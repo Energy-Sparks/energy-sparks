@@ -4,7 +4,7 @@ RSpec.describe Schools::BillRequestService do
   let!(:school)           { create(:school) }
   let!(:service)          { Schools::BillRequestService.new(school) }
   let(:email)             { ActionMailer::Base.deliveries.last }
-  let(:email_body)        { email.body.to_s }
+  let(:email_body)        { email.html_part.decoded }
 
   context 'listing users' do
     context 'with no users' do
@@ -15,7 +15,7 @@ RSpec.describe Schools::BillRequestService do
 
     context 'with users' do
       let!(:school_admin)     { create(:school_admin, school: school)}
-      let!(:cluster_admin)    { create(:school_admin, name: "Cluster admin", cluster_schools: [school]) }
+      let!(:cluster_admin)    { create(:school_admin, name: 'Cluster admin', cluster_schools: [school]) }
       let!(:staff)            { create(:staff, school: school)}
       let!(:pupil)            { create(:pupil, school: school)}
 
@@ -73,7 +73,7 @@ RSpec.describe Schools::BillRequestService do
       end
 
       it 'has the expected subject line' do
-        expect(email.subject).to eql("Please upload a recent energy bill to Energy Sparks")
+        expect(email.subject).to eql('Please upload a recent energy bill to Energy Sparks')
       end
 
       it 'includes the school name' do
@@ -93,7 +93,7 @@ RSpec.describe Schools::BillRequestService do
       end
 
       it 'has the expected subject line' do
-        expect(email.subject).to eql("Uwchlwythwch fil ynni diweddar i Sbarcynni")
+        expect(email.subject).to eql('Uwchlwythwch fil ynni diweddar i Sbarcynni')
       end
     end
 

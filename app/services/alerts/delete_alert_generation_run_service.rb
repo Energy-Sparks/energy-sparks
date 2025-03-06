@@ -1,6 +1,6 @@
 module Alerts
   class DeleteAlertGenerationRunService
-    DEFAULT_OLDER_THAN = 1.month.ago.beginning_of_month
+    DEFAULT_OLDER_THAN = 14.days.ago.to_date
     attr_reader :older_than
 
     def initialize(older_than = DEFAULT_OLDER_THAN)
@@ -8,7 +8,7 @@ module Alerts
     end
 
     def delete!
-      alert_generation_runs = AlertGenerationRun.where("created_at <= ?", @older_than)
+      alert_generation_runs = AlertGenerationRun.where('created_at <= ?', @older_than)
       alert_generation_runs.destroy_all
     end
   end

@@ -7,15 +7,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - if: ${{ inputs.ruby-only == 'false' }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16
-        cache: yarn
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: "3.0"
+        ruby-version: "3.2"
     - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rails db:schema:load
       shell: bash

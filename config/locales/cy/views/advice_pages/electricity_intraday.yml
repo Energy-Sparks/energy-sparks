@@ -5,7 +5,7 @@ cy:
         charts:
           comparison_chart_explanation_html: |-
             <p>
-              Mae'r siart hwn yn eich galluogi i weld sut mae defnydd trydan eich ysgol yn cymharu ag ysgolion eraill sy'n defnyddio ynni'n effeithlon trwy gydol y diwrnod ysgol. Mae ysgol 'meincnod' yn cynrychioli'r 30.0% gorau o ysgolion %{school_type} ac mae 'enghreifftiol' yn cynrychioli'r 17.5% o ysgolion %{school_type} orau.
+              Mae'r siart hwn yn eich galluogi i weld sut mae defnydd trydan eich ysgol yn cymharu ag ysgolion eraill sy'n defnyddio ynni'n effeithlon trwy gydol y diwrnod ysgol. Mae ysgol 'Dan reolaeth dda' yn cynrychioli'r 30.0% gorau o ysgolion %{school_type} ac mae 'Enghreifftiol' yn cynrychioli'r 17.5% o ysgolion %{school_type} orau.
             </p>
 
               Gall y siart hwn fod yn ddefnyddiol i arsylwi lle mae patrwm eich ysgol o ddefnyddio ynni yn wahanol i ysgolion eraill. Efallai y bydd anghysondebau fel neidiau mewn defnydd y tu allan i oriau ysgol na ellir eu cyfrif.
@@ -13,9 +13,15 @@ cy:
             <p>
               Os oes gan eich ysgol ddefnydd uchel dros nos, o gymharu <p></p>â'r ysgolion meincnod, gallai hyn ddangos bod angen i chi leihau eich llwyth sylfaenol. Os yw defnydd yn bennaf yn uchel yn ystod canol y dydd, mae hyn yn dangos bod angen i chi leihau eich defnydd trydan brig.
             </p>
-          comparison_chart_subtitle_html: Mae'r siart isod yn darparu cymhariaeth o ddefnydd cyfartalog eich ysgol yn ystod diwrnod ysgol rhwng <span class="start-date">%{start_month_year}</span> a %{end_month_year}<span class="end-date">, ac yn cynnwys cymhariaeth gydag ysgolion 'meincnod' ac 'enghreifftiol'.
-          comparison_chart_title: Eich defnydd o drydan diwrnod ysgol dros y 12 mis diwethaf
-          holidays_chart_subtitle: Mae'r graff yn cymharu'r defnydd trydan cyfartalog ar gyfer eich ysgol yn ystod gwyliau'r ysgol dros y 2 flynedd ddiwethaf
+          comparison_chart_subtitle_html: Mae'r siart isod yn darparu cymhariaeth o ddefnydd cyfartalog eich ysgol yn ystod diwrnod ysgol rhwng <span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>, ac yn cynnwys cymhariaeth gydag ysgolion 'Dan reolaeth dda' ac 'Enghreifftiol'.
+          comparison_chart_title:
+            one: Eich defnydd trydan diwrnod ysgol diweddar
+            two: Eich defnydd o drydan diwrnod ysgol dros y %{count} fis diwethaf
+            many: Eich defnydd o drydan diwrnod ysgol dros y %{count} mis diwethaf
+            other: Eich defnydd o drydan diwrnod ysgol dros y %{count} mis diwethaf
+          holidays_chart_subtitle:
+            since_html: Mae’r graff yn cymharu’r defnydd cyfartalog o drydan ar gyfer <span class='meter'>%{meter}</span> yn ystod gwyliau’r ysgol ers <span class='start_date'>%{start_date}</span>
+            two_years_html: Mae'r graff yn cymharu'r defnydd trydan cyfartalog ar gyfer <span class='meter'>%{meter}</span> yn ystod gwyliau'r ysgol dros y 2 flynedd ddiwethaf
           holidays_chart_title: Amrywiad dyddiol yn y defnydd o drydan yn ystod gwyliau ysgol
           schooldays_chart_explanation_html: |-
             <p>
@@ -24,12 +30,16 @@ cy:
             <p>
               Mae'n ddefnyddiol wrth wneud diagnosis o newidiadau sydd wedi digwydd dros y flwyddyn ddiwethaf a allai fod wedi newid y defnydd o drydan.
             </p>
-          schooldays_chart_subtitle: Mae'r siart yn dangos defnydd o drydan cyfartalog ar gyfer eich ysgol yn ystod diwrnod ysgol dros y 2 flynedd ddiwethaf
+          schooldays_chart_subtitle:
+            since_html: Mae’r siart yn dangos y defnydd cyfartalog o drydan ar gyfer <span class='meter'>%{meter}</span> yn ystod y diwrnod ysgol ers <span class='start_date'>%{start_date}</span>
+            two_years_html: Mae'r siart yn dangos y defnydd cyfartalog o drydan ar gyfer <span class='meter'>%{meter}</span> yn ystod diwrnod ysgol dros y 2 flynedd ddiwethaf
           schooldays_chart_title: Amrywiad dyddiol yn y defnydd o drydan yn ystod diwrnodau ysgol
           trends_chart_explanation: Gallwch ddefnyddio math hwn o graff i ddeall sut mae defnydd trydan ysgolion yn newid dros amser. Gallwch glicio ar yr allwedd i ychwanegu neu ddileu llinellau o'r graff i'w wneud yn gliriach.
-          trends_chart_subtitle: Mae'r graff yn dangos sut mae'r defnydd o drydan yn amrywio ar gyfer eich ysgol yn ystod y dydd dros yr wythnos ddiwethaf
+          trends_chart_subtitle_html: Mae'r graff yn dangos sut mae'r defnydd o drydan yn amrywio ar gyfer <span class='meter'>%{meter}</span> yn ystod y dydd dros yr wythnos ddiwethaf
           trends_chart_title: Amrywiad dyddiol yn y defnydd o drydan yn ystod y 7 diwrnod diwethaf
-          weekends_chart_subtitle: Mae'r graff yn cymharu'r defnydd trydan cyfartalog ar gyfer eich ysgol yn ystod y penwythnos dros y 2 flynedd ddiwethaf
+          weekends_chart_subtitle:
+            since_html: Mae'r graff yn cymharu'r defnydd cyfartalog o drydan ar gyfer <span class='meter'>%{meter}</span> yn ystod y penwythnos ers <span class='start_date'>%{start_date}</span>
+            two_years_html: Mae'r graff yn cymharu'r defnydd trydan cyfartalog ar gyfer <span class='meter'>%{meter}</span> yn ystod y penwythnos dros y 2 flynedd ddiwethaf
           weekends_chart_title: Amrywiad dyddiol yn y defnydd o drydan yn ystod y penwythnosau
         comparison:
           title: Sut mae'ch ysgol yn cymharu?
@@ -38,7 +48,7 @@ cy:
         schooldays:
           title: Diwrnodau ysgol
         sections: Mae'r adrannau canlynol yn darparu mwy o gefndir a dadansoddiad ar eich llwyth sylfaenol trydan
-        summary: 'Mae''r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd trydan eich ysgol yn amrywio drwy gydol y dydd. Gwneir cymhariaethau rhwng eich ysgol ac ysgolion meincnod ac ysgolion enghreifftiol yn ogystal â rhwng eleni a''r flwyddyn flaenorol ar gyfer dyddiau''r wythnos, penwythnosau a gwyliau. '
+        summary: Mae'r adran hon yn rhoi dadansoddiad manylach o sut mae defnydd trydan eich ysgol yn amrywio drwy gydol y dydd. Gwneir cymhariaethau rhwng eich ysgol ac ysgolion meincnod ac ysgolion enghreifftiol yn ogystal â rhwng eleni a'r flwyddyn flaenorol ar gyfer dyddiau'r wythnos, penwythnosau a gwyliau.
         title: Dadansoddiad
         trends:
           title: Tueddiadau diweddar
@@ -60,7 +70,6 @@ cy:
         summary_link: Dysgu rhagor
         title: Beth yw defnydd o fewn diwrnod?
         your_current_peak_electricity_use:
-          data_on_peak_kw_usage_available_from: Data ar ddefnydd kw brig ar gael o %{data_available_from}
           table:
             average_peak_kw: Brig cyfartalog kW
             percent_change: "% newid"

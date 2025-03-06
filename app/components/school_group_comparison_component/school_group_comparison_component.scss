@@ -1,15 +1,9 @@
 .school-group-comparison-component-callout-row {
-  .exemplar_school {
-    background-color: #f8f9fa !important;
-    border-bottom: 10px solid #5cb85c;
-  }
-  .benchmark_school {
-    background-color: #f8f9fa !important;
-    border-bottom: 10px solid #ffac21;
-  }
-  .other_school {
-    background-color: #f8f9fa !important;
-    border-bottom: 10px solid #FF3A5B;
+  @each $tag, $colour in $colours-comparison {
+    .#{$tag} {
+      background-color: $light !important;
+      border-bottom: 10px solid $colour;
+    }
   }
 }
 
@@ -24,12 +18,12 @@
 }
 
 .school-group-comparison-component-callout-box {
-  border: 1px solid #dee2e6;
+  border: 1px solid $grey-light;
   width: 50%;
-  box-shadow: 1px 1px #ccc;
+  box-shadow: 1px 1px $grey-medium;
   margin-top: 10px;
   margin-bottom: 12px;
-  background-color: white;
+  background-color: $white;
   text-align: center;
 
   div.body h2 {
@@ -44,7 +38,7 @@
   left: 50%;
   height: 20px;
   width: 20px;
-  background: white;
+  background: $white;
   box-sizing: border-box;
   transform: rotate(45deg) translate(-50%);
   border-bottom: inherit;

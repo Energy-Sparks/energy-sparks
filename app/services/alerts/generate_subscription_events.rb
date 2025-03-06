@@ -29,18 +29,17 @@ module Alerts
       end
     end
 
+    # Always create a subscription event as we're disabling unsubscribe option
     def first_or_create_alert_subscription_event(contact, alert, content_version, find_out_more, priority, communication_type)
-      if contact.alert_type_rating_unsubscriptions.active(Time.zone.today).where(alert_type_rating: content_version.alert_type_rating).empty?
-        AlertSubscriptionEvent.create_with(
-          content_version: content_version,
-          subscription_generation_run: @subscription_generation_run,
-          find_out_more: find_out_more,
-          unsubscription_uuid: SecureRandom.uuid,
-          priority: priority
-        ).find_or_create_by!(
-          contact: contact, alert: alert, communication_type: communication_type
-        )
-      end
+      AlertSubscriptionEvent.create_with(
+        content_version: content_version,
+        subscription_generation_run: @subscription_generation_run,
+        find_out_more: find_out_more,
+        unsubscription_uuid: nil,
+        priority: priority
+      ).find_or_create_by!(
+        contact: contact, alert: alert, communication_type: communication_type
+      )
     end
   end
 end

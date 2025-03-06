@@ -5,7 +5,7 @@ module Schools
     skip_before_action :authenticate_user!
 
     def show
-      if @school.public? || can?(:show, @school)
+      if @school.data_sharing_public? || can?(:show, @school)
         redirect_to school_path(@school)
       else
         render :show

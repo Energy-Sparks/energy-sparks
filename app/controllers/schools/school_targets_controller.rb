@@ -5,14 +5,15 @@ module Schools
 
     include SchoolAggregation
     include SchoolProgress
-    include ActivityTypeFilterable
     include DashboardTimeline
 
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
+    before_action :load_advice_pages
     before_action :set_breadcrumbs
+    before_action :set_counts
 
     def index
       if @school.has_target?
@@ -30,31 +31,35 @@ module Schools
         @overview_data = Schools::ManagementTableService.new(@school).management_data
       end
 
+      layout = Flipper.enabled?(:new_dashboards_2024, current_user) ? 'dashboards' : 'application'
+
       if @school_target.current?
-        setup_activity_suggestions
-        @actions = Interventions::SuggestAction.new(@school).suggest
-        #list of fuel types to suggest estimates
+        @activities = Recommendations::Activities.new(@school).based_on_energy_use
+        @actions = Recommendations::Actions.new(@school).based_on_energy_use
+        # list of fuel types to suggest estimates
         @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
-        render :current
+        render :current, layout: layout
       else
         @observations = setup_target_timeline(@school_target)
-        render :expired
+        render :expired, layout: layout
       end
     end
 
-    #create first or new target if current has expired
+    # create first or new target if current has expired
     def new
+      layout = Flipper.enabled?(:new_dashboards_2024, current_user) ? 'dashboards' : 'application'
+
       if @school.has_current_target?
         redirect_to school_school_target_path(@school, @school.current_target)
       elsif @school.school_targets.any?(&:persisted?)
         @previous_school_target = @school.most_recent_target
         @school_target = target_service.build_target
-        render :new
+        render :new, layout: layout
       else
         @school_target = target_service.build_target
-        render :first
+        render :first, layout: layout
       end
     end
 
@@ -70,6 +75,8 @@ module Schools
     end
 
     def edit
+      layout = Flipper.enabled?(:new_dashboards_2024, current_user) ? 'dashboards' : 'application'
+
       authorize! :edit, @school_target
       if @school_target.expired?
         redirect_to school_school_target_path(@school, @school_target), notice: 'Cannot edit an expired target'
@@ -77,17 +84,20 @@ module Schools
         target_service.refresh_target(@school_target)
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
+        render :edit, layout: layout
       end
     end
 
     def update
+      layout = Flipper.enabled?(:new_dashboards_2024, current_user) ? 'dashboards' : 'application'
+
       authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
         AggregateSchoolService.new(@school).invalidate_cache
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else
         target_service
-        render :edit
+        render :edit, layout: layout
       end
     end
 
@@ -103,13 +113,17 @@ module Schools
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
     end
 
-    def school_target_params
-      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+    def load_advice_pages
+      @advice_pages = AdvicePage.all
     end
 
-    def setup_activity_suggestions
-      suggester = NextActivitySuggesterWithFilter.new(@school, activity_type_filter)
-      @suggestions = suggester.suggest_for_school_targets
+    def set_counts
+      @priority_count = @school.latest_management_priorities.count
+      @alert_count = @school.latest_dashboard_alerts.management_dashboard.count
+    end
+
+    def school_target_params
+      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
     end
   end
 end

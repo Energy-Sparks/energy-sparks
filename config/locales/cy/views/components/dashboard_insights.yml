@@ -1,0 +1,6 @@
+cy:
+  components:
+    dashboard_insights:
+      reminders:
+        title: Nodiadau atgoffa
+      title: Nodiadau atgoffa a rhybuddion

@@ -1,0 +1,41 @@
+<div id="my-schools-summary">
+  <% if user.school.present? || user.group_admin? %>
+    <div class="row mt-4">
+      <div class="col">
+        <h2><%= t('nav.my_schools') %></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <% if user.group_admin? %>
+          <p>
+            <%= t('users.show.school_summary.group_admin_html',
+                  role: t("role.#{user.role}"),
+                  count: user.school_group.visible_schools_count,
+                  url: school_group_path(user.school_group),
+                  link_text: user.school_group.name) %>.
+          </p>
+        <% elsif user.has_other_schools? %>
+          <p>
+            <%= t('users.show.school_summary.cluster_admin_html',
+                  role: t("role.#{user.role}"),
+                  count: user.cluster_schools.count) %>.
+          </p>
+        <% else %>
+          <p>
+            <%= t('users.show.school_summary.school_user_html',
+                  role: t("role.#{user.role}"),
+                  url: school_path(user.school),
+                  link_text: user.school.name) %>.
+          </p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  <div class="row mt-2 mb-4">
+    <div class="col">
+      <%= link_to t('users.show.manage_alerts'), user_contacts_path(user), class: 'btn btn-primary' unless user.admin? %>
+      <%= link_to t('users.show.update_email_preferences'), user_emails_path(user), class: 'btn btn-success' %>
+    </div>
+  </div>
+</div>

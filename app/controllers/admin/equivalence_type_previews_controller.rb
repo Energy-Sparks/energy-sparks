@@ -3,11 +3,11 @@ module Admin
     include LocaleHelper
 
     def create
-      school = School.find(params[:school_id])
+      @school = School.find(params[:school_id])
       equivalence_type = EquivalenceType.new(equivalence_type_params)
       content = EquivalenceTypeContentVersion.new(content_params[:content])
-      aggregate_school = AggregateSchoolService.new(school).aggregate_school
-      @equivalence = Equivalences::Calculator.new(school, EnergyConversions.new(aggregate_school)).perform(equivalence_type, content)
+      aggregate_school = AggregateSchoolService.new(@school).aggregate_school
+      @equivalence = Equivalences::Calculator.new(@school, EnergyConversions.new(aggregate_school)).perform(equivalence_type, content)
       @equivalence_content = TemplateInterpolation.new(
         content,
         with_objects: { equivalence_type: equivalence_type }
@@ -17,7 +17,7 @@ module Admin
       )
       render 'show', layout: nil
     rescue Equivalences::Calculator::CalculationError => e
-      render plain: "#{e.message} for #{school.name}"
+      render plain: "#{e.message} for #{@school.name}"
     end
 
   private

@@ -1,17 +1,17 @@
 module SchoolGroups
   class PriorityActions
-    def initialize(school_group)
-      @school_group = school_group
+    def initialize(schools)
+      @schools = schools
       @ratings_for_reporting = {}
     end
 
-    #returns a hash of alert_type_rating to a list of ManagementPriority
-    #there will be at most one ManagementPriority for a given alert type rating for a school
+    # returns a hash of alert_type_rating to a list of ManagementPriority
+    # there will be at most one ManagementPriority for a given alert type rating for a school
     def priority_actions
       @priority_actions ||= find_priority_actions
     end
 
-    #returns a hash of alert_type_rating to a list of OpenStruct with saving values
+    # returns a hash of alert_type_rating to a list of OpenStruct with saving values
     def total_savings
       priority_actions.transform_values do |priorities|
         OpenStruct.new(
@@ -54,7 +54,7 @@ module SchoolGroups
       end
       for_rating.map do |priority|
         OpenStruct.new(
-          school: schools.find {|s| s.id == priority.school_id },
+          school: @schools.find {|s| s.id == priority.school_id },
           average_one_year_saving_gbp: average_one_year_saving_gbp(priority),
           one_year_saving_co2: one_year_saving_co2(priority),
           one_year_saving_kwh: one_year_saving_kwh(priority)
@@ -71,7 +71,7 @@ module SchoolGroups
     end
 
     def one_year_saving_co2(priority)
-      value_to_i(priority.one_year_saving_co2.split(" ").first)
+      value_to_i(priority.one_year_saving_co2.split(' ').first)
     end
 
     def value_to_i(val)
@@ -87,19 +87,15 @@ module SchoolGroups
       @ratings_for_reporting[rating]
     end
 
-    #Any alert rating where `management_priorities_active: true`. i.e. will produce a
-    #ManagementPriority record. These are all the ratings that school might be graded
-    #against
+    # Any alert rating where `management_priorities_active: true`. i.e. will produce a
+    # ManagementPriority record. These are all the ratings that school might be graded
+    # against
     def alert_type_ratings
       @alert_type_ratings = AlertTypeRating.management_priorities_title
     end
 
     def priorities
-      @priorities = ManagementPriority.for_school_group(@school_group)
-    end
-
-    def schools
-      @schools ||= @school_group.schools.visible
+      @priorities = ManagementPriority.for_schools(@schools)
     end
   end
 end

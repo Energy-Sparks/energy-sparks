@@ -1,0 +1,9 @@
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.report_reporting_period').on('change', function() {
+      const selected = $(this).find(":selected").val();
+      const display = (selected == 'custom') ? 'block' : 'none';
+      $('.custom_period').css('display', display);
+    }).trigger('change');
+  })
+</script>

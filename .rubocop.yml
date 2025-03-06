@@ -33,6 +33,7 @@ AllCops:
     - config/environments/development.rb
     - config/environments/production.rb
     - config/environments/test.rb
+    - config/initializers/assets.rb
     - config/initializers/backtrace_silencers.rb
     - config/initializers/content_security_policy.rb
     - config/initializers/filter_parameter_logging.rb
@@ -40,11 +41,12 @@ AllCops:
     - config/initializers/permissions_policy.rb
     - config/puma.rb
     - config/routes.rb
-require:
-  - rubocop-rails
+plugins:
   - rubocop-performance
+  - rubocop-rails
+require:
   - rubocop-rspec
-# - rubocop-capybara
+  - rubocop-capybara
 # - rubocop-factory_bot
 
 Rails/DynamicFindBy:
@@ -106,8 +108,6 @@ Layout/MultilineArrayBraceLayout:
   Enabled: false
 Lint/BooleanSymbol:
   Enabled: false
-Metrics/BlockLength:
-  Enabled: false
 Style/DateTime:
   Enabled: false
 Style/InverseMethods:
@@ -137,8 +137,6 @@ Naming/AccessorMethodName:
 Metrics/PerceivedComplexity:
   Enabled: false
 Style/FrozenStringLiteralComment:
-  Enabled: false
-Style/StringLiterals:
   Enabled: false
 Naming/PredicateName:
   Enabled: false
@@ -176,8 +174,6 @@ Style/RedundantBegin:
   Enabled: false
 Layout/HashAlignment:
   Enabled: false
-Layout/IndentationWidth:
-  Enabled: false
 Layout/FirstParameterIndentation:
   Enabled: false
 Style/HashSyntax:
@@ -185,8 +181,6 @@ Style/HashSyntax:
 Layout/DotPosition:
   Enabled: false
 Style/RaiseArgs:
-  Enabled: false
-Layout/LeadingCommentSpace:
   Enabled: false
 Style/TrailingCommaInArguments:
   Enabled: false
@@ -426,6 +420,7 @@ RSpec/MultipleExpectations:
 RSpec/AnyInstance:
   Enabled: false
 RSpec/LetSetup:
+  # often used in shared contexts allowing let to be overridden
   Enabled: false
 
 ### Things we're unlikely to fix: ###
@@ -441,3 +436,9 @@ Naming/AsciiIdentifiers:
     - 'spec/models/meter_attribute_spec.rb'
     - 'spec/services/schools/advice/baseload_service_spec.rb'
     - 'spec/system/schools/advice_pages/hot_water_spec.rb'
+Metrics/BlockLength:
+  Exclude: # excluding route file as blocklength can be greater than default 25
+    - 'config/route.rb'
+Rails/FindEach:
+  Exclude: # find_each does not work here
+    - 'app/components/comparison_table_component.rb'

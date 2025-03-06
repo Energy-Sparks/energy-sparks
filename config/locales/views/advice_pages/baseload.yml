@@ -9,10 +9,16 @@ en:
         baseload_low_details_html: This is good, and as a result you are saving %{estimated_savings} per year versus other schools of a similar size.
         baseload_low_extra_savings_html: If you matched the baseload of the best performing schools you could save %{estimated_savings} per year.
         charts:
-          baseload_chart_considerations: If your baseload has changed, for example suddenly increasing or decreasing, you should be able to track down and explain the cause of this change. Consider whether the school has recently purchased new equipment. A very large decrease over the summer holidays is good, it shows that appliances and equipment have been switched off. Perhaps fridges and freezers in the kitchen were emptied or consolidated. Consider how significant that drop is - if caused by switching off fridges and freezers, they might be inefficient enough to require replacement. Think about whether your school can replicate that decrease for other holidays, or even weekends.
+          baseload_chart_considerations:
+          - If your baseload has changed, for example suddenly increasing or decreasing, you should be able to track down and explain the cause of this change. Consider whether the school has recently purchased new equipment or equipment serviced. Check the date of the change against any record of work done in the school.
+          - A sudden increase in the winter could be related to heating being left on overnight. This might be necessary during very cold periods, but it is useful to check that baseload levels return to normal once the cold spell has passed.
+          - A very large decrease over the summer holidays is good, it shows that appliances and equipment have been switched off. Perhaps fridges and freezers in the kitchen were emptied or consolidated. Consider how significant that drop is - if caused by switching off fridges and freezers, they might be inefficient enough to require replacement. Think about whether your school can replicate that decrease for other holidays, or even weekends.
           baseload_chart_explanation: Each point on this chart represents the average baseload over the hours a school is closed on that day. You can click on a point in the chart and it will drill down to show you the full electricity usage on that day.
           baseload_chart_subtitle_html: This chart shows the electricity baseload for your school between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>.
-          baseload_chart_title: Electricity baseload for the last %{months_analysed} months
+          baseload_chart_title:
+            one: Electricity baseload for the last month
+            other: Electricity baseload for the last %{count} months
+            zero: Electricity baseload for the last month
           long_term_baseload_chart_explanation: You can click on the chart to drill down to individual days and work out at what times of day and year your school is doing either better or worse than these schools.
           long_term_baseload_chart_subtitle_html: This chart shows the long term trend in your school’s baseload between <span class="start-date">%{start_month_year}</span> and <span class="end-date">%{end_month_year}</span>, and includes a comparison with 'benchmark' and 'exemplar' schools
           long_term_baseload_chart_title: Long term baseload comparison with benchmark and exemplar schools
@@ -27,7 +33,6 @@ en:
           link_text: meter breakdown
           table_description: The table below shows a breakdown of the average baseload for your school for the last %{months_analysed} months by meter.
           title: Baseload breakdown by meter
-          whole_school: Whole school
         meter_charts:
           title: Baseload charts by meter
         multiple_meters_suggestion_html: Ideally, there should be little variation in baseload between different days and seasons. If you notice unusual changes or very high baseload, you might be able to narrow down what is causing it by looking at the %{link} of your baseload below.
@@ -41,7 +46,11 @@ en:
         sections: The following sections provide more background and analysis on your electricity baseload
         summary: This section gives a more detailed analysis of your school’s electricity baseload and some things to look out for.
         title: Baseload Analysis
-        usage: Your baseload over the last %{months_analysed} months was %{baseload_usage} kW. Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
+        usage_last_month:
+          one: Your baseload for the last month was %{baseload_usage} kW.
+          other: Your baseload over the last %{count} months was %{baseload_usage} kW.
+          zero: Your baseload for the last month was %{baseload_usage} kW.
+        usage_other: Other schools with a similar number of pupils have a baseload of %{benchmark_usage} kW.
         usage_percent_html: Your baseload represents %{percent} of your annual consumption.
         weekday_variation:
           intro_1: At a well-managed school the baseload should remain the same throughout the week, there should be no reason why the electricity consumption at midnight on a weekday should be higher than during the weekend.
@@ -54,7 +63,7 @@ en:
         more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
         title: How do you compare?
       current_baseload:
-        calculation_dates: Calculation based on usage between %{start_date} and %{end_date}
+        calculation_dates: Calculation based on usage between %{start_date} and %{end_date}.
         last_week: Last week
         last_year: Last year
         tables:
@@ -87,7 +96,7 @@ en:
           percentage_of_total: "% of total baseload"
           potential_saving_co2: CO2 reduction (kg)
           potential_saving_gbp: Potential saving (£)
-          year: Year
+          year: Academic Year
         labels:
           all_meters: All meters
       what_is_baseload_html: |-

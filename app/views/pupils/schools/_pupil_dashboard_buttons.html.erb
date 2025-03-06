@@ -1,7 +1,0 @@
-<% if show_admin_page_switch?(school) %>
-  <% if params[:no_data] %>
-    <%= link_to t('pupils.schools.show.admin_view'), pupils_school_path(school), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
-  <% else %>
-    <%= link_to t('pupils.schools.show.user_view'), pupils_school_path(school, no_data: true), class: 'btn btn-outline-dark bg-warning rounded-pill font-weight-bold' %>
-  <% end %>
-<% end %>

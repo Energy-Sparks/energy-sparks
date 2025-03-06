@@ -48,11 +48,8 @@ module Schools
     end
 
     def setup_meters(school, supply)
-      case supply
-      when :electricity then school.filterable_meters.electricity
-      when :gas then school.filterable_meters.gas
-      else Meter.none
-      end
+      return Meter.none unless [:electricity, :gas].include?(supply)
+      school.filterable_meters(supply)
     end
 
     def title_key(supply, period, split_meters)

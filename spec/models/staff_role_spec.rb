@@ -9,14 +9,14 @@ describe StaffRole, type: :model do
   describe '#translated_names_and_ids' do
     it 'returns an array of arrays containing the translated staff role title and its id' do
       staff_roles = [
-        "Building/site manager or caretaker",
-        "Business manager",
-        "Council or MAT staff",
-        "Governor",
-        "Headteacher or Deputy Head",
-        "Parent or volunteer",
-        "Public",
-        "Teacher or teaching assistant"
+        'Building/site manager or caretaker',
+        'Business manager',
+        'Council or MAT staff',
+        'Governor',
+        'Headteacher or Deputy Head',
+        'Parent or volunteer',
+        'Public',
+        'Teacher or teaching assistant'
       ]
       staff_roles.each { |title| StaffRole.create!(title: title) }
       I18n.with_locale(:cy) do
@@ -35,6 +35,18 @@ describe StaffRole, type: :model do
       end
       I18n.with_locale(:en) do
         expect(StaffRole.translated_names_and_ids.map(&:first)).to eq(staff_roles)
+      end
+    end
+  end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:staff_role, :management) }
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          title: 'New',
+        }
       end
     end
   end

@@ -1,10 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe "hot water advice page", type: :system do
+RSpec.describe 'hot water advice page', type: :system do
   let(:key) { 'hot_water' }
-  let(:expected_page_title) { "Hot water usage analysis" }
+  let(:expected_page_title) { 'Hot water usage analysis' }
 
-  include_context "gas advice page"
+  include_context 'gas advice page'
+
+  it_behaves_like 'it responds to HEAD requests'
 
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
@@ -95,9 +97,9 @@ RSpec.describe "hot water advice page", type: :system do
       visit school_advice_hot_water_path(school)
     end
 
-    it_behaves_like "an advice page tab", tab: "Insights"
+    it_behaves_like 'an advice page tab', tab: 'Insights'
 
-    context "when school has a pool" do
+    context 'when school has a pool' do
       before do
         allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
           has_swimming_pool?: true
@@ -111,7 +113,7 @@ RSpec.describe "hot water advice page", type: :system do
       end
     end
 
-    context "when efficiency is too high" do
+    context 'when efficiency is too high' do
       before do
         allow_any_instance_of(Schools::Advice::HotWaterController).to receive_messages(
           has_swimming_pool?: false,
@@ -125,7 +127,7 @@ RSpec.describe "hot water advice page", type: :system do
       end
     end
 
-    context "when not enough data" do
+    context 'when not enough data' do
       let(:enough_data) { false }
 
       before do
@@ -140,7 +142,7 @@ RSpec.describe "hot water advice page", type: :system do
     context "clicking the 'Insights' tab" do
       before { click_on 'Insights' }
 
-      it_behaves_like "an advice page tab", tab: "Insights"
+      it_behaves_like 'an advice page tab', tab: 'Insights'
 
       it 'shows expected content' do
         expect(page).to have_content('Your hot water use')
@@ -187,7 +189,7 @@ RSpec.describe "hot water advice page", type: :system do
     context "clicking the 'Analysis' tab" do
       before { click_on 'Analysis' }
 
-      it_behaves_like "an advice page tab", tab: "Analysis"
+      it_behaves_like 'an advice page tab', tab: 'Analysis'
 
       it 'shows expected content' do
         expect(page).to have_content('Hot water efficiency improvement options')
@@ -201,7 +203,7 @@ RSpec.describe "hot water advice page", type: :system do
     context "clicking the 'Learn More' tab" do
       before { click_on 'Learn More' }
 
-      it_behaves_like "an advice page tab", tab: "Learn More"
+      it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
   end
 end

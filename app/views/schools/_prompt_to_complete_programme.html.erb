@@ -1,19 +1,23 @@
 <% if local_assigns[:programmes].try(:any?) %>
   <% programmes.each do |programme| %>
-    <%= component 'info_bar',
-        status: :neutral,
-        style: local_assigns[:style],
-        title: Programmes::Progress.new(programme).notification,
-        icon: fa_icon('tasks fa-3x'),
-        buttons: { I18n.t('common.labels.view_now') => programme_type_path(programme.programme_type) }
-    %>
+    <%= render InfoBarComponent.new(
+          status: :neutral,
+          style: local_assigns[:style],
+          title: if Flipper.enabled?(:todos, current_user)
+                   Completables::Progress.new(programme).notification
+                 else
+                   Programmes::Progress.new(programme).notification
+                 end,
+          icon: fa_icon('tasks fa-3x'),
+          buttons: { I18n.t('common.labels.view_now') => programme_type_path(programme.programme_type) }
+        ) %>
   <% end %>
 <% else %>
-  <%= component 'info_bar',
-      status: :positive,
-      style: local_assigns[:style],
-      title: I18n.t('schools.prompts.programme.choose_a_new_programme_message'),
-      icon: fa_icon('tasks fa-3x'),
-      buttons: { I18n.t('schools.prompts.programme.start_a_new_programme') => programme_types_path }
-  %>
+  <%= render InfoBarComponent.new(
+        status: :positive,
+        style: local_assigns[:style],
+        title: I18n.t('schools.prompts.programme.choose_a_new_programme_message'),
+        icon: fa_icon('tasks fa-3x'),
+        buttons: { I18n.t('schools.prompts.programme.start_a_new_programme') => programme_types_path }
+      ) %>
 <% end %>

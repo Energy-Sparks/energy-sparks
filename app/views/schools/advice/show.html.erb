@@ -1,12 +1,19 @@
-<%= render 'schools/advice/index/advice_index_page', school: @school, advice_pages: @advice_pages, tab: @tab, priority_count: @priority_count, alert_count: @alert_count do %>
+<%= render 'schools/advice/index/advice_index_page', school: @school, advice_pages: @advice_pages, tab: @tab,
+                                                     priority_count: @priority_count, alert_count: @alert_count do %>
   <div class="row mt-4">
     <div class="col">
-      <h2><%= t('advice_pages.index.show.title')%></h2>
-      <%= component 'notice', status: :neutral do |c| %>
+      <h2><%= t('advice_pages.index.show.title') %></h2>
+      <%= render PromptComponent.new(status: :none) do |c| %>
         <% c.with_link { link_to t('advice_pages.index.show.notice_link'), priorities_school_advice_path(@school) } %>
         <%= t('advice_pages.index.show.notice_html') %>
       <% end %>
     </div>
   </div>
-  <%= render 'schools/advice/index/page_list', school: @school, advice_pages: @advice_pages, advice_page_benchmarks: @advice_page_benchmarks %>
+
+  <% if Flipper.enabled?(:new_dashboards_2024, current_user) %>
+    <%= render AdvicePageListComponent.new(school: @school) %>
+  <% else %>
+    <%= render 'schools/advice/index/page_list', school: @school, advice_pages: @advice_pages,
+                                                 advice_page_benchmarks: @advice_page_benchmarks %>
+  <% end %>
 <% end %>

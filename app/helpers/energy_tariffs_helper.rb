@@ -59,8 +59,8 @@ module EnergyTariffsHelper
   end
 
   def formatted_date_range_for(energy_tariff)
-    start_date = energy_tariff&.start_date&.to_s(:es_compact)
-    end_date = energy_tariff&.end_date&.to_s(:es_compact)
+    start_date = energy_tariff&.start_date&.to_fs(:es_compact)
+    end_date = energy_tariff&.end_date&.to_fs(:es_compact)
 
     if start_date && end_date
       I18n.t(
@@ -76,8 +76,8 @@ module EnergyTariffsHelper
   def energy_tariff_price_title(energy_tariff_price)
     I18n.t(
       'schools.tariffs_helper.rate_from',
-      start_time: energy_tariff_price&.start_time&.to_s(:time),
-      end_time: energy_tariff_price&.end_time&.to_s(:time)
+      start_time: energy_tariff_price&.start_time&.to_fs(:time),
+      end_time: energy_tariff_price&.end_time&.to_fs(:time)
     )
   end
 
@@ -96,8 +96,8 @@ module EnergyTariffsHelper
   def all_energy_tariff_price_times_for(energy_tariff)
     energy_tariff.energy_tariff_prices.map do |energy_tariff_price|
       [
-        energy_tariff_price.start_time.to_s(:time),
-        energy_tariff_price.end_time.to_s(:time)
+        energy_tariff_price.start_time.to_fs(:time),
+        energy_tariff_price.end_time.to_fs(:time)
       ]
     end
   end
@@ -129,9 +129,9 @@ module EnergyTariffsHelper
     settings(charge_type).fetch(:units, []).map { |k| [EnergyTariffCharge.charge_type_units[k], k] }
   end
 
-  #If user provides a value that cant be cast to underlying type,
-  #e.g. a string when a number is expected, you cant read the attribute
-  #value. This checks for errors and retrieves the original.
+  # If user provides a value that cant be cast to underlying type,
+  # e.g. a string when a number is expected, you cant read the attribute
+  # value. This checks for errors and retrieves the original.
   def value_allowing_for_errors(model, attribute = :value)
     if model.errors.any?
       model.read_attribute_before_type_cast(attribute)

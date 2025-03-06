@@ -29,7 +29,7 @@ describe Meters::MeterAttributeManager, type: :service do
 
     context 'with invalid attributes' do
       it 'doesnt create the attribute' do
-        expect { service.create!(meter.id, attribute_type, "invalid", reason, admin) }.to raise_error(ActiveRecord::RecordInvalid)
+        expect { service.create!(meter.id, attribute_type, 'invalid', reason, admin) }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
   end
@@ -51,7 +51,7 @@ describe Meters::MeterAttributeManager, type: :service do
 
     context 'with invalid attributes' do
       it 'doesnt create a new attribute' do
-        expect { service.update!(meter_attribute.id, "invalid", reason, admin) }.to raise_error(ActiveRecord::RecordInvalid)
+        expect { service.update!(meter_attribute.id, 'invalid', reason, admin) }.to raise_error(ActiveRecord::RecordInvalid)
       end
     end
   end

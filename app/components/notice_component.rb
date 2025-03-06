@@ -30,6 +30,6 @@ class NoticeComponent < ViewComponent::Base
   end
 
   def self.status_error
-    "Status must be: " + self.statuses.to_sentence(last_word_connector: ' or ')
+    'Status must be: ' + self.statuses.to_sentence(last_word_connector: ' or ')
   end
 end

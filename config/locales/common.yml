@@ -19,6 +19,7 @@ en:
       actions: Actions
       activate: Activate
       active: Active
+      activity: Activity
       adult_actions: Adult actions
       are_you_sure: Are you sure?
       attributes: Attributes
@@ -26,15 +27,18 @@ en:
       cancel: Cancel
       choose_activity: Choose activity
       close: Close
+      complete: Complete
       continue: Continue
       create: Create
       created: Created
+      date: Date
       deactivate: Deactivate
       delete: Delete
       disable: Disable
       download: Download
       edit: Edit
       enable: Enable
+      energy_saving_actions: Energy saving actions
       finish: Finish
       finished: Finished
       home: Home
@@ -47,23 +51,31 @@ en:
       no_label: 'No'
       not_applicable: N/A
       not_set: Not set
+      place: Place
       previous: Previous
       pupil_activities: Pupil activities
+      pupil_led_activities: Pupil-led activities
       remove: Remove
       report: Report
       restart: Restart
       save: Save
+      start: Start
       status: Status
       submit: Submit
+      subscribe: Subscribe
       type: Type
+      unsubscribe: Unsubscribe
       update: Update
       upload: Upload
       view: View
+      view_alerts: View alerts
       view_now: View now
+      view_opportunities: View opportunities
       view_results: View results
       yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    points_html: "%{count} points"
     privacy_policy: privacy policy
     school: School
     school_types:
@@ -80,6 +92,7 @@ en:
     storage_heaters: Storage heaters
     table:
       columns:
+        average_daily_usage: Average daily usage (kWh)
         co2_kg: CO2 (kg)
         cost_gbp: Cost (£)
         use_kwh: Use (kWh)

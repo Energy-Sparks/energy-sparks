@@ -1,41 +1,49 @@
-<div<%= " id=#{id}" if id %> class="podium-component<%= classes %>">
+<div id="<%= id %>" class="podium-component <%= classes %>">
   <% if podium.includes_school? && podium.school_has_points? %>
-    <% if EnergySparks::FeatureFlags.active?(:activities_2023) %>
-      <h4 class="text-center"><%= t('components.podium.full_position_html',
-        position_ordinal: podium.school_position.ordinal,
-        scoreboard: podium.scoreboard.name,
-        scoreboard_path: scoreboard_path(podium.scoreboard),
-        national_position_ordinal: national_podium.school_position.ordinal,
-        national_scoreboard_path: scoreboard_path(national_podium.scoreboard)) %>.</h4>
-    <% else %>
-      <h4 class="text-center"><%= t('components.podium.position_html', position_ordinal: podium.school_position.ordinal) %>.</h4>
-    <% end %>
+    <h4 class="<%= title_class %>">
+      <% if national_podium.school_position %>
+        <%= t('components.podium.full_position_html',
+              position_ordinal: podium.school_position.ordinal,
+              scoreboard: podium.scoreboard.name,
+              scoreboard_path: scoreboard_path(podium.scoreboard),
+              national_position_ordinal: national_podium.school_position.ordinal,
+              national_scoreboard_path: scoreboard_path(national_podium.scoreboard)) %>.
+      <% else %>
+        <%= t('components.podium.scoreboard_position_html',
+              position_ordinal: podium.school_position.ordinal,
+              scoreboard: podium.scoreboard.name,
+              scoreboard_path: scoreboard_path(podium.scoreboard)) %>.
+        <% end %>
+      </h4>
   <% else %>
-    <h4 class="text-center"><%= t('components.podium.no_points_this_year') %></h4>
-
-    <p class="text-center"><%= t('components.podium.complete_an_activity_html', recommendations_path: (EnergySparks::FeatureFlags.active?(:activities_2023) ? school_recommendations_path(school) : activity_categories_path)) %>.
-      <%= t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake) if podium.points_to_overtake %>
-    </p>
+    <h4 class="<%= title_class %>">
+      <%= t('components.podium.no_points_this_year') %>
+    </h4>
+    <% unless Flipper.enabled?(:new_dashboards_2024, user) %>
+      <p class="text-center"><%= t('components.podium.complete_an_activity_html',
+                                   recommendations_path: school_recommendations_path(school)) %>.
+        <%= if podium.points_to_overtake
+              t('components.podium.points_needed_to_overtake', points: podium.points_to_overtake)
+            end %>
+      </p>
+    <% end %>
   <% end %>
-  <% if (EnergySparks::FeatureFlags.active?(:activities_2023) && (podium.school_has_points? || podium.positions.count > 1)) ||
-       !EnergySparks::FeatureFlags.active?(:activities_2023) && podium.includes_school? %>
-    <div class="row align-items-end border-bottom grey">
+  <% if podium.school_has_points? || podium.positions.count > 1 %>
+    <div class="row align-items-end border-bottom border-secondary">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
-          <h5>
-            <% if podium.current_school?(position) %>
-              <% if podium.school_has_points? %>
-                <%= fa_icon('crown fa-2x') %>
-                <p class='h2'><%= position.ordinal %></p>
-              <% end %>
-            <% else %>
-              <p><%= position.ordinal %></p>
-              <% if (position.normalised_points * 149).to_i < 70 %>
-                <p class="mb-1"><strong><%= position.points %></strong></p>
-                <p class="text-uppercase"><%= t('components.podium.points') %></p>
-              <% end %>
+          <% if podium.current_school?(position) %>
+            <% if podium.school_has_points? %>
+              <%= fa_icon('crown fa-2x') %>
+              <p class='f2'><%= position.ordinal %></p>
             <% end %>
-          </h5>
+          <% else %>
+            <p><%= position.ordinal %></p>
+            <% if (position.normalised_points * 149).to_i < 70 %>
+              <p class="mb-1"><strong><%= position.points %></strong></p>
+              <p class="text-uppercase"><%= t('components.podium.points') %></p>
+            <% end %>
+          <% end %>
 
           <div class="bar <%= 'bar-current' if podium.current_school?(position) %>">
             <div class="bar-arrow"></div>
@@ -51,14 +59,12 @@
     </div>
     <div class="row border-top grey">
       <% podium.low_to_high.each do |position| %>
-        <div class="col-4 text-center">
-          <h6>
-            <% if podium.current_school?(position) %>
-              <%= position.school.name %>
-            <% else %>
-              <%= link_to position.school.name, pupils_school_path(position.school) %>
-            <% end %>
-          </h6>
+        <div class="col-4 text-center px-3 small">
+          <% if podium.current_school?(position) %>
+            <%= position.school.name %>
+          <% else %>
+            <%= link_to position.school.name, pupils_school_path(position.school) %>
+          <% end %>
         </div>
       <% end %>
     </div>

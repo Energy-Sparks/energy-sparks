@@ -7,17 +7,15 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
 
   let(:service)   { Alerts::DeleteContentGenerationRunService.new }
 
-  it 'defaults to beginning of month, 1 month ago' do
-    expect(service.older_than).to eql(1.month.ago.beginning_of_month)
+  it 'defaults to two weeks ago' do
+    expect(service.older_than).to eql(14.days.ago.to_date)
   end
 
   it 'doesnt delete new runs' do
-    date_time = (Time.zone.now - 1.month)
+    date_time = (Time.zone.now - 14.days)
     school.content_generation_runs.create!(created_at: date_time + 1.day)
     school.content_generation_runs.create!(created_at: date_time + 1.week)
-    school.content_generation_runs.create!(created_at: date_time + 1.month)
     school.content_generation_runs.create!(created_at: Time.zone.now)
-    expect(ContentGenerationRun.count).to eq 4
     expect { service.delete! }.not_to change(ContentGenerationRun, :count)
   end
 
@@ -29,7 +27,7 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let(:content_version_1) { create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
     let(:alert_1) { create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2) { create(:alert, alert_type: electricity_fuel_alert_type) }
-    older_than_date = Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN
+    let(:older_than_date) { Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN }
     let(:content_generation_run_1) { create(:content_generation_run, school: school, created_at: older_than_date) }
     let(:content_generation_run_2) { create(:content_generation_run, school: school, created_at: older_than_date + 1.day) }
 
@@ -37,8 +35,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let!(:dashboard_alert_2) { create(:dashboard_alert, alert: alert_2, content_version: content_version_1, content_generation_run: content_generation_run_2) }
     let!(:management_priority_1) { create(:management_priority, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:management_priority_2) { create(:management_priority, alert: alert_2, content_generation_run: content_generation_run_2) }
-    let!(:analysis_page_1) { create(:analysis_page, alert: alert_1, content_generation_run: content_generation_run_1) }
-    let!(:analysis_page_2) { create(:analysis_page, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:management_dashboard_table_1) { create(:management_dashboard_table, alert: alert_1, content_generation_run: content_generation_run_1) }
     let!(:management_dashboard_table_2) { create(:management_dashboard_table, alert: alert_2, content_generation_run: content_generation_run_2) }
     let!(:find_out_more_1) { create(:find_out_more, alert: alert_1, content_generation_run: content_generation_run_1) }
@@ -48,7 +44,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
       expect(ContentGenerationRun.count).to eq 2
       expect(DashboardAlert.count).to eq(2)
       expect(ManagementPriority.count).to eq(2)
-      expect(AnalysisPage.count).to eq(2)
       expect(ManagementDashboardTable.count).to eq(2)
       expect(FindOutMore.count).to eq(2)
       cv_ids = FindOutMore.all.pluck(:alert_type_rating_content_version_id)
@@ -62,7 +57,6 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
       expect { service.delete! }.to change(ContentGenerationRun, :count).from(2).to(1) &
                                     change(DashboardAlert, :count).from(2).to(1) &
                                     change(ManagementPriority, :count).from(2).to(1) &
-                                    change(AnalysisPage, :count).from(2).to(1) &
                                     change(ManagementDashboardTable, :count).from(2).to(1) &
                                     change(FindOutMore, :count).from(2).to(1) &
                                     not_change(AlertTypeRatingContentVersion.where(id: cv_ids), :count) &

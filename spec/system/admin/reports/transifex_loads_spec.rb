@@ -13,14 +13,14 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
   end
 
   it 'has link to report' do
-    expect(page).to have_link("Transifex Content Loads")
-    click_on "Transifex Content Loads"
-    expect(page).to have_content("Transifex Content Loads")
+    expect(page).to have_link('Transifex Content Loads')
+    click_on 'Transifex Content Loads'
+    expect(page).to have_content('Transifex Content Loads')
   end
 
   context 'viewing report' do
     before do
-      click_on "Transifex Content Loads"
+      click_on 'Transifex Content Loads'
     end
 
     it 'shows reports' do
@@ -28,8 +28,8 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
     end
 
     it 'links to reports' do
-      expect(page).to have_link("View", href: admin_reports_transifex_load_path(transifex_load.id))
-      expect(page).to have_link("View", href: admin_reports_transifex_load_path(transifex_load_error.transifex_load.id))
+      expect(page).to have_link('View', href: admin_reports_transifex_load_path(transifex_load.id))
+      expect(page).to have_link('View', href: admin_reports_transifex_load_path(transifex_load_error.transifex_load.id))
     end
   end
 
@@ -39,8 +39,8 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
     end
 
     it 'shows errors' do
-      expect(page).to have_content("1 error occured")
-      expect(page).to have_content("A problem occured")
+      expect(page).to have_content('1 error occured')
+      expect(page).to have_content('A problem occured')
     end
   end
 
@@ -50,9 +50,9 @@ describe 'TransifexLoads', type: :system, include_application_helper: true do
     end
 
     it 'shows a summary' do
-      expect(page).to have_content("pulled 6 resources")
-      expect(page).to have_content("pushed 7 resources")
-      expect(page).to have_content("0 errors occured")
+      expect(page).to have_content('pulled 6 resources')
+      expect(page).to have_content('pushed 7 resources')
+      expect(page).to have_content('0 errors occured')
     end
   end
 end

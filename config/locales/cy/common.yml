@@ -1,12 +1,12 @@
 cy:
   co2: CO2
   common:
-    application: Sbarcynni
     action:
       one: '%{count} weithred'
       two: '%{count} weithred'
       many: '%{count} o weithredoedd'
       other: '%{count} o weithredoedd'
+    application: Sbarcynni
     back_to_top: Yn ôl i'r brig
     bar_charts: Siartiau bar
     confirm: Ydych chi'n siŵr?
@@ -20,14 +20,19 @@ cy:
       actions: Gweithredoedd
       activate: Gweithredu
       active: Gweithredol
+      activity: Gweithgaredd
+      adult_actions: Gweithredoedd oedolion
       are_you_sure: Ydych chi'n siŵr?
       attributes: Priodweddau
       back: Yn ôl
       cancel: Canslo
+      choose_activity: Dewiswch weithgaredd
       close: Cau
+      complete: Cwblhau
       continue: Parhau
       create: Creu
       created: Crëwyd
+      date: Dyddiad
       deactivate: Dadweithredu
       delete: Dileu
       disable: Analluogi
@@ -46,17 +51,23 @@ cy:
       no_label: 'Na'
       not_applicable: Amh
       not_set: Heb ei osod
+      place: Lle
       previous: Blaenorol
+      pupil_activities: Gweithgareddau disgyblion
       remove: Tynnu
       report: Adrodd
       restart: Ail-ddechrau
       save: Cadw
+      start: Dechrau
       status: Statws
       submit: Cyflwyno
       type: Math
       update: Diweddaru
       upload: Uwchlwytho
       view: Gweld
+      view_alerts: Gweld rhybuddion
+      view_now: Gweld nawr
+      view_opportunities: Gweld cyfleoedd
       view_results: Gweld canlyniadau
       yes_label: 'Ie'
     line_graphs: Graffiau llinell
@@ -77,6 +88,7 @@ cy:
     storage_heaters: Stôr-wresogyddion
     table:
       columns:
+        average_daily_usage: Defnydd dyddiol ar gyfartaledd (kWh)
         co2_kg: CO2 (kg)
         cost_gbp: Cost (£)
         use_kwh: Defnyddio (kWh)

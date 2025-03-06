@@ -1,0 +1,23 @@
+<%= render ComparisonTableComponent.new(
+      report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+      headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab
+    ) do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.electricity_economic_tariff_changed_this_year %>
+      <% r.with_var val: result.schoolday_open_percent, unit: :percent %>
+      <% r.with_var val: result.schoolday_closed_percent, unit: :percent %>
+      <% r.with_var val: result.holidays_percent, unit: :percent %>
+      <% r.with_var val: result.weekends_percent, unit: :percent %>
+      <% r.with_var val: result.community_percent, unit: :percent %>
+      <% r.with_var val: result.community_gbp, unit: :£ %>
+      <% r.with_var val: result.out_of_hours_gbp, unit: :£ %>
+      <% r.with_var val: result.potential_saving_gbp, unit: :£ %>
+    <% end %>
+  <% end %>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+  <% end %>
+<% end %>

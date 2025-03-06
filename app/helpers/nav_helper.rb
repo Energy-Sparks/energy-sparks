@@ -1,50 +1,43 @@
 module NavHelper
-  def navbar_image_link
+  def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image_tag("nav-brand-transparent-#{I18n.locale}.png", class: "d-inline-block align-top")
+      image = I18n.locale == :cy ? 'navigation-brand-transparent-cy.png' : 'navigation-brand-transparent-en.png'
+      image_tag(image)
     end
   end
 
-  def on_test_link
-    if on_test?
-      link_to 'Test', "/", class: 'nav-item px-1'
-    end
+  def expand_class
+    I18n.locale.to_s == 'en' ? 'lg' : 'xl'
   end
 
   def navbar_expand_class
-    size = I18n.locale.to_s == 'en' ? 'lg' : 'xl'
-    "navbar-expand-#{size}"
+    "navbar-expand-#{expand_class}"
+  end
+
+  def order_expand_class
+    "order-#{expand_class}-12"
+  end
+
+  def navbar_hide_class
+    "d-none d-#{expand_class}-inline-block"
+  end
+
+  def navbar_secondary_class
+    controller.controller_path == 'pupils/schools' ? 'pupil' : 'adult'
   end
 
   def other_locales
     I18n.available_locales - [I18n.locale]
   end
 
-  def locale_switcher_buttons
-    return "" unless EnergySparks::FeatureFlags.active?(:locale_switcher_buttons)
-    li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: "nav-item pl-3 pr-3 nav-lozenge my-3px") }
-    tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
-  end
-
-  def link_to_locale(locale)
+  def link_to_locale(locale, **kwargs)
     secondary_presentation = request.params['secondary_presentation'] ? "/#{request.params['secondary_presentation']}" : ''
-    link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation)
-  end
-
-  def header_fix_enabled?
-    @header_fix_enabled == true
-  end
-
-  def sub_nav?
-    @sub_nav == true
+    link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation, **kwargs)
   end
 
   def conditional_application_container_classes
-    classes = ''
-    classes += ' sub-nav' if sub_nav?
-    classes += ' header-fix' if header_fix_enabled?
-    classes
+    " #{content_for(:container_classes)}" if content_for?(:container_classes)
   end
 
   def subdomain_for(locale)
@@ -105,9 +98,10 @@ module NavHelper
     end
   end
 
-  def header_nav_link(link_text, link_path)
-    nav_class = 'btn btn-outline-dark rounded-pill font-weight-bold'
-    nav_class += ' disabled' if current_page?(link_path)
+  def header_nav_link(link_text, link_path, **kwargs)
+    return if current_page?(link_path) # don't show link if already on page
+    nav_class = 'btn '
+    nav_class += " #{kwargs[:class]}" if kwargs[:class]
     link_to link_text, link_path, class: nav_class
   end
 end

@@ -12,13 +12,13 @@
       <%= render 'pupil_password_section' if @pupil %>
     </div>
 
-    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
+    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary' %>
     <hr>
 
     <%= render 'optional_steps_section' %>
     <%= render 'opening_times_section' %>
     <%= render 'inset_days_section' if @inset_days %>
 
-    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary btn-success' %>
+    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary' %>
   </div>
 </div>

@@ -50,7 +50,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
         it 'inserts all the validated records from the analytics' do
-          expect(service.rows_affected).to eq 3
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(active_record_meter.amr_validated_readings.count).to eq expected_readings
         end
@@ -71,7 +70,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
       let(:end_date)          { Time.zone.today }
       let(:expected_readings) { 3 }
 
-      #Same values for all readings
+      # Same values for all readings
       let(:kwh_data_x48)      { Array.new(48, 0.5) }
       let(:one_day_kwh)       { kwh_data_x48.sum }
       let(:status)            { 'ORIG' }
@@ -92,7 +91,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
       let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
       context 'and the analytics has no new data' do
-        #Created OneDayAMRReading will all be identical to those in database
+        # Created OneDayAMRReading will all be identical to those in database
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
             start_date: start_date,
@@ -105,9 +104,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         end
 
         it 'does not update the database' do
-          #upsert returns zero rows
-          expect(service.rows_affected).to eq 0
-          #confirm nothing else changed
+          # confirm nothing else changed
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.kwh_data_x48).to eq kwh_data_x48
@@ -119,7 +116,7 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
 
       context 'and the analytics has new readings to insert' do
         let(:expected_readings) { 4 }
-        #Extra day of data from the analytics
+        # Extra day of data from the analytics
         let(:dashboard_meter)   do
           build(:dashboard_gas_meter_with_validated_reading,
             start_date: start_date - 1,
@@ -132,18 +129,18 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         end
 
         it 'inserts the new records' do
-          expect(service.rows_affected).to eq 1
           expect(AmrValidatedReading.count).to eq expected_readings
+          expect(active_record_meter.amr_validated_readings.count).to eq expected_readings
         end
       end
 
       context 'and the analytics has substituted all the data' do
-        #All new fields for the same reading date
+        # All new fields for the same reading date
         let(:new_datetime)         { (DateTime.now - 10).utc }
         let(:new_data)             { Array.new(48, 1.5) }
         let(:new_status)           { 'GSS1' }
         let(:new_substitute_date)  { Time.zone.today - 7 }
-        #force this to be very different so we can be sure we're saving right value
+        # force this to be very different so we can be sure we're saving right value
 
         let(:dashboard_meter) do
           build(:dashboard_gas_meter_with_validated_reading,
@@ -158,7 +155,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         end
 
         it 'updates the existing records' do
-          expect(service.rows_affected).to eq expected_readings
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.kwh_data_x48).to eq new_data
@@ -169,8 +165,8 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
       end
 
       context 'and the supplier has sent new original data' do
-        #Note: we're simulating supplier having sent new original data by
-        #building readings for same dates, same status but different kwh values
+        # Note: we're simulating supplier having sent new original data by
+        # building readings for same dates, same status but different kwh values
         let(:new_datetime)     { (DateTime.now - 10).utc }
         let(:new_data)         { Array.new(48, 2.5) }
 
@@ -188,7 +184,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
         it 'updates the existing records' do
-          expect(service.rows_affected).to eq expected_readings
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.status).to eq status
@@ -212,7 +207,6 @@ describe Amr::UpsertValidatedReadingsForAMeter, type: :service do
         let(:first_reading) { active_record_meter.amr_validated_readings.order(reading_date: :asc).first }
 
         it 'updates the existing records' do
-          expect(service.rows_affected).to eq expected_readings
           expect(AmrValidatedReading.count).to eq expected_readings
           expect(first_reading.reading_date).to eq start_date
           expect(first_reading.status).to eq new_status

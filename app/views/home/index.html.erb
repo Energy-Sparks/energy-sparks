@@ -1,43 +1,94 @@
-<% content_for :page_title, 'Home' %>
+<% content_for :page_title, t('common.labels.home') %>
 
-<!-- Header -->
-<header>
-  <div class="row masthead">
-    <div class="col-7">
-    </div>
-    <div class="col-5 masthead-content">
-      <div class="row pt-5">
-        <div class="col">
-        <p class="headline-text"><%= t('home.title')%></p>
-      </div>
-      </div>
-      <div class="row">
-        <div class="col pr-5">
-        <p class="headline-sub-text"><%= t('home.sub_title') %></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-3 pt-5">
-        <%= link_to t('home.enrol_your_school'), enrol_path, class: 'btn bg-positive' %>
-        </div>
-      </div>
-    </div>
+<% if Flipper.enabled?(:new_home_page, current_user) %>
+  <div class="bg-blue-very-dark text-white">
+    <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
+      <% grid.with_feature_card classes: 'py-4' do |feature| %>
+        <%= feature.with_header title: t('home.feature.header'), classes: 'text-white' %>
+        <%= feature.with_description { t('home.feature.description_html') } %>
+        <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
+        <%= feature.with_button t('campaigns.find_out_more.book_demo'),
+                                book_demo_campaigns_path,
+                                style: :white, outline: true %>
+      <% end %>
+      <%= grid.with_image src: 'on-screen.jpg', stretch: :right, width: '50vw', collapse: true %>
+    <% end %>
   </div>
-</header>
 
-<%= render 'carousel' %>
+  <div class="container">
+    <%= render Layout::Cards::StatementComponent.new do |statement| %>
+      <%= statement.with_header title: t('home.statement.header') %>
+      <%= statement.with_description { t('home.statement.description') } %>
+    <% end %>
 
-<%= render 'funnels' %>
+    <%= render Layout::GridComponent.new(cols: 4,
+                                         cell_classes: 'pb-4') do |grid| %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon fuel_type: :electricity, style: :circle %>
+        <%= card.with_header title: t('home.stats.card_1.header') %>
+        <%= card.with_figure t('home.stats.card_1.figure') %>
+        <%= card.with_subtext { t('home.stats.card_1.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
+        <%= card.with_header title: t('home.stats.card_2.header') %>
+        <%= card.with_figure t('home.stats.card_2.figure') %>
+        <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-success' %>
+        <%= card.with_header title: t('home.stats.card_3.header') %>
+        <%= card.with_figure t('home.stats.card_3.figure') %>
+        <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
+        <%= card.with_header title: t('home.stats.card_4.header') %>
+        <%= card.with_figure t('home.stats.card_4.figure') %>
+        <%= card.with_subtext { t('home.stats.card_4.subtext') } %>
+      <% end %>
+    <% end %>
+  </div>
 
-<%= render 'testimonial',
-  quote: t('home.quote.text_html'),
-  by: 'Jennie Nixon',
-  title: t('home.quote.job_title'),
-  location: 'Whiteways Primary School, Sheffield'
-%>
+<% else %>
+<!-- Header -->
+  <header>
+    <div class="row masthead">
+      <div class="col-7">
+      </div>
+      <div class="col-5 masthead-content">
+        <div class="row pt-5">
+          <div class="col">
+            <h2 class='text-white'><%= t('home.title') %></h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col pr-5">
+            <h4 class='text-white'><%= t('home.sub_title') %></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8 offset-md-3 pt-5">
+            <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<%= render 'videos' %>
+  <%= render 'carousel' %>
 
-<%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+  <%= render 'funnels' %>
 
-<%= render 'mailchimp' %>
+  <%= render 'testimonial',
+             quote: t('home.quote.text_html'),
+             by: 'Jennie Nixon',
+             title: t('home.quote.job_title'),
+             location: 'Whiteways Primary School, Sheffield' %>
+
+  <%= render 'videos' %>
+
+  <%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+
+  <%= render 'mailchimp' %>
+<% end %>

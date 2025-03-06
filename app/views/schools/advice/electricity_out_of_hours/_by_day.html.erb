@@ -1,0 +1,19 @@
+<%= render 'schools/advice/section_title',
+           section_id: 'usage_by_day_of_week',
+           section_title:
+           t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
+
+<%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.title') %>
+<%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.subtitle_html') %>
+<%= render MeterSelectionChartComponent.new(
+      meter_selection: meter_selection,
+      chart_type: :electricity_by_day_of_week_tolerant,
+      chart_subtitle_key: 'advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.subtitle_html'
+    ) do |c| %>
+   <% c.with_title do %>
+     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.title') %>
+   <% end %>
+   <% c.with_footer do %>
+     <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.electricity_by_day_of_week_tolerant_chart.footer') %>
+   <% end %>
+<% end %>

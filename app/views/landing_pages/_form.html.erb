@@ -1,0 +1,59 @@
+<%= form_for :contact, url: 'submit_contact' do |f| %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :first_name, t('campaigns.form.fields.first_name') %>
+      <%= f.text_field :first_name, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :last_name, t('campaigns.form.fields.last_name') %>
+      <%= f.text_field :last_name, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :job_title, t('campaigns.form.fields.job_title') %>
+      <%= f.text_field :job_title, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :organisation, t('campaigns.form.fields.organisation') %>
+      <%= f.telephone_field :organisation, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :org_type, t('campaigns.form.fields.org_type') %>
+      <%= f.select :org_type, @org_types,
+                   { include_blank: false, include_hidden: false },
+                   { required: true, multiple: true, class: 'form-control select2 must-select' } %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :email, t('campaigns.form.fields.email') %>
+      <%= f.email_field :email, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :tel, t('campaigns.form.fields.tel') %>
+      <%= f.telephone_field :tel, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <div class="form-check">
+        <%= f.check_box :consent, { class: 'form-check-input' }, 'true', 'false' %>
+        <%= f.label :consent, t('campaigns.form.fields.consent'), class: 'form-check-label' %>
+      </div>
+    </div>
+  </div>
+  <%= f.hidden_field :request_type, value: request_type %>
+  <%= f.hidden_field :utm_source, value: params[:utm_source] %>
+  <%= f.hidden_field :utm_medium, value: params[:utm_medium] %>
+  <%= f.hidden_field :utm_campaign, value: params[:utm_campaign] %>
+  <%= f.submit t('campaigns.form.fields.submit'), class: 'btn btn-primary' %>
+<% end %>

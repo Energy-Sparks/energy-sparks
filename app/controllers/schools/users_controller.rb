@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class UsersController < ApplicationController
     include AlertContactCreator
@@ -20,19 +22,19 @@ module Schools
       authorize! :create, @user
     end
 
+    def edit
+      @user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :edit, @user
+    end
+
     def create
       authorize! :manage_users, @school
-      @user = User.new(user_params.merge(school: @school))
+      @user = User.new(user_params.merge(school: @school, created_by: current_user))
       if @user.save
         redirect_to school_users_path(@school)
       else
         render :new
       end
-    end
-
-    def edit
-      @user = @school.find_user_or_cluster_user_by_id(params[:id])
-      authorize! :edit, @user
     end
 
     def update
@@ -50,7 +52,7 @@ module Schools
       authorize! :manage_users, @school
       @user = @school.find_user_or_cluster_user_by_id(params[:id])
       if @user.has_other_schools?
-        @user.cluster_schools.delete(@school)
+        @user.remove_school(@school)
         @user.contacts.where(school: @school).delete_all
       else
         @user.destroy
@@ -63,6 +65,27 @@ module Schools
       authorize! :update, @user
       @user.update(role: :school_admin)
       redirect_to school_users_path(@school)
+    end
+
+    def unlock
+      user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :manage, :admin_functions
+      user.unlock_access!
+      redirect_to school_users_path(@school), notice: "User '#{user.email}' was successfully unlocked."
+    end
+
+    def lock
+      user = @school.find_user_or_cluster_user_by_id(params[:id])
+      authorize! :manage, :admin_functions
+      user.lock_access!(send_instructions: false)
+      redirect_to school_users_path(@school), notice: "User '#{user.email}' was successfully locked."
+    end
+
+    def resend_confirmation
+      authorize! :manage_users, @school
+      user = @school.find_user_or_cluster_user_by_id(params[:id])
+      user.send_confirmation_instructions unless user.confirmed?
+      redirect_to school_users_path(@school), notice: 'Confirmation email sent'
     end
 
     private

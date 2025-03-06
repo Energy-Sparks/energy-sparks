@@ -61,6 +61,8 @@
   <% end %>
 
   <%= f.input :score, as: :string %>
+  <%= f.input :maximum_frequency, as: :string %>
+  <p class="small">Note: This is the maximum number of times a school can record the activity their academic year and still be awarded the above score. After this they get zero.</p>
 
   <%= f.input :active %>
   <%= f.input :data_driven, label: 'Uses data?' %>

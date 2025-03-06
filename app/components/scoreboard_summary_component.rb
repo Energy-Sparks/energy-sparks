@@ -1,17 +1,20 @@
 # frozen_string_literal: true
 
-class ScoreboardSummaryComponent < ViewComponent::Base
-  attr_reader :podium
+class ScoreboardSummaryComponent < ApplicationComponent
+  attr_reader :podium, :user, :audience
 
   include ApplicationHelper
 
-  def initialize(podium:, title: nil)
+  def initialize(podium:, title: nil, audience: :adult, user: nil, id: nil, classes: '')
+    super(id: id, classes: classes)
     @podium = podium
     @title = title
+    @user = user
+    @audience = audience
   end
 
   def title
-    @title || I18n.t("components.scoreboard_summary.title")
+    @title || I18n.t('components.scoreboard_summary.title')
   end
 
   def other_schools?
@@ -32,14 +35,18 @@ class ScoreboardSummaryComponent < ViewComponent::Base
 
   def observations
     scope = other_schools? ? scoreboard.observations : Observation
-    scope.for_visible_schools.not_including(school).recorded_since(school.current_academic_year.start_date).by_date.limit(limit)
+    scope.for_visible_schools.not_including(school).recorded_since(school.current_academic_year.start_date..).by_date.with_points.sample(limit)
   end
 
   def timeline_title
     if other_schools?
-      I18n.t("components.scoreboard_summary.recent_scoreboard_activity_html", scoreboard_path: scoreboard_path(scoreboard)).html_safe
+      if Flipper.enabled?(:new_dashboards_2024, user)
+        I18n.t('components.scoreboard_summary.recent_scoreboard_activity')
+      else
+        I18n.t('components.scoreboard_summary.recent_scoreboard_activity_html', scoreboard_path: scoreboard_path(scoreboard)).html_safe
+      end
     else
-      I18n.t("components.scoreboard_summary.recent_activity")
+      I18n.t('components.scoreboard_summary.recent_activity')
     end
   end
 

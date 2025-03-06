@@ -16,7 +16,7 @@ class SchoolRemover
 
   def users_ready?
     # Requires all school users are access locked except those linked to another school
-    return true if @school.users.all?(&:access_locked?)
+    return true if @school.users.all?(&:inactive?)
 
     all_unlocked_users_are_linked_to_other_schools?
   end
@@ -28,7 +28,7 @@ class SchoolRemover
   def remove_school!
     raise SchoolRemover::Error.new('Cannot remove school while it is still visible') if @school.visible?
     @school.transaction do
-      if @school.update!(active: false, process_data: false, removal_date: removal_date)
+      if @school.update!({ active: false, process_data: false }.merge(inactive_dates))
         delete_school_issues
       end
     end
@@ -37,7 +37,7 @@ class SchoolRemover
   def reenable_school!
     raise SchoolRemover::Error.new('Cannot reenable an active school') if @school.active?
     @school.transaction do
-      @school.update(active: true, removal_date: nil)
+      @school.update(active: true, removal_date: nil, archived_date: nil)
     end
   end
 
@@ -50,10 +50,12 @@ class SchoolRemover
 
         if user.has_other_schools?
           user.remove_school(@school)
-        else
+        elsif user.confirmed?
           # Lock account if user is linked to only this school
           user.contacts.for_school(@school).first&.destroy unless @archive
-          user.lock_access!(send_instructions: false)
+          user.disable!
+        else
+          user.destroy
         end
       end
     end
@@ -87,7 +89,7 @@ class SchoolRemover
   end
 
   def unlocked_user_ids
-    @unlocked_user_ids ||= @school.users.reject(&:access_locked?).pluck(:id)
+    @unlocked_user_ids ||= @school.users.reject(&:inactive?).pluck(:id)
   end
 
   def delete_school_issues
@@ -97,8 +99,12 @@ class SchoolRemover
     @school.issues.delete_all
   end
 
-  def removal_date
-    @archive ? nil : Time.zone.today
+  def inactive_dates
+    if @archive
+      { archived_date: Time.zone.today, removal_date: nil }
+    else
+      { removal_date: Time.zone.today } # Don't blat archive_date
+    end
   end
 
   def remove_meter(meter)

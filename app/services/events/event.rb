@@ -2,7 +2,7 @@ module Events
   class Event
     attr_reader :date, :name, :url
 
-    #create with an EventbriteSDK::Event object
+    # create with an EventbriteSDK::Event object
     def initialize(eventbrite)
       @name = eventbrite.name.html
       @date = DateTime.parse(eventbrite.start.local)

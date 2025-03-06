@@ -59,7 +59,7 @@ module Targets
 
     def reject_for_reminder?(school)
       return true if school.has_target? || school.has_school_target_event?(:first_target_reminder_sent)
-      school.school_target_events.where(event: :first_target_sent).where("created_at <= ?", 30.days.ago).empty?
+      school.school_target_events.where(event: :first_target_sent).where('created_at <= ?', 30.days.ago).empty?
     end
   end
 end

@@ -9,7 +9,8 @@ en:
     item_2: Energy-related lesson plans and downloadable resources.
     item_3: Support for pupils in designing and carrying out experiments to monitor energy related data and behaviour patterns at school.
     our_programmes:
-      introduction: Short programmes of related activities that pupils can work through step-by-step to achieve greater impact.
+      introduction: Short programmes of related tasks that can be worked through step-by-step to achieve greater impact
+      introduction_activities: Short programmes of related activities that pupils can work through step-by-step to achieve greater impact.
       title: Our Programmes
     page_title: Activities
     pupil:
@@ -21,10 +22,6 @@ en:
       introduction_html:
         one: 1 activity relevant to a range of subjects and key stages
         other: A collection of <strong>%{count}</strong> activities relevant to a range of subjects and key stages
-    suggested:
-      introduction: Our suggestions based on your school programmes and analysis of your energy data
-      title: Recommended for your school
-      view_all: View all suggestions
     title: Explore energy saving activities
     view_all:
       one: View 1 activity

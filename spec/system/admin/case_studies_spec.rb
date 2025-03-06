@@ -8,7 +8,9 @@ describe 'Case studies', type: :system do
       sign_in(admin)
       visit root_path
       click_on 'Admin'
-      click_on 'Case studies'
+      within '.application' do
+        click_on 'Case studies'
+      end
     end
 
     it 'allows the user to create, edit and delete a case study' do
@@ -23,7 +25,7 @@ describe 'Case studies', type: :system do
       click_on 'Create Case study'
       expect(page).to have_content('blank')
       fill_in :case_study_title_en, with: title
-      attach_file(:case_study_file_en, Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+      attach_file(:case_study_file_en, Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
       click_on 'Create Case study'
       expect(page).to have_content title
 

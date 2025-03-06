@@ -11,6 +11,14 @@ RSpec.describe 'scoreboards', :scoreboards do
     create(:school, :with_points, score_points: points, scoreboard: scoreboard, calendar: calendar)
   end
 
+  # Avoids problem with showing national placing. National Scoreboard only runs from
+  # 1st Sept to 31st Jul.
+  around do |example|
+    travel_to Date.new(2024, 4, 1) do
+      example.run
+    end
+  end
+
   describe 'with public scoreboards', :aggregate_failures do
     describe 'on the index page' do
       before do
@@ -25,13 +33,13 @@ RSpec.describe 'scoreboards', :scoreboards do
 
       it 'has a national scoreboard' do
         expect(page).to have_content('National Scoreboard')
-        expect(page).to have_link(href: scoreboard_path('all'))
+        expect(page).to have_link(href: scoreboard_path('national'))
       end
 
       it 'includes top ranking schools' do
         expect(page).to have_content(school_with_points.name)
         expect(page).to have_content(points)
-        expect(page).not_to have_content(school.name)
+        expect(page).to have_no_content(school.name)
         expect(page).to have_link('View scores for 2 schools')
       end
     end
@@ -40,20 +48,25 @@ RSpec.describe 'scoreboards', :scoreboards do
       visit scoreboard_path(scoreboard)
       expect(page).to have_content('Super scoreboard')
       expect(page).to have_content(school_with_points.name)
+      expect(page).to have_link(points.to_s, href: school_timeline_path(school_with_points, academic_year: scoreboard.this_academic_year))
       expect(page).to have_content(points)
       expect(page).to have_content(school.name)
       expect(page).to have_content('0')
     end
 
     it 'shows schools and points on the national scoreboard' do
-      visit scoreboard_path('all')
+      visit scoreboard_path('national')
       expect(page).to have_content('National Scoreboard')
       expect(page).to have_content(school_with_points.name)
       expect(page).to have_content(points)
-      expect(page).to have_link(
-        'last year', href: scoreboard_path('all', academic_year: calendar.academic_years.current.previous_year)
-      )
-      expect(page).not_to have_content(school.name)
+      expect(page).to have_link(points.to_s, href: school_timeline_path(school_with_points))
+      expect(page).to have_link('last year', href: scoreboard_path('national', previous_year: true))
+      expect(page).to have_no_content(school.name)
+    end
+
+    it 'redirects all to national' do
+      visit scoreboard_path('all')
+      expect(page).to have_current_path(scoreboard_path('national'))
     end
   end
 
@@ -63,9 +76,11 @@ RSpec.describe 'scoreboards', :scoreboards do
 
     it 'doesn\'t list the scoreboard' do
       visit schools_path
-      click_on 'Scoreboards'
+      within '#our-schools' do
+        click_on 'Scoreboards'
+      end
       expect(page).to have_content('Super scoreboard')
-      expect(page).not_to have_content('Private scoreboard')
+      expect(page).to have_no_content('Private scoreboard')
     end
 
     it 'doesn\'t allow access to the private scoreboard' do
@@ -96,14 +111,16 @@ RSpec.describe 'scoreboards', :scoreboards do
     let(:feature_active) { false }
     let(:prize_excerpt) { 'We are also offering a special prize' }
 
-    before do
-      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true) if feature_active
+    around do |example|
+      ClimateControl.modify FEATURE_FLAG_SCOREBOARD_PRIZES: feature_active.to_s do
+        example.run
+      end
     end
 
     context 'on index page' do
       before { visit scoreboards_path }
 
-      it { expect(page).not_to have_content(prize_excerpt) }
+      it { expect(page).to have_no_content(prize_excerpt) }
 
       context 'feature is active' do
         let(:feature_active) { true }
@@ -116,7 +133,7 @@ RSpec.describe 'scoreboards', :scoreboards do
     context 'on scoreboard page' do
       before { visit scoreboards_path(scoreboard) }
 
-      it { expect(page).not_to have_content(prize_excerpt) }
+      it { expect(page).to have_no_content(prize_excerpt) }
 
       context 'feature is active' do
         let(:feature_active) { true }

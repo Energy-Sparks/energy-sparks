@@ -1,36 +1,30 @@
 require 'rails_helper'
 RSpec.describe Schools::AdvicePageBenchmarks::LongTermUsageBenchmarkGenerator, type: :service do
-  let(:school)      { create(:school) }
-  let(:advice_page) { create(:advice_page, key: :electricity_long_term, fuel_type: :electricity) }
-  let(:aggregate_school) { double(:aggregate_school) }
+  subject(:service) do
+    described_class.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)
+  end
 
-  let(:service) { Schools::AdvicePageBenchmarks::LongTermUsageBenchmarkGenerator.new(advice_page: advice_page, school: school, aggregate_school: aggregate_school)}
+  let(:advice_page) { create(:advice_page, key: :electricity_long_term, fuel_type: :electricity) }
+  let(:reading_start_date) { 1.year.ago }
+  let(:school) do
+    school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 100)
+    create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+    create(:electricity_meter_with_validated_reading_dates,
+           school: school, start_date: reading_start_date, end_date: Time.zone.today, reading: 1.25)
+    school
+  end
+  let(:aggregate_school) { AggregateSchoolService.new(school).aggregate_school }
 
   describe '#benchmark_school' do
-    let(:enough_data) { true }
-    let(:comparison) do
-      Schools::Comparison.new(
-        school_value: 42000.0,
-        benchmark_value: 45000.0,
-        exemplar_value: 30000.0,
-        unit: :kw
-      )
-    end
-
-    before do
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:enough_data?).and_return(enough_data)
-      allow_any_instance_of(Schools::Advice::LongTermUsageService).to receive(:benchmark_usage).and_return(comparison)
-    end
-
     context 'not enough data' do
-      let(:enough_data) { false }
+      let(:reading_start_date) { 30.days.ago }
 
       it 'does not benchmark' do
         expect(service.benchmark_school).to be_nil
       end
     end
 
-    context 'with a comparison' do
+    context 'with enough data' do
       it 'returns the comparison category' do
         expect(service.benchmark_school).to eq :benchmark_school
       end

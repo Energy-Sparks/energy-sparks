@@ -13,7 +13,7 @@
 
 .partial-month {
   background: white;
-  color: $bg-negative;
+  color: $negative-dark;
 }
 
 .estimated-target-month {
@@ -26,9 +26,9 @@ pre.debug {
 
 .work_week {
   .fa-arrow-circle-down {
-    color: $green;
+    color: $positive-dark;
   }
   .fa-arrow-circle-up {
-    color: $new-red;
+    color: $negative-dark;
   }
 }

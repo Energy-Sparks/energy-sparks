@@ -5,7 +5,7 @@
         <%= far_icon("check-circle text-success fa-3x") %>
       </div>
       <div class="col-lg-11 col-sm-12 align-self-center">
-        <%= label %> <%= t('activities.previous_records.previously_completed', label: label) %>
+        <%= t('activities.previous_records.previously_completed', label: label) %>
         <strong>
           <%= link_to "#{human_counts(list)}", school_timeline_path(school) %>
         </strong>

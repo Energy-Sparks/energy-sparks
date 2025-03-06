@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 class AggregateSchoolService
@@ -15,7 +17,7 @@ class AggregateSchoolService
     end
   end
 
-  #overwrite whatever we have cached
+  # overwrite whatever we have cached
   def cache(meter_collection)
     Rails.cache.write(cache_key, meter_collection)
   end
@@ -33,26 +35,27 @@ class AggregateSchoolService
   end
 
   def self.caching_off?
-    ! Rails.application.config.action_controller.perform_caching
+    !Rails.application.config.action_controller.perform_caching
   end
 
   def self.analysis_date(meter_collection, fuel_type)
-    return Time.zone.today unless fuel_type
-    fuel_type = fuel_type.to_sym
-    if fuel_type == :gas
+    case fuel_type&.to_sym
+    when :gas
       meter_collection.aggregated_heat_meters.amr_data.end_date
-    elsif fuel_type == :electricity
-      meter_collection.aggregated_electricity_meters.amr_data.end_date
-    elsif fuel_type == :storage_heater
+    when :electricity, :storage_heater
       meter_collection.aggregated_electricity_meters.amr_data.end_date
     else
       Time.zone.today
     end
   end
 
-private
+  private
 
   def cache_key
-    "#{@active_record_school.id}-#{@active_record_school.name.parameterize}-aggregated_meter_collection-#{@active_record_school.validation_cache_key}"
+    parts = [@active_record_school.id, @active_record_school.name.parameterize, 'aggregated_meter_collection']
+    unless Flipper.enabled?(:meter_collection_cache_delete_on_invalidate)
+      parts << @active_record_school.validation_cache_key
+    end
+    parts.join('-')
   end
 end

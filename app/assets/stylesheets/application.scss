@@ -2,15 +2,19 @@
  *
  *= require trix
  */
-@import "bootstrap";
-@import "bootstrap-xl";
-@import "font-awesome";
 
 @import "colours";
+@import "fonts";
+@import "bootstrap-overrides";
+@import "bootstrap";
+
+@import "bootstrap-xl";
+@import "font-awesome";
 @import "base";
 @import "links";
 @import "headers";
 @import "nav";
+@import "nav-tabs";
 @import "footer";
 @import "home";
 @import "site";
@@ -19,7 +23,6 @@
 @import "activities";
 @import "activity_type";
 
-@import "test_warning";
 @import "calendars";
 @import "analysis";
 @import "teachers";
@@ -38,10 +41,8 @@
 @import "trix_content";
 
 @import "observations";
-@import "carousels";
 @import "timeline";
 @import "alert_editor";
-@import "benchmarks";
 @import "reports";
 
 @import "map";
@@ -53,6 +54,8 @@
 @import "toggler";
 @import "advice_page";
 @import "compare";
+@import "comparisons";
 @import "standout";
+@import "cookie_banner";
 
 @import "../../components/**/*"; // loaded here so bootstrap SASS variables are available

@@ -11,9 +11,7 @@ module Schools
       end
 
       def analysis
-        @meters = options_for_meter_select
         @analysis_dates = analysis_dates
-
         @multiple_meters = baseload_service.multiple_electricity_meters?
         @average_baseload_kw = baseload_service.average_baseload_kw
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark
@@ -25,11 +23,11 @@ module Schools
         if @multiple_meters
           @baseload_meter_breakdown = baseload_service.baseload_meter_breakdown
           @baseload_meter_breakdown_total = baseload_service.meter_breakdown_table_total
-          @date_ranges_by_meter = baseload_service.date_ranges_by_meter
+          @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, include_whole_school: false)
         end
 
-        #need at least a years worth of data for this analysis
-        if @analysis_dates.one_years_data
+        # need at least a years worth of data for this analysis
+        if @analysis_dates.one_years_data?
           @seasonal_variation = baseload_service.seasonal_variation
           @seasonal_variation_by_meter = baseload_service.seasonal_variation_by_meter
           @intraweek_variation = baseload_service.intraweek_variation
@@ -41,17 +39,6 @@ module Schools
 
       def aggregate_meter
         @aggregate_meter ||= aggregate_school.aggregated_electricity_meters
-      end
-
-      def aggregate_meter_adapter
-        OpenStruct.new(
-          mpan_mprn: aggregate_meter.mpan_mprn.to_s,
-          display_name: I18n.t("advice_pages.#{advice_page_key}.analysis.meter_breakdown.whole_school")
-        )
-      end
-
-      def options_for_meter_select
-        [aggregate_meter_adapter] + @school.meters.active.electricity.sort_by(&:mpan_mprn)
       end
 
       def set_economic_tariffs_change_caveats

@@ -1,19 +1,11 @@
 #!/usr/bin/env bash
-set -xe
-
-EB_APP_STAGING_DIR=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppStagingDir)
-EB_APP_USER=$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)
-
-set +x
-export $(/opt/elasticbeanstalk/bin/get-config --output YAML environment | sed -r 's/: /=/' | xargs)
+set -e
+# /opt/elasticbeanstalk/deployment/env doesn't exist on a new instance
+export $(/opt/elasticbeanstalk/bin/get-config environment | jq -r 'to_entries | .[] | "\(.key)=\(.value)"')
 set -x
-
-PATH=/opt/elasticbeanstalk/.rbenv/shims:/opt/elasticbeanstalk/.rbenv/bin:$PATH
-RBENV_ROOT=/opt/elasticbeanstalk/.rbenv
-RBENV_VERSION=$(cat $RBENV_ROOT/version)
-
-cd $EB_APP_STAGING_DIR
-
+EB_APP_STAGING_DIR="$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppStagingDir)"
+EB_APP_USER="$(/opt/elasticbeanstalk/bin/get-config platformconfig -k AppUser)"
 if [ "$EB_IS_COMMAND_LEADER" = "true" ]; then
-  su -s /bin/bash -c "bundle exec rails after_party:run" $EB_APP_USER
+  cd "$EB_APP_STAGING_DIR"
+  runuser -u "$EB_APP_USER" -- bin/rails after_party:run
 fi

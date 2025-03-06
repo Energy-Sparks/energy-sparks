@@ -44,7 +44,7 @@ describe Programmes::UserProgress, type: :service do
 
     context 'and enrolled in programme' do
       before do
-        #this is because the Enroller relies on this currently
+        # this is because the Enroller relies on this currently
         allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
 
         Programmes::Enroller.new(programme_type_1).enrol(school)
@@ -61,7 +61,7 @@ describe Programmes::UserProgress, type: :service do
         let(:activity)      { create(:activity, school: school, activity_type: programme_type_1.activity_types.first)}
 
         before do
-          ActivityCreator.new(activity).process
+          ActivityCreator.new(activity, nil).process
         end
 
         it 'returns the expected results' do

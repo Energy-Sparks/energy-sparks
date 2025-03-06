@@ -1,0 +1,34 @@
+<div id="<%= id %>" class="row dashboard-learn-more-component <%= classes %> p-4 d-flex flex-wrap align-items-center justify-content-between">
+  <div>
+    <div class="row">
+      <div class="col">
+        <h2>
+          <%= title %>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          <%= intro %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <% if data_enabled? %>
+      <% if adult? %>
+        <div class="row">
+          <div class="col d-flex justify-content-center align-items-center">
+            <%= link_to t('components.dashboard_learn_more.adult.explore'),
+                        school_advice_path(school),
+                        class: 'btn btn-primary mr-2' %>
+            <%= link_to t('components.dashboard_learn_more.adult.opportunities'),
+                        priorities_school_advice_path(school),
+                        class: 'btn btn-secondary' %>
+          </div>
+        </div>
+     <% end %>
+    <% end %>
+  </div>
+</div>

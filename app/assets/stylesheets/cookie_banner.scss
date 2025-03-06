@@ -1,0 +1,31 @@
+#cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  border-radius: 0;
+  display: none;
+  background-color: $dark;
+  color: $white;
+
+  a {
+    color: $white;
+  }
+}
+
+#cookie-preference-accepted-message {
+  display: none;
+}
+
+#cookie-preference-rejected-message {
+  display: none;
+}
+
+#cookie-preference-accept {
+  display: none;
+}
+
+#cookie-preference-reject {
+  display: none;
+}

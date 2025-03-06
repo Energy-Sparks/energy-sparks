@@ -1,0 +1,41 @@
+<div class="footer-second py-3">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col-md-4">
+        <%= t('footer.cc_licence_notice_html') %>.
+      </div>
+      <div class="col-md-4">
+        <%= t('footer.registered_charity_notice') %>.
+      </div>
+      <div class="col-md-4 d-flex justify-content-md-end">
+          <ul class="list-inline d-flex justify-content-end my-2 my-md-0">
+            <li class="list-inline-item">
+              <a href="https://www.linkedin.com/company/energy-sparks/">
+                <%= render IconComponent.new(icon_set: 'fab', name: 'linkedin', style: :circle) %>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://x.com/EnergySparks">
+                <%= render IconComponent.new(icon_set: 'fab', name: 'x-twitter', style: :circle) %>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://www.instagram.com/energysparksuk/">
+                <%= render IconComponent.new(icon_set: 'fab', name: 'instagram', style: :circle) %>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://www.facebook.com/EnergySparksUK/">
+                <%= render IconComponent.new(icon_set: 'fab', name: 'facebook-square', style: :circle) %>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://github.com/energy-sparks/energy-sparks">
+                <%= render IconComponent.new(icon_set: 'fab', name: 'github', style: :circle) %>
+              </a>
+            </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>

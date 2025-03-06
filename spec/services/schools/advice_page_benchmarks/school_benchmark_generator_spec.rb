@@ -91,7 +91,7 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
           expect(result).not_to be_nil
           expect(result.advice_page).to eq advice_page
           expect(result.school).to eq school
-          expect(result.benchmarked_as).to eq "exemplar_school"
+          expect(result.benchmarked_as).to eq 'exemplar_school'
         end
       end
     end
@@ -111,11 +111,20 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
         it 'updates the benchmark' do
           expect(result).to eq benchmark
           benchmark.reload
-          expect(benchmark.benchmarked_as).to eq "exemplar_school"
+          expect(benchmark.benchmarked_as).to eq 'exemplar_school'
         end
       end
 
       context 'and benchmark is nil' do
+        it 'removes the benchmark' do
+          expect(result).to eq nil
+          expect(AdvicePageSchoolBenchmark.count).to eq 0
+        end
+      end
+
+      context 'and school no longer has fuel type' do
+        let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true)}
+
         it 'removes the benchmark' do
           expect(result).to eq nil
           expect(AdvicePageSchoolBenchmark.count).to eq 0

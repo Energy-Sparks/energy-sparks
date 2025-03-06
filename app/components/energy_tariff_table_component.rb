@@ -36,11 +36,11 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def start_time(price)
-    price.start_time.to_s(:time)
+    price.start_time.to_fs(:time)
   end
 
   def end_time(price)
-    price.end_time.to_s(:time)
+    price.end_time.to_fs(:time)
   end
 
   def flat_rate_label(energy_tariff)
@@ -48,7 +48,7 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def start_date(energy_tariff)
-    energy_tariff.start_date ? energy_tariff.start_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_start_date')
+    energy_tariff.start_date ? energy_tariff.start_date&.to_fs(:es_compact) : t('schools.user_tariffs.summary_table.no_start_date')
   end
 
   def start_date_sortable(energy_tariff)
@@ -56,7 +56,7 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def end_date(energy_tariff)
-    energy_tariff.end_date ? energy_tariff.end_date&.to_s(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date')
+    energy_tariff.end_date ? energy_tariff.end_date&.to_fs(:es_compact) : t('schools.user_tariffs.summary_table.no_end_date')
   end
 
   def end_date_sortable(energy_tariff)
@@ -68,7 +68,7 @@ class EnergyTariffTableComponent < ViewComponent::Base
   end
 
   def class_for_tariff(energy_tariff)
-    return "table-secondary" unless energy_tariff.enabled
-    return "table-danger" unless energy_tariff.usable?
+    return 'table-secondary' unless energy_tariff.enabled
+    return 'table-danger' unless energy_tariff.usable?
   end
 end

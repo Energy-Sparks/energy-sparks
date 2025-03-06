@@ -1,11 +1,11 @@
 <% if @agreed_capacity.percentage > 0.85 %>
-  <%= component 'notice', status: :negative do |c| %>
+  <%= render PromptComponent.new(icon: :bolt, fuel_type: :electricity, status: :negative) do |c| %>
     <%= t('advice_pages.electricity_costs.analysis.agreed_capacity_notice.nearing_agreed_capacity_html',
           kw: format_unit(@agreed_capacity.kw, :kw),
           agreed_limit_kw: format_unit(@agreed_capacity.agreed_limit_kw, :kw),
           mpan_mprn: @mpan_mprn) %>
   <% end %>
-  <br />
+  <br>
 <% else %>
   <%= t('advice_pages.electricity_costs.analysis.agreed_capacity_notice.not_nearing_agreed_capacity.introduction_html',
         kw: format_unit(@agreed_capacity.kw, :kw),
@@ -13,8 +13,7 @@
         mpan_mprn: @mpan_mprn) %>
   <% if @agreed_capacity.annual_saving_£ %>
     <%= t('advice_pages.electricity_costs.analysis.agreed_capacity_notice.not_nearing_agreed_capacity.annual_saving_gbp_html',
-      annual_saving_gbp: format_unit(@agreed_capacity.annual_saving_£, :£)
-    ) %>
+          annual_saving_gbp: format_unit(@agreed_capacity.annual_saving_£, :£)) %>
   <% end %>
   <%= t('advice_pages.electricity_costs.analysis.agreed_capacity_notice.not_nearing_agreed_capacity.suggestion_html') %>
 <% end %>

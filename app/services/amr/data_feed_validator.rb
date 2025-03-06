@@ -9,7 +9,7 @@ module Amr
       array_of_rows = handle_header(@array_of_rows)
       array_of_rows = sort_out_off_by_one_array(array_of_rows) if @config.handle_off_by_one && array_of_rows.size > 1
       array_of_rows = array_of_rows.reject { |row| invalid_row?(row) }
-      array_of_rows = array_of_rows.reject { |row| partial_row?(row) } unless @config.missing_readings_limit.nil?
+      array_of_rows = array_of_rows.reject { |row| partial_row?(row) } if should_reject_rows?
       array_of_rows = filter_column_rows_for(array_of_rows) if @config.column_row_filters.present? && headers_as_array
       array_of_rows
     end
@@ -20,8 +20,8 @@ module Amr
       @config.column_row_filters.each do |column_name, filter_as_regex|
         column_index = headers_as_array.index(column_name)
         next unless column_index
-        #if there's no value for the column we're trying to filter it's an incomplete row,
-        #e.g. has fewer columns than expected so remove
+        # if there's no value for the column we're trying to filter it's an incomplete row,
+        # e.g. has fewer columns than expected so remove
         array_of_rows = array_of_rows.reject { |row| row[column_index].nil? || row[column_index].match?(filter_as_regex) }
       end
       array_of_rows
@@ -32,7 +32,9 @@ module Amr
     end
 
     def handle_header(array_of_rows)
-      if array_of_rows.first.join(',') == @config.header_example
+      if array_of_rows.empty?
+        array_of_rows
+      elsif array_of_rows.first.join(',') == @config.header_example
         array_of_rows[1, array_of_rows.length]
       elsif @config.number_of_header_rows
         if @config.number_of_header_rows > array_of_rows.length
@@ -60,7 +62,7 @@ module Amr
       end
 
       new_array.last.slice!(index_of_first_reading_field)
-      new_array.last << "0.0"
+      new_array.last << '0.0'
       new_array
     end
 
@@ -81,6 +83,13 @@ module Amr
       # Reject if row has more than the allowed number of missing readings
       return true unless row.count > index_of_last_reading_field
       row[index_of_first_reading_field..index_of_last_reading_field].count(&:blank?) > @config.missing_readings_limit
+    end
+
+    # Don't apply the missing_readings_limit to reject partial rows for row_per_reading format
+    # That is done in SingleReadConverter for those configs
+    def should_reject_rows?
+      return false if @config.row_per_reading?
+      @config.missing_readings_limit.present?
     end
   end
 end

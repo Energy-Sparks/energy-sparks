@@ -8,6 +8,8 @@ en:
         name: Name
         school_specific_description: School specific description
         summary: Summary
+      activity_type_todos:
+        task: Activity
       consent_grant:
         job_title: Job title
         name: Name
@@ -17,13 +19,11 @@ en:
         download_links: Download links
         name: Title
         summary: Summary
+      intervention_type_todos:
+        task: Action
       school:
         activation_date: Activation date
         address: Address
-        alternative_heating_biomass: Our school has a Biomass boiler
-        alternative_heating_district_heating: Our school has District Heating
-        alternative_heating_lpg: Our school is using LPG for heating
-        alternative_heating_oil: Our school uses Oil for heating
         cooks_dinners_for_other_schools: The kitchen cooks dinners for other schools
         cooks_dinners_for_other_schools_count: How many schools does your school cook dinners for?
         cooks_dinners_onsite: Dinners are cooked on site
@@ -32,6 +32,17 @@ en:
         floor_area: Floor area in square metres
         funding_status: Funding status
         has_swimming_pool: Our school has its own swimming pool
+        heating_air_source_heat_pump: Our school has an air source heat pump
+        heating_biomass: Our school has a biomass boiler
+        heating_chp: Our school has a combined heat and power (CHP) system
+        heating_district_heating: Our school has district heating
+        heating_electric: Our school has electric heating
+        heating_gas: Our school uses gas for heating
+        heating_ground_source_heat_pump: Our school has a ground source heat pump
+        heating_lpg: Our school is using LPG for heating
+        heating_oil: Our school uses oil for heating
+        heating_underfloor: Our school has underfloor heating
+        heating_water_source_heat_pump: Our school has a water source heat pump
         indicated_has_solar_panels: Our school has solar PV panels
         indicated_has_storage_heaters: Our school has night storage heaters
         latitude: Latitude

@@ -1,0 +1,44 @@
+<h2>Example 1: With header as single block</h2>
+
+<%= render EquivalenceComponent.new(image_name: 'tree') do |c| %>
+  <% c.with_header do %>
+    <div>The school consumed XXX kWh of electricity</div>
+    <h3>That is equivalent to YYYY trees</h3>
+  <% end %>
+  This is the content of the equivalence
+<% end %>
+
+<hr>
+
+<h2>Example 2: With separate title and equivalence text</h2>
+
+<%= render EquivalenceComponent.new(image_name: 'tree') do |c| %>
+  <% c.with_title { 'The school consumed XXX kWh of electricity' } %>
+  <% c.with_equivalence { 'That is equivalent to YYYY trees' } %>
+  This is the content of the equivalence
+<% end %>
+
+<hr>
+
+<h2>Example 3: Vertical layout with header as block</h2>
+
+<%= render EquivalenceComponent.new(image_name: 'tree', layout: :vertical) do |c| %>
+  <% c.with_header do %>
+    <div>The school consumed XXX kWh of electricity</div>
+    <h3>That is equivalent to YYYY trees</h3>
+  <% end %>
+  This is the content of the equivalence
+<% end %>
+
+<hr>
+
+<h2>Example 4: With vertical layout, separate text and fuel type</h2>
+
+<%= render EquivalenceComponent.new(image_name: 'tree',
+                                    fuel_type: :electricity,
+                                    show_fuel_type: true,
+                                    layout: :vertical) do |c| %>
+  <% c.with_title { 'The school consumed XXX kWh of electricity' } %>
+  <% c.with_equivalence { 'That is equivalent to YYYY trees' } %>
+  This is the content of the equivalence
+<% end %>

@@ -2,12 +2,12 @@ module Admin
   class ManualDataLoadRunsController < AdminController
     load_and_authorize_resource :amr_uploaded_reading
 
-    #show the progress report
+    # show the progress report
     def show
       @manual_data_load_run = ManualDataLoadRun.find(params[:id])
     end
 
-    #create a job to load the data
+    # create a job to load the data
     def create
       run = ManualDataLoadRun.create!(amr_uploaded_reading: @amr_uploaded_reading)
       ManualDataLoadRunJob.perform_later run

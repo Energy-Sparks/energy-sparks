@@ -3,8 +3,8 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= t('intervention_types.search.title') %></h1>
       <div>
-        <%= link_to t('intervention_types.search.all_actions'), intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
-        <%= link_to t('intervention_types.search.pupil_activities'), activity_categories_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
+        <%= link_to t('intervention_types.search.all_actions'), intervention_type_groups_path, class: 'btn btn-default' %>
+        <%= link_to t('intervention_types.search.pupil_activities'), activity_categories_path, class: 'btn btn-default' %>
       </div>
     </div>
   </div>
@@ -21,13 +21,13 @@
 <%= form_tag search_intervention_types_path, method: :get do %>
   <div class="row">
     <div class="col-md-10">
-      <%= text_field_tag :query, params[:query], class: 'form-control' %>
+      <%= text_field_tag :query, params[:query], class: 'form-control', autocomplete: :off %>
     </div>
     <div class="col-md-2">
-      <%= submit_tag t('intervention_types.search.search'), class: "btn btn-primary" %>
+      <%= submit_tag t('intervention_types.search.search'), class: 'btn btn-primary' %>
     </div>
   </div>
-  <br/>
+  <br>
 <% end %>
 
 <% if @intervention_types.empty? %>
@@ -40,13 +40,13 @@
   <h4>
     <%= t('intervention_types.search.results_found', count: @pagy.count) %>
   </h4>
-  <br/>
+  <br>
 
   <% @intervention_types.each do |intervention_type| %>
     <%= render 'intervention_types/intervention_type', intervention_type: intervention_type, school: current_user_school %>
   <% end %>
 
-  <br/>
-  <br/>
-  <%= render "shared/pagy_footer" %>
+  <br>
+  <br>
+  <%= render 'shared/pagy_footer' %>
 <% end %>

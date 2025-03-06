@@ -1,4 +1,4 @@
-<% content_for :page_title, @school_group.name + ' | ' +  t("school_groups.titles.#{action_name}") %>
+<% content_for :page_title, "#{@school_group.name} | #{t("school_groups.titles.#{action_name}")}" %>
 
 <div class="row">
   <div class="col-md-8">
@@ -7,9 +7,13 @@
   <div class="col-md-4">
     <div class='btn-group float-right mt-4'>
       <% if current_page?({ action: 'map' }) %>
-        <%= link_to(t('school_groups.header.view_group'), school_group_path(@school_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold') if can?(:compare, @school_group) %>
+        <%= if can?(:compare, @school_group)
+              link_to(t('school_groups.header.view_group'), school_group_path(@school_group),
+                      class: 'btn btn-default')
+            end %>
       <% else %>
-        <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+        <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group),
+                    class: 'btn btn-default' %>
       <% end %>
     </div>
   </div>
@@ -19,9 +23,11 @@
   <div class="col-md-12">
     <p>
     <% if @partners.any? %>
-      <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.in_partnership_with_html", count: @school_group.visible_schools_count, partners: list_of_partners_as_links(@partners)) %>.
+      <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.in_partnership_with_html",
+            count: @school_group.visible_schools_count, partners: list_of_partners_as_links(@partners)) %>.
     <% else %>
-      <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.no_partnership", count: @school_group.visible_schools_count) %>.
+      <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.no_partnership",
+            count: @school_group.visible_schools_count) %>.
     <% end %>
     </p>
   </div>
@@ -31,7 +37,14 @@
   <div class='row'>
     <div class="col-md-12">
       <div class="container">
-        <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+        <% if @school_group.try(:dashboard_message) %>
+          <%= render InfoBarComponent.new(
+                status: :neutral,
+                title: @school_group.dashboard_message.message,
+                icon: fa_icon('info-circle fa-3x'),
+                buttons: {}
+              ) %>
+        <% end %>
       </div>
     </div>
   </div>
@@ -42,25 +55,31 @@
     <% unless current_page?({ action: 'map' }) %>
       <ul class="nav nav-tabs locales">
         <li class="nav-item">
-          <a class="nav-link <%= 'active' if current_page?({ action: 'show' }) %>" href="<%= school_group_path(@school_group) %>">
-            <%= t("school_groups.titles.recent_usage") %>
+          <a class="nav-link<%= ' active' if current_page?({ action: 'show' }) %>"
+            href="<%= school_group_path(@school_group) %>">
+            <%= t('school_groups.titles.recent_usage') %>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= 'active' if current_page?({ action: 'comparisons' }) %>" href="<%= comparisons_school_group_path(@school_group) %>">
-            <%= t("school_groups.titles.comparisons") %>
+          <a class="nav-link<%= ' active' if current_page?({ action: 'comparisons' }) %>"
+            href="<%= comparisons_school_group_path(@school_group) %>">
+            <%= t('school_groups.titles.comparisons') %>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link <%= 'active' if current_page?({ action: 'priority_actions' }) %>" href="<%= priority_actions_school_group_path(@school_group) %>">
-            <%= t("school_groups.titles.priority_actions") %>
+          <a class="nav-link<%= ' active' if current_page?({ action: 'priority_actions' }) %>"
+            href="<%= priority_actions_school_group_path(@school_group) %>">
+            <%= t('school_groups.titles.priority_actions') %>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <%= 'active' if current_page?({ action: 'current_scores' }) %>" href="<%= current_scores_school_group_path(@school_group) %>">
-            <%= t("school_groups.titles.current_scores") %>
-          </a>
-        </li>
+        <% if @school_group.scorable? %>
+          <li class="nav-item">
+            <a class="nav-link<%= ' active' if current_page?({ action: 'current_scores' }) %>"
+              href="<%= current_scores_school_group_path(@school_group) %>">
+              <%= t('school_groups.titles.current_scores') %>
+            </a>
+          </li>
+        <% end %>
       </ul>
     <% end %>
   </div>

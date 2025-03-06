@@ -13,15 +13,13 @@ module Amr
       array_of_data_feed_reading_hashes = convert_to_day_per_row_format(array_of_data_feed_reading_hashes) if @config.row_per_reading
       array_of_data_feed_reading_hashes.uniq
 
-      missing_reading_threshold = @config.row_per_reading? ? SingleReadConverter::BLANK_THRESHOLD : 0
-
-      AmrReadingData.new(reading_data: array_of_data_feed_reading_hashes.uniq, date_format: @config.date_format, missing_reading_threshold: missing_reading_threshold)
+      AmrReadingData.new(amr_data_feed_config: @config, reading_data: array_of_data_feed_reading_hashes.uniq)
     end
 
     private
 
     def convert_to_day_per_row_format(array_of_data_feed_reading_hashes)
-      SingleReadConverter.new(array_of_data_feed_reading_hashes, indexed: @config[:positional_index]).perform
+      SingleReadConverter.new(@config, array_of_data_feed_reading_hashes).perform
     rescue ArgumentError
       {}
     end

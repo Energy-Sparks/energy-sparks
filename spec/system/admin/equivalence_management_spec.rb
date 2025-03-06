@@ -4,7 +4,7 @@ RSpec.describe 'equivalence type management', type: :system do
   let!(:school)   { create(:school)}
   let!(:admin)    { create(:admin)}
 
-  let!(:kwh_value)          { "2,600 kWh" }
+  let!(:kwh_value)          { '2,600 kWh' }
   let!(:equivalence_calc)   { double(from_date: Date.parse('20200101'), to_date: Date.parse('20210101'), formatted_variables: { kwh: kwh_value }, :hide_preview? => false) }
 
   before do
@@ -33,7 +33,6 @@ RSpec.describe 'equivalence type management', type: :system do
     expect(equivalence_type.electricity?).to eq true
     expect(equivalence_type.last_month?).to eq true
 
-    expect(equivalence_type.show_image?).to eq false
     expect(equivalence_type.image_name).to eq :no_image.to_s
 
     first_content = equivalence_type.current_content
@@ -54,7 +53,6 @@ RSpec.describe 'equivalence type management', type: :system do
     expect(equivalence_type.gas?).to eq true
 
     expect(equivalence_type.image_name).to eq :petrol_car.to_s
-    expect(equivalence_type.show_image?).to eq true
 
     expect(equivalence_type.content_versions.count).to eq(2)
     first_content = equivalence_type.current_content

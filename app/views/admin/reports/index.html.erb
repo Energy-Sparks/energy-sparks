@@ -8,22 +8,28 @@
   <div class="col">
     <h3>Schools & users</h3>
     <ul>
-      <li><%= link_to "Recent audits", admin_reports_recent_audits_path %></li>
-      <li><%= link_to "Consents Granted", admin_consent_grants_path %></li>
-      <li><%= link_to "Recently onboarded", completed_admin_school_onboardings_path %></li>
-      <li><%= link_to "School targets", admin_reports_school_targets_path %></li>
-      <li><%= link_to "Schools removed", admin_schools_removals_path %></li>
-      <li><%= link_to "Issues & Notes", admin_issues_path %></li>
-      <li><%= link_to "Funder allocation report", admin_reports_funder_allocations_path %></li>
-      <li><%= link_to "Engaged Schools", admin_reports_engaged_schools_path %></li>
+      <li><%= link_to 'Recent audits', admin_reports_recent_audits_path %></li>
+      <li><%= link_to 'Consents Granted', admin_consent_grants_path %></li>
+      <li><%= link_to 'Recently onboarded', completed_admin_school_onboardings_path %></li>
+      <li><%= link_to 'School targets', admin_reports_school_targets_path %></li>
+      <li><%= link_to 'Schools removed', admin_schools_removals_path %></li>
+      <li><%= link_to 'Issues & Notes', admin_issues_path %></li>
+      <li><%= link_to 'Work allocation', admin_reports_work_allocation_index_path %></li>
+      <li><%= link_to 'Funder allocation report', admin_reports_funder_allocations_path %></li>
+      <li><%= link_to 'Engaged Schools', admin_reports_engaged_schools_path %></li>
+      <li><%= link_to 'Engaged Groups', admin_reports_engaged_groups_path %></li>
+      <li><%= link_to 'User logins', admin_reports_user_logins_path %></li>
+      <li><%= link_to 'Missing Alert Subscribers', admin_reports_missing_alert_contacts_path %></li>
+      <li><%= link_to 'Heating Types', admin_reports_heating_types_path %></li>
     </ul>
 
     <h3>Activities</h3>
 
     <ul>
-      <li><%= link_to "Activity type management report", admin_reports_activity_types_path %></li>
-      <li><%= link_to "Recently recorded activities", admin_reports_activities_path %></li>
-      <li><%= link_to "Recently recorded interventions", admin_reports_interventions_path %></li>
+      <li><%= link_to 'Activity type management report', admin_reports_activity_types_path %></li>
+      <li><%= link_to 'Intervention type management report', admin_reports_intervention_types_path %></li>
+      <li><%= link_to 'Recently recorded activities', admin_reports_activities_path %></li>
+      <li><%= link_to 'Recently recorded interventions', admin_reports_interventions_path %></li>
     </ul>
 
     <h3>Alert communications</h3>
@@ -36,31 +42,33 @@
   <div class="col">
     <h3>Data</h3>
     <ul>
-      <li><%= link_to "Unvalidated readings", admin_reports_unvalidated_readings_path %></li>
-      <li><%= link_to "Recent manual imports", admin_reports_data_loads_path %></li>
-      <li><%= link_to "AMR File imports report", admin_reports_amr_data_feed_import_logs_path %></li>
-      <li><%= link_to "School group meter reports", admin_reports_meter_reports_path %></li>
-      <li><%= link_to "DCC Meter Status", admin_reports_dcc_status_index_path %></li>
-      <li><%= link_to "PROB data report", admin_prob_data_reports_path %></li>
-      <li><%= link_to "Solar Panels", admin_reports_solar_panels_path %></li>
-      <li><%= link_to "Community Use", admin_reports_community_use_index_path %></li>
+      <li><%= link_to 'Unvalidated readings', admin_reports_unvalidated_readings_path %></li>
+      <li><%= link_to 'Recent manual imports', admin_reports_data_loads_path %></li>
+      <li><%= link_to 'Data Feed Import Logs', admin_reports_amr_data_feed_import_logs_path %></li>
+      <li><%= link_to 'Meter loading report', admin_reports_meter_loading_reports_path %></li>
+      <li><%= link_to 'School group meter reports', admin_reports_meter_reports_path %></li>
+      <li><%= link_to 'DCC Meter Status', admin_reports_dcc_status_index_path %></li>
+      <li><%= link_to 'PROB data report', admin_prob_data_reports_path %></li>
+      <li><%= link_to 'Solar Panels', admin_reports_solar_panels_path %></li>
+      <li><%= link_to 'Community Use', admin_reports_community_use_index_path %></li>
+      <li><%= link_to 'Manual reads meter report', admin_reports_manual_reads_path %></li>
     </ul>
 
     <h3>Tariffs</h3>
     <ul>
       <li><%= link_to 'Energy Tariffs', admin_reports_energy_tariffs_path %></li>
-      <li><%= link_to "DCC Tariff imports report", admin_reports_tariff_import_logs_path %></li>
-      <li><%= link_to "DCC Tariffs report", admin_reports_tariffs_path %></li>
-    </ul>
-    <h3>Transifex</h3>
-    <ul>
-      <li><%= link_to "Transifex Content Loads", admin_reports_transifex_loads_path %></li>
+      <li><%= link_to 'DCC Tariff imports report', admin_reports_tariff_import_logs_path %></li>
+      <li><%= link_to 'DCC Tariffs report', admin_reports_tariffs_path %></li>
     </ul>
 
-    <h3>Jobs</h3>
+    <h3>Development</h3>
+
     <ul>
-      <li><%= link_to "Good Job Statistics", admin_reports_good_jobs_path %></li>
+      <li><%= link_to 'Transifex Content Loads', admin_reports_transifex_loads_path %></li>
+      <li><%= link_to 'Good Job Statistics', admin_reports_good_jobs_path %></li>
+      <li><%= link_to 'Mailchimp status', admin_reports_mailchimp_status_index_path %></li>
     </ul>
+
   </div>
 </div>
 
@@ -73,14 +81,14 @@
     <h3>Carbon Intensity</h3>
     <ul>
       <li><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path %></li>
-      <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: "csv") %></li>
+      <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: 'csv') %></li>
     </ul>
   </div>
   <div class="col">
     <h3>Misc Downloads</h3>
     <ul>
-      <li><%= link_to "Download meter collections", admin_schools_meter_collections_path %></li>
-      <li><%= link_to "Download meter attributes", admin_meter_attributes_path(format: :yaml) %></li>
+      <li><%= link_to 'Download meter collections', admin_schools_meter_collections_path %></li>
+      <li><%= link_to 'Download meter attributes', admin_meter_attributes_path(format: :yaml) %></li>
     </ul>
   </div>
 </div>

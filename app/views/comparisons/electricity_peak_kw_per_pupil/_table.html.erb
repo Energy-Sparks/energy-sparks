@@ -1,0 +1,16 @@
+<%= render ComparisonTableComponent.new(
+      report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+      headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab
+    ) do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.electricity_economic_tariff_changed_this_year %>
+      <%= r.with_var val: result.average_school_day_last_year_kw_per_floor_area * 1000.0, unit: :kw %>
+      <%= r.with_var val: result.average_school_day_last_year_kw, unit: :kw %>
+      <%= r.with_var val: result.exemplar_kw, unit: :kw %>
+      <%= r.with_var val: [0.0, result.one_year_saving_versus_exemplar_gbp].max, unit: :£ %>
+    <% end %>
+  <% end %>
+<% end %>

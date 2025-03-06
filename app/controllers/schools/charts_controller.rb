@@ -17,9 +17,9 @@ class Schools::ChartsController < ApplicationController
 
   def render_json
     @chart_type ||= begin
-                      params.require(:chart_type).to_sym
+      params.require(:chart_type).to_sym
     rescue => error
-                      render json: { error: error, status: 400 }.to_json and return
+      render json: { error: error, status: 400 }.to_json and return
     end
 
     chart_config = {
@@ -27,6 +27,7 @@ class Schools::ChartsController < ApplicationController
       series_breakdown: params[:series_breakdown],
       date_ranges: get_date_ranges
     }
+    chart_config[:sub_meter_definition] = params[:sub_meter] if params[:sub_meter].present?
     y_axis_units = params[:chart_y_axis_units]
     chart_config[:y_axis_units] = y_axis_units.to_sym if y_axis_units.present?
     provide_advice = params[:provide_advice] || false
@@ -63,8 +64,8 @@ class Schools::ChartsController < ApplicationController
     end
   end
 
-  #Always report exceptions in development and on the test server
-  #Otherwise supress exceptions from charts requested by admins
+  # Always report exceptions in development and on the test server
+  # Otherwise supress exceptions from charts requested by admins
   def report_exception?
     return true unless Rails.env.production?
     return true if ENV['ENVIRONMENT_IDENTIFIER'] != 'production'

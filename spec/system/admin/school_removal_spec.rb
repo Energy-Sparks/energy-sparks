@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school removal", :schools, type: :system do
+RSpec.describe 'school removal', :schools, type: :system do
   let(:visible) { true }
   let(:school)  { create(:school, name: 'My High School', visible: visible) }
 
@@ -27,11 +27,11 @@ RSpec.describe "school removal", :schools, type: :system do
 
       before do
         refresh
-        click_button 'Lock user accounts'
+        click_button 'Disable user accounts'
       end
 
       it 'removes the users' do
-        expect(page).to have_content('Users have been deactivated')
+        expect(page).to have_content('Users have been disabled')
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe "school removal", :schools, type: :system do
         visit admin_reports_path
         click_on 'Schools removed'
         expect(page).to have_content('My High School')
-        expect(page).to have_content(Time.zone.today.to_s(:es_full))
+        expect(page).to have_content(Time.zone.today.to_fs(:es_full))
         expect(page).to have_link(electricity_meter.mpan_mprn.to_s)
       end
 

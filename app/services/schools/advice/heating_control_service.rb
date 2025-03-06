@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class HeatingControlService
       include AnalysableMixin
 
-      #number of days heating on in warm weather => rating
+      # number of days heating on in warm weather => rating
       WARM_WEATHER_DAYS_RATING = {
-        0..5     => :excellent,
-        6..11    => :good,
-        12..16   => :above_average,
-        17..24   => :poor,
-        25..365  => :very_poor
+        0..5 => :excellent,
+        6..11 => :good,
+        12..16 => :above_average,
+        17..24 => :poor,
+        25..365 => :very_poor
       }.freeze
 
       EXEMPLAR_WARM_WEATHER_DAYS = 6
@@ -20,55 +22,30 @@ module Schools
         @meter_collection = meter_collection
       end
 
-      def enough_data?
-        heating_start_time_service.enough_data?
-      end
+      delegate :enough_data?, to: :heating_start_time_service
 
       def multiple_meters?
         meters.count > 1
       end
 
       def meters
-        @meters ||= find_meters
+        @meters ||= heat_meters
       end
 
-      def date_ranges_by_meter
-        heat_meters.each_with_object({}) do |analytics_meter, date_range_by_meter|
-          end_date = analytics_meter.amr_data.end_date
-          start_date = [end_date - 363, analytics_meter.amr_data.start_date].max
-          meter = @school.meters.find_by_mpan_mprn(analytics_meter.mpan_mprn)
-          date_range_by_meter[analytics_meter.mpan_mprn] = {
-            meter: meter,
-            start_date: start_date,
-            end_date: end_date
-          }
-        end
-      end
-
-      #TODO: needs changes in the analytics
+      # TODO: needs changes in the analytics
       def data_available_from
         nil
       end
 
-      def average_start_time_last_week
-        heating_start_time_service.average_start_time_last_week
-      end
+      delegate :average_start_time_last_week, to: :heating_start_time_service
 
-      def last_week_start_times
-        heating_start_time_service.last_week_start_times
-      end
+      delegate :last_week_start_times, to: :heating_start_time_service
 
-      def percentage_of_annual_gas
-        heating_savings_service.percentage_of_annual_gas
-      end
+      delegate :percentage_of_annual_gas, to: :heating_savings_service
 
-      def estimated_savings
-        heating_savings_service.estimated_savings
-      end
+      delegate :estimated_savings, to: :heating_savings_service
 
-      def seasonal_analysis
-        seasonal_analysis_service.seasonal_analysis
-      end
+      delegate :seasonal_analysis, to: :seasonal_analysis_service
 
       def enough_data_for_seasonal_analysis?
         seasonal_analysis_service.enough_data?
@@ -87,27 +64,21 @@ module Schools
         )
       end
 
-      private
-
-      def find_meters
-        @school.meters
-               .active
-               .gas
-               .where.not(id: MeterAttribute.where(meter_id: @school.meters.pluck(:id))
-                                            .where(
-                                              <<-SQL.squish
-                                                input_data::text IN ('"kitchen_only"', '"hotwater_only"')
-                                              SQL
-                                            ).select(:meter_id)
-              )
+      def heating_on_in_last_weeks_holiday?
+        @meter_collection.holidays.day_type(Time.zone.today) != :holiday &&
+          last_week_start_times.days.any? do |day|
+            @meter_collection.holidays.day_type(day.date) == :holiday && day.heating_start_time
+          end
       end
+
+      private
 
       def days_when_heating_on_warm_weather
         seasonal_analysis.heating_on_in_warm_weather_days.to_i
       end
 
       def heat_meters
-        @heat_meters ||= @meter_collection.heat_meters
+        @meter_collection.heat_meters.reject(&:non_heating_only?).sort_by(&:mpan_mprn)
       end
 
       def heating_start_time_service

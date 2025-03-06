@@ -9,14 +9,13 @@
 </p>
 
 <% if @school_groups.any? %>
-  <% @school_groups.each do |school_group| %>
-
   <div class="row">
     <div class="col">
-      <h2><%= school_group.name %></h2>
       <table class="table table-sorted table-sm table-activations">
         <thead>
           <tr>
+            <th class="name">School group</th>
+            <th class="name">Group admin</th>
             <th class="name">School name</th>
             <th class="completed">Onboarding completed</th>
             <th class="visible">Visible?</th>
@@ -29,45 +28,49 @@
           </tr>
         </thead>
         <tbody>
-          <% school_group.schools.awaiting_activation.by_name.each do |school| %>
-            <tr>
-              <td><%= link_to school.name, school_path(school) %></td>
-              <td>
-                  <% if school.school_onboarding.present? %>
-                    <%= nice_dates(school.school_onboarding.completed_on) %>
-                  <% else %>
-                    N/A
+          <% @school_groups.each do |school_group| %>
+            <% school_group.schools.awaiting_activation.by_name.each do |school| %>
+              <tr>
+                <td><%= link_to school_group.name, admin_school_group_path(school_group) %></td>
+                <td><%= school_group.default_issues_admin_user&.name %></td>
+                <td><%= link_to school.name, school_path(school) %></td>
+                <td data-order="<%= school.school_onboarding&.completed_on&.iso8601 || 'last' %>">
+                    <% if school.school_onboarding.present? %>
+                      <%= nice_dates(school.school_onboarding.completed_on) %>
+                    <% else %>
+                      N/A
+                    <% end %>
+                </td>
+                <td><%= checkmark(school.visible) %></td>
+                <td><%= checkmark(school.process_data) %></td>
+                <td><%= checkmark(school.data_enabled) %></td>
+                <td><%= school.meters.count %></td>
+                <td>
+                  <%= y_n(school.meters.unreviewed_dcc_meter.any?) %>
+                  <% if school.meters.unreviewed_dcc_meter.any? %>
+                  <%= link_to '(view)', admin_meter_reviews_path %>
                   <% end %>
-              </td>
-              <td><%= checkmark(school.visible) %></td>
-              <td><%= checkmark(school.process_data) %></td>
-              <td><%= checkmark(school.data_enabled) %></td>
-              <td><%= school.meters.count %></td>
-              <td>
-                <%= y_n(school.meters.unreviewed_dcc_meter.any?) %>
-                <% if school.meters.unreviewed_dcc_meter.any? %>
-                 <%= link_to "(view)", admin_meter_reviews_path %>
-                <% end %>
-              </td>
-              <td>
-                <%= link_to school.issues.status_open.count, admin_school_issues_path(school_id: school.slug) if school.issues.status_open.any? %>
-              </td>
-              <td>
-                <div class="btn-group">
-                  <%= link_to 'Edit details', edit_school_path(school), class: "btn btn-sm" %>
-                  <%= link_to 'Meters', school_meters_path(school), class: "btn btn-sm" %>
-                  <%= link_to 'Users', school_users_path(school), class: "btn btn-sm" %>
-                </div>
-              </td>
-            </tr>
+                </td>
+                <td>
+                  <%= if school.issues.status_open.any?
+                        link_to school.issues.status_open.count, admin_school_issues_path(school_id: school.slug)
+                      end %>
+                </td>
+                <td>
+                  <div class="btn-group">
+                    <%= link_to 'Edit details', edit_school_path(school), class: 'btn btn-sm' %>
+                    <%= link_to 'Meters', school_meters_path(school), class: 'btn btn-sm' %>
+                    <%= link_to 'Users', school_users_path(school), class: 'btn btn-sm' %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
           <% end %>
         </tbody>
       </table>
     </div>
 
   </div>
-
-  <% end %>
 <% else %>
   <p>There are no schools currently awaiting activation</p>
 <% end %>

@@ -1,5 +1,7 @@
 <% days = @seasonal_analysis.heating_on_in_warm_weather_days %>
 <% rating = Adjective.warm_weather_on_days_rating(days) %>
-<%= component 'notice', status: notice_status_for(rating[:rating_value]) do |c| %>
-  <%= t('advice_pages.storage_heaters.analysis.seasonal_control.notice_html', heating_on_in_warm_weather_days: days.to_i, assessment: Adjective.warm_weather_on_days_adjective(days)) %>
+<%= render PromptComponent.new(icon: :fire_alt, fuel_type: :storage_heaters,
+                               status: notice_status_for(rating[:rating_value])) do |c| %>
+  <%= t('advice_pages.storage_heaters.analysis.seasonal_control.notice_html',
+        heating_on_in_warm_weather_days: days.to_i, assessment: Adjective.warm_weather_on_days_adjective(days)) %>
 <% end %>

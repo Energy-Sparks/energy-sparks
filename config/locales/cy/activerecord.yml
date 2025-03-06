@@ -7,6 +7,8 @@ cy:
         name: Enw
         school_specific_description: Disgrifiad penodol i'r ysgol
         summary: Crynodeb
+      activity_type_todos:
+        task: Gweithgaredd
       consent_grant:
         job_title: Teitl swydd
         name: Enw
@@ -16,13 +18,18 @@ cy:
         download_links: Lawrlwytho dolenni
         name: Teitl
         summary: Crynodeb
+      intervention_type_todos:
+        task: Gweithred
       school:
         activation_date: Dyddiad gweithredu
         address: Cyfeiriad
-        alternative_heating_biomass: Mae gan ein hysgol foeler Biomas
-        alternative_heating_district_heating: Mae gan ein hysgol Wresogi Ardal
-        alternative_heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
-        alternative_heating_oil: Mae ein hysgol yn defnyddio Olew ar gyfer gwresogi
+        heating_air_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell aer
+        heating_biomass: Mae gan ein hysgol foeler biomas
+        heating_district_heating: Mae gan ein hysgol wresogi ardal
+        heating_ground_source_heat_pump: Mae gan ein hysgol bwmp gwres o'r ddaear
+        heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
+        heating_oil: Mae ein hysgol yn defnyddio olew ar gyfer gwresogi
+        heating_water_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell dŵr
         cooks_dinners_for_other_schools: Mae'r gegin yn coginio ciniawau ar gyfer ysgolion eraill
         cooks_dinners_for_other_schools_count: Ar gyfer faint o ysgolion mae eich ysgol yn coginio cinio?
         cooks_dinners_onsite: Ciniawau yn cael eu coginio ar y safle

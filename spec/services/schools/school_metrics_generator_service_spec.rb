@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 describe Schools::SchoolMetricsGeneratorService, type: :service do
-  let!(:benchmark_run)    { BenchmarkResultGenerationRun.create! }
-
   let(:school)            { create(:school) }
-  #this will create an empty meter collection as the school has no data
+  # this will create an empty meter collection as the school has no data
   let(:meter_collection)  { Amr::AnalyticsMeterCollectionFactory.new(school).validated }
 
   subject(:service)       { Schools::SchoolMetricsGeneratorService.new(school: school, meter_collection: meter_collection)}
@@ -22,14 +20,9 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
 
     context 'when running alerts and benchmarks' do
       it 'runs the service' do
-        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything, benchmark_result_generation_run: benchmark_run).and_return(stub)
+        expect(Alerts::GenerateAndSaveAlertsAndBenchmarks).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:perform).once
         service.perform
-      end
-
-      it 'stores school specific benchmarks' do
-        service.perform
-        expect(BenchmarkResultSchoolGenerationRun.last.benchmark_result_generation_run).to eq(benchmark_run)
       end
     end
 
@@ -67,6 +60,16 @@ describe Schools::SchoolMetricsGeneratorService, type: :service do
         expect(Schools::AdvicePageBenchmarks::GenerateBenchmarks).to receive(:new).with(school: school, aggregate_school: anything).and_return(stub)
         expect(stub).to receive(:generate!).once
         service.perform
+      end
+    end
+
+    context 'when an error it thrown' do
+      before do
+        allow(Alerts::GenerateContent).to receive(:new).and_raise
+      end
+
+      it 'does not raise' do
+        expect { service.perform }.not_to raise_error
       end
     end
   end

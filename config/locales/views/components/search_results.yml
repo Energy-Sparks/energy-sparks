@@ -1,0 +1,14 @@
+---
+en:
+  components:
+    search_results:
+      keyword:
+        title: Results
+      school_groups:
+        subtitle:
+          one: 1 school group
+          other: "%{count} school groups"
+      schools:
+        subtitle:
+          one: 1 school
+          other: "%{count} schools"

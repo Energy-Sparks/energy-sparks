@@ -5,13 +5,17 @@ class ScoreboardsController < ApplicationController
 
   # GET /scoreboards
   def index
-    @scoreboard_all = ScoreboardAll.new
+    @national_scoreboard = NationalScoreboard.new
     @scoreboards = ComparisonService.new(current_user).list_scoreboards
   end
 
   def show
-    if params[:id] == ScoreboardAll::SLUG
-      @scoreboard = ScoreboardAll.new
+    case params[:id]
+    when 'all'
+      redirect_to(action: 'show', id: NationalScoreboard::SLUG)
+      return
+    when NationalScoreboard::SLUG
+      @scoreboard = NationalScoreboard.new
     else
       @scoreboard = Scoreboard.find(params[:id])
       authorize!(:read, @scoreboard)

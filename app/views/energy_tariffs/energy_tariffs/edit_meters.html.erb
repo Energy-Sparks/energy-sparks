@@ -1,6 +1,7 @@
-<%= component 'energy_tariff_form_title',
-  energy_tariff: @energy_tariff,
-  skip_fields: [:name, :dates] do |c| %>
+<%= render EnergyTariffFormTitleComponent.new(
+      energy_tariff: @energy_tariff,
+      skip_fields: %i[name dates]
+    ) do |c| %>
   <% c.with_page_title do %>
     <h1><%= t('schools.user_tariffs.choose_meters.title') %></h1>
   <% end %>
@@ -9,9 +10,13 @@
 <div class="row mt-4">
   <div class="col-md-12">
     <div class="energy_tariff">
-      <%= simple_form_for :energy_tariff, url: energy_tariffs_path(@energy_tariff, [], { action: :update_meters }), method: :post do |f| %>
-        <%= render 'form_meter_choices', f: f, meter_type: @energy_tariff.meter_type, all_meters: !@energy_tariff.meters.any? %>
-        <%= submit_tag t('common.labels.continue'), class: 'btn btn-info' %>
+      <%= simple_form_for :energy_tariff,
+                          url: energy_tariffs_path(@energy_tariff, [], { action: :update_meters }),
+                          method: :post do |f| %>
+        <%= render 'form_meter_choices', f: f,
+                                         meter_type: @energy_tariff.meter_type,
+                                         all_meters: @energy_tariff.meters.none? %>
+        <%= submit_tag t('common.labels.continue'), class: 'btn btn-secondary' %>
       <% end %>
     </div>
   </div>

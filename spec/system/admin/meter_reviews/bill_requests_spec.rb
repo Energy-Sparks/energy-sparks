@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'bill_requests', type: :system do
   let!(:school)                { create(:school) }
-  let!(:unreviewed_dcc_meter)  { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: false, meter_review_id: nil) }
-  let!(:reviewed_dcc_meter)    { create(:electricity_meter, school: school, dcc_meter: true, consent_granted: true) }
+  let!(:unreviewed_dcc_meter)  { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: false, meter_review_id: nil) }
+  let!(:reviewed_dcc_meter)    { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: true) }
 
   let!(:admin)                 { create(:admin) }
 
@@ -16,7 +16,7 @@ RSpec.describe 'bill_requests', type: :system do
       visit root_path
       click_on 'Admin'
       click_on 'Meter Reviews'
-      expect(page).to have_link("Request bill", href: new_admin_school_bill_request_path(school))
+      expect(page).to have_link('Request bill', href: new_admin_school_bill_request_path(school))
     end
   end
 
@@ -27,11 +27,11 @@ RSpec.describe 'bill_requests', type: :system do
       end
 
       it 'says there are no users' do
-        expect(page).to have_text("The school has no staff or admin users")
+        expect(page).to have_text('The school has no staff or admin users')
       end
 
       it 'links to add a user' do
-        expect(page).to have_link("Add user", href: school_users_path(school))
+        expect(page).to have_link('Add user', href: school_users_path(school))
       end
     end
 
@@ -54,13 +54,13 @@ RSpec.describe 'bill_requests', type: :system do
       end
 
       it 'links to manage users' do
-        expect(page).to have_link("Manage users", href: school_users_path(school))
+        expect(page).to have_link('Manage users', href: school_users_path(school))
       end
 
       context 'when invalid form is submitted' do
         it 'displays an error' do
           click_on 'Request bill'
-          expect(page.has_text?("You must select at least one user")).to be true
+          expect(page.has_text?('You must select at least one user')).to be true
           expect(ActionMailer::Base.deliveries.count).to be 0
         end
       end
@@ -73,7 +73,7 @@ RSpec.describe 'bill_requests', type: :system do
         end
 
         it 'confirms email has been sent' do
-          expect(page.has_text?("Bill has been requested")).to be true
+          expect(page.has_text?('Bill has been requested')).to be true
         end
 
         it 'sends the email' do
@@ -85,6 +85,15 @@ RSpec.describe 'bill_requests', type: :system do
           expect(page).to have_content('Bill last requested from the school on')
         end
       end
+    end
+  end
+
+  context 'when clear the bill request' do
+    it 'provides navigation' do
+      school.update!(bill_requested: true)
+      visit admin_meter_reviews_path
+      click_on 'Clear bill request'
+      expect(school.reload.bill_requested).to be false
     end
   end
 end

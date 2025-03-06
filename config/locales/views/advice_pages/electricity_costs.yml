@@ -20,7 +20,7 @@ en:
                 consumption in the near future?
               </p>
         comparison:
-          title: Cost comparison for last 2 years
+          title: Cost comparison for last 2 academic years
         cost_breakdown_by_charge:
           title: Cost breakdown by charge for the last %{period}
         cost_breakdown_by_meter:
@@ -30,7 +30,6 @@ en:
         meter_breakdown:
           select: Select an option to view costs for the whole school or a specific meter
           title: Cost breakdown
-          whole_school: Whole school
         summary: The following sections provide more background and analysis on your electricity costs
         tariff_note:
           good_estimate: The information below provides a good estimate of your annual costs for this meter based on meter tariff information which has been provided to Energy Sparks.
@@ -53,9 +52,9 @@ en:
           subtitle_html: This chart shows the bill components for the period ending on <span class='end-date'>%{end_date}</span> for the whole school
           title: Electricity cost components for the last few weeks
         cost_comparison_last_2_years_accounting:
-          meter_title: Electricity cost comparison for last 2 years for %{meter}
-          subtitle_html: This chart compares your monthly consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months
-          title: Electricity cost comparison for last 2 years
+          meter_title: Electricity cost comparison for last 2 academic years for %{meter}
+          subtitle_html: This chart compares your monthly consumption for the academic year ending on <span>%{end_date}</span> with the previous academic year
+          title: Electricity cost comparison for last 2 academic years
       insights:
         current_costs:
           title: Your current costs

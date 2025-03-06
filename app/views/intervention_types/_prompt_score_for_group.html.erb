@@ -1,18 +1,20 @@
 <%= simple_form_for :intervention_type, url: for_school_intervention_type_path(intervention_type), method: :get do |f| %>
-  <%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+  <%= render NoticeComponent.new(status: :neutral, classes: 'mb-4') do %>
     <div class="row" role="alert">
       <div class="col-lg-1 d-none d-lg-block">
         <i class="fas fa-tasks fa-3x"></i>
       </div>
       <div class="col-lg-8 col-sm-12 align-self-center">
-        <%= t('intervention_types.prompt_score.complete_this_action_for_group_html', count: intervention_type.score) %><br />
+        <%= t('intervention_types.prompt_score.complete_this_action_for_group_html', count: intervention_type.score) %><br>
         <div class="pt-3 w-75">
-          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select disable-tooltip' %>
+          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name),
+                         include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select disable-tooltip' %>
         </div>
       </div>
       <div class="col-lg-3 col-sm-12">
         <div class="d-none d-sm-block d-md-block d-lg-none pt-2"></div>
-        <%= f.submit t('intervention_types.prompt_score.record_this_action'), class: 'btn btn-light float-lg-right', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: t('activity_types.show.select_school') %>
+        <%= f.submit t('intervention_types.prompt_score.record_this_action'), class: 'btn float-lg-right',
+                                                                              'data-toggle': 'tooltip', 'data-placement': 'bottom', title: t('activity_types.show.select_school') %>
       </div>
     </div>
   <% end %>

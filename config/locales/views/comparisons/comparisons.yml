@@ -1,0 +1,37 @@
+---
+en:
+  comparisons:
+    column_headings:
+      current_period: Latest period
+      last_year_electricity_kwh_floor_area: Last year electricity kWh/floor area
+      last_year_energy_kgco2_floor_area: Last year energy kgCO2/floor area
+      last_year_energy_kwh_floor_area: Last year energy kWh/floor area
+      last_year_gas_kwh_floor_area: Last year gas kWh/floor area
+      last_year_storage_heater_kwh_floor_area: Last year storage heater kWh/floor area
+      previous_period: Previous period
+      previous_period_unadjusted: Previous period (not adjusted)
+      recent_data: Recent data
+      swimming_pool: Swimming pool
+    hot_water_efficiency:
+      unlisted:
+        message:
+          one: "%{count} school could not be shown in this report as it does not have enough data to be analysed, or has a swimming pool so its hot water usage cannot be accurately estimated"
+          other: "%{count} schools could not be shown in this report as they do not have enough data to be analysed, or have swimming pools so their hot water usage cannot be accurately estimated"
+    period_types:
+      periods: periods
+    tables:
+      electricity_usage: Electricity usage comparison
+      gas_usage: Gas usage comparison
+      heating_start_time: Heating Start Times
+      optimum_start_analysis: Optimum Start Analysis
+      storage_heater_usage: Storage heater usage comparison
+      table_number: Table %{table_number}
+      total_usage: Total energy usage comparison
+    unlisted:
+      link:
+        one: View school
+        other: View list of schools
+      loading: Loading schools
+      message:
+        one: "%{count} school could not be shown in this report as it does not have enough data to be analysed"
+        other: "%{count} schools could not be shown in this report as they do not have enough data to be analysed"

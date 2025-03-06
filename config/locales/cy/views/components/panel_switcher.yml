@@ -1,0 +1,4 @@
+cy:
+  components:
+    panel_switcher:
+      change_to: Newid i %{name}

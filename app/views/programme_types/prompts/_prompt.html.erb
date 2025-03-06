@@ -1,0 +1,19 @@
+<% if programme_type.tasks_already_completed_for?(school:) %>
+  <%= render PromptComponent.new(icon: 'play-circle', status: :neutral) do |c| %>
+    <b><%= t('programme_types.prompt_todo.completed_message_html', count: programme_type.bonus_score) %></b>
+    <% c.with_link do %>
+      <%= link_to t('common.labels.complete'),
+                  school_programmes_path(school, programme_type_id: programme_type),
+                  method: :post %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= render PromptComponent.new(icon: 'play-circle', status: :neutral) do |c| %>
+    <b><%= t('programme_types.prompt_todo.message_html', count: programme_type.task_count_for(school:)) %></b>
+    <% c.with_link do %>
+      <%= link_to t('common.labels.start'),
+                  school_programmes_path(school, programme_type_id: programme_type),
+                  method: :post %>
+    <% end %>
+  <% end %>
+<% end %>

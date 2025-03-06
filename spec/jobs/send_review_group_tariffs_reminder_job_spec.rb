@@ -1,9 +1,14 @@
 require 'rails_helper'
 
 describe SendReviewGroupTariffsReminderJob do
+  subject(:job) { SendReviewGroupTariffsReminderJob.new }
+
   let!(:school_group) { create(:school_group) }
   let!(:school_group_admin) { create(:group_admin, school_group: school_group) }
-  let(:job) { SendReviewGroupTariffsReminderJob.new }
+
+  describe '#priority' do
+    it_behaves_like 'a high priority job'
+  end
 
   describe '#perform' do
     it 'sends an email to school admins to remind them to keep their tariff updated on a valid day of the year' do

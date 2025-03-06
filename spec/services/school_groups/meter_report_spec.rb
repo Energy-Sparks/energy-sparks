@@ -2,8 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SchoolGroups::MeterReport do
   let(:frozen_time) { Time.zone.now }
-  before { Timecop.freeze(frozen_time) }
-  after { Timecop.return }
+  before { travel_to(frozen_time) }
 
   let(:school_group) { create :school_group, name: 'A Group' }
   let(:all_meters) { false }
@@ -15,24 +14,24 @@ RSpec.describe SchoolGroups::MeterReport do
 
   let(:header) { 'School,Supply,Number,Meter,Half-Hourly,Data source,Admin meter status,Procurement route,Active,First validated reading,Last validated reading,Large gaps (last 2 years),Modified readings (last 2 years),Zero reading days' }
 
-  describe "#csv_filename" do
-    context "when all_meters is false" do
+  describe '#csv_filename' do
+    context 'when all_meters is false' do
       let(:all_meters) { false }
 
       it { expect(meter_report.csv_filename).to eq("a-group-meter-report-#{frozen_time.iso8601.parameterize}.csv") }
     end
 
-    context "when all_meters is true" do
+    context 'when all_meters is true' do
       let(:all_meters) { true }
 
       it { expect(meter_report.csv_filename).to eq("a-group-meter-report-#{frozen_time.iso8601.parameterize}-all-meters.csv") }
     end
   end
 
-  describe "#csv" do
+  describe '#csv' do
     subject(:csv) { meter_report.csv }
 
-    context "only active meters" do
+    context 'only active meters' do
       let(:all_meters) { false }
 
       it { expect(csv.lines.first.chomp).to eq(header) }
@@ -47,7 +46,7 @@ RSpec.describe SchoolGroups::MeterReport do
       end
     end
 
-    context "all meters" do
+    context 'all meters' do
       let(:all_meters) { true }
 
       it { expect(csv.lines.first.chomp).to eq(header) }

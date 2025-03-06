@@ -2,6 +2,7 @@ module Schools
   module Advice
     class GasOutOfHoursController < BaseOutOfHoursController
       before_action :load_dashboard_alerts, only: [:insights, :analysis]
+      before_action :set_heating_model_available, only: [:analysis]
 
       private
 
@@ -13,8 +14,8 @@ module Schools
         :gas_out_of_hours
       end
 
-      def aggregate_meter
-        aggregate_school.aggregated_heat_meters
+      def set_heating_model_available
+        @heating_model_available = HeatingControlService.new(@school, aggregate_school).enough_data?
       end
     end
   end

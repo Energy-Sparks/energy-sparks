@@ -9,7 +9,7 @@ class ComparisonService
     end
     scoreboards = Scoreboard.is_public.order(:name).to_a
     if @user.present? && @user.school.present? && @user.school.scoreboard.present?
-        scoreboards << @user.school.scoreboard
+      scoreboards << @user.school.scoreboard
     end
     scoreboards.uniq
   end
@@ -20,7 +20,7 @@ class ComparisonService
     end
     groups = SchoolGroup.with_active_schools.is_public.order(:name).to_a
     if @user.present? && @user.school.present? && @user.school.school_group.present?
-        groups << @user.school.school_group
+      groups << @user.school.school_group
     end
     groups.uniq.sort_by(&:name)
   end

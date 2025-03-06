@@ -1,0 +1,16 @@
+.prompt-component {
+  border-radius: 8px;
+  &.none {
+    background-color: $grey-pale !important;
+  }
+
+  @each $polarity, $tones in $colours-polarity {
+    &.#{$polarity} {
+      background-color: map-get($tones, 'light') !important;
+    }
+  }
+
+  div.row {
+    margin: 0.25rem 0.25rem;
+  }
+}

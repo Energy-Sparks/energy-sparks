@@ -9,32 +9,26 @@ en:
       title: Actions
     activity_title: Activity title
     choose_next_activity: Choose Next Activity
-    completed:
-      congratulations: Congratulations! We've recorded your activity
-      our_suggestions: Our suggestions based on your school programmes and analysis of your energy data
-      page_title: Activity
-      recommended_for_your_school: Recommended for your school
-      see_the_scoreboard: See the scoreboard
-      view_all_suggestions: View all suggestions
-      view_your_activity: View your activity
     completed_on: Completed on
     edit:
       page_title: Update activity
       update_your_activity: Update your activity
     form:
-      adding_a_photo_to_document_your_activity_will_score_you: Adding a photo to document your activity will score you
+      adding_a_photo_to_document_your_activity_will_score_you: Adding a photo to document your activity can score you
       bonus_points:
         one: bonus point
         other: bonus points
       build_a_record_message: You can record a recent activity and older activities to build up a record of all of the energy saving activities you've carried out as a school
       cancel: Cancel
       completing_this_activity:
-        one: Completing this activity will earn you 1 point
-        other: Completing this activity will earn you %{count} points
+        one: Completing this activity up to %{maximum} times this academic year will earn you 1 point
+        other: Completing this activity up to %{maximum} times this academic year  will earn you %{count} points
+      exceeded_maximum_in_year: You have already completed this activity %{maximum} times this academic year. You will not score additional points for recording it
       how_many_pupils_were_involved_in_this_activity: How many pupils were involved in this activity?
       how_would_you_describe_this_activity: How would you describe this activity
       not_a_standard_activity_message: As you're not recording one of our standard activities, you need to supply a title. Choose a clear title which will make others want to read about your activity
       other: Other
+      previous_years: Activities recorded in previous academic years do not score points
       save_activity: Save activity
       tell_us_more_formatting_message: You can add formatting, links to your school website and attach images using the toolbar below. Hover over each icon to learn what it does
       tell_us_more_label: Tell us more about what you did
@@ -49,20 +43,6 @@ en:
       record_a_new_activity: Record a new energy saving activity for your school
     no_activities_completed: No activities completed
     page_title: All Activities
-    points:
-      and_need_to_score:
-        one: and need to score %{count} point to reach %{place_to_reach} place
-        other: and need to score %{count} points to reach %{place_to_reach} place
-      choose_your_next_activity: Choose your next activity from the suggestions below.
-      prizes: Our top scoring schools this year could win up to £1250 towards an energy saving improvement of your choice
-      prizes_link: read more
-      recorded_this_year:
-        one: You've recorded 1 activity so far this year
-        other: You've recorded %{count} activities so far this year
-      school_position: and your school is currently in %{ordinal_place} place.
-      you_just_scored:
-        one: You've just scored 1 point!
-        other: You've just scored %{count} points!
     show:
       activity_description: Activity description
       all_activities: All activities

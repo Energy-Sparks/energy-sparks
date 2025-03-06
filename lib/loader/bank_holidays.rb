@@ -17,9 +17,9 @@ module Loader
           CalendarEvent.where(
             calendar: calendar,
             calendar_event_type: bank_holiday_type,
-            start_date: bank_holiday["date"],
-            end_date: bank_holiday["date"],
-            description: bank_holiday["notes"]
+            start_date: bank_holiday['date'],
+            end_date: bank_holiday['date'],
+            description: bank_holiday['notes']
           ).first_or_create!
         end
 

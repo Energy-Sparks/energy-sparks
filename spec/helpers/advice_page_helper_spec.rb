@@ -18,16 +18,16 @@ describe AdvicePageHelper do
 
   describe '.format_unit' do
     it 'formats a value accourding to its energy unit and the unit symbol as an html character reference' do
-      expect(helper.format_unit(1234567, :co2)).to eq("1,234,567")
-      expect(helper.format_unit(-4.736951571734001e-15, :co2)).to eq("0")
-      expect(helper.format_unit(1234567, :kwh)).to eq("1,234,567")
-      expect(helper.format_unit(-4.736951571734001e-15, :kwh)).to eq("0")
-      expect(helper.format_unit(1234567, :£)).to eq("&pound;1,234,567")
-      expect(helper.format_unit(0, :£)).to eq("0p")
-      expect(helper.format_unit(-4.736951571734001e-15, :£)).to eq("0p")
-      expect(helper.format_unit(1234567, :percent)).to eq("120,000,000&percnt;")
-      expect(helper.format_unit(-4.736951571734001e-15, :percent)).to eq("0&percnt;")
-      expect(helper.format_unit(0, :percent)).to eq("0&percnt;")
+      expect(helper.format_unit(1234567, :co2)).to eq('1,234,567')
+      expect(helper.format_unit(-4.736951571734001e-15, :co2)).to eq('0')
+      expect(helper.format_unit(1234567, :kwh)).to eq('1,234,567')
+      expect(helper.format_unit(-4.736951571734001e-15, :kwh)).to eq('0')
+      expect(helper.format_unit(1234567, :£)).to eq('&pound;1,234,567')
+      expect(helper.format_unit(0, :£)).to eq('0p')
+      expect(helper.format_unit(-4.736951571734001e-15, :£)).to eq('0p')
+      expect(helper.format_unit(1234567, :percent)).to eq('120,000,000&percnt;')
+      expect(helper.format_unit(-4.736951571734001e-15, :percent)).to eq('0&percnt;')
+      expect(helper.format_unit(0, :percent)).to eq('0&percnt;')
     end
   end
 
@@ -88,12 +88,16 @@ describe AdvicePageHelper do
         helper.advice_page_path(school, advice_page, :blah)
       end.to raise_error(NoMethodError)
     end
+
+    it 'returns advice root if advice page not specified' do
+      expect(helper.advice_page_path(school)).to end_with("/schools/#{school.slug}/advice")
+    end
   end
 
   describe '.sort_by_label' do
     before do
-      I18n.backend.store_translations("en", { advice_pages: { nav: { pages: { one: "ZZZ", two: "AAA" } } } })
-      I18n.backend.store_translations("cy", { advice_pages: { nav: { pages: { one: "AAA", two: "ZZZ" } } } })
+      I18n.backend.store_translations('en', { advice_pages: { nav: { pages: { one: 'ZZZ', two: 'AAA' } } } })
+      I18n.backend.store_translations('cy', { advice_pages: { nav: { pages: { one: 'AAA', two: 'ZZZ' } } } })
     end
 
     let(:advice_page_1) { create(:advice_page, key: 'one') }
@@ -124,13 +128,8 @@ describe AdvicePageHelper do
 
     describe '.dashboard_alert_groups' do
       it 'returns list of groups with alerts' do
-        expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(%w[change advice])
-      end
-    end
-
-    describe '.dashboard_alerts_for_group' do
-      it 'returns alerts for group' do
-        expect(helper.dashboard_alerts_for_group(dashboard_alerts, 'change')).to eq([dashboard_alert_change])
+        expect(helper.dashboard_alert_groups(dashboard_alerts)).to \
+          eq([['change', [dashboard_alert_change]], ['advice', [dashboard_alert_advice]]])
       end
     end
 
@@ -145,8 +144,12 @@ describe AdvicePageHelper do
     end
 
     describe '.alert_types_for_class' do
-      it 'returns alert types for class name' do
+      it 'returns alert types for class name as string' do
         expect(helper.alert_types_for_class('ChangeAlert')).to eq([alert_type_change])
+      end
+
+      it 'returns alert types for class name as array' do
+        expect(helper.alert_types_for_class(['ChangeAlert'])).to eq([alert_type_change])
       end
     end
   end

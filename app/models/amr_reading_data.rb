@@ -1,7 +1,7 @@
 class AmrReadingData
   include ActiveModel::Validations
 
-  attr_accessor :reading_data, :date_format, :missing_reading_threshold
+  attr_accessor :reading_data, :date_format, :missing_reading_limit
 
   WARNING_INCONSISTENT_DATE_FORMAT = 'Reading date format does not match configuration format'.freeze
   WARNING_BAD_DATE_FORMAT = 'Bad format for a reading date'.freeze
@@ -29,10 +29,11 @@ class AmrReadingData
   validates_presence_of :reading_data, message: ERROR_UNABLE_TO_PARSE_FILE
   validate :any_valid_readings?
 
-  def initialize(reading_data:, date_format:, missing_reading_threshold: 0, today: Time.zone.today)
+  def initialize(amr_data_feed_config:, reading_data:, today: Time.zone.today)
+    @amr_data_feed_config = amr_data_feed_config
     @reading_data = reading_data
-    @date_format = date_format
-    @missing_reading_threshold = missing_reading_threshold
+    @date_format = @amr_data_feed_config.date_format
+    @missing_reading_limit = @amr_data_feed_config.row_per_reading? ? @amr_data_feed_config.blank_threshold : 0
     @today = today
     invalid_row_check
   end
@@ -113,8 +114,18 @@ class AmrReadingData
     true
   end
 
+  # Are there any missing readings for this row of data?
+  #
+  # If we are merging partial data received from suppliers, then we never
+  # generate a warning
+  #
+  # Otherwise we check whether there are more than an allowed threshold.
+  # For "row per reading" formats this is configured in the config, but
+  # for "row per day" formats the threshold is always zero.
   def missing_readings?(readings)
-    readings.compact.count {|reading| reading.present? && reading != '-'} < (48 - @missing_reading_threshold)
+    return false if @amr_data_feed_config.allow_merging?
+
+    readings.compact.count {|reading| reading.present? && reading != '-'} < (48 - @missing_reading_limit)
   end
 
   def valid_reading_date?(reading_date)

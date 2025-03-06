@@ -29,91 +29,142 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#users_ready?' do
     context 'with all access locked all users' do
-      before { school.users.each(&:lock_access!) }
+      before { school.users.each(&:disable!) }
 
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(4)
+        expect(school.users.count(&:active?)).to eq(0)
         expect(service.users_ready?).to eq(true)
       end
     end
 
     context 'with at least 1 access unlocked user' do
       before do
-        school.users.each(&:lock_access!)
-        school.users.first.unlock_access!
+        school.users.each(&:disable!)
+        school.users.first.enable!
       end
 
       it 'returns false' do
         expect(visible_school.cluster_users.count).to eq(0)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(3)
+        expect(school.users.count(&:active?)).to eq(1)
         expect(service.users_ready?).to eq(false)
       end
     end
 
     context 'with all access locked users except one which is associated with another school' do
       before do
-        school.users.each(&:lock_access!)
-        school.users.first.unlock_access!
+        school.users.each(&:disable!)
+        school.users.first.enable!
         school.users.first.add_cluster_school(visible_school)
       end
 
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(3)
+        expect(school.users.count(&:active?)).to eq(1)
         expect(service.users_ready?).to eq(true)
       end
     end
 
     context 'with two access locked users and two unlocked users, only one of which is associated with another school' do
       before do
-        school.users.each(&:lock_access!)
-        school.users.first.unlock_access!
-        school.users.second.unlock_access!
+        school.users.each(&:disable!)
+        school.users.first.enable!
+        school.users.second.enable!
         school.users.first.add_cluster_school(visible_school)
       end
 
       it 'returns true' do
         expect(visible_school.cluster_users.count).to eq(1)
         expect(school.users.count).to eq(4)
-        expect(school.users.count(&:access_locked?)).to eq(2)
+        expect(school.users.count(&:active?)).to eq(2)
         expect(service.users_ready?).to eq(false)
       end
     end
   end
 
   describe '#remove_school!' do
-    it 'marks the school as inactive, sets removal date and deletes any school meter or school issues' do
-      service.remove_school!
-      expect(school.active).to be_falsey
-      expect(school.process_data).to be_falsey
-      expect(school.removal_date).to eq(Time.zone.today)
-      expect(electricity_meter.issues.count).to eq 0
-      expect(gas_meter.issues.count).to eq 0
-      expect(school.issues.count).to eq 0
+    context 'when archive flag is set to false (pure delete)' do
+      context 'when school is not visible' do
+        before do
+          service.remove_school!
+        end
+
+        it 'marks the school as inactive' do
+          expect(school.active).to be_falsey
+        end
+
+        it 'sets process_data to false' do
+          expect(school.process_data).to be_falsey
+        end
+
+        it 'sets the removal_date to today' do
+          expect(school.removal_date).to eq(Time.zone.today)
+        end
+
+        it 'deletes any school meter or school issues' do
+          expect(electricity_meter.issues.count).to eq 0
+          expect(gas_meter.issues.count).to eq 0
+          expect(school.issues.count).to eq 0
+        end
+      end
+
+      context 'when school is visiable' do
+        before do
+          school.update(visible: true)
+        end
+
+        it 'raises error' do
+          expect do
+            service.remove_school!
+          end.to raise_error(SchoolRemover::Error)
+        end
+      end
     end
 
-    it 'fails if school is visible' do
-      school.update(visible: true)
-      expect do
-        service.remove_school!
-      end.to raise_error(SchoolRemover::Error)
-    end
-
-    context 'when archive flag set true' do
+    context 'when archive flag set true (archive - soft delete)' do
       let(:archive) { true }
 
-      it 'marks the school as inactive but with no removal date or issue deletion' do
-        service.remove_school!
-        expect(school.active).to be_falsey
-        expect(school.process_data).to be_falsey
-        expect(school.removal_date).to be_nil
-        expect(electricity_meter.issues.count).to eq 1
-        expect(gas_meter.issues.count).to eq 1
-        expect(school.issues.count).to eq 3
+      context 'when school is not visible' do
+        before do
+          service.remove_school!
+        end
+
+        it 'marks the school as inactive' do
+          expect(school.active).to be_falsey
+        end
+
+        it 'sets process_data to false' do
+          expect(school.process_data).to be_falsey
+        end
+
+        it 'sets the removal_date to nil' do
+          expect(school.removal_date).to be_nil
+        end
+
+        it 'sets the archived_date to today' do
+          expect(school.archived_date).to eq(Time.zone.today)
+        end
+
+        it 'does not remove issues' do
+          expect(electricity_meter.issues.count).to eq 1
+          expect(gas_meter.issues.count).to eq 1
+          expect(school.issues.count).to eq 3
+        end
+      end
+
+      context 'when school is visiable' do
+        before do
+          school.update(visible: true)
+        end
+
+        it 'raises error' do
+          expect do
+            service.remove_school!
+          end.to raise_error(SchoolRemover::Error)
+        end
       end
     end
   end
@@ -123,7 +174,7 @@ describe SchoolRemover, :schools, type: :service do
 
     it 'locks the user accounts' do
       remove
-      expect(school.users).to be_all(&:access_locked?)
+      expect(school.users).to be_all(&:inactive?)
     end
 
     it 'removes alert contacts' do
@@ -136,7 +187,7 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'keeps the alert contacts' do
         remove
-        expect(school.users).to be_all(&:access_locked?)
+        expect(school.users).to be_all(&:inactive?)
         expect(Contact.count).to eq 1
       end
     end
@@ -151,12 +202,21 @@ describe SchoolRemover, :schools, type: :service do
 
       it 'does not lock user and switches them to the other school' do
         school_admin.reload
-        expect(school_admin).not_to be_access_locked
+        expect(school_admin).to be_active
         expect(school_admin.school).to eq(other_school)
       end
     end
 
-    context
+    context 'when a user is not confirmed' do
+      let!(:unconfirmed) { create(:school_admin, school: school, confirmed_at: nil) }
+
+      it 'removes the unconfirmed user' do
+        remove
+        school.users.reload
+        expect(school.users.count).to eq(4)
+        expect(school.users).to be_all(&:inactive?)
+      end
+    end
   end
 
   describe '#remove_meters!' do

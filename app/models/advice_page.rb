@@ -2,12 +2,13 @@
 #
 # Table name: advice_pages
 #
-#  created_at :datetime         not null
-#  fuel_type  :integer
-#  id         :bigint(8)        not null, primary key
-#  key        :string           not null
-#  restricted :boolean          default(FALSE)
-#  updated_at :datetime         not null
+#  created_at      :datetime         not null
+#  fuel_type       :integer
+#  id              :bigint(8)        not null, primary key
+#  key             :string           not null
+#  multiple_meters :boolean          default(FALSE), not null
+#  restricted      :boolean          default(FALSE)
+#  updated_at      :datetime         not null
 #
 # Indexes
 #
@@ -16,6 +17,7 @@
 class AdvicePage < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
+  include EnumFuelType
 
   translates :learn_more, backend: :action_text
 
@@ -33,7 +35,11 @@ class AdvicePage < ApplicationRecord
 
   scope :by_key, -> { order(key: :asc) }
 
-  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv]
+  # Required as multiple is not yet supported in advice page list
+  # Could be used for the total energy use page.
+  def self.display_fuel_types
+    fuel_types.reject {|k, _v| k.to_sym == :multiple}
+  end
 
   def label
     key.humanize
@@ -66,9 +72,9 @@ class AdvicePage < ApplicationRecord
     end
   end
 
-  #Check whether school has the fuel type for this advice page
-  #Defaults to treating unknown/nil fuel type as applicable to
-  #all schools
+  # Check whether school has the fuel type for this advice page
+  # Defaults to treating unknown/nil fuel type as applicable to
+  # all schools
   def school_has_fuel_type?(school, default_value: true)
     case fuel_type&.to_sym
     when :gas

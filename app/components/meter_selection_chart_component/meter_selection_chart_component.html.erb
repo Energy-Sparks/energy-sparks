@@ -1,0 +1,70 @@
+<% if underlying_meters.count > 1 %>
+  <div class="charts">
+    <%= render ChartComponent.new(
+          chart_type: chart_type,
+          school: school,
+          chart_config: chart_config,
+          html_class: 'usage-chart',
+          **chart_options
+        ) do |c| %>
+      <% c.with_title do %>
+        <%= title %>
+      <% end %>
+      <% c.with_subtitle { '' } %>
+      <% c.with_header do %>
+        <%= header %>
+        <%= form_tag '', method: :get, id: 'chart-filter' do %>
+          <%= hidden_field_tag :configuration,
+                               nil,
+                               data: {
+                                 configuration: configuration
+                               } %>
+          <%= hidden_field_tag :descriptions,
+                               nil,
+                               data: {
+                                 descriptions: chart_descriptions
+                               } %>
+
+          <div class="pt-4 chart-controls form-inline d-flex justify-content-between">
+            <label>
+              <%= t('advice_pages.charts.controls.select_meter') %>
+            </label>
+            <%= select_tag :meter,
+                           options_from_collection_for_select(meter_selection_options,
+                                                              :mpan_mprn,
+                                                              :display_name,
+                                                              meter_selection_options.first.mpan_mprn),
+                           include_blank: false,
+                           class: 'custom-select',
+                           data: {
+                             toggle: 'tooltip',
+                             placement: 'top',
+                             title: t('advice_pages.charts.controls.select_meter')
+                           } %>
+          </div>
+        <% end %>
+      <% end %>
+      <% c.with_footer do %>
+        <%= footer %>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <%= render ChartComponent.new(
+        chart_type: chart_type,
+        school: school,
+        chart_config: chart_config,
+        **chart_options
+      ) do |c| %>
+    <% c.with_title do %>
+      <%= title %>
+    <% end if title? %>
+    <% c.with_subtitle { sanitize chart_descriptions[meter_selection_options.first.mpan_mprn] } %>
+    <% c.with_header do %>
+      <%= header %>
+    <% end if header? %>
+    <% c.with_footer do %>
+      <%= footer %>
+    <% end if footer? %>
+  <% end %>
+<% end %>

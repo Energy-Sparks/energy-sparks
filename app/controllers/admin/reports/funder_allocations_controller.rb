@@ -4,8 +4,14 @@ module Admin
   module Reports
     class FunderAllocationsController < AdminController
       def show
-        @funders = School.visible.left_joins(:funder).group('funders.id')
-                         .select('funders.*, COUNT(schools.id) as school_count').order('funders.name')
+        @funders_visible = Funder.funded_school_counts(visible: true, data_enabled: false)
+        @funders_visible_and_enabled = Funder.funded_school_counts(visible: true, data_enabled: true)
+        @onboarding = Funder.joins('LEFT JOIN school_onboardings ON funders.id = school_onboardings.funder_id ' \
+                                   'AND school_onboardings.school_id IS NULL')
+                            .group(:name).count('school_onboardings.id')
+        @unfunded_visible = School.visible.unfunded.count
+        @unfunded_visible_and_enabled = School.visible.data_enabled.unfunded.count
+        @unfunded_onboarding = SchoolOnboarding.where(funder: nil, school: nil).count
       end
 
       def deliver

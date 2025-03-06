@@ -1,0 +1,24 @@
+<style>
+  .negative { background-color: <%= Colours.negative_light %>; }
+  .positive { background-color: <%= Colours.positive_light %>; }
+  .neutral { background-color: <%= Colours.neutral_light %>; }
+  .lh-md { line-height: 1.75; }
+</style>
+<% dashboard_alert_groups(alert_contents).each do |group, alerts| %>
+  <h4 class="py-4"><%= t("advice_pages.alerts.groups.#{group}") %></h4>
+  <% alerts.each do |alert_content| %>
+    <div class="row rounded-lg <%= status_for_alert_colour(alert_content.colour) %>">
+      <div class="col-lg-1 py-3">
+        <%= image_tag "email/fa-#{alert_type_icon(alert_content.alert.alert_type)}.png", class: 'px-4' %>
+      </div>
+      <div class="col-lg-11 py-4 text-sm lh-base">
+        <strong><%= sanitize alert_content.email_title %></strong>
+        <%= alert_content.email_content %>
+        <% path = find_out_more_path_from_alert_content(school, alert_content, params: weekly_alert_utm_parameters,
+                                                                               mailer: true) %>
+        <%= link_to(t('alert_mailer.alert_email.find_out_more'), path, class: 'text my-4') if path %>
+      </div>
+    </div>
+    <div class="s-2"></div>
+  <% end %>
+<% end %>

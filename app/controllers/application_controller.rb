@@ -1,13 +1,11 @@
 class ApplicationController < ActionController::Base
   include DefaultUrlOptionsHelper
-
-  protect_from_forgery with: :exception
   around_action :switch_locale
   before_action :authenticate_user!
   before_action :analytics_code
   before_action :pagy_locale
   before_action :check_admin_mode
-  helper_method :site_settings, :current_school_podium, :current_user_school, :current_school_group
+  helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group, :current_user_default_school_group, :current_school, :current_school_group
   before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -25,33 +23,47 @@ class ApplicationController < ActionController::Base
   end
 
   def route_not_found
-    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
+    render 'errors/show', status: :not_found
   end
 
   def site_settings
     @site_settings ||= SiteSettings.current
   end
 
+  def current_school
+    @current_school ||= if @school&.persisted?
+                          @school
+                        elsif @tariff_holder&.school? && @tariff_holder&.persisted?
+                          @tariff_holder
+                        end
+  end
+
+  def current_school_group
+    @current_school_group ||= if @school_group&.persisted?
+                                @school_group
+                              elsif @tariff_holder&.school_group? && @tariff_holder&.persisted?
+                                @tariff_holder
+                              end
+  end
+
   def current_school_podium
-    @current_school_podium ||= if @school && @school&.scoreboard
-                                 podium_for(@school)
-                               elsif @tariff_holder && @tariff_holder&.school? && @tariff_holder&.scoreboard
-                                 podium_for(@tariff_holder)
-                               end
+    @current_school_podium ||= podium_for(current_school) if current_school&.scoreboard
   end
 
   def current_user_school
-    if current_user && current_user.school
-      current_user.school
-    end
+    @current_user_school ||= current_user&.school
+  end
+
+  def current_user_school_group
+    @current_user_school_group ||= current_user&.school_group
+  end
+
+  def current_user_default_school_group
+    @current_user_default_school_group ||= current_user&.default_school_group
   end
 
   def current_ip_address
     request.remote_ip
-  end
-
-  def current_school_group
-    current_user.try(:default_school_group)
   end
 
   private
@@ -67,7 +79,7 @@ class ApplicationController < ActionController::Base
   end
 
   def admin_mode?
-    ENV["ADMIN_MODE"] == 'true'
+    ENV['ADMIN_MODE'] == 'true'
   end
 
   def current_user_admin?
@@ -84,10 +96,6 @@ class ApplicationController < ActionController::Base
 
   def pagy_locale
     @pagy_locale = I18n.locale.to_s
-  end
-
-  def header_fix_enabled
-    @header_fix_enabled = true
   end
 
   # user has signed in via devise "remember me" functionality

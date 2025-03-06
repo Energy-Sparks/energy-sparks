@@ -1,0 +1,32 @@
+<% if analysis_dates.one_years_data? %>
+  <% section_title = t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.title") %>
+<% else %>
+  <% section_title = t("advice_pages.#{fuel_type}_long_term.analysis.recent_trend.title") %>
+<% end %>
+<%= render 'schools/advice/section_title',
+           section_id: 'last_twelve_months',
+           section_title: section_title %>
+
+<%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.title') %>
+<%# i18n-tasks-use t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_electricity_tolerant_chart.subtitle_html') %>
+<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.title') %>
+<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.daytype_breakdown_gas_tolerant_chart.subtitle_html') %>
+<%= render MeterSelectionChartComponent.new(
+      meter_selection: meter_selection,
+      chart_type: chart,
+      analysis_controls: true,
+      chart_subtitle_key: "advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.subtitle_html"
+    ) do |c| %>
+  <% c.with_title do %>
+    <%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.usage_by_day_of_week.#{chart}_chart.title") %>
+  <% end %>
+<% end %>
+
+<% if meter_selection.underlying_meters.count > 1 %>
+  <h5><%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table_title") %></h5>
+<% end %>
+
+<p><%= t("advice_pages.#{fuel_type}_out_of_hours.analysis.last_twelve_months.table_introduction") %></p>
+
+<%= render 'schools/advice/out_of_hours/analysis_table', fuel_type: fuel_type, usage_categories: usage_categories,
+                                                         annual_usage_breakdown: annual_usage_breakdown %>

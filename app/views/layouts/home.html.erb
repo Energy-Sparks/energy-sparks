@@ -4,16 +4,18 @@
     <%= render 'shared/head' %>
   </head>
   <body>
-    <div class='fixed-top'>
-      <%= render 'shared/nav' %>
-    </div>
-    <% if flash.any? %>
-      <section class="home alerts">
-        <%= render 'shared/alerts' %>
-      </section>
-    <% end %>
+    <%= render 'shared/navigation' %>
+
     <!-- don't render application container as you do for the other pages -->
-    <%= yield %>
+    <div class="navigation-margin <%= home_class %>">
+      <% if flash.any? %>
+        <section class="alerts">
+          <%= render 'shared/alerts' %>
+        </section>
+      <% end %>
+      <%= yield %>
+    </div>
+    <%= render 'shared/cookie_banner' %>
     <%= render 'shared/footer' %>
   </body>
 </html>

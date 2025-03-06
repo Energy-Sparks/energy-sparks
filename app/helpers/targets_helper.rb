@@ -22,6 +22,6 @@ module TargetsHelper
 
   def human_fuel_type(fuel_type, include_storage_heaters: false)
     return fuel_type.to_s.humanize(capitalize: false) if include_storage_heaters
-    fuel_type == :storage_heaters ? "electricity" : fuel_type.to_s.humanize(capitalize: false)
+    fuel_type == :storage_heaters ? 'electricity' : fuel_type.to_s.humanize(capitalize: false)
   end
 end

@@ -14,7 +14,7 @@ describe 'Pupil dashboard' do
 
   let(:pupil) { create(:pupil, school: school)}
 
-  context 'when viewing as guest user' do
+  shared_examples 'a pupil dashboard viewed when logged out' do
     before do
       visit pupils_school_path(school)
     end
@@ -24,13 +24,9 @@ describe 'Pupil dashboard' do
       expect(page).to have_content('Log in with your pupil password')
     end
 
-    it 'shows equivalences' do
-      expect(page).to have_content('Your school spent £2.00 on electricity last year!')
-    end
-
-    context 'for non-public school' do
+    context 'for school with non-public data' do
       before do
-        school.update!(public: false)
+        school.update!(data_sharing: :within_group)
       end
 
       it 'prompts for login' do
@@ -40,16 +36,9 @@ describe 'Pupil dashboard' do
     end
   end
 
-  context 'when logged in as pupil' do
+  shared_examples 'a data enabled pupil dashboard' do
     before do
-      sign_in(pupil)
       visit pupils_school_path(school)
-    end
-
-    it 'redirects to pupil dashboard' do
-      visit root_path
-      expect(page).to have_content(school.name.to_s)
-      expect(page).to have_title("Pupil dashboard")
     end
 
     it 'shows equivalences' do
@@ -61,33 +50,23 @@ describe 'Pupil dashboard' do
       expect(page).to have_content('Gwariodd eich ysgol £9.00 ar drydan y llynedd')
     end
 
-    it 'has navigation to adult dashboard' do
-      expect(page).to have_content(school.name.to_s)
-      expect(page).to have_link("Adult dashboard", href: school_path(school, switch: true))
-      click_on 'Adult dashboard'
-      expect(page).to have_title("Adult dashboard")
-      click_on 'Pupil dashboard'
-      expect(page).to have_title("Pupil dashboard")
-    end
-
     context 'with observations' do
+      let(:activity_type) { create(:activity_type) }
+      let(:intervention_type) { create(:intervention_type, name: 'Upgraded insulation') }
+
       before do
-        intervention_type = create(:intervention_type, name: 'Upgraded insulation')
         create(:observation, :intervention, school: school, intervention_type: intervention_type)
-        create(:observation_with_temperature_recording_and_location, school: school)
-        activity_type = create(:activity_type) # doesn't get saved if built with activity below
         create(:activity, school: school, activity_type: activity_type)
         visit pupils_school_path(school)
       end
 
-      it 'displays interventions and temperature recordings in a timeline' do
-        expect(page).to have_content('Recorded indoor temperatures in')
-        expect(page).to have_content('Upgraded insulation')
-        expect(page).to have_content('Completed an activity')
-        click_on 'View all events'
-        expect(page).to have_content('Recorded indoor temperatures in')
-        expect(page).to have_content('Upgraded insulation')
-        expect(page).to have_content('Completed an activity')
+      it 'displays activity and actions in a timeline' do
+        expect(page).to have_content(intervention_type.name)
+        expect(page).to have_content(activity_type.name)
+        expect(page).to have_link(href: school_timeline_path(school))
+        visit school_timeline_path(school)
+        expect(page).to have_content(intervention_type.name)
+        expect(page).to have_content(activity_type.name)
       end
     end
 
@@ -109,7 +88,7 @@ describe 'Pupil dashboard' do
     end
   end
 
-  context 'when school is not data-enabled' do
+  shared_examples 'a non-data enabled pupil dashboard' do
     before do
       school.update!(data_enabled: false)
       visit pupils_school_path(school)
@@ -123,9 +102,85 @@ describe 'Pupil dashboard' do
       expect(page).to have_content('the average school')
       expect(page).to have_content('How will your school compare?')
     end
+  end
 
-    it 'shows message' do
-      expect(page).to have_content("We're setting up this school's energy data and will update this page when it is ready to explore")
+  context 'when viewing as guest user' do
+    it_behaves_like 'a pupil dashboard viewed when logged out'
+    it_behaves_like 'a data enabled pupil dashboard'
+
+    context 'when school is not data-enabled' do
+      it_behaves_like 'a non-data enabled pupil dashboard'
+    end
+  end
+
+  context 'when logged in as pupil' do
+    before do
+      sign_in(pupil)
+      visit pupils_school_path(school)
+    end
+
+    it 'has navigation to adult dashboard' do
+      expect(page).to have_content(school.name.to_s)
+      expect(page).to have_link('Adult dashboard', href: school_path(school, switch: true))
+      click_on 'Adult dashboard'
+      expect(page).to have_title('Adult dashboard')
+      click_on 'Pupil dashboard'
+      expect(page).to have_title('Pupil dashboard')
+    end
+
+    it 'redirects to pupil dashboard' do
+      visit root_path
+      expect(page).to have_content(school.name.to_s)
+      expect(page).to have_title('Pupil dashboard')
+    end
+
+    it_behaves_like 'a data enabled pupil dashboard'
+
+    context 'when school is not data-enabled' do
+      it_behaves_like 'a non-data enabled pupil dashboard'
+    end
+  end
+
+  context 'with new dashboard enabled' do
+    before do
+      Flipper.enable :new_dashboards_2024
+    end
+
+    context 'when viewing as guest user' do
+      it_behaves_like 'a pupil dashboard viewed when logged out'
+      it_behaves_like 'a data enabled pupil dashboard'
+
+      context 'when school is not data-enabled' do
+        it_behaves_like 'a non-data enabled pupil dashboard'
+      end
+    end
+
+    context 'when logged in as pupil' do
+      before do
+        sign_in(pupil)
+        visit pupils_school_path(school)
+      end
+
+      it 'has navigation to adult dashboard' do
+        expect(page).to have_content(school.name.to_s)
+        expect(page).to have_link('Adult dashboard', href: school_path(school, switch: true))
+        click_on 'Adult dashboard'
+        expect(page).to have_title('Adult dashboard')
+        click_on 'Pupil dashboard'
+        expect(page).to have_title('Pupil dashboard')
+      end
+
+      it 'redirects to pupil dashboard' do
+        visit root_path
+        expect(page).to have_content(school.name.to_s)
+        expect(page).to have_title('Pupil dashboard')
+      end
+
+      it_behaves_like 'a data enabled pupil dashboard'
+
+      context 'when school is not data-enabled' do
+        it_behaves_like 'a non-data enabled pupil dashboard'
+      end
     end
   end
 end

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <%= render 'shared/head' %>
+  </head>
+  <body>
+    <%= render 'shared/navigation' %>
+    <div class="container-fluid <%= @audience || :adult %> pb-2">
+      <div class="container navigation-margin">
+        <%= render 'shared/breadcrumbs' %>
+        <%= render 'shared/alerts' if flash.any? %>
+        <%= yield :dashboard_header %>
+      </div>
+    </div>
+    <%= yield %>
+
+    <% if show_partner_footer?(@school) %>
+      <div class="container-fluid bg-light">
+        <div class="container">
+          <%= render 'shared/partners' %>
+        </div>
+      </div>
+    <% end %>
+    <%= render 'shared/cookie_banner' %>
+    <%= render 'shared/footer' %>
+  </body>
+  <%= render 'layouts/set_mobility_locale' %>
+</html>

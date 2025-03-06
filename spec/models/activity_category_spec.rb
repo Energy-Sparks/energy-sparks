@@ -34,7 +34,7 @@ describe ActivityCategory do
     let!(:activity_category_1) { create(:activity_category, name: 'Learning') }
     let!(:activity_category_2) { create(:activity_category, name: 'Environment') }
 
-    it "#tx_resources" do
+    it '#tx_resources' do
       expect(ActivityCategory.tx_resources).to match_array([activity_category_1, activity_category_2])
     end
   end

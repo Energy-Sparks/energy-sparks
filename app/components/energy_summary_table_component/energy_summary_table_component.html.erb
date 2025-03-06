@@ -1,0 +1,71 @@
+<div class="energy-summary-table-component <%= classes %>">
+  <% if show_title? %>
+    <h2 id="<%= id %>" class="scrollable-title">
+      <%= t('schools.show.recent_energy_usage') %>
+    </h2>
+  <% end %>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th class="icon <%= col(1) %>"></th>
+          <th class="text-left"></th>
+          <th class="text-left <%= col(4) %>"></th>
+          <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('common.table.columns.use_kwh') %></th>
+          <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('common.table.columns.co2_kg') %></th>
+          <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('common.table.columns.cost_gbp') %></th>
+          <% if show_savings? %>
+            <th class="<%= hidden_on_mobile %> text-right <%= col(1) %>"><%= t('schools.show.potential_savings') %></th>
+          <% end %>
+          <th class="text-right <%= col(1) %>"><%= t('schools.show.percentage_change') %></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% overview_data.by_fuel_type.each do |data| %>
+        <tr class="<%= data.period_key %>">
+          <%# if showing the row for "Last week" show the fuel icon and name. Reduces clutter %>
+          <% if row_for_last_week?(data) %>
+            <td rowspan="2" class="align-middle icon <%= fuel_type_class(data.fuel_type) %>">
+              <%= render IconComponent.new(fuel_type: data.fuel_type) %>
+              <% if data.fuel_type == :electricity && @school.has_solar_pv? %>
+                <%= render IconComponent.new(fuel_type: :solar_pv) %>
+              <% end %>
+            </td>
+            <td rowspan="2" class="align-middle text-left">
+              <% if data.fuel_type == :electricity && @school.has_solar_pv? %>
+                <%= t('common.electricity_and_solar_pv') %>
+              <% else %>
+                <%= t("common.#{data.fuel_type}") %>
+              <% end %>
+            </td>
+          <% end %>
+          <td class="text-left"><%= data.period %></td>
+          <% if data.has_data %>
+            <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.usage %></td>
+            <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.co2 %></td>
+            <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.cost %></td>
+            <% if show_savings? %>
+              <td class="<%= hidden_on_mobile %> text-right <%= data.message_class %>"><%= data.savings %></td>
+            <% end %>
+            <td class="text-right"><%= up_downify(data.change, sanitize: false) %></td>
+          <% else %>
+            <td class="text-center <%= no_data_message_class(data) %>" colspan='5'><%= data.message %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <% if footer? %>
+    <%= footer %>
+  <% else %>
+    <div class="table-caption">
+      <%= overview_data.date_ranges %>
+      <%= link_to_help_for_feature :management_summary_overview,
+                                   title: t('advice_pages.how_have_we_analysed_your_data.link_title'),
+                                   user: user, css: 'strong' %>
+    </div>
+  <% end %>
+
+</div>

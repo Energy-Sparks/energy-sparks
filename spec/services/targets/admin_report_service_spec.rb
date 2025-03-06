@@ -27,8 +27,8 @@ describe Targets::AdminReportService, type: :service do
       expect(array).to eq([
                             school_group.name,
                             school.name,
-                            "true",
-                            "true",
+                            'true',
+                            'true',
                             school_target.start_date.strftime('%Y-%m-%d').to_s,
                             school_target.target_date.strftime('%Y-%m-%d').to_s,
                             "-#{school_target.electricity}%",
@@ -67,16 +67,16 @@ describe Targets::AdminReportService, type: :service do
       expect(array).to eq([
                             school_group.name,
                             school.name,
-                            "true",
-                            "true",
-                            "electricity",
-                            "true",
-                            "true",
-                            "true",
-                            "true",
-                            "false",
-                            "false",
-                            "true"
+                            'true',
+                            'true',
+                            'electricity',
+                            'true',
+                            'true',
+                            'true',
+                            'true',
+                            'false',
+                            'false',
+                            'true'
                           ])
     end
   end
@@ -87,30 +87,30 @@ describe Targets::AdminReportService, type: :service do
     end
 
     let(:email)       { ActionMailer::Base.deliveries.last }
-    #use html_part here as this is a multi-part mime message with attachment
+    # use html_part here as this is a multi-part mime message with attachment
     let(:email_body)  { email.html_part.body.to_s }
-    let(:today)       { Time.zone.now.strftime("%Y-%m-%d") }
+    let(:today)       { Time.zone.now.strftime('%Y-%m-%d') }
 
     it 'sends an email' do
       expect(ActionMailer::Base.deliveries.count).to be 1
     end
 
     it 'has right recipient' do
-      expect(email.to).to contain_exactly("operations@energysparks.uk")
+      expect(email.to).to contain_exactly('operations@energysparks.uk')
     end
 
     it 'has the right subject' do
-      expect(email.subject).to eql "Target Progress and Data Report"
+      expect(email.subject).to eql 'Target Progress and Data Report'
     end
 
     it 'includes summary' do
-      expect(email_body).to include("There are 1 currently active school targets")
+      expect(email_body).to include('There are 1 currently active school targets')
     end
 
     it 'has the expected 2 attachments' do
-      expect(email.attachments.first.mime_type).to eql "text/csv"
+      expect(email.attachments.first.mime_type).to eql 'text/csv'
       expect(email.attachments.first.filename).to eql "progress-report-#{today}.csv"
-      expect(email.attachments.last.mime_type).to eql "text/csv"
+      expect(email.attachments.last.mime_type).to eql 'text/csv'
       expect(email.attachments.last.filename).to eql "target-data-report-#{today}.csv"
     end
   end

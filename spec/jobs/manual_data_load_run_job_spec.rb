@@ -9,20 +9,24 @@ describe ManualDataLoadRunJob, ts: false do
   let(:updated)             { 99 }
 
   before do
-    #stub the service
+    # stub the service
     allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_return(true)
     allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(imported)
     allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(updated)
   end
 
+  describe '#priority' do
+    it_behaves_like 'a high priority job'
+  end
+
   context 'with a valid file' do
     before do
-      expect(run.status).to eq "pending"
+      expect(run.status).to eq 'pending'
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
 
     it 'updates the status' do
-      expect(run.status).to eq "done"
+      expect(run.status).to eq 'done'
     end
 
     it 'adds messages' do
@@ -36,16 +40,16 @@ describe ManualDataLoadRunJob, ts: false do
 
   context 'when a problem occurs' do
     before do
-      #stub the service
-      allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_raise("An error occured")
+      # stub the service
+      allow_any_instance_of(Amr::ProcessAmrReadingData).to receive(:perform).and_raise('An error occured')
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_imported).and_return(0)
       allow_any_instance_of(AmrDataFeedImportLog).to receive(:records_updated).and_return(0)
-      expect(run.status).to eq "pending"
+      expect(run.status).to eq 'pending'
       job.load(run.amr_uploaded_reading.amr_data_feed_config, run.amr_uploaded_reading, run)
     end
 
     it 'updates the status' do
-      expect(run.status).to eq "failed"
+      expect(run.status).to eq 'failed'
     end
 
     it 'adds messages' do

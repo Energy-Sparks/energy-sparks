@@ -3,15 +3,16 @@ module SchoolGroups
     METRIC_HEADERS = [:change, :usage, :cost, :co2].freeze
     METRICS = [:change, :usage, :cost_text, :co2].freeze
 
-    def initialize(school_group:, include_cluster: false)
+    def initialize(school_group:, schools: school_group.schools.visible, include_cluster: false)
       @school_group = school_group
+      @schools = schools
       @include_cluster = include_cluster
     end
 
     def export
       CSV.generate(headers: true) do |csv|
         csv << headers
-        @school_group.schools.visible.order(:name).each do |school|
+        @schools.order(:name).each do |school|
           recent_usage = school&.recent_usage
           row = []
           row << school.name
@@ -29,15 +30,15 @@ module SchoolGroups
     def columns_for_usage(recent_usage)
       columns = []
       fuel_types.each do |fuel_type|
-        #loop first to add all metrics for last week, then last year
-        #rubocop:disable Style/CombinableLoops
+        # loop first to add all metrics for last week, then last year
+        # rubocop:disable Style/CombinableLoops
         METRICS.each do |metric|
           columns << (recent_usage&.send(fuel_type)&.week&.has_data ? recent_usage&.send(fuel_type)&.week&.send(metric) : '-')
         end
         METRICS.each do |metric|
           columns << (recent_usage&.send(fuel_type)&.year&.has_data ? recent_usage&.send(fuel_type)&.year&.send(metric) : '-')
         end
-        #rubocop:enable Style/CombinableLoops
+        # rubocop:enable Style/CombinableLoops
       end
       columns
     end

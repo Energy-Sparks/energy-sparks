@@ -81,7 +81,7 @@ module Admin
         end
 
         def content_managed?
-          @alert_type.class_name == "Alerts::System::ContentManaged"
+          @alert_type.class_name == 'Alerts::System::ContentManaged'
         end
       end
     end

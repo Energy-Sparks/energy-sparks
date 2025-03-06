@@ -53,9 +53,6 @@ en:
           notice_html: "<p>Last year your school heating was on for %{heating_on_in_warm_weather_days} days during warm weather. This is %{assessment}.</p>"
           title: Seasonal control
           you_should_ensure: You should ensure that storage heaters are turned off during weekends and holidays, and shorten the period when they are used during the year.
-        tables:
-          columns:
-            average_daily_usage: Average daily usage (kWh)
         thermostatic_control:
           storage_heater_thermostatic:
             content_html: |-

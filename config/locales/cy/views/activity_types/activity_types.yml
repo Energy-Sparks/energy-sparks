@@ -9,10 +9,6 @@ cy:
         other: 'mathau o danwydd annilys:'
     impacts: Effeithiau
     key_stages: Cyfnodau Allweddol
-    recommended:
-      all_activities: Pob gweithgaredd
-      introduction: Mae'r rhain yn weithgareddau a awgrymir ar gyfer eich ysgol, yn seiliedig ar eich gweithgaredd blaenorol a'ch targedau
-      title: Argymhellir ar gyfer eich ysgol
     score_for_this_activity: Sgôr ar gyfer y gweithgaredd hwn
     search:
       adult_actions: Gweithredoedd oedolion

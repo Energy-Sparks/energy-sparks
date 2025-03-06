@@ -5,19 +5,21 @@ module Schools
       include AdvicePageHelper
       include SchoolAggregation
       include DashboardAlerts
+      include SchoolInactive
 
       load_resource :school
       skip_before_action :authenticate_user!
       before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
-
+      before_action :school_inactive
       before_action :load_advice_pages
-      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
-      before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
       before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
+      before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
       before_action :set_page_title, only: [:insights, :analysis, :learn_more]
+      before_action :set_counts, only: [:insights, :analysis, :learn_more]
       before_action :check_has_fuel_type, only: [:insights, :analysis]
+      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
       before_action :set_page_subtitle, only: [:insights, :analysis]
@@ -32,6 +34,12 @@ module Schools
         I18n.with_locale(locale) do
           render 'error', status: :internal_server_error
         end
+      end
+
+      # Generic action used to respond to HEAD requests
+      # See routes.rb for routing
+      def handle_head
+        head(:ok)
       end
 
       def show
@@ -79,6 +87,11 @@ module Schools
         ]
       end
 
+      def set_counts
+        @priority_count = @school.latest_management_priorities.count
+        @alert_count = @school.latest_dashboard_alerts.management_dashboard.count
+      end
+
       def if_exists(key)
         full_key = "advice_pages.#{@advice_page.key}.#{key}"
         if I18n.exists?(full_key, I18n.locale)
@@ -113,9 +126,9 @@ module Schools
         true
       end
 
-      #Checks that the analysis can be run.
-      #Enforces check that school has the necessary fuel type
-      #and provides hook for controllers to plug in custom checks
+      # Checks that the analysis can be run.
+      # Enforces check that school has the necessary fuel type
+      # and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
         @analysable = create_analysable
         if @analysable.present? && !@analysable.enough_data?
@@ -146,12 +159,13 @@ module Schools
         aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
       end
 
-      #for charts that use the last full week
+      # for charts that use the last full week
       def last_full_week_start_date(end_date)
         end_date.prev_year.end_of_week
       end
 
-      #for charts that use the last full week
+      # for charts that use the last full week
+      # end of the week is Saturday
       def last_full_week_end_date(end_date)
         end_date.end_of_week - 1
       end
@@ -160,23 +174,24 @@ module Schools
         start_date = analysis_start_date
         end_date = analysis_end_date
 
-        OpenStruct.new(
+        ActiveSupport::OrderedOptions.new.merge(
           start_date: start_date,
           end_date: end_date,
           one_year_before_end: end_date - 1.year,
-          one_years_data: one_years_data?(start_date, end_date),
+          one_years_data?: one_years_data?(start_date, end_date),
           last_full_week_start_date: last_full_week_start_date(end_date),
           last_full_week_end_date: last_full_week_end_date(end_date),
           recent_data: recent_data?(end_date),
           months_of_data: months_between(start_date, end_date),
-          months_analysed: months_analysed(start_date, end_date)
+          months_analysed: months_analysed(start_date, end_date),
+          fixed_academic_year_end: DateService.fixed_academic_year_end(end_date)
         )
       end
 
-      #Should return an object that conforms to interface described
-      #by the AnalysableMixin. Will be used to determine whether
-      #there's enough data and, optionally, identify when we think there
-      #will be enough data.
+      # Should return an object that conforms to interface described
+      # by the AnalysableMixin. Will be used to determine whether
+      # there's enough data and, optionally, identify when we think there
+      # will be enough data.
       def create_analysable
         nil
       end
@@ -195,6 +210,10 @@ module Schools
           query: { exclude_if_done_this_year: true }
         )
         @intervention_types = intervention_type_filter.intervention_types.limit(4)
+      end
+
+      def set_analysis_dates
+        @analysis_dates = analysis_dates
       end
     end
   end

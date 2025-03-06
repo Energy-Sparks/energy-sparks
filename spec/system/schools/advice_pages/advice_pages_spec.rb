@@ -1,38 +1,54 @@
 require 'rails_helper'
 
-RSpec.describe "advice pages", type: :system do
-  include_context "electricity advice page"
+RSpec.describe 'advice pages', type: :system do
+  let(:school) do
+    create(:school,
+           :with_basic_configuration_single_meter_and_tariffs,
+           school_group: create(:school_group))
+  end
 
-  let(:key) { 'total_energy_use' }
+  let(:key) { 'baseload' }
   let(:learn_more) { 'here is some more explanation' }
-  let(:expected_page_title) { "Energy usage summary" }
+  let(:expected_page_title) { 'Baseload' }
 
-  let!(:advice_page) { create(:advice_page, key: key, restricted: false, learn_more: learn_more, fuel_type: nil) }
+  let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: :electricity, learn_more: learn_more) }
 
   context 'when error occurs' do
     before do
       allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:learn_more).and_raise(StandardError.new('testing..'))
     end
 
-    context "in production" do
+    context 'in production' do
       before do
-        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("production"))
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
       end
 
       it 'shows the error page' do
-        visit learn_more_school_advice_total_energy_use_path(school)
+        visit learn_more_school_advice_baseload_path(school)
         expect(page).to have_content('Sorry, something has gone wrong')
         expect(page).to have_content('We encountered an error attempting to generate your analysis')
       end
+
+      context 'with feature active' do
+        before do
+          Flipper.enable(:new_dashboards_2024)
+        end
+
+        it 'shows the error page' do
+          visit learn_more_school_advice_baseload_path(school)
+          expect(page).to have_content('Sorry, something has gone wrong')
+          expect(page).to have_content('We encountered an error attempting to generate your analysis')
+        end
+      end
     end
 
-    context "in test" do
+    context 'in test' do
       before do
-        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("test"))
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('test'))
       end
 
       it 'throws error' do
-        expect { visit learn_more_school_advice_total_energy_use_path(school) }.to raise_error(StandardError)
+        expect { visit learn_more_school_advice_baseload_path(school) }.to raise_error(StandardError)
       end
     end
   end
@@ -44,48 +60,51 @@ RSpec.describe "advice pages", type: :system do
 
     it 'shows the no fuel type page' do
       visit school_advice_path(school)
-      within '#page-nav' do
-        click_on 'Energy use summary'
+      expect(page).to have_no_link(expected_page_title,
+                                   href: school_advice_baseload_path(school))
+    end
+
+    context 'with feature active' do
+      before do
+        Flipper.enable(:new_dashboards_2024)
       end
-      expect(page).to have_content('Unable to run requested analysis')
+
+      it 'shows the error page' do
+        visit insights_school_advice_baseload_path(school)
+        expect(page).to have_content('Unable to run requested analysis')
+      end
     end
   end
 
   context 'when school doesnt have enough data' do
-    let(:data_available_from) { nil }
-    let(:analysable) do
-      OpenStruct.new(
-        enough_data?: false,
-        data_available_from: data_available_from
-      )
+    let(:school) do
+      create(:school,
+             :with_basic_configuration_single_meter_and_tariffs,
+             school_group: create(:school_group),
+             reading_start_date: 1.day.ago)
     end
 
-    before do
-      allow_any_instance_of(Schools::Advice::AdviceBaseController).to receive(:create_analysable).and_return(analysable)
+    context 'with new feature active' do
+      before do
+        Flipper.enable(:new_dashboards_2024)
+      end
+
+      it 'shows the not enough data page' do
+        visit school_advice_baseload_path(school)
+        expect(page).to have_content('Not enough data to run analysis')
+        expect(page).to have_content('Assuming we continue to regularly receive data')
+      end
     end
 
     it 'shows the not enough data page' do
       visit school_advice_path(school)
       within '#page-nav' do
-        click_on 'Energy use summary'
+        click_on 'Baseload'
       end
       expect(page).to have_content('Not enough data to run analysis')
-      expect(page).not_to have_content('Assuming we continue to regularly receive data')
-    end
-
-    context 'and we can estimate a date' do
-      let(:data_available_from) { Time.zone.today + 10 }
-
-      it 'also includes the data' do
-        visit school_advice_path(school)
-        within '#page-nav' do
-          click_on 'Energy use summary'
-        end
-        expect(page).to have_content("Assuming we continue to regularly receive data we expect this analysis to be available after #{data_available_from.to_s(:es_short)}")
-      end
+      expect(page).to have_content('Assuming we continue to regularly receive data')
     end
   end
-
 
   context 'as non-logged in user' do
     before do
@@ -93,8 +112,7 @@ RSpec.describe "advice pages", type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Energy efficiency advice')
-      expect(page).to have_link('Energy use summary')
+      expect(page).to have_content(I18n.t('advice_pages.index.title'))
     end
 
     context 'when page is restricted' do
@@ -104,10 +122,10 @@ RSpec.describe "advice pages", type: :system do
 
       it 'does not show the restricted advice page' do
         within '#page-nav' do
-          click_on 'Energy use summary'
+          click_on expected_page_title
         end
-        expect(page).to have_content('Energy efficiency advice')
-        expect(page).to have_content("Only an admin or staff user for this school can access this content")
+        expect(page).to have_content(I18n.t('advice_pages.index.title'))
+        expect(page).to have_content('Only an admin or staff user for this school can access this content')
       end
     end
   end
@@ -121,15 +139,15 @@ RSpec.describe "advice pages", type: :system do
     end
 
     it 'shows the advice pages index' do
-      expect(page).to have_content('Energy efficiency advice')
+      expect(page).to have_content(I18n.t('advice_pages.index.title'))
       within '#page-nav' do
-        expect(page).to have_link('Energy use summary')
+        expect(page).to have_link(expected_page_title)
       end
     end
 
     context 'basic navigation checks' do
       before do
-        visit learn_more_school_advice_total_energy_use_path(school)
+        visit learn_more_school_advice_baseload_path(school)
       end
 
       it 'shows the advice page' do
@@ -138,7 +156,7 @@ RSpec.describe "advice pages", type: :system do
 
       it 'shows the nav bar' do
         within '.advice-page-nav' do
-          expect(page).to have_content("Advice")
+          expect(page).to have_content('Advice')
         end
       end
 
@@ -184,9 +202,9 @@ RSpec.describe "advice pages", type: :system do
     end
   end
 
-  context 'for a non-public school' do
+  context 'for a school with non-public analysis' do
     before do
-      school.update(public: false)
+      school.update(data_sharing: :within_group)
       sign_in(user) if user
       visit school_advice_path(school)
     end

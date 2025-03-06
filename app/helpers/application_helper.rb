@@ -9,16 +9,16 @@ module ApplicationHelper
   end
 
   def nice_times_only(datetime)
-    return "" if datetime.nil?
+    return '' if datetime.nil?
     datetime.strftime('%H:%M')
   end
 
   def nice_dates(date)
-    date ? date.to_s(:es_full) : ""
+    date ? date.to_fs(:es_full) : ''
   end
 
   def short_dates(date)
-    date ? date.to_s(:es_short) : ""
+    date ? date.to_fs(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
@@ -39,7 +39,7 @@ module ApplicationHelper
   end
 
   def nice_dates_from_timestamp(timestamp)
-    return "" if timestamp.nil?
+    return '' if timestamp.nil?
     datetime = DateTime.strptime(timestamp.to_s, '%s')
     nice_dates(datetime)
   end
@@ -47,7 +47,7 @@ module ApplicationHelper
   def date_range_from_reading_gaps(readings_chunks)
     readings_chunks.map do |chunk|
       "#{chunk.size} days (#{short_dates(chunk.first.reading_date)} to #{short_dates(chunk.last.reading_date)})"
-    end.join('<br/>').html_safe
+    end.join('<br>').html_safe
   end
 
   def active(bool = true)
@@ -75,13 +75,13 @@ module ApplicationHelper
 
   def class_for_last_date(last_date)
     if last_date.nil?
-      "table-light"
+      'table-light'
     elsif last_date < Time.zone.now - 30.days
-      "table-danger"
+      'table-danger'
     elsif last_date < Time.zone.now - 5.days
-      "table-warning"
+      'table-warning'
     else
-      "table-success"
+      'table-success'
     end
   end
 
@@ -129,11 +129,11 @@ module ApplicationHelper
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
-      class_for_alert_colour(:green)
+      class_for_alert_colour(:positive)
     elsif rating > 6
-      class_for_alert_colour(:yellow)
+      class_for_alert_colour(:neutral)
     else
-      class_for_alert_colour(:red)
+      class_for_alert_colour(:negative)
     end
   end
 
@@ -142,33 +142,36 @@ module ApplicationHelper
   end
 
   def spinner_icon
-    content_class = "fa fa-spinner fa-spin"
+    content_class = 'fa fa-spinner fa-spin'
     content_tag(:i, nil, class: content_class)
   end
 
-  def icon(style, name)
+  def icon(style, name, **kwargs)
     content_class = "#{style} fa-#{name}"
-    content_tag(:i, nil, class: content_class)
+    kwargs[:class] = kwargs[:class] ? "#{kwargs[:class]} #{content_class}" : content_class
+    content_tag(:i, nil, **kwargs)
   end
 
-  def fa_icon(icon_type)
-    icon('fas', icon_type)
+  def fa_icon(icon_type, **kwargs)
+    icon('fas', icon_type, **kwargs)
   end
 
-  def fab_icon(icon_type)
-    icon('fab', icon_type)
+  def fab_icon(icon_type, **kwargs)
+    icon('fab', icon_type, **kwargs)
   end
 
-  def fal_icon(icon_type)
-    icon('fal', icon_type)
+  def fal_icon(icon_type, **kwargs)
+    icon('fal', icon_type, **kwargs)
   end
 
-  def far_icon(icon_type)
-    icon('far', icon_type)
+  def far_icon(icon_type, **kwargs)
+    icon('far', icon_type, **kwargs)
   end
 
   def alert_type_icon(alert_type, size = nil)
-    alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert_type.fuel_type)} #{size}"
+    icon = alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert_type.fuel_type)
+    icon += " #{size}" if size
+    icon
   end
 
   def alert_icon(alert, size = nil)
@@ -200,27 +203,23 @@ module ApplicationHelper
       'bg-electric-light'
     when :gas
       'bg-gas-light'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'bg-solar-light'
     when :storage_heater, :storage_heaters
       'bg-storage-light'
-    when :exported_solar_pv
-      'bg-solar-light'
     end
   end
 
   def fuel_type_class(fuel_type)
     case fuel_type.to_sym
     when :electricity
-      'text-electricity'
+      'text-electric'
     when :gas
       'text-gas'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'text-solar'
     when :storage_heater, :storage_heaters
       'text-storage'
-    when :exported_solar_pv
-      'text-solar'
     end
   end
 
@@ -293,8 +292,8 @@ module ApplicationHelper
      Array.new(empty_stars) { far_icon('star') }).compact.inject(&:+)
   end
 
-  def up_downify(text)
-    return if text.nil? || text == "-"
+  def up_downify(text, sanitize: true)
+    return if text.nil? || text == '-'
     icon = if text.match?(/^\+/)
              fa_icon('arrow-circle-up')
            elsif text.match?(/increased/)
@@ -306,7 +305,8 @@ module ApplicationHelper
            else
              ''
            end
-    (sanitize(text) + ' ' + icon).html_safe
+    text = sanitize(text) if sanitize
+    (text + ' ' + icon).html_safe
   end
 
   def safely
@@ -360,18 +360,26 @@ module ApplicationHelper
   end
 
   def weekly_alert_utm_parameters
-    email_utm_parameters(source: "weekly-alert", campaign: "alerts")
+    email_utm_parameters(source: 'weekly-alert', campaign: 'alerts')
   end
 
-  def targets_utm_parameters(source: "weekly-alert")
-    email_utm_parameters(source: source, campaign: "targets")
+  def targets_utm_parameters(source: 'weekly-alert')
+    email_utm_parameters(source: source, campaign: 'targets')
   end
 
   def email_utm_parameters(source:, campaign:)
     {
       utm_source: source,
-      utm_medium: "email",
+      utm_medium: 'email',
       utm_campaign: campaign
+    }
+  end
+
+  def utm_params_for_redirect
+    {
+      utm_source: params[:utm_source],
+      utm_medium: params[:utm_medium],
+      utm_campaign: params[:utm_campaign]
     }
   end
 
@@ -389,7 +397,7 @@ module ApplicationHelper
   end
 
   def activity_types_badge_class(list, item, color = 'info')
-    list && list.include?(item) ? "badge badge-#{color}" : "badge badge-light outline"
+    list && list.include?(item) ? "badge badge-#{color}" : 'badge badge-light outline'
   end
 
   def file_type_icon(type)
@@ -437,31 +445,34 @@ module ApplicationHelper
   end
 
   def dashboard_message_icon(messageable)
+    who = messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+
     if messageable.dashboard_message
-      title = "Dashboard message is shown for "
-      title += messageable.is_a?(SchoolGroup) ? "schools in this group" : "school"
+      title = 'Dashboard message is shown for '
+      title += who
       tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+        fa_icon(:info)
+      end
+    else
+      title = 'Dashboard message is not set for '
+      title += who
+      tag.span class: 'badge badge-grey-light', title: title.to_s do
         fa_icon(:info)
       end
     end
   end
 
   def toggler
-    (fa_icon("chevron-down") + fa_icon("chevron-right")).html_safe
+    (fa_icon('chevron-up', class: 'fa-fw') + fa_icon('chevron-down', class: 'fa-fw')).html_safe
   end
 
-  def text_with_icon(text, icon)
-    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
-  end
-
-  def component(name, *args, **kwargs, &block)
-    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
-    render(component.new(*args, **kwargs), &block)
+  def text_with_icon(text, icon, **kwargs)
+    (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
   end
 
   def school_name_group(school)
-    if school.school_group
-      "#{school.name} (#{school.school_group.name})"
+    if school.school_group_name
+      "#{school.name} (#{school.school_group_name})"
     else
       school.name
     end
@@ -473,5 +484,83 @@ module ApplicationHelper
 
   def recommendations_scope_for(task_type)
     { 'action': :adult, 'activity': :pupil }[task_type]
+  end
+
+  def live_data_path
+    ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
+  end
+
+  def case_study_link(case_study, serve: :link)
+    download_locale = I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present? ? :cy : :en
+    url_for(controller: :case_studies, action: :download, serve: serve, id: case_study.id, :locale => download_locale)
+  end
+
+  # Round down to nearest hundred
+  def marketing_school_count
+    (School.visible.count / 100) * 100
+  end
+
+  # Round down to nearest 10
+  def marketing_activity_count
+    round_down_to_nearest_ten(ActivityType.active_and_not_custom.count)
+  end
+
+  # Round down to nearest 10
+  def marketing_action_count
+    round_down_to_nearest_ten(InterventionType.active_and_not_custom.count)
+  end
+
+  def marketing_mat_count
+    round_down_to_nearest_ten(SchoolGroup.multi_academy_trust.with_active_schools.count)
+  end
+
+  def round_down_to_nearest_ten(val)
+    (val / 10) * 10
+  end
+
+  def admin_only(path, to: 'Edit', tag: nil, classes: nil)
+    if current_user&.admin?
+      link = link_to to, path,
+                  class: classes,
+                  data: { toggle: 'tooltip', placement: 'right' },
+                  title: 'Admin Only'
+      tag ? content_tag(tag, link) : link
+    end
+  end
+
+  def admin_link(path, to: 'Link', tag: nil, classes: nil)
+    admin_only(path, to: to, tag: tag, classes: classes || 'badge badge-light font-weight-normal')
+  end
+
+  def admin_button(path, to: 'Edit', tag: nil, classes: nil)
+    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-xs')
+  end
+
+  def email_with_wbr(email)
+    email.gsub(/@/, '@<wbr>').html_safe
+  end
+
+  def label_with_wbr(label)
+    return '' unless label.present?
+    label.gsub(%r{/}, '/<wbr>').html_safe
+  end
+
+  def recording_path(recording)
+    if recording.is_a?(Activity)
+      school_activity_path(recording.school, recording)
+    elsif recording.is_a?(Observation) && recording.observation_type == 'intervention'
+      school_intervention_path(recording.school, recording)
+    else
+      raise StandardError, 'Unsupported recording type'
+    end
+  end
+
+  def home_class
+    if Flipper.enabled?(:new_home_page, current_user) &&
+       controller_name == 'home' && %w[index show].include?(action_name)
+      'home'
+    else
+      'home-page'
+    end
   end
 end

@@ -1,11 +1,15 @@
 require 'rails_helper'
 
-describe "downloads", type: :system do
+describe 'downloads', type: :system do
   let(:school_name)               { 'Active school'}
   let!(:school)                   { create_active_school(name: school_name)}
   let!(:teacher)                  { create(:staff, school: school)}
   let(:mpan)                      { 1234567890123 }
   let!(:meter)                    { create(:electricity_meter_with_validated_reading, name: 'Electricity meter', school: school, mpan_mprn: mpan) }
+
+  def reading_row(amr)
+    "#{amr.meter.mpan_mprn},#{amr.meter.meter_type.titleize},#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
+  end
 
   context 'as teacher' do
     before do
@@ -13,7 +17,7 @@ describe "downloads", type: :system do
 
       sign_in(teacher)
       visit root_path
-      #this is the my school menu link
+      # this is the my school menu link
       click_link 'download-your-data'
       expect(page).to have_content("Downloads for #{school.name}")
       expect(page).to have_content(mpan)
@@ -29,8 +33,7 @@ describe "downloads", type: :system do
       # Then check the content
       meter.amr_validated_readings.each do |amr|
         expect(page.source).to have_content AmrValidatedReading::CSV_HEADER_FOR_SCHOOL
-        reading_row = "#{amr.meter.mpan_mprn},#{amr.meter.meter_type.titleize},#{amr.reading_date},#{amr.one_day_kwh},#{amr.status},#{amr.substitute_date},#{amr.kwh_data_x48.join(',')}"
-        expect(page).to have_content reading_row
+        expect(page).to have_content reading_row(amr)
       end
     end
 
@@ -40,12 +43,12 @@ describe "downloads", type: :system do
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
       expect(header).to match(/^attachment/)
-      expect(header).to match(/filename=\"meter-amr-readings-#{meter.mpan_mprn}.csv\"/)
+      expect(header).to match(/filename=\"#{meter.mpan_mprn}-readings.csv\"/)
 
       # Then check the content
       meter.amr_validated_readings.each do |amr|
-        expect(page.source).to have_content AmrValidatedReading::CSV_HEADER_FOR_METER
-        expect(page).to have_content amr_validated_reading_to_s(amr)
+        expect(page.source).to have_content AmrValidatedReading::CSV_HEADER_FOR_SCHOOL
+        expect(page).to have_content reading_row(amr)
       end
     end
   end
@@ -57,19 +60,18 @@ describe "downloads", type: :system do
     it 'does not allow download of other schools data' do
       sign_in(school_admin)
       visit school_downloads_path(other_school)
-      expect(page).to have_content("You are not authorized to view that page")
+      expect(page).to have_content('You are not authorized to view that page')
     end
   end
 
   context 'as admin' do
     let!(:admin)                  { create(:admin) }
-    let!(:filtered_school)        { create(:school, :with_feed_areas, name: "Filter school") }
+    let!(:filtered_school)        { create(:school, :with_feed_areas, name: 'Filter school') }
 
     before do
       sign_in(admin)
-      visit school_path(filtered_school)
-      #this is the in-page link
-      click_on 'Download your data'
+      visit school_meters_path(filtered_school)
+      click_on 'School downloads'
       expect(page).to have_content("Downloads for #{filtered_school.name}")
     end
 
@@ -81,7 +83,7 @@ describe "downloads", type: :system do
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
       expect(header).to match(/^attachment/)
-      expect(header).to match(/#{filtered_school.name.parameterize}-amr-raw-readings.csv$/)
+      expect(header).to match(/#{filtered_school.name.parameterize}-amr-raw-readings.+\.csv$/)
 
       expect(page.source).to have_content AmrDataFeedReading::CSV_HEADER_DATA_FEED_READING
 

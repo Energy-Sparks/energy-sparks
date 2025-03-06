@@ -3,13 +3,15 @@ class SchoolCreator
 
   class Error < StandardError; end
 
+  LOGIN_CACHE_KEY = :schools_for_login_form
+
   def initialize(school)
     @school = school
   end
 
   def onboard_school!(onboarding)
     @school.assign_attributes(
-      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station)
+      onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station, :funder)
     )
     if @school.valid?
       @school.transaction do
@@ -26,6 +28,7 @@ class SchoolCreator
         onboarding_service.record_event(onboarding, :school_details_created) do
           onboarding.update!(school: @school)
         end
+        onboarding.issues.find_each { |issue| issue.update(issueable_type: :School, issueable_id: @school.id) }
       end
     end
     @school
@@ -37,12 +40,13 @@ class SchoolCreator
   end
 
   def make_visible!
-    raise Error.new("School cannot be made visible as we dont have a record of consent") unless @school.consent_grants.any?
+    raise Error.new('School cannot be made visible as we dont have a record of consent') unless @school.consent_grants.any?
     @school.update!(visible: true)
     if onboarding_service.should_complete_onboarding?(@school)
       users = @school.users.reject(&:pupil?)
       onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
+    self.class.expire_login_cache!
     broadcast(:school_made_visible, @school)
   end
 
@@ -64,6 +68,16 @@ class SchoolCreator
     generate_calendar
   end
 
+  def self.expire_login_cache!
+    Rails.cache.delete(LOGIN_CACHE_KEY) # cached in sessions controller
+  end
+
+  def self.school_list_for_login_form
+    Rails.cache.fetch(LOGIN_CACHE_KEY) do
+      School.school_list_for_login_form
+    end
+  end
+
 private
 
   def add_school(user, school)
@@ -74,11 +88,12 @@ private
   end
 
   def copy_onboarding_details_to_school(onboarding)
-      @school.update!(
-        public: onboarding.school_will_be_public,
-        chart_preference: onboarding.default_chart_preference
-      )
-      Solar::SolarAreaLookupService.new(@school, onboarding).assign
+    @school.update!(
+      data_sharing: onboarding.data_sharing,
+      public: onboarding.school_will_be_public,
+      chart_preference: onboarding.default_chart_preference
+    )
+    Solar::SolarAreaLookupService.new(@school, onboarding).assign
   end
 
   def create_default_contact(onboarding)

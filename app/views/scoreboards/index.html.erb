@@ -2,10 +2,10 @@
 
 <div class="row padded-row">
   <div class="col-lg-3">
-    <%= image_tag("actions/podium.png", class: "img-fluid ") %>
+    <%= image_tag('actions/podium.png', class: 'img-fluid ') %>
   </div>
   <div class="col-lg-9">
-    <h1 class="display-3"><strong><%= t('scoreboards.page_title') %></strong></h1>
+    <h1><%= t('scoreboards.page_title') %></h1>
     <p>
       <%= t('scoreboards.intro_para_1') %>
     </p>
@@ -21,13 +21,13 @@
   <h2><%= t('scoreboards.all_title') %></h2>
   <div class="card mt-4 mb-4">
     <div class="card-body">
-      <% @scoreboard_all.scored_schools.top(5).each do |s| %>
+      <% @national_scoreboard.scored_schools.top(5).each do |s| %>
         <h4><span class="badge badge-success"><%= s.sum_points %></span> <%= s.name %></h4>
       <% end %>
     </div>
     <div class="card-footer text-right">
-      <%= link_to scoreboard_path(@scoreboard_all) do %>
-        <%= t('scoreboards.view_all', count: @scoreboard_all.scored_schools.count) %>
+      <%= link_to scoreboard_path(@national_scoreboard) do %>
+        <%= t('scoreboards.view_all', count: @national_scoreboard.scored_schools.count) %>
       <% end %>
     </div>
   </div>

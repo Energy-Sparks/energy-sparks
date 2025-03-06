@@ -6,8 +6,14 @@ module Audits
       @audit = audit
     end
 
+    def recent?
+      audit.created_at > 1.year.ago
+    end
+
     def message
-      I18n.t('schools.prompts.audit.message_html',
+      i18n_key = recent? ? 'message_html' : 'message_older_html'
+
+      I18n.t("schools.prompts.audit.#{i18n_key}",
         completed_activities_count: completed_activities_count,
         total_activities_count: total_activities_count,
         completed_actions_count: completed_actions_count,
@@ -18,16 +24,16 @@ module Audits
     def summary
       I18n.t('schools.prompts.audit.summary_html',
         remaining_points: remaining_points,
-        bonus_points: bonus_points
+        count: bonus_points
       )
     end
 
     def notification
-      (message + "<br />" + summary).html_safe
+      (message + '<br />' + summary).html_safe
     end
 
     def completed_activities_count
-      audit.completed_activity_types.count
+      audit.activity_types_completed.count
     end
 
     def total_activities_count
@@ -35,7 +41,7 @@ module Audits
     end
 
     def completed_actions_count
-      audit.completed_intervention_types.count
+      audit.intervention_types_completed.count
     end
 
     def total_actions_count
@@ -43,11 +49,11 @@ module Audits
     end
 
     def remaining_activities_score
-      audit.activity_types.sum(&:score) - audit.completed_activity_types.sum(&:score)
+      audit.activity_types_remaining.sum(&:score)
     end
 
     def remaining_actions_score
-      audit.intervention_types.sum(&:score) - audit.completed_intervention_types.sum(&:score)
+      audit.intervention_types_remaining.sum(&:score)
     end
 
     def remaining_points

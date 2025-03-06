@@ -6,7 +6,7 @@ describe Targets::GenerateProgressService do
   let!(:school_target)            { create(:school_target, school: school) }
 
   let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
-  let(:school_target_fuel_types)  { ["electricity"] }
+  let(:school_target_fuel_types)  { ['electricity'] }
 
   let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types) }
 
@@ -33,8 +33,8 @@ describe Targets::GenerateProgressService do
       cumulative_targets_kwh: cumulative_targets_kwh,
       cumulative_usage_kwh: cumulative_usage_kwh,
       cumulative_performance: cumulative_performance,
-      cumulative_performance_versus_synthetic_last_year: cumulative_performance,
-      monthly_performance_versus_synthetic_last_year: monthly_performance,
+      cumulative_performance_versus_synthetic_last_year: [],
+      monthly_performance_versus_synthetic_last_year: [],
       partial_months: partial_months,
       percentage_synthetic: percentage_synthetic
     )
@@ -190,9 +190,9 @@ describe Targets::GenerateProgressService do
       end
 
       it 'reports the fuel progress' do
-        expect(target.electricity_progress["progress"]).to be 0.99
-        expect(target.electricity_progress["usage"]).to be 15
-        expect(target.electricity_progress["target"]).to be 20
+        expect(target.electricity_progress['progress']).to be 0.99
+        expect(target.electricity_progress['usage']).to be 15
+        expect(target.electricity_progress['target']).to be 20
       end
     end
 

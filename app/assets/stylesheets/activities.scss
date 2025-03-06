@@ -10,7 +10,7 @@
 
 trix-editor {
   min-height: 320px !important;
-  background: white;
+  background: $white;
 }
 
 trix-toolbar .button_groups {
@@ -43,17 +43,17 @@ trix-toolbar .button_groups {
   }
 
   .trix-button {
-    background: white;
+    background: $white;
   }
 }
 
 .select2-container--bootstrap .select2-results__group {
-  color: #212529;
-  font-size: 24px;
+  color: $body-color;
+  font-size: $f4;
 }
 
 .select2-container {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 .select2-selection--multiple:after{
@@ -65,7 +65,7 @@ trix-toolbar .button_groups {
   height:0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #888;
+  border-top: 5px solid $grey-dark;
 }
 
 img.activity-card-img {

@@ -1,0 +1,80 @@
+<%= render PromptListComponent.new id: id, classes: classes do |list| %>
+  <% if title? %>
+    <% list.with_title do %>
+      <%= title %>
+    <% end %>
+  <% end %>
+
+  <% if show_temperature_observations? %>
+
+    <%# i18n-tasks-use t("pupils.schools.show.enter_temperatures") %>
+    <% if temperature_observations.empty? %>
+      <% add_prompt(id: :enter_temperatures,
+                    list: list,
+                    status: :neutral,
+                    icon: 'temperature-high',
+                    link: 'pupils.schools.show.enter_temperatures',
+                    path: new_school_temperature_observation_path(school, introduction: true)) do %>
+          <p>
+            <%= t('pupils.schools.show.measure_temperatures') %>
+          </p>
+      <% end %>
+    <% else %>
+      <%# i18n-tasks-use t("pupils.schools.show.previous_temperatures") %>
+      <% add_prompt(id: :update_temperatures,
+                    list: list,
+                    status: :neutral,
+                    icon: 'temperature-high',
+                    link: 'pupils.schools.show.previous_temperatures',
+                    path: school_temperature_observations_path(school)) do %>
+          <p>
+            <%= t('pupils.schools.show.updating_temperatures') %>
+          </p>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%# i18n-tasks-use t("pupils.schools.show.start_transport_survey") %>
+  <% add_prompt(id: :transport_surveys,
+                list: list,
+                status: :neutral,
+                icon: 'car-alt',
+                link: 'pupils.schools.show.start_transport_survey',
+                path: school_transport_surveys_path(school)) do %>
+      <p>
+        <%= t('pupils.schools.show.transport_surveys') %>
+      </p>
+  <% end %>
+
+  <% if programmes_to_prompt.any? %>
+    <% programmes_to_prompt.each do |programme| %>
+      <%# i18n-tasks-use t("common.labels.view_now") %>
+      <% add_prompt(id: :programme_reminder,
+                    list: list,
+                    status: :neutral,
+                    icon: 'tasks',
+                    link: 'common.labels.view_now',
+                    path: programme_type_path(programme.programme_type)) do %>
+        <p>
+          <% if Flipper.enabled?(:todos, user) %>
+            <%= Completables::Progress.new(programme).notification %>
+          <% else %>
+            <%= Programmes::Progress.new(programme).notification %>
+          <% end %>
+        </p>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%# i18n-tasks-use t("schools.prompts.programme.start_a_new_programme") %>
+    <% add_prompt(id: :new_programme,
+                  list: list,
+                  status: :neutral,
+                  icon: 'tasks',
+                  link: 'schools.prompts.programme.start_a_new_programme',
+                  path: programme_types_path) do %>
+      <p>
+        <%= t('schools.prompts.programme.choose_a_new_programme_message') %>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>

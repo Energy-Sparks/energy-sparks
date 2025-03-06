@@ -36,8 +36,8 @@ class ManagementPriority < ApplicationRecord
 
   scope :by_priority, -> { order(priority: :desc) }
 
-  #Returns an Array of OpenStruct
-  def self.for_school_group(school_group)
+  # Returns an Array of OpenStruct
+  def self.for_schools(schools)
     query = <<-SQL.squish
       SELECT a.school_id, a.id, cv.alert_type_rating_id, vars.average_one_year_saving_£, vars.one_year_saving_co2, vars.one_year_saving_kwh
       FROM management_priorities mp
@@ -50,12 +50,7 @@ class ManagementPriority < ApplicationRecord
             LEFT OUTER JOIN content_generation_runs c2 ON c1.school_id = c2.school_id AND c1.created_at < c2.created_at
             WHERE
             c2.created_at IS NULL AND
-            c1.school_id IN (
-                SELECT id
-                FROM schools
-                WHERE school_group_id = #{school_group.id}
-                AND visible=true
-            )
+            c1.school_id IN (#{schools.pluck(:id).join(',')})
         )
       ORDER BY a.school_id, a.id;
     SQL

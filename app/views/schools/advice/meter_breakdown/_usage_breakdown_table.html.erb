@@ -1,0 +1,57 @@
+<p><%= t("advice_pages.#{fuel_type}_long_term.analysis.meter_breakdown.table_introduction",
+         start_date: usage_breakdown.start_date.to_fs(:es_short),
+         end_date: usage_breakdown.end_date.to_fs(:es_short)) %></p>
+
+<table id="meter-breakdown<%= '-summary' if local_assigns[:summary] %>" class="table table-sm table-with-totals-footer table-sorted">
+  <thead class="thead-dark">
+    <th class="text-left"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.meter") %></th>
+    <th class='no-sort'><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.name") %></th>
+    <% unless local_assigns[:summary] %>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_usage_kwh") %></th>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_usage_gbp") %></th>
+      <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_usage_co2") %></th>
+    <% end %>
+    <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.percent") %></th>
+    <th class="text-right"><%= t("advice_pages.#{fuel_type}_long_term.tables.columns.annual_change") %></th>
+  </thead>
+  <tbody>
+    <% annual_usage_breakdown_meters.each do |mpan_mprn, meter| %>
+      <tr>
+        <td class="text-left"><%= meter.mpan_mprn %></td>
+        <td><%= meter.name %></td>
+        <% unless local_assigns[:summary] %>
+          <td class="text-right" data-order="<%= usage_breakdown.usage(mpan_mprn).kwh %>">
+            <%= format_unit(usage_breakdown.usage(mpan_mprn).kwh, :kwh) %>
+          </td>
+          <td class="text-right" data-order="<%= usage_breakdown.usage(mpan_mprn).£ %>">
+            <%= format_unit(usage_breakdown.usage(mpan_mprn).£, :£) %>
+          </td>
+          <td class="text-right" data-order="<%= usage_breakdown.usage(mpan_mprn).co2 %>">
+            <%= format_unit(usage_breakdown.usage(mpan_mprn).co2, :co2) %>
+          </td>
+        <% end %>
+        <td class="text-right" data-order="<%= usage_breakdown.usage(mpan_mprn).percent %>">
+          <%= format_unit(usage_breakdown.usage(mpan_mprn).percent, :percent) %>
+        </td>
+        <td class="text-right" data-order="<%= usage_breakdown.annual_percent_change(mpan_mprn) %>">
+          <%= format_unit(usage_breakdown.annual_percent_change(mpan_mprn), :percent) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td class="text-left"><%= t("advice_pages.#{fuel_type}_long_term.tables.labels.all_meters") %></td>
+      <td></td>
+      <% unless local_assigns[:summary] %>
+        <td class="text-right"><%= format_unit(usage_breakdown.total_usage.kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(usage_breakdown.total_usage.£, :£) %></td>
+        <td class="text-right"><%= format_unit(usage_breakdown.total_usage.co2, :co2) %></td>
+      <% end %>
+      <td class="text-right"><%= format_unit(usage_breakdown.total_usage.percent, :percent) %></td>
+      <td class="text-right"><%= format_unit(usage_breakdown.total_annual_percent_change, :percent) %></td>
+    </tr>
+  </tfoot>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>

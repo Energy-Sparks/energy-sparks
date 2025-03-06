@@ -1,12 +1,13 @@
+# frozen_string_literal: true
+
 class ActivityCreator
-  def initialize(activity)
+  def initialize(activity, user)
     @activity = activity
+    @user = user
   end
 
   def process
-    if @activity.activity_type
-      @activity.activity_category = @activity.activity_type.activity_category
-    end
+    @activity.activity_category = @activity.activity_type.activity_category if @activity.activity_type
 
     if @activity.save
       process_programmes if started_active_programmes.any?
@@ -21,7 +22,7 @@ class ActivityCreator
   def process_programmes
     started_active_programmes.each do |programme|
       add_programme_activity(programme)
-      programme.complete! if completed_programme?(programme)
+      programme.complete! if programme.all_activities_complete?
     end
   end
 
@@ -30,16 +31,12 @@ class ActivityCreator
   end
 
   def create_activity_observation
-    academic_year = @activity.school.academic_year_for(@activity.happened_on)
-    points = if academic_year && academic_year.current?
-               @activity.activity_type.score
-             end
     Observation.create!(
       school: @activity.school,
       observation_type: :activity,
       activity: @activity,
       at: @activity.happened_on,
-      points: points
+      created_by: @user
     )
   end
 
@@ -72,13 +69,5 @@ class ActivityCreator
 
   def programme_activities(programme)
     programme.programme_activities.where(activity_type: @activity.activity_type)
-  end
-
-  def completed_programme?(programme)
-    # Completed programme if all activity types for the programme type are in the list of completed  activities
-    # (extra completed activities are ignored - activity types may have been removed from programme..)
-    programme_type_activity_ids = programme.programme_type.activity_types.pluck(:id)
-    programme_activity_types = programme.activities.map(&:activity_type).pluck(:id)
-    (programme_type_activity_ids - programme_activity_types).empty?
   end
 end

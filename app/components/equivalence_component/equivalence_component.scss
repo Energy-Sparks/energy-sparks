@@ -1,0 +1,55 @@
+.illustration-background {
+  padding-top: 20px;
+  background: linear-gradient(to right, $blue-pale 0%, $blue-pale 15%, $grey-pale 50%, $blue-pale 85%, $blue-pale 100%);
+}
+
+.illustration-wrapper {
+  overflow: visible;
+
+  img {
+    height: 300px;
+  }
+}
+
+// Extra small devices (portrait phones, less than 576px)
+@media (max-width: 575.98px) {
+  .illustration-wrapper {
+    img {
+      height: 200px;
+    }
+  }
+}
+
+@media (max-width: 991.98px) {
+  div.equivalence-wrapper {
+    height: 200px;
+  }
+}
+
+.equivalence-component.vertical {
+  .trix-content {
+    h1 {
+      font-size: $f3;
+      line-height: 34px;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+// Used for public display version of equivalence
+// Force the text to match the header height and colours
+// so more readable from a distance
+.equivalence-component.public-displays.vertical {
+  .trix-content div, div {
+    @include font(f1);
+    font-family: $header-font-family;
+    font-weight: $header-font-weight;
+    color: $blue-very-dark;
+    padding-bottom: 10px;
+  }
+  .illustration-wrapper {
+    img {
+      height: 500px;
+    }
+  }
+}

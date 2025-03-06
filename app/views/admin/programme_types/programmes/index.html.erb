@@ -3,13 +3,18 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= @programme_type.title %></h1>
       <div>
-        <%= link_to 'Back', admin_programme_types_path, class: 'btn btn-secondary'  %>
+        <%= link_to 'Back', admin_programme_types_path, class: 'btn btn-secondary' %>
       </div>
     </div>
   </div>
 </div>
 
-<h2>Total activities: <%= @activity_types_count %></h2>
+<% if Flipper.enabled?(:todos, current_user) %>
+  <h2>Total activities: <%= @programme_type.activity_type_todos.count %>,
+    interventions: <%= @programme_type.intervention_type_todos.count %></h2>
+<% else %>
+  <h2>Total activities: <%= @activity_types_count %></h2>
+<% end %>
 
 <% if @programmes.any? %>
   <table class="table table-striped table-sm">
@@ -17,17 +22,30 @@
       <tr>
         <th>School</th>
         <th>Activities types completed</th>
+        <% if Flipper.enabled?(:todos, current_user) %>
+          <th>Intervention types completed</th>
+        <% end %>
         <th>Progress</th>
         <th>Status</th>
+        <th>Started on</th>
+        <th>Ended on</th>
       </tr>
     </thead>
     <tbody>
       <% @programmes.each do |programme| %>
         <tr>
-          <td><%= programme.school.name %></td>
-          <td><%= programme.activity_types_completed.count %></td>
-          <td><%= progress_as_percent(programme.activity_types_completed.count, @activity_types_count) %></td>
+          <td><%= link_to programme.school.name, school_path(programme.school) %></td>
+          <% if Flipper.enabled?(:todos, current_user) %>
+            <td><%= programme.completed_activity_types.count %> / <%= @programme_type.activity_type_todos.count %></td>
+            <td><%= programme.completed_intervention_types.count %> / <%= @programme_type.intervention_type_todos.count %></td>
+            <td><%= progress_as_percent(programme.completed_todos.count, @programme_type.todos.count) %></td>
+          <% else %>
+            <td><%= programme.activity_types_completed.count %></td>
+            <td><%= progress_as_percent(programme.activity_types_completed.count, @activity_types_count) %></td>
+          <% end %>
           <td><%= programme.status %></td>
+          <td><%= nice_dates(programme.started_on) %></td>
+          <td><%= nice_dates(programme.ended_on) %></td>
         </tr>
       <% end %>
     </tbody>
@@ -36,8 +54,8 @@
   <p>No schools have enrolled in this programme yet</p>
 <% end %>
 
-<br/>
-<br/>
+<br>
+<br>
 
 <h3>Enrol schools in this programme</h3>
 <p>Enrolling a school will add a programme of this type, and mark the programme as "started".</p>
@@ -45,7 +63,8 @@
 <%= form_for(:programme) do |f| %>
   <div class="row">
     <div class="col-md-6">
-        <%= f.select :school_id, options_from_collection_for_select(@schools_to_enrol, 'id', 'name'), {prompt: 'Choose a school to enrol..'}, {class: 'form-control'} %>
+        <%= f.select :school_id, options_from_collection_for_select(@schools_to_enrol, 'id', 'name'),
+                     { prompt: 'Choose a school to enrol..' }, { class: 'form-control' } %>
     </div>
     <div class="col-md-2">
       <%= f.submit 'Enrol', class: 'btn btn-primary' %>

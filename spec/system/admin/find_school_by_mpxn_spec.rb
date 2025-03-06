@@ -1,0 +1,48 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'find school by mpnx' do
+  let(:admin) { create(:admin) }
+
+  let!(:gmeter) { create(:gas_meter, mpan_mprn: 1_234_567_001) }
+  let!(:emeter) { create(:electricity_meter, mpan_mprn: 1_234_567_809_876) }
+
+  context 'when an admin' do
+    before do
+      sign_in(admin)
+      visit root_path
+      click_on 'Admin'
+      click_on 'Find school by MPXN'
+    end
+
+    it 'displays the search page' do
+      expect(page).to have_content('Find schools by meter')
+    end
+
+    it 'does not display empty results message' do
+      expect(page).to have_no_content('No meters were found using this mpxn')
+    end
+
+    it 'finds a single meter' do
+      fill_in 'query', with: gmeter.mpan_mprn
+      click_on 'Search'
+
+      expect(page).to have_content gmeter.mpan_mprn
+      expect(page).to have_content gmeter.school.name
+    end
+
+    it 'finds based on wildcard' do
+      fill_in 'query', with: '12345'
+      click_on 'Search'
+      expect(page).to have_content gmeter.mpan_mprn
+      expect(page).to have_content emeter.mpan_mprn
+    end
+
+    it 'reports empty results' do
+      fill_in 'query', with: '9999'
+      click_on 'Search'
+      expect(page).to have_content('No meters were found using this mpxn')
+    end
+  end
+end

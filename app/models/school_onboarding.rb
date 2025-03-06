@@ -8,7 +8,9 @@
 #  created_by_id            :bigint(8)
 #  created_user_id          :bigint(8)
 #  dark_sky_area_id         :bigint(8)
+#  data_sharing             :enum             default("public"), not null
 #  default_chart_preference :integer          default("default"), not null
+#  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
 #  notes                    :text
 #  school_group_id          :bigint(8)
@@ -26,6 +28,7 @@
 #
 #  index_school_onboardings_on_created_by_id          (created_by_id)
 #  index_school_onboardings_on_created_user_id        (created_user_id)
+#  index_school_onboardings_on_funder_id              (funder_id)
 #  index_school_onboardings_on_school_group_id        (school_group_id)
 #  index_school_onboardings_on_school_id              (school_id)
 #  index_school_onboardings_on_scoreboard_id          (scoreboard_id)
@@ -45,6 +48,8 @@
 #
 
 class SchoolOnboarding < ApplicationRecord
+  include EnumDataSharing
+
   validates :school_name, :contact_email, presence: true
 
   belongs_to :school, optional: true
@@ -56,16 +61,34 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
+  belongs_to :funder, optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
+  has_many :issues, as: :issueable, dependent: :destroy
 
   scope :by_name, -> { order(school_name: :asc) }
-  scope :complete, -> { joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] }) }
+  scope :complete, lambda {
+    joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
+  }
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
-  scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
+  scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
 
-  enum default_chart_preference: [:default, :carbon, :usage, :cost]
-  enum country: School.countries
+  enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
+  enum :country, School.countries
+
+  def populate_default_values(user)
+    assign_attributes({
+                        uuid: SecureRandom.uuid,
+                        created_by: user,
+                        template_calendar: school_group&.default_template_calendar,
+                        solar_pv_tuos_area: school_group&.default_solar_pv_tuos_area,
+                        dark_sky_area: school_group&.default_dark_sky_area,
+                        weather_station: school_group&.default_weather_station,
+                        scoreboard: school_group&.default_scoreboard,
+                        default_chart_preference: school_group&.default_chart_preference,
+                        country: school_group&.default_country
+                      })
+  end
 
   def has_event?(event_name)
     events.where(event: event_name).any?
@@ -80,7 +103,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def has_only_sent_email_or_reminder?
-    (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
+    (events.pluck(:event).map(&:to_sym) - %i[email_sent reminder_sent]).empty?
   end
 
   def complete?
@@ -116,16 +139,16 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def additional_users_created?
-    school.present? && school.users.count {|u| !u.pupil?} > 1
+    school.present? && school.users.count { |u| !u.pupil? } > 1
   end
 
   def ready_for_review?
-    #adding pupil password is trigger for last step
+    # adding pupil password is trigger for last step
     pupil_account_created?
   end
 
   def email_locales
-    country == 'wales' ? [:en, :cy] : [:en]
+    country == 'wales' ? %i[en cy] : [:en]
   end
 
   def to_param
@@ -146,8 +169,14 @@ class SchoolOnboarding < ApplicationRecord
 
   def days_until_data_enabled
     return nil unless complete?
+
     data_enabled_on = first_made_data_enabled
     return nil unless data_enabled_on.present?
+
     (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
+  end
+
+  def name
+    school_name
   end
 end

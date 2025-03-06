@@ -1,7 +1,7 @@
 require 'benchmark'
 
 module Schools
-  #Redirect old urls
+  # Redirect old urls
   class ProgressController < ApplicationController
     load_and_authorize_resource :school
     skip_before_action :authenticate_user!

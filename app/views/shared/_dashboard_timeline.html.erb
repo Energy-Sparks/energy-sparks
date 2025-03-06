@@ -4,7 +4,7 @@
       <h3><%= t('timeline.whats_been_going_on') %></h3>
     </div>
     <div class="col-4 text-right">
-      <%= link_to school_timeline_path(school), class: 'btn btn-sm btn-outline-dark rounded-pill pull-right' do %>
+      <%= link_to school_timeline_path(school), class: 'btn btn-sm btn-default pull-right' do %>
         <%= far_icon('eye') %>  <%= t('timeline.view_all_events') %>
       <% end %>
     </div>
@@ -12,7 +12,7 @@
 
   <div class="row justify-content-md-center">
     <div class="col col-md-10">
-      <%= component 'timeline', observations: observations, show_actions: false %>
+      <%= render TimelineComponent.new(observations: observations, school: school, show_actions: false) %>
     </div>
   </div>
 <% end %>

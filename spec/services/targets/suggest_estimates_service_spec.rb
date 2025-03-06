@@ -9,12 +9,12 @@ describe Targets::SuggestEstimatesService, type: :service do
   let(:aggregate_meter_dates) do
     {
       "electricity": {
-        "start_date": "2021-12-01",
-        "end_date": "2022-02-01"
+        "start_date": '2021-12-01',
+        "end_date": '2022-02-01'
       },
       "gas": {
-        "start_date": "2021-03-01",
-        "end_date": "2022-02-01"
+        "start_date": '2021-03-01',
+        "end_date": '2022-02-01'
       }
     }
   end
@@ -31,7 +31,7 @@ describe Targets::SuggestEstimatesService, type: :service do
   describe '#suggestions' do
     context 'checking data' do
       it 'removes gas' do
-        expect(service.suggestions(check_data: true)).to match_array(["electricity"])
+        expect(service.suggestions(check_data: true)).to match_array(['electricity'])
       end
     end
 

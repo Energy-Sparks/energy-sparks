@@ -1,0 +1,8 @@
+.advice-page-list-component {
+  @each $tag, $colour in $colours-comparison {
+    .#{$tag} {
+      background-color: $colour;
+      color: $white;
+    }
+  }
+}

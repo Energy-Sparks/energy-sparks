@@ -21,6 +21,37 @@ describe AlertTypeRatingContentVersion do
     end
   end
 
+  describe 'validations' do
+    context 'with sms active' do
+      let(:alert_type_rating) { create(:alert_type_rating, sms_active: true) }
+      let(:alert_type_rating_content_version) { build(:alert_type_rating_content_version, alert_type_rating: alert_type_rating, sms_content: sms_content) }
+
+      context 'with no sms content' do
+        let(:sms_content) { nil }
+
+        it 'is not valid' do
+          expect(alert_type_rating_content_version).not_to be_valid
+        end
+      end
+
+      context 'with no sms content' do
+        let(:sms_content) { 'text message' }
+
+        it 'is valid' do
+          expect(alert_type_rating_content_version).to be_valid
+        end
+
+        context 'with find_out_more_active' do
+          let(:alert_type_rating) { create(:alert_type_rating, sms_active: true, find_out_more_active: true) }
+
+          it 'is valid' do
+            expect(alert_type_rating_content_version).to be_valid
+          end
+        end
+      end
+    end
+  end
+
   describe 'meets_timings?' do
     let(:start_date) { nil }
     let(:end_date) { nil }
@@ -128,37 +159,37 @@ describe AlertTypeRatingContentVersion do
     context 'when serialising fields' do
       it 'only includes fields with active alerts' do
         data = content_version.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array([])
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array([])
 
         data = content_version_pupil.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(['pupil_dashboard_title_html'])
 
         data = content_version_management.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(["management_dashboard_title_html"])
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(['management_dashboard_title_html'])
 
         data = content_version_both.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(%w[pupil_dashboard_title_html management_dashboard_title_html])
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(%w[pupil_dashboard_title_html management_dashboard_title_html])
 
         data = content_version_management_title.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(["management_priorities_title_html"])
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(['management_priorities_title_html'])
 
         data = content_version_email.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(%w[email_title email_content_html])
-        #check that we're serialsing as templated content
-        expect(data["en"][key]["email_title"]).to eq "email title %{tx_var_title_variable}"
-        expect(data["en"][key]["email_content_html"]).to eq "email content %{tx_var_content_variable}"
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(%w[email_title email_content_html])
+        # check that we're serialsing as templated content
+        expect(data['en'][key]['email_title']).to eq 'email title %{tx_var_title_variable}'
+        expect(data['en'][key]['email_content_html']).to eq 'email content %{tx_var_content_variable}'
 
         data = content_version_sms.tx_serialise
-        key = data["en"].keys.first
-        expect(data["en"][key].keys).to match_array(["sms_content"])
-        #check that we're serialsing as templated content
-        expect(data["en"][key]["sms_content"]).to eq "sms content %{tx_var_content_variable}"
+        key = data['en'].keys.first
+        expect(data['en'][key].keys).to match_array(['sms_content'])
+        # check that we're serialsing as templated content
+        expect(data['en'][key]['sms_content']).to eq 'sms content %{tx_var_content_variable}'
       end
     end
   end
@@ -174,27 +205,27 @@ describe AlertTypeRatingContentVersion do
       end
 
       it 'produces the expected key names' do
-        expect(content_version.tx_attribute_key("pupil_dashboard_title")).to eq "pupil_dashboard_title_html"
+        expect(content_version.tx_attribute_key('pupil_dashboard_title')).to eq 'pupil_dashboard_title_html'
       end
 
       it 'produces the expected tx values, removing trix content wrapper' do
-        expect(content_version.tx_value("pupil_dashboard_title")).to eql "some content with %{tx_chart_chart_name}"
+        expect(content_version.tx_value('pupil_dashboard_title')).to eql 'some content with %{tx_chart_chart_name}'
       end
 
       it 'maps all translated fields' do
         data = content_version.tx_serialise
-        expect(data["en"]).not_to be nil
+        expect(data['en']).not_to be nil
         key = "alert_type_rating_content_version_#{alert_type_rating.id}"
-        expect(data["en"][key]).not_to be nil
-        expect(data["en"][key].keys).to match_array(["pupil_dashboard_title_html"])
+        expect(data['en'][key]).not_to be nil
+        expect(data['en'][key].keys).to match_array(['pupil_dashboard_title_html'])
       end
 
       it 'created categories' do
-        expect(content_version.tx_categories).to match_array(["alert_rating"])
+        expect(content_version.tx_categories).to match_array(['alert_rating'])
       end
 
       it 'overrides default name' do
-        expect(content_version.tx_name).to eq("some alert type - 0 to 10")
+        expect(content_version.tx_name).to eq('some alert type - 0 to 10')
       end
 
       it 'fetches status' do

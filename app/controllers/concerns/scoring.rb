@@ -4,7 +4,7 @@ module Scoring
   def setup_scores_and_years(scorable)
     @current_year = scorable.this_academic_year
     @previous_year = scorable.previous_academic_year
-    @academic_year = if params[:academic_year]
+    @academic_year = if params[:previous_year]
                        @previous_year
                      else
                        @current_year

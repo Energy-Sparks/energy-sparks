@@ -1,15 +1,21 @@
-<%= component 'notice', status: :neutral do |c| %>
-  <% c.with_link { link_to t('advice_pages.solar_pv.has_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school) } %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <% c.with_link do
+       link_to t('advice_pages.solar_pv.has_solar_pv.insights.link'), learn_more_school_advice_solar_pv_path(@school)
+     end %>
   <%= t('advice_pages.solar_pv.has_solar_pv.insights.advice_html') %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'your_solar_energy_production', section_title: t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_energy_production') %>
+<%= render 'schools/advice/section_title', section_id: 'your_solar_energy_production',
+                                           section_title: t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_energy_production') %>
 
-<%= component 'notice', status: :positive do |c| %>
-  <%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced', annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent, :percent)).html_safe %>
+<%= render PromptComponent.new(icon: :sun, fuel_type: :solar_pv, status: :positive) do |c| %>
+  <%= t('advice_pages.solar_pv.has_solar_pv.insights.your_solar_panels_have_reduced',
+        annual_saving_from_solar_pv_percent: format_unit(@existing_benefits.annual_saving_from_solar_pv_percent,
+                                                         :percent)).html_safe %>
 <% end %>
-<br />
+<br>
 <%= render 'insights_has_solar_pv_table' %>
-<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.solar_pv.has_solar_pv.insights.how_do_you_compare') %>
-<%= t('advice_pages.solar_pv.has_solar_pv.insights.for_more_detail_html', link: compare_for_school_group_path(:change_in_solar_pv_since_last_year, @school)) %>
-
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare',
+                                           section_title: t('advice_pages.solar_pv.has_solar_pv.insights.how_do_you_compare') %>
+<%= t('advice_pages.solar_pv.has_solar_pv.insights.for_more_detail_html',
+      link: compare_for_school_group_path(:change_in_solar_pv_since_last_year, @school)) %>

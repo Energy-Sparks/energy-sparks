@@ -1,0 +1,30 @@
+// Core colours for use across the application
+
+// The hex values for colours can be found in initializers/colours.rb
+
+// The following creates a SASS variable for colours grouped in the Colours::PALETTE hash
+// e.g.: Colours.sass_variables :palette
+// creates variables for the :palette group, such as:
+// $yellow-pale: #fdefc8;
+// $blue-very-dark: #334375;
+
+// Examples of variables bought in from fuel, polarity and comparison groups:
+// $electric-dark: #007EFF;
+// $positive-dark: #10bca2;
+// $exemplar-school: #10bca2;
+<%= Colours.sass_variables :palette, :fuel, :polarity, :comparison, :bootstrap, :theme, :charts %>
+
+// Create SASS maps for each of these keys found in Colours::PALETTE hash
+// These will be named: $colours-fuel etc
+<%= Colours.sass_maps :palette, :fuel, :polarity, :comparison, :charts %>
+
+// Get a colour from a generated map
+// not used yet so need to check if working :-)
+@function colour-get($map, $name, $shade: false) {
+  @if $shade {
+    @return map-get(map-get($map, $name), $shade);
+  } @else {
+    @return map-get($map, $name);
+  }
+}
+

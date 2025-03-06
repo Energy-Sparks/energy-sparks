@@ -3,7 +3,8 @@
     <div class="col-8">
       <h3><%= t('schools.school_targets.target_timeline.how_did_you_achieve_your_target') %></h3>
       <p>
-        <%= t('schools.school_targets.target_timeline.you_didnt_record_any_energy_saving', start_date: nice_dates(@school_target.start_date), target_date: nice_dates(@school_target.target_date)) %>.
+        <%= t('schools.school_targets.target_timeline.you_didnt_record_any_energy_saving',
+              start_date: nice_dates(@school_target.start_date), target_date: nice_dates(@school_target.target_date)) %>.
       </p>
     </div>
   </div>
@@ -12,13 +13,15 @@
     <div class="col-8">
       <h3><%= t('schools.school_targets.target_timeline.how_did_you_try_to_achieve_your_target') %></h3>
       <p>
-        <%= t('schools.school_targets.target_timeline.a_reminder_of_the_energy_saving', start_date: nice_dates(@school_target.start_date), target_date: nice_dates(@school_target.target_date)) %>.
+        <%= t('schools.school_targets.target_timeline.a_reminder_of_the_energy_saving',
+              start_date: nice_dates(@school_target.start_date), target_date: nice_dates(@school_target.target_date)) %>.
       </p>
     </div>
   </div>
   <div class="row justify-content-md-center">
     <div class="col col-md-10">
-      <%= component 'timeline', observations: observations, show_actions: false %>
+      <%= render TimelineComponent.new(observations: observations, show_actions: false, show_header: false,
+                                       user: current_user, school: @school_target.school) %>
     </div>
   </div>
 <% end %>

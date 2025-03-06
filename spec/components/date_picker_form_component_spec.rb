@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe DatePickerFormComponent, type: :component do
   let(:value) { '01/12/2022' }
@@ -18,11 +18,11 @@ RSpec.describe DatePickerFormComponent, type: :component do
     render_inline(component)
   end
 
-  it "renders expected field" do
+  it 'renders expected field' do
     expect(html).to have_css('#job_start_date')
   end
 
-  it "renders expected value" do
+  it 'renders expected value' do
     expect(html).to have_field('job[start_date]', with: value)
   end
 
@@ -30,7 +30,7 @@ RSpec.describe DatePickerFormComponent, type: :component do
     let(:value) { nil }
 
     it 'defaults to today' do
-      expect(html).to have_field('job[start_date]', with: Time.zone.today.strftime("%d/%m/%Y"))
+      expect(html).to have_field('job[start_date]', with: Time.zone.today.strftime('%d/%m/%Y'))
     end
 
     context 'and a default supplied' do
@@ -50,7 +50,7 @@ RSpec.describe DatePickerFormComponent, type: :component do
     end
   end
 
-  it "renders a datepicker form component" do
+  it 'renders a datepicker form component' do
     expect(
       ActionController::Base.render(component)
     ).to eq(

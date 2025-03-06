@@ -15,11 +15,11 @@ module Meters
 
     let(:calcs) { Meters::DccConsentCalcs.new(meters, dcc_consents) }
 
-    it "gives count of consented meters" do
+    it 'gives count of consented meters' do
       expect(calcs.total_meters_with_consents).to eq(2)
     end
 
-    it "gives count of consented schools" do
+    it 'gives count of consented schools' do
       expect(calcs.total_schools_with_consents).to eq(2)
     end
   end

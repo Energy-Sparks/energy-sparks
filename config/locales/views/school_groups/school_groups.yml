@@ -80,9 +80,6 @@ en:
       view_current_scores: View the current scores
     download_as_csv: Download as CSV
     header:
-      compare_schools: Compare schools
-      scoreboard: Scoreboard
-      view_all_schools: View all schools
       view_group: View dashboard
       view_map: View map
     labels:
@@ -190,20 +187,11 @@ en:
       view_analysis: View analysis
     show:
       change_units: Change units
-      currently_works_with_from:
-        one: Energy Sparks currently works with %{count} school from
-        other: Energy Sparks currently works with %{count} schools from
-      currently_works_with_schools_from:
-        one: Energy Sparks currently works with 1 school from
-        other: Energy Sparks currently works with %{count} schools from
-      if_you_would_like_support_enrol_here_html: If you would like Energy Sparks to support your school to reduce its carbon emissions, enrol <a href='%{enrol_path}'>here</a>
-      in_partnership_with: in partnership with
       metric:
         change: "% Change"
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
-      not_visible_schools: Not visible schools
       recent_usage_intro:
         general: A summary of the recent energy usage across schools in this group.
         local_authority: A summary of the recent energy usage across schools in this local authority.
@@ -233,7 +221,6 @@ en:
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
-      dashboards: Dashboards
       edit_group: Edit group
       group_admin: Group admin
       manage_group: Manage Group

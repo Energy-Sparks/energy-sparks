@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence(:mpan) { |n| n }
     sequence(:api_key) { |n| "api_key_#{n}" }
     information do
-      { site_detail: "", dates: %w(2023-01-01 2023-10-01) }
+      { site_detail: '', dates: %w(2023-01-01 2023-10-01) }
     end
 
     trait :with_electricity_meter do
@@ -21,7 +21,7 @@ FactoryBot.define do
     factory :solar_edge_installation_with_meters_and_validated_readings do
       transient do
         reading_count { 1 }
-        config        { create(:amr_data_feed_config, process_type: :solar_edge_api) }
+        config        { create(:amr_data_feed_config, process_type: :solar_edge_api, source_type: :api) }
       end
 
       after(:create) do |solar_edge_installation, _evaluator|

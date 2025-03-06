@@ -1,0 +1,71 @@
+<h2>Simple list</h2>
+
+<%= render PromptListComponent.new do |list| %>
+  <% list.with_title { 'List title' } %>
+  <% list.with_link do %>
+    <% link_to 'More information', root_path %>
+  <% end %>
+  <% list.with_prompt icon: 'car' do |prompt| %>
+    <%= prompt.with_title { 'Prompt with icon' } %>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+      odio in vestibulum. Duis a semper mi.
+    </p>
+  <% end %>
+  <% list.with_prompt icon: 'house' do |prompt| %>
+    <%= prompt.with_title { 'Prompt with icon' } %>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+      odio in vestibulum. Duis a semper mi.
+    </p>
+  <% end %>
+<% end %>
+
+<h2>Rendering in two columns</h2>
+
+<div class="row">
+  <div class="col-12 col-lg-6">
+    <%= render PromptListComponent.new do |list| %>
+      <% list.with_title { 'Column 1' } %>
+      <% list.with_link do %>
+        <% link_to 'More information', root_path %>
+      <% end %>
+      <% list.with_prompt fuel_type: :gas, status: :positive do |prompt| %>
+        <%= prompt.with_title { 'Positive prompt with fuel type' } %>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+          odio in vestibulum. Duis a semper mi.
+        </p>
+      <% end %>
+      <% list.with_prompt icon: 'calendar-alt', status: :negative do |prompt| %>
+        <%= prompt.with_title { 'Negative prompt with icon' } %>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+          odio in vestibulum. Duis a semper mi.
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col-12 col-lg-6">
+    <%= render PromptListComponent.new do |list| %>
+      <% list.with_title { 'Column 2' } %>
+      <% list.with_link do %>
+        <% link_to 'More information', root_path %>
+      <% end %>
+      <% list.with_prompt fuel_type: 'electricity', status: :none do |prompt| %>
+        <%= prompt.with_title { 'Prompt with status none and fuel type' } %>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+          odio in vestibulum. Duis a semper mi.
+        </p>
+      <% end %>
+      <% list.with_prompt icon: 'stop', status: :neutral do |prompt| %>
+        <%= prompt.with_title { 'Neutral prompt with icon' } %>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+          odio in vestibulum. Duis a semper mi.
+        </p>
+      <% end %>
+    <% end %>
+  </div>
+</div>

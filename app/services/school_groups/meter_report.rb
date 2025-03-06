@@ -32,7 +32,7 @@ module SchoolGroups
 
     def csv_filename
       filename = "#{school_group.name}-meter-report-#{Time.zone.now.iso8601}"
-      filename += "-all-meters" if all_meters
+      filename += '-all-meters' if all_meters
       filename.parameterize + '.csv'
     end
 
@@ -50,8 +50,8 @@ module SchoolGroups
             meter.admin_meter_status_label,
             meter.procurement_route.try(:organisation_name) || '',
             y_n(meter.active),
-            meter.first_validated_reading_date&.to_s(:es_compact),
-            meter.last_validated_reading_date&.to_s(:es_compact),
+            meter.first_validated_reading_date&.to_fs(:es_compact),
+            meter.last_validated_reading_date&.to_fs(:es_compact),
             date_range_from_reading_gaps(meter.gappy_validated_readings),
             meter.modified_validated_readings.count,
             meter.zero_reading_days_count
@@ -72,7 +72,7 @@ module SchoolGroups
         .joins(:school_group)
         .where(schools: { school_group: school_group, active: true })
         .with_zero_reading_days_and_dates
-        .order("schools.name", :mpan_mprn)
+        .order('schools.name', :mpan_mprn)
       scope = all_meters ? scope : scope.active
       scope
     end

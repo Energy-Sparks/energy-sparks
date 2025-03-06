@@ -49,7 +49,7 @@ describe 'Resources', type: :system do
       click_on 'Create Resource'
       expect(page).to have_content('blank')
       fill_in 'Title', with: title
-      attach_file("File", Rails.root + "spec/fixtures/images/newsletter-placeholder.png")
+      attach_file('File', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
       select 'Document', from: 'Type'
       click_on 'Create Resource'
       expect(page).to have_content title

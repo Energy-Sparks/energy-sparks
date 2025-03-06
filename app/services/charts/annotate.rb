@@ -6,7 +6,7 @@ module Charts
     end
 
     def annotate_weekly(x_axis_categories)
-      return if x_axis_categories.empty?
+      return if x_axis_categories.nil? || x_axis_categories.empty?
 
       date_categories = date_categories_for(x_axis_categories)
 

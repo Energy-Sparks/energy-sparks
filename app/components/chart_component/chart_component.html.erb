@@ -12,13 +12,22 @@
 
     <%= header %>
 
-    <%= render 'shared/analysis_controls', chart_type: chart_type, axis_controls: axis_controls, analysis_controls: analysis_controls %>
+    <%= render 'shared/analysis_controls',
+               chart_id: chart_id,
+               axis_controls: axis_controls,
+               analysis_controls: analysis_controls %>
 
-    <div id="<%= chart_id %>" class="<%= html_class %>" data-autoload-chart="<%= autoload_chart %>" data-chart-config="<%= chart_config_json %>">
+    <div id="<%= chart_id %>" class="<%= html_class %>"
+         data-autoload-chart="<%= autoload_chart %>"
+         data-chart-config="<%= chart_config_json %>">
     </div>
     <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
 
   </div>
+
+  <% if @show_how_have_we_analysed_your_data %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption' %>
+  <% end %>
 
   <%= footer %>
 

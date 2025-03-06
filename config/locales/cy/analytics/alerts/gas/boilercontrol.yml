@@ -3,14 +3,11 @@ cy:
     alert_heating_coming_on_too_early:
       timescale: 7 diwrnod
     alert_heating_hot_water_on_during_holiday_base:
-      both: mae'r dŵr poeth wedi ei adael ymlaen ar %{hotwater_days} a'r gwres ar %{heating_days}
-      heating_not_on: Da iawn. Nid ydych chi wedi defnyddio unrhyw nwy y gwyliau hwn.
-      only_heating: mae'r gwres wedi'i adael ymlaen ar %{heating_days}
-      only_hotwater: mae'r dŵr poeth wedi'i adael ymlaen ar %{hotwater_days}
+      heating_not_on: Da iawn nid yw eich gwres wedi bod ymlaen yn ystod y gwyliau hyn
       summary: |
-        Mae eich %{heating_type} wedi ei adael ymlaen dros wyliau'r %{holiday_name}. Hyd
-        at %{date} %{left_on_message} gan gostio %{cost}, a rhagamcan o %{project_cost} erbyn diwedd y gwyliau.
-      timescale: y gwyliau yma
+        Mae eich  %{heating_type} wedi ei adael ymlaen dros wyliau'r %{holiday_name}. Hyd
+        at %{date}, mae wedi costio %{cost}. Gyda chost amcanol o %{project_cost} erbyn diwedd y gwyliau.
+      timescale: y gwyliau hyn
     alert_heating_sensitivity_advice:
       timescale: blwyddyn
     alert_optimum_start_analysis:

@@ -6,7 +6,7 @@ module Admin
         respond_to do |format|
           format.html
           format.csv do
-            send_data csv_report(@report), filename: "#{t('common.application')}-unvalidated-readings-report-#{Time.zone.now.iso8601}".parameterize + '.csv'
+            send_data csv_report(@report), filename: EnergySparks::Filenames.csv('unvalidated-readings-report')
           end
         end
       end
@@ -16,8 +16,8 @@ module Admin
       def run_report
         if params[:mpans].present?
           param = params[:mpans]
-          if param["list"].present?
-            mpans = tidy(param["list"])
+          if param['list'].present?
+            mpans = tidy(param['list'])
             amr_data_feed_config_id = param['amr_data_feed_config_id'].to_i
             return AmrDataFeedReading.unvalidated_data_report_for_mpans(mpans, [amr_data_feed_config_id])
           else

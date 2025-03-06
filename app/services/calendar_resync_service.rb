@@ -1,5 +1,5 @@
 class CalendarResyncService
-  attr_reader :successes, :failures
+  attr_reader :successes, :failures, :calendar
 
   def initialize(calendar, from_date = nil)
     @calendar = calendar
@@ -70,7 +70,7 @@ class CalendarResyncService
 
   def error_message(calendar_events)
     calendar_events.select { |event| !event.errors.empty? }.map do |ce|
-      ce.display_title + ": " + ce.errors.full_messages.join(',')
+      ce.display_title + ': ' + ce.errors.full_messages.join(',')
     end
   end
 end

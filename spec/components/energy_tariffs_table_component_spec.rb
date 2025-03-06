@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe EnergyTariffTableComponent, type: :component do
   let(:current_user)      { create(:admin) }
@@ -60,7 +60,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     let(:start_date) { component.start_date(energy_tariffs.first) }
 
     it 'returns expected date' do
-      expect(start_date).to eq energy_tariffs.first.start_date.to_s(:es_compact)
+      expect(start_date).to eq energy_tariffs.first.start_date.to_fs(:es_compact)
     end
 
     context 'with open ended tariff' do
@@ -76,7 +76,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
     let(:end_date) { component.end_date(energy_tariffs.first) }
 
     it 'returns expected date' do
-      expect(end_date).to eq energy_tariffs.first.end_date.to_s(:es_compact)
+      expect(end_date).to eq energy_tariffs.first.end_date.to_fs(:es_compact)
     end
 
     context 'with open ended tariff' do
@@ -101,8 +101,8 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       within('#tariff-table tbody tr[1]') do
         expect(page).to have_content(energy_tariffs.first.name)
         expect(page).to have_content('schools.user_tariffs.tariff_partial.flat_rate_tariff')
-        expect(page).to have_content(energy_tariffs.first.start_date.to_s(:es_compact))
-        expect(page).to have_content(energy_tariffs.first.end_date.to_s(:es_compact))
+        expect(page).to have_content(energy_tariffs.first.start_date.to_fs(:es_compact))
+        expect(page).to have_content(energy_tariffs.first.end_date.to_fs(:es_compact))
         expect(page).to have_content(energy_tariffs.first.energy_tariff_price.first)
       end
     end
@@ -162,16 +162,16 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
       end
 
       it 'styles the row' do
-        expect(page).to have_css("tr.table-secondary")
+        expect(page).to have_css('tr.table-secondary')
       end
     end
 
     context 'with unusable tariff' do
-      #no prices
+      # no prices
       let(:energy_tariffs) { [create(:energy_tariff, tariff_holder: tariff_holder, meter_type: :electricity, enabled: enabled, source: source)] }
 
       it 'styles the row' do
-        expect(page).to have_css("tr.table-danger")
+        expect(page).to have_css('tr.table-danger')
       end
     end
 
@@ -195,7 +195,7 @@ RSpec.describe EnergyTariffTableComponent, type: :component do
         end
 
         it 'styles the row' do
-          expect(page).to have_css("tr.table-secondary")
+          expect(page).to have_css('tr.table-secondary')
         end
       end
     end

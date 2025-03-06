@@ -1,4 +1,4 @@
-<%= simple_form_for([@school, audit], html: { id: :audit_form } ) do |f| %>
+<%= simple_form_for([@school, audit], html: { id: :audit_form }) do |f| %>
 
   <%= render 'shared/errors', subject: audit, subject_name: 'audit' %>
 
@@ -13,96 +13,104 @@
   <h2><%= t('schools.audits.form.report') %></h2>
 
   <% if audit.file.attached? %>
-    <%= t('schools.audits.form.current_file') %>: <%= link_to @audit.file.filename, url_for(@audit.file), target: '_blank' %>
+    <%= t('schools.audits.form.current_file') %>: <%= link_to @audit.file.filename, url_for(@audit.file),
+                                                              target: '_blank', rel: 'noopener' %>
     <%= f.hidden_field :file, value: f.object.file.signed_id %>
   <% else %>
     <%= t('schools.audits.form.no_file_attached_yet') %>
   <% end %>
 
-  <br/>
-  <br/>
+  <br>
+  <br>
 
   <%= f.file_field :file, direct_upload: true, label: false %>
-  <br/>
+  <br>
   <%= f.error :file, id: 'file_error' %>
-  <br/>
+  <br>
 
   <%= f.input :published %>
   <p class="small"><%= t('schools.audits.form.unpublished_audits_message') %>.</p>
 
   <%= f.input :involved_pupils %>
-  <p class="small"><%= t('schools.audits.form.audit_points_message_html', audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
+  <p class="small"><%= t('schools.audits.form.audit_points_message_html',
+                         audit_points: Audits::AuditService::AUDIT_POINTS) %></p>
 
-  <h2><%= t('schools.audits.form.activities') %></h2>
-  <p class="small">
-    <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
-  </p>
+  <% if Flipper.enabled?(:todos, current_user) %>
+    <%= render 'shared/todos/form', assignable: @audit, f: f %>
+  <% else %>
+    <h2><%= t('schools.audits.form.activities') %></h2>
+    <p class="small">
+      <%= t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path) %>.
+    </p>
 
-  <p class="small">
-    <%= t('schools.audits.form.add_a_custom_activity_message') %>.
-  </p>
+    <p class="small">
+      <%= t('schools.audits.form.add_a_custom_activity_message') %>.
+    </p>
 
-  <div class="row">
-    <div class="col-md-5 mb-3">
-      <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+    <div class="row">
+      <div class="col-md-5 mb-3">
+        <label for="activity_type"><%= t('schools.audits.form.activity_type') %></label>
+      </div>
+      <div class="col-md-5 mb-3">
+        <label for="notes"><%= t('schools.audits.form.notes') %></label>
+      </div>
+      <div class="col-md-2 mb-3">
+      </div>
     </div>
-    <div class="col-md-5 mb-3">
-      <label for="notes"><%= t('schools.audits.form.notes') %></label>
+
+    <div id="audit-activity-types">
+      <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types do |audit_activity_type| %>
+        <%= render 'audit_activity_type_fields', f: audit_activity_type %>
+      <% end %>
+      <div class="links">
+        <%= link_to_add_association t('schools.audits.form.add_activity'), f, :audit_activity_types, class: 'btn' %>
+      </div>
     </div>
-    <div class="col-md-2 mb-3">
+
+    <br>
+    <br>
+
+    <h2><%= t('common.labels.actions') %></h2>
+
+    <p class="small">
+      <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
+    </p>
+
+    <p class="small">
+      <%= t('schools.audits.form.actions_message_2') %>.
+    </p>
+
+    <div class="row">
+      <div class="col-md-5 mb-3">
+        <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
+      </div>
+      <div class="col-md-5 mb-3">
+        <label for="lastName"><%= t('schools.audits.form.notes') %></label>
+      </div>
+      <div class="col-md-2 mb-3">
+      </div>
     </div>
-  </div>
 
-  <div id="audit-activity-types">
-    <%= f.simple_fields_for :audit_activity_types, @audit.audit_activity_types do |audit_activity_type| %>
-      <%= render 'audit_activity_type_fields', f: audit_activity_type %>
-    <% end %>
-    <div class="links">
-      <%= link_to_add_association t('schools.audits.form.add_activity'), f, :audit_activity_types, class: 'btn' %>
+    <div id="audit-intervention-types">
+      <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types do |audit_intervention_type| %>
+        <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
+      <% end %>
+      <div class="links">
+        <%= link_to_add_association t('schools.audits.form.add_action'), f, :audit_intervention_types, class: 'btn' %>
+      </div>
     </div>
-  </div>
 
-  <br/>
-  <br/>
-
-  <h2><%= t('common.labels.actions') %></h2>
-
-  <p class="small">
-    <%= t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path) %>
-  </p>
-
-  <p class="small">
-    <%= t('schools.audits.form.actions_message_2') %>.
-  </p>
-
-  <div class="row">
-    <div class="col-md-5 mb-3">
-      <label for="firstName"><%= t('schools.audits.form.action_type') %></label>
-    </div>
-    <div class="col-md-5 mb-3">
-      <label for="lastName"><%= t('schools.audits.form.notes') %></label>
-    </div>
-    <div class="col-md-2 mb-3">
-    </div>
-  </div>
-
-  <div id="audit-intervention-types">
-    <%= f.simple_fields_for :audit_intervention_types, @audit.audit_intervention_types do |audit_intervention_type| %>
-      <%= render 'audit_intervention_type_fields', f: audit_intervention_type %>
-    <% end %>
-    <div class="links">
-      <%= link_to_add_association t('schools.audits.form.add_action'), f, :audit_intervention_types, class: 'btn' %>
-    </div>
-  </div>
-
-  <br/>
-  <br/>
+    <br>
+    <br>
+  <% end %>
 
   <p class="small">
     <%= t('schools.audits.form.audit_points_message') %>
   </p>
 
-  <%= f.submit @audit.persisted? ? t('common.labels.update') : t('common.labels.create'), class: 'btn btn-success' %>
+  <%= f.submit @audit.persisted? ? t('common.labels.update') : t('common.labels.create'), class: 'btn btn-primary' %>
 
-  <%= link_to t('common.labels.cancel'), @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: "btn btn-primary" %>
+  <%= link_to t('common.labels.cancel'),
+              @audit.persisted? ? school_audit_path(@school, @audit) : school_audits_path(@school), class: 'btn btn-secondary' %>
+
 <% end %>

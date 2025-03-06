@@ -3,7 +3,7 @@ module Admin
   class SchoolOnboardingsController < AdminController
     load_and_authorize_resource find_by: :uuid
 
-    INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = "incomplete-onboarding-schools.csv".freeze
+    INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = 'incomplete-onboarding-schools.csv'.freeze
 
     def index
       @school_groups = SchoolGroup.order(name: :asc)
@@ -21,8 +21,7 @@ module Admin
     end
 
     def create
-      @school_onboarding.uuid = SecureRandom.uuid
-      @school_onboarding.created_by = current_user
+      @school_onboarding.populate_default_values(current_user)
       if @school_onboarding.save
         redirect_to edit_admin_school_onboarding_configuration_path(@school_onboarding)
       else
@@ -57,13 +56,21 @@ module Admin
         @school_onboardings.order(:school_group_id).incomplete.each do |school_onboarding|
           last_event = school_onboarding.events.order(event: :desc).first
           last_event = last_event.event.to_s.humanize if last_event
-          csv << [school_onboarding.school_name, school_onboarding.school_group.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
+          csv << [school_onboarding.school_name, school_onboarding.school_group&.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
         end
       end
     end
 
     def school_onboarding_params
-      params.require(:school_onboarding).permit(:school_name, :contact_email, :school_group_id, :notes, :school_will_be_public)
+      params.require(:school_onboarding).permit(
+        :contact_email,
+        :data_sharing,
+        :funder_id,
+        :notes,
+        :school_group_id,
+        :school_name,
+        :school_will_be_public
+      )
     end
   end
 end

@@ -20,7 +20,7 @@
 
 class ActivityTypeSuggestion < ApplicationRecord
   belongs_to :activity_type, optional: true
-  belongs_to :suggested_type, class_name: "ActivityType"
+  belongs_to :suggested_type, class_name: 'ActivityType'
 
   scope :initial, -> { where(activity_type: nil) }
 end

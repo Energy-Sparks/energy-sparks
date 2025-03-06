@@ -47,12 +47,12 @@ RSpec.describe Schools::ConsentRequestService do
       end
 
       it 'includes the school name' do
-        email_body = @email.body.to_s
+        email_body = @email.html_part.decoded
         expect(email_body).to include(school.name)
       end
 
       it 'includes a link to the give consent page' do
-        email_body = @email.body.to_s
+        email_body = @email.html_part.decoded
         node = Capybara::Node::Simple.new(email_body.to_s)
         expect(node).to have_link('Give consent')
       end
@@ -61,7 +61,7 @@ RSpec.describe Schools::ConsentRequestService do
         let!(:preferred_locale) { :cy }
 
         it 'has the expected subject line' do
-          expect(@email.subject).to eql("Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol")
+          expect(@email.subject).to eql('Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol')
         end
       end
     end
@@ -84,7 +84,7 @@ RSpec.describe Schools::ConsentRequestService do
         it 'email should have en and cy subject line' do
           emails = ActionMailer::Base.deliveries.last(2)
           expected_subjects = [
-            "Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol",
+            'Mae angen caniatâd arnom i gael mynediad at ddata ynni eich ysgol',
             "We need permission to access your school's energy data"
           ]
           expect(emails.map(&:subject)).to match_array(expected_subjects)

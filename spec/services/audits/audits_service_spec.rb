@@ -52,11 +52,11 @@ describe Audits::AuditService, type: :service do
   describe '#process' do
     let(:audit) { build(:audit, school: school) }
 
-    it "has no observations" do
+    it 'has no observations' do
       expect(audit.observations.audit.count).to be(0)
     end
 
-    context "calling the service" do
+    context 'calling the service' do
       before do
         service.process(audit)
       end
@@ -65,7 +65,7 @@ describe Audits::AuditService, type: :service do
         expect(audit).to be_persisted
       end
 
-      it "creates observation" do
+      it 'creates observation' do
         expect(audit.observations.audit.count).to be(1)
         expect(audit.observations.audit.first.points).not_to be_nil
       end

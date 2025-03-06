@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   module Schools
     class BillRequestsController < AdminController
@@ -10,15 +12,20 @@ module Admin
       end
 
       def create
-        users = User.where(id: params[:bill_request]["user_ids"])
+        users = User.where(id: params[:bill_request]['user_ids'])
         if users.any?
-          meters = @school.meters.where(id: params[:bill_request]["meter_ids"])
+          meters = @school.meters.where(id: params[:bill_request]['meter_ids'])
           service = ::Schools::BillRequestService.new(@school)
           service.request_documentation!(users, meters)
-          redirect_to admin_meter_reviews_path, notice: "Bill has been requested"
+          redirect_back fallback_location: admin_meter_reviews_path, notice: 'Bill has been requested'
         else
-          redirect_to new_admin_school_bill_request_path(@school), alert: "You must select at least one user."
+          redirect_to new_admin_school_bill_request_path(@school), alert: 'You must select at least one user.'
         end
+      end
+
+      def clear
+        @school.update!(bill_requested: false)
+        redirect_back fallback_location: admin_meter_reviews_path, notice: 'Cleared bill request'
       end
 
       private

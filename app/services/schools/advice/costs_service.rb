@@ -32,7 +32,7 @@ module Schools
         breakdown
       end
 
-      #find the analytics meter for a given mpan
+      # find the analytics meter for a given mpan
       def analytics_meter_for_mpan(mpan_mprn)
         @meter_collection.meter?(mpan_mprn)
       end

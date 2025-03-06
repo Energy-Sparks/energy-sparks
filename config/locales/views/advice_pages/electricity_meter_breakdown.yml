@@ -1,0 +1,26 @@
+---
+en:
+  advice_pages:
+    electricity_meter_breakdown:
+      analysis:
+        long_term_trends:
+          summary: This section looks at longer term changes in electricity use monitored by individual meters at your school.
+        sections: The following sections provide more analysis of the electricity use by individual meters
+      charts:
+        group_by_month_electricity_meter_breakdown:
+          subtitle: This chart shows a monthly breakdown of electricity use by meter over the last twelve months
+          title: Monthly electricity consumption by meter
+        group_by_year_electricity_meter_breakdown:
+          subtitle: This chart shows the annual change in electricity use by meter
+          title: Annual electricity consumption by meter
+      insights:
+        current_usage:
+          title: Your current electricity usage by meter
+        what_is_a_meter_breakdown:
+          link: Learn more
+          text_html: |-
+            <p>
+            Your school has multiple electricity meters. Comparing electricity use across meters will help you focus on
+            improving energy efficiency in certain parts of your school which may have different usage patterns.
+            </p>
+      page_title: Comparisons of electricity use by meter

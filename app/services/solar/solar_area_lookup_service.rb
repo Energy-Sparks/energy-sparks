@@ -30,7 +30,7 @@ module Solar
     end
 
     def find_nearest_area
-      #nearest is last in list
+      # nearest is last in list
       sorted_list = SolarPvTuosArea.all.sort do |a, b|
         distance_from_school_km(b) <=> distance_from_school_km(a)
       end

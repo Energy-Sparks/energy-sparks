@@ -29,7 +29,7 @@ module Transifex
     end
 
     def list_resources
-      url = add_filter("resources")
+      url = add_filter('resources')
       get_data(url)
     end
 
@@ -46,12 +46,12 @@ module Transifex
     end
 
     def create_resource(name, slug, categories = [], priority = 'normal')
-      url = make_url("resources")
+      url = make_url('resources')
       post_data(url, resource_data(name, slug, project_id, categories, priority))
     end
 
     def create_resource_strings_async_upload(slug, content)
-      url = make_url("resource_strings_async_uploads")
+      url = make_url('resource_strings_async_uploads')
       post_data(url, resource_strings_async_upload_data(resource_id(slug), content))
     end
 
@@ -63,7 +63,7 @@ module Transifex
     end
 
     def create_resource_translations_async_downloads(slug, language, mode = 'onlyreviewed')
-      url = make_url("resource_translations_async_downloads")
+      url = make_url('resource_translations_async_downloads')
       post_data(url, resource_translations_async_downloads_data(resource_id(slug), language, mode))
     end
 
@@ -78,7 +78,7 @@ module Transifex
       if slug && language
         url = make_url("resource_language_stats/#{resource_language_id(slug, language)}")
       else
-        url = add_filter("resource_language_stats")
+        url = add_filter('resource_language_stats')
       end
       get_data(url)
     end
@@ -166,11 +166,11 @@ module Transifex
     end
 
     def error_messages(errors)
-      errors.map { |error| error["code"] + ": " + error["detail"] }.join('\n')
+      errors.map { |error| error['code'] + ': ' + error['detail'] }.join('\n')
     end
 
     def json?(response)
-      response.headers["content-type"].include?(CONTENT_TYPE_JSON)
+      response.headers['content-type'].include?(CONTENT_TYPE_JSON)
     end
 
     def error_message(response)
@@ -181,7 +181,7 @@ module Transifex
         response.body
       end
     rescue
-      #problem parsing or traversing json, return original api error
+      # problem parsing or traversing json, return original api error
       response.body
     end
 
@@ -197,17 +197,17 @@ module Transifex
         "data": {
           "attributes": {
             "content": content,
-            "content_encoding": "text"
+            "content_encoding": 'text'
           },
           "relationships": {
             "resource": {
               "data": {
                 "id": resource_id,
-                "type": "resources"
+                "type": 'resources'
               }
             }
           },
-          "type": "resource_strings_async_uploads"
+          "type": 'resource_strings_async_uploads'
         }
       }
     end
@@ -225,18 +225,18 @@ module Transifex
           "relationships": {
             "i18n_format": {
               "data": {
-                "id": "YML_KEY",
-                "type": "i18n_formats"
+                "id": 'YML_KEY',
+                "type": 'i18n_formats'
               }
             },
             "project": {
               "data": {
                 "id": project_id,
-                "type": "projects"
+                "type": 'projects'
               }
             }
           },
-          "type": "resources"
+          "type": 'resources'
         }
       }
     end
@@ -245,8 +245,8 @@ module Transifex
       {
         "data": {
           "attributes": {
-            "content_encoding": "text",
-            "file_type": "default",
+            "content_encoding": 'text',
+            "file_type": 'default',
             "mode": mode,
             "pseudo": false
           },
@@ -254,17 +254,17 @@ module Transifex
             "language": {
               "data": {
                 "id": "l:#{language}",
-                "type": "languages"
+                "type": 'languages'
               }
             },
             "resource": {
               "data": {
                 "id": resource_id,
-                "type": "resources"
+                "type": 'resources'
               }
             }
           },
-          "type": "resource_translations_async_downloads"
+          "type": 'resource_translations_async_downloads'
         }
       }
     end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "school", type: :system do
+RSpec.describe 'school', type: :system do
   let(:school_name) { 'Oldfield Park Infants' }
   let!(:school) { create(:school, :with_school_group, name: school_name) }
   let!(:teacher) { create(:staff, school: school) }
@@ -113,7 +113,7 @@ RSpec.describe "school", type: :system do
         click_on('Edit phone number')
         fill_in 'Mobile phone number', with: '01122333444'
         click_on('Update details')
-        expect(page).to have_content contact.name
+        expect(page).to have_content teacher.name
 
         contact.reload
         expect(contact.mobile_phone_number).to eq('01122333444')
