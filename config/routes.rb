@@ -506,6 +506,8 @@ Rails.application.routes.draw do
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
+    get 'chart-preview', to: 'chart_previews#show'
+
     concerns :issueable
     resources :funders
     resources :users do
@@ -601,7 +603,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :chart_previews
     resources :meter_attributes, only: :index
     resources :meter_reviews, only: :index
     resources :meter_statuses, except: :show
