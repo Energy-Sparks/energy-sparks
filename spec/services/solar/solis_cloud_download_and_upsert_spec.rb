@@ -48,4 +48,22 @@ describe Solar::SolisCloudDownloadAndUpsert do
     upserter.download_and_upsert
     expect(upserter.import_log.records_imported).to eq(0)
   end
+
+  it 'with existing readings, it reloads last five days' do
+    travel_to(Date.new(2023, 11, 16))
+    (Date.new(2023, 11, 10)..Date.new(2023, 11, 15)).each do |day|
+      stub_stations_day(day.iso8601)
+    end
+    create(:solar_pv_meter,
+                   :with_unvalidated_readings,
+                   mpan_mprn: 70_000_001_799_272,
+                   pseudo: true,
+                   end_date: Date.parse('2023-11-15'),
+                   meter_serial_number: '1298491919449314564',
+                   solis_cloud_installation: installation,
+                   school: installation.school)
+    described_class.new(start_date: nil, end_date: nil,
+                       installation:).download_and_upsert
+    expect(installation.meters.first.amr_data_feed_readings.count).to eq(7)
+  end
 end
