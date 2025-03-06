@@ -32,6 +32,7 @@
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
     <% end %>
+    <%= link_to 'Review school setup', school_review_path(school), class: 'dropdown-item' if can? :review_setup, school %>
     <%= if can? :configure, school
           link_to t('manage_school_menu.school_configuration'), edit_school_configuration_path(school),
                   class: 'dropdown-item'

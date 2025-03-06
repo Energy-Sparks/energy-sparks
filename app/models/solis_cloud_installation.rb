@@ -34,7 +34,8 @@ class SolisCloudInstallation < ApplicationRecord
   end
 
   def latest_electricity_reading
-    AmrDataFeedReading.where(meter_id: meters).maximum(:reading_date)
+    reading_date = AmrDataFeedReading.where(meter_id: meters).maximum(:reading_date)
+    reading_date ? Date.parse(reading_date) : nil
   end
 
   def update_station_list

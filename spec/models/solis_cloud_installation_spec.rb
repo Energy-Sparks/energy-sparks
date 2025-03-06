@@ -9,7 +9,7 @@ describe SolisCloudInstallation do
     it 'gets a reading' do
       create(:electricity_meter_with_reading, solis_cloud_installation: installation, reading_date_format: '%Y-%m-%d',
                                               reading_count: 2)
-      expect(installation.latest_electricity_reading).to eq('2019-06-01')
+      expect(installation.latest_electricity_reading).to eq(Date.new(2019, 6, 1))
     end
 
     it 'returns nil with no meter' do
