@@ -215,12 +215,12 @@ RSpec.describe 'Baseload advice page', type: :system do
 
       it 'shows the comparison section' do
         expect(page).to have_content('How do you compare?')
-        within '.school-comparison-component-footer-row' do
+        within '.school-comparison-component .footer-row' do
           expect(page).to have_content('1.1')
           expect(page).to have_content('2.4')
         end
         # check within comparison component
-        within '.school-comparison-component-callout-box' do
+        within '.school-comparison-component .callout-box' do
           expect(page).to have_content('2.1')
         end
         expect(page).to have_content('compare with other schools in your group')
