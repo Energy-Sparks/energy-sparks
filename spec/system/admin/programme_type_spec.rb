@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-describe 'programme type management', type: :system do
+describe 'programme type management', :include_application_helper, type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
-  context 'when todos_parallel feature is switched on' do
+  context with_feature: :todos_parallel do
     let!(:programme_type) do
       create(:programme_type, title: 'Test Programme',
         activity_types: create_list(:activity_type, 3)) # old way
@@ -13,10 +13,6 @@ describe 'programme type management', type: :system do
     # new way
     let!(:activity_type_todos) { create_list(:activity_type_todo, 2, assignable: programme_type) }
     let!(:intervention_type_todos) { create_list(:intervention_type_todo, 2, assignable: programme_type) }
-
-    before do
-      Flipper.enable(:todos_parallel)
-    end
 
     context 'when viewing programme type admin index' do
       before do
@@ -62,9 +58,8 @@ describe 'programme type management', type: :system do
     end
   end
 
-  context 'when todos feature is switched on' do
+  context with_feature: :todos do
     before do
-      Flipper.enable(:todos)
       # enrolment only enabled if targets enabled...
       allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
     end
@@ -117,7 +112,7 @@ describe 'programme type management', type: :system do
         displayed_activity_types = all('#activity-type-todos .nested-fields')
         activity_type_todos.each_with_index do |todo, idx|
           expect(displayed_activity_types[idx]).to have_content(todo.task.name)
-          expect(displayed_activity_types[idx]).to have_content(todo.notes)
+          expect(displayed_activity_types[idx]).not_to have_content(todo.notes)
         end
 
         expect(page).to have_css('#intervention-type-todos .nested-fields', count: 3)
@@ -125,7 +120,7 @@ describe 'programme type management', type: :system do
         displayed_intervention_types = all('#intervention-type-todos .nested-fields')
         intervention_type_todos.each_with_index do |todo, idx|
           expect(displayed_intervention_types[idx]).to have_content(todo.task.name)
-          expect(displayed_intervention_types[idx]).to have_content(todo.notes)
+          expect(displayed_intervention_types[idx]).not_to have_content(todo.notes)
         end
       end
 
@@ -181,9 +176,9 @@ describe 'programme type management', type: :system do
           it 'changes activity order to THREE, ONE, TWO' do
             displayed_todos = all('#activity-type-todos .nested-fields')
 
-            expect(displayed_todos[0]).to have_content(activity_type_todos[2].notes)
-            expect(displayed_todos[1]).to have_content(activity_type_todos[0].notes)
-            expect(displayed_todos[2]).to have_content(activity_type_todos[1].notes)
+            expect(displayed_todos[0]).to have_content(activity_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_content(activity_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_content(activity_type_todos[1].task.name)
           end
 
           context 'when saving' do
@@ -213,9 +208,9 @@ describe 'programme type management', type: :system do
           it 'changes action order to THREE, ONE, TWO' do
             displayed_todos = all('#intervention-type-todos .nested-fields')
 
-            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].notes)
-            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].notes)
-            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].notes)
+            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].task.name)
           end
 
           context 'when saving' do
@@ -341,6 +336,7 @@ describe 'programme type management', type: :system do
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
         expect(page).to have_content('started')
+        expect(page).to have_content(nice_dates(programme.started_on))
         expect(page).to have_content('50 %')
       end
 

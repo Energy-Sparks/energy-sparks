@@ -1,4 +1,4 @@
-<%= component 'titled_section', id: id, classes: classes do |section| %>
+<%= render TitledSectionComponent.new(id: id, classes: classes) do |section| %>
   <% if title? %>
     <% section.with_title do %>
       <%= title %>
@@ -30,14 +30,15 @@
              id="<%= energy %>-overview"
              role="tabpanel"
              aria-labelledby="<%= energy %>-tab">
-            <%= component 'chart',
-                          school: school,
-                          chart_type: chart_config[:chart],
-                          no_zoom: true,
-                          fuel_type: energy,
-                          chart_config: default_chart_config(chart_config),
-                          autoload_chart: index.zero?,
-                          html_class: "analysis-chart #{energy}-overview-analysis-chart" %>
+            <%= render ChartComponent.new(
+                  school: school,
+                  chart_type: chart_config[:chart],
+                  no_zoom: true,
+                  fuel_type: energy,
+                  chart_config: default_chart_config(chart_config),
+                  autoload_chart: index.zero?,
+                  html_class: "analysis-chart #{energy}-overview-analysis-chart"
+                ) %>
         </div>
       <% end %>
     </div>

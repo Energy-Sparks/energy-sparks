@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'cancan/matchers'
 
 describe User do
+  include ActiveJob::TestHelper
+
   it 'generates display name' do
     user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
@@ -342,15 +344,355 @@ describe User do
   end
 
   describe '#destroy' do
-    it 'allow deletion when there are linked observations' do
-      user = create(:user)
-      obs1 = create(:observation, :intervention, created_by: user)
-      obs2 = create(:observation, :intervention, created_by: create(:user), updated_by: user)
-      user.destroy
-      obs1.reload
-      expect(obs1.created_by).to be_nil
-      obs2.reload
-      expect(obs2.updated_by).to be_nil
+    shared_examples 'created by nullified on user destroy' do
+      before { user.destroy! }
+
+      it 'created_by is nullified' do
+        expect(object.reload.created_by).to be_nil
+      end
+    end
+
+    shared_examples 'updated by nullified on user destroy' do
+      before { user.destroy! }
+
+      it 'updated_by is nullified' do
+        expect(object.reload.updated_by).to be_nil
+      end
+    end
+
+    let!(:user) { create(:user) }
+
+    context 'when observation has been created by user' do
+      let!(:object) { create(:observation, :intervention, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when observation has been updated by user' do
+      let!(:object) { create(:observation, :intervention, created_by: create(:user), updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'when energy tariff has been created by user' do
+      let!(:object) { create(:energy_tariff, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when energy tariff has been updated by user' do
+      let!(:object) { create(:energy_tariff, created_by: create(:user), updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'when issue has been created by user' do
+      let!(:object) { create(:issue, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when issue has been updated by user' do
+      let!(:object) { create(:issue, updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'when activity has been updated by user' do
+      let!(:object) { create(:activity, updated_by: user) }
+
+      it_behaves_like 'updated by nullified on user destroy'
+    end
+
+    context 'with linked school groups for issues admin' do
+      let!(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before { user.destroy! }
+
+      it 'default_issues_admin is nullified' do
+        expect(school_group.reload.default_issues_admin_user).to be_nil
+      end
+    end
+
+    context 'when user has been created by another user' do
+      let!(:object) { create(:user, created_by: user) }
+
+      it_behaves_like 'created by nullified on user destroy'
+    end
+
+    context 'when removing from mailchmp' do
+      context 'with user who isnt in the audience' do
+        let!(:user) { create(:school_admin, school: create(:school)) }
+
+        it 'does not submit a job' do
+          expect(Mailchimp::UserDeletionJob).not_to receive(:perform_later)
+          user.destroy!
+        end
+      end
+
+      context 'with subscribed user' do
+        let!(:user) { create(:school_admin, school: create(:school), mailchimp_status: :subscribed) }
+
+        it 'submits a job' do
+          expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+            email_address: user.email,
+            name: user.name,
+            school: user.school.name
+          )
+          user.destroy!
+        end
+
+        context 'with cluster admin' do
+          let!(:user) { create(:school_admin, :with_cluster_schools, mailchimp_status: :subscribed) }
+
+          it 'submits a job to remove all tags' do
+            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+              email_address: user.email,
+              name: user.name,
+              school: user.school.name
+            )
+            user.destroy!
+          end
+        end
+
+        context 'with group admin' do
+          let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+
+          it 'submits a job' do
+            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+              email_address: user.email,
+              name: user.name,
+              school: user.school_group.name
+            )
+            user.destroy!
+          end
+        end
+      end
+    end
+  end
+
+  describe 'MailchimpUpdateable' do
+    subject! { create(:user) }
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          confirmed_at: Time.zone.now,
+          name: 'New',
+          preferred_locale: :cy,
+          role: :admin,
+          school: create(:school),
+          school_group: create(:school_group),
+          staff_role: create(:staff_role, :management),
+          active: false
+        }
+      end
+
+      let(:ignored_field_changes) do
+        {
+          sign_in_count: 5,
+          unlock_token: 'XYZ'
+        }
+      end
+    end
+  end
+
+  describe 'when changing associations used in Mailchimp' do
+    subject!(:user) { create(:user) }
+
+    context 'when changing cluster schools' do
+      it 'updates timestamp when added' do
+        user.add_cluster_school(create(:school))
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+
+      it 'updates timestamp when removed' do
+        school = create(:school)
+        user.add_cluster_school(school)
+        user.remove_school(school)
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+    end
+
+    context 'when changing contacts' do
+      subject!(:user) { create(:school_admin) }
+
+      it 'updates timestamp when contact added' do
+        user.contacts.create!(email_address: user.email, name: user.name, school: user.school)
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+
+      it 'updates timestamp when contact removed' do
+        user.contacts.create!(email_address: user.email, name: user.name, school: user.school)
+        user.contacts.first.delete
+        expect(user.mailchimp_fields_changed_at_previously_changed?).to be(true)
+      end
+    end
+  end
+
+  describe '.mailchimp_update_required' do
+    context 'when mailchimp status is unknown' do
+      let(:user) { create(:school_admin, school: create(:school, :with_school_group)) }
+
+      it { expect(User.mailchimp_update_required).to be_empty }
+    end
+
+    context 'with school admin' do
+      let!(:school) { create(:school, :with_school_group) }
+
+      context 'when user has not been synchronised' do
+        let!(:user) { create(:school_admin, school: school, mailchimp_status: :subscribed) }
+
+        it { expect(User.mailchimp_update_required).to match_array([user])}
+      end
+
+      context 'when user is up to date' do
+        let!(:user) do
+          user = create(:school_admin, school: school, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now) # ensure timestamp is later
+          user
+        end
+
+        it { expect(User.mailchimp_update_required).to be_empty }
+      end
+
+      context 'when updates are pending' do
+        let!(:user) do
+          user = create(:school_admin, school: school, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user
+        end
+
+        context 'when user has been updated' do
+          before do
+            user.update!(name: 'New name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when funder has been updated' do
+          let!(:school) { create(:school, :with_school_group, funder: create(:funder)) }
+
+          before do
+            school.funder.update!(name: 'New funder name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when local authority has been updated' do
+          let!(:school) { create(:school, :with_school_group, local_authority_area: create(:local_authority_area)) }
+
+          before do
+            school.local_authority_area.update!(name: 'New area name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when scoreboard has been updated' do
+          let!(:school) { create(:school, :with_school_group, scoreboard: create(:scoreboard)) }
+
+          before do
+            school.scoreboard.update!(name: 'New scoreboard name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when school_group has been updated' do
+          let!(:school) { create(:school, :with_school_group) }
+
+          before do
+            school.school_group.update!(name: 'New group name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+
+    context 'with group admin' do
+      let!(:user) { create(:group_admin) }
+
+      context 'when user has not been synchronised' do
+        let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+
+        it { expect(User.mailchimp_update_required).to match_array([user])}
+      end
+
+      context 'when updates are pending' do
+        let!(:user) do
+          user = create(:group_admin, mailchimp_status: :subscribed)
+          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user
+        end
+
+        context 'when user has been updated' do
+          before do
+            user.update!(name: 'New name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+
+        context 'when school_group has been updated' do
+          before do
+            user.school_group.update!(name: 'New group name')
+          end
+
+          it { expect(User.mailchimp_update_required).to match_array([user])}
+        end
+      end
+    end
+  end
+
+  describe '#update_email_in_mailchimp' do
+    let(:email) { 'old@example.org'}
+    let(:user) { create(:user, email: email) }
+
+    context 'when email not changed' do
+      it 'does not update mailchimp' do
+        expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)
+        user.update!(name: 'New name')
+      end
+    end
+
+    context 'when email changed' do
+      around do |example|
+        ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'production' do
+          example.run
+        end
+      end
+
+      context 'when user is not in mailchimp' do
+        it 'does not update mailchimp' do
+          expect(Mailchimp::EmailUpdaterJob).not_to receive(:perform_later)
+          user.update!(email: 'new@example.org')
+        end
+      end
+
+      context 'when user is in mailchimp' do
+        let(:user) { create(:user, email: email, mailchimp_status: :subscribed) }
+
+        before do
+          double = instance_double(Mailchimp::AudienceManager)
+          allow(Mailchimp::AudienceManager).to receive(:new).and_return(double)
+          member = ActiveSupport::OrderedOptions.new
+          member.email = email
+          member.status = 'subscribed'
+          allow(double).to receive(:update_contact).and_return(member)
+        end
+
+        it 'updates mailchimp' do
+          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email).and_call_original
+          expect { user.update!(email: 'new@example.org') }.to have_enqueued_job
+          perform_enqueued_jobs
+          user.reload
+          expect(user.mailchimp_updated_at).not_to be_nil
+        end
+      end
     end
   end
 end

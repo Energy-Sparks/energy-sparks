@@ -4,17 +4,18 @@ source 'https://rubygems.org'
 
 ruby '~> 3.2.2'
 
-gem 'rails', '~> 7.1.4'
+gem 'rails', '~> 7.2.2'
 
 # Rails/Core
 gem 'bootsnap'
-gem 'image_processing', '~> 1.13'
+gem 'image_processing', '~> 1.14'
 gem 'jbuilder', '~> 2.13' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
+gem 'ruby-limiter'
 gem 'sprockets'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'wisper' # publish subscribe for ruby objects
@@ -27,7 +28,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.3'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.6'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -100,7 +101,7 @@ gem 'rollbar'
 
 # Internationalisation
 gem 'i18n-tasks', '~> 1.0.14'
-gem 'mobility', '~> 1.2.9'
+gem 'mobility', '~> 1.3.2'
 gem 'mobility-actiontext', '~> 1.1.1'
 
 # Background jobs
@@ -121,6 +122,7 @@ gem 'flipper-ui', '~> 1.3'
 gem 'net-sftp'
 
 group :development, :test do
+  gem 'better_html'
   gem 'bullet', require: false # use bullet to optimise queries
   gem 'climate_control'
   gem 'debug'
@@ -136,6 +138,10 @@ group :development, :test do
   gem 'terminal-notifier-guard', require: false
   gem 'webmock'
   gem 'wisper-rspec', require: false
+end
+
+group :development, :production do
+  gem 'lookbook'
 end
 
 group :development do
@@ -165,5 +171,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
   gem 'simplecov', require: false, group: :test
+  gem 'sqlite3'
   gem 'test-prof'
 end

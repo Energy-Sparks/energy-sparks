@@ -1,0 +1,46 @@
+<%= i18n_prefix = "advice_pages.#{fuel_type}_long_term"
+    render 'schools/advice/section_title',
+           section_id: 'long-term-trends',
+           section_title: t("#{i18n_prefix}.analysis.long_term_trends.title") %>
+
+<p><%= t("#{i18n_prefix}.analysis.long_term_trends.summary") %></p>
+
+<% if analysis_dates.months_of_data > 23 %>
+  <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.subtitle_html') %>
+  <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.subtitle_html') %>
+  <%= render MeterSelectionChartComponent.new(
+        chart_type: :"#{fuel_type}_longterm_trend_academic_year",
+        meter_selection: meter_selection,
+        chart_subtitle_key: "#{i18n_prefix}.charts.#{fuel_type}_longterm_trend.subtitle_html"
+      ) do |c| %>
+    <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.title') %>
+    <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.title') %>
+    <% c.with_title { t("advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_longterm_trend.title_academic_year") } %>
+    <% c.with_footer do %>
+      <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_longterm_trend.explanation') %>
+      <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_longterm_trend.explanation') %>
+      <p><%= t("advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_longterm_trend.explanation") %></p>
+      <% if fuel_type == :gas %>
+        <p><%= t('advice_pages.gas_long_term.charts.gas_longterm_trend.temp_compensation') %></p>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.group_by_week_electricity_unlimited.subtitle_html') %>
+<%# i18n-tasks-use t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.subtitle_html') %>
+<%= render MeterSelectionChartComponent.new(
+      chart_type: :"group_by_week_#{fuel_type}_unlimited",
+      meter_selection: meter_selection,
+      chart_subtitle_key: "#{i18n_prefix}.charts.group_by_week_#{fuel_type}_unlimited.subtitle_html"
+    ) do |c| %>
+  <% c.with_title { t("#{i18n_prefix}.charts.group_by_week_#{fuel_type}_unlimited.title") } %>
+  <% c.with_header do %>
+    <p><%= t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.header') %></p>
+  <% end if fuel_type == :gas %>
+  <% c.with_footer do %>
+    <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.group_by_week_electricity_unlimited.explanation') %>
+    <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.group_by_week_gas_unlimited.explanation') %>
+    <p><%= t("#{i18n_prefix}.charts.group_by_week_#{fuel_type}_unlimited.explanation") %></p>
+  <% end %>
+<% end %>

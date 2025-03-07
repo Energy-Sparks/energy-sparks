@@ -96,7 +96,9 @@ en:
       new:
         title: New Audit
       show:
+        completed_message: Congratulations, you completed all recommended actions and activities on %{date}!
         completed_on: Completed on
+        completed_points: Completing all of these tasks will award you
         completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
         points:
@@ -247,12 +249,12 @@ en:
       edit:
         edit_meter: Edit meter
       form:
-        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
+        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy and Perse integration
         create_meter: Create Meter
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
-        leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
+        leave_this_blank_message: Leave this as "No" for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
         meter_system: Meter system
         name: Name
@@ -274,6 +276,7 @@ en:
         large_gaps: Gaps
         latest: To
         manage_solar_api_feeds: Manage Solar API feeds
+        manual_reads: Manual reads?
         meter: Meter
         meter_reviews: Completed DCC meter reviews
         meter_system: Meter system
@@ -300,8 +303,10 @@ en:
         no_meter_issues: No issues or notes for meter
         title: Meter Issues & Notes - %{name}
       show:
+        admin_details: Admin details
         available_cache_range: Available date range
         basic_information: Basic information
+        data_feed_config_report: Data feed config report
         data_source: Data source
         dcc_consented: DCC Consented
         dcc_information: DCC (SMETS2) information
@@ -309,6 +314,7 @@ en:
         download_readings: Readings
         grant_consent: Grant consent
         inventory: Inventory
+        loading_report: Loading report
         meter: Meter
         n3rgy_api_status: n3rgy API Status
         n3rgy_consent_confirmed: n3rgy Confirm Consented
@@ -330,6 +336,18 @@ en:
       audit:
         message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
         message_older_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your energy audit
+        progress:
+          message_html:
+            one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
+            other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
+            zero: You haven't yet completed any of the tasks recommended in your recent energy audit
+          message_older_html:
+            one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your energy audit
+            other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your energy audit
+            zero: You haven't yet completed any of the tasks recommended in your energy audit
+          summary_final_html: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
+          summary_html: Complete the others to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
+          summary_none_html: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
         summary_html:
           one: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{count}</strong> bonus point for completing all audit tasks
           other: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{count}</strong> bonus points for completing all audit tasks
@@ -354,7 +372,32 @@ en:
         message: Make a plan for reducing energy use to save money and reduce emissions by focusing on these key areas
       programme:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
+        join:
+          completed_message_html:
+            one: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus point?
+            other: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus points?
+            zero: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it as complete?
+          message_html:
+            one: You've recently completed a task that is part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
+            other: You've recently completed %{count} tasks that are part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
         message_html: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme
+        progress:
+          message_html:
+            one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks in the <strong>%{title}</strong> programme
+            other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks in the <strong>%{title}</strong> programme
+            zero: You haven't yet completed any of the tasks in the <strong>%{title}</strong> programme
+          summary_final_html:
+            one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
+            other: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            zero: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points
+          summary_html:
+            one: Complete the final <strong>%{uncompleted_count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
+            other: Complete the final <strong>%{uncompleted_count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            zero: Complete the final <strong>%{uncompleted_count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points
+          summary_none_html:
+            one: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
+            other: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            zero: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points
         start_a_new_programme: Start a new programme
         summary_bonus_html:
           one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
@@ -391,6 +434,8 @@ en:
         description: These suggestions are based on your most recently recorded activity
         title: Based on your recent activity
       title: Recommended activities and actions
+    review:
+      title: School setup review
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
@@ -647,14 +692,6 @@ en:
         energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
         energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
         subscribe_to_school_alerts: Subscribe to school alerts
-      auto_subscribe_newsletter:
-        newsletters_main_communication_channel: Newsletters are our main communication channel for
-        newsletters_main_communication_channel_list_item_1: highlighting new resources
-        newsletters_main_communication_channel_list_item_2: sharing featured activities
-        newsletters_main_communication_channel_list_item_3: celebrating best practice and success stories at participating schools
-        newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
-        subscribe_to_newsletters: Subscribe to newsletters
-        we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
       edit:
         title: Edit %{user_role} account
         update_account: Update account
@@ -671,7 +708,6 @@ en:
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
-        lock: Lock
         make_school_admin: Make school admin
         name: Name
         new_pupil_account: New pupil account
@@ -698,33 +734,34 @@ en:
         title: New %{user_role} account
     your_school_estates:
       edit:
-        alternative_heating_sources:
+        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        heating_sources:
           air_source_heat_pump:
-            label: Our school has an air source heat pump
-            percentage: What percentage of the school is using the air source heat pump for heating?
+            percentage: What percentage of the school floor area is using the air source heat pump for heating?
           biomass:
-            label: Our school has a biomass boiler
-            percentage: What percentage of the school is using a biomass boiler for heating?
+            percentage: What percentage of the school floor area is using a biomass boiler for heating?
+          chp:
+            percentage: What percentage of the school floor area is using a combined heat and power (CHP) system for heating?
           description_1: Tell us about any alternative sources of heating that you use in your school
           description_2: At the moment we only analyse your gas data. But by letting us know about other sources, we can qualify any potential cost savings or recommendations
           district_heating:
-            label: Our school has district heating
-            percentage: What percentage of the school is using district heating for heating?
+            percentage: What percentage of the school floor area is using district heating for heating?
+          electric:
+            percentage: What percentage of the school floor area is using electric for heating?
+          gas:
+            percentage: What percentage of the school floor area is using gas for heating?
           ground_source_heat_pump:
-            label: Our school has a ground source heat pump
-            percentage: What percentage of the school is using the ground source heat pump for heating?
+            percentage: What percentage of the school floor area is using the ground source heat pump for heating?
           header: Alternative heating sources
           lpg:
-            label: Our school is using LPG for heating
-            percentage: What percentage of the school using LPG for heating?
+            percentage: What percentage of the school floor area using LPG for heating?
           notes: Is there anything else we should know?
           oil:
-            label: Our school uses oil for heating
-            percentage: What percentage of the school is heated by oil heating?
+            percentage: What percentage of the school floor area is heated by oil heating?
+          underfloor:
+            percentage: What percentage of the school floor area is using underfloor heating?
           water_source_heat_pump:
-            label: Our school has a water source heat pump
-            percentage: What percentage of the school is using the water source heat pump for heating?
-        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+            percentage: What percentage of the school floor area is using the water source heat pump for heating?
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels
         solar_panels_label: Our school has solar PV panels

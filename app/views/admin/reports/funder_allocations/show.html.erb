@@ -1,6 +1,4 @@
-<% content_for :page_title, 'Funder allocation report' %>
-
-<h1>Funder school count</h1>
+<%= render 'admin/reports/title', title: 'Funder allocation report' %>
 
 <h2>Funded schools</h2>
 
@@ -18,6 +16,8 @@
       <th scope="col">Funder</th>
       <th scope="col">Visible not data enabled</th>
       <th scope="col">Visible and data enabled</th>
+      <th scope="col">Onboarding</th>
+      <th scope="col">Total</th>
     </tr>
   </thead>
   <tbody>
@@ -26,12 +26,16 @@
         <td><%= funder %></td>
         <td><%= school_count %></td>
         <td><%= @funders_visible_and_enabled[funder] %></td>
+        <td><%= @onboarding[funder] %>
+        <td><%= school_count + @funders_visible_and_enabled[funder] + @onboarding[funder] %></td>
       </tr>
     <% end %>
     <tr>
       <td>No funder</td>
       <td><%= @unfunded_visible %></td>
       <td><%= @unfunded_visible_and_enabled %></td>
+      <td><%= @unfunded_onboarding %></td>
+      <td><%= @unfunded_visible + @unfunded_visible_and_enabled + @unfunded_onboarding %></td>
     </tr>
   </tbody>
 <table>

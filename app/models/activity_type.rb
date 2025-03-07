@@ -78,12 +78,16 @@ class ActivityType < ApplicationRecord
 
   has_many :activity_type_suggestions
   has_many :suggested_types, through: :activity_type_suggestions
-  has_many :programme_activities
   has_many :activities, inverse_of: :activity_type
 
+  # old relationships to be removed when todos feature removed
+  has_many :programme_activities
+
+  # old relationships to be removed when todos feature removed
   has_many :programme_type_activity_types
   has_many :programme_types, through: :programme_type_activity_types
 
+  # old relationships to be removed when todos feature removed
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
 
@@ -138,6 +142,10 @@ class ActivityType < ApplicationRecord
 
   def count_existing_for_academic_year(school, academic_year)
     school.activities.where(activity_type: self).where(happened_on: academic_year.start_date..academic_year.end_date).count
+  end
+
+  def public_type
+    :activity
   end
 
   private

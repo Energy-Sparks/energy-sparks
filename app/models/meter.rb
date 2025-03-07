@@ -9,18 +9,22 @@
 #  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :enum             default("no"), not null
+#  gas_unit                       :enum
 #  id                             :bigint(8)        not null, primary key
 #  low_carbon_hub_installation_id :bigint(8)
+#  manual_reads                   :boolean          default(FALSE), not null
 #  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
 #  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
 #  mpan_mprn                      :bigint(8)
 #  name                           :string
+#  perse_api                      :enum
 #  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
 #  school_id                      :bigint(8)        not null
 #  solar_edge_installation_id     :bigint(8)
+#  solis_cloud_installation_id    :bigint(8)
 #  updated_at                     :datetime         not null
 #
 # Indexes
@@ -33,6 +37,7 @@
 #  index_meters_on_procurement_route_id            (procurement_route_id)
 #  index_meters_on_school_id                       (school_id)
 #  index_meters_on_solar_edge_installation_id      (solar_edge_installation_id)
+#  index_meters_on_solis_cloud_installation_id     (solis_cloud_installation_id)
 #
 # Foreign Keys
 #
@@ -40,12 +45,14 @@
 #  fk_rails_...  (meter_review_id => meter_reviews.id)
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (solar_edge_installation_id => solar_edge_installations.id) ON DELETE => cascade
+#  fk_rails_...  (solis_cloud_installation_id => solis_cloud_installations.id) ON DELETE => cascade
 #
 
 class Meter < ApplicationRecord
   belongs_to :school, inverse_of: :meters
   belongs_to :low_carbon_hub_installation, optional: true
   belongs_to :solar_edge_installation, optional: true
+  belongs_to :solis_cloud_installation, optional: true
   belongs_to :meter_review, optional: true
   belongs_to :data_source, optional: true
   belongs_to :procurement_route, optional: true
@@ -99,12 +106,18 @@ class Meter < ApplicationRecord
       )
   }
 
+  scope :with_active_meter_attributes, ->(attribute_types) {
+    joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
+  }
+
   # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
   # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
   # Other options are: NHH (Non Half-Hourly), HH (Half-Hourly), and SMETS2/smart (SMETS2 Smart Meters)
   enum :meter_system, { nhh_amr: 0, nhh: 1, hh: 2, smets2_smart: 3 }
   enum :dcc_meter, %w[no smets2 other].to_h { |v| [v, v] }, prefix: true
+  enum :perse_api, %i[half_hourly].index_with(&:to_s), prefix: true
+  enum :gas_unit, %i[kwh m3 ft3 hcf].index_with(&:to_s), prefix: true
 
   delegate :area_name, to: :school
 
@@ -117,6 +130,7 @@ class Meter < ApplicationRecord
                                   message: 'for electricity meters should be a 13 to 14 digit number' }
   validates :mpan_mprn, format: { with: /\A\d{1,15}\Z/, if: :gas?,
                                   message: 'for gas meters should be a 1-15 digit number' }
+  validates :gas_unit, absence: true, if: -> { meter_type != 'gas' }
   validate :pseudo_meter_type_not_changed, on: :update, if: :pseudo
   validate :pseudo_mpan_mprn_not_changed, on: :update, if: :pseudo
 

@@ -661,14 +661,6 @@ cy:
         energy_sparks_alerts_list_item_2: yn amlygu problemau hirdymor gyda'ch defnydd o ynni gydag argymhellion penodol i arbed ynni
         energy_sparks_alerts_list_item_3: yn rhoi gwybod i chi os ydych yn gwneud yn dda o gymharu ag ysgolion eraill a'ch perfformiad yn y gorffennol
         subscribe_to_school_alerts: Tanysgrifio i rybuddion ysgol
-      auto_subscribe_newsletter:
-        newsletters_main_communication_channel: Cylchlythyrau yw ein prif sianel gyfathrebu ar gyfer
-        newsletters_main_communication_channel_list_item_1: tynnu sylw at adnoddau newydd
-        newsletters_main_communication_channel_list_item_2: rhannu gweithgareddau sydd dan sylw
-        newsletters_main_communication_channel_list_item_3: dathlu arfer gorau a llwyddiannau yn yr ysgolion sy'n cymryd rhan
-        newsletters_main_communication_channel_list_item_4: hyrwyddo gwasanaethau ategol megis gweithdai, hyfforddiant ac archwiliadau
-        subscribe_to_newsletters: Tanysgrifio i gylchlythyrau
-        we_strongly_recommend_you_sign_up: Rydym yn argymell yn gryf eich bod yn cofrestru i gael y gorau o Sbarcynni (ni fyddwn byth yn rhannu eich cyfeiriad e-bost ag unrhyw un arall)
       edit:
         title: Golygu cyfrif %{user_role}
         update_account: Diweddaru cyfrif
@@ -685,7 +677,6 @@ cy:
         could_not_decrypt: "(methu â dadgryptio)"
         email: E-bost
         introduction: Mae gan gyfrifon gweinyddwr ysgolion fynediad at holl swyddogaethau Sbarcynni a gallant reoli defnyddwyr eraill a diweddaru manylion yr ysgol
-        lock: Cloi
         make_school_admin: Gwneud yn weinyddwr ysgol
         name: Enw
         new_pupil_account: Cyfrif disgybl newydd
@@ -712,31 +703,24 @@ cy:
         title: Cyfrif %{user_role} newydd
     your_school_estates:
       edit:
-        alternative_heating_sources:
+        heating_sources:
           air_source_heat_pump:
-            label: Mae gan ein hysgol bwmp gwres ffynhonnell aer
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell aer ar gyfer gwresogi?
           biomass:
-            label: Mae gan ein hysgol foeler biomas
             percentage: Pa ganran o'r ysgol sy'n defnyddio boeler biomas ar gyfer gwresogi?
           description_1: Dywedwch wrthym am unrhyw ffynonellau gwresogi eraill rydych yn eu defnyddio yn eich ysgol
           description_2: Ar hyn o bryd dim ond eich data nwy rydym yn eu dadansoddi. Ond trwy roi gwybod i ni am ffynonellau eraill, gallwn gymhwyso unrhyw arbedion cost neu argymhellion posibl
           district_heating:
-            label: Mae gan ein hysgol wresogi ardal
             percentage: Pa ganran o'r ysgol sy'n defnyddio gwresogi ardal ar gyfer gwresogi?
           ground_source_heat_pump:
-            label: Mae gan ein hysgol bwmp gwres o'r ddaear
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell ddaear ar gyfer gwresogi?
           header: Ffynonellau gwresogi amgen
           lpg:
-            label: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
             percentage: Pa ganran o'r ysgol sy'n defnyddio LPG ar gyfer gwresogi?
           notes: A oes unrhyw beth arall y dylem ei wybod?
           oil:
-            label: Mae ein hysgol yn defnyddio olew ar gyfer gwresogi
             percentage: Pa ganran o'r ysgol sy'n cael ei gwresogi gan gwresogi olew?
           water_source_heat_pump:
-            label: Mae gan ein hysgol bwmp gwres ffynhonnell dŵr
             percentage: Pa ganran o'r ysgol sy'n defnyddio'r pwmp gwres ffynhonnell dŵr ar gyfer gwresogi?
         description: Mae Sbarcynni yn defnyddio amrywiaeth o ddata am eich ysgol i deilwra ein dadansoddiad a'n cyngor. Drwy ddweud ychydig mwy wrthym am eich ystâd ysgol gallwn wella'r cymorth rydym yn ei gynnig i chi
         school_was_successfully_updated: Diweddarwyd yr ysgol yn llwyddiannus

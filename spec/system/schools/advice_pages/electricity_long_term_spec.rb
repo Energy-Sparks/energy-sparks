@@ -29,6 +29,7 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
 
   context 'when a school admin' do
     before do
+      travel_to(Date.new(2024, 12, 1))
       sign_in(create(:school_admin, school:))
       visit school_advice_electricity_long_term_path(school)
     end
@@ -132,10 +133,10 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
           expect(page).to have_content(I18n.t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_electricity.title'))
           expect(page).to have_css('#chart_wrapper_management_dashboard_group_by_week_electricity')
 
-          expect(page).to have_css('#chart_wrapper_electricity_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_electricity_by_month_acyear_0_1')
           expect(page).to have_no_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
           expect(page).to have_no_css('#chart_wrapper_group_by_week_electricity_unlimited')
-          expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend')
+          expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend_academic_year')
         end
       end
 
@@ -156,9 +157,9 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
           expect(page).to have_css('#chart_wrapper_group_by_week_electricity')
           expect(page).to have_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
           expect(page).to have_css('#chart_wrapper_group_by_week_electricity_unlimited')
-          expect(page).to have_css('#chart_wrapper_electricity_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_electricity_by_month_acyear_0_1')
           # not enough data for this
-          expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend')
+          expect(page).to have_no_css('#chart_wrapper_electricity_longterm_trend_academic_year')
         end
       end
 
@@ -181,8 +182,8 @@ RSpec.describe 'electricity long term advice page', :aggregate_failures do
           expect(page).to have_css('#chart_wrapper_group_by_week_electricity')
           expect(page).to have_css('#chart_wrapper_group_by_week_electricity_versus_benchmark')
           expect(page).to have_css('#chart_wrapper_group_by_week_electricity_unlimited')
-          expect(page).to have_css('#chart_wrapper_electricity_by_month_year_0_1')
-          expect(page).to have_css('#chart_wrapper_electricity_longterm_trend')
+          expect(page).to have_css('#chart_wrapper_electricity_by_month_acyear_0_1')
+          expect(page).to have_css('#chart_wrapper_electricity_longterm_trend_academic_year')
         end
       end
     end

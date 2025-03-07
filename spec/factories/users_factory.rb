@@ -13,11 +13,13 @@ FactoryBot.define do
       trait :with_cluster_schools do
         transient do
           count { 1 }
+          existing_school { nil }
         end
 
         after(:build) do |user, evaluator|
           user.cluster_schools = create_list(:school, evaluator.count, active: true, public: true)
           user.cluster_schools << user.school
+          user.cluster_schools << evaluator.existing_school if evaluator.existing_school
         end
       end
     end
@@ -62,6 +64,7 @@ FactoryBot.define do
     end
 
     factory :group_admin do
+      name { 'Group admin'}
       role { :group_admin }
       school_group
     end
@@ -73,6 +76,12 @@ FactoryBot.define do
     trait :skip_confirmed do
       after(:build) do |user, _evaluator|
         user.skip_confirmation_notification!
+      end
+    end
+
+    trait :subscribed_to_alerts do
+      after(:build) do |user, _evaluator|
+        user.contacts << create(:contact_with_name_email_phone, school: user.school)
       end
     end
   end

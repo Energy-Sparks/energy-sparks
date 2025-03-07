@@ -1,4 +1,12 @@
 module Recordable
+  extend ActiveSupport::Concern
+
+  included do
+    has_many :todos, as: :task, inverse_of: :task, dependent: :destroy
+    has_many :programme_types_todo, through: :todos, source: :assignable, source_type: 'ProgrammeType'
+    has_many :audits_todo, through: :todos, source: :assignable, source_type: 'Audit'
+  end
+
   # Return the point score when a given school records this recordable on a given
   # date
   #
@@ -22,5 +30,10 @@ module Recordable
   # recordable in the given academic year
   def count_existing_for_academic_year(_school, _academic_year)
     nil
+  end
+
+  # Publically we refer to ActivityType as activity and InterventionType as action
+  def public_type
+    raise NoMethodError, 'Implement in including class!'
   end
 end

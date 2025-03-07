@@ -111,7 +111,6 @@ en:
             <li>email support with energy management and sustainability education</li>
             <li>access to >%{activities_count} pupil activities with downloadable lesson plans, workshops and additional resources</li>
             <li>guidance on >%{actions_count} adult led low and no-cost energy efficiency actions</li>
-            <li>analysis of up to 10 gas and electricity meters</li>
             <li>integrated solar data (if relevant)</li>
             <li>support with upgrading meters to half-hourly metering (if needed)</li>
           </ul>
@@ -129,7 +128,7 @@ en:
           </p>
         title: Free places
       groups:
-        price: "£495 + VAT"
+        price: "£545 + VAT"
         title: Multi-Academy Trust and Local Authority clusters
       independent_schools:
         price: "£595 + VAT"
@@ -145,10 +144,10 @@ en:
             </ul>
           title: On-site energy audits
         metering:
-          price: "£10 + VAT per meter"
-          title: Analysis of data from more than 10 meters
+          price: "£25 + VAT per meter"
+          title: Analysis of data from more than 5 meters
         private_tool:
-          price: "£75 + VAT per school per year"
+          price: "£95 + VAT per school per year"
           title: Private energy management tool, accessible only to staff
         title: Additional optional services
         virtual_audits:
@@ -158,6 +157,9 @@ en:
           price: "£250-£500, dependent on location"
           title: In-school educational workshops
       state_schools:
+        note: per school per year, with less than 250 pupils
+        note_large: per school per year, with more than 250 pupils
         price: "£545 + VAT"
+        price_large: "£595 + VAT"
         title: Individual state schools
       title: Pricing

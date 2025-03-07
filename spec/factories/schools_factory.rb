@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :school do
-    sequence(:urn)
+    sequence(:urn, 10_000)
     sequence(:number_of_pupils)
     sequence(:name, 'School AAAAA1')
     school_type     { :primary }
@@ -27,6 +27,18 @@ FactoryBot.define do
     trait :with_school_group do
       after(:create) do |school, _evaluator|
         school.update(school_group: create(:school_group))
+      end
+    end
+
+    trait :with_scoreboard do
+      after(:create) do |school, _evaluator|
+        school.update(scoreboard: create(:scoreboard))
+      end
+    end
+
+    trait :with_local_authority do
+      after(:create) do |school, _evaluator|
+        school.update(local_authority_area: create(:local_authority_area))
       end
     end
 

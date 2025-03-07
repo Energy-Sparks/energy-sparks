@@ -52,6 +52,7 @@ class InterventionType < ApplicationRecord
   has_many :alert_type_rating_intervention_types, dependent: nil
   has_many :alert_type_ratings, through: :alert_type_rating_intervention_types
 
+  # old relationships to be removed when todos feature removed
   has_many :audit_intervention_types, dependent: nil
   has_many :audits, through: :audit_intervention_types
 
@@ -77,7 +78,7 @@ class InterventionType < ApplicationRecord
   before_save :copy_searchable_attributes
 
   def actions_for_school(school)
-    observations.for_school(school)
+    observations.visible.for_school(school)
   end
 
   # override default name for this resource in transifex
@@ -91,6 +92,10 @@ class InterventionType < ApplicationRecord
 
   def count_existing_for_academic_year(school, academic_year)
     school.observations.where(intervention_type: self).where(at: academic_year.start_date..academic_year.end_date).count
+  end
+
+  def public_type
+    :action
   end
 
   private

@@ -91,6 +91,10 @@ RSpec.configure do |config|
 
   config.include ActiveSupport::Testing::TimeHelpers
   config.include ShowMeTheCookies, type: :system
+
+  config.expect_with :rspec do |expectations|
+    expectations.max_formatted_output_length = 500
+  end
 end
 
 Shoulda::Matchers.configure do |config|

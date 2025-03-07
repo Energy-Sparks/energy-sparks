@@ -13,6 +13,9 @@ en:
       message_5: Explore eco-team and classroom activities for pupils.
       message_6: Share energy saving ideas and compete against other schools.
     enrol_your_school: Find out more
+    feature:
+      description_html: Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.
+      header: Helping schools cut energy costs and fight climate change
     funnels:
       local_authority:
         button: Energy Sparks for Local Authorities
@@ -29,17 +32,35 @@ en:
     quote:
       job_title: Head of School
       text_html: Engaging with Energy Sparks has been a really worthwhile experience. Not only has the school saved money, the children have become more aware of the ways that they can help to reduce energy use&hellip;
+    statement:
+      description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.
+      header: Are you looking to cut energy bills and take action on climate change?
+    stats:
+      card_1:
+        figure: 10%
+        header: Save energy
+        subtext: Typical energy and carbon savings seen by schools in their first year with Energy Sparks
+      card_2:
+        figure: "£5,000"
+        header: Primary schools
+        subtext: and 7 tonnes CO₂ - average saving in 2023/24
+      card_3:
+        figure: "£20,000"
+        header: Secondary schools
+        subtext: and 26 tonnes CO₂ - average saving in 2023/24
+      card_4:
+        figure: 70%
+        header: Empower pupils
+        subtext: Number of participating schools using Energy Sparks with their eco-team to inform impactful action
     sub_title: A unique school-specific energy management tool and education programme
     title: We help schools become more energy efficient and fight climate change.
   mailchimp:
-    continue: Continue
     example: 'eg: hello@example.com'
     latest_news_title: Get the latest news from Energy Sparks in your inbox
     more_newsletters: More newsletters
     never_share_your_email_promise: We'll never share your email with anyone else
     signup_now: Sign-up now
     title_html: Stay up to date&hellip;
-    your_email_address: Your email address
   newsletters:
     title: Newsletters
   school_count:

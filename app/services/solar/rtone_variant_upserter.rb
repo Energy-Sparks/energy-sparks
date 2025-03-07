@@ -1,41 +1,22 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Solar
-  class RtoneVariantUpserter
-    def initialize(installation:, readings:, import_log:)
-      @rtone_variant_installation = installation
-      @readings = readings
-      @import_log = import_log
-    end
-
+  class RtoneVariantUpserter < BaseUpserter
     def perform
-      Rails.logger.info "Upserting #{@readings.count} for #{@rtone_variant_installation.rtone_meter_id} at #{@rtone_variant_installation.school.name}"
-
-      Amr::DataFeedUpserter.new(@rtone_variant_installation.amr_data_feed_config, @import_log, data_feed_reading_array(@readings[:readings])).perform
-
-      Rails.logger.info "Upserted #{@import_log.records_updated} inserted #{@import_log.records_imported}for #{@rtone_variant_installation.rtone_meter_id} at #{@rtone_variant_installation.school.name}"
+      log_perform_start
+      Amr::DataFeedUpserter.new(@amr_data_feed_config, @amr_data_feed_import_log,
+                                data_feed_reading_array(@readings[:readings],
+                                                        @installation.meter.id,
+                                                        @installation.meter.mpan_mprn)).perform
+      log_perform_upsert
     end
 
     private
 
-    def data_feed_reading_array(readings_hash)
-      readings_hash.map do |reading_date, one_day_amr_reading|
-        {
-          amr_data_feed_config_id: @rtone_variant_installation.amr_data_feed_config.id,
-          meter_id: meter_id,
-          mpan_mprn: mpan_mprn,
-          reading_date: reading_date,
-          readings: one_day_amr_reading.kwh_data_x48
-        }
-      end
-    end
-
-    def meter_id
-      @rtone_variant_installation.meter.id
-    end
-
-    def mpan_mprn
-      @rtone_variant_installation.meter.mpan_mprn
+    def data_feed_reading_array(readings_hash, meter_id, mpan_mprn)
+      super(readings_hash.transform_values(&:kwh_data_x48), meter_id, mpan_mprn)
     end
   end
 end

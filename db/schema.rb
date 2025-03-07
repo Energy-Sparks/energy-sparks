@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_03_145810) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -19,9 +19,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "amr_data_feed_config_convert_to_kwh", ["no", "m3", "meter"]
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
+  create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
+  create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
+  create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -416,12 +420,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.string "period_field"
     t.boolean "enabled", default: true, null: false
     t.text "reading_time_field"
-    t.boolean "convert_to_kwh", default: false
+    t.enum "convert_to_kwh", default: "no", enum_type: "amr_data_feed_config_convert_to_kwh"
     t.boolean "delayed_reading", default: false, null: false
     t.enum "half_hourly_labelling", enum_type: "half_hourly_labelling"
     t.boolean "allow_merging", default: false, null: false
+    t.integer "missing_reading_window", default: 5
+    t.bigint "owned_by_id"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
+    t.index ["owned_by_id"], name: "index_amr_data_feed_configs_on_owned_by_id"
   end
 
   create_table "amr_data_feed_import_logs", force: :cascade do |t|
@@ -614,33 +621,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.index ["school_id"], name: "index_cluster_schools_users_on_school_id"
     t.index ["user_id", "school_id"], name: "index_cluster_schools_users_on_user_id_and_school_id"
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
-  end
-
-  create_table "cms_categories", force: :cascade do |t|
-    t.string "icon"
-    t.string "slug", null: false
-    t.boolean "published", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "cms_pages", force: :cascade do |t|
-    t.bigint "category_id", null: false
-    t.string "slug", null: false
-    t.boolean "published", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_cms_pages_on_category_id"
-  end
-
-  create_table "cms_sections", force: :cascade do |t|
-    t.bigint "page_id", null: false
-    t.string "slug", null: false
-    t.integer "position", default: 0, null: false
-    t.boolean "published", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["page_id"], name: "index_cms_sections_on_page_id"
   end
 
   create_table "comparison_custom_periods", force: :cascade do |t|
@@ -967,6 +947,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
 
   create_table "funders", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "mailchimp_fields_changed_at"
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|
@@ -1178,6 +1159,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "mailchimp_fields_changed_at"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -1286,6 +1268,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.bigint "admin_meter_statuses_id"
     t.bigint "procurement_route_id"
     t.integer "meter_system", default: 0
+    t.enum "perse_api", enum_type: "meter_perse_api"
+    t.bigint "solis_cloud_installation_id"
+    t.boolean "manual_reads", default: false, null: false
+    t.enum "gas_unit", enum_type: "gas_unit"
     t.index ["data_source_id"], name: "index_meters_on_data_source_id"
     t.index ["low_carbon_hub_installation_id"], name: "index_meters_on_low_carbon_hub_installation_id"
     t.index ["meter_review_id"], name: "index_meters_on_meter_review_id"
@@ -1294,6 +1280,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.index ["procurement_route_id"], name: "index_meters_on_procurement_route_id"
     t.index ["school_id"], name: "index_meters_on_school_id"
     t.index ["solar_edge_installation_id"], name: "index_meters_on_solar_edge_installation_id"
+    t.index ["solis_cloud_installation_id"], name: "index_meters_on_solis_cloud_installation_id"
   end
 
   create_table "mobility_string_translations", force: :cascade do |t|
@@ -1536,6 +1523,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.bigint "default_procurement_route_gas_id"
     t.bigint "default_procurement_route_solar_pv_id"
     t.integer "group_type", default: 0
+    t.datetime "mailchimp_fields_changed_at"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
@@ -1696,34 +1684,47 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.integer "chart_preference", default: 0, null: false
     t.integer "country", default: 0, null: false
     t.integer "funding_status", default: 0, null: false
-    t.boolean "alternative_heating_oil", default: false, null: false
-    t.integer "alternative_heating_oil_percent", default: 0
-    t.text "alternative_heating_oil_notes"
-    t.boolean "alternative_heating_lpg", default: false, null: false
-    t.integer "alternative_heating_lpg_percent", default: 0
-    t.text "alternative_heating_lpg_notes"
-    t.boolean "alternative_heating_biomass", default: false, null: false
-    t.integer "alternative_heating_biomass_percent", default: 0
-    t.text "alternative_heating_biomass_notes"
-    t.boolean "alternative_heating_district_heating", default: false, null: false
-    t.integer "alternative_heating_district_heating_percent", default: 0
-    t.text "alternative_heating_district_heating_notes"
+    t.boolean "heating_oil", default: false, null: false
+    t.integer "heating_oil_percent", default: 0
+    t.text "heating_oil_notes"
+    t.boolean "heating_lpg", default: false, null: false
+    t.integer "heating_lpg_percent", default: 0
+    t.text "heating_lpg_notes"
+    t.boolean "heating_biomass", default: false, null: false
+    t.integer "heating_biomass_percent", default: 0
+    t.text "heating_biomass_notes"
+    t.boolean "heating_district_heating", default: false, null: false
+    t.integer "heating_district_heating_percent", default: 0
+    t.text "heating_district_heating_notes"
     t.integer "region"
     t.bigint "local_authority_area_id"
     t.datetime "bill_requested_at", precision: nil
     t.bigint "school_group_cluster_id"
     t.bigint "funder_id"
-    t.boolean "alternative_heating_ground_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_ground_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_ground_source_heat_pump_notes"
-    t.boolean "alternative_heating_air_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_air_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_air_source_heat_pump_notes"
-    t.boolean "alternative_heating_water_source_heat_pump", default: false, null: false
-    t.integer "alternative_heating_water_source_heat_pump_percent", default: 0
-    t.text "alternative_heating_water_source_heat_pump_notes"
+    t.boolean "heating_ground_source_heat_pump", default: false, null: false
+    t.integer "heating_ground_source_heat_pump_percent", default: 0
+    t.text "heating_ground_source_heat_pump_notes"
+    t.boolean "heating_air_source_heat_pump", default: false, null: false
+    t.integer "heating_air_source_heat_pump_percent", default: 0
+    t.text "heating_air_source_heat_pump_notes"
+    t.boolean "heating_water_source_heat_pump", default: false, null: false
+    t.integer "heating_water_source_heat_pump_percent", default: 0
+    t.text "heating_water_source_heat_pump_notes"
     t.date "archived_date"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
+    t.datetime "mailchimp_fields_changed_at"
+    t.boolean "heating_gas", default: false, null: false
+    t.integer "heating_gas_percent", default: 0
+    t.text "heating_gas_notes"
+    t.boolean "heating_electric", default: false, null: false
+    t.integer "heating_electric_percent", default: 0
+    t.text "heating_electric_notes"
+    t.boolean "heating_underfloor", default: false, null: false
+    t.integer "heating_underfloor_percent", default: 0
+    t.text "heating_underfloor_notes"
+    t.boolean "heating_chp", default: false, null: false
+    t.integer "heating_chp_percent", default: 0
+    t.text "heating_chp_notes"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -1741,6 +1742,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "academic_year_calendar_id"
     t.boolean "public", default: true
+    t.datetime "mailchimp_fields_changed_at"
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
   end
 
@@ -1794,10 +1796,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
   end
 
+  create_table "solis_cloud_installations", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "amr_data_feed_config_id", null: false
+    t.text "api_id"
+    t.text "api_secret"
+    t.jsonb "station_list", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["amr_data_feed_config_id"], name: "index_solis_cloud_installations_on_amr_data_feed_config_id"
+    t.index ["school_id"], name: "index_solis_cloud_installations_on_school_id"
+  end
+
   create_table "staff_roles", force: :cascade do |t|
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "mailchimp_fields_changed_at"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -1963,6 +1978,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
     t.string "preferred_locale", default: "en", null: false
     t.string "pupil_password"
     t.bigint "created_by_id"
+    t.datetime "mailchimp_fields_changed_at"
+    t.datetime "mailchimp_updated_at"
+    t.enum "mailchimp_status", enum_type: "mailchimp_status"
+    t.boolean "active", default: true, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -2047,6 +2066,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
   add_foreign_key "alerts", "alert_types", on_delete: :cascade
   add_foreign_key "alerts", "comparison_reports"
   add_foreign_key "alerts", "schools", on_delete: :cascade
+  add_foreign_key "amr_data_feed_configs", "users", column: "owned_by_id"
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "amr_data_feed_import_logs", on_delete: :cascade
   add_foreign_key "amr_data_feed_readings", "meters", on_delete: :nullify
@@ -2062,8 +2082,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
-  add_foreign_key "cms_pages", "cms_categories", column: "category_id"
-  add_foreign_key "cms_sections", "cms_pages", column: "page_id"
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
@@ -2123,6 +2141,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
   add_foreign_key "meters", "meter_reviews"
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
+  add_foreign_key "meters", "solis_cloud_installations", on_delete: :cascade
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict
@@ -2176,6 +2195,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_11_161627) do
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
+  add_foreign_key "solis_cloud_installations", "amr_data_feed_configs", on_delete: :cascade
+  add_foreign_key "solis_cloud_installations", "schools", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade

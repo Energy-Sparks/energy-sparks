@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>
+        <%= t("pupils.digital_signage.charts.#{@chart_type}.title", fuel_type: I18n.t("common.#{@fuel_type}").downcase) %>
+      </h1>
+      <h2>
+        <%= t("pupils.digital_signage.charts.#{@chart_type}.intro") %>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 public-display-chart">
+      <%= render ChartComponent.new(school: @school,
+                                    chart_type: @chart,
+                                    axis_controls: false,
+                                    no_zoom: true,
+                                    analysis_controls: false,
+                                    chart_config: create_chart_config(@school, @chart),
+                                    show_how_have_we_analysed_your_data: false) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 d-flex justify-content-between align-items-center flex-wrap">
+      <h4>
+        <% display_dates = @analysis_dates.transform_values { |d| short_dates(d) } %>
+        <%= t("pupils.digital_signage.charts.#{@chart_type}.dates", **display_dates) %>
+      </h4>
+      <div class="public-display-logo">
+        <%= image_tag('navigation-brand-transparent-en.png') %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,16 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe 'home', type: :system do
-  it 'has a home page' do
-    visit root_path
-    expect(page.has_content?('Energy Sparks'))
+  describe 'Home page' do
+    context without_feature: :new_home_page do
+      it 'has a home page' do
+        visit root_path
+        expect(page.has_content?('Energy Sparks'))
+      end
+    end
   end
 
   it 'allows locale switch retaining extra parameters' do
-    ClimateControl.modify FEATURE_FLAG_LOCALE_SWITCHER_BUTTONS: 'true' do
-      visit root_path(foo: :bar)
-      expect(page).to have_link('Cymraeg', href: 'http://cy.example.com/?foo=bar')
-    end
+    visit root_path(foo: :bar)
+    expect(page).to have_link('Cymraeg', href: 'http://cy.example.com/?foo=bar')
   end
 
   context 'with marketing pages' do
@@ -65,7 +67,9 @@ RSpec.describe 'home', type: :system do
 
     it 'links to the marketing page from home page' do
       visit root_path
-      click_on('Find out more')
+      within('header') do
+        click_on('Find out more')
+      end
       expect(page).to have_current_path(find_out_more_campaigns_path)
     end
   end
@@ -117,10 +121,7 @@ RSpec.describe 'home', type: :system do
 
   it 'has a datasets page' do
     visit root_path
-    click_on('About us')
-    within('#about-menu') do
-      click_on('Datasets')
-    end
+    click_on('Datasets')
     expect(page.has_content?('Data used in Energy Sparks'))
   end
 
@@ -129,6 +130,7 @@ RSpec.describe 'home', type: :system do
     let!(:newsletter_2) { create(:newsletter, published_on: Date.parse('02/01/2019')) }
     let!(:newsletter_3) { create(:newsletter, published_on: Date.parse('03/01/2019')) }
     let!(:newsletter_4) { create(:newsletter, published_on: Date.parse('04/01/2019')) }
+    let!(:newsletter_5) { create(:newsletter, published_on: Date.parse('05/01/2019')) }
 
     it 'shows the latest newsletters only' do
       visit root_path
@@ -137,6 +139,7 @@ RSpec.describe 'home', type: :system do
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
+      expect(page).to have_content(newsletter_5.title)
 
       click_on 'More newsletters'
 
@@ -144,6 +147,7 @@ RSpec.describe 'home', type: :system do
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
+      expect(page).to have_content(newsletter_5.title)
     end
   end
 

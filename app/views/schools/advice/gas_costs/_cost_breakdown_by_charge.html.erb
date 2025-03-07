@@ -1,14 +1,32 @@
-<%= render 'schools/advice/section_title', section_id: 'cost-breakdown-by-charge', section_title: advice_t('gas_costs.analysis.cost_breakdown_by_charge.title', period: format_unit(annual_costs.days/365.0, :years)) %>
+<%= render 'schools/advice/section_title',
+           section_id: 'cost-breakdown-by-charge',
+           section_title: advice_t('gas_costs.analysis.cost_breakdown_by_charge.title',
+                                   period: format_unit(annual_costs.days / 365.0, :years)) %>
 
 <% if local_assigns[:show_school_total] == true %>
   <p>
-    <%= advice_t('gas_costs.analysis.cost_breakdown_by_meter.whole_school', cost: format_unit(annual_costs.£, :£), period: format_unit(annual_costs.days/365.0, :years)) %>
+    <%= advice_t('gas_costs.analysis.cost_breakdown_by_meter.whole_school',
+                 cost: format_unit(annual_costs.£, :£),
+                 period: format_unit(
+                   annual_costs.days / 365.0, :years
+                 )) %>
   </p>
 <% end %>
 
-<%= component 'chart', chart_type: one_year_breakdown_chart, school: school, chart_config: create_chart_config(school, one_year_breakdown_chart, aggregate_meter_mpan_mprn) do |c| %>
+<%= render ChartComponent.new(
+      chart_type: one_year_breakdown_chart,
+      school: school,
+      chart_config: create_chart_config(
+        school,
+        one_year_breakdown_chart,
+        aggregate_meter_mpan_mprn
+      )
+    ) do |c| %>
   <% c.with_title { advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.title") } %>
-  <% c.with_subtitle { advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html", end_date: analysis_dates.end_date.to_fs(:es_short)) } %>
+  <% c.with_subtitle do
+       advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html",
+                end_date: analysis_dates.end_date.to_fs(:es_short))
+     end %>
 <% end %>
 
-<%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs %>
+<%= render MeterCostsTableComponent.new(monthly_costs: monthly_costs, change_in_costs: change_in_costs) %>

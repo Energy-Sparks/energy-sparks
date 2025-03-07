@@ -19,7 +19,7 @@ namespace :todos do
 
         ## latest activity for this activity_type completed since the audit was created
         activity = audit.school.activities.where(
-          activity_type: audit_activity_type.activity_type, happened_on: audit.created_at..).order(happened_on: :asc).last
+          activity_type: audit_activity_type.activity_type, happened_on: audit.created_at..).order(happened_on: :asc, id: :asc).last
 
         if activity
           audit.completed_todos.find_or_create_by!(
@@ -36,8 +36,8 @@ namespace :todos do
           notes: audit_intervention_type.notes)
 
         ## latest observation for this intervention_type completed since the audit was created
-        observation = audit.school.observations.intervention.where(
-          intervention_type: audit_intervention_type.intervention_type, at: audit.created_at..).order(at: :asc).last
+        observation = audit.school.observations.intervention.visible.where(
+          intervention_type: audit_intervention_type.intervention_type, at: audit.created_at..).order(at: :asc, id: :asc).last
         if observation
           audit.completed_todos.find_or_create_by!(
             todo: todo,
@@ -56,14 +56,14 @@ namespace :todos do
           position: programme_type_activity_type.position,
           notes: nil)
 
-        # Find all records where this activity_type has been completed. Ensures we don't have any rougue entries
-        ProgrammeActivity.where(activity_type_id: programme_type_activity_type.activity_type).order(position: :asc).find_each do |programme_activity|
-          # only create one record per programme / activity / activity_type
+        ProgrammeActivity.where(programme: programme_type.programmes, activity_type: programme_type_activity_type.activity_type).order(position: :asc).find_each do |programme_activity|
           if programme_activity.activity && programme_activity.programme # there are some activities / programmes referenced that don't exist!
             programme_activity.programme.completed_todos.find_or_create_by(
               todo: todo,
               recording: programme_activity.activity
             )
+          else
+            puts "Missing activity for: #{programme_activity.inspect}"
           end
         end
       end

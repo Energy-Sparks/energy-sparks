@@ -1,12 +1,14 @@
 <% if !school_target.school.has_current_target? %>
-  <%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+  <%= render NoticeComponent.new(status: :neutral, classes: 'mb-4') do %>
     <div class="flex-wrap">
       <div class="col-md-2">
-        <%= link_to t('schools.school_targets.prompt_to_set_new_target.set_a_new_target'), new_school_school_target_path(school_target.school), class: "btn btn-default" %>
+        <%= link_to t('schools.school_targets.prompt_to_set_new_target.set_a_new_target'),
+                    new_school_school_target_path(school_target.school), class: 'btn btn-default' %>
       </div>
       <div class="col">
         <span class="align-middle">
-          <%= t('schools.school_targets.prompt_to_set_new_target.you_set_a_target_to_reduce', target_date: I18n.l(school_target.target_date, format: '%B %Y')) %>.
+          <%= t('schools.school_targets.prompt_to_set_new_target.you_set_a_target_to_reduce',
+                target_date: I18n.l(school_target.target_date, format: '%B %Y')) %>.
         </span>
       </div>
     </div>

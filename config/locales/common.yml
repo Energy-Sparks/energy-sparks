@@ -38,6 +38,7 @@ en:
       download: Download
       edit: Edit
       enable: Enable
+      energy_saving_actions: Energy saving actions
       finish: Finish
       finished: Finished
       home: Home
@@ -53,6 +54,7 @@ en:
       place: Place
       previous: Previous
       pupil_activities: Pupil activities
+      pupil_led_activities: Pupil-led activities
       remove: Remove
       report: Report
       restart: Restart
@@ -60,7 +62,9 @@ en:
       start: Start
       status: Status
       submit: Submit
+      subscribe: Subscribe
       type: Type
+      unsubscribe: Unsubscribe
       update: Update
       upload: Upload
       view: View
@@ -71,6 +75,7 @@ en:
       yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    points_html: "%{count} points"
     privacy_policy: privacy policy
     school: School
     school_types:

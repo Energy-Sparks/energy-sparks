@@ -15,7 +15,7 @@
         <tr>
           <% if show_positions? %>
             <td>
-              <%= position(observation.school)&.ordinal || '-' %>
+              <%= position(observation.school) || '-' %>
             </td>
           <% end %>
           <td>
@@ -25,7 +25,7 @@
             <%= observation.points || '-' %>
           </td>
           <td>
-            <%= component 'observation', observation: observation, style: :description %>
+            <%= render ObservationComponent.new(observation: observation, style: :description) %>
           </td>
         </tr>
       <% end %>
