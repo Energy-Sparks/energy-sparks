@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe SchoolGroupComparisonComponent, type: :component do
-  let(:school_group) { create(:school_group) }
   let(:comparison) do
     {
       benchmark_school: [{ 'school_id' => 1, 'school_slug' => 'school-1', 'school_name' => 'School 1', 'cluster_name' => 'My Area' }],

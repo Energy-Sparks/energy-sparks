@@ -12,6 +12,10 @@ module Elements
       render(Elements::ButtonComponent.new('text', '/', style: :info, outline: true))
     end
 
+    def with_outline_transparent
+      render(Elements::ButtonComponent.new('text', '/', style: :info, outline: true, outline_style: :transparent))
+    end
+
     def with_size_xs
       render(Elements::ButtonComponent.new('text', '/', size: :xs))
     end

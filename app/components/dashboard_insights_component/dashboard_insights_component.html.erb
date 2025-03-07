@@ -1,4 +1,4 @@
-<div class="dashboard-insights-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <div class="row">
     <div class="col-12">
       <h2 id="<%= id %>" class="scrollable-title"><%= t('components.dashboard_insights.title') %></h2>
@@ -52,4 +52,4 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>

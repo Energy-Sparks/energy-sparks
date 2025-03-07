@@ -10,10 +10,11 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:style) { }
-  let(:size) { nil }
+  let(:size) { }
   let(:outline) { false }
+  let(:outline_style) {}
 
-  let(:kwargs) { { style: style, size: size, outline: outline, id: id, classes: classes } }
+  let(:kwargs) { { style: style, size: size, outline: outline, outline_style: outline_style, id: id, classes: classes } }
 
   let(:html) do
     render_inline(Elements::ButtonComponent.new(*args, **kwargs)) do
@@ -21,31 +22,14 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
     end
   end
 
-  context 'with basic params' do
+  context 'with base params' do
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
+
     it { expect(html).to have_link('name', href: url) }
-    it { expect(html).to have_css('a.btn.extra-classes') }
-    it { expect(html).to have_css('a.btn#custom-id') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'without optional parameters' do
-    let(:params) { {} }
-
     it { expect(html).to have_css('a.btn') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with classes' do
-    let(:params) { { classes: classes } }
-
-    it { expect(html).to have_css('a.btn.extra-classes') }
-    it { expect(html).to have_content('Content') }
-  end
-
-  context 'with id' do
-    let(:params) { { id: id } }
-
-    it { expect(html).to have_css('a.btn#custom-id') }
     it { expect(html).to have_content('Content') }
   end
 
@@ -81,5 +65,11 @@ RSpec.describe Elements::ButtonComponent, :include_application_helper, type: :co
     let(:outline) { true }
 
     it { expect(html).to have_css('a.btn-outline') }
+  end
+
+  context 'with outline style' do
+    let(:outline_style) { :transparent }
+
+    it { expect(html).to have_css('a.btn.transparent') }
   end
 end

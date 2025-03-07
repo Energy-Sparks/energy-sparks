@@ -53,7 +53,19 @@ en:
         header: Empower pupils
         subtext: Number of participating schools using Energy Sparks with their eco-team to inform impactful action
     sub_title: A unique school-specific energy management tool and education programme
+    testimonials:
+      card_1:
+        quote: 'The main thing for me was: don’t assume the heating settings are right without checking; take time to have a look, as it is worth it for everyone'
+        source:
+          name: David Reed - Facilities Manager
+          school: Northampton Academy
+        title: Energy Sparks helped Northampton Academy reduce energy costs by 40% and £34,000 in their first year
+      more_case_studies: More case studies
+      read_case_study: Read case study
     title: We help schools become more energy efficient and fight climate change.
+    tools:
+      description: Energy Sparks provides near real-time data and school-specific insights to help you cut costs and carbon, as well as a range of resources and activities designed to inspire your pupils
+      header: Data-driven tools that will change your school
   mailchimp:
     example: 'eg: hello@example.com'
     latest_news_title: Get the latest news from Energy Sparks in your inbox
