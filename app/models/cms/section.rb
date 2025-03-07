@@ -4,8 +4,8 @@
 #
 #  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
-#  page_id    :bigint(8)        not null
-#  position   :integer          default(0), not null
+#  page_id    :bigint(8)
+#  position   :integer
 #  published  :boolean          default(FALSE), not null
 #  slug       :string           not null
 #  updated_at :datetime         not null
@@ -29,7 +29,26 @@ module Cms
     translates :title, type: :string, fallbacks: { cy: :en }
     translates :body, backend: :action_text
 
-    belongs_to :page, class_name: 'Cms::Page'
+    belongs_to :page, class_name: 'Cms::Page', optional: true
+
+    before_validation :set_default_position, on: [:create, :update]
+
+    validates :position, numericality: { greater_than: 0, allow_nil: true }
+    validates :position, uniqueness: { scope: :page_id }
+
+    # virtual attribute for handling deletes from forms
+    attr_accessor :_delete
+
     scope :positioned, -> { order(position: :asc) }
+    scope :by_category_and_page, -> { joins(:page, { page: :category }).i18n.order(category_id: :asc, page_id: :asc, position: :asc) }
+
+    private
+
+    def set_default_position
+      if position.nil?
+        max_position = page.sections.maximum(:position) || 0
+        self.position = max_position + 1
+      end
+    end
   end
 end

@@ -1,4 +1,4 @@
-class NewHelpPages < ActiveRecord::Migration[7.1]
+class AddCmsModels < ActiveRecord::Migration[7.2]
   def change
     create_table :cms_categories do |t|
       t.string :icon
@@ -15,9 +15,9 @@ class NewHelpPages < ActiveRecord::Migration[7.1]
     end
 
     create_table :cms_sections do |t|
-      t.references :page, null: false, foreign_key: { to_table: :cms_pages }
+      t.references :page, null: true, foreign_key: { to_table: :cms_pages }
       t.string :slug, null: false
-      t.integer :position, default: 0, null: false
+      t.integer :position, null: true
       t.boolean :published, null: false, default: false
       t.timestamps
     end

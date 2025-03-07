@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_03_145810) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_07_100433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -621,6 +621,33 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_03_145810) do
     t.index ["school_id"], name: "index_cluster_schools_users_on_school_id"
     t.index ["user_id", "school_id"], name: "index_cluster_schools_users_on_user_id_and_school_id"
     t.index ["user_id"], name: "index_cluster_schools_users_on_user_id"
+  end
+
+  create_table "cms_categories", force: :cascade do |t|
+    t.string "icon"
+    t.string "slug", null: false
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cms_pages", force: :cascade do |t|
+    t.bigint "category_id", null: false
+    t.string "slug", null: false
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_cms_pages_on_category_id"
+  end
+
+  create_table "cms_sections", force: :cascade do |t|
+    t.bigint "page_id"
+    t.string "slug", null: false
+    t.integer "position"
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_cms_sections_on_page_id"
   end
 
   create_table "comparison_custom_periods", force: :cascade do |t|
@@ -2082,6 +2109,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_03_145810) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
+  add_foreign_key "cms_pages", "cms_categories", column: "category_id"
+  add_foreign_key "cms_sections", "cms_pages", column: "page_id"
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade

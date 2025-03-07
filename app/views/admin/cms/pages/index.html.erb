@@ -1,4 +1,4 @@
-<h1>Pages</h1>
+<%= render 'admin/cms/title_and_navigation', title: 'Pages' %>
 
 <div class="row">
   <div class="col">
@@ -8,28 +8,37 @@
 
 <div class="row">
  <div class="col">
-   <table class="table table-striped">
+   <table class="table table-sorted">
      <thead>
        <tr>
+         <th>Category</th>
          <th>Title</th>
          <th>Published?</th>
-         <th>Actions</th>
+         <th data-orderable="false">Published Sections</th>
+         <th data-orderable="false">Actions</th>
        </tr>
      </thead>
      <tbody>
        <% @pages.each do |page| %>
         <tr>
+          <td><%= link_to page.category.title, edit_admin_cms_category_path(page) %></td>
           <td><%= link_to page.title, edit_admin_cms_page_path(page) %></td>
           <td><%= fa_icon(page.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+          <td><%= page.sections.published.count %> / <%= page.sections.count %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_page_path(page), class: 'btn' %>
             <% if page.published? %>
-            <%= link_to 'Hide', hide_admin_cms_page_path(page), method: :put, class: 'btn',
-                                                                data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
-            <%# = link_to 'View', help_path(help_page), class: "btn" %>
+            <%= link_to 'Hide',
+                        hide_admin_cms_page_path(page),
+                        method: :put,
+                        class: 'btn',
+                        data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
             <% else %>
-            <%= link_to 'Publish', publish_admin_cms_page_path(page), method: :put, class: 'btn',
-                                                                      data: { confirm: 'Note this will make the page public, are you sure?' } %>
+            <%= link_to 'Publish',
+                        publish_admin_cms_page_path(page),
+                        method: :put,
+                        class: 'btn',
+                        data: { confirm: 'Note this will make the page public, are you sure?' } %>
             <% end %>
           </td>
         </tr>

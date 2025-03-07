@@ -5,7 +5,7 @@ module Admin
       load_and_authorize_resource :page, class: 'Cms::Page'
 
       def index
-        @pages = ::Cms::Page.all.by_title
+        @pages = ::Cms::Page.all.by_category_and_title
       end
 
       def new
@@ -23,6 +23,16 @@ module Admin
       end
 
       def update
+        # Remove deleted associations
+        if params[:page][:sections_attributes]
+          params[:page][:sections_attributes].each do |id, section_params|
+            section_id = section_params[:id]
+            if section_params[:_delete] == '1'
+              @page.sections.where(id: section_id).update(page_id: nil, position: nil)
+              params[:page][:sections_attributes].delete(id)
+            end
+          end
+        end
         if @page.update(page_params)
           redirect_to admin_cms_pages_path, notice: 'Page has been updated'
         else
@@ -44,7 +54,12 @@ module Admin
 
       def page_params
         translated_params = t_params(::Cms::Page.mobility_attributes)
-        params.require(:page).permit(translated_params, :title, :description, :published, :category_id)
+        params.require(:page).permit(translated_params, :title, :description, :published, :category_id,
+          sections_attributes: sections_attributes)
+      end
+
+      def sections_attributes
+        [:id, :position, :_delete]
       end
     end
   end

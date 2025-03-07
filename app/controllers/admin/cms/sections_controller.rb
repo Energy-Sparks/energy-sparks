@@ -5,7 +5,7 @@ module Admin
       load_and_authorize_resource :section, class: 'Cms::Section'
 
       def index
-        @sections = ::Cms::Section.all.by_title
+        @sections = ::Cms::Section.all.by_category_and_page
       end
 
       def new
@@ -44,7 +44,7 @@ module Admin
 
       def section_params
         translated_params = t_params(::Cms::Section.mobility_attributes)
-        params.require(:section).permit(translated_params, :title, :body, :published, :page_id, :position)
+        params.require(:section).permit(translated_params, :title, :body, :published, :page_id)
       end
     end
   end

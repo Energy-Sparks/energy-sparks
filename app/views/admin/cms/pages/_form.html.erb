@@ -6,16 +6,20 @@
                admin_cms_page_path(page)
              end %>
     <%= simple_form_for(page, as: :page, url: url) do |f| %>
-      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
-        <%= f.input t_field(:title, locale), as: :string %>
-      <% end %>
-      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
-        <%= f.input t_field(:description, locale), as: :string %>
-      <% end %>
-
+      <div class="form-group">
       <%= f.select :category_id, options_for_select(Cms::Category.by_title.map do |c|
             [c.title, c.id]
           end, page.category_id), { include_blank: 'Choose category' }, { class: 'form-control' } %>
+
+      </div>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+        <%= f.input t_field(:description, locale), as: :string %>
+      <% end %>
 
       <div class="form-group">
         <div class="form-check form-check-inline">
@@ -24,7 +28,48 @@
         </div>
       </div>
 
-      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <div class="row">
+        <div class="col">
+          <h4>Manage Page Sections</h4>
+          <p>
+            Drag and drop sections to reorder how they are displayed on the page. Click remove to
+            remove a section from the page (without deleting it). Click Save after making changes.
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col mb-4">
+          <%= link_to 'New Section', new_admin_cms_section_path(page_id: @page.id), class: 'btn btn-sm btn-success' %>
+        </div>
+      </div>
+
+      <div class="sections sort-list">
+        <%= f.fields_for :sections, @page.sections.positioned do |s| %>
+          <div class="section">
+            <div class="nested-fields row mb-2">
+              <div class="col-1">
+                <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
+              </div>
+              <div class="col-10">
+                <%= s.object.title %>
+              </div>
+              <div class="col-1">
+                <button class="btn btn-sm delete-association-button">Remove</button>
+              </div>
+              <%= s.hidden_field :position, class: 'position' %>
+              <%= s.hidden_field :id %>
+              <%= s.hidden_field :_delete, value: '' %>
+              <%= s.hidden_field :page_id, value: page.id %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-group mt-4">
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', admin_cms_pages_path, class: 'btn' %>
+      </div>
     <% end %>
   </div>
 </div>

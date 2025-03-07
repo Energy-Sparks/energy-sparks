@@ -29,7 +29,12 @@ module Cms
     translates :description, type: :string, fallbacks: { cy: :en }
 
     belongs_to :category, class_name: 'Cms::Category'
-    has_many :sections, class_name: 'Cms::Section', dependent: :restrict_with_error
+    has_many :sections, class_name: 'Cms::Section', dependent: :nullify
+
+    scope :by_category_and_title, -> { i18n.order(category_id: :asc, title: :asc) }
+
+    # todo: options here?
+    accepts_nested_attributes_for :sections
 
     def audience
       'School and group admins'
