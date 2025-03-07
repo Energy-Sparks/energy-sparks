@@ -2,21 +2,27 @@
 #
 # Table name: cms_sections
 #
-#  created_at :datetime         not null
-#  id         :bigint(8)        not null, primary key
-#  page_id    :bigint(8)
-#  position   :integer
-#  published  :boolean          default(FALSE), not null
-#  slug       :string           not null
-#  updated_at :datetime         not null
+#  created_at    :datetime         not null
+#  created_by_id :bigint(8)
+#  id            :bigint(8)        not null, primary key
+#  page_id       :bigint(8)
+#  position      :integer
+#  published     :boolean          default(FALSE), not null
+#  slug          :string           not null
+#  updated_at    :datetime         not null
+#  updated_by_id :bigint(8)
 #
 # Indexes
 #
-#  index_cms_sections_on_page_id  (page_id)
+#  index_cms_sections_on_created_by_id  (created_by_id)
+#  index_cms_sections_on_page_id        (page_id)
+#  index_cms_sections_on_updated_by_id  (updated_by_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (page_id => cms_pages.id)
+#  fk_rails_...  (updated_by_id => users.id) ON DELETE => nullify
 #
 module Cms
   class Section < Cms::Base

@@ -12,6 +12,7 @@ module Admin
       end
 
       def create
+        @section = ::Cms::Section.build(section_params.merge(created_by: current_user))
         if @section.save
           redirect_to admin_cms_sections_path, notice: 'Section has been created'
         else
@@ -23,7 +24,7 @@ module Admin
       end
 
       def update
-        if @section.update(section_params)
+        if @section.update(section_params.merge(updated_by: current_user))
           redirect_to admin_cms_sections_path, notice: 'Section has been updated'
         else
           render :edit

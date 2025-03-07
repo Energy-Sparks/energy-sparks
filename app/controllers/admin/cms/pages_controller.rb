@@ -12,6 +12,7 @@ module Admin
       end
 
       def create
+        @page = ::Cms::Page.build(page_params.merge(created_by: current_user))
         if @page.save
           redirect_to admin_cms_pages_path, notice: 'Page has been created'
         else
@@ -33,7 +34,7 @@ module Admin
             end
           end
         end
-        if @page.update(page_params)
+        if @page.update(page_params.merge(updated_by: current_user))
           redirect_to admin_cms_pages_path, notice: 'Page has been updated'
         else
           render :edit

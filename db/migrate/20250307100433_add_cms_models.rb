@@ -4,6 +4,8 @@ class AddCmsModels < ActiveRecord::Migration[7.2]
       t.string :icon
       t.string :slug, null: false
       t.boolean :published, null: false, default: false
+      t.references :created_by, foreign_key: { on_delete: :nullify, to_table: :users }
+      t.references :updated_by, foreign_key: { on_delete: :nullify, to_table: :users }
       t.timestamps
     end
 
@@ -11,6 +13,8 @@ class AddCmsModels < ActiveRecord::Migration[7.2]
       t.references :category, null: false, foreign_key: { to_table: :cms_categories }
       t.string :slug, null: false
       t.boolean :published, null: false, default: false
+      t.references :created_by, foreign_key: { on_delete: :nullify, to_table: :users }
+      t.references :updated_by, foreign_key: { on_delete: :nullify, to_table: :users }
       t.timestamps
     end
 
@@ -19,6 +23,8 @@ class AddCmsModels < ActiveRecord::Migration[7.2]
       t.string :slug, null: false
       t.integer :position, null: true
       t.boolean :published, null: false, default: false
+      t.references :created_by, foreign_key: { on_delete: :nullify, to_table: :users }
+      t.references :updated_by, foreign_key: { on_delete: :nullify, to_table: :users }
       t.timestamps
     end
   end

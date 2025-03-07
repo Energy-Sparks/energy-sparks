@@ -627,17 +627,25 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_100433) do
     t.string "icon"
     t.string "slug", null: false
     t.boolean "published", default: false, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_cms_categories_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_cms_categories_on_updated_by_id"
   end
 
   create_table "cms_pages", force: :cascade do |t|
     t.bigint "category_id", null: false
     t.string "slug", null: false
     t.boolean "published", default: false, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_cms_pages_on_category_id"
+    t.index ["created_by_id"], name: "index_cms_pages_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_cms_pages_on_updated_by_id"
   end
 
   create_table "cms_sections", force: :cascade do |t|
@@ -645,9 +653,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_100433) do
     t.string "slug", null: false
     t.integer "position"
     t.boolean "published", default: false, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_cms_sections_on_created_by_id"
     t.index ["page_id"], name: "index_cms_sections_on_page_id"
+    t.index ["updated_by_id"], name: "index_cms_sections_on_updated_by_id"
   end
 
   create_table "comparison_custom_periods", force: :cascade do |t|
@@ -2109,8 +2121,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_100433) do
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
+  add_foreign_key "cms_categories", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "cms_categories", "users", column: "updated_by_id", on_delete: :nullify
   add_foreign_key "cms_pages", "cms_categories", column: "category_id"
+  add_foreign_key "cms_pages", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "cms_pages", "users", column: "updated_by_id", on_delete: :nullify
   add_foreign_key "cms_sections", "cms_pages", column: "page_id"
+  add_foreign_key "cms_sections", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "cms_sections", "users", column: "updated_by_id", on_delete: :nullify
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade

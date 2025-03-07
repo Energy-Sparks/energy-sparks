@@ -12,6 +12,7 @@ module Admin
       end
 
       def create
+        @category = ::Cms::Category.build(category_params.merge(created_by: current_user))
         if @category.save
           redirect_to admin_cms_categories_path, notice: 'Category has been created'
         else
@@ -23,7 +24,7 @@ module Admin
       end
 
       def update
-        if @category.update(category_params)
+        if @category.update(category_params.merge(updated_by: current_user))
           redirect_to admin_cms_categories_path, notice: 'Category has been updated'
         else
           render :edit

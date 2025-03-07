@@ -26,6 +26,12 @@
         <%= f.submit 'Save', class: 'btn btn-primary' %>
         <%= link_to 'Cancel', admin_cms_categories_path, class: 'btn' %>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <%= render 'admin/cms/change_history', model: category %>
+        </div>
+      </div>
     <% end %>
   </div>
 </div>

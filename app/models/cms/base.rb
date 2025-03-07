@@ -4,6 +4,9 @@ module Cms
 
     self.abstract_class = true
 
+    belongs_to :created_by, class_name: 'User', optional: true
+    belongs_to :updated_by, class_name: 'User', optional: true
+
     validates :title, presence: true
 
     scope :published, -> { where(published: true) }
