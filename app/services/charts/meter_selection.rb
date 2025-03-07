@@ -42,8 +42,7 @@ module Charts
                    include_whole_school: true,
                    date_window: nil,
                    whole_school_title_key: 'advice_pages.charts.the_whole_school',
-                   whole_school_label_key: 'advice_pages.charts.whole_school',
-                   academic_year: false)
+                   whole_school_label_key: 'advice_pages.charts.whole_school')
       @school = school
       @meter_collection = meter_collection
       @fuel_type = fuel_type
@@ -106,11 +105,7 @@ module Charts
     end
 
     def end_date(meter)
-      if @academic_year
-        DateService.fixed_academic_year_end(meter.amr_data.end_date)
-      else
-        meter.amr_data.end_date
-      end
+      meter.amr_data.end_date
     end
 
     # Used to override default labelling methods for aggregate meter
