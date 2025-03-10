@@ -54,7 +54,7 @@
                                              classes: 'bg-yellow-pale rounded-12 p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
       <%# Until we  have more things to go in the carousel, do this for demo purposes %>
-      <% %w[funnel-pupils funnel-teachers].each do |pic| %>
+      <% %w[funnel-pupils.png funnel-teachers.png].each do |pic| %>
         <%= carousel.with_grid(cols: 2, cell_classes: 'my-auto') do |grid| %>
           <%= grid.with_image(src: pic, classes: 'rounded fit') %>
           <%= grid.with_testimonial_card do |testimonial| %>
