@@ -53,7 +53,7 @@ en:
           title: Electricity cost components for the last few weeks
         cost_comparison_last_2_years_accounting:
           meter_title: Electricity cost comparison for last 2 academic years for %{meter}
-          subtitle_html: This chart compares your monthly consumption for the academic year ending on <span>%{end_date}</span> with the previous academic year
+          subtitle_html: This chart compares your monthly consumption for the academic year ending on <span class='end-date'>%{end_date}</span> with the previous academic year
           title: Electricity cost comparison for last 2 academic years
       insights:
         current_costs:

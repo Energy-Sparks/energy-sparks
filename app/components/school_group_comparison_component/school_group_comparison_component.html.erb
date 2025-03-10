@@ -1,4 +1,4 @@
-<div class="pb-2">
+<%= tag.div id: id, class: class_names(classes, 'pb-2') do %>
   <strong><%= t("advice_pages.#{@advice_page_key}.page_title") %></strong>
   <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>
 
@@ -98,4 +98,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

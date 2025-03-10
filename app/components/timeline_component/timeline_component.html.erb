@@ -1,4 +1,4 @@
-<div <%= "id=#{id}" if id %> class="timeline-component<%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <div class="row">
     <div class="col">
       <%= render TitledSectionComponent.new do |section| %>
@@ -45,4 +45,4 @@
       <% end %>
     </div>
   </div>
-</div>
+<% end %>

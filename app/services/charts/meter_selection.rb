@@ -12,8 +12,8 @@ module Charts
   # further filtering of the list of meters via the +filter+ option. Any meter for which the filter returns true will
   # be dropped from the list.
   #
-  # Some charts include an option to show data for the entire school as well as individual meters. This can be configured
-  # via the +include_whole_school+ option.
+  # Some charts include an option to show data for the entire school as well as individual meters. This can be
+  # configured via the +include_whole_school+ option.
   #
   # The date ranges produced by +date+ranges_by_meter+ can be restricted using +date_window+
   #
@@ -28,8 +28,8 @@ module Charts
     # @param filter optional, a filter to be applied to list of meters, should return true for any to be dropped
     # @param boolean include_whole_school specifies whether there should be a "Whole school" option included in list
     # This will be based on the aggregate meter for the specified +fuel_type+
-    # @param Integer date_window optional, used to build date ranges for each meter for dynamically populating sub titles
-    # with date ranges
+    # @param Integer date_window optional, used to build date ranges for each meter for dynamically populating sub
+    # titles with date ranges
     # @param String whole_school_title_key, i18n key used for the meter name for the aggregate meter, if included
     # @param String whole_school_label_key, i18n key used for the display name for the aggregate meter, if included
     #
@@ -42,8 +42,7 @@ module Charts
                    include_whole_school: true,
                    date_window: nil,
                    whole_school_title_key: 'advice_pages.charts.the_whole_school',
-                   whole_school_label_key: 'advice_pages.charts.whole_school',
-                   academic_year: false)
+                   whole_school_label_key: 'advice_pages.charts.whole_school')
       @school = school
       @meter_collection = meter_collection
       @fuel_type = fuel_type
@@ -52,7 +51,6 @@ module Charts
       @filter = filter
       @whole_school_title_key = whole_school_title_key
       @whole_school_label_key = whole_school_label_key
-      @academic_year = academic_year
     end
 
     def meter_selection_options
@@ -106,11 +104,7 @@ module Charts
     end
 
     def end_date(meter)
-      if @academic_year
-        DateService.fixed_academic_year_end(meter.amr_data.end_date)
-      else
-        meter.amr_data.end_date
-      end
+      meter.amr_data.end_date
     end
 
     # Used to override default labelling methods for aggregate meter

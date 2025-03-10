@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-class RecommendationsComponent < ViewComponent::Base
-  attr_reader :title, :description, :limit, :limit_lg, :id
+class RecommendationsComponent < ApplicationComponent
+  attr_reader :title, :description, :limit, :limit_lg
 
   renders_many :items, 'ItemComponent'
 
-  def initialize(title: nil, description: nil, recommendations: [], classes: '', id: nil, limit: 4, limit_lg: 3)
+  def initialize(title: nil, description: nil, recommendations: [], limit: 4, limit_lg: 3, **_kwargs)
+    super
     @title = title
     @description = description
-    @classes = classes
-    @id = id
     @limit = limit
     @limit_lg = limit_lg
     @recommendations = recommendations
@@ -20,10 +19,6 @@ class RecommendationsComponent < ViewComponent::Base
     @recommendations.each do |recommendation|
       with_item(name: recommendation.name, href: helpers.url_for(recommendation), image: recommendation.t_attached_or_default(:image))
     end
-  end
-
-  def classes
-    " #{@classes}" if @classes
   end
 
   def responsive_classes(index)
