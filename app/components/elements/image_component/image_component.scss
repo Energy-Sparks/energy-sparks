@@ -1,4 +1,4 @@
-img.image-component {
+img.elements-image-component {
   &.stretch {
     top: 0;
     height: 100%;
@@ -11,5 +11,11 @@ img.image-component {
 
   &.left {
     left: 0;
+  }
+
+  &.fit {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
   }
 }

@@ -51,7 +51,7 @@ class MeterSelectionChartComponent < ViewComponent::Base
     @meter_selection.date_ranges_by_meter.transform_values do |dates|
       I18n.t(@chart_subtitle_key,
              start_date: dates[:start_date].to_fs(:es_short),
-             end_date: dates[:end_date].to_fs(:es_short),
+             end_date: DateService.subtitle_end_date(@chart_type, dates[:end_date]).to_fs(:es_short),
              meter: dates[:meter]&.name_or_mpan_mprn)
     end
   end

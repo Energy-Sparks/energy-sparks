@@ -18,8 +18,13 @@ address {
   font-size: initial;
 }
 
-p, .trix-content div {
+p, q, .trix-content div {
   @include font(f6);
+}
+
+q {
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .small {
