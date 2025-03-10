@@ -28,9 +28,9 @@ run a specific chart using their data.
   how the chart will look when embedded into a page with other text around it.
   </p>
 
-  <%= f.input :title, as: :string, input_html: { value: @title || '' } %>
-  <%= f.input :subtitle, as: :string, input_html: { value: @subtitle || '' } %>
-  <%= f.input :footer, as: :string, input_html: { value: @footer || '' } %>
+  <%= f.input :title, as: :string, required: false, input_html: { value: @title || '' } %>
+  <%= f.input :subtitle, as: :string, required: false, input_html: { value: @subtitle || '' } %>
+  <%= f.input :footer, as: :string, required: false, input_html: { value: @footer || '' } %>
 
   <p>
   You can optionally indicate whether the chart should have controls to switch axis and to
