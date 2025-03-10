@@ -12,8 +12,8 @@ module Charts
   # further filtering of the list of meters via the +filter+ option. Any meter for which the filter returns true will
   # be dropped from the list.
   #
-  # Some charts include an option to show data for the entire school as well as individual meters. This can be configured
-  # via the +include_whole_school+ option.
+  # Some charts include an option to show data for the entire school as well as individual meters. This can be
+  # configured via the +include_whole_school+ option.
   #
   # The date ranges produced by +date+ranges_by_meter+ can be restricted using +date_window+
   #
@@ -28,8 +28,8 @@ module Charts
     # @param filter optional, a filter to be applied to list of meters, should return true for any to be dropped
     # @param boolean include_whole_school specifies whether there should be a "Whole school" option included in list
     # This will be based on the aggregate meter for the specified +fuel_type+
-    # @param Integer date_window optional, used to build date ranges for each meter for dynamically populating sub titles
-    # with date ranges
+    # @param Integer date_window optional, used to build date ranges for each meter for dynamically populating sub
+    # titles with date ranges
     # @param String whole_school_title_key, i18n key used for the meter name for the aggregate meter, if included
     # @param String whole_school_label_key, i18n key used for the display name for the aggregate meter, if included
     #
@@ -51,7 +51,6 @@ module Charts
       @filter = filter
       @whole_school_title_key = whole_school_title_key
       @whole_school_label_key = whole_school_label_key
-      @academic_year = academic_year
     end
 
     def meter_selection_options
