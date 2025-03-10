@@ -7,8 +7,8 @@ class DashboardChartsComponent < ApplicationComponent
   renders_one :title
   renders_one :intro
 
-  def initialize(school:, id: 'dashboard-charts', classes: '')
-    super(id: id, classes: "dashboard-charts-component #{classes}")
+  def initialize(school:, **_kwargs)
+    super
     @school = school
   end
 

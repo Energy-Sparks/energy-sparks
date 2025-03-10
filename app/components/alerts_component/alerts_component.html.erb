@@ -1,4 +1,4 @@
-<div <%= tag.attributes id: id, class: ['alerts-component', classes] %>>
+<%= tag.div id: id, class: classes do %>
   <% if title? || link? %>
     <div class="row">
       <div class="col d-flex flex-wrap justify-content-between align-items-center">
@@ -34,4 +34,4 @@
         <%= alert_content.send(content_field) %>
     <% end %>
   <% end %>
-</div>
+<% end %>

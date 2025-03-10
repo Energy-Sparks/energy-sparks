@@ -7,14 +7,15 @@
 # A row may refer to footnotes
 #
 # A footnote section that provides the detail for individual footnotes
-class ComparisonTableComponent < ViewComponent::Base
+class ComparisonTableComponent < ApplicationComponent
   include AdvicePageHelper
   include ComparisonsHelper
 
   attr_reader :report, :table_name, :index_params, :headers, :colgroups
 
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [],
-                 advice_page_tab: :insights, advice_page_anchor: nil)
+                 advice_page_tab: :insights, advice_page_anchor: nil, **_kwargs)
+    super
     @report = report
     @advice_page = advice_page
     @table_name = table_name

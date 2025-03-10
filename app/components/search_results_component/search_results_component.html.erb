@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="row search-results-component">
+<%= tag.div id: id, class: class_names(classes, 'row') do %>
   <div class="col-12 col-md-2">
     <h3>
       <%= title %>
@@ -16,4 +16,4 @@
       </ul>
     <% end %>
   </div>
-</div>
+<% end %>

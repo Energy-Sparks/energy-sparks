@@ -35,7 +35,7 @@ en:
         gas_by_month_year:
           explanation: This chart can be a quick way to spot whether changes to heating and hot water control are having an impact on your gas consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
           subtitle_html: This chart shows the monthly gas consumption from %{start_date} to <span class='end-date'>%{end_date}</span> for <span class='meter'>%{meter}</span>
-          subtitle_two_years_html: This chart shows the difference in gas consumption for the academic year ending on <span>%{end_date}</span> and the previous academic year for <span class='meter'>%{meter}</span>
+          subtitle_two_years_html: This chart shows the difference in gas consumption for the academic year ending on <span class='end-date'>%{end_date}</span> and the previous academic year for <span class='meter'>%{meter}</span>
           title: Monthly gas consumption comparison
           title_two_years: Monthly gas consumption comparison over the last few academic years
         gas_longterm_trend:

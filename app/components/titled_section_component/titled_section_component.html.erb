@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="titled-section-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if title? %>
     <div class="row">
       <div class="col-12">
@@ -23,4 +23,4 @@
       <%= body %>
     </div>
   </div>
-</div>
+<% end %>

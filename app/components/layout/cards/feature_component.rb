@@ -2,18 +2,13 @@ module Layout
   module Cards
     class FeatureComponent < ApplicationComponent
       renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**({ level: 2 }.merge(kwargs)))
+        Elements::HeaderComponent.new(**kwargs.merge({ level: 2 }))
       end
       renders_one :description, ->(**kwargs) do
-        Elements::ParagraphComponent.new(**({ classes: 'small' }.merge(kwargs)))
+        Elements::TagComponent.new(:p, **kwargs.merge({ classes: 'small' }))
       end
       renders_many :buttons, ->(*args, **kwargs) do
-        Elements::ButtonComponent.new(*args, **kwargs)
-      end
-
-      def initialize(id: '', classes: '')
-        super(id: id, classes: classes)
-        add_classes('feature-card-component py-4')
+        Elements::ButtonComponent.new(*args, **kwargs.merge({ classes: 'pb-1' }))
       end
     end
   end

@@ -59,7 +59,7 @@
    key_suffix = '_two_years' if analysis_dates.one_years_data? %>
 <%= render MeterSelectionChartComponent.new(
       chart_type: :"#{fuel_type}_by_month_acyear_0_1",
-      meter_selection: Charts::MeterSelection.new(@school, @aggregate_school, fuel_type, academic_year: true),
+      meter_selection: Charts::MeterSelection.new(@school, @aggregate_school, fuel_type),
       chart_subtitle_key: "#{key_prefix}.subtitle#{key_suffix}_html"
     ) do |c| %>
   <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title_two_years') %>

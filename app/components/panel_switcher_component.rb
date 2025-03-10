@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
-class PanelSwitcherComponent < ViewComponent::Base
+class PanelSwitcherComponent < ApplicationComponent
   attr_reader :title, :description, :classes, :id, :name
 
   renders_many :panels, 'PanelComponent'
 
-  def initialize(title: nil, description: nil, selected: nil, classes: '', id: nil)
+  def initialize(title: nil, description: nil, selected: nil, **_kwargs)
+    super
     @title = title
     @description = description
     @selected = selected
-    @classes = classes
-    @id = id
     @name = title.try(:parameterize) || SecureRandom.uuid
   end
 

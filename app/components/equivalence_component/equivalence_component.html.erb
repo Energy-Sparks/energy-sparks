@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="equivalence-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if horizontal? %>
     <div class="row">
       <%# add margin at small screen sizes to avoid text overlapping image %>
@@ -54,4 +54,4 @@
       </div>
     </div>
   <% end %>
-</div>
+<% end %>
