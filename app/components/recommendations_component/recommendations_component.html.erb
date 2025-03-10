@@ -1,4 +1,4 @@
-<div <%= "id=#{id}" if id %> class="recommendations-component<%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if title %>
     <h4><%= title %></h4>
   <% end %>
@@ -22,4 +22,4 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>

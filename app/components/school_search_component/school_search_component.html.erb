@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="school-search-component mt-4 <%= classes %>">
+<%= tag.div id: id, class: class_names(classes, 'mt-4') do %>
   <ul class="nav nav-tabs" id="search-tabs" role="tablist">
     <% TABS.each do |tab| %>
       <li class="nav-item">
@@ -72,4 +72,4 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>

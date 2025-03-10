@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="podium-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if podium.includes_school? && podium.school_has_points? %>
     <h4 class="<%= title_class %>">
       <% if national_podium.school_position %>
@@ -69,4 +69,4 @@
       <% end %>
     </div>
   <% end %>
-</div>
+<% end %>
