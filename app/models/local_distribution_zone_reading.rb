@@ -17,5 +17,6 @@
 #  idx_on_local_distribution_zone_id_date_acca36ccf1  (local_distribution_zone_id,date) UNIQUE
 #
 class LocalDistributionZoneReading < ApplicationRecord
+  belongs_to :local_distribution_zone
   scope :by_date, -> { order(:date) }
 end
