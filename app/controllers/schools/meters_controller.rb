@@ -53,7 +53,8 @@ module Schools
       manager = MeterManagement.new(@meter)
       if @meter.save
         manager.process_mpan_mpnr_change! if @meter.mpan_mprn_previously_changed?
-        redirect_back fallback_location: school_meters_path(@school), notice: 'Meter updated'
+        # the admin team prefer this always redirects back to the meters page
+        redirect_to school_meters_path(@school), notice: 'Meter updated'
       else
         render :edit
       end
