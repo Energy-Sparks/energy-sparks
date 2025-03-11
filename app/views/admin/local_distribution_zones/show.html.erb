@@ -1,0 +1,23 @@
+<h1><%= @local_distribution_zone.name %></h1>
+
+<h2>Calorific Values</h2>
+
+<% if @first_reading.nil? %>
+  <strong>There are currently no readings for this zone</strong>
+<% else %>
+  <p>This calendar summarises the calorific values data from <%= nice_dates(@first_reading.date) %> up until the present
+     day.</p>
+
+    <div id="calendar" class="calendar"></div>
+
+    <div class='calendar-legend row'>
+    <div class='legend-scale vertical'>
+        <ul class='legend-labels'>
+        <li><span style='background:<%= Colours.hex(@colours[40]) %>;'></span>Calorific Value &gt; 40.0</li>
+        <li><span style='background:<%= Colours.hex(@colours[39]) %>;'></span>Calorific Value &gt; 39.0</li>
+        <li><span style='background:<%= Colours.hex(@colours[38]) %>;'></span>Calorific Value &lt; 39.0</li>
+        <li><span style='background:<%= Colours.hex(@colours[:missing]) %>;'></span>Missing day</li>
+        </ul>
+    </div>
+    </div>
+<% end %>

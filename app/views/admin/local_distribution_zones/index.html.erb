@@ -17,7 +17,7 @@
   <tbody>
     <% @local_distribution_zones.each do |zone| %>
       <tr>
-        <td><%= zone.name %></td>
+        <td><%= link_to zone.name, admin_local_distribution_zone_path(zone) %></td>
         <td><%= zone.code %></td>
         <td><%= zone.publication_id %></td>
         <td><%= zone.readings.count %></td>
