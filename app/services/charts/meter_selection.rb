@@ -90,7 +90,7 @@ module Charts
                else
                  raise 'Unexpected fuel type'
                end
-      meters = meters.keep_if { |m| m.amr_data.any? } # only show meters with readings
+      meters.keep_if { |m| m.amr_data.any? } # only show meters with readings
       meters = meters.reject(&@filter) if @filter # apply optional filter
       meters.sort_by(&:mpan_mprn)
     end
