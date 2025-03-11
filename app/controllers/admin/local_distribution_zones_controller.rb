@@ -2,7 +2,14 @@
 
 module Admin
   class LocalDistributionZonesController < AdminController
+    include Columns
     load_and_authorize_resource
+    def index
+      respond_to do |format|
+        format.html
+        format.csv { send_csv }
+      end
+    end
 
     def new
     end
@@ -31,6 +38,23 @@ module Admin
 
     def local_distribution_zone_params
       params.require(:local_distribution_zone).permit(:name, :code, :publication_id)
+    end
+
+    def send_csv
+      columns = [
+        Column.new(:zone_name,
+                   ->(reading) { reading.local_distribution_zone.name }),
+        Column.new(:zone_code,
+                   ->(reading) { reading.local_distribution_zone.code }),
+        Column.new('Zone Publication ID',
+                   ->(reading) { reading.local_distribution_zone.publication_id }),
+        Column.new(:date,
+                   ->(reading) { reading.date }),
+        Column.new(:calorific_value,
+                   ->(reading) { reading.calorific_value })
+      ]
+      send_data csv_report(columns, LocalDistributionZoneReading.by_date.order(:local_distribution_zone_id)),
+                filename: EnergySparks::Filenames.csv('LDZ-readings-report')
     end
   end
 end
