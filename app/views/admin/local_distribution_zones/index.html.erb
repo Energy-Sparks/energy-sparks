@@ -21,7 +21,7 @@
         <td><%= zone.publication_id %></td>
         <td><%= zone.readings.count %></td>
         <% earliest_date = zone.readings.by_date.first&.date %>
-        <td data-order="<% earliest_date&.iso8601 %>">
+        <td data-order="<%= earliest_date&.iso8601 %>">
           <%= nice_dates(earliest_date) %>
         </td>
         <% latest_date = zone.readings.by_date.last&.date %>
