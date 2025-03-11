@@ -1,10 +1,10 @@
 module Layout
   module Cards
     class StatementComponentPreview < ViewComponent::Preview
-      def without_classes
+      def default
         render(Layout::Cards::StatementComponent.new) do |card|
-          card.with_header title: 'Header'
-          card.with_description { 'Interesting text about the above figure' }
+          card.with_badge 'Badge text'
+          card.with_statement title: 'Tools component content'
         end
       end
     end

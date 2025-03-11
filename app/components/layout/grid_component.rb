@@ -10,7 +10,8 @@ module Layout
       prompt_list: { renders: ->(*args, **kwargs, &block) { column_div(PromptListComponent, *args, **kwargs, &block) }, as: :prompt_list },
       stats_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatsComponent, *args, **kwargs, &block) }, as: :stats_card },
       feature_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::FeatureComponent, *args, **kwargs, &block) }, as: :feature_card },
-      testimonial_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::TestimonialComponent, *args, **kwargs, &block) }, as: :testimonial_card }
+      testimonial_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::TestimonialComponent, *args, **kwargs, &block) }, as: :testimonial_card },
+      statement_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatementComponent, *args, **kwargs, &block) }, as: :statement_card }
     }
 
     private
@@ -46,6 +47,8 @@ module Layout
         'col-12 col-md-4'
       when 4
         'col-12 col-xl-3 col-sm-6'
+      when 6
+        'col-xl-2 col-lg-4 col-sm-6 col-xs-6'
       end
     end
   end

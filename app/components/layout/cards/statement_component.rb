@@ -1,16 +1,11 @@
 module Layout
   module Cards
     class StatementComponent < ApplicationComponent
-      renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**kwargs.merge({ level: 3 }))
+      renders_one :badge, ->(*args, **kwargs) do
+        Elements::BadgeComponent.new(*args, **kwargs.merge({ classes: 'bg-teal-medium text-blue-very-dark text-uppercase mb-3' }))
       end
-      renders_one :description, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **kwargs.merge({ classes: '' }))
-      end
-
-      def initialize(**_kwargs)
-        super
-        add_classes('p-4 m-4 text-center')
+      renders_one :statement, ->(**kwargs) do
+        Elements::HeaderComponent.new(**kwargs.merge({ classes: 'statement text-white card-text', level: 6 }))
       end
     end
   end

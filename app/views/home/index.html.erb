@@ -16,7 +16,7 @@
   </div>
 
   <div class="container">
-    <%= render Layout::Cards::StatementComponent.new do |statement| %>
+    <%= render Layout::Cards::SectionHeaderComponent.new do |statement| %>
       <%= statement.with_header title: t('home.statement.header') %>
       <%= statement.with_description { t('home.statement.description') } %>
     <% end %>
@@ -72,11 +72,23 @@
       <% end %>
     <% end %>
 
-    <%= render Layout::Cards::StatementComponent.new do |statement| %>
-      <%= statement.with_header title: t('home.tools.header') %>
-      <%= statement.with_description { t('home.tools.description') } %>
+    <%= render Layout::Cards::SectionHeaderComponent.new do |section_header| %>
+      <%= section_header.with_header title: t('home.features.header') %>
+      <%= section_header.with_description { t('home.features.description') } %>
     <% end %>
 
+    <%= render Layout::GridComponent.new(
+          cols: 3, classes: 'pb-4 mb-4',
+          cell_classes: 'mb-4',
+          component_classes: 'rounded-12'
+        ) do |grid| %>
+      <% I18n.t('home.features.cards').each do |card| %>
+        <% grid.with_statement_card do |statement| %>
+          <%= statement.with_badge(card[:badge]) %>
+          <%= statement.with_statement(title: card[:statement]) %>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 <% else %>
 <!-- Header -->
