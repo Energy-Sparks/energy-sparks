@@ -9,8 +9,8 @@ RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, t
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
-      card.with_header(title: 'Header')
-      card.with_description { 'Description' }
+      card.with_badge('badge text', style: :secondary)
+      card.with_statement(title: 'Statement')
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, t
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('Description') }
+    it { expect(html).to have_css('span.badge.badge-secondary') }
+    it { expect(html).to have_content('Statement') }
   end
 end

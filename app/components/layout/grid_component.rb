@@ -11,7 +11,7 @@ module Layout
       stats_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatsComponent, *args, **kwargs, &block) }, as: :stats_card },
       feature_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::FeatureComponent, *args, **kwargs, &block) }, as: :feature_card },
       testimonial_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::TestimonialComponent, *args, **kwargs, &block) }, as: :testimonial_card },
-      tools_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::ToolsComponent, *args, **kwargs, &block) }, as: :tools_card }
+      statement_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatementComponent, *args, **kwargs, &block) }, as: :statement_card }
     }
 
     private

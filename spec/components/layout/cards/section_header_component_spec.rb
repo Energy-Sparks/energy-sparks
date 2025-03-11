@@ -2,15 +2,15 @@
 
 require 'rails_helper'
 
-RSpec.describe Layout::Cards::ToolsComponent, :include_application_helper, type: :component do
+RSpec.describe Layout::Cards::SectionHeaderComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:base_params) { { id: id, classes: classes } }
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
-      card.with_badge('badge text', style: :secondary)
-      card.with_statement(title: 'Statement')
+      card.with_header(title: 'Header')
+      card.with_description { 'Description' }
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.describe Layout::Cards::ToolsComponent, :include_application_helper, type:
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_css('span.badge.badge-secondary') }
-    it { expect(html).to have_content('Statement') }
+    it { expect(html).to have_content('Header') }
+    it { expect(html).to have_content('Description') }
   end
 end
