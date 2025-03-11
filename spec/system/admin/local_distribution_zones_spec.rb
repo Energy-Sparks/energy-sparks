@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Local Distribution Zone', :include_application_helper do
+RSpec.describe 'Local Distribution Zone' do
   before do
     sign_in(create(:admin))
     visit admin_local_distribution_zones_path
