@@ -77,6 +77,18 @@
       <%= statement.with_description { t('home.tools.description') } %>
     <% end %>
 
+    <%= render Layout::GridComponent.new(
+          cols: 3, classes: 'pb-4 mb-4',
+          cell_classes: 'mb-4',
+          component_classes: 'bg-blue-very-dark rounded-12'
+        ) do |grid| %>
+      <% I18n.t('home.tools.cards').each do |card| %>
+        <% grid.with_tools_card do |tool| %>
+          <%= tool.with_badge(card[:badge]) %>
+          <%= tool.with_statement(title: card[:statement]) %>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 <% else %>
 <!-- Header -->

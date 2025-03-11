@@ -64,6 +64,19 @@ en:
       read_case_study: Read case study
     title: We help schools become more energy efficient and fight climate change.
     tools:
+      cards:
+      - badge: Make a differece
+        statement: Help your school save energy, money and prevent climate change
+      - badge: Get involved
+        statement: Discover whether energy is being wasted outside of school hours
+      - badge: Personalised Data
+        statement: Get tailored energy saving advice designed just for your school
+      - badge: Stay updated
+        statement: Get automated alerts to let you know when your energy use changes
+      - badge: Fun & engaging
+        statement: Explore eco-team and classroom activities for pupils
+      - badge: The community
+        statement: Share energy saving ideas and compete against other schools
       description: Energy Sparks provides near real-time data and school-specific insights to help you cut costs and carbon, as well as a range of resources and activities designed to inspire your pupils
       header: Data-driven tools that will change your school
   mailchimp:
