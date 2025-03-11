@@ -12,7 +12,7 @@ module Elements
     end
 
     def call
-      tag.span(id: id, class: classes) { @text || content }
+      tag.span(id: id, class: classes) { "#{@text}#{content}" }
     end
 
     def render?
