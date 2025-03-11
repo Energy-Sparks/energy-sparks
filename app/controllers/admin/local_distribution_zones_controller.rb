@@ -11,11 +11,9 @@ module Admin
       end
     end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       if @local_distribution_zone.save
@@ -27,8 +25,7 @@ module Admin
 
     def update
       if @local_distribution_zone.update(local_distribution_zone_params)
-        @local_distribution_zone.weather_observations.delete_all if lat_long_changed?
-        redirect_to admin_local_distribution_zone_path, notice: 'Local Distribution Zone was updated.'
+        redirect_to admin_local_distribution_zones_path, notice: 'Local Distribution Zone was updated.'
       else
         render :edit
       end
