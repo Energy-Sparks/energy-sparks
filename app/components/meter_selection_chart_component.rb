@@ -48,7 +48,7 @@ class MeterSelectionChartComponent < ViewComponent::Base
   end
 
   def chart_descriptions
-    config = ChartManager.new(school).get_chart_config(@chart_type)
+    config = ChartManager.new(@meter_selection.meter_collection).get_chart_config(@chart_type)
     @meter_selection.date_ranges_by_meter.transform_values do |dates|
       I18n.t(@chart_subtitle_key,
              start_date: dates[:start_date].to_fs(:es_short),
