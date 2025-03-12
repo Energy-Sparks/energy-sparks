@@ -7,7 +7,7 @@
         <%= feature.with_header title: t('home.feature.header'), classes: 'text-white' %>
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
-        <%= feature.with_button t('campaigns.find_out_more.book_demo'),
+        <%= feature.with_button t('home.buttons.book_a_demo'),
                                 book_demo_campaigns_path,
                                 style: :white, outline: true %>
       <% end %>
@@ -78,7 +78,7 @@
     <% end %>
 
     <%= render Layout::GridComponent.new(
-          cols: 3, classes: 'pb-4 mb-4',
+          cols: 3, classes: 'mb-4',
           cell_classes: 'mb-4',
           component_classes: 'rounded-12'
         ) do |grid| %>
@@ -90,6 +90,17 @@
       <% end %>
     <% end %>
 
+    <div class='pb-4 mb-4 text-center'>
+      <%= render Elements::ButtonComponent.new(
+            t('home.buttons.enrol_your_school'),
+            enrol_path, style: :primary
+          ) %>
+      <%= render Elements::ButtonComponent.new(
+            t('home.buttons.book_a_demo'),
+            book_demo_campaigns_path, style: :secondary
+          ) %>
+    </div>
+
     <%= render Layout::GridComponent.new(
           cols: 2,
           classes: 'bg-blue-light rounded-12 p-4 mb-4',
@@ -98,9 +109,9 @@
       <%= grid.with_feature_card do |feature| %>
         <%= feature.with_header(title: t('home.general.title'), level: 3) %>
         <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
-        <%= feature.with_button(t('home.enrol_your_school'), find_out_more_path, style: :primary) %>
-      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-12 p-4 bg-white') %>
+        <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
       <% end %>
+      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-12 p-4 bg-white') %>
     <% end %>
   </div>
 <% else %>
@@ -122,7 +133,7 @@
         </div>
         <div class="row">
           <div class="col-md-8 offset-md-3 pt-5">
-            <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+            <%= link_to t('home.buttons.find_out_more'), find_out_more_campaigns_path, class: 'btn btn-success' %>
           </div>
         </div>
       </div>

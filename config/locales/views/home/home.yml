@@ -5,6 +5,10 @@ en:
     more_case_studies: More case studies
     title: Case Studies
   home:
+    buttons:
+      book_a_demo: Book a demo
+      enrol_your_school: Enrol your school
+      find_out_more: Find out more
     carousel:
       message_1: Help your school save energy, money and prevent climate change.
       message_2: Show your school how much and when you are using energy.
@@ -12,7 +16,6 @@ en:
       message_4: Get automated alerts to let you know when your energy use changes.
       message_5: Explore eco-team and classroom activities for pupils.
       message_6: Share energy saving ideas and compete against other schools.
-    enrol_your_school: Find out more
     feature:
       description_html: Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.
       header: Helping schools cut energy costs and fight climate change
