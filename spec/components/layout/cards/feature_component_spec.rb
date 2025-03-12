@@ -29,4 +29,10 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
     it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
     it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end
+
+  context 'with responsive params' do
+    let(:params) { base_params.merge(responsive: true) }
+
+    it { expect(html).to have_css('.responsive') }
+  end
 end

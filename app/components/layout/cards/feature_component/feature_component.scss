@@ -1,5 +1,7 @@
 .layout-cards-feature-component {
-  @include responsive-typography;
+  &.responsive {
+    @include responsive-typography;
+  }
 
   p {
     font-family: $header-font-family;

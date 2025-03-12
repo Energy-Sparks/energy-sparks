@@ -42,12 +42,11 @@ AllCops:
     - config/puma.rb
     - config/routes.rb
 plugins:
+  - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
   - rubocop-rails
-require:
   - rubocop-rspec
-  - rubocop-capybara
-# - rubocop-factory_bot
 
 Rails/DynamicFindBy:
   Enabled: false
