@@ -78,7 +78,7 @@
     <% end %>
 
     <%= render Layout::GridComponent.new(
-          cols: 3, classes: 'mb-4',
+          cols: 3, classes: '',
           cell_classes: 'mb-4',
           component_classes: 'rounded-12'
         ) do |grid| %>
@@ -93,17 +93,17 @@
     <div class='pb-4 mb-4 text-center'>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.enrol_your_school'),
-            enrol_path, style: :primary
+            enrol_path, style: :primary, classes: 'mb-4'
           ) %>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.book_a_demo'),
-            book_demo_campaigns_path, style: :secondary
+            book_demo_campaigns_path, style: :secondary, classes: 'mb-4'
           ) %>
     </div>
 
     <%= render Layout::GridComponent.new(
           cols: 2,
-          classes: 'bg-blue-light rounded-12 p-4 mb-4',
+          classes: 'bg-blue-light rounded-12 p-4 mb-4 mt-4',
           cell_classes: 'my-auto'
         ) do |grid| %>
       <%= grid.with_feature_card do |feature| %>
