@@ -96,9 +96,9 @@
           cell_classes: 'my-auto'
         ) do |grid| %>
       <%= grid.with_feature_card do |feature| %>
-        <%= feature.with_header(title: t('home.audits.title'), level: 3) %>
-        <%= feature.with_description { t('home.audits.description_html', count: School.visible.count) } %>
-        <%= feature.with_button(t('home.enrol_your_school'), 'energy-audits', style: :primary) %>
+        <%= feature.with_header(title: t('home.general.title'), level: 3) %>
+        <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
+        <%= feature.with_button(t('home.enrol_your_school'), find_out_more_path, style: :primary) %>
       <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-12 p-4 bg-white') %>
       <% end %>
     <% end %>
