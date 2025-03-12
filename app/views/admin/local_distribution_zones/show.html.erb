@@ -10,14 +10,16 @@
 
     <div id="calendar" class="calendar"></div>
 
-    <div class='calendar-legend row'>
-    <div class='legend-scale vertical'>
-        <ul class='legend-labels'>
-        <li><span style='background:<%= Colours.hex(@colours[40]) %>;'></span>Calorific Value &gt; 40.0</li>
-        <li><span style='background:<%= Colours.hex(@colours[39]) %>;'></span>Calorific Value &gt; 39.0</li>
-        <li><span style='background:<%= Colours.hex(@colours[38]) %>;'></span>Calorific Value &lt; 39.0</li>
-        <li><span style='background:<%= Colours.hex(@colours[:missing]) %>;'></span>Missing day</li>
+    <div class="calendar-legend clearfix">
+      <div class="legend-scale vertical float-right">
+        <ul class="legend-labels">
+          <% [[40, 'Calorific Value > 40.0'],
+              [39, 'Calorific Value > 39.0'],
+              [38, 'Calorific Value < 39.0'],
+              [:missing, 'Missing day']].each do |colour, description| %>
+            <li><span class="mr-2" style='background:<%= Colours.hex(@colours[colour]) %>;'></span><%= description %></li>
+          <% end %>
         </ul>
-    </div>
+      </div>
     </div>
 <% end %>

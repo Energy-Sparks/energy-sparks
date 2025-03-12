@@ -74,5 +74,11 @@ RSpec.describe 'Local Distribution Zone' do
       click_on 'Update'
       expect(page).to have_content("can't be blank", count: 1)
     end
+
+    it 'shows the zone' do
+      click_on zone.name
+      expect(page).to have_content('This calendar summarises the calorific values data from Sun 9th Mar 2025 ' \
+                                   'up until the present day.')
+    end
   end
 end
