@@ -5,8 +5,8 @@ class ComparisonOverviewComponent < ApplicationComponent
 
   attr_reader :school
 
-  def initialize(school:, id: nil, classes: '')
-    super(id: id, classes: "comparison-overview-component #{classes}")
+  def initialize(school:, **_kwargs)
+    super
     @school = school
   end
 

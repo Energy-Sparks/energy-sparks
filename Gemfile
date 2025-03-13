@@ -28,7 +28,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.6'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.7'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -100,7 +100,7 @@ gem 'oj'
 gem 'rollbar'
 
 # Internationalisation
-gem 'i18n-tasks', '~> 1.0.14'
+gem 'i18n-tasks', '~> 1.0.15'
 gem 'mobility', '~> 1.3.2'
 gem 'mobility-actiontext', '~> 1.1.1'
 

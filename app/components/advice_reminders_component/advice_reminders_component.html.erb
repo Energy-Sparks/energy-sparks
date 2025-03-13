@@ -1,4 +1,4 @@
-<div class="advice-reminders-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <%= render TitledSectionComponent.new do |section| %>
     <% section.with_title do %>
       <h2 id="<%= id %>" class="scrollable-title"><%= t('advice_pages.index.show.what_next') %></h2>
@@ -75,4 +75,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>

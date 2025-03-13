@@ -1,4 +1,4 @@
-<div<%= " id=#{id}" if id %> class="panel-switcher-component<%= " #{classes}" if classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if title %>
     <h4><%= title %></h4>
   <% end %>
@@ -23,4 +23,4 @@
       <%= panel %>
     </div>
   <% end %>
-</div>
+<% end %>

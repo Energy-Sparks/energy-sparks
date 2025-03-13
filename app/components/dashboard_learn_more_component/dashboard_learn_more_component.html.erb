@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="row dashboard-learn-more-component <%= classes %> p-4 d-flex flex-wrap align-items-center justify-content-between">
+<%= tag.div id: id, class: class_names(classes, 'row p-4 d-flex flex-wrap align-items-center justify-content-between') do %>
   <div>
     <div class="row">
       <div class="col">
@@ -28,7 +28,7 @@
                         class: 'btn btn-secondary' %>
           </div>
         </div>
-     <% end %>
+      <% end %>
     <% end %>
   </div>
-</div>
+<% end %>

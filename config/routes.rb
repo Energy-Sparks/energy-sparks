@@ -513,6 +513,8 @@ Rails.application.routes.draw do
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
+    get 'chart-preview', to: 'chart_previews#show'
+
     concerns :issueable
     resources :funders
     resources :users do

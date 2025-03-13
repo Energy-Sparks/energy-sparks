@@ -1,8 +1,9 @@
 module Elements
   class ImageComponent < ApplicationComponent
-    def initialize(src:, collapse: false, stretch: false, width: nil, id: '', classes: '')
-      super(id: id, classes: classes)
+    def initialize(src:, fit: true, collapse: false, stretch: false, width: nil, **_kwargs)
+      super
       @src = src
+      @fit = fit
       @collapse = collapse
       @stretch = stretch
       @width = width
@@ -11,11 +12,12 @@ module Elements
     end
 
     def setup_classes
-      add_classes('image-component')
       if @stretch
         add_classes('stretch')
         add_classes('left') if @stretch == :left
         add_classes('right') if @stretch == :right
+      elsif @fit
+        add_classes('fit')
       end
       add_classes('d-none d-md-block') if @collapse
     end

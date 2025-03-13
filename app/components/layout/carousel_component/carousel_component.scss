@@ -1,6 +1,15 @@
-.equivalence-carousel-component {
+.layout-carousel-component {
   padding-left: 20px;
   padding-right: 20px;
+
+  &.side {
+    padding-left: 50px !important;
+    padding-right: 50px !important;
+
+    .carousel-control-prev, .carousel-control-next {
+      width: 50px;
+    }
+  }
 
   .carousel-control-prev, .carousel-control-next, .carousel-indicators {
     height: $f6;
@@ -25,8 +34,8 @@
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%222222' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
   }
 
+  .carousel-controls {
+    width: 100%;
+  }
 }
 
-.equivalence-carousel-controls {
-  width: 100%;
-}

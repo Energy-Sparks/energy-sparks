@@ -6,9 +6,12 @@ module Layout
       block: { renders: ->(*args, **kwargs, &block) { column_div(Elements::BlockComponent, *args, **kwargs, &block) }, as: :block },
       icon: { renders: ->(*args, **kwargs, &block) { column_div(IconComponent, *args, **kwargs, &block) }, as: :icon },
       image: { renders: ->(*args, **kwargs, &block) { column_div(Elements::ImageComponent, *args, **kwargs, &block) }, as: :image },
+      tag: { renders: ->(*args, **kwargs, &block) { column_div(Elements::TagComponent, *args, **kwargs, &block) }, as: :tag },
       prompt_list: { renders: ->(*args, **kwargs, &block) { column_div(PromptListComponent, *args, **kwargs, &block) }, as: :prompt_list },
       stats_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatsComponent, *args, **kwargs, &block) }, as: :stats_card },
-      feature_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::FeatureComponent, *args, **kwargs, &block) }, as: :feature_card }
+      feature_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::FeatureComponent, *args, **kwargs, &block) }, as: :feature_card },
+      testimonial_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::TestimonialComponent, *args, **kwargs, &block) }, as: :testimonial_card },
+      statement_card: { renders: ->(*args, **kwargs, &block) { column_div(Cards::StatementComponent, *args, **kwargs, &block) }, as: :statement_card }
     }
 
     private
@@ -22,8 +25,8 @@ module Layout
       end
     end
 
-    def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', id: nil, classes: '')
-      super(id: id, classes: ['grid-component', classes])
+    def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', **_kwargs)
+      super
 
       @cols = cols
       @rows = rows
@@ -44,6 +47,8 @@ module Layout
         'col-12 col-md-4'
       when 4
         'col-12 col-xl-3 col-sm-6'
+      when 6
+        'col-xl-2 col-lg-4 col-sm-6 col-xs-6'
       end
     end
   end

@@ -286,10 +286,6 @@
 // outer div has this class when :new_home_page feature is switched on and if we're on the home page
 
 .home {
-  p {
-    font-family: $header-font-family;
-  }
-
   section.alerts .alert {
     margin-bottom: 0px;
   }

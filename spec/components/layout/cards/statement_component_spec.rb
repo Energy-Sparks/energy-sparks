@@ -5,23 +5,24 @@ require 'rails_helper'
 RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:all_params) { { id: id, classes: classes } }
+  let(:base_params) { { id: id, classes: classes } }
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
-      card.with_header(title: 'Header')
-      card.with_description { 'Description' }
+      card.with_badge('badge text', style: :secondary)
+      card.with_statement(title: 'Statement')
     end
   end
 
-  context 'with all params' do
-    let(:params) { all_params }
+  context 'with base params' do
+    let(:params) { base_params }
 
-    it { expect(html).to have_css('div.statement-card-component') }
-    it { expect(html).to have_css('div.extra-classes') }
-    it { expect(html).to have_css('div#custom-id') }
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { classes }
+      let(:expected_id) { id }
+    end
 
-    it { expect(html).to have_content('Header') }
-    it { expect(html).to have_content('Description') }
+    it { expect(html).to have_css('span.badge.badge-secondary') }
+    it { expect(html).to have_content('Statement') }
   end
 end

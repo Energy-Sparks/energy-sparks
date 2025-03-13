@@ -1,7 +1,7 @@
 module Elements
   class HeaderComponent < ApplicationComponent
-    def initialize(title:, level: 1, id: '', classes: '')
-      super(id: id, classes: classes)
+    def initialize(title:, level: 1, **_kwargs)
+      super
       @title = title
       @level = level
 
