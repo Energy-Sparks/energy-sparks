@@ -20,7 +20,7 @@ module Charts
   # Currently this class uses the meters returned from a MeterCollection rather than querying for meters from
   # the database.
   class MeterSelection
-    attr_reader :school
+    attr_reader :school, :meter_collection
 
     # @param School school the school whose data will be displayed
     # @param MeterCollection meter_collection the aggregate school, used to find meters and data ranges

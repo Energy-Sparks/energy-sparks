@@ -10,21 +10,6 @@ describe 'Audits', :include_application_helper, type: :system do
     end
   end
 
-  def with_retry
-    retry_count = 0
-    begin
-      puts 'running with retry'
-      yield
-    rescue Selenium::WebDriver::Error::UnknownError => e
-      puts "exception #{e} - #{e.message}"
-      retry_count += 1
-      raise unless retry_count < 3
-
-      sleep(retry_count)
-      retry
-    end
-  end
-
   describe 'as an admin' do
     let(:admin) { create(:admin) }
 
@@ -145,7 +130,7 @@ describe 'Audits', :include_application_helper, type: :system do
             attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
 
             click_on('Create')
-            with_retry { expect(page).to have_content('Audit created') }
+            with_retry(Selenium::WebDriver::Error::UnknownError) { expect(page).to have_content('Audit created') }
 
             audit = Audit.last
             expect(audit.title).to eq('New audit')
@@ -203,7 +188,7 @@ describe 'Audits', :include_application_helper, type: :system do
           end
 
           click_on('Create')
-          with_retry { expect(page).to have_content('Audit created') }
+          with_retry(Selenium::WebDriver::Error::UnknownError) { expect(page).to have_content('Audit created') }
 
           audit = Audit.last
           expect(audit.title).to eq('New audit')
@@ -272,7 +257,7 @@ describe 'Audits', :include_application_helper, type: :system do
             attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
 
             click_on('Create')
-            with_retry { expect(page).to have_content('Audit created') }
+            with_retry(Selenium::WebDriver::Error::UnknownError) { expect(page).to have_content('Audit created') }
 
             audit = Audit.last
             expect(audit.title).to eq('New audit')

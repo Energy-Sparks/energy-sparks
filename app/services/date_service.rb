@@ -5,10 +5,8 @@ module DateService
     Date.new(date.year + (date.month < 9 ? 0 : 1), 8, 31)
   end
 
-  def self.subtitle_end_date(chart_type, date)
-    if %i[gas_by_month_acyear_0_1
-          electricity_by_month_acyear_0_1
-          electricity_cost_comparison_last_2_years_accounting].include?(chart_type)
+  def self.subtitle_end_date(chart_config, date)
+    if chart_config[:timescale].respond_to?(:dig) && chart_config.dig(:timescale, 0, :fixed_academic_year).present?
       fixed_academic_year_end(date)
     else
       date
