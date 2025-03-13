@@ -2,8 +2,8 @@ class CreateLocalDistributionZones < ActiveRecord::Migration[7.2]
   def change
     create_table :local_distribution_zones do |t|
       t.string :name, null: false, index: { unique: true }
-      t.string :code, null: false, index: { unique: true }
-      t.string :publication_id, null: false, index: { unique: true }
+      t.string :code, index: { unique: true }
+      t.string :publication_id, index: { unique: true }
       t.timestamps
     end
 
