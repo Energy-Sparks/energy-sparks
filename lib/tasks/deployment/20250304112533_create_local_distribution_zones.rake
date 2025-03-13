@@ -3,6 +3,7 @@ namespace :after_party do
   task create_local_distribution_zones: :environment do
     puts "Running deploy task 'create_local_distribution_zones'"
 
+    # zones and publication IDs from https://data.nationalgas.com/find-gas-data
     [[:EA, :PUBOB4507, 'East Anglia'],
      [:EM, :PUBOB4508, 'East Midlands'],
      [:NO, :PUBOB4509, 'Northern'],
