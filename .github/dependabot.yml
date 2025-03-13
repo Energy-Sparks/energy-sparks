@@ -15,4 +15,4 @@ updates:
       # updates - so ignore new minor versions (they need manual intervention anyway)
       - dependency-name: "rails"
         update-types: ["version-update:semver-minor"]
-    open-pull-requests-limit: 10 # default 5
+    open-pull-requests-limit: 20 # default 5

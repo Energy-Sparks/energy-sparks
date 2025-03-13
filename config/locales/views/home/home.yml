@@ -45,6 +45,9 @@ en:
         button: Energy Sparks for Schools
         text: Learn more about how Energy Sparks can support your school.
         title: For schools
+    general:
+      description_html: Signing up to Energy Sparks is just the first step. We support our network of over <strong>%{count}</strong> schools on their energy saving journey - from helping them to get set up, to providing a range of free training and 1:1 support. We also offer educational workshops and on-site energy audits.
+      title: With you on your journey
     quote:
       job_title: Head of School
       text_html: Engaging with Energy Sparks has been a really worthwhile experience. Not only has the school saved money, the children have become more aware of the ways that they can help to reduce energy use&hellip;
