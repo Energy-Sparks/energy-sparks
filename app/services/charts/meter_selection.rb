@@ -20,7 +20,7 @@ module Charts
   # Currently this class uses the meters returned from a MeterCollection rather than querying for meters from
   # the database.
   class MeterSelection
-    attr_reader :school
+    attr_reader :school, :meter_collection
 
     # @param School school the school whose data will be displayed
     # @param MeterCollection meter_collection the aggregate school, used to find meters and data ranges
@@ -90,7 +90,7 @@ module Charts
                else
                  raise 'Unexpected fuel type'
                end
-      meters = meters.keep_if { |m| m.amr_data.any? } # only show meters with readings
+      meters.keep_if { |m| m.amr_data.any? } # only show meters with readings
       meters = meters.reject(&@filter) if @filter # apply optional filter
       meters.sort_by(&:mpan_mprn)
     end
