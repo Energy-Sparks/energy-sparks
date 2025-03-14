@@ -33,12 +33,12 @@ module Admin
 
       def publish
         @category.update!(published: true, updated_by: current_user)
-        redirect_back fallback_to: admin_cms_categories_path, notice: 'Content published'
+        redirect_back fallback_location: admin_cms_categories_path, notice: 'Content published'
       end
 
       def hide
         @category.update!(published: false, updated_by: current_user)
-        redirect_back fallback_to: admin_cms_categories_path, notice: 'Content hidden'
+        redirect_back fallback_location: admin_cms_categories_path, notice: 'Content hidden'
       end
 
       private
