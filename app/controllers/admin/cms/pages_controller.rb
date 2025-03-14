@@ -43,12 +43,12 @@ module Admin
 
       def publish
         @page.update!(published: true, updated_by: current_user)
-        redirect_to admin_cms_pages_path, notice: 'Page published'
+        redirect_to admin_cms_pages_path, notice: 'Content published'
       end
 
       def hide
         @page.update!(published: false, updated_by: current_user)
-        redirect_to admin_cms_pages_path, notice: 'Page hidden'
+        redirect_to admin_cms_pages_path, notice: 'Content hidden'
       end
 
       private

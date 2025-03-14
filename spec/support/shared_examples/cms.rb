@@ -12,7 +12,7 @@ RSpec.shared_examples_for 'a publishable model' do
       click_link('Publish')
     end
 
-    expect(page).to have_content('Page published')
+    expect(page).to have_content('Content published')
     model.reload
     expect(model.published).to be(true)
     expect(model.updated_by).to eq(user)
@@ -20,7 +20,7 @@ RSpec.shared_examples_for 'a publishable model' do
     accept_confirm do
       click_link('Hide')
     end
-    expect(page).to have_content('Page hidden')
+    expect(page).to have_content('Content hidden')
     model.reload
     expect(model.published).to be(false)
   end

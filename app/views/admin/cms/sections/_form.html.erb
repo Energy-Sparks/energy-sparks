@@ -8,27 +8,25 @@
     <%= simple_form_for(section, as: :section, url: url) do |f| %>
 
       <div class="form-group">
-        <%= f.select :page_id, options_for_select(Cms::Page.by_title.map do |p|
-              [p.title, p.id]
-            end, section.page_id || params[:page_id]), { include_blank: 'Choose page' }, { class: 'form-control' } %>
+        <%= f.select :page_id,
+                     options_for_select(
+                       Cms::Page.by_title.map { |p| [p.title, p.id] },
+                       section.page_id || params[:page_id]
+                     ),
+                     { include_blank: 'Choose page' },
+                     { class: 'form-control' } %>
       </div>
 
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>
+
       <%= render 'admin/shared/locale_tabs', f: f, field: :body do |locale| %>
         <div class="body-trix-editor-<%= locale %> form-group">
           <%= f.label t_field(:body, locale), 'Body', class: 'form-label' %>
           <%= f.rich_text_area t_field(:body, locale), class: '' %>
         </div>
       <% end %>
-
-      <div class="form-group">
-        <div class="form-check form-check-inline">
-          <%= f.check_box :published, class: 'form-check-input' %>
-          <%= f.label :published, class: 'form-check-label' %>
-        </div>
-      </div>
 
       <div class="form-group mt-4">
         <%= f.submit 'Save', class: 'btn btn-primary' %>

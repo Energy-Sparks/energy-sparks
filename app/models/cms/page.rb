@@ -34,12 +34,14 @@ module Cms
     translates :title, type: :string, fallbacks: { cy: :en }
     translates :description, type: :string, fallbacks: { cy: :en }
 
+    validates_presence_of :title, :description
+    validate :change_publication_status?, on: :update
+
     belongs_to :category, class_name: 'Cms::Category'
     has_many :sections, class_name: 'Cms::Section', dependent: :nullify
 
     scope :by_category_and_title, -> { i18n.order(category_id: :asc, title: :asc) }
 
-    # todo: options here?
     accepts_nested_attributes_for :sections
 
     def audience

@@ -41,17 +41,14 @@ module Cms
 
     validates :position, numericality: { greater_than: 0, allow_nil: true }
     validates :position, uniqueness: { scope: :page_id }
-    validate :change_publication_status?, on: :update
+
+    validates_presence_of :title
 
     # virtual attribute for handling deletes from forms
     attr_accessor :_delete
 
     scope :positioned, -> { order(position: :asc) }
     scope :by_category_and_page, -> { joins(:page, { page: :category }).i18n.order(category_id: :asc, page_id: :asc, position: :asc) }
-
-    def publishable?
-      sections.published.any?
-    end
 
     private
 

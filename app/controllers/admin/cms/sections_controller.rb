@@ -33,12 +33,12 @@ module Admin
 
       def publish
         @section.update!(published: true, updated_by: current_user)
-        redirect_to admin_cms_sections_path, notice: 'Section published'
+        redirect_to admin_cms_sections_path, notice: 'Content published'
       end
 
       def hide
         @section.update!(published: false, updated_by: current_user)
-        redirect_to admin_cms_sections_path, notice: 'Section hidden'
+        redirect_to admin_cms_sections_path, notice: 'Content hidden'
       end
 
       private

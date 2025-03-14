@@ -34,7 +34,7 @@
                         method: :put,
                         class: 'btn',
                         data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
-            <% else %>
+            <% elsif section.publishable? %>
             <%= link_to 'Publish',
                         publish_admin_cms_section_path(section),
                         method: :put,

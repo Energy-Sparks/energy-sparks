@@ -8,10 +8,10 @@
     <%= simple_form_for(page, as: :page, url: url) do |f| %>
       <div class="form-group">
       <%= f.select :category_id,
-                   options_for_select(Cms::Category.by_title.map do |c|
-                     [c.title, c.id]
-                   end,
-                                      page.category_id || params[:category_id]),
+                   options_for_select(
+                     Cms::Category.by_title.map { |c| [c.title, c.id] },
+                     page.category_id || params[:category_id]
+                   ),
                    { include_blank: 'Choose category' },
                    { class: 'form-control' } %>
       </div>
