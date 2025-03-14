@@ -32,7 +32,7 @@ RSpec.describe 'Local Distribution Zone' do
   it 'checks for valid fields when creating a zone' do
     click_on 'New Local Distribution Zone'
     click_on 'Create'
-    expect(page).to have_content("can't be blank", count: 1)
+    expect(page).to have_content("can't be blank", count: 3)
   end
 
   context 'with an existing weather station' do
