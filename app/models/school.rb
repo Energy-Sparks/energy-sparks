@@ -62,6 +62,7 @@
 #  latitude                                :decimal(10, 6)
 #  level                                   :integer          default(0)
 #  local_authority_area_id                 :bigint(8)
+#  local_distribution_zone_id              :bigint(8)
 #  longitude                               :decimal(10, 6)
 #  mailchimp_fields_changed_at             :datetime
 #  met_office_area_id                      :bigint(8)
@@ -91,13 +92,14 @@
 #
 # Indexes
 #
-#  index_schools_on_calendar_id              (calendar_id)
-#  index_schools_on_latitude_and_longitude   (latitude,longitude)
-#  index_schools_on_local_authority_area_id  (local_authority_area_id)
-#  index_schools_on_school_group_cluster_id  (school_group_cluster_id)
-#  index_schools_on_school_group_id          (school_group_id)
-#  index_schools_on_scoreboard_id            (scoreboard_id)
-#  index_schools_on_urn                      (urn) UNIQUE
+#  index_schools_on_calendar_id                 (calendar_id)
+#  index_schools_on_latitude_and_longitude      (latitude,longitude)
+#  index_schools_on_local_authority_area_id     (local_authority_area_id)
+#  index_schools_on_local_distribution_zone_id  (local_distribution_zone_id)
+#  index_schools_on_school_group_cluster_id     (school_group_cluster_id)
+#  index_schools_on_school_group_id             (school_group_id)
+#  index_schools_on_scoreboard_id               (scoreboard_id)
+#  index_schools_on_urn                         (urn) UNIQUE
 #
 # Foreign Keys
 #
@@ -207,6 +209,7 @@ class School < ApplicationRecord
   belongs_to :local_authority_area, optional: true
 
   belongs_to :funder, optional: true
+  belongs_to :local_distribution_zone, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
