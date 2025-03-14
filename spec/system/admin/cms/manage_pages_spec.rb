@@ -75,7 +75,7 @@ describe 'manage pages' do
       expect(page).to have_link('New Section', href: new_admin_cms_section_path(page_id: cms_page.id))
       cms_page.sections.each do |section|
         expect(page).to have_content(section.title)
-        expect(page).to have_link('Hide', publish_admin_cms_section_path(section))
+        expect(page).to have_link('Hide', href: hide_admin_cms_section_path(section))
       end
     end
   end
