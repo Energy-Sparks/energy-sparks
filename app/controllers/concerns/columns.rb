@@ -17,8 +17,12 @@ module Columns
     end
 
     def name
-      string = @name.to_s
-      string.downcase == string ? string.titleize : string
+      if @name.is_a?(Symbol)
+        string = @name.to_s
+        string.downcase == string ? string.titleize : string
+      else
+        @name
+      end
     end
 
     def csv(arg)
