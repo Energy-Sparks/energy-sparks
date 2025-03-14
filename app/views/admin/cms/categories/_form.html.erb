@@ -16,9 +16,14 @@
       <div class="form-group">
         <%= f.input :icon %>
         <span class="form-text text-muted">
-          Provide the name of a <a href="https://fontawesome.com/search?ic=free"
+          Provide the name of a <a href="https://fontawesome.com/search?ic=free">Fontawesome icon</a>
+        </span>
+      </div>
+
+      <div class="form-group mt-4">
         <%= f.submit 'Save', class: 'btn btn-primary' %>
-        <%= link_to 'Cancel', admin_cms_categories_path, class: 'btn' %>>
+        <%= link_to 'Cancel', admin_cms_categories_path, class: 'btn' %>
+      </div>
 
       <div class="row">
         <div class="col">

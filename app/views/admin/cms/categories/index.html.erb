@@ -27,6 +27,7 @@
           <td><%= category.pages.published.count %> / <%= category.pages.count %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_category_path(category), class: 'btn' %>
+            <%= link_to 'New Page', new_admin_cms_page_path(category_id: category.id), class: 'btn' %>
             <% if category.published? %>
             <%= link_to 'Hide',
                         hide_admin_cms_category_path(category),

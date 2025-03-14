@@ -64,21 +64,8 @@ describe 'manage categories' do
       expect(page).to have_content('1 / 1')
     end
 
-    it 'allows category to be published and unpublished', :js do
-      accept_confirm do
-        click_link('Publish')
-      end
-      expect(page).to have_content('Category published')
-      category.reload
-      expect(category.published).to be(true)
-      expect(category.updated_by).to eq(user)
-
-      accept_confirm do
-        click_link('Hide')
-      end
-      expect(page).to have_content('Category hidden')
-      category.reload
-      expect(category.published).to be(false)
+    it_behaves_like 'a publishable model' do
+      let(:model) { category }
     end
   end
 end
