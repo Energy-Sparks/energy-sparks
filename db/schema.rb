@@ -1174,8 +1174,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_03_175445) do
 
   create_table "local_distribution_zones", force: :cascade do |t|
     t.string "name", null: false
-    t.string "code"
-    t.string "publication_id"
+    t.string "code", null: false
+    t.string "publication_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_local_distribution_zones_on_code", unique: true

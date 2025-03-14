@@ -16,8 +16,7 @@ namespace :after_party do
      [:SW, :PUBOB4516, 'South West'],
      [:WM, :PUBOB4517, 'West Midlands'],
      [:WN, :PUBOB4518, 'Wales North'],
-     [:WS, :PUBOB4519, 'Wales South'],
-     [nil, nil, 'Off Network']].each do |code, publication_id, name|
+     [:WS, :PUBOB4519, 'Wales South']].each do |code, publication_id, name|
       LocalDistributionZone.create!(name:, code:, publication_id:)
     end
 
