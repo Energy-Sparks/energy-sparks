@@ -31,6 +31,23 @@ module Cms
     translates :title, type: :string, fallbacks: { cy: :en }
     translates :description, type: :string, fallbacks: { cy: :en }
 
+    validates_presence_of :title, :description
+    validate :change_publication_status?, on: :update
+
     has_many :pages, class_name: 'Cms::Page', dependent: :restrict_with_error
+
+    def publishable?
+      pages.published.any?
+    end
+
+    private
+
+    # only allow changing publication status if we're unpublishing something
+    # or if its publishable
+    def change_publication_status?
+      if published_changed?(from: false, to: true) && !publishable?
+        errors.add(:published, 'cannot publish category without any published pages')
+      end
+    end
   end
 end

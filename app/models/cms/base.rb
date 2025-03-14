@@ -11,5 +11,9 @@ module Cms
 
     scope :published, -> { where(published: true) }
     scope :by_title, ->(order = :asc) { i18n.order(title: order) }
+
+    def publishable?
+      true
+    end
   end
 end

@@ -13,19 +13,12 @@
         <%= f.input t_field(:description, locale), as: :string %>
       <% end %>
 
-      <%= f.input :icon, hint: 'Provide the name of a FontAwesome icon' %>
-
       <div class="form-group">
-        <div class="form-check form-check-inline">
-          <%= f.check_box :published, class: 'form-check-input' %>
-          <%= f.label :published, class: 'form-check-label' %>
-        </div>
-      </div>
-
-      <div class="form-group mt-4">
+        <%= f.input :icon %>
+        <span class="form-text text-muted">
+          Provide the name of a <a href="https://fontawesome.com/search?ic=free"
         <%= f.submit 'Save', class: 'btn btn-primary' %>
-        <%= link_to 'Cancel', admin_cms_categories_path, class: 'btn' %>
-      </div>
+        <%= link_to 'Cancel', admin_cms_categories_path, class: 'btn' %>>
 
       <div class="row">
         <div class="col">

@@ -32,12 +32,12 @@ module Admin
       end
 
       def publish
-        @category.update!(published: true)
+        @category.update!(published: true, updated_by: current_user)
         redirect_to admin_cms_categories_path, notice: 'Category published'
       end
 
       def hide
-        @category.update!(published: false)
+        @category.update!(published: false, updated_by: current_user)
         redirect_to admin_cms_categories_path, notice: 'Category hidden'
       end
 

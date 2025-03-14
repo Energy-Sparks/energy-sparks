@@ -45,5 +45,9 @@ module Cms
     def audience
       'School and group admins'
     end
+
+    def publishable?
+      sections.published.any?
+    end
   end
 end
