@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col">
+    <% url = if page.new_record?
+               admin_cms_pages_path
+             else
+               admin_cms_page_path(page)
+             end %>
+    <%= simple_form_for(page, as: :page, url: url) do |f| %>
+      <div class="form-group">
+      <%= f.select :category_id,
+                   options_for_select(
+                     Cms::Category.by_title.map { |c| [c.title, c.id] },
+                     page.category_id || params[:category_id]
+                   ),
+                   { include_blank: 'Choose category' },
+                   { class: 'form-control' } %>
+      </div>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+        <%= f.input t_field(:description, locale), as: :string %>
+      <% end %>
+
+      <% unless page.new_record? %>
+        <%= render 'page_sections_form', page: @page, f: f %>
+      <% end %>
+
+      <div class="form-group mt-4">
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', admin_cms_pages_path, class: 'btn' %>
+      </div>
+    <% end %>
+  </div>
+</div>
