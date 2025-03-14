@@ -4,7 +4,7 @@ namespace :data_feeds do
   desc 'Load calorific values from National Gas'
   task national_gas_calorific_values: :environment do
     api = DataFeeds::NationalGas.new
-    LocalDistributionZone.where.not(publication_id: nil).find_each do |zone|
+    LocalDistributionZone.find_each do |zone|
       next if ENV['ZONE'] && ENV['ZONE'] != zone.code
 
       latest_reading = zone.readings.by_date.last&.date

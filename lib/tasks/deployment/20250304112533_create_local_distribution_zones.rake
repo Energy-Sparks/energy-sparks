@@ -4,19 +4,26 @@ namespace :after_party do
     puts "Running deploy task 'create_local_distribution_zones'"
 
     # zones and publication IDs from https://data.nationalgas.com/find-gas-data
-    [[:EA, :PUBOB4507, 'East Anglia'],
-     [:EM, :PUBOB4508, 'East Midlands'],
-     [:NO, :PUBOB4509, 'Northern'],
-     [:NE, :PUBOB4510, 'North East'],
-     [:NT, :PUBOB4511, 'North Thames'],
-     [:NW, :PUBOB4512, 'North West'],
-     [:SC, :PUBOB4513, 'Scotland'],
-     [:SO, :PUBOB4514, 'Southern'],
-     [:SE, :PUBOB4515, 'South East'],
-     [:SW, :PUBOB4516, 'South West'],
-     [:WM, :PUBOB4517, 'West Midlands'],
-     [:WN, :PUBOB4518, 'Wales North'],
-     [:WS, :PUBOB4519, 'Wales South']].each do |code, publication_id, name|
+    [
+      [:EA, :PUBOB4507, 'East Anglia'],
+      [:EM, :PUBOB4508, 'East Midlands'],
+      [:NO, :PUBOB4509, 'Northern'],
+      [:NE, :PUBOB4510, 'North East'],
+      [:NT, :PUBOB4511, 'North Thames'],
+      [:NW, :PUBOB4512, 'North West'],
+      [:SC, :PUBOB4513, 'Scotland'],
+      [:SO, :PUBOB4514, 'Southern'],
+      [:SE, :PUBOB4515, 'South East'],
+      [:SW, :PUBOB4516, 'South West'],
+      [:WM, :PUBOB4517, 'West Midlands'],
+      [:WN, :PUBOB4518, 'Wales North'],
+      [:WS, :PUBOB4519, 'Wales South'],
+      [:LO, :PUBOB4521, 'Oban'],
+      [:LS, :PUBOB4522, 'Stranraer'],
+      [:LC, :PUBOBJ1660, 'Campbeltown'],
+      [:LT, :PUBOBJ1661, 'Thurso'],
+      [:LW, :PUBOBJ1662, 'Wick']
+    ].each do |code, publication_id, name|
       LocalDistributionZone.create!(name:, code:, publication_id:)
     end
 
