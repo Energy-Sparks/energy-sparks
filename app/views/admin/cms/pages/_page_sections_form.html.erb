@@ -21,10 +21,24 @@
         <div class="col-1">
           <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
         </div>
-        <div class="col-10">
-          <%= s.object.title %>
+        <div class="col-9">
+          <%= link_to s.object.title, edit_admin_cms_section_path(s.object), target: '_blank', rel: 'noopener' %>
         </div>
-        <div class="col-1">
+        <div class="col-2">
+          <% if s.object.published? %>
+          <%= link_to 'Hide',
+                      hide_admin_cms_section_path(s.object),
+                      method: :put,
+                      class: 'btn btn-sm',
+                      data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
+          <% elsif s.object.publishable? %>
+          <%= link_to 'Publish',
+                      publish_admin_cms_section_path(s.object),
+                      method: :put,
+                      class: 'btn btn-sm',
+                      data: { confirm: 'Note this will make the content public, are you sure?' } %>
+          <% end %>
+
           <button class="btn btn-sm delete-association-button">Remove</button>
         </div>
         <%= s.hidden_field :position, class: 'position' %>
