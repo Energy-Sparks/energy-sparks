@@ -10,7 +10,7 @@ namespace :data_feeds do
       sheet = xlsx.sheet(name)
       header = sheet.row(1).each.with_index(1).to_h
       (2..sheet.last_row).each do |row|
-        postcode = "#{sheet.cell(row, header['Outcode'])}#{sheet.cell(row, header['Incode'])}"
+        postcode = "#{sheet.cell(row, header['Outcode'])} #{sheet.cell(row, header['Incode'])}"
         postcode_to_zone[postcode] << sheet.cell(row, header['LDZ'])
       end
     end
