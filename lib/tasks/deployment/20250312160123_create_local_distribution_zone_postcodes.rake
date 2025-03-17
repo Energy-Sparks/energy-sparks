@@ -3,13 +3,24 @@ namespace :after_party do
   task create_local_distribution_zone_postcodes: :environment do
     puts "Running deploy task 'create_local_distribution_zone_postcodes'"
 
-    postcodes = if File.exist?('postcode_to_ldz.json')
-                  File.read('postcode_to_ldz.json')
-                else
-                  s3 = Aws::S3::Client.new
-                  s3.get_object(bucket: 'es-import-20250314', key: 'postcode_to_ldz.json').body.read
-                end
-    postcodes = JSON.parse(postcodes)
+    # from https://www.xoserve.com/a-to-z/#p - https://www.xoserve.com/media/2008/postcode-exit-zone-list-may-2017.zip
+    unless File.exist?('tmp/Postcode-Exit-Zone-List-May-2017.xlsx')
+      s3 = Aws::S3::Client.new
+      File.open('tmp/Postcode-Exit-Zone-List-May-2017.xlsx', 'wb') do |target|
+        s3.get_object({ bucket: 'es-import-20250314', key: 'Postcode-Exit-Zone-List-May-2017.xlsx' }, target:)
+      end
+    end
+    xlsx = Roo::Excelx.new('tmp/Postcode-Exit-Zone-List-May-2017.xlsx')
+    postcodes = Hash.new { |h, k| h[k] = Set.new }
+    xlsx.sheets.each do |name|
+      sheet = xlsx.sheet(name)
+      header = sheet.row(1).each.with_index(1).to_h
+      (2..sheet.last_row).each do |row|
+        postcode = "#{sheet.cell(row, header['Outcode'])} #{sheet.cell(row, header['Incode'])}"
+        postcodes[postcode] << sheet.cell(row, header['LDZ'])
+      end
+    end
+
     # these postcodes have multiple zones
     postcodes['SW11 3GQ'] = ['SE']
     postcodes['SE1 6HZ'] = ['SE']
