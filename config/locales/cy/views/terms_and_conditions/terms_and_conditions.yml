@@ -75,14 +75,14 @@ cy:
         <li>8.1 Os oes gan yr ysgol fesurydd AMR sy’n darparu data defnydd ynni bob hanner awr, gall Sbarcynni gasglu’r data ynni oddi wrth gyflenwr yr ysgol, gweithredwr mesurydd neu Awdurdod Lleol. Mae rhagor o fanylion am y ffordd yr ydym yn cael data ysgolion unigol ar gael ar gais trwy gysylltu â ni ar hello@energysparks.uk.</li>
         <li>8.2 Os oes gan ysgol baneli solar, gall Sbarcynni gael data cynhyrchu solar, allforio a defnydd grid o system monitro solar yr ysgol. Os nad yw hyn yn bosibl byddwn yn cael data cynhyrchu solar wedi'i fodelu gan Solar PV Live, gwasanaeth a ddarperir gan Brifysgol Sheffield.</li>
         <li>
-          8.3Os oes gan yr ysgol fesurydd clyfar SMETS2 neu SMETS1+ wedi'i osod mae Sbarcynni yn defnyddio n3rgy Ltd i gasglu data ynni drwy'r Cwmni Cyfathrebu Data (DCC). Yn yr achos hwn, mae n3rgy Ltd yn darparu gwelededd a rheolaeth lawn o'r wybodaeth a rennir ag Sbarcynni trwy borth defnyddwyr (https://data.n3rgy.com/consumer) lle gall defnyddwyr&#58;
+          8.3 Os oes gan yr ysgol fesurydd clyfar SMETS2 neu SMETS1+ wedi'i osod mae Sbarcynni yn defnyddio n3rgy data Ltd i gasglu data ynni drwy'r Cwmni Cyfathrebu Data (DCC). Yn yr achos hwn, mae n3rgy data Ltd yn darparu gwelededd a rheolaeth lawn o'r wybodaeth a rennir ag Sbarcynni trwy borth defnyddwyr (https://data.n3rgy.com/consumer) lle gall defnyddwyr&#58;
           <ul>
             <li>8.3.1 Adolygu pa sefydliadau rydych wedi rhoi mynediad i ddata iddynt.</li>
             <li>8.3.2 Gweld y tro diwethaf iddyn nhw gael mynediad i'ch data.</li>
             <li>8.3.3 Tynnu caniatâd yn ôl ar gyfer unrhyw un neu bob un o’r sefydliadau a restrir.</li>
           </ul>
         </li>
-        <li>8.4 Bydd yr holl wybodaeth am ddefnydd, cynhyrchu a thariffau a gesglir gan n3rgy Ltd hefyd yn ddienw ac yn cael ei chyfuno o fewn set ddata sydd ar gael i bob sefydliad sy'n defnyddio gwasanaeth n3rgy. Mae hyn yn galluogi n3rgy a’i gwsmeriaid i ddeall yn well y ffordd yr ydym yn defnyddio, yn cynhyrchu ac yn talu am ynni, gyda’r bwriad o wella effeithlonrwydd ynni a lleihau allyriadau carbon ein cenedl ymhellach. Oherwydd natur y dull anhysbysu a ddefnyddir, nid yw'n bosibl adnabod eich data o'r set ehangach hon, ac felly dileu eich cyfraniad.</li>
+        <li>8.4 Bydd yr holl wybodaeth am ddefnydd, cynhyrchu a thariffau a gesglir gan n3rgy data Ltd hefyd yn ddienw ac yn cael ei chyfuno o fewn set ddata sydd ar gael i bob sefydliad sy'n defnyddio gwasanaeth n3rgy data Ltd. Mae hyn yn galluogi n3rgy data Ltd a’i gwsmeriaid i ddeall yn well y ffordd yr ydym yn defnyddio, yn cynhyrchu ac yn talu am ynni, gyda’r bwriad o wella effeithlonrwydd ynni a lleihau allyriadau carbon ein cenedl ymhellach. Oherwydd natur y dull anhysbysu a ddefnyddir, nid yw'n bosibl adnabod eich data o'r set ehangach hon, ac felly dileu eich cyfraniad.</li>
         <li>8.5 Rhestrir setiau data trydydd parti eraill a ddefnyddir gan Sbarcynni yn <a href='%{attribution_url}'>%{attribution_url}</a></li>
         <li>8.6 Mae Sbarcynni yn defnyddio amgylchedd cwmwl AWS yn y DU i reoli a defnyddio ein gwefan a’n seilwaith. Mae Sbarcynni yn defnyddio Mailchimp i reoli ein rhestrau o danysgrifwyr cylchlythyr e-bost ac anfon cylchlythyrau at ein defnyddwyr.</li>
       </ul>
