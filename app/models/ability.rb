@@ -102,6 +102,10 @@ class Ability
 
     can :read, SchoolGroup
 
+    # Anyone can view published content
+    can :show, Cms::Category, published: true
+    can :show, Cms::Page, published: true
+
     # Allow anyone to compare schools in public school group. The actual schools that are shown
     # are filtered based on whether user can :show the school
     can :compare, SchoolGroup, public: true

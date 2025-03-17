@@ -1,8 +1,7 @@
-<%= component 'page_nav', name: 'Support Pages',
-                          classes: classes,
-                          icon: nil, href: support_path,
-                          options: { user: current_user, match_controller: true } do |c| %>
-
+<%= render PageNavComponent.new name: 'Support Pages',
+                                classes: classes,
+                                icon: nil, href: support_path,
+                                options: { user: current_user, match_controller: true } do |c| %>
 
  <% categories.each do |category| %>
 
@@ -11,7 +10,7 @@
 
      <% category.pages.published.by_title.each do |page| %>
        <% s.with_item(name: page.title,
-                          href: page_path(page), classes: 'small') %>
+                      href: page_path(page), classes: 'small') %>
      <% end %>
    <% end %>
  <% end %>

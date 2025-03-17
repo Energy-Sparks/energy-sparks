@@ -2,17 +2,23 @@
 
 module Cms
   class CategoriesController < ApplicationController
+    include ContentManagement
+
     skip_before_action :authenticate_user!
-    load_resource :category
+    load_and_authorize_resource :category, except: [:index]
+
+    before_action :redirect_unless_feature_enabled?
+
+    before_action :load_categories
+
+    layout 'dashboards'
 
     def index
-      @categories = Cms::Category.all.published.by_title
-      render :index, layout: 'dashboards'
+      render :index
     end
 
     def show
-      @categories = Cms::Category.all.published.by_title
-      render :show, layout: 'dashboards'
+      render :show
     end
   end
 end
