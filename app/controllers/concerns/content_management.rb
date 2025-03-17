@@ -6,7 +6,12 @@ module ContentManagement
   private
 
   def load_categories
-    @categories = Cms::Category.all.published.by_title
+    scope = if current_user_admin?
+              Cms::Category.all
+            else
+              Cms::Category.all.published
+            end
+    @categories = scope.by_title
   end
 
   def redirect_unless_feature_enabled?
