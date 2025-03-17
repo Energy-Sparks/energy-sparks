@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_100433) do
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "amr_data_feed_config_convert_to_kwh", ["no", "m3", "meter"]
+  create_enum "audience", ["anyone", "school_users", "school_admins", "group_admins"]
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
@@ -639,6 +640,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_07_100433) do
     t.bigint "category_id", null: false
     t.string "slug", null: false
     t.boolean "published", default: false, null: false
+    t.enum "audience", default: "anyone", null: false, enum_type: "audience"
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false

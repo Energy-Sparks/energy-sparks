@@ -16,6 +16,16 @@
                    { class: 'form-control' } %>
       </div>
 
+      <div class="form-group">
+        <%= f.select :audience,
+                     options_for_select(
+                       Cms::Page.audiences.transform_keys { |v| t("page.audience.#{v}") },
+                       page.audience
+                     ),
+                     { include_blank: 'Choose audience' },
+                     { class: 'form-control' } %>
+      </div>
+
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>

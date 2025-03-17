@@ -55,8 +55,8 @@ module Admin
 
       def page_params
         translated_params = t_params(::Cms::Page.mobility_attributes)
-        params.require(:page).permit(translated_params, :title, :description, :published, :category_id,
-          sections_attributes: sections_attributes)
+        params.require(:page).permit(translated_params, :title, :description, :published,
+          :category_id, :audience, sections_attributes: sections_attributes)
       end
 
       def sections_attributes

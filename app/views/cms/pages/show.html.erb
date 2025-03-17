@@ -23,7 +23,7 @@
 
       <%= render PromptComponent.new(status: :none) do |c| %>
         <% c.with_title { 'Audience' } %>
-        <%= @page.audience %>
+        <%= t("page.audience.#{@page.audience}") %>
       <% end %>
 
       <div class="row">
