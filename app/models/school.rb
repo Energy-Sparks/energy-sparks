@@ -318,6 +318,8 @@ class School < ApplicationRecord
 
   before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
+  before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
+
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
       school.latitude = geo.data['latitude']
@@ -325,8 +327,6 @@ class School < ApplicationRecord
       school.country = geo.data['country']&.downcase
     end
   end
-
-
 
   def deleted?
     not_active? and removal_date.present?
@@ -869,5 +869,9 @@ class School < ApplicationRecord
     return unless latitude.blank? || longitude.blank? || country.blank?
 
     errors.add(:postcode, I18n.t('schools.school_details.geocode_not_found_message'))
+  end
+
+  def update_local_distribution_zone
+    update_column(local_distribution_zone_id: LocalDistributionZonePostcode.zone_id_for_school(school))
   end
 end
