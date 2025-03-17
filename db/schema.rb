@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_03_145810) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_03_175445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1160,6 +1160,27 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_03_145810) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "mailchimp_fields_changed_at"
+  end
+
+  create_table "local_distribution_zone_readings", force: :cascade do |t|
+    t.date "date", null: false
+    t.float "calorific_value", null: false
+    t.bigint "local_distribution_zone_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["local_distribution_zone_id", "date"], name: "idx_on_local_distribution_zone_id_date_acca36ccf1", unique: true
+    t.index ["local_distribution_zone_id"], name: "idx_on_local_distribution_zone_id_5bc550f347"
+  end
+
+  create_table "local_distribution_zones", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "code", null: false
+    t.string "publication_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_local_distribution_zones_on_code", unique: true
+    t.index ["name"], name: "index_local_distribution_zones_on_name", unique: true
+    t.index ["publication_id"], name: "index_local_distribution_zones_on_publication_id", unique: true
   end
 
   create_table "locations", force: :cascade do |t|

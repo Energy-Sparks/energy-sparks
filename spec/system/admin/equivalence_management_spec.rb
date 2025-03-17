@@ -29,6 +29,7 @@ RSpec.describe 'equivalence type management', type: :system do
 
     click_on 'Create equivalence type'
 
+    with_retry { expect(EquivalenceType.first).not_to be_nil }
     equivalence_type = EquivalenceType.first
     expect(equivalence_type.electricity?).to eq true
     expect(equivalence_type.last_month?).to eq true
