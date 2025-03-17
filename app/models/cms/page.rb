@@ -35,7 +35,7 @@ module Cms
     translates :title, type: :string, fallbacks: { cy: :en }
     translates :description, type: :string, fallbacks: { cy: :en }
 
-    enum :audience, %w[anyone school_users school_admins group_admins].to_h { |v| [v, v] }
+    enum(:audience, %w[anyone school_users school_admins group_admins].to_h { |v| [v, v] })
 
     validates_presence_of :title, :description
     validate :change_publication_status?, on: :update
