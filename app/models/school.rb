@@ -872,6 +872,6 @@ class School < ApplicationRecord
   end
 
   def update_local_distribution_zone
-    update_column(local_distribution_zone_id: LocalDistributionZonePostcode.zone_id_for_school(school))
+    self.local_distribution_zone_id = LocalDistributionZonePostcode.zone_id_for_school(self)
   end
 end
