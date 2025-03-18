@@ -1,0 +1,33 @@
+<%= content_for :page_title, 'Support Pages' %>
+
+<% content_for :dashboard_header do %>
+  <div>
+    <div id="dashboard-header-welcome" class="col-12 col-md-9">
+      <div class="row">
+        <div class="col">
+          <h1>Support pages</h1>
+        </div>
+      </div>
+      <%= render 'cms/search' %>
+    </div>
+  </div>
+<% end %>
+
+<div class="container">
+  <% @categories.in_groups_of(3, false).each do |group| %>
+    <div class="row mt-4">
+      <% group.each do |category| %>
+        <div class="col-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <%= render IconComponent.new(name: category.icon) %>
+              <p>
+                <%= link_to category.title, category_path(category) %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
