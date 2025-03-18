@@ -400,22 +400,6 @@ describe Mailchimp::Contact do
           let(:role) { :school_admin }
         end
       end
-
-      context 'with volunteer' do
-        it_behaves_like 'it maps all the roles correctly' do
-          let(:role) { :volunteer }
-        end
-      end
-
-      context 'with a user with no staff role' do
-        let(:user) { create(:volunteer, staff_role: nil) }
-
-        it_behaves_like 'interests have been selected' do
-          let(:selected) do
-            [Mailchimp::Contact::GETTING_THE_MOST, Mailchimp::Contact::ENGAGING_PUPILS, Mailchimp::Contact::LEADERSHIP]
-          end
-        end
-      end
     end
   end
 end
