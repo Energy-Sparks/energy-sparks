@@ -1,16 +1,13 @@
 module Elements
   class TagComponent < ApplicationComponent
-    def initialize(tag, **kwargs)
+    def initialize(*args, **kwargs)
       super
-      @tag = tag
+      @args = args
+      @kwargs = kwargs
     end
 
     def call
-      content_tag(@tag, id: id, class: classes) { content }
-    end
-
-    def render?
-      content
+      content_tag(*@args, **@kwargs, id: id, class: classes) { content }
     end
   end
 end

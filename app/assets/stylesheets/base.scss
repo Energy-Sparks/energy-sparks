@@ -41,7 +41,14 @@ q {
 
 .rounded-12 {
   border-radius: 12px;
-
+  .top {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .bottom {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
 }
 
 .fa-li.fa-check {
@@ -280,6 +287,33 @@ input, progress {
   }
 }
 
+.h-60 {
+  height: 60% !important;
+}
+
+.h-40 {
+  height: 40% !important;
+}
+
 .sortable-hide {
   opacity:0;
+}
+
+.theme {
+  &.dark {
+    background-color: $blue-very-dark;
+    color: $white;
+    a {
+      color: $teal-medium;
+    }
+  }
+
+  &.light {
+    background-color: $blue-light;
+
+  }
+
+  &.accent {
+    background-color: $blue-light;
+  }
 }

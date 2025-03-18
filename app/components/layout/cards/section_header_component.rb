@@ -10,7 +10,7 @@ module Layout
 
       def initialize(**_kwargs)
         super
-        add_classes('m-4 pt-4 text-center')
+        add_classes('text-center')
       end
     end
   end

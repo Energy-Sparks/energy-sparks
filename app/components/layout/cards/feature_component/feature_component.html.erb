@@ -1,6 +1,9 @@
 <%= tag.div id: id, class: classes do %>
   <%= header %>
   <%= description %>
+  <% links.each do |link| %>
+    <%= link %>
+  <% end %>
   <% buttons.each do |button| %>
     <%= button %>
   <% end %>

@@ -38,12 +38,4 @@ RSpec.describe Elements::TagComponent, :include_application_helper, type: :compo
     it { expect(html).to have_css('q') }
     it { expect(html).to have_content('Content') }
   end
-
-  context 'with no content' do
-    let(:content) {}
-
-    it { expect(html).not_to have_css('p') }
-    it { expect(html).not_to have_css('q') }
-    it { expect(html).not_to have_content('Content') }
-  end
 end

@@ -3,7 +3,7 @@
 <% if Flipper.enabled?(:new_home_page, current_user) %>
   <div class="bg-blue-very-dark text-white">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-      <% grid.with_feature_card responsive: true, classes: 'py-4' do |feature| %>
+      <% grid.with_feature_card main: true, classes: 'py-4' do |feature| %>
         <%= feature.with_header title: t('home.feature.header'), classes: 'text-white' %>
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
@@ -16,9 +16,9 @@
   </div>
 
   <div class="container">
-    <%= render Layout::Cards::SectionHeaderComponent.new do |statement| %>
-      <%= statement.with_header title: t('home.statement.header') %>
-      <%= statement.with_description { t('home.statement.description') } %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= section_header.with_header title: t('home.stats.header') %>
+      <%= section_header.with_description { t('home.stats.description') } %>
     <% end %>
 
     <%= render Layout::GridComponent.new(cols: 4, classes: 'pb-4 mb-4',
@@ -72,7 +72,7 @@
       <% end %>
     <% end %>
 
-    <%= render Layout::Cards::SectionHeaderComponent.new do |section_header| %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
       <%= section_header.with_header title: t('home.features.header') %>
       <%= section_header.with_description { t('home.features.description') } %>
     <% end %>
@@ -112,6 +112,44 @@
         <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
       <% end %>
       <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-12 p-4 bg-white') %>
+    <% end %>
+
+    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= section_header.with_header title: t('home.organisations.header') %>
+      <%= section_header.with_description { t('home.organisations.description') } %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          cols: 3,
+          classes: 'mb-4 mt-4',
+          component_classes: 'rounded-12'
+        ) do |grid| %>
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-12 top h-60') %>
+        <%= card.with_feature_card(classes: 'p-4 rounded-12 bottom h-40', theme: :dark) do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.school.description') } %>
+          <%= feature.with_link(href: for_schools_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'funnel-teachers.png', classes: 'rounded-12 top h-60') %>
+        <%= card.with_feature_card(classes: 'p-4 rounded-12 bottom h-40', theme: :dark) do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
+          <%= feature.with_link(href: for_multi_academy_trusts_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'funnel-manager.png', classes: 'rounded-12 top h-60') %>
+        <%= card.with_feature_card(classes: 'p-4 rounded-12 bottom h-40', theme: :dark) do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.local_authority.description') } %>
+          <%= feature.with_link(href: for_local_authorities_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
     <% end %>
   </div>
 <% else %>

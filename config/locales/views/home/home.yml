@@ -49,14 +49,24 @@ en:
         text: Learn more about how Energy Sparks can support your school.
         title: For schools
     general:
-      description_html: Signing up to Energy Sparks is just the first step. We support our network of over <strong>%{count}</strong> schools on their energy saving journey - from helping them to get set up, to providing a range of free training and 1:1 support. We also offer educational workshops and on-site energy audits.
+      description_html: Signing up to Energy Sparks is just the first step. We support our network of <strong>%{count}</strong> schools on their energy saving journey - from helping them to get set up, to providing a range of free training and 1:1 support. We also offer educational workshops and on-site energy audits.
       title: With you on your journey
+    organisations:
+      cards:
+        local_authority:
+          description: Energy Sparks can work with Local Authorities to support schools in their area
+          title: For Local Authorities
+        multi_academy:
+          description: Find out how Energy Sparks supports Multi-Academy Trusts
+          title: For Multi-Academy Trusts
+        school:
+          description: Find out how Energy Sparks can support your school
+          title: For Schools
+      description: We work with primary, secondary, special and independent schools to help them lower their energy consumption, cut costs and reduce their impact on the environment
+      header: Working with schools of all types and sizes
     quote:
       job_title: Head of School
       text_html: Engaging with Energy Sparks has been a really worthwhile experience. Not only has the school saved money, the children have become more aware of the ways that they can help to reduce energy use&hellip;
-    statement:
-      description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.
-      header: Are you looking to cut energy bills and take action on climate change?
     stats:
       card_1:
         figure: 10%
@@ -67,13 +77,15 @@ en:
         header: Primary schools
         subtext: and 7 tonnes CO₂ - average saving in 2023/24
       card_3:
-        figure: "£20,000"
+        figure: "£21,000"
         header: Secondary schools
         subtext: and 26 tonnes CO₂ - average saving in 2023/24
       card_4:
         figure: 70%
         header: Empower pupils
         subtext: Number of participating schools using Energy Sparks with their eco-team to inform impactful action
+      description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.
+      header: Are you looking to cut energy bills and take action on climate change?
     sub_title: A unique school-specific energy management tool and education programme
     testimonials:
       card_1:

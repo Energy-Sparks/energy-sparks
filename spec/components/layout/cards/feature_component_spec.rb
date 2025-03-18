@@ -24,15 +24,17 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
       let(:expected_id) { id }
     end
 
+    it { expect(html).to have_css('h4') }
+    it { expect(html).not_to have_css('.main') }
     it { expect(html).to have_content('Header') }
     it { expect(html).to have_content('Description') }
     it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
     it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end
 
-  context 'with responsive params' do
-    let(:params) { base_params.merge(responsive: true) }
+  context 'with main params' do
+    let(:params) { base_params.merge(main: true) }
 
-    it { expect(html).to have_css('.responsive') }
+    it { expect(html).to have_css('.main h2') }
   end
 end
