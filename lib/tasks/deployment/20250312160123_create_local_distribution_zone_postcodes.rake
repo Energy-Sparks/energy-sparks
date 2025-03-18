@@ -8,10 +8,9 @@ namespace :after_party do
       s3 = Aws::S3::Client.new
       File.open('tmp/Postcode-Exit-Zone-List-May-2017.xlsx', 'wb') do |target|
         s3.get_object({ bucket: 'es-import-20250314', key: 'Postcode-Exit-Zone-List-May-2017.xlsx' }, target:)
-        target.flush
-        target.fsync
       end
     end
+    sleep 5
     xlsx = Roo::Excelx.new('tmp/Postcode-Exit-Zone-List-May-2017.xlsx')
     postcodes = Hash.new { |h, k| h[k] = Set.new }
     xlsx.sheets.each do |name|
