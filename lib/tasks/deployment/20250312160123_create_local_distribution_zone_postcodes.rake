@@ -20,7 +20,7 @@ namespace :after_party do
     end
 
     # these postcodes have multiple zones
-    LocalDistributionZonePostcode.upsert_all([{ local_distribution_zone_id: model_zones['SE'], postcode: 'SE1 6HZ' }
+    LocalDistributionZonePostcode.upsert_all([{ local_distribution_zone_id: model_zones['SE'], postcode: 'SE1 6HZ' },
                                               { local_distribution_zone_id: model_zones['SE'], postcode: 'SW11 3GQ' }])
 
     # Update task as completed.  If you remove the line below, the task will
