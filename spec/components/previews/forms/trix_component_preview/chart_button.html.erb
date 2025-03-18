@@ -1,0 +1,8 @@
+<h2>With Chart Button</h2>
+
+<%= simple_form_for([:admin, ActivityType.new]) do |form| %>
+  <%= render(Forms::TrixComponent.new(form: form,
+                                      charts: [['Example',
+                                                ChartManager::STANDARD_CHART_CONFIGURATION.keys.grep(/^activities/)]],
+                                      field: :description)) %>
+<% end %>

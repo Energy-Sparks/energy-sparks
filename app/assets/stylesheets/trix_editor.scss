@@ -1,0 +1,23 @@
+trix-editor {
+  min-height: 320px !important;
+  background: $white;
+}
+
+trix-editor.large {
+  min-height: 500px !important;
+}
+
+trix-toolbar .button_groups {
+  button.code {
+    display: none;
+  }
+  button.strike {
+    display: none;
+  }
+  button.increase {
+    display: none;
+  }
+  button.decrease {
+    display: none;
+  }
+}
