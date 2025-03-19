@@ -92,14 +92,15 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :confirmable
 
+  # volunteer has been removed, this was 8
   enum :role, { guest: 0, staff: 1, admin: 2, school_admin: 3, school_onboarding: 4, pupil: 5,
-                group_admin: 6, analytics: 7, volunteer: 8 }
+                group_admin: 6, analytics: 7 }
 
   enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
 
   scope :active, -> { where(active: true) }
 
-  scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin], User.roles[:volunteer]]) }
+  scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
   scope :mailchimp_roles, -> {
     where.not(role: [:pupil, :school_onboarding]).where.not(confirmed_at: nil)

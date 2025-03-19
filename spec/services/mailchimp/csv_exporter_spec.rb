@@ -388,7 +388,7 @@ describe Mailchimp::CsvExporter do
     let!(:school_admin) { create(:school_admin, school: school) }
     let!(:group_admin) { create(:group_admin, school_group: school_group) }
     let!(:staff) { create(:staff) }
-    let!(:volunteer) { create(:volunteer) }
+    let!(:other_staff) { create(:staff) }
     let!(:admin) { create(:admin) }
 
     let(:subscribed) do
@@ -407,7 +407,7 @@ describe Mailchimp::CsvExporter do
     end
 
     let(:nonsubscribed) do
-      [create_contact(volunteer.email)]
+      [create_contact(other_staff.email)]
     end
 
     before do
@@ -421,7 +421,7 @@ describe Mailchimp::CsvExporter do
 
       expect(service.updated_audience[:cleaned].map(&:email_address)).to contain_exactly(group_admin.email)
 
-      expect(service.updated_audience[:nonsubscribed].map(&:email_address)).to contain_exactly(volunteer.email)
+      expect(service.updated_audience[:nonsubscribed].map(&:email_address)).to contain_exactly(other_staff.email)
 
       expect(service.new_nonsubscribed.first.email_address).to eq admin.email
     end

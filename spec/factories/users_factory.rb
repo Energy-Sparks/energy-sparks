@@ -48,12 +48,6 @@ FactoryBot.define do
       role { :admin }
     end
 
-    factory :volunteer do
-      name { 'Volunteer'}
-      role { :volunteer }
-      school
-    end
-
     factory :analytics do
       name { 'Analytics'}
       role { :analytics }
