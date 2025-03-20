@@ -25,4 +25,12 @@ class LocalDistributionZone < ApplicationRecord
   validates :publication_id, presence: true, uniqueness: true
 
   scope :by_name, -> { order(:name) }
+
+  KWH_PER_M3_GAS = 11.1 # this depends on the calorifc value of the gas and so is an approximate average
+  MEGAJOULES_TO_KWH = 1 / (1.hour / 1000.0)
+
+  def self.kwh_per_m3(zone, date)
+    calorific_value = zone.readings.find_by(date: date)&.calorific_value unless zone.nil?
+    calorific_value.nil? ? KWH_PER_M3_GAS : calorific_value * MEGAJOULES_TO_KWH
+  end
 end
