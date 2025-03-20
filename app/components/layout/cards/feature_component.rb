@@ -5,7 +5,7 @@ module Layout
         Elements::HeaderComponent.new(**{ level: @main ? 2 : 4, theme: @theme }.merge(kwargs))
       end
       renders_one :description, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **merge_classes('small', kwargs))
+        Elements::TagComponent.new(:p, **merge_classes('small pb-2', kwargs))
       end
       renders_many :buttons, ->(*args, **kwargs) do
         Elements::ButtonComponent.new(*args, **merge_classes('mb-1 mr-2', kwargs))
