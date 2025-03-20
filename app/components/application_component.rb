@@ -2,7 +2,7 @@ class ApplicationComponent < ViewComponent::Base
   include ApplicationHelper
   include LocaleHelper
 
-  attr_reader :id, :classes, :theme
+  attr_reader :id, :classes
 
   # Structuring the initialize method in this manner offers flexibility for future enhancements
   # It allows the addition of new parameters without necessitating changes to other subclasses and also
