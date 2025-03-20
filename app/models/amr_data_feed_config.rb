@@ -139,7 +139,7 @@ class AmrDataFeedConfig < ApplicationRecord
   end
 
   def parse_reading_date(date_string)
-    Date.strptime(date_string, date_format)
+    DateTime.strptime(date_string, date_format)
   rescue ArgumentError
     nil
   end

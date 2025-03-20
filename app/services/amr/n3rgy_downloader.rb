@@ -105,7 +105,7 @@ module Amr
       if value.nil?
         nil
       else
-        LocalDistributionZone.kwh_per_m3(@meter.school.local_distribution_zone, timestamp.to_date) * value
+        LocalDistributionZone.kwh_per_m3(@meter.school, timestamp) * value
       end
     end
 

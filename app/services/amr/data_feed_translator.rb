@@ -48,7 +48,7 @@ module Amr
 
     def reading_date(row)
       date_string = fetch_from_row(:reading_date_index, row)
-      date = @config.parse_reading_date(parse_date(date_string))
+      date = @config.parse_reading_date(date_string) unless date_string.nil?
       # a delayed reading config means the date/date-time column is when the readings
       # where collected, rather than the date the energy was consumed. For now
       # this only appears in one config where the readings are collected a day later
@@ -77,7 +77,7 @@ module Amr
         unit = conversion_unit(data_feed_reading_hash, meter)
         if unit
           data_feed_reading_hash[:units] = 'kwh'
-          return convert_readings(array_of_readings, unit, parsed_reading_date)
+          return convert_readings(array_of_readings, unit, meter, parsed_reading_date)
         end
       end
       array_of_readings
@@ -95,8 +95,8 @@ module Amr
       end
     end
 
-    def convert_readings(array_of_readings, unit, date)
-      factor = LocalDistributionZone.kwh_per_m3(meter.school.local_distribution_zone, date)
+    def convert_readings(array_of_readings, unit, meter, date)
+      factor = LocalDistributionZone.kwh_per_m3(meter&.school, date)
       case unit
       when :ft3
         factor *= FT3_TO_M3

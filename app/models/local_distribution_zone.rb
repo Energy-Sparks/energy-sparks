@@ -29,8 +29,10 @@ class LocalDistributionZone < ApplicationRecord
   KWH_PER_M3_GAS = 11.1 # this depends on the calorifc value of the gas and so is an approximate average
   MEGAJOULES_TO_KWH = 1 / (1.hour / 1000.0)
 
-  def self.kwh_per_m3(zone, date)
-    calorific_value = zone.readings.find_by(date: date)&.calorific_value unless zone.nil?
+  def self.kwh_per_m3(school, date)
+    calorific_value = unless school&.local_distribution_zone.nil?
+                        school.local_distribution_zone.readings&.find_by(date: date)&.calorific_value
+                      end
     calorific_value.nil? ? KWH_PER_M3_GAS : calorific_value * MEGAJOULES_TO_KWH
   end
 end
