@@ -102,7 +102,7 @@ module Amr
     end
 
     def to_kwh(value, timestamp)
-      LocalDistributionZone.kwh_per_m3(@meter.school, timestamp) * value unless value.nil?
+      LocalDistributionZone.kwh_per_m3(@meter&.school&.local_distribution_zone, timestamp) * value unless value.nil?
     end
 
     def api_client

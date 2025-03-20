@@ -100,7 +100,7 @@ module Amr
       rescue ArgumentError
         date = nil
       end
-      factor = LocalDistributionZone.kwh_per_m3(meter.school, date)
+      factor = LocalDistributionZone.kwh_per_m3(meter&.school&.local_distribution_zone, date)
       case unit
       when :ft3
         factor *= FT3_TO_M3
