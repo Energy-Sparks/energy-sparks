@@ -106,8 +106,7 @@ class AmrReadingData
   def inconsistent_reading_date_format?(reading_date)
     return false if reading_date.is_a? Date
 
-    formatted_date = @amr_data_feed_config.parse_reading_date(reading_date)
-
+    formatted_date = Date.strptime(reading_date, @date_format)
     return false if formatted_date.strftime(@date_format) == reading_date
 
     true
@@ -139,8 +138,7 @@ class AmrReadingData
 
   def parse_date(reading_date)
     return reading_date if reading_date.is_a? Date
-
-    @amr_data_feed_config.parse_reading_date(reading_date)
+    Date.strptime(reading_date, @date_format)
   rescue ArgumentError
     begin
       Date.parse(reading_date)

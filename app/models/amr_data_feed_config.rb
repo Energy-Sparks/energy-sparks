@@ -138,12 +138,6 @@ class AmrDataFeedConfig < ApplicationRecord
     missing_readings_limit || BLANK_THRESHOLD
   end
 
-  def parse_reading_date(date_string)
-    DateTime.strptime(date_string, date_format)
-  rescue ArgumentError
-    nil
-  end
-
   private
 
   def no_nil_array_of_reading_indexes

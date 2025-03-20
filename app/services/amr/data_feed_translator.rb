@@ -22,13 +22,13 @@ module Amr
     def translate_row_to_hash(row)
       meter, data_feed_reading_hash = meter_details_from_row(row)
       data_feed_reading_hash[:amr_data_feed_config_id] = @config.id
-      data_feed_reading_hash[:reading_date], parsed_reading_date = reading_date(row)
+      data_feed_reading_hash[:reading_date] = reading_date(row)
       data_feed_reading_hash[:reading_time] = fetch_from_row(:reading_time_index, row)
       data_feed_reading_hash[:postcode] = fetch_from_row(:postcode_index, row)
       data_feed_reading_hash[:units] = fetch_from_row(:units_index, row)
       data_feed_reading_hash[:description] = fetch_from_row(:description_index, row)
       data_feed_reading_hash[:provider_record_id] = fetch_from_row(:provider_record_id_index, row)
-      data_feed_reading_hash[:readings] = readings_as_array(data_feed_reading_hash, row, meter, parsed_reading_date)
+      data_feed_reading_hash[:readings] = readings_as_array(data_feed_reading_hash, row, meter)
       data_feed_reading_hash[:period] = fetch_from_row(:period_index, row) if @config.positional_index
       data_feed_reading_hash
     end
@@ -48,21 +48,20 @@ module Amr
 
     def reading_date(row)
       date_string = fetch_from_row(:reading_date_index, row)
-      date = @config.parse_reading_date(date_string) unless date_string.nil?
+      return date_string unless @config.delayed_reading
+
       # a delayed reading config means the date/date-time column is when the readings
       # where collected, rather than the date the energy was consumed. For now
       # this only appears in one config where the readings are collected a day later
-      if @config.delayed_reading
+      begin
+        date = DateTime.strptime(date_string, @config.date_format)
+        date -= 1.day
+        date.strftime(@config.date_format)
+      rescue ArgumentError
         # return nil here and we should end up rejecting the data
         # better to do this than load with incorrect date
-        if date.nil?
-          date_string = nil
-        else
-          date -= 1.day
-          date_string = date.strftime(@config.date_format)
-        end
+        nil
       end
-      [date_string, date]
     end
 
     def fetch_from_row(index_symbol, row)
@@ -71,13 +70,13 @@ module Amr
       row[map_of_fields_to_indexes[index_symbol]]
     end
 
-    def readings_as_array(data_feed_reading_hash, amr_data_feed_row, meter, parsed_reading_date)
+    def readings_as_array(data_feed_reading_hash, amr_data_feed_row, meter)
       array_of_readings = @config.array_of_reading_indexes.map { |reading_index| amr_data_feed_row[reading_index] }
       if array_of_readings.all?(&:present?) && @config.convert_to_kwh != 'no'
         unit = conversion_unit(data_feed_reading_hash, meter)
         if unit
           data_feed_reading_hash[:units] = 'kwh'
-          return convert_readings(array_of_readings, unit, meter, parsed_reading_date)
+          return convert_readings(array_of_readings, unit, meter, data_feed_reading_hash[:reading_date])
         end
       end
       array_of_readings
@@ -96,7 +95,12 @@ module Amr
     end
 
     def convert_readings(array_of_readings, unit, meter, date)
-      factor = LocalDistributionZone.kwh_per_m3(meter&.school, date)
+      begin
+        date = Date.strptime(date, @config.date_format)
+      rescue ArgumentError
+        date = nil
+      end
+      factor = LocalDistributionZone.kwh_per_m3(meter.school, date)
       case unit
       when :ft3
         factor *= FT3_TO_M3
