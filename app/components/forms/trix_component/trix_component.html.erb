@@ -1,4 +1,5 @@
 <%= tag.div id: id, class: classes do %>
+  <%= form.rich_text_area field, class: @size %>
   <% if charts&.any? %>
     <div id="trix-chart-list-components" class="d-none">
       <button type="button"
@@ -23,5 +24,4 @@
       </div>
     </div>
   <% end %>
-  <%= form.rich_text_area field, class: @size %>
 <% end %>
