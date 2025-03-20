@@ -39,16 +39,20 @@ q {
   white-space: nowrap;
 }
 
-.rounded-12 {
-  border-radius: 12px;
-  .top {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .bottom {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
+$rounded-xl: 12px;
+
+.rounded-xl {
+  border-radius: $rounded-xl;
+}
+
+.rounded-top-xl {
+  border-top-left-radius: $rounded-xl;
+  border-top-right-radius: $rounded-xl;
+}
+
+.rounded-bottom-xl {
+  border-bottom-left-radius: $rounded-xl;
+  border-bottom-right-radius: $rounded-xl;
 }
 
 .fa-li.fa-check {
@@ -287,33 +291,29 @@ input, progress {
   }
 }
 
-.h-60 {
-  height: 60% !important;
-}
-
-.h-40 {
-  height: 40% !important;
-}
-
 .sortable-hide {
   opacity:0;
 }
 
 .theme {
-  &.dark {
+  &.theme-dark {
     background-color: $blue-very-dark;
     color: $white;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $white;
+    }
+
     a {
       color: $teal-medium;
     }
   }
 
-  &.light {
+  &.theme-light {
     background-color: $blue-light;
-
   }
 
-  &.accent {
+  &.theme-accent {
     background-color: $blue-light;
   }
 }

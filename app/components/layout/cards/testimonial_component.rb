@@ -1,6 +1,6 @@
 module Layout
   module Cards
-    class TestimonialComponent < ApplicationComponent
+    class TestimonialComponent < LayoutComponent
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**kwargs.merge({ level: 4 }))
       end

@@ -1,4 +1,9 @@
 .layout-cards-feature-component {
+
+  h2, h4 {
+    padding-top: 0;
+  }
+
   &.main {
     @include responsive-typography;
     p {

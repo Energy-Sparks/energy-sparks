@@ -51,12 +51,12 @@
 
     <%= render Layout::CarouselComponent.new(show_markers: false,
                                              id: 'testimonials',
-                                             classes: 'bg-yellow-pale rounded-12 p-4 mb-4',
+                                             classes: 'bg-yellow-pale rounded-xl p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
       <%# Until we  have more things to go in the carousel, do this for demo purposes %>
       <% %w[funnel-pupils.png funnel-teachers.png].each do |pic| %>
         <%= carousel.with_grid(cols: 2, cell_classes: 'my-auto') do |grid| %>
-          <%= grid.with_image(src: pic, classes: 'rounded-12 fit') %>
+          <%= grid.with_image(src: pic, classes: 'rounded-xl fit') %>
           <%= grid.with_testimonial_card do |testimonial| %>
             <%= testimonial.with_header(title: t('home.testimonials.card_1.title')) %>
             <%= testimonial.with_quote { "#{t('home.testimonials.card_1.quote')}." } %>
@@ -80,7 +80,7 @@
     <%= render Layout::GridComponent.new(
           cols: 3, classes: '',
           cell_classes: 'mb-4',
-          component_classes: 'rounded-12'
+          component_classes: 'rounded-xl'
         ) do |grid| %>
       <% I18n.t('home.features.cards').each do |card| %>
         <% grid.with_statement_card do |statement| %>
@@ -103,7 +103,7 @@
 
     <%= render Layout::GridComponent.new(
           cols: 2,
-          classes: 'bg-blue-light rounded-12 p-4 mb-4 mt-4',
+          classes: 'bg-blue-light rounded-xl p-4 mb-4 mt-4',
           cell_classes: 'my-auto'
         ) do |grid| %>
       <%= grid.with_feature_card do |feature| %>
@@ -111,7 +111,7 @@
         <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
         <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
       <% end %>
-      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-12 p-4 bg-white') %>
+      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-xl p-4 bg-white') %>
     <% end %>
 
     <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
@@ -122,11 +122,12 @@
     <%= render Layout::GridComponent.new(
           cols: 3,
           classes: 'mb-4 mt-4',
-          component_classes: 'rounded-12'
+          cell_classes: 'mb-4 d-flex flex-column',
+          component_classes: 'h-100'
         ) do |grid| %>
       <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-12 top h-60') %>
-        <%= card.with_feature_card(classes: 'p-4 rounded-12 bottom h-40', theme: :dark) do |feature| %>
+        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
+        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
           <%= feature.with_description { t('home.organisations.cards.school.description') } %>
           <%= feature.with_link(href: for_schools_path) { t('common.labels.learn_more') } %>
@@ -134,8 +135,8 @@
       <% end %>
 
       <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-teachers.png', classes: 'rounded-12 top h-60') %>
-        <%= card.with_feature_card(classes: 'p-4 rounded-12 bottom h-40', theme: :dark) do |feature| %>
+        <%= card.with_image(src: 'funnel-teachers.png', classes: 'rounded-top-xl') %>
+        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
           <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
           <%= feature.with_link(href: for_multi_academy_trusts_path) { t('common.labels.learn_more') } %>
@@ -143,10 +144,10 @@
       <% end %>
 
       <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-manager.png', classes: 'rounded-12 top h-60') %>
-        <%= card.with_feature_card(classes: 'p-4 rounded-12 bottom h-40', theme: :dark) do |feature| %>
+        <%= card.with_image(src: 'funnel-manager.png', classes: 'rounded-top-xl') %>
+        <%= card.with_feature_card(theme: :dark, classes: 'rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
-          <%= feature.with_description { t('home.organisations.cards.local_authority.description') } %>
+          <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>
           <%= feature.with_link(href: for_local_authorities_path) { t('common.labels.learn_more') } %>
         <% end %>
       <% end %>

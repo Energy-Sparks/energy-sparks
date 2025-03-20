@@ -1,5 +1,5 @@
 module Layout
-  class GridComponent < ApplicationComponent
+  class GridComponent < LayoutComponent
     attr_reader :cols, :rows
 
     renders_many :cells, types: types(
@@ -18,7 +18,6 @@ module Layout
     private
 
     def wrap(klass, *args, **kwargs, &block)
-      kwargs[:classes] = class_names(kwargs[:classes], @component_classes)
       cell_classes = kwargs.delete(:cell_classes)
 
       tag.div(class: class_names(column_classes, cell_classes, @cell_classes)) do
@@ -26,14 +25,13 @@ module Layout
       end
     end
 
-    def initialize(cols:, rows: 1, cell_classes: '', component_classes: '', **_kwargs)
+    def initialize(cols:, rows: 1, cell_classes: '', **_kwargs)
       super
 
       @cols = cols
       @rows = rows
 
       @cell_classes = cell_classes
-      @component_classes = component_classes
     end
 
     def render?
@@ -45,7 +43,7 @@ module Layout
       when 2
         'col-12 col-md-6'
       when 3
-        'col-12 col-md-4'
+        'col-12 col-md-4 col-sm-12'
       when 4
         'col-12 col-xl-3 col-sm-6'
       when 6 # not currently in use

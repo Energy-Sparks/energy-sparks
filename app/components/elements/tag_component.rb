@@ -1,7 +1,9 @@
 module Elements
   class TagComponent < ApplicationComponent
-    def initialize(*args, **kwargs)
+    def initialize(*args, id: nil, classes: nil, **kwargs)
       super
+      @id = id
+      @classes = classes
       @args = args
       @kwargs = kwargs
     end

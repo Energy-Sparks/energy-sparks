@@ -1,22 +1,23 @@
 module Layout
   module Cards
-    class FeatureComponent < ApplicationComponent
+    class FeatureComponent < LayoutComponent
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: @main ? 2 : 4, theme: @theme }.merge(kwargs))
       end
       renders_one :description, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **{ classes: 'small' }.merge(kwargs))
-      end
-      renders_many :links, ->(*args, **kwargs) do
-        Elements::TagComponent.new(:a, *args, **{ classes: 'pb-1' }.merge(kwargs))
+        Elements::TagComponent.new(:p, **merge_classes('small', kwargs))
       end
       renders_many :buttons, ->(*args, **kwargs) do
-        Elements::ButtonComponent.new(*args, **{ classes: 'pb-1' }.merge(kwargs))
+        Elements::ButtonComponent.new(*args, **merge_classes('mb-1 mt-3 mr-3', kwargs))
+      end
+      renders_many :links, ->(*args, **kwargs) do
+        Elements::TagComponent.new(:a, *args, **merge_classes('small mb-1 mt-auto', kwargs))
       end
 
       def initialize(main: false, **_kwargs)
         super
         @main = main
+        add_classes('d-flex flex-column h-100')
         add_classes('main') if main
       end
     end

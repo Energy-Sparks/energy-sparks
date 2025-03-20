@@ -6,7 +6,7 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:cols) { 2 }
-  let(:all_params) { { cols: cols, classes: classes, id: id } }
+  let(:all_params) { { cols: cols, classes: classes, id: id, theme: :dark } }
 
   let(:params) { all_params }
 
@@ -64,6 +64,19 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
 
     it { expect(row).to have_css('div.component-classes', count: 2) }
   end
+
+  context 'with theme' do
+    let(:params) { all_params }
+
+    let(:html) do
+      render_inline(described_class.new(**params)) do |c|
+        c.with_block { 'cell 1' }
+      end
+    end
+
+    it { expect(row).to have_css('div.theme.dark', count: 1) }
+  end
+
 
   context 'with inline component classes' do
     let(:html) do

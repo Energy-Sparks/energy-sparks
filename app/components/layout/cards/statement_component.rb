@@ -1,6 +1,6 @@
 module Layout
   module Cards
-    class StatementComponent < ApplicationComponent
+    class StatementComponent < LayoutComponent
       renders_one :badge, ->(*args, **kwargs) do
         Elements::BadgeComponent.new(*args, **{ classes: 'bg-teal-medium text-blue-very-dark text-uppercase mb-3' }.merge(kwargs))
       end

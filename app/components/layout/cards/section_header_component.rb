@@ -1,6 +1,6 @@
 module Layout
   module Cards
-    class SectionHeaderComponent < ApplicationComponent
+    class SectionHeaderComponent < LayoutComponent
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: 3 }.merge(kwargs))
       end
