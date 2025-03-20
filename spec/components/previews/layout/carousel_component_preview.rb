@@ -56,7 +56,7 @@ module Layout
     end
 
     def with_two_grids_side_arrows
-      render Layout::CarouselComponent.new(id: 'ex5', classes: 'bg-yellow-pale rounded p-4', show_arrows: :side, show_markers: false) do |carousel|
+      render Layout::CarouselComponent.new(id: 'ex5', theme: :accent, classes: 'rounded p-4', show_arrows: :side, show_markers: false) do |carousel|
         carousel.with_grid(cols: 2, classes: '') do |grid|
           grid.with_image(src: 'laptop.jpg', classes: 'w-100 rounded')
           grid.with_feature_card do |feature|
