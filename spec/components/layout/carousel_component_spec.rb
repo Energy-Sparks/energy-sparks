@@ -7,11 +7,13 @@ RSpec.describe Layout::CarouselComponent, type: :component do
 
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
+  let(:theme) { :dark }
 
   let(:params) do
     {
       id: id,
-      classes: classes
+      classes: classes,
+      theme: theme
     }
   end
 
@@ -27,6 +29,10 @@ RSpec.describe Layout::CarouselComponent, type: :component do
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
+    end
+
+    it_behaves_like 'a layout component' do
+      let(:expected_theme) { theme }
     end
 
     it { expect(html).to have_content('Television') }

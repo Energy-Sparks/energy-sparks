@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:base_params) { { id: id, classes: classes } }
+  let(:theme) { :dark }
+  let(:base_params) { { id: id, classes: classes, theme: theme } }
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
@@ -22,6 +23,10 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
+    end
+
+    it_behaves_like 'a layout component' do
+      let(:expected_theme) { theme }
     end
 
     it { expect(html).to have_css('h4') }

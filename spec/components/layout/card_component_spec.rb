@@ -5,7 +5,9 @@ require 'rails_helper'
 RSpec.describe Layout::CardComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:all_params) { { classes: classes, id: id } }
+  let(:theme) { :dark }
+
+  let(:all_params) { { classes: classes, id: id, theme: theme } }
 
   let(:params) { all_params }
 
@@ -25,6 +27,10 @@ RSpec.describe Layout::CardComponent, :include_application_helper, type: :compon
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
+    end
+
+    it_behaves_like 'a layout component' do
+      let(:expected_theme) { theme }
     end
   end
 end
