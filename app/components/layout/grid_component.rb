@@ -6,7 +6,7 @@ module Layout
       type(:block, Elements::BlockComponent),
       type(:icon, IconComponent),
       type(:image, Elements::ImageComponent),
-      type(:tag, Elements::TagComponent),
+      type(:paragraph, Elements::TagComponent, :p),
       type(:prompt_list, PromptListComponent),
       type(:stats_card, Cards::StatsComponent),
       type(:feature_card, Cards::FeatureComponent),

@@ -8,7 +8,7 @@ module Layout
         Elements::TagComponent.new(:p, **merge_classes('small', kwargs))
       end
       renders_many :buttons, ->(*args, **kwargs) do
-        Elements::ButtonComponent.new(*args, **merge_classes('mb-1 mt-3 mr-3', kwargs))
+        Elements::ButtonComponent.new(*args, **merge_classes('mb-1 mr-2', kwargs))
       end
       renders_many :links, ->(*args, **kwargs) do
         Elements::TagComponent.new(:a, *args, **merge_classes('small mb-1 mt-auto', kwargs))
@@ -17,7 +17,7 @@ module Layout
       def initialize(main: false, **_kwargs)
         super
         @main = main
-        add_classes('d-flex flex-column h-100')
+        add_classes('d-flex flex-column')
         add_classes('main') if main
       end
     end

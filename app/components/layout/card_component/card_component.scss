@@ -1,6 +1,8 @@
 .layout-card-component {
-  .card-img-top {
+  @include media-breakpoint-up(md) {
+    .card-img-top {
       height: 15vw;
       object-fit: cover;
+    }
   }
 }

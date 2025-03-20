@@ -93,7 +93,7 @@
     <div class='pb-4 mb-4 text-center'>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.enrol_your_school'),
-            enrol_path, style: :primary, classes: 'mb-4'
+            enrol_path, style: :primary, classes: 'mb-4 mr-2'
           ) %>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.book_a_demo'),
@@ -106,7 +106,7 @@
           classes: 'bg-blue-light rounded-xl p-4 mb-4 mt-4',
           cell_classes: 'my-auto'
         ) do |grid| %>
-      <%= grid.with_feature_card do |feature| %>
+      <%= grid.with_feature_card(classes: 'mb-4') do |feature| %>
         <%= feature.with_header(title: t('home.general.title'), level: 3) %>
         <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
         <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
@@ -122,7 +122,7 @@
     <%= render Layout::GridComponent.new(
           cols: 3,
           classes: 'mb-4 mt-4',
-          cell_classes: 'mb-4 d-flex flex-column',
+          cell_classes: 'mb-4',
           component_classes: 'h-100'
         ) do |grid| %>
       <%= grid.with_card do |card| %>

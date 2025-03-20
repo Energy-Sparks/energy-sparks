@@ -103,7 +103,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
       render_inline(described_class.new(**params)) do |c|
         c.with_grid cols: 2 do |grid|
           grid.with_image(src: 'laptop.jpg')
-          grid.with_tag(:p) { 'Laptop description' }
+          grid.with_paragraph { 'Laptop description' }
         end
         c.with_equivalence image_name: 'tree' do |e|
           e.with_title { 'Tree' }

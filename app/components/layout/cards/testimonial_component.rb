@@ -11,7 +11,7 @@ module Layout
         Elements::TagComponent.new(:p, **kwargs.merge({ classes: 'small text-blue-very-dark' }))
       end
       renders_many :buttons, ->(*args, **kwargs) do
-        Elements::ButtonComponent.new(*args, **kwargs.merge({ classes: 'mb-1' }))
+        Elements::ButtonComponent.new(*args, **kwargs.merge({ classes: 'mb-1 mr-2' }))
       end
     end
   end
