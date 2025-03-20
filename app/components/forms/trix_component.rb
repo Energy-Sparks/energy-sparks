@@ -1,16 +1,20 @@
 module Forms
   class TrixComponent < ApplicationComponent
-    attr_reader :form, :field, :charts, :size
+    attr_reader :form, :field, :charts, :required
 
-    def initialize(form:, field:, size: :default, charts: nil, **_kwargs)
+    def initialize(form:, field:, controls: :default, size: :default, button_size: :default, charts: nil, required: true, **_kwargs)
       super
-      raise ArgumentError, 'Unknown badge style' if size && !self.class.sizes.include?(size)
-      @size = size
+      raise ArgumentError, 'Unknown size' if size && !self.class.sizes.include?(size)
+      raise ArgumentError, 'Unknown button size' if button_size && !self.class.sizes.include?(button_size)
+
       @form = form
       @field = field
       @charts = charts
-      add_classes(@size)
+      @required = required
+      add_classes(size)
+      add_classes("buttons-#{button_size}")
       add_classes('chart-list') if charts&.any?
+      add_classes("controls-#{controls}")
     end
 
     class << self

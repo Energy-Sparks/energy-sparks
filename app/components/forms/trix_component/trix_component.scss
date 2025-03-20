@@ -1,0 +1,26 @@
+.forms-trix-component.buttons-large {
+  trix-toolbar {
+    .trix-button--icon {
+      width: 3.6em;
+      height: 2.6em;
+    }
+  }
+}
+
+.forms-trix-component.large {
+  trix-editor {
+    min-height: 500px !important;
+  }
+}
+
+.forms-trix-component.controls-simple {
+  trix-toolbar {
+    button.trix-button--icon-quote {
+      display: none;
+    }
+
+    button.trix-button--icon-code {
+      display: none;
+    }
+  }
+}
