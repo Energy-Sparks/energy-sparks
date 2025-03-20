@@ -205,6 +205,10 @@ input, progress {
   border-radius: 6px;
 }
 
+.sortable-hide {
+  opacity:0;
+}
+
 // palette styles
 
 @each $colour, $shades in $colours-palette {
@@ -291,10 +295,6 @@ input, progress {
   }
 }
 
-.sortable-hide {
-  opacity:0;
-}
-
 .theme {
   &.theme-dark {
     background-color: $blue-very-dark;
@@ -304,7 +304,7 @@ input, progress {
       color: $white;
     }
 
-    a {
+    a:not(.btn) {
       color: $teal-medium;
     }
   }
@@ -314,6 +314,6 @@ input, progress {
   }
 
   &.theme-accent {
-    background-color: $blue-light;
+    background-color: $yellow-pale;
   }
 }

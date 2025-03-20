@@ -1,10 +1,10 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class="bg-blue-very-dark text-white">
+  <div class="bg-blue-very-dark">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-      <% grid.with_feature_card main: true, classes: 'py-4' do |feature| %>
-        <%= feature.with_header title: t('home.feature.header'), classes: 'text-white' %>
+      <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4' do |feature| %>
+        <%= feature.with_header title: t('home.feature.header') %>
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
         <%= feature.with_button t('home.buttons.book_a_demo'),
@@ -51,7 +51,8 @@
 
     <%= render Layout::CarouselComponent.new(show_markers: false,
                                              id: 'testimonials',
-                                             classes: 'bg-yellow-pale rounded-xl p-4 mb-4',
+                                             theme: :accent,
+                                             classes: 'rounded-xl p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
       <%# Until we  have more things to go in the carousel, do this for demo purposes %>
       <% %w[funnel-pupils.png funnel-teachers.png].each do |pic| %>
@@ -83,7 +84,7 @@
           component_classes: 'rounded-xl'
         ) do |grid| %>
       <% I18n.t('home.features.cards').each do |card| %>
-        <% grid.with_statement_card do |statement| %>
+        <% grid.with_statement_card(theme: :dark) do |statement| %>
           <%= statement.with_badge(card[:badge]) %>
           <%= statement.with_statement(title: card[:statement]) %>
         <% end %>
@@ -103,7 +104,8 @@
 
     <%= render Layout::GridComponent.new(
           cols: 2,
-          classes: 'bg-blue-light rounded-xl p-4 mb-4 mt-4',
+          theme: :light,
+          classes: 'rounded-xl p-4 mb-4 mt-4',
           cell_classes: 'my-auto'
         ) do |grid| %>
       <%= grid.with_feature_card(classes: 'mb-4') do |feature| %>
