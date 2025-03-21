@@ -3,7 +3,7 @@
 <% if Flipper.enabled?(:new_home_page, current_user) %>
   <div class="bg-blue-very-dark">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-      <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4' do |feature| %>
+      <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4 pr-4' do |feature| %>
         <%= feature.with_header title: t('home.feature.header') %>
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
