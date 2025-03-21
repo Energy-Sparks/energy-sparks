@@ -17,6 +17,10 @@ module Forms
       add_classes("controls-#{controls}")
     end
 
+    def data_attributes
+      return { chart_list: charts } if charts
+    end
+
     class << self
       def sizes
         [:default, :large]

@@ -1,23 +1,3 @@
-addEventListener("trix-initialize", function(event) {
-  var parentWrapper = $(event.target).parents('.chart-list');
-
-  if(parentWrapper.length){
-    var buttonHTML = $('#trix-chart-list-components button[data-trix-action="chart"]')[0];
-    var dialogHTML = $('#trix-chart-list-components .trix-dialog')[0];
-
-    $(event.target.toolbarElement).find('.trix-button-group--text-tools').append(buttonHTML);
-    $(event.target.toolbarElement).find('.trix-dialogs').append(dialogHTML);
-  }
-});
-
-document.addEventListener("trix-action-invoke", function(event) {
-  if(event.actionName === "x-insert-chart"){
-    var element = event.target;
-    var parentWrapper = $(element).parents('.chart-list');
-    element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
-  }
-})
-
 // modify Trix config before its initialised so it doesn't strip the heading tags
 addEventListener("trix-before-initialize", event => {
   addHeadingAttributes()
@@ -31,15 +11,31 @@ function addHeadingAttributes() {
 }
 
 addEventListener("trix-initialize", event => {
-  console.log('CUSTOMISE')
   var customiser = new TrixCustomiser(event.target)
   customiser.addUrlValidation()
-  if ($(event.target).parents('.controls-simple').length) {
-    customiser.createSimplifiedEditor()
-  } else if ($(event.target).parents('.controls-advanced').length) {
-    customiser.createAdvancedEditor()
+
+  var components = $(event.target).parents('.forms-trix-component');
+  if (components.length) {
+    var component = components[0]
+
+    if (component.classList.contains('controls-simple')) {
+      customiser.createSimplifiedEditor()
+    } else if (component.classList.contains('controls-advanced')) {
+      customiser.createAdvancedEditor()
+    }
+
+    if (component.dataset.chartList) {
+      customiser.addChartButton(JSON.parse(component.dataset.chartList))
+    }
   }
-  console.log('DONE')
+})
+
+document.addEventListener("trix-action-invoke", function(event) {
+  if(event.actionName === "x-insert-chart"){
+    var element = event.target;
+    var parentWrapper = $(element).parents('.chart-list');
+    element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
+  }
 })
 
 class TrixCustomiser {
@@ -63,13 +59,18 @@ class TrixCustomiser {
     this.replaceHeadingButton();
   }
 
+  addChartButton(chart_list) {
+    this.buttonGroupTextTools.insertAdjacentHTML("beforeend", this.chartButtonTemplate)
+    this.dialogsElement.insertAdjacentHTML("beforeend", this.chartDialogTemplate(chart_list))
+  }
+
   replaceHeadingButton() {
     // remove existing button
     this.buttonGroupBlockTools.removeChild(this.getButton('heading1'))
     // add in new replacement
     this.buttonGroupBlockTools.insertAdjacentHTML("afterbegin", this.headingButtonTemplate)
     // add in dialog for new H1-H6 selection
-    this.dialogsElement.insertAdjacentHTML("beforeend", this.dialogHeadingTemplate)
+    this.dialogsElement.insertAdjacentHTML("beforeend", this.headingDialogTemplate)
   }
 
   getButton(selector) {
@@ -80,7 +81,7 @@ class TrixCustomiser {
     return '<button type="button" class="trix-button trix-button--icon trix-button--icon-heading-1" data-trix-action="x-heading" title="Heading" tabindex="-1">Heading</button>'
   }
 
-  get dialogHeadingTemplate() {
+  get headingDialogTemplate() {
     return `
       <div class="trix-dialog trix-dialog--heading" data-trix-dialog="x-heading" data-trix-dialog-attribute="x-heading">
         <div class="trix-dialog__link-fields">
@@ -98,8 +99,41 @@ class TrixCustomiser {
     `
   }
 
+  get chartButtonTemplate() {
+    return '<button type="button" class="trix-button" data-trix-action="chart" data-trix-key="c" title="Chart" tabindex="-1" data-trix-active=""><i class="fas fa-chart-bar"></i></button>'
+  }
+
+  chartDialogTemplate(chart_list) {
+    var options = chart_list.map(group => {
+      var name = group[0]
+      var charts = group[1]
+      var chart_options = charts.map(c => `<option value="${c}">${c}</option>`).join("")
+      return `<optgroup label="${name}">${chart_options}</optgroup>`
+    }).join("");
+
+    return `
+      <div class="trix-dialog trix-dialog--chart" data-trix-dialog="chart">
+        <div class="trix-dialog__link-fields">
+          <select name="chart-list-chart" class="mr-3">
+          ${options}
+          </select>
+          <div class="trix-button-group">
+            <input type="button"
+                   class="trix-button trix-button--dialog"
+                   value="Insert"
+                   data-trix-action="x-insert-chart">
+          </div>
+        </div>
+      </div>
+    `
+  }
+
   get dialogsElement() {
     return this.toolbarElement.querySelector("[data-trix-dialogs]")
+  }
+
+  get buttonGroupTextTools() {
+    return this.toolbarElement.querySelector("[data-trix-button-group=text-tools]")
   }
 
   get buttonGroupBlockTools() {
