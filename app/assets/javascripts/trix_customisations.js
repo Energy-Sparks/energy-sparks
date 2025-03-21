@@ -18,13 +18,6 @@ document.addEventListener("trix-action-invoke", function(event) {
   }
 })
 
-addEventListener("trix-initialize", event => {
-  const { toolbarElement } = event.target
-  const inputElement = toolbarElement.querySelector("input[name=href]")
-  inputElement.type = "text"
-  inputElement.pattern = "(https?://|/|\.\./|mailto:).+"
-})
-
 // modify Trix config before its initialised so it doesn't strip the heading tags
 addEventListener("trix-before-initialize", event => {
   addHeadingAttributes()
@@ -40,6 +33,7 @@ function addHeadingAttributes() {
 addEventListener("trix-initialize", event => {
   console.log('CUSTOMISE')
   var customiser = new TrixCustomiser(event.target)
+  customiser.addUrlValidation()
   if ($(event.target).parents('.controls-simple').length) {
     customiser.createSimplifiedEditor()
   } else if ($(event.target).parents('.controls-advanced').length) {
@@ -52,6 +46,12 @@ class TrixCustomiser {
   constructor(element) {
     console.log(element.toolbarElement)
     this.element = element
+  }
+
+  addUrlValidation() {
+    const inputElement = this.toolbarElement.querySelector("input[name=href]")
+    inputElement.type = "text"
+    inputElement.pattern = "(https?://|/|\.\./|mailto:).+"
   }
 
   createSimplifiedEditor() {
