@@ -44,7 +44,7 @@
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
         <%= card.with_header title: t('home.stats.card_4.header') %>
-        <%= card.with_figure t('home.stats.card_4.figure') %>
+        <%= card.with_figure ActivityType.active_and_not_custom.count.to_s %>
         <%= card.with_subtext { t('home.stats.card_4.subtext') } %>
       <% end %>
     <% end %>
