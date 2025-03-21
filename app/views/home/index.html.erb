@@ -5,7 +5,7 @@
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
       <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4 pr-4' do |feature| %>
         <%= feature.with_header title: t('home.feature.header') %>
-        <%= feature.with_description { t('home.feature.description_html') } %>
+        <%= feature.with_description(classes: 'text-blue-light') { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
         <%= feature.with_button t('home.buttons.book_a_demo'),
                                 book_demo_campaigns_path,
