@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AmrReadingData do
+describe AmrReadingData, :aggregate_failures do
   subject(:amr_reading_data) do
     described_class.new(amr_data_feed_config: amr_data_feed_config, reading_data: reading_data)
   end
@@ -16,7 +16,7 @@ describe AmrReadingData do
       expect(amr_reading_data.valid?).to be true
       expect(amr_reading_data.valid_reading_count).to be valid_readings
       expect(amr_reading_data.warnings?).to be false
-      expect(amr_reading_data.warnings.count).to be 0
+      expect(amr_reading_data.warnings).to eq([])
     end
   end
 
@@ -25,9 +25,9 @@ describe AmrReadingData do
     let(:warnings) { 2 }
     it 'validates correctly' do
       expect(amr_reading_data.valid?).to be false
-      expect(amr_reading_data.valid_reading_count).to be valid_readings
+      expect(amr_reading_data.valid_reading_count).to eq valid_readings
       expect(amr_reading_data.warnings?).to be true
-      expect(amr_reading_data.warnings.count).to be warnings
+      expect(amr_reading_data.warnings.count).to eq warnings
     end
   end
 
@@ -38,9 +38,9 @@ describe AmrReadingData do
 
     it 'validates correctly' do
       expect(amr_reading_data.valid?).to be true
-      expect(amr_reading_data.valid_reading_count).to be valid_readings
+      expect(amr_reading_data.valid_reading_count).to eq valid_readings
       expect(amr_reading_data.warnings?).to be true
-      expect(amr_reading_data.warnings.count).to be warnings
+      expect(amr_reading_data.warnings.count).to eq warnings
       expect(amr_reading_data.warnings.first[:warnings]).to include(warning_type)
     end
   end
@@ -63,7 +63,7 @@ describe AmrReadingData do
         readings = Array.new(48, '0.0')
         [
           { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-01') },
-          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-02') },
+          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-02') }
         ]
       end
 
@@ -76,7 +76,7 @@ describe AmrReadingData do
         readings = Array.new(48, '0.0')
         [
           { mpan_mprn:, readings:, reading_date: '2019-01-01' },
-          { mpan_mprn:, readings:, reading_date: '2019-01-02' },
+          { mpan_mprn:, readings:, reading_date: '2019-01-02' }
         ]
       end
 
@@ -91,7 +91,7 @@ describe AmrReadingData do
         readings = Array.new(48, '0.0')
         [
           { mpan_mprn:, readings:, reading_date: '2022-01-01' },
-          { mpan_mprn:, readings:, reading_date: '2022-01-02' },
+          { mpan_mprn:, readings:, reading_date: '2022-01-02' }
         ]
       end
 
@@ -105,7 +105,7 @@ describe AmrReadingData do
       readings = Array.new(48, '0.0')
       [
         { mpan_mprn:, readings:, reading_date: '2019-01-01' },
-        { mpan_mprn:, readings:, reading_date: '2019-01-02' },
+        { mpan_mprn:, readings:, reading_date: '2019-01-02' }
       ]
     end
 
@@ -145,7 +145,7 @@ describe AmrReadingData do
         readings = Array.new(48, '0.0')
         [
           { mpan_mprn:, readings:, reading_date: '2019-01-01' },
-          { mpan_mprn:, readings:, reading_date: '2019-01-01' },
+          { mpan_mprn:, readings:, reading_date: '2019-01-01' }
         ]
       end
 
@@ -199,9 +199,9 @@ describe AmrReadingData do
       context 'when format is row per reading and missing threshold is higher' do
         let(:amr_data_feed_config) do
           create(:amr_data_feed_config,
-            row_per_reading: true,
-            date_format: date_format,
-            missing_readings_limit: 1)
+                 row_per_reading: true,
+                 date_format: date_format,
+                 missing_readings_limit: 1)
         end
 
         it_behaves_like 'it is valid'
@@ -210,9 +210,9 @@ describe AmrReadingData do
       context 'when format is row per reading and merged is allowed' do
         let(:amr_data_feed_config) do
           create(:amr_data_feed_config,
-            row_per_reading: true,
-            date_format: date_format,
-            allow_merging: true)
+                 row_per_reading: true,
+                 date_format: date_format,
+                 allow_merging: true)
         end
 
         it_behaves_like 'it is valid'
@@ -256,7 +256,7 @@ describe AmrReadingData do
         readings = Array.new(48, '0.0')
         [
           { mpan_mprn: '1234050000000', readings:, reading_date: '31-01-22' },
-          { mpan_mprn: '1234050000001', readings:, reading_date: '31-01-2022' },
+          { mpan_mprn: '1234050000001', readings:, reading_date: '31-01-2022' }
         ]
       end
 
