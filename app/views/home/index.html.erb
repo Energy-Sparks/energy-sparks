@@ -1,13 +1,13 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class="bg-blue-very-dark text-white">
+  <div class="bg-blue-very-dark">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-      <% grid.with_feature_card responsive: true, classes: 'py-4' do |feature| %>
-        <%= feature.with_header title: t('home.feature.header'), classes: 'text-white' %>
+      <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4' do |feature| %>
+        <%= feature.with_header title: t('home.feature.header') %>
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
-        <%= feature.with_button t('campaigns.find_out_more.book_demo'),
+        <%= feature.with_button t('home.buttons.book_a_demo'),
                                 book_demo_campaigns_path,
                                 style: :white, outline: true %>
       <% end %>
@@ -16,9 +16,9 @@
   </div>
 
   <div class="container">
-    <%= render Layout::Cards::SectionHeaderComponent.new do |statement| %>
-      <%= statement.with_header title: t('home.statement.header') %>
-      <%= statement.with_description { t('home.statement.description') } %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= section_header.with_header title: t('home.stats.header') %>
+      <%= section_header.with_description { t('home.stats.description') } %>
     <% end %>
 
     <%= render Layout::GridComponent.new(cols: 4, classes: 'pb-4 mb-4',
@@ -51,12 +51,13 @@
 
     <%= render Layout::CarouselComponent.new(show_markers: false,
                                              id: 'testimonials',
-                                             classes: 'bg-yellow-pale rounded-12 p-4 mb-4',
+                                             theme: :accent,
+                                             classes: 'rounded-xl p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
       <%# Until we  have more things to go in the carousel, do this for demo purposes %>
       <% %w[funnel-pupils.png funnel-teachers.png].each do |pic| %>
         <%= carousel.with_grid(cols: 2, cell_classes: 'my-auto') do |grid| %>
-          <%= grid.with_image(src: pic, classes: 'rounded-12 fit') %>
+          <%= grid.with_image(src: pic, classes: 'rounded-xl fit') %>
           <%= grid.with_testimonial_card do |testimonial| %>
             <%= testimonial.with_header(title: t('home.testimonials.card_1.title')) %>
             <%= testimonial.with_quote { "#{t('home.testimonials.card_1.quote')}." } %>
@@ -72,34 +73,85 @@
       <% end %>
     <% end %>
 
-    <%= render Layout::Cards::SectionHeaderComponent.new do |section_header| %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
       <%= section_header.with_header title: t('home.features.header') %>
       <%= section_header.with_description { t('home.features.description') } %>
     <% end %>
 
     <%= render Layout::GridComponent.new(
-          cols: 3, classes: 'pb-4 mb-4',
+          cols: 3, classes: '',
           cell_classes: 'mb-4',
-          component_classes: 'rounded-12'
+          component_classes: 'rounded-xl'
         ) do |grid| %>
       <% I18n.t('home.features.cards').each do |card| %>
-        <% grid.with_statement_card do |statement| %>
+        <% grid.with_statement_card(theme: :dark) do |statement| %>
           <%= statement.with_badge(card[:badge]) %>
           <%= statement.with_statement(title: card[:statement]) %>
         <% end %>
       <% end %>
     <% end %>
 
+    <div class='pb-4 mb-4 text-center'>
+      <%= render Elements::ButtonComponent.new(
+            t('home.buttons.enrol_your_school'),
+            enrol_path, style: :primary, classes: 'mb-4 mr-2'
+          ) %>
+      <%= render Elements::ButtonComponent.new(
+            t('home.buttons.book_a_demo'),
+            book_demo_campaigns_path, style: :secondary, classes: 'mb-4'
+          ) %>
+    </div>
+
     <%= render Layout::GridComponent.new(
           cols: 2,
-          classes: 'bg-blue-light rounded-12 p-4 mb-4',
+          theme: :light,
+          classes: 'rounded-xl p-4 mb-4 mt-4',
           cell_classes: 'my-auto'
         ) do |grid| %>
-      <%= grid.with_feature_card do |feature| %>
+      <%= grid.with_feature_card(classes: 'mb-4') do |feature| %>
         <%= feature.with_header(title: t('home.general.title'), level: 3) %>
         <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
-        <%= feature.with_button(t('home.enrol_your_school'), find_out_more_path, style: :primary) %>
-      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-12 p-4 bg-white') %>
+        <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
+      <% end %>
+      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-xl p-4 bg-white') %>
+    <% end %>
+
+    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= section_header.with_header title: t('home.organisations.header') %>
+      <%= section_header.with_description { t('home.organisations.description') } %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          cols: 3,
+          classes: 'mb-4 mt-4',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100'
+        ) do |grid| %>
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
+        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.school.description') } %>
+          <%= feature.with_link(href: for_schools_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'funnel-teachers.png', classes: 'rounded-top-xl') %>
+        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
+          <%= feature.with_link(href: for_multi_academy_trusts_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'funnel-manager.png', classes: 'rounded-top-xl') %>
+        <%= card.with_feature_card(theme: :dark, classes: 'rounded-bottom-xl') do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
+          <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>
+          <%= feature.with_link(href: for_local_authorities_path) { t('common.labels.learn_more') } %>
+        <% end %>
       <% end %>
     <% end %>
   </div>
@@ -122,7 +174,7 @@
         </div>
         <div class="row">
           <div class="col-md-8 offset-md-3 pt-5">
-            <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
+            <%= link_to t('home.buttons.find_out_more'), find_out_more_campaigns_path, class: 'btn btn-success' %>
           </div>
         </div>
       </div>

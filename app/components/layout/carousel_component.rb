@@ -1,5 +1,5 @@
 module Layout
-  class CarouselComponent < ApplicationComponent
+  class CarouselComponent < LayoutComponent
     attr_reader :show_arrows
 
     renders_many :panels, types: {

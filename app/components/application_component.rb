@@ -25,4 +25,9 @@ class ApplicationComponent < ViewComponent::Base
   def add_classes(classes)
     @classes = class_names(@classes, classes)
   end
+
+  def merge_classes(classes, kwargs)
+    kwargs[:classes] = class_names(classes, kwargs[:classes])
+    kwargs
+  end
 end
