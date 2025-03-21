@@ -30,7 +30,7 @@ class LocalDistributionZone < ApplicationRecord
   MEGAJOULES_TO_KWH = 1 / (1.hour / 1000.0)
 
   def self.kwh_per_m3(local_distribution_zone, date)
-    calorific_value = unless date.nil? || local_distribution_zone.nil?
+    calorific_value = unless local_distribution_zone.nil? || date.nil?
                         local_distribution_zone.readings.find_by(date: date)&.calorific_value
                       end
     calorific_value.nil? ? KWH_PER_M3_GAS : calorific_value * MEGAJOULES_TO_KWH
