@@ -295,6 +295,10 @@ input, progress {
   }
 }
 
+.border-blue-dark {
+  border-color: $blue-dark !important;
+}
+
 .theme {
   &.theme-dark {
     background-color: $blue-very-dark;

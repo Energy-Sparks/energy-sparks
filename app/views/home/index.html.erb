@@ -1,11 +1,11 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class="bg-blue-very-dark">
+  <div class="theme theme-dark border-top border-blue-dark">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-      <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4' do |feature| %>
+      <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4 pr-4' do |feature| %>
         <%= feature.with_header title: t('home.feature.header') %>
-        <%= feature.with_description { t('home.feature.description_html') } %>
+        <%= feature.with_description(classes: 'text-blue-light') { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
         <%= feature.with_button t('home.buttons.book_a_demo'),
                                 book_demo_campaigns_path,
@@ -44,7 +44,7 @@
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
         <%= card.with_header title: t('home.stats.card_4.header') %>
-        <%= card.with_figure t('home.stats.card_4.figure') %>
+        <%= card.with_figure ActivityType.active_and_not_custom.count.to_s %>
         <%= card.with_subtext { t('home.stats.card_4.subtext') } %>
       <% end %>
     <% end %>
@@ -86,7 +86,7 @@
       <% I18n.t('home.features.cards').each do |card| %>
         <% grid.with_statement_card(theme: :dark) do |statement| %>
           <%= statement.with_badge(card[:badge]) %>
-          <%= statement.with_statement(title: card[:statement]) %>
+          <%= statement.with_statement { card[:statement] } %>
         <% end %>
       <% end %>
     <% end %>
@@ -113,7 +113,7 @@
         <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
         <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
       <% end %>
-      <%= grid.with_image(src: 'audit-image.png', classes: 'rounded-xl p-4 bg-white') %>
+      <%= grid.with_image(src: 'pupils-jumping.jpg', classes: 'rounded-xl bg-white') %>
     <% end %>
 
     <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
@@ -146,7 +146,7 @@
       <% end %>
 
       <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-manager.png', classes: 'rounded-top-xl') %>
+        <%= card.with_image(src: 'laptop.jpg', classes: 'rounded-top-xl') %>
         <%= card.with_feature_card(theme: :dark, classes: 'rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
           <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>

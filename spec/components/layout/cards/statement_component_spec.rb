@@ -11,7 +11,7 @@ RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, t
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
       card.with_badge('badge text', style: :secondary)
-      card.with_statement(title: 'Statement')
+      card.with_statement { 'Statement' }
     end
   end
 

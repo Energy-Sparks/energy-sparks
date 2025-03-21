@@ -1,12 +1,13 @@
 module Elements
   class ImageComponent < ApplicationComponent
-    def initialize(src:, fit: true, collapse: false, stretch: false, width: nil, **_kwargs)
+    def initialize(src:, fit: true, collapse: false, stretch: false, width: nil, height: nil, **_kwargs)
       super
       @src = src
       @fit = fit
       @collapse = collapse
       @stretch = stretch
       @width = width
+      @height = height
       validate
       setup_classes
     end
@@ -22,8 +23,15 @@ module Elements
       add_classes('d-none d-md-block') if @collapse
     end
 
+    def style
+      style = ''
+      style += "width: #{@width};" if @width
+      style += " height: #{@height};" if @height
+      style
+    end
+
     def call
-      tag.img(src: image_path(@src), id: @id, class: classes, style: @width && "width: #{@width};")
+      tag.img(src: image_path(@src), id: @id, class: classes, style: style)
     end
 
     def validate
