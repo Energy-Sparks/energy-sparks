@@ -13,14 +13,15 @@
   }
 }
 
-.forms-trix-component.controls-simple {
-  trix-toolbar {
-    button.trix-button--icon-quote {
-      display: none;
-    }
+trix-toolbar {
+  .trix-dialog {
+    padding: 5px;
 
-    button.trix-button--icon-code {
-      display: none;
+    .trix-dialog-hidden__input {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
     }
   }
+
 }

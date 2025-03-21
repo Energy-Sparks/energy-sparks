@@ -6,6 +6,9 @@ module Forms
     def simple
     end
 
+    def advanced
+    end
+
     def large
     end
 
