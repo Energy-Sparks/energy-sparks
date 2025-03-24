@@ -318,59 +318,54 @@ describe 'School admin user management' do
       end
 
       context 'when adding an existing user' do
-        let!(:other_school_admin) { create(:school_admin, name: 'Other admin') }
-        let!(:contact) { create(:contact_with_name_email, user: other_school_admin, school: other_school_admin.school) }
-
         before do
           click_on 'Manage users'
+          click_on 'Add an existing Energy Sparks user as a school admin'
         end
 
         it 'has option to add another school admin' do
-          expect(page).to have_content('Add an existing Energy Sparks user as a school admin')
-          click_on 'Add an existing Energy Sparks user as a school admin'
           expect(page).to have_content('Add an existing user as a school admin')
         end
 
         it 'warns if user not found' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
           click_on 'Add user'
           expect(page).to have_content('We were unable to find a user with this email address')
         end
 
-        it 'adds the user' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          fill_in 'Email', with: other_school_admin.email
-          click_on 'Add user'
-          expect(page).to have_content(other_school_admin.name)
-          other_school_admin.reload
-          expect(other_school_admin.cluster_schools_for_switching).to eq([school])
-        end
+        context 'when adding a user' do
+          let!(:other_school_admin) { create(:school_admin, :subscribed_to_alerts, name: 'Other admin') }
 
-        context 'when other user is staff' do
-          let!(:other_school_admin) { create(:staff, name: 'Other admin') }
+          before do
+            fill_in 'Email', with: other_school_admin.email
+          end
 
           it 'adds the user' do
-            click_on 'Add an existing Energy Sparks user as a school admin'
-            fill_in 'Email', with: other_school_admin.email
             click_on 'Add user'
             expect(page).to have_content(other_school_admin.name)
             other_school_admin.reload
             expect(other_school_admin.cluster_schools_for_switching).to eq([school])
-            expect(other_school_admin.role).to eq 'school_admin'
           end
-        end
 
-        it 'adds the user as an alert contact, by default' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          fill_in 'Email', with: other_school_admin.email
-          expect { click_on 'Add user' }.to change(Contact, :count).by(1)
-        end
+          it 'adds the user as an alert contact, by default' do
+            expect { click_on 'Add user' }.to change(Contact, :count).by(1)
+          end
 
-        it 'doesnt add alert contact if requested' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          fill_in 'Email', with: other_school_admin.email
-          uncheck 'Subscribe to school alerts'
-          expect { click_on 'Add user' }.not_to(change(Contact, :count))
+          it 'doesnt add alert contact if requested' do
+            uncheck 'Subscribe to school alerts'
+            expect { click_on 'Add user' }.not_to(change(Contact, :count))
+          end
+
+          context 'when the other user is staff' do
+            let!(:other_school_admin) { create(:staff, name: 'Other admin') }
+
+            it 'adds the user' do
+              click_on 'Add user'
+
+              other_school_admin.reload
+              expect(other_school_admin.cluster_schools_for_switching).to eq([school])
+              expect(other_school_admin.role).to eq 'school_admin'
+            end
+          end
         end
       end
 
