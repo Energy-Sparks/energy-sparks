@@ -3,10 +3,8 @@
 require 'rails_helper'
 require 'fileutils'
 
-describe Amr::Importer do
+describe AmrImportJob do
   include ActiveJob::TestHelper
-
-  subject(:amr_importer) { described_class.new(config, bucket) }
 
   let(:bucket)        { 'test-bucket' }
   let(:thing_prefix)  { 'this-path' }
@@ -19,7 +17,7 @@ describe Amr::Importer do
 
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
-  # responses from AWS API to stub out network calls in client
+  # responses from AWS API to stub out network call s in client
   let(:list_of_objects) { { contents: [{ key: }, { key: "#{thing_prefix}/" }] } }
   let(:object_data) { { key => { body: 'meter-readings!' } } }
 
@@ -39,7 +37,7 @@ describe Amr::Importer do
       expect(File.read(expected_local_file)).to eq('meter-readings!')
       instance_double(Amr::CsvParserAndUpserter, perform: nil)
     end
-    amr_importer.import_all
+    described_class.import_all(config, bucket)
     expect(ActiveJob::Base.queue_adapter.enqueued_jobs.size).to eq(1)
     perform_enqueued_jobs
     expect(s3_client.api_requests.pluck(:operation_name)).to \
@@ -52,8 +50,10 @@ describe Amr::Importer do
 
   it 'logs errors to Rollbar' do
     e = StandardError.new
-    expect_any_instance_of(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
-    expect(Rollbar).to receive(:error).with(e, job: :import_all, bucket:, config: thing_prefix, key:)
-    perform_enqueued_jobs { amr_importer.import_all }
+    allow_any_instance_of(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
+    allow(Rollbar).to receive(:error)
+    perform_enqueued_jobs { described_class.import_all(config, bucket) }
+    expect(Rollbar).to \
+      have_received(:error).with(e, hash_including(job: :amr_import_job, bucket:, config: thing_prefix, key:))
   end
 end
