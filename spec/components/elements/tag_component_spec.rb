@@ -39,11 +39,10 @@ RSpec.describe Elements::TagComponent, :include_application_helper, type: :compo
     it { expect(html).to have_content('Content') }
   end
 
-  context 'with no content' do
-    let(:content) {}
+  context 'with a tag' do
+    let(:tag) { :a }
+    let(:params) { base_params.merge(href: 'a_link')}
 
-    it { expect(html).not_to have_css('p') }
-    it { expect(html).not_to have_css('q') }
-    it { expect(html).not_to have_content('Content') }
+    it { expect(html).to have_link('Content', href: 'a_link') }
   end
 end

@@ -12,6 +12,7 @@ module Schools
       if user
         user.add_cluster_school(@school)
         user.add_cluster_school(user.school) unless user.school.nil?
+        user.role = :school_admin
         if user.save
           create_or_update_alert_contact(@school, user) if auto_create_alert_contact?
         end
