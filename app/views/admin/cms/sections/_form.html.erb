@@ -6,8 +6,9 @@
                admin_cms_section_path(section)
              end %>
     <%= simple_form_for(section, as: :section, url: url) do |f| %>
-
+      <%= render 'shared/errors', subject: section, subject_name: 'section' %>
       <div class="form-group">
+        <label for='page_id'>Page</label>
         <%= f.select :page_id,
                      options_for_select(
                        Cms::Page.by_title.map { |p| [p.title, p.id] },

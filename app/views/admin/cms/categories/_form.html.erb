@@ -6,6 +6,7 @@
                admin_cms_category_path(category)
              end %>
     <%= simple_form_for(category, as: :category, url: url) do |f| %>
+      <%= render 'shared/errors', subject: category, subject_name: 'category' %>
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
         <%= f.input t_field(:title, locale), as: :string %>
       <% end %>

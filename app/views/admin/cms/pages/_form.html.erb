@@ -6,24 +6,27 @@
                admin_cms_page_path(page)
              end %>
     <%= simple_form_for(page, as: :page, url: url) do |f| %>
+      <%= render 'shared/errors', subject: page, subject_name: 'page' %>
       <div class="form-group">
-      <%= f.select :category_id,
-                   options_for_select(
-                     Cms::Category.by_title.map { |c| [c.title, c.id] },
-                     page.category_id || params[:category_id]
-                   ),
-                   { include_blank: 'Choose category' },
-                   { class: 'form-control' } %>
+        <label for='category_id'>Category</label>
+        <%= f.select :category_id,
+                     options_for_select(
+                       Cms::Category.by_title.map { |c| [c.title, c.id] },
+                       page.category_id || params[:category_id]
+                     ),
+                     { include_blank: 'Choose category' },
+                     { class: 'form-control' } %>
       </div>
 
       <div class="form-group">
-        <%= f.select :audience,
-                     options_for_select(
-                       Cms::Page.audiences.transform_keys { |v| t("page.audience.#{v}") },
-                       page.audience
-                     ),
-                     { include_blank: 'Choose audience' },
-                     { class: 'form-control' } %>
+        <label for='audience'>Audience</label>
+          <%= f.select :audience,
+                       options_for_select(
+                         Cms::Page.audiences.transform_keys { |v| t("page.audience.#{v}") },
+                         page.audience
+                       ),
+                       { include_blank: 'Choose audience' },
+                       { class: 'form-control' } %>
       </div>
 
       <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
