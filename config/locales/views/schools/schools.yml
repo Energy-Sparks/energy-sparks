@@ -665,7 +665,7 @@ en:
       edit:
         community_use:
           add_time: Add time
-          breakfast_and_after_school_clubs: Some schools also choose to use this section to record breakfast and after school clubs
+          breakfast_and_after_school_clubs: You can also use this section to record the times when you have before and after school clubs running that only use a small proportion of your school estate.
           closing_time: Closing Time
           day: Day
           opening_time: Opening Time
@@ -679,8 +679,8 @@ en:
         save_school_times: Save school times
         title: School opening hours
       message_1: Enter the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school.
-      message_1_community_use: Breakfast clubs, after school clubs and any private lettings should be included in the Community Use times below.
-      message_2: While many schools will have a certain number of staff in the school outside of these times, keeping this definition consistent across all schools improves the support you receive from Energy Sparks.
+      message_1_community_use: Before and after school clubs can be included if the majority of the school is in use by pupils. External lettings or times when you have only a small proportion of your school estate in use by pupils should be listed under community use times below.
+      message_2: Many schools will have cleaning or other premises staff in the school outside of the times when they are open to pupils. Do not include these periods in your main school opening hours as we recommend that you should keep energy use to a minimum during these times.
       message_3: Times should be entered in 24 hour format.
       opening_time: Opening Time
       school_time_fields:
