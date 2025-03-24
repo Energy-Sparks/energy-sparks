@@ -13,3 +13,9 @@ RSpec.shared_examples_for 'an application component' do
     expect(html).to have_css(":first-child##{expected_id}")
   end
 end
+
+RSpec.shared_examples_for 'a layout component' do
+  it 'has the theme classes' do
+    expect(html).to have_css(".theme.theme-#{expected_theme}")
+  end
+end

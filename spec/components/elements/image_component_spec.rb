@@ -25,10 +25,9 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
 
   context 'with stretch params' do
     let(:stretch) { :right }
-    let(:params) { base_params.merge({ stretch: stretch, width: '50vw' }) }
+    let(:params) { base_params.merge({ stretch: stretch }) }
 
     it { expect(html).to have_css('img.stretch.right') }
-    it { expect(html).to have_css('img[style*="width: 50vw;"]') }
 
     context 'with unrecognised stretch' do
       let(:stretch) { :unrecognised }
@@ -41,5 +40,25 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
     let(:params) { base_params.merge(collapse: true) }
 
     it { expect(html).to have_css('img.d-none.d-md-block') }
+  end
+
+  context 'with width params' do
+    let(:params) { base_params.merge({ width: '50vw' }) }
+
+    before { puts html }
+
+    it { expect(html).to have_css('img[style*="width: 50vw;"]') }
+  end
+
+  context 'with height params' do
+    let(:params) { base_params.merge({ height: '60vw' }) }
+
+    it { expect(html).to have_css('img[style*="height: 60vw;"]') }
+  end
+
+  context 'with height and width params' do
+    let(:params) { base_params.merge({ width: '50vw', height: '60vw' }) }
+
+    it { expect(html).to have_css('img[style*="width: 50vw; height: 60vw;"]') }
   end
 end

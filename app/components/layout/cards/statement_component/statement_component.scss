@@ -1,9 +1,12 @@
 .layout-cards-statement-component {
-  background-color: $blue-very-dark;
-
   .badge {
     font-size: $f9;
     padding: 6px 14px;
+  }
+
+  .statement {
+    font-family: $header-font-family;
+    @include font(f6);
   }
 
   &:hover {
