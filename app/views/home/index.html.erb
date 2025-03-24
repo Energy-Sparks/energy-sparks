@@ -61,10 +61,9 @@
           <%= grid.with_testimonial_card do |testimonial| %>
             <%= testimonial.with_header(title: t('home.testimonials.card_1.title')) %>
             <%= testimonial.with_quote { "#{t('home.testimonials.card_1.quote')}." } %>
-            <%= testimonial.with_source(classes: 'text-blue-very-dark') do %>
-              <strong><%= t('home.testimonials.card_1.source.name') %></strong><br>
-                <%= t('home.testimonials.card_1.source.school') %>
-            <% end %>
+            <%= testimonial.with_name { t('home.testimonials.card_1.source.name') } %>
+            <%= testimonial.with_role { t('home.testimonials.card_1.source.role') } %>
+            <%= testimonial.with_location { t('home.testimonials.card_1.source.school') } %>
             <%= testimonial.with_button(t('home.testimonials.read_case_study'), 'case-studies/15', style: :primary) %>
             <%= testimonial.with_button(t('home.testimonials.more_case_studies'), case_studies_path,
                                         outline_style: :transparent) %>

@@ -1,8 +1,11 @@
 <%= tag.div id: id, class: classes do %>
   <%= header %>
   <%= quote %>
-  <%= source %>
-  <% buttons.each do |button| %>
-    <%= button %>
-  <% end %>
+  <%= name %><%= " - #{role}".html_safe if role %>
+  <%= location %>
+  <div class='mt-3'>
+    <% buttons.each do |button| %>
+      <%= button %>
+    <% end %>
+  </div>
 <% end %>
