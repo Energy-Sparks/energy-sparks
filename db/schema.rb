@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_14_111844) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_24_154639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1935,6 +1935,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_14_111844) do
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_temperature_recordings_on_location_id"
     t.index ["observation_id"], name: "index_temperature_recordings_on_observation_id"
+  end
+
+  create_table "testimonials", force: :cascade do |t|
+    t.string "title"
+    t.text "quote"
+    t.string "name"
+    t.string "role"
+    t.string "location"
+    t.bigint "case_study_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["case_study_id"], name: "index_testimonials_on_case_study_id"
   end
 
   create_table "todos", force: :cascade do |t|
