@@ -7,11 +7,13 @@ RSpec.describe Layout::CarouselComponent, type: :component do
 
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
+  let(:theme) { :dark }
 
   let(:params) do
     {
       id: id,
-      classes: classes
+      classes: classes,
+      theme: theme
     }
   end
 
@@ -27,6 +29,10 @@ RSpec.describe Layout::CarouselComponent, type: :component do
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
+    end
+
+    it_behaves_like 'a layout component' do
+      let(:expected_theme) { theme }
     end
 
     it { expect(html).to have_content('Television') }
@@ -103,7 +109,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
       render_inline(described_class.new(**params)) do |c|
         c.with_grid cols: 2 do |grid|
           grid.with_image(src: 'laptop.jpg')
-          grid.with_tag(:p) { 'Laptop description' }
+          grid.with_paragraph { 'Laptop description' }
         end
         c.with_equivalence image_name: 'tree' do |e|
           e.with_title { 'Tree' }

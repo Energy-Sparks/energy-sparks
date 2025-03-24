@@ -5,8 +5,9 @@ require 'rails_helper'
 RSpec.describe Layout::GridComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
+  let(:theme) { :dark }
   let(:cols) { 2 }
-  let(:all_params) { { cols: cols, classes: classes, id: id } }
+  let(:all_params) { { cols: cols, classes: classes, id: id, theme: theme } }
 
   let(:params) { all_params }
 
@@ -27,6 +28,10 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
+    end
+
+    it_behaves_like 'a layout component' do
+      let(:expected_theme) { theme }
     end
 
     context 'with 2 cols' do
@@ -64,6 +69,19 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
 
     it { expect(row).to have_css('div.component-classes', count: 2) }
   end
+
+  context 'with theme' do
+    let(:params) { all_params }
+
+    let(:html) do
+      render_inline(described_class.new(**params)) do |c|
+        c.with_block { 'cell 1' }
+      end
+    end
+
+    it { expect(html).to have_css('div.theme.theme-dark') }
+  end
+
 
   context 'with inline component classes' do
     let(:html) do

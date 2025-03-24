@@ -1,6 +1,6 @@
 module Layout
   module Cards
-    class StatsComponent < ApplicationComponent
+    class StatsComponent < LayoutComponent
       renders_one :icon, 'IconComponent'
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: 5, classes: 'text-white mt-2' }.merge(kwargs))
@@ -10,7 +10,7 @@ module Layout
 
       def initialize(**_kwargs)
         super
-        add_classes('bg-blue-very-dark rounded-12 text-center p-4 h-100')
+        add_classes('bg-blue-very-dark rounded-xl text-center p-4 h-100')
       end
     end
   end

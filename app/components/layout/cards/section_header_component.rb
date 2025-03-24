@@ -1,6 +1,6 @@
 module Layout
   module Cards
-    class SectionHeaderComponent < ApplicationComponent
+    class SectionHeaderComponent < LayoutComponent
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: 3 }.merge(kwargs))
       end
@@ -10,7 +10,7 @@ module Layout
 
       def initialize(**_kwargs)
         super
-        add_classes('p-4 m-4 text-center')
+        add_classes('text-center')
       end
     end
   end
