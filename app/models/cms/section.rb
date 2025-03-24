@@ -37,11 +37,9 @@ module Cms
 
     belongs_to :page, class_name: 'Cms::Page', optional: true
 
-    before_validation :set_default_position, on: [:create, :update]
+    before_validation :set_default_position, on: [:create]
 
-    validates :position, numericality: { greater_than: 0, allow_nil: true }
-    validates :position, uniqueness: { scope: :page_id }
-
+    validates :position, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
     validates_presence_of :title
 
     # virtual attribute for handling deletes from forms
@@ -54,8 +52,8 @@ module Cms
 
     def set_default_position
       if position.nil?
-        max_position = page.sections.maximum(:position) || 0
-        self.position = max_position + 1
+        max_position = page.sections.maximum(:position)
+        self.position = max_position ? max_position + 1 : 0
       end
     end
   end

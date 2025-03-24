@@ -15,16 +15,15 @@ describe 'manage sections' do
       before do
         click_on('Pages')
         click_on 'New Section'
+        fill_in 'Title en', with: 'Section Title'
+        within('.body-trix-editor-en') do
+          fill_in_trix with: 'Section Body'
+        end
       end
 
       it_behaves_like 'a cms admin page'
 
       it 'creates the model' do
-        fill_in 'Title en', with: 'Section Title'
-        within('.body-trix-editor-en') do
-          fill_in_trix with: 'Section Body'
-        end
-
         expect { click_on 'Save' }.to change(Cms::Section, :count).by(1)
         expect(page).to have_content('Section Title')
         model = Cms::Section.last

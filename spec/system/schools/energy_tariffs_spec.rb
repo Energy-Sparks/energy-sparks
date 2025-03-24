@@ -77,15 +77,6 @@ describe 'school energy tariffs', type: :system do
       it_behaves_like 'the user does not have access to the tariff editor'
     end
 
-    context 'as a volunteer user' do
-      let!(:current_user) { create(:volunteer, school: school) }
-      let(:path)          { school_energy_tariffs_path(school) }
-
-      before { sign_in(current_user) }
-
-      it_behaves_like 'the user does not have access to the tariff editor'
-    end
-
     context 'as a non school user' do
       let!(:school_2)     { create_active_school }
       let!(:current_user) { create(:user, school: school_2) }

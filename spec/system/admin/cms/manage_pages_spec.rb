@@ -15,15 +15,15 @@ describe 'manage pages' do
       before do
         click_on('Pages')
         click_on 'New Page'
+        select category.title, from: :page_category_id
+        fill_in 'Title en', with: 'Page Title'
+        fill_in 'Description en', with: 'Page Description'
+        select 'School users', from: :page_audience
       end
 
       it_behaves_like 'a cms admin page'
 
       it 'creates the model' do
-        select category.title, from: :page_category_id
-        fill_in 'Title en', with: 'Page Title'
-        fill_in 'Description en', with: 'Page Description'
-        select 'School users', from: :page_audience
         expect { click_on 'Save' }.to change(Cms::Page, :count).by(1)
         expect(page).to have_content('Page Title')
         model = Cms::Page.last
@@ -40,12 +40,12 @@ describe 'manage pages' do
       before do
         click_on('Pages')
         click_on('Edit')
-      end
-
-      it 'updates the model' do
         fill_in 'Title en', with: 'Page Title'
         fill_in 'Description en', with: 'Page Description'
         select 'School group administrators', from: :page_audience
+      end
+
+      it 'updates the model' do
         expect { click_on 'Save' }.not_to change(Cms::Page, :count)
         expect(page).to have_content('Page Title')
         model = Cms::Page.last

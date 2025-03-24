@@ -541,25 +541,17 @@ Rails.application.routes.draw do
       resources :report_groups, except: [:show]
     end
 
+    concern :publishable do
+      member do
+        put :publish
+        put :hide
+      end
+    end
+
     namespace :cms do
-      resources :categories, except: [:show] do
-        member do
-          put :publish
-          put :hide
-        end
-      end
-      resources :pages, except: [:show] do
-        member do
-          put :publish
-          put :hide
-        end
-      end
-      resources :sections, except: [:show] do
-        member do
-          put :publish
-          put :hide
-        end
-      end
+      resources :categories, except: [:show], concerns: [:publishable]
+      resources :pages, except: [:show], concerns: [:publishable]
+      resources :sections, except: [:show], concerns: [:publishable]
     end
 
     resources :case_studies

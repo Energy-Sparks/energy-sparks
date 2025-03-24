@@ -39,9 +39,20 @@ q {
   white-space: nowrap;
 }
 
-.rounded-12 {
-  border-radius: 12px;
+$rounded-xl: 12px;
 
+.rounded-xl {
+  border-radius: $rounded-xl;
+}
+
+.rounded-top-xl {
+  border-top-left-radius: $rounded-xl;
+  border-top-right-radius: $rounded-xl;
+}
+
+.rounded-bottom-xl {
+  border-bottom-left-radius: $rounded-xl;
+  border-bottom-right-radius: $rounded-xl;
 }
 
 .fa-li.fa-check {
@@ -194,6 +205,10 @@ input, progress {
   border-radius: 6px;
 }
 
+.sortable-hide {
+  opacity:0;
+}
+
 // palette styles
 
 @each $colour, $shades in $colours-palette {
@@ -280,6 +295,29 @@ input, progress {
   }
 }
 
-.sortable-hide {
-  opacity:0;
+.border-blue-dark {
+  border-color: $blue-dark !important;
+}
+
+.theme {
+  &.theme-dark {
+    background-color: $blue-very-dark;
+    color: $white;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $white;
+    }
+
+    a:not(.btn) {
+      color: $teal-medium;
+    }
+  }
+
+  &.theme-light {
+    background-color: $blue-light;
+  }
+
+  &.theme-accent {
+    background-color: $yellow-pale;
+  }
 }
