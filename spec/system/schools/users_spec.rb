@@ -346,6 +346,20 @@ describe 'School admin user management' do
           expect(other_school_admin.cluster_schools_for_switching).to eq([school])
         end
 
+        context 'when other user is staff' do
+          let!(:other_school_admin) { create(:staff, name: 'Other admin') }
+
+          it 'adds the user' do
+            click_on 'Add an existing Energy Sparks user as a school admin'
+            fill_in 'Email', with: other_school_admin.email
+            click_on 'Add user'
+            expect(page).to have_content(other_school_admin.name)
+            other_school_admin.reload
+            expect(other_school_admin.cluster_schools_for_switching).to eq([school])
+            expect(other_school_admin.role).to eq 'school_admin'
+          end
+        end
+
         it 'adds the user as an alert contact, by default' do
           click_on 'Add an existing Energy Sparks user as a school admin'
           fill_in 'Email', with: other_school_admin.email
