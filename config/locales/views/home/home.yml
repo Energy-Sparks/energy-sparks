@@ -17,7 +17,7 @@ en:
       message_5: Explore eco-team and classroom activities for pupils.
       message_6: Share energy saving ideas and compete against other schools.
     feature:
-      description_html: Save up to <strong>40%</strong> on energy bills with our unique school-specific energy management tool and education programme.
+      description_html: Save up to 40% on energy bills with our unique school-specific energy management tool and education programme.
       header: Helping schools cut energy costs and fight climate change
     features:
       cards:
@@ -81,9 +81,8 @@ en:
         header: Secondary schools
         subtext: and 26 tonnes CO₂ - average saving in 2023/24
       card_4:
-        figure: 70%
         header: Empower pupils
-        subtext: Number of participating schools using Energy Sparks with their eco-team to inform impactful action
+        subtext: Eco-team and curriculum-linked energy saving activities linked to energy use data to maximise impact
       description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.
       header: Are you looking to cut energy bills and take action on climate change?
     sub_title: A unique school-specific energy management tool and education programme
