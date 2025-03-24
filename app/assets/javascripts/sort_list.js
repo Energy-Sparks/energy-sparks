@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function reindex(list) {
     let idx = 0;
     list.querySelectorAll('.nested-fields').forEach((item) => {
-      const destroyField = item.querySelector('input[type="hidden"][name$="[_destroy]"]');
+      const destroyField = item.querySelector('input[type="hidden"][name$="[_destroy]"], input[type="hidden"][name$="[_delete]"]');
       const positionField = item.querySelector('input.position');
 
       if (destroyField.value !== 'true') {
