@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:base_params) { { id: id, classes: classes } }
+  let(:theme) { :dark }
+  let(:base_params) { { id: id, classes: classes, theme: theme } }
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
@@ -24,15 +25,21 @@ RSpec.describe Layout::Cards::FeatureComponent, :include_application_helper, typ
       let(:expected_id) { id }
     end
 
+    it_behaves_like 'a layout component' do
+      let(:expected_theme) { theme }
+    end
+
+    it { expect(html).to have_css('h4') }
+    it { expect(html).not_to have_css('.main') }
     it { expect(html).to have_content('Header') }
     it { expect(html).to have_content('Description') }
     it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
     it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
   end
 
-  context 'with responsive params' do
-    let(:params) { base_params.merge(responsive: true) }
+  context 'with main params' do
+    let(:params) { base_params.merge(main: true) }
 
-    it { expect(html).to have_css('.responsive') }
+    it { expect(html).to have_css('.main h2') }
   end
 end

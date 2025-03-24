@@ -1,9 +1,13 @@
 .layout-cards-feature-component {
-  &.responsive {
-    @include responsive-typography;
+
+  h2, h4 {
+    padding-top: 0;
   }
 
-  p {
-    font-family: $header-font-family;
+  &.main {
+    @include responsive-typography;
+    p {
+      font-family: $header-font-family;
+    }
   }
 }

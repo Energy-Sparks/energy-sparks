@@ -4,6 +4,9 @@ cy:
     more_case_studies: Rhagor o astudiaethau achos
     title: Astudiaethau Achos
   home:
+    buttons:
+      find_out_more: Dysgu rhagor
+      book_a_demo: Archebwch demo
     carousel:
       message_1: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd.
       message_2: Dangoswch i'ch ysgol faint a phryd rydych yn defnyddio ynni.
@@ -11,7 +14,6 @@ cy:
       message_4: Cael rhybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.
       message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
       message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
-    enrol_your_school: Dysgu rhagor
     funnels:
       local_authority:
         button: Sbarcynni ar gyfer Awdurdodau Lleol
