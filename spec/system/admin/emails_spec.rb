@@ -9,7 +9,6 @@ describe 'Emails', type: :system do
   let!(:pupil) { create(:pupil, school: school) }
   let!(:onboarding_user) { create(:onboarding_user, school: school) }
   let!(:staff) { create(:staff, school: school) }
-  let!(:volunteer) { create(:volunteer, school: school) }
 
   describe 'visiting the admin email preview path' do
     context 'as an admin' do
@@ -92,19 +91,6 @@ describe 'Emails', type: :system do
     context 'as a staff user' do
       it 'prevents the user from seeing the admin email preview page' do
         sign_in(staff)
-        visit admin_mailer_previews_path
-        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
-        preview = ActionMailer::Preview.all.last
-        visit admin_mailer_preview_path(preview.preview_name)
-        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
-        visit admin_mailer_preview_path(preview.preview_name + '/' + preview.emails.first)
-        expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
-      end
-    end
-
-    context 'as a volunteer user' do
-      it 'prevents the user from seeing the admin email preview page' do
-        sign_in(volunteer)
         visit admin_mailer_previews_path
         expect(page).to have_current_path("/schools/#{school.slug}", ignore_query: true)
         preview = ActionMailer::Preview.all.last

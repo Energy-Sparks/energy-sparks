@@ -1,5 +1,20 @@
 <%= f.input :name, required: false %>
 <%= f.input :email, required: true %>
-<%= f.input :role, label: t('onboarding.users.form.type'), required: true, collection: User.roles.except(:guest, :admin, :school_onboarding, :pupil, :group_admin, :analytics, :volunteer).keys, label_method: lambda { |role| t_role(role) }, hint: t('onboarding.users.form.staff_accounts_have_access_hint') %>
-<%= f.input :staff_role_id, label: t('onboarding.users.form.role'), required: true, collection: StaffRole.order(:title), label_method: :translated_title, hint: t('onboarding.users.form.what_is_the_users_relationship_hint') %>
-<%= f.input :preferred_locale, label: t('onboarding.users.form.preferred_locale'), required: :true, collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] }, prompt: '', hint: t('onboarding.users.form.preferred_locale_hint'), selected: @user&.new_record? ? current_user&.preferred_locale : @user&.preferred_locale %>
+<%= f.input :role,
+            label: t('onboarding.users.form.type'),
+            required: true,
+            collection: %i[staff school_admin],
+            label_method: ->(role) { t_role(role) },
+            hint: t('onboarding.users.form.staff_accounts_have_access_hint') %>
+<%= f.input :staff_role_id,
+            label: t('onboarding.users.form.role'), required: true,
+            collection: StaffRole.order(:title),
+            label_method: :translated_title,
+            hint: t('onboarding.users.form.what_is_the_users_relationship_hint') %>
+<%= f.input :preferred_locale,
+            label: t('onboarding.users.form.preferred_locale'),
+            required: true,
+            collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] },
+            prompt: '',
+            hint: t('onboarding.users.form.preferred_locale_hint'),
+            selected: @user&.new_record? ? current_user&.preferred_locale : @user&.preferred_locale %>

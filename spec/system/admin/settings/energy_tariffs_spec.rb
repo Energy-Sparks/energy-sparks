@@ -69,15 +69,6 @@ describe 'site settings energy tariffs', type: :system do
     it_behaves_like 'the user does not have access to the tariff editor'
   end
 
-  context 'as a volunteer user' do
-    let!(:current_user) { create(:volunteer) }
-    let(:path)          { admin_settings_energy_tariffs_path }
-
-    before              { sign_in(current_user) }
-
-    it_behaves_like 'the user does not have access to the tariff editor'
-  end
-
   context 'with no signed in user' do
     let!(:current_user) { nil }
     let(:path)          { admin_settings_energy_tariffs_path }
