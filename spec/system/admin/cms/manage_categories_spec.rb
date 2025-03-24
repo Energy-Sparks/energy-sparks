@@ -13,15 +13,14 @@ describe 'manage categories' do
       before do
         click_on('Categories')
         click_on 'New Category'
+        fill_in 'Title en', with: 'Category Title'
+        fill_in 'Description en', with: 'Category Description'
+        fill_in 'Icon', with: 'lightbulb'
       end
 
       it_behaves_like 'a cms admin page'
 
       it 'creates the model' do
-        fill_in 'Title en', with: 'Category Title'
-        fill_in 'Description en', with: 'Category Description'
-        fill_in 'Icon', with: 'lightbulb'
-
         expect { click_on 'Save' }.to change(Cms::Category, :count).by(1)
         expect(page).to have_content('Category Title')
         model = Cms::Category.last
@@ -38,11 +37,11 @@ describe 'manage categories' do
       before do
         click_on('Categories')
         click_on('Edit')
+        fill_in 'Title en', with: 'Category Title'
+        fill_in 'Description en', with: 'Category Description'
       end
 
       it 'updates the model' do
-        fill_in 'Title en', with: 'Category Title'
-        fill_in 'Description en', with: 'Category Description'
         expect { click_on 'Save' }.not_to change(Cms::Category, :count)
         expect(page).to have_content('Category Title')
         model = Cms::Category.last
