@@ -5,13 +5,19 @@ module Layout
         Elements::HeaderComponent.new(**kwargs.merge({ level: 4 }))
       end
       renders_one :quote, ->(**kwargs) do
-        Elements::TagComponent.new(:q, **kwargs.merge({ classes: 'small' }))
+        Elements::TagComponent.new(:q, **merge_classes('small', kwargs))
       end
-      renders_one :source, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **kwargs.merge({ classes: 'small text-blue-very-dark' }))
+      renders_one :name, ->(**kwargs) do
+        Elements::TagComponent.new(:span, **merge_classes('small text-darker font-weight-bold', kwargs))
+      end
+      renders_one :role, ->(**kwargs) do
+        Elements::TagComponent.new(:span, **merge_classes('small text-darker', kwargs))
+      end
+      renders_one :location, ->(**kwargs) do
+        Elements::TagComponent.new(:div, **merge_classes('small text-darker', kwargs))
       end
       renders_many :buttons, ->(*args, **kwargs) do
-        Elements::ButtonComponent.new(*args, **kwargs.merge({ classes: 'mb-1 mr-2' }))
+        Elements::ButtonComponent.new(*args, **merge_classes('mb-1 mr-2', kwargs))
       end
     end
   end

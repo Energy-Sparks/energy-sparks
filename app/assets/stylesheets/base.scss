@@ -319,5 +319,9 @@ input, progress {
 
   &.theme-accent {
     background-color: $yellow-pale;
+
+    .text-darker {
+      color: $blue-very-dark;
+    }
   }
 }
