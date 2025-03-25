@@ -17,7 +17,7 @@ describe AmrImportJob do
 
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
-  # responses from AWS API to stub out network call s in client
+  # responses from AWS API to stub out network calls in client
   let(:list_of_objects) { { contents: [{ key: }, { key: "#{thing_prefix}/" }] } }
   let(:object_data) { { key => { body: 'meter-readings!' } } }
 
