@@ -13,6 +13,10 @@ trix-editor {
   background: $white;
 }
 
+trix-editor.large {
+  min-height: 500px !important;
+}
+
 trix-toolbar .button_groups {
   button.code {
     display: none;
