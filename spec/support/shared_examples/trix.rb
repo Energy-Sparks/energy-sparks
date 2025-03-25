@@ -1,0 +1,55 @@
+RSpec.shared_examples 'a form with a customised trix component' do |controls: :default, charts: false|
+  let(:id) { nil }
+
+  let(:selector) do
+    id ? "##{id}.forms-trix-component" : '.forms-trix-component'
+  end
+
+  let(:size) { :default }
+  let(:button_size) { :default }
+
+  it do
+    within(selector) do
+      expect(page).to have_css('trix-editor')
+    end
+  end
+
+  it 'has expected size' do
+    expect(page).to have_css("#{selector}.#{size}")
+  end
+
+  it 'has expected button size' do
+    expect(page).to have_css("#{selector}.buttons-#{button_size}")
+  end
+
+  it 'has simplified controls', if: controls == :simple do
+    expect(page).to have_css("#{selector}.controls-#{controls}")
+    within(selector) do
+      expect(page).not_to have_css('button[data-trix-attribute="quote"]')
+      expect(page).not_to have_css('button[data-trix-attribute="code"]')
+      expect(page).not_to have_css('button[data-trix-attribute="chart"]')
+      expect(page).not_to have_css('button[data-trix-action="x-heading"]')
+    end
+  end
+
+  it 'has advanced controls', if: controls == :advanced do
+    expect(page).to have_css("#{selector}.controls-#{controls}")
+    within(selector) do
+      expect(page).to have_css('button[data-trix-attribute="quote"]')
+      expect(page).to have_css('button[data-trix-attribute="code"]')
+      expect(page).to have_css('button[data-trix-action="x-heading"]')
+    end
+  end
+
+  it 'does not have chart button', unless: charts do
+    within(selector) do
+      expect(page).not_to have_css('button[data-trix-action="chart"]')
+    end
+  end
+
+  it 'has a chart button', if: charts do
+    within(selector) do
+      expect(page).to have_css('button[data-trix-action="chart"]')
+    end
+  end
+end
