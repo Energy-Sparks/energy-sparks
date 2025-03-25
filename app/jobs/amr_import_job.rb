@@ -16,32 +16,30 @@ class AmrImportJob < ApplicationJob
     @s3_client = Aws::S3::Client.new
     @config = config
     @bucket = bucket
-    filename = File.basename(key)
-    get_file_from_s3(key, filename)
-    Amr::CsvParserAndUpserter.new(@config, filename).perform
+    file_path = get_file_from_s3(key)
+    key_without_parent = key.partition('/').last
+    Amr::CsvParserAndUpserter.perform(@config, file_path, key_without_parent)
     Rails.logger.info "Imported #{key}"
-    archive_file(key, filename)
+    archive_file(key, key_without_parent, file_path)
   rescue StandardError => e
     EnergySparks::Log.exception(e, job: :amr_import_job, bucket: @bucket, config: @config.identifier, key:)
   end
 
   private
 
-  def local_filename_and_path(filename)
-    "#{@config.local_bucket_path}/#{filename}"
-  end
-
-  def get_file_from_s3(key, filename)
+  def get_file_from_s3(key)
     Rails.logger.info "Downloading from S3 key: #{key}"
-    @s3_client.get_object(bucket: @bucket, key:, response_target: local_filename_and_path(filename))
+    response_target = "#{@config.local_bucket_path}/#{File.basename(key)}"
+    @s3_client.get_object(bucket: @bucket, key:, response_target:)
     Rails.logger.info "Downloaded  from S3 key: #{key}"
+    response_target
   end
 
-  def archive_file(key, filename)
-    archived_key = "#{@config.s3_archive_folder}/#{filename}"
+  def archive_file(key, key_without_parent, file_path)
+    archived_key = "#{@config.s3_archive_folder}/#{key_without_parent}"
     @s3_client.copy_object(bucket: @bucket, copy_source: "#{@bucket}/#{key}", key: archived_key)
     @s3_client.delete_object(bucket: @bucket, key:)
-    File.delete(local_filename_and_path(filename))
+    File.delete(file_path)
     Rails.logger.info "Archived #{key} to #{archived_key} and removed local file"
   end
 end
