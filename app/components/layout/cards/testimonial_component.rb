@@ -1,6 +1,9 @@
 module Layout
   module Cards
     class TestimonialComponent < LayoutComponent
+      renders_one :image, ->(**kwargs) do
+        Elements::ImageComponent.new(**merge_classes('rounded-xl fit', kwargs))
+      end
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**kwargs.merge({ level: 4 }))
       end
@@ -13,7 +16,7 @@ module Layout
       renders_one :role, ->(**kwargs) do
         Elements::TagComponent.new(:span, **merge_classes('small text-darker', kwargs))
       end
-      renders_one :location, ->(**kwargs) do
+      renders_one :organisation, ->(**kwargs) do
         Elements::TagComponent.new(:div, **merge_classes('small text-darker', kwargs))
       end
       renders_many :buttons, ->(*args, **kwargs) do
