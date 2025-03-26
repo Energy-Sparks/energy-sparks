@@ -76,7 +76,7 @@ module Amr
         unit = conversion_unit(data_feed_reading_hash, meter)
         if unit
           data_feed_reading_hash[:units] = 'kwh'
-          return convert_readings(array_of_readings, unit)
+          return convert_readings(array_of_readings, unit, meter, data_feed_reading_hash[:reading_date])
         end
       end
       array_of_readings
@@ -94,8 +94,13 @@ module Amr
       end
     end
 
-    def convert_readings(array_of_readings, unit)
-      factor = Amr::N3rgyDownloader::KWH_PER_M3_GAS
+    def convert_readings(array_of_readings, unit, meter, date)
+      begin
+        date = Date.strptime(date, @config.date_format)
+      rescue ArgumentError
+        date = nil
+      end
+      factor = LocalDistributionZone.kwh_per_m3(meter&.school&.local_distribution_zone, date)
       case unit
       when :ft3
         factor *= FT3_TO_M3

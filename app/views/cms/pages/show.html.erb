@@ -1,0 +1,48 @@
+<%= content_for :page_title, @page.title %>
+
+<% content_for :dashboard_header do %>
+  <div>
+    <div id="dashboard-header-welcome" class="col-12 col-md-9">
+      <div class="row">
+        <div class="col">
+          <h1><%= @page.title %></h1>
+        </div>
+      </div>
+      <%= render 'cms/search' %>
+    </div>
+  </div>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
+      <%= render 'cms/nav', categories: @categories, classes: '' %>
+    </div>
+
+    <div id="page-body" class="col-md-5 col-lg-5 col-xl-7">
+
+      <%= render PromptComponent.new(status: :none) do |c| %>
+        <% c.with_title { 'Audience' } %>
+        <%= t("page.audience.#{@page.audience}") %>
+      <% end %>
+
+      <div class="row">
+        <div class="col">
+          <p>
+            <%= @page.description %>
+          </p>
+        </div>
+      </div>
+
+      <% @page.sections.published.positioned.each do |section| %>
+        <h3 id="<%= section.slug %>" class="scrollable-title"><%= section.title %></h3>
+        <%= section.body %>
+      <% end %>
+    </div>
+
+    <div id="section-navigation" class="col-md-3 col-lg-3 col-xl-2">
+      <%= render 'section_nav', page: @page %>
+    </div>
+
+  </div>
+</div>

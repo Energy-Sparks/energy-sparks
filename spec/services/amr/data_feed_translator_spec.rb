@@ -228,7 +228,7 @@ describe Amr::DataFeedTranslator do
 
         it 'converts all rows to kwh' do
           expect(results.size).to eq(readings.size)
-          expect(results.first[:readings].first).to eq(1.20800000 * 11.1)
+          expect(results.first[:readings].first).to be_within(0.0001).of(13.4087)
         end
       end
 
@@ -243,7 +243,7 @@ describe Amr::DataFeedTranslator do
           expect(results.first[:units]).to eq('kwh')
           expect(results.first[:readings].first).to eq('1.20800000')
           expect(results.last[:units]).to eq('kwh')
-          expect(results.last[:readings].first).to eq(1.20800000 * 11.1)
+          expect(results.last[:readings].first).to be_within(0.0001).of(13.4087)
         end
       end
 
