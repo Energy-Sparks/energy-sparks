@@ -1,8 +1,8 @@
 module Amr
   class DataFileToAmrReadingData
     def initialize(config_to_parse_file, path_and_file_name)
-      @path_and_file_name = path_and_file_name
       @config = config_to_parse_file
+      @path_and_file_name = path_and_file_name
     end
 
     def perform

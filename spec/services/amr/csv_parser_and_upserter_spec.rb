@@ -1,22 +1,20 @@
 require 'rails_helper'
 
 describe Amr::CsvParserAndUpserter do
-  subject(:service) { described_class.new(config, file_name) }
-
-  around do |example|
-    ClimateControl.modify AMR_CONFIG_LOCAL_FILE_BUCKET_PATH: 'spec/fixtures/amr_data' do
-      example.run
-    end
+  def perform
+    described_class.perform(config, "spec/fixtures/amr_data/#{config.identifier}/#{file_name}", file_name)
   end
+
+  let(:import_log) { perform }
 
   shared_examples 'it updates the database' do
     it 'inserts correct number of records' do
-      expect(service.inserted_record_count).to eq inserted
+      expect(import_log.records_imported).to eq inserted
       expect(AmrDataFeedReading.count).to eq(inserted + updated)
     end
 
     it 'updates the correct number of records' do
-      expect(service.updated_record_count).to eq updated
+      expect(import_log.records_updated).to eq updated
     end
 
     it 'records a log' do
@@ -29,7 +27,7 @@ describe Amr::CsvParserAndUpserter do
     let(:updated) { 0 }
 
     before do
-      service.perform
+      import_log
     end
 
     it_behaves_like 'it updates the database'
@@ -50,7 +48,7 @@ describe Amr::CsvParserAndUpserter do
     let(:warning_type) { :missing_readings }
 
     before do
-      service.perform
+      import_log
     end
 
     it_behaves_like 'it updates the database'
@@ -69,12 +67,12 @@ describe Amr::CsvParserAndUpserter do
 
   shared_examples 'it rejects the file' do
     before do
-      service.perform
+      import_log
     end
 
     it 'does not update the database' do
-      expect(service.inserted_record_count).to eq 0
-      expect(service.updated_record_count).to eq 0
+      expect(import_log.records_imported).to eq 0
+      expect(import_log.records_updated).to eq 0
       expect(AmrDataFeedReading.count).to eq 0
     end
 
@@ -140,13 +138,12 @@ describe Amr::CsvParserAndUpserter do
 
       context 'when reloaded' do
         it 'upserts the data' do
-          service.perform
-          expect(service.inserted_record_count).to eq 1
-          expect(service.updated_record_count).to eq 0
+          expect(import_log.records_imported).to eq 1
+          expect(import_log.records_updated).to eq 0
 
-          service.perform
-          expect(service.inserted_record_count).to eq 0
-          expect(service.updated_record_count).to eq 1
+          import_log = perform
+          expect(import_log.records_imported).to eq 0
+          expect(import_log.records_updated).to eq 1
         end
       end
     end
@@ -185,7 +182,7 @@ describe Amr::CsvParserAndUpserter do
       let(:file_name) { 'malformed.csv' }
 
       it 'throws an exception' do
-        expect { service.perform }.to raise_error(Amr::DataFileParser::Error)
+        expect { import_log }.to raise_error(Amr::DataFileParser::Error)
       end
     end
 
@@ -250,7 +247,7 @@ describe Amr::CsvParserAndUpserter do
       it_behaves_like 'it successfully processes the file'
 
       it 'does not have any blank readings' do
-        service.perform
+        import_log
         AmrDataFeedReading.all.find_each do |reading_record|
           expect(reading_record.readings.any?(&:blank?)).to be false
         end
