@@ -19,9 +19,11 @@ module Layout
       renders_one :organisation, ->(**kwargs) do
         Elements::TagComponent.new(:div, **merge_classes('small text-darker', kwargs))
       end
-      renders_one :case_study, ->(case_study) do
-        Elements::ButtonComponent.new(t('home.testimonials.read_case_study'),
-          case_study_download_path(case_study), style: :primary, classes: 'mb-1 mr-2')
+      renders_one :case_study, ->(case_study = nil) do
+        if case_study
+          Elements::ButtonComponent.new(t('components.testimonial.read_case_study'),
+            case_study_download_path(case_study), style: :primary, classes: 'mb-1 mr-2')
+        end
       end
     end
   end
