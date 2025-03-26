@@ -9,8 +9,7 @@ module Layout
           card.with_name { 'Dr Watts' }
           card.with_role { 'Energy Champion' }
           card.with_organisation { 'Greenfields Academy' }
-          card.with_button 'Primary link', '/', style: :primary
-          card.with_button 'Secondary link', '/', style: :secondary
+          card.with_case_study(CaseStudy.last)
         end
       end
 
@@ -21,8 +20,7 @@ module Layout
           card.with_quote { 'Every watt saved is a step towards a brighter future!' }
           card.with_name { 'Dr Watts' }
           card.with_organisation { 'Greenfields Academy' }
-          card.with_button 'Primary link', '/', style: :primary
-          card.with_button 'Secondary link', '/', style: :secondary
+          card.with_case_study(CaseStudy.last)
         end
       end
     end

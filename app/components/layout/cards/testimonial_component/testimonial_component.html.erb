@@ -9,9 +9,12 @@
       <%= name %><%= " - #{role}".html_safe if role %>
       <%= organisation %>
       <div class='mt-3'>
-        <% buttons.each do |button| %>
-          <%= button %>
-        <% end %>
+        <%= case_study %>
+        <%= render Elements::ButtonComponent.new(
+              t('home.testimonials.more_case_studies'),
+              case_studies_path,
+              outline_style: :transparent, classes: 'mb-1'
+            ) %>
       </div>
     <% end %>
   <% end %>

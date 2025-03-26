@@ -54,6 +54,7 @@
                                              theme: :accent,
                                              classes: 'rounded-xl p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
+
       <%# Until we  have more things to go in the carousel, do this for demo purposes %>
       <% %w[funnel-pupils.png funnel-teachers.png].each do |pic| %>
         <%= carousel.with_testimonial_card do |testimonial| %>
@@ -63,10 +64,7 @@
           <%= testimonial.with_name { t('home.testimonials.card_1.source.name') } %>
           <%= testimonial.with_role { t('home.testimonials.card_1.source.role') } %>
           <%= testimonial.with_organisation { t('home.testimonials.card_1.source.school') } %>
-          <%= testimonial.with_button(t('home.testimonials.read_case_study'), 'case-studies/15', style: :primary) %>
-          <%= testimonial.with_button(
-                t('home.testimonials.more_case_studies'), case_studies_path, outline_style: :transparent
-              ) %>
+          <%= testimonial.with_case_study(CaseStudy.all.last) %>
         <% end %>
       <% end %>
     <% end %>

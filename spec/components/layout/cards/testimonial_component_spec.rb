@@ -2,11 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper, type: :component do
+RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper, :include_url_helpers, type: :component do
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:theme) { :dark }
   let(:base_params) { { id: id, classes: classes, theme: theme } }
+  let(:case_study) { create(:case_study) }
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
@@ -16,8 +17,7 @@ RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper,
       card.with_name { 'Source Name' }
       card.with_role { 'Role' }
       card.with_organisation { 'Organisation' }
-      card.with_button('button 1', 'link_to_button_1', style: :primary)
-      card.with_button('button 2', 'link_to_button_2', style: :secondary)
+      card.with_case_study(case_study)
     end
   end
 
@@ -40,7 +40,7 @@ RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper,
     it { expect(html).to have_content('Source Name') }
     it { expect(html).to have_content('Role') }
     it { expect(html).to have_content('Organisation') }
-    it { expect(html).to have_link('button 1', href: 'link_to_button_1') }
-    it { expect(html).to have_link('button 2', href: 'link_to_button_2') }
+    it { expect(html).to have_link('Read case study', href: case_study_download_path(case_study)) }
+    it { expect(html).to have_link('More case studies', href: '/case-studies') }
   end
 end
