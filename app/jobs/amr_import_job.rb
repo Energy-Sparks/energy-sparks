@@ -28,10 +28,9 @@ class AmrImportJob < ApplicationJob
   private
 
   def get_file_from_s3(key)
-    Rails.logger.info "Downloading from S3 key: #{key}"
+    Rails.logger.info "Downloading s3://#{@bucket}/#{key}"
     response_target = "#{@config.local_bucket_path}/#{File.basename(key)}"
     @s3_client.get_object(bucket: @bucket, key:, response_target:)
-    Rails.logger.info "Downloaded  from S3 key: #{key}"
     response_target
   end
 
