@@ -723,18 +723,18 @@ GEM
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
-    sass-embedded (1.80.7-aarch64-linux-gnu)
-      google-protobuf (~> 4.28)
-    sass-embedded (1.80.7-arm-linux-gnueabihf)
-      google-protobuf (~> 4.28)
-    sass-embedded (1.80.7-arm64-darwin)
-      google-protobuf (~> 4.28)
-    sass-embedded (1.80.7-x86-linux-gnu)
-      google-protobuf (~> 4.28)
-    sass-embedded (1.80.7-x86_64-darwin)
-      google-protobuf (~> 4.28)
-    sass-embedded (1.80.7-x86_64-linux-gnu)
-      google-protobuf (~> 4.28)
+    sass-embedded (1.79.6-aarch64-linux-gnu)
+      google-protobuf (~> 4.27)
+    sass-embedded (1.79.6-arm-linux-gnueabihf)
+      google-protobuf (~> 4.27)
+    sass-embedded (1.79.6-arm64-darwin)
+      google-protobuf (~> 4.27)
+    sass-embedded (1.79.6-x86-linux-gnu)
+      google-protobuf (~> 4.27)
+    sass-embedded (1.79.6-x86_64-darwin)
+      google-protobuf (~> 4.27)
+    sass-embedded (1.79.6-x86_64-linux-gnu)
+      google-protobuf (~> 4.27)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc-rails (2.1.2)
@@ -942,7 +942,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec_rails
   ruby-limiter
-  sass-embedded (< 1.81)
+  sass-embedded (< 1.80)
   sass-rails
   sassc!
   scenic

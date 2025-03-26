@@ -42,7 +42,7 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
-gem 'sass-embedded', '< 1.81' # getting test failures with newer versions
+gem 'sass-embedded', '< 1.80' # getting test failures with newer versions
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
 
