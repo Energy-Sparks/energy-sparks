@@ -28,6 +28,11 @@ describe 'manage sections' do
         let(:size) { :large }
       end
 
+      it_behaves_like 'a trix component with a working heading button' do
+        let(:id) { 'body-en' }
+        let(:content) { 'Section Body' }
+      end
+
       it 'creates the model' do
         expect { click_on 'Save' }.to change(Cms::Section, :count).by(1)
         expect(page).to have_content('Section Title')
@@ -57,6 +62,11 @@ describe 'manage sections' do
         it_behaves_like 'a form with a customised trix component', controls: :advanced do
           let(:id) { 'body-en' }
           let(:size) { :large }
+        end
+
+        it_behaves_like 'a trix component with a working heading button' do
+          let(:id) { 'body-en' }
+          let(:content) { 'Section Body' }
         end
 
         it 'updates the model' do

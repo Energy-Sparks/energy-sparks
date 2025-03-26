@@ -70,3 +70,21 @@ RSpec.shared_examples 'a trix component with a working chart button' do
     end
   end
 end
+
+RSpec.shared_examples 'a trix component with a working heading button' do
+  let(:content) { 'Content' }
+  let(:id) { nil }
+
+  let(:selector) do
+    id ? "##{id}.forms-trix-component" : '.forms-trix-component'
+  end
+
+  it 'inserts the correct heading' do
+    within(selector) do
+      fill_in_trix with: content
+      find('button[data-trix-action="x-heading"]').click
+      find('button[data-trix-attribute="heading2"]').click
+      expect(find('trix-editor').value).to eq("<h2>#{content}</h2>")
+    end
+  end
+end
