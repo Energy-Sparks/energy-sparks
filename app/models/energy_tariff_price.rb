@@ -25,8 +25,12 @@ class EnergyTariffPrice < ApplicationRecord
   validates :start_time, :end_time, :units, presence: true
   validates :value, presence: true, on: :update
 
-  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }, allow_nil: true, on: :create
-  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE }, on: :update
+  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE,
+                                    message: I18n.t('energy_tariff_price.errors.value_too_high') }, allow_nil: true,
+                    on: :create
+  validates :value, numericality: { greater_than: MINIMUM_VALUE, less_than: MAXIMUM_VALUE,
+                                    message: I18n.t('energy_tariff_price.errors.value_too_high') },
+                    on: :update
 
   validate :no_time_overlaps
   validate :time_range_given
@@ -97,6 +101,9 @@ class EnergyTariffPrice < ApplicationRecord
   def time_range_given
     return if energy_tariff&.flat_rate?
 
-    errors.add(:start_time, I18n.t('energy_tariff_price.errors.cannot_be_the_same_as_end_time')) if start_time == end_time
+    return unless start_time == end_time
+
+    errors.add(:start_time,
+               I18n.t('energy_tariff_price.errors.cannot_be_the_same_as_end_time'))
   end
 end
