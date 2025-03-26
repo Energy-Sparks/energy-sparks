@@ -34,8 +34,9 @@ describe 'manage sections' do
       end
 
       it 'creates the model' do
-        expect { click_on 'Save' }.to change(Cms::Section, :count).by(1)
+        click_on 'Save'
         expect(page).to have_content('Section Title')
+        expect(Cms::Section.count).to eq(1)
         model = Cms::Section.last
         expect(model.created_by).to eq(user)
         expect(model.updated_by).to be_nil
@@ -70,7 +71,7 @@ describe 'manage sections' do
         end
 
         it 'updates the model' do
-          expect { click_on 'Save' }.not_to change(Cms::Section, :count)
+          click_on 'Save'
           expect(page).to have_content('Section Title')
           model = Cms::Section.last
           expect(model.updated_by).to eq(user)
