@@ -57,6 +57,7 @@ class TrixCustomiser {
 
   createAdvancedEditor() {
     this.replaceHeadingButton();
+    this.addYoutubeButton();
   }
 
   addChartButton(chart_list) {
@@ -71,6 +72,11 @@ class TrixCustomiser {
     this.buttonGroupBlockTools.insertAdjacentHTML("afterbegin", this.headingButtonTemplate)
     // add in dialog for new H1-H6 selection
     this.dialogsElement.insertAdjacentHTML("beforeend", this.headingDialogTemplate)
+  }
+
+  addYoutubeButton() {
+    this.buttonGroupFileTools.insertAdjacentHTML("beforeend", this.youtubeButtonTemplate)
+    this.dialogsElement.insertAdjacentHTML("beforeend", this.youtubeDialogTemplate)
   }
 
   getButton(selector) {
@@ -128,8 +134,32 @@ class TrixCustomiser {
     `
   }
 
+  get youtubeButtonTemplate() {
+    return '<button type="button" class="trix-button" data-trix-action="youtube" data-trix-key="y" title="Youtube" tabindex="-1" data-trix-active=""><i class="fa-brands fa-youtube"></i></button>'
+  }
+
+  get youtubeDialogTemplate() {
+    return `
+      <div class="trix-dialog trix-dialog--youtube" data-trix-dialog="youtube">
+        <div class="trix-dialog__link-fields">
+          <input type="text" name="youtube-url" class="mr-3">
+          <div class="trix-button-group">
+            <input type="button"
+                   class="trix-button trix-button--dialog"
+                   value="Insert"
+                   data-trix-action="x-insert-youtube">
+          </div>
+        </div>
+      </div>
+    `
+  }
+
   get dialogsElement() {
     return this.toolbarElement.querySelector("[data-trix-dialogs]")
+  }
+
+  get buttonGroupFileTools() {
+    return this.toolbarElement.querySelector("[data-trix-button-group=file-tools]")
   }
 
   get buttonGroupTextTools() {
