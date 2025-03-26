@@ -54,17 +54,15 @@
                                              theme: :accent,
                                              classes: 'rounded-xl p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
-
-      <%# Until we  have more things to go in the carousel, do this for demo purposes %>
-      <% %w[funnel-pupils.png funnel-teachers.png].each do |pic| %>
-        <%= carousel.with_testimonial_card do |testimonial| %>
-          <%= testimonial.with_image(src: pic) %>
-          <%= testimonial.with_header(title: t('home.testimonials.card_1.title')) %>
-          <%= testimonial.with_quote { "#{t('home.testimonials.card_1.quote')}." } %>
-          <%= testimonial.with_name { t('home.testimonials.card_1.source.name') } %>
-          <%= testimonial.with_role { t('home.testimonials.card_1.source.role') } %>
-          <%= testimonial.with_organisation { t('home.testimonials.card_1.source.school') } %>
-          <%= testimonial.with_case_study(CaseStudy.all.last) %>
+      <% Testimonial.all.default.each do |testimonial| %>
+        <%= carousel.with_testimonial_card do |card| %>
+          <%= card.with_image(src: testimonial.image) %>
+          <%= card.with_header(title: testimonial.title) %>
+          <%= card.with_quote { testimonial.quote } %>
+          <%= card.with_name { testimonial.name } %>
+          <%= card.with_role { testimonial.role } %>
+          <%= card.with_organisation { testimonial.organisation } %>
+          <%= card.with_case_study(testimonial.case_study) %>
         <% end %>
       <% end %>
     <% end %>
