@@ -117,14 +117,14 @@ describe 'activity type', type: :system do
 
       context 'when adding a chart', js: true do
         it_behaves_like 'a form with a customised trix component', charts: true
+        it_behaves_like 'a trix component with a working chart button' do
+          let(:chart_id) { 'last_7_days_intraday_gas' }
+        end
 
-        it 'can embed a chart from the analytics' do
+        it 'can preview an embedded chart' do
           within('.school-specific-description-trix-editor') do
-            fill_in_trix '#activity_type_school_specific_description_en', with: 'Your chart'
-            find('button[data-trix-action="chart"]').click
-            select 'last_7_days_intraday_gas', from: 'chart-list-chart'
-            click_on 'Insert'
-            expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
+            embed = 'Your chart {{#chart}}last_7_days_intraday_gas{{/chart}}'
+            fill_in_trix '#activity_type_school_specific_description_en', with: embed
             click_on 'Preview'
             within '#school-specific-description-preview-en' do
               expect(page).to have_content('Your chart')

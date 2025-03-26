@@ -53,3 +53,20 @@ RSpec.shared_examples 'a form with a customised trix component' do |controls: :d
     end
   end
 end
+
+RSpec.shared_examples 'a trix component with a working chart button' do
+  let(:id) { nil }
+
+  let(:selector) do
+    id ? "##{id}.forms-trix-component" : '.forms-trix-component'
+  end
+
+  it 'embeds a chart when clicked' do
+    within(selector) do
+      find('button[data-trix-action="chart"]').click
+      select chart_id, from: 'chart-list-chart'
+      click_on 'Insert'
+      expect(find('trix-editor')).to have_text('{{#chart}}last_7_days_intraday_gas{{/chart}}')
+    end
+  end
+end
