@@ -1,11 +1,18 @@
 <%= tag.div id: id, class: classes do %>
-  <%= header %>
-  <%= quote %>
-  <%= name %><%= " - #{role}".html_safe if role %>
-  <%= location %>
-  <div class='mt-3'>
-    <% buttons.each do |button| %>
-      <%= button %>
+  <%= render Layout::GridComponent.new(cols: 2, cell_classes: 'my-auto') do |grid| %>
+    <%= grid.with_cell do %>
+      <%= image %>
     <% end %>
-  </div>
+    <%= grid.with_cell do %>
+      <%= header %>
+      <%= quote %>
+      <%= name %><%= " - #{role}".html_safe if role %>
+      <%= organisation %>
+      <div class='mt-3'>
+        <% buttons.each do |button| %>
+          <%= button %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>

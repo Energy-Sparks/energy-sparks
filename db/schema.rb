@@ -1938,11 +1938,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_24_154639) do
   end
 
   create_table "testimonials", force: :cascade do |t|
-    t.string "title"
-    t.text "quote"
     t.string "name"
-    t.string "role"
-    t.string "location"
+    t.string "organisation"
+    t.boolean "active", default: false, null: false
+    t.integer "category", default: 0, null: false
     t.bigint "case_study_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
