@@ -28,7 +28,7 @@ class Testimonial < ApplicationRecord
 
   enum :category, { default: 0 } # need more here
 
-  validates :image, :title, :name, :quote, :organisation, :category, presence: true
+  validates :image, :title_en, :name, :quote_en, :organisation, :category, presence: true
 
   scope :active, -> { where(active: true) }
 end
