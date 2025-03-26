@@ -55,9 +55,7 @@
               <%= card.with_name { testimonial.name } %>
               <%= card.with_role { testimonial.role } %>
               <%= card.with_organisation { testimonial.organisation } %>
-              <%= card.with_button t('home.testimonials.read_case_study'), case_studies_path(testimonial.case_study),
-                                   style: :primary %>
-              <%= card.with_button t('home.testimonials.more_case_studies'), case_studies_path, style: :secondary %>
+              <%= card.with_case_study(testimonial.case_study) %>
             <% end %>
           </div>
         </div>
