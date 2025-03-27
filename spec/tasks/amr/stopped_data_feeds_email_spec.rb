@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'amr:stopped_data_feeds_email' do # rubocop:disable RSpec/DescribeClass
-  before(:all) { Rails.application.load_tasks } # rubocop:disable RSpec/BeforeAfterAll
+  before { Rails.application.load_tasks unless Rake::Task.tasks.any? }
 
   let(:task) do
     task = Rake::Task[self.class.description]

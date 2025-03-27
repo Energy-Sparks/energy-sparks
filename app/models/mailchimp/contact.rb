@@ -18,11 +18,20 @@ module Mailchimp
     end
 
     def self.from_user(user, tags: [], interests: {})
+      unless user.active?
+        return self.from_params({
+          email_address: user.email,
+          name: user.name,
+          school: user.mailchimp_organisation,
+          interests: {}
+        })
+      end
+
       contact = self.new(user.email, user.name)
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
       contact.user_role = user.role.humanize
-      contact.user_status = user.active? ? 'Active' : 'Disabled'
+      contact.user_status = 'Active'
       contact.locale = user.preferred_locale
       contact.interests = interests
 
