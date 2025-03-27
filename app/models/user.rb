@@ -342,6 +342,17 @@ class User < ApplicationRecord
     admin.sort_by { |user| user.display_name.downcase }
   end
 
+  # For Mailchimp fields, don't use in other contexts
+  def mailchimp_organisation
+    if school.present?
+      school.name
+    elsif school_group.present?
+      school_group.name
+    else
+      ''
+    end
+  end
+
   protected
 
   def preferred_locale_presence_in_available_locales
@@ -375,19 +386,10 @@ class User < ApplicationRecord
   def reset_mailchimp_contact
     return unless mailchimp_status.present?
 
-    # name of school or organisation
-    organisation = if school.present?
-                     school.name
-                   elsif school_group.present?
-                     school_group.name
-                   else
-                     ''
-                   end
-
     Mailchimp::UserDeletionJob.perform_later(
       email_address: email,
       name: name,
-      school: organisation
+      school: mailchimp_organisation
     )
   end
 
