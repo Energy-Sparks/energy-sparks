@@ -1,6 +1,8 @@
 module Admin
   class TestimonialsController < AdminController
     include LocaleHelper
+    include ActiveStorage::SetCurrent
+
     load_and_authorize_resource
 
     def show
