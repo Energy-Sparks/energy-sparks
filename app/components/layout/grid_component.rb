@@ -12,17 +12,20 @@ module Layout
       type(:feature_card, Cards::FeatureComponent),
       type(:testimonial_card, Cards::TestimonialComponent),
       type(:statement_card, Cards::StatementComponent),
-      type(:card, CardComponent)
+      type(:card, CardComponent),
+      cell: { renders: ->(**kwargs, &block) { cell(**kwargs) { capture(&block) } }, as: :cell }
     )
 
     private
 
     def wrap(klass, *args, **kwargs, &block)
-      cell_classes = kwargs.delete(:cell_classes)
-
-      tag.div(class: class_names(column_classes, cell_classes, @cell_classes)) do
+      cell(**kwargs) do
         render(klass.new(*args, **kwargs), &block)
       end
+    end
+
+    def cell(**kwargs, &block)
+      tag.div(class: class_names(column_classes, kwargs.delete(:cell_classes), @cell_classes), &block)
     end
 
     def initialize(cols:, rows: 1, cell_classes: '', **_kwargs)
