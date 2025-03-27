@@ -90,6 +90,11 @@ en:
         restrict_dependent_destroy:
           has_many: Cannot delete record because dependent %{record} exist
           has_one: Cannot delete record because a dependent %{record} exists
+      models:
+        energy_tariff_price:
+          attributes:
+            value:
+              less_than: Must be less than £1.00. It is likely you have entered your rate in pence. Please convert your rate to pounds before entering it into Energy Sparks.
     models:
       transport_survey:
         one: Transport survey
