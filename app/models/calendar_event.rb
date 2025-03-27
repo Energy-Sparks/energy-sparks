@@ -40,7 +40,7 @@ class CalendarEvent < ApplicationRecord
   scope :bank_holidays,     -> { joins(:calendar_event_type).merge(CalendarEventType.bank_holiday) }
   scope :outside_term_time, -> { joins(:calendar_event_type).merge(CalendarEventType.outside_term_time) }
 
-  scope :by_end_date,       -> { order(end_date: :asc)}
+  scope :by_end_date,       -> { order(end_date: :asc) }
   before_validation :update_academic_year
 
   validates :calendar, :calendar_event_type, :start_date, :end_date, presence: true
@@ -57,28 +57,28 @@ class CalendarEvent < ApplicationRecord
   end
 
   def start_date_end_date_order
-    if (start_date && end_date) && (end_date < start_date)
-      errors.add(:end_date, 'must be on or after the start date')
-    end
+    return unless start_date && end_date && (end_date < start_date)
+
+    errors.add(:end_date, 'must be on or after the start date')
   end
 
   def no_overlaps
-    if start_date && end_date && calendar_event_type
-      overlap_types = if calendar_event_type.term_time || calendar_event_type.holiday
-                        (CalendarEventType.holiday + CalendarEventType.term)
-                      else
-                        [calendar_event_type]
-                      end
-      events_to_check = calendar.calendar_events.where(calendar_event_type: overlap_types)
-      if events_to_check.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
-        errors.add(:base, 'overlaps another term or holiday event')
-      end
+    return unless start_date && end_date && calendar_event_type
+
+    overlap_types = if calendar_event_type.term_time || calendar_event_type.holiday
+                      (CalendarEventType.holiday + CalendarEventType.term)
+                    else
+                      [calendar_event_type]
+                    end
+    events_to_check = calendar.calendar_events.where(calendar_event_type: overlap_types)
+    if events_to_check.where.not(id: id).where('(start_date, end_date) OVERLAPS (?,?)', start_date, end_date).any?
+      errors.add(:base, 'overlaps another term or holiday event')
     end
   end
 
   def calendar_event_type_is_valid
-    if calendar.national? && !calendar_event_type.bank_holiday?
-      errors.add(:base, 'only Bank Holidays can be created on National calendars')
-    end
+    return unless calendar.national? && !calendar_event_type.bank_holiday?
+
+    errors.add(:base, 'only Bank Holidays can be created on National calendars')
   end
 end
