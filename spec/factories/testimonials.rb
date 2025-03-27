@@ -1,9 +1,19 @@
 FactoryBot.define do
   factory :testimonial do
-    title { 'Testimonial title' }
-    quote { 'Testimonial quote' }
+    active { false }
+    category { :default }
     name { 'Testimonial name' }
-    role { 'Testimonial role' }
-    location { 'Testimonial location' }
+    organisation { 'Testimonial organisation' }
+    image { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/placeholder.png'), 'image/png') }
+
+    # Translated attributes
+    title_en { 'Testimonial title in English' }
+    title_cy { 'Testimonial title in Welsh' }
+    quote_en { 'Testimonial quote in English' }
+    quote_cy { 'Testimonial quote in Welsh' }
+    role_en { 'Testimonial role in English' }
+    role_cy { 'Testimonial role in Welsh' }
+
+    association :case_study, factory: :case_study
   end
 end
