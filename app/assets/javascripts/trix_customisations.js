@@ -31,16 +31,43 @@ addEventListener("trix-initialize", event => {
 })
 
 document.addEventListener("trix-action-invoke", function(event) {
-  if(event.actionName === "x-insert-chart"){
+  if(event.actionName === 'x-insert-chart') {
     var element = event.target;
     var parentWrapper = $(element).parents('.chart-list');
     element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
+  }
+  if(event.actionName === 'x-insert-youtube') {
+    var local_event = event
+    var target = event.target
+    var dialog = $(event.invokingElement).parents('.trix-dialog--youtube')
+    var input = $(dialog).find('input[name=youtube-url]')
+    const youtubeRegex = /^https:\/\/([^\.]+\.)?youtube\.com\/watch\?v=(.*)/
+
+    var matches = input.val().match(youtubeRegex);
+
+    if (matches !== null) {
+      let id = matches[2]
+      $.ajax({
+        url: `/youtube/${encodeURIComponent(id)}`,
+        type: 'get',
+        error: function(xhr) {
+          alert(xhr.statusText);
+        },
+        success: function(embed) {
+          //console.log(target) //element
+          //console.log(target.editor) //Editor
+          //console.log(target.editorController)
+          let attachment = new Trix.Attachment(embed)
+          target.editor.insertAttachment(attachment)
+          target.editorController.toolbarController.hideDialog()
+        }
+      })
+    }
   }
 })
 
 class TrixCustomiser {
   constructor(element) {
-    console.log(element.toolbarElement)
     this.element = element
   }
 
@@ -142,7 +169,7 @@ class TrixCustomiser {
     return `
       <div class="trix-dialog trix-dialog--youtube" data-trix-dialog="youtube">
         <div class="trix-dialog__link-fields">
-          <input type="text" name="youtube-url" class="mr-3">
+          <input type="text" name="youtube-url" placeholder="Enter Youtube URL..." class="trix-input trix-input--dialog mr-3">
           <div class="trix-button-group">
             <input type="button"
                    class="trix-button trix-button--dialog"
