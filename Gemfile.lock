@@ -46,7 +46,6 @@ PATH
       require_all (~> 3)
       roo (~> 2)
       roo-xls (~> 1)
-      ruby-limiter (~> 2)
       ruby-sun-times (~> 0)
       statsample (~> 2)
       structured_warnings (~> 0)
