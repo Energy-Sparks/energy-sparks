@@ -1,0 +1,107 @@
+---
+en:
+  analytics:
+    adjectives:
+      about: about
+      about_average: about average
+      above: above
+      above_average: above average
+      bad: bad
+      below: below
+      below_average: below average
+      better_than_average: better than average
+      down: down
+      excellent: excellent
+      good: good
+      higher: higher
+      increase: increase
+      just_above: just above
+      just_below: just below
+      just_below_average: just below average
+      lower: lower
+      no_change: the same
+      ok: ok
+      perfect: perfect
+      poor: poor
+      poorly: poorly
+      reduction: reduction
+      significantly_above: significantly above
+      significantly_below: significantly below
+      unchanged: unchanged
+      up: up
+      very_poor: very poor
+      well: well
+      worse_than_average: worse than average
+    aggregator:
+      subttitle: "%{start_date} to %{end_date}"
+    common:
+      electricity: electricity
+      gas: gas
+      gas_boiler: gas boiler
+      holiday: holiday
+      last_school_week: last school week
+      pa: "%{cost}pa"
+      previous_school_week: previous school week
+      school_day: School day
+      storage_heaters: storage heaters
+      weekend: weekend
+    holidays:
+      autumn_half_term: Autumn half term
+      easter: Easter
+      mayday: Mayday
+      spring_half_term: Spring half term
+      summer: Summer
+      summer_half_term: Summer half term
+      xmas: Xmas
+    school_types:
+      infant: Infant
+      junior: Junior
+      middle: Middle
+      mixed_primary_and_secondary: 'Mixed: Primary and Secondary'
+      primary: Primary
+      secondary: Secondary
+      special: Special or Alternative Provision
+    series_data_manager:
+      series_name:
+        baseload: BASELOAD
+        benchmark_school: Well managed
+        boiler_off: Boiler Off
+        community: Community
+        community_baseload: Community Baseload
+        cusum: CUSUM
+        degree_days: Degree Days
+        electricity: Electricity
+        electricity_consumed_from_mains: Electricity consumed from mains
+        electricity_consumed_from_solar_pv: Electricity consumed from solar pv
+        exemplar_school: Exemplar School
+        exported_solar_electricity: Exported solar electricity (not consumed onsite)
+        gas: Gas
+        gascarbon: Carbon Intensity of Gas (kg/kWh)
+        gridcarbon: Carbon Intensity of Electricity Grid (kg/kWh)
+        heating_day: Heating on in colder weather
+        heating_day_warm_weather: Heating on in warmer weather
+        holiday: Holiday
+        holiday_heating: Heating On Holidays
+        holiday_hot_water_kitchen: Hot water/kitchen only On Holidays
+        non_heating_day: Hot Water (& Kitchen)
+        none: Energy
+        peak_kw: Peak (kW)
+        predicted_heat: Predicted Heat
+        school_day_closed: School Day Closed
+        school_day_heating: Heating On School Days
+        school_day_hot_water_kitchen: Hot water/kitchen only On School Days
+        school_day_open: School Day Open
+        solar_irradiance: Solar Irradiance
+        solar_pv: Solar PV (consumed onsite)
+        storage_heater_charge: Storage heater charge (school day)
+        storage_heaters: Storage heaters
+        target_degree_days: Target degree days
+        temperature: Temperature
+        useful_hot_water_usage: Hot Water Usage
+        wasted_hot_water_usage: Wasted Hot Water Usage
+        weekend: Weekend
+        weekend_heating: Heating On Weekends
+        weekend_hot_water_kitchen: Hot water/kitchen only On Weekends
+      y2_rating: Rating
+      y2_solar_html: "<span>Brightness<br>of sunshine<br>W/m2</span>"
+      y2_solar_label: Solar irradiance (brightness of sunshine)

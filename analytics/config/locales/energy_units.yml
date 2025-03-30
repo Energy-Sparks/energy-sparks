@@ -1,0 +1,111 @@
+---
+en:
+  analytics:
+    energy_units:
+      accounting_cost: "£%{value}"
+      bev_car: "%{value} km"
+      boiler_start_time: "%{value} boiler start time"
+      carnivore_dinner: "%{value} dinners"
+      co2: "%{value} kg CO2"
+      co2t: "%{value} tonnes CO2"
+      comparison_percent: "%"
+      computer_console: "%{value} computer consoles"
+      date: ''
+      date_mmm_yyyy: ''
+      datetime: ''
+      days: days
+      electricity: "%{value} electricity"
+      fuel_type: ''
+      gas: "%{value} gas"
+      home: "%{value} homes"
+      homes_electricity: "%{value} homes (electricity usage)"
+      homes_gas: "%{value} homes (gas usage)"
+      hour: "%{value} hours"
+      ice_car: "%{value} km"
+      kettle: "%{value} kettles"
+      kg: "%{value} kg"
+      kg_co2_per_kwh: "%{value} kg CO2/kWh"
+      km: "%{value} km"
+      kva: "%{value} kVA"
+      kw: "%{value} kW"
+      kwh: "%{value} kWh"
+      kwh_per_day: "%{value} kWh/day"
+      kwh_per_day_per_c: "%{value} kWh/day/C"
+      kwp: "%{value} kWp"
+      library_books: "%{value} library books"
+      litre: "%{value} litres"
+      m2: "%{value} m2"
+      m2_html: "%{value} m<sup>2</sup>"
+      meters: "%{value} meters"
+      morning_start_time: "%{value} time of day"
+      offshore_wind_turbine_hours: "%{value} offshore wind turbine hours"
+      offshore_wind_turbines: "%{value} offshore wind turbines"
+      onshore_wind_turbine_hours: "%{value} onshore wind turbine hours"
+      onshore_wind_turbines: "%{value} onshore wind turbines"
+      opt_start_standard_deviation: "%{value} standard deviation (hours)"
+      optimum_start_sensitivity: "%{value} hours/C"
+      p: "%{value}p"
+      p_per_kwh: "%{value}p/kWh"
+      panels: "%{value} solar PV panels"
+      percent: "%{value}%"
+      percent_0dp: "%{value}%"
+      percent_0dp_html: "%{value}&percnt;"
+      percent_html: "%{value}&percnt;"
+      pupils: "%{value} pupils"
+      r2: ''
+      relative_percent: "%{sign}%{value}%"
+      relative_percent_0dp: "%{sign}%{value}%"
+      relative_percent_0dp_html: "%{sign}%{value}&percnt;"
+      relative_percent_html: "%{sign}%{value}&percnt;"
+      school_name: ''
+      short_school_name: ''
+      shower: "%{value} showers"
+      smartphone: "%{value} smartphone charges"
+      solar_panels: "%{value} solar panels"
+      solar_panels_in_a_year: "%{value} solar panels in a year"
+      teaching_assistant: "%{value} teaching assistant"
+      teaching_assistant_hours: "%{value} teaching assistant (hours)"
+      temperature: "%{value}C"
+      timeofday: ''
+      tree: "%{value} trees"
+      tv: "%{value} tvs"
+      vegetarian_dinner: "%{value} dinners"
+      w: "%{value} W"
+      years: years
+      years_decimal: "%{value} years"
+      years_range: "%{low} to %{high}"
+      "£": "%{sign}£%{value}"
+      "£_0dp": "%{sign}£%{value}"
+      "£_0dp_html": "%{sign}&pound;%{value}"
+      "£_html": "%{sign}&pound;%{value}"
+      "£_per_kva": "%{sign}£%{value}/kVA"
+      "£_per_kva_html": "%{sign}&pound;%{value}/kVA"
+      "£_per_kw": "%{sign}£%{value}/kW"
+      "£_per_kw_html": "%{sign}£%{value}/kW"
+      "£_per_kwh": "%{sign}£%{value}/kWh"
+      "£_per_kwh_html": "%{sign}&pound;%{value}/kWh"
+      "£_range": "%{low} to %{high}"
+      "£current": "%{sign}£%{value}"
+      "£current_html": "%{sign}&pound;%{value}"
+    units:
+      days:
+        one: "%{count} day"
+        other: "%{count} days"
+      hours:
+        one: "%{count} hour"
+        other: "%{count} hours"
+      infinity: Infinity
+      infinity_negative: "-Infinity"
+      minutes:
+        one: "%{count} minute"
+        other: "%{count} minutes"
+      months:
+        one: "%{count} month"
+        other: "%{count} months"
+      nan: Uncalculable
+      weeks:
+        one: "%{count} week"
+        other: "%{count} weeks"
+      years:
+        one: "%{count} year"
+        other: "%{count} years"

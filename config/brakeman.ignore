@@ -295,7 +295,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/admin/users_controller.rb",
-      "line": 91,
+      "line": 101,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :cluster_school_ids => ([]))",
       "render_path": null,
@@ -414,6 +414,29 @@
       "note": ""
     },
     {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "cf374106a18b43d13ea563c4d7cd6b3d82d6f515ebb00b1f88bb623236553383",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "analytics/test_support/file_writer.rb",
+      "line": 46,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(File.open(filename))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "FileWriter",
+        "method": "load_marshal_file"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Redirect",
       "warning_code": 18,
       "fingerprint": "d1ad8d6151f9b10bd4088bb3a67cb2477cadd4db822e7bd0e22c695c71d6e175",
@@ -467,6 +490,52 @@
       "confidence": "Weak",
       "cwe_id": [
         79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "d7753f56ab36be144b4f9977dc49faef920e4268d13c7a623b1b173dcbccd470",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "analytics/lib/dashboard/utilities/half_hourly_loader.rb",
+      "line": 29,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(File.open(marshal_filename(csv_file)))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "HalfHourlyLoader",
+        "method": "load_marshal_copy"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "e6e8650219ff5834b805228ae5d5f4620c6dcaaf0fd80f14f6343d55a656c93d",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "analytics/test_support/school_factory.rb",
+      "line": 123,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(File.open(build_filename(school_filename, file_type, \".marshal\")))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "SchoolFactory",
+        "method": "load_meter_collections"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
       ],
       "note": ""
     }
