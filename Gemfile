@@ -160,6 +160,7 @@ group :development do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec_rails'
+  gem 'ruby-prof' # used by analytics
   gem 'scout_apm'
   gem 'web-console'
 end
@@ -167,6 +168,7 @@ end
 group :test do
   gem 'capybara'
   gem 'capybara-email'
+  gem 'compare-xml' # used by rspec html matcher in analytics
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
