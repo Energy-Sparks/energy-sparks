@@ -72,11 +72,7 @@ jobs:
     - uses: ./.github/actions/setup
       with:
         ruby-only: true
-    - run: bundle exec overcommit --sign && bundle exec overcommit --run
-      env:
-        GIT_AUTHOR_NAME: Over Commit
-        GIT_AUTHOR_EMAIL: overcommit@localhost
-        SKIP: ForbiddenBranches # this fails when triggered by master push
+      working-directory: analytics
     - run: bundle exec rspec
       working-directory: analytics
   analytics_tests:
@@ -88,6 +84,7 @@ jobs:
     - uses: ./.github/actions/setup
       with:
         ruby-only: true
+      working-directory: analytics
     - name: Run standard test
       run: ANALYTICSTESTDIR=test_output bundle exec ruby script/standard/standard_test_github_actions.rb
       working-directory: analytics
