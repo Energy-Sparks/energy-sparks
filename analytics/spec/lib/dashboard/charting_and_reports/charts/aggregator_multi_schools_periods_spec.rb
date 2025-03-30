@@ -133,7 +133,7 @@ describe AggregatorMultiSchoolsPeriods do
           # Oct, Nov, Dec, and 17 days in Jan
           monthly_usage = [31, 30, 31, 17].map(&daily_usage.method(:*))
           # 9 months with no values, then the above
-          expect(bucketed_data.values.last).to eq(Array.new(9, 0.0) + monthly_usage)
+          expect(bucketed_data.values.first).to eq(Array.new(9, 0.0) + monthly_usage)
         end
       end
 
@@ -149,8 +149,10 @@ describe AggregatorMultiSchoolsPeriods do
 
         it 'has aligned the series correctly' do
           bucketed_data = aggregator.results.bucketed_data
-          expect(bucketed_data.values.first.size).to eq(bucketed_data.values.last.size)
-          expect(bucketed_data.values.last.all? { |kwh| kwh > 0.0 }).to be true
+          expect(bucketed_data.values).to eq([
+            [29, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 1],
+            [30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0]
+          ].map { |range| range.map { |days| days * daily_usage } })
         end
       end
     end
@@ -212,6 +214,15 @@ describe AggregatorMultiSchoolsPeriods do
                 [30, 31, 31, 30, 31, 30, 31, 31, 28, 31, 30, 31, 30, 31, 31].map(&daily_usage.method(:*))
             }
           )
+        end
+      end
+
+      context 'when data starts after the beginning of the academic year' do
+        let(:amr_start_date) { Date.new(2022, 10, 1) }
+
+        it_behaves_like 'a successful chart', series_count: 2
+        it 'has the correct data' do
+          expect(aggregator.results.x_axis).to eq(%w[Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug])
         end
       end
     end

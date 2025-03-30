@@ -127,5 +127,23 @@ describe ChartManagerTimescaleManipulation do
         expect(manipulator.timescale_description).to eq 'year'
       end
     end
+
+    context 'with timescale fixed_academic_year' do
+      let(:timescale) { [{ fixed_academic_year: 0 }] }
+      let(:start_date) { Date.new(2023, 8, 31) }
+      let(:end_date) { Date.new(2024, 1, 1) }
+
+      it 'returns true' do
+        expect(manipulator.can_go_back_in_time_one_period?).to be true
+      end
+
+      context 'with a single period' do
+        let(:start_date) { Date.new(2023, 9, 1) }
+
+        it 'returns false' do
+          expect(manipulator.can_go_back_in_time_one_period?).to be false
+        end
+      end
+    end
   end
 end

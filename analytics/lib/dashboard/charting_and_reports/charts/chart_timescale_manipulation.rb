@@ -222,6 +222,8 @@ class ChartManagerTimescaleManipulation
       Holidays.periods_cadence(start_date, end_date, include_partial_period: true, move_to_saturday_boundary: move_to_saturday_boundary, minimum_days: minimum_days).count
     when :academicyear
       @school.holidays.academic_years(start_date, end_date).length
+    when :fixed_academic_year
+      Periods::FixedAcademicYear.enumerator(start_date, end_date).count
     when :workweek
       start_date = start_date - ((start_date.wday - 6) % 7)
       ((end_date - start_date + 1) / 7.0).floor

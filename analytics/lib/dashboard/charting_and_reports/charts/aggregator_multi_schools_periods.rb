@@ -6,12 +6,11 @@
 class AggregatorMultiSchoolsPeriods < AggregatorBase
   class InternalErrorOnlyOneResultExpected < StandardError; end
 
-  attr_reader :min_combined_school_date, :max_combined_school_date
-  attr_reader :single_series_aggregators
+  attr_reader :min_combined_school_date, :max_combined_school_date, :single_series_aggregators
 
   def initialize(school, chart_config, results)
     @single_series_aggregators = []
-    super(school, chart_config, results)
+    super
   end
 
   def calculate
@@ -74,7 +73,9 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
     elsif single_series_aggregators.length > 1 || number_of_periods > 1
       merge_multiple_charts
     else
-      raise InternalErrorOnlyOneResultExpected, "Number of results = #{single_series_aggregators.length}" if single_series_aggregators.length != 1
+      if single_series_aggregators.length != 1
+        raise InternalErrorOnlyOneResultExpected, "Number of results = #{single_series_aggregators.length}"
+      end
 
       results.bucketed_data       = single_series_aggregators.first.results.bucketed_data
       results.bucketed_data_count = single_series_aggregators.first.results.bucketed_data_count
@@ -88,7 +89,7 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
     raise EnergySparksBadChartSpecification, 'More than one school not supported' if number_of_schools > 1
 
     x_axis = calculate_x_axis
-    valid_aggregators.reverse_each do |period_data| # reverse is only needed for tests?
+    valid_aggregators.each do |period_data|
       time_description = number_of_periods <= 1 ? '' : period_data.results.xbucketor.compact_date_range_description
 
       # This series will have either the same number or fewer months than the other range
@@ -120,14 +121,15 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
     results.x_axis = x_axis
   end
 
-  def calculate_x_axis
-    x_axis = remove_years(valid_aggregators.max_by { |aggregator| aggregator.results.x_axis.count }.results.x_axis)
-    valid_aggregators.each do |aggregator|
-      months = remove_years(aggregator.results.x_axis)
-      next if find_sub_array_index(x_axis, months)
+  MONTHS = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec].freeze
+  MONTHS_TO_I = MONTHS.each_with_index.to_h { |month, index| [month, index] }
 
-      insert_index = x_axis.index(months[0]) || x_axis.length
-      x_axis[insert_index..] = months
+  def calculate_x_axis
+    axis_months = valid_aggregators.map { |aggregator| remove_years(aggregator.results.x_axis) }
+    axis_months = axis_months.sort_by { |months| months.map { |month| MONTHS_TO_I[month] }.first }
+    x_axis, *axis_months = axis_months
+    axis_months.each do |months|
+      x_axis += months.filter { |month| !x_axis.include?(month) }
     end
     x_axis
   end
@@ -152,7 +154,7 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
   def merge_multiple_charts
     valid_aggregators.each do |data|
       time_description = unique_periods <= 1 ? '' : (':' + data.results.time_description)
-      school_name = (schools.nil? || schools.length <= 1 || data.results.school_name.nil?) ? '' : (':' + data.results.school_name)
+      school_name = schools.nil? || schools.length <= 1 || data.results.school_name.nil? ? '' : (':' + data.results.school_name)
       school_name = '' if number_of_schools <= 1 # TODO(PH, 9May2022) is schools.length <= 1 test in line above sufficient?
 
       data.results.bucketed_data.each do |series_name, x_data|
@@ -179,7 +181,7 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
   end
 
   def schools_list
-    schools = chart_config.include_target? ? target_schools : [ school ]
+    schools = chart_config.include_target? ? target_schools : [school]
 
     schools += benchmark_exemplar_schools_list if chart_config.include_benchmark?
 
@@ -210,15 +212,17 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
 
     min_date = schools.map do |school|
       Series::ManagerBase.new(school, chart_config).first_meter_date
-    rescue EnergySparksNotEnoughDataException => e_
+    rescue EnergySparksNotEnoughDataException
       raise unless chart_config.ignore_single_series_failure?
+
       nil
     end.compact.max
 
     last_meter_dates = schools.map do |school|
       Series::ManagerBase.new(school, chart_config).last_meter_date
-    rescue EnergySparksNotEnoughDataException => e_
+    rescue EnergySparksNotEnoughDataException
       raise unless chart_config.ignore_single_series_failure?
+
       nil
     end.compact
 
@@ -242,9 +246,9 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
       # do it here so it maps to the 1st school
       temperature_adjustment_map(school)
 
-      periods.reverse.each do |period| # do in reverse so final iteration represents the x-axis dates
+      periods.reverse_each do |period| # do in reverse so final iteration represents the x-axis dates
         run_one_aggregation(period, school)
-      rescue EnergySparksNotEnoughDataException => e_
+      rescue EnergySparksNotEnoughDataException
         raise unless chart_config.ignore_single_series_failure?
       end
     end
@@ -272,7 +276,7 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
   end
 
   def temperature_adjustment_map(school)
-    return if !chart_config.temperature_compensation_hash?
+    return unless chart_config.temperature_compensation_hash?
 
     chart_config.temperature_adjustment_map = temperature_compensation_temperature_map(school)
   end
@@ -282,13 +286,16 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
   # into a [date] => temperature hash
   # this allows in this example, for examples for all mondays to be compensated to the temperature of {schoolweek: 0}
   def temperature_compensation_temperature_map(school)
-    raise EnergySparksBadChartSpecification, 'Expected chart config timescale for array temperature compensation' unless chart_config.array_of_timescales?
+    unless chart_config.array_of_timescales?
+      raise EnergySparksBadChartSpecification, 'Expected chart config timescale for array temperature compensation'
+    end
 
     date_to_temperature_map = {}
     periods = chart_config.timescale
     chart_config_hash = chart_config.to_h
     periods.each do |period|
-      chart_config_hash[:timescale] = date_to_temperature_map.empty? ? chart_config_hash[:adjust_by_temperature] : period
+      chart_config_hash[:timescale] =
+        date_to_temperature_map.empty? ? chart_config_hash[:adjust_by_temperature] : period
       series_manager = Series::ManagerBase.new(school, chart_config_hash)
       if date_to_temperature_map.empty?
         series_manager.periods[0].dates.each do |date|

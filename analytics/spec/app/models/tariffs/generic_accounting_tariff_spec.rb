@@ -8,6 +8,7 @@ describe GenericAccountingTariff, :aggregate_failures do
   let(:tariff_type)       { :flat }
   let(:rates)             { create_flat_rate }
   let(:kwh_data_x48)      { Array.new(48, 0.01) }
+  let(:mpxn)              { 1_512_345_678_900 }
 
   let(:tariff_attribute) do
     create_accounting_tariff_generic(start_date: start_date, end_date: end_date, type: tariff_type, rates: rates)
@@ -18,7 +19,7 @@ describe GenericAccountingTariff, :aggregate_failures do
   let(:accounting_tariff)      { described_class.new(meter, tariff_attribute) }
 
   before do
-    expect(meter).to receive(:mpxn).and_return(1_512_345_678_900)
+    expect(meter).to receive(:mpxn).and_return(mpxn)
     expect(meter).to receive(:amr_data).and_return(nil)
     expect(meter).to receive(:fuel_type).and_return(:electricity)
   end
@@ -230,6 +231,17 @@ describe GenericAccountingTariff, :aggregate_failures do
           expect(accounting_cost.all_costs_x48[:duos_red].sum).not_to be 0.0
           expect(accounting_cost.all_costs_x48[:duos_amber].sum).not_to be 0.0
           expect(accounting_cost.all_costs_x48[:duos_green].sum).not_to be 0.0
+        end
+
+        context 'when the DuoS region is unknown' do
+          let(:mpxn)  { 2_712_345_678_900 }
+
+          it 'includes the zero charges as a fallback' do
+            # confirm that we've omitted these costs
+            expect(accounting_cost.all_costs_x48[:duos_red]).to be_nil
+            expect(accounting_cost.all_costs_x48[:duos_amber]).to be_nil
+            expect(accounting_cost.all_costs_x48[:duos_green]).to be_nil
+          end
         end
       end
 

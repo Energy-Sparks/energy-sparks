@@ -28,5 +28,15 @@ describe Periods::FixedAcademicYear do
       expect(period(Date.new(2022, 1, 1), Date.new(2023, 12, 31), -1).periods).to \
         contain_exactly(have_attributes(start_date: Date.new(2022, 9, 1), end_date: Date.new(2023, 8, 31)))
     end
+
+    it 'handles the boundary correctly' do
+      expect(period(Date.new(2023, 9, 1), Date.new(2023, 12, 31), -1).periods).to eq([nil])
+      expect(period(Date.new(2023, 8, 31), Date.new(2023, 12, 31), -1).periods).to \
+        contain_exactly(have_attributes(start_date: Date.new(2023, 8, 31), end_date: Date.new(2023, 8, 31)))
+      expect(period(Date.new(2023, 10, 31), Date.new(2023, 12, 31), 0).periods).to \
+        contain_exactly(have_attributes(start_date: Date.new(2023, 10, 31), end_date: Date.new(2023, 12, 31)))
+      expect(period(Date.new(2023, 7, 31), Date.new(2023, 8, 30), 0).periods).to \
+        contain_exactly(have_attributes(start_date: Date.new(2023, 7, 31), end_date: Date.new(2023, 8, 30)))
+    end
   end
 end

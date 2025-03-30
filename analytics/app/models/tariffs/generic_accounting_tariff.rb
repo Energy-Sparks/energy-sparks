@@ -305,9 +305,10 @@ class GenericAccountingTariff
 
     costs.map do |colour_key, kwh_x48|
       duos_key = "duos_#{colour_key.to_s}".to_sym
+      # fallback to 0.0 if can't find key in the rates, e.g. if using DuoS fallback
       [
         duos_key,
-        AMRData.fast_multiply_x48_x_scalar(kwh_x48, tariff[:rates][duos_key])
+        AMRData.fast_multiply_x48_x_scalar(kwh_x48, tariff[:rates][duos_key] || 0.0)
       ]
     end.to_h
   end
