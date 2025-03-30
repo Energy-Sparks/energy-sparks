@@ -8,7 +8,7 @@ module IssuesHelper
     counts = []
     icons = []
     Issue.issue_types.each_key do |issue_type|
-      count = issues.for_issue_types(issue_type).status_open.count
+      count = issues.is_a?(Hash) ? issues[issue_type] : issues.for_issue_types(issue_type).status_open.count
       unless count == 0 && hide_empty
         counts << pluralize(count, issue_type.to_s)
         icons << issue_type_icon(issue_type, count)

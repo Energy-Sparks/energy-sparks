@@ -217,7 +217,7 @@ describe Amr::DataFeedTranslator do
 
     context 'when converting rows to kwh' do
       before do
-        config.convert_to_kwh = true
+        config.convert_to_kwh = :m3
       end
 
       context 'when no units field is specified for each row' do
@@ -228,7 +228,7 @@ describe Amr::DataFeedTranslator do
 
         it 'converts all rows to kwh' do
           expect(results.size).to eq(readings.size)
-          expect(results.first[:readings].first).to eq(1.20800000 * 11.1)
+          expect(results.first[:readings].first).to be_within(0.0001).of(13.4087)
         end
       end
 
@@ -243,7 +243,23 @@ describe Amr::DataFeedTranslator do
           expect(results.first[:units]).to eq('kwh')
           expect(results.first[:readings].first).to eq('1.20800000')
           expect(results.last[:units]).to eq('kwh')
-          expect(results.last[:readings].first).to eq(1.20800000 * 11.1)
+          expect(results.last[:readings].first).to be_within(0.0001).of(13.4087)
+        end
+      end
+
+      context 'when using the meter gas unit' do
+        before do
+          config.convert_to_kwh = :meter
+        end
+
+        it 'converts ft3' do
+          create(:gas_meter, mpan_mprn: reading[1], gas_unit: :ft3)
+          expect(results.first[:readings].first).to be_within(0.0001).of(0.3797)
+        end
+
+        it 'converts hcf' do
+          create(:gas_meter, mpan_mprn: reading[1], gas_unit: :hcf)
+          expect(results.first[:readings].first).to be_within(0.01).of(37.97)
         end
       end
     end

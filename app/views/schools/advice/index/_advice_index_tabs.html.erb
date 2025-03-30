@@ -1,22 +1,22 @@
 <ul class="nav nav-tabs locales">
   <li class="nav-item d-md-none">
-    <%= component 'page_nav/collapse_button' %>
+    <%= render PageNavComponent::CollapseButton.new %>
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :show %>" href="<%= school_advice_path(school) %>">
-      <%= t('advice_pages.index.show.title')%>
+      <%= t('advice_pages.index.show.title') %>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :priorities %>" href="<%= priorities_school_advice_path(school) %>">
-      <%= t('advice_pages.index.priorities.title')%>
+      <%= t('advice_pages.index.priorities.title') %>
       <span class="badge badge-secondary"><%= @priority_count %>
       </span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :alerts %>" href="<%= alerts_school_advice_path(school) %>">
-      <%= t('advice_pages.index.alerts.title')%>
+      <%= t('advice_pages.index.alerts.title') %>
       <span class="badge badge-secondary"><%= @alert_count %>
       </span>
     </a>

@@ -5,7 +5,7 @@
 #  allow_merging           :boolean          default(FALSE), not null
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
-#  convert_to_kwh          :boolean          default(FALSE)
+#  convert_to_kwh          :enum             default("no")
 #  created_at              :datetime         not null
 #  date_format             :text             not null
 #  delayed_reading         :boolean          default(FALSE), not null
@@ -58,6 +58,7 @@ class AmrDataFeedConfig < ApplicationRecord
   enum :process_type, { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3, rtone_variant_api: 4,
                         other_api: 5 }
   enum :source_type, { email: 0, manual: 1, api: 2, sftp: 3 }
+  enum :convert_to_kwh, %i[no m3 meter].index_with(&:to_s), prefix: true
 
   belongs_to :owned_by, class_name: :User, optional: true
   has_many :amr_data_feed_import_logs
@@ -118,8 +119,7 @@ class AmrDataFeedConfig < ApplicationRecord
   end
 
   def local_bucket_path
-    path = ENV['AMR_CONFIG_LOCAL_FILE_BUCKET_PATH'] || 'tmp/amr_files_bucket'
-    "#{path}/#{identifier}"
+    "tmp/amr_files_bucket/#{identifier}"
   end
 
   # Used in SingleReadConverter to determine whether to drop rows that have missing readings

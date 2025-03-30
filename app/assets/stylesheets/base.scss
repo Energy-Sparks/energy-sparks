@@ -18,8 +18,13 @@ address {
   font-size: initial;
 }
 
-p, .trix-content div {
+p, q, .trix-content div {
   @include font(f6);
+}
+
+q {
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .small {
@@ -34,8 +39,20 @@ p, .trix-content div {
   white-space: nowrap;
 }
 
-.bg-light-blue {
-  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
+$rounded-xl: 12px;
+
+.rounded-xl {
+  border-radius: $rounded-xl;
+}
+
+.rounded-top-xl {
+  border-top-left-radius: $rounded-xl;
+  border-top-right-radius: $rounded-xl;
+}
+
+.rounded-bottom-xl {
+  border-bottom-left-radius: $rounded-xl;
+  border-bottom-right-radius: $rounded-xl;
 }
 
 .fa-li.fa-check {
@@ -168,16 +185,8 @@ input, progress {
   background-color: $header-dark;
 }
 
-.text-white {
-  color: $white;
-}
-
-.text-grey-light {
-  color: $grey-light;
-}
-
-.text-dark-blue {
-  color: $blue-very-dark;
+.bg-light-blue {
+  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
 }
 
 .badge-grey-light {
@@ -194,6 +203,36 @@ input, progress {
   background: $grey-dark;
   border:2px solid $grey-dark;
   border-radius: 6px;
+}
+
+.sortable-hide {
+  opacity:0;
+}
+
+// palette styles
+
+@each $colour, $shades in $colours-palette {
+  $colour-name: $colour;
+
+  @if type-of($shades) == map {
+    @each $tone, $value in $shades {
+      $tone-name: $tone;
+
+      .text-#{$colour-name}-#{$tone-name} {
+        color: $value;
+      }
+      .bg-#{$colour-name}-#{$tone-name} {
+        background-color: $value;
+      }
+    }
+  } @else {
+    .text-#{$colour-name} {
+      color: $shades;
+    }
+    .bg-#{$colour-name} {
+      background-color: $shades;
+    }
+  }
 }
 
 // polarity styles
@@ -256,6 +295,29 @@ input, progress {
   }
 }
 
-.sortable-hide {
-  opacity:0;
+.border-blue-dark {
+  border-color: $blue-dark !important;
+}
+
+.theme {
+  &.theme-dark {
+    background-color: $blue-very-dark;
+    color: $white;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $white;
+    }
+
+    a:not(.btn) {
+      color: $teal-medium;
+    }
+  }
+
+  &.theme-light {
+    background-color: $blue-light;
+  }
+
+  &.theme-accent {
+    background-color: $yellow-pale;
+  }
 }

@@ -136,8 +136,8 @@ describe Mailchimp::Contact do
       context 'when account is disabled' do
         let!(:user) { create(:school_admin, :subscribed_to_alerts, school: school, active: false) }
 
-        it 'uses correct status' do
-          expect(contact.user_status).to eq 'Disabled'
+        it 'switches user to Organic' do
+          expect(contact.contact_source).to eq 'Organic'
         end
       end
     end
@@ -161,6 +161,14 @@ describe Mailchimp::Contact do
           expect(contact.alert_subscriber).to eq 'Yes'
         end
       end
+
+      context 'when account is disabled' do
+        let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard), active: false) }
+
+        it 'switches user to Organic' do
+          expect(contact.contact_source).to eq 'Organic'
+        end
+      end
     end
 
     context 'with a cluster admin' do
@@ -180,6 +188,14 @@ describe Mailchimp::Contact do
 
         it 'uses correct status' do
           expect(contact.alert_subscriber).to eq 'Yes'
+        end
+      end
+
+      context 'when account is disabled' do
+        let!(:user) { create(:school_admin, :with_cluster_schools, school: school, active: false) }
+
+        it 'switches user to Organic' do
+          expect(contact.contact_source).to eq 'Organic'
         end
       end
     end
@@ -398,22 +414,6 @@ describe Mailchimp::Contact do
       context 'with school admin' do
         it_behaves_like 'it maps all the roles correctly' do
           let(:role) { :school_admin }
-        end
-      end
-
-      context 'with volunteer' do
-        it_behaves_like 'it maps all the roles correctly' do
-          let(:role) { :volunteer }
-        end
-      end
-
-      context 'with a user with no staff role' do
-        let(:user) { create(:volunteer, staff_role: nil) }
-
-        it_behaves_like 'interests have been selected' do
-          let(:selected) do
-            [Mailchimp::Contact::GETTING_THE_MOST, Mailchimp::Contact::ENGAGING_PUPILS, Mailchimp::Contact::LEADERSHIP]
-          end
         end
       end
     end

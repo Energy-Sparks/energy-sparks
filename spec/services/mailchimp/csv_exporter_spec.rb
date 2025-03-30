@@ -23,8 +23,8 @@ describe Mailchimp::CsvExporter do
   end
 
   shared_examples 'it adds interests correctly' do
-    it 'adds emails types' do
-      expect(contact.interests).to include 'Getting the most out of Energy Sparks'
+    it 'adds emails types as a comma-separated list' do
+      expect(contact.interests.split(',')).to include 'Getting the most out of Energy Sparks'
     end
   end
 
@@ -103,6 +103,14 @@ describe Mailchimp::CsvExporter do
 
       it 'populates tags' do
         expect(contact.tags.split(',')).to contain_exactly('FSM30', user.school.slug)
+      end
+
+      context 'when user is not active' do
+        let!(:user) { create(:school_admin, school: school, active: false) }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
       end
 
       context 'when not adding in default interests' do
@@ -270,10 +278,17 @@ describe Mailchimp::CsvExporter do
         expect(contact.user_role).to be_nil
         expect(contact.locale).to eq 'en'
         expect(contact.tags).to eq 'trustee,external support'
-
         expect(contact.staff_role).to eq 'School management'
         expect(contact.school).to eq 'DfE'
         expect(contact.school_group).to eq 'Unity Schools Partnership'
+      end
+
+      context 'when not adding in default interests' do
+        let(:add_default_interests) { false }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
       end
     end
   end
@@ -291,6 +306,14 @@ describe Mailchimp::CsvExporter do
 
       it_behaves_like 'it correctly creates a contact', school_user: true
       it_behaves_like 'it adds interests correctly'
+
+      context 'when user is not active' do
+        let!(:user) { create(:school_admin, school: school, active: false) }
+
+        it 'does not add any interests' do
+          expect(contact.interests).to eq('')
+        end
+      end
 
       context 'when not adding defaults' do
         let(:add_default_interests) { false }
@@ -365,7 +388,7 @@ describe Mailchimp::CsvExporter do
     let!(:school_admin) { create(:school_admin, school: school) }
     let!(:group_admin) { create(:group_admin, school_group: school_group) }
     let!(:staff) { create(:staff) }
-    let!(:volunteer) { create(:volunteer) }
+    let!(:other_staff) { create(:staff) }
     let!(:admin) { create(:admin) }
 
     let(:subscribed) do
@@ -384,7 +407,7 @@ describe Mailchimp::CsvExporter do
     end
 
     let(:nonsubscribed) do
-      [create_contact(volunteer.email)]
+      [create_contact(other_staff.email)]
     end
 
     before do
@@ -398,7 +421,7 @@ describe Mailchimp::CsvExporter do
 
       expect(service.updated_audience[:cleaned].map(&:email_address)).to contain_exactly(group_admin.email)
 
-      expect(service.updated_audience[:nonsubscribed].map(&:email_address)).to contain_exactly(volunteer.email)
+      expect(service.updated_audience[:nonsubscribed].map(&:email_address)).to contain_exactly(other_staff.email)
 
       expect(service.new_nonsubscribed.first.email_address).to eq admin.email
     end

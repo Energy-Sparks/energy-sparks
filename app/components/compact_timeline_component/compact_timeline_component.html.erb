@@ -1,5 +1,5 @@
-<div <%= "id=#{id}" if id %> class="compact-timeline-component<%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% observations.each do |observation| %>
-    <%= component 'observation', observation: observation, style: :compact %>
+    <%= render ObservationComponent.new(observation: observation, style: :compact) %>
   <% end %>
-</div>
+<% end %>

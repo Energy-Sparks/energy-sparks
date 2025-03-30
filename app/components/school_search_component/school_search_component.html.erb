@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="school-search-component mt-4 <%= classes %>">
+<%= tag.div id: id, class: class_names(classes, 'mt-4') do %>
   <ul class="nav nav-tabs" id="search-tabs" role="tablist">
     <% TABS.each do |tab| %>
       <li class="nav-item">
@@ -56,7 +56,7 @@
         </div>
         <hr>
         <div id="<%= label(tab, 'results') %>">
-          <%= component 'search_results' do |c| %>
+          <%= render SearchResultsComponent.new do |c| %>
             <% c.with_title { default_results_title(tab) } %>
             <% c.with_subtitle { default_results_subtitle(tab) } %>
             <% default_results(tab).each do |result| %>
@@ -72,4 +72,4 @@
       </div>
     <% end %>
   </div>
-</div>
+<% end %>

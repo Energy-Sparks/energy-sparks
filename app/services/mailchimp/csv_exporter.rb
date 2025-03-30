@@ -60,10 +60,10 @@ module Mailchimp
           # remove matches from list
           contact = @audience[mailchimp_contact_type].delete(user.email)
           # update user, only adding default interests if we're overriding current prefs
-          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact, add_default_interests: @add_default_interests)
+          @updated_audience[mailchimp_contact_type] << to_mailchimp_contact(user, contact, add_default_interests: user.active && @add_default_interests)
         else
           # always add default interests
-          @new_nonsubscribed << to_mailchimp_contact(user, add_default_interests: true)
+          @new_nonsubscribed << to_mailchimp_contact(user, add_default_interests: user.active)
         end
       end
     end
@@ -133,17 +133,18 @@ module Mailchimp
       contact.locale = 'en'
       contact.tags = non_fsm_tags(existing_contact).join(',')
 
-      interests = if existing_contact[:interests].present?
-                    existing_contact[:interests].split(',').index_with { |_i| true }
-                  else
-                    {}
-                  end
 
+      interests = (existing_contact&.dig(:interests)&.split(',') || []).index_with { true }
       contact.interests = add_default_interests ? default_interests(interests) : interests
+
+      # Convert interests back into a string for the CSV export
+      contact.interests = contact.interests.keys.join(',')
+
       contact.name = existing_contact[:name]
       contact.staff_role = existing_contact[:staff_role]
       contact.school = existing_contact[:school_or_organisation]
       contact.school_group = existing_contact[:school_group]
+
       contact
     end
 

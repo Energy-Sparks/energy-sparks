@@ -41,6 +41,7 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
+gem 'sass-embedded', '< 1.79.1' # not a direct dependency but getting test failures with newer versions
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
 
@@ -99,7 +100,7 @@ gem 'oj'
 gem 'rollbar'
 
 # Internationalisation
-gem 'i18n-tasks', '~> 1.0.14'
+gem 'i18n-tasks', '~> 1.0.15'
 gem 'mobility', '~> 1.3.2'
 gem 'mobility-actiontext', '~> 1.1.1'
 

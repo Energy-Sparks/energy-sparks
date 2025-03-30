@@ -1,4 +1,4 @@
-// outer div has the .home-page class when :new_home_page feature glad is switched off
+// outer div has the .home-page class when :new_home_page feature is switched off
 // and we're not currently looking at the home page
 
 .home-page {
@@ -283,53 +283,10 @@
   }
 }
 
-// outer div has this class when :new_home_page feature glad is switched on and if we're on the home page
+// outer div has this class when :new_home_page feature is switched on and if we're on the home page
 
 .home {
-  p {
-    font-family: $header-font-family;
-  }
-
   section.alerts .alert {
     margin-bottom: 0px;
   }
-
-  .hero-component {
-    .right-half {
-      top: 0;
-      right: 0;
-      width: 50vw;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    @media (min-width: map-get($grid-breakpoints, 'xl')) {
-      h1, h2, h3, h4 {
-        font-size: 3vw;
-        line-height: 4vw;
-      }
-
-      p {
-        font-size: 1.3vw;
-        line-height: 2vw;
-      }
-
-      .btn {
-        font-size: 1.3vw;
-        line-height: 2vw;
-      }
-
-    }
-  }
 }
-
-
-/*
-      .break-left {
-        width: 100%;
-        padding-right: 15px;
-        padding-left: 15px;
-        margin-right: 0;
-        margin-left: 0;
-      }
-*/

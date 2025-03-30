@@ -1,64 +1,64 @@
-<div
-  id="<%= @id %>"
-  class="school-comparison-component-callout-row row mt-2">
-  <% categories.each do |category| %>
-    <div class="col-md-4 justify-content-center <%= category %> <%= responsive_classes(category) %>">
-      <% if school_in_category?(category) %>
-        <div class="school-comparison-component-callout-box">
-          <div class="header">
-            <small>
-              <%= t('advice_pages.benchmarks.your_school') %>
-            </small>
-          </div>
-          <div class="body m-2">
-            <h4>
-              <%= school_value %>
-            </h4>
-          </div>
-          <div class="footer mb-2">
-            <% if footer %>
+<%= tag.div id: id, class: classes do %>
+  <div class="callout-row row mt-2">
+    <% categories.each do |category| %>
+      <div class="col-md-4 justify-content-center <%= category %> <%= responsive_classes(category) %>">
+        <% if school_in_category?(category) %>
+          <div class="callout-box">
+            <div class="header">
               <small>
-                <%= footer %>
+                <%= t('advice_pages.benchmarks.your_school') %>
               </small>
-            <% end %>
+            </div>
+            <div class="body m-2">
+              <h4>
+                <%= school_value %>
+              </h4>
+            </div>
+            <div class="footer mb-2">
+              <% if footer %>
+                <small>
+                  <%= footer %>
+                </small>
+              <% end %>
+            </div>
           </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<div class="school-comparison-component-footer-row row">
-  <div class="col-md-4 justify-content-center <%= responsive_classes(:exemplar_school) %>">
-    <div>
-      <h4 class="category-label">
-        <%= t('advice_pages.benchmarks.exemplar_school') %>
-      </h4>
-      <p>
-        <%= exemplar_value_sign %><%= exemplar_value %>
-      </p>
-    </div>
-  </div>
-  <div class="col-md-4 justify-content-center <%= responsive_classes(:benchmark_school) %>">
-    <div>
-      <h4 class="category-label">
-        <%= t('advice_pages.benchmarks.benchmark_school') %>
-      </h4>
-      <p>
-        <% if benchmark_value %>
-          <%= benchmark_value_sign %><%= benchmark_value %>
         <% end %>
-      </p>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="footer-row row">
+    <div class="col-md-4 justify-content-center <%= responsive_classes(:exemplar_school) %>">
+      <div>
+        <h4 class="category-label">
+          <%= t('advice_pages.benchmarks.exemplar_school') %>
+        </h4>
+        <p>
+          <%= exemplar_value_sign %><%= exemplar_value %>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 justify-content-center <%= responsive_classes(:benchmark_school) %>">
+      <div>
+        <h4 class="category-label">
+          <%= t('advice_pages.benchmarks.benchmark_school') %>
+        </h4>
+        <p>
+          <% if benchmark_value %>
+            <%= benchmark_value_sign %><%= benchmark_value %>
+          <% end %>
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 justify-content-center <%= responsive_classes(:other_school) %>">
+      <div>
+        <h4 class="category-label">
+          <%= t('advice_pages.benchmarks.other_school') %>
+        </h4>
+        <p>
+          <%= other_value_sign %><%= other_value %>
+        </p>
+      </div>
     </div>
   </div>
-  <div class="col-md-4 justify-content-center <%= responsive_classes(:other_school) %>">
-    <div>
-      <h4 class="category-label">
-        <%= t('advice_pages.benchmarks.other_school') %>
-      </h4>
-      <p>
-        <%= other_value_sign %><%= other_value %>
-      </p>
-    </div>
-  </div>
-</div>
+<% end %>

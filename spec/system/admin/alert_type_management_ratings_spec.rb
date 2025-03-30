@@ -174,7 +174,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'Email title en', with: 'Stop using so much gas!'
         click_on 'Update content'
 
-        expect(alert_type_rating.content_versions.size).to eq(2)
+        with_retry { expect(alert_type_rating.content_versions.size).to eq(2) }
       end
     end
 

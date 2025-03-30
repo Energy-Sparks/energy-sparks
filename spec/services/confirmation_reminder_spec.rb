@@ -97,7 +97,7 @@ describe ConfirmationReminder do
     end
   end
 
-  [:staff, :school_admin, :volunteer].each do |role|
+  [:staff, :school_admin].each do |role|
     context "with #{role} school user role" do
       it_behaves_like 'a confirmable user role' do
         let(:role) { role }

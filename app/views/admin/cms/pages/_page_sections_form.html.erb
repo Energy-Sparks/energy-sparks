@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col">
+    <h4>Manage Page Sections</h4>
+    <p>
+      Drag and drop sections to reorder how they are displayed on the page. Click remove to
+      remove a section from the page (without deleting it). Click Save after making changes.
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col mb-4">
+    <%= link_to 'New Section', new_admin_cms_section_path(page_id: page.id), class: 'btn btn-sm btn-success' %>
+  </div>
+</div>
+
+<div class="sections sort-list">
+  <%= f.fields_for :sections, page.sections.positioned do |s| %>
+    <div class="section">
+      <div class="nested-fields row mb-2">
+        <div class="col-1">
+          <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
+        </div>
+        <div class="col-9">
+          <%= link_to s.object.title, edit_admin_cms_section_path(s.object), target: '_blank', rel: 'noopener' %>
+        </div>
+        <div class="col-2">
+          <% if s.object.published? %>
+          <%= link_to 'Hide',
+                      hide_admin_cms_section_path(s.object),
+                      method: :put,
+                      class: 'btn btn-sm',
+                      data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
+          <% elsif s.object.publishable? %>
+          <%= link_to 'Publish',
+                      publish_admin_cms_section_path(s.object),
+                      method: :put,
+                      class: 'btn btn-sm',
+                      data: { confirm: 'Note this will make the content public, are you sure?' } %>
+          <% end %>
+
+          <button class="btn btn-sm delete-association-button">Remove</button>
+        </div>
+        <%= s.hidden_field :position, class: 'position' %>
+        <%= s.hidden_field :id %>
+        <%= s.hidden_field :_delete, value: '' %>
+        <%= s.hidden_field :page_id, value: page.id %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -86,6 +86,12 @@ Rails.application.routes.draw do
     get :unlisted, on: :collection, :defaults => { :format => 'js' }
   end
 
+  get '/support', to: redirect('/support/categories')
+  scope module: 'cms', path: 'support' do
+    resources :categories, only: [:index, :show]
+    resources :pages, only: [:show]
+  end
+
   namespace :comparisons do
     resources :annual_change_in_electricity_out_of_hours_use, only: [:index], concerns: :unlisted
     resources :annual_change_in_gas_out_of_hours_use, only: [:index], concerns: :unlisted
@@ -138,6 +144,7 @@ Rails.application.routes.draw do
   get 'version', to: 'version#show'
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
+
 
   resources :help, controller: 'help_pages', only: [:show]
 
@@ -444,6 +451,7 @@ Rails.application.routes.draw do
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show', defaults: {format: :json}
 
+      get :review, to: 'review#show'
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
@@ -505,6 +513,8 @@ Rails.application.routes.draw do
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
 
+    get 'chart-preview', to: 'chart_previews#show'
+
     concerns :issueable
     resources :funders
     resources :users do
@@ -529,6 +539,19 @@ Rails.application.routes.draw do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]
       resources :report_groups, except: [:show]
+    end
+
+    concern :publishable do
+      member do
+        put :publish
+        put :hide
+      end
+    end
+
+    namespace :cms do
+      resources :categories, except: [:show], concerns: [:publishable]
+      resources :pages, except: [:show], concerns: [:publishable]
+      resources :sections, except: [:show], concerns: [:publishable]
     end
 
     resources :case_studies
@@ -766,6 +789,8 @@ Rails.application.routes.draw do
         mount Lookbook::Engine, as: :components, at: 'components'
       end
     end
+
+    resources :local_distribution_zones, except: [:destroy]
   end # Admin name space
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
