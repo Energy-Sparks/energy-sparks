@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e8f749bdb2007f1662ac63bcdda3e678a568ee6f
-  tag: 6.1.7
+  revision: 7afadfb89077f5aa9539e2b0ec6490c2c1103665
+  branch: 4810-change-baseload-option-for-schools-with-solar
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
