@@ -14,7 +14,7 @@
 
       <%= f.input :case_study_id,
                   label: 'Case Study',
-                  collection: CaseStudy.order(position: :asc),
+                  collection: CaseStudy.order(title: :asc),
                   label_method: :title,
                   value_method: :id,
                   include_blank: 'Select Case Study' %>

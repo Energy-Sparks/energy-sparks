@@ -54,7 +54,7 @@
                                              theme: :accent,
                                              classes: 'rounded-xl p-4 mb-4',
                                              show_arrows: :side) do |carousel| %>
-      <% Testimonial.all.active.default.each do |testimonial| %>
+      <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
         <%= carousel.with_testimonial_card do |card| %>
           <%= card.with_image(src: testimonial.image) %>
           <%= card.with_header(title: testimonial.title) %>
