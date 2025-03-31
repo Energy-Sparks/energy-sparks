@@ -130,4 +130,23 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     it { expect(row).to have_xpath('.//img[contains(@src, "/assets/laptop-")]', visible: :all) }
     it { expect(row).to have_css('img.component-classes', count: 1) }
   end
+
+  context 'with cell' do
+    let(:params) { all_params }
+
+    let(:html) do
+      render_inline(described_class.new(**params)) do |c|
+        c.with_cell { 'cell 1' }
+        c.with_cell { 'cell 2' }
+      end
+    end
+
+    before do
+      puts html
+    end
+
+    it { expect(rows[0]).to have_css('div.col-12.col-md-6', count: 2) }
+    it { expect(html).to have_content('cell 1') }
+    it { expect(html).to have_content('cell 2') }
+  end
 end
