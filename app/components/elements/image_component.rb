@@ -31,7 +31,7 @@ module Elements
     end
 
     def call
-      tag.img(src: image_path(@src), id: @id, class: classes, style: style)
+      image_tag(@src, id: @id, class: classes, style: style)
     end
 
     def validate
