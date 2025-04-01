@@ -247,7 +247,7 @@ class User < ApplicationRecord
       attributes.merge(
         role: :pupil,
         school:,
-        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV.fetch('APPLICATION_HOST', nil)}",
+        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV.fetch('APPLICATION_HOST', 'energysparks.uk')}",
         password: SecureRandom.uuid,
         confirmed_at: Time.zone.now
       )
