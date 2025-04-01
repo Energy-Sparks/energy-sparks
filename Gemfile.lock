@@ -1,21 +1,19 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: e8f749bdb2007f1662ac63bcdda3e678a568ee6f
-  tag: 6.1.7
+  revision: d6b192b7f4501a1469a1039c71958fda66b70328
+  branch: 20250401-structured-warnings
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
       benchmark-memory (~> 0)
       chroma (~> 0)
       hashdiff (~> 1)
-      html-table (~> 1)
       interpolate (~> 0.3.0)
       require_all (~> 3)
       roo (~> 2)
       roo-xls (~> 1)
       ruby-sun-times (~> 0)
       statsample (~> 2)
-      structured_warnings (~> 0)
       write_xlsx (~> 1)
 
 GIT
@@ -373,8 +371,6 @@ GEM
     hashdiff (1.1.2)
     highline (3.1.2)
       reline
-    html-table (1.7.0)
-      structured_warnings (~> 0.4.0)
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
     http-accept (1.7.0)
@@ -795,7 +791,6 @@ GEM
     sqlite3 (2.6.0-x86_64-linux-gnu)
     stateful_enum (0.7.0)
     stringio (3.1.6)
-    structured_warnings (0.4.0)
     terminal-notifier (2.0.0)
     terminal-notifier-guard (1.7.0)
     terminal-table (4.0.0)
