@@ -943,7 +943,6 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec_rails
   ruby-limiter
-  sass-embedded (< 1.86.2)
   sass-rails
   sassc!
   scenic
