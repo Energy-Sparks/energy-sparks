@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: d6b192b7f4501a1469a1039c71958fda66b70328
+  revision: 5b322f45f401402b25d96d5b505100b64ce4a527
   branch: 20250401-structured-warnings
   specs:
     energy-sparks_analytics (1.2.1)
