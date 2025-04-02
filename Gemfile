@@ -28,7 +28,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', branch: '4810-change-baseload-option-for-schools-with-solar'
+gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.9'
 # gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
@@ -42,7 +42,6 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
-gem 'sass-embedded', '< 1.79.1' # not a direct dependency but getting test failures with newer versions
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
 
