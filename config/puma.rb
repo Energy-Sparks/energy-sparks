@@ -36,4 +36,5 @@ pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 if ENV["RAILS_ENV"] == "production"
   # import no longer works - https://github.com/puma/puma/issues/1632
   _load_from '/opt/elasticbeanstalk/config/private/pumaconf.rb'
+  preload_app! # should reduce memory usage
 end
