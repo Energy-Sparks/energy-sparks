@@ -13,8 +13,6 @@ describe AmrImportJob do
 
   let(:config)        { create(:amr_data_feed_config, identifier: thing_prefix) }
 
-  let(:expected_local_file) { "#{config.local_bucket_path}/#{thing_name}" }
-
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
   # responses from AWS API to stub out network calls in client
@@ -22,7 +20,6 @@ describe AmrImportJob do
   let(:object_data) { { key => { body: 'meter-readings!' } } }
 
   before do
-    FileUtils.mkdir_p config.local_bucket_path
     s3_client.stub_responses(:list_objects_v2, list_of_objects)
     s3_client.stub_responses(:get_object, lambda { |context|
       object_data[context.params[:key]] || 'NoSuchKey'
@@ -39,7 +36,6 @@ describe AmrImportJob do
     expect(s3_client.api_requests[2][:params]).to \
       eq({ bucket:, copy_source: "#{bucket}/#{key}", key: "archive-#{thing_prefix}/20250325-125200/#{thing_name}" })
     expect(s3_client.api_requests[3][:params]).to eq({ bucket:, key: })
-    expect(File.exist?(expected_local_file)).to be false
   end
 
   it 'logs errors to Rollbar' do
