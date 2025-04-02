@@ -325,22 +325,22 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    google-protobuf (4.30.1)
+    google-protobuf (4.30.2)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-aarch64-linux)
+    google-protobuf (4.30.2-aarch64-linux)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-arm64-darwin)
+    google-protobuf (4.30.2-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-x86-linux)
+    google-protobuf (4.30.2-x86-linux)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-x86_64-darwin)
+    google-protobuf (4.30.2-x86_64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-x86_64-linux)
+    google-protobuf (4.30.2-x86_64-linux)
       bigdecimal
       rake (>= 13)
     groupdate (6.5.1)
@@ -719,18 +719,19 @@ GEM
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
-    sass-embedded (1.78.0-aarch64-linux-gnu)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-arm-linux-gnueabihf)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-arm64-darwin)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-x86-linux-gnu)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-x86_64-darwin)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-x86_64-linux-gnu)
-      google-protobuf (~> 4.27)
+    sass-embedded (1.86.1)
+      google-protobuf (~> 4.30)
+      rake (>= 13)
+    sass-embedded (1.86.1-aarch64-linux-gnu)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-arm-linux-gnueabihf)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-arm64-darwin)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-x86_64-darwin)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-x86_64-linux-gnu)
+      google-protobuf (~> 4.30)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc-rails (2.1.2)
@@ -937,7 +938,6 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec_rails
   ruby-limiter
-  sass-embedded (< 1.79.1)
   sass-rails
   sassc!
   scenic
