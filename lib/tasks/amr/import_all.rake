@@ -3,7 +3,6 @@ namespace :amr do
   task import_all: :environment do
     puts "#{DateTime.now.utc} amr import all start"
     AmrDataFeedConfig.s3_folder.each do |config|
-      FileUtils.mkdir_p config.local_bucket_path
       AmrImportJob.import_all(config, ENV.fetch('AWS_S3_AMR_DATA_FEEDS_BUCKET'))
     rescue StandardError => e
       puts "Exception: running import_all for #{config.description}: #{e.class} #{e.message}"

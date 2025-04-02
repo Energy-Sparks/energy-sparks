@@ -1,8 +1,15 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
-require 'cancan/matchers'
 
 describe User do
   include ActiveJob::TestHelper
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:email) }
+    it { is_expected.to allow_value('test@example.com').for(:email) }
+    it { is_expected.not_to allow_value('\xE2\x80\x8Btest@example.com').for(:email) }
+  end
 
   it 'generates display name' do
     user = create(:user, name: 'Name')
@@ -120,7 +127,7 @@ describe User do
 
   describe 'staff roles as symbols' do
     it 'returns nil if no staff role' do
-      expect(User.new.staff_role_as_symbol).to be_nil
+      expect(described_class.new.staff_role_as_symbol).to be_nil
     end
 
     it 'returns symbol if staff role' do
@@ -198,16 +205,16 @@ describe User do
         expect(school.users.count).to eq(3)
         expect(school_2.cluster_users.count).to eq(1)
         expect(school_3.cluster_users.count).to eq(1)
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: school.users.pluck(:id))).to contain_exactly(
-                                                                school_admin, staff_user
-                                                              )
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: [school_admin.id])).to contain_exactly(school_admin)
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: [staff_user.id])).to contain_exactly(staff_user)
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: [pupil_user.id])).to be_empty
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: school.users.pluck(:id))).to contain_exactly(
+                                                                           school_admin, staff_user
+                                                                         )
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: [school_admin.id])).to contain_exactly(school_admin)
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: [staff_user.id])).to contain_exactly(staff_user)
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: [pupil_user.id])).to be_empty
       end
     end
 
@@ -216,14 +223,14 @@ describe User do
         expect(school.users.count).to eq(3)
         expect(school_2.cluster_users.count).to eq(0)
         expect(school_3.cluster_users.count).to eq(0)
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: school.users.pluck(:id))).to be_empty
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: [school_admin.id])).to be_empty
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: [staff_user.id])).to be_empty
-        expect(User.find_school_users_linked_to_other_schools(school_id: school,
-                                                              user_ids: [pupil_user.id])).to be_empty
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: school.users.pluck(:id))).to be_empty
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: [school_admin.id])).to be_empty
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: [staff_user.id])).to be_empty
+        expect(described_class.find_school_users_linked_to_other_schools(school_id: school,
+                                                                         user_ids: [pupil_user.id])).to be_empty
       end
     end
   end
@@ -255,7 +262,7 @@ describe User do
     let!(:school)       { create(:school, school_group:) }
     let!(:user)         { create(:staff, school:, confirmed_at: nil) }
 
-    let(:csv)           { User.admin_user_export_csv }
+    let(:csv)           { described_class.admin_user_export_csv }
     let(:parsed)        { CSV.parse(csv) }
 
     context 'when exporting' do
@@ -534,7 +541,7 @@ describe User do
     context 'when mailchimp status is unknown' do
       let(:user) { create(:school_admin, school: create(:school, :with_school_group)) }
 
-      it { expect(User.mailchimp_update_required).to be_empty }
+      it { expect(described_class.mailchimp_update_required).to be_empty }
     end
 
     context 'with school admin' do
@@ -543,7 +550,7 @@ describe User do
       context 'when user has not been synchronised' do
         let!(:user) { create(:school_admin, school: school, mailchimp_status: :subscribed) }
 
-        it { expect(User.mailchimp_update_required).to match_array([user])}
+        it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
       end
 
       context 'when user is up to date' do
@@ -553,13 +560,13 @@ describe User do
           user
         end
 
-        it { expect(User.mailchimp_update_required).to be_empty }
+        it { expect(described_class.mailchimp_update_required).to be_empty }
       end
 
       context 'when updates are pending' do
         let!(:user) do
           user = create(:school_admin, school: school, mailchimp_status: :subscribed)
-          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user.update!(mailchimp_updated_at: 1.day.ago) # ensure timestamp is later
           user
         end
 
@@ -568,7 +575,7 @@ describe User do
             user.update!(name: 'New name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
 
         context 'when funder has been updated' do
@@ -578,7 +585,7 @@ describe User do
             school.funder.update!(name: 'New funder name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
 
         context 'when local authority has been updated' do
@@ -588,7 +595,7 @@ describe User do
             school.local_authority_area.update!(name: 'New area name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
 
         context 'when scoreboard has been updated' do
@@ -598,7 +605,7 @@ describe User do
             school.scoreboard.update!(name: 'New scoreboard name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
 
         context 'when school_group has been updated' do
@@ -608,7 +615,7 @@ describe User do
             school.school_group.update!(name: 'New group name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
       end
     end
@@ -619,13 +626,13 @@ describe User do
       context 'when user has not been synchronised' do
         let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
 
-        it { expect(User.mailchimp_update_required).to match_array([user])}
+        it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
       end
 
       context 'when updates are pending' do
         let!(:user) do
           user = create(:group_admin, mailchimp_status: :subscribed)
-          user.update!(mailchimp_updated_at: Time.zone.now - 1.day) # ensure timestamp is later
+          user.update!(mailchimp_updated_at: 1.day.ago) # ensure timestamp is later
           user
         end
 
@@ -634,7 +641,7 @@ describe User do
             user.update!(name: 'New name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
 
         context 'when school_group has been updated' do
@@ -642,14 +649,14 @@ describe User do
             user.school_group.update!(name: 'New group name')
           end
 
-          it { expect(User.mailchimp_update_required).to match_array([user])}
+          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
       end
     end
   end
 
   describe '#update_email_in_mailchimp' do
-    let(:email) { 'old@example.org'}
+    let(:email) { 'old@example.org' }
     let(:user) { create(:user, email: email) }
 
     context 'when email not changed' do
@@ -686,7 +693,8 @@ describe User do
         end
 
         it 'updates mailchimp' do
-          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user, original_email: email).and_call_original
+          expect(Mailchimp::EmailUpdaterJob).to receive(:perform_later).with(user: user,
+                                                                             original_email: email).and_call_original
           expect { user.update!(email: 'new@example.org') }.to have_enqueued_job
           perform_enqueued_jobs
           user.reload

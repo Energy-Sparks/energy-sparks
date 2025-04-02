@@ -127,7 +127,7 @@ class User < ApplicationRecord
   end
 
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
-  validates :email, presence: true
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   validates :pupil_password, presence: true, if: :pupil?
   validates :pupil_password, length: { minimum: 12 }, if: :pupil?
@@ -247,7 +247,7 @@ class User < ApplicationRecord
       attributes.merge(
         role: :pupil,
         school:,
-        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV.fetch('APPLICATION_HOST', nil)}",
+        email: "#{school.id}-#{SecureRandom.uuid}@pupils.#{ENV.fetch('APPLICATION_HOST', 'energysparks.uk')}",
         password: SecureRandom.uuid,
         confirmed_at: Time.zone.now
       )
