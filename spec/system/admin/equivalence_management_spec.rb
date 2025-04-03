@@ -50,8 +50,7 @@ RSpec.describe 'equivalence type management', type: :system do
 
     click_on 'Update equivalence type'
 
-    equivalence_type.reload
-    expect(equivalence_type.gas?).to eq true
+    with_retry { expect(equivalence_type.reload.gas?).to be true }
 
     expect(equivalence_type.image_name).to eq :petrol_car.to_s
 
