@@ -57,5 +57,7 @@
 @import "comparisons";
 @import "standout";
 @import "cookie_banner";
+@import "themes";
+@import "palette";
 
 @import "../../components/**/*"; // loaded here so bootstrap SASS variables are available

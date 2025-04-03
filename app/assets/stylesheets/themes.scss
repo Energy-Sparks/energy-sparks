@@ -1,0 +1,47 @@
+.theme {
+  &.theme-dark {
+    background-color: $blue-very-dark;
+    color: $blue-light;
+
+    h1, h2, h3, h4, h5, h6 {
+      color: $white;
+    }
+
+    a:not(.btn) {
+      color: $teal-medium;
+    }
+
+    .badge {
+      background-color: $teal-medium;
+      color: $blue-very-dark;
+    }
+  }
+
+  &.theme-light, &.theme-accent {
+    h1, h2, h3, h4, h5, h6 {
+      color: $blue-very-dark;
+    }
+
+    a:not(.btn) {
+      color: $blue-very-dark;
+    }
+  }
+
+  &.theme-light {
+    background-color: $blue-light;
+    color: $blue-dark;
+
+    .badge {
+      background-color: $yellow-light;
+    }
+
+  }
+
+  &.theme-accent {
+    background-color: $yellow-pale;
+
+    .text-darker {
+      color: $blue-very-dark;
+    }
+  }
+}

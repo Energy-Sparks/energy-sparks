@@ -6,6 +6,7 @@ en:
       one: "%{count} action"
       other: "%{count} actions"
     application: Energy Sparks
+    author: by %{author}
     back_to_top: Back to top
     bar_charts: Bar charts
     confirm: Are you sure?
@@ -56,6 +57,7 @@ en:
       previous: Previous
       pupil_activities: Pupil activities
       pupil_led_activities: Pupil-led activities
+      read_more: Read more
       remove: Remove
       report: Report
       restart: Restart

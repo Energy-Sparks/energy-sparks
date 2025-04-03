@@ -1,6 +1,11 @@
 module Layout
   module Cards
     class FeatureComponent < LayoutComponent
+      renders_many :tags, ->(*args, **kwargs) do
+        Elements::BadgeComponent.new(*args, **{ classes: 'font-weight-normal text-uppercase' }.merge(kwargs))
+      end
+      renders_one :date, ->(date) { short_dates(date.to_s.to_date) }
+      renders_one :author, ->(author) { author }
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: @main ? 2 : 4, theme: @theme }.merge(kwargs))
       end
@@ -13,6 +18,8 @@ module Layout
       renders_many :links, ->(*args, **kwargs) do
         Elements::TagComponent.new(:a, *args, **merge_classes('small mb-1 mt-auto', kwargs))
       end
+
+
 
       def initialize(main: false, **_kwargs)
         super
