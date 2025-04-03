@@ -1,21 +1,19 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 41e1f9566aa9916d3bdbdfded27dfe77dc4a9204
-  tag: 6.1.8
+  revision: 64f20ef67b4a5af85890ba29870e5a0250b17c37
+  tag: 6.1.10
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
       benchmark-memory (~> 0)
       chroma (~> 0)
       hashdiff (~> 1)
-      html-table (~> 1)
       interpolate (~> 0.3.0)
       require_all (~> 3)
       roo (~> 2)
       roo-xls (~> 1)
       ruby-sun-times (~> 0)
       statsample (~> 2)
-      structured_warnings (~> 0)
       write_xlsx (~> 1)
 
 GIT
@@ -327,22 +325,22 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    google-protobuf (4.30.1)
+    google-protobuf (4.30.2)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-aarch64-linux)
+    google-protobuf (4.30.2-aarch64-linux)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-arm64-darwin)
+    google-protobuf (4.30.2-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-x86-linux)
+    google-protobuf (4.30.2-x86-linux)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-x86_64-darwin)
+    google-protobuf (4.30.2-x86_64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.30.1-x86_64-linux)
+    google-protobuf (4.30.2-x86_64-linux)
       bigdecimal
       rake (>= 13)
     groupdate (6.5.1)
@@ -373,8 +371,6 @@ GEM
     hashdiff (1.1.2)
     highline (3.1.2)
       reline
-    html-table (1.7.0)
-      structured_warnings (~> 0.4.0)
     htmlbeautifier (1.4.3)
     htmlentities (4.3.4)
     http-accept (1.7.0)
@@ -723,18 +719,19 @@ GEM
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
-    sass-embedded (1.78.0-aarch64-linux-gnu)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-arm-linux-gnueabihf)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-arm64-darwin)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-x86-linux-gnu)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-x86_64-darwin)
-      google-protobuf (~> 4.27)
-    sass-embedded (1.78.0-x86_64-linux-gnu)
-      google-protobuf (~> 4.27)
+    sass-embedded (1.86.1)
+      google-protobuf (~> 4.30)
+      rake (>= 13)
+    sass-embedded (1.86.1-aarch64-linux-gnu)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-arm-linux-gnueabihf)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-arm64-darwin)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-x86_64-darwin)
+      google-protobuf (~> 4.30)
+    sass-embedded (1.86.1-x86_64-linux-gnu)
+      google-protobuf (~> 4.30)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc-rails (2.1.2)
@@ -794,7 +791,6 @@ GEM
     sqlite3 (2.6.0-x86_64-linux-gnu)
     stateful_enum (0.7.0)
     stringio (3.1.6)
-    structured_warnings (0.4.0)
     terminal-notifier (2.0.0)
     terminal-notifier-guard (1.7.0)
     terminal-table (4.0.0)
@@ -942,7 +938,6 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec_rails
   ruby-limiter
-  sass-embedded (< 1.79.1)
   sass-rails
   sassc!
   scenic
