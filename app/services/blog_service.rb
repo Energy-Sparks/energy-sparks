@@ -44,7 +44,6 @@ class BlogService
   def items
     if fetch_feed?
       if (feed = fetch_feed)
-        puts feed.inspect
         Rails.cache.write(key, feed)
         return feed&.dig(:items)
       elsif log_error?

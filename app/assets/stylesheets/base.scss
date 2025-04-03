@@ -46,13 +46,11 @@ $rounded-xl: 12px;
 }
 
 .rounded-top-xl {
-  background-color: transparent;
   border-top-left-radius: $rounded-xl;
   border-top-right-radius: $rounded-xl;
 }
 
 .rounded-bottom-xl {
-  background-color: transparent;
   border-bottom-left-radius: $rounded-xl;
   border-bottom-right-radius: $rounded-xl;
 }
