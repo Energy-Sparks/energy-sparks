@@ -149,6 +149,7 @@ nav.navbar-second {
   min-height: 42px; // design says 50
   padding-top: 4px;
   padding-bottom: 4px;
+  border-bottom: 1px solid $blue-dark; // Helps prevent blocks of blue-very-dark in main content merging in with nav
 
   .nav-link, .navbar-text {
     padding-top: 4px;

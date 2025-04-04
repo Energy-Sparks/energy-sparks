@@ -1,11 +1,11 @@
 <% content_for :page_title, t('common.labels.home') %>
 
 <% if Flipper.enabled?(:new_home_page, current_user) %>
-  <div class="theme theme-dark border-top border-blue-dark">
+  <div class="theme theme-dark">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
       <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4 pr-4' do |feature| %>
         <%= feature.with_header title: t('home.feature.header') %>
-        <%= feature.with_description(classes: 'text-blue-light') { t('home.feature.description_html') } %>
+        <%= feature.with_description(classes: 'text-complement') { t('home.feature.description_html') } %>
         <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
         <%= feature.with_button t('home.buttons.book_a_demo'),
                                 book_demo_campaigns_path,
@@ -22,7 +22,7 @@
     <% end %>
 
     <%= render Layout::GridComponent.new(cols: 4, classes: 'pb-4 mb-4',
-                                         cell_classes: 'mb-4') do |grid| %>
+                                         cell_classes: 'mb-4', component_classes: 'theme theme-dark') do |grid| %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon fuel_type: :electricity, style: :circle %>
         <%= card.with_header title: t('home.stats.card_1.header') %>
@@ -179,12 +179,12 @@
           <%= grid.with_card do |card| %>
             <%= card.with_image(src: item[:image] || 'on-screen.jpg', classes: 'rounded-top-xl') %>
             <%= card.with_feature_card(theme: :light, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+              <%= feature.with_header(title: item[:title]) %>
               <%= feature.with_author(item[:author]) %>
               <%= feature.with_date(item[:date]) %>
-              <% item[:categories].each do |category| %>
+              <% item[:categories].first(1).each do |category| %>
                 <%= feature.with_tag(category) %>
               <% end %>
-              <%= feature.with_header(title: item[:title]) %>
               <%= feature.with_description { item[:description] } %>
               <%= feature.with_link(href: item[:link]) { t('common.labels.read_more') } %>
             <% end %>

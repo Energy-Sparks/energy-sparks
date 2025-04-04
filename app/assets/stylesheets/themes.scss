@@ -11,6 +11,10 @@
       color: $teal-medium;
     }
 
+    .text-complement {
+      color: $blue-light;
+    }
+
     .badge {
       background-color: $teal-medium;
       color: $blue-very-dark;
@@ -25,6 +29,10 @@
     a:not(.btn) {
       color: $blue-very-dark;
     }
+
+    .text-complement {
+      color: $blue-very-dark;
+    }
   }
 
   &.theme-light {
@@ -34,14 +42,9 @@
     .badge {
       background-color: $yellow-light;
     }
-
   }
 
   &.theme-accent {
     background-color: $yellow-pale;
-
-    .text-darker {
-      color: $blue-very-dark;
-    }
   }
 }
