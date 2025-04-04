@@ -8,7 +8,10 @@
   <% end %>
   <% if date || author %>
     <div class='pb-4 small'>
-      <%= date if date %> <%= t('common.author', author: author.to_s) if author %>
+      <%= date if date %>
+      <% if author %>
+        <%= t('common.author_html', author: "<u>#{author}</u>".html_safe) %>
+      <% end %>
     </div>
   <% end %>
   <%= header %>

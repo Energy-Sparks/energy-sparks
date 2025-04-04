@@ -19,8 +19,6 @@ module Layout
         Elements::TagComponent.new(:a, *args, **merge_classes('small mb-1 mt-auto', kwargs))
       end
 
-
-
       def initialize(main: false, **_kwargs)
         super
         @main = main
