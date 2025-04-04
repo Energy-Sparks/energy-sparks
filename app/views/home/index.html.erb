@@ -180,7 +180,7 @@
             <%= card.with_image(src: item[:image] || 'on-screen.jpg', classes: 'rounded-top-xl') %>
             <%= card.with_feature_card(theme: :light, classes: 'p-4 rounded-bottom-xl') do |feature| %>
               <%= feature.with_header(title: item[:title]) %>
-              <%= feature.with_author(item[:author]) %>
+              <%= feature.with_author(href: item[:author_link]) { item[:author] } %>
               <%= feature.with_date(item[:date]) %>
               <% item[:categories].first(1).each do |category| %>
                 <%= feature.with_tag(category) %>

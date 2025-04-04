@@ -11,7 +11,7 @@
     <div class='pb-3 small text-complement'>
       <%= date if date %>
       <% if author %>
-        <%= t('common.author_html', author: "<u>#{author}</u>".html_safe) %>
+        <%= t('common.author_html', author: author.to_s.html_safe) %>
       <% end %>
     </div>
   <% end %>

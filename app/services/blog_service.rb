@@ -94,7 +94,8 @@ class BlogService
           link: item.link,
           date: item.pubDate.to_date.to_s,
           categories: item.categories.collect(&:content),
-          author: item.dc_creator }
+          author: item.dc_creator,
+          author_link: "#{feed.channel.link}/author/#{item.dc_creator.parameterize}" }
       end }
   end
 end

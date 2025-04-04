@@ -36,6 +36,7 @@ RSpec.describe BlogService, type: :service do
         expect(item[:date]).to be_present
         expect(item[:categories]).to be_present
         expect(item[:author]).to be_present
+        expect(item[:author_link]).to be_present
       end
     end
   end

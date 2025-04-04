@@ -25,7 +25,7 @@ module Layout
           card.with_tag('Energy savings')
           card.with_tag('Reducing heating consumption')
           card.with_date(Time.zone.today)
-          card.with_author('Happy Blogger')
+          card.with_author(href: '/') { 'Happy Blogger' }
           card.with_header title: 'Header'
           card.with_description { 'Interesting text' }
           card.with_link(href: '/') { 'Read more' }
