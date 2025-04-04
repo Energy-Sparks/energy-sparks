@@ -5,7 +5,7 @@ require 'active_support/time'
 
 class BlogService
   CACHE_EXPIRY_PERIOD = 1.hour
-  CACHE_WARNING_PERIOD = 2.hours
+  CACHE_ERROR_PERIOD = 2.hours
   RETRY_PERIOD = 1.second
 
   attr_reader :key, :url, :retries, :force_fetch
@@ -21,8 +21,12 @@ class BlogService
     Rails.cache.fetch(key)
   end
 
+  def cache_out_of_date?(period)
+    !cached_feed || cached_feed&.dig(:timestamp) && cached_feed[:timestamp] < period.ago
+  end
+
   def cache_expired?
-    !cached_feed || cached_feed&.dig(:timestamp) && cached_feed[:timestamp] < CACHE_EXPIRY_PERIOD.ago
+    cache_out_of_date?(CACHE_EXPIRY_PERIOD)
   end
 
   def caching_on?
@@ -33,8 +37,8 @@ class BlogService
     cache_expired? || force_fetch
   end
 
-  def log_error?
-    caching_on? && !cached_feed&.dig(:timestamp) || (cached_feed[:timestamp] < CACHE_WARNING_PERIOD.ago)
+  def raise_error?
+    caching_on? && cache_out_of_date?(CACHE_ERROR_PERIOD)
   end
 
   def tries
@@ -42,16 +46,13 @@ class BlogService
   end
 
   def items
-    if fetch_feed?
-      if (feed = fetch_feed)
-        Rails.cache.write(key, feed)
-        return feed&.dig(:items)
-      elsif log_error?
-        Rollbar.error("Blog cache for: #{key} is over #{CACHE_WARNING_PERIOD.seconds.in_hours} hours out of date")
-      end
-    else
-      return cached_feed&.dig(:items)
+    if fetch_feed? && (feed = fetch_feed)
+      Rails.cache.write(key, feed)
+      return feed&.dig(:items)
+    elsif raise_error?
+      Rollbar.error("Blog cache for: #{url} is over #{CACHE_ERROR_PERIOD.seconds.in_hours} hours out of date")
     end
+    cached_feed&.dig(:items)
   end
 
   # Can be run from cron if we don't want to tie up the front-page request
@@ -71,6 +72,7 @@ class BlogService
         sleep(RETRY_PERIOD)
       end
     end
+    false
   end
 
   private

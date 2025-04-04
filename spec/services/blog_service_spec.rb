@@ -20,15 +20,15 @@ RSpec.describe BlogService, type: :service do
     it { expect(Rails.cache.exist?(blog.key)).to be false }
   end
 
-  shared_examples 'a cache with blog key' do
+  shared_examples 'a cache with a key' do
     it { expect(Rails.cache.exist?(blog.key)).to be true }
   end
 
-  shared_examples 'a cache with blog fields' do
-    it 'contains the blog fields' do
-      (0..4).each do |x|
-        item = blog.cached_feed[:items][x]
+  shared_examples 'item fields' do
+    it { expect(expected_items.count).to be 5 }
 
+    it 'contains the blog fields' do
+      expected_items.each_with_index do |item, x|
         expect(item[:title]).to be_present
         expect(item[:image]).to be_present if x.in?([0, 1])
         expect(item[:description]).to be_present
@@ -40,68 +40,127 @@ RSpec.describe BlogService, type: :service do
     end
   end
 
-  describe '#cache_feed!' do
-    let(:blog) { BlogService.new(inline_fetch: false) }
+  describe '#items' do
+    let(:blog) { BlogService.new }
+
+    before { freeze_time }
 
     it_behaves_like 'an empty cache'
 
     context 'when cache is empty' do
-      before do
-        freeze_time
-        blog.cache_feed!
+      context 'when making a successful request' do
+        let!(:items) { blog.items }
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { items }
+        end
+
+        it_behaves_like 'a cache with a key'
+
+        it 'updates the cache' do
+          expect(blog.cached_feed[:timestamp]).to eq(Time.zone.now)
+        end
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { blog.cached_feed[:items] }
+        end
       end
 
-      it { expect(blog.cached_feed[:timestamp]).to eq(Time.zone.now) }
-      it { expect(blog.cached_feed[:items].count).to be 5 }
+      context 'when request is not successful' do
+        let(:error_response) do
+          instance_double(Net::HTTPResponse, code: '500', message: 'Internal Server Error')
+        end
 
-      it_behaves_like 'a cache with blog key'
-      it_behaves_like 'a cache with blog fields'
+        before do
+          allow(Net::HTTP).to receive(:get_response).and_return(error_response)
+          allow(Rollbar).to receive(:error)
+        end
+
+        let!(:items) { blog.items }
+
+        it 'returns nil' do
+          expect(items).to be_nil
+        end
+
+        it_behaves_like 'an empty cache'
+      end
     end
 
-    context 'when cache is present' do
+    context 'when cache is already present' do
       before do
-        freeze_time
-        blog.cache_feed!
+        blog.update_cache!
       end
 
-      let!(:cached_time) { blog.cached_feed[:timestamp] }
+      let!(:saved_cached_time) { blog.cached_feed[:timestamp] }
+
+      it_behaves_like 'a cache with a key'
+      it_behaves_like 'item fields' do
+        let(:expected_items) { blog.cached_feed[:items] }
+      end
 
       context 'when it is 10 minutes later' do
         before do
           travel 10.minutes
-          blog.cache_feed!
         end
 
-        it_behaves_like 'a cache with blog fields'
+        let!(:items) { blog.items }
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { items }
+        end
+
+        it_behaves_like 'a cache with a key'
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { blog.cached_feed[:items] }
+        end
 
         it 'does not update the cache' do
-          expect(blog.cached_feed[:timestamp]).to eq(cached_time)
+          expect(blog.cached_feed[:timestamp]).to eq(saved_cached_time)
         end
       end
 
       context 'when it is over an hour later' do
         before do
           travel 61.minutes
-          blog.cache_feed!
         end
 
-        it_behaves_like 'a cache with blog fields'
+        let!(:items) { blog.items }
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { items }
+        end
+
+        it_behaves_like 'a cache with a key'
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { blog.cached_feed[:items] }
+        end
 
         it 'updates the cache' do
-          expect(blog.cached_feed[:timestamp]).not_to eq(cached_time)
+          expect(blog.cached_feed[:timestamp]).not_to eq(saved_cached_time)
         end
       end
 
       context 'when it is over two hours later' do
         before do
           travel 121.minutes
-          blog.cache_feed!
         end
 
-        it_behaves_like 'a cache with blog fields'
+        let!(:items) { blog.items }
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { items }
+        end
+
+        it_behaves_like 'a cache with a key'
+
+        it_behaves_like 'item fields' do
+          let(:expected_items) { blog.cached_feed[:items] }
+        end
 
         it 'updates the cache' do
-          expect(blog.cached_feed[:timestamp]).not_to eq(cached_time)
+          expect(blog.cached_feed[:timestamp]).not_to eq(saved_cached_time)
         end
       end
 
@@ -115,31 +174,27 @@ RSpec.describe BlogService, type: :service do
           allow(Rollbar).to receive(:error)
         end
 
-        context 'when it is over 2 hours later (cache warning error raised)' do
-          before do
-            travel 122.minutes
-            blog.cache_feed!
-          end
-
-          it 'does not update the cache' do
-            expect(blog.cached_feed[:timestamp]).to eq(cached_time)
-          end
-
-          it 'logs an error via Rollbar' do
-            expect(Rollbar).to have_received(:error).with("Blog #{blog.url} cache is over #{BlogService::CACHE_WARNING_PERIOD.seconds.in_hours} out of date: 500 Internal Server Error")
-          end
-        end
-
-        context 'when it is less than 2 hours later (no error raised)' do
+        context 'when it is less than 2 hours later (no Rollbar error raised)' do
           before do
             allow(Rollbar).to receive(:error)
 
             travel 65.minutes
-            blog.cache_feed!
+          end
+
+          let!(:items) { blog.items }
+
+          it_behaves_like 'item fields' do
+            let(:expected_items) { items }
+          end
+
+          it_behaves_like 'a cache with a key'
+
+          it_behaves_like 'item fields' do
+            let(:expected_items) { blog.cached_feed[:items] }
           end
 
           it 'does not update the cache' do
-            expect(blog.cached_feed[:timestamp]).to eq(cached_time)
+            expect(blog.cached_feed[:timestamp]).to eq(saved_cached_time)
           end
 
           it 'does not log error via Rollbar' do
@@ -147,18 +202,55 @@ RSpec.describe BlogService, type: :service do
           end
         end
 
-        context 'with retries > 0 and it is over 2 hours later (cache warning raised)' do
-          let(:blog) { BlogService.new(inline_fetch: false, retries: 2) }
+        context 'when it is over 2 hours later (Rollbar error raised)' do
+          before do
+            travel 122.minutes
+          end
+
+          let!(:items) { blog.items }
+
+          it_behaves_like 'item fields' do
+            let(:expected_items) { items }
+          end
+
+          it_behaves_like 'a cache with a key'
+
+          it_behaves_like 'item fields' do
+            let(:expected_items) { blog.cached_feed[:items] }
+          end
+
+          it 'does not update the cache' do
+            expect(blog.cached_feed[:timestamp]).to eq(saved_cached_time)
+          end
+
+          it 'logs an error via Rollbar' do
+            expect(Rollbar).to have_received(:error).with("Blog cache for: #{blog.url} is over #{BlogService::CACHE_ERROR_PERIOD.seconds.in_hours} hours out of date")
+          end
+        end
+
+        context 'with retries > 0 and it is over 2 hours later (Rollbar error raised)' do
+          let(:blog) { BlogService.new(retries: 2) }
 
           before do
             allow(Rollbar).to receive(:error)
 
             travel 122.minutes
-            blog.cache_feed!
+          end
+
+          let!(:items) { blog.items }
+
+          it_behaves_like 'item fields' do
+            let(:expected_items) { items }
+          end
+
+          it_behaves_like 'a cache with a key'
+
+          it_behaves_like 'item fields' do
+            let(:expected_items) { blog.cached_feed[:items] }
           end
 
           it 'does not update the cache' do
-            expect(blog.cached_feed[:timestamp]).to eq(cached_time)
+            expect(blog.cached_feed[:timestamp]).to eq(saved_cached_time)
           end
 
           it 'retries' do
@@ -167,25 +259,10 @@ RSpec.describe BlogService, type: :service do
           end
 
           it 'logs one error via Rollbar' do
-            expect(Rollbar).to have_received(:error).once.with("Blog #{blog.url} cache is over #{BlogService::CACHE_WARNING_PERIOD.seconds.in_hours} out of date: 500 Internal Server Error")
+            expect(Rollbar).to have_received(:error).with("Blog cache for: #{blog.url} is over #{BlogService::CACHE_ERROR_PERIOD.seconds.in_hours} hours out of date")
           end
         end
       end
-    end
-  end
-
-  describe '#items' do
-    subject(:blog) { BlogService.new(inline_fetch: true) }
-
-    it_behaves_like 'an empty cache'
-
-    context 'when the cache is empty' do
-      before do
-        blog.items
-      end
-
-      it_behaves_like 'a cache with blog key'
-      it_behaves_like 'a cache with blog fields'
     end
   end
 end
