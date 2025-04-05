@@ -162,11 +162,14 @@ nav.navbar-second {
   &.adult {
     @include navbar($background: $blue-very-dark, $foreground: $white, $background-lozenge: $blue-light, $foreground-lozenge: $blue-dark, $hover: $blue-light);
     @include toggler('dark');
+    border-bottom: 1px solid $blue-dark; // Helps prevent blocks of blue-very-dark in main content merging in with nav
   }
 
   &.pupil {
     @include navbar($background: $yellow-light, $foreground: $yellow-very-dark, $background-lozenge: $yellow-medium, $foreground-lozenge: $yellow-dark, $hover: $yellow-dark);
     @include toggler('light');
+    border-bottom: 1px solid $yellow-pale; // Helps prevent blocks of blue-very-dark in main content merging in with nav
+
   }
 }
 
