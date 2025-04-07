@@ -1,0 +1,5 @@
+<h2>Large Size and Buttons</h2>
+
+<%= simple_form_for([:admin, ActivityType.new]) do |form| %>
+  <%= render(Forms::TrixComponent.new(form: form, size: :large, button_size: :large, field: :description)) %>
+<% end %>

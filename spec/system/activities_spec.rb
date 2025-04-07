@@ -171,6 +171,10 @@ describe 'viewing and recording activities' do
           expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
         end
 
+        it_behaves_like 'a form with a customised trix component', controls: :simple do
+          let(:button_size) { :large }
+        end
+
         context 'with non-custom activity' do
           before do
             fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
