@@ -1,4 +1,4 @@
-<%= simple_form_for([@school, activity], direct_upload: true, html: {class: "activity-form"}) do |f| %>
+<%= simple_form_for([@school, activity], direct_upload: true, html: { class: 'activity-form' }) do |f| %>
 
   <%= render 'shared/errors', subject: activity, subject_name: 'activity' %>
 
@@ -27,7 +27,7 @@
       <p class="small">
         <%= t('activities.form.not_a_standard_activity_message') %>.
       </p>
-      <%= f.text_field :title, class: 'form-control', value: t('activities.form.other')  %>
+      <%= f.text_field :title, class: 'form-control', value: t('activities.form.other') %>
     </div>
   <% end %>
 
@@ -57,7 +57,10 @@
       </small>
     <% end %>
 
-    <%= f.rich_text_area :description, required: true %>
+    <div class="mt-4">
+      <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :large, controls: :simple,
+                                          required: true)) %>
+    </div>
   </div>
 
   <div class="form-group mt-4">
@@ -65,7 +68,8 @@
   </div>
 
   <div class="actions">
-    <%= f.submit activity.persisted? ? t('activities.form.update_activity') : t('activities.form.save_activity'), class: 'btn btn-primary' %>
+    <%= f.submit activity.persisted? ? t('activities.form.update_activity') : t('activities.form.save_activity'),
+                 class: 'btn btn-primary' %>
     <%= link_to t('activities.form.cancel'), activity_type_path(activity.activity_type), class: 'btn btn-secondary' %>
   </div>
 <% end %>
