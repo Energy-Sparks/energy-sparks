@@ -118,11 +118,6 @@ class AmrDataFeedConfig < ApplicationRecord
     "archive-#{identifier}"
   end
 
-  def local_bucket_path
-    path = ENV['AMR_CONFIG_LOCAL_FILE_BUCKET_PATH'] || 'tmp/amr_files_bucket'
-    "#{path}/#{identifier}"
-  end
-
   # Used in SingleReadConverter to determine whether to drop rows that have missing readings
   #
   # Only applicable to row_per_reading formats

@@ -2,8 +2,6 @@ require 'dashboard'
 
 module Amr
   class N3rgyDownloader
-    KWH_PER_M3_GAS = 11.1 # this depends on the calorifc value of the gas and so is an approximate average
-
     def initialize(meter:, start_date:, end_date:)
       @meter = meter
       @start_date = start_date
@@ -92,18 +90,19 @@ module Amr
       # Individual values can also include an additionalInformation key, to indicate
       # why data is missing which we are not currently using either.
       response['devices'][0]['values'].map do |half_hourly_reading|
+        timestamp = DateTime.parse(half_hourly_reading['timestamp'])
         value = case response['unit']
                 when 'm3'
-                  to_kwh(half_hourly_reading['primaryValue'])
+                  to_kwh(half_hourly_reading['primaryValue'], timestamp)
                 else
                   half_hourly_reading['primaryValue']
                 end
-        [DateTime.parse(half_hourly_reading['timestamp']), value]
+        [timestamp, value]
       end
     end
 
-    def to_kwh(value)
-      value.nil? ? nil : KWH_PER_M3_GAS * value
+    def to_kwh(value, timestamp)
+      LocalDistributionZone.kwh_per_m3(@meter&.school&.local_distribution_zone, timestamp) * value unless value.nil?
     end
 
     def api_client

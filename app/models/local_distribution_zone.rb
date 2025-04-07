@@ -25,4 +25,16 @@ class LocalDistributionZone < ApplicationRecord
   validates :publication_id, presence: true, uniqueness: true
 
   scope :by_name, -> { order(:name) }
+
+  AVERAGE_CALORIFIC_VALUE = 39.075
+  MEGAJOULES_TO_KWH = 1 / (1.hour / 1000.0)
+  CORRECTION_FACTOR = 1.02264 # https://www.eonnext.com/business/help/convert-gas-units-to-kwh
+
+  def self.kwh_per_m3(local_distribution_zone, date)
+    calorific_value = unless local_distribution_zone.nil? || date.nil?
+                        local_distribution_zone.readings.find_by(date: date)&.calorific_value
+                      end
+    calorific_value = AVERAGE_CALORIFIC_VALUE if calorific_value.nil?
+    calorific_value * MEGAJOULES_TO_KWH * CORRECTION_FACTOR
+  end
 end

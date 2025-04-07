@@ -6,7 +6,7 @@ module Mailchimp
         begin
           contact = Mailchimp::Contact.from_user(user)
 
-          # Use update contact here, not subscribe_or_update as we're not adding all users initially
+          # Use update contact here, not subscribe_or_update
           mailchimp_member = audience_manager.update_contact(contact)
 
           tags_to_remove = tags_to_remove(mailchimp_member, contact)

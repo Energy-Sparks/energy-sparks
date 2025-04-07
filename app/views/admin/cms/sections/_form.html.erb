@@ -25,7 +25,6 @@
       <%= render 'admin/shared/locale_tabs', f: f, field: :body do |locale| %>
         <div class="body-trix-editor-<%= locale %> form-group">
           <%= f.label t_field(:body, locale), 'Body', class: 'form-label' %>
-          <%= section.body_en.to_s %>
           <%= render Forms::TrixComponent.new(id: "body-#{locale}",
                                               form: f,
                                               field: t_field(:body, locale),

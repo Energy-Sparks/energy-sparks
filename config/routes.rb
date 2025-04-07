@@ -677,6 +677,8 @@ Rails.application.routes.draw do
         concerns :issueable
       end
     end
+    resources :testimonials
+
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update, :destroy] do
