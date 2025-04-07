@@ -11,7 +11,7 @@ function addHeadingAttributes() {
 }
 
 addEventListener("trix-initialize", event => {
-  var customiser = new TrixCustomiser(event.target)
+  const customiser = new TrixCustomiser(event.target)
   customiser.addUrlValidation()
 
   var components = $(event.target).parents('.forms-trix-component');
@@ -40,7 +40,6 @@ document.addEventListener("trix-action-invoke", function(event) {
 
 class TrixCustomiser {
   constructor(element) {
-    console.log(element.toolbarElement)
     this.element = element
   }
 

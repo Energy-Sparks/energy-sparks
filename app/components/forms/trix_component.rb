@@ -19,7 +19,7 @@ module Forms
     end
 
     def data_attributes
-      return { chart_list: charts } if charts
+      { chart_list: charts } if charts
     end
 
     class << self
