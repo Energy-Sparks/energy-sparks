@@ -1,4 +1,4 @@
-<% cache_unless current_user, ['v1', @intervention_type] do %>
+<% cache_if current_user.nil?, ['v1', @intervention_type] do %>
   <% content_for :page_title do %>
     <%= @intervention_type.name %>
   <% end %>
