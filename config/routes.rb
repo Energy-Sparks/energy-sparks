@@ -121,7 +121,6 @@ Rails.application.routes.draw do
     resources :electricity_targets, only: [:index], concerns: :unlisted
     resources :gas_consumption_during_holiday, only: [:index], concerns: :unlisted
     resources :gas_targets, only: [:index], concerns: :unlisted
-    resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
     resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
