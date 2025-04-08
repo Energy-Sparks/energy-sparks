@@ -59,7 +59,7 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
-  get 'youtube/:id', to: 'youtube#show'
+  get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
 
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do

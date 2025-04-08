@@ -48,7 +48,7 @@ document.addEventListener("trix-action-invoke", function(event) {
     if (matches !== null) {
       let id = matches[2]
       $.ajax({
-        url: `/youtube/${encodeURIComponent(id)}`,
+        url: `/cms/youtube_embed/${encodeURIComponent(id)}`,
         type: 'get',
         error: function(xhr) {
           alert(xhr.statusText);
