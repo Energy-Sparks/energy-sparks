@@ -37,12 +37,11 @@ document.addEventListener("trix-action-invoke", function(event) {
     element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
   }
   if(event.actionName === 'x-insert-youtube') {
-    var local_event = event
-    var target = event.target
+    const youtubeRegex = /^https:\/\/([^\.]+\.)?youtube\.com\/watch\?v=(.*)/
+    const target = event.target
+
     var dialog = $(event.invokingElement).parents('.trix-dialog--youtube')
     var input = $(dialog).find('input[name=youtube-url]')
-    const youtubeRegex = /^https:\/\/([^\.]+\.)?youtube\.com\/watch\?v=(.*)/
-
     var matches = input.val().match(youtubeRegex);
 
     if (matches !== null) {
@@ -51,12 +50,9 @@ document.addEventListener("trix-action-invoke", function(event) {
         url: `/cms/youtube_embed/${encodeURIComponent(id)}`,
         type: 'get',
         error: function(xhr) {
-          alert(xhr.statusText);
+          console.log(xhr.statusText);
         },
         success: function(embed) {
-          //console.log(target) //element
-          //console.log(target.editor) //Editor
-          //console.log(target.editorController)
           let attachment = new Trix.Attachment(embed)
           target.editor.insertAttachment(attachment)
           target.editorController.toolbarController.hideDialog()
