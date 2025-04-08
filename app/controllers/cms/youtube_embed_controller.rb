@@ -1,14 +1,14 @@
 module Cms
   class YoutubeEmbedController < ApplicationController
     def show
-      @embed = Cms::YoutubeEmbed.new(id: params[:id])
+      @youtube_embed = Cms::YoutubeEmbed.new(id: params[:id])
       content = render_to_string(
         partial: 'cms/youtube_embeds/thumbnail',
-        locals: { embed: @embed },
+        locals: { youtube_embed: @youtube_embed },
         formats: [:html]
       )
       render json: {
-        sgid: @embed.attachable_sgid,
+        sgid: @youtube_embed.attachable_sgid,
         content: content
       }
     end
