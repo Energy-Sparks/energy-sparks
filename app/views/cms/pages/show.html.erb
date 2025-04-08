@@ -8,12 +8,18 @@
           <h1><%= @page.title %></h1>
         </div>
       </div>
-      <%= render 'cms/search' %>
+      <div class="row">
+        <div class="col">
+          <%= @page.description %>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
 
 <div class="container">
+  <%= render 'cms/search' %>
+
   <div class="row mt-2">
     <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
       <%= render 'cms/nav', categories: @categories, classes: '' %>
@@ -25,14 +31,6 @@
         <% c.with_title { 'Audience' } %>
         <%= t("page.audience.#{@page.audience}") %>
       <% end %>
-
-      <div class="row">
-        <div class="col">
-          <p>
-            <%= @page.description %>
-          </p>
-        </div>
-      </div>
 
       <% @page.sections.published.positioned.each do |section| %>
         <h3 id="<%= section.slug %>" class="scrollable-title"><%= section.title %></h3>

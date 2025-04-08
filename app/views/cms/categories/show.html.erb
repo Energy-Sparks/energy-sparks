@@ -8,23 +8,21 @@
           <h1><%= @category.title %></h1>
         </div>
       </div>
-      <%= render 'cms/search' %>
+      <div class="row">
+        <div class="col">
+          <%= @category.description %>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
 
 <div class="container">
+  <%= render 'cms/search' %>
+
   <div class="row mt-2">
     <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
       <%= render 'cms/nav', categories: @categories, classes: '' %>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <p>
-          <%= @category.description %>
-        </p>
-      </div>
     </div>
 
     <div id="page-body" class="col-md-8 col-lg-8 col-xl-9">
