@@ -46,6 +46,10 @@ module EnergySparks
         Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
       ActionText::ContentHelper.allowed_attributes.add 'id'
       ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
+      ActionText::ContentHelper.allowed_attributes.add 'allow'
+      ActionText::ContentHelper.allowed_attributes.add 'allowfullscreen'
+      ActionText::ContentHelper.allowed_tags = Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_tags
+      ActionText::ContentHelper.allowed_tags.add 'iframe'
     end
     config.exceptions_app = self.routes
     # Default good job execution mode configuration for test
