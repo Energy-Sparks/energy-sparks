@@ -10,7 +10,7 @@
 <div class="container">
   <div class="row mt-2">
     <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
-      <%= render 'cms/nav', categories: @categories, classes: '' %>
+      <%= render 'cms/nav', categories: @categories, current_category: @page.category, classes: '' %>
     </div>
 
     <div id="page-body" class="col-md-5 col-lg-5 col-xl-7">

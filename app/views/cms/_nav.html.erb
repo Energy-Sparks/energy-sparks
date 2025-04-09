@@ -6,11 +6,14 @@
  <% categories.each do |category| %>
 
    <% c.with_section name: category.title,
+                     expanded: current_category == category,
+                     icon: category.icon,
+                     classes: 'generic-section',
                      options: { match_controller: false } do |s| %>
 
      <% category.pages.published.by_title.each do |page| %>
        <% s.with_item(name: page.title,
-                      href: page_path(page), classes: 'small') %>
+                      href: page_path(page), classes: 'small generic-item') %>
      <% end %>
    <% end %>
  <% end %>
