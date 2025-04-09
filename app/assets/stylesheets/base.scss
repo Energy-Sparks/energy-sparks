@@ -313,6 +313,10 @@ input, progress {
     }
   }
 
+  &.theme-pale {
+    background-color: $blue-pale;
+  }
+
   &.theme-light {
     background-color: $blue-light;
   }

@@ -1,20 +1,10 @@
 <%= content_for :page_title, t('categories.index.title') %>
 
 <% content_for :dashboard_header do %>
-  <div>
-    <div id="dashboard-header-welcome" class="col-12 col-md-9">
-      <div class="row">
-        <div class="col">
-          <h1><%= t('categories.index.title') %></h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <p><%= t('categories.index.intro') %></p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: t('categories.index.title'),
+        subtitle: t('categories.index.subtitle')
+      ) %>
 <% end %>
 
 <div class="container">
@@ -22,7 +12,6 @@
 
   <%= render Layout::GridComponent.new(cols: 3, classes: 'pb-4 mt-4 mb-4',
                                        cell_classes: 'mb-4') do |grid| %>
-
     <% @categories.each do |category| %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: category.icon, style: :circle %>

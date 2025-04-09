@@ -1,20 +1,10 @@
 <%= content_for :page_title, 'Support Pages' %>
 
 <% content_for :dashboard_header do %>
-  <div>
-    <div id="dashboard-header-welcome" class="col-12 col-md-9">
-      <div class="row">
-        <div class="col">
-          <h1><%= @category.title %></h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <%= @category.description %>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: @category.title,
+        subtitle: @category.description
+      ) %>
 <% end %>
 
 <div class="container">
