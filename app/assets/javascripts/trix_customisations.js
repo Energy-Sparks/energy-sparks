@@ -31,10 +31,41 @@ addEventListener("trix-initialize", event => {
 })
 
 document.addEventListener("trix-action-invoke", function(event) {
-  if(event.actionName === "x-insert-chart"){
+  if(event.actionName === 'x-insert-chart') {
     var element = event.target;
     var parentWrapper = $(element).parents('.chart-list');
     element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
+  }
+  if(event.actionName === 'x-insert-youtube') {
+    const target = event.target
+
+    var dialog = $(event.invokingElement).parents('.trix-dialog--youtube')
+    var input = $(dialog).find('input[name=youtube-url]')
+
+    url = new URL(input.val())
+
+    var youtube_id = null
+    // catch all link variations where id is a parameter, or short urls where its last part of the path
+    if (url.searchParams.has('v')) {
+      var youtube_id = url.searchParams.get('v')
+    } else {
+      var youtube_id = url.pathname.split('/').pop()
+    }
+
+    if (youtube_id !== null) {
+      $.ajax({
+        url: `/cms/youtube_embed/${encodeURIComponent(youtube_id)}`,
+        type: 'get',
+        error: function(xhr) {
+          console.log(xhr.statusText);
+        },
+        success: function(embed) {
+          let attachment = new Trix.Attachment(embed)
+          target.editor.insertAttachment(attachment)
+          target.editorController.toolbarController.hideDialog()
+        }
+      })
+    }
   }
 })
 
@@ -56,6 +87,7 @@ class TrixCustomiser {
 
   createAdvancedEditor() {
     this.replaceHeadingButton();
+    this.addYoutubeButton();
   }
 
   addChartButton(chart_list) {
@@ -70,6 +102,11 @@ class TrixCustomiser {
     this.buttonGroupBlockTools.insertAdjacentHTML("afterbegin", this.headingButtonTemplate)
     // add in dialog for new H1-H6 selection
     this.dialogsElement.insertAdjacentHTML("beforeend", this.headingDialogTemplate)
+  }
+
+  addYoutubeButton() {
+    this.buttonGroupFileTools.insertAdjacentHTML("beforeend", this.youtubeButtonTemplate)
+    this.dialogsElement.insertAdjacentHTML("beforeend", this.youtubeDialogTemplate)
   }
 
   getButton(selector) {
@@ -127,8 +164,32 @@ class TrixCustomiser {
     `
   }
 
+  get youtubeButtonTemplate() {
+    return '<button type="button" class="trix-button" data-trix-action="youtube" data-trix-key="y" title="Youtube" tabindex="-1" data-trix-active=""><i class="fa-brands fa-youtube"></i></button>'
+  }
+
+  get youtubeDialogTemplate() {
+    return `
+      <div class="trix-dialog trix-dialog--youtube" data-trix-dialog="youtube">
+        <div class="trix-dialog__link-fields">
+          <input type="text" name="youtube-url" placeholder="Enter Youtube URL..." class="trix-input trix-input--dialog mr-3">
+          <div class="trix-button-group">
+            <input type="button"
+                   class="trix-button trix-button--dialog"
+                   value="Insert"
+                   data-trix-action="x-insert-youtube">
+          </div>
+        </div>
+      </div>
+    `
+  }
+
   get dialogsElement() {
     return this.toolbarElement.querySelector("[data-trix-dialogs]")
+  }
+
+  get buttonGroupFileTools() {
+    return this.toolbarElement.querySelector("[data-trix-button-group=file-tools]")
   }
 
   get buttonGroupTextTools() {
