@@ -57,7 +57,7 @@
 
     &:hover, &.current {
       border-radius: 5px;
-      background-color: $blue-light;
+      background-color: $teal-light;
     }
 
     &.current {
@@ -73,7 +73,7 @@
     }
 
     i.fuel {
-      color: $blue-dark;
+      color: $teal-dark;
     }
   }
 }

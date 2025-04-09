@@ -11,7 +11,8 @@
                      classes: 'generic-section',
                      options: { match_controller: false } do |s| %>
 
-     <% category.pages.published.by_title.each do |page| %>
+     <% scope = current_user&.admin? ? category.pages : category.pages.published %>
+     <% scope.by_title.each do |page| %>
        <% s.with_item(name: page.title,
                       href: page_path(page), classes: 'small generic-item') %>
      <% end %>

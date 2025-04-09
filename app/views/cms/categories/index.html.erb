@@ -14,7 +14,7 @@
                                        cell_classes: 'mb-4') do |grid| %>
     <% @categories.each do |category| %>
       <% grid.with_stats_card do |card| %>
-        <%= card.with_icon name: category.icon, style: :circle %>
+        <%= card.with_icon name: category.icon, style: :circle, classes: 'text-teal-dark' %>
         <%= card.with_header title: category.title, url: category_path(category) %>
         <%= card.with_subtext { category.description } %>
       <% end %>
