@@ -37,17 +37,24 @@ document.addEventListener("trix-action-invoke", function(event) {
     element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
   }
   if(event.actionName === 'x-insert-youtube') {
-    const youtubeRegex = /^https:\/\/([^\.]+\.)?youtube\.com\/watch\?v=(.*)/
     const target = event.target
 
     var dialog = $(event.invokingElement).parents('.trix-dialog--youtube')
     var input = $(dialog).find('input[name=youtube-url]')
-    var matches = input.val().match(youtubeRegex);
 
-    if (matches !== null) {
-      let id = matches[2]
+    url = new URL(input.val())
+
+    var youtube_id = null
+    // catch all link variations where id is a parameter, or short urls where its last part of the path
+    if (url.searchParams.has('v')) {
+      var youtube_id = url.searchParams.get('v')
+    } else {
+      var youtube_id = url.pathname.split('/').pop()
+    }
+
+    if (youtube_id !== null) {
       $.ajax({
-        url: `/cms/youtube_embed/${encodeURIComponent(id)}`,
+        url: `/cms/youtube_embed/${encodeURIComponent(youtube_id)}`,
         type: 'get',
         error: function(xhr) {
           console.log(xhr.statusText);
