@@ -1,4 +1,4 @@
-<% cache_if current_user.nil?, ['v1', @intervention_type] do %>
+<% cache_if current_user.nil?, [@intervention_type, I18n.locale], expires_in: 1.hour do %>
   <% content_for :page_title do %>
     <%= @intervention_type.name %>
   <% end %>
