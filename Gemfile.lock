@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: 40ced72a5f38d1811b7e967a71b1f3970b5da6ca
-  branch: 4839-monthly-gas-comparison-chart-not-working-for-falconers-hill
+  revision: 818588dc31dcfa4c18a48a1ded8f21e4c21dc694
+  tag: 6.1.11
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
