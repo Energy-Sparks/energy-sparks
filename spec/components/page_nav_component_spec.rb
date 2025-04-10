@@ -54,6 +54,7 @@ RSpec.describe PageNavComponent, type: :component do
       it { expect(list_item).to have_css('.bg-section') }
       it { expect(list_item).to have_css('.nav-link') }
       it { expect(list_item).to have_css('.toggler') }
+      it { expect(page_nav).to have_css('.page-nav-component') } # css based on this
     end
 
     context 'with toggling for section' do

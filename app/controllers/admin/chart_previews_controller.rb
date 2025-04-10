@@ -2,7 +2,6 @@ require 'dashboard'
 
 module Admin
   class ChartPreviewsController < AdminController
-    before_action :set_school
     before_action :load_chart_list
     before_action :set_chart_type
     before_action :set_chart_titles
@@ -10,18 +9,17 @@ module Admin
 
     def show
       @schools = School.data_enabled.by_name
+      @preview_school = School.friendly.find(chart_params[:school_id]) if chart_params[:school_id].present?
+      return unless params[:commit] == 'Next school' && @preview_school
+
+      ids = @schools.pluck(:id)
+      @preview_school = School.find(ids[ids.find_index(@preview_school.id) + 1])
     end
 
     private
 
-    def set_school
-      return nil unless chart_params[:school_id].present?
-      @preview_school = School.friendly.find(chart_params[:school_id])
-    end
-
     def set_chart_type
-      return nil unless chart_params[:chart_type].present?
-      @chart_type = chart_params[:chart_type].to_sym
+      @chart_type = chart_params[:chart_type].to_sym if chart_params[:chart_type].present?
     end
 
     def set_chart_titles

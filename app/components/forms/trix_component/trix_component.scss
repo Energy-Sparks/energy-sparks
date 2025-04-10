@@ -25,3 +25,13 @@ trix-toolbar {
   }
 
 }
+
+.trix-dialog--youtube {
+  max-width: 600px;
+}
+
+trix-editor {
+  .youtube-embed {
+    max-width: 400px;
+  }
+}

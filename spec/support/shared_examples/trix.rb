@@ -29,6 +29,7 @@ RSpec.shared_examples 'a form with a customised trix component' do |controls: :d
       expect(page).not_to have_css('button[data-trix-attribute="code"]')
       expect(page).not_to have_css('button[data-trix-attribute="chart"]')
       expect(page).not_to have_css('button[data-trix-action="x-heading"]')
+      expect(page).not_to have_css('button[data-trix-action="youtube"]')
     end
   end
 
@@ -38,6 +39,7 @@ RSpec.shared_examples 'a form with a customised trix component' do |controls: :d
       expect(page).to have_css('button[data-trix-attribute="quote"]')
       expect(page).to have_css('button[data-trix-attribute="code"]')
       expect(page).to have_css('button[data-trix-action="x-heading"]')
+      expect(page).to have_css('button[data-trix-action="youtube"]')
     end
   end
 
@@ -85,6 +87,24 @@ RSpec.shared_examples 'a trix component with a working heading button' do
       find('button[data-trix-action="x-heading"]').click
       find('button[data-trix-attribute="heading2"]').click
       expect(find('trix-editor').value).to eq("<h2>#{content}</h2>")
+    end
+  end
+end
+
+RSpec.shared_examples 'a trix component with a working youtube embed button' do
+  let(:id) { nil }
+
+  let(:selector) do
+    id ? "##{id}.forms-trix-component" : '.forms-trix-component'
+  end
+
+  it 'inserts a youtube embed' do
+    within(selector) do
+      find('button[data-trix-action="youtube"]').click
+      fill_in 'youtube-url', with: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+      click_on 'Insert'
+      # find the thumbnail image, will retry allowing the ajax call to complete
+      expect(find('img[src="http://i3.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg"]')).not_to be_nil
     end
   end
 end

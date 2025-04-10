@@ -33,6 +33,10 @@ describe 'manage sections' do
         let(:content) { 'Section Body' }
       end
 
+      it_behaves_like 'a trix component with a working youtube embed button' do
+        let(:id) { 'body-en' }
+      end
+
       it 'creates the model' do
         click_on 'Save'
         expect(page).to have_content('Section Title')

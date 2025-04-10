@@ -11,7 +11,7 @@ run a specific chart using their data.
               label: 'Choose school',
               label_method: ->(k) { k.name },
               include_blank: false,
-              selected: (params[:preview_chart].present? ? params[:preview_chart]['school_id'] : nil),
+              selected: @preview_school&.id,
               input_html: { class: 'form-control select2' } %>
 
   <%= f.input :chart_type,
@@ -43,6 +43,7 @@ run a specific chart using their data.
 
   <%= f.submit 'Run chart', class: 'btn btn-primary' %>
   <%= link_to 'Clear', admin_chart_preview_path, class: 'btn btn-primary' %>
+  <%= f.submit 'Next school', class: 'btn btn-primary' %>
 <% end %>
 
 <div class="mt-4">
