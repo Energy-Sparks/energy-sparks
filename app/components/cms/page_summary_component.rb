@@ -11,7 +11,7 @@ module Cms
     end
 
     def sections
-      admin? ? @page.sections.positioned : @page.sections.published.positions
+      admin? ? @page.sections.positioned : @page.sections.published.positioned
     end
 
     private
