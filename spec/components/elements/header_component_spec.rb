@@ -33,6 +33,13 @@ RSpec.describe Elements::HeaderComponent, :include_application_helper, type: :co
     end
   end
 
+  context 'with link' do
+    let(:params) { base_params.merge({ url: 'https://example.org' }) }
+
+    it { expect(html).to have_css('h1') }
+    it { expect(html).to have_link(href: 'https://example.org') }
+  end
+
   context 'with invalid level' do
     let(:params) { { level: 7, title: title } }
 

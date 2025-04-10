@@ -37,13 +37,14 @@ class PageNavComponent < ViewComponent::Base
 
     attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(name: nil, icon: nil, visible: true, toggler: true, classes: nil, options: {})
+    def initialize(name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil, options: {})
       @name = name
       @classes = classes
       @icon = icon
       @visible = visible
       @options = options
       @toggler = toggler
+      @expanded = expanded
     end
 
     def id
@@ -51,7 +52,11 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def link_text
-      helpers.text_with_icon(name, icon, class: 'fuel') + content_tag(:span, helpers.toggler, class: 'float-right')
+      helpers.text_with_icon(name, icon, class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'float-right')
+    end
+
+    def expanded?
+      @expanded
     end
 
     def render?
@@ -60,7 +65,9 @@ class PageNavComponent < ViewComponent::Base
 
     def call
       if @toggler
-        args = { class: 'nav-link toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+        toggle_classes = 'nav-link toggler'
+        toggle_classes += ' collapsed' unless expanded?
+        args = { class: toggle_classes, 'data-toggle': 'collapse', 'data-target': "##{id}" }
       else
         args = { class: '' }
       end

@@ -25,3 +25,31 @@ RSpec.shared_examples_for 'a publishable model' do
     expect(model.published).to be(false)
   end
 end
+
+RSpec.shared_examples_for 'a page with a support page nav' do
+  let(:categories) { Cms::Category.all.published }
+  let(:pages) { Cms::Page.all.published }
+  let(:current_category) { nil }
+
+  it 'displays all categories as collapsable sections' do
+    within('#page-nav') do
+      categories.each do |category|
+        if current_category == category
+          expect(page).to have_css("a.nav-link[data-target='##{category.slug}']")
+        else
+          expect(page).to have_css("a.nav-link.collapsed[data-target='##{category.slug}']")
+        end
+      end
+    end
+  end
+
+  it 'links to all pages within their category' do
+    within('#page-nav') do
+      pages.each do |cms_page|
+        within("div##{cms_page.category.slug}") do
+          expect(page).to have_link(cms_page.title, href: page_path(cms_page))
+        end
+      end
+    end
+  end
+end
