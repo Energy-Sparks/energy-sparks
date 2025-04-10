@@ -4,7 +4,6 @@
                                 options: { user: current_user, match_controller: true } do |c| %>
 
  <% categories.each do |category| %>
-
    <% c.with_section name: category.title,
                      expanded: current_category == category,
                      icon: category.icon,

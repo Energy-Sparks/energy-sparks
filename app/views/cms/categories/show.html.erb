@@ -1,4 +1,4 @@
-<%= content_for :page_title, 'Support Pages' %>
+<%= content_for :page_title, @category.title %>
 
 <% content_for :dashboard_header do %>
   <%= render Layout::Cards::PageHeaderComponent.new(
