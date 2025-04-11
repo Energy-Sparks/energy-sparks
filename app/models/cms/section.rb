@@ -27,6 +27,7 @@
 module Cms
   class Section < Cms::Base
     extend FriendlyId
+    include Searchable
 
     self.table_name = 'cms_sections'
 
@@ -54,6 +55,22 @@ module Cms
       if position.nil?
         max_position = page.sections.maximum(:position)
         self.position = max_position ? max_position + 1 : 0
+      end
+    end
+
+    class << self
+      private
+
+      def searchable_filter
+        %|"#{table_name}"."published" = 'true'|
+      end
+
+      def searchable_body_field
+        'body'
+      end
+
+      def searchable_metadata_fields
+        ['title']
       end
     end
   end

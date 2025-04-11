@@ -103,4 +103,20 @@ class InterventionType < ApplicationRecord
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
   end
+
+  class << self
+    private
+
+    def searchable_filter
+      %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+    end
+
+    def searchable_body_field
+      'description'
+    end
+
+    def searchable_metadata_fields
+      %w[name summary]
+    end
+  end
 end

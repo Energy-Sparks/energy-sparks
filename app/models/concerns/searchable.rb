@@ -35,20 +35,20 @@ module Searchable
             SELECT "#{table_name}"."id" AS id, "action_text_rich_texts"."body"::text AS action_text_rich_texts_body
             FROM "#{table_name}"
             INNER JOIN "action_text_rich_texts" ON "action_text_rich_texts"."record_type" = '#{name}'
-            AND "action_text_rich_texts"."name" = 'description'
+            AND "action_text_rich_texts"."name" = '#{searchable_body_field}'
             AND "action_text_rich_texts"."locale" = '#{locale}'
             AND "action_text_rich_texts"."record_id" = "#{table_name}"."id"
-            WHERE "#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'
+            WHERE #{searchable_filter}
           ) action_text_rich_texts_results ON action_text_rich_texts_results.id = "#{table_name}"."id"
 
           LEFT OUTER JOIN (
             SELECT "#{table_name}"."id" AS id, string_agg("mobility_string_translations"."value"::text, ' ') AS mobility_string_translations_value
             FROM "#{table_name}"
             INNER JOIN "mobility_string_translations" ON "mobility_string_translations"."translatable_type" = '#{name}'
-            AND "mobility_string_translations"."key" IN ('name', 'summary')
+            AND "mobility_string_translations"."key" IN (#{searchable_metadata_fields.map { |s| "'#{s}'" }.join(', ')})
             AND "mobility_string_translations"."translatable_id" = "#{table_name}"."id"
             AND "mobility_string_translations"."locale" = '#{locale}'
-            WHERE "#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'
+            WHERE #{searchable_filter}
             GROUP BY "#{table_name}"."id"
           ) mobility_string_translations_results ON mobility_string_translations_results.id = "#{table_name}"."id"
 
