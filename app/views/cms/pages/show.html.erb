@@ -8,26 +8,41 @@
 <% end %>
 
 <div class="container">
+  <div class="row d-md-none">
+    <div class="col d-md-none">
+      <%= render PageNavComponent::CollapseButton.new %>
+    </div>
+  </div>
   <div class="row mt-2">
     <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
-      <%= render 'cms/nav', categories: @categories, current_category: @page.category, classes: '' %>
+      <%= render 'cms/nav',
+                 categories: @categories,
+                 current_category: @page.category %>
     </div>
 
-    <div id="page-body" class="col-md-5 col-lg-5 col-xl-7">
+    <div id="cms-page-body" class="col-md-5 col-lg-5 col-xl-7">
 
       <%= render PromptComponent.new(status: :none) do |c| %>
         <% c.with_title { 'Audience' } %>
         <%= t("page.audience.#{@page.audience}") %>
       <% end %>
 
-      <% @page.sections.published.positioned.each do |section| %>
-        <h3 id="<%= section.slug %>" class="scrollable-title"><%= section.title %></h3>
-        <%= section.body %>
+      <% @sections.each do |section| %>
+        <section id="<%= section.slug %>"
+                 class="cms-page-section scrollable-title">
+          <h2>
+            <%= section.title %>
+            <% if current_user&.admin? && !section.published %>
+              <span class="badge badge-warning">Unpublished</span>
+            <% end %>
+          </h2>
+          <%= section.body %>
+        </section>
       <% end %>
     </div>
 
-    <div id="section-navigation" class="col-md-3 col-lg-3 col-xl-2">
-      <%= render 'section_nav', page: @page %>
+    <div class="d-sm-none d-md-block col-md-3 col-lg-3 col-xl-2">
+      <%= render 'section_nav', sections: @sections %>
     </div>
 
   </div>

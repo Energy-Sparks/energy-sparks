@@ -14,6 +14,15 @@ module ContentManagement
     @categories = scope.by_title
   end
 
+  def load_sections
+    scope = if current_user_admin?
+              @page.sections
+            else
+              @page.sections.published
+            end
+    @sections = scope.positioned
+  end
+
   def redirect_unless_feature_enabled?
     redirect_to root_path, notice: 'You are not authorized' unless Flipper.enabled?(:support_pages, current_user)
   end

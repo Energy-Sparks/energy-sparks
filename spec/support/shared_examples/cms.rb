@@ -6,6 +6,16 @@ RSpec.shared_examples_for 'a cms admin page' do
   end
 end
 
+RSpec.shared_examples_for 'a cms page header' do
+  it 'displays title and description' do
+    within('.layout-cards-page-header-component') do
+      expect(page).to have_content(model.title)
+      expect(page).to have_content(model.description)
+    end
+  end
+end
+
+
 RSpec.shared_examples_for 'a publishable model' do
   it 'allows model to be published and unpublished', :js do
     accept_confirm do
