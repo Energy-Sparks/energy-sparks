@@ -13,6 +13,7 @@ module Cms
     layout 'dashboards'
 
     def show
+      @sections = current_user&.admin? ? @page.sections.positioned : @page.sections.published.positioned
       render :show, layout: 'dashboards'
     end
   end
