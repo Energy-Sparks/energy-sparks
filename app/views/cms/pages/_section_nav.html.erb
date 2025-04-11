@@ -1,9 +1,11 @@
 <div style="position: sticky; top: 100px;">
-  <h4>Go to section</h4>
-  <ul>
+  <ul class="nav flex-column flex-nowrap w-100">
+    <li class="nav-item">
+        <h4><%= t('pages.section_nav.title') %></h4>
+    </li>
     <% page.sections.published.positioned.each do |section| %>
-      <li>
-        <a href="#<%= section.slug %>"><%= section.title %></a>
+      <li class="nav-item">
+        <a class="nav-link" href="#<%= section.slug %>"><%= section.title %></a>
       </li>
     <% end %>
   </ul>

@@ -6,3 +6,6 @@ en:
       title: Find help and support
     nav:
       title: Support index
+  pages:
+    section_nav:
+      title: Go to section

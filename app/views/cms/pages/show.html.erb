@@ -21,7 +21,7 @@
       <% end %>
 
       <% @page.sections.published.positioned.each do |section| %>
-        <h3 id="<%= section.slug %>" class="scrollable-title"><%= section.title %></h3>
+        <h2 id="<%= section.slug %>" class="scrollable-title"><%= section.title %></h2>
         <%= section.body %>
       <% end %>
     </div>
