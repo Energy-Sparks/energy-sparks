@@ -3,7 +3,7 @@
     <li class="nav-item">
       <a class="nav-link header"><%= t('pages.section_nav.title') %></a>
     </li>
-    <% @sections.positioned.each do |section| %>
+    <% sections.positioned.each do |section| %>
       <li class="nav-item overflow-hidden section">
         <a class="nav-link item small generic-item section-link"
            href="#<%= section.slug %>">

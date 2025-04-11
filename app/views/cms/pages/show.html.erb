@@ -10,7 +10,9 @@
 <div class="container">
   <div class="row mt-2">
     <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
-      <%= render 'cms/nav', categories: @categories, current_category: @page.category, classes: '' %>
+      <%= render 'cms/nav',
+                 categories: @categories,
+                 current_category: @page.category %>
     </div>
 
     <div id="cms-page-body" class="col-md-5 col-lg-5 col-xl-7">
@@ -21,15 +23,21 @@
       <% end %>
 
       <% @sections.each do |section| %>
-        <section id="<%= section.slug %>" class="cms-page-section scrollable-title">
-          <h2><%= section.title %></h2>
+        <section id="<%= section.slug %>"
+                 class="cms-page-section scrollable-title">
+          <h2>
+            <%= section.title %>
+            <% if current_user&.admin? && !section.published %>
+              <span class="badge badge-warning">Unpublished</span>
+            <% end %>
+          </h2>
           <%= section.body %>
         </section>
       <% end %>
     </div>
 
     <div class="col-md-3 col-lg-3 col-xl-2">
-      <%= render 'section_nav', page: @page %>
+      <%= render 'section_nav', sections: @sections %>
     </div>
 
   </div>
