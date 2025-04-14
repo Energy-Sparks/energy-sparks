@@ -105,6 +105,4 @@ Rails.application.configure do
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true
   config.active_job.queue_adapter = :good_job
-  # this interferes with trix when attaching
-  config.action_view.annotate_rendered_view_with_filenames = false unless ENV.key?('ANNOTATE_RENDERED_VIEWS')
 end
