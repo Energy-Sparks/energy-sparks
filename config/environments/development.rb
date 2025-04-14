@@ -67,6 +67,9 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
+  # Annotate rendered view with file names.
+  config.action_view.annotate_rendered_view_with_filenames = true
+
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
@@ -102,7 +105,6 @@ Rails.application.configure do
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true
   config.active_job.queue_adapter = :good_job
-
-  # Annotate rendered view with file names.
-  config.action_view.annotate_rendered_view_with_filenames = ENV.fetch('ANNOTATE_RENDERED_VIEWS', false)
+  # this interferes with trix when attaching
+  config.action_view.annotate_rendered_view_with_filenames = false unless ENV.key?('ANNOTATE_RENDERED_VIEWS')
 end
