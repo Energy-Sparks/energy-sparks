@@ -60,7 +60,10 @@ document.addEventListener("trix-action-invoke", function(event) {
           console.log(xhr.statusText);
         },
         success: function(embed) {
-          let attachment = new Trix.Attachment(embed)
+          const attachment = new Trix.Attachment({
+            sgid: embed.sgid,
+            content: `<div><img class="youtube-embed" src="${embed.thumbnail_url}" /></div>`
+          })
           target.editor.insertAttachment(attachment)
           target.editorController.toolbarController.hideDialog()
         }
