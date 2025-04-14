@@ -58,9 +58,12 @@ document.addEventListener("trix-action-invoke", function(event) {
           console.log(xhr.statusText);
         },
         success: function(embed) {
+          const img = document.createElement('img')
+          img.className = 'youtube-embed'
+          img.src = embed.thumbnail_url
           const attachment = new Trix.Attachment({
             sgid: embed.sgid,
-            content: `<div><img class="youtube-embed" src="${embed.thumbnail_url}" /></div>`
+            content: document.createElement('div').appendChild(img).parentElement.outerHTML
           })
           target.editor.insertAttachment(attachment)
           target.editorController.toolbarController.hideDialog()
