@@ -1,7 +1,7 @@
 class InterventionTypesController < ApplicationController
   include Pagy::Backend
   load_and_authorize_resource
-
+  before_action :handle_head_request, only: [:show]
   skip_before_action :authenticate_user!, only: [:search, :show, :for_school]
 
   def search

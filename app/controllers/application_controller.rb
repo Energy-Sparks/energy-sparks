@@ -105,4 +105,10 @@ class ApplicationController < ActionController::Base
       session[:updated_tracked_fields] = true
     end
   end
+
+  def handle_head_request
+    if request.head?
+      head :ok
+    end
+  end
 end
