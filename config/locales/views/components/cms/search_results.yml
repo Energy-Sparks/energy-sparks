@@ -1,0 +1,9 @@
+---
+en:
+  components:
+    cms:
+      search_results:
+        results_html:
+          one: Found <span class="count">1</span> result for "<span class="keywords">%{keywords}</span>"
+          other: Found <span class="count">%{count}</span> results for "<span class="keywords">%{keywords}</span>"
+          zero: Found no results for "<span class="keywords">%{keywords}</span>"

@@ -2,6 +2,7 @@
 
 module Cms
   class PagesController < ApplicationController
+    include Pagy::Backend
     include ContentManagement
 
     skip_before_action :authenticate_user!
@@ -14,6 +15,11 @@ module Cms
 
     def show
       render :show, layout: 'dashboards'
+    end
+
+    def search
+      # TODO visibility?
+      @pagy, @results = pagy(Cms::Section.search(query: params[:query], locale: I18n.locale))
     end
   end
 end

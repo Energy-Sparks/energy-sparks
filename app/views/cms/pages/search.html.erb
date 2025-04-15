@@ -1,0 +1,19 @@
+<%= content_for :page_title, t('pages.search.title') %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: t('pages.search.title')
+      ) %>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div id="page-body" class="col-md-12">
+      <%= render 'cms/search' %>
+
+      <%= render Cms::SearchResultsComponent.new(query: params[:query], results: @results) %>
+
+      <%= render 'shared/pagy_footer' %>
+    </div>
+  </div>
+</div>

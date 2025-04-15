@@ -6,3 +6,7 @@ en:
       title: Find help and support
     nav:
       title: Support index
+  pages:
+    search:
+      button: Search
+      title: Search our support pages
