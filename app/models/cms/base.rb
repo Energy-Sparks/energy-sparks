@@ -1,6 +1,7 @@
 module Cms
   class Base < ApplicationRecord
     extend Mobility
+    include TransifexSerialisable
 
     self.abstract_class = true
 
@@ -14,6 +15,10 @@ module Cms
 
     def publishable?
       true
+    end
+
+    def self.tx_resources
+      published.order(:id)
     end
 
     private
