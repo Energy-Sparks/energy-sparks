@@ -23,5 +23,16 @@ module Cms
                                                  locale: I18n.locale,
                                                  show_all: current_user_admin?))
     end
+
+    private
+
+    def load_sections
+      scope = if current_user_admin?
+                @page.sections
+              else
+                @page.sections.published
+              end
+      @sections = scope.positioned
+    end
   end
 end
