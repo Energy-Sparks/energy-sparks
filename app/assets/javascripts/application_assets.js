@@ -73,3 +73,4 @@
 //= require sortable.min
 //= require sort_list
 //= require delete_association
+//= require section_nav
