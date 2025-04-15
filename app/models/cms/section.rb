@@ -61,8 +61,12 @@ module Cms
     class << self
       private
 
-      def searchable_filter
-        %|"#{table_name}"."published" = 'true'|
+      def searchable_filter(show_all: false)
+        if show_all == true
+          %|"#{table_name}"."published" in ('true', 'false')|
+        else
+          %|"#{table_name}"."published" = 'true'|
+        end
       end
 
       def searchable_body_field

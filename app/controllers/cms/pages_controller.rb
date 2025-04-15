@@ -18,8 +18,9 @@ module Cms
     end
 
     def search
-      # TODO visibility?
-      @pagy, @results = pagy(Cms::Section.search(query: params[:query], locale: I18n.locale))
+      @pagy, @results = pagy(Cms::Section.search(query: params[:query],
+                                                 locale: I18n.locale,
+                                                 show_all: current_user_admin?))
     end
   end
 end

@@ -6,23 +6,23 @@
 module Searchable
   extend ActiveSupport::Concern
 
-  # Disable cop as want SQL to be formatted for readability. Its a complex query so splitting
+  # Disable cop as want SQL to be formatted for readability. Its already a complex query and splitting
   # into fragments will make it less readable.
   #
   # rubocop:disable Metrics/BlockLength
   class_methods do
-    def search(query:, locale:)
-      sql = ActiveRecord::Base.sanitize_sql_array(build_translated_search_sql(locale, query))
+    def search(query:, locale: :en, show_all: false)
+      sql = ActiveRecord::Base.sanitize_sql_array(build_translated_search_sql(query:, locale:, show_all:))
       select("#{table_name}.*, search_results.rank, search_results.headline").joins(sql)
                                                          .order('search_results.rank', "#{table_name}.id")
     end
 
     private
 
-    def build_translated_search_sql(locale, querytext)
+    def build_translated_search_sql(query:, locale: :en, show_all: false)
       dictionary = dictionary_for(locale)
       metadata_fields = searchable_metadata_fields.map { |s| "'#{s}'" }.join(', ')
-      query = ActiveRecord::Base.connection.quote(querytext)
+      search = ActiveRecord::Base.connection.quote(query)
       <<-SQL.squish
         INNER JOIN (
           SELECT
@@ -34,7 +34,7 @@ module Searchable
                 to_tsvector('#{dictionary}', coalesce(mobility_strings.metadata_fields_text::text, ''))
               ),
               (
-                websearch_to_tsquery('#{dictionary}', #{query})
+                websearch_to_tsquery('#{dictionary}', #{search})
               )
             ) AS rank,
             ts_headline(
@@ -43,7 +43,7 @@ module Searchable
                 coalesce(rich_texts.body_field_text::text, '') ||
                 coalesce(mobility_strings.metadata_fields_text::text, '')
               ),
-              websearch_to_tsquery('#{dictionary}', #{query})
+              websearch_to_tsquery('#{dictionary}', #{search})
             ) AS headline
           FROM "#{table_name}"
           LEFT OUTER JOIN (
@@ -56,7 +56,7 @@ module Searchable
               AND "action_text_rich_texts"."name" = '#{searchable_body_field}'
               AND "action_text_rich_texts"."locale" = '#{locale}'
               AND "action_text_rich_texts"."record_id" = "#{table_name}"."id"
-              WHERE #{searchable_filter}
+              WHERE #{searchable_filter(show_all:)}
           ) rich_texts ON rich_texts.id = "#{table_name}"."id"
           LEFT OUTER JOIN (
               SELECT
@@ -68,7 +68,7 @@ module Searchable
               AND "mobility_string_translations"."key" IN (#{metadata_fields})
               AND "mobility_string_translations"."translatable_id" = "#{table_name}"."id"
               AND "mobility_string_translations"."locale" = '#{locale}'
-              WHERE #{searchable_filter}
+              WHERE #{searchable_filter(show_all:)}
               GROUP BY "#{table_name}"."id"
           ) mobility_strings ON mobility_strings.id = "#{table_name}"."id"
           WHERE (
@@ -76,7 +76,7 @@ module Searchable
               ||
               to_tsvector('#{dictionary}', coalesce(mobility_strings.metadata_fields_text::text, ''))
           ) @@ (
-              websearch_to_tsquery('#{dictionary}', #{query})
+              websearch_to_tsquery('#{dictionary}', #{search})
           )
         ) AS search_results ON "#{table_name}"."id" = search_results.search_id
       SQL

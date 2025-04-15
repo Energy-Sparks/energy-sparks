@@ -22,6 +22,7 @@ describe 'searching support pages' do
       let!(:unpublished) { create(:section, title: 'Lorem ipsum', page: cms_page, published: false) }
 
       it 'they are not included in results' do
+        refresh
         expect(page).to have_content('Found 1 result for "Lorem ipsum"')
         expect(page).not_to have_link(unpublished.title, href: page_path(cms_page, anchor: unpublished.slug))
       end
@@ -49,6 +50,7 @@ describe 'searching support pages' do
       let!(:unpublished) { create(:section, title: 'Lorem ipsum', page: cms_page, published: false) }
 
       it 'they are included in results' do
+        refresh
         expect(page).to have_content('Found 2 results for "Lorem ipsum"')
         expect(page).to have_link(unpublished.title, href: page_path(cms_page, anchor: unpublished.slug))
       end

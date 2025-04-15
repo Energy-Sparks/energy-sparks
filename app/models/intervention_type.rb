@@ -107,8 +107,12 @@ class InterventionType < ApplicationRecord
   class << self
     private
 
-    def searchable_filter
-      %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+    def searchable_filter(show_all: false)
+      if show_all
+        %|"#{table_name}"."active" in ('true', 'false') AND "#{table_name}"."custom" = 'false'|
+      else
+        %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+      end
     end
 
     def searchable_body_field
