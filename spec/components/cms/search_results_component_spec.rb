@@ -46,5 +46,17 @@ RSpec.describe Cms::SearchResultsComponent, :include_application_helper, :includ
         expect(html).to have_content('Unpublished')
       end
     end
+
+    context 'when there are no results' do
+      let(:search) { 'Lorem ipsum'}
+
+      it 'includes additional links' do
+        within('.search_results') do
+          expect(page).to have_link(href: categories_path)
+          expect(page).to have_link(href: training_path)
+          expect(page).to have_link(href: contact_path)
+        end
+      end
+    end
   end
 end

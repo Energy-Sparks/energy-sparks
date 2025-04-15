@@ -10,6 +10,14 @@
   <div class="row mt-2">
     <div id="page-body" class="col-md-12">
       <%= render 'cms/search' %>
+      <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+          <small>
+            <%= link_to t('pages.search.browse'), categories_path %> |
+            <%= link_to t('pages.search.training'), training_path %>
+          </small>
+        </div>
+      </div>
 
       <%= render Cms::SearchResultsComponent.new(query: params[:query], results: @results) %>
 

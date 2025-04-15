@@ -44,6 +44,16 @@
           </div>
         </div>
       <% end %>
+
+      <% unless @results.any? %>
+        <p><%= t('components.cms.search_results.no_results_prompt') %></p>
+
+        <ul>
+          <li><%= link_to t('pages.search.browse'), categories_path %></li>
+          <li><%= link_to t('pages.search.training'), training_path %></li>
+          <li><%= link_to t('components.cms.search_results.get_in_touch'), contact_path %></li>
+        </ul>
+      <% end %>
     </div>
   </div>
 <% end %>
