@@ -6,7 +6,7 @@ module Cms
     include ContentManagement
 
     skip_before_action :authenticate_user!
-    load_and_authorize_resource :page
+    load_and_authorize_resource :page, only: [:show]
 
     before_action :redirect_unless_feature_enabled?
     before_action :load_categories
