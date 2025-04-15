@@ -1,8 +1,9 @@
-<%= content_for :page_title, t('pages.search.title') %>
+<%= content_for :page_title, t('categories.index.title') %>
 
 <% content_for :dashboard_header do %>
   <%= render Layout::Cards::PageHeaderComponent.new(
-        title: t('pages.search.title')
+        title: t('categories.index.title'),
+        subtitle: t('categories.index.subtitle')
       ) %>
 <% end %>
 
