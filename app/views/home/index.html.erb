@@ -188,7 +188,7 @@
 
     <%= render 'videos' %>
 
-    <%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+    <%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: CaseStudy.count %>
 
     <%= render 'mailchimp' %>
   <% end %>
