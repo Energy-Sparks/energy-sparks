@@ -6,11 +6,8 @@ describe 'view categories' do
   shared_examples 'a category page' do |pages: true|
     let(:visible_pages) { category.pages.published }
 
-    it 'displays category title and description' do
-      within('.layout-cards-page-header-component') do
-        expect(page).to have_content(category.title)
-        expect(page).to have_content(category.description)
-      end
+    it_behaves_like 'a cms page header' do
+      let(:model) { category }
     end
 
     it 'lists the expected pages', if: pages do

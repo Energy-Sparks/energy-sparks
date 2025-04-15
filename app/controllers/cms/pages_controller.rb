@@ -9,6 +9,7 @@ module Cms
 
     before_action :redirect_unless_feature_enabled?
     before_action :load_categories
+    before_action :load_sections
 
     layout 'dashboards'
 
