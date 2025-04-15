@@ -23,6 +23,11 @@ describe 'searching support pages' do
       expect(page).to have_link(href: training_path)
     end
 
+    it 'has extra support links' do
+      expect(page).to have_link(href: categories_path)
+      expect(page).to have_link(href: training_path)
+    end
+
     context 'when there are unpublished sections' do
       let!(:unpublished) { create(:section, title: 'Lorem ipsum', page: cms_page, published: false) }
 
