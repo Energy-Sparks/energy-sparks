@@ -12,13 +12,10 @@ module Cms
 
     scope :published, -> { where(published: true) }
     scope :by_title, ->(order = :asc) { i18n.order(title: order) }
+    scope :tx_resources, -> { published.order(:id) }
 
     def publishable?
       true
-    end
-
-    def self.tx_resources
-      published.order(:id)
     end
 
     private
