@@ -23,10 +23,10 @@ describe 'Engaged Schools Report', :aggregate_failures do
     email = ActionMailer::Base.deliveries.last
     expect(email.attachments.count).to eq(1)
     expect(email.attachments.first.body.decoded.split("\r\n").map { |line| line.split(',') }).to eq(
-      [['School Group', 'School', 'Funder', 'Country', 'Active', 'Data Visible', 'Admin',
+      [['School Group', 'School', 'School Type', 'Funder', 'Country', 'Active', 'Data Visible', 'Admin',
         'Activities', 'Actions', 'Programmes', 'Target?', 'Transport Survey?', 'Temperatures?', 'Audit?',
         'Active Users', 'Last Visit'],
-       [school.school_group.name, school.name, '', school.country.humanize, 'Y', 'Y', '',
+       [school.school_group.name, school.name, 'Primary', '', school.country.humanize, 'Y', 'Y', '',
         activities.to_s, '0', '0', 'N', 'N', 'N', 'N',
         '1', last_sign_in.iso8601]]
     )

@@ -115,7 +115,6 @@ class HomeController < ApplicationController
   end
 
   def set_case_studies
-    @all_case_studies_count = CaseStudy.count
     @case_studies = CaseStudy.order(position: :asc).limit(3)
   end
 

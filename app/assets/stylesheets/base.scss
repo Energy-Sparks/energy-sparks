@@ -69,15 +69,6 @@ div.callout-text {
   padding-right: 30px;
 }
 
-@media (max-width: 767px) {
-  section {
-    padding: 75px 0;
-  }
-  section.first {
-    padding-top: 75px;
-  }
-}
-
 div.hide, .hidden {
   display: none;
 }
@@ -311,6 +302,10 @@ input, progress {
     a:not(.btn) {
       color: $teal-medium;
     }
+  }
+
+  &.theme-pale {
+    background-color: $blue-pale;
   }
 
   &.theme-light {

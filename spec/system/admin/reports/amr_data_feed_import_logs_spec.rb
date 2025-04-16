@@ -17,7 +17,7 @@ describe AmrDataFeedImportLog, type: :system, include_application_helper: true d
 
   context 'when viewing summary report' do
     before do
-      click_on 'Data Feed Import Logs'
+      click_on 'Data feed import logs'
     end
 
     it 'has the expected title' do

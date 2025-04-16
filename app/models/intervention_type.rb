@@ -74,6 +74,7 @@ class InterventionType < ApplicationRecord
   scope :custom_last,           -> { order(:custom) }
   scope :between,               ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :not_including,         ->(records = []) { where.not(id: records) }
+  scope :tx_resources,          -> { active.order(:id) }
 
   before_save :copy_searchable_attributes
 
@@ -84,10 +85,6 @@ class InterventionType < ApplicationRecord
   # override default name for this resource in transifex
   def tx_name
     name
-  end
-
-  def self.tx_resources
-    active.order(:id)
   end
 
   def count_existing_for_academic_year(school, academic_year)
@@ -102,5 +99,25 @@ class InterventionType < ApplicationRecord
 
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
+  end
+
+  class << self
+    private
+
+    def searchable_filter(show_all: false)
+      if show_all
+        %|"#{table_name}"."active" in ('true', 'false') AND "#{table_name}"."custom" = 'false'|
+      else
+        %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+      end
+    end
+
+    def searchable_body_field
+      'description'
+    end
+
+    def searchable_metadata_fields
+      %w[name summary]
+    end
   end
 end

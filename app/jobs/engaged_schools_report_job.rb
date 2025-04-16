@@ -17,6 +17,7 @@ class EngagedSchoolsReportJob < ApplicationJob
   def row
     { school_group: ->(service) { service.school_group.name },
       school: ->(service) { service.school.name },
+      school_type: ->(service) { service.school.school_type&.humanize },
       funder: ->(service) { service.school.funder&.name },
       country: ->(service) { service.school.country.humanize },
       active: ->(service) { format_bool(service.school.active) },

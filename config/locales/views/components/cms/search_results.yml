@@ -1,0 +1,11 @@
+---
+en:
+  components:
+    cms:
+      search_results:
+        get_in_touch: Get in touch to ask a question
+        no_results_prompt: 'Can''t find what you''re looking for? Try refining your search, or:'
+        results_html:
+          one: Found <span class="count">1</span> result for "<span class="keywords">%{keywords}</span>"
+          other: Found <span class="count">%{count}</span> results for "<span class="keywords">%{keywords}</span>"
+          zero: Found no results for "<span class="keywords">%{keywords}</span>"

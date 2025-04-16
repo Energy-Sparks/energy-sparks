@@ -1,6 +1,7 @@
 module Cms
   class Base < ApplicationRecord
     extend Mobility
+    include TransifexSerialisable
 
     self.abstract_class = true
 
@@ -11,6 +12,7 @@ module Cms
 
     scope :published, -> { where(published: true) }
     scope :by_title, ->(order = :asc) { i18n.order(title: order) }
+    scope :tx_resources, -> { published.order(:id) }
 
     def publishable?
       true

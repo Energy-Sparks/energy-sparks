@@ -37,11 +37,18 @@ module Transifex
         synchronise_resources(transifex_load, Comparison::Footnote.tx_resources)
         log('Synchronising Comparison Report Groups')
         synchronise_resources(transifex_load, Comparison::ReportGroup.tx_resources)
-
-        if EnergySparks::FeatureFlags.active?(:sync_advice_page_translations)
-          log('Synchronising Advice Pages')
-          synchronise_resources(transifex_load, AdvicePage.tx_resources)
-        end
+        log('Synchronising Advice Pages')
+        synchronise_resources(transifex_load, AdvicePage.tx_resources)
+        log('Synchronising Scoreboards')
+        synchronise_resources(transifex_load, Scoreboard.tx_resources)
+        log('Synchronising Testimonials')
+        synchronise_resources(transifex_load, Testimonial.tx_resources)
+        log('Synchronising Cms:Category')
+        synchronise_resources(transifex_load, ::Cms::Category.tx_resources)
+        log('Synchronising Cms:Page')
+        synchronise_resources(transifex_load, ::Cms::Page.tx_resources)
+        log('Synchronising Cms:Section')
+        synchronise_resources(transifex_load, ::Cms::Section.tx_resources)
       rescue => error
         # ensure all errors are caught and logged
         log_error(transifex_load, error)

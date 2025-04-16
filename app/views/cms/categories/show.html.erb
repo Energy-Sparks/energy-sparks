@@ -1,41 +1,29 @@
-<%= content_for :page_title, 'Support Pages' %>
+<%= content_for :page_title, @category.title %>
 
 <% content_for :dashboard_header do %>
-  <div>
-    <div id="dashboard-header-welcome" class="col-12 col-md-9">
-      <div class="row">
-        <div class="col">
-          <h1><%= @category.title %></h1>
-        </div>
-      </div>
-      <%= render 'cms/search' %>
-    </div>
-  </div>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: @category.title,
+        subtitle: @category.description
+      ) %>
 <% end %>
 
 <div class="container">
+  <div class="row d-md-none">
+    <div class="col d-md-none">
+      <%= render PageNavComponent::CollapseButton.new %>
+    </div>
+  </div>
+
+  <%= render 'cms/search' %>
+
   <div class="row mt-2">
     <div id="page-navigation" class="col-md-4 col-lg-4 col-xl-3">
-      <%= render 'cms/nav', categories: @categories, classes: '' %>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <p>
-          <%= @category.description %>
-        </p>
-      </div>
+      <%= render 'cms/nav', categories: @categories, current_category: @category, classes: '' %>
     </div>
 
     <div id="page-body" class="col-md-8 col-lg-8 col-xl-9">
-      <% @category.pages.published.by_title.each do |page| %>
-        <h3><%= link_to page.title, page_path(page) %></h3>
-
-        <ul>
-          <% page.sections.positioned.each do |section| %>
-            <li><%= link_to section.title, page_path(page, anchor: section.slug) %></li>
-          <% end %>
-        </ul>
+      <% @category.pages.by_title.each do |page| %>
+        <%= render Cms::PageSummaryComponent.new(id: page.slug, page: page, current_user: current_user) %>
       <% end %>
     </div>
   </div>

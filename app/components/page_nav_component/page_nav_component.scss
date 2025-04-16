@@ -49,4 +49,31 @@
       }
     }
   }
+
+  a.nav-link.generic-item {
+    font-family: $default-font-family;
+    color: $blue-dark; // switch to $body-color when we've switch that over
+    font-weight: $default-font-weight;
+
+    &:hover, &.current {
+      border-radius: 5px;
+      background-color: $teal-light;
+    }
+
+    &.current {
+      font-weight: bold !important;
+    }
+  }
+
+  a.generic-section {
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    i.fuel {
+      color: $teal-dark;
+    }
+  }
 }
