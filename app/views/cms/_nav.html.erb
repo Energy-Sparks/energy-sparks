@@ -12,7 +12,7 @@
      <% scope = current_user&.admin? ? category.pages : category.pages.published %>
      <% scope.by_title.each do |page| %>
        <% s.with_item(name: page.title,
-                      href: page_path(page), classes: 'small generic-item') %>
+                      href: category_page_path(page.category, page), classes: 'small generic-item') %>
      <% end %>
    <% end %>
  <% end %>
