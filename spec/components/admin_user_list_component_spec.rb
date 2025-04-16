@@ -7,7 +7,7 @@ RSpec.describe AdminUserListComponent, :include_url_helpers, type: :component do
     described_class.new(**params)
   end
 
-  let(:id) { 'user-table'}
+  let(:id) { 'user-table' }
   let(:classes) { 'extra-classes' }
   let(:users) { nil }
   let(:schools) { nil }
@@ -22,7 +22,6 @@ RSpec.describe AdminUserListComponent, :include_url_helpers, type: :component do
     }
   end
 
-
   describe '#users_to_display' do
     context 'with users' do
       let(:users) { [create(:school_admin), create(:staff)] }
@@ -35,15 +34,17 @@ RSpec.describe AdminUserListComponent, :include_url_helpers, type: :component do
     context 'with schools' do
       let(:school) { create(:school) }
 
-      let(:school_admin) { create(:school_admin, school: school) }
-      let(:staff) { create(:staff, school: school) }
-      let(:pupil) { create(:pupil, school: school) }
+      let(:school_admin) { create(:school_admin, school:, email: "admin@#{school.name.parameterize}.com") }
+      let(:staff) { create(:staff, school:, email: "employee@#{school.name.parameterize}.com") }
+      let(:pupil) { create(:pupil, school:, email: "pupil@#{school.name.parameterize}.com") }
       let(:school_admin_2) { create(:school_admin) }
 
       let(:schools) { [school, school_admin_2.school] }
 
       it 'yields all school users' do
-        expect { |b| component.users_to_display(&b) }.to yield_successive_args(school_admin, staff, pupil, school_admin_2)
+        expect do |b|
+          component.users_to_display(&b)
+        end.to yield_successive_args(school_admin, staff, pupil, school_admin_2)
       end
     end
   end
