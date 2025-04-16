@@ -18,6 +18,7 @@
   <thead>
     <tr>
       <th>School Group</th>
+      <th>Group Type</th>
       <th>Admin</th>
       <th>Active Schools</th>
       <th>Engaged Schools</th>
@@ -28,6 +29,7 @@
     <% @engaged_groups.each do |school_group| %>
       <tr>
         <td><%= link_to school_group.name, admin_reports_engaged_schools_path(school_group_id: school_group.id) %></td>
+        <td><span class="badge badge-pill badge-primary"><%= school_group.group_type.humanize %></span></td>
         <td><%= school_group.admin_user_name %></td>
         <td><%= school_group.active_count %></td>
         <td><%= school_group.engaged_count %></td>

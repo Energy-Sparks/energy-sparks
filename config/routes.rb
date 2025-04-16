@@ -91,7 +91,11 @@ Rails.application.routes.draw do
   get '/support', to: redirect('/support/categories')
   scope module: 'cms', path: 'support' do
     resources :categories, only: [:index, :show]
-    resources :pages, only: [:show]
+    resources :pages, only: [:show] do
+      collection do
+        get 'search', as: :search
+      end
+    end
   end
 
   namespace :comparisons do
@@ -732,6 +736,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, only: [:index]
       resources :heating_types, only: [:index]
       resources :manual_reads, only: [:index]
+      resources :perse_meter, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver

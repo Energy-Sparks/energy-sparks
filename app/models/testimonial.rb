@@ -31,4 +31,5 @@ class Testimonial < ApplicationRecord
   validates :image, :title_en, :name, :quote_en, :organisation, :category, presence: true
 
   scope :active, -> { where(active: true) }
+  scope :tx_resources, -> { active.order(:id) }
 end

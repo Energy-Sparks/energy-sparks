@@ -1,15 +1,19 @@
 module Elements
   class HeaderComponent < ApplicationComponent
-    def initialize(title:, level: 1, **_kwargs)
+    def initialize(title:, level: 1, url: nil, **_kwargs)
       super
       @title = title
       @level = level
-
+      @url = url
       validate_level
     end
 
     def call
-      tag.send("h#{@level}", id: @id, class: @classes) { @title }
+      if @url
+        tag.a(href: @url, class: 'text-decoration-none') { tag.send("h#{@level}", id: @id, class: @classes) { @title } }
+      else
+        tag.send("h#{@level}", id: @id, class: @classes) { @title }
+      end
     end
 
     private

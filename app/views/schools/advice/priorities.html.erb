@@ -2,12 +2,7 @@
   <% content_for :page_title, "#{t('advice_pages.index.priorities.title')} | #{@school.name}" %>
 
   <% content_for :dashboard_header do %>
-    <%= render DashboardHeaderComponent.new(
-          title: 'advice_pages.index.priorities.title',
-          intro: nil,
-          show_school: false,
-          school: @school
-        ) %>
+    <%= render Layout::Cards::PageHeaderComponent.new(title: t('advice_pages.index.priorities.title')) %>
   <% end %>
 
   <div class="container">
