@@ -62,8 +62,8 @@ module Cms
       private
 
       def searchable_filter(show_all: false)
-        if show_all == true
-          %|"#{table_name}"."published" in ('true', 'false')|
+        if show_all
+          'true' # include everything
         else
           %|"#{table_name}"."published" = 'true'|
         end
