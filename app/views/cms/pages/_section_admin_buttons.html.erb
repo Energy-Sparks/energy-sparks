@@ -1,4 +1,5 @@
-<%= render Layout::Cards::AdminButtonPanelComponent.new(current_user: current_user, row: true) do |panel| %>
+<%= render Layout::Cards::AdminButtonPanelComponent.new(id: "section-#{section.id}-admin-buttons",
+                                                        current_user: current_user, row: true) do |panel| %>
   <% panel.with_status section.published ? 'Published' : 'Unpublished', style: section.published ? :info : :warning %>
   <% panel.with_button 'Edit Section', edit_admin_cms_section_path(section) %>
   <% if section.published? %>
