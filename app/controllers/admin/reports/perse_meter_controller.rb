@@ -1,11 +1,9 @@
 module Admin
   module Reports
-    class DccStatusController < AdminController
+    class PerseMeterController < AdminController
       include Columns
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
-
-      before_action :set_consented_mpxns
 
       def index
         meter_issue_counts =
@@ -41,8 +39,6 @@ module Admin
                      ->(meter, csv) { link_to(csv, school_meter_path(meter.school, meter)) }),
           Column.new(:active?,
                      ->(meter) { y_n(meter.active) }),
-          Column.new(:consented?,
-                     ->(meter) { y_n(meter.consent_granted) }),
           Column.new(:earliest_validated,
                      ->(meter) { meter.min }),
           Column.new(:latest_validated,
@@ -54,25 +50,14 @@ module Admin
                      },
                      html_data: { sortable: false })
         ]
-        @dcc_meters = Meter.admin_report(Meter.dcc)
-        @schools_count = Meter.dcc.distinct.count(:school_id)
+        @meters = Meter.admin_report(Meter.where.not(perse_api: nil))
         respond_to do |format|
           format.html
           format.csv do
-            send_data(csv_report(@columns, @dcc_meters.order('schools.name')),
-                      filename: EnergySparks::Filenames.csv('dcc-status-report'))
+            send_data(csv_report(@columns, @meters.order('schools.name')),
+                      filename: EnergySparks::Filenames.csv('perse-meter-report'))
           end
         end
-      end
-
-      private
-
-      def set_consented_mpxns
-        @mpxns = Meters::N3rgyMeteringService.consented_meters
-        @consent_lookup_error = false
-      rescue StandardError
-        @mpxns = []
-        @consent_lookup_error = true
       end
     end
   end
