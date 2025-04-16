@@ -734,6 +734,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, only: [:index]
       resources :heating_types, only: [:index]
       resources :manual_reads, only: [:index]
+      resources :perse_meter, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
