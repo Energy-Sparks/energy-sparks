@@ -50,14 +50,7 @@ module Admin
                      },
                      html_data: { sortable: false })
         ]
-        reading_dates = AmrValidatedReading.select('meter_id, MIN(reading_date), MAX(reading_date)').group(:meter_id)
-        @meters = Meter.where.not(perse_api: nil)
-                       .includes(school: { school_group: :default_issues_admin_user })
-                       .includes(:data_source)
-                       .includes(:issues)
-                       .joins("LEFT JOIN (#{reading_dates.to_sql}) " \
-                              'AS reading_dates ON meters.id = reading_dates.meter_id')
-                       .select('meters.*, reading_dates.*')
+        @meters = Meter.admin_report(Meter.where.not(perse_api: nil))
         respond_to do |format|
           format.html
           format.csv do
