@@ -29,8 +29,14 @@ RSpec.describe Cms::PageSummaryComponent, :include_application_helper, :include_
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_link(cms_page.title, href: page_path(cms_page)) }
+    it { expect(html).to have_link(cms_page.title, href: category_page_path(cms_page.category, cms_page)) }
     it { expect(html).to have_content(cms_page.description) }
-    it { expect(html).to have_link(cms_page.sections.first.title, href: page_path(cms_page, anchor: cms_page.sections.first.slug)) }
+
+    it {
+      expect(html).to have_link(cms_page.sections.first.title,
+                                   href: category_page_path(cms_page.category,
+                                                            cms_page,
+                                                            anchor: cms_page.sections.first.slug))
+    }
   end
 end

@@ -57,7 +57,7 @@ RSpec.shared_examples_for 'a page with a support page nav' do
     within('#page-nav') do
       pages.each do |cms_page|
         within("div##{cms_page.category.slug}") do
-          expect(page).to have_link(cms_page.title, href: page_path(cms_page))
+          expect(page).to have_link(cms_page.title, href: category_page_path(cms_page.category, cms_page))
         end
       end
     end
