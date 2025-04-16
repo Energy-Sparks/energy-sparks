@@ -38,6 +38,7 @@ class ProgrammeType < ApplicationRecord
 
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
+  scope :tx_resources, -> { active.order(:id) }
 
   # to be removed when todos feature removed
   scope :with_school_activity_type_count, ->(school) {
@@ -114,9 +115,5 @@ class ProgrammeType < ApplicationRecord
   # regardless of having signed up to the programme
   def all_activity_types_completed_for_school?(school)
     (activity_types.pluck(:id) - school.activity_types_in_academic_year.pluck(:id)).empty?
-  end
-
-  def self.tx_resources
-    active.order(:id)
   end
 end
