@@ -2,15 +2,16 @@
 #
 # Table name: comparison_reports
 #
-#  created_at       :datetime         not null
-#  custom_period_id :bigint(8)
-#  disabled         :boolean          default(FALSE), not null
-#  id               :bigint(8)        not null, primary key
-#  key              :string           not null
-#  public           :boolean          default(FALSE)
-#  report_group_id  :bigint(8)
-#  reporting_period :integer
-#  updated_at       :datetime         not null
+#  created_at            :datetime         not null
+#  custom_period_id      :bigint(8)
+#  disable_normalisation :boolean          default(FALSE), not null
+#  disabled              :boolean          default(FALSE), not null
+#  id                    :bigint(8)        not null, primary key
+#  key                   :string           not null
+#  public                :boolean          default(FALSE)
+#  report_group_id       :bigint(8)
+#  reporting_period      :integer
+#  updated_at            :datetime         not null
 #
 # Indexes
 #
@@ -66,7 +67,8 @@ class Comparison::Report < ApplicationRecord
       max_days_out_of_date: custom_period.max_days_out_of_date,
       enough_days_data: custom_period.enough_days_data,
       current_period: custom_period.current_start_date..custom_period.current_end_date,
-      previous_period: custom_period.previous_start_date..custom_period.previous_end_date }
+      previous_period: custom_period.previous_start_date..custom_period.previous_end_date,
+      disable_normalisation: }
   end
 
   def self.fetch(key)

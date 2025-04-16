@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_16_164103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -700,6 +700,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.datetime "updated_at", null: false
     t.bigint "report_group_id"
     t.boolean "disabled", default: false, null: false
+    t.boolean "disable_normalisation", default: false, null: false
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
     t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
