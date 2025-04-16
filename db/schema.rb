@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_08_130532) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3605,54 +3605,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_08_130532) do
   SQL
   add_index "comparison_heating_coming_on_too_early", ["school_id"], name: "index_comparison_heating_coming_on_too_early_on_school_id", unique: true
 
-  create_view "comparison_heating_in_warm_weathers", materialized: true, sql_definition: <<-SQL
-      WITH gas AS (
-           SELECT alerts.alert_generation_run_id,
-              data.percent_of_annual_heating,
-              data.warm_weather_heating_days_all_days_kwh,
-              data.warm_weather_heating_days_all_days_co2,
-              data.warm_weather_heating_days_all_days_gbpcurrent,
-              data.warm_weather_heating_days_all_days_days
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(percent_of_annual_heating double precision, warm_weather_heating_days_all_days_kwh double precision, warm_weather_heating_days_all_days_co2 double precision, warm_weather_heating_days_all_days_gbpcurrent double precision, warm_weather_heating_days_all_days_days double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalHeatingSchoolDays'::text))
-          ), storage_heaters AS (
-           SELECT alerts.alert_generation_run_id,
-              data.percent_of_annual_heating,
-              data.warm_weather_heating_days_all_days_kwh,
-              data.warm_weather_heating_days_all_days_co2,
-              data.warm_weather_heating_days_all_days_gbpcurrent,
-              data.warm_weather_heating_days_all_days_days
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(percent_of_annual_heating double precision, warm_weather_heating_days_all_days_kwh double precision, warm_weather_heating_days_all_days_co2 double precision, warm_weather_heating_days_all_days_gbpcurrent double precision, warm_weather_heating_days_all_days_days double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalHeatingSchoolDaysStorageHeaters'::text))
-          ), additional AS (
-           SELECT alerts.alert_generation_run_id,
-              alerts.school_id
-             FROM alerts,
-              alert_types
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
-          ), latest_runs AS (
-           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
-          )
-   SELECT latest_runs.id,
-      additional.school_id,
-      COALESCE(gas.percent_of_annual_heating, storage_heaters.percent_of_annual_heating) AS percent_of_annual_heating,
-      COALESCE(gas.warm_weather_heating_days_all_days_kwh, storage_heaters.warm_weather_heating_days_all_days_kwh) AS warm_weather_heating_days_all_days_kwh,
-      COALESCE(gas.warm_weather_heating_days_all_days_co2, storage_heaters.warm_weather_heating_days_all_days_co2) AS warm_weather_heating_days_all_days_co2,
-      COALESCE(gas.warm_weather_heating_days_all_days_gbpcurrent, storage_heaters.warm_weather_heating_days_all_days_gbpcurrent) AS warm_weather_heating_days_all_days_gbpcurrent,
-      COALESCE(gas.warm_weather_heating_days_all_days_days, storage_heaters.warm_weather_heating_days_all_days_days) AS warm_weather_heating_days_all_days_days
-     FROM (((latest_runs
-       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
-       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
-       LEFT JOIN storage_heaters ON ((latest_runs.id = storage_heaters.alert_generation_run_id)));
-  SQL
-  add_index "comparison_heating_in_warm_weathers", ["school_id"], name: "index_comparison_heating_in_warm_weathers_on_school_id", unique: true
-
   create_view "comparison_heating_vs_hot_waters", materialized: true, sql_definition: <<-SQL
       WITH gas AS (
            SELECT alerts.alert_generation_run_id,
@@ -4122,5 +4074,41 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_08_130532) do
     WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
   add_index "comparison_weekday_baseload_variations", ["school_id"], name: "index_comparison_weekday_baseload_variations_on_school_id", unique: true
+
+  create_view "comparison_heating_in_warm_weathers", materialized: true, sql_definition: <<-SQL
+      WITH gas AS (
+           SELECT alerts.alert_generation_run_id,
+              data.percent_of_annual_heating,
+              data.warm_weather_heating_days_all_days_kwh,
+              data.warm_weather_heating_days_all_days_co2,
+              data.warm_weather_heating_days_all_days_gbpcurrent,
+              data.warm_weather_heating_days_all_days_days
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(percent_of_annual_heating double precision, warm_weather_heating_days_all_days_kwh double precision, warm_weather_heating_days_all_days_co2 double precision, warm_weather_heating_days_all_days_gbpcurrent double precision, warm_weather_heating_days_all_days_days double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalHeatingSchoolDays'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id
+             FROM alerts,
+              alert_types
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      additional.school_id,
+      gas.percent_of_annual_heating,
+      gas.warm_weather_heating_days_all_days_kwh,
+      gas.warm_weather_heating_days_all_days_co2,
+      gas.warm_weather_heating_days_all_days_gbpcurrent,
+      gas.warm_weather_heating_days_all_days_days
+     FROM ((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)));
+  SQL
+  add_index "comparison_heating_in_warm_weathers", ["school_id"], name: "index_comparison_heating_in_warm_weathers_on_school_id", unique: true
 
 end
