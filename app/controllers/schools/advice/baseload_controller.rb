@@ -49,8 +49,15 @@ module Schools
         ).calculate_economic_tariff_changed
       end
 
+      # Should align with BaseloadCalculationService
       def create_analysable
-        baseload_service
+        days = Baseload::BaseService::DEFAULT_DAYS_OF_DATA_REQUIRED
+        enough_data = @analysis_dates.at_least_x_days_data?(days)
+        date = enough_data ? nil : @analysis_dates.date_when_enough_data_available(days)
+        ActiveSupport::OrderedOptions.new.merge(
+          enough_data?: enough_data,
+          date_when_enough_data_available: date
+        )
       end
 
       def current_baseload

@@ -105,6 +105,10 @@ module Schools
       date_when_enough_data_available(365 * 2)
     end
 
+    def at_least_x_days_data?(days)
+      days_of_data >= days
+    end
+
     def days_of_data
       (analysis_date - analysis_start_date) + 1
     end
