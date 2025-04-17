@@ -141,7 +141,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
                       :with_school_group,
                       :with_fuel_configuration,
                       :with_meter_dates,
-                      reading_start_date: reading_start_date,
+                      reading_start_date: start_date,
                       number_of_pupils: 1)
       create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
       create(:electricity_meter_with_validated_reading_dates,
@@ -210,7 +210,7 @@ RSpec.describe 'meter comparison advice pages', :aggregate_failures do
                       :with_fuel_configuration,
                       :with_meter_dates,
                       fuel_type: :gas,
-                      reading_start_date: reading_start_date,
+                      reading_start_date: start_date,
                       number_of_pupils: 1)
       create(:energy_tariff, :with_flat_price, meter_type: :gas, tariff_holder: school, start_date: nil, end_date: nil)
       create(:gas_meter_with_validated_reading_dates,
