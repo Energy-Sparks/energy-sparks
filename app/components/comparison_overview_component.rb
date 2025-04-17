@@ -45,10 +45,6 @@ class ComparisonOverviewComponent < ApplicationComponent
     @school.advice_page_school_benchmarks.where(advice_page:).any?
   end
 
-  def meter_collection
-    @meter_collection ||= AggregateSchoolService.new(@school).aggregate_school
-  end
-
   def gas_usage_service
     @gas_usage_service ||= usage_service(:gas)
   end
@@ -58,6 +54,6 @@ class ComparisonOverviewComponent < ApplicationComponent
   end
 
   def usage_service(fuel_type)
-    Schools::Advice::LongTermUsageService.new(@school, meter_collection, fuel_type)
+    Schools::Advice::LongTermUsageService.new(@school, AggregateSchoolService.new(@school), fuel_type)
   end
 end

@@ -5,7 +5,12 @@ require 'rails_helper'
 RSpec.describe 'electricity long term advice page', :aggregate_failures do
   let(:reading_start_date) { 1.year.ago }
   let(:school) do
-    school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+    school = create(:school,
+                    :with_school_group,
+                    :with_fuel_configuration,
+                    :with_meter_dates,
+                    reading_start_date: reading_start_date,
+                    number_of_pupils: 1)
     create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
     create(:electricity_meter_with_validated_reading_dates,
            school:, start_date: reading_start_date, end_date: Time.zone.today, reading: 0.5)

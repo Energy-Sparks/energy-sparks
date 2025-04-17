@@ -19,7 +19,6 @@ module Schools
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         @heating_control_service = heating_control_service
         @last_week_start_times = heating_control_service.last_week_start_times
         @estimated_savings = heating_control_service.estimated_savings
@@ -53,7 +52,7 @@ module Schools
       end
 
       def heating_control_service
-        @heating_control_service ||= HeatingControlService.new(@school, aggregate_school)
+        @heating_control_service ||= HeatingControlService.new(@school, aggregate_school_service)
       end
     end
   end
