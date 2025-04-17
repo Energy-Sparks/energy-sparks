@@ -56,7 +56,7 @@ module Schools
         date = enough_data ? nil : @analysis_dates.date_when_enough_data_available(days)
         ActiveSupport::OrderedOptions.new.merge(
           enough_data?: enough_data,
-          date_when_enough_data_available: date
+          data_available_from: date
         )
       end
 
