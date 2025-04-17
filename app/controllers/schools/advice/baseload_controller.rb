@@ -4,9 +4,12 @@ module Schools
       before_action :load_dashboard_alerts, only: [:insights, :analysis]
 
       def insights
-        @current_baseload = current_baseload
-        @benchmarked_baseload = baseload_service.benchmark_baseload
-        @saving_through_1_kw_reduction_in_baseload = baseload_service.saving_through_1_kw_reduction_in_baseload
+        @cache_view = true
+        @aggregate_school_service = aggregate_school_service
+        @service = baseload_service
+        # @current_baseload = current_baseload
+        # @benchmarked_baseload = baseload_service.benchmark_baseload
+        # @saving_through_1_kw_reduction_in_baseload = baseload_service.saving_through_1_kw_reduction_in_baseload
       end
 
       def analysis
@@ -40,14 +43,14 @@ module Schools
       end
 
       def set_economic_tariffs_change_caveats
-        @economic_tariffs_change_caveats = build_economic_tariffs_change_caveats
+        @economic_tariffs_change_caveats = true
       end
 
-      def build_economic_tariffs_change_caveats
-        Costs::EconomicTariffsChangeCaveatsService.new(
-          meter_collection: aggregate_school, fuel_type: @advice_page.fuel_type.to_sym
-        ).calculate_economic_tariff_changed
-      end
+      # def build_economic_tariffs_change_caveats
+      #  Costs::EconomicTariffsChangeCaveatsService.new(
+      #    meter_collection: aggregate_school, fuel_type: @advice_page.fuel_type.to_sym
+      #  ).calculate_economic_tariff_changed
+      # end
 
       # Should align with BaseloadCalculationService
       def create_analysable
@@ -57,22 +60,6 @@ module Schools
         ActiveSupport::OrderedOptions.new.merge(
           enough_data?: enough_data,
           data_available_from: date
-        )
-      end
-
-      def current_baseload
-        average_baseload_kw_last_year = baseload_service.average_baseload_kw(period: :year)
-        average_baseload_kw_last_week = baseload_service.average_baseload_kw(period: :week)
-
-        previous_year_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :year)
-
-        previous_week_average_baseload_kw = baseload_service.previous_period_average_baseload_kw(period: :week)
-
-        OpenStruct.new(
-          average_baseload_kw_last_week: average_baseload_kw_last_week,
-          average_baseload_kw_last_year: average_baseload_kw_last_year,
-          percentage_change_year: relative_percent(previous_year_average_baseload_kw, average_baseload_kw_last_year),
-          percentage_change_week: relative_percent(previous_week_average_baseload_kw, average_baseload_kw_last_week)
         )
       end
 

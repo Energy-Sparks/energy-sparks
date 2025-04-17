@@ -66,7 +66,7 @@ module Schools
       end
 
       def set_economic_tariffs_change_caveats
-        @economic_tariffs_change_caveats = nil
+        @set_economic_tariffs_change_caveats = nil
       end
 
       def set_insights_next_steps
