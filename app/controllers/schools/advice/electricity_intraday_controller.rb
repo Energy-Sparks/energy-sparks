@@ -4,7 +4,6 @@ module Schools
       before_action :load_dashboard_alerts, only: [:insights]
 
       def insights
-        @analysis_dates = analysis_dates
         peak_usage_service = create_analysable
         @average_peak_kw = peak_usage_service.average_peak_kw
         @peak_kw_usage_percentage_change = peak_usage_service.percentage_change_in_peak_kw
@@ -13,7 +12,6 @@ module Schools
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type)
       end
 

@@ -3,8 +3,6 @@
 module Schools
   module Advice
     class ThermostaticControlController < AdviceBaseController
-      before_action :set_analysis_dates, only: [:analysis]
-
       def insights
         @heating_thermostatic_analysis = thermostatic_analysis_service.thermostatic_analysis
         @benchmark_thermostatic_control = thermostatic_analysis_service.benchmark_thermostatic_control

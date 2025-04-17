@@ -4,14 +4,12 @@ module Schools
       before_action :load_dashboard_alerts, only: [:insights, :analysis]
 
       def insights
-        @analysis_dates = analysis_dates
         @current_baseload = current_baseload
         @benchmarked_baseload = baseload_service.benchmark_baseload
         @saving_through_1_kw_reduction_in_baseload = baseload_service.saving_through_1_kw_reduction_in_baseload
       end
 
       def analysis
-        @analysis_dates = analysis_dates
         @multiple_meters = baseload_service.multiple_electricity_meters?
         @average_baseload_kw = baseload_service.average_baseload_kw
         @average_baseload_kw_benchmark = baseload_service.average_baseload_kw_benchmark

@@ -2,7 +2,6 @@ module Schools
   module Advice
     class GasRecentChangesController < AdviceBaseController
       before_action :load_dashboard_alerts
-      before_action :set_analysis_dates, only: [:insights]
 
       def insights
         @recent_usage = recent_changes_service.recent_usage
@@ -10,7 +9,7 @@ module Schools
 
       def analysis
         @meters = @school.filterable_meters(:gas)
-        @chart_config = start_end_dates
+        @chart_config = @analysis_dates.usage_chart_dates
       end
 
       private
