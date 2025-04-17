@@ -77,7 +77,7 @@ module Schools
       end
 
       def baseload_service
-        @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school)
+        @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school_service)
       end
 
       def advice_page_key

@@ -1,9 +1,9 @@
 module Schools
   module Advice
     class BaseService
-      def initialize(school, meter_collection)
+      def initialize(school, aggregate_school_service)
         @school = school
-        @meter_collection = meter_collection
+        @aggregate_school_service = aggregate_school_service
       end
 
       # from analytics: lib/dashboard/charting_and_reports/content_base.rb
@@ -15,6 +15,10 @@ module Schools
       end
 
       private
+
+      def meter_collection
+        @aggregate_school_service.meter_collection
+      end
 
       def meter_for_mpan(mpan_mprn)
         @school.meters.find_by_mpan_mprn(mpan_mprn)

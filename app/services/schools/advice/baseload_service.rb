@@ -77,11 +77,11 @@ module Schools
       end
 
       def baseload_meter_breakdown
-        meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(@meter_collection)
+        meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(meter_collection)
         baseloads = meter_breakdown_service.calculate_breakdown
         meter_breakdowns = {}
         baseloads.meters.each do |mpan_mprn|
-          baseload_service = Baseload::BaseloadCalculationService.new(@meter_collection.meter?(mpan_mprn),
+          baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.meter?(mpan_mprn),
                                                                       end_of_previous_year)
           previous_year_baseload = baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: :year) : nil
           meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
@@ -162,11 +162,11 @@ module Schools
       end
 
       def electricity_meters
-        @electricity_meters ||= @meter_collection.electricity_meters.select { |meter| meter.fuel_type == :electricity }
+        @electricity_meters ||= meter_collection.electricity_meters.select { |meter| meter.fuel_type == :electricity }
       end
 
       def aggregate_meter
-        @meter_collection.aggregated_electricity_meters
+        meter_collection.aggregated_electricity_meters
       end
 
       def baseload_service
@@ -174,7 +174,7 @@ module Schools
       end
 
       def benchmark_service
-        @benchmark_service ||= Baseload::BaseloadBenchmarkingService.new(@meter_collection, asof_date)
+        @benchmark_service ||= Baseload::BaseloadBenchmarkingService.new(meter_collection, asof_date)
       end
 
       def build_meter_breakdown(mpan_mprn, breakdown, previous_year_baseload)

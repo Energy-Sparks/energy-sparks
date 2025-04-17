@@ -18,7 +18,7 @@ module Schools
       private
 
       def create_analysable
-        Schools::Advice::PeakUsageService.new(@school, aggregate_school)
+        Schools::Advice::PeakUsageService.new(@school, aggregate_school_service)
       end
 
       def advice_page_key

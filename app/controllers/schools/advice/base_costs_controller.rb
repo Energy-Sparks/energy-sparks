@@ -88,7 +88,7 @@ module Schools
       end
 
       def costs_service
-        Schools::Advice::CostsService.new(@school, aggregate_school, advice_page_fuel_type)
+        Schools::Advice::CostsService.new(@school, aggregate_school_service, advice_page_fuel_type)
       end
     end
   end
