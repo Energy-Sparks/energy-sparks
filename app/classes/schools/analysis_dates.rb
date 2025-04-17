@@ -79,7 +79,7 @@ module Schools
     end
 
     def recent_data
-      analysis_end_date > (Time.zone.today - 30.days)
+      analysis_date > (Time.zone.today - 30.days)
     end
 
     def months_of_data

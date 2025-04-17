@@ -21,12 +21,12 @@ module Schools
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
+      before_action :set_analysis_dates, only: %i[insights analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
       before_action :set_page_subtitle, only: [:insights, :analysis]
       before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
       before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
-      before_action :set_analysis_dates, only: %i[insights analysis] # FIXME move higher?
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
@@ -101,13 +101,7 @@ module Schools
       end
 
       def set_data_warning
-        analysis_date = case advice_page_fuel_type
-                        when :gas, :electricity, :storage_heater
-                          analysis_end_date
-                        else
-                          Time.zone.today
-                        end
-        @data_warning = !recent_data?(analysis_date)
+        @data_warning = !@analysis_dates.recent_data
       end
 
       def set_tab_name
