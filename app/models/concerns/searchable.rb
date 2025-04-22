@@ -6,11 +6,7 @@
 module Searchable
   extend ActiveSupport::Concern
 
-  # Disable cop as want SQL to be formatted for readability. Its already a complex query and splitting
-  # into fragments will make it less readable.
-  #
-  # rubocop:disable Metrics/BlockLength
-  class_methods do
+  class_methods do # rubocop:disable Metrics/BlockLength # splitting queries would only make more complicated
     def search(query:, locale: :en, show_all: false)
       sql = ActiveRecord::Base.sanitize_sql_array(build_translated_search_sql(query:, locale:, show_all:))
       select("#{table_name}.*, search_results.rank, search_results.headline").joins(sql)
@@ -86,5 +82,4 @@ module Searchable
       locale.to_s == 'en' ? 'english' : 'simple'
     end
   end
-  # rubocop:enable Metrics/BlockLength
 end

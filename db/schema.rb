@@ -675,6 +675,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_16_164103) do
     t.datetime "updated_at", null: false
     t.integer "max_days_out_of_date"
     t.integer "enough_days_data"
+    t.boolean "disable_normalisation", default: false, null: false
   end
 
   create_table "comparison_footnotes", force: :cascade do |t|
@@ -700,7 +701,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_16_164103) do
     t.datetime "updated_at", null: false
     t.bigint "report_group_id"
     t.boolean "disabled", default: false, null: false
-    t.boolean "disable_normalisation", default: false, null: false
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
     t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
