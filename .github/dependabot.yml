@@ -15,7 +15,7 @@ updates:
       # updates - so ignore new minor versions (they need manual intervention anyway)
       - dependency-name: "rails"
         update-types: ["version-update:semver-minor"]
-      # upgrading bootstrap will be a bigger manual job
+      # upgrading to bootstrap 5 will be a bigger manual job
       - dependency-name: "bootstrap"
         update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 20 # default 5
