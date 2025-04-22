@@ -6,7 +6,7 @@
 module Searchable
   extend ActiveSupport::Concern
 
-  class_methods do # rubocop:disable Metrics/BlockLength # splitting queries would only make more complicated
+  class_methods do # rubocop:disable Metrics/BlockLength -- splitting queries would only make more complicated
     def search(query:, locale: :en, show_all: false)
       sql = ActiveRecord::Base.sanitize_sql_array(build_translated_search_sql(query:, locale:, show_all:))
       select("#{table_name}.*, search_results.rank, search_results.headline").joins(sql)
