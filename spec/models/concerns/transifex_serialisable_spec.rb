@@ -62,7 +62,9 @@ describe TransifexSerialisable do
       # we have to explicitly require the classes otherwise they're not loaded and
       # check for included modules fails
       Dir[Rails.root.join('app/models/**/*.rb')].sort.each { |f| require f }
-      @tx_serialisables = ApplicationRecord.descendants.select { |c| c.included_modules.include? TransifexSerialisable }
+      @tx_serialisables = ApplicationRecord.descendants.select do |c|
+        c.included_modules.include?(TransifexSerialisable) && !c.abstract_class
+      end
     end
 
     it 'all including models have timestamps and include Mobility' do

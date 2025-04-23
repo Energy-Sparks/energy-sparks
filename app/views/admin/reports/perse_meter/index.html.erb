@@ -1,0 +1,8 @@
+<%= render 'admin/reports/title', title: 'Perse Meter Summary' %>
+
+<p>There are currently <strong><%= @meters.count('meters.id') %></strong> Perse meters in the system, across
+   <strong><%= @meters.count('meters.school_id') %> schools</strong>.</p>
+
+<p><%= link_to 'Download as CSV', admin_reports_perse_meter_index_path(format: :csv), class: 'btn' %></p>
+
+<%= render 'admin/reports/column_table', columns: @columns, rows: @meters %>

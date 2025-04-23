@@ -1,0 +1,28 @@
+<%= content_for :page_title, t('categories.index.title') %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: t('categories.index.title'),
+        subtitle: t('categories.index.subtitle')
+      ) %>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div id="page-body" class="col-md-12">
+      <%= render 'cms/search' %>
+      <div class="row justify-content-md-center">
+        <div class="col-md-auto">
+          <small>
+            <%= link_to t('pages.search.browse'), categories_path %> |
+            <%= link_to t('pages.search.training'), training_path %>
+          </small>
+        </div>
+      </div>
+
+      <%= render Cms::SearchResultsComponent.new(query: params[:query], results: @results) %>
+
+      <%= render 'shared/pagy_footer' %>
+    </div>
+  </div>
+</div>

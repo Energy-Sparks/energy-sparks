@@ -9,7 +9,7 @@ describe 'DCC Status Report' do
     sign_in(create(:admin))
     visit admin_reports_path
     stub_request(:get, 'https://n3rgy.test/?maxResults=100&startAt=0').to_return(status: 400)
-    click_on 'DCC Meter Status'
+    click_on 'DCC meter status'
   end
 
   it 'displays the table' do

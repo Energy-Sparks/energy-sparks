@@ -89,9 +89,11 @@ Rails.application.routes.draw do
   end
 
   get '/support', to: redirect('/support/categories')
+  get '/support/search', to: 'cms/pages#search', as: :search
   scope module: 'cms', path: 'support' do
-    resources :categories, only: [:index, :show]
-    resources :pages, only: [:show]
+    resources :categories, only: [:index, :show] do
+      resources :pages, path: '', only: [:show]
+    end
   end
 
   namespace :comparisons do
@@ -732,6 +734,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, only: [:index]
       resources :heating_types, only: [:index]
       resources :manual_reads, only: [:index]
+      resources :perse_meter, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
