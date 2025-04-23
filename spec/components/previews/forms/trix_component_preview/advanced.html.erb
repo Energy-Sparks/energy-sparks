@@ -1,0 +1,9 @@
+<h2>Advanced UI</h2>
+
+<p>
+  Used for admin interface, has more options
+</p>
+
+<%= simple_form_for([:admin, ActivityType.new]) do |form| %>
+  <%= render(Forms::TrixComponent.new(form: form, field: :description, controls: :advanced)) %>
+<% end %>

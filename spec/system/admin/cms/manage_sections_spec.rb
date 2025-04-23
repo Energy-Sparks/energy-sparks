@@ -11,7 +11,7 @@ describe 'manage sections' do
   context 'when managing sections' do
     let!(:cms_page) { create(:page) }
 
-    context 'when adding a new section' do
+    context 'when adding a new section', :js do
       before do
         click_on('Pages')
         click_on 'New Section'
@@ -23,9 +23,24 @@ describe 'manage sections' do
 
       it_behaves_like 'a cms admin page'
 
+      it_behaves_like 'a form with a customised trix component', controls: :advanced do
+        let(:id) { 'body-en' }
+        let(:size) { :large }
+      end
+
+      it_behaves_like 'a trix component with a working heading button' do
+        let(:id) { 'body-en' }
+        let(:content) { 'Section Body' }
+      end
+
+      it_behaves_like 'a trix component with a working youtube embed button' do
+        let(:id) { 'body-en' }
+      end
+
       it 'creates the model' do
-        expect { click_on 'Save' }.to change(Cms::Section, :count).by(1)
+        click_on 'Save'
         expect(page).to have_content('Section Title')
+        expect(Cms::Section.count).to eq(1)
         model = Cms::Section.last
         expect(model.created_by).to eq(user)
         expect(model.updated_by).to be_nil
@@ -40,19 +55,32 @@ describe 'manage sections' do
         click_on('Sections')
       end
 
-      it 'updates the model' do
-        click_on('Edit')
-
-        fill_in 'Title en', with: 'Section Title'
-        within('.body-trix-editor-en') do
-          fill_in_trix with: 'Section Body'
+      context 'when updating the content', :js do
+        before do
+          click_on('Edit')
+          fill_in 'Title en', with: 'Section Title'
+          within('.body-trix-editor-en') do
+            fill_in_trix with: 'Section Body'
+          end
         end
 
-        expect { click_on 'Save' }.not_to change(Cms::Section, :count)
-        expect(page).to have_content('Section Title')
-        model = Cms::Section.last
-        expect(model.updated_by).to eq(user)
-        expect(page).to have_link('Edit', href: edit_admin_cms_section_path(model))
+        it_behaves_like 'a form with a customised trix component', controls: :advanced do
+          let(:id) { 'body-en' }
+          let(:size) { :large }
+        end
+
+        it_behaves_like 'a trix component with a working heading button' do
+          let(:id) { 'body-en' }
+          let(:content) { 'Section Body' }
+        end
+
+        it 'updates the model' do
+          click_on 'Save'
+          expect(page).to have_content('Section Title')
+          model = Cms::Section.last
+          expect(model.updated_by).to eq(user)
+          expect(page).to have_link('Edit', href: edit_admin_cms_section_path(model))
+        end
       end
 
       it_behaves_like 'a publishable model' do

@@ -44,7 +44,7 @@ jobs:
         if: failure()
         with:
           name: capybara-screenshots
-          path: energy-sparks/tmp/capybara/
+          path: tmp/capybara/
           if-no-files-found: ignore
   overcommit:
     runs-on: ubuntu-latest

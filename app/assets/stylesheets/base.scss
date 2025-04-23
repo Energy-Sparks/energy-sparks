@@ -69,15 +69,6 @@ div.callout-text {
   padding-right: 30px;
 }
 
-@media (max-width: 767px) {
-  section {
-    padding: 75px 0;
-  }
-  section.first {
-    padding-top: 75px;
-  }
-}
-
 div.hide, .hidden {
   display: none;
 }
@@ -313,11 +304,19 @@ input, progress {
     }
   }
 
+  &.theme-pale {
+    background-color: $blue-pale;
+  }
+
   &.theme-light {
     background-color: $blue-light;
   }
 
   &.theme-accent {
     background-color: $yellow-pale;
+
+    .text-darker {
+      color: $blue-very-dark;
+    }
   }
 }

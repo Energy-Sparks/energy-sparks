@@ -60,6 +60,7 @@ class AmrDataFeedReading < ApplicationRecord
     WHEN date_format='%d-%b-%y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d-%m-%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%Y%m%d' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
+    WHEN date_format='%d/%m/%Y %H:%M:%S' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY/MM/DD')
     WHEN date_format='%d-%m-%Y' THEN to_date(reading_date, 'DD-MM-YYYY')
     WHEN date_format='%d/%m/%Y' AND reading_date~'\\d{4}-\\d{2}-\\d{2}' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%d/%m/%Y' THEN to_date(reading_date, 'DD/MM/YYYY')
