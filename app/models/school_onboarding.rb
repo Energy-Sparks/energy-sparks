@@ -18,7 +18,6 @@
 #  school_name              :string           not null
 #  school_will_be_public    :boolean          default(TRUE)
 #  scoreboard_id            :bigint(8)
-#  solar_pv_tuos_area_id    :bigint(8)
 #  template_calendar_id     :bigint(8)
 #  updated_at               :datetime         not null
 #  uuid                     :string           not null
@@ -26,15 +25,14 @@
 #
 # Indexes
 #
-#  index_school_onboardings_on_created_by_id          (created_by_id)
-#  index_school_onboardings_on_created_user_id        (created_user_id)
-#  index_school_onboardings_on_funder_id              (funder_id)
-#  index_school_onboardings_on_school_group_id        (school_group_id)
-#  index_school_onboardings_on_school_id              (school_id)
-#  index_school_onboardings_on_scoreboard_id          (scoreboard_id)
-#  index_school_onboardings_on_solar_pv_tuos_area_id  (solar_pv_tuos_area_id)
-#  index_school_onboardings_on_template_calendar_id   (template_calendar_id)
-#  index_school_onboardings_on_uuid                   (uuid) UNIQUE
+#  index_school_onboardings_on_created_by_id         (created_by_id)
+#  index_school_onboardings_on_created_user_id       (created_user_id)
+#  index_school_onboardings_on_funder_id             (funder_id)
+#  index_school_onboardings_on_school_group_id       (school_group_id)
+#  index_school_onboardings_on_school_id             (school_id)
+#  index_school_onboardings_on_scoreboard_id         (scoreboard_id)
+#  index_school_onboardings_on_template_calendar_id  (template_calendar_id)
+#  index_school_onboardings_on_uuid                  (uuid) UNIQUE
 #
 # Foreign Keys
 #
@@ -43,7 +41,6 @@
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
-#  fk_rails_...  (solar_pv_tuos_area_id => areas.id) ON DELETE => restrict
 #  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => nullify
 #
 
