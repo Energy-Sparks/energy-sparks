@@ -39,36 +39,38 @@ function findYoutubeId(str) {
   }
 }
 
-document.addEventListener("trix-action-invoke", function(event) {
+document.addEventListener('trix-action-invoke', function(event) {
+  const target = event.target
   if(event.actionName === 'x-insert-chart') {
-    var element = event.target;
-    var parentWrapper = $(element).parents('.chart-list');
-    element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
+    target.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}")
   }
   if(event.actionName === 'x-insert-youtube') {
-    const dialog = $(event.invokingElement).parents('.trix-dialog--youtube')
-    const input = $(dialog).find('input[name=youtube-url]')
+    const dialog = event.invokingElement.closest('.trix-dialog--youtube')
+    const input = dialog.querySelector('input[name="youtube-url"]')
     const youtube_id = findYoutubeId(input.val())
     if (youtube_id !== null) {
-      const target = event.target
-      $.ajax({
-        url: `/cms/youtube_embed/${encodeURIComponent(youtube_id)}`,
-        type: 'get',
-        error: function(xhr) {
-          console.log(xhr.statusText);
-        },
-        success: function(embed) {
+      fetch(`/cms/youtube_embed/${encodeURIComponent(youtube_id)}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
+          return response.json()
+        })
+        .then(embed => {
           const img = document.createElement('img')
           img.className = 'youtube-embed'
           img.src = embed.thumbnail_url
           const attachment = new Trix.Attachment({
             sgid: embed.sgid,
             content: document.createElement('div').appendChild(img).parentElement.outerHTML
-          })
+          });
           target.editor.insertAttachment(attachment)
           target.editorController.toolbarController.hideDialog()
-        }
-      })
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+
     }
   }
 })
