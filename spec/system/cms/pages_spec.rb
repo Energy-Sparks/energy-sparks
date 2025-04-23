@@ -33,7 +33,7 @@ describe 'view pages and sections' do
   context 'with support pages feature off', without_feature: :support_pages do
     context 'when visiting a page' do
       before do
-        visit page_path(cms_page)
+        visit category_page_path(cms_page.category, cms_page)
       end
 
       it_behaves_like 'the user is not authorised'
@@ -47,7 +47,7 @@ describe 'view pages and sections' do
       context 'when logged in as an admin' do
         before do
           sign_in(create(:admin))
-          visit page_path(cms_page)
+          visit category_page_path(cms_page.category, cms_page)
         end
 
         it_behaves_like 'a cms page'
@@ -61,7 +61,7 @@ describe 'view pages and sections' do
 
       context 'when logged in as any other user' do
         before do
-          visit page_path(cms_page)
+          visit category_page_path(cms_page.category, cms_page)
         end
 
         it_behaves_like 'a cms page'
@@ -80,7 +80,7 @@ describe 'view pages and sections' do
       context 'when logged in as an admin' do
         before do
           sign_in(create(:admin))
-          visit page_path(cms_page)
+          visit category_page_path(cms_page.category, cms_page)
         end
 
         it_behaves_like 'a cms page'
@@ -88,7 +88,7 @@ describe 'view pages and sections' do
 
       context 'when logged in as any other user' do
         before do
-          visit page_path(cms_page)
+          visit category_page_path(cms_page.category, cms_page)
         end
 
         it_behaves_like 'the user is not authorised'

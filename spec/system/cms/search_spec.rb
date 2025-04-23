@@ -15,7 +15,7 @@ describe 'searching support pages' do
 
     it 'shows the search results' do
       expect(page).to have_content('Found 1 result for "Lorem ipsum"')
-      expect(page).to have_link(section.title, href: page_path(cms_page, anchor: section.slug))
+      expect(page).to have_link(section.title, href: category_page_path(cms_page.category, cms_page, anchor: section.slug))
     end
 
     it 'has extra support links' do
@@ -29,7 +29,7 @@ describe 'searching support pages' do
       it 'they are not included in results' do
         refresh
         expect(page).to have_content('Found 1 result for "Lorem ipsum"')
-        expect(page).not_to have_link(unpublished.title, href: page_path(cms_page, anchor: unpublished.slug))
+        expect(page).not_to have_link(unpublished.title, href: category_page_path(cms_page.category, cms_page, anchor: unpublished.slug))
       end
     end
   end
@@ -48,7 +48,7 @@ describe 'searching support pages' do
 
     it 'shows the search results' do
       expect(page).to have_content('Found 1 result for "Lorem ipsum"')
-      expect(page).to have_link(section.title, href: page_path(cms_page, anchor: section.slug))
+      expect(page).to have_link(section.title, href: category_page_path(cms_page.category, cms_page, anchor: section.slug))
     end
 
     context 'when there are unpublished sections' do
@@ -57,7 +57,7 @@ describe 'searching support pages' do
       it 'they are included in results' do
         refresh
         expect(page).to have_content('Found 2 results for "Lorem ipsum"')
-        expect(page).to have_link(unpublished.title, href: page_path(cms_page, anchor: unpublished.slug))
+        expect(page).to have_link(unpublished.title, href: category_page_path(cms_page.category, cms_page, anchor: unpublished.slug))
       end
     end
   end

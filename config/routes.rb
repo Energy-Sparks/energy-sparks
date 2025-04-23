@@ -89,12 +89,10 @@ Rails.application.routes.draw do
   end
 
   get '/support', to: redirect('/support/categories')
+  get '/support/search', to: 'cms/pages#search', as: :search
   scope module: 'cms', path: 'support' do
-    resources :categories, only: [:index, :show]
-    resources :pages, only: [:show] do
-      collection do
-        get 'search', as: :search
-      end
+    resources :categories, only: [:index, :show] do
+      resources :pages, path: '', only: [:show]
     end
   end
 

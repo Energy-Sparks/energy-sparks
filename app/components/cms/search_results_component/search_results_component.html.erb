@@ -15,9 +15,11 @@
             <div class="row">
               <div class="col-md-12">
                 <h5>
-                  <%= link_to section.page.title, page_path(section.page) %>
+                  <%= link_to section.page.title, category_page_path(section.page.category, section.page) %>
                   -
-                  <%= link_to section.title, page_path(section.page, anchor: section.slug) %>
+                  <%= link_to section.title, category_page_path(section.page.category,
+                                                                section.page,
+                                                                anchor: section.slug) %>
                 </h5>
               </div>
             </div>

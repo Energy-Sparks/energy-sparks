@@ -28,7 +28,9 @@
           <td><%= fa_icon(section.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_section_path(section), class: 'btn' %>
-            <%= link_to 'View', page_path(section.page, anchor: section.slug), class: 'btn' %>
+            <%= link_to 'View', category_page_path(section.page.category,
+                                                   section.page,
+                                                   anchor: section.slug), class: 'btn' %>
             <% if section.published? %>
             <%= link_to 'Hide',
                         hide_admin_cms_section_path(section),
