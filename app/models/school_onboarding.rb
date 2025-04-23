@@ -52,7 +52,6 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
-  belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
   belongs_to :scoreboard, optional: true
@@ -78,7 +77,6 @@ class SchoolOnboarding < ApplicationRecord
                         uuid: SecureRandom.uuid,
                         created_by: user,
                         template_calendar: school_group&.default_template_calendar,
-                        solar_pv_tuos_area: school_group&.default_solar_pv_tuos_area,
                         dark_sky_area: school_group&.default_dark_sky_area,
                         weather_station: school_group&.default_weather_station,
                         scoreboard: school_group&.default_scoreboard,
