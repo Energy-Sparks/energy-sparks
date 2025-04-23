@@ -59,6 +59,8 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
+  get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
+
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'find-out-more', as: :find_out_more
@@ -87,9 +89,11 @@ Rails.application.routes.draw do
   end
 
   get '/support', to: redirect('/support/categories')
+  get '/support/search', to: 'cms/pages#search', as: :search
   scope module: 'cms', path: 'support' do
-    resources :categories, only: [:index, :show]
-    resources :pages, only: [:show]
+    resources :categories, only: [:index, :show] do
+      resources :pages, path: '', only: [:show]
+    end
   end
 
   namespace :comparisons do
@@ -121,7 +125,6 @@ Rails.application.routes.draw do
     resources :electricity_targets, only: [:index], concerns: :unlisted
     resources :gas_consumption_during_holiday, only: [:index], concerns: :unlisted
     resources :gas_targets, only: [:index], concerns: :unlisted
-    resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
     resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
@@ -731,6 +734,7 @@ Rails.application.routes.draw do
       resources :engaged_groups, only: [:index]
       resources :heating_types, only: [:index]
       resources :manual_reads, only: [:index]
+      resources :perse_meter, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
