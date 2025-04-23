@@ -95,6 +95,14 @@ describe AggregatorMultiSchoolsPeriods do
           before { aggregator.calculate }
 
           it_behaves_like 'a successful chart', series_count: 1
+
+          it 'has the correct data' do
+            expect(aggregator.results.x_axis).to eq(%w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec])
+            expect(aggregator.results.bucketed_data).to eq(
+              { 'Mon 02 Jan 23-Sun 31 Dec 23' =>
+                  [30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31].map(&daily_usage.method(:*)) }
+            )
+          end
         end
       end
 
@@ -120,20 +128,22 @@ describe AggregatorMultiSchoolsPeriods do
 
         it_behaves_like 'a successful chart', series_count: 2
 
-        it 'has aligned the series correctly' do
-          bucketed_data = aggregator.results.bucketed_data
+        it 'has the correct data' do
+          expect(aggregator.results.x_axis).to eq(%w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec Jan])
           # in this instance the two series should have the same number of entries
           # otherwise the monthly values for the current and previous years dont align on the chart
-          expect(bucketed_data.values.first.size).to eq(bucketed_data.values.last.size)
           # The two series will be:
           # 2023-01-18 - 2024-01-16 = [Jan, Feb,...Dec, Jan]
           # 2022-10-01 - 2023-01-17 = [Oct, Nov, Dec, Jan]
           #
           # The four months should be at the end of the range
           # Oct, Nov, Dec, and 17 days in Jan
-          monthly_usage = [31, 30, 31, 17].map(&daily_usage.method(:*))
-          # 9 months with no values, then the above
-          expect(bucketed_data.values.first).to eq(Array.new(9, 0.0) + monthly_usage)
+          expect(aggregator.results.bucketed_data).to eq(
+            { 'Sat 01 Oct 22-Tue 17 Jan 23' =>
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 30, 31, 17].map(&daily_usage.method(:*)),
+              'Wed 18 Jan 23-Tue 16 Jan 24' =>
+               [14, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 16].map(&daily_usage.method(:*)) }
+          )
         end
       end
 
@@ -147,17 +157,19 @@ describe AggregatorMultiSchoolsPeriods do
 
         it_behaves_like 'a successful chart', series_count: 2
 
-        it 'has aligned the series correctly' do
-          bucketed_data = aggregator.results.bucketed_data
-          expect(bucketed_data.values).to eq([
-            [29, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 1],
-            [30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0]
-          ].map { |range| range.map { |days| days * daily_usage } })
+        it 'has the correct data' do
+          expect(aggregator.results.x_axis).to eq(%w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec Jan])
+          expect(aggregator.results.bucketed_data).to eq(
+            { 'Mon 03 Jan 22-Sun 01 Jan 23' =>
+                [29, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 1].map(&daily_usage.method(:*)),
+              'Mon 02 Jan 23-Sun 31 Dec 23' =>
+                [30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 0].map(&daily_usage.method(:*)) }
+          )
         end
       end
     end
 
-    context 'with two periods of :academicyear' do
+    context 'with two periods of :academicyear' do # TODO: remove as not currently used?
       let(:timescale) { [{ academicyear: 0 }, { academicyear: -1 }] }
 
       before { aggregator.calculate }
@@ -165,13 +177,13 @@ describe AggregatorMultiSchoolsPeriods do
       context 'when there is only a year of data' do
         it_behaves_like 'a successful chart', series_count: 2
         it 'has the correct data' do
-          expect(aggregator.results.x_axis).to eq(%w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec])
+          expect(aggregator.results.x_axis).to eq(%w[Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug])
           expect(aggregator.results.bucketed_data).to eq(
             {
               'Mon 02 Jan 23-Thu 31 Aug 23' =>
-                [30, 28, 31, 30, 31, 30, 31, 31, 0, 0, 0, 0].map(&daily_usage.method(:*)),
+                [0, 0, 0, 0, 30, 28, 31, 30, 31, 30, 31, 31].map(&daily_usage.method(:*)),
               'Fri 01 Sep 23-Sun 31 Dec 23' =>
-                [0, 0, 0, 0, 0, 0, 0, 0, 30, 31, 30, 31].map(&daily_usage.method(:*))
+                [30, 31, 30, 31, 0, 0, 0, 0, 0, 0, 0, 0].map(&daily_usage.method(:*))
             }
           )
         end
@@ -188,13 +200,13 @@ describe AggregatorMultiSchoolsPeriods do
 
         it_behaves_like 'a successful chart', series_count: 2
         it 'has the correct data' do
-          expect(aggregator.results.x_axis).to eq(%w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec])
+          expect(aggregator.results.x_axis).to eq(%w[Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug Sep])
           expect(aggregator.results.bucketed_data).to eq(
             {
               'Mon 02 Jan 23-Sun 03 Sep 23' =>
-                [30, 28, 31, 30, 31, 30, 31, 31, 3, 0, 0, 0].map(&daily_usage.method(:*)),
+                [0, 0, 0, 0, 30, 28, 31, 30, 31, 30, 31, 31, 3].map(&daily_usage.method(:*)),
               'Mon 04 Sep 23-Sun 31 Dec 23' =>
-                [0, 0, 0, 0, 0, 0, 0, 0, 27, 31, 30, 31].map(&daily_usage.method(:*))
+                [27, 31, 30, 31, 0, 0, 0, 0, 0, 0, 0, 0, 0].map(&daily_usage.method(:*))
             }
           )
         end
@@ -207,12 +219,10 @@ describe AggregatorMultiSchoolsPeriods do
         it 'has the correct data' do
           expect(aggregator.results.x_axis).to eq(%w[Jun Jul Aug Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug])
           expect(aggregator.results.bucketed_data).to eq(
-            {
+            { 'Wed 01 Jun 22-Thu 31 Aug 23' =>
+                [30, 31, 31, 30, 31, 30, 31, 31, 28, 31, 30, 31, 30, 31, 31].map(&daily_usage.method(:*)),
               'Fri 01 Sep 23-Sun 31 Dec 23' =>
-                [0, 0, 0, 30, 31, 30, 31, 0, 0, 0, 0, 0, 0, 0, 0].map(&daily_usage.method(:*)),
-              'Wed 01 Jun 22-Thu 31 Aug 23' =>
-                [30, 31, 31, 30, 31, 30, 31, 31, 28, 31, 30, 31, 30, 31, 31].map(&daily_usage.method(:*))
-            }
+                [0, 0, 0, 30, 31, 30, 31, 0, 0, 0, 0, 0, 0, 0, 0].map(&daily_usage.method(:*)) }
           )
         end
       end
@@ -223,6 +233,43 @@ describe AggregatorMultiSchoolsPeriods do
         it_behaves_like 'a successful chart', series_count: 2
         it 'has the correct data' do
           expect(aggregator.results.x_axis).to eq(%w[Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug])
+        end
+      end
+    end
+
+    context 'with two periods of :fixed_academic_year' do
+      let(:timescale) { [{ fixed_academic_year: 0 }, { fixed_academic_year: -1 }] }
+
+      before { aggregator.calculate }
+
+      context 'when there is only a year of data' do
+        it_behaves_like 'a successful chart', series_count: 2
+        it 'has the correct data' do
+          expect(aggregator.results.x_axis).to eq(%w[Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug])
+          expect(aggregator.results.bucketed_data).to eq(
+            { 'Mon 02 Jan 23-Thu 31 Aug 23' =>
+                [0, 0, 0, 0, 30, 28, 31, 30, 31, 30, 31, 31].map(&daily_usage.method(:*)),
+              'Fri 01 Sep 23-Sun 31 Dec 23' =>
+                [30, 31, 30, 31, 0, 0, 0, 0, 0, 0, 0, 0].map(&daily_usage.method(:*)) }
+          )
+        end
+      end
+
+      context 'when data starts after the beginning of the academic year' do
+        let(:amr_start_date) { Date.new(2022, 2, 16) }
+        let(:amr_end_date) { Date.new(2023, 3, 29) }
+
+        it_behaves_like 'a successful chart', series_count: 2
+        it 'has the correct data' do
+          expect(aggregator.results.x_axis).to eq(%w[Sep Oct Nov Dec Jan Feb Mar Apr May Jun Jul Aug])
+          expect(aggregator.results.bucketed_data).to eq(
+            {
+              'Wed 16 Feb 22-Wed 31 Aug 22' =>
+                [0, 0, 0, 0, 0, 13, 31, 30, 31, 30, 31, 31].map(&daily_usage.method(:*)),
+              'Thu 01 Sep 22-Wed 29 Mar 23' =>
+                [30, 31, 30, 31, 31, 28, 29, 0, 0, 0, 0, 0].map(&daily_usage.method(:*))
+            }
+          )
         end
       end
     end

@@ -93,58 +93,6 @@ module AggregationMixin
 
   private
 
-  # Factory method to create a new meter, copying values and data from an existing
-  # meter. By default it instantiates a new +Dashboard::Meter+ but other classes
-  # can be provided as a parameter.
-  #
-  # Note: relies on +meter_collection+ method being available
-  #
-  # @param Dashboard::Meter meter the meter to copy
-  # @param AmrData amr_data the amr data to populate the new meter
-  # @param Symbol type the type for the new meter
-  # @param String identifier the identifier for the new meter
-  # @param String name the name of the new meter
-  # @param Symbol pseudo_meter_name a symbol indicates the name of pseudo meter attributes to copy into the new meter
-  # @param Class meter_type the class to use to instantiate the new meter
-  #
-  # @return Dashboard::Meter the new meter
-  def create_modified_meter_copy(meter, amr_data, type, identifier, name, pseudo_meter_name, meter_type = Dashboard::Meter)
-    meter_type.new(
-      meter_collection: meter_collection,
-      amr_data: amr_data,
-      type: type,
-      identifier: identifier,
-      name: name,
-      floor_area: meter.floor_area,
-      number_of_pupils: meter.number_of_pupils,
-      solar_pv_installation: meter.solar_pv_setup,
-      storage_heater_config: meter.storage_heater_setup,
-      meter_attributes: meter.meter_attributes.merge(meter_collection.pseudo_meter_attributes(pseudo_meter_name))
-    )
-  end
-
-  # Creates a new aggregate meter, by coping values from an existing meter
-  #
-  # Note: only used in +DisaggregateCommunityUsage+?
-  #
-  # @param Dashboard::Meter aggregate_meter the existing meter to copy from
-  # @param Array meters the list of meters to add to the new aggregate
-  # @param Symbol fuel_type the fuel type of the meter
-  # @param String identifier the identifier for the new meter
-  # @param String name the name of the new meter
-  # @param Symbol pseudo_meter_name a symbol indicates the name of pseudo meter attributes to copy into the new meter
-  def create_aggregate_meter(aggregate_meter, meters, fuel_type, identifier, name, pseudo_meter_name)
-    aggregate_amr_data = aggregate_amr_data_between_dates(meters, fuel_type, aggregate_meter.amr_data.start_date, aggregate_meter.amr_data.end_date, aggregate_meter.mpxn)
-
-    new_aggregate_meter = create_modified_meter_copy(aggregate_meter, aggregate_amr_data, fuel_type, identifier, name, pseudo_meter_name, Dashboard::AggregateMeter)
-
-    new_aggregate_meter.set_constituent_meters(meters)
-
-    calculate_meter_carbon_emissions_and_costs(new_aggregate_meter, fuel_type)
-
-    new_aggregate_meter
-  end
-
   # Aggregate the data associated with a list of meters, optionally ignoring any aggregation rules
   #
   # @param Array meter an array of +Dashboard::Meter+

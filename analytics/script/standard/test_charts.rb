@@ -8,7 +8,7 @@ module Logging
 end
 
 charts = {
-  adhoc: %i[benchmark]
+  adhoc: %i[baseload_lastyear]
 }
 
 no_charts = RunCharts.standard_charts_for_school
@@ -24,7 +24,7 @@ control = {
 }
 
 overrides = {
-  schools:  ['acc*'],
+  schools:  ['l*'],
   cache_school: false,
   charts:   { charts: charts, control: control }
 }

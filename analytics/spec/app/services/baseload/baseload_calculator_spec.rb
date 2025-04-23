@@ -5,59 +5,21 @@ require 'spec_helper'
 describe Baseload::BaseloadCalculator, type: :service do
   let(:meter_collection) { build(:meter_collection, :with_electricity_meter) }
 
-  describe '.for_meter' do
-    subject(:calculator) { described_class.for_meter(meter) }
-
-    let(:meter) { meter_collection.electricity_meters.first }
-
-    context 'when school has sheffield solar' do
-      before do
-        allow(meter).to receive(:sheffield_simulated_solar_pv_panels?).and_return(true)
-      end
-
-      it 'returns calculator' do
-        expect(calculator).to be_a(Baseload::OvernightBaseloadCalculator)
-      end
-
-      context 'with FEATURE_FLAG_MIDNIGHT_BASELOAD enabled' do
-        it 'returns the new implementation' do
-          ClimateControl.modify FEATURE_FLAG_MIDNIGHT_BASELOAD: 'true' do
-            expect(calculator).to be_a Baseload::AroundMidnightBaseloadCalculator
-          end
-        end
-      end
-    end
-
-    context 'when school does not have sheffield solar' do
-      it 'returns calculator' do
-        expect(calculator).to be_a(Baseload::StatisticalBaseloadCalculator)
-      end
-    end
-  end
-
   describe '.calculator_for' do
-    subject(:calculator)      { described_class.calculator_for(amr_data, sheffield_solar_pv) }
+    subject(:calculator)      { described_class.calculator_for(amr_data, solar_pv) }
 
     let(:amr_data)            { meter_collection.electricity_meters.first.amr_data }
 
-    context 'with sheffield solar' do
-      let(:sheffield_solar_pv) { true }
+    context 'with solar' do
+      let(:solar_pv) { true }
 
       it 'returns calculator' do
-        expect(calculator).to be_a(Baseload::OvernightBaseloadCalculator)
-      end
-
-      context 'with FEATURE_FLAG_MIDNIGHT_BASELOAD enabled' do
-        it 'returns the new implementation' do
-          ClimateControl.modify FEATURE_FLAG_MIDNIGHT_BASELOAD: 'true' do
-            expect(calculator).to be_a Baseload::AroundMidnightBaseloadCalculator
-          end
-        end
+        expect(calculator).to be_a(Baseload::AroundMidnightBaseloadCalculator)
       end
     end
 
-    context 'without sheffield solar' do
-      let(:sheffield_solar_pv) { false }
+    context 'without solar' do
+      let(:solar_pv) { false }
 
       it 'returns calculator' do
         expect(calculator).to be_a(Baseload::StatisticalBaseloadCalculator)

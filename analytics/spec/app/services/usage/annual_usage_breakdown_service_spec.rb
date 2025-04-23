@@ -209,10 +209,10 @@ describe Usage::AnnualUsageBreakdownService, type: :service do
       end
 
       it 'returns the community use analysis' do
-        expect(day_type_breakdown.community.kwh).to round_to_two_digits(0)
-        expect(day_type_breakdown.community.co2).to round_to_two_digits(0)
-        expect(day_type_breakdown.community.percent).to round_to_two_digits(0)
-        expect(day_type_breakdown.community.£).to round_to_two_digits(0)
+        expect(day_type_breakdown.community.kwh).to be_within(0.005).of(0)
+        expect(day_type_breakdown.community.co2).to be_within(0.005).of(0)
+        expect(day_type_breakdown.community.percent).to be_within(0.005).of(0)
+        expect(day_type_breakdown.community.£).to be_within(0.005).of(0)
       end
 
       it 'returns the totals' do

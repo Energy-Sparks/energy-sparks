@@ -21,7 +21,7 @@ describe Baseload::BaseloadCalculationService, type: :service do
 
     it 'calculates baseload for a week' do
       # numbers taken from running the AlertChangeInElectricityBaseloadShortTerm alert
-      expect(service.average_baseload_kw(period: :week)).to round_to_two_digits(25.62)
+      expect(service.average_baseload_kw(period: :week)).to be_within(0.005).of(25.62)
     end
   end
 

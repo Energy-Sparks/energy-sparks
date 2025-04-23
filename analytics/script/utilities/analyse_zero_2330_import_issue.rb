@@ -11,8 +11,7 @@ end
 def analyse_meter(school, meter)
   start_date = meter.amr_data.start_date
   end_date = meter.amr_data.end_date
-  baseload_kw = meter.amr_data.average_baseload_kw_date_range(start_date, end_date, sheffield_solar_pv: meter.sheffield_simulated_solar_pv_panels?)
-
+  baseload_kw = Baseload::BaseloadAnalysis.new(meter).average_baseload_kw(start_date, end_date)
   cnt = (start_date..end_date).count do |date|
     missing_23_30_value?(meter.amr_data.days_kwh_x48(date))
   end

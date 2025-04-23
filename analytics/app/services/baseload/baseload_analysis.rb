@@ -8,12 +8,8 @@ module Baseload
       @meter = meter
     end
 
-    def baseload_kwh_date_range(date1, date2)
-      calculator.baseload_kwh_date_range(date1, date2)
-    end
-
-    def baseload_kw(date)
-      calculator.baseload_kw(date)
+    def baseload_kw(date, data_type = :kwh)
+      calculator.baseload_kw(date, data_type)
     end
 
     def average_baseload_kw(date1, date2)
@@ -148,7 +144,7 @@ module Baseload
     end
 
     def baseload_kws_for_dates(dates)
-      dates.map { |d| amr_data.baseload_kw(d, @meter.sheffield_simulated_solar_pv_panels?) }
+      dates.map { |d| baseload_kw(d) }
     end
 
     def average_top_n(baseload_kws, num)
@@ -183,7 +179,7 @@ module Baseload
         next if daytype(date) == :holiday
 
         weekday_baseloads[date.wday] ||= []
-        weekday_baseloads[date.wday].push(amr_data.baseload_kw(date, @meter.sheffield_simulated_solar_pv_panels?))
+        weekday_baseloads[date.wday].push(baseload_kw(date))
       end
       weekday_baseloads
     end
@@ -201,7 +197,7 @@ module Baseload
     end
 
     def calculator
-      BaseloadCalculator.calculator_for(@meter.amr_data, @meter.sheffield_simulated_solar_pv_panels?)
+      @calculator ||= BaseloadCalculator.calculator_for(@meter.amr_data, @meter.solar_pv_panels?)
     end
   end
 end

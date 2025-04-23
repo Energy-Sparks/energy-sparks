@@ -266,7 +266,7 @@ class CommunityUseBreakdown
 
   def calc_baseload_kw(date, data_type)
     if @meter.fuel_type == :electricity
-      @meter.amr_data.baseload_kw(date, @meter.sheffield_simulated_solar_pv_panels?, data_type)
+      Baseload::BaseloadAnalysis.new(@meter).baseload_kw(date, data_type)
     else # gas and perhaps for storage heaters
       0.0
     end

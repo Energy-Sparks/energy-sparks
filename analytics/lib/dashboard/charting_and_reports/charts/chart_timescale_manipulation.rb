@@ -27,9 +27,9 @@
 class ChartManagerTimescaleManipulation
   include Logging
 
-  #@param type [Symbol] the type of operation
-  #@param original_chart_config [Hash] the chart configuration
-  #@param school [MeterCollection] the school data to use when interpreting operations
+  # @param type [Symbol] the type of operation
+  # @param original_chart_config [Hash] the chart configuration
+  # @param school [MeterCollection] the school data to use when interpreting operations
   def initialize(type, original_chart_config, school)
     @type = type
     @original_chart_config = original_chart_config.deep_dup
@@ -42,17 +42,18 @@ class ChartManagerTimescaleManipulation
   #
   # Used by main application
   #
-  #@param type [Symbol] the type of operation
-  #@param original_chart_config [Hash] the chart configuration
-  #@param school [MeterCollection] the school data to use when interpreting operations
+  # @param type [Symbol] the type of operation
+  # @param original_chart_config [Hash] the chart configuration
+  # @param school [MeterCollection] the school data to use when interpreting operations
   def self.factory(type, original_chart_config, school)
     case type
-    when :move;     ChartManagerTimescaleManipulationMove.new(:move, original_chart_config, school)
-    when :extend;   ChartManagerTimescaleManipulationExtend.new(:extend, original_chart_config, school)
-    when :contract; ChartManagerTimescaleManipulationContract.new(:contract, original_chart_config, school)
-    when :compare;  ChartManagerTimescaleManipulationCompare.new(:compare, original_chart_config, school)
+    when :move then     ChartManagerTimescaleManipulationMove.new(:move, original_chart_config, school)
+    when :extend then   ChartManagerTimescaleManipulationExtend.new(:extend, original_chart_config, school)
+    when :contract then ChartManagerTimescaleManipulationContract.new(:contract, original_chart_config, school)
+    when :compare then  ChartManagerTimescaleManipulationCompare.new(:compare, original_chart_config, school)
     else
       raise EnergySparksUnexpectedStateException, 'Unexpected nil chart adjustment timescale shift' if type.nil?
+
       raise EnergySparksUnexpectedStateException, "Unexpected chart adjustment timescale shift #{type}"
     end
   end
@@ -67,8 +68,8 @@ class ChartManagerTimescaleManipulation
   #
   # Used by main application
   #
-  #@param factor [Integer] the period to adjust the timescale
-  #@raise [EnergySparksNotEnoughDataException] if not enough data
+  # @param factor [Integer] the period to adjust the timescale
+  # @raise [EnergySparksNotEnoughDataException] if not enough data
   def adjust_timescale(factor)
     adjust_timescale_private(factor)
   end
@@ -91,24 +92,20 @@ class ChartManagerTimescaleManipulation
     enough_data?(-1)
   end
 
-  #Used by main application
+  # Used by main application
   def chart_suitable_for_timescale_manipulation?
     return false unless @original_chart_config.key?(:timescale) && !@original_chart_config[:timescale].nil? # :benchmark type chart has no defined timescale
+
     timescale_type, value = timescale_type(@original_chart_config)
     !%i[hotwater none].include?(timescale_type)
   end
 
   def enough_data?(factor)
-    begin
-      adjust_timescale_private(factor)
-      true
-    rescue EnergySparksNotEnoughDataException => _e
-      false
-    rescue
-      raise
-    end
+    adjust_timescale_private(factor)
+    true
+  rescue EnergySparksNotEnoughDataException => _e
+    false
   end
-
 
   # Returns a description of the timescale variable in the chart configuration
   #
@@ -118,9 +115,10 @@ class ChartManagerTimescaleManipulation
     description.timescale_description
   end
 
-  #UNUSED
+  # UNUSED
   def timescale_shift_description(shift_amount)
     return 'no shift' if shift_amount == 0
+
     direction_description = shift_amount > 0 ? 'forward' : 'back'
     singular_plural = shift_amount.magnitude > 1 ? 's' : ''
     "#{direction_description} #{shift_amount.magnitude} #{timescale_description}#{singular_plural}"
@@ -152,8 +150,8 @@ class ChartManagerTimescaleManipulation
 
   def is_thermostatic_chart?(chart_config)
     chart_config[:chart1_type] == :scatter &&
-    chart_config[:series_breakdown].length == 2 &&
-    (chart_config[:series_breakdown] & %i[model_type temperature]).length == 2
+      chart_config[:series_breakdown].length == 2 &&
+      (chart_config[:series_breakdown] & %i[model_type temperature]).length == 2
   end
 
   def manipulate_timescale(timescale, factor, available_periods)
@@ -187,37 +185,35 @@ class ChartManagerTimescaleManipulation
     available_periods_by_type(chart_config_original)
   end
 
-  private def determine_chart_range(chart_config)
+  def determine_chart_range(chart_config)
     aggregator = Aggregator.new(@school, chart_config)
     chart_config, _schools = aggregator.initialise_schools_date_range # get min and max combined meter ranges
-    if chart_config.key?(:min_combined_school_date) || chart_config.key?(:max_combined_school_date)
-      logger.info "METER range = #{chart_config[:min_combined_school_date]} to #{chart_config[:max_combined_school_date]}"
-      [chart_config[:min_combined_school_date], chart_config[:max_combined_school_date]]
-    else
-      raise EnergySparksUnexpectedStateException, 'Unable to determine chart date range'
-    end
+    raise EnergySparksUnexpectedStateException, 'Unable to determine chart date range' unless chart_config.key?(:min_combined_school_date) || chart_config.key?(:max_combined_school_date)
+
+    logger.info "METER range = #{chart_config[:min_combined_school_date]} to #{chart_config[:max_combined_school_date]}"
+    [chart_config[:min_combined_school_date], chart_config[:max_combined_school_date]]
   end
 
-  private def factor_multiplier(chart_config_original)
+  def factor_multiplier(chart_config_original)
     type, _value = timescale_type(chart_config_original)
     # optimum start chart grouped in 5 heating workdays, jump to next set of 5 days
     type == :optimum_start ? 5 : 1
   end
 
-  private def weekly_x_axis?(chart_config)
-   chart_config.key?(:x_axis) && chart_config[:x_axis] == :week
+  def weekly_x_axis?(chart_config)
+    chart_config.key?(:x_axis) && chart_config[:x_axis] == :week
   end
 
-  private def available_periods_by_type(chart_config_original)
+  def available_periods_by_type(chart_config_original)
     start_date, end_date = determine_chart_range(chart_config_original)
     timescale_type, value = timescale_type(chart_config_original)
     case timescale_type
     when :year
       ((end_date - start_date + 1) / 365.0).floor
     when :up_to_a_year
-      #allow navigation back to partial years
-      #aligning with saturday boundarys ensures code is in sync with UpToAYearPeriods
-      move_to_saturday_boundary = weekly_x_axis?(chart_config_original) ? true : false
+      # allow navigation back to partial years
+      # aligning with saturday boundarys ensures code is in sync with UpToAYearPeriods
+      move_to_saturday_boundary = weekly_x_axis?(chart_config_original) || false
       minimum_days = weekly_x_axis?(chart_config_original) ? 7 : nil
       Holidays.periods_cadence(start_date, end_date, include_partial_period: true, move_to_saturday_boundary: move_to_saturday_boundary, minimum_days: minimum_days).count
     when :academicyear
@@ -225,7 +221,7 @@ class ChartManagerTimescaleManipulation
     when :fixed_academic_year
       Periods::FixedAcademicYear.enumerator(start_date, end_date).count
     when :workweek
-      start_date = start_date - ((start_date.wday - 6) % 7)
+      start_date -= ((start_date.wday - 6) % 7)
       ((end_date - start_date + 1) / 7.0).floor
     when :week
       ((end_date - start_date + 1) / 7.0).floor
@@ -235,7 +231,7 @@ class ChartManagerTimescaleManipulation
     when :day, :datetime
       end_date - start_date + 1
     when :month
-      (end_date.year * 12 + end_date.month - 1) - (start_date.year * 12 + start_date.month - 1) + 1
+      ((end_date.year * 12) + end_date.month - 1) - ((start_date.year * 12) + start_date.month - 1) + 1
     when :holiday
       @school.holidays.number_holidays_between_dates(start_date, end_date, false)
     when :includeholiday
@@ -258,7 +254,7 @@ class ChartManagerTimescaleManipulation
     end
   end
 
-  private def optimum_start_periods
+  def optimum_start_periods
     @optimum_start_days ||= OptimumStartDates.new(@school).list_of_dates
   end
 
@@ -279,9 +275,8 @@ class ChartManagerTimescaleManipulation
 
   def calculate_new_period_number(period_number, factor, available_periods)
     new_period_number = period_number + factor
-    if new_period_number > 0 || new_period_number < (-1 * (available_periods - 1))
-      raise EnergySparksNotEnoughDataException, "Timescale charge request out of range #{new_period_number} versus #{available_periods} limit"
-    end
+    raise EnergySparksNotEnoughDataException, "Timescale charge request out of range #{new_period_number} versus #{available_periods} limit" if new_period_number > 0 || new_period_number < (-1 * (available_periods - 1))
+
     new_period_number
   end
 
@@ -294,11 +289,12 @@ class ChartManagerTimescaleManipulation
     # need to provide chart config for original period range, so when you extend.
     # from a 1 to a 2 and then a 3 week chart, you can go back to a 2 week chart following a contraction request
     @cadence_days = days_in_range.to_i unless @original_chart_config.key?(:cadence_days)
-    start_date = existing_timescale_daterange.first + days_in_range * start_factor
-    end_date = existing_timescale_daterange.last + days_in_range * end_factor
+    start_date = existing_timescale_daterange.first + (days_in_range * start_factor)
+    end_date = existing_timescale_daterange.last + (days_in_range * end_factor)
     available_data_start_date, available_data_end_date = determine_chart_range(@original_chart_config)
     raise EnergySparksNotEnoughDataException, "Not enough data available earliest available data #{available_data_start_date} request #{start_date}" if start_date < available_data_start_date
     raise EnergySparksNotEnoughDataException, "Not enough data available latest available data #{available_data_end_date} request #{end_date}" if end_date > available_data_end_date
+
     Range.new(start_date, end_date, existing_timescale_daterange.exclude_end?)
   end
 
@@ -311,6 +307,7 @@ class ChartManagerTimescaleManipulation
   def calculate_new_range(period_type, existing_range, start_factor, end_factor, override_days_factor = nil, requires_cadence = false)
     if date_range?(existing_range)
       raise EnergySparksNotEnoughDataException, 'Cant contract chart without previously extended cadence information' if requires_cadence && !@original_chart_config.key?(:cadence_days)
+
       { period_type => calculate_new_date_range(existing_range, start_factor, end_factor, override_days_factor) }
     else
       { period_type => calculate_new_period_range(existing_range, start_factor, end_factor) }
@@ -324,11 +321,12 @@ end
 
 class ChartManagerTimescaleManipulationMove < ChartManagerTimescaleManipulation
   def initialize(type, holidays, original_chart_config)
-    super(type, holidays, original_chart_config)
+    super
   end
 
   def manipulate_timescale(timescale, factor, available_periods)
     raise EnergySparksUnexpectedStateException, "Expecting single entry hash, got #{timescale}" if timescale.length != 1
+
     period_type, period_number = timescale.first
     if period_number.is_a?(Integer)
       new_period_number = calculate_new_period_number(period_number, factor, available_periods)
@@ -344,24 +342,26 @@ end
 class ChartManagerTimescaleManipulationNonMoveTypes < ChartManagerTimescaleManipulation
   def chart_suitable_for_timescale_manipulation?
     return false unless super
+
     timescale, _value = timescale_type(@original_chart_config)
     !(@original_chart_config[:timescale].is_a?(Array) && @original_chart_config[:timescale].length > 1) &&
-    !%i[frostday frostday_3 optimum_start diurnal].include?(timescale)
+      !%i[frostday frostday_3 optimum_start diurnal].include?(timescale)
   end
 end
 
 class ChartManagerTimescaleManipulationExtend < ChartManagerTimescaleManipulationNonMoveTypes
   def initialize(type, holidays, original_chart_config)
-    super(type, holidays, original_chart_config)
+    super
   end
 
   def manipulate_timescale(timescale, factor, available_periods)
     raise EnergySparksUnexpectedStateException, "Expecting single entry hash, got #{timescale}" if timescale.length != 1
+
     period_type, period_number = timescale.first
     if period_number.is_a?(Integer)
       new_period_number = calculate_new_period_number(period_number, factor, available_periods)
       new_range = factor > 0 ? Range.new(period_number, new_period_number) : Range.new(new_period_number, period_number)
-      {period_type => new_range}
+      { period_type => new_range }
     elsif period_number.is_a?(Range)
       override_days_factor = date_range?(period_number) ? self.class.days_in_date_range(period_number) : nil
       calculate_new_range(period_type, period_number, factor > 0 ? 0 : factor, factor < 0 ? 0 : factor, override_days_factor)
@@ -373,18 +373,20 @@ end
 
 class ChartManagerTimescaleManipulationContract < ChartManagerTimescaleManipulationNonMoveTypes
   def initialize(type, holidays, original_chart_config)
-    super(type, holidays, original_chart_config)
+    super
   end
 
   def manipulate_timescale(timescale, factor, available_periods)
     raise EnergySparksUnexpectedStateException, "Expecting single entry hash, got #{timescale}" if timescale.length != 1
+
     period_type, period_number = timescale.first
     if period_number.is_a?(Integer)
       # do nothing as can't contract single time range, should potentially raise error
       # PH 22Aug2019, see chart_suitable_for_timescale_manipulation test above
-      {period_type => period_number}
+      { period_type => period_number }
     elsif period_number.is_a?(Range)
       raise EnergySparksNotEnoughDataException, 'Cant contract back beyond original chart size if date range (typically a drilldown)' if not_enough_periods(period_number)
+
       calculate_new_range(period_type, period_number, factor > 0 ? 0 : (-1 * factor), factor < 0 ? 0 : (-1 * factor), @original_chart_config[:cadence_days], true)
     else
       raise EnergySparksUnexpectedStateException, "Unsupported period number #{period_number} type"
@@ -405,11 +407,12 @@ end
 #   - PH 22Aug2019 - decided to to say chart can't be compared
 class ChartManagerTimescaleManipulationCompare < ChartManagerTimescaleManipulationNonMoveTypes
   def initialize(type, holidays, original_chart_config)
-    super(type, holidays, original_chart_config)
+    super
   end
 
   def chart_suitable_for_timescale_manipulation?
     return false unless super
+
     !is_thermostatic_chart?(@original_chart_config)
   end
 
@@ -423,6 +426,7 @@ class ChartManagerTimescaleManipulationCompare < ChartManagerTimescaleManipulati
 
   def manipulate_timescale(timescale, factor, available_periods)
     raise EnergySparksUnexpectedStateException, "Expecting single entry hash, got #{timescale}" if timescale.length != 1
+
     period_type, period_number = timescale.first
     if period_number.is_a?(Integer)
       new_period_number = calculate_new_period_number(period_number, factor, available_periods)

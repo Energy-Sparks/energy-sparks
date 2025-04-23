@@ -20,7 +20,6 @@ class TargetMeter < Dashboard::Meter
       floor_area: meter_to_clone.floor_area,
       number_of_pupils: meter_to_clone.number_of_pupils,
       solar_pv_installation: meter_to_clone.solar_pv_setup,
-      storage_heater_config: meter_to_clone.storage_heater_setup,
       meter_attributes: meter_to_clone.meter_attributes
     )
 

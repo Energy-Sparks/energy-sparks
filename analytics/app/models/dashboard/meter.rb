@@ -6,27 +6,20 @@ module Dashboard
 
     # Extra fields - potentially a concern or mix-in
     attr_reader :fuel_type, :meter_collection, :meter_attributes
-    attr_reader :storage_heater_setup, :sub_meters
-    attr_reader :meter_correction_rules, :model_cache
-    attr_reader :partial_meter_coverage
-    attr_reader :meter_tariffs
-    attr_reader :community_opening_times
-    attr_accessor :amr_data, :floor_area, :number_of_pupils, :solar_pv_setup, :solar_pv_overrides
-    attr_reader :constituent_meters
+    attr_reader :storage_heater_setup, :sub_meters, :meter_correction_rules, :model_cache, :partial_meter_coverage, :meter_tariffs, :community_opening_times, :constituent_meters
+    attr_accessor :amr_data, :floor_area, :number_of_pupils, :solar_pv_setup, :solar_pv_overrides, :id, :name, :external_meter_id
 
     # Energy Sparks activerecord fields:
     attr_reader :active, :created_at, :meter_type, :school, :updated_at, :mpan_mprn, :dcc_meter
-    attr_accessor :id, :name, :external_meter_id
+
     # enum meter_type: [:electricity, :gas]
 
     def initialize(meter_collection:, amr_data:, type:, identifier:, name:,
-                    floor_area: nil, number_of_pupils: nil,
-                    solar_pv_installation: nil,
-                    storage_heater_config: nil, # now redundant PH 20Mar2019
-                    external_meter_id: nil,
-                    dcc_meter: false,
-                    has_sheffield_solar_pv: false, # set for aggregate if component meters have sheffield data, for baseload calcs
-                    meter_attributes: {})
+                   floor_area: nil, number_of_pupils: nil,
+                   solar_pv_installation: nil,
+                   external_meter_id: nil,
+                   dcc_meter: false,
+                   meter_attributes: {})
       @amr_data = amr_data
       @meter_collection = meter_collection
       @meter_type = type # think Energy Sparks variable naming is a minomer (PH,31May2018)
@@ -41,7 +34,6 @@ module Dashboard
       @sub_meters = Dashboard::SubMeters.new
       @external_meter_id = external_meter_id
       @dcc_meter = dcc_meter
-      @has_sheffield_solar_pv = has_sheffield_solar_pv
       set_meter_attributes(meter_attributes)
       @model_cache = AnalyseHeatingAndHotWater::ModelCache.new(self)
       @constituent_meters = [self]
@@ -88,6 +80,7 @@ module Dashboard
       # are against the pseudo meter, rather than the legacy individual meters
       kwh_attr = combined_meter_and_aggregate_attributes(:estimated_period_consumption).uniq
       return Float::NAN if kwh_attr.nil? || kwh_attr.empty?
+
       kwh_estimate = EstimatePeriodConsumption.new(kwh_attr)
       kwh_estimate.annual_kwh
     end
@@ -159,37 +152,12 @@ module Dashboard
         floor_area: meter_to_clone.floor_area,
         number_of_pupils: meter_to_clone.number_of_pupils,
         solar_pv_installation: meter_to_clone.solar_pv_setup,
-        storage_heater_config: meter_to_clone.storage_heater_setup,
         meter_attributes: meter_to_clone.meter_attributes
       )
     end
 
-    # aggregate @partial_meter_coverage meter attribute component is an array
-    # of its component meters' partial_meter_coverages, or just the component
-    # if only one meter of that fuel type - in which case the meter is copied
-    # and not aggregated - so it shouldn't get here!
-    def add_aggregate_partial_meter_coverage_component(partial_meter_coverage_components)
-      if partial_meter_coverage_components.empty?
-        @partial_meter_coverage = nil
-      else
-        @partial_meter_coverage = partial_meter_coverage_components
-      end
-    end
-
-    # Centrica
-    def has_community_use?
-      # TODO check real attribute
-      mpxn.to_i % 2 == 1
-    end
-
-    # Centrica
-    def has_exclusive_community_use?
-      # TODO check real attribute
-      mpxn.to_i % 2 == 1
-    end
-
     def inspect
-      "object_id: #{"0x00%x" % (object_id << 1)}, #{self.class.name}, mpan: #{@mpan_mprn.to_s}, fuel_type: #{@fuel_type.to_s}"
+      "object_id: #{format('0x00%x', (object_id << 1))}, #{self.class.name}, mpan: #{@mpan_mprn}, fuel_type: #{@fuel_type}"
     end
 
     def to_s
@@ -208,6 +176,7 @@ module Dashboard
     def original_meter
       if solar_pv_panels? || storage_heater?
         raise MissingOriginalMainsMeter, "Missing original mains meter for #{mpxn} only got #{sub_meters&.keys}" unless sub_meters.key?(:mains_consume) && !sub_meters[:mains_consume].nil?
+
         sub_meters[:mains_consume]
       else
         self
@@ -228,8 +197,8 @@ module Dashboard
 
     def solar_pv_panels?
       sheffield_simulated_solar_pv_panels? ||
-      solar_pv_real_metering? ||
-      solar_pv_sub_meters_to_be_aggregated > 0
+        solar_pv_real_metering? ||
+        solar_pv_sub_meters_to_be_aggregated > 0
     end
 
     def first_solar_pv_panel_installation_date
@@ -237,23 +206,22 @@ module Dashboard
         @solar_pv_setup.first_installation_date
       elsif solar_pv_real_metering?
         @amr_data.start_date
-      else
-        nil
       end
     end
 
     def sheffield_simulated_solar_pv_panels?
-      @has_sheffield_solar_pv || !@solar_pv_setup.nil? && @solar_pv_setup.instance_of?(SolarPVPanels)
+      !@solar_pv_setup.nil? && @solar_pv_setup.instance_of?(SolarPVPanels)
     end
 
     def solar_pv_real_metering?
       !@solar_pv_real_metering.nil?
     end
 
-        # num of incoming meters, the aggregation process then implies
+    # num of incoming meters, the aggregation process then implies
     # extra meters - so this method is only valid prior to aggregation
     def solar_pv_sub_meters_to_be_aggregated
       return 0 if attributes(:solar_pv_mpan_meter_mapping).nil?
+
       attributes(:solar_pv_mpan_meter_mapping).length
     end
 
@@ -292,11 +260,11 @@ module Dashboard
     end
 
     def heat_meter?
-      [:gas, :storage_heater, :aggregated_heat].include?(fuel_type)
+      %i[gas storage_heater aggregated_heat].include?(fuel_type)
     end
 
     def electricity_meter?
-      [:electricity, :solar_pv, :aggregated_electricity].include?(fuel_type)
+      %i[electricity solar_pv aggregated_electricity].include?(fuel_type)
     end
 
     def insert_correction_rules_first(rules)
@@ -312,13 +280,13 @@ module Dashboard
       name.present? ? name : mpan_mprn.to_s
     end
 
-    #Default series name for this meter when displayed on a chart
+    # Default series name for this meter when displayed on a chart
     def series_name
       name.present? ? name : mpan_mprn.to_s
     end
 
-    #Used to create a qualified series name for charts, when 2 meters for
-    #this school have the same name.
+    # Used to create a qualified series name for charts, when 2 meters for
+    # this school have the same name.
     def qualified_series_name
       name.present? ? "#{name} (#{mpan_mprn})" : mpan_mprn.to_s
     end
@@ -331,28 +299,29 @@ module Dashboard
     end
 
     def synthetic_mpan_mprn?
-      mpan_mprn > 60000000000000
+      mpan_mprn > 60_000_000_000_000
     end
 
     def aggregate_meter?
       # TODO(PH, 14Sep2019) - Make 90000000000000 etc. masks constants
-      aggregate = 90000000000000 & mpan_mprn > 0 || 80000000000000 & mpan_mprn > 0
+      aggregate = 90_000_000_000_000 & mpan_mprn > 0 || 80_000_000_000_000 & mpan_mprn > 0
       # TODO(PH, 10Aug2021) deprecate in favour of aggregate_meter2? if continues to work
-      raise StandardError, "Unexpected inconsistency in aggregate meter logic see aggregate_meter2?" if aggregate != aggregate_meter2?
+      raise StandardError, 'Unexpected inconsistency in aggregate meter logic see aggregate_meter2?' if aggregate != aggregate_meter2?
+
       aggregate
     end
 
     def self.synthetic_combined_meter_mpan_mprn_from_urn(urn, fuel_type, group_number = 0)
-      if fuel_type == :electricity || fuel_type == :aggregated_electricity
-        90000000000000 + urn.to_i
-      elsif fuel_type == :gas || fuel_type == :aggregated_heat
-        80000000000000 + urn.to_i
+      if %i[electricity aggregated_electricity].include?(fuel_type)
+        90_000_000_000_000 + urn.to_i
+      elsif %i[gas aggregated_heat].include?(fuel_type)
+        80_000_000_000_000 + urn.to_i
       elsif fuel_type == :storage_heater # suspect as same number as solar_pv; TODO(PH, 14Sep2019)
-        70000000000000 + urn.to_i
+        70_000_000_000_000 + urn.to_i
       elsif fuel_type == :solar_pv
-        70000000000000 + urn.to_i + 1000000000000 * group_number
+        70_000_000_000_000 + urn.to_i + 1_000_000_000_000 * group_number
       elsif fuel_type == :exported_solar_pv
-        60000000000000 + urn.to_i + 1000000000000 * group_number
+        60_000_000_000_000 + urn.to_i + 1_000_000_000_000 * group_number
       else
         raise EnergySparksUnexpectedStateException.new, "Unexpected fuel_type #{fuel_type}"
       end
@@ -360,32 +329,30 @@ module Dashboard
 
     def self.synthetic_aggregate_generation_meter(base_mpan)
       mpan = base_mpan.to_i
-      prefix = (mpan / 10000000000000) * 10000000000000
-      new_mpan = 20000000000000 + (mpan - prefix)
-      new_mpan
+      prefix = (mpan / 10_000_000_000_000) * 10_000_000_000_000
+      20_000_000_000_000 + (mpan - prefix)
     end
 
     def self.synthetic_mpan_mprn(mpan_mprn, type)
       mpan_mprn = mpan_mprn.to_i
       case type
       when :storage_heater_only, :storage_heater_disaggregated_storage_heater
-        70000000000000 + mpan_mprn
+        70_000_000_000_000 + mpan_mprn
       when :electricity_minus_storage_heater, :storage_heater_disaggregated_electricity
-        75000000000000 + mpan_mprn
+        75_000_000_000_000 + mpan_mprn
       when :solar_pv
-        80000000000000 + mpan_mprn
+        80_000_000_000_000 + mpan_mprn
       else
         raise EnergySparksUnexpectedStateException.new("Unexpected type #{type} for modified mpan/mprn")
       end
     end
 
-    #Sets the default cost schedules for this meter, allowing calculation of £/co2 values
+    # Sets the default cost schedules for this meter, allowing calculation of £/co2 values
     def set_tariffs
       set_economic_tariff
       set_current_economic_tariff
       set_accounting_tariff
     end
-
 
     private
 
@@ -421,24 +388,12 @@ module Dashboard
     end
 
     def check_fuel_type(fuel_type)
-      raise EnergySparksUnexpectedStateException.new("Unexpected fuel type #{fuel_type}") if [:electricity, :gas].include?(fuel_type)
+      raise EnergySparksUnexpectedStateException.new("Unexpected fuel type #{fuel_type}") if %i[electricity gas].include?(fuel_type)
     end
 
     def function_includes?(*function_list)
       function = attributes(:function)
       !function.nil? && !(function_list & function).empty?
-    end
-
-  end
-
-  class AggregateMeter < Meter
-    # must be called immediately after construction
-    def set_constituent_meters(list_of_meters)
-      @constituent_meters = list_of_meters
-    end
-
-    def aggregate_meter?
-      true
     end
   end
 end

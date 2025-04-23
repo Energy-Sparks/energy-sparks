@@ -463,7 +463,7 @@ class AlertAnalysisBase < ContentBase
 
   # slightly iffy way of creating short codes for alert class names
   def self.alert_short_code(alert_class)
-    alert_class.to_s.split(//).select { |char| ('A'..'Z').include?(char) }[1..8].join
+    alert_class.to_s.split(//).select { |char| ('A'..'Z').cover?(char) }[1..8].join
   end
 
   def self.short_code_alert(short_code)
@@ -581,25 +581,7 @@ class AlertAnalysisBase < ContentBase
       AlertTurnHeatingOffStorageHeaters                           => 'tosh',
       AlertElectricityUsageDuringCurrentHoliday                   => 'edhl',
       AlertSchoolWeekComparisonStorageHeater                      => 'sswc',
-      AlertLayerUpPowerdown11November2022ElectricityComparison    => 'lue1',
-      AlertLayerUpPowerdown11November2022GasComparison            => 'lug1',
-      AlertLayerUpPowerdown11November2022StorageHeaterComparison  => 'lus1',
-      AlertAutumnTerm20212022ElectricityComparison                => 'a22e',
-      AlertAutumnTerm20212022GasComparison                        => 'a22g',
-      AlertAutumnTerm20212022StorageHeaterComparison              => 'a22s',
-      AlertSeptNov20212022ElectricityComparison                   => 's22e',
-      AlertSeptNov20212022GasComparison                           => 's22g',
-      AlertSeptNov20212022StorageHeaterComparison                 => 's22s',
-      AlertEaster2023ShutdownElectricityComparison                => 'e23e',
-      AlertEaster2023ShutdownGasComparison                        => 'e23g',
-      AlertEaster2023ShutdownStorageHeaterComparison              => 'e23s',
-      AlertSolarGeneration                                        => 'sgen',
-      AlertJanAug20222023ElectricityComparison                    => 'py23e',
-      AlertJanAug20222023GasComparison                            => 'py23g',
-      AlertJanAug20222023StorageHeaterComparison                  => 'py23s',
-      AlertLayerUpPowerdownNovember2023ElectricityComparison      => 'lu23e1',
-      AlertLayerUpPowerdownNovember2023GasComparison              => 'lu23g1',
-      AlertLayerUpPowerdownNovember2023StorageHeaterComparison    => 'lu23s1'
+      AlertSolarGeneration                                        => 'sgen'
     }
   end
 

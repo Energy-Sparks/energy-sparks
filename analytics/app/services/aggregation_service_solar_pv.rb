@@ -205,13 +205,13 @@ class AggregateDataServiceSolar
     date_range = pv_meter_map[:mains_consume].amr_data.date_range
     logger.debug { "Creating empty export meter between #{date_range.first} and #{date_range.last}" }
     amr_data = AMRData.create_empty_dataset(:exported_solar_pv, date_range.first, date_range.last, 'SOLE')
-    create_modified_meter_copy(
-      pv_meter_map[:mains_consume],
-      amr_data,
-      :exported_solar_pv,
-      Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, :exported_solar_pv),
-      SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
-      :solar_pv_exported_sub_meter
+    @meter_collection.create_modified_copy_of_meter(
+      original: pv_meter_map[:mains_consume],
+      amr_data: amr_data,
+      meter_type: :exported_solar_pv,
+      identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, :exported_solar_pv),
+      name: SolarPVPanels::SOLAR_PV_EXPORTED_ELECTRIC_METER_NAME,
+      pseudo_meter_key: :solar_pv_exported_sub_meter
     )
   end
 
@@ -234,13 +234,13 @@ class AggregateDataServiceSolar
       ignore_rules: true,
       zero_negative: true
     )
-    pv_meter_map[:self_consume] = create_modified_meter_copy(
-      pv_meter_map[:mains_consume],
-      onsite_consumpton_amr_data,
-      :solar_pv,
-      Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, :solar_pv),
-      SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
-      :solar_pv_consumed_sub_meter
+    pv_meter_map[:self_consume] = @meter_collection.create_modified_copy_of_meter(
+      original: pv_meter_map[:mains_consume],
+      amr_data: onsite_consumpton_amr_data,
+      meter_type: :solar_pv,
+      identifier: Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, :solar_pv),
+      name: SolarPVPanels::SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME,
+      pseudo_meter_key: :solar_pv_consumed_sub_meter
     )
   end
 
@@ -255,13 +255,12 @@ class AggregateDataServiceSolar
       ignore_rules: true
     )
 
-    pv_meter_map[:mains_plus_self_consume] = create_modified_meter_copy(
-      pv_meter_map[:mains_consume],
-      consumpton_amr_data,
-      :electricity,
-      pv_meter_map[:mains_consume].mpan_mprn,
-      pv_meter_map[:mains_consume].name,
-      {}
+    pv_meter_map[:mains_plus_self_consume] = @meter_collection.create_modified_copy_of_meter(
+      original: pv_meter_map[:mains_consume],
+      amr_data: consumpton_amr_data,
+      meter_type: :electricity,
+      identifier: pv_meter_map[:mains_consume].mpan_mprn,
+      name: pv_meter_map[:mains_consume].name
     )
   end
 
@@ -282,13 +281,12 @@ class AggregateDataServiceSolar
       mpan
     )
 
-    generation_meter = create_modified_meter_copy(
-      pv_meter_map[:generation],
-      generation_amr_data,
-      :solar_pv,
-      mpan,
-      pv_meter_map[:generation].name,
-      {}
+    generation_meter = @meter_collection.create_modified_copy_of_meter(
+      original: pv_meter_map[:generation],
+      amr_data: generation_amr_data,
+      meter_type: :solar_pv,
+      identifier: mpan,
+      name: pv_meter_map[:generation].name
     )
 
     logger.debug { "Created aggregate generation meter #{generation_meter} #{generation_meter.amr_data.total.round(0)}" }

@@ -7,6 +7,8 @@ module Periods
     protected
 
     def period_list(first_meter_date = @first_meter_date, last_meter_date = @last_meter_date)
+      return [] if first_meter_date.nil? || last_meter_date.nil?
+
       self.class.enumerator(first_meter_date, last_meter_date).map { |args| new_school_period(*args) }
     end
 

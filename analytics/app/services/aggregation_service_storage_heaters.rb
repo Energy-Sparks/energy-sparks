@@ -212,26 +212,20 @@ class AggregateDataServiceStorageHeaters
   end
 
   def create_meter(meter, amr_data, meter_type, fuel_type = :electricity)
-    new_meter = create_modified_meter_copy(
-      meter,
-      amr_data,
-      fuel_type,
-      meter.id,
-      "#{meter.name} #{meter_type.to_s.humanize}",
-      meter_type
+    identifier = if meter_type == :aggregated_electricity
+                   Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, meter_type)
+                 else
+                   Dashboard::Meter.synthetic_mpan_mprn(meter.id, meter_type)
+                 end
+
+    @meter_collection.create_modified_copy_of_meter(
+      original: meter,
+      amr_data: amr_data,
+      meter_type: fuel_type,
+      identifier: identifier,
+      name: "#{meter.name} #{meter_type.to_s.humanize}",
+      pseudo_meter_key: meter_type
     )
-
-    set_synthetic_mpan(new_meter, meter, meter_type)
-
-    new_meter
-  end
-
-  def set_synthetic_mpan(new_meter, original_meter, meter_type)
-    if meter_type == :aggregated_electricity
-      new_meter.set_mpan_mprn_id(Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, meter_type))
-    else
-      new_meter.set_mpan_mprn_id(Dashboard::Meter.synthetic_mpan_mprn(original_meter.id, meter_type))
-    end
   end
 
   def calculate_meters_carbon_emissions_and_costs(maps)

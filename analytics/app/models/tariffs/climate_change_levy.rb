@@ -15,7 +15,9 @@ class ClimateChangeLevy
       Date.new(2021, 4, 1)..Date.new(2022, 3, 31) => 0.00775,
       Date.new(2022, 4, 1)..Date.new(2023, 3, 31) => 0.00775,
       Date.new(2023, 4, 1)..Date.new(2024, 3, 31) => 0.00775,
-      Date.new(2024, 4, 1)..Date.new(2025, 3, 31) => 0.00775
+      Date.new(2024, 4, 1)..Date.new(2025, 3, 31) => 0.00775,
+      Date.new(2025, 4, 1)..Date.new(2026, 3, 31) => 0.00775,
+      Date.new(2026, 4, 1)..Date.new(2027, 3, 31) => 0.00801
     },
     gas: {
       Date.new(2018, 4, 1)..Date.new(2019, 3, 31) => 0.00203,
@@ -24,7 +26,9 @@ class ClimateChangeLevy
       Date.new(2021, 4, 1)..Date.new(2022, 3, 31) => 0.00465,
       Date.new(2022, 4, 1)..Date.new(2023, 3, 31) => 0.00568,
       Date.new(2023, 4, 1)..Date.new(2024, 3, 31) => 0.00672,
-      Date.new(2024, 4, 1)..Date.new(2025, 3, 31) => 0.00775
+      Date.new(2024, 4, 1)..Date.new(2025, 3, 31) => 0.00775,
+      Date.new(2025, 4, 1)..Date.new(2026, 3, 31) => 0.00775,
+      Date.new(2026, 4, 1)..Date.new(2027, 3, 31) => 0.00801
     }
   }.freeze
 

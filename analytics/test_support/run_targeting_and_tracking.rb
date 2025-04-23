@@ -242,7 +242,7 @@ class RunTargetingAndTracking < RunAdultDashboard
     ed = annual_kwh_estimate[:end_date]
     sd = ed - 365
 
-    baseload_kw = meter.amr_data.average_baseload_kw_date_range(annual_kwh_estimate[:start_date], ed)
+    baseload_kw = Baseload::BaseloadAnalysis(meter).average_baseload_kw(annual_kwh_estimate[:start_date], ed)
 
     annnual_degreedays = school.temperatures.degree_days_in_date_range(sd, ed, 20.0)
     meter_degreedays = school.temperatures.degree_days_in_date_range(annual_kwh_estimate[:start_date], ed, 20.0)

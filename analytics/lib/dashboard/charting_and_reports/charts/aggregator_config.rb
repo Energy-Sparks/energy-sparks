@@ -125,7 +125,7 @@ class AggregatorConfig < OpenStruct
       !key?(:temperature_adjustment_map)
   end
 
-  def up_to_a_year_month_comparison?
+  def month_comparison?
     return false unless array_of_timescales?
     return false unless timescale.length > 1
     return false unless %i[month month_excluding_year].include?(x_axis)

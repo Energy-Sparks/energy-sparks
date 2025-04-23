@@ -6,30 +6,11 @@ module Baseload
       @amr_data = amr_data
     end
 
-    # Create a baseload calculator suitable for this school. If we are using
-    # Sheffield Solar PV data, we use an alternate method as there are issues with
-    # the Sheffield data resulting underestimated early morning usage
-    #
-    def self.for_meter(dashboard_meter)
-      # return calculator cached by the amr data
-      dashboard_meter.amr_data.baseload_calculator(dashboard_meter.sheffield_simulated_solar_pv_panels?)
-    end
-
-    # Create a baseload calculator suitable for this school. If we are using
-    # Sheffield Solar PV data, as indicated by the flag, we use an alternate
-    # method as there are issues with the Sheffield data resulting underestimated
-    # early morning usage
-    def self.calculator_for(amr_data, sheffield_solar_pv)
-      # create a new calculator
-      sheffield_solar_pv ? BaseloadCalculator.overnight_calculator(amr_data) : StatisticalBaseloadCalculator.new(amr_data)
-    end
-
-    def self.overnight_calculator(amr_data)
-      if ENV['FEATURE_FLAG_MIDNIGHT_BASELOAD'] == 'true'
-        Baseload::AroundMidnightBaseloadCalculator.new(amr_data)
-      else
-        Baseload::OvernightBaseloadCalculator.new(amr_data)
-      end
+    # Create a baseload calculator suitable for this school. If we are using Solar PV data, as indicated by the flag,
+    # we use an alternate method as there are issues e.g. with underestimated early morning usage
+    def self.calculator_for(amr_data, solar_pv)
+      klass = solar_pv ? AroundMidnightBaseloadCalculator : StatisticalBaseloadCalculator
+      klass.new(amr_data)
     end
 
     # Calculates the average baseload in kw between 2 dates
@@ -53,7 +34,7 @@ module Baseload
     private
 
     def up_to_1_year_ago
-      [@amr_data.end_date - 365, @amr_data.start_date].max
+      @amr_data.up_to_1_year_ago
     end
   end
 end

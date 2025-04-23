@@ -17,7 +17,6 @@ describe Dashboard::Meter do
         floor_area: nil,
         number_of_pupils: nil,
         solar_pv_installation: nil,
-        storage_heater_config: nil,
         external_meter_id: nil,
         dcc_meter: true,
         meter_attributes: {}

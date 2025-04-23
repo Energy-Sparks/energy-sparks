@@ -26,7 +26,7 @@ describe Heating::HeatingThermostaticAnalysisService do
       let(:service) { described_class.new(meter_collection: @acme_academy, fuel_type: :gas) }
 
       it 'creates a model for results of a heating thermostatic analysis for gas' do
-        expect(model.r2).to round_to_two_digits(0.81)
+        expect(model.r2).to be_within(0.005).of(0.81)
         expect(model.insulation_hotwater_heat_loss_estimate_kwh).to be_within(0.01).of(298_689.32)
         expect(model.insulation_hotwater_heat_loss_estimate_£).to be_within(0.01).of(8960.67)
         expect(model.average_heating_school_day_a).to be_within(0.01).of(4654.57)
@@ -42,7 +42,7 @@ describe Heating::HeatingThermostaticAnalysisService do
       let(:service) { described_class.new(meter_collection: @beta_academy, fuel_type: :storage_heater) }
 
       it 'creates a model for results of a heating thermostatic analysis' do
-        expect(model.r2).to round_to_two_digits(0.48)
+        expect(model.r2).to be_within(0.005).of(0.48)
         expect(model.insulation_hotwater_heat_loss_estimate_kwh).to be_within(0.01).of(38_990.95)
         expect(model.insulation_hotwater_heat_loss_estimate_£).to be_within(0.01).of(7054.12)
         expect(model.average_heating_school_day_a).to be_within(0.01).of(755.12)

@@ -68,7 +68,7 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
     results.bucketed_data       = {}
     results.bucketed_data_count = {}
 
-    if chart_config.up_to_a_year_month_comparison?
+    if chart_config.month_comparison?
       merge_monthly_comparison_charts
     elsif single_series_aggregators.length > 1 || number_of_periods > 1
       merge_multiple_charts
@@ -82,65 +82,13 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
     end
   end
 
-  # monthly comparison charts e.g. electricity_cost_comparison_last_2_years_accounting
-  # can be awkward as some years may occasionally have subtely different numbers of months e.g. 12 v. 13
-  # so specific month date matching occurs to match one year with the next
   def merge_monthly_comparison_charts
     raise EnergySparksBadChartSpecification, 'More than one school not supported' if number_of_schools > 1
 
-    x_axis = calculate_x_axis
-    valid_aggregators.each do |period_data|
-      time_description = number_of_periods <= 1 ? '' : period_data.results.xbucketor.compact_date_range_description
-
-      # This series will have either the same number or fewer months than the other range
-      #
-      # If we have same number of months then we're comparing, e.g. two full year (52*7) week periods
-      # So the columns are already aligned.
-      #
-      # If we have fewer months than the full range then we need to copy into a new array with the
-      # monthly values in the right position.
-      #
-      # When we have fewer months then the months will correspond with the months at the final part of the
-      # full range. So use the last occurence of the month name when finding the right index.
-      if x_axis.length == period_data.results.x_axis.length
-        data = period_data.results.bucketed_data.values[0]
-        count_data = period_data.results.bucketed_data_count.values[0]
-      else
-        data = Array.new(x_axis.length, 0.0)
-        count_data = Array.new(x_axis.length, 0)
-        sub_array_index = find_sub_array_index(x_axis, remove_years(period_data.results.x_axis))
-        if sub_array_index
-          end_index = sub_array_index + period_data.results.x_axis.length
-          data[sub_array_index...end_index] = period_data.results.bucketed_data.values[0]
-          count_data[sub_array_index...end_index] = period_data.results.bucketed_data_count.values[0]
-        end
-      end
-      results.bucketed_data[time_description] = data
-      results.bucketed_data_count[time_description] = count_data
-    end
-    results.x_axis = x_axis
-  end
-
-  MONTHS = %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec].freeze
-  MONTHS_TO_I = MONTHS.each_with_index.to_h { |month, index| [month, index] }
-
-  def calculate_x_axis
-    axis_months = valid_aggregators.map { |aggregator| remove_years(aggregator.results.x_axis) }
-    axis_months = axis_months.sort_by { |months| months.map { |month| MONTHS_TO_I[month] }.first }
-    x_axis, *axis_months = axis_months
-    axis_months.each do |months|
-      x_axis += months.filter { |month| !x_axis.include?(month) }
-    end
-    x_axis
-  end
-
-  def remove_years(month_years)
-    month_years.map { |month_year| month_year[0..2] }
-  end
-
-  def find_sub_array_index(array, sub_array)
-    array.each_cons(sub_array.size).with_index { |cons, index| return index if cons == sub_array }
-    nil
+    merged = Charts::MergeMonthlyComparisons.merge(valid_aggregators.map(&:results), number_of_periods)
+    results.x_axis = merged[:x_axis]
+    results.bucketed_data = merged[:bucketed_data]
+    results.bucketed_data_count = merged[:bucketed_data_count]
   end
 
   def valid_aggregators

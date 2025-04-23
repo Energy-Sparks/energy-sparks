@@ -9,9 +9,9 @@ describe AggregatorConfig do
 
   let(:chart_config) { {} }
 
-  describe '#up_to_a_year_month_comparison?' do
+  describe '#month_comparison?' do
     context 'with no timescale in config' do
-      it { expect(config.up_to_a_year_month_comparison?).to be false }
+      it { expect(config.month_comparison?).to be false }
     end
 
     context 'with config' do
@@ -26,14 +26,14 @@ describe AggregatorConfig do
       context 'with a non month x-axis' do
         let(:x_axis) { :day }
 
-        it { expect(config.up_to_a_year_month_comparison?).to be false }
+        it { expect(config.month_comparison?).to be false }
 
         context 'when timescale is a comparison' do
           let(:timescale) do
             [{ up_to_a_year: 0 }, { up_to_a_year: -1 }]
           end
 
-          it { expect(config.up_to_a_year_month_comparison?).to be false }
+          it { expect(config.month_comparison?).to be false }
         end
       end
 
@@ -44,13 +44,13 @@ describe AggregatorConfig do
           context 'when timescale is a single period' do
             let(:timescale) { :year }
 
-            it { expect(config.up_to_a_year_month_comparison?).to be false }
+            it { expect(config.month_comparison?).to be false }
           end
 
           context 'when timescale isnt a comparison' do
             let(:timescale) { [{ year: 0 }] }
 
-            it { expect(config.up_to_a_year_month_comparison?).to be false }
+            it { expect(config.month_comparison?).to be false }
           end
 
           context 'with :year timescale comparison' do
@@ -58,7 +58,7 @@ describe AggregatorConfig do
               [{ year: 0 }, { year: -1 }]
             end
 
-            it { expect(config.up_to_a_year_month_comparison?).to be false }
+            it { expect(config.month_comparison?).to be false }
           end
 
           context 'with :up_to_a_year timescale comparison' do
@@ -66,7 +66,7 @@ describe AggregatorConfig do
               [{ up_to_a_year: 0 }, { up_to_a_year: -1 }]
             end
 
-            it { expect(config.up_to_a_year_month_comparison?).to be true }
+            it { expect(config.month_comparison?).to be true }
           end
 
           context 'with :twelve_months timescale comparison' do
@@ -74,7 +74,7 @@ describe AggregatorConfig do
               [{ twelve_months: 0 }, { twelve_months: -1 }]
             end
 
-            it { expect(config.up_to_a_year_month_comparison?).to be true }
+            it { expect(config.month_comparison?).to be true }
           end
         end
       end

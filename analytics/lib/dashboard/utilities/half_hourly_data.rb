@@ -5,10 +5,12 @@ require 'csv'
 # hash of date => 48 x float values
 class HalfHourlyData < Hash
   include Logging
-  alias_method :parent_key?, :key?
+  alias parent_key? key?
 
   attr_reader :type, :validated
+
   def initialize(type)
+    super()
     @min_date = Date.new(4000, 1, 1)
     @max_date = Date.new(1000, 1, 1)
     @validated = false
@@ -25,9 +27,9 @@ class HalfHourlyData < Hash
 
     @cache_days_totals.delete(date)
 
-    if data_count != 48
-      logger.debug "Missing data: #{date}: only #{data_count} of 48"
-    end
+    return unless data_count != 48
+
+    logger.debug "Missing data: #{date}: only #{data_count} of 48"
   end
 
   def remove_dates!(*dates)
@@ -57,7 +59,7 @@ class HalfHourlyData < Hash
     results = Array.new(sorted_buckets.length + 1, 0)
     (date1..date2).each do |date|
       one_days_data_x48(date).each do |d|
-        i = sorted_buckets.bsearch_index{ |h| h >= d } || sorted_buckets.length
+        i = sorted_buckets.bsearch_index { |h| h >= d } || sorted_buckets.length
         results[i] += 1
       end
     end
@@ -76,6 +78,7 @@ class HalfHourlyData < Hash
     if start_date < self.start_date || end_date > self.end_date
       return nil # NAN blows up write_xlsx
     end
+
     total = 0.0
     (start_date..end_date).each do |date|
       total += average(date)
@@ -108,17 +111,15 @@ class HalfHourlyData < Hash
   end
 
   def validate_data(half_hourly_data_x48)
-    half_hourly_data_x48.count{ |val| val.is_a?(Float) || val.is_a?(Integer) }
+    half_hourly_data_x48.count { |val| val.is_a?(Float) || val.is_a?(Integer) }
   end
 
   # first and last dates maintained manually as the data is held in a hash for speed of access by date
   def set_min_max_date(date)
-    if date < @min_date
-      @min_date = date
-    end
-    if date > @max_date
-      @max_date = date
-    end
+    @min_date = date if date < @min_date
+    return unless date > @max_date
+
+    @max_date = date
   end
 
   # half_hour_index is 0 to 47, i.e. the index for the half hour within the day
@@ -161,16 +162,18 @@ class HalfHourlyData < Hash
 
   def set_start_date(date)
     return if date < @min_date
+
     logger.info "setting start date to #{date} truncating prior data"
     @min_date = date
-    self.delete_if{ |d, _value| d < date }
+    delete_if { |d, _value| d < date }
   end
 
   def set_end_date(date)
     return if date > @max_date
+
     logger.info "setting end date to #{date} truncating post data"
     @max_date = date
-    self.delete_if{ |d, _value| d > date }
+    delete_if { |d, _value| d > date }
   end
 
   def days
@@ -183,32 +186,29 @@ class HalfHourlyData < Hash
 
   # probably slow
   def all_dates
-    self.keys.sort
+    keys.sort
   end
 
   # returns an array of DatePeriod - 1 for each acedemic years, with most recent year first
   def academic_years(holidays)
-    logger.warn "Warning: depricated from this location please use version in Class Holidays"
+    logger.warn 'Warning: depricated from this location please use version in Class Holidays'
     holidays.academic_years(start_date, end_date)
   end
 
   def nearest_previous_saturday(date)
-    while date.wday != 6
-      date -= 1
-    end
+    date -= 1 while date.wday != 6
     date
   end
 
   def inspect
-    "#{self.class.name} (days: #{self.keys.count}, object_id: #{"0x00%x" % (object_id << 1)})"
+    "#{self.class.name} (days: #{keys.count}, object_id: #{format('0x00%x', (object_id << 1))})"
   end
-
 
   private
 
   def reset_min_max_date
     # This method needs to remain private as it should only ever be called by
     # the `remove_dates!` method
-    @min_date,@max_date = keys.minmax
+    @min_date, @max_date = keys.minmax
   end
 end

@@ -53,7 +53,8 @@ module Baseload
         [
           meter.mpan_mprn,
           {
-            kw: meter.amr_data.average_baseload_kw_date_range(sheffield_solar_pv: meter.sheffield_simulated_solar_pv_panels?),
+            kw: Baseload::BaseloadAnalysis.new(meter).average_baseload_kw(meter.amr_data.up_to_1_year_ago,
+                                                                          meter.amr_data.end_date),
             £: BaseloadAnalysis.new(meter).scaled_annual_baseload_cost_£(:£)
           }
         ]

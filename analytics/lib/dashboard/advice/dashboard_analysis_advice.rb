@@ -2,7 +2,6 @@
 # primarily bound up with specific charts, indexed by the symbol which represents
 # the chart in chart_manager.rb e.g. :benchmark
 # generates advice with different levels of expertise
-require 'html-table'
 require 'erb'
 
 class DashboardChartAdviceBase

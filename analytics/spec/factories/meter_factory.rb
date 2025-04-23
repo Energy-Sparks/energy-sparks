@@ -13,7 +13,6 @@ FactoryBot.define do
       floor_area              { 0 }
       number_of_pupils        { 1 }
       solar_pv_installation   { nil }
-      storage_heater_config   { nil }
       external_meter_id       { nil }
       dcc_meter               { false }
       meter_attributes        { {} }
@@ -24,7 +23,6 @@ FactoryBot.define do
           amr_data: amr_data, type: type, identifier: identifier,
           name: name, floor_area: floor_area, number_of_pupils: number_of_pupils,
           solar_pv_installation: solar_pv_installation,
-          storage_heater_config: storage_heater_config,
           external_meter_id: external_meter_id,
           dcc_meter: dcc_meter,
           meter_attributes: meter_attributes)
@@ -47,7 +45,6 @@ FactoryBot.define do
             amr_data: amr_data, type: type, identifier: identifier,
             name: name, floor_area: floor_area, number_of_pupils: number_of_pupils,
             solar_pv_installation: solar_pv_installation,
-            storage_heater_config: storage_heater_config,
             external_meter_id: external_meter_id,
             dcc_meter: dcc_meter,
             meter_attributes: { accounting_tariff_generic: [accounting_tariff] }.merge(meter_attributes))
@@ -69,7 +66,6 @@ FactoryBot.define do
             amr_data: amr_data, type: type, identifier: identifier,
             name: name, floor_area: floor_area, number_of_pupils: number_of_pupils,
             solar_pv_installation: solar_pv_installation,
-            storage_heater_config: storage_heater_config,
             external_meter_id: external_meter_id,
             dcc_meter: dcc_meter,
             meter_attributes: meter_attributes)

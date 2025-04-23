@@ -270,7 +270,6 @@ class AggregateDataService
   #
   # Otherwise (the common case) creates a new +Dashboard::AggregateMeter+.
   #
-  #
   # @param Dashboard::Meter combined_meter the existing aggregate meter, if there is one
   # @param Array list_of_meters the meters to combine
   # @param Symbol fuel_type the fuel type of the meters being aggregated
@@ -292,8 +291,6 @@ class AggregateDataService
     # Will apply rules that define how the time series are combined
     combined_amr_data = aggregate_amr_data(list_of_meters, fuel_type)
 
-    has_sheffield_solar_pv = list_of_meters.any?(&:sheffield_simulated_solar_pv_panels?)
-
     # Concatenate meter names ids and sum floor area and number of pupils
     combined_name, _, combined_floor_area, combined_pupils = combine_meter_meta_data(list_of_meters)
 
@@ -309,13 +306,9 @@ class AggregateDataService
         name: combined_name,
         floor_area: combined_floor_area,
         number_of_pupils: combined_pupils,
-        has_sheffield_solar_pv: has_sheffield_solar_pv,
+        constituent_meters: list_of_meters,
         meter_attributes: @meter_collection.pseudo_meter_attributes(Dashboard::Meter.aggregate_pseudo_meter_attribute_key(fuel_type))
       )
-
-      combined_meter.set_constituent_meters(list_of_meters)
-
-      combined_meter.add_aggregate_partial_meter_coverage_component(list_of_meters.map(&:partial_meter_coverage))
     else
       log "Combined meter #{combined_meter.mpan_mprn} already created"
       combined_meter.floor_area = combined_floor_area if combined_meter.floor_area.nil? || combined_meter.floor_area.zero?

@@ -63,7 +63,7 @@ describe Costs::MonthlyMeterCostsService, type: :service do
         expect(costs.bill_component_costs.keys.sort).to eq(%i[flat_rate standing_charge])
         expect(costs.bill_component_costs[:flat_rate]).to be_within(0.01).of(715.35) # 715.35
         expect(costs.bill_component_costs[:standing_charge]).to be_within(0.01).of(31.0) # 31.0
-        expect(costs.total).to round_to_two_digits(746.35) # 746.35
+        expect(costs.total).to be_within(0.005).of(746.35) # 746.35
       end
     end
 

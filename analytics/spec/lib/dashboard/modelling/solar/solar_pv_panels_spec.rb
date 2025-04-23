@@ -35,7 +35,7 @@ describe SolarPVPanels, type: :service do
   let(:meter_collection)   { build(:meter_collection, holidays: holidays) }
 
   let(:kwh_data_x48)       do
-    Array.new(10, 0.0) + Array.new(10, 0.005) + Array.new(8, 0.4) + Array.new(10, 0.25) + Array.new(10, 0.01)
+    Array.new(10, 0.1) + Array.new(10, 0.005) + Array.new(8, 0.4) + Array.new(10, 0.25) + Array.new(10, 0.01)
   end
 
   let(:meter) do
@@ -96,11 +96,11 @@ describe SolarPVPanels, type: :service do
 
     it 'calculates self consumption data' do
       # puts "GENERATION"
-      pv_meter_map[:generation].amr_data.days_kwh_x48(sunday)
+      # p pv_meter_map[:generation].amr_data.days_kwh_x48(sunday)
       # puts days_data.inspect
 
       # puts "EXPORT"
-      pv_meter_map[:export].amr_data.days_kwh_x48(sunday)
+      # p pv_meter_map[:export].amr_data.days_kwh_x48(sunday)
       # puts days_data.inspect
 
       # puts "SELF CONSUME"
@@ -109,7 +109,7 @@ describe SolarPVPanels, type: :service do
       # should be consuming from periods 10-19 on the sunday based on AMR and solar data
       # the period of Array.new(10, 0.005) is lowering than yesterdays baseload, so
       # there will be self-consumption from solar generation
-      expect(days_data[10..19].all? { |hh| hh > 0.0 }).to eq true
+      expect(days_data[10..19].all? { |hh| hh > 0.0 }).to be true
 
       days_data = pv_meter_map[:self_consume].amr_data.days_kwh_x48(monday)
       # should be consuming all of the generation on the monday when occupied

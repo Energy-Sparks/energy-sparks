@@ -85,6 +85,31 @@ class MeterCollection
     false
   end
 
+  # Factory method to create a new meter in this meter collection,
+  # copying values and data from an existing meter.
+  #
+  # @param Dashboard::Meter original the meter to copy
+  # @param AmrData amr_data the amr data to populate the new meter
+  # @param Symbol meter_type the type for the new meter
+  # @param String identifier the identifier for the new meter
+  # @param String name the name of the new meter
+  # @param Symbol pseudo_meter_key a symbol indicates the name of pseudo meter attributes to copy into the new meter
+  #
+  # @return Dashboard::Meter the new meter
+  def create_modified_copy_of_meter(original:, amr_data:, meter_type:, identifier:, name:, pseudo_meter_key: {})
+    Dashboard::Meter.new(
+      meter_collection: self,
+      amr_data: amr_data,
+      type: meter_type,
+      identifier: identifier,
+      name: name,
+      floor_area: original.floor_area,
+      number_of_pupils: original.number_of_pupils,
+      solar_pv_installation: original.solar_pv_setup,
+      meter_attributes: original.meter_attributes.merge(pseudo_meter_attributes(pseudo_meter_key))
+    )
+  end
+
   def aggregate_meter(fuel_type)
     case fuel_type
     when :electricity
