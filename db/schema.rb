@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_16_164103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -675,6 +675,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.datetime "updated_at", null: false
     t.integer "max_days_out_of_date"
     t.integer "enough_days_data"
+    t.boolean "disable_normalisation", default: false, null: false
   end
 
   create_table "comparison_footnotes", force: :cascade do |t|
