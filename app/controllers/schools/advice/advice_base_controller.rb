@@ -136,14 +136,6 @@ module Schools
         @advice_page.fuel_type&.to_sym
       end
 
-      def analysis_start_date
-        @school.configuration.meter_start_date(advice_page_fuel_type)
-      end
-
-      def analysis_end_date
-        @school.configuration.meter_end_date(advice_page_fuel_type)
-      end
-
       # Should return an object that conforms to interface described
       # by the AnalysableMixin. Will be used to determine whether
       # there's enough data and, optionally, identify when we think there

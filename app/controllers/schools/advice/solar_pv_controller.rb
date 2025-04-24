@@ -50,7 +50,7 @@ module Schools
       def potential_benefits_service
         @potential_benefits_service ||= ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
           meter_collection: aggregate_school,
-          asof_date: analysis_end_date
+          asof_date: @analysis_dates.end_date
         )
       end
 
