@@ -41,16 +41,6 @@ module Schools
         @aggregate_meter ||= aggregate_school.aggregated_electricity_meters
       end
 
-      def set_economic_tariffs_change_caveats
-        @economic_tariffs_change_caveats = true
-      end
-
-      # def build_economic_tariffs_change_caveats
-      #  Costs::EconomicTariffsChangeCaveatsService.new(
-      #    meter_collection: aggregate_school, fuel_type: @advice_page.fuel_type.to_sym
-      #  ).calculate_economic_tariff_changed
-      # end
-
       # Should align with BaseloadCalculationService
       def create_analysable
         days = Baseload::BaseService::DEFAULT_DAYS_OF_DATA_REQUIRED

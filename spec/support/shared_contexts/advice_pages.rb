@@ -2,7 +2,19 @@ RSpec.shared_context 'advice page base' do
   let(:learn_more_content) { 'Learn more content' }
   let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true, has_solar_pv: true)}
   let(:school) { create(:school, school_group: create(:school_group)) }
+
+  let(:caveats_service) do
+    instance_double(Costs::EconomicTariffsChangeCaveatsService,
+                    calculate_economic_tariff_changed: OpenStruct.new(
+                      last_change_date: Date.new(2022, 9, 1),
+                      percent_change: 18.857098661736725,
+                      rate_after_£_per_kwh: 3.066783066364631,
+                      rate_before_£_per_kwh: 0.1544426564326899
+                        ))
+  end
+
   before do
+    allow(Costs::EconomicTariffsChangeCaveatsService).to receive(:new).and_return(caveats_service)
     school.configuration.update!(fuel_configuration: fuel_configuration)
   end
 end

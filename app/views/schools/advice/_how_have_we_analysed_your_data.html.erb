@@ -70,7 +70,7 @@
   <p><%= paragraph %></p>
 <% end %>
 
-<% if @economic_tariffs_change_caveats %>
+<% if @advice_page&.fuel_type %>
   <% caveats = Costs::EconomicTariffsChangeCaveatsService.new(
        meter_collection: @aggregate_school_service.meter_collection,
        fuel_type: @advice_page.fuel_type.to_sym

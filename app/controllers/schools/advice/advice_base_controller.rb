@@ -26,7 +26,6 @@ module Schools
       before_action :set_page_subtitle, only: [:insights, :analysis]
       before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
-      before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
@@ -63,10 +62,6 @@ module Schools
 
       def latest_dashboard_alerts
         @latest_dashboard_alerts ||= @school.latest_dashboard_alerts.management_dashboard
-      end
-
-      def set_economic_tariffs_change_caveats
-        @set_economic_tariffs_change_caveats = nil
       end
 
       def set_insights_next_steps
