@@ -107,16 +107,6 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
   end
 
-  describe '#baseload_usage_benchmark' do
-    before do
-      allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:baseload_usage).and_return(usage)
-    end
-
-    it 'returns usage' do
-      expect(service.baseload_usage_benchmark).to eq(usage)
-    end
-  end
-
   describe '#estimated_savings' do
     before do
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:estimated_savings).and_return(savings)
