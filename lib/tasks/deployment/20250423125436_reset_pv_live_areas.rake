@@ -12,7 +12,7 @@ namespace :after_party do
     SolarPvTuosArea.all.update!(active: false, gsp_id: nil)
 
     # Load all GSP regions and their centroids, as active
-    file = File.join( File.expand_path(File.dirname(__FILE__)) , "gsp-regions-2025.csv" )
+    file = File.join(__dir__, "gsp-regions-2025.csv")
     CSV.foreach( file, headers: true ) do |row|
       gsp_name = row[0]
       centroid_longitude = row[1]
@@ -28,7 +28,7 @@ namespace :after_party do
     end
 
     # Load GSP ids
-    file = File.join( File.expand_path(File.dirname(__FILE__)) , "gsp-list-2025.csv" )
+    file = File.join(__dir__, "gsp-list-2025.csv")
     CSV.foreach( file, headers: true ) do |row|
       gsp_id = row[0]
       gsp_name = row[1]
