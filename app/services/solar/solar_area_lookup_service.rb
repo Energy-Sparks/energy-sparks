@@ -7,11 +7,7 @@ module Solar
     end
 
     def lookup(scope: SolarPvTuosArea.assignable)
-      # nearest is last in list
-      sorted_list = scope.sort do |a, b|
-        distance_from_school_km(b) <=> distance_from_school_km(a)
-      end
-      sorted_list.last
+      scope.min_by { |item| distance_from_school_km(item) }
     end
 
     def assign(scope: SolarPvTuosArea.assignable, trigger_load: true)
