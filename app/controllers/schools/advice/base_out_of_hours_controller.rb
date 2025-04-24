@@ -15,7 +15,7 @@ module Schools
       def analysis
         @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
-        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type, date_window: 363)
+        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school_service, advice_page_fuel_type, date_window: 363)
       end
 
       private

@@ -34,7 +34,7 @@ module Schools
         return unless @multiple_meters
 
         @meter_selection = Charts::MeterSelection.new(@school,
-                                                      aggregate_school,
+                                                      aggregate_school_service,
                                                       advice_page_fuel_type,
                                                       filter: :non_heating_only?,
                                                       date_window: 363,

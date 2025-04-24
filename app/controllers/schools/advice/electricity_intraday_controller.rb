@@ -12,7 +12,7 @@ module Schools
       end
 
       def analysis
-        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school, advice_page_fuel_type)
+        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school_service, advice_page_fuel_type)
       end
 
       private

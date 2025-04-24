@@ -3,7 +3,7 @@ module Schools
   module Advice
     class BaseloadService < BaseService
       include AnalysableMixin
-      include AdvicePageHelper # TODO relative_percent
+      include AdvicePageHelper # TODO only using relative_percent
 
       delegate :enough_data?, to: :baseload_service
 
@@ -62,32 +62,32 @@ module Schools
       end
 
       def average_baseload_kw_benchmark(compare: :benchmark_school)
-        benchmark_service.average_baseload_kw(compare: compare)
-      end
-
-      def baseload_usage_benchmark(compare: :benchmark_school)
-        benchmark_service.baseload_usage(compare: compare)
+        @average_baseload_kw_benchmark ||= {}
+        @average_baseload_kw_benchmark[compare] ||= benchmark_service.average_baseload_kw(compare: compare)
       end
 
       def estimated_savings(versus: :benchmark_school)
-        benchmark_service.estimated_savings(versus: versus)
+        @estimated_savings ||= {}
+        @estimated_savings[versus] = benchmark_service.estimated_savings(versus: versus)
       end
 
       # Calculate the annual average baseload for every year
       def annual_average_baseloads
-        start_date = aggregate_meter.amr_data.start_date
-        end_date = aggregate_meter.amr_data.end_date
-        baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, nil)
-        baseload_analysis = baseload_service.baseload_analysis
-        Periods::FixedAcademicYear.enumerator(start_date, end_date).map do |period_start, period_end|
-          scale_to_year = Baseload::BaseloadAnalysis.scale_to_year(period_start, period_end)
-          average_baseload_kw = baseload_analysis.average_baseload_kw(period_start, period_end)
-          { year: academic_year(period_start, period_end),
-            partial: [period_start.month, period_start.day] != [9, 1] || [period_end.month, period_end.day] != [8, 31],
-            baseload: average_baseload_kw,
-            baseload_usage_gbp:
-              baseload_analysis.baseload_economic_cost_date_range_£(period_start, period_end, :£) * scale_to_year,
-            baseload_usage_co2: average_baseload_kw * 365 * 24 * baseload_service.co2_per_kwh }
+        @annual_average_baseloads ||= begin
+          start_date = aggregate_meter.amr_data.start_date
+          end_date = aggregate_meter.amr_data.end_date
+          baseload_service = Baseload::BaseloadCalculationService.new(aggregate_meter, nil)
+          baseload_analysis = baseload_service.baseload_analysis
+          Periods::FixedAcademicYear.enumerator(start_date, end_date).map do |period_start, period_end|
+            scale_to_year = Baseload::BaseloadAnalysis.scale_to_year(period_start, period_end)
+            average_baseload_kw = baseload_analysis.average_baseload_kw(period_start, period_end)
+            { year: academic_year(period_start, period_end),
+              partial: [period_start.month, period_start.day] != [9, 1] || [period_end.month, period_end.day] != [8, 31],
+              baseload: average_baseload_kw,
+              baseload_usage_gbp:
+                baseload_analysis.baseload_economic_cost_date_range_£(period_start, period_end, :£) * scale_to_year,
+              baseload_usage_co2: average_baseload_kw * 365 * 24 * baseload_service.co2_per_kwh }
+          end
         end
       end
 
@@ -98,53 +98,61 @@ module Schools
       end
 
       def baseload_meter_breakdown
-        meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(meter_collection)
-        baseloads = meter_breakdown_service.calculate_breakdown
-        meter_breakdowns = {}
-        baseloads.meters.each do |mpan_mprn|
-          baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.meter?(mpan_mprn),
-                                                                      end_of_previous_year)
-          previous_year_baseload = baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: :year) : nil
-          meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
+        @baseload_meter_breakdown ||= begin
+          meter_breakdown_service = Baseload::BaseloadMeterBreakdownService.new(meter_collection)
+          baseloads = meter_breakdown_service.calculate_breakdown
+          meter_breakdowns = {}
+          baseloads.meters.each do |mpan_mprn|
+            baseload_service = Baseload::BaseloadCalculationService.new(meter_collection.meter?(mpan_mprn),
+                                                                        end_of_previous_year)
+            previous_year_baseload = baseload_service.enough_data? ? baseload_service.average_baseload_kw(period: :year) : nil
+            meter_breakdowns[mpan_mprn] = build_meter_breakdown(mpan_mprn, baseloads, previous_year_baseload)
+          end
+          meter_breakdowns
         end
-        meter_breakdowns
       end
 
       # helper for building "all meters" / total row for meter breakdown table
       def meter_breakdown_table_total
-        baseload_usage = annual_baseload_usage
-        previous_year_baseload = previous_period_average_baseload_kw(period: :year)
-        baseload_kw = average_baseload_kw
-        OpenStruct.new(
-          baseload_kw: baseload_kw,
-          baseload_cost_£: baseload_usage.£,
-          percentage_baseload: 1.0,
-          baseload_previous_year_kw: previous_year_baseload,
-          baseload_change_kw: previous_year_baseload ? baseload_kw - previous_year_baseload : nil
-        )
+        @meter_breakdown_table_total ||= begin
+          baseload_usage = annual_baseload_usage
+          previous_year_baseload = previous_period_average_baseload_kw(period: :year)
+          baseload_kw = average_baseload_kw
+          OpenStruct.new(
+            baseload_kw: baseload_kw,
+            baseload_cost_£: baseload_usage.£,
+            percentage_baseload: 1.0,
+            baseload_previous_year_kw: previous_year_baseload,
+            baseload_change_kw: previous_year_baseload ? baseload_kw - previous_year_baseload : nil
+          )
+        end
       end
 
       def seasonal_variation
-        calculate_seasonal_variation(aggregate_meter, asof_date)
+        @seasonal_variation ||= calculate_seasonal_variation(aggregate_meter, asof_date)
       end
 
       def seasonal_variation_by_meter
         return {} unless electricity_meters.count > 1
 
-        electricity_meters.each_with_object({}) do |meter, variation_by_meter|
-          variation_by_meter[meter.mpan_mprn] = calculate_seasonal_variation(meter, meter.amr_data.end_date, true)
+        @seasonal_variation_by_meter ||= begin
+          electricity_meters.each_with_object({}) do |meter, variation_by_meter|
+            variation_by_meter[meter.mpan_mprn] = calculate_seasonal_variation(meter, meter.amr_data.end_date, true)
+          end
         end
       end
 
       def intraweek_variation
-        calculate_intraweek_variation(aggregate_meter, asof_date)
+        @intraweek_variation ||= calculate_intraweek_variation(aggregate_meter, asof_date)
       end
 
       def intraweek_variation_by_meter
         return {} unless electricity_meters.count > 1
 
-        electricity_meters.each_with_object({}) do |meter, variation_by_meter|
-          variation_by_meter[meter.mpan_mprn] = calculate_intraweek_variation(meter, meter.amr_data.end_date, true)
+        @intraweek_variation_by_meter ||= begin
+          electricity_meters.each_with_object({}) do |meter, variation_by_meter|
+            variation_by_meter[meter.mpan_mprn] = calculate_intraweek_variation(meter, meter.amr_data.end_date, true)
+          end
         end
       end
 

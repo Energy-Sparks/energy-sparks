@@ -58,7 +58,7 @@ RSpec.describe 'Baseload advice page', type: :system do
             average_baseload_kw: average_baseload_kw,
             average_baseload_kw_benchmark: average_baseload_kw_benchmark,
             annual_baseload_usage: usage,
-            baseload_usage_benchmark: usage,
+            #            baseload_usage_benchmark: usage,
             estimated_savings: savings,
             annual_average_baseloads: [annual_average_baseload],
             baseload_meter_breakdown: baseload_meter_breakdown,
