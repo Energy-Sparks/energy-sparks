@@ -66,7 +66,8 @@ class Comparison::Report < ApplicationRecord
       max_days_out_of_date: custom_period.max_days_out_of_date,
       enough_days_data: custom_period.enough_days_data,
       current_period: custom_period.current_start_date..custom_period.current_end_date,
-      previous_period: custom_period.previous_start_date..custom_period.previous_end_date }
+      previous_period: custom_period.previous_start_date..custom_period.previous_end_date,
+      disable_normalisation: custom_period.disable_normalisation }
   end
 
   def self.fetch(key)
