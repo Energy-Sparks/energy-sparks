@@ -675,6 +675,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_23_131456) do
     t.datetime "updated_at", null: false
     t.integer "max_days_out_of_date"
     t.integer "enough_days_data"
+    t.boolean "disable_normalisation", default: false, null: false
   end
 
   create_table "comparison_footnotes", force: :cascade do |t|
