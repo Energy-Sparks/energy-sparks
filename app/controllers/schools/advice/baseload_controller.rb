@@ -4,7 +4,6 @@ module Schools
       before_action :load_dashboard_alerts, only: [:insights, :analysis]
 
       def insights
-        @cache_view = true
         @aggregate_school_service = aggregate_school_service
         @service = baseload_service
         # @current_baseload = current_baseload
