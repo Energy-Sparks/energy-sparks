@@ -4,17 +4,18 @@
 #
 # Table name: comparison_custom_periods
 #
-#  created_at           :datetime         not null
-#  current_end_date     :date             not null
-#  current_label        :string           not null
-#  current_start_date   :date             not null
-#  enough_days_data     :integer
-#  id                   :bigint(8)        not null, primary key
-#  max_days_out_of_date :integer
-#  previous_end_date    :date             not null
-#  previous_label       :string           not null
-#  previous_start_date  :date             not null
-#  updated_at           :datetime         not null
+#  created_at            :datetime         not null
+#  current_end_date      :date             not null
+#  current_label         :string           not null
+#  current_start_date    :date             not null
+#  disable_normalisation :boolean          default(FALSE), not null
+#  enough_days_data      :integer
+#  id                    :bigint(8)        not null, primary key
+#  max_days_out_of_date  :integer
+#  previous_end_date     :date             not null
+#  previous_label        :string           not null
+#  previous_start_date   :date             not null
+#  updated_at            :datetime         not null
 #
 module Comparison
   class CustomPeriod < ApplicationRecord
