@@ -20,7 +20,6 @@ module Admin
       def school_params
         params.require(:school_onboarding).permit(
           :template_calendar_id,
-          :solar_pv_tuos_area_id,
           :dark_sky_area_id,
           :scoreboard_id,
           :weather_station_id,

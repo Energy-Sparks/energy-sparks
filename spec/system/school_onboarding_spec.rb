@@ -8,7 +8,6 @@ RSpec.describe 'onboarding', :schools do
 
   # This calendar is there to allow for the calendar area selection
   let(:template_calendar) { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
-  let(:solar_pv_area) { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let!(:consent_statement) do
     ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true)
   end
@@ -24,7 +23,6 @@ RSpec.describe 'onboarding', :schools do
         event_names: [:email_sent],
         school_name: school_name,
         template_calendar: template_calendar,
-        solar_pv_tuos_area: solar_pv_area,
         created_by: admin
       )
     end

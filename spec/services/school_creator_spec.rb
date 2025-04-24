@@ -6,7 +6,6 @@ describe SchoolCreator, :schools, type: :service do
   let(:service) { described_class.new(school) }
 
   let(:template_calendar) { create(:template_calendar, title: 'BANES calendar') }
-  let(:solar_pv_area) { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let(:dark_sky_area) { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let(:school_group) { create(:school_group, name: 'BANES') }
   let(:scoreboard) { create(:scoreboard, name: 'BANES scoreboard') }
@@ -21,7 +20,6 @@ describe SchoolCreator, :schools, type: :service do
       onboarding = create(:school_onboarding,
                           created_user: onboarding_user,
                           template_calendar:,
-                          solar_pv_tuos_area: solar_pv_area,
                           dark_sky_area:,
                           school_group:,
                           scoreboard:,
@@ -44,7 +42,6 @@ describe SchoolCreator, :schools, type: :service do
       expect(school.school_group).to eq(school_group)
       expect(school.template_calendar).to eq template_calendar
       expect(school.calendar.based_on).to eq(template_calendar)
-      expect(school.solar_pv_tuos_area).to eq(solar_pv_area)
       expect(school.dark_sky_area).to eq(dark_sky_area)
       expect(school.scoreboard).to eq(scoreboard)
       expect(school.configuration).not_to be_nil
@@ -253,7 +250,6 @@ describe SchoolCreator, :schools, type: :service do
       create(:school_onboarding,
              created_user: onboarding_user,
              template_calendar:,
-             solar_pv_tuos_area: solar_pv_area,
              dark_sky_area:,
              school_group:,
              scoreboard:,

@@ -93,7 +93,7 @@ private
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )
-    Solar::SolarAreaLookupService.new(@school, onboarding).assign
+    Solar::SolarAreaLookupService.new(@school).assign
   end
 
   def create_default_contact(onboarding)

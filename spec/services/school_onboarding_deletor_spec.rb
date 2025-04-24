@@ -4,8 +4,7 @@ describe SchoolOnboardingDeletor, type: :service do
   let(:school)                    { build :school}
   let(:onboarding_user)           { create :onboarding_user }
   let!(:template_calendar) { create(:template_calendar, title: 'BANES calendar') }
-  let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let(:dark_sky_area)             { create(:dark_sky_area, title: 'BANES dark sky weather') }
+  let(:dark_sky_area)       { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let!(:school_group)       { create(:school_group, name: 'BANES') }
   let!(:scoreboard)         { create(:scoreboard, name: 'BANES scoreboard') }
   let!(:weather_station)    { create(:weather_station, title: 'BANES weather') }
@@ -17,7 +16,6 @@ describe SchoolOnboardingDeletor, type: :service do
       event_names: [:email_sent],
       created_user: onboarding_user,
       template_calendar: template_calendar,
-      solar_pv_tuos_area: solar_pv_area,
       dark_sky_area: dark_sky_area,
       school_group: school_group,
       scoreboard: scoreboard,
