@@ -51,7 +51,7 @@ module Admin
     private
 
     def local_distribution_zone_params
-      params.require(:local_distribution_zone).permit(:name, :code, :publication_id)
+      permit_params(LocalDistributionZone)
     end
 
     def send_csv
