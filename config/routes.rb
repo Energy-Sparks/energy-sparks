@@ -797,6 +797,7 @@ Rails.application.routes.draw do
     end
 
     resources :local_distribution_zones, except: [:destroy]
+    resources :secr_co2_equivalences, except: [:destroy]
   end # Admin name space
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview

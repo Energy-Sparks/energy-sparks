@@ -1,0 +1,14 @@
+<%= simple_form_for([:admin, secr_co2_equivalence]) do |f| %>
+  <%= f.input %>
+  <%= f.input :electricity_co2e %>
+  <%= f.input :electricity_co2e_co2 %>
+  <%= f.input :transmission_distribution_co2e %>
+  <%= f.input :natural_gas_co2e %>
+  <%= f.input :natural_gas_co2e_co2 %>
+  <%= f.input :publication_id, label: 'Publication ID' %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>
+
+<div class="other-actions">
+ <%= link_to 'Back', admin_secr_co2_equivalence_path, class: 'btn' %>
+</div>

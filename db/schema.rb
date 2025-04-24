@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_23_165802) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1815,6 +1815,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.boolean "public", default: true
     t.datetime "mailchimp_fields_changed_at"
     t.index ["academic_year_calendar_id"], name: "index_scoreboards_on_academic_year_calendar_id"
+  end
+
+  create_table "secr_co2_equivalences", force: :cascade do |t|
+    t.integer "year"
+    t.float "electricity_co2e"
+    t.float "electricity_co2e_co2"
+    t.float "transmission_distribution_co2e"
+    t.float "natural_gas_co2e"
+    t.float "natural_gas_co2e_co2"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["year"], name: "index_secr_co2_equivalences_on_year", unique: true
   end
 
   create_table "site_settings", force: :cascade do |t|
