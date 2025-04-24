@@ -118,7 +118,7 @@
 
       <%= render Layout::GridComponent.new(
             cols: 3,
-            classes: 'mb-4 mt-4',
+            classes: 'mb-4 mt-4 pb-4',
             cell_classes: 'mb-4',
             component_classes: 'h-100'
           ) do |grid| %>
@@ -153,24 +153,24 @@
 
     <% if @blog.items.count >= 3 %>
       <div class="theme theme-dark pt-4">
-        <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+        <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
           <%= section_header.with_header title: t('home.blog.header') %>
           <%= section_header.with_description { t('home.blog.description') } %>
         <% end %>
         <div class='mb-4 text-center'>
           <%= render Elements::ButtonComponent.new(
                 t('home.buttons.newsletter_signup'),
-                new_mailchimp_signup_path, style: :success, classes: 'mb-4 mr-2'
+                new_mailchimp_signup_path, style: :success, classes: 'mr-2'
               ) %>
           <%= render Elements::ButtonComponent.new(
                 t('home.buttons.view_blog'),
-                'http://blog.energysparks.uk', style: :white, outline: true, classes: 'mb-4'
+                'http://blog.energysparks.uk', style: :white, outline: true, classes: ''
               ) %>
         </div>
 
         <%= render Layout::GridComponent.new(
               cols: 3,
-              classes: 'mb-4 container',
+              classes: 'container pb-4',
               cell_classes: 'mb-4',
               component_classes: 'h-100'
             ) do |grid| %>
