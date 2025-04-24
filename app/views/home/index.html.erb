@@ -153,7 +153,6 @@
 
     <% if @blog.items.count >= 3 %>
       <div class="theme theme-dark pt-4">
-
         <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
           <%= section_header.with_header title: t('home.blog.header') %>
           <%= section_header.with_description { t('home.blog.description') } %>
