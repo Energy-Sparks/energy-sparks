@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/Energy-Sparks/energy-sparks_analytics.git
-  revision: fae78c9b9eb5a4511a9132961b5ea4119cd0170a
-  branch: 4695-add-option-to-disable-normalisation-for-custom-periods
+  revision: 173601c2afe9f4bb39888a7c8751574f3602fc43
+  tag: 6.1.12
   specs:
     energy-sparks_analytics (1.2.1)
       activesupport (>= 6.0, < 8.1)
