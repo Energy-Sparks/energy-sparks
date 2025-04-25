@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_23_131456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -675,6 +675,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.datetime "updated_at", null: false
     t.integer "max_days_out_of_date"
     t.integer "enough_days_data"
+    t.boolean "disable_normalisation", default: false, null: false
   end
 
   create_table "comparison_footnotes", force: :cascade do |t|
@@ -1574,7 +1575,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.bigint "default_scoreboard_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.bigint "default_solar_pv_tuos_area_id"
     t.bigint "default_dark_sky_area_id"
     t.bigint "default_template_calendar_id"
     t.bigint "default_weather_station_id"
@@ -1595,7 +1595,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.datetime "mailchimp_fields_changed_at"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
-    t.index ["default_solar_pv_tuos_area_id"], name: "index_school_groups_on_default_solar_pv_tuos_area_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
   end
 
@@ -1637,7 +1636,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.bigint "created_user_id"
     t.bigint "created_by_id"
     t.bigint "school_group_id"
-    t.bigint "solar_pv_tuos_area_id"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "dark_sky_area_id"
@@ -1655,7 +1653,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
     t.index ["scoreboard_id"], name: "index_school_onboardings_on_scoreboard_id"
-    t.index ["solar_pv_tuos_area_id"], name: "index_school_onboardings_on_solar_pv_tuos_area_id"
     t.index ["template_calendar_id"], name: "index_school_onboardings_on_template_calendar_id"
     t.index ["uuid"], name: "index_school_onboardings_on_uuid", unique: true
   end
@@ -2255,7 +2252,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
-  add_foreign_key "school_groups", "areas", column: "default_solar_pv_tuos_area_id"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
   add_foreign_key "school_groups", "users", column: "default_issues_admin_user_id", on_delete: :nullify
@@ -2266,7 +2262,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_140725) do
   add_foreign_key "school_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
-  add_foreign_key "school_onboardings", "areas", column: "solar_pv_tuos_area_id", on_delete: :restrict
   add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
