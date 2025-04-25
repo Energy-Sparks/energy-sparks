@@ -74,6 +74,7 @@ RSpec.describe BlogService, type: :service do
     end
   end
 
+
   describe '#cache_feed!' do
     it_behaves_like 'a cache without the key'
 
@@ -159,6 +160,25 @@ RSpec.describe BlogService, type: :service do
       it_behaves_like 'items with expected fields' do
         let(:items) { returned_items }
       end
+    end
+  end
+
+  describe '.new' do
+    let(:max_retries) { 5 }
+    let(:expected_retry_options) do
+      BlogService::RETRY_OPTIONS.merge(max: max_retries)
+    end
+
+    let(:custom_url) { 'http://custom.url' }
+    let(:faraday_connection) { instance_spy(Faraday::Connection) }
+
+    before do
+      allow(Faraday).to receive(:new).with(url: custom_url).and_yield(faraday_connection)
+      BlogService.new(retries: max_retries, url: custom_url)
+    end
+
+    it 'sets retry options' do
+      expect(faraday_connection).to have_received(:request).with(:retry, expected_retry_options)
     end
   end
 end
