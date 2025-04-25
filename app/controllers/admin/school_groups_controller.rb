@@ -52,7 +52,6 @@ module Admin
         :default_scoreboard_id,
         :default_template_calendar_id,
         :default_dark_sky_area_id,
-        :default_solar_pv_tuos_area_id,
         :default_weather_station_id,
         :default_chart_preference,
         :default_issues_admin_user_id,
