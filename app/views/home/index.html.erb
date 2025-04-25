@@ -157,7 +157,7 @@
           <%= section_header.with_header title: t('home.blog.header') %>
           <%= section_header.with_description { t('home.blog.description') } %>
         <% end %>
-        <div class='mb-4 text-center'>
+        <div class='mb-4 pb-2 text-center'>
           <%= render Elements::ButtonComponent.new(
                 t('home.buttons.newsletter_signup'),
                 new_mailchimp_signup_path, style: :success, classes: 'mr-2'
