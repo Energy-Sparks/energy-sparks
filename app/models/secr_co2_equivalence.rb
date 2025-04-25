@@ -17,22 +17,17 @@
 #  index_secr_co2_equivalences_on_year  (year) UNIQUE
 #
 class SecrCo2Equivalence < ApplicationRecord
-  validates :electricity_co2e, presence: true
-  validates :electricity_co2e_co2, presence: true
-  validates :natural_gas_co2e, presence: true
-  validates :natural_gas_co2e_co2, presence: true
-  validates :transmission_distribution_co2e, presence: true
-  validates :year, presence: true, uniqueness: true
+  validates :electricity_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  validates :electricity_co2e_co2, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  validates :natural_gas_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  validates :natural_gas_co2e_co2, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  validates :transmission_distribution_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  validates :year, presence: true, uniqueness: true, numericality: { greater_than: 2020, less_than: 2050 }
 
   def self.human_attribute_name(attribute, options = {})
     name = super
     name.sub!('co2e co2', 'kg CO₂ equivalence of CO₂')
     name.sub!('co2e', 'kg CO₂ equivalence')
-
-    # attribute.to_s.sub('_co2e', 'kg CO₂ equivalence ')
-
-    # return "Custom Email Label" if attr.to_s == "email"
-    # super
     name
   end
 end

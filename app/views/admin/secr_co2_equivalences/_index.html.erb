@@ -1,4 +1,3 @@
-<h1><%= SecrCo2Equivalence.model_name.human(count: 2) %></h1>
 <table class="table table-sorted">
   <thead>
     <tr>
@@ -11,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @secr_co2_equivalences.order(:year).each do |equivalence| %>
+    <% @resources.order(:year).each do |equivalence| %>
       <tr>
         <td><%= equivalence.year %></td>
         <td><%= equivalence.electricity_co2e %></td>
@@ -28,4 +27,3 @@
     <% end %>
   </tbody>
 </table>
-<%= link_to "New #{SecrCo2Equivalence.model_name.human}", new_admin_secr_co2_equivalence_path, class: 'btn' %>
