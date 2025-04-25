@@ -47,7 +47,7 @@ document.addEventListener('trix-action-invoke', function(event) {
   if(event.actionName === 'x-insert-youtube') {
     const dialog = event.invokingElement.closest('.trix-dialog--youtube')
     const input = dialog.querySelector('input[name="youtube-url"]')
-    const youtube_id = findYoutubeId(input.val())
+    const youtube_id = findYoutubeId(input.value)
     if (youtube_id !== null) {
       fetch(`/cms/youtube_embed/${encodeURIComponent(youtube_id)}`)
         .then(response => {
