@@ -22,21 +22,19 @@ class BlogService
   end
 
   def cached_items
-    Rails.cache.read(@key)
+    Rails.cache.read(@key) || []
   end
 
   def items
-    if Rails.env.development?
-      return fetch_items
-    else
-      return cached_items || []
-    end
+    Rails.env.development? ? fetch_items : cached_items
   end
 
   # To be run from cron
   def cache_feed!
-    if (items = fetch_items)
+    items = fetch_items
+    if items&.any?
       Rails.cache.write(@key, items)
+      Rails.logger.info "Blog cache updated: #{@key}"
     end
   end
 
@@ -45,11 +43,10 @@ class BlogService
   def fetch_items
     response = @connection.get
     if response.success?
-      return extract_items(response.body)
+      extract_items(response.body)
     else
-      Rollbar.error("Unable to fetch Blog url: #{url}. Status: #{response.status}, Body: #{response.body}")
+      Rollbar.error("Unable to fetch Blog url: #{url}. Status: #{response.status}, body: #{response.body}")
     end
-    false
   end
 
   def max_option
@@ -65,15 +62,20 @@ class BlogService
 
   def extract_items(body)
     feed = RSS::Parser.parse(body, false)
-    feed.items.collect do |item|
-      { title: item.title,
-        image: item.enclosure&.url,
-        description: clean(item.description),
-        link: item.link,
-        date: item.pubDate.to_date.to_s,
-        categories: item.categories.collect(&:content),
-        author: item.dc_creator,
-        author_link: "#{feed.channel.link}/author/#{item.dc_creator.parameterize}" }
+    items = []
+    if feed&.items
+      items = feed.items.collect do |item|
+        { title: item.title,
+          image: item.enclosure&.url,
+          description: clean(item.description),
+          link: item.link,
+          date: item.pubDate.to_date.to_s,
+          categories: item.categories.collect(&:content),
+          author: item.dc_creator,
+          author_link: "#{feed.channel.link}/author/#{item.dc_creator.parameterize}" }
+      end
     end
+    Rollbar.error("No items extracted from blog: #{url}") if items.empty?
+    items
   end
 end

@@ -27,6 +27,12 @@ RSpec.describe BlogService, type: :service do
     end
   end
 
+  let(:response_success_empty) do
+    instance_double(Faraday::Response, body: '', status: 200).tap do |r|
+      allow(r).to receive(:success?).and_return(true)
+    end
+  end
+
   let(:response_error) do
     instance_double(Faraday::Response, body: 'Error 500', status: 500).tap do |r|
       allow(r).to receive(:success?).and_return(false)
@@ -47,12 +53,8 @@ RSpec.describe BlogService, type: :service do
     it { expect(Rails.cache.exist?(blog.key)).to be true }
   end
 
-  shared_examples 'a cache with no items' do
-    it { expect(Rails.cache.read(blog.key)).to eq [] }
-  end
-
-  shared_examples 'items with expected fields' do
-    it { expect(items.count).to be 5 }
+  shared_examples 'items with expected fields' do |count: 5|
+    it { expect(items.count).to be count }
 
     it 'contains items with the correct fields' do
       items.each_with_index do |item, x|
@@ -68,10 +70,9 @@ RSpec.describe BlogService, type: :service do
     end
   end
 
-  shared_examples 'a cache with items' do
-    it_behaves_like 'items with expected fields' do
-      let(:items) { Rails.cache.read(blog.key) }
-    end
+  shared_examples 'a cache with items' do |count: 5|
+    let(:items) { Rails.cache.read(blog.key) }
+    it_behaves_like 'items with expected fields', count: count
   end
 
   describe '#cache_feed!' do
@@ -87,7 +88,17 @@ RSpec.describe BlogService, type: :service do
         let(:response) { response_success }
 
         it_behaves_like 'a cache with the key'
-        it_behaves_like 'a cache with items'
+        it_behaves_like 'a cache with items', count: 5
+      end
+
+      context 'when request is successful but nothing is returned' do
+        let(:response) { response_success_empty }
+
+        it_behaves_like 'a cache without the key'
+
+        it 'logs an error via Rollbar' do
+          expect(Rollbar).to have_received(:error).with("No items extracted from blog: #{blog.url}")
+        end
       end
 
       context 'when request is not successful' do
@@ -96,7 +107,7 @@ RSpec.describe BlogService, type: :service do
         it_behaves_like 'a cache without the key'
 
         it 'logs an error via Rollbar' do
-          expect(Rollbar).to have_received(:error).with("Unable to fetch Blog url: #{blog.url}. Status: 500, Body: Error 500")
+          expect(Rollbar).to have_received(:error).with("Unable to fetch Blog url: #{blog.url}. Status: 500, body: Error 500")
         end
       end
     end
@@ -112,18 +123,36 @@ RSpec.describe BlogService, type: :service do
         let(:response) { response_success }
 
         it_behaves_like 'a cache with the key'
-        it_behaves_like 'a cache with items'
+        it_behaves_like 'a cache with items', count: 5
       end
 
-      context 'when request is not successful' do
-        let(:response) { response_error }
+      context 'when request is successful but nothing is returned' do
+        let(:response) { response_success_empty }
+
+        it_behaves_like 'a cache with the key'
+        it_behaves_like 'a cache with items', count: 1
 
         it 'retains original items' do
           expect(blog.cached_items).to eq([basic_item])
         end
 
         it 'logs an error via Rollbar' do
-          expect(Rollbar).to have_received(:error).with("Unable to fetch Blog url: #{blog.url}. Status: 500, Body: Error 500")
+          expect(Rollbar).to have_received(:error).with("No items extracted from blog: #{blog.url}")
+        end
+      end
+
+      context 'when request is not successful' do
+        let(:response) { response_error }
+
+        it_behaves_like 'a cache with the key'
+        it_behaves_like 'a cache with items', count: 1
+
+        it 'retains original items' do
+          expect(blog.cached_items).to eq([basic_item])
+        end
+
+        it 'logs an error via Rollbar' do
+          expect(Rollbar).to have_received(:error).with("Unable to fetch Blog url: #{blog.url}. Status: 500, body: Error 500")
         end
       end
     end
@@ -144,8 +173,8 @@ RSpec.describe BlogService, type: :service do
         blog.cache_feed!
       end
 
-      it_behaves_like 'a cache with items'
-      it_behaves_like 'items with expected fields' do
+      it_behaves_like 'a cache with items', count: 5
+      it_behaves_like 'items with expected fields', count: 5 do
         let(:items) { returned_items }
       end
     end
@@ -156,7 +185,7 @@ RSpec.describe BlogService, type: :service do
       end
 
       it_behaves_like 'a cache without the key'
-      it_behaves_like 'items with expected fields' do
+      it_behaves_like 'items with expected fields', count: 5 do
         let(:items) { returned_items }
       end
     end
