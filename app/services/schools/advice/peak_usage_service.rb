@@ -5,9 +5,9 @@ module Schools
       # matches the required days for base load advice pages - see BaseloadService and Baseload::BaseService it uses
       REQUIRED_DAYS = 14
 
-      def initialize(school, meter_collection)
+      def initialize(school, aggregate_school_service)
         @school = school
-        @meter_collection = meter_collection
+        @aggregate_school_service = aggregate_school_service
       end
 
       def enough_data?
@@ -44,7 +44,7 @@ module Schools
       end
 
       def asof_date
-        @asof_date ||= AggregateSchoolService.analysis_date(@meter_collection, :electricity)
+        @asof_date ||= AggregateSchoolService.analysis_date(meter_collection, :electricity)
       end
 
       private
@@ -62,18 +62,22 @@ module Schools
       end
 
       def aggregate_meter
-        @meter_collection.aggregated_electricity_meters
+        meter_collection.aggregated_electricity_meters
       end
 
       def peak_usage_benchmarking_service
         @peak_usage_benchmarking_service ||= ::Usage::PeakUsageBenchmarkingService.new(
-          meter_collection: @meter_collection,
+          meter_collection: meter_collection,
           asof_date: asof_date
         )
       end
 
       def peak_usage_calculation_service(date = asof_date)
-        Usage::PeakUsageCalculationService.new(meter_collection: @meter_collection, asof_date: date)
+        Usage::PeakUsageCalculationService.new(meter_collection: meter_collection, asof_date: date)
+      end
+
+      def meter_collection
+        @aggregate_school_service.meter_collection
       end
     end
   end

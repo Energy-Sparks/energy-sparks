@@ -3,8 +3,13 @@
 require 'dashboard'
 
 class AggregateSchoolService
-  def initialize(active_record_school)
+  def initialize(active_record_school, meter_collection = nil)
     @active_record_school = active_record_school
+    @meter_collection = meter_collection
+  end
+
+  def meter_collection
+    @meter_collection ||= aggregate_school
   end
 
   def aggregate_school
