@@ -42,9 +42,7 @@ module EnergySparks
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
 
-      if Flipper.enabled?(:new_home_page)
-        UpdateBlogCacheJob.perform_later
-      end
+      UpdateBlogCacheJob.perform_later
 
       # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
       ActionText::ContentHelper.allowed_attributes =
