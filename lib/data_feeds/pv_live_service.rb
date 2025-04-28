@@ -71,6 +71,9 @@ module DataFeeds
 
         if missing_on_day > 5 && date > start_date
           too_little_data_on_day.push(date)
+        elsif days_data.compact.empty?
+          Rails.logger.error { "No valid readings for #{date}" }
+          too_little_data_on_day.push(date)
         elsif days_data.sum <= 0.0
           Rails.logger.error { "Data sums to zero on #{date}" }
           too_little_data_on_day.push(date)
@@ -138,7 +141,7 @@ module DataFeeds
         time = adjust_to_bst(gmt_time)
         generation = halfhour_data[meta_data_dictionary.index('generation_mw')]
         capacity = halfhour_data[meta_data_dictionary.index('installedcapacity_mwp')]
-        next if generation.nil? || capacity.nil?
+        next if generation.nil? || capacity.nil? || capacity.zero?
 
         yield_pv = generation / capacity
         all_pv_yield[time] = yield_pv
