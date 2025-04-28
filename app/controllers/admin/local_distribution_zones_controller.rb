@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Admin
-  class LocalDistributionZonesController < AdminController
+  class LocalDistributionZonesController < AdminCrudController
+    MODEL = LocalDistributionZone
     include Columns
-    load_and_authorize_resource
     def index
       respond_to do |format|
         format.html
@@ -13,11 +13,11 @@ module Admin
 
     def show
       @colours = { missing: :grey_dark, 38 => :teal_medium, 39 => :yellow_medium, 40 => :red_medium }
-      @first_reading = @local_distribution_zone.readings.by_date.first
+      @first_reading = @resource.readings.by_date.first
       respond_to do |format|
         format.html
         format.json do
-          readings = @local_distribution_zone.readings.pluck(:date, :calorific_value).to_h
+          readings = @resource.readings.pluck(:date, :calorific_value).to_h
           calendar_events = (@first_reading.date..Date.current).map do |date|
             value = readings[date]
             { startDate: date, endDate: date, name: value || 'Missing',
@@ -28,31 +28,7 @@ module Admin
       end
     end
 
-    def new; end
-
-    def edit; end
-
-    def create
-      if @local_distribution_zone.save
-        redirect_to admin_local_distribution_zones_path, notice: 'New Local Distribution Zone created.'
-      else
-        render :new
-      end
-    end
-
-    def update
-      if @local_distribution_zone.update(local_distribution_zone_params)
-        redirect_to admin_local_distribution_zones_path, notice: 'Local Distribution Zone was updated.'
-      else
-        render :edit
-      end
-    end
-
     private
-
-    def local_distribution_zone_params
-      params.require(:local_distribution_zone).permit(:name, :code, :publication_id)
-    end
 
     def send_csv
       columns = [
