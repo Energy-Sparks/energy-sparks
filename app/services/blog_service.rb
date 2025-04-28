@@ -21,16 +21,12 @@ class BlogService
     end
   end
 
-  def cached_items
+  def items
     Rails.cache.read(@key) || []
   end
 
-  def items
-    Rails.env.development? ? fetch_items : cached_items
-  end
-
   # To be run from cron
-  def cache_feed!
+  def update_cache!
     items = fetch_items
     if items&.any?
       Rails.cache.write(@key, items)
@@ -45,7 +41,7 @@ class BlogService
     if response.success?
       extract_items(response.body)
     else
-      Rollbar.error("Unable to fetch Blog url: #{url}. Status: #{response.status}, body: #{response.body}")
+      Rollbar.error("Unable to fetch blog feed: #{url}. Status: #{response.status}, body: #{response.body}")
     end
   end
 
@@ -75,7 +71,7 @@ class BlogService
           author_link: "#{feed.channel.link}/author/#{item.dc_creator.parameterize}" }
       end
     end
-    Rollbar.error("No items extracted from blog: #{url}") if items.empty?
+    Rollbar.error("No items extracted from blog feed: #{url}") if items.empty?
     items
   end
 end

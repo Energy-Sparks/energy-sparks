@@ -75,13 +75,13 @@ RSpec.describe BlogService, type: :service do
     it_behaves_like 'items with expected fields', count: count
   end
 
-  describe '#cache_feed!' do
+  describe '#update_cache!' do
     it_behaves_like 'a cache without the key'
 
     context 'when cache is empty' do
       before do
         allow(Rollbar).to receive(:error)
-        blog.cache_feed!
+        blog.update_cache!
       end
 
       context 'when request is successful' do
@@ -97,7 +97,7 @@ RSpec.describe BlogService, type: :service do
         it_behaves_like 'a cache without the key'
 
         it 'logs an error via Rollbar' do
-          expect(Rollbar).to have_received(:error).with("No items extracted from blog: #{blog.url}")
+          expect(Rollbar).to have_received(:error).with("No items extracted from blog feed: #{blog.url}")
         end
       end
 
@@ -107,7 +107,7 @@ RSpec.describe BlogService, type: :service do
         it_behaves_like 'a cache without the key'
 
         it 'logs an error via Rollbar' do
-          expect(Rollbar).to have_received(:error).with("Unable to fetch Blog url: #{blog.url}. Status: 500, body: Error 500")
+          expect(Rollbar).to have_received(:error).with("Unable to fetch blog feed: #{blog.url}. Status: 500, body: Error 500")
         end
       end
     end
@@ -116,7 +116,7 @@ RSpec.describe BlogService, type: :service do
       before do
         Rails.cache.write(blog.key, [basic_item])
         allow(Rollbar).to receive(:error)
-        blog.cache_feed!
+        blog.update_cache!
       end
 
       context 'when request is successful' do
@@ -133,11 +133,11 @@ RSpec.describe BlogService, type: :service do
         it_behaves_like 'a cache with items', count: 1
 
         it 'retains original items' do
-          expect(blog.cached_items).to eq([basic_item])
+          expect(blog.items).to eq([basic_item])
         end
 
         it 'logs an error via Rollbar' do
-          expect(Rollbar).to have_received(:error).with("No items extracted from blog: #{blog.url}")
+          expect(Rollbar).to have_received(:error).with("No items extracted from blog feed: #{blog.url}")
         end
       end
 
@@ -148,11 +148,11 @@ RSpec.describe BlogService, type: :service do
         it_behaves_like 'a cache with items', count: 1
 
         it 'retains original items' do
-          expect(blog.cached_items).to eq([basic_item])
+          expect(blog.items).to eq([basic_item])
         end
 
         it 'logs an error via Rollbar' do
-          expect(Rollbar).to have_received(:error).with("Unable to fetch Blog url: #{blog.url}. Status: 500, body: Error 500")
+          expect(Rollbar).to have_received(:error).with("Unable to fetch blog feed: #{blog.url}. Status: 500, body: Error 500")
         end
       end
     end
@@ -170,21 +170,10 @@ RSpec.describe BlogService, type: :service do
 
     context 'when the cache contains items' do
       before do
-        blog.cache_feed!
+        blog.update_cache!
       end
 
       it_behaves_like 'a cache with items', count: 5
-      it_behaves_like 'items with expected fields', count: 5 do
-        let(:items) { returned_items }
-      end
-    end
-
-    context 'when in development environment' do
-      before do
-        allow(Rails.env).to receive(:development?).and_return(true)
-      end
-
-      it_behaves_like 'a cache without the key'
       it_behaves_like 'items with expected fields', count: 5 do
         let(:items) { returned_items }
       end
