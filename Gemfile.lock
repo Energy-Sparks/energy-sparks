@@ -667,6 +667,8 @@ GEM
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
     rspec-support (3.13.2)
+    rss (0.3.1)
+      rexml
     rubocop (1.75.3)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -932,6 +934,7 @@ DEPENDENCIES
   roo-xls
   rspec-json_expectations
   rspec-rails
+  rss
   rubocop
   rubocop-capybara
   rubocop-factory_bot

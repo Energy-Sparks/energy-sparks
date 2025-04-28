@@ -1,0 +1,50 @@
+.theme {
+  &.theme-dark {
+    background-color: $blue-very-dark;
+    color: $blue-light;
+
+    h1, h2, h3, h4, h5, h6, .text-main {
+      color: $white;
+    }
+
+    a:not(.btn) {
+      color: $teal-medium;
+    }
+
+    .text-complement {
+      color: $blue-light;
+    }
+
+    .badge {
+      background-color: $teal-medium;
+      color: $blue-very-dark;
+    }
+  }
+
+  &.theme-light, &.theme-accent {
+    h1, h2, h3, h4, h5, h6, .text-main {
+      color: $blue-very-dark;
+    }
+
+    a:not(.btn) {
+      color: $blue-very-dark;
+    }
+
+    .text-complement {
+      color: $blue-very-dark;
+    }
+  }
+
+  &.theme-light {
+    background-color: $blue-light;
+    color: $blue-dark;
+
+    .badge {
+      background-color: $yellow-light;
+    }
+  }
+
+  &.theme-accent {
+    background-color: $yellow-pale;
+  }
+}
