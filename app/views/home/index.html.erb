@@ -2,17 +2,17 @@
   <% content_for :page_title, t('common.labels.home') %>
 
   <% if Flipper.enabled?(:new_home_page, current_user) %>
-    <div class="theme theme-dark border-top border-blue-dark">
+    <div class="theme theme-dark">
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
         <% grid.with_feature_card main: true, theme: :dark, classes: 'py-4 pr-4' do |feature| %>
           <%= feature.with_header title: t('home.feature.header') %>
-          <%= feature.with_description(classes: 'text-blue-light') { t('home.feature.description_html') } %>
+          <%= feature.with_description(classes: 'text-complement') { t('home.feature.description_html') } %>
           <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
           <%= feature.with_button t('home.buttons.book_a_demo'),
                                   book_demo_campaigns_path,
                                   style: :white, outline: true %>
         <% end %>
-        <%= grid.with_image src: 'on-screen.jpg', stretch: :right, width: '50vw', collapse: true %>
+        <%= grid.with_image src: 'on-screen.jpg', stretch: :right, width: '50vw', collapse: true, classes: 'main' %>
       <% end %>
     </div>
 
@@ -23,7 +23,7 @@
       <% end %>
 
       <%= render Layout::GridComponent.new(cols: 4, classes: 'pb-4 mb-4',
-                                           cell_classes: 'mb-4') do |grid| %>
+                                           cell_classes: 'mb-4', component_classes: 'theme theme-dark') do |grid| %>
         <% grid.with_stats_card do |card| %>
           <%= card.with_icon fuel_type: :electricity, style: :circle %>
           <%= card.with_header title: t('home.stats.card_1.header') %>
@@ -118,7 +118,7 @@
 
       <%= render Layout::GridComponent.new(
             cols: 3,
-            classes: 'mb-4 mt-4',
+            classes: 'mb-4 mt-4 pb-4',
             cell_classes: 'mb-4',
             component_classes: 'h-100'
           ) do |grid| %>
@@ -150,6 +150,49 @@
         <% end %>
       <% end %>
     </div>
+
+    <% if @blog.items.count >= 3 %>
+      <div class="theme theme-dark pt-4">
+        <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
+          <%= section_header.with_header title: t('home.blog.header') %>
+          <%= section_header.with_description { t('home.blog.description') } %>
+        <% end %>
+        <div class='mb-4 pb-2 text-center'>
+          <%= render Elements::ButtonComponent.new(
+                t('home.buttons.newsletter_signup'),
+                new_mailchimp_signup_path, style: :success, classes: 'mr-2'
+              ) %>
+          <%= render Elements::ButtonComponent.new(
+                t('home.buttons.view_blog'),
+                'http://blog.energysparks.uk', style: :white, outline: true, classes: ''
+              ) %>
+        </div>
+
+        <%= render Layout::GridComponent.new(
+              cols: 3,
+              classes: 'container pb-4',
+              cell_classes: 'mb-4',
+              component_classes: 'h-100'
+            ) do |grid| %>
+
+          <% @blog.items.first(3).each do |item| %>
+            <%= grid.with_card do |card| %>
+              <%= card.with_image(src: item[:image] || 'on-screen.jpg', classes: 'rounded-top-xl') %>
+              <%= card.with_feature_card(theme: :light, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+                <%= feature.with_header(title: item[:title]) %>
+                <%= feature.with_author(href: item[:author_link]) { item[:author] } %>
+                <%= feature.with_date(item[:date]) %>
+                <% item[:categories].first(1).each do |category| %>
+                  <%= feature.with_tag(category) %>
+                <% end %>
+                <%= feature.with_description { item[:description] } %>
+                <%= feature.with_link(href: item[:link]) { t('common.labels.read_more') } %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
   <% else %>
   <!-- Header -->
     <header>

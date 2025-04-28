@@ -5,10 +5,15 @@ en:
     more_case_studies: More case studies
     title: Case Studies
   home:
+    blog:
+      description: Get the latest news updates and insights from our experts delivered right to your inbox by signing up to our newsletter
+      header: Latest updates from our blog
     buttons:
       book_a_demo: Book a demo
       enrol_your_school: Enrol your school
       find_out_more: Find out more
+      newsletter_signup: Sign up to our newsletter
+      view_blog: View our blog
     carousel:
       message_1: Help your school save energy, money and prevent climate change.
       message_2: Show your school how much and when you are using energy.
