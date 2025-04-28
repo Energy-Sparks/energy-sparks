@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../app/models/meter_attributes'
+require_relative '../../analytics/app/models/meter_attributes'
 
 describe MeterAttributes do
   describe '.all' do

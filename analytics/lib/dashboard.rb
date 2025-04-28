@@ -9,7 +9,6 @@ module Logging
   # Global, memoized, lazy initialized instance of a logger
   def self.logger
      # If rails is defined, then use that
-    # debugger
     if Object.const_defined?('Rails')
       @logger ||= Rails.logger
     else
