@@ -84,6 +84,8 @@ describe ContentBase do
   end
 
   context 'when listing variables' do
+    before { CustomAlert.front_end_template_variables }
+
     describe '#front_end_template_variables' do
       let(:variables) { CustomAlert.front_end_template_variables }
 
