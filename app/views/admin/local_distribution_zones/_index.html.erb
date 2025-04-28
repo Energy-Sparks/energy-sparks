@@ -1,4 +1,3 @@
-<h1>Local Distribution Zones</h1>
 <p><%= link_to 'Download readings as CSV', admin_local_distribution_zones_path(format: :csv), class: 'btn' %></p>
 <table class="table table-sorted">
   <thead>
@@ -13,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @local_distribution_zones.each do |zone| %>
+    <% @resources.each do |zone| %>
       <tr>
         <td><%= link_to zone.name, admin_local_distribution_zone_path(zone) %></td>
         <td><%= zone.code %></td>
@@ -36,4 +35,3 @@
     <% end %>
   </tbody>
 </table>
-<%= link_to 'New Local Distribution Zone', new_admin_local_distribution_zone_path, class: 'btn' %>
