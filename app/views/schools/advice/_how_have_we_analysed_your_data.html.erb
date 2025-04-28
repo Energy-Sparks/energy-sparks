@@ -70,12 +70,18 @@
   <p><%= paragraph %></p>
 <% end %>
 
-<% if @economic_tariffs_change_caveats %>
-  <%= t('advice_pages.how_have_we_analysed_your_data.your_electricity_tariffs_html',
-        last_change_date: short_dates(@economic_tariffs_change_caveats.last_change_date),
-        rate_before_gbp_per_kwh: format_unit(@economic_tariffs_change_caveats.rate_before_£_per_kwh, :£),
-        rate_after_gbp_per_kwh: format_unit(@economic_tariffs_change_caveats.rate_after_£_per_kwh, :£),
-        percent_change: format_unit(@economic_tariffs_change_caveats.percent_change, :percent)) %>
+<% if @advice_page&.fuel_type %>
+  <% caveats = Costs::EconomicTariffsChangeCaveatsService.new(
+       meter_collection: @aggregate_school_service.meter_collection,
+       fuel_type: @advice_page.fuel_type.to_sym
+     ).calculate_economic_tariff_changed %>
+  <%= if caveats
+        t('advice_pages.how_have_we_analysed_your_data.your_electricity_tariffs_html',
+          last_change_date: short_dates(caveats.last_change_date),
+          rate_before_gbp_per_kwh: format_unit(caveats.rate_before_£_per_kwh, :£),
+          rate_after_gbp_per_kwh: format_unit(caveats.rate_after_£_per_kwh, :£),
+          percent_change: format_unit(caveats.percent_change, :percent))
+      end %>
 <% end %>
 
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.school_comparisons') %></strong></h4>
