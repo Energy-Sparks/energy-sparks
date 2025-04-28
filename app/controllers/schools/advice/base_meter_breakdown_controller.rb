@@ -5,7 +5,6 @@ module Schools
     class BaseMeterBreakdownController < AdviceBaseController
       before_action :redirect_if_single_meter
       before_action :set_meters_and_usage_breakdown, only: %i[insights analysis]
-      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights; end
 
@@ -23,7 +22,7 @@ module Schools
       end
 
       def create_analysable
-        days_of_data = (analysis_end_date - analysis_start_date).to_i
+        days_of_data = (@analysis_dates.end_date - @analysis_dates.start_date).to_i
         OpenStruct.new(
           enough_data?: days_of_data >= 7,
           data_available_from: nil
@@ -40,7 +39,7 @@ module Schools
       end
 
       def usage_service
-        @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, aggregate_school, fuel_type)
+        @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, aggregate_school_service, fuel_type)
       end
     end
   end

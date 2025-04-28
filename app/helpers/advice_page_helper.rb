@@ -29,18 +29,6 @@ module AdvicePageHelper
     FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
-  def chart_start_month_year(date = Time.zone.today)
-    month_year(date.last_month - 1.year)
-  end
-
-  def chart_end_month_year(date = Time.zone.today)
-    month_year(date.last_month)
-  end
-
-  def month_year(date)
-    I18n.t('date.month_names')[date.month] + ' ' + date.year.to_s
-  end
-
   def advice_baseload_high?(estimated_savings_vs_benchmark)
     estimated_savings_vs_benchmark > 0.0
   end
@@ -64,23 +52,6 @@ module AdvicePageHelper
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
     (current - base) / base
-  end
-
-  def recent_data?(end_date)
-    end_date > (Time.zone.today - 30.days)
-  end
-
-  def one_years_data?(start_date, end_date)
-    (end_date - 364) >= start_date
-  end
-
-  def months_analysed(start_date, end_date)
-    months = months_between(start_date, end_date)
-    months > 12 ? 12 : months
-  end
-
-  def months_between(start_date, end_date)
-    ((end_date - start_date).to_f / 365 * 12).floor
   end
 
   def annual_usage_breakdown_totals_for(annual_usage_breakdown, unit = :kwh)

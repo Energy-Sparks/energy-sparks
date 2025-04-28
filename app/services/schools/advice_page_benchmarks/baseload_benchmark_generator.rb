@@ -9,7 +9,7 @@ module Schools
       private
 
       def baseload_service
-        @baseload_service ||= Schools::Advice::BaseloadService.new(@school, @aggregate_school)
+        @baseload_service ||= Schools::Advice::BaseloadService.new(@school, aggregate_school_service)
       end
     end
   end

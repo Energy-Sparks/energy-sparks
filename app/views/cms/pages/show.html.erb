@@ -21,6 +21,7 @@
     </div>
 
     <div id="cms-page-body" class="col-md-5 col-lg-5 col-xl-7">
+      <%= render 'cms/admin_buttons', content: @page, current_user: current_user %>
 
       <%= render PromptComponent.new(status: :none) do |c| %>
         <% c.with_title { 'Audience' } %>
@@ -30,12 +31,11 @@
       <% @sections.each do |section| %>
         <section id="<%= section.slug %>"
                  class="cms-page-section scrollable-title">
+
           <h2>
             <%= section.title %>
-            <% if current_user&.admin? && !section.published %>
-              <span class="badge badge-warning">Unpublished</span>
-            <% end %>
           </h2>
+          <%= render 'cms/admin_buttons', content: section, current_user: current_user %>
           <%= section.body %>
         </section>
       <% end %>

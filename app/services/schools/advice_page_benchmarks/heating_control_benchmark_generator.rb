@@ -9,7 +9,7 @@ module Schools
       private
 
       def heating_control_service
-        @heating_control_service ||= Schools::Advice::HeatingControlService.new(@school, @aggregate_school)
+        @heating_control_service ||= Schools::Advice::HeatingControlService.new(@school, aggregate_school_service)
       end
     end
   end

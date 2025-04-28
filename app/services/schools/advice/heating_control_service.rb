@@ -17,9 +17,9 @@ module Schools
       EXEMPLAR_WARM_WEATHER_DAYS = 6
       BENCHMARK_WARM_WEATHER_DAYS = 11
 
-      def initialize(school, meter_collection)
+      def initialize(school, aggregate_school_service)
         @school = school
-        @meter_collection = meter_collection
+        @aggregate_school_service = aggregate_school_service
       end
 
       delegate :enough_data?, to: :heating_start_time_service
@@ -65,9 +65,9 @@ module Schools
       end
 
       def heating_on_in_last_weeks_holiday?
-        @meter_collection.holidays.day_type(Time.zone.today) != :holiday &&
+        meter_collection.holidays.day_type(Time.zone.today) != :holiday &&
           last_week_start_times.days.any? do |day|
-            @meter_collection.holidays.day_type(day.date) == :holiday && day.heating_start_time
+            meter_collection.holidays.day_type(day.date) == :holiday && day.heating_start_time
           end
       end
 
@@ -78,23 +78,27 @@ module Schools
       end
 
       def heat_meters
-        @meter_collection.heat_meters.reject(&:non_heating_only?).sort_by(&:mpan_mprn)
+        meter_collection.heat_meters.reject(&:non_heating_only?).sort_by(&:mpan_mprn)
       end
 
       def heating_start_time_service
-        @heating_start_time_service ||= Heating::HeatingStartTimeService.new(@meter_collection, analysis_date)
+        @heating_start_time_service ||= Heating::HeatingStartTimeService.new(meter_collection, analysis_date)
       end
 
       def heating_savings_service
-        @heating_savings_service ||= Heating::HeatingStartTimeSavingsService.new(@meter_collection, analysis_date)
+        @heating_savings_service ||= Heating::HeatingStartTimeSavingsService.new(meter_collection, analysis_date)
       end
 
       def seasonal_analysis_service
-        @seasonal_analysis_service ||= Heating::SeasonalControlAnalysisService.new(meter_collection: @meter_collection)
+        @seasonal_analysis_service ||= Heating::SeasonalControlAnalysisService.new(meter_collection: meter_collection)
       end
 
       def analysis_date
-        AggregateSchoolService.analysis_date(@meter_collection, :gas)
+        AggregateSchoolService.analysis_date(meter_collection, :gas)
+      end
+
+      def meter_collection
+        @aggregate_school_service.meter_collection
       end
     end
   end

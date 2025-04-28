@@ -12,16 +12,6 @@ RSpec.describe 'Baseload advice page', type: :system do
     let(:user)  { create(:school_admin, school: school) }
 
     before do
-      allow_any_instance_of(Schools::Advice::BaseloadController).to receive_messages(
-        {
-          build_economic_tariffs_change_caveats: OpenStruct.new(
-            last_change_date: Date.new(2022, 9, 1),
-            percent_change: 18.857098661736725,
-            rate_after_£_per_kwh: 3.066783066364631,
-            rate_before_£_per_kwh: 0.1544426564326899
-          )
-        }
-      )
       sign_in(user)
       visit school_advice_path(school)
     end
@@ -68,7 +58,6 @@ RSpec.describe 'Baseload advice page', type: :system do
             average_baseload_kw: average_baseload_kw,
             average_baseload_kw_benchmark: average_baseload_kw_benchmark,
             annual_baseload_usage: usage,
-            baseload_usage_benchmark: usage,
             estimated_savings: savings,
             annual_average_baseloads: [annual_average_baseload],
             baseload_meter_breakdown: baseload_meter_breakdown,

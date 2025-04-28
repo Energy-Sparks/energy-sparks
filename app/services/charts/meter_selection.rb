@@ -20,10 +20,10 @@ module Charts
   # Currently this class uses the meters returned from a MeterCollection rather than querying for meters from
   # the database.
   class MeterSelection
-    attr_reader :school, :meter_collection
+    attr_reader :school
 
     # @param School school the school whose data will be displayed
-    # @param MeterCollection meter_collection the aggregate school, used to find meters and data ranges
+    # @param AggregateSchoolService service to access the meter_collection for school, used to find meters and data ranges
     # @param Symbol fuel_type specifies the fuel type of the meters to be selected
     # @param filter optional, a filter to be applied to list of meters, should return true for any to be dropped
     # @param boolean include_whole_school specifies whether there should be a "Whole school" option included in list
@@ -36,7 +36,7 @@ module Charts
     # i18n-tasks-use t('advice_pages.charts.the_whole_school')
     # i18n-tasks-use t('advice_pages.charts.whole_school')
     def initialize(school,
-                   meter_collection,
+                   aggregate_school_service,
                    fuel_type,
                    filter: nil,
                    include_whole_school: true,
@@ -44,7 +44,7 @@ module Charts
                    whole_school_title_key: 'advice_pages.charts.the_whole_school',
                    whole_school_label_key: 'advice_pages.charts.whole_school')
       @school = school
-      @meter_collection = meter_collection
+      @aggregate_school_service = aggregate_school_service
       @fuel_type = fuel_type
       @include_whole_school = include_whole_school
       @date_window = date_window
@@ -73,20 +73,24 @@ module Charts
       @underlying_meters ||= displayable_meters
     end
 
+    def meter_collection
+      @meter_collection ||= @aggregate_school_service.aggregate_school
+    end
+
     private
 
     def aggregate_meter
-      @meter_collection.aggregate_meter(@fuel_type)
+      meter_collection.aggregate_meter(@fuel_type)
     end
 
     def displayable_meters
       meters = case @fuel_type
                when :electricity
-                 @meter_collection.electricity_meters
+                 meter_collection.electricity_meters
                when :gas
-                 @meter_collection.heat_meters
+                 meter_collection.heat_meters
                when :storage_heater, :storage_heaters
-                 @meter_collection.storage_heater_meters # TODO: likely not used
+                 meter_collection.storage_heater_meters # TODO: likely not used
                else
                  raise 'Unexpected fuel type'
                end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Schools::Advice::BaseloadService, type: :service do
-  subject(:service) { described_class.new(school, meter_collection) }
+  subject(:service) { described_class.new(school, aggregate_school_service) }
 
   let(:school) { create(:school) }
   let!(:fuel_configuration) do
@@ -12,6 +12,10 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
   let(:electricity_meters) { ['electricity-meter'] }
   let(:electricity_aggregate_meter) { double('electricity-aggregated-meter', aggregate_meter?: true) }
+
+  let(:aggregate_school_service) do
+    instance_double(AggregateSchoolService, meter_collection: meter_collection)
+  end
 
   let(:meter_collection) do
     meter_collection_double = instance_double(MeterCollection,
@@ -100,16 +104,6 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       expect(comparison.benchmark_value).to eq average_baseload_kw
       expect(comparison.exemplar_value).to eq exemplar_average_baseload_kw
       expect(comparison.unit).to eq :kw
-    end
-  end
-
-  describe '#baseload_usage_benchmark' do
-    before do
-      allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:baseload_usage).and_return(usage)
-    end
-
-    it 'returns usage' do
-      expect(service.baseload_usage_benchmark).to eq(usage)
     end
   end
 

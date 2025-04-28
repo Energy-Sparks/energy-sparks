@@ -13,9 +13,7 @@ module Schools
 
       # FIXME keep to current, or change over?
       def set_one_year_breakdown_chart
-        dates = analysis_dates
-        days_of_data = dates.end_date - dates.start_date
-        case days_of_data
+        case @analysis_dates.days_of_data
         when 1..13
           @one_year_breakdown_chart = :electricity_cost_1_year_accounting_breakdown_group_by_day
           @one_year_breakdown_chart_key = :cost_1_year_accounting_breakdown_group_by_day

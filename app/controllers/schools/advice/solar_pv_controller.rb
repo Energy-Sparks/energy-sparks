@@ -4,7 +4,6 @@ module Schools
   module Advice
     class SolarPvController < AdviceBaseController
       before_action :load_dashboard_alerts, only: [:insights]
-      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights
         if @school.has_solar_pv?
@@ -51,7 +50,7 @@ module Schools
       def potential_benefits_service
         @potential_benefits_service ||= ::SolarPhotovoltaics::PotentialBenefitsEstimatorService.new(
           meter_collection: aggregate_school,
-          asof_date: analysis_end_date
+          asof_date: @analysis_dates.end_date
         )
       end
 

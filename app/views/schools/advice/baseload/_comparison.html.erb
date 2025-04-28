@@ -7,7 +7,7 @@
 </p>
 
 <div class="col">
-  <%= render SchoolComparisonComponent.new(id: 'comparison-baseload', comparison: @benchmarked_baseload) do |c| %>
+  <%= render SchoolComparisonComponent.new(id: 'comparison-baseload', comparison: benchmarked_baseload) do |c| %>
     <% c.with_footer { advice_t('baseload.comparison.callout_footer') } %>
   <% end %>
 </div>

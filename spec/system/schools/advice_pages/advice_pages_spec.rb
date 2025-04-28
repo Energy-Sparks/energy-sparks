@@ -91,7 +91,7 @@ RSpec.describe 'advice pages', type: :system do
 
       it 'shows the not enough data page' do
         visit school_advice_baseload_path(school)
-        expect(page).to have_content('Not enough data to run analysis')
+        expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
         expect(page).to have_content('Assuming we continue to regularly receive data')
       end
     end
@@ -101,7 +101,7 @@ RSpec.describe 'advice pages', type: :system do
       within '#page-nav' do
         click_on 'Baseload'
       end
-      expect(page).to have_content('Not enough data to run analysis')
+      expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
       expect(page).to have_content('Assuming we continue to regularly receive data')
     end
   end

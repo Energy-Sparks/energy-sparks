@@ -1,0 +1,8 @@
+<%= tag.div id: id, class: classes do %>
+  <div class="<%= class_names('col-md-12': @row) %>">
+    <%= status %>
+    <% buttons.each do |button| %>
+      <%= button %>
+    <% end %>
+  </div>
+<% end %>

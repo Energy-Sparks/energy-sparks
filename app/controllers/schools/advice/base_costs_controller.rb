@@ -27,7 +27,6 @@ module Schools
           @aggregate_meter_adapter = aggregate_meter_adapter
           @options_for_meter_select = options_for_meter_select
         end
-        @analysis_dates = analysis_dates
         @costs_service_analysis_date_range = costs_service.analysis_date_range
       end
 
@@ -50,7 +49,7 @@ module Schools
           end
         end
         @fuel_type = advice_page_fuel_type
-        @analysis_dates = analysis_dates
+        set_analysis_dates
         respond_to(&:js)
       end
 
@@ -89,7 +88,7 @@ module Schools
       end
 
       def costs_service
-        Schools::Advice::CostsService.new(@school, aggregate_school, advice_page_fuel_type)
+        Schools::Advice::CostsService.new(@school, aggregate_school_service, advice_page_fuel_type)
       end
     end
   end
