@@ -21,7 +21,7 @@
     </div>
 
     <div id="cms-page-body" class="col-md-5 col-lg-5 col-xl-7">
-      <%= render 'admin_buttons', page: @page, current_user: current_user %>
+      <%= render 'cms/admin_buttons', content: @page, current_user: current_user %>
 
       <%= render PromptComponent.new(status: :none) do |c| %>
         <% c.with_title { 'Audience' } %>
@@ -35,7 +35,7 @@
           <h2>
             <%= section.title %>
           </h2>
-          <%= render 'section_admin_buttons', section: section, current_user: current_user %>
+          <%= render 'cms/admin_buttons', content: section, current_user: current_user %>
           <%= section.body %>
         </section>
       <% end %>
