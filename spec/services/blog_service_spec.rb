@@ -74,7 +74,6 @@ RSpec.describe BlogService, type: :service do
     end
   end
 
-
   describe '#cache_feed!' do
     it_behaves_like 'a cache without the key'
 

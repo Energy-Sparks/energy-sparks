@@ -5,7 +5,7 @@ module Layout
         Elements::BadgeComponent.new(*args, **{ classes: 'text-uppercase mb-3 font-weight-normal' }.merge(kwargs))
       end
       renders_one :statement, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **{ classes: 'statement card-text text-white' }.merge(kwargs))
+        Elements::TagComponent.new(:p, **{ classes: 'statement card-text text-main' }.merge(kwargs))
       end
     end
   end
