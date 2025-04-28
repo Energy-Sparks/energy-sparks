@@ -52,14 +52,10 @@ document.addEventListener('trix-action-invoke', function(event) {
       fetch(`/cms/youtube_embed/${encodeURIComponent(youtube_id)}`)
         .then(response => {
           if (!response.ok) throw new Error(response.statusText)
-          const embed = response.json()
-          const img = document.createElement('img')
-          img.className = 'youtube-embed'
-          img.src = embed.thumbnail_url
-          const attachment = new Trix.Attachment({
-            sgid: embed.sgid,
-            content: document.createElement('div').appendChild(img).parentElement.outerHTML
-          })
+          return response.json()
+        })
+       .then(embed => {
+          const attachment = new Trix.Attachment(embed)
           target.editor.insertAttachment(attachment)
           target.editorController.toolbarController.hideDialog()
         })
