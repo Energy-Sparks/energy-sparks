@@ -118,7 +118,7 @@ module Schools
           baseload_usage = annual_baseload_usage
           previous_year_baseload = previous_period_average_baseload_kw(period: :year)
           baseload_kw = average_baseload_kw
-          OpenStruct.new(
+          ActiveSupport::OrderedOptions.new.merge(
             baseload_kw: baseload_kw,
             baseload_cost_£: baseload_usage.£,
             percentage_baseload: 1.0,
@@ -135,11 +135,10 @@ module Schools
       def seasonal_variation_by_meter
         return {} unless electricity_meters.count > 1
 
-        @seasonal_variation_by_meter ||= begin
+        @seasonal_variation_by_meter ||=
           electricity_meters.each_with_object({}) do |meter, variation_by_meter|
             variation_by_meter[meter.mpan_mprn] = calculate_seasonal_variation(meter, meter.amr_data.end_date, true)
           end
-        end
       end
 
       def intraweek_variation
@@ -209,7 +208,7 @@ module Schools
       end
 
       def build_meter_breakdown(mpan_mprn, breakdown, previous_year_baseload)
-        OpenStruct.new(
+        ActiveSupport::OrderedOptions.new.merge(
           meter: meter_for_mpan(mpan_mprn),
           baseload_kw: breakdown.baseload_kw(mpan_mprn),
           baseload_cost_£: breakdown.baseload_cost_£(mpan_mprn),
@@ -224,21 +223,21 @@ module Schools
         seasonal_baseload_service = Baseload::SeasonalBaseloadService.new(analytics_meter, date)
         # return if there's not enough data, then return limited object
         unless enough_data_for_meter?(analytics_meter)
-          return OpenStruct.new(meter: meter, enough_data?: false,
+          return ActiveSupport::OrderedOptions.new.merge(meter: meter, enough_data?: false,
                                 data_available_from: seasonal_baseload_service.data_available_from)
         end
 
         variation = seasonal_baseload_service.seasonal_variation
         # we may have >1 year of data, but not enough to actually calculate a seasonal analysis
         # e.g. a meter for a swimming pool only used in the summer
-        return OpenStruct.new(meter: meter, enough_data?: false) if variation.percentage.nan?
+        return ActiveSupport::OrderedOptions.new.merge(meter: meter, enough_data?: false) if variation.percentage.nan?
 
         saving = seasonal_baseload_service.estimated_costs
         build_seasonal_variation(meter, variation, saving)
       end
 
       def build_seasonal_variation(meter, variation, saving)
-        OpenStruct.new(
+        ActiveSupport::OrderedOptions.new.merge(
           meter: meter,
           winter_kw: variation.winter_kw,
           summer_kw: variation.summer_kw,
@@ -268,7 +267,7 @@ module Schools
       end
 
       def build_intraweek_variation(meter, variation, saving)
-        OpenStruct.new(
+        ActiveSupport::OrderedOptions.new.merge(
           meter: meter,
           max_day: variation.max_day,
           min_day: variation.min_day,

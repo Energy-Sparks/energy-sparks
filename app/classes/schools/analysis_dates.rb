@@ -74,7 +74,7 @@ module Schools
 
     def months_analysed
       months = months_of_data
-      months > 12 ? 12 : months
+      [months, 12].min
     end
 
     def fixed_academic_year_end
