@@ -16,8 +16,12 @@
 
     padding: 1.5rem 0 1.5rem 1.5rem;
 
+    @include media-breakpoint-down(sm) {
+      padding-left: 0;
+    }
+
     @include media-breakpoint-up(xl) {
-      min-height: 450px; // make sure we show at least 9/10 height of the main image (500px)
+      min-height: 430px; // show a minimum of 430px of the main image (500px)
       padding: 3rem 0 3rem 3rem;
     }
   }
