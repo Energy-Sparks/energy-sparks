@@ -1,10 +1,6 @@
-<%= simple_form_for([:admin, local_distribution_zone]) do |f| %>
+<%= simple_form_for([:admin, @resource]) do |f| %>
   <%= f.input :name %>
   <%= f.input :code %>
   <%= f.input :publication_id, label: 'Publication ID' %>
   <%= f.submit class: 'btn btn-primary' %>
 <% end %>
-
-<div class="other-actions">
-  <%= link_to 'Back', admin_local_distribution_zones_path, class: 'btn' %>
-</div>

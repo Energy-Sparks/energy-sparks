@@ -17,7 +17,6 @@
 #  default_procurement_route_gas_id         :bigint(8)
 #  default_procurement_route_solar_pv_id    :bigint(8)
 #  default_scoreboard_id                    :bigint(8)
-#  default_solar_pv_tuos_area_id            :bigint(8)
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
@@ -31,16 +30,14 @@
 #
 # Indexes
 #
-#  index_school_groups_on_default_issues_admin_user_id   (default_issues_admin_user_id)
-#  index_school_groups_on_default_scoreboard_id          (default_scoreboard_id)
-#  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
-#  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
+#  index_school_groups_on_default_issues_admin_user_id  (default_issues_admin_user_id)
+#  index_school_groups_on_default_scoreboard_id         (default_scoreboard_id)
+#  index_school_groups_on_default_template_calendar_id  (default_template_calendar_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_issues_admin_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (default_scoreboard_id => scoreboards.id)
-#  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
 #
 
@@ -70,7 +67,6 @@ class SchoolGroup < ApplicationRecord
   has_many :school_issues, through: :schools, source: :issues
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
-  belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :default_weather_station, class_name: 'WeatherStation',
                                        optional: true

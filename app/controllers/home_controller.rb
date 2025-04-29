@@ -7,6 +7,7 @@ class HomeController < ApplicationController
   before_action :redirect_if_logged_in, only: :index
   before_action :set_newsletters, only: [:index, :show]
   before_action :set_case_studies, only: [:index, :show]
+  before_action :set_blog_service, only: [:index, :show]
   before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
 
   def index
@@ -125,6 +126,12 @@ class HomeController < ApplicationController
       pupils: CaseStudy.find(13),
       emissions: CaseStudy.find(9)
     }
+  end
+
+  def set_blog_service
+    if Flipper.enabled?(:new_home_page, current_user)
+      @blog = BlogService.new
+    end
   end
 
   def redirect_if_logged_in

@@ -15,10 +15,12 @@
   <% end %>
 
   <%= render RecommendationsComponent.new(recommendations: @activity_types,
-                                          title: t('advice_pages.insights.recommendations.activities_title'), classes: 'pb-4') %>
+                                          title: t('advice_pages.insights.recommendations.activities_title'),
+                                          classes: 'pb-4') %>
 
   <%= render RecommendationsComponent.new(recommendations: @intervention_types,
-                                          title: t('advice_pages.insights.recommendations.actions_title'), classes: 'pb-4') %>
+                                          title: t('advice_pages.insights.recommendations.actions_title'),
+                                          classes: 'pb-4') %>
 
   <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
 <% end %>

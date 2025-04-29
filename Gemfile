@@ -119,6 +119,7 @@ gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-ui', '~> 1.3'
 
 gem 'net-sftp'
+gem 'rss'
 
 group :development, :test do
   gem 'better_html'
