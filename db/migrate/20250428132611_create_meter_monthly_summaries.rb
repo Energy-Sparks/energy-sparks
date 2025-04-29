@@ -5,10 +5,8 @@ class CreateMeterMonthlySummaries < ActiveRecord::Migration[7.2]
 
     create_table :meter_monthly_summaries do |t|
       t.references :meter
-
       t.integer :year
       # t.enum :type, enum_type: :meter_monthly_summary_type
-
       t.float :consumption, array: true
       t.enum :quality, array: true, enum_type: :meter_monthly_summary_quality
       t.float :total
