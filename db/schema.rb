@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_23_165802) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_28_132611) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_23_165802) do
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
+  create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
   create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
@@ -1305,6 +1306,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_23_165802) do
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
     t.index ["meter_id"], name: "index_meter_attributes_on_meter_id"
+  end
+
+  create_table "meter_monthly_summaries", force: :cascade do |t|
+    t.bigint "meter_id"
+    t.integer "year"
+    t.float "consumption", array: true
+    t.enum "quality", array: true, enum_type: "meter_monthly_summary_quality"
+    t.float "total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meter_id"], name: "index_meter_monthly_summaries_on_meter_id"
   end
 
   create_table "meter_reviews", force: :cascade do |t|
