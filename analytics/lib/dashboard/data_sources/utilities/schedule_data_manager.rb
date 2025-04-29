@@ -84,7 +84,7 @@ class ScheduleDataManager
   def self.uk_grid_carbon_intensity
     if @@uk_grid_carbon_intensity_data.nil?
       filename = INPUT_DATA_DIR + 'uk_carbon_intensity.csv'
-      @@uk_grid_carbon_intensity_data = GridCarbonIntensity.new
+      @@uk_grid_carbon_intensity_data = GridCarbonIntensity.new # rubocop:disable Style/ClassVars
       GridCarbonLoader.new(filename, @@uk_grid_carbon_intensity_data)
       puts "Loaded #{@@uk_grid_carbon_intensity_data.length} days of uk grid carbon intensity data"
     end
