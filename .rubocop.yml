@@ -1,27 +1,14 @@
 inherit_from: .rubocop_todo.yml
 
-## regenerate .rubocop_todo.yml after any changes to this config using:
-## rubocop --auto-gen-config --exclude-limit=1000
+inherit_mode:
+  merge:
+    - Exclude
+    - Include
+
 AllCops:
   NewCops: disable
   SuggestExtensions: false
-  Include:
-    # RuboCop by default ignores files and directories starting with `.`, so they have to be listed explicitly
-    - 'app/**/*.rb'
-    - 'lib/**/*.rb'
-    - 'spec/**/*.rb'
   Exclude:
-    - 'app/services/schools/funding_status_lookup.rb'
-    - 'lib/data_feeds/weather_underground_loader.rb'
-    - 'lib/data_feeds/solar_pv_tuos_loader.rb'
-    - 'lib/data_feeds/dark_sky_temperature_loader.rb'
-    - 'lib/data_feeds/solar_pv_tuos_v2_loader.rb'
-    - 'script/**/*'
-    - 'node_modules/**/*'
-    - 'node_modules/node-sass/src/libsass/script/spec'
-    - 'log/**/*'
-    - 'storage/**/*'
-    - 'tmp/**/*'
     # exclude as these files are updated/managed by rails app:upgrade
     - bin/rails
     - bin/rake
@@ -422,22 +409,3 @@ RSpec/LetSetup:
   # often used in shared contexts allowing let to be overridden
   Enabled: false
 
-### Things we're unlikely to fix: ###
-
-Security/JSONLoad:
-  Exclude:
-    - 'spec/services/events/list_events_spec.rb'
-Security/YAMLLoad:
-  Exclude:
-    - 'spec/system/admin/meter_attributes_spec.rb'
-Naming/AsciiIdentifiers:
-  Exclude: # excluding these are they have £ signs in method names
-    - 'spec/models/meter_attribute_spec.rb'
-    - 'spec/services/schools/advice/baseload_service_spec.rb'
-    - 'spec/system/schools/advice_pages/hot_water_spec.rb'
-Metrics/BlockLength:
-  Exclude: # excluding route file as blocklength can be greater than default 25
-    - 'config/route.rb'
-Rails/FindEach:
-  Exclude: # find_each does not work here
-    - 'app/components/comparison_table_component.rb'
