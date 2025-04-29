@@ -41,6 +41,7 @@ module EnergySparks
       if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
+
       # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
       ActionText::ContentHelper.allowed_attributes =
         Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
