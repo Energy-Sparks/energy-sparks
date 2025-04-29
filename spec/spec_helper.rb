@@ -93,7 +93,6 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
-  config.order = :random if ENV.key?('CI')
 end
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
