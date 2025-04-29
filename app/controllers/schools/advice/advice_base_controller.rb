@@ -161,7 +161,7 @@ module Schools
       end
 
       def set_analysis_dates
-        @analysis_dates = Schools::AnalysisDates.new(@school, @advice_page.fuel_type&.to_sym)
+        @analysis_dates = Schools::AnalysisDates.new(@school, advice_page_fuel_type)
       end
     end
   end
