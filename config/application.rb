@@ -42,10 +42,6 @@ module EnergySparks
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
 
-      if defined?(Rails::Server)
-        UpdateBlogCacheJob.perform_later
-      end
-
       # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
       ActionText::ContentHelper.allowed_attributes =
         Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
