@@ -5,6 +5,10 @@ require 'rails_helper'
 RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpers: true do
   let(:school) { create(:school) }
 
+  let(:aggregate_school_service) do
+    instance_double(AggregateSchoolService, aggregate_school: meter_collection)
+  end
+
   let(:meter_collection) do
     build(:meter_collection, :with_aggregate_meter, fuel_type: :electricity)
   end
@@ -19,7 +23,7 @@ RSpec.describe MeterSelectionChartComponent, type: :component, include_url_helpe
     end
   end
 
-  let(:meter_selection) { Charts::MeterSelection.new(school, meter_collection, :electricity, include_whole_school: false) }
+  let(:meter_selection) { Charts::MeterSelection.new(school, aggregate_school_service, :electricity, include_whole_school: false) }
 
   let(:params) do
     {
