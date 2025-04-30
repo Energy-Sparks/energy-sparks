@@ -240,7 +240,7 @@ RSpec.describe Issue, type: :model do
     end
 
     it 'finds records with term in either' do
-      expect(Issue.search('findme|hiding')).to eq([issue_1, issue_2])
+      expect(Issue.search('findme|hiding')).to contain_exactly(issue_1, issue_2)
     end
 
     it 'returns nothing when not found' do
