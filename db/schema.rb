@@ -1310,13 +1310,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_093955) do
   end
 
   create_table "meter_monthly_summaries", force: :cascade do |t|
-    t.bigint "meter_id"
-    t.integer "year"
-    t.float "consumption", array: true
-    t.enum "quality", array: true, enum_type: "meter_monthly_summary_quality"
-    t.float "total"
+    t.bigint "meter_id", null: false
+    t.integer "year", null: false
+    t.float "consumption", null: false, array: true
+    t.enum "quality", null: false, array: true, enum_type: "meter_monthly_summary_quality"
+    t.float "total", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["meter_id", "year"], name: "index_meter_monthly_summaries_on_meter_id_and_year", unique: true
     t.index ["meter_id"], name: "index_meter_monthly_summaries_on_meter_id"
   end
 
