@@ -14,15 +14,37 @@
       font-family: $header-font-family;
     }
 
-    padding: 1.5rem 0 1.5rem 1.5rem;
-
-    @include media-breakpoint-down(sm) {
-      padding-left: 0;
-    }
+    padding: 1.5rem 0 1.5rem 0;
 
     @include media-breakpoint-up(xl) {
       min-height: 430px; // show a minimum of 430px of the main image (500px)
-      padding: 3rem 0 3rem 3rem;
+      padding: 3rem 0 3rem 0;
+    }
+
+    &.main-left {
+      padding-right: 1.5rem;
+
+      @include media-breakpoint-down(sm) {
+        padding-right: 0;
+      }
+
+      @include media-breakpoint-up(xl) {
+        padding-right: 3rem;
+        padding-left: 0;
+      }
+    }
+
+    &.main-right {
+      padding-left: 1.5rem;
+
+      @include media-breakpoint-down(sm) {
+        padding-left: 0;
+      }
+
+      @include media-breakpoint-up(xl) {
+        padding-left: 3rem;
+        padding-right: 0;
+      }
     }
   }
 }

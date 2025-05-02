@@ -4,6 +4,9 @@ module Layout
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: @main ? 2 : 4, theme: @theme }.merge(kwargs))
       end
+      renders_one :price, ->(**kwargs) do
+        Elements::PriceComponent.new(**merge_classes('', kwargs))
+      end
       renders_many :tags, ->(*args, **kwargs) do
         Elements::BadgeComponent.new(*args, **{ classes: 'font-weight-normal text-uppercase' }.merge(kwargs))
       end
@@ -26,6 +29,8 @@ module Layout
         @main = main
         add_classes('d-flex flex-column')
         add_classes('main') if main
+        add_classes('main-left') if main == :left
+        add_classes('main-right') if main == :right
       end
     end
   end

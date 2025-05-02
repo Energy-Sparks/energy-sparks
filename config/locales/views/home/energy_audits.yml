@@ -2,7 +2,12 @@
 en:
   energy_audits:
     availability: Energy Sparks offers two types of energy audits, online virtual energy audits and on-site energy audits. These services are currently only offered to schools with active Energy Sparks accounts.
+    feature:
+      description: Get a detailed insight into your energy consumption and priority actions with our bespoke energy audits. Available to schools with an active Energy Sparks account, we offer both on-site audits and desktop review options to suit your needs and budget.
+      title: Turn data into action with our in-depth energy audits
+    labels:
     onsite:
+      description: Following a detailed analysis of your energy consumption data and a visit to your site, we will provide you with an in-depth report and action plan. The site visit will include the use of a thermal imaging camera and other monitoring equipment to identify issues such as heat loss from doors and windows, and problems with insulation.
       intro_html: |-
         <h4 id="onsite-energy-audits"><strong>On-site energy audits</strong></h4>
         <p>
@@ -16,10 +21,22 @@ en:
         <p>
           Ideally we like to involve the students in our audits, providing opportunities for students to shadow our auditor during the day, use the thermal imaging camera and we normally include an initial feedback session to the eco-team and staff at the end of the visit.
         </p>
+      plus:
+        price: "£2,250 + VAT"
+        title: Multi-site secondary or independent school
+      primary:
+        price: "£950 + VAT"
+        title: Primary school
+      secondary:
+        price: "£1650 + VAT"
+        title: Single-site secondary school
+      summary: We welcome pupils to participate in our audits by shadowing our auditor and using our thermal imaging camera. We normally provide an initial feedback session to the eco-team and staff at the end of our visit, giving pupils the chance to ask questions and lead on next steps.
+      title: On-site energy audits
     quote: Contact us for a quote
     title: Energy Audits
     virtual:
       availability: Virtual energy audits are charged at £350 + VAT.
+      description: We welcome pupils to participate in our audits by shadowing our auditor and using our thermal imaging camera. We normally provide an initial feedback session to the eco-team and staff at the end of our visit, giving pupils the chance to ask questions and lead on next steps.
       intro_html: |-
         <h4 id="virtual-energy-audits"><strong>Virtual energy audits</strong></h4>
         <p>
@@ -34,3 +51,5 @@ en:
         <p>
           After the meeting, our auditor will issue written ‘action items’ for each party to execute, this might include activities the pupils can do to help. Subsequent meetings or milestones are agreed, which includes further analysis, feedback from changes made, and potential support in terms of getting help with contractors and quotes.
         </p>
+      price: "£350 + VAT"
+      title: Virtual energy audits

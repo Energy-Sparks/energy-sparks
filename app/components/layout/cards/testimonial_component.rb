@@ -25,6 +25,24 @@ module Layout
             case_study_download_path(case_study), style: :primary, classes: 'mb-1 mr-2')
         end
       end
+
+      def initialize(testimonial: nil, **_kwargs)
+        super
+        @testimonial = testimonial
+      end
+
+      # `#helpers` can't be used during initialization as it depends on the view context that only exists once a ViewComponent is passed to the Rails render pipeline.
+      def before_render
+        if @testimonial
+          with_image(src: @testimonial.image)
+          with_header(title: @testimonial.title)
+          with_quote { @testimonial.quote }
+          with_name { @testimonial.name }
+          with_role { @testimonial.role }
+          with_organisation { @testimonial.organisation }
+          with_case_study(@testimonial.case_study)
+        end
+      end
     end
   end
 end

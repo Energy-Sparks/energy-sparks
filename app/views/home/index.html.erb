@@ -2,12 +2,13 @@
   <% content_for :page_title, t('common.labels.home') %>
 
   <% if Flipper.enabled?(:new_home_page, current_user) %>
-    <div class="theme theme-dark">
+    <div class="theme theme-dark mb-5">
+
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
-        <%= grid.with_image src: 'on-screen.jpg', stretch: :left, width: '50vw', collapse: true, classes: 'main' %>
-        <% grid.with_feature_card main: true, theme: :dark do |feature| %>
+        <%= grid.with_image src: 'on-screen.jpg', stretch: :left, width: '50vw', classes: 'main', collapse: true %>
+        <% grid.with_feature_card main: :right, theme: :dark do |feature| %>
           <%= feature.with_header title: t('home.feature.header') %>
-          <%= feature.with_description(classes: 'text-complement') { t('home.feature.description_html') } %>
+          <%= feature.with_description { t('home.feature.description_html') } %>
           <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
           <%= feature.with_button t('home.buttons.book_a_demo'),
                                   book_demo_campaigns_path,
@@ -17,12 +18,12 @@
     </div>
 
     <div class="container">
-      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
         <%= section_header.with_header title: t('home.stats.header') %>
         <%= section_header.with_description { t('home.stats.description') } %>
       <% end %>
 
-      <%= render Layout::GridComponent.new(cols: 4, classes: 'pb-4 mb-4',
+      <%= render Layout::GridComponent.new(cols: 4, classes: 'mb-5',
                                            cell_classes: 'mb-4', component_classes: 'theme theme-dark') do |grid| %>
         <% grid.with_stats_card do |card| %>
           <%= card.with_icon fuel_type: :electricity, style: :circle %>
@@ -53,22 +54,14 @@
       <%= render Layout::CarouselComponent.new(show_markers: false,
                                                id: 'testimonials',
                                                theme: :accent,
-                                               classes: 'rounded-xl p-4 mb-4',
+                                               classes: 'rounded-xl p-4 mb-5',
                                                show_arrows: :side) do |carousel| %>
         <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
-          <%= carousel.with_testimonial_card do |card| %>
-            <%= card.with_image(src: testimonial.image) %>
-            <%= card.with_header(title: testimonial.title) %>
-            <%= card.with_quote { testimonial.quote } %>
-            <%= card.with_name { testimonial.name } %>
-            <%= card.with_role { testimonial.role } %>
-            <%= card.with_organisation { testimonial.organisation } %>
-            <%= card.with_case_study(testimonial.case_study) %>
-          <% end %>
+          <%= carousel.with_testimonial_card(testimonial: testimonial) %>
         <% end %>
       <% end %>
 
-      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
         <%= section_header.with_header title: t('home.features.header') %>
         <%= section_header.with_description { t('home.features.description') } %>
       <% end %>
@@ -118,7 +111,7 @@
 
       <%= render Layout::GridComponent.new(
             cols: 3,
-            classes: 'mb-4 mt-4 pb-4',
+            classes: 'my-4 pb-4',
             cell_classes: 'mb-4',
             component_classes: 'h-100'
           ) do |grid| %>
