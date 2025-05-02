@@ -6,7 +6,7 @@ class AmrImportJob < ApplicationJob
   include GoodJob::ActiveJobExtensions::Concurrency
   # some configs (e.g. TGP) have quite large files so add this limit to lower database load
   good_job_control_concurrency_with(
-    total_limit: 1,
+    perform_limit: 1,
     key: -> { "#{self.class.name}-#{arguments.first.identifier}" } # AmrImportJob-config.identifier
   )
 
