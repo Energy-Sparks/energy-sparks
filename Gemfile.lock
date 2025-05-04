@@ -970,7 +970,7 @@ DEPENDENCIES
   wisper-rspec
 
 RUBY VERSION
-   ruby 3.2.4p170
+   ruby 3.3.6p108
 
 BUNDLED WITH
    2.6.6
