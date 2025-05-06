@@ -3,13 +3,6 @@
 class AmrImportJob < ApplicationJob
   queue_as :regeneration
 
-  include GoodJob::ActiveJobExtensions::Concurrency
-  # some configs (e.g. TGP) have quite large files so add this limit to lower database load
-  good_job_control_concurrency_with(
-    total_limit: 1,
-    key: -> { "#{self.class.name}-#{arguments.first.identifier}" } # AmrImportJob-config.identifier
-  )
-
   def self.import_all(config, bucket)
     s3_client = Aws::S3::Client.new
     Rails.logger.info "Download all from S3 key pattern: #{config.identifier}"
