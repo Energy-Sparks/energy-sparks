@@ -5,7 +5,6 @@ en:
     feature:
       description: Get a detailed insight into your energy consumption and priority actions with our bespoke energy audits. Available to schools with an active Energy Sparks account, we offer both on-site audits and desktop review options to suit your needs and budget.
       title: Turn data into action with our in-depth energy audits
-    labels:
     onsite:
       description: Following a detailed analysis of your energy consumption data and a visit to your site, we will provide you with an in-depth report and action plan. The site visit will include the use of a thermal imaging camera and other monitoring equipment to identify issues such as heat loss from doors and windows, and problems with insulation.
       intro_html: |-
