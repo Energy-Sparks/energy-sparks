@@ -16,7 +16,8 @@ class AmrImportJob < ApplicationJob
   end
 
   def perform(config, bucket, keys)
-    keys.each { |key| process_key(Aws::S3::Client.new, config, bucket, key) }
+    s3_client = Aws::S3::Client.new
+    keys.each { |key| process_key(s3_client, config, bucket, key) }
   end
 
   private
