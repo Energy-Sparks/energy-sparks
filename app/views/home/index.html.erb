@@ -4,7 +4,7 @@
   <% if Flipper.enabled?(:new_home_page, current_user) %>
     <div class="theme theme-dark mb-5">
 
-      <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
+      <%= render Layout::GridComponent.new(cols: 2, classes: 'container', id: 'hero') do |grid| %>
         <%= grid.with_image src: 'on-screen.jpg', stretch: :left, width: '50vw', classes: 'main', collapse: true %>
         <% grid.with_feature_card main: :right, theme: :dark do |feature| %>
           <%= feature.with_header title: t('home.feature.header') %>
@@ -18,13 +18,17 @@
     </div>
 
     <div class="container">
-      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(
+            classes: 'm-4', id: 'stats-header'
+          ) do |section_header| %>
         <%= section_header.with_header title: t('home.stats.header') %>
         <%= section_header.with_description { t('home.stats.description') } %>
       <% end %>
 
-      <%= render Layout::GridComponent.new(cols: 4, classes: 'mb-5',
-                                           cell_classes: 'mb-4', component_classes: 'theme theme-dark') do |grid| %>
+      <%= render Layout::GridComponent.new(id: 'stats',
+                                           cols: 4, classes: 'mb-5',
+                                           cell_classes: 'mb-4',
+                                           component_classes: 'theme theme-dark') do |grid| %>
         <% grid.with_stats_card do |card| %>
           <%= card.with_icon fuel_type: :electricity, style: :circle %>
           <%= card.with_header title: t('home.stats.card_1.header') %>
@@ -51,8 +55,8 @@
         <% end %>
       <% end %>
 
-      <%= render Layout::CarouselComponent.new(show_markers: false,
-                                               id: 'testimonials',
+      <%= render Layout::CarouselComponent.new(id: 'testimonials',
+                                               show_markers: false,
                                                theme: :accent,
                                                classes: 'rounded-xl p-4 mb-5',
                                                show_arrows: :side) do |carousel| %>
@@ -61,12 +65,15 @@
         <% end %>
       <% end %>
 
-      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(
+            classes: 'm-4', id: 'features-header'
+          ) do |section_header| %>
         <%= section_header.with_header title: t('home.features.header') %>
         <%= section_header.with_description { t('home.features.description') } %>
       <% end %>
 
       <%= render Layout::GridComponent.new(
+            id: 'features',
             cols: 3, classes: '',
             cell_classes: 'mb-4',
             component_classes: 'rounded-xl'
@@ -79,7 +86,7 @@
         <% end %>
       <% end %>
 
-      <div class='pb-4 mb-4 text-center'>
+      <div class='pb-4 mb-4 text-center' id='buttons'>
         <%= render Elements::ButtonComponent.new(
               t('home.buttons.enrol_your_school'),
               enrol_path, style: :primary, classes: 'mb-4 mr-2'
@@ -91,6 +98,7 @@
       </div>
 
       <%= render Layout::GridComponent.new(
+            id: 'general',
             cols: 2,
             theme: :light,
             classes: 'rounded-xl p-4 mb-4 mt-4',
@@ -104,12 +112,16 @@
         <%= grid.with_image(src: 'pupils-jumping.jpg', classes: 'rounded-xl bg-white') %>
       <% end %>
 
-      <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4 pt-4') do |section_header| %>
+      <%= render Layout::Cards::SectionHeaderComponent.new(
+            id: 'organisations-header',
+            classes: 'm-4 pt-4'
+          ) do |section_header| %>
         <%= section_header.with_header title: t('home.organisations.header') %>
         <%= section_header.with_description { t('home.organisations.description') } %>
       <% end %>
 
       <%= render Layout::GridComponent.new(
+            id: 'organisations',
             cols: 3,
             classes: 'my-4 pb-4',
             cell_classes: 'mb-4',
@@ -146,7 +158,9 @@
 
     <% if @blog.items.count >= 3 %>
       <div class="theme theme-dark pt-4">
-        <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
+        <%= render Layout::Cards::SectionHeaderComponent.new(
+              id: 'blog-header', classes: 'm-4'
+            ) do |section_header| %>
           <%= section_header.with_header title: t('home.blog.header') %>
           <%= section_header.with_description { t('home.blog.description') } %>
         <% end %>
@@ -162,6 +176,7 @@
         </div>
 
         <%= render Layout::GridComponent.new(
+              id: 'blog',
               cols: 3,
               classes: 'container pb-4',
               cell_classes: 'mb-4',

@@ -1,7 +1,9 @@
 <% content_for :page_title, t('energy_audits.title') %>
 <% if Flipper.enabled?(:new_audits_page, current_user) %>
-  <div class="container-fluid adult mb-5">
-    <%= render Layout::GridComponent.new(cols: 2, classes: 'container') do |grid| %>
+  <div class="container-fluid adult mb-5 py-4">
+    <%= render Layout::GridComponent.new(
+          id: 'hero', cols: 2, classes: 'container'
+        ) do |grid| %>
       <% grid.with_feature_card(classes: 'valign-center', cell_classes: 'my-auto', main: :left) do |feature| %>
         <%= feature.with_header title: t('energy_audits.feature.title') %>
         <%= feature.with_description { t('energy_audits.feature.description') } %>
@@ -11,12 +13,13 @@
   </div>
 
   <div class="container">
-    <%= render Layout::Cards::SectionHeaderComponent.new(classes: 'm-4') do |section_header| %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(id: 'onsite-header', classes: 'm-4') do |section_header| %>
       <%= section_header.with_header title: t('energy_audits.onsite.title') %>
       <%= section_header.with_description { t('energy_audits.onsite.description') } %>
     <% end %>
 
     <%= render Layout::GridComponent.new(
+          id: 'onsite',
           cols: 3,
           classes: '',
           cell_classes: 'mb-4',
@@ -56,7 +59,7 @@
         <% end %>
       <% end %>
     <% end %>
-    <div class='mb-5 text-center'>
+    <div class='mb-5 px-4 text-center' id='onsite-summary'>
       <p><%= t('energy_audits.onsite.summary') %></p>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.get_quote'),
@@ -68,12 +71,13 @@
           ) %>
     </div>
     <%= render Layout::GridComponent.new(
+          id: 'virtual',
           cols: 2,
           classes: 'rounded-xl p-4 my-5',
           cell_classes: 'my-auto',
           theme: :light
         ) do |grid| %>
-      <%= grid.with_feature_card(classes: 'mb-4') do |feature| %>
+      <%= grid.with_feature_card(classes: 'mb-4', cell_classes: '') do |feature| %>
         <%= feature.with_header(title: t('energy_audits.virtual.title'), level: 3) %>
         <%= feature.with_price(
               label: t('common.labels.starting_from'),
@@ -83,15 +87,15 @@
         <%= feature.with_description { t('energy_audits.virtual.description') } %>
         <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
       <% end %>
-      <%= grid.with_image(src: 'laptop.jpg', classes: 'rounded-xl bg-white') %>
+      <%= grid.with_image(src: 'laptop.jpg', classes: 'rounded-xl bg-white', cell_classes: '') %>
     <% end %>
 
-    <%= render Layout::CarouselComponent.new(show_markers: false,
-                                             id: 'testimonials',
+    <%= render Layout::CarouselComponent.new(id: 'testimonials',
+                                             show_markers: false,
                                              theme: :accent,
                                              classes: 'rounded-xl p-4 my-5',
                                              show_arrows: :side) do |carousel| %>
-      <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
+      <% Testimonial.all.active.audit.shuffle.each do |testimonial| %>
         <%= carousel.with_testimonial_card(testimonial: testimonial) %>
       <% end %>
     <% end %>
