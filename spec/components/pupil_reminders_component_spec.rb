@@ -52,6 +52,8 @@ RSpec.describe PupilRemindersComponent, :include_application_helper, :include_ur
   end
 
   context 'when rendering' do
+    before { travel_to(Date.new(2025, 4, 30)) }
+
     let(:html) do
       render_inline(component)
     end
