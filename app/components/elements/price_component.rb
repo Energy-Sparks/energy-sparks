@@ -1,6 +1,6 @@
 module Elements
   class PriceComponent < ApplicationComponent
-    def initialize(label:, price:, level: 3, **_kwargs)
+    def initialize(label:, price:, level: 4, **_kwargs)
       super
       @label = label
       @price = price

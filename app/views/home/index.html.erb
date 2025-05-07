@@ -3,10 +3,9 @@
 
   <% if Flipper.enabled?(:new_home_page, current_user) %>
     <div class="theme theme-dark mb-5">
-
-      <%= render Layout::GridComponent.new(cols: 2, classes: 'container', id: 'hero') do |grid| %>
-        <%= grid.with_image src: 'on-screen.jpg', stretch: :left, width: '50vw', classes: 'main', collapse: true %>
-        <% grid.with_feature_card main: :right, theme: :dark do |feature| %>
+      <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
+        <%= grid.with_image src: 'on-screen.jpg', classes: 'rounded-xl', cell_classes: '', collapse: true %>
+        <% grid.with_feature_card size: :lg, theme: :dark, cell_classes: 'my-auto' do |feature| %>
           <%= feature.with_header title: t('home.feature.header') %>
           <%= feature.with_description { t('home.feature.description_html') } %>
           <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
@@ -26,7 +25,7 @@
       <% end %>
 
       <%= render Layout::GridComponent.new(id: 'stats',
-                                           cols: 4, classes: 'mb-5',
+                                           cols: 4, classes: 'mb-4',
                                            cell_classes: 'mb-4',
                                            component_classes: 'theme theme-dark') do |grid| %>
         <% grid.with_stats_card do |card| %>
@@ -42,7 +41,7 @@
           <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
         <% end %>
         <% grid.with_stats_card do |card| %>
-          <%= card.with_icon name: 'school', style: :circle, classes: 'text-success' %>
+          <%= card.with_icon name: 'hotel', style: :circle, classes: 'text-success' %>
           <%= card.with_header title: t('home.stats.card_3.header') %>
           <%= card.with_figure t('home.stats.card_3.figure') %>
           <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
@@ -104,8 +103,8 @@
             classes: 'rounded-xl p-4 mb-4 mt-4',
             cell_classes: 'my-auto'
           ) do |grid| %>
-        <%= grid.with_feature_card(classes: 'mb-4') do |feature| %>
-          <%= feature.with_header(title: t('home.general.title'), level: 3) %>
+        <%= grid.with_feature_card(classes: 'mb-4', size: :sm) do |feature| %>
+          <%= feature.with_header(title: t('home.general.title')) %>
           <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
           <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
         <% end %>
@@ -129,7 +128,7 @@
           ) do |grid| %>
         <%= grid.with_card do |card| %>
           <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
-          <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+          <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
             <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
             <%= feature.with_description { t('home.organisations.cards.school.description') } %>
             <%= feature.with_link(href: for_schools_path) { t('common.labels.learn_more') } %>
@@ -138,7 +137,7 @@
 
         <%= grid.with_card do |card| %>
           <%= card.with_image(src: 'funnel-teachers.png', classes: 'rounded-top-xl') %>
-          <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+          <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
             <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
             <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
             <%= feature.with_link(href: for_multi_academy_trusts_path) { t('common.labels.learn_more') } %>
@@ -147,7 +146,7 @@
 
         <%= grid.with_card do |card| %>
           <%= card.with_image(src: 'laptop.jpg', classes: 'rounded-top-xl') %>
-          <%= card.with_feature_card(theme: :dark, classes: 'rounded-bottom-xl') do |feature| %>
+          <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'rounded-bottom-xl') do |feature| %>
             <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
             <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>
             <%= feature.with_link(href: for_local_authorities_path) { t('common.labels.learn_more') } %>
@@ -186,7 +185,7 @@
           <% @blog.items.first(3).each do |item| %>
             <%= grid.with_card do |card| %>
               <%= card.with_image(src: item[:image] || 'on-screen.jpg', classes: 'rounded-top-xl') %>
-              <%= card.with_feature_card(theme: :light, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+              <%= card.with_feature_card(theme: :light, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
                 <%= feature.with_header(title: item[:title]) %>
                 <%= feature.with_author(href: item[:author_link]) { item[:author] } %>
                 <%= feature.with_date(item[:date]) %>

@@ -1,8 +1,8 @@
 img.elements-image-component {
   &.stretch {
-    position: absolute;
-    height: 100%;
-    object-fit: cover;
+    //position: absolute;
+    //height: 100%;
+    //object-fit: cover;
   }
 
   &.right {
@@ -10,7 +10,21 @@ img.elements-image-component {
   }
 
   &.left {
-    right: 0;
+    @include media-breakpoint-down(lg) {
+      position: absolute;
+      height: 100%;
+      object-fit: cover;
+
+      width: 50vw;
+      right: 0;
+    }
+    @include media-breakpoint-up(xl) {
+      border-radius: $rounded-xl;
+      margin-top: 1.5em;
+      margin-bottom: 1.5em;
+      width: 100%;
+      object-fit: cover;
+    }
   }
 
   &.fit {

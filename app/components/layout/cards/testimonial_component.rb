@@ -8,16 +8,16 @@ module Layout
         Elements::HeaderComponent.new(**kwargs.merge({ level: 4 }))
       end
       renders_one :quote, ->(**kwargs) do
-        Elements::TagComponent.new(:q, **merge_classes('small', kwargs))
+        Elements::TagComponent.new(:q, **merge_classes('', kwargs))
       end
       renders_one :name, ->(**kwargs) do
-        Elements::TagComponent.new(:span, **merge_classes('small text-complement font-weight-bold', kwargs))
+        Elements::TagComponent.new(:span, **merge_classes('text-complement font-weight-bold', kwargs))
       end
       renders_one :role, ->(**kwargs) do
-        Elements::TagComponent.new(:span, **merge_classes('small text-complement', kwargs))
+        Elements::TagComponent.new(:span, **merge_classes('text-complement', kwargs))
       end
       renders_one :organisation, ->(**kwargs) do
-        Elements::TagComponent.new(:div, **merge_classes('small text-complement', kwargs))
+        Elements::TagComponent.new(:div, **merge_classes('text-complement', kwargs))
       end
       renders_one :case_study, ->(case_study = nil) do
         if case_study

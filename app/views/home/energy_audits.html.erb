@@ -4,7 +4,7 @@
     <%= render Layout::GridComponent.new(
           id: 'hero', cols: 2, classes: 'container'
         ) do |grid| %>
-      <% grid.with_feature_card(classes: 'valign-center', cell_classes: 'my-auto', main: :left) do |feature| %>
+      <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
         <%= feature.with_header title: t('energy_audits.feature.title') %>
         <%= feature.with_description { t('energy_audits.feature.description') } %>
       <% end %>
@@ -13,81 +13,74 @@
   </div>
 
   <div class="container">
-    <%= render Layout::Cards::SectionHeaderComponent.new(id: 'onsite-header', classes: 'm-4') do |section_header| %>
-      <%= section_header.with_header title: t('energy_audits.onsite.title') %>
-      <%= section_header.with_description { t('energy_audits.onsite.description') } %>
+    <%= render Layout::GridComponent.new(
+          id: 'onsite', cols: 2, classes: 'pb-2', cell_classes: 'py-4'
+        ) do |grid| %>
+      <%= grid.with_image src: 'whiteboard.jpg', classes: 'rounded-xl' %>
+      <% grid.with_feature_card(cell_classes: 'my-auto py-4', size: :md) do |feature| %>
+        <%= feature.with_header title: t('energy_audits.onsite.title') %>
+        <%= feature.with_description { t('energy_audits.onsite.description_html') } %>
+        <%= feature.with_button(t('home.buttons.get_quote'),
+                                'mailto:hello@energysparks.uk', style: :primary, classes: 'mr-2') %>
+        <%= feature.with_button(t('home.buttons.read_case_studies'),
+                                case_studies_path, style: :secondary, classes: '') %>
+      <% end %>
     <% end %>
+
+    <h2 class='text-left'><%= t('common.labels.prices') %></h2>
 
     <%= render Layout::GridComponent.new(
           id: 'onsite',
           cols: 3,
-          classes: '',
+          classes: 'mb-4',
           cell_classes: 'mb-4',
-          component_classes: 'h-100'
+          component_classes: 'h-100 p-4 rounded-xl'
         ) do |grid| %>
-      <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
-        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
-          <%= feature.with_header(title: t('energy_audits.onsite.primary.title')) %>
-          <%= feature.with_price(
-                label: t('common.labels.starting_from'),
-                price: t('energy_audits.onsite.primary.price'),
-                classes: 'mt-auto'
-              ) %>
-        <% end %>
-      <% end %>
-      <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
-        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
-          <%= feature.with_header(title: t('energy_audits.onsite.secondary.title')) %>
-          <%= feature.with_price(
-                label: t('common.labels.starting_from'),
-                price: t('energy_audits.onsite.secondary.price'),
-                classes: 'mt-auto pt-4'
-              ) %>
-        <% end %>
-      <% end %>
-      <%= grid.with_card do |card| %>
-        <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
-        <%= card.with_feature_card(theme: :dark, classes: 'p-4 rounded-bottom-xl') do |feature| %>
-          <%= feature.with_header(title: t('energy_audits.onsite.plus.title')) %>
-          <%= feature.with_price(
-                label: t('common.labels.starting_from'),
-                price: t('energy_audits.onsite.plus.price'),
-                classes: 'mt-auto'
-              ) %>
-        <% end %>
-      <% end %>
-    <% end %>
-    <div class='mb-5 px-4 text-center' id='onsite-summary'>
-      <p><%= t('energy_audits.onsite.summary') %></p>
-      <%= render Elements::ButtonComponent.new(
-            t('home.buttons.get_quote'),
-            'mailto:hello@energysparks.uk', style: :primary, classes: 'mr-2'
-          ) %>
-      <%= render Elements::ButtonComponent.new(
-            t('home.buttons.read_case_studies'),
-            case_studies_path, style: :secondary, classes: ''
-          ) %>
-    </div>
-    <%= render Layout::GridComponent.new(
-          id: 'virtual',
-          cols: 2,
-          classes: 'rounded-xl p-4 my-5',
-          cell_classes: 'my-auto',
-          theme: :light
-        ) do |grid| %>
-      <%= grid.with_feature_card(classes: 'mb-4', cell_classes: '') do |feature| %>
-        <%= feature.with_header(title: t('energy_audits.virtual.title'), level: 3) %>
+      <%= grid.with_feature_card(theme: :dark, size: :xs) do |feature| %>
+        <%= feature.with_header(title: t('energy_audits.onsite.primary.title')) %>
         <%= feature.with_price(
               label: t('common.labels.starting_from'),
-              price: t('energy_audits.virtual.price'),
+              price: t('energy_audits.onsite.primary.price'),
+              classes: 'mt-auto'
+            ) %>
+      <% end %>
+      <%= grid.with_feature_card(theme: :dark, size: :xs) do |feature| %>
+        <%= feature.with_header(title: t('energy_audits.onsite.secondary.title')) %>
+        <%= feature.with_price(
+              label: t('common.labels.starting_from'),
+              price: t('energy_audits.onsite.secondary.price'),
+              classes: 'mt-auto pt-4'
+            ) %>
+      <% end %>
+      <%= grid.with_feature_card(theme: :dark, size: :xs) do |feature| %>
+        <%= feature.with_header(title: t('energy_audits.onsite.plus.title')) %>
+        <%= feature.with_price(
+              label: t('common.labels.starting_from'),
+              price: t('energy_audits.onsite.plus.price'),
+              classes: 'mt-auto'
+            ) %>
+      <% end %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          id: 'desktop',
+          cols: 2,
+          classes: '', cell_classes: 'py-4 my-auto'
+        ) do |grid| %>
+      <%= grid.with_feature_card(classes: '', size: :md, cell_classes: '') do |feature| %>
+        <%= feature.with_header(title: t('energy_audits.desktop.title')) %>
+        <%= feature.with_price(
+              label: t('common.labels.starting_from'),
+              price: t('energy_audits.desktop.price'),
               classes: 'text-complement pb-1'
             ) %>
-        <%= feature.with_description { t('energy_audits.virtual.description') } %>
-        <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
+        <%= feature.with_description { t('energy_audits.desktop.description_html') } %>
+        <%= feature.with_button(t('home.buttons.get_quote'),
+                                'mailto:hello@energysparks.uk', style: :primary, classes: 'mr-2') %>
+        <%= feature.with_button(t('home.buttons.read_case_studies'),
+                                case_studies_path, style: :secondary, classes: '') %>
       <% end %>
-      <%= grid.with_image(src: 'laptop.jpg', classes: 'rounded-xl bg-white', cell_classes: '') %>
+      <%= grid.with_image(src: 'laptop.jpg', classes: 'rounded-xl', cell_classes: '') %>
     <% end %>
 
     <%= render Layout::CarouselComponent.new(id: 'testimonials',
