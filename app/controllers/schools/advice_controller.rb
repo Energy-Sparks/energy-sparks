@@ -16,7 +16,6 @@ module Schools
     before_action :school_inactive
     before_action :load_advice_pages
     before_action :set_tab_name
-    before_action :set_counts
     before_action :set_breadcrumbs
     before_action :check_aggregated_school_in_cache, only: [:show]
 
@@ -65,11 +64,6 @@ module Schools
 
     def redirect_to_pupil_dash_if_not_data_enabled
       redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
-    end
-
-    def set_counts
-      @priority_count = latest_management_priorities.count
-      @alert_count = latest_dashboard_alerts.count
     end
 
     def latest_dashboard_alerts
