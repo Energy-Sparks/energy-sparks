@@ -21,31 +21,18 @@ module Schools
     before_action :check_aggregated_school_in_cache, only: [:show]
 
     def show
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        @overview_data = Schools::ManagementTableService.new(@school).management_data
-        render :new_show, layout: 'dashboards'
-      else
-        @advice_page_benchmarks = @school.advice_page_school_benchmarks
-        render :show
-      end
+      @overview_data = Schools::ManagementTableService.new(@school).management_data
+      render :show, layout: 'dashboards'
     end
 
     def priorities
       @management_priorities = sort_priorities
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        render :priorities, layout: 'dashboards'
-      else
-        render :priorities
-      end
+      render :priorities, layout: 'dashboards'
     end
 
     def alerts
       @dashboard_alerts = setup_alerts(latest_dashboard_alerts, :management_dashboard_title, limit: nil)
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        render :alerts, layout: 'dashboards'
-      else
-        render :alerts
-      end
+      render :alerts, layout: 'dashboards'
     end
 
     private
