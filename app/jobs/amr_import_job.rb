@@ -9,10 +9,10 @@ class AmrImportJob < ApplicationJob
   def self.import_all(config, bucket)
     s3_client = Aws::S3::Client.new
     Rails.logger.info "Download all from S3 key pattern: #{config.identifier}"
-    keys = s3_client.list_objects_v2(bucket: bucket, prefix: "#{config.identifier}/").contents
-                    # need to ignore application/x-directory objects ending with /
-                    .reject { |object| object.key.end_with?('/') }.map(&:key)
-    perform_later(config, bucket, keys)
+    objects = s3_client.list_objects_v2(bucket: bucket, prefix: "#{config.identifier}/").contents
+                       # need to ignore application/x-directory objects ending with /
+                       .reject { |object| object.key.end_with?('/') }
+    perform_later(config, bucket, objects.map(&:key)) unless objects.empty?
   end
 
   def perform(config, bucket, keys)
