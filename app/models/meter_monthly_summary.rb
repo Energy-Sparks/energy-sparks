@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: meter_monthly_summaries
@@ -25,13 +27,12 @@ class MeterMonthlySummary < ApplicationRecord
   validates :consumption, presence: true
   validates :quality, presence: true
   validates :total, presence: true
-  validates :year, presence: true, uniqueness: { scope: [:meter_id, :type] }
+  validates :year, presence: true, uniqueness: { scope: %i[meter_id type] }
 
   def self.create_or_update_from_school(school, meter_collection)
     today = Time.zone.today
     Periods::FixedAcademicYear.enumerator(start_date(today, 2), today).filter_map do |period_start, period_end|
       school.meters.main_meter.each { |meter| from_main_meter(meter, period_start, period_end) }
-      # debugger
       school.meters.electricity.filter(&:has_solar_array?).each do |meter|
         from_solar_meter(meter, meter_collection.meter?(meter.mpan_mprn), period_start, period_end)
       end
@@ -39,7 +40,6 @@ class MeterMonthlySummary < ApplicationRecord
   end
 
   private_class_method def self.from_main_meter(meter, period_start, period_end)
-    # debugger
     readings = meter.amr_validated_readings.where(reading_date: period_start..period_end)
     return if readings.empty?
 
@@ -48,7 +48,7 @@ class MeterMonthlySummary < ApplicationRecord
     create_or_update_summary(meter, period_start.year, :consumption, consumption, quality)
   end
 
-  def self.consumption_and_quality(readings_by_month, quality_method)
+  private_class_method def self.consumption_and_quality(readings_by_month, quality_method)
     consumption = []
     quality = []
     readings_by_month.each do |month_start, month_readings|
@@ -78,8 +78,9 @@ class MeterMonthlySummary < ApplicationRecord
     end
   end
 
-  def self.from_solar_meter(meter, meter_collection_meter, period_start, period_end)
-    # debugger
+  private_class_method def self.from_solar_meter(meter, meter_collection_meter, period_start, period_end)
+    return if meter_collection_meter.nil?
+
     meter_collection_meter.sub_meters.slice(:generation, :self_consume, :export).each do |type, sub_meter|
       readings = (period_start..period_end).filter_map { |date| sub_meter.amr_data[date] }
       next if readings.empty?
