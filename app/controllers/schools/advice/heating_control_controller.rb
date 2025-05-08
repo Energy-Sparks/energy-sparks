@@ -7,15 +7,6 @@ module Schools
 
       def insights
         @heating_control_service = heating_control_service
-        @last_week_start_times = heating_control_service.last_week_start_times
-        @estimated_savings = heating_control_service.estimated_savings
-        @percentage_of_annual_gas = heating_control_service.percentage_of_annual_gas
-        @enough_data_for_seasonal_analysis = heating_control_service.enough_data_for_seasonal_analysis?
-        return unless @enough_data_for_seasonal_analysis
-
-        @seasonal_analysis = heating_control_service.seasonal_analysis
-        @warm_weather_on_days_rating = heating_control_service.warm_weather_on_days_rating
-        @benchmark_warm_weather_days = heating_control_service.benchmark_warm_weather_days
       end
 
       def analysis

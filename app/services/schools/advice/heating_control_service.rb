@@ -39,16 +39,24 @@ module Schools
 
       delegate :average_start_time_last_week, to: :heating_start_time_service
 
-      delegate :last_week_start_times, to: :heating_start_time_service
+      def last_week_start_times
+        @last_week_start_times ||= heating_start_time_service.last_week_start_times
+      end
 
-      delegate :percentage_of_annual_gas, to: :heating_savings_service
+      def percentage_of_annual_gas
+        @percentage_of_annual_gas ||= heating_savings_service.percentage_of_annual_gas
+      end
 
-      delegate :estimated_savings, to: :heating_savings_service
+      def estimated_savings
+        @estimated_savings ||= heating_savings_service.estimated_savings
+      end
 
-      delegate :seasonal_analysis, to: :seasonal_analysis_service
+      def seasonal_analysis
+        @seasonal_analysis ||= seasonal_analysis_service.seasonal_analysis
+      end
 
       def enough_data_for_seasonal_analysis?
-        seasonal_analysis_service.enough_data?
+        @enough_data_for_seasonal_analysis ||= seasonal_analysis_service.enough_data?
       end
 
       def warm_weather_on_days_rating
@@ -74,7 +82,7 @@ module Schools
       private
 
       def days_when_heating_on_warm_weather
-        seasonal_analysis.heating_on_in_warm_weather_days.to_i
+        @days_when_heating_on_warm_weather ||= seasonal_analysis.heating_on_in_warm_weather_days.to_i
       end
 
       def heat_meters
