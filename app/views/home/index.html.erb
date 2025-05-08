@@ -4,8 +4,8 @@
   <% if Flipper.enabled?(:new_home_page, current_user) %>
     <div class="theme theme-dark mb-5">
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
-        <%= grid.with_image src: 'on-screen.jpg', classes: 'rounded-xl', cell_classes: '', collapse: true %>
-        <% grid.with_feature_card size: :lg, theme: :dark, cell_classes: 'my-auto' do |feature| %>
+        <%= grid.with_image src: 'laptop.jpg', classes: 'rounded-xl', cell_classes: '', collapse: true %>
+        <% grid.with_feature_card size: :xl, theme: :dark, cell_classes: 'my-auto' do |feature| %>
           <%= feature.with_header title: t('home.feature.header') %>
           <%= feature.with_description { t('home.feature.description_html') } %>
           <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
@@ -103,7 +103,7 @@
             classes: 'rounded-xl p-4 mb-4 mt-4',
             cell_classes: 'my-auto'
           ) do |grid| %>
-        <%= grid.with_feature_card(classes: 'mb-4', size: :sm) do |feature| %>
+        <%= grid.with_feature_card(classes: 'mb-4', size: :md) do |feature| %>
           <%= feature.with_header(title: t('home.general.title')) %>
           <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
           <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
