@@ -105,7 +105,6 @@ class MeterMonthlySummary < ApplicationRecord
         :incomplete
       else
         raise "unknown #{month_readings.to_set(&:type)}"
-        :corrected
       end
     end
   end
