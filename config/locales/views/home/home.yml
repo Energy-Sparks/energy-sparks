@@ -12,7 +12,9 @@ en:
       book_a_demo: Book a demo
       enrol_your_school: Enrol your school
       find_out_more: Find out more
+      get_quote: Get quote
       newsletter_signup: Sign up to our newsletter
+      read_case_studies: Read case studies
       view_blog: View our blog
     carousel:
       message_1: Help your school save energy, money and prevent climate change.
@@ -26,17 +28,17 @@ en:
       header: Helping schools cut energy costs and fight climate change
     features:
       cards:
-      - badge: Make a difference
+      - badge: Powerful insights
         statement: Help your school save energy, money and prevent climate change
-      - badge: Get involved
+      - badge: Problem solving
         statement: Discover whether energy is being wasted outside of school hours
-      - badge: Personalised Data
+      - badge: Bespoke advice
         statement: Get tailored energy saving advice designed just for your school
-      - badge: Stay updated
+      - badge: Timely alerts
         statement: Get automated alerts to let you know when your energy use changes
-      - badge: Fun & engaging
+      - badge: Learning activities
         statement: Explore eco-team and classroom activities for pupils
-      - badge: The community
+      - badge: Climate community
         statement: Share energy saving ideas and compete against other schools
       description: Energy Sparks provides near real-time data and school-specific insights to help you cut costs and carbon, as well as a range of resources and activities designed to inspire your pupils
       header: Data-driven tools that will change your school

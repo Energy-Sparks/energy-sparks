@@ -19,6 +19,14 @@
       background-color: $teal-medium;
       color: $blue-very-dark;
     }
+
+    .btn-primary {
+      @extend .btn-success;
+    }
+
+    .btn-secondary {
+      @extend .btn-outline-white;
+    }
   }
 
   &.theme-light, &.theme-accent {

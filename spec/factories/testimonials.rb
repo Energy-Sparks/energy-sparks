@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :testimonial do
-    active { false }
+    active { true }
     category { :default }
     name { 'Testimonial name' }
     organisation { 'Testimonial organisation' }

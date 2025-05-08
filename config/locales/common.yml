@@ -55,6 +55,7 @@ en:
       not_set: Not set
       place: Place
       previous: Previous
+      prices: Prices
       pupil_activities: Pupil activities
       pupil_led_activities: Pupil-led activities
       read_more: Read more
@@ -63,6 +64,7 @@ en:
       restart: Restart
       save: Save
       start: Start
+      starting_from: Starting from
       status: Status
       submit: Submit
       subscribe: Subscribe

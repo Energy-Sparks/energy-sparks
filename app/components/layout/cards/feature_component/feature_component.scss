@@ -4,23 +4,8 @@
     padding: 6px 14px;
   }
 
-  h2, h4 {
+  h1, h2, h3, h4, h5, h6 {
     padding-top: 0;
     padding-bottom: 0;
-  }
-
-  &.main {
-    @include responsive-typography;
-    p {
-      font-family: $header-font-family;
-    }
-
-    // break out of container to left on large screens
-    @include media-breakpoint-up(xl) {
-      padding-left: 30px;
-      width: 50vw;
-      position: absolute;
-      right: 0;
-    }
   }
 }
