@@ -22,5 +22,7 @@
                                           title: t('advice_pages.insights.recommendations.actions_title'),
                                           classes: 'pb-4') %>
 
-  <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
+  <% cache [@school.latest_content, @advice_page.fuel_type, I18n.locale], expires_in: 4.hours do %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
+  <% end %>
 <% end %>
