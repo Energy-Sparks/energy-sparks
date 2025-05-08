@@ -1,0 +1,44 @@
+<%= content_for :page_title, t('school_groups.secr.title') %>
+<h1><%= t('school_groups.secr.title') %></h1>
+<p><%= t('school_groups.secr.introduction') %></p>
+<h2><%= t('school_groups.secr.section1.title') %></h2>
+<%= start_date = MeterMonthlySummary.start_date(Time.zone.today, 2)
+    end_date = Periods::FixedAcademicYear.enumerator(start_date, start_date + 1.year).to_a[-1][1].to_fs(:es_short)
+    t('school_groups.secr.section1.introduction_html', start_date: start_date.to_fs(:es_short), end_date:) %>
+<table class="table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Consumption</th>
+      <th>Emission</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% school = @school_group.schools.active.first %>
+    <tr>
+      <td><%= t('school_groups.secr.section1.scope1') %></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><%= t('school_groups.secr.section1.gas_consumption') %></td>
+      <td><%= gas_consumption = school.meters.active.gas.map do |meter|
+                meter.meter_monthly_summaries.find_by(year: start_date.year, type: :consumption)&.total || 0
+              end.sum.round(2) %></td>
+      <td><%= gas_consumption_emission =
+                SecrCo2Equivalence.find_by(year: start_date.year).natural_gas_co2e * gas_consumption %></td>
+    </tr>
+    <tr>
+      <td><%= t('school_groups.secr.section1.solar_self_consumption') %></td>
+      <td><%= self_consumption = school.meters.active.electricity.map do |meter|
+                meter.meter_monthly_summaries.find_by(year: start_date.year, type: :self_consume)&.total || 0
+              end.sum.round(2) %></td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td><%= t('school_groups.secr.section1.total') %></td>
+      <td><%= gas_consumption + self_consumption %></td>
+      <td><%= gas_consumption_emission %></td>
+    </tr>
+  </tbody>
+</table>

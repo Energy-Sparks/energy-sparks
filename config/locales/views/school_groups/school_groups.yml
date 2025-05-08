@@ -185,6 +185,28 @@ en:
         <p>This page summarises these potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
+    secr:
+      introduction: Using your half-hourly meter data, Energy Sparks is able to provide a summary of your consumption and carbon emissions to support production of your annual SECR reports.
+      section1:
+        gas_consumption: Gas consumption
+        introduction_html: |-
+          <p>
+          The following table provides a summary of your consumptions and emissions for the last academic year (%{start_date} to %{end_date}). Consumption is based on the latest data available to Energy Sparks, which may not be completed. Emissions are calculated using the latest carbon emission factors which are quoted below.
+          </p>
+          <p>
+          We do not recommend including these figures in your SECR reporting without first confirming that Energy Sparks has access to data for all of your schools and meters in each school.
+          </p>
+          <p>
+          We may also be using estimated solar data if we do not have access to data from your solar monitoring system.
+          </p>
+          <p>
+          Data quality issues might also impact our ability to provide accurate figures. See below for downloads of data that can help you identify gaps and support you in producing a more complete report if we do not yet have all of your schools or meters on our system.
+          </p>
+        scope1: Scope 1
+        solar_self_consumption: Solar self consumption
+        title: Section 1
+        total: Total
+      title: SECR Reporting Data
     show:
       change_units: Change units
       metric:
@@ -226,6 +248,7 @@ en:
       manage_group: Manage Group
       manage_partners: Manage partners
       manage_users: Manage users
+      secr_report: SECR report
       set_message: Set message
     titles:
       comparisons: Comparisons

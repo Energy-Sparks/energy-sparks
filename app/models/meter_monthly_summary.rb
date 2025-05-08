@@ -32,8 +32,8 @@ class MeterMonthlySummary < ApplicationRecord
   def self.create_or_update_from_school(school, meter_collection)
     today = Time.zone.today
     Periods::FixedAcademicYear.enumerator(start_date(today, 2), today).filter_map do |period_start, period_end|
-      school.meters.main_meter.each { |meter| from_main_meter(meter, period_start, period_end) }
-      school.meters.electricity.filter(&:has_solar_array?).each do |meter|
+      school.meters.active.main_meter.each { |meter| from_main_meter(meter, period_start, period_end) }
+      school.meters.active.electricity.filter(&:has_solar_array?).each do |meter|
         from_solar_meter(meter, meter_collection.meter?(meter.mpan_mprn), period_start, period_end)
       end
     end
@@ -114,7 +114,7 @@ class MeterMonthlySummary < ApplicationRecord
     all_days_in_month.reject { |day| days_with_readings.include?(day) }
   end
 
-  private_class_method def self.start_date(today, years)
+  def self.start_date(today, years)
     year = today.month >= 9 ? today.year - (years - 1) : today.year - years
     Date.new(year, 9, 1)
   end
