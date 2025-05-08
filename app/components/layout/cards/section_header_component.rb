@@ -5,12 +5,12 @@ module Layout
         Elements::HeaderComponent.new(**{ level: 2, classes: 'mb-0' }.merge(kwargs))
       end
       renders_one :description, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **{ classes: '' }.merge(kwargs))
+        Elements::TagComponent.new(:p, **{ classes: 'mb-0' }.merge(kwargs))
       end
 
       def initialize(**_kwargs)
         super
-        add_classes('row')
+        add_classes('row my-4')
       end
     end
   end

@@ -18,7 +18,7 @@
 
     <div class="container">
       <%= render Layout::Cards::SectionHeaderComponent.new(
-            classes: 'm-4', id: 'stats-header'
+            classes: '', id: 'stats-header'
           ) do |section_header| %>
         <%= section_header.with_header title: t('home.stats.header') %>
         <%= section_header.with_description { t('home.stats.description') } %>
@@ -65,7 +65,7 @@
       <% end %>
 
       <%= render Layout::Cards::SectionHeaderComponent.new(
-            classes: 'm-4', id: 'features-header'
+            id: 'features-header'
           ) do |section_header| %>
         <%= section_header.with_header title: t('home.features.header') %>
         <%= section_header.with_description { t('home.features.description') } %>
@@ -113,7 +113,7 @@
 
       <%= render Layout::Cards::SectionHeaderComponent.new(
             id: 'organisations-header',
-            classes: 'm-4 pt-4'
+            classes: 'pt-4'
           ) do |section_header| %>
         <%= section_header.with_header title: t('home.organisations.header') %>
         <%= section_header.with_description { t('home.organisations.description') } %>
