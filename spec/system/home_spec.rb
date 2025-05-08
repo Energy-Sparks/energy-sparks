@@ -66,10 +66,9 @@ RSpec.describe 'home', type: :system do
 
         it 'renders all the components' do
           expect(page).to have_css('#hero')
-          expect(page).to have_css('#onsite-header')
           expect(page).to have_css('#onsite')
-          expect(page).to have_css('#onsite-summary')
-          expect(page).to have_css('#virtual')
+          expect(page).to have_css('#onsite-prices')
+          expect(page).to have_css('#desktop')
           expect(page).to have_css('#testimonials')
         end
       end

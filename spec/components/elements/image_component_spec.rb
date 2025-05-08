@@ -25,17 +25,20 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
   end
 
   context 'with fit params' do
-    let(:fit) {}
-    let(:params) { base_params.merge({ fit: fit }) }
+    context 'when fit is not provided' do
+      let(:params) { base_params }
+
+      it { expect(html).to have_css('img.fit') }
+    end
 
     context 'when fit is true' do
-      let(:fit) { true }
+      let(:params) { base_params.merge({ fit: true }) }
 
       it { expect(html).to have_css('img.fit') }
     end
 
     context 'when fit is false' do
-      let(:fit) { false }
+      let(:params) { base_params.merge({ fit: false }) }
 
       it { expect(html).not_to have_css('img.fit') }
     end
