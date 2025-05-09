@@ -6,10 +6,10 @@ module DashboardAlerts
       TemplateInterpolation.new(
         dashboard_alert.content_version,
         with_objects: {
-          find_out_more: dashboard_alert.alert.alert_type.find_out_more?,
+          advice_page: dashboard_alert.alert.alert_type.advice_page,
           alert: dashboard_alert.alert,
           alert_type: dashboard_alert.alert.alert_type,
-          advice_page: dashboard_alert.alert.alert_type.advice_page,
+          find_out_more: dashboard_alert.alert.alert_type.find_out_more?,
           priority: dashboard_alert.priority
         },
         proxy: [:colour]
