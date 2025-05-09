@@ -7,6 +7,8 @@ require 'spec_helper'
 # end
 
 describe ValidateAMRData, type: :service do
+  before { travel_to Date.new(2025, 5, 3) }
+
   subject(:validator) do
     described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
   end
