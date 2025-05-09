@@ -36,14 +36,18 @@
   </div>
 </div>
 
-<div class="container-fluid bg-light pt-3 pb-3 mt-4">
-  <div class="container">
-    <div class="row">
-      <div class="col-12 offset-md-2 offset-xl-2 col-md-9 col-lg-9 col-xl-10">
-        <%= render ComparisonOverviewComponent.new(id: 'comparison', school: @school) %>
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
+  <div class="container-fluid bg-light pt-3 pb-3 mt-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 offset-md-2 offset-xl-2 col-md-9 col-lg-9 col-xl-10">
+          <%= render ComparisonOverviewComponent.new(id: 'comparison',
+                                                     school: @school,
+                                                     aggregate_school_service: @aggregate_school_service) %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
