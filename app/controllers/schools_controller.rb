@@ -62,7 +62,7 @@ class SchoolsController < ApplicationController
     # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @audience = :adult
-    @observations = setup_timeline(@school.observations)
+    @observations = setup_timeline(@school.observations.includes(:activity, :intervention_type))
     @progress_summary = progress_service.progress_summary if @school.data_enabled?
     render :show, layout: 'dashboards'
   end
