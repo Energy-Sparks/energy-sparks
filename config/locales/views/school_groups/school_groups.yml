@@ -202,10 +202,16 @@ en:
           <p>
           Data quality issues might also impact our ability to provide accurate figures. See below for downloads of data that can help you identify gaps and support you in producing a more complete report if we do not yet have all of your schools or meters on our system.
           </p>
+        net: Net
+        purchased_electricity: Purchased Electricity
         scope1: Scope 1
+        scope2: Scope 2
+        scope3: Scope 3
+        solar_export: Solar export
         solar_self_consumption: Solar self consumption
         title: Section 1
         total: Total
+        transmission_and_distribution: Electricity transmission and distribution
       title: SECR Reporting Data
     show:
       change_units: Change units

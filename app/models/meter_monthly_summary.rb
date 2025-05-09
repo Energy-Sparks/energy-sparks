@@ -29,6 +29,10 @@ class MeterMonthlySummary < ApplicationRecord
   validates :total, presence: true
   validates :year, presence: true, uniqueness: { scope: %i[meter_id type] }
 
+  def self.total_sum(meters, year, type)
+    meters.sum { |meter| meter.meter_monthly_summaries.find_by(year:, type:)&.total || 0 }.round(2)
+  end
+
   def self.create_or_update_from_school(school, meter_collection)
     today = Time.zone.today
     Periods::FixedAcademicYear.enumerator(start_date(today, 2), today).filter_map do |period_start, period_end|

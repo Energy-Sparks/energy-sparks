@@ -5,28 +5,27 @@
 <%= start_date = MeterMonthlySummary.start_date(Time.zone.today, 2)
     end_date = Periods::FixedAcademicYear.enumerator(start_date, start_date + 1.year).to_a[-1][1].to_fs(:es_short)
     t('school_groups.secr.section1.introduction_html', start_date: start_date.to_fs(:es_short), end_date:) %>
-<table class="table">
+<table class="table table-sm">
   <thead>
     <tr>
       <th></th>
-      <th>Consumption</th>
-      <th>Emission</th>
+      <th>Consumption (kWh)</th>
+      <th>Emission (metric tonnes CO2e)</th>
     </tr>
   </thead>
   <tbody>
     <% school = @school_group.schools.active.first %>
     <tr>
-      <td><%= t('school_groups.secr.section1.scope1') %></td>
+      <td><b><%= t('school_groups.secr.section1.scope1') %></b></td>
       <td></td>
       <td></td>
     </tr>
     <tr>
       <td><%= t('school_groups.secr.section1.gas_consumption') %></td>
-      <td><%= gas_consumption = school.meters.active.gas.map do |meter|
-                meter.meter_monthly_summaries.find_by(year: start_date.year, type: :consumption)&.total || 0
-              end.sum.round(2) %></td>
-      <td><%= gas_consumption_emission =
-                SecrCo2Equivalence.find_by(year: start_date.year).natural_gas_co2e * gas_consumption %></td>
+      <td><%= gas_consumption =
+                MeterMonthlySummary.total_sum(school.meters.active.gas, start_date.year, :consumption) %></td>
+      <td><%= gas_emissions =
+                SecrCo2Equivalence.emissions(start_date.year, :natural_gas_co2e, gas_consumption) %></td>
     </tr>
     <tr>
       <td><%= t('school_groups.secr.section1.solar_self_consumption') %></td>
@@ -38,7 +37,49 @@
     <tr>
       <td><%= t('school_groups.secr.section1.total') %></td>
       <td><%= gas_consumption + self_consumption %></td>
-      <td><%= gas_consumption_emission %></td>
+      <td><%= gas_emissions %></td>
     </tr>
+    <tr>
+      <td><b><%= t('school_groups.secr.section1.scope2') %></b></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><%= t('school_groups.secr.section1.purchased_electricity') %></td>
+      <td><%= electricity_consumption =
+                MeterMonthlySummary.total_sum(school.meters.active.electricity, start_date.year, :consumption) %></td>
+      <td><%= electricity_emissions =
+                SecrCo2Equivalence.emissions(start_date.year, :electricity_co2e, electricity_consumption) %></td>
+    </tr>
+    <tr>
+      <td><b><%= t('school_groups.secr.section1.scope3') %></b></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><%= t('school_groups.secr.section1.transmission_and_distribution') %></td>
+      <td><%= transmission_consumption =
+                MeterMonthlySummary.total_sum(school.meters.active.electricity, start_date.year, :consumption) %></td>
+      <td><%= transmission_emissions = SecrCo2Equivalence.emissions(start_date.year, :transmission_distribution_co2e,
+                                                                    electricity_consumption) %></td>
+    </tr>
+    <tr>
+      <td><b><%= t('school_groups.secr.section1.total') %></b></td>
+      <td><%= (total_consumption =
+                 gas_consumption + self_consumption + electricity_consumption + transmission_consumption).round(2) %></td>
+      <td><%= (gas_emissions + electricity_emissions + transmission_emissions).round(2) %></td>
+    </tr>
+    <tr>
+      <td><%= t('school_groups.secr.section1.solar_export') %></td>
+      <td><%= solar_export =
+                - MeterMonthlySummary.total_sum(school.meters.active.electricity, start_date.year, :export) %></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><b><%= t('school_groups.secr.section1.net') %></b></td>
+      <td><%= (total_consumption - solar_export).round(2) %></td>
+      <td></td>
+    </tr>
+
   </tbody>
 </table>
