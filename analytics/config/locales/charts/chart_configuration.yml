@@ -1,0 +1,951 @@
+---
+en:
+  chart_configuration:
+    acc1:
+      title:
+      - Energy Costs
+    acc2:
+      title:
+      - Energy Costs
+    acc3:
+      title:
+      - Electricity accounting cost breakdown by week for the last year
+    acc4:
+      title:
+      - 'Breakdown by type of day/time: Electricity'
+    accounting_cost_daytype_breakdown_electricity:
+      title:
+      - ''
+    accounting_cost_daytype_breakdown_gas:
+      title:
+      - 'Breakdown by type of day/time: Gas'
+    activities_14_days_daytype_electricity_cost:
+      title:
+      - Last 14 days electricity costs
+    activities_14_days_daytype_gas_cost:
+      title:
+      - Last 14 days gas costs
+    activities_2_weeks_daytype_electricity_cost:
+      title:
+      - Last 2 weeks electricity costs
+    activities_2_weeks_daytype_gas_cost:
+      title:
+      - Last 2 weeks gas costs
+    activities_school_day_electricity_cost:
+      title:
+      - School day electricity cost
+    activities_school_day_gas_cost:
+      title:
+      - School day gas cost
+    activities_weekend_day_electricity_cost:
+      title:
+      - Weekend day electricity cost
+    activities_weekend_day_gas_cost:
+      title:
+      - Weekend day gas cost
+    adhoc_test_chart:
+      title:
+      - Adhoc chart test
+    adult_dashboard_drilldown_last_2_weeks_electricity_comparison:
+      title:
+      - Comparison of last 2 school weeks electricity consumption
+    alert_1_year_baseload:
+      title:
+      - Baseload kW - last year
+    alert_daytype_breakdown_electricity:
+      title:
+      - 'Breakdown by type of day/time: Electricity'
+    alert_daytype_breakdown_gas:
+      title:
+      - 'Breakdown by type of day/time: Gas'
+    alert_daytype_breakdown_storage_heater:
+      title:
+      - 'Breakdown by type of day/time: Storage Heaters'
+    alert_gas_heating_season_intraday:
+      title:
+      - Intraday Gas Consumption (during heating season)
+    alert_group_by_week_electricity:
+      title:
+      - 'By Week: Electricity'
+    alert_group_by_week_electricity_14_months:
+      title:
+      - 'By Week: Electricity'
+    alert_group_by_week_electricity_4_months:
+      title:
+      - 'By Week: Electricity'
+    alert_group_by_week_gas:
+      title:
+      - 'By Week: Gas'
+    alert_group_by_week_gas_14_months:
+      title:
+      - 'By Week: Gas'
+    alert_group_by_week_gas_4_months:
+      title:
+      - 'By Week: Gas'
+    alert_group_by_week_storage_heaters:
+      title:
+      - 'By Week: Storage Heaters'
+    alert_intraday_line_school_days_last5weeks:
+      title:
+      - Intraday (Last 5 weeks comparison - school day)
+    alert_intraday_line_school_last7days:
+      title:
+      - Intraday (Last 5 weeks comparison - school day)
+    alert_last_2_weeks_gas_comparison_temperature_compensated:
+      title:
+      - Comparison of last 2 weeks gas consumption - adjusted for outside temperature
+    alert_last_7_days_intraday_gas_heating_on_too_early:
+      title:
+      - Intraday (last 7 days) gas
+    alert_week_on_week_electricity_daily_electricity_comparison_chart:
+      title:
+      - Comparison of last 2 weeks electricity consumption
+    alert_weekend_last_week_gas_datetime_kw:
+      title:
+      - Last weeks half hourly gas consumption (kW)
+    alert_weekend_last_week_gas_datetime_kwh:
+      title:
+      - Last weeks half hourly gas consumption (kWh)
+    alert_weekend_last_week_gas_datetime_£:
+      title:
+      - ''
+    baseload:
+      title:
+      - Baseload kW
+    baseload_lastyear:
+      title:
+      - Baseload kW - last year
+    baseload_versus_benchmarks:
+      title:
+      - Baseload kW
+    benchmark:
+      title:
+      - Annual Electricity and Gas Consumption Comparison with other schools in your region
+    benchmark_co2:
+      title:
+      - School Carbon Emissions from Electricity and Gas Usage
+    benchmark_electric:
+      title:
+      - Benchmark Comparison (Annual Electricity Consumption)
+    benchmark_electric_only_£:
+      title:
+      - Annual Electricity and Gas Consumption Comparison with other schools in your region
+    benchmark_gas_only_£:
+      title:
+      - Annual Electricity and Gas Consumption Comparison with other schools in your region
+    benchmark_kwh:
+      title:
+      - Annual Electricity and Gas Consumption Comparison with other schools in your region
+    benchmark_kwh_electric_only:
+      title:
+      - Annual Electricity and Gas Consumption Comparison with other schools in your region
+    benchmark_storage_heater_only_£:
+      title:
+      - Annual Electricity and Gas Consumption Comparison with other schools in your region
+    boiler_start_time:
+      title:
+      - Boiler start time
+    boiler_start_time_up_to_one_year:
+      title:
+      - 'Boiler start time: in last year'
+    boiler_start_time_up_to_one_year_no_frost:
+      title:
+      - Boiler start time on non frosty mornings
+    calendar_picker_electricity_day_chart:
+      title:
+      - Calendar picker electricity day chart
+    calendar_picker_electricity_day_example_comparison_chart:
+      title:
+      - Calendar picker electricity example day comparison chart
+    calendar_picker_electricity_day_example_meter_breakdown_chart:
+      title:
+      - Calendar picker electricity example meter breakdown chart
+    calendar_picker_electricity_day_example_meter_breakdown_comparison_chart:
+      title:
+      - Calendar picker electricity example meter breakdown chart
+    calendar_picker_electricity_week_chart:
+      title:
+      - Calendar picker electricity week chart
+    calendar_picker_electricity_week_example_comparison_chart:
+      title:
+      - Calendar picker electricity example week comparison chart
+    calendar_picker_gas_day_chart:
+      title:
+      - Calendar picker gas day chart
+    calendar_picker_gas_day_example_comparison_chart:
+      title:
+      - Calendar picker gas example day comparison chart
+    calendar_picker_gas_week_chart:
+      title:
+      - Calendar picker gas week chart
+    calendar_picker_gas_week_example_comparison_chart:
+      title:
+      - Calendar picker gas example week comparison chart
+    calendar_picker_storage_heater_day_chart:
+      title:
+      - Calendar picker storage heater day chart
+    calendar_picker_storage_heaters_week_chart:
+      title:
+      - Calendar picker storage heaters week chart
+    community_use_test_electricity:
+      title:
+      - Community use test chart electricity
+    community_use_test_electricity_community_use_only:
+      title:
+      - Community use test chart electricity community use only
+    community_use_test_electricity_community_use_only_aggregated:
+      title:
+      - Community use test chart electricity community use only aggregated - series name = community
+    community_use_test_electricity_school_use_only:
+      title:
+      - Community use test chart electricity school use only
+    community_use_test_gas:
+      title:
+      - Community use test chart gas
+    cusum:
+      title:
+      - Weekly CUSUM - divergence from modelled gas consumption
+    cusum_simple:
+      title:
+      - 'CUSUM: simple model'
+    cusum_thermal_mass:
+      title:
+      - 'CUSUM: thermal mass model model'
+    cusum_weekly:
+      title:
+      - Weekly CUSUM - divergence from modelled gas consumption
+    cusum_weekly_best_model:
+      title:
+      - Weekly CUSUM - divergence from modelled gas consumption
+    daytype_breakdown_combined_fuels:
+      title:
+      - 'Breakdown by type of day/time: Gas'
+    daytype_breakdown_electricity:
+      title:
+      - 'Breakdown by type of day/time: Electricity'
+    daytype_breakdown_electricity_tolerant:
+      title:
+      - 'Breakdown by type of day/time: Electricity'
+    daytype_breakdown_gas:
+      title:
+      - 'Breakdown by type of day/time: Gas'
+    daytype_breakdown_gas_tolerant:
+      title:
+      - 'Breakdown by type of day/time: Gas'
+    electricity_1_year_intraday_accounting_breakdown:
+      title:
+      - Electricity costs for last year by time of day (accounting costs)
+    electricity_1_year_intraday_kwh_breakdown:
+      title:
+      - Electricity kWh usage intraday for last year for comparison with accounting version above
+    electricity_2_week_accounting_breakdown:
+      title:
+      - Electricity accounting cost breakdown by day for last 2 weeks
+    electricity_baseload_by_day_of_week:
+      title:
+      - Electricity Use By Day of the Week
+    electricity_by_datetime:
+      title:
+      - 'By Time: Electricity'
+    electricity_by_datetime_line_kw:
+      title:
+      - 'By Time: Electricity'
+    electricity_by_day:
+      title:
+      - 'By Day: Electricity'
+    electricity_by_day_of_week:
+      title:
+      - Electricity Use By Day of the Week
+    electricity_by_day_of_week_tolerant:
+      title:
+      - Electricity Use By Day of the Week
+    electricity_by_day_of_week_tolerant_versus_benchmarks:
+      title:
+      - Electricity Use By Day of the Week
+    electricity_by_month_acyear_0_1:
+      title:
+      - Electricity Use By Month (previous 2 academic years)
+    electricity_by_month_year_0_1:
+      title:
+      - Electricity Use By Month (last 2 years)
+    electricity_by_month_year_0_1_finance_advice:
+      title:
+      - Energy Costs
+    electricity_co2_last_7_days_with_co2_intensity:
+      title:
+      - Variation in the electricity carbon emissions of your school over the last week
+    electricity_co2_last_7_days_with_co2_intensity_unmodified:
+      title:
+      - The carbon emissions of your school and the carbon intensity of the National Electricity Grid over the last year
+    electricity_co2_last_year_weekly_with_co2_intensity:
+      title:
+      - The carbon emissions of your school and the carbon intensity of the National Electricity Grid over the last year
+    electricity_co2_last_year_weekly_with_co2_intensity_co2_only:
+      title:
+      - The carbon emissions of your school and the carbon intensity of the National Electricity Grid over the last year
+    electricity_co2_last_year_weekly_with_co2_intensity_unmodified:
+      title:
+      - The carbon emissions of your school and the carbon intensity of the National Electricity Grid over the last year
+    electricity_cost_1_year_accounting_breakdown:
+      title:
+      - Energy Costs
+    electricity_cost_1_year_accounting_breakdown_group_by_day:
+      title:
+      - ''
+    electricity_cost_1_year_accounting_breakdown_group_by_week:
+      title:
+      - ''
+    electricity_cost_comparison_1_year_accounting_breakdown_by_week:
+      title:
+      - Electricity accounting cost breakdown by week for the last year
+    electricity_cost_comparison_last_2_years:
+      title:
+      - Electricity Use By Month (last 2 years)
+    electricity_cost_comparison_last_2_years_accounting:
+      title:
+      - ''
+    electricity_cost_comparison_last_2_years_accounting_breakdown:
+      title:
+      - Energy Costs
+    electricity_intraday_line_school_last7days_carbon:
+      title:
+      - Intraday (last 7 days)
+    electricity_intraday_line_school_last7days_co2_commentary:
+      title:
+      - Intraday (last 7 days)
+    electricity_kwh_last_7_days_with_co2_intensity:
+      title:
+      - Variation in the electricity carbon emissions of your school over the last week
+    electricity_kwh_last_7_days_with_co2_intensity_unmodified:
+      title:
+      - ''
+    electricity_longterm_trend:
+      title:
+      - 'Electricity: long term trends'
+    electricity_longterm_trend_carbon:
+      title:
+      - 'Electricity: long term trends'
+    electricity_longterm_trend_carbon_unmodified:
+      title:
+      - 'Electricity: long term trends'
+    electricity_longterm_trend_kwh_with_carbon:
+      title:
+      - Your schools electricity consumption over the last few years
+    electricity_longterm_trend_kwh_with_carbon_unmodified:
+      title:
+      - Your schools electricity consumption over the last few years
+    frost:
+      title:
+      - 'Frost Protection: cold weekend'
+    frost_1:
+      title:
+      - Frost Protection Example Sunday 1
+    frost_2:
+      title:
+      - Frost Protection Example Sunday 2
+    frost_3:
+      title:
+      - Frost Protection Example Sunday 3
+    gas_1_year_intraday_accounting_breakdown:
+      title:
+      - Gas costs for last year by time of day (accounting costs)
+    gas_1_year_intraday_economic_breakdown:
+      title:
+      - Gas costs for last year by time of day (economic costs)
+    gas_1_year_intraday_kwh_breakdown:
+      title:
+      - Gas kWh usage intraday for last year for comparison with accounting version above
+    gas_by_day_of_week:
+      title:
+      - Gas Use By Day of the Week
+    gas_by_day_of_week_model_fitting:
+      title:
+      - Gas Use By Day of the Week
+    gas_by_day_of_week_tolerant:
+      title:
+      - Gas Use By Day of the Week
+    gas_by_month_year_0_1:
+      title:
+      - Gas Use By Month (last 2 years)
+    gas_by_month_year_0_1_finance_advice:
+      title:
+      - Gas Costs
+    gas_cost_1_year_accounting_breakdown:
+      title:
+      - ''
+    gas_cost_comparison_1_year_accounting_breakdown_by_week:
+      title:
+      - Gas accounting cost breakdown by week for the last year
+    gas_cost_comparison_1_year_economic_breakdown_by_week:
+      title:
+      - Gas economic cost breakdown by week for the last year
+    gas_cost_comparison_last_2_years_accounting:
+      title:
+      - ''
+    gas_cost_comparison_last_2_years_accounting_breakdown:
+      title:
+      - Gas accounting cost by month for the last year
+    gas_heating_season_intraday:
+      title:
+      - Intraday Gas Consumption (during heating season)
+    gas_heating_season_intraday_up_to_1_year:
+      title:
+      - Intraday Gas Consumption (during heating season)
+    gas_heating_season_intraday_£:
+      title:
+      - Intraday Gas Consumption (during heating season)
+    gas_intraday_schoolday_last_year:
+      title:
+      - Intra-school day gas consumption profile
+    gas_latest_academic_years:
+      title:
+      - Gas Use Over Last Few Academic Years
+    gas_latest_years:
+      title:
+      - Gas Use Over Last Few Years (to date)
+    gas_longterm_trend:
+      title:
+      - 'Gas: long term trends'
+    gas_longterm_trend_carbon:
+      title:
+      - 'Gas: long term trends'
+    gas_longterm_trend_kwh_with_carbon:
+      title:
+      - Your School Gas Carbon Emissions over the last few years
+    gas_longterm_trend_model_fitting:
+      title:
+      - 'Gas: long term trends'
+    gridcarbon_test:
+      title:
+      - Grid Carbon Y2 axis check
+    group_by_week_carbon:
+      title:
+      - Calculating your schools total carbon emissions, including transport and food
+    group_by_week_electricity:
+      title:
+      - 'By Week: Electricity'
+    group_by_week_electricity_dd:
+      title:
+      - 'By Week: Electricity'
+    group_by_week_electricity_meter_breakdown:
+      title:
+      - 'By Week: Electricity (Meter Breakdown)'
+    group_by_week_electricity_meter_breakdown_one_year:
+      title:
+      - 'By Week: Electricity (Meter Breakdown)'
+    group_by_week_electricity_unlimited:
+      title:
+      - 'By Week: Electricity (multi-year)'
+    group_by_week_electricity_versus_benchmark:
+      title:
+      - 'By Week: Electricity - compared with benchmark'
+    group_by_week_electricity_versus_benchmark_line:
+      title:
+      - 'By Week: Electricity - compared with benchmark'
+    group_by_week_electricity_versus_benchmark_line_on_y2:
+      title:
+      - 'By Week: Electricity - compared with benchmark'
+    group_by_week_gas:
+      title:
+      - 'By Week: Gas'
+    group_by_week_gas_co2_floor_area:
+      title:
+      - 'By Week: Gas'
+    group_by_week_gas_kw:
+      title:
+      - 'By Week: Gas'
+    group_by_week_gas_kwh:
+      title:
+      - 'By Week: Gas'
+    group_by_week_gas_kwh_pupil:
+      title:
+      - 'By Week: Gas'
+    group_by_week_gas_library_books:
+      title:
+      - 'By Week: Gas'
+    group_by_week_gas_meter_breakdown:
+      title:
+      - 'By Week: Gas (Meter Breakdown)'
+    group_by_week_gas_meter_breakdown_one_year:
+      title:
+      - 'By Week: Gas (Meter Breakdown)'
+    group_by_week_gas_model_fitting_one_year:
+      title:
+      - 'By Week: Gas (1 year)'
+    group_by_week_gas_model_fitting_unlimited:
+      title:
+      - 'By Week: Gas (all data)'
+    group_by_week_gas_unlimited:
+      title:
+      - 'By Week: Gas (multi-year)'
+    group_by_week_gas_versus_benchmark:
+      title:
+      - 'By Week: Gas - compared with benchmark'
+    group_by_year_gas_unlimited_meter_breakdown_heating_model_fitter:
+      title:
+      - Gas meter breakdown by year
+    heating_on_by_week_with_breakdown:
+      title:
+      - Heating season analysis
+    heating_on_by_week_with_breakdown_school_day_only:
+      title:
+      - Heating season analysis
+    heating_on_by_week_with_breakdown_storage_heaters:
+      title:
+      - Heating season analysis
+    heating_on_off_by_week:
+      title:
+      - Heating season analysis
+    heating_on_off_by_week_heating_school_days_and_holidays_only:
+      title:
+      - Heating season analysis
+    heating_on_off_by_week_heating_school_non_school_days_only:
+      title:
+      - Heating season analysis
+    heating_on_off_by_week_storage_heater:
+      title:
+      - How many days the heating is left on during the year
+    heating_on_off_by_week_with_breakdown_all:
+      title:
+      - Heating season analysis
+    heating_on_off_pie_chart:
+      title:
+      - Heating versus non-heating day gas consumption
+    hot_water_kitchen_on_off_by_week_with_breakdown:
+      title:
+      - Heating season analysis
+    hotwater:
+      title:
+      - Hot Water Analysis
+    hotwater_alert:
+      title:
+      - Hot Water Analysis
+    intraday_line_holidays:
+      title:
+      - Intraday (holidays)
+    intraday_line_school_days:
+      title:
+      - Intraday (school days) - comparison of last 2 years
+    intraday_line_school_days_6months:
+      title:
+      - Intraday (Comparison 6 months apart)
+    intraday_line_school_days_gas_reduced_data_versus_benchmarks:
+      title:
+      - 'By Week: Gas - compared with benchmark - intraday'
+    intraday_line_school_days_last5weeks:
+      title:
+      - Intraday (Last 5 weeks comparison - school day)
+    intraday_line_school_days_reduced_data:
+      title:
+      - Intraday (school days) - comparison of last 2 years
+    intraday_line_school_days_reduced_data_versus_benchmarks:
+      title:
+      - Comparison of intraday consumption with benchmarks
+    intraday_line_school_last7days:
+      title:
+      - Intraday (last 7 days)
+    intraday_line_school_last7days_storage_heaters:
+      title:
+      - Last 7 days storage heater power consumption
+    intraday_line_weekends:
+      title:
+      - Intraday (weekends)
+    irradiance_test:
+      title:
+      - Solar Irradiance Y2 axis check
+    last_2_school_weeks_electricity_comparison_alert:
+      title:
+      - Comparison of last 2 school weeks electricity consumption
+    last_2_weeks_carbon_emissions:
+      title:
+      - Last 2 weeks carbon emissions at your school from electricity and gas
+    last_2_weeks_gas:
+      title:
+      - Last 2 weeks gas consumption (with temperature)
+    last_2_weeks_gas_comparison:
+      title:
+      - Comparison of last 2 weeks gas consumption
+    last_2_weeks_gas_comparison_temperature_compensated:
+      title:
+      - Comparison of last 2 weeks gas consumption - adjusted for outside temperature
+    last_2_weeks_gas_degreedays:
+      title:
+      - Last 2 weeks gas consumption (with degree days)
+    last_4_weeks_gas_temperature_compensated:
+      title:
+      - Last 4 weeks gas consumption - adjusted for outside temperature
+    last_7_days_intraday_gas:
+      title:
+      - Intraday (last 7 days) gas
+    management_dashboard_group_by_month_solar_pv:
+      title:
+      - Analysis of your school’s solar PV panels
+    management_dashboard_group_by_month_solar_pv_unlimited:
+      title:
+      - Analysis of your school’s solar PV panels
+    management_dashboard_group_by_week_electricity:
+      title:
+      - 'By Week: Electricity'
+    management_dashboard_group_by_week_gas:
+      title:
+      - 'By Week: Gas'
+    management_dashboard_group_by_week_storage_heater:
+      title:
+      - Information on your school’s storage heater electricity consumption
+    meter_breakdown_pie_1_year:
+      title:
+      - 'Breakdown by meter (this year): Gas'
+    optimum_start:
+      title:
+      - Optimum Start Control Check
+    peak_kw:
+      title:
+      - Peak daily power consumption (kW)
+    pie_chart_1_year_accounting_breakdown:
+      title:
+      - ''
+    pupil_dashboard_baseload_lastyear:
+      title:
+      - Your school's electricity baseload. This is power used when the school is empty (kW)
+      - Electricity power consumption on your chosen day (in kW)
+    pupil_dashboard_daytype_breakdown_electricity:
+      title:
+      - When your school used electricity over the past year. School day closed is the electricity used in the evenings and early mornings during term time.
+    pupil_dashboard_daytype_breakdown_gas:
+      title:
+      - When your school used gas over the past year. School day closed is the gas used in the evenings and early mornings during term time.
+    pupil_dashboard_daytype_breakdown_storage_heaters:
+      title:
+      - When your school used storage heaters over the past year. School day closed is the storage heaters used in the evenings and early mornings during term time.
+    pupil_dashboard_electricity_benchmark:
+      title:
+      - How much my school spends on electricity in comparison with other schools (£)
+    pupil_dashboard_electricity_longterm_trend_£:
+      title:
+      - Your school's long term electricity costs (£). Each bar shows a year's costs.
+      - Your school's electricity costs over a year (in £). Each bar shows a week's costs.
+      - Electricity costs in your chosen week (in £)
+      - Electricity costs on your chosen day (in £)
+    pupil_dashboard_gas_benchmark:
+      title:
+      - How much my school spends on gas in comparison with other schools (£)
+    pupil_dashboard_gas_longterm_trend_£:
+      title:
+      - Your school's long term gas costs (£). Each bar shows a year's costs.
+      - Your school's gas costs over a year (in £). Each bar shows a week's costs.
+      - Gas costs in your chosen week (in £)
+      - Gas costs on your chosen day (in £)
+    pupil_dashboard_group_by_week_electricity_co2:
+      title:
+      - Your school's carbon emissions from electricity use over a year (in kg CO2). Each bar shows a week's emissions.
+      - Electricity carbon emissions in your chosen week (in kg CO2)
+      - Electricity carbon emissions on your chosen day (in kg CO2)
+    pupil_dashboard_group_by_week_electricity_kwh:
+      title:
+      - Your school's electricity use over a year (in kWh). Each bar shows a week's use
+      - Electricity costs in your chosen week (in £)
+      - Electricity costs on your chosen day (in £)
+    pupil_dashboard_group_by_week_electricity_£:
+      title:
+      - Your school's electricity costs over a year (in £). Each bar shows a week's costs.
+      - Electricity costs in your chosen week (in £)
+      - Electricity costs on your chosen day (in £)
+    pupil_dashboard_group_by_week_gas_co2:
+      title:
+      - Your school's carbon emissions from gas use over a year (in kg CO2). Each bar shows a week's emissions.
+      - Gas carbon emissions in your chosen week (in kg CO2)
+      - Gas carbon emissions on your chosen day (in kg CO2)
+    pupil_dashboard_group_by_week_gas_kwh:
+      title:
+      - Your school's gas use over a year (in kWh). Each bar shows a week's use.
+      - Gas use in your chosen week (in kWh)
+      - Gas use on your chosen day (in kWh)
+    pupil_dashboard_group_by_week_gas_£:
+      title:
+      - Your school's gas costs over a year (in £). Each bar shows a week's costs.
+      - Gas costs in your chosen week (in £)
+      - Gas costs on your chosen day (in £)
+    pupil_dashboard_group_by_week_storage_heaters_co2:
+      title:
+      - Your school's carbon emissions from storage heater use over a year (in kg CO2). Each bar shows a week's emissions.
+      - Storage heater carbon emissions in your chosen week (in kg CO2)
+      - Storage heater carbon emissions on your chosen day (in kg CO2)
+    pupil_dashboard_group_by_week_storage_heaters_kwh:
+      title:
+      - Your school's storage heater use over a year (in kWh). Each bar shows a week's use.
+      - Storage heater use in your chosen week (in kWh)
+      - Storage heater use on your chosen day (in kWh)
+    pupil_dashboard_group_by_week_storage_heaters_£:
+      title:
+      - Your school's storage heater costs over a year (in £). Each bar shows a week's costs.
+      - Storage heater costs in your chosen week (in £)
+      - Storage heater costs on your chosen day (in £)
+    pupil_dashboard_intraday_line_electricity_last7days:
+      title:
+      - Your school's electricity use over 7 days (kW)
+    pupil_dashboard_intraday_line_gas_last7days:
+      title:
+      - Your school's gas use over 7 days (kW)
+    pupil_dashboard_intraday_line_storage_heaters_last7days:
+      title:
+      - Your school's storage heaters use over 7 days (kW)
+    pupil_dashboard_solar_pv_benchmark:
+      title:
+      - How much my school spends on electricity in comparison with other schools (£)
+    pupil_dashboard_solar_pv_monthly:
+      title:
+      - How my school's solar PV panels reduce my school's mains electricity consumption (kWh)
+      - Impact of Solar PV in your chosen month (in kWh)
+      - Impact of Solar PV on your chosen day (in kWh)
+    pupil_dashboard_solar_pv_one_week_by_day:
+      title:
+      - Solar PV for last week
+    pupil_dashboard_solar_pv_one_week_by_day_previous_week:
+      title:
+      - Solar PV for previous week
+    pupil_dashboard_storage_heaters_benchmark:
+      title:
+      - How much my school spends on storage heating in comparison with other schools (£)
+    pupil_dashboard_storage_heaters_longterm_trend_£:
+      title:
+      - Your school's long term storage heaters costs (£). Each bar shows a year's costs.
+      - Your school's storage heaters costs over a year (in £). Each bar shows a week's costs.
+      - Storage heater costs in your chosen week (in £)
+      - Storage heater costs on your chosen day (in £)
+    recent_holiday_electricity_comparison_alert:
+      title:
+      - Comparison of electricity consumption for recent holidays
+    schoolweek_alert_2_previous_holiday_comparison_gas_adjusted:
+      title:
+      - Comparison of last 2 weeks gas consumption - temperature adjusted alert calculation
+    schoolweek_alert_2_week_comparison_for_internal_calculation_gas_adjusted:
+      title:
+      - Comparison of last 2 weeks gas consumption - temperature adjusted alert calculation
+    schoolweek_alert_2_week_comparison_for_internal_calculation_gas_adjusted_community_only:
+      title:
+      - Comparison of last 2 weeks gas consumption - temperature adjusted alert calculation, community use only
+    schoolweek_alert_2_week_comparison_for_internal_calculation_gas_unadjusted:
+      title:
+      - Comparison of last 2 weeks gas consumption - unadjusted alert calculation
+    schoolweek_alert_2_week_comparison_for_internal_calculation_gas_unadjusted_community_only:
+      title:
+      - Comparison of last 2 weeks gas consumption - temperature unadjusted alert calculation, community use only
+    seasonal_simple_school_day_non_heating_non_regression:
+      title:
+      - Thermostatic (School Day) - heating - non-heating separation non regression
+    seasonal_simple_school_day_non_heating_regression:
+      title:
+      - Thermostatic (School Day) - heating - non-heating separation regression
+    seasonal_simple_school_day_non_heating_regression_covid_tolerant:
+      title:
+      - Thermostatic (School Day) - heating - non-heating separation regression, covid tolerant
+    solar_pv_group_by_month:
+      title:
+      - Analysis of your school’s solar PV panels
+    solar_pv_group_by_month_dashboard_overview:
+      title:
+      - Analysis of your school’s solar PV panels
+    solar_pv_group_by_week:
+      title:
+      - Solar PV by week of the year
+    solar_pv_group_by_week_by_submeter:
+      title:
+      - Solar PV by week of the year
+    solar_pv_last_7_days_by_submeter:
+      title:
+      - The last 7 days of your school’s electricity consumption
+    solar_pv_single_day_adhoc_test:
+      title:
+      - adhoc single day solar PV test chart
+    storage_heater_by_day_of_week:
+      title:
+      - Storage heater usage by day of the week
+    storage_heater_by_day_of_week_tolerant:
+      title:
+      - Storage heater usage by day of the week
+    storage_heater_group_by_week:
+      title:
+      - Information on your school’s storage heater electricity consumption
+    storage_heater_group_by_week_long_term:
+      title:
+      - Storage heater electricity consumption over a longer time period
+    storage_heater_intraday_current_year:
+      title:
+      - Storage heater power consumption
+    storage_heater_intraday_current_year_kw:
+      title:
+      - Storage heater intraday profile (kw) for year to date
+    storage_heater_thermostatic:
+      title:
+      - Thermostatic control
+    targeting_and_tracking_standard_group_by_week_electricity:
+      title:
+      - Standard <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_standard_group_by_week_gas:
+      title:
+      - Standard <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_standard_group_by_week_storage_heater:
+      title:
+      - Standard <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_synthetic_target_group_by_week_electricity:
+      title:
+      - Historic and or synthetic target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_synthetic_target_group_by_week_gas:
+      title:
+      - Historic and or synthetic target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_synthetic_target_group_by_week_storage_heater:
+      title:
+      - Historic and or synthetic target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_target_only_group_by_week_electricity:
+      title:
+      - Target only <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_target_only_group_by_week_gas:
+      title:
+      - Target only <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_target_only_group_by_week_storage_heater:
+      title:
+      - Target only <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_unscaled_target_group_by_week_electricity:
+      title:
+      - Unscaled target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_unscaled_target_group_by_week_gas:
+      title:
+      - Unscaled target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
+      title:
+      - Unscaled target <%= meter.fuel_type %> group by week chart (<%= total_kwh %> kWh)
+    targeting_and_tracking_weekly_electricity_one_year_cumulative_line:
+      title:
+      - Weekly progress versus target to date
+    targeting_and_tracking_weekly_electricity_one_year_line:
+      title:
+      - Weekly progress versus target to date
+    targeting_and_tracking_weekly_electricity_to_date_cumulative_line:
+      title:
+      - Cumulative progress versus target
+    targeting_and_tracking_weekly_electricity_to_date_line:
+      title:
+      - Weekly progress versus target
+    targeting_and_tracking_weekly_gas_one_year_line:
+      title:
+      - Weekly progress versus target to date
+    targeting_and_tracking_weekly_gas_to_date_cumulative_line:
+      title:
+      - Cumulative progress versus target
+    targeting_and_tracking_weekly_gas_to_date_line:
+      title:
+      - Weekly progress versus target
+    targeting_and_tracking_weekly_storage_heater_one_year_line:
+      title:
+      - Weekly progress versus target to date
+    targeting_and_tracking_weekly_storage_heater_to_date_cumulative_line:
+      title:
+      - Cumulative progress versus target
+    targeting_and_tracking_weekly_storage_heater_to_date_line:
+      title:
+      - Weekly progress versus target
+    teachers_landing_page_electricity:
+      title:
+      - Comparison of last 2 weeks electricity consumption
+    teachers_landing_page_gas:
+      title:
+      - Comparison of last 2 weeks gas consumption - adjusted for outside temperature
+    teachers_landing_page_gas_simple:
+      title:
+      - Comparison of last 2 weeks gas consumption
+    teachers_landing_page_storage_heaters:
+      title:
+      - Comparison of last 2 weeks gas consumption - adjusted for outside temperature
+    teachers_landing_page_storage_heaters_simple:
+      title:
+      - Comparison of last 2 weeks gas consumption
+    temp_test:
+      title:
+      - 'By Week: Electricity (Meter Breakdown)'
+    temp_test2:
+      title:
+      - 'By Week: Electricity (Meter Breakdown)'
+    thermostatic:
+      title:
+      - Thermostatic (Temperature v. Daily Consumption - current year)
+    thermostatic_control_large_diurnal_range:
+      title:
+      - Thermostatic Control Large Diurnal Range Assessment
+    thermostatic_control_large_diurnal_range_1:
+      title:
+      - Thermostatic Control Large Diurnal Range Assessment 1
+    thermostatic_control_large_diurnal_range_2:
+      title:
+      - Thermostatic Control Large Diurnal Range Assessment 2
+    thermostatic_control_large_diurnal_range_3:
+      title:
+      - Thermostatic Control Large Diurnal Range Assessment 3
+    thermostatic_control_medium_diurnal_range:
+      title:
+      - Thermostatic Control Medium Diurnal Range Assessment
+    thermostatic_model_by_week:
+      title:
+      - Thermostatic model type by week
+    thermostatic_model_categories_pie_chart:
+      title:
+      - Categorised consumption by model
+    thermostatic_non_best:
+      title:
+      - Thermostatic (Days of minimal consumption)
+    thermostatic_non_heating_deprecated:
+      title:
+      - Thermostatic (Non Heating Season, School Day)
+    thermostatic_regression:
+      title:
+      - Thermostatic (Regression_Model Testing)
+    thermostatic_regression_simple_all:
+      title:
+      - Thermostatic (All Categories) - simple model
+    thermostatic_regression_simple_school_day:
+      title:
+      - Thermostatic (School Day) - simple model
+    thermostatic_regression_simple_school_day_non_heating_non_regression:
+      title:
+      - Thermostatic (School Day) - heating - non-heating separation non regression
+    thermostatic_regression_simple_school_day_non_heating_regression:
+      title:
+      - Thermostatic (School Day) - heating - non-heating separation regression
+    thermostatic_regression_simple_school_day_non_heating_regression_covid_tolerant:
+      title:
+      - Thermostatic (School Day) - heating - non-heating separation regression, covid tolerant
+    thermostatic_regression_thermally_massive_all:
+      title:
+      - Thermostatic (All Categories) - thermally massive model
+    thermostatic_regression_thermally_massive_school_day:
+      title:
+      - Thermostatic (School Day) - thermally massive model
+    thermostatic_summer_school_day_holiday_best:
+      title:
+      - Thermostatic (Summer Weekend and Holiday)
+    thermostatic_summer_weekend_best:
+      title:
+      - Thermostatic (Summer Weekend and Holiday)
+    thermostatic_up_to_1_year:
+      title:
+      - Thermostatic (Temperature v. Daily Consumption)
+    thermostatic_winter_holiday_best:
+      title:
+      - Thermostatic (Winter Holiday)
+    thermostatic_winter_weekend_best:
+      title:
+      - Thermostatic (Winter Weekend)
+    y_axis_label_name:
+      co2: kg CO2
+      days: days
+      kw: kW
+      kwh: kWh
+      percent: percent
+      percent_0dp: percent
+      r2: ''
+      relative_percent: percent
+      relative_percent_0dp: percent
+      timeofday: Time of day
+      values: values
+      w: W
+      "£": "£"
+      "£_0dp": "£"

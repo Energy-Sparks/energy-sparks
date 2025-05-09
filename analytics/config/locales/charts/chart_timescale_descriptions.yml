@@ -1,0 +1,23 @@
+---
+en:
+  charts:
+    timescale_name:
+      academicyear: academic year
+      daterange: date range
+      day: day
+      diurnal: day with large diurnal range
+      frostday: frosty day
+      frostday_3: frosty day
+      holiday: holiday
+      hotwater: summer period with hot water usage
+      includeholiday: holiday
+      month: month
+      n_weeks: "%{count} weeks"
+      optimum_start: optimum start example day
+      period: period
+      schoolweek: school week
+      up_to_a_year: year
+      week: week
+      workweek: week
+      year: year
+      years: long term
