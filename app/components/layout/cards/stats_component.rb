@@ -6,7 +6,7 @@ module Layout
         Elements::HeaderComponent.new(**{ level: 5, classes: 'mt-2' }.merge(kwargs))
       end
       renders_one :figure, ->(figure, **kwargs) { Elements::HeaderComponent.new(**{ title: figure, level: 2, classes: 'figure text-complement' }.merge(kwargs)) }
-      renders_one :subtext, ->(**kwargs) { Elements::TagComponent.new(:p, **{ classes: 'very-small text-complement' }.merge(kwargs)) }
+      renders_one :subtext, ->(**kwargs) { Elements::TagComponent.new(:p, **{ classes: 'small text-complement' }.merge(kwargs)) }
 
       def initialize(**_kwargs)
         super
