@@ -26,6 +26,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_093955) do
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
+  create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
+  create_enum "meter_monthly_summary_type", ["consumption", "generation", "self_consume", "export"]
   create_enum "meter_perse_api", ["half_hourly"]
 
   create_table "academic_years", force: :cascade do |t|
@@ -1306,6 +1308,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_093955) do
     t.bigint "deleted_by_id"
     t.bigint "created_by_id"
     t.index ["meter_id"], name: "index_meter_attributes_on_meter_id"
+  end
+
+  create_table "meter_monthly_summaries", force: :cascade do |t|
+    t.bigint "meter_id", null: false
+    t.integer "year", null: false
+    t.enum "type", null: false, enum_type: "meter_monthly_summary_type"
+    t.float "consumption", null: false, array: true
+    t.enum "quality", null: false, array: true, enum_type: "meter_monthly_summary_quality"
+    t.float "total", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meter_id", "year", "type"], name: "index_meter_monthly_summaries_on_meter_id_and_year_and_type", unique: true
+    t.index ["meter_id"], name: "index_meter_monthly_summaries_on_meter_id"
   end
 
   create_table "meter_reviews", force: :cascade do |t|
