@@ -11,10 +11,8 @@ class YAxisScaling
   attr_reader :units, :scaling_factors
 
   def initialize
-    # rubocop:disable Style/ClassVars, Metrics/LineLength, Lint/UnneededDisable
-    @@units = %i[kwh kw co2 £ £current library_books]
-    @@scaling_factors = %i[none per_pupil per_floor_area per_200_pupils per_1000_pupils]
-    # rubocop:enable Style/ClassVars, Metrics/LineLength, Lint/UnneededDisable
+    @@units = %i[kwh kw co2 £ £current library_books] # rubocop:disable Style/ClassVars
+    @@scaling_factors = %i[none per_pupil per_floor_area per_200_pupils per_1000_pupils] # rubocop:disable Style/ClassVars
   end
 
   def self.unit_description(unit, scaling_factor_type, value)
