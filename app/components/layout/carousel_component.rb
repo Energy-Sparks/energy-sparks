@@ -17,8 +17,10 @@ module Layout
       super
       @show_arrows = show_arrows
       @show_markers = show_markers
+    end
 
-      add_classes('side') if show_arrows == :side
+    def before_render
+      add_classes('side') if show_arrows == :side && panels.length > 1
     end
 
     def show_markers?

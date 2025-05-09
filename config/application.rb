@@ -57,7 +57,6 @@ module EnergySparks
     # See https://github.com/bensheldon/good_job#configuration-options
     config.good_job.max_threads = 5
     config.good_job.cleanup_preserved_jobs_before_seconds_ago = 30.days.to_i # default 14 days
-    config.good_job.smaller_number_is_higher_priority = true
     config.i18n.available_locales = [:en, :cy]
     config.i18n.default_locale = :en
     config.i18n.enforce_available_locales = true
