@@ -41,9 +41,13 @@ class AggregateSchoolService
   # To avoid fetching the item from disk twice for the common case, we just
   # attempt to fetch the item here.
   def in_cache?
-    # Fetch but do not aggregate
-    @meter_collection = Rails.cache.fetch(cache_key)
-    @meter_collection != nil
+    if Rails.cache.respond_to?(:exists_on_disk?)
+      Rails.cache.exists_on_disk?(cache_key)
+    else
+      # Fetch but do not aggregate
+      @meter_collection = Rails.cache.fetch(cache_key)
+      @meter_collection != nil
+    end
   end
 
   def in_cache_or_cache_off?
