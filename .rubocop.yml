@@ -384,25 +384,6 @@ RSpec/ItBehavesLike:
   EnforcedStyle: 'it_behaves_like' # rather than 'it_should_behave_like'
 RSpec/MultipleExpectations:
   Max: 12 # max expectations per test
-  Exclude:
-    - 'spec/helpers/application_helper_spec.rb'
-    - 'spec/helpers/nav_helper_spec.rb'
-    - 'spec/helpers/school_groups_helper_spec.rb'
-    - 'spec/models/amr_reading_data_spec.rb'
-    - 'spec/models/chart_data_values_spec.rb'
-    - 'spec/services/amr/analytics_school_factory_spec.rb'
-    - 'spec/services/maps/school_features_spec.rb'
-    - 'spec/services/school_groups/comparisons_csv_generator_spec.rb'
-    - 'spec/services/solar/low_carbon_hub_installation_factory_spec.rb'
-    - 'spec/support/shared_examples/energy_tariff_editors.rb'
-    - 'spec/support/shared_examples/energy_tariffs.rb'
-    - 'spec/support/shared_examples/school_groups.rb'
-    - 'spec/system/admin/activity_type_spec.rb'
-    - 'spec/system/admin/alert_type_management_ratings_spec.rb'
-    - 'spec/system/admin/school_creation_spec.rb'
-    - 'spec/system/admin/school_groups_spec.rb'
-    - 'spec/system/rtone_variant_installation_spec.rb'
-    - 'spec/system/school_onboarding_spec.rb'
 RSpec/AnyInstance:
   Enabled: false
 RSpec/LetSetup:
