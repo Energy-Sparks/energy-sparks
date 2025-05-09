@@ -1,0 +1,192 @@
+---
+en:
+  analytics:
+    benchmarking:
+      caveat_text:
+        comparison_with_previous_period_infinite: "<p>An infinite or incalculable value indicates the consumption in the first period was zero.</p>"
+        es_data_not_in_sync_html: |-
+          <p>
+            The gas, electricity and storage heater costs are all using the latest
+            data. The total might not be the sum of these 3 in the circumstance
+            where one of the meter's data is out of date, and the total then covers the
+            most recent year where all data is available to us on all the underlying
+            meters, and hence will cover the period of the most out of date of the
+            underlying meters.
+          </p>
+        es_doesnt_have_all_meter_data_html: "<p>\n  Energy Sparks doesn't have a full set of meter data for some schools, for example rural schools with \n  biomass or oil boilers, so a total energy comparison might not be relevant for all schools. This comparison \n  excludes the benefit of any solar PV which might be installed - so looks at energy consumption only.\n</p>"
+        es_exclude_storage_heaters_and_solar_pv: "<p>This breakdown excludes electricity consumed by storage heaters and solar PV.</p>"
+      chart_table_config:
+        annual_storage_heater_out_of_hours_use: Storage heaters used out of school hours
+        change_in_storage_heaters_since_last_year: Annual change in storage heater
+        optimum_start_analysis: Optimum start analysis
+        storage_heater_consumption_during_holiday: Storage heater use during current holiday
+      configuration:
+        column_groups:
+          co2_kg: CO2 (kg)
+          cost: Cost
+          electricity_consumption: Electricity consumption
+          gas_consumption: Gas consumption
+          gbp: "£"
+          kwh: kWh
+          metering: Metering
+          percent_changed: Percent changed
+          solar_self_consumption: Solar self consumption
+          storage_heater_consumption: Storage heater consumption
+        column_heading_explanation:
+          last_year_definition_html: "<p>In school comparisons &apos;last year&apos; is defined as this year to date.</p>"
+          last_year_previous_year_definition_html: "<p>In school comparisons &apos;last year&apos; is defined as this year to date, &apos;previous year&apos; is defined as the year before.</p>"
+        column_headings:
+          average_baseload_kw: Average baseload kW
+          average_baseload_last_week_kw: Average baseload last week (kW)
+          average_baseload_last_year_kw: Average baseload last year (kW)
+          average_heating_start_time_last_week: Average heating start time last week
+          average_heating_start_time_last_year: Average heating start time last year
+          average_peak_kw: Average peak kw
+          baseload_per_pupil_w: Baseload per pupil (W)
+          baseload_percent: Baseload as a percent of total usage
+          change_in_baseload_last_week_v_year_kw: Change in baseload last week v. year (kW)
+          change_in_baseload_last_week_v_year_pct: Change in baseload last week v. year (%)
+          change_kwh: Change kWh
+          change_pct: Change %
+          change_£current: Change £ (latest tariff)
+          community: Community
+          community_usage_cost: Community usage cost
+          cost_of_change_in_baseload: Next year cost of change in baseload
+          cost_per_pupil: Cost per pupil
+          day_of_week_with_maximum_baseload: Day of week with maximum baseload
+          day_of_week_with_minimum_baseload: Day of week with minimum baseload
+          efficiency_of_system: Efficiency of system
+          electricity: Electricity
+          electricity_cost_ct: Electricity cost (current tariff)
+          electricity_cost_ht: Electricity cost (historic tariff)
+          electricity_kwh_per_pupil: Electricity kWh per pupil per holiday
+          estimated: Estimated
+          exemplar_peak_kw: Exemplar peak kw
+          floor_area: Floor area
+          fuel: Fuel
+          gas: Gas
+          gas_cost_ct: Gas cost (current tariff)
+          gas_cost_ht: Gas cost (historic tariff)
+          gas_kwh_per_floor_area: Gas kWh per floor area per holiday
+          heating_gas: Heating Gas
+          holiday: Holiday
+          holiday_usage_to_date: Holiday usage to date
+          hot_water_gas: Hot Water Gas
+          kwh_consumption_since_target_set: kWh consumption since target set
+          last_year: Last year
+          last_year_carbon_emissions_tonnes_co2: Last year carbon emissions (tonnes CO2)
+          last_year_consumption_kwh: Last year consumption kWh
+          last_year_cost_of_baseload: Last year cost of baseload
+          last_year_cost_£: Last year cost £
+          last_year_electricity_kwh_pupil: Last year electricity kWh/pupil
+          last_year_electricity_£: Last year electricity £
+          last_year_electricity_£_pupil: Last year electricity £/pupil
+          last_year_energy_co2tonnes: Last year Energy CO2(tonnes)
+          last_year_energy_kgco2_pupil: Last year energy kgCO2/pupil
+          last_year_energy_kwh: Last year Energy kWh
+          last_year_energy_kwh_pupil: Last year energy kWh/pupil
+          last_year_energy_£_floor_area: Last year energy £/floor area
+          last_year_energy_£_pupil: Last year energy £/pupil
+          last_year_gas_kwh_pupil: Last year gas kWh/pupil
+          last_year_gas_£: Last year Gas £
+          last_year_heating_costs_per_floor_area: Last year heating costs per floor area
+          last_year_out_of_hours_co2: Last year out of hours co2
+          last_year_out_of_hours_cost: Last year out of hours cost
+          last_year_out_of_hours_cost_ct: Last year out of hours cost at current tariff
+          last_year_out_of_hours_kwh: Last year out of hours kwh
+          last_year_saving_if_improve_to_exemplar: Last year saving if improve to exemplar
+          last_year_saving_per_1c_reduction_in_thermostat: Saving per 1C reduction in thermostat
+          last_year_storage_heater_kwh_pupil: Last year storage heater kWh/pupil
+          last_year_storage_heater_£: Last year Storage Heater £
+          last_year_weekend_and_holiday_costs: Last year weekend and holiday costs
+          max_average_weekday_baseload_kw: Max average weekday baseload kW
+          min_average_weekday_baseload_kw: Min average weekday baseload kW
+          most_recent_holiday: Most recent holiday
+          number_of_days_heating_on_in_warm_weather: Number of days heating on in warm weather
+          optimum_start_rating: Optimum start rating
+          overnight_charging: Overnight charging
+          payback_years: Payback (years)
+          percent_above_or_below_target_since_target_set: Percent above or below target since target set
+          percent_increase_on_winter_baseload_over_summer: Percent increase on winter baseload over summer
+          percentage_of_annual_heating_consumed_in_warm_weather: Percentage of annual heating consumed in warm weather
+          percentage_of_gas_use_for_hot_water: Percentage of gas use for hot water
+          potential_saving: Potential saving (at latest tariff)
+          previous_holiday: Previous holiday
+          previous_year: Previous year
+          previous_year_out_of_hours_co2: Previous year out of hours co2
+          previous_year_out_of_hours_cost_ct: Previous year out of hours cost at current tariff
+          previous_year_out_of_hours_kwh: Previous year out of hours kwh
+          previous_year_temperature_adjusted: Previous year (temperature adjusted)
+          projected_usage_by_end_of_holiday: Projected usage by end of holiday
+          pupils: Pupils
+          reduction_in_mains_consumption_pct: Reduction in mains consumption (%)
+          regression_model_optimum_start_r2: Regression model optimum start r2
+          regression_model_optimum_start_sensitivity_to_outside_temperature: Regression model optimum start sensitivity to outside temperature
+          regression_model_optimum_start_time: Regression model optimum start time
+          saving_co2_kg: Saving CO2 kg
+          saving_if_improve_to_exemplar: Saving if improve to exemplar (at latest tariff)
+          saving_if_match_exemplar_£: Saving if match exemplar (£ at latest tariff)
+          saving_if_matched_exemplar_school: Saving if matched exemplar school (using latest tariff)
+          saving_if_same_all_year_around: Saving if same all year around (at latest tariff)
+          saving_improving_timing: Saving improving timing
+          saving_optimal_panels: Annual saving at latest tariff if optimal panel size installed
+          saving_through_improved_thermostatic_control: Saving through improved thermostatic control
+          saving_through_turning_heating_off_in_warm_weather_kwh: Saving through turning heating off in warm weather (kWh)
+          saving_with_pou_electric_hot_water: Saving with POU electric hot water
+          saving_£: Saving £
+          school: School
+          school_day_closed: School Day Closed
+          school_day_open: School Day Open
+          size_kwp: 'Size: kWp'
+          solar_export: Export (kWh)
+          solar_generation: Generation (kWh)
+          solar_mains_consume: Mains consumption (kWh)
+          solar_mains_onsite: Total onsite consumption (kWh)
+          solar_self_consume: Self consumption (kWh)
+          standard_deviation_of_start_time__hours_last_year: Standard deviation of start time - hours, last year
+          start_date_for_target: Start date for target
+          storage_heaters: Storage heaters
+          summer_baseload_kw: Summer baseload kW
+          target_kwh_consumption: Target kWh consumption
+          temperature_adjusted_kwh: Temperature adjusted change (kWh)
+          thermostatic_r2: Thermostatic R2
+          total_energy_costs_£: Total Energy Costs £
+          type: Type
+          unadjusted_kwh: Unadjusted change (kWh)
+          variation_in_baseload_between_days_of_week: Variation in baseload between days of week
+          w_floor_area: W/floor area
+          weekend: Weekend
+          winter_baseload_kw: Winter baseload kW
+      content:
+        benchmark_holidays_change_base:
+          period_types: holidays
+        footnotes:
+          notes: Notes
+        optimum_start_analysis:
+          caveat_text_html: |-
+            <p>
+              However, these calculations are experimental and might not provide
+              good indicators of how well the optimum start is working for all schools.
+              Drilling down to look at the data for an individual school should provide
+              a better indication.
+            <p>
+          introduction_text_html: |-
+            <p>
+              This experimental analysis attempts to help determine whether
+              a school&apos;s optimum start control is working by looking at
+              the times the boiler has started over the last year.
+            </p>
+          table_introduction_text_html: |-
+            <p>
+              The &apos;standard deviation&apos; column shows over how many hours
+              the starting time has varied over the last year. If this is more than
+              an hour or so, it might indicate the optimum start control is working,
+              or it could be that someone has made lots of adjustments to the boiler
+              start time during the year.
+            </p>
+            <p>
+              The &apos;Regression model optimum start R2&apos; indicates how well
+              correlated with outside temperature the start time of the boiler was.
+              The closer to 1.0, the more correlated it was and therefore the
+              more likely the optimum start control is working well.
+            </p>
