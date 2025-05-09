@@ -50,7 +50,7 @@ module Layout
         render(Layout::Cards::FeatureComponent.new(theme: :light, classes: 'p-3 rounded-xl')) do |card|
           card.with_tag('Rock bottom prices')
           card.with_header title: 'Header'
-          card.with_price label: 'Starting from:', price: '£2999 + VAT'
+          card.with_price label: 'Starting from', price: '£2999 + VAT'
         end
       end
 
