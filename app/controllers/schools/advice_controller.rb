@@ -21,6 +21,7 @@ module Schools
 
     def show
       @overview_data = Schools::ManagementTableService.new(@school).management_data
+      @aggregate_school_service = aggregate_school_service
       render :show, layout: 'dashboards'
     end
 
