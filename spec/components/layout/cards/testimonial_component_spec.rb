@@ -43,4 +43,21 @@ RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper,
     it { expect(html).to have_link('Read case study', href: case_study_download_path(case_study)) }
     it { expect(html).to have_link('More case studies', href: '/case-studies') }
   end
+
+  context 'when passed a testimonial object' do
+    let!(:testimonial) { create(:testimonial) }
+
+    let(:html) do
+      render_inline(described_class.new(testimonial: testimonial))
+    end
+
+    it { expect(html).to have_css('h4') }
+    it { expect(html).to have_content(testimonial.title) }
+    it { expect(html).to have_content(testimonial.quote) }
+    it { expect(html).to have_content(testimonial.name) }
+    it { expect(html).to have_content(testimonial.role) }
+    it { expect(html).to have_content(testimonial.organisation) }
+    it { expect(html).to have_link('Read case study', href: case_study_download_path(testimonial.case_study)) }
+    it { expect(html).to have_link('More case studies', href: '/case-studies') }
+  end
 end
