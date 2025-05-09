@@ -30,4 +30,8 @@ class SecrCo2Equivalence < ApplicationRecord
     name.sub!('co2e', 'kg CO₂ equivalence')
     name
   end
+
+  def self.emissions(year, type, consumption)
+    (find_by(year:).public_send(type) * consumption).round(2)
+  end
 end

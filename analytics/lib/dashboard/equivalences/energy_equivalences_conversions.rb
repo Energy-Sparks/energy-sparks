@@ -21,12 +21,12 @@ class EnergyEquivalences
   #
   # updated with July 2024 figures - see the Analytics Benchmarking Values spreadsheet
   #
-  UK_ELECTRIC_GRID_CO2_KG_KWH = 0.20493
+  UK_ELECTRIC_GRID_CO2_KG_KWH = 0.20493 # see SecrCo2Equivalence.electricity_co2e_co2
   UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
   UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2236
 
   UK_DOMESTIC_GAS_£_KWH = 0.0548
-  UK_GAS_CO2_KG_KWH = 0.18253
+  UK_GAS_CO2_KG_KWH = 0.18253 # see SecrCo2Equivalence.natural_gas_co2e_co2
   UK_GAS_£_KWH = BenchmarkMetrics.pricing.gas_price
   GAS_BOILER_EFFICIENCY = 0.7
 
