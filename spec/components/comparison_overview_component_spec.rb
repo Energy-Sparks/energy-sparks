@@ -87,7 +87,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
   end
 
   context 'when rendering' do
-    let(:html) do
+    subject(:html) do
       render_inline(component)
     end
 
