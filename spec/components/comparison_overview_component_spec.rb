@@ -19,9 +19,12 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
            has_storage_heaters: false)
   end
 
+  let(:aggregate_school_service) { AggregateSchoolService.new(school) }
+
   let(:params) do
     {
       school: school,
+      aggregate_school_service: aggregate_school_service,
       id: id,
       classes: classes
     }
@@ -30,7 +33,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
   before do
     create(:advice_page, key: :electricity_long_term, fuel_type: :electricity)
     create(:advice_page, key: :gas_long_term, fuel_type: :gas)
-    meter_collection = AggregateSchoolService.new(school).aggregate_school
+    meter_collection = aggregate_school_service.aggregate_school
     Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school, aggregate_school: meter_collection).generate!
     school.reload
   end
@@ -84,7 +87,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
   end
 
   context 'when rendering' do
-    let(:html) do
+    subject(:html) do
       render_inline(component)
     end
 

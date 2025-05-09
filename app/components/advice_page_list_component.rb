@@ -10,7 +10,7 @@ class AdvicePageListComponent < ApplicationComponent
   end
 
   def advice_page_benchmarks
-    @advice_page_benchmarks ||= @school.advice_page_school_benchmarks
+    @advice_page_benchmarks ||= @school.advice_page_school_benchmarks.includes(:advice_page)
   end
 
   def advice_pages
@@ -19,5 +19,11 @@ class AdvicePageListComponent < ApplicationComponent
 
   def render?
     advice_pages.any? && school.data_enabled?
+  end
+
+  private
+
+  def benchmark_for(advice_page)
+    advice_page_benchmarks.detect {|benchmark| benchmark.advice_page == advice_page }
   end
 end

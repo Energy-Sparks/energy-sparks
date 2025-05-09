@@ -515,6 +515,10 @@ class School < ApplicationRecord
     content_generation_runs.order(created_at: :desc).first
   end
 
+  def latest_adult_dashboard_alert_count
+    @latest_adult_dashboard_alert_count ||= latest_dashboard_alerts.management_dashboard.count
+  end
+
   def latest_dashboard_alerts
     if latest_content
       latest_content.dashboard_alerts
@@ -540,6 +544,10 @@ class School < ApplicationRecord
     else
       Meter.none
     end
+  end
+
+  def latest_management_priority_count
+    @latest_management_priority_count ||= latest_management_priorities.count
   end
 
   def latest_management_priorities

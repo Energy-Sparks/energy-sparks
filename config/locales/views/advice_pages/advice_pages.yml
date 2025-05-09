@@ -78,7 +78,6 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
-      name: Advice
       overview: Overview
       pages:
         baseload: Baseload

@@ -1,3 +1,4 @@
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
   <p><%= t('advice_pages.baseload.analysis.summary') %></p>
 
   <p><%= t('advice_pages.baseload.analysis.sections') %></p>
@@ -160,3 +161,4 @@
     <% end %>
 
   <% end %>
+<% end %>

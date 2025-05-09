@@ -24,10 +24,6 @@ en:
           <a href="#whats-next">start reducing energy use</a> and see how you <a href="#comparison">compare against other schools</a>
         not_applicable: No comparison
         not_available: Not enough data
-        notice_html: |-
-          <p>Looking for suggestions of how to start reducing your energy usage?</p>
-          <p>We've recommended some priority actions to help you make progress. Or explore our detailed analysis below.</p>
-        notice_link: View prioritised actions
         overview_charts:
           intro: Use the tabs to switch between charts. Click on a chart to drill down into the data.
           title: Overview charts

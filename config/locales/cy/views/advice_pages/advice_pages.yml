@@ -75,7 +75,6 @@ cy:
         title: Beth ddylech chi wneud nesaf?
     loading_data: Wrthi'n llwytho data...
     nav:
-      name: Cyngor
       overview: Trosolwg
       pages:
         baseload: Llwyth sylfaenol

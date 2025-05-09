@@ -1,6 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe 'advice pages', type: :system do
+RSpec.describe 'advice pages', :include_application_helper, type: :system do
+  include AdvicePageHelper
+
   let(:school) do
     create(:school,
            :with_basic_configuration_single_meter_and_tariffs,
@@ -28,18 +30,6 @@ RSpec.describe 'advice pages', type: :system do
         expect(page).to have_content('Sorry, something has gone wrong')
         expect(page).to have_content('We encountered an error attempting to generate your analysis')
       end
-
-      context 'with feature active' do
-        before do
-          Flipper.enable(:new_dashboards_2024)
-        end
-
-        it 'shows the error page' do
-          visit learn_more_school_advice_baseload_path(school)
-          expect(page).to have_content('Sorry, something has gone wrong')
-          expect(page).to have_content('We encountered an error attempting to generate your analysis')
-        end
-      end
     end
 
     context 'in test' do
@@ -64,15 +54,9 @@ RSpec.describe 'advice pages', type: :system do
                                    href: school_advice_baseload_path(school))
     end
 
-    context 'with feature active' do
-      before do
-        Flipper.enable(:new_dashboards_2024)
-      end
-
-      it 'shows the error page' do
-        visit insights_school_advice_baseload_path(school)
-        expect(page).to have_content('Unable to run requested analysis')
-      end
+    it 'shows the error page' do
+      visit insights_school_advice_baseload_path(school)
+      expect(page).to have_content('Unable to run requested analysis')
     end
   end
 
@@ -82,18 +66,6 @@ RSpec.describe 'advice pages', type: :system do
              :with_basic_configuration_single_meter_and_tariffs,
              school_group: create(:school_group),
              reading_start_date: 1.day.ago)
-    end
-
-    context 'with new feature active' do
-      before do
-        Flipper.enable(:new_dashboards_2024)
-      end
-
-      it 'shows the not enough data page' do
-        visit school_advice_baseload_path(school)
-        expect(page).to have_content(I18n.t('advice_pages.not_enough_data.title'))
-        expect(page).to have_content('Assuming we continue to regularly receive data')
-      end
     end
 
     it 'shows the not enough data page' do
@@ -155,8 +127,8 @@ RSpec.describe 'advice pages', type: :system do
       end
 
       it 'shows the nav bar' do
-        within '.advice-page-nav' do
-          expect(page).to have_content('Advice')
+        within('#page-nav') do
+          expect(page).to have_link(I18n.t("advice_pages.nav.pages.#{key}"), href: advice_page_path(school, advice_page))
         end
       end
 
