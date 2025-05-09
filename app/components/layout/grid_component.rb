@@ -44,9 +44,10 @@ module Layout
     def column_classes
       case cols
       when 2
-        'col-12 col-md-6'
+        # 'col-12 col-md-6'
+        'col-12 col-lg-6' # it might look better to go full width on md
       when 3
-        'col-12 col-md-4 col-sm-12'
+        'col-12 col-md-4'
       when 4
         'col-12 col-xl-3 col-sm-6'
       when 6 # not currently in use

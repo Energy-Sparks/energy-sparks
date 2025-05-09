@@ -6,7 +6,7 @@
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
         <%= grid.with_image src: 'on-screen.jpg', classes: 'rounded-xl', cell_classes: '', collapse: true %>
         <% grid.with_feature_card size: :xl, theme: :dark, cell_classes: 'my-auto' do |feature| %>
-          <%= feature.with_header title: t('home.feature.header') %>
+          <%= feature.with_header title: t('home.feature.header'), classes: 'mt-md-3' %>
           <%= feature.with_description { t('home.feature.description_html') } %>
           <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
           <%= feature.with_button t('home.buttons.book_a_demo'),

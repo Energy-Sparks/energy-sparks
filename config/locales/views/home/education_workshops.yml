@@ -29,7 +29,7 @@ en:
     workshops:
       cards:
       - title: Energy warriors
-        icon: user-ninja
+        icon: user-shield
         icon_colour: text-blue-dark
         description: Introduce your pupils to the energy we use in our homes and schools.
       - title: Our school, our climate
