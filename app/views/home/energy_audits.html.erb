@@ -1,14 +1,14 @@
 <% content_for :page_title, t('energy_audits.title') %>
 <% if Flipper.enabled?(:new_audits_page, current_user) %>
-  <div class="container-fluid adult mb-5 py-4">
+  <div class="container-fluid adult mb-5 py-5">
     <%= render Layout::GridComponent.new(
-          id: 'hero', cols: 2, classes: 'container'
+          id: 'hero', cols: 2, classes: 'container', cell_classes: 'my-auto'
         ) do |grid| %>
-      <% grid.with_feature_card(cell_classes: 'my-auto', size: :xl) do |feature| %>
+      <% grid.with_feature_card(cell_classes: 'px-xl-4', size: :xl) do |feature| %>
         <%= feature.with_header title: t('energy_audits.feature.title') %>
         <%= feature.with_description { t('energy_audits.feature.description') } %>
       <% end %>
-      <%= grid.with_image src: 'audit-image.png', classes: 'rounded-xl', cell_classes: 'p-4' %>
+      <%= grid.with_image src: 'audit-image.png', classes: 'rounded-xl', cell_classes: 'px-xxl-5' %>
     <% end %>
   </div>
 

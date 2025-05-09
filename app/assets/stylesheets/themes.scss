@@ -50,9 +50,19 @@
     .badge {
       background-color: $yellow-light;
     }
+
+    .btn-secondary {
+      background-color: transparent;
+      @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-pale);
+    }
   }
 
   &.theme-accent {
     background-color: $yellow-pale;
+
+    .btn-secondary {
+      background-color: transparent;
+      @include button-outline-variant($blue-very-dark, $blue-very-dark, $yellow-light);
+    }
   }
 }

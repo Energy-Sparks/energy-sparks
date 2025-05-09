@@ -2,11 +2,11 @@
   <% content_for :page_title, t('common.labels.home') %>
 
   <% if Flipper.enabled?(:new_home_page, current_user) %>
-    <div class="theme theme-dark mb-5">
+    <div class="container-fluid theme theme-dark mb-5 pt-3 pb-4">
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
-        <%= grid.with_image src: 'on-screen.jpg', classes: 'rounded-xl', cell_classes: '', collapse: true %>
-        <% grid.with_feature_card size: :xl, theme: :dark, cell_classes: 'my-auto' do |feature| %>
-          <%= feature.with_header title: t('home.feature.header') %>
+        <%= grid.with_image src: 'on-screen.jpg', cell_classes: 'pr-xl-4', collapse: true %>
+        <% grid.with_feature_card size: :xl, theme: :dark, cell_classes: 'my-auto pl-xl-4' do |feature| %>
+          <%= feature.with_header title: t('home.feature.header'), classes: 'mt-3 mt-lg-0' %>
           <%= feature.with_description { t('home.feature.description_html') } %>
           <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :success %>
           <%= feature.with_button t('home.buttons.book_a_demo'),
@@ -18,7 +18,7 @@
 
     <div class="container">
       <%= render Layout::Cards::SectionHeaderComponent.new(
-            classes: '', id: 'stats-header'
+            id: 'stats-header'
           ) do |section_header| %>
         <%= section_header.with_header title: t('home.stats.header') %>
         <%= section_header.with_description { t('home.stats.description') } %>
@@ -29,7 +29,7 @@
                                            cell_classes: 'mb-4',
                                            component_classes: 'theme theme-dark') do |grid| %>
         <% grid.with_stats_card do |card| %>
-          <%= card.with_icon fuel_type: :electricity, style: :circle %>
+          <%= card.with_icon name: 'bolt', style: :circle, classes: 'text-electric' %>
           <%= card.with_header title: t('home.stats.card_1.header') %>
           <%= card.with_figure t('home.stats.card_1.figure') %>
           <%= card.with_subtext { t('home.stats.card_1.subtext') } %>
@@ -100,7 +100,7 @@
             id: 'general',
             cols: 2,
             theme: :light,
-            classes: 'rounded-xl p-4 mb-4 mt-4',
+            classes: 'rounded-xl p-4 my-4',
             cell_classes: 'my-auto'
           ) do |grid| %>
         <%= grid.with_feature_card(classes: 'mb-4', size: :md) do |feature| %>
@@ -108,7 +108,7 @@
           <%= feature.with_description { t('home.general.description_html', count: School.visible.count) } %>
           <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
         <% end %>
-        <%= grid.with_image(src: 'pupils-jumping.jpg', classes: 'rounded-xl bg-white') %>
+        <%= grid.with_image(src: 'pupils-jumping.jpg') %>
       <% end %>
 
       <%= render Layout::Cards::SectionHeaderComponent.new(
@@ -122,12 +122,12 @@
       <%= render Layout::GridComponent.new(
             id: 'organisations',
             cols: 3,
-            classes: 'my-4 pb-4',
+            classes: 'mt-4 mb-5',
             cell_classes: 'mb-4',
             component_classes: 'h-100'
           ) do |grid| %>
         <%= grid.with_card do |card| %>
-          <%= card.with_image(src: 'funnel-pupils.png', classes: 'rounded-top-xl') %>
+          <%= card.with_image(src: 'funnel-pupils.png', rounded: :top) %>
           <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
             <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
             <%= feature.with_description { t('home.organisations.cards.school.description') } %>
@@ -136,7 +136,7 @@
         <% end %>
 
         <%= grid.with_card do |card| %>
-          <%= card.with_image(src: 'funnel-teachers.png', classes: 'rounded-top-xl') %>
+          <%= card.with_image(src: 'funnel-teachers.png', rounded: :top) %>
           <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
             <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
             <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
@@ -145,7 +145,7 @@
         <% end %>
 
         <%= grid.with_card do |card| %>
-          <%= card.with_image(src: 'laptop.jpg', classes: 'rounded-top-xl') %>
+          <%= card.with_image(src: 'laptop.jpg', rounded: :top) %>
           <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'rounded-bottom-xl') do |feature| %>
             <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
             <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>
@@ -170,7 +170,7 @@
               ) %>
           <%= render Elements::ButtonComponent.new(
                 t('home.buttons.view_blog'),
-                'http://blog.energysparks.uk', style: :white, outline: true, classes: ''
+                'http://blog.energysparks.uk', style: :secondary
               ) %>
         </div>
 
@@ -184,7 +184,7 @@
 
           <% @blog.items.first(3).each do |item| %>
             <%= grid.with_card do |card| %>
-              <%= card.with_image(src: item[:image] || 'on-screen.jpg', classes: 'rounded-top-xl') %>
+              <%= card.with_image(src: item[:image] || 'on-screen.jpg', rounded: :top) %>
               <%= card.with_feature_card(theme: :light, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
                 <%= feature.with_header(title: item[:title]) %>
                 <%= feature.with_author(href: item[:author_link]) { item[:author] } %>
