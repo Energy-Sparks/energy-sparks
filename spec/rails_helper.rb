@@ -104,11 +104,5 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-require 'dashboard/test_factory_path'
-FactoryBot.definition_file_paths = [
-  Dashboard::TEST_FACTORY_PATH
-]
-FactoryBot.find_definitions
-
 require 'webmock/rspec'
 WebMock.disable_net_connect!(allow_localhost: true)
