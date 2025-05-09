@@ -25,7 +25,7 @@ module Layout
     end
 
     def cell(**kwargs, &block)
-      tag.div(class: class_names(column_classes, kwargs.delete(:cell_classes), @cell_classes), &block)
+      tag.div(class: class_names(column_classes, kwargs.delete(:cell_classes), @cell_classes, responsive_classes(**kwargs)), &block)
     end
 
     def initialize(cols:, rows: 1, cell_classes: '', **_kwargs)
@@ -35,6 +35,11 @@ module Layout
       @rows = rows
 
       @cell_classes = cell_classes
+    end
+
+    def responsive_classes(**kwargs)
+      return 'pr-xl-4 pr-xxl-5' if kwargs[:left]
+      return 'pl-xl-4 pl-xxl-5' if kwargs[:right]
     end
 
     def render?

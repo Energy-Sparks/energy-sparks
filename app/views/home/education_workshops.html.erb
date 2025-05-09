@@ -1,14 +1,14 @@
 <% content_for :page_title, t('education_workshops.title') %>
 <% if Flipper.enabled?(:new_audits_page, current_user) %>
-  <div class="container-fluid adult mb-5 py-4">
+  <div class="container-fluid adult mb-5 py-5">
     <%= render Layout::GridComponent.new(
-          id: 'hero', cols: 2, classes: 'container'
+          id: 'hero', cols: 2, classes: 'container p-4'
         ) do |grid| %>
-      <% grid.with_feature_card(cell_classes: 'my-auto', size: :xl) do |feature| %>
+      <% grid.with_feature_card(cell_classes: 'my-auto pr-xl-4 pr-xxl-5', size: :xl) do |feature| %>
         <%= feature.with_header title: t('education_workshops.feature.title') %>
         <%= feature.with_description { t('education_workshops.feature.description') } %>
       <% end %>
-      <%= grid.with_image src: 'for-schools/workshop-class.png', classes: 'rounded-xl', cell_classes: 'p-4' %>
+      <%= grid.with_image src: 'for-schools/workshop-class.png', classes: 'rounded-xl', cell_classes: 'pl-xl-4 pl-xxl-5' %>
     <% end %>
   </div>
 
@@ -31,6 +31,46 @@
           <%= stats.with_subtext { card[:description] } %>
         <% end %>
       <% end %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          id: 'audience',
+          cols: 2,
+          theme: :light,
+          classes: 'rounded-xl p-4 my-4',
+          cell_classes: 'my-auto'
+        ) do |grid| %>
+      <%= grid.with_image(src: 'for-schools/workshop-activity.png') %>
+      <%= grid.with_feature_card(classes: 'mb-4', size: :md) do |feature| %>
+        <%= feature.with_header(title: t('education_workshops.audience.title'), classes: 'mt-3 mt-lg-0') %>
+        <%= feature.with_description { t('education_workshops.audience.description_html') } %>
+        <%= feature.with_button(t('education_workshops.book'),
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary, classes: 'mr-2') %>
+        <%= feature.with_button(t('common.labels.enquire_now'),
+                                'mailto:hello@energysparks.uk', style: :secondary) %>
+      <% end %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          id: 'desktop',
+          cols: 2,
+          classes: 'my-4',
+          cell_classes: 'py-4'
+        ) do |grid| %>
+      <%= grid.with_feature_card(size: :lg) do |feature| %>
+        <%= feature.with_header(title: t('education_workshops.details.title')) %>
+        <%= feature.with_price(
+              label: t('common.labels.ranging_from'),
+              price: t('education_workshops.details.price'),
+              classes: 'text-complement pb-1'
+            ) %>
+        <%= feature.with_description { t('education_workshops.details.description_html') } %>
+        <%= feature.with_button(t('education_workshops.book'),
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary, classes: 'mr-2') %>
+        <%= feature.with_button(t('common.labels.enquire_now'),
+                                'mailto:hello@energysparks.uk', style: :secondary) %>
+      <% end %>
+      <%= grid.with_image(src: 'laptop.jpg') %>
     <% end %>
   </div>
 <% else %>
