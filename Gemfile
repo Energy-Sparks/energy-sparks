@@ -28,8 +28,7 @@ gem 'pg'
 gem 'scenic'
 
 # Dashboard analytics
-gem 'energy-sparks_analytics', github: 'Energy-Sparks/energy-sparks_analytics', tag: '6.1.12'
-# gem 'energy-sparks_analytics', path: '../energy-sparks_analytics'
+gem 'energy-sparks_analytics', path: 'analytics'
 
 # Using master due to it having a patch which doesn't override Enumerable#sum if it's already defined
 # Last proper release does that, causing all kinds of weird behaviour (+ not defined etc)
@@ -161,6 +160,7 @@ group :development do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec_rails'
+  gem 'ruby-prof' # used by analytics
   gem 'scout_apm'
   gem 'web-console'
 end
@@ -168,6 +168,7 @@ end
 group :test do
   gem 'capybara'
   gem 'capybara-email'
+  gem 'compare-xml' # used by rspec html matcher in analytics
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
