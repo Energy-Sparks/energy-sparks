@@ -1,5 +1,5 @@
 <% content_for :page_title, t('education_workshops.title') %>
-<% if Flipper.enabled?(:new_audits_page, current_user) %>
+<% if Flipper.enabled?(:new_workshops_page, current_user) %>
   <div class="container-fluid adult mb-5 py-5">
     <%= render Layout::GridComponent.new(
           id: 'hero', cols: 2, classes: 'container p-4'
@@ -52,7 +52,7 @@
     <% end %>
 
     <%= render Layout::GridComponent.new(
-          id: 'desktop',
+          id: 'details',
           cols: 2,
           classes: 'my-4',
           cell_classes: 'py-4'
