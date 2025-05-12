@@ -188,7 +188,21 @@ en:
     secr:
       introduction: Using your half-hourly meter data, Energy Sparks is able to provide a summary of your consumption and carbon emissions to support production of your annual SECR reports.
       section1:
+        footnotes_html: |-
+          <i>Support notes</i>
+          <p>
+          The above figures are based on the following data points. See the data downloads below for details of
+          individuals schools, meters and data quality issues.
+          </p>
+          <ul>
+          <li>Number of active schools</li>
+          <li>Number of active gas meters</li>
+          <li>Number of active electricity meters</li>
+          <li>Number of schools with metered solar</li>
+          <li>Number of schools with estimated solar</li>
+          </ul>
         gas_consumption: Gas consumption
+        intensity_ratio: Intensity ratio
         introduction_html: |-
           <p>
           The following table provides a summary of your consumptions and emissions for the last academic year (%{start_date} to %{end_date}). Consumption is based on the latest data available to Energy Sparks, which may not be completed. Emissions are calculated using the latest carbon emission factors which are quoted below.
@@ -203,15 +217,25 @@ en:
           Data quality issues might also impact our ability to provide accurate figures. See below for downloads of data that can help you identify gaps and support you in producing a more complete report if we do not yet have all of your schools or meters on our system.
           </p>
         net: Net
+        pupil_intensity: Tonnes CO2e per pupil
         purchased_electricity: Purchased Electricity
         scope1: Scope 1
         scope2: Scope 2
         scope3: Scope 3
         solar_export: Solar export
         solar_self_consumption: Solar self consumption
-        title: Section 1
+        table2_introduction_html: The following emissions factors are those produced by UK government for reporting emissions for the last academic year %{year} and have been used in calculating the above figures.
+        table2_title: Carbon Emission Factors
+        title: Summary of Consumption and Emissions
         total: Total
         transmission_and_distribution: Electricity transmission and distribution
+      section2:
+        electricity_consumption: electricity consumption
+        gas_consumption: gas consumption
+        introduction: 'CSV downloads of the following:'
+        solar_export: solar export
+        solar_self_consumption: solar self consumption
+        title: SECR reporting data
       title: SECR Reporting Data
     show:
       change_units: Change units

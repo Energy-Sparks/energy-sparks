@@ -55,6 +55,12 @@ en:
         serves_dinners: Our school serves school dinners on site
         urn: Unique Reference Number
         website: Website
+      secr_co2_equivalence:
+        electricity_co2e: Electricity kg CO₂e
+        electricity_co2e_co2: Electricity kg CO₂e of CO₂
+        natural_gas_co2e: Natural gas kg CO₂e
+        natural_gas_co2e_co2: Natural gas kg CO₂e of CO₂
+        transmission_distribution_co2e: Transmission & distribution kg CO₂e
       transport_survey/response:
         id: Id
         journey_minutes: Journey minutes
