@@ -1,0 +1,22 @@
+---
+en:
+  analytics:
+    alert_energy_annual_versus_benchmark:
+      timescale: year
+    alert_impending_holiday:
+      timescale:
+        one: 1 week
+        other: "%{count} weeks"
+      timescale_unknown: Unknown
+    alert_long_term_trend:
+      summary: "%{cost}pa %{increase_or_reduction} since last year, %{percent}"
+      timescale: last 2 years
+    alert_out_of_hours_base_usage:
+      summary: "%{cost}pa (%{percent} of annual cost) "
+      timescale: last year
+    alert_target_base:
+      summary: "%{percent} %{above_or_below} target"
+      timescale: at least 1 year
+    tariff_change:
+      change_between_periods_caveat: 'Warning: the school''s economic tariff has changed between the two periods being compared, this is not reflected in the cost savings where we have used the most recent tariff to calculate the savings.'
+      change_within_period_caveat: 'Warning: the school''s economic tariff has changed recently, this is not reflected in the cost savings where we have used the most recent tariff to calculate the savings.'

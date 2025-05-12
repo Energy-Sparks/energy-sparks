@@ -1,25 +1,20 @@
 module Elements
   class ImageComponent < ApplicationComponent
-    def initialize(src:, fit: true, collapse: false, stretch: false, width: nil, height: nil, **_kwargs)
+    def initialize(src:, fit: true, collapse: false, width: nil, height: nil, rounded: :all, **_kwargs)
       super
       @src = src
       @fit = fit
       @collapse = collapse
-      @stretch = stretch
       @width = width
       @height = height
+      @rounded = rounded
       validate
       setup_classes
     end
 
     def setup_classes
-      if @stretch
-        add_classes('stretch')
-        add_classes('left') if @stretch == :left
-        add_classes('right') if @stretch == :right
-      elsif @fit
-        add_classes('fit')
-      end
+      add_classes('fit') if @fit
+      add_classes(self.class.rounded[@rounded]) if @rounded
       add_classes('d-none d-md-block') if @collapse
     end
 
@@ -35,15 +30,19 @@ module Elements
     end
 
     def validate
-      raise ArgumentError.new(self.class.stretch_error) if @stretch && !self.class.stretch.include?(@stretch.to_sym)
+      raise ArgumentError.new(self.class.rounded_error) if @rounded && !self.class.rounded.key?(@rounded.to_sym)
     end
 
-    def self.stretch
-      [:left, :right]
+    def self.rounded
+      {
+        top: 'rounded-top-xl',
+        bottom: 'rounded-bottom-xl',
+        all: 'rounded-xl'
+      }
     end
 
-    def self.stretch_error
-      'Stretch must be: ' + self.stretch.to_sentence(two_words_connector: ' or ')
+    def self.rounded_error
+      'Rounded must be: ' + self.rounded.keys.to_sentence(two_words_connector: ' or ')
     end
   end
 end
