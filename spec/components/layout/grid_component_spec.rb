@@ -37,9 +37,9 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     context 'with 2 cols' do
       let(:cols) { 2 }
 
-      it { expect(rows[0]).to have_css('div.col-12.col-md-6', count: 2) }
-      it { expect(rows[1]).to have_css('div.col-12.col-md-6', count: 2) }
-      it { expect(rows[2]).to have_css('div.col-12.col-md-6', count: 1) }
+      it { expect(rows[0]).to have_css('div.col-12.col-lg-6', count: 2) }
+      it { expect(rows[1]).to have_css('div.col-12.col-lg-6', count: 2) }
+      it { expect(rows[2]).to have_css('div.col-12.col-lg-6', count: 1) }
     end
 
     context 'with 3 cols' do
@@ -104,7 +104,7 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(rows[0]).to have_css('div.col-12.col-md-6.cell-classes', count: 2) }
+    it { expect(rows[0]).to have_css('div.col-12.col-lg-6.cell-classes', count: 2) }
   end
 
   context 'with inline cell classes' do
@@ -115,9 +115,8 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
       end
     end
 
-    it { expect(row).to have_css('div.col-12.col-md-6.cell-classes', count: 1) }
+    it { expect(row).to have_css('div.col-12.col-lg-6.cell-classes', count: 1) }
   end
-
 
   context 'with image' do
     let(:html) do
@@ -141,11 +140,7 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
       end
     end
 
-    before do
-      puts html
-    end
-
-    it { expect(rows[0]).to have_css('div.col-12.col-md-6', count: 2) }
+    it { expect(rows[0]).to have_css('div.col-12.col-lg-6', count: 2) }
     it { expect(html).to have_content('cell 1') }
     it { expect(html).to have_content('cell 2') }
   end
