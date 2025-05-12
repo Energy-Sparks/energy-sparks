@@ -86,6 +86,22 @@ RSpec.describe 'home', type: :system do
     end
   end
 
+  describe 'Education workshops page' do
+    context with_feature: :new_workshops_page do
+      before do
+        visit education_workshops_path
+      end
+
+      it 'renders all the components' do
+        expect(page).to have_css('#hero')
+        expect(page).to have_css('#workshops-header')
+        expect(page).to have_css('#workshops')
+        expect(page).to have_css('#audience')
+        expect(page).to have_css('#details')
+      end
+    end
+  end
+
   it 'allows locale switch retaining extra parameters' do
     visit root_path(foo: :bar)
     expect(page).to have_link('Cymraeg', href: 'http://cy.example.com/?foo=bar')
