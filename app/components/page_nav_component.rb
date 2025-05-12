@@ -15,7 +15,6 @@ class PageNavComponent < ViewComponent::Base
     @classes = classes
     @href = href
     @options = options
-    @user = options[:user]
   end
 
   def header
@@ -23,10 +22,6 @@ class PageNavComponent < ViewComponent::Base
     args[:class] += " #{classes}" if classes
     text = icon.nil? ? name : helpers.text_with_icon(name, icon)
     link_to(text, href, args)
-  end
-
-  def component_classes
-    Flipper.enabled?(:new_dashboards_2024, @user) ? 'rounded' : 'border rounded'
   end
 
   class SectionComponent < ViewComponent::Base

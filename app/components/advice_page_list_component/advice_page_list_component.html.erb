@@ -12,7 +12,7 @@
           <h4>
             <%= t("advice_pages.nav.sections.#{fuel_type}") %>
           </h4>
-          <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)).each do |ap| %>
+          <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)).each do |advice_page| %>
             <%= render PromptComponent.new(
                   icon: fuel_type_icon(fuel_type),
                   style: :compact,
@@ -20,10 +20,10 @@
                   fuel_type: fuel_type
                 ) do |p| %>
               <% p.with_title do %>
-                <%= translated_label(ap) %>
+                <%= translated_label(advice_page) %>
               <% end %>
 
-              <% school_benchmark = advice_page_benchmarks.where(advice_page: ap).first %>
+              <% school_benchmark = benchmark_for(advice_page) %>
               <% if school_benchmark.present? %>
                 <% p.with_pill do %>
                   <span class="badge <%= school_benchmark.benchmarked_as %>">
@@ -33,14 +33,14 @@
               <% end %>
 
               <% p.with_link do %>
-                <%= link_to t('schools.show.find_out_more'), advice_page_path(school, ap) %>
+                <%= link_to t('schools.show.find_out_more'), advice_page_path(school, advice_page) %>
               <% end %>
 
-              <% if ap.key == 'solar_pv' %>
+              <% if advice_page.key == 'solar_pv' %>
                 <% solar_status = @school.has_solar_pv? ? 'has_solar' : 'no_solar' %>
                 <%= t("advice_pages.index.show.page_summary.solar_pv.#{solar_status}") %>
               <% else %>
-                <%= t("advice_pages.index.show.page_summary.#{ap.key}") %>
+                <%= t("advice_pages.index.show.page_summary.#{advice_page.key}") %>
               <% end %>
 
             <% end %>

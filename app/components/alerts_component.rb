@@ -30,6 +30,6 @@ class AlertsComponent < PromptListComponent
   def dashboard_alerts_for(alert_types)
     return @dashboard_alerts unless alert_types.present?
     alert_type_ids = alert_types.map(&:id)
-    @dashboard_alerts.select { |dashboard_alert| alert_type_ids.include?(dashboard_alert.alert.alert_type_id) }
+    @dashboard_alerts.select { |dashboard_alert| alert_type_ids.include?(dashboard_alert.alert_type.id) }
   end
 end
