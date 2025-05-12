@@ -30,41 +30,39 @@ addEventListener("trix-initialize", event => {
   }
 })
 
-document.addEventListener("trix-action-invoke", function(event) {
+function findYoutubeId(str) {
+  try {
+    const url = new URL(str);
+    return url.searchParams.has('v') ? url.searchParams.get('v') : url.pathname.split('/').pop()
+  } catch (e) {
+    return null;
+  }
+}
+
+document.addEventListener('trix-action-invoke', function(event) {
+  const target = event.target
   if(event.actionName === 'x-insert-chart') {
-    var element = event.target;
-    var parentWrapper = $(element).parents('.chart-list');
-    element.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}");
+    target.editor.insertHTML("{{#chart}}" + $('select[name="chart-list-chart"]').val() + "{{/chart}}")
   }
   if(event.actionName === 'x-insert-youtube') {
-    const target = event.target
-
-    var dialog = $(event.invokingElement).parents('.trix-dialog--youtube')
-    var input = $(dialog).find('input[name=youtube-url]')
-
-    url = new URL(input.val())
-
-    var youtube_id = null
-    // catch all link variations where id is a parameter, or short urls where its last part of the path
-    if (url.searchParams.has('v')) {
-      var youtube_id = url.searchParams.get('v')
-    } else {
-      var youtube_id = url.pathname.split('/').pop()
-    }
-
+    const dialog = event.invokingElement.closest('.trix-dialog--youtube')
+    const input = dialog.querySelector('input[name="youtube-url"]')
+    const youtube_id = findYoutubeId(input.value)
     if (youtube_id !== null) {
-      $.ajax({
-        url: `/cms/youtube_embed/${encodeURIComponent(youtube_id)}`,
-        type: 'get',
-        error: function(xhr) {
-          console.log(xhr.statusText);
-        },
-        success: function(embed) {
-          let attachment = new Trix.Attachment(embed)
+      fetch(`/cms/youtube_embed/${encodeURIComponent(youtube_id)}`)
+        .then(response => {
+          if (!response.ok) throw new Error(response.statusText)
+          return response.json()
+        })
+       .then(embed => {
+          const attachment = new Trix.Attachment(embed)
           target.editor.insertAttachment(attachment)
           target.editorController.toolbarController.hideDialog()
-        }
-      })
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+
     }
   }
 })
