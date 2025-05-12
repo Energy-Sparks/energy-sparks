@@ -20,6 +20,14 @@ RSpec.describe AlertMailer do
         expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
       end
 
+      it 'sends an email with a mailgun deliverytime option' do
+        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
+        expect(ActionMailer::Base.deliveries.count).to be 1
+        deliverytime = email.mailgun_options[:deliverytime]
+        expect(deliverytime).not_to be_nil
+        expect(DateTime.rfc2822(deliverytime)).to be_between(Time.zone.now, Time.zone.now + 15.minutes)
+      end
+
       it 'specifies a subject' do
         AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
         expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name)
@@ -56,6 +64,14 @@ RSpec.describe AlertMailer do
         AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
         expect(ActionMailer::Base.deliveries.count).to be 1
         expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
+      end
+
+      it 'sends an email with a mailgun deliverytime option' do
+        AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
+        expect(ActionMailer::Base.deliveries.count).to be 1
+        deliverytime = email.mailgun_options[:deliverytime]
+        expect(deliverytime).not_to be_nil
+        expect(DateTime.rfc2822(deliverytime)).to be_between(Time.zone.now, Time.zone.now + 15.minutes)
       end
 
       it 'specifies a subject' do
