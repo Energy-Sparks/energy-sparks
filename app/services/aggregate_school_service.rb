@@ -38,12 +38,19 @@ class AggregateSchoolService
   # The common case for us is that the meter_collection will be in the cache.
   # If it isn't, then we serve a holding page whilst the school is aggregated.
   #
-  # To avoid fetching the item from disk twice for the common case, we just
-  # attempt to fetch the item here.
+  # To avoid fetching the item from disk we rely on a custom cache implementation
+  # that checks for a cached file, but not expiry.
+  #
+  # If that method is not available, then we just fetch the item rather than calling
+  # exists.
   def in_cache?
-    # Fetch but do not aggregate
-    @meter_collection = Rails.cache.fetch(cache_key)
-    @meter_collection != nil
+    if Rails.cache.respond_to?(:exists_on_disk?)
+      Rails.cache.exists_on_disk?(cache_key)
+    else
+      # Fetch but do not aggregate
+      @meter_collection = Rails.cache.fetch(cache_key)
+      @meter_collection != nil
+    end
   end
 
   def in_cache_or_cache_off?
