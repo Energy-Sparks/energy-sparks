@@ -496,14 +496,18 @@ en:
         page_title: Results of reducing your energy usage
         your_school_set_a_target_to_reduce_html: Your school set a target to reduce its energy usage between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>. This page summarises your results
       first:
+        advice: Focus on building momentum and making some early savings.
         careful_planning: Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommended set of steps to help you achieve your targets by
         its_time: It's time to set your first target to reduce your energy consumption
         page_title: Set your first energy saving target
         providing_more_insight: providing more insight through our detailed analysis of your energy usage
         providing_reports: providing reports to monitor your progress
+        recommend: Based on our work with schools across the UK, we recommend setting the following targets for your school this year.
         set_your_first_energy_saving_target: Set your first energy saving target
         suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
         suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
+        tip_html: "<strong>Tip</strong>: don't try to be too ambitious"
+        your_first: Your first target
       form:
         reducing_electricity_usage_by: Reducing electricity usage by
         reducing_gas_usage_by: Reducing gas usage by
