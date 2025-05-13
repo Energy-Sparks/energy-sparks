@@ -585,11 +585,9 @@ module AnalyseHeatingAndHotWater
 
     def report_missing_amr_dates(missing_dates)
       logger.info 'Warning: missing dates during regression modelling'
-      # rubocop:disable Naming/VariableNumber
       missing_dates.each_slice(10) do |group_of_10|
         logger.info group_of_10.to_s
       end
-      # rubocop:enable Naming/VariableNumber
     end
 
     def save_raw_regression_data_to_csv_for_debug(filename, x1, y1, a, b, r2)
