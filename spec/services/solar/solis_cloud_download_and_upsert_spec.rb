@@ -15,11 +15,11 @@ describe Solar::SolisCloudDownloadAndUpsert do
   end
 
   def stub_stations_day(time)
-    @list_json ||= File.read('spec/fixtures/solis_cloud/user_station_list.json')
-    stub('userStationList', @list_json) # rubocop:disable RSpec/InstanceVariable
-    @day_json ||= File.read('spec/fixtures/solis_cloud/station_day.json')
-    stub_station_day('1298491919449314564', time, @day_json) # rubocop:disable RSpec/InstanceVariable
-    stub_station_day('1298491919449314551', time, @day_json) # rubocop:disable RSpec/InstanceVariable
+    @@list_json ||= File.read('spec/fixtures/solis_cloud/user_station_list.json') # rubocop:disable Style/ClassVars
+    stub('userStationList', @@list_json)
+    @@day_json ||= File.read('spec/fixtures/solis_cloud/station_day.json') # rubocop:disable Style/ClassVars
+    stub_station_day('1298491919449314564', time, @@day_json)
+    stub_station_day('1298491919449314551', time, @@day_json)
   end
 
   it 'downloads and saves readings' do
