@@ -1,4 +1,5 @@
 require "active_support/core_ext/integer/time"
+require './lib/energy_sparks/file_store'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -123,7 +124,8 @@ Rails.application.configure do
   # session cookie has configurable name so that live and test logins are separated
   config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME', '_energy-sparks_session'),
                                       domain: ENV.fetch('SESSION_COOKIE_DOMAIN', '.energysparks.uk')
-  config.cache_store = :file_store, "/var/cache/rails_cache_store"
+
+  config.cache_store = EnergySparks::FileStore.new("/var/cache/rails_cache_store")
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
   config.active_job.queue_adapter = :good_job

@@ -24,6 +24,7 @@ class AggregateSchoolService
 
   # overwrite whatever we have cached
   def cache(meter_collection)
+    @meter_collection = meter_collection
     Rails.cache.write(cache_key, meter_collection)
   end
 
@@ -31,8 +32,25 @@ class AggregateSchoolService
     Rails.cache.delete(cache_key)
   end
 
+  # A call to `Rails.cache.exist?(cache_key)` results in the cache entry
+  # being retrieved from disk and deserialised, but it is not then returned.
+  #
+  # The common case for us is that the meter_collection will be in the cache.
+  # If it isn't, then we serve a holding page whilst the school is aggregated.
+  #
+  # To avoid fetching the item from disk we rely on a custom cache implementation
+  # that checks for a cached file, but not expiry.
+  #
+  # If that method is not available, then we just fetch the item rather than calling
+  # exists.
   def in_cache?
-    Rails.cache.exist?(cache_key)
+    if Rails.cache.respond_to?(:exists_on_disk?)
+      Rails.cache.exists_on_disk?(cache_key)
+    else
+      # Fetch but do not aggregate
+      @meter_collection = Rails.cache.fetch(cache_key)
+      @meter_collection != nil
+    end
   end
 
   def in_cache_or_cache_off?
