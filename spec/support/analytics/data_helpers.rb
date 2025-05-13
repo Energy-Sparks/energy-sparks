@@ -8,8 +8,12 @@ module EnergySparksAnalyticsDataHelpers
   def load_unvalidated_meter_collection(dir: 'analytics/test_output/MeterCollections', school: 'acme-academy',
                                         validate_and_aggregate: true)
     file_name = "#{dir}/unvalidated-data-#{school}.yaml"
+    cache_key = "#{file_name}-#{validate_and_aggregate}"
+    @@meter_collections ||= {} # rubocop:disable Style/ClassVars
+    return @@meter_collections[cache_key] if @@meter_collections.key?(cache_key)
+
     data = load_meter_collection(file_name: file_name)
-    meter_collection = create_meter_collection(data)
+    @@meter_collections[cache_key] ||= (meter_collection = create_meter_collection(data))
     validate_and_aggregate(meter_collection) if validate_and_aggregate
     meter_collection
   end
