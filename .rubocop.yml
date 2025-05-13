@@ -389,4 +389,5 @@ RSpec/AnyInstance:
 RSpec/LetSetup:
   # often used in shared contexts allowing let to be overridden
   Enabled: false
-
+RSpec/ExampleLength:
+  Max: 15
