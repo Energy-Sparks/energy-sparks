@@ -4,7 +4,7 @@
 <h2><%= t('school_groups.secr.section1.title') %></h2>
 <%= end_date = Periods::FixedAcademicYear.enumerator(@start_date, @start_date + 1.year).to_a[-1][1].to_fs(:es_short)
     t('school_groups.secr.section1.introduction_html', start_date: @start_date.to_fs(:es_short), end_date:) %>
-<table class="table table-sm">
+<table id="table1" class="table table-sm">
   <thead>
     <tr>
       <th></th>
@@ -56,15 +56,13 @@
     </tr>
     <tr>
       <td><%= t('school_groups.secr.section1.transmission_and_distribution') %></td>
-      <td><%= transmission_consumption =
-                MeterMonthlySummary.total_sum(meters.electricity, @start_date.year, :consumption) %></td>
+      <td>-</td>
       <td><%= transmission_emissions = SecrCo2Equivalence.emissions(@start_date.year, :transmission_distribution_co2e,
                                                                     electricity_consumption) %></td>
     </tr>
     <tr>
       <td><b><%= t('school_groups.secr.section1.total') %></b></td>
-      <td><%= (total_consumption =
-                 gas_consumption + self_consumption + electricity_consumption + transmission_consumption).round(2) %></td>
+      <td><%= (total_consumption = gas_consumption + self_consumption + electricity_consumption).round(2) %></td>
       <td><%= (gas_emissions + electricity_emissions + transmission_emissions).round(2) %></td>
     </tr>
     <tr>
@@ -85,7 +83,7 @@
     </tr>
     <tr>
       <td><%= t('school_groups.secr.section1.pupil_intensity') %></td>
-      <td><%= (@school_group.schools.sum(:number_of_pupils) / net).round(4) %></td>
+      <td><%= net.zero? ? 0 : (@school_group.schools.sum(:number_of_pupils) / net).round(4) %></td>
       <td></td>
     </tr>
   </tbody>
@@ -95,9 +93,10 @@
     </tr>
   </tfoot>
 </table>
+<% academic_year = "#{@start_date.year}/#{(@start_date.year + 1).to_s[-2..]}" %>
 <h2><%= t('school_groups.secr.section1.table2_title') %></h2>
-<p><%= t('school_groups.secr.section1.table2_introduction_html', year: @start_date.year) %></p>
-<table class="table table-sm">
+<p><%= t('school_groups.secr.section1.table2_introduction_html', year: academic_year) %></p>
+<table id="table2" class="table table-sm">
   <thead>
     <tr>
       <th>Type</th>
@@ -116,7 +115,7 @@
   </tbody>
 </table>
 <h2><%= t('school_groups.secr.section2.title') %></h2>
-<p><%= t('school_groups.secr.section2.title') %></p>
+<p><%= t('school_groups.secr.section2.introduction', year: academic_year) %></p>
 <ul>
   <li><%= link_to t('school_groups.secr.section2.electricity_consumption'),
                   school_group_secr_index_path(@school_group, format: :csv, csv: :electricity) %></li>

@@ -20,11 +20,11 @@ RSpec.describe 'SECR CO₂ equivalences' do
   it 'can create a new zone' do
     click_on 'New SECR CO₂ equivalence'
     fill_in 'Year', with: '2025'
-    fill_in 'Electricity kg CO₂ equivalence', with: '0.51', match: :first
-    fill_in 'Electricity kg CO₂ equivalence of CO₂', with: '0.52'
-    fill_in 'Transmission distribution kg CO₂ equivalence', with: '0.53'
-    fill_in 'Natural gas kg CO₂ equivalence', with: '0.54', match: :first
-    fill_in 'Natural gas kg CO₂ equivalence of CO₂', with: '0.55'
+    fill_in 'Electricity kg CO₂e', with: '0.51', match: :first
+    fill_in 'Electricity kg CO₂e of CO₂', with: '0.52'
+    fill_in 'Transmission & distribution kg CO₂e', with: '0.53'
+    fill_in 'Natural gas kg CO₂e', with: '0.54', match: :first
+    fill_in 'Natural gas kg CO₂e of CO₂', with: '0.55'
     expect { click_on 'Create' }.to change(SecrCo2Equivalence, :count).by(1)
     expect(page).to have_content('New SECR CO₂ equivalence created')
     expect(page).to have_content '2025 0.51 0.52 0.53 0.54 0.55'
@@ -52,9 +52,9 @@ RSpec.describe 'SECR CO₂ equivalences' do
     it 'displays the index' do
       expect(page).to have_content('SECR CO₂ equivalence')
       expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to eq(
-        [['Year', 'Electricity kg CO₂ equivalence', 'Electricity kg CO₂ equivalence of CO₂',
-          'Transmission distribution kg CO₂ equivalence', 'Natural gas kg CO₂ equivalence',
-          'Natural gas kg CO₂ equivalence of CO₂'],
+        [['Year', 'Electricity kg CO₂e', 'Electricity kg CO₂e of CO₂',
+          'Transmission & distribution kg CO₂e', 'Natural gas kg CO₂e',
+          'Natural gas kg CO₂e of CO₂'],
          ['2024', '0.20705', '0.20493', '0.0183', '0.1829', '0.18253', 'Edit']]
       )
     end

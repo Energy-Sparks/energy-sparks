@@ -232,7 +232,7 @@ en:
       section2:
         electricity_consumption: electricity consumption
         gas_consumption: gas consumption
-        introduction: 'CSV downloads of the following:'
+        introduction: 'CSV downloads for the last academic year %{year} of the following:'
         solar_export: solar export
         solar_self_consumption: solar self consumption
         title: SECR reporting data
