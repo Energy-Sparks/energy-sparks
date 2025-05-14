@@ -61,6 +61,29 @@ Rails.application.routes.draw do
 
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
 
+  direct :cdn_link do |model, options|
+    if model.respond_to?(:signed_id)
+      route_for(
+        :rails_service_blob_proxy,
+        model.signed_id,
+        model.filename,
+        options.merge(host: ENV.fetch('ASSET_HOST'))
+      )
+    else
+      signed_blob_id = model.blob.signed_id
+      variation_key = model.variation.key
+      filename = model.blob.filename
+
+      route_for(
+        :rails_blob_representation_proxy,
+        signed_blob_id,
+        variation_key,
+        filename,
+        options.merge(host: ENV.fetch('ASSET_HOST'))
+      )
+    end
+  end
+
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'find-out-more', as: :find_out_more
