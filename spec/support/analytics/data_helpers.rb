@@ -13,7 +13,7 @@ module EnergySparksAnalyticsDataHelpers
     return @@meter_collections[cache_key] if @@meter_collections.key?(cache_key)
 
     data = load_meter_collection(file_name: file_name)
-    @@meter_collections[cache_key] ||= (meter_collection = create_meter_collection(data))
+    @@meter_collections[cache_key] = meter_collection = create_meter_collection(data)
     validate_and_aggregate(meter_collection) if validate_and_aggregate
     meter_collection
   end
