@@ -1,3 +1,19 @@
 <% content_for :page_title, t('case_studies.title') %>
 
-<%= render 'home/case_studies', case_studies: @case_studies, all_case_studies_count: 0 %>
+<% if Flipper.enabled?(:new_case_studies_page, current_user) %>
+  <div class="container-fluid adult mb-5 py-4">
+    <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
+      <% grid.with_iframe classes: 'rounded-xl overflow-hidden h-100', cell_classes: 'pr-xl-4', src: 'https://www.youtube.com/embed/PqoKZjwgmoY' %>
+      <% grid.with_feature_card size: :xl, cell_classes: 'my-auto pl-xl-4' do |feature| %>
+        <%= feature.with_header title: t('case_studies.feature.title'), classes: 'mt-3 mt-lg-0' %>
+        <%= feature.with_description { t('case_studies.feature.description_html', count: School.active.visible.count) } %>
+        <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :primary %>
+        <%= feature.with_button t('home.buttons.book_a_demo'),
+                                book_demo_campaigns_path,
+                                style: :secondary %>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <%= render 'home/case_studies', case_studies: @case_studies, all_case_studies_count: 0 %>
+<% end %>

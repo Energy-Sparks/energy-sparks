@@ -3,6 +3,8 @@ class CaseStudiesController < ApplicationController
   skip_before_action :authenticate_user!
   def index
     @case_studies = CaseStudy.order(position: :asc)
+    layout = Flipper.enabled?(:new_case_studies_page, current_user) ? 'home' : 'application'
+    render :index, layout: layout
   end
 
   def download
