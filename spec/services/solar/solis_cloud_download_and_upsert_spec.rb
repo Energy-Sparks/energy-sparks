@@ -5,9 +5,6 @@ require 'rails_helper'
 describe Solar::SolisCloudDownloadAndUpsert do
   let(:installation) { create(:solis_cloud_installation) }
 
-  self::LIST_JSON = File.read('spec/fixtures/solis_cloud/user_station_list.json') # rubocop:disable RSpec/LeakyConstantDeclaration
-  self::DAY_JSON = File.read('spec/fixtures/solis_cloud/station_day.json') # rubocop:disable RSpec/LeakyConstantDeclaration
-
   def stub(action, body)
     headers = { 'Content-Type' => 'application/json' }
     stub_request(:post, "https://www.soliscloud.com:13333/v1/api/#{action}").to_return(body:, headers:)
@@ -16,6 +13,9 @@ describe Solar::SolisCloudDownloadAndUpsert do
   def stub_station_day(id, time, body)
     stub('stationDay', body).with(body: { id:, money: 'GBP', time:, timeZone: 44 }.to_json)
   end
+
+  self::LIST_JSON = File.read('spec/fixtures/solis_cloud/user_station_list.json') # rubocop:disable RSpec/LeakyConstantDeclaration
+  self::DAY_JSON = File.read('spec/fixtures/solis_cloud/station_day.json') # rubocop:disable RSpec/LeakyConstantDeclaration
 
   def stub_stations_day(time)
     stub('userStationList', self.class::LIST_JSON)
