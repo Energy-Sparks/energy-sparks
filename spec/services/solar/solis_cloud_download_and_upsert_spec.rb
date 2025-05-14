@@ -5,6 +5,9 @@ require 'rails_helper'
 describe Solar::SolisCloudDownloadAndUpsert do
   let(:installation) { create(:solis_cloud_installation) }
 
+  self::LIST_JSON = File.read('spec/fixtures/solis_cloud/user_station_list.json') # rubocop:disable RSpec/LeakyConstantDeclaration
+  self::DAY_JSON = File.read('spec/fixtures/solis_cloud/station_day.json') # rubocop:disable RSpec/LeakyConstantDeclaration
+
   def stub(action, body)
     headers = { 'Content-Type' => 'application/json' }
     stub_request(:post, "https://www.soliscloud.com:13333/v1/api/#{action}").to_return(body:, headers:)
@@ -15,11 +18,9 @@ describe Solar::SolisCloudDownloadAndUpsert do
   end
 
   def stub_stations_day(time)
-    @@list_json ||= File.read('spec/fixtures/solis_cloud/user_station_list.json') # rubocop:disable Style/ClassVars
-    stub('userStationList', @@list_json)
-    @@day_json ||= File.read('spec/fixtures/solis_cloud/station_day.json') # rubocop:disable Style/ClassVars
-    stub_station_day('1298491919449314564', time, @@day_json)
-    stub_station_day('1298491919449314551', time, @@day_json)
+    stub('userStationList', self.class::LIST_JSON)
+    stub_station_day('1298491919449314564', time, self.class::DAY_JSON)
+    stub_station_day('1298491919449314551', time, self.class::DAY_JSON)
   end
 
   it 'downloads and saves readings' do
