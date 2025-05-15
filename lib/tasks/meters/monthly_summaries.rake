@@ -5,7 +5,8 @@ namespace :meters do
   task monthly_summaries: :environment do |_t, _args|
     School.process_data.order(:name).each do |school|
       puts school.slug
-      MeterMonthlySummary.create_or_update_from_school(school, AggregateSchoolService.new(school).meter_collection)
+      service = AggregateSchoolService.new(school)
+      MeterMonthlySummary.create_or_update_from_school(school, service.meter_collection) if service.in_cache?
     end
   end
 end
