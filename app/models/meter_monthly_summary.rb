@@ -112,7 +112,7 @@ class MeterMonthlySummary < ApplicationRecord
       elsif types.intersect?(%w[PROB SOL0])
         :incomplete
       else
-        raise "unknown #{types} #{month_start} #{month_readings}"
+        raise "unknown #{types} - #{month_start} #{month_readings}"
       end
     end
   end
