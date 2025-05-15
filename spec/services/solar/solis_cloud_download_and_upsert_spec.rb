@@ -14,11 +14,13 @@ describe Solar::SolisCloudDownloadAndUpsert do
     stub('stationDay', body).with(body: { id:, money: 'GBP', time:, timeZone: 44 }.to_json)
   end
 
+  self::LIST_JSON = File.read('spec/fixtures/solis_cloud/user_station_list.json') # rubocop:disable RSpec/LeakyConstantDeclaration
+  self::DAY_JSON = File.read('spec/fixtures/solis_cloud/station_day.json') # rubocop:disable RSpec/LeakyConstantDeclaration
+
   def stub_stations_day(time)
-    stub('userStationList', File.read('spec/fixtures/solis_cloud/user_station_list.json'))
-    station_day_body = File.read('spec/fixtures/solis_cloud/station_day.json')
-    stub_station_day('1298491919449314564', time, station_day_body)
-    stub_station_day('1298491919449314551', time, station_day_body)
+    stub('userStationList', self.class::LIST_JSON)
+    stub_station_day('1298491919449314564', time, self.class::DAY_JSON)
+    stub_station_day('1298491919449314551', time, self.class::DAY_JSON)
   end
 
   it 'downloads and saves readings' do
@@ -55,15 +57,14 @@ describe Solar::SolisCloudDownloadAndUpsert do
       stub_stations_day(day.iso8601)
     end
     create(:solar_pv_meter,
-                   :with_unvalidated_readings,
-                   mpan_mprn: 70_000_001_799_272,
-                   pseudo: true,
-                   end_date: Date.parse('2023-11-15'),
-                   meter_serial_number: '1298491919449314564',
-                   solis_cloud_installation: installation,
-                   school: installation.school)
-    described_class.new(start_date: nil, end_date: nil,
-                       installation:).download_and_upsert
+           :with_unvalidated_readings,
+           mpan_mprn: 70_000_001_799_272,
+           pseudo: true,
+           end_date: Date.parse('2023-11-15'),
+           meter_serial_number: '1298491919449314564',
+           solis_cloud_installation: installation,
+           school: installation.school)
+    described_class.new(start_date: nil, end_date: nil, installation:).download_and_upsert
     expect(installation.meters.first.amr_data_feed_readings.count).to eq(7)
   end
 end
