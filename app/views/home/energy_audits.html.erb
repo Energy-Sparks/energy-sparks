@@ -16,7 +16,7 @@
     <%= render Layout::GridComponent.new(
           id: 'onsite', cols: 2, classes: 'pb-2', cell_classes: 'py-4'
         ) do |grid| %>
-      <%= grid.with_image src: 'whiteboard.jpg', classes: 'rounded-xl' %>
+      <%= grid.with_image src: 'audit-boiler.jpg', classes: 'rounded-xl' %>
       <% grid.with_feature_card(cell_classes: 'my-auto py-4', size: :lg) do |feature| %>
         <%= feature.with_header title: t('energy_audits.onsite.title') %>
         <%= feature.with_description { t('energy_audits.onsite.description_html') } %>
@@ -80,7 +80,7 @@
         <%= feature.with_button(t('home.buttons.read_case_studies'),
                                 case_studies_path, style: :secondary, classes: '') %>
       <% end %>
-      <%= grid.with_image(src: 'laptop.jpg', classes: 'rounded-xl', cell_classes: '') %>
+      <%= grid.with_image(src: 'laptop.jpg', cell_classes: 'order-md-first') %>
     <% end %>
 
     <%= render Layout::CarouselComponent.new(id: 'testimonials',
