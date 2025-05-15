@@ -35,10 +35,12 @@ class MeterMonthlySummary < ApplicationRecord
     Periods::FixedAcademicYear.enumerator(start_date(today, 2), today).filter_map do |period_start, period_end|
       (meter_collection.heat_meters + meter_collection.electricity_meters).each do |meter|
         meter = meter.sub_meters[:mains_consume] if meter.storage_heater?
-        from_meter_collection_meter(meter_ids[meter.id], meter, period_start, period_end, :main_meter_month_quality, :consumption)
+        from_meter_collection_meter(meter_ids[meter.id], meter, period_start, period_end, :main_meter_month_quality,
+                                    :consumption)
       end
       meter_collection.electricity_meters.filter(&:solar_pv_panels?).each do |meter|
-        from_solar_meter(meter_ids[meter.storage_heater? ? meter.sub_meters[:mains_consume].id : meter.id], meter, period_start, period_end)
+        from_solar_meter(meter_ids[meter.storage_heater? ? meter.sub_meters[:mains_consume].id : meter.id], meter,
+                         period_start, period_end)
       end
     end
   end
@@ -88,7 +90,8 @@ class MeterMonthlySummary < ApplicationRecord
     end
   end
 
-  private_class_method def self.from_meter_collection_meter(meter_id, meter, period_start, period_end, quality_method, type)
+  private_class_method def self.from_meter_collection_meter(meter_id, meter, period_start, period_end, quality_method,
+                                                            type)
     readings = (period_start..period_end).filter_map { |date| meter.amr_data[date] }
     return if readings.empty?
 
@@ -102,7 +105,7 @@ class MeterMonthlySummary < ApplicationRecord
       :incomplete
     else
       types = month_readings.to_set(&:type)
-      if types == %w[ORIG].to_set
+      if types == %w[ORIG].to_set || types == %w[ORIG SOLN].to_set
         :actual
       elsif types.intersect?(%w[SOLR SOLO SOLE BKPV])
         :estimated
