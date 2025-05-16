@@ -1,13 +1,7 @@
 module SchoolGroups
-  class DigitalSignageController < ApplicationController
-    load_and_authorize_resource :school_group
-
+  class DigitalSignageController < BaseController
     def index
-      @breadcrumbs = [
-        { name: I18n.t('common.schools'), href: schools_path },
-        { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: I18n.t('manage_school_menu.digital_signage') }
-      ]
+      set_breadcrumbs(name: I18n.t('manage_school_menu.digital_signage'))
     end
 
     def charts

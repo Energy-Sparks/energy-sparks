@@ -1,17 +1,11 @@
 # frozen_string_literal: true
 
 module SchoolGroups
-  class SecrController < ApplicationController
-    load_and_authorize_resource :school_group
-
+  class SecrController < BaseController
     def index
       raise CanCan::AccessDenied unless current_user.admin? || current_user.group_admin?
 
-      @breadcrumbs = [
-        { name: I18n.t('common.schools'), href: schools_path },
-        { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: I18n.t('school_groups.sub_nav.secr_report') }
-      ]
+      set_breadcrumbs(name: I18n.t('school_groups.sub_nav.secr_report'))
       @start_date = MeterMonthlySummary.start_date(Time.zone.today, 2)
       @meters = @school_group.meters.active.where('schools.active')
       respond_to do |format|

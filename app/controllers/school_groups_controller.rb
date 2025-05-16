@@ -1,9 +1,7 @@
-class SchoolGroupsController < ApplicationController
+class SchoolGroupsController < SchoolGroups::BaseController
   include PartnersHelper
   include Promptable
   include Scoring
-
-  load_resource
 
   before_action :find_schools_and_partners
   before_action :redirect_unless_authorised, except: [:map]
@@ -122,11 +120,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def build_breadcrumbs
-    @breadcrumbs = [
-      { name: I18n.t('common.schools'), href: schools_path },
-      { name: @school_group.name, href: school_group_path(@school_group) },
-      { name: I18n.t("school_groups.titles.#{action_name}") }
-    ]
+    set_breadcrumbs(name: I18n.t("school_groups.titles.#{action_name}"))
   end
 
   def find_schools_and_partners
