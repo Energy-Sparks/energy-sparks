@@ -35,10 +35,16 @@ class MeterMonthlySummary < ApplicationRecord
 
   def self.create_or_update_from_school(school, meter_collection)
     today = Time.zone.today
+    meter_ids = school.meters.to_h { |meter| [meter.mpan_mprn, meter.id] }
     Periods::FixedAcademicYear.enumerator(start_date(today, 2), today).filter_map do |period_start, period_end|
-      school.meters.active.main_meter.each { |meter| from_main_meter(meter, period_start, period_end) }
-      school.meters.active.electricity.filter(&:has_solar_array?).each do |meter|
-        from_solar_meter(meter, meter_collection.meter?(meter.mpan_mprn), period_start, period_end)
+      (meter_collection.heat_meters + meter_collection.electricity_meters).each do |meter|
+        meter = meter.sub_meters[:mains_consume] if meter.storage_heater?
+        from_meter_collection_meter(meter_ids[meter.id], meter, period_start, period_end, :main_meter_month_quality,
+                                    :consumption)
+      end
+      meter_collection.electricity_meters.filter(&:solar_pv_panels?).each do |meter|
+        from_solar_meter(meter_ids[meter.storage_heater? ? meter.sub_meters[:mains_consume].id : meter.id], meter,
+                         period_start, period_end)
       end
     end
   end
@@ -64,35 +70,37 @@ class MeterMonthlySummary < ApplicationRecord
     [consumption, quality]
   end
 
-  private_class_method def self.create_or_update_summary(meter, year, type, consumption, quality)
-    summary = find_or_initialize_by(meter:, year:, type:)
+  private_class_method def self.create_or_update_summary(meter_id, year, type, consumption, quality)
+    summary = find_or_initialize_by(meter_id:, year:, type:)
     summary.assign_attributes(consumption:, quality:, total: consumption.sum)
     summary.save! if summary.changed?
     summary
   end
 
   private_class_method def self.main_meter_month_quality(month_start, month_readings)
-    missing_days = calculate_missing_days(month_readings.to_set(&:reading_date), month_start)
+    missing_days = calculate_missing_days(month_readings.to_set(&:date), month_start)
     if missing_days.any?
       :incomplete
-    elsif month_readings.to_set(&:status).to_a == %w[ORIG]
+    elsif month_readings.to_set(&:type) == %w[ORIG].to_set
       :actual
     else
       :corrected
     end
   end
 
-  private_class_method def self.from_solar_meter(meter, meter_collection_meter, period_start, period_end)
-    return if meter_collection_meter.nil?
-
+  private_class_method def self.from_solar_meter(meter_id, meter_collection_meter, period_start, period_end)
     meter_collection_meter.sub_meters.slice(:generation, :self_consume, :export).each do |type, sub_meter|
-      readings = (period_start..period_end).filter_map { |date| sub_meter.amr_data[date] }
-      next if readings.empty?
-
-      consumption, quality = consumption_and_quality(readings.group_by { |r| r.date.beginning_of_month },
-                                                     :solar_meter_month_quality)
-      create_or_update_summary(meter, period_start.year, type, consumption, quality)
+      from_meter_collection_meter(meter_id, sub_meter, period_start, period_end, :solar_meter_month_quality, type)
     end
+  end
+
+  private_class_method def self.from_meter_collection_meter(meter_id, meter, period_start, period_end, quality_method,
+                                                            type)
+    readings = (period_start..period_end).filter_map { |date| meter.amr_data[date] }
+    return if readings.empty?
+
+    consumption, quality = consumption_and_quality(readings.group_by { |r| r.date.beginning_of_month }, quality_method)
+    create_or_update_summary(meter_id, period_start.year, type, consumption, quality)
   end
 
   private_class_method def self.solar_meter_month_quality(month_start, month_readings)
@@ -101,14 +109,14 @@ class MeterMonthlySummary < ApplicationRecord
       :incomplete
     else
       types = month_readings.to_set(&:type)
-      if types == %w[ORIG].to_set
+      if %w[ORIG SOLN].to_set.superset?(types)
         :actual
       elsif types.intersect?(%w[SOLR SOLO SOLE BKPV])
         :estimated
       elsif types.intersect?(%w[PROB SOL0])
         :incomplete
       else
-        raise "unknown #{month_readings.to_set(&:type)}"
+        raise "unknown #{types} - #{month_start} #{month_readings}"
       end
     end
   end
