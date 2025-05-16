@@ -735,7 +735,7 @@ en:
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
-        title: New %{user_role} account
+        title: Add %{user_role} account
     your_school_estates:
       edit:
         description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you

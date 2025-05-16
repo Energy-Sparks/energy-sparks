@@ -52,8 +52,6 @@
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
 #
 
-require 'securerandom'
-
 class User < ApplicationRecord
   include MailchimpUpdateable
 
@@ -140,6 +138,8 @@ class User < ApplicationRecord
   validates :school_id, presence: true, if: :pupil?
 
   validates :school_group_id, presence: true, if: :group_admin?
+
+  validates :name, presence: true, on: :create
 
   validate :preferred_locale_presence_in_available_locales
 

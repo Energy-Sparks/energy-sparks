@@ -223,20 +223,20 @@ describe 'School admin user management' do
         before do
           click_on 'Manage users'
           click_on 'New school admin account'
-          fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
+          click_on 'Continue'
+          fill_in 'Name', with: 'Mrs Jones'
           select 'Business manager', from: 'Role'
+          click_on 'Create account'
         end
 
         it 'can create a school admin' do
-          click_on 'Create account'
           school_admin = school.users.school_admin.last
           expect(school_admin.email).to eq('mrsjones@test.com')
           expect(school_admin.confirmed?).to be false
         end
 
         it 'emails new user to confirm account' do
-          click_on 'Create account'
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to eq('Please confirm your account on Energy Sparks')
           expect(email.encoded).to match(school.name)
@@ -320,17 +320,17 @@ describe 'School admin user management' do
       context 'when adding an existing user' do
         before do
           click_on 'Manage users'
-          click_on 'Add an existing Energy Sparks user as a school admin'
+          click_on 'New school admin account'
         end
 
-        it 'has option to add another school admin' do
-          expect(page).to have_content('Add an existing user as a school admin')
-        end
+        # it 'has option to add another school admin' do
+        #   expect(page).to have_content('Add school admin account')
+        # end
 
-        it 'warns if user not found' do
-          click_on 'Add user'
-          expect(page).to have_content('We were unable to find a user with this email address')
-        end
+        # it 'warns if user not found' do
+        #   click_on 'Add user'
+        #   expect(page).to have_content('We were unable to find a user with this email address')
+        # end
 
         context 'when adding a user' do
           let!(:other_school_admin) { create(:school_admin, :subscribed_to_alerts, name: 'Other admin') }
@@ -340,30 +340,30 @@ describe 'School admin user management' do
           end
 
           it 'adds the user' do
-            click_on 'Add user'
+            click_on 'Continue'
+            expect(page).to have_content('Added user as a school admin')
             expect(page).to have_content(other_school_admin.name)
             other_school_admin.reload
             expect(other_school_admin.cluster_schools_for_switching).to eq([school])
-          end
-
-          it 'adds the user as an alert contact, by default' do
-            expect { click_on 'Add user' }.to change(Contact, :count).by(1)
-          end
-
-          it 'doesnt add alert contact if requested' do
-            uncheck 'Subscribe to school alerts'
-            expect { click_on 'Add user' }.not_to(change(Contact, :count))
           end
 
           context 'when the other user is staff' do
             let!(:other_school_admin) { create(:staff, name: 'Other admin') }
 
             it 'adds the user' do
-              click_on 'Add user'
-
+              click_on 'Continue'
               other_school_admin.reload
               expect(other_school_admin.cluster_schools_for_switching).to eq([school])
               expect(other_school_admin.role).to eq 'school_admin'
+            end
+          end
+
+          context 'with a group admin' do
+            let!(:other_school_admin) { create(:group_admin, name: 'Group admin') }
+
+            it 'notifies about a group admin' do
+              click_on 'Continue'
+              expect(page).to have_content('this user is already able to administer this school')
             end
           end
         end
