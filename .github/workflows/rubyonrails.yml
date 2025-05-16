@@ -57,7 +57,7 @@ jobs:
           ruby-only: true
       # Fail early if we have issues with translation keys
       - run: bundle exec i18n-tasks health
-      - run: bundle exec overcommit --sign && bundle exec overcommit --run
+      - run: bundle exec overcommit --sign && bundle exec overcommit --sign pre-commit && bundle exec overcommit --run
         env:
           GIT_AUTHOR_NAME: Over Commit
           GIT_AUTHOR_EMAIL: overcommit@localhost
