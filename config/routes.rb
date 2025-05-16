@@ -255,6 +255,7 @@ Rails.application.routes.draw do
           post :assign
         end
       end
+      resources :secr, only: [:index]
     end
     member do
       get :map
