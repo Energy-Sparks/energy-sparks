@@ -40,7 +40,7 @@
           classes: 'rounded-xl p-4 my-4',
           cell_classes: 'my-auto'
         ) do |grid| %>
-      <%= grid.with_image(src: 'for-schools/workshop-activity.png') %>
+      <%= grid.with_image(src: 'pupil-whiteboard.jpg') %>
       <%= grid.with_feature_card(classes: 'mb-4', size: :md) do |feature| %>
         <%= feature.with_header(title: t('education_workshops.audience.title'), classes: 'mt-3 mt-lg-0') %>
         <%= feature.with_description { t('education_workshops.audience.description_html') } %>
@@ -60,7 +60,7 @@
       <%= grid.with_feature_card(size: :lg) do |feature| %>
         <%= feature.with_header(title: t('education_workshops.details.title')) %>
         <%= feature.with_price(
-              label: t('common.labels.ranging_from'),
+              label: t('education_workshops.prices_ranging_from'),
               price: t('education_workshops.details.price'),
               classes: 'text-complement pb-1'
             ) %>
@@ -70,7 +70,7 @@
         <%= feature.with_button(t('common.labels.enquire_now'),
                                 'mailto:hello@energysparks.uk', style: :secondary) %>
       <% end %>
-      <%= grid.with_image(src: 'laptop.jpg') %>
+      <%= grid.with_image(src: 'workshops-hall.jpg') %>
     <% end %>
   </div>
 <% else %>
