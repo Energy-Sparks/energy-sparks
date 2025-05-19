@@ -30,8 +30,7 @@ module Schools
     def create
       authorize! :manage_users, @school
       @user = User.new(user_params.merge(school: @school, created_by: current_user))
-      # debugger
-      @user.valid?
+      @user.valid? # to run validations
       if @user.role == 'school_admin' &&
          @user.errors.where(:email).filter { |error| error.type != :taken }.empty? && !params.key?(:new_user_form)
         existing_user = User.find_by(email: @user.email)
