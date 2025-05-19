@@ -708,7 +708,6 @@ en:
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
       index:
         account_confirmed: Account confirmed?
-        add_existing_user_as_admin: Add an existing Energy Sparks user as a school admin
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
