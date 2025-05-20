@@ -4,7 +4,7 @@
   <% if Flipper.enabled?(:new_home_page, current_user) %>
     <div class="container-fluid adult mb-5 py-5">
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, id: 'hero') do |grid| %>
-        <%= grid.with_image src: 'on-screen.jpg', collapse: true %>
+        <%= grid.with_image src: 'on-screen.jpg' %>
         <% grid.with_feature_card size: :xl, cell_classes: 'my-auto' do |feature| %>
           <%= feature.with_header title: t('home.feature.header'), classes: 'mt-lg-0' %>
           <%= feature.with_description { t('home.feature.description_html') } %>
