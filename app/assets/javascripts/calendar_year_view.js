@@ -37,14 +37,10 @@ $(document).ready(function() {
   if ($("#calendar").length) {
 
     function editEvent(event) {
-
-      var lastEvent =  event.events[event.events.length - 1];
-      var startDate = lastEvent.startDate;
-      var endDate = lastEvent.endDate;
-
-      var calendarId =  $('#event-modal').data('calendar');
-
-      $(".event-action").html('Edit');
+      const lastEvent =  event.events[event.events.length - 1];
+      const startDate = lastEvent.startDate;
+      const endDate = lastEvent.endDate;
+      const calendarId =  $('#event-modal').data('calendar');
       $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events/' + lastEvent.id)
       $('#event-modal input[name="_method"]').val('patch');
 
@@ -68,22 +64,7 @@ $(document).ready(function() {
     }
 
     function newEvent(event) {
-      var calendarId =  $('#event-modal').data('calendar');
-
-      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
-      $('#event-modal input[name="_method"]').val('post');
-
-      $("#calendar_event_calendar_event_type_id").val('');
-
-      $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
-      $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
-
-      $('#delete_button').hide();
-
-      document.getElementById('event-model-new-title').style.display = 'initial';
-      document.getElementById('event-model-edit-title').style.display = 'none';
       if (event.events.length) {
-        console.log(event.events)
           if (event.events.at(-1).basedOn) {
             document.getElementById('edit_button').style.display = 'initial';
             document.getElementById('edit_button').addEventListener('click', function(e) {
@@ -96,6 +77,20 @@ $(document).ready(function() {
       } else {
         document.getElementById('edit_button').style.display = 'none';
       }
+
+      var calendarId =  $('#event-modal').data('calendar');
+      $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
+      $('#event-modal input[name="_method"]').val('post');
+
+      $("#calendar_event_calendar_event_type_id").val('');
+
+      $('#event-modal input[name="calendar_event[start_date]"]').val(event.date.toLocaleDateString("en-GB"));
+      $('#event-modal input[name="calendar_event[end_date]"]').val(event.date.toLocaleDateString("en-GB"));
+
+      $('#delete_button').hide();
+
+      document.getElementById('event-model-new-title').style.display = 'initial';
+      document.getElementById('event-model-edit-title').style.display = 'none';
       $('#event-modal').modal();
     }
 
