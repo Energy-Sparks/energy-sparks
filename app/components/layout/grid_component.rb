@@ -29,12 +29,10 @@ module Layout
     end
 
     def responsive_classes(klass)
-      cell_classes = ''
-      if cols == 2
+      if cols == 2 && klass == Elements::ImageComponent
         # ensure image always comes first on 2 col layouts
-        cell_classes += ' order-first-md-down pb-4 pb-lg-0' if klass == Elements::ImageComponent
+        return 'order-first-md-down pb-4 pb-lg-0'
       end
-      cell_classes
     end
 
     def initialize(cols:, rows: 1, feature: false, cell_classes: '', **_kwargs)
