@@ -15,6 +15,7 @@ function loadCalendarData(dataUrl, calendarDiv) {
           startDate: new Date(returnedData[i].startDate),
           endDate: new Date(returnedData[i].endDate),
           color: returnedData[i].color,
+          basedOn: returnedData[i].basedOn
         });
       }
       calendarDiv.data('calendar').setDataSource(data);
@@ -60,14 +61,15 @@ $(document).ready(function() {
         $('#event-modal input[name="_method"]').val('delete');
         $('form#event_form').submit();
       });
-
+      document.getElementById('event-model-new-title').style.display = 'none';
+      document.getElementById('event-model-edit-title').style.display = 'inherit';
+      document.getElementById('edit_button').style.display = 'none';
       $('#event-modal').modal();
     }
 
     function newEvent(event) {
       var calendarId =  $('#event-modal').data('calendar');
 
-      $(".event-action").html('New');
       $('form#event_form').attr('action', '/calendars/' + calendarId + '/calendar_events')
       $('#event-modal input[name="_method"]').val('post');
 
@@ -78,6 +80,22 @@ $(document).ready(function() {
 
       $('#delete_button').hide();
 
+      document.getElementById('event-model-new-title').style.display = 'initial';
+      document.getElementById('event-model-edit-title').style.display = 'none';
+      if (event.events.length) {
+        console.log(event.events)
+          if (event.events.at(-1).basedOn) {
+            document.getElementById('edit_button').style.display = 'initial';
+            document.getElementById('edit_button').addEventListener('click', function(e) {
+              e.preventDefault();
+              editEvent(event);
+            });
+          } else {
+            return editEvent(event);
+          }
+      } else {
+        document.getElementById('edit_button').style.display = 'none';
+      }
       $('#event-modal').modal();
     }
 
@@ -89,11 +107,7 @@ $(document).ready(function() {
         enableRangeSelection: false,
         style: 'background',
         clickDay: function(e) {
-          if(e.events.length){
-            editEvent({ events: e.events });
-          }else{
-            newEvent({ date: e.date });
-          }
+          newEvent({ date: e.date, events: e.events });
         },
         mouseOnDay: function(e) {
           if(e.events.length > 0) {

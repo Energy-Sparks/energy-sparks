@@ -24,9 +24,11 @@ en:
       status: Status
       type: Type
     event_modal:
-      calendar_event: Calendar Event
+      edit_calendar_event: Edit Calendar Event
+      edit_existing: Edit Existing
       end_date: End Date
       event_type: Event Type
+      new_calendar_event: New Calendar Event
       save_changes: Save Changes
       start_date: Start Date
     legend:
