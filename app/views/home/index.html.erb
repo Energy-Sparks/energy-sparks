@@ -2,7 +2,7 @@
   <% content_for :page_title, t('common.labels.home') %>
 
   <% if Flipper.enabled?(:new_home_page, current_user) %>
-    <div class="container-fluid adult mb-5 py-5">
+    <div class="container-fluid adult mb-4 py-5">
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, id: 'hero') do |grid| %>
         <%= grid.with_image src: 'on-screen.jpg' %>
         <% grid.with_feature_card size: :xl, cell_classes: 'my-auto' do |feature| %>
@@ -57,7 +57,7 @@
       <%= render Layout::CarouselComponent.new(id: 'testimonials',
                                                show_markers: false,
                                                theme: :accent,
-                                               classes: 'rounded-xl p-4 mb-5',
+                                               classes: 'rounded-xl p-4 mb-4',
                                                show_arrows: :side) do |carousel| %>
         <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
           <%= carousel.with_testimonial_card(testimonial: testimonial) %>

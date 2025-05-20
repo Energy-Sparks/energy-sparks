@@ -1,6 +1,6 @@
 <% content_for :page_title, t('education_workshops.title') %>
 <% if Flipper.enabled?(:new_workshops_page, current_user) %>
-  <div class="container-fluid adult mb-5 py-5">
+  <div class="container-fluid adult mb-4 py-5">
     <%= render Layout::GridComponent.new(
           id: 'hero', cols: 2, feature: true, classes: 'container'
         ) do |grid| %>
