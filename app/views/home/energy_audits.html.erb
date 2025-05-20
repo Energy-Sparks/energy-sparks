@@ -1,6 +1,6 @@
 <% content_for :page_title, t('energy_audits.title') %>
 <% if Flipper.enabled?(:new_audits_page, current_user) %>
-  <div class="container-fluid adult mb-5 py-5">
+  <div class="container-fluid adult mb-6 py-5">
     <%= render Layout::GridComponent.new(
           id: 'hero', cols: 2, classes: 'container', feature: true, cell_classes: 'my-auto'
         ) do |grid| %>
@@ -8,13 +8,13 @@
         <%= feature.with_header title: t('energy_audits.feature.title') %>
         <%= feature.with_description { t('energy_audits.feature.description') } %>
       <% end %>
-      <%= grid.with_image src: 'audit-image.png', classes: 'rounded-xl', cell_classes: '' %>
+      <%= grid.with_image src: 'audit-image.png' %>
     <% end %>
   </div>
 
   <div class="container">
     <%= render Layout::GridComponent.new(
-          id: 'onsite', cols: 2, classes: 'mt-5 py-2', cell_classes: ''
+          id: 'onsite', cols: 2, classes: 'mt-6 mb-3', cell_classes: ''
         ) do |grid| %>
       <%= grid.with_image src: 'audit-boiler.jpg', classes: 'rounded-xl' %>
       <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
