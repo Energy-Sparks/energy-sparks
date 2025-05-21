@@ -34,24 +34,15 @@ class MeterMonthlySummary < ApplicationRecord
     meter_ids = school.meters.to_h { |meter| [meter.mpan_mprn, meter.id] }
     Periods::FixedAcademicYear.enumerator(start_date(today, 2), today).filter_map do |period_start, period_end|
       (meter_collection.heat_meters + meter_collection.electricity_meters).each do |meter|
-        meter = meter.sub_meters[:mains_consume] if meter.storage_heater?
-        from_meter_collection_meter(meter_ids[meter.id], meter, period_start, period_end, :main_meter_month_quality,
-                                    :consumption)
+        meter = meter.sub_meters[:mains_consume] if meter.sub_meters.key?(:mains_consume)
+        from_meter_collection_meter(meter_ids.fetch(meter.id), meter, period_start, period_end,
+                                    :mains_meter_month_quality, :consumption)
       end
       meter_collection.electricity_meters.filter(&:solar_pv_panels?).each do |meter|
-        from_solar_meter(meter_ids[meter.storage_heater? ? meter.sub_meters[:mains_consume].id : meter.id], meter,
+        from_solar_meter(meter_ids.fetch(meter.sub_meters[:mains_consume].id), meter,
                          period_start, period_end)
       end
     end
-  end
-
-  private_class_method def self.from_main_meter(meter, period_start, period_end)
-    readings = meter.amr_validated_readings.where(reading_date: period_start..period_end)
-    return if readings.empty?
-
-    consumption, quality = consumption_and_quality(readings.group_by { |r| r.reading_date.beginning_of_month },
-                                                   :main_meter_month_quality)
-    create_or_update_summary(meter, period_start.year, :consumption, consumption, quality)
   end
 
   private_class_method def self.consumption_and_quality(readings_by_month, quality_method)
@@ -73,7 +64,7 @@ class MeterMonthlySummary < ApplicationRecord
     summary
   end
 
-  private_class_method def self.main_meter_month_quality(month_start, month_readings)
+  private_class_method def self.mains_meter_month_quality(month_start, month_readings)
     missing_days = calculate_missing_days(month_readings.to_set(&:date), month_start)
     if missing_days.any?
       :incomplete

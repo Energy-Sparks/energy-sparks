@@ -25,7 +25,7 @@
   <%= link_to key.to_s, '/', class: "btn btn-#{key} disabled", disabled: true %>
 <% end %>
 
-<div class='bg-grey-medium rounded p-2 my-2'>
+<div class='bg-grey-pale rounded p-2 my-2'>
   <h4>Outline</h4>
   <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
     <%= link_to key.to_s, '/', class: "btn btn-outline-#{key}" %>
@@ -73,14 +73,32 @@
 
 <h3>Badges</h1>
 
+<h4>Bootstrap 4 syntax</h4>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
-  <%= tag.span(key, class: "badge badge-#{key}") %>
+  <% classes = "badge badge-#{key}" %>
+  <%= tag.span(classes, class: classes) %>
+<% end %>
+
+<h4>Bootstrap 5 syntax (requires adding text-dark for warning and light)</h4>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <% classes = "badge bg-#{key}" %>
+  <% classes += ' text-dark' if %i[warning light].include?(key) %>
+  <%= tag.span(classes, class: classes) %>
 <% end %>
 
 <h3>Badge pills</h1>
 
+<h4>Bootstrap 4 syntax</h4>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
-  <%= tag.span(key, class: "badge badge-#{key} badge-pill") %>
+  <% classes = "badge badge-#{key} badge-pill" %>
+  <%= tag.span(classes, class: classes) %>
+<% end %>
+
+<h4>Bootstrap 5 syntax (requires adding text-dark for warning and light)</h4>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <% classes = "badge bg-#{key} rounded-pill" %>
+  <% classes += ' text-dark' if %i[warning light].include?(key) %>
+  <%= tag.span(classes, class: classes) %>
 <% end %>
 
 <h3>Links</h3>
