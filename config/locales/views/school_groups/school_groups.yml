@@ -186,6 +186,13 @@ en:
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
     secr:
+      csv:
+        consumption_for_the_year: Consumption for the year
+        earliest_validated_reading: Earliest validated reading
+        latest_validated_reading: Latest validated reading
+        meter_name: Meter name
+        meter_serial: Meter serial
+        quality: Quality
       introduction: Using your half-hourly meter data, Energy Sparks is able to provide a summary of your consumption and carbon emissions to support production of your annual SECR reports.
       section1:
         footnotes_html: |-
@@ -195,11 +202,11 @@ en:
           individuals schools, meters and data quality issues.
           </p>
           <ul>
-          <li>Number of active schools</li>
-          <li>Number of active gas meters</li>
-          <li>Number of active electricity meters</li>
-          <li>Number of schools with metered solar</li>
-          <li>Number of schools with estimated solar</li>
+          <li>Number of active schools: %{active_schools}</li>
+          <li>Number of active gas meters: %{gas_meters}</li>
+          <li>Number of active electricity meters: %{electricity_meters}</li>
+          <li>Number of schools with metered solar: %{metered_solar_schools}</li>
+          <li>Number of schools with estimated solar: %{estimated_solar_schools}</li>
           </ul>
         gas_consumption: Gas consumption
         intensity_ratio: Intensity ratio

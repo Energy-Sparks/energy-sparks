@@ -22,14 +22,14 @@
     <tr>
       <td><%= t('school_groups.secr.section1.gas_consumption') %></td>
       <td><%= gas_consumption =
-                MeterMonthlySummary.total_sum(meters.active.gas, @start_date.year, :consumption) %></td>
+                MeterMonthlySummary.total_sum(meters.gas, @start_date.year, :consumption) %></td>
       <td><%= gas_emissions =
                 SecrCo2Equivalence.emissions(@start_date.year, :natural_gas_co2e, gas_consumption) %></td>
     </tr>
     <tr>
       <td><%= t('school_groups.secr.section1.solar_self_consumption') %></td>
       <td><%= self_consumption =
-                MeterMonthlySummary.total_sum(meters.active.electricity.map, @start_date.year, :self_consume) %></td>
+                MeterMonthlySummary.total_sum(meters.electricity.map, @start_date.year, :self_consume) %></td>
       <td>0</td>
     </tr>
     <tr>
@@ -89,7 +89,15 @@
   </tbody>
   <tfoot>
     <tr>
-      <td colspan="3"><%= t('school_groups.secr.section1.footnotes_html') %></td>
+      <td colspan="3">
+        <%= schools = @school_group.schools.active.pluck(:id)
+            t('school_groups.secr.section1.footnotes_html',
+              active_schools: schools.length,
+              gas_meters: meters.gas.count,
+              electricity_meters: meters.electricity.count,
+              metered_solar_schools: (MeterAttribute.metered_solar.pluck(:school_id) & schools).length,
+              estimated_solar_schools: (MeterAttribute.solar_pv.pluck(:school_id) & schools).length) %>
+      </td>
     </tr>
   </tfoot>
 </table>
