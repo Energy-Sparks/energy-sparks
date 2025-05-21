@@ -1,0 +1,57 @@
+@include media-breakpoint-down(md) {
+  .order-first-md-down {
+    order: -1 !important;
+  }
+}
+
+// Put this in bootstrap 5 bridge once it's been reviewed
+
+// Define gutter values (matches Bootstrap 5)
+$gutters: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 1rem,
+  4: 1.5rem,
+  5: 3rem
+);
+
+// Generate responsive g/gx/gy classes for all breakpoints
+@each $breakpoint, $breakpoint-value in $grid-breakpoints {
+  @each $size, $value in $gutters {
+    @include media-breakpoint-up($breakpoint) {
+
+      // Horizontal gutter utility
+      .gx-#{$breakpoint}-#{$size} {
+        margin-left: -#{$value};
+        margin-right: -#{$value};
+      }
+
+      .gx-#{$breakpoint}-#{$size} > .col,
+      .gx-#{$breakpoint}-#{$size} > [class^="col-"],
+      .gx-#{$breakpoint}-#{$size} > [class*=" col-"] {
+        padding-left: #{$value};
+        padding-right: #{$value};
+      }
+
+      // Vertical gutter utility
+      .gy-#{$breakpoint}-#{$size} {
+        margin-top: -#{$value};
+        margin-bottom: -#{$value};
+      }
+
+      .gy-#{$breakpoint}-#{$size} > .col,
+      .gy-#{$breakpoint}-#{$size} > [class^="col-"],
+      .gy-#{$breakpoint}-#{$size} > [class*=" col-"] {
+        padding-top: #{$value};
+        padding-bottom: #{$value};
+      }
+
+      // Combined gutter utility
+      .g-#{$breakpoint}-#{$size} {
+        @extend .gx-#{$breakpoint}-#{$size};
+        @extend .gy-#{$breakpoint}-#{$size};
+      }
+    }
+  }
+}

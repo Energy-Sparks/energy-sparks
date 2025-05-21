@@ -1,9 +1,9 @@
 <%= tag.div id: id, class: classes do %>
-  <%= render Layout::GridComponent.new(cols: 2, cell_classes: 'my-auto') do |grid| %>
+  <%= render Layout::GridComponent.new(cols: 2) do |grid| %>
     <%= grid.with_cell do %>
       <%= image %>
     <% end %>
-    <%= grid.with_cell do %>
+    <%= grid.with_cell(cell_classes: 'my-auto') do %>
       <%= header %>
       <%= quote %>
       <%= name %><%= " - #{role}".html_safe if role %>

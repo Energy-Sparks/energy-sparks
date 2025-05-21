@@ -1,7 +1,7 @@
 namespace :after_party do
-  desc 'Deployment task: add_audits_testimonial'
-  task add_audits_testimonial: :environment do
-    puts "Running deploy task 'add_audits_testimonial'"
+  desc 'Deployment task: update_audits_testimonial'
+  task update_audits_testimonial: :environment do
+    puts "Running deploy task 'update_audits_testimonial'"
 
     testimonial = Testimonial.find_or_initialize_by(name: 'Mark Crookes')
 
@@ -15,9 +15,8 @@ namespace :after_party do
       active: true
     )
 
-    testimonial.image.attach(io: File.open(Rails.root.join('app/assets/images/thermal-camera.png')), filename: 'thermal-camera.png')
+    testimonial.image.attach(io: File.open(Rails.root.join('app/assets/images/thermal-imaging.jpg')), filename: 'thermal-imaging.jpg')
     testimonial.save!
-
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
     AfterParty::TaskRecord

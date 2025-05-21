@@ -15,7 +15,7 @@ module Elements
     def setup_classes
       add_classes('fit') if @fit
       add_classes(self.class.rounded[@rounded]) if @rounded
-      add_classes('d-none d-md-block') if @collapse
+      add_classes('d-none d-lg-block') if @collapse
     end
 
     def style

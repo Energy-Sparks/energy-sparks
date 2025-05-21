@@ -6,7 +6,7 @@ en:
     title: Case Studies
   home:
     blog:
-      description: Get the latest news updates and insights from our experts delivered right to your inbox by signing up to our newsletter
+      description: Take a look at our blog for the latest updates and insights from our experts. You can also sign up for our newsletters to get ideas and inspiration delivered right to your inbox.
       header: Latest updates from our blog
     buttons:
       book_a_demo: Book a demo
@@ -40,7 +40,7 @@ en:
         statement: Explore eco-team and classroom activities for pupils
       - badge: Climate community
         statement: Share energy saving ideas and compete against other schools
-      description: Energy Sparks provides near real-time data and school-specific insights to help you cut costs and carbon, as well as a range of resources and activities designed to inspire your pupils
+      description: Energy Sparks provides near real-time energy data and school-specific insights to help you cut costs and carbon, as well as a range of resources and activities designed to inspire your pupils
       header: Data-driven tools that will change your school
     funnels:
       local_authority:
@@ -90,7 +90,7 @@ en:
       card_4:
         header: Empower pupils
         subtext: Eco-team and curriculum-linked energy saving activities linked to energy use data to maximise impact
-      description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills.
+      description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills
       header: Are you looking to cut energy bills and take action on climate change?
     sub_title: A unique school-specific energy management tool and education programme
     title: We help schools become more energy efficient and fight climate change.
