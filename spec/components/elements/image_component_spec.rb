@@ -47,7 +47,7 @@ RSpec.describe Elements::ImageComponent, :include_application_helper, type: :com
   context 'with collapse params' do
     let(:params) { base_params.merge(collapse: true) }
 
-    it { expect(html).to have_css('img.d-none.d-md-block') }
+    it { expect(html).to have_css('img.d-none.d-lg-block') }
   end
 
   context 'with width params' do
