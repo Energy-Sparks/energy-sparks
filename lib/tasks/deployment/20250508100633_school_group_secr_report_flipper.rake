@@ -3,7 +3,7 @@ namespace :after_party do
   task school_group_secr_report_flipper: :environment do
     puts "Running deploy task 'school_group_secr_report_flipper'"
 
-    Flipper.add(:school_group_secr_report)
+    Flipper.enable_group(:school_group_secr_report, :admins)
 
     # Update task as completed.  If you remove the line below, the task will
     # run with every deploy (or every time you call after_party:run).
