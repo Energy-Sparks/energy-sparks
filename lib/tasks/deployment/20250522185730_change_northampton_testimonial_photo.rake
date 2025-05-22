@@ -3,7 +3,7 @@ namespace :after_party do
   task change_northampton_testimonial_photo: :environment do
     puts "Running deploy task 'change_northampton_testimonial_photo'"
 
-    testimonial = Testimonial.find_or_initialize_by(name: 'David Reed')
+    testimonial = Testimonial.find_by(name: 'David Reed')
 
     testimonial.image.attach(io: File.open(Rails.root.join('app/assets/images/Northampton-Academy.jpg')), filename: 'Northampton-Academy.jpg')
     testimonial.save!
