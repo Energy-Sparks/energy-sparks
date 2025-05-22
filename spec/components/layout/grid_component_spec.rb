@@ -71,8 +71,6 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
   end
 
   context 'with theme' do
-    let(:params) { all_params }
-
     let(:html) do
       render_inline(described_class.new(**params)) do |c|
         c.with_block { 'cell 1' }
@@ -143,5 +141,28 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
     it { expect(rows[0]).to have_css('div.col-12.col-lg-6', count: 2) }
     it { expect(html).to have_content('cell 1') }
     it { expect(html).to have_content('cell 2') }
+  end
+
+  context 'with responsive classes' do
+    context 'with 2 col layout' do
+      let(:params) { all_params.merge(cols: 2) }
+      let(:rows) { html.css('div.row') }
+      let(:row) { rows.first }
+
+      let(:html) do
+        render_inline(described_class.new(**params)) do |c|
+          c.with_image src: 'laptop.jpg', classes: 'component-classes'
+          c.with_block { 'cell 2' }
+        end
+      end
+
+      it 'the image cell has the responsive classes' do
+        expect(rows.first.css('div').first).to have_css('.order-first-md-down.pb-4.pb-lg-0')
+      end
+
+      it 'the other cell does not have the responsive classes' do
+        expect(rows.first.css('div')[1]).not_to have_css('.order-first-md-down.pb-4.pb-lg-0')
+      end
+    end
   end
 end
