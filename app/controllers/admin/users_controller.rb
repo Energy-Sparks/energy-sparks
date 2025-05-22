@@ -34,7 +34,8 @@ module Admin
     end
 
     def update
-      if @user.update(user_params)
+      @user.assign_attributes(user_params)
+      if @user.update(context: :form_update)
         redirect_to admin_users_path, notice: 'User was successfully updated.'
       else
         set_schools_options

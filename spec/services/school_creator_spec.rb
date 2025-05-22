@@ -96,6 +96,15 @@ describe SchoolCreator, :schools, type: :service do
       expect(contact.name).to eq(onboarding_user.name)
     end
 
+    it 'defaults contact name when not set on administrator user' do
+      onboarding_user.update!({ name: '' })
+      service.onboard_school!(school_onboarding)
+      contact = school.contacts.first
+      expect(contact.email_address).to eq(onboarding_user.email)
+      expect(contact.user).to eq(onboarding_user)
+      expect(contact.name).to eq(onboarding_user.email)
+    end
+
     it 'creates onboarding events' do
       service.onboard_school!(school_onboarding)
       expect(school_onboarding).to have_event(:school_details_created)

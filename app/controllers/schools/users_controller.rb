@@ -45,7 +45,8 @@ module Schools
     def update
       @user = @school.find_user_or_cluster_user_by_id(params[:id])
       authorize! :update, @user
-      if @user.update(user_params)
+      @user.assign_attributes(user_params)
+      if @user.save(context: :form_update)
         update_alert_contact(@school, @user)
         redirect_to school_users_path(@school)
       else

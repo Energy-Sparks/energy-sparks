@@ -1,6 +1,5 @@
 <%= simple_form_for([:admin, user], html: { class: 'admin-user-form' }) do |f| %>
-
-  <%= f.input :name %>
+  <%= f.input :name, required: true %>
   <%= f.input :email %>
   <%= f.input :role, collection: User.roles.except(:guest).keys, label_method: :titleize %>
   <%= f.input :school_id, collection: @schools, hint: 'For staff and school admins' %>

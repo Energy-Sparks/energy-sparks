@@ -1,4 +1,5 @@
 <%= f.input :name, label: t('onboarding.pupil_account.name'),
+                   required: true,
                    hint: t('onboarding.pupil_account.name_hint'),
                    placeholder: t('onboarding.pupil_account.name_placeholder',
                                   school_name: @school.name) %>
