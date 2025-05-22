@@ -4,6 +4,7 @@ class SchoolGroupsController < ApplicationController
   include PartnersHelper
   include Promptable
   include Scoring
+  include SchoolGroupBreadcrumbs
 
   load_resource
 
@@ -125,8 +126,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def build_breadcrumbs
-    @breadcrumbs = SchoolGroups::BaseController.breadcrumbs(@school_group,
-                                                            { name: I18n.t("school_groups.titles.#{action_name}") })
+    set_breadcrumbs(name: I18n.t("school_groups.titles.#{action_name}"))
   end
 
   def find_schools_and_partners
