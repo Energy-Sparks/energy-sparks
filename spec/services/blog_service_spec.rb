@@ -56,13 +56,13 @@ RSpec.describe BlogService, type: :service do
     it { expect(Rails.cache.exist?(blog.key)).to be true }
   end
 
-  shared_examples 'items with expected fields' do |count: 5|
+  shared_examples 'items with expected fields' do |count:|
     it { expect(items.count).to be count }
 
     it 'contains items with the correct fields' do
       items.each_with_index do |item, x|
         expect(item[:title]).to be_present
-        expect(item[:image]).to be_present if x.in?([0, 1])
+        expect(item[:image]).to be_present if x.in?([0])
         expect(item[:description]).to be_present
         expect(item[:link]).to be_present
         expect(item[:date]).to be_present
@@ -73,9 +73,18 @@ RSpec.describe BlogService, type: :service do
     end
   end
 
-  shared_examples 'a cache with items' do |count: 5|
+  shared_examples 'a cache with items' do |count: 4|
     let(:items) { Rails.cache.read(blog.key) }
     it_behaves_like 'items with expected fields', count: count
+  end
+
+  shared_examples 'a cache with excluded items' do |tag:|
+    let(:items) { Rails.cache.read(blog.key) }
+    it "does not contain items with excluded tag: #{tag}" do
+      items.each do |item|
+        expect(item[:categories].map(&:downcase)).not_to include(tag)
+      end
+    end
   end
 
   describe '#update_cache!' do
@@ -91,7 +100,8 @@ RSpec.describe BlogService, type: :service do
         let(:response) { response_success }
 
         it_behaves_like 'a cache with the key'
-        it_behaves_like 'a cache with items', count: 5
+        it_behaves_like 'a cache with items', count: 4
+        it_behaves_like 'a cache with excluded items', tag: 'Time sensitive'
       end
 
       context 'when request is successful but nothing is returned' do
@@ -126,7 +136,7 @@ RSpec.describe BlogService, type: :service do
         let(:response) { response_success }
 
         it_behaves_like 'a cache with the key'
-        it_behaves_like 'a cache with items', count: 5
+        it_behaves_like 'a cache with items', count: 4
       end
 
       context 'when request is successful but nothing is returned' do
@@ -176,10 +186,11 @@ RSpec.describe BlogService, type: :service do
         blog.update_cache!
       end
 
-      it_behaves_like 'a cache with items', count: 5
-      it_behaves_like 'items with expected fields', count: 5 do
+      it_behaves_like 'a cache with items', count: 4
+      it_behaves_like 'items with expected fields', count: 4 do
         let(:items) { returned_items }
       end
+      it_behaves_like 'a cache with excluded items', tag: 'Time sensitive'
     end
   end
 
