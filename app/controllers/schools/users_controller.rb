@@ -30,27 +30,12 @@ module Schools
     def create
       authorize! :manage_users, @school
       @user = User.new(user_params.merge(school: @school, created_by: current_user))
-      @user.valid? # to run validations
-      if @user.role == 'school_admin' &&
-         @user.errors.where(:email).filter { |error| error.type != :taken }.empty? && !params.key?(:new_user_form)
-        existing_user = User.find_by(email: @user.email)
-        if existing_user&.role == 'group_admin'
-          skip_save = true
-          notice = "As a group admin for #{existing_user.school_group.name}, this user is already able to administer " \
-                     'this school'
-        elsif existing_user.present?
-          existing_user.add_cluster_school(@school)
-          existing_user.add_cluster_school(existing_user.school) unless existing_user.school.nil?
-          existing_user.role = :school_admin
-          @user = existing_user
-          notice = 'Added user as a school admin'
-        else
-          @user.errors.clear
-          @new_school_admin = true
-          return render :new
-        end
+      if @user.role == 'school_admin'
+        redirect, notice = add_school_admin
+      else
+        redirect = @user.save
       end
-      if skip_save || @user.save
+      if redirect
         redirect_to school_users_path(@school), notice:
       else
         render :new
@@ -109,6 +94,32 @@ module Schools
     end
 
     private
+
+    def add_school_admin
+      @user.valid? # to run validations
+      redirect = false
+      if @user.errors.where(:email).filter { |error| error.type != :taken }.empty? && !params.key?(:new_user_form)
+        existing_user = User.find_by(email: @user.email)
+        if existing_user&.role == 'group_admin'
+          redirect = true
+          notice = "As a group admin for #{existing_user.school_group.name}, this user is already able to administer " \
+                      'this school'
+        elsif existing_user.present?
+          existing_user.add_cluster_school(@school)
+          existing_user.add_cluster_school(existing_user.school) unless existing_user.school.nil?
+          existing_user.role = :school_admin
+          @user = existing_user
+          redirect = @user.save
+          notice = 'Added user as a school admin'
+        else
+          @user.errors.clear
+          @new_school_admin = true
+        end
+      else
+        redirect = @user.save
+      end
+      [redirect, notice]
+    end
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_users') }]

@@ -139,6 +139,8 @@ class User < ApplicationRecord
 
   validates :school_group_id, presence: true, if: :group_admin?
 
+  validates :name, presence: true
+
   validate :preferred_locale_presence_in_available_locales
 
   after_save :update_contact
