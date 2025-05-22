@@ -8,14 +8,4 @@
     font-family: $header-font-family;
     @include font(f6);
   }
-
-  &:hover {
-    .statement {
-      color: $yellow-pale !important;
-    }
-
-    .badge {
-      background-color: white;
-    }
-  }
 }
