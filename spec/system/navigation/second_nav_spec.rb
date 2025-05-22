@@ -163,6 +163,8 @@ RSpec.describe 'Navigation -> second nav' do
       let(:path) { school_group_path(school.school_group) }
 
       context 'when user is a site admin' do
+        before { Flipper.enable(:school_group_secr_report) }
+
         let(:user) { create(:admin) }
 
         it_behaves_like 'a page with a manage school group menu'

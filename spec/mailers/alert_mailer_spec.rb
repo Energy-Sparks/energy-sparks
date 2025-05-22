@@ -23,9 +23,8 @@ RSpec.describe AlertMailer do
       it 'sends an email with a mailgun deliverytime option' do
         AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
         expect(ActionMailer::Base.deliveries.count).to be 1
-        deliverytime = email.mailgun_options[:deliverytime]
-        expect(deliverytime).not_to be_nil
-        expect(DateTime.rfc2822(deliverytime)).to be_between(Time.zone.now, Time.zone.now + 15.minutes)
+        expect(DateTime.rfc2822(email.mailgun_options[:deliverytime]).in_time_zone).to \
+          be_within(1.minute).of(15.minutes.from_now)
       end
 
       it 'specifies a subject' do
