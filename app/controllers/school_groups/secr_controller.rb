@@ -28,8 +28,8 @@ module SchoolGroups
        ((9..12).map { |m| [@start_date.year, m] } +
         (1..8).map { |m| [@start_date.year + 1, m] })
             .map { |year, month| [Date.new(year, month, 1).strftime('%b-%Y'), t('school_groups.secr.csv.quality')] },
-       t('school_groups.secr.earliest_validated_reading'),
-       t('school_groups.secr.latest_validated_reading')].flatten
+       t('school_groups.secr.csv.earliest_validated_reading'),
+       t('school_groups.secr.csv.latest_validated_reading')].flatten
     end
 
     TYPE_MAPPING = { self: :self_consume, export: :export }.stringify_keys.freeze

@@ -1,7 +1,11 @@
-class SchoolGroupsController < SchoolGroups::BaseController
+# frozen_string_literal: true
+
+class SchoolGroupsController < ApplicationController
   include PartnersHelper
   include Promptable
   include Scoring
+
+  load_resource
 
   before_action :find_schools_and_partners
   before_action :redirect_unless_authorised, except: [:map]
@@ -15,18 +19,15 @@ class SchoolGroupsController < SchoolGroups::BaseController
     respond_to do |format|
       format.html {}
       format.csv do
-        send_data SchoolGroups::RecentUsageCsvGenerator.new(
-          school_group: @school_group,
-          schools: @schools,
-          include_cluster: include_cluster
-        ).export,
-        filename: csv_filename_for('recent_usage')
+        send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                            schools: @schools,
+                                                            include_cluster: include_cluster).export,
+                  filename: csv_filename_for('recent_usage')
       end
     end
   end
 
-  def map
-  end
+  def map; end
 
   def comparisons
     respond_to do |format|
@@ -36,9 +37,10 @@ class SchoolGroupsController < SchoolGroups::BaseController
       format.csv do
         head :bad_request and return unless params['advice_page_keys']
 
-        filename = "#{@school_group.name}-#{I18n.t('school_groups.titles.comparisons')}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
-        send_data SchoolGroups::ComparisonsCsvGenerator.new(schools: @schools, advice_page_keys: params['advice_page_keys'], include_cluster: include_cluster).export,
-        filename: filename
+        send_data SchoolGroups::ComparisonsCsvGenerator.new(schools: @schools,
+                                                            advice_page_keys: params['advice_page_keys'],
+                                                            include_cluster:).export,
+                  filename: csv_filename_for('comparisons')
       end
     end
   end
@@ -63,8 +65,10 @@ class SchoolGroupsController < SchoolGroups::BaseController
     respond_to do |format|
       format.html {}
       format.csv do
-        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group, scored_schools: @scored_schools, include_cluster: include_cluster).export,
-        filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
+        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group,
+                                                              scored_schools: @scored_schools,
+                                                              include_cluster:).export,
+                  filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
       end
     end
   end
@@ -73,7 +77,8 @@ class SchoolGroupsController < SchoolGroups::BaseController
 
   def csv_filename_for(action)
     title = I18n.t("school_groups.titles.#{action}")
-    "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize + '.csv'
+    name = "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize
+    "#{name}.csv"
   end
 
   def priority_actions_csv
@@ -81,7 +86,7 @@ class SchoolGroupsController < SchoolGroups::BaseController
       SchoolGroups::SchoolsPriorityActionCsvGenerator.new(
         schools: @schools,
         alert_type_rating_ids: params[:alert_type_rating_ids].map(&:to_i),
-        include_cluster: include_cluster
+        include_cluster:
       ).export
     else
       SchoolGroups::PriorityActionsCsvGenerator.new(schools: @schools).export
@@ -120,17 +125,18 @@ class SchoolGroupsController < SchoolGroups::BaseController
   end
 
   def build_breadcrumbs
-    set_breadcrumbs(name: I18n.t("school_groups.titles.#{action_name}"))
+    @breadcrumbs = SchoolGroups::BaseController.breadcrumbs(@school_group,
+                                                            { name: I18n.t("school_groups.titles.#{action_name}") })
   end
 
   def find_schools_and_partners
-    if action_name == :map
-      # Display all active schools on the map view
-      @schools = @school_group.schools.active.by_name
-    else
-      # Rely on CanCan to filter the list of schools to those that can be shown to the current user
-      @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
-    end
+    @schools = if action_name == :map
+                 # Display all active schools on the map view
+                 @school_group.schools.active.by_name
+               else
+                 # Rely on CanCan to filter the list of schools to those that can be shown to the current user
+                 @school_group.schools.active.accessible_by(current_ability, :show).by_name
+               end
     @partners = @school_group.partners
   end
 
