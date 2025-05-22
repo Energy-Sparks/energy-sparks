@@ -14,6 +14,36 @@
       <% end %>
     <% end %>
   </div>
+ <div class="container mt-4">
+    <%= render Layout::GridComponent.new(
+          id: 'case-studies',
+          cols: 3,
+          classes: 'container pb-4',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100'
+        ) do |grid| %>
+
+      <% @case_studies.each do |case_study| %>
+        <%= case_study.description %>
+        <%= grid.with_card do |card| %>
+          <%= card.with_image(src: case_study.image, rounded: :top) unless @case_studies.without_images.any? %>
+          <%= card.with_feature_card(
+                theme: :dark, size: :sm,
+                classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' if @case_studies.without_images.any?}"
+              ) do |feature| %>
+            <%= feature.with_tag(case_study.school_type || 'School') %>
+            <%= feature.with_header(title: case_study.title, classes: '') %>
+            <%= feature.with_description(classes: 'pt-0 pb-0') { case_study.description.to_s } %>
+            <%= feature.with_link(
+                  href: case_study_download_path(case_study, locale: case_study.file_locale, serve: :download)
+                ) do
+                  t('common.labels.download')
+                end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
 <% else %>
   <%= render 'home/case_studies', case_studies: @case_studies, all_case_studies_count: 0 %>
 <% end %>

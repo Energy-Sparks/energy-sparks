@@ -9,11 +9,11 @@
 #  bill_requested                          :boolean          default(FALSE)
 #  bill_requested_at                       :datetime
 #  calendar_id                             :bigint(8)
-#  chart_preference                        :integer          default("default"), not null
+#  chart_preference                        :integer          default(0), not null
 #  cooks_dinners_for_other_schools         :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count   :integer
 #  cooks_dinners_onsite                    :boolean          default(FALSE), not null
-#  country                                 :integer          default("england"), not null
+#  country                                 :integer          default(0), not null
 #  created_at                              :datetime         not null
 #  dark_sky_area_id                        :bigint(8)
 #  data_enabled                            :boolean          default(FALSE)
@@ -21,7 +21,7 @@
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  floor_area                              :decimal(, )
 #  funder_id                               :bigint(8)
-#  funding_status                          :integer          default("state_school"), not null
+#  funding_status                          :integer          default(0), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump            :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump_notes      :text
@@ -115,8 +115,9 @@ class School < ApplicationRecord
   extend FriendlyId
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
-  include EnumDataSharing
   include MailchimpUpdateable
+  include Enums::DataSharing
+  include Enums::SchoolType
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
 
@@ -219,9 +220,6 @@ class School < ApplicationRecord
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
-
-  enum :school_type, { primary: 0, secondary: 1, special: 2, infant: 3, junior: 4, middle: 5,
-                       mixed_primary_and_secondary: 6 }
 
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }

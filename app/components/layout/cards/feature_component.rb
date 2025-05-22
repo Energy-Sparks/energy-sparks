@@ -4,7 +4,7 @@ module Layout
       attr_reader :size, :position
 
       renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**{ level: header_size, theme: @theme }.merge(kwargs))
+        Elements::HeaderComponent.new(**{ level: header_size }.merge(kwargs))
       end
       renders_one :price, ->(**kwargs) do
         Elements::PriceComponent.new(**merge_classes('', kwargs))
