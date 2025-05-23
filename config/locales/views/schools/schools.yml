@@ -738,7 +738,7 @@ en:
         title: New %{user_role} account
     your_school_estates:
       edit:
-        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        description: Energy Sparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
         heating_sources:
           air_source_heat_pump:
             percentage: What percentage of the school floor area is using the air source heat pump for heating?
