@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_30_093955) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_23_084317) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -4118,5 +4118,66 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_30_093955) do
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)));
   SQL
   add_index "comparison_heating_in_warm_weathers", ["school_id"], name: "index_comparison_heating_in_warm_weathers_on_school_id", unique: true
+
+  create_view "report_baseload_anomalies", materialized: true, sql_definition: <<-SQL
+      WITH unnested_readings_with_index AS (
+           SELECT amr.id,
+              amr.meter_id,
+              amr.reading_date,
+              (EXISTS ( SELECT 1
+                     FROM meter_attributes ma
+                    WHERE ((ma.meter_id = amr.meter_id) AND (((ma.attribute_type)::text = 'solar_pv_mpan_meter_mapping'::text) OR ((ma.attribute_type)::text = 'solar_pv'::text)) AND (ma.deleted_by_id IS NULL) AND (ma.replaced_by_id IS NULL)))) AS has_solar,
+              (t.val * 2.0) AS val_kw,
+              t.ordinality AS index
+             FROM ((amr_validated_readings amr
+               JOIN meters m ON ((amr.meter_id = m.id)))
+               CROSS JOIN LATERAL unnest(amr.kwh_data_x48) WITH ORDINALITY t(val, ordinality))
+            WHERE ((amr.reading_date >= (CURRENT_DATE - 'P31D'::interval)) AND (m.meter_type = 0) AND (m.active = true))
+          ), unnested_readings_with_index_and_ranking AS (
+           SELECT unnested_readings_with_index.id,
+              unnested_readings_with_index.meter_id,
+              unnested_readings_with_index.reading_date,
+              unnested_readings_with_index.has_solar,
+              unnested_readings_with_index.val_kw,
+              unnested_readings_with_index.index,
+              row_number() OVER (PARTITION BY unnested_readings_with_index.meter_id, unnested_readings_with_index.reading_date ORDER BY unnested_readings_with_index.val_kw) AS ranking
+             FROM unnested_readings_with_index
+          ), daily_baseload AS (
+           SELECT unnested_readings_with_index_and_ranking.id,
+              unnested_readings_with_index_and_ranking.meter_id,
+              unnested_readings_with_index_and_ranking.reading_date,
+                  CASE
+                      WHEN unnested_readings_with_index_and_ranking.has_solar THEN avg(
+                      CASE
+                          WHEN (((unnested_readings_with_index_and_ranking.index >= 1) AND (unnested_readings_with_index_and_ranking.index <= 4)) OR ((unnested_readings_with_index_and_ranking.index >= 45) AND (unnested_readings_with_index_and_ranking.index <= 48))) THEN unnested_readings_with_index_and_ranking.val_kw
+                          ELSE NULL::numeric
+                      END)
+                      ELSE avg(
+                      CASE
+                          WHEN (unnested_readings_with_index_and_ranking.ranking <= 8) THEN unnested_readings_with_index_and_ranking.val_kw
+                          ELSE NULL::numeric
+                      END)
+                  END AS selected_avg
+             FROM unnested_readings_with_index_and_ranking
+            GROUP BY unnested_readings_with_index_and_ranking.id, unnested_readings_with_index_and_ranking.meter_id, unnested_readings_with_index_and_ranking.reading_date, unnested_readings_with_index_and_ranking.has_solar
+          ), last_two_days_baseload AS (
+           SELECT t1.id,
+              t1.meter_id,
+              t1.reading_date,
+              t1.selected_avg AS today_baseload,
+              t2.selected_avg AS previous_day_baseload
+             FROM (daily_baseload t1
+               LEFT JOIN daily_baseload t2 ON (((t1.meter_id = t2.meter_id) AND (t1.reading_date = (t2.reading_date + 'P1D'::interval)))))
+            WHERE (t1.reading_date >= (CURRENT_DATE - 'P30D'::interval))
+          )
+   SELECT last_two_days_baseload.id,
+      last_two_days_baseload.meter_id,
+      last_two_days_baseload.reading_date,
+      last_two_days_baseload.today_baseload,
+      last_two_days_baseload.previous_day_baseload
+     FROM last_two_days_baseload
+    WHERE ((last_two_days_baseload.previous_day_baseload IS NOT NULL) AND (last_two_days_baseload.previous_day_baseload > 0.5) AND (((last_two_days_baseload.today_baseload >= (0)::numeric) AND (last_two_days_baseload.today_baseload < 0.01)) OR (last_two_days_baseload.previous_day_baseload >= (last_two_days_baseload.today_baseload * (5)::numeric))));
+  SQL
+  add_index "report_baseload_anomalies", ["id"], name: "index_report_baseload_anomalies_on_id", unique: true
 
 end

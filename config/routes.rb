@@ -735,6 +735,7 @@ Rails.application.routes.draw do
       resources :heating_types, only: [:index]
       resources :manual_reads, only: [:index]
       resources :perse_meter, only: [:index]
+      resources :baseload_anomaly, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
