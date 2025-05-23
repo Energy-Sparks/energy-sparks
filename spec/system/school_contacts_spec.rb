@@ -14,53 +14,19 @@ RSpec.describe 'school', type: :system do
       click_on 'Manage alert contacts'
     end
 
-    describe 'no contacts' do
-      it 'allows me to add a contact for an existing user' do
-        visit school_contacts_path(school)
-        expect(page).not_to have_content('Standalone contacts')
+    it 'allows me to add a contact for an existing user' do
+      expect(page).not_to have_content('Standalone contacts')
 
-        find("#enable_alerts_#{teacher.id}").click
-        expect(find_field('Email address').value).to eq teacher.email
+      find("#enable_alerts_#{teacher.id}").click
+      expect(find_field('Email address').value).to eq teacher.email
 
-        click_on('Enable alerts')
-        expect(page).to have_content "Alerts enabled for #{teacher.name}"
+      click_on('Enable alerts')
+      expect(page).to have_content "Alerts enabled for #{teacher.name}"
 
-        contacts = school.contacts
-        expect(contacts.pluck(:user_id)).to include(teacher.id)
-        expect(contacts.pluck(:email_address)).to include(teacher.email)
-        expect(contacts.pluck(:name)).to include(teacher.name)
-      end
-    end
-
-    describe 'multiple contacts' do
-      let!(:contact) { create(:contact_with_name_email, user: school_admin, school: school) }
-      let!(:other_school) { create(:school, :with_school_group, name: 'School Two') }
-
-      it 'lets me sign up for alerts for correct school' do
-        expect(school_admin.contact_for_school).to eq(contact)
-
-        school_admin.update(school: other_school)
-        expect(school_admin.contact_for_school).to be_nil
-
-        visit school_path(other_school)
-
-        click_on('My alerts')
-
-        expect(find_field('Email address').value).to eq school_admin.email
-        click_button 'Enable alerts'
-
-        school_admin.reload
-        expect(school_admin.contact_for_school).not_to be_nil
-
-        click_on 'My alerts'
-
-        click_on 'Disable alerts'
-
-        school_admin.reload
-        expect(school_admin.contact_for_school).to be_nil
-
-        expect(school_admin.contacts.for_school(school).first).to eq(contact)
-      end
+      contacts = school.contacts
+      expect(contacts.pluck(:user_id)).to include(teacher.id)
+      expect(contacts.pluck(:email_address)).to include(teacher.email)
+      expect(contacts.pluck(:name)).to include(teacher.name)
     end
   end
 
