@@ -1,0 +1,36 @@
+<%= render 'admin/reports/title', title: 'Baseload Anomaly' %>
+
+<div class="row">
+  <table class="table table-sorted">
+    <thead>
+    <tr>
+      <th>School Group</th>
+      <th>School</th>
+      <th>Meter</th>
+      <th>Reading date</th>
+      <th>Baseload (kw)</th>
+      <th>Previous baseload day (kwh)</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @anomalies.each do |anomaly| %>
+        <tr>
+          <td><%= link_to(anomaly.meter.school.school_group.name, school_group_path(anomaly.meter.school.school_group)) %></td>
+          <td><%= link_to(anomaly.meter.school.name, school_path(anomaly.meter.school)) %></td>
+          <td>
+            <%= link_to(anomaly.meter.display_name,
+                        school_meter_path(anomaly.meter.school, anomaly.meter)) %>
+          </td>
+          <td><%= anomaly.reading_date %></td>
+          <td><%= FormatEnergyUnit.format(:kw, anomaly.today_baseload.to_f, :html, false, true, :benchmark) %></td>
+          <td><%= FormatEnergyUnit.format(:kw, anomaly.previous_day_baseload.to_f, :html, false, true, :benchmark) %></td>
+          <td>
+            <%= link_to('Baseload chart',
+                        analysis_school_advice_baseload_path(anomaly.meter.school, anchor: 'meter-charts')) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
