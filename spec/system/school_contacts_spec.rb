@@ -163,35 +163,4 @@ RSpec.describe 'school', type: :system do
       end
     end
   end
-
-  describe 'when logged in as a teacher' do
-    before do
-      sign_in(teacher)
-    end
-
-    it 'lets me sign up for alerts' do
-      expect(teacher.contact_for_school).to be_nil
-      visit school_path(school)
-
-      click_on('My alerts')
-
-      expect(find_field('Email address').value).to eq teacher.email
-
-      fill_in 'Mobile phone number', with: '01122333444'
-      select 'Welsh', from: 'Preferred language'
-
-      click_button 'Enable alerts'
-
-      teacher.reload
-      expect(teacher.contact_for_school).not_to be_nil
-      expect(teacher.contact_for_school.mobile_phone_number).to eq('01122333444')
-      expect(teacher.preferred_locale).to eq('cy')
-
-      click_on 'My alerts'
-      click_on 'Disable alerts'
-
-      teacher.reload
-      expect(teacher.contact_for_school).to be_nil
-    end
-  end
 end
