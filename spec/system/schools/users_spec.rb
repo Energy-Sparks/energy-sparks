@@ -68,6 +68,12 @@ describe 'School admin user management' do
           select 'Teacher or teaching assistant', from: 'Role'
         end
 
+        it 'requires a name' do
+          fill_in 'Name', with: ''
+          click_on 'Create account'
+          expect(page).to have_text("Name *\ncan't be blank")
+        end
+
         it 'can create staff' do
           expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
 
