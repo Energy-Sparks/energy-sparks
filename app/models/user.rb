@@ -52,14 +52,14 @@
 #  fk_rails_...  (staff_role_id => staff_roles.id) ON DELETE => restrict
 #
 
-require 'securerandom'
-
 class User < ApplicationRecord
   include MailchimpUpdateable
 
-  watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id, :active
+  watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id,
+                         :active
   after_destroy :reset_mailchimp_contact
 
+  after_save :update_contact
   # Email is primary key in Mailchimp, trigger immediate update if its is changed, otherwise
   # subsequent updates will fail
   after_commit :update_email_in_mailchimp, if: :email_previously_changed?
@@ -102,29 +102,29 @@ class User < ApplicationRecord
 
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
-  scope :mailchimp_roles, -> {
-    where.not(role: [:pupil, :school_onboarding]).where.not(confirmed_at: nil)
+  scope :mailchimp_roles, lambda {
+    where.not(role: %i[pupil school_onboarding]).where.not(confirmed_at: nil)
   }
 
-  scope :mailchimp_update_required, -> do
+  scope :mailchimp_update_required, lambda {
     joins('LEFT JOIN schools ON schools.id = users.school_id')
-    .joins('LEFT JOIN school_groups ON school_groups.id = users.school_group_id')
-    .joins('LEFT JOIN funders ON funders.id = schools.funder_id')
-    .joins('LEFT JOIN local_authority_areas ON local_authority_areas.id = schools.local_authority_area_id')
-    .joins('LEFT JOIN scoreboards ON scoreboards.id = schools.scoreboard_id')
-    .joins('LEFT JOIN staff_roles ON staff_roles.id = users.staff_role_id')
-    .where.not(mailchimp_status: nil) # only include users already in mailchimp for now
-    # include any we've not pushed to mailchimp, or any that are out of date based on timestamps
-    .where('mailchimp_updated_at IS NULL OR ' \
-           'GREATEST(users.mailchimp_fields_changed_at, schools.mailchimp_fields_changed_at, ' \
-           ' school_groups.mailchimp_fields_changed_at, funders.mailchimp_fields_changed_at, ' \
-           ' local_authority_areas.mailchimp_fields_changed_at, scoreboards.mailchimp_fields_changed_at, ' \
-           ' staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
-  end
+      .joins('LEFT JOIN school_groups ON school_groups.id = users.school_group_id')
+      .joins('LEFT JOIN funders ON funders.id = schools.funder_id')
+      .joins('LEFT JOIN local_authority_areas ON local_authority_areas.id = schools.local_authority_area_id')
+      .joins('LEFT JOIN scoreboards ON scoreboards.id = schools.scoreboard_id')
+      .joins('LEFT JOIN staff_roles ON staff_roles.id = users.staff_role_id')
+      .where.not(mailchimp_status: nil) # only include users already in mailchimp for now
+      # include any we've not pushed to mailchimp, or any that are out of date based on timestamps
+      .where('mailchimp_updated_at IS NULL OR ' \
+             'GREATEST(users.mailchimp_fields_changed_at, schools.mailchimp_fields_changed_at,  ' \
+             'school_groups.mailchimp_fields_changed_at, funders.mailchimp_fields_changed_at,  ' \
+             'local_authority_areas.mailchimp_fields_changed_at, scoreboards.mailchimp_fields_changed_at,  ' \
+             'staff_roles.mailchimp_fields_changed_at) > mailchimp_updated_at')
+  }
 
-  scope :for_school_group, ->(school_group) do
+  scope :for_school_group, lambda { |school_group|
     joins(:school, school: :school_group).where(schools: { school_group: school_group })
-  end
+  }
 
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -141,9 +141,10 @@ class User < ApplicationRecord
 
   validates :school_group_id, presence: true, if: :group_admin?
 
-  validate :preferred_locale_presence_in_available_locales
+  validates :name, presence: true, on: :create
+  validates :name, presence: true, on: :form_update
 
-  after_save :update_contact
+  validate :preferred_locale_presence_in_available_locales
 
   # Hook into devise so we can use our own status flag to permanently disable an account
   def active_for_authentication?

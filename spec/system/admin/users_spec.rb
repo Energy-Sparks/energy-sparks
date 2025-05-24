@@ -45,6 +45,7 @@ describe 'Users' do
     it 'creates a user' do
       visit admin_users_path
       click_on 'New User'
+      fill_in 'Name', with: 'Random User'
       email = 'random_user2948@example.com'
       fill_in 'Email', with: email
       select 'Admin', from: 'user_role'

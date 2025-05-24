@@ -673,7 +673,6 @@ cy:
         what_is_their_primary_role: Beth yw eu prif rôl mewn perthynas â Sbarcynni?
       index:
         account_confirmed: Cyfrif wedi'i gadarnhau?
-        add_existing_user_as_admin: Ychwanegu defnyddiwr Sbarcynni presennol fel gweinyddwr ysgol
         could_not_decrypt: "(methu â dadgryptio)"
         email: E-bost
         introduction: Mae gan gyfrifon gweinyddwr ysgolion fynediad at holl swyddogaethau Sbarcynni a gallant reoli defnyddwyr eraill a diweddaru manylion yr ysgol
