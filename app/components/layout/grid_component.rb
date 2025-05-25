@@ -30,7 +30,7 @@ module Layout
     end
 
     def responsive_classes(klass)
-      if cols == 2 && klass == Elements::ImageComponent
+      if cols == 2 && klass == Elements::ImageComponent || klass == Elements::IframeComponent
         # ensure image always comes first on 2 col layouts
         return 'order-first-md-down pb-4 pb-lg-0'
       end

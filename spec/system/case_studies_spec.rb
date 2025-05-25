@@ -25,18 +25,18 @@ RSpec.describe 'case_studies', type: :system do
       expect(page).to have_http_status(:ok)
     end
 
-    context 'a welsh download is not available' do
+    context 'a welsh download is not available', toggle_feature: :new_case_studies_page do
       before do
         visit case_studies_path(locale: 'cy')
       end
 
-      it 'the welsh link is not displayed' do
+      it 'the english link is displayed' do
         expect(page).to have_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=en"
       end
     end
   end
 
-  context 'when case study does not exist' do
+  context 'when case study does not exist', toggle_feature: :new_case_studies_page do
     before do
       visit case_study_download_path('unknown')
     end

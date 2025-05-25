@@ -28,7 +28,7 @@ class CaseStudy < ApplicationRecord
   validates :title, :file_en, presence: true
   validates :position, numericality: true, presence: true
 
-  def file_locale
-    I18n.locale.to_sym == :cy && t_attached(:file, :cy).present? ? :cy : :en
+  def file_locale(current_locale)
+    current_locale.to_sym == :cy && t_attached(:file, :cy).present? ? :cy : :en
   end
 end
