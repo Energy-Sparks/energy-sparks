@@ -9,11 +9,11 @@
 #  bill_requested                          :boolean          default(FALSE)
 #  bill_requested_at                       :datetime
 #  calendar_id                             :bigint(8)
-#  chart_preference                        :integer          default(0), not null
+#  chart_preference                        :integer          default("default"), not null
 #  cooks_dinners_for_other_schools         :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count   :integer
 #  cooks_dinners_onsite                    :boolean          default(FALSE), not null
-#  country                                 :integer          default(0), not null
+#  country                                 :integer          default("england"), not null
 #  created_at                              :datetime         not null
 #  dark_sky_area_id                        :bigint(8)
 #  data_enabled                            :boolean          default(FALSE)
@@ -21,7 +21,7 @@
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  floor_area                              :decimal(, )
 #  funder_id                               :bigint(8)
-#  funding_status                          :integer          default(0), not null
+#  funding_status                          :integer          default("state_school"), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump            :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump_notes      :text

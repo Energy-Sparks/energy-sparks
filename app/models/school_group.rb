@@ -7,7 +7,7 @@
 #  admin_meter_statuses_solar_pv_id         :bigint(8)
 #  created_at                               :datetime         not null
 #  default_chart_preference                 :integer          default("default"), not null
-#  default_country                          :integer          default(0), not null
+#  default_country                          :integer          default("england"), not null
 #  default_dark_sky_area_id                 :bigint(8)
 #  default_data_source_electricity_id       :bigint(8)
 #  default_data_source_gas_id               :bigint(8)

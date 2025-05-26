@@ -612,7 +612,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_22_094531) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "school_type"
+    t.integer "organisation_type", default: 0, null: false
   end
 
   create_table "cluster_schools_users", id: false, force: :cascade do |t|
