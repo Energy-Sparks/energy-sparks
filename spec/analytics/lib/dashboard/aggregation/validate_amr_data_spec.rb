@@ -7,11 +7,11 @@ require 'rails_helper'
 # end
 
 describe ValidateAMRData, type: :service do
-  before { travel_to Date.new(2025, 5, 3) }
-
   subject(:validator) do
     described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
   end
+
+  before { travel_to Date.new(2025, 5, 3) }
 
   let(:meter_collection) { build(:meter_collection, :with_electricity_meter, kwh_data_x48: Array.new(48, 0.44)) }
   let(:meter) { meter_collection.electricity_meters.first }
