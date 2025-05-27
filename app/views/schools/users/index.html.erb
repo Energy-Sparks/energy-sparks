@@ -11,8 +11,6 @@
 
 <%= link_to t('schools.users.index.new_school_admin_account'), new_school_user_path(@school, role: :school_admin),
             class: 'btn btn-primary' %>
-<%= link_to t('schools.users.index.add_existing_user_as_admin'), new_school_cluster_admin_path(@school),
-            class: 'btn btn-primary' %>
 
 <h2 class="mt-4"><%= t('schools.users.index.staff_accounts') %></h2>
 <p><%= t('schools.users.index.staff_accounts_have_access_message') %></p>

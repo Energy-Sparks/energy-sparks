@@ -17,6 +17,8 @@
 #  index_secr_co2_equivalences_on_year  (year) UNIQUE
 #
 class SecrCo2Equivalence < ApplicationRecord
+  # sourced from https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting
+
   validates :electricity_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
   validates :electricity_co2e_co2, presence: true, numericality: { greater_than: 0, less_than: 1 }
   validates :natural_gas_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
@@ -24,10 +26,8 @@ class SecrCo2Equivalence < ApplicationRecord
   validates :transmission_distribution_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
   validates :year, presence: true, uniqueness: true, numericality: { greater_than: 2020, less_than: 2050 }
 
-  def self.human_attribute_name(attribute, options = {})
-    name = super
-    name.sub!('co2e co2', 'kg CO₂ equivalence of CO₂')
-    name.sub!('co2e', 'kg CO₂ equivalence')
-    name
+
+  def self.emissions(year, type, consumption)
+    (find_by(year:).public_send(type) * consumption).round(2)
   end
 end

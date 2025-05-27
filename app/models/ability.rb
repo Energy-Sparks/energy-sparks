@@ -204,8 +204,7 @@ class Ability
         show_management_dash read start_programme read_restricted_analysis read_restricted_advice
       ], School, school_scope
 
-      can %i[create update destroy], Contact, user_id: user.id
-
+      can :manage, Contact, user_id: user.id
       can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey],
           related_school_scope
       can :manage, TransportSurvey::Response, transport_survey: related_school_scope
@@ -272,7 +271,7 @@ class Ability
         can :start_programme, School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
-        can %i[create update destroy], Contact, user_id: user.id
+        can :manage, Contact, user_id: user.id
         can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
         can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
       end

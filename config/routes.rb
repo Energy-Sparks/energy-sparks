@@ -255,6 +255,7 @@ Rails.application.routes.draw do
           post :assign
         end
       end
+      resources :secr, only: [:index]
     end
     member do
       get :map
@@ -478,7 +479,6 @@ Rails.application.routes.draw do
           post :resend_confirmation
         end
       end
-      resources :cluster_admins, only: [:new, :create]
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resources :consent_documents
