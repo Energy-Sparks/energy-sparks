@@ -111,7 +111,7 @@ module Schools
           existing_user.role = :school_admin
           @user = existing_user
           redirect = @user.save
-          notice = 'Added user as a school admin'
+          notice = 'Added user as a school admin' if redirect
         else
           @user.errors.clear
           @new_school_admin = true
