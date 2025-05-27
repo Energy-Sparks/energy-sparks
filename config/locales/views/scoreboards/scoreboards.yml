@@ -6,7 +6,7 @@ en:
     intro_para_1:
       one: There is only 1 school on this scoreboard
       other: There are %{count} schools competing on this scoreboard
-    intro_para_2_national: The EnergySparks national prize scoreboard reports shows points scored by schools between %{start_date} and %{end_date}
+    intro_para_2_national: The Energy Sparks national prize scoreboard reports shows points scored by schools between %{start_date} and %{end_date}
     position: Position
     previous_scoreboard: View the final scores from last year
     previous_scores: These were the final scores from last year

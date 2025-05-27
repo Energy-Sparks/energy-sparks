@@ -134,6 +134,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
+  gem 'ruby-prof' # used by analytics
   gem 'terminal-notifier', require: false
   gem 'terminal-notifier-guard', require: false
   gem 'webmock'
@@ -160,7 +161,6 @@ group :development do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec_rails'
-  gem 'ruby-prof' # used by analytics
   gem 'scout_apm'
   gem 'web-console'
 end
