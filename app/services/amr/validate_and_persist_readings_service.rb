@@ -22,7 +22,6 @@ module Amr
 
       @logger.info('Completed database updates for validated readings')
 
-      # this will cause a cache miss when requesting the meter collection
       @active_record_school.invalidate_cache_key
 
       meter_collection
