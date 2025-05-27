@@ -69,6 +69,21 @@ RSpec.describe 'User alert management', :include_application_helper do
       end
     end
 
+    context 'with a staff user' do
+      let(:user) { create(:staff) }
+
+      before do
+        within('#profile-page-navigation') do
+          click_on(I18n.t('users.show.manage_alerts'))
+        end
+      end
+
+      it_behaves_like 'an account page with navigation'
+      it_behaves_like 'an alert management page' do
+        let(:schools) { [user.school] }
+      end
+    end
+
     context 'with a cluster admin' do
       let(:user) { create(:school_admin, :with_cluster_schools) }
 
