@@ -65,7 +65,9 @@ Rails.application.routes.draw do
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
     asset_host = ENV.fetch('ASSET_HOST') { 'localhost:3000' }
 
-    if model.respond_to?(:signed_id)
+    if model.is_a?(String) # placeholder images
+      model
+    elsif model.respond_to?(:signed_id)
       route_for(
         :rails_service_blob_proxy,
         model.signed_id(expires_in: expires_in),
