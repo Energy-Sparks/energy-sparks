@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_23_084317) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_28_093314) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1893,15 +1893,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_23_084317) do
   end
 
   create_table "solis_cloud_installations", force: :cascade do |t|
-    t.bigint "school_id", null: false
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_id"
     t.text "api_secret"
-    t.jsonb "station_list", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "inverter_detail_list", default: {}
     t.index ["amr_data_feed_config_id"], name: "index_solis_cloud_installations_on_amr_data_feed_config_id"
-    t.index ["school_id"], name: "index_solis_cloud_installations_on_school_id"
   end
 
   create_table "staff_roles", force: :cascade do |t|
@@ -2309,7 +2307,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_23_084317) do
   add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
   add_foreign_key "solis_cloud_installations", "amr_data_feed_configs", on_delete: :cascade
-  add_foreign_key "solis_cloud_installations", "schools", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade
