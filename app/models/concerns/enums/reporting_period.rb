@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-module EnumReportingPeriod
+
+module Enums::ReportingPeriod
   extend ActiveSupport::Concern
 
   # Add reporting periods as required:

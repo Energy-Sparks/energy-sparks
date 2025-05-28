@@ -41,7 +41,7 @@
 #
 
 class Alert < ApplicationRecord
-  include EnumReportingPeriod
+  include Enums::ReportingPeriod
   include AlertTypeWithComparisonReport
 
   belongs_to :school,               inverse_of: :alerts

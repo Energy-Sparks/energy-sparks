@@ -1,40 +1,79 @@
-<h1>Case Studies</h1>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>
+    Case Studies
+    <%= link_to 'New', new_admin_case_study_path, class: 'btn btn-sm' %>
+  </h1>
+</div>
 
-<% if @case_studies %>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Position</th>
-      <th>File</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
+<div classes='container'>
+  <div class="p-2">
     <% @case_studies.each do |case_study| %>
-      <tr>
-        <td><%= case_study.title %></td>
-        <td><%= case_study.description %></td>
-        <td><%= case_study.position %></td>
-        <td class="text-nowrap">
-          <%= t_attached_links(case_study, :file, ' | ') %>
-        </td>
-        <td>
-          <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn btn-primary' %>
-            <%= link_to 'Delete', admin_case_study_path(case_study), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <div class='clearfix border rounded bg-light p-2 row mb-2'>
+        <div class='col-md-12'>
+          <h4 class='pb-0'>
+            <span class='d-inline-block text-truncate' style="max-width: 95%">
+              <span class="badge bg-secondary font-weight-normal">
+                <%= case_study.position %>
+                </span>
+                <%= case_study.title %>
+            </span>
+            <span class='float-right pb-2'>
+              <small>
+                <% if case_study.image.attached? %>
+                  <span title='has image' data-toggle='tooltip'><%= render IconComponent.new(name: 'image') %></span>
+                <% else %>
+                  <span title='no image' data-toggle='tooltip'>
+                    <%= render IconComponent.new(name: 'triangle-exclamation') %>
+                  </span>
+                <% end %>
+              </small>
+            </span>
+          </h4>
+            <div class='pl-2 pb-2'>
+            <span data-toggle="collapse"
+                  href="#case_study-<%= case_study.id %>" role="button" aria-expanded="true"
+                  aria-controls="case_study-<%= case_study.id %>"
+                  class="toggler text-decoration-none collapsed">
+              <%= toggler %>
+            </span>
+            <span class="badge rounded-pill bg-info font-weight-normal">
+              <%= CaseStudy.human_enum_name(:organisation_type, case_study.organisation_type) %>
+            </span>
+            <span class="badge rounded-pill bg-white text-dark font-weight-normal border">
+              Download: <%= t_attached_links(case_study, :file, ' • ') %>
+            </span>
+
+            <span class='float-right'>
+              <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn btn-sm' %>
+              <%= link_to 'Delete', admin_case_study_path(case_study),
+                          method: :delete,
+                          data: { confirm: 'Are you sure?' },
+                          class: 'btn btn-danger btn-sm' %>
+            </span>
           </div>
-        </td>
-      </tr>
+
+          <div class="collapse" id="case_study-<%= case_study.id %>">
+            <%= render Layout::GridComponent.new(cols: 3, classes: 'py-2') do |grid| %>
+              <%= grid.with_card do |card| %>
+                <%= card.with_image(src: case_study.image, rounded: :top) if case_study.image.attached? %>
+                <%= card.with_feature_card(
+                      theme: :dark, size: :sm,
+                      classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' unless case_study.image.attached?}"
+                    ) do |feature| %>
+                  <%= feature.with_tag(case_study.organisation_type_label) %>
+                  <%= feature.with_header(title: case_study.title) %>
+                  <%= feature.with_description { case_study.description.to_s } %>
+                  <%= feature.with_link(
+                        href: case_study_serve_path(case_study, locale: case_study.file_locale, serve: :download)
+                      ) do
+                        t('common.labels.download')
+                      end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
     <% end %>
-  </tbody>
-</table>
-
-<% else %>
-  <p>There are no case studies</p>
-<% end %>
-
-<p><%= link_to 'New Case study', new_admin_case_study_path, class: 'btn' %></p>
+  </div>
+</div>

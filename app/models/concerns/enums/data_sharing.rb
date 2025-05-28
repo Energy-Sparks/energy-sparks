@@ -1,4 +1,4 @@
-module EnumDataSharing
+module Enums::DataSharing
   extend ActiveSupport::Concern
 
   # Defined as Postgres Enum. Mapping is from ruby values to database values

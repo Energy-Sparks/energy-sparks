@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
-  get 'case_studies/:id/:serve', to: 'case_studies#download'
+  get 'case_studies/:id/:serve', to: 'case_studies#download', as: :case_study_serve
   get 'case-studies/:id/download', to: 'case_studies#download', as: :case_study_download
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources

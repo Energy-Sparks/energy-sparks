@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'case_studies', type: :system do
+  let(:school) { create(:school) }
+
   context 'when there is an existing case study' do
     let!(:case_study) do
       CaseStudy.create!(title: 'First Case Study', position: 1,
-      file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'))
+      file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
+      organisation: school)
     end
 
     before do
@@ -25,18 +28,18 @@ RSpec.describe 'case_studies', type: :system do
       expect(page).to have_http_status(:ok)
     end
 
-    context 'a welsh download is not available' do
+    context 'a welsh download is not available', toggle_feature: :new_case_studies_page do
       before do
         visit case_studies_path(locale: 'cy')
       end
 
-      it 'the welsh link is not displayed' do
+      it 'the english link is displayed' do
         expect(page).to have_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=en"
       end
     end
   end
 
-  context 'when case study does not exist' do
+  context 'when case study does not exist', toggle_feature: :new_case_studies_page do
     before do
       visit case_study_download_path('unknown')
     end
@@ -48,7 +51,8 @@ RSpec.describe 'case_studies', type: :system do
     let!(:case_study) do
       CaseStudy.create!(title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
-      file_cy: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'))
+      file_cy: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
+      organisation: school)
     end
 
     before do

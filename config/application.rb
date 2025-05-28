@@ -71,5 +71,6 @@ module EnergySparks
     config.active_record.encryption.deterministic_key = 'eo84dBizRt6e4I68aD8IUrCBjuzTt7c7'
     config.active_record.encryption.key_derivation_salt = 'IXTWKMlViWaALgj3k2UNhIouWdOyXAwm'
     config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    config.global_id_signed = true
   end
 end
