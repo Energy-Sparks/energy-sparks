@@ -22,9 +22,9 @@ Rails.application.routes.draw do
   get 'case-studies/:id/download', to: 'case_studies#download', as: :case_study_download
   get 'newsletters', to: 'newsletters#index', as: :newsletters
   get 'resources', to: 'resource_files#index', as: :resources
-  get 'resources/:id/:serve', to: 'resource_files#download', as: :serve_resource
+  get 'resources/:id/:serve', to: 'resource_files#download', as: :resource_file_download
   get 'jobs', to: 'jobs#index', as: :jobs
-  get 'jobs/:id/:serve', to: 'jobs#download'
+  get 'jobs/:id/:serve', to: 'jobs#download', as: :job_download
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
   get 'map/popup', to: 'map#popup'
