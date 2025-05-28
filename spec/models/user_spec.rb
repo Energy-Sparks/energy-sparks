@@ -15,10 +15,10 @@ describe User do
     user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
 
-    user = create(:user, name: nil)
+    user = build(:user, name: nil).tap { |u| u.save!(validate: false) }
     expect(user.display_name).to eql user.email
 
-    user = create(:user, name: '')
+    user = build(:user, name: '').tap { |u| u.save!(validate: false) }
     expect(user.display_name).to eql user.email
   end
 

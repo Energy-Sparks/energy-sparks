@@ -1,50 +1,52 @@
-<p><%= t('advice_pages.electricity_out_of_hours.analysis.summary') %></p>
-<ul>
-  <li>
-    <a href='#last_twelve_months'>
-      <% if @analysis_dates.one_years_data? %>
-        <%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
-      <% else %>
-        <%= t('advice_pages.electricity_long_term.analysis.recent_trend.title') %>
-      <% end %>
-    </a>
-  </li>
-  <li>
-    <a href='#usage_by_day_of_week'>
-      <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
-    </a>
-  </li>
-  <% if show_holiday_usage_section?(@holiday_usage) %>
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
+  <p><%= t('advice_pages.electricity_out_of_hours.analysis.summary') %></p>
+  <ul>
     <li>
-      <a href='#holiday-usage'>
-        <%= t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
+      <a href='#last_twelve_months'>
+        <% if @analysis_dates.one_years_data? %>
+          <%= t('advice_pages.electricity_out_of_hours.analysis.last_twelve_months.title') %>
+        <% else %>
+          <%= t('advice_pages.electricity_long_term.analysis.recent_trend.title') %>
+        <% end %>
       </a>
     </li>
-  <% end %>
-</ul>
+    <li>
+      <a href='#usage_by_day_of_week'>
+        <%= t('advice_pages.electricity_out_of_hours.analysis.usage_by_day_of_week.title') %>
+      </a>
+    </li>
+    <% if show_holiday_usage_section?(@out_of_hours_usage_service.holiday_usage) %>
+      <li>
+        <a href='#holiday-usage'>
+          <%= t('advice_pages.electricity_out_of_hours.analysis.holiday_usage.title') %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
 
-<%= render 'schools/advice/out_of_hours/last_year',
-           analysis_dates: @analysis_dates,
-           meter_selection: @meter_selection,
-           usage_categories: @usage_categories,
-           annual_usage_breakdown: @annual_usage_breakdown,
-           fuel_type: :electricity,
-           chart: :daytype_breakdown_electricity_tolerant %>
-
-<%= render 'by_day',
-           school: @school,
-           meter_selection: @meter_selection,
-           analysis_dates: @analysis_dates %>
-
-<% if show_holiday_usage_section?(@holiday_usage) %>
-  <%= render 'schools/advice/out_of_hours/holidays',
-             school: @school,
+  <%= render 'schools/advice/out_of_hours/last_year',
              analysis_dates: @analysis_dates,
+             meter_selection: @meter_selection,
+             usage_categories: @usage_categories,
+             annual_usage_breakdown: @out_of_hours_usage_service.annual_usage_breakdown,
              fuel_type: :electricity,
-             dashboard_alerts: @dashboard_alerts,
-             alert_classes: [AlertElectricityUsageDuringCurrentHoliday, AlertPreviousHolidayComparisonElectricity,
-                             AlertPreviousYearHolidayComparisonElectricity],
-             full_chart: :alert_group_by_week_electricity_14_months,
-             limited_chart: :management_dashboard_group_by_week_electricity,
-             holiday_usage: @holiday_usage %>
+             chart: :daytype_breakdown_electricity_tolerant %>
+
+  <%= render 'by_day',
+             school: @school,
+             meter_selection: @meter_selection,
+             analysis_dates: @analysis_dates %>
+
+  <% if show_holiday_usage_section?(@out_of_hours_usage_service.holiday_usage) %>
+    <%= render 'schools/advice/out_of_hours/holidays',
+               school: @school,
+               analysis_dates: @analysis_dates,
+               fuel_type: :electricity,
+               dashboard_alerts: @dashboard_alerts,
+               alert_classes: [AlertElectricityUsageDuringCurrentHoliday, AlertPreviousHolidayComparisonElectricity,
+                               AlertPreviousYearHolidayComparisonElectricity],
+               full_chart: :alert_group_by_week_electricity_14_months,
+               limited_chart: :management_dashboard_group_by_week_electricity,
+               holiday_usage: @out_of_hours_usage_service.holiday_usage %>
+  <% end %>
 <% end %>

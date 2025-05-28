@@ -23,7 +23,6 @@ cy:
       status: Statws
       type: Math
     event_modal:
-      calendar_event: Digwyddiad Calendr
       end_date: Dyddiad Gorffen
       event_type: Math o Ddigwyddiad
       save_changes: Cadw Newidiadau

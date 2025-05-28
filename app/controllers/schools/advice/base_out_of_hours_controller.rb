@@ -4,17 +4,11 @@ module Schools
       before_action :set_usage_categories
 
       def insights
-        @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
-        @benchmarked_usage = benchmark_school(@annual_usage_breakdown)
-
-        unless @analysis_dates.one_years_data?
-          @well_managed_percent = benchmark_value(:benchmark_school)
-        end
+        @out_of_hours_usage_service = out_of_hours_usage_service
       end
 
       def analysis
-        @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
-        @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
+        @out_of_hours_usage_service = out_of_hours_usage_service
         @meter_selection = Charts::MeterSelection.new(@school, aggregate_school_service, advice_page_fuel_type, date_window: 363)
       end
 
@@ -24,43 +18,16 @@ module Schools
         @analysable = create_analysable
         render 'not_enough_data' and return unless @analysable.enough_data?
         set_analysis_dates
-        @annual_usage_breakdown = annual_usage_breakdown_service.usage_breakdown
+        @annual_usage_breakdown = out_of_hours_usage_service.annual_usage_breakdown
         render 'schools/advice/out_of_hours/no_usage' and return if @annual_usage_breakdown&.out_of_hours&.kwh&.zero?
       end
 
-      def aggregate_meter
-        aggregate_school.aggregate_meter(advice_page_fuel_type)
-      end
-
       def create_analysable
-        annual_usage_breakdown_service
+        out_of_hours_usage_service
       end
 
-      def benchmark_school(annual_usage_breakdown)
-        Schools::Comparison.new(
-          school_value: annual_usage_breakdown.out_of_hours.kwh,
-          benchmark_value: (annual_usage_breakdown.total.kwh * benchmark_value(:benchmark_school)),
-          exemplar_value: (annual_usage_breakdown.total.kwh * benchmark_value(:exemplar_school)),
-          unit: :kwh
-        )
-      end
-
-      def annual_usage_breakdown_service
-        ::Usage::UsageBreakdownService.new(
-          meter_collection: aggregate_school,
-          fuel_type: fuel_type
-        )
-      end
-
-      def holiday_usage_calculation_service
-        ::Usage::HolidayUsageCalculationService.new(
-          aggregate_meter,
-          aggregate_school.holidays
-        )
-      end
-
-      def benchmark_value(comparison)
-        Schools::AdvicePageBenchmarks::OutOfHoursUsageBenchmarkGenerator.benchmark(compare: comparison, fuel_type: fuel_type)
+      def out_of_hours_usage_service
+        @out_of_hours_usage_service = Schools::Advice::OutOfHoursUsageService.new(@school, aggregate_school_service, fuel_type)
       end
 
       def set_usage_categories

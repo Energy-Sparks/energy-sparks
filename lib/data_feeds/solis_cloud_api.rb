@@ -17,7 +17,7 @@ module DataFeeds
       get_data('/v1/api/userStationList', {})
     end
 
-    limit_method :station_day, rate: 1, interval: 2
+    limit_method :station_day, rate: 1, interval: 2 unless Rails.env.test?
     def station_day(id, day)
       get_data('/v1/api/stationDay', { id: id, money: 'GBP', time: day.iso8601, timeZone: 44 })
     end
