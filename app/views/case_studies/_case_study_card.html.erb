@@ -9,6 +9,7 @@
     <% download_locale = I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present? ? :cy : :en %>
     <%= link_to case_study_download_path(case_study,
                                          locale: download_locale),
+                download: true,
                 class: 'btn' do %>
       <%= t('case_studies.download') %>
       <i class="fas fa-file-download"></i>
