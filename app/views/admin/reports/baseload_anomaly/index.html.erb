@@ -1,0 +1,7 @@
+<%= render 'admin/reports/title', title: 'Baseload Anomalies' %>
+
+<p><%= link_to 'Download as CSV', admin_reports_baseload_anomaly_index_path(format: :csv), class: 'btn btn-sm' %></p>
+
+<div class="row">
+  <%= render 'admin/reports/column_table', columns: @columns, rows: @anomalies %>
+</div>
