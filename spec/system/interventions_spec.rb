@@ -14,11 +14,11 @@ describe 'viewing and recording action' do
   let(:description) { 'How to change your boiler' }
   let(:photo_bonus_points) { nil }
   let!(:intervention_type) { create(:intervention_type, name: title, summary:, description:) }
+  let!(:programme) {}
+
   let(:scoreboard) { create(:scoreboard) }
   let(:school) { create_active_school(scoreboard:) }
   let!(:setup_data) {}
-
-  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
 
   context 'as a public user' do
     it 'there is a top-level navigation item' do
@@ -215,46 +215,100 @@ describe 'viewing and recording action' do
         it { expect(page).to have_content("can't be blank") }
       end
 
-      context 'when time is in previous academic year' do
-        before do
-          fill_in 'observation_at', with: 2.years.ago # points are not scored for actions in previous aademic year
-          fill_in_trix with: 'We changed to a more efficient boiler'
-          click_on 'Record action'
-        end
+      context without_feature: :todos do
+        let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
 
-        it 'observation has 0 points' do
-          observation = school.observations.intervention.first
-          expect(observation.points).to be_nil
-        end
-
-        it_behaves_like 'a task completed page', points: 0, task_type: :action
-      end
-
-      context 'when time is this academic year' do
-        before do
-          fill_in 'observation_at', with: today.strftime('%d/%m/%Y')
-          fill_in_trix with: 'We changed to a more efficient boiler'
-          fill_in 'How many pupils were involved in this activity?', with: 3
-          click_on 'Record action'
-        end
-
-        it 'creates observation' do
-          observation = school.observations.intervention.first
-          expect(observation.intervention_type).to eq(intervention_type)
-          expect(observation.points).to eq(intervention_type.score)
-          expect(observation.at.to_date).to eq(today)
-          expect(observation.created_by).to eq(school_admin)
-        end
-
-        it_behaves_like 'a task completed page', points: 30, task_type: :action
-
-        context 'when viewing action' do
+        context 'when time is in previous academic year' do
           before do
-            click_on 'View your action'
+            fill_in 'observation_at', with: 2.years.ago # points are not scored for actions in previous aademic year
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            click_on 'Record action'
           end
 
-          it 'displays action' do
-            expect(page).to have_content('We changed to a more efficient boiler')
+          it 'observation has 0 points' do
+            observation = school.observations.intervention.first
+            expect(observation.points).to be_nil
+          end
+
+          it_behaves_like 'a task completed page', points: 0, task_type: :action
+        end
+
+        context 'when time is this academic year' do
+          before do
+            fill_in 'observation_at', with: today.strftime('%d/%m/%Y')
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            fill_in 'How many pupils were involved in this activity?', with: 3
+            click_on 'Record action'
+          end
+
+          it 'creates observation' do
+            observation = school.observations.intervention.first
+            expect(observation.intervention_type).to eq(intervention_type)
+            expect(observation.points).to eq(intervention_type.score)
+            expect(observation.at.to_date).to eq(today)
+            expect(observation.created_by).to eq(school_admin)
+          end
+
+          it_behaves_like 'a task completed page', points: 30, task_type: :action
+
+          context 'when viewing action' do
+            before do
+              click_on 'View your action'
+            end
+
+            it 'displays action' do
+              expect(page).to have_content('We changed to a more efficient boiler')
+            end
+          end
+        end
+      end
+
+      context with_feature: :todos do
+        let!(:audit) { create(:audit, :with_todos, school:) }
+
+        context 'when time is in previous academic year' do
+          before do
+            fill_in 'observation_at', with: 2.years.ago # points are not scored for actions in previous aademic year
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            click_on 'Record action'
+          end
+
+          it 'observation has 0 points' do
+            observation = school.observations.intervention.first
+            expect(observation.points).to be_nil
+          end
+
+          it_behaves_like 'a task completed page', points: 0, task_type: :action, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
+        end
+
+        context 'when time is this academic year' do
+          before do
+            fill_in 'observation_at', with: today.strftime('%d/%m/%Y')
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            fill_in 'How many pupils were involved in this activity?', with: 3
+            click_on 'Record action'
+          end
+
+          it 'creates observation' do
+            observation = school.observations.intervention.first
+            expect(observation.intervention_type).to eq(intervention_type)
+            expect(observation.points).to eq(intervention_type.score)
+            expect(observation.at.to_date).to eq(today)
+            expect(observation.created_by).to eq(school_admin)
+          end
+
+          it_behaves_like 'a task completed page', points: 30, task_type: :action, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
+
+          context 'when viewing action' do
+            before do
+              click_on 'View your action'
+            end
+
+            it 'displays action' do
+              expect(page).to have_content('We changed to a more efficient boiler')
+            end
           end
         end
       end

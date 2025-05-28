@@ -1,0 +1,16 @@
+language: ruby
+cache:
+  bundler: true
+dist: bionic
+addons:
+  sources:
+  - google-chrome
+  apt:
+    packages:
+    - google-chrome-stable
+sudo: required
+before_install:
+  - gem install bundler -v '2.2.32'
+script:
+- bundle exec bundle-audit check --update
+- bundle exec rspec

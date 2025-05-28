@@ -3,11 +3,9 @@
 class PodiumComponent < ApplicationComponent
   attr_reader :podium, :id, :user
 
-  def initialize(podium: nil, classes: nil, id: nil, user: nil)
-    super(id: id, classes: classes)
+  def initialize(podium: nil, classes: nil, id: nil, user: nil, **_kwargs)
+    super
     @podium = podium
-    @classes = classes
-    @id = id
     @user = user
   end
 

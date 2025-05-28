@@ -2,7 +2,7 @@
            section_id: 'comparison',
            section_title: t('advice_pages.electricity_long_term.analysis.comparison.title') %>
 
-<%= component 'chart', chart_type: :benchmark_electric_only_one_year_kwh, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :benchmark_electric_only_one_year_kwh, school: school) do |c| %>
   <% c.with_title { t('advice_pages.electricity_long_term.charts.benchmark.title') } %>
   <% c.with_subtitle do
        t('advice_pages.electricity_long_term.charts.benchmark.subtitle',
@@ -22,11 +22,11 @@
                                               estimated_savings_vs_exemplar: estimated_savings_vs_exemplar,
                                               estimated_savings_vs_benchmark: estimated_savings_vs_benchmark %>
 
-<%= component 'chart', chart_type: :group_by_week_electricity_versus_benchmark, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :group_by_week_electricity_versus_benchmark, school: school) do |c| %>
   <% c.with_title { t('advice_pages.electricity_long_term.charts.group_by_week_electricity_versus_benchmark.title') } %>
   <% c.with_subtitle do
        t('advice_pages.electricity_long_term.charts.group_by_week_electricity_versus_benchmark.subtitle_html',
-         start_date: analysis_dates.last_full_week_start_date.to_fs(:es_short),
+         start_date: analysis_dates.last_full_week_start_date_up_to_one_year_ago.to_fs(:es_short),
          end_date: analysis_dates.last_full_week_end_date.to_fs(:es_short))
      end %>
 <% end %>

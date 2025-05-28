@@ -1,7 +1,38 @@
-<% content_for :page_title, t('schools.index.page_title') %>
+<% content_for :page_title, t('schools.index.title') %>
 
 <% if Flipper.enabled?(:new_schools_page, current_user) %>
-  <%= component 'school_search', letter: params[:letter], keyword: params[:keyword], tab: params[:scope] %>
+  <div class="row">
+    <div class="col-12 col-md-6">
+
+      <div class="row">
+        <div class="col-8 mt-2 p-4">
+          <h1><%= t('schools.index.title') %></h1>
+
+          <p><%= t('schools.index.introduction_1') %>.</p>
+          <p><%= t('schools.index.introduction_2', count: @school_count) %>.</p>
+          <p><%= t('schools.index.introduction_3') %>.</p>
+          <p><%= t('schools.index.introduction_4') %>.</p>
+          <p>
+            <%= link_to t('schools.index.case_studies'), case_studies_path, class: 'btn btn-primary' %>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-4 col-12 col-md-6">
+      <div class="map" id="geo-json-map"></div>
+    </div>
+  </div>
+
+  <%= render SchoolSearchComponent.new(
+        schools: @schools,
+        letter: params[:letter],
+        keyword: params[:keyword],
+        tab: params[:scope],
+        schools_total_key: "components.school_search.schools.total#{'_for_admins' if current_user&.admin?}"
+      ) %>
+
 <% else %>
   <div class="row">
     <div class="col-md-12">

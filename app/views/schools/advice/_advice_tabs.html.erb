@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs locales">
   <li class="nav-item d-md-none">
-    <%= component 'page_nav/collapse_button' %>
+    <%= render PageNavComponent::CollapseButton.new %>
   </li>
   <li class="nav-item">
     <a class="nav-link <%= 'active' if tab == :insights %>" href="<%= advice_page_path(school, advice_page, :insights) %>">

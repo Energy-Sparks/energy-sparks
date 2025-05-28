@@ -15,7 +15,6 @@ class PageNavComponent < ViewComponent::Base
     @classes = classes
     @href = href
     @options = options
-    @user = options[:user]
   end
 
   def header
@@ -23,10 +22,6 @@ class PageNavComponent < ViewComponent::Base
     args[:class] += " #{classes}" if classes
     text = icon.nil? ? name : helpers.text_with_icon(name, icon)
     link_to(text, href, args)
-  end
-
-  def component_classes
-    Flipper.enabled?(:new_dashboards_2024, @user) ? 'rounded' : 'border rounded'
   end
 
   class SectionComponent < ViewComponent::Base
@@ -37,13 +32,14 @@ class PageNavComponent < ViewComponent::Base
 
     attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(name: nil, icon: nil, visible: true, toggler: true, classes: nil, options: {})
+    def initialize(name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil, options: {})
       @name = name
       @classes = classes
       @icon = icon
       @visible = visible
       @options = options
       @toggler = toggler
+      @expanded = expanded
     end
 
     def id
@@ -54,13 +50,19 @@ class PageNavComponent < ViewComponent::Base
       helpers.text_with_icon(name, icon, class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'float-right')
     end
 
+    def expanded?
+      @expanded
+    end
+
     def render?
       name
     end
 
     def call
       if @toggler
-        args = { class: 'nav-link toggler', 'data-toggle': 'collapse', 'data-target': "##{id}" }
+        toggle_classes = 'nav-link toggler'
+        toggle_classes += ' collapsed' unless expanded?
+        args = { class: toggle_classes, 'data-toggle': 'collapse', 'data-target': "##{id}" }
       else
         args = { class: '' }
       end

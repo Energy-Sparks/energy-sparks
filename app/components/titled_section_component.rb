@@ -18,10 +18,6 @@ class TitledSectionComponent < ApplicationComponent
   renders_one :link
   renders_one :body
 
-  def initialize(id: nil, classes: '')
-    super(id: id, classes: classes)
-  end
-
   def render
     body?
   end

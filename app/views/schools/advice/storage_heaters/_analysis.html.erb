@@ -32,20 +32,23 @@
   </li>
 </ul>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeaterOutOfHours), show_links: false %>
+<%= render AlertsComponent.new(school: @school,
+                               dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertStorageHeaterOutOfHours), show_links: false) %>
 
-<%= render 'schools/advice/section_title', section_id: 'electricity_use_for_the_last_12_months', section_title: t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'electricity_use_for_the_last_12_months',
+           section_title: t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.title') %>
 <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.advice_html') %>
 
-<%= component 'chart', chart_type: :storage_heater_group_by_week, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :storage_heater_group_by_week, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.subtitle_html',
-           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
-           end_month_year: short_dates(@analysis_dates.end_date
-          )) %>
+          start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          end_month_year: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_group_by_week.footer_html') %>
@@ -54,53 +57,56 @@
 
 <%= render 'analysis_table' %>
 
-<%= component 'chart', chart_type: :storage_heater_by_day_of_week_tolerant, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :storage_heater_by_day_of_week_tolerant, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.subtitle_html',
           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
-          end_month_year: short_dates(@analysis_dates.end_date
-        )) %>
+          end_month_year: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
-    <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.footer_html', case_study_path: case_study_download_path(id: 3, locale: I18n.locale)) %>
+    <%= t(
+          'advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_by_day_of_week_tolerant.footer_html', case_study_path: case_study_download_path(
+            id: 3, locale: I18n.locale
+          )
+        ) %>
   <% end %>
 <% end %>
 
-<%= component 'chart', chart_type: :storage_heater_intraday_current_year, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :storage_heater_intraday_current_year, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.subtitle_html',
           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
-          end_month_year: short_dates(@analysis_dates.end_date
-         )) %>
+          end_month_year: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.storage_heaters.analysis.electricity_use_for_the_last_12_months.storage_heater_intraday_current_year.footer') %>
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'recent_usage', section_title: t('advice_pages.storage_heaters.analysis.recent_usage.title') %>
+<%= render 'schools/advice/section_title', section_id: 'recent_usage',
+                                           section_title: t('advice_pages.storage_heaters.analysis.recent_usage.title') %>
 <%= t('advice_pages.storage_heaters.analysis.recent_usage.this_chart_html') %>
 
-<%= component 'chart', chart_type: :intraday_line_school_last7days_storage_heaters, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :intraday_line_school_last7days_storage_heaters, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.recent_usage.intraday_line_school_last7days_storage_heaters.subtitle_html',
           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.week : @analysis_dates.start_date),
-          end_month_year: short_dates(@analysis_dates.end_date)
-    ) %>
+          end_month_year: short_dates(@analysis_dates.end_date)) %>
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'long_term_trends', section_title: t('advice_pages.storage_heaters.analysis.long_term_trends.title') %>
-<%= component 'chart', chart_type: :storage_heater_group_by_week_long_term, school: @school do |c| %>
+<%= render 'schools/advice/section_title', section_id: 'long_term_trends',
+                                           section_title: t('advice_pages.storage_heaters.analysis.long_term_trends.title') %>
+<%= render ChartComponent.new(chart_type: :storage_heater_group_by_week_long_term, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.long_term_trends.storage_heater_group_by_week_long_term.title') %>
   <% end %>
@@ -109,49 +115,51 @@
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'seasonal_control', section_title: t('advice_pages.storage_heaters.analysis.seasonal_control.title') %>
+<%= render 'schools/advice/section_title', section_id: 'seasonal_control',
+                                           section_title: t('advice_pages.storage_heaters.analysis.seasonal_control.title') %>
 <%= render('seasonal_control_notice') %>
 <p><%= t('advice_pages.storage_heaters.analysis.seasonal_control.advice_html') %></p>
 
-<%= component 'chart', chart_type: :heating_on_off_by_week_storage_heater, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :heating_on_off_by_week_storage_heater, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.seasonal_control.heating_on_off_by_week_storage_heater.subtitle_html',
-           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
-           end_month_year: short_dates(@analysis_dates.end_date)
-           ) %>
+          start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          end_month_year: short_dates(@analysis_dates.end_date)) %>
   <% end %>
 <% end %>
 <p>
   <%= t('advice_pages.storage_heaters.analysis.seasonal_control.you_should_ensure') %>
 </p>
-<%= render 'schools/advice/section_title', section_id: 'thermostatic_control', section_title: t('advice_pages.storage_heaters.analysis.thermostatic_control.title') %>
+<%= render 'schools/advice/section_title', section_id: 'thermostatic_control',
+                                           section_title: t('advice_pages.storage_heaters.analysis.thermostatic_control.title') %>
 
 <%= render 'your_thermostatic_control_notice' %>
 
-<%= component 'chart', chart_type: :storage_heater_thermostatic, axis_controls: false, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :storage_heater_thermostatic, axis_controls: false, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.title') %>
   <% end %>
   <% c.with_subtitle do %>
     <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.subtitle_html',
-           start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
-           end_month_year: short_dates(@analysis_dates.end_date)
-    ) %>
+          start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date),
+          end_month_year: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.storage_heater_thermostatic.content_html') %>
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'holiday-usage', section_title: t('advice_pages.storage_heaters.analysis.holiday_usage.title') %>
+<%= render 'schools/advice/section_title', section_id: 'holiday-usage',
+                                           section_title: t('advice_pages.storage_heaters.analysis.holiday_usage.title') %>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertStorageHeaterHeatingOnDuringHoliday), show_links: false %>
+<%= render AlertsComponent.new(school: @school, dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertStorageHeaterHeatingOnDuringHoliday), show_links: false) %>
 
 <p><%= advice_t('storage_heaters.analysis.holiday_usage.table_intro') %></p>
 
-<%= component 'holiday_usage_table', holiday_usage: @holiday_usage, analysis_dates: @analysis_dates %>
+<%= render HolidayUsageTableComponent.new(holiday_usage: @holiday_usage, analysis_dates: @analysis_dates) %>
 
 <p><%= advice_t('storage_heaters.analysis.holiday_usage.table_footer') %></p>

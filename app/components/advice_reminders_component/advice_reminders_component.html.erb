@@ -1,10 +1,10 @@
-<div class="advice-reminders-component <%= classes %>">
-  <%= component 'titled_section' do |section| %>
+<%= tag.div id: id, class: classes do %>
+  <%= render TitledSectionComponent.new do |section| %>
     <% section.with_title do %>
       <h2 id="<%= id %>" class="scrollable-title"><%= t('advice_pages.index.show.what_next') %></h2>
     <% end %>
     <% section.with_body do %>
-      <%= component 'prompt', icon: 'tasks', status: :neutral, style: :compact do |p| %>
+      <%= render PromptComponent.new(icon: 'tasks', status: :neutral, style: :compact) do |p| %>
         <% p.with_title do %>
           <%= t('advice_pages.insights.recommendations.actions_title') %>
         <% end %>
@@ -15,7 +15,7 @@
       <% end %>
 
       <% if prompt_for_target? %>
-        <%= component 'prompt', icon: 'tachometer-alt', status: :neutral, style: :compact do |p| %>
+        <%= render PromptComponent.new(icon: 'tachometer-alt', status: :neutral, style: :compact) do |p| %>
           <% p.with_title do %>
             <%= t('schools.show.set_target') %>
           <% end %>
@@ -27,7 +27,7 @@
       <% end %>
 
       <% if prompt_to_review_target? %>
-        <%= component 'prompt', icon: 'tachometer-alt', status: :neutral, style: :compact do |p| %>
+        <%= render PromptComponent.new(icon: 'tachometer-alt', status: :neutral, style: :compact) do |p| %>
           <% p.with_title do %>
             <%= t('schools.show.review_target') %>
           <% end %>
@@ -39,7 +39,7 @@
       <% end %>
 
       <% if prompt_to_set_new_target? %>
-        <%= component 'prompt', icon: 'tachometer-alt', status: :neutral, style: :compact do |p| %>
+        <%= render PromptComponent.new(icon: 'tachometer-alt', status: :neutral, style: :compact) do |p| %>
           <% p.with_title do %>
             <%= t('schools.show.review_target') %>
           <% end %>
@@ -51,7 +51,7 @@
       <% end %>
 
       <% if alert_count.positive? %>
-        <%= component 'prompt', icon: 'bell', status: :neutral, style: :compact do |p| %>
+        <%= render PromptComponent.new(icon: 'bell', status: :neutral, style: :compact) do |p| %>
           <% p.with_title do %>
             <%= t('schools.school_targets.achieving_your_targets.view_recent_alerts') %>
           <% end %>
@@ -63,7 +63,7 @@
       <% end %>
 
       <% if priority_count.positive? %>
-        <%= component 'prompt', icon: 'list', status: :neutral, style: :compact do |p| %>
+        <%= render PromptComponent.new(icon: 'list', status: :neutral, style: :compact) do |p| %>
           <% p.with_title do %>
             <%= t('schools.school_targets.achieving_your_targets.view_energy_saving_opportunities') %>
           <% end %>
@@ -75,4 +75,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>

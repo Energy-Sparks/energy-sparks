@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get 'jobs/:id/:serve', to: 'jobs#download'
   get 'home-page', to: 'home#show'
   get 'map', to: 'map#index'
+  get 'map/popup', to: 'map#popup'
   get 'school_statistics', to: 'home#school_statistics'
   get 'school_statistics_key_data', to: 'home#school_statistics_key_data'
 
@@ -58,6 +59,8 @@ Rails.application.routes.draw do
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
+  get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
+
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'find-out-more', as: :find_out_more
@@ -82,7 +85,15 @@ Rails.application.routes.draw do
   end
 
   concern :unlisted do
-    get :unlisted, on: :collection
+    get :unlisted, on: :collection, :defaults => { :format => 'js' }
+  end
+
+  get '/support', to: redirect('/support/categories')
+  get '/support/search', to: 'cms/pages#search', as: :search
+  scope module: 'cms', path: 'support' do
+    resources :categories, only: [:index, :show] do
+      resources :pages, path: '', only: [:show]
+    end
   end
 
   namespace :comparisons do
@@ -114,7 +125,6 @@ Rails.application.routes.draw do
     resources :electricity_targets, only: [:index], concerns: :unlisted
     resources :gas_consumption_during_holiday, only: [:index], concerns: :unlisted
     resources :gas_targets, only: [:index], concerns: :unlisted
-    resources :heat_saver_march_2024, only: [:index], concerns: :unlisted
     resources :heating_coming_on_too_early, only: [:index], concerns: :unlisted
     resources :heating_in_warm_weather, only: [:index], concerns: :unlisted
     resources :heating_vs_hot_water, only: [:index], concerns: :unlisted
@@ -138,9 +148,14 @@ Rails.application.routes.draw do
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
 
+
   resources :help, controller: 'help_pages', only: [:show]
 
-  resources :mailchimp_signups, only: [:new, :create, :index]
+  resources :mailchimp_signups, only: [:new, :create] do
+    collection do
+      get 'subscribed', as: :subscribed
+    end
+  end
 
   concern :tariff_holder do
     scope module: 'energy_tariffs' do
@@ -226,6 +241,12 @@ Rails.application.routes.draw do
       resources :chart_updates, only: [:index] do
         post :bulk_update_charts
       end
+      resources :digital_signage, path: 'digital-signage', only: [:index] do
+        collection do
+          get :equivalences
+          get :charts
+        end
+      end
       resources :clusters do
         member do
           post :unassign
@@ -234,6 +255,7 @@ Rails.application.routes.draw do
           post :assign
         end
       end
+      resources :secr, only: [:index]
     end
     member do
       get :map
@@ -264,6 +286,17 @@ Rails.application.routes.draw do
   end
 
   get 'analysis_page_finder/:urn/:analysis_class', to: 'analysis_page_finder#show', as: :analysis_page_finder
+
+  resources :users, path: 'profiles', except: [:new, :destroy] do
+    member do
+      get :edit_password
+      patch :update_password
+    end
+    scope module: :users do
+      resources :contacts, path: 'alerts', only: [:index, :create, :destroy]
+      resources :emails, only: [:index, :create]
+    end
+  end
 
   resources :schools do
     member do
@@ -398,6 +431,12 @@ Rails.application.routes.draw do
           post :submit_job
         end
       end
+      resources :solis_cloud_installations, only: [:new, :show, :create, :edit, :update, :destroy] do
+        member do
+          post :check
+          post :submit_job
+        end
+      end
 
       resource :meter_readings_validation, only: [:create]
 
@@ -420,11 +459,14 @@ Rails.application.routes.draw do
       get :chart, to: 'charts#show'
       get :annotations, to: 'annotations#show', defaults: {format: :json}
 
+      get :review, to: 'review#show'
       get :timeline, to: 'timeline#show'
 
       get :inactive, to: 'inactive#show'
       get :live_data, to: 'live_data#show'
       get :private, to: 'private#show'
+
+      get 'digital-signage', to: 'digital_signage#index'
 
       resources :cads do
         get :live_data, to: 'cads#live_data'
@@ -441,7 +483,6 @@ Rails.application.routes.draw do
           post :resend_confirmation
         end
       end
-      resources :cluster_admins, only: [:new, :create]
       resources :pupils, only: [:new, :create, :edit, :update]
 
       resources :consent_documents
@@ -476,14 +517,20 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :mailer_previews, only: [:index]
-    resources :component_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
+
+    get 'chart-preview', to: 'chart_previews#show'
 
     concerns :issueable
     resources :funders
     resources :users do
+      get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
+      get 'disable', to: 'users#disable'
+      get 'enable', to: 'users#enable'
+      get 'mailchimp_redirect', to: 'users#mailchimp_redirect'
+
       scope module: :users do
         resource :confirmation, only: [:create], controller: 'confirmation'
       end
@@ -499,6 +546,19 @@ Rails.application.routes.draw do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]
       resources :report_groups, except: [:show]
+    end
+
+    concern :publishable do
+      member do
+        put :publish
+        put :hide
+      end
+    end
+
+    namespace :cms do
+      resources :categories, except: [:show], concerns: [:publishable]
+      resources :pages, except: [:show], concerns: [:publishable]
+      resources :sections, except: [:show], concerns: [:publishable]
     end
 
     resources :case_studies
@@ -533,8 +593,6 @@ Rails.application.routes.draw do
           end
         end
         resource :users, only: [:show] do
-          get 'lock', to: 'users#lock'
-          get 'unlock', to: 'users#unlock'
           get 'lock_all', to: 'users#lock_all'
         end
         resource :partners, only: [:show, :update]
@@ -579,6 +637,7 @@ Rails.application.routes.draw do
     resources :programme_types do
       scope module: :programme_types do
         resource :activity_types, only: [:show, :update]
+        resource :todos, only: [:edit, :update]
         resources :programmes, only: [:index, :create]
       end
     end
@@ -623,6 +682,8 @@ Rails.application.routes.draw do
         concerns :issueable
       end
     end
+    resources :testimonials
+
 
     resource :content_generation_run, controller: :content_generation_run
     resources :school_onboardings, path: 'school_setup', only: [:new, :create, :index, :edit, :update, :destroy] do
@@ -654,6 +715,7 @@ Rails.application.routes.draw do
       get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
       get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
+      resources :mailchimp_status, only: [:index]
       resources :recent_audits, only: [:index]
       resources :tariff_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
@@ -666,12 +728,18 @@ Rails.application.routes.draw do
       resources :activity_types, only: [:index, :show]
       resources :dcc_status, only: [:index]
       resources :solar_panels, only: [:index]
-      resources :engaged_schools, only: [:index]
+      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
       resources :community_use, only: [:index]
       resources :intervention_types, only: [:index, :show]
       resources :missing_alert_contacts, only: [:index]
       resources :work_allocation, only: [:index]
       resources :user_logins, only: [:index]
+      resources :meter_loading_reports, only: :index
+      resources :engaged_groups, only: [:index]
+      resources :heating_types, only: [:index]
+      resources :manual_reads, only: [:index]
+      resources :perse_meter, only: [:index]
+      resources :baseload_anomaly, only: [:index]
       resource :unvalidated_readings, only: [:show]
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -704,7 +772,11 @@ Rails.application.routes.draw do
         resource :partners, only: [:show, :update]
         resources :meter_reviews
         resources :consent_requests
-        resources :bill_requests
+        resources :bill_requests do
+          collection do
+            post :clear
+          end
+        end
         resource :target_data, only: :show
       end
       member do
@@ -722,7 +794,15 @@ Rails.application.routes.draw do
     authenticate :user, ->(user) { user.admin? } do
       mount GoodJob::Engine => 'good_job'
       mount Flipper::UI.app(Flipper) => 'flipper', as: :flipper
+      if Rails.env.test?
+        get 'components', to: 'component_previews#index'
+      else
+        mount Lookbook::Engine, as: :components, at: 'components'
+      end
     end
+
+    resources :local_distribution_zones, except: [:destroy]
+    resources :secr_co2_equivalences, except: [:destroy, :show]
   end # Admin name space
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
@@ -732,9 +812,8 @@ Rails.application.routes.draw do
     resources :schools, only: :show do
       get :analysis, to: 'analysis#index'
       get 'analysis/:energy/:presentation(/:secondary_presentation)', to: 'analysis#show', as: :analysis_tab
-      get 'public-displays', to: 'public_displays#index'
-      get 'public-displays/:fuel_type/equivalences', to: 'public_displays#equivalences', as: :public_displays_equivalences
-      get 'public-displays/:fuel_type/charts/:chart_type', to: 'public_displays#charts', as: :public_displays_charts
+      get 'digital-signage/:fuel_type/equivalences', to: 'digital_signage#equivalences', as: :digital_signage_equivalences
+      get 'digital-signage/:fuel_type/charts/:chart_type', to: 'digital_signage#charts', as: :digital_signage_charts
     end
   end
 
@@ -768,4 +847,5 @@ Rails.application.routes.draw do
   match "/:code", to: "errors#show", via: :all, constraints: {
     code: /#{ErrorsController::CODES.join("|")}/
   }
+
 end

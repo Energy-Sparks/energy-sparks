@@ -1,0 +1,18 @@
+<table class="table table-condensed table-sorted" data-order='[[0, "asc"]]'>
+  <thead>
+    <tr>
+        <% columns.each do |column| %>
+          <%= content_tag(:th, column.name, data: column.html_data) %>
+        <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% rows.find_each do |row| %>
+        <tr>
+        <% columns.each do |column| %>
+            <td><%= column.td(row) %></td>
+        <% end %>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

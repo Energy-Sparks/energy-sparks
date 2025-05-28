@@ -1,9 +1,17 @@
-<%= component 'chart', chart_type: one_year_breakdown_chart, analysis_controls: true, school: school, chart_config: create_chart_config(school, one_year_breakdown_chart, mpan_mprn) do |c| %>
+<%= render ChartComponent.new(chart_type: one_year_breakdown_chart,
+                              school: school,
+                              chart_config: create_chart_config(school, one_year_breakdown_chart, mpan_mprn)) do |c| %>
   <% c.with_title { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_title", meter: label) } %>
-  <% c.with_subtitle { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html", end_date: analysis_dates.end_date.to_fs(:es_short)) } %>
+  <% c.with_subtitle do
+       advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html",
+                end_date: analysis_dates.end_date.to_fs(:es_short))
+     end %>
 <% end %>
 
-<%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: school, fuel_type: fuel_type %>
+<%= render MeterCostsTableComponent.new(monthly_costs: monthly_costs,
+                                        change_in_costs: change_in_costs,
+                                        school: school,
+                                        fuel_type: fuel_type) %>
 
 <%= render 'agreed_capacity_notice' if @agreed_capacity %>
 
@@ -15,8 +23,18 @@
 <% end %>
 
 <% if analysis_dates.months_of_data > 23 %>
-  <%= component 'chart', chart_type: :electricity_cost_comparison_last_2_years_accounting, analysis_controls: true, school: school, chart_config: create_chart_config(school, :electricity_cost_comparison_last_2_years_accounting, mpan_mprn) do |c| %>
-    <% c.with_title { advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.meter_title', meter: label) } %>
-    <% c.with_subtitle { advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.subtitle_html', end_date: analysis_dates.end_date.to_fs(:es_short)) } %>
+  <%= render ChartComponent.new(
+        chart_type: :electricity_cost_comparison_last_2_years_accounting,
+        analysis_controls: true,
+        school: school,
+        chart_config: create_chart_config(school, :electricity_cost_comparison_last_2_years_accounting, mpan_mprn)
+      ) do |c| %>
+    <% c.with_title do
+         advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.meter_title', meter: label)
+       end %>
+    <% c.with_subtitle do
+         advice_t('electricity_costs.charts.cost_comparison_last_2_years_accounting.subtitle_html',
+                  end_date: analysis_dates.fixed_academic_year_end.to_fs(:es_short))
+       end %>
   <% end %>
 <% end %>

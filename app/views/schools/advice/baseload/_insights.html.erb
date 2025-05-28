@@ -1,4 +1,7 @@
-  <%= render 'what_is_baseload', school: @school %>
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
+  <%= render 'what_is_baseload', school: @school,
+                                 saving_through_1_kw_reduction: @service.saving_through_1_kw_reduction_in_baseload %>
   <%= render 'current_baseload', school: @school, analysis_dates: @analysis_dates,
-  current_baseload: @current_baseload, dashboard_alerts: @dashboard_alerts %>
-  <%= render 'comparison', school: @school, benchmarked_baseload: @benchmarked_baseload %>
+                                 current_baseload: @service.current_baseload, dashboard_alerts: @dashboard_alerts %>
+  <%= render 'comparison', school: @school, benchmarked_baseload: @service.benchmark_baseload %>
+<% end %>

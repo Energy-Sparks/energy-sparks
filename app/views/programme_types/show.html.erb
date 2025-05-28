@@ -1,95 +1,134 @@
-<% content_for :page_title do %>
-  <%= @programme_type.title %>
-<% end %>
+<% cache_if current_user.nil?, [@programme_type, I18n.locale], expires_in: 1.hour do %>
+  <% content_for :page_title do %>
+    <%= @programme_type.title %>
+  <% end %>
 
-<div class="row padded-row">
-  <div class="col-md-3">
-    <%= render 'programme_types/image', programme_type: @programme_type, css_class: "" %>
+  <div class="row padded-row">
+    <div class="col-md-3">
+      <%= render 'programme_types/image', programme_type: @programme_type, css_class: '' %>
+    </div>
+    <div class="col-md-6">
+      <h2><%= @programme_type.title %></h2>
+      <p><%= @programme_type.short_description %></p>
+      <% if Flipper.enabled?(:todos) %>
+        <p><%= render 'intention', programme_type: @programme_type %></p>
+      <% end %>
+      <p><%= t('programme_types.cards.bonus_points_html',
+               bonus_score: tag.span(@programme_type.bonus_score, class: 'badge badge-success')) %></p>
+    </div>
+    <div class="col-md-3">
+      <%= link_to t('programme_types.show.view_all_programmes'), programme_types_path,
+                  class: 'btn btn-secondary float-right' %>
+    </div>
   </div>
-  <div class="col-md-6">
-    <h2><%= @programme_type.title %></h2>
-    <p><%= @programme_type.short_description %></p>
-    <p><%= t('programme_types.cards.bonus_points_html', bonus_score: tag.span(@programme_type.bonus_score, class: 'badge badge-success')) %></p>
-  </div>
-  <div class="col-md-3">
-    <%= link_to t('programme_types.show.view_all_programmes'), programme_types_path, class: 'btn btn-secondary float-right' %>
-  </div>
-</div>
 
-<div class="row padded-row">
-  <div class="col-md-9">
-    <h3><%= t('programme_types.show.overview') %></h3>
-    <p><%= @programme_type.description %></p>
+  <div class="row padded-row">
+    <div class="col-md-9">
+      <h3><%= t('programme_types.show.overview') %></h3>
+      <p><%= @programme_type.description %></p>
+    </div>
+    <div class="col-md-3 text-right programme-type-download-links" data-event-value="<%= @programme_type.id %>">
+      <% if @programme_type.document_link.present? %>
+        <%= link_to @programme_type.document_link, class: 'btn btn-lg', target: '_blank', rel: 'noopener' do %>
+          <%= t('programme_types.show.download') %> <%= fa_icon('download') %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
-  <div class="col-md-3 text-center programme-type-download-links" data-event-value="<%= @programme_type.id %>">
-    <% if @programme_type.document_link.present? %>
-      <%= link_to @programme_type.document_link, class: "btn btn-lg", target: '_blank' do %>
-        <%= t('programme_types.show.download') %> <%= fa_icon("download") %>
+
+  <% if current_user.nil? %>
+    <%= render 'prompt_login', programme_type: @programme_type %>
+  <% end %>
+
+  <% if Flipper.enabled?(:todos, current_user) %>
+    <% programme = @programme_type.programme_for_school(current_user_school) if current_user_school %>
+
+    <% if current_user_school && !programme && can?(:start_programme, current_user_school) %>
+      <%= render 'programme_types/prompts/prompt', programme_type: @programme_type, school: current_user_school %>
+    <% elsif programme&.completed? %>
+      <%= render 'programme_types/prompts/completed', programme: programme %>
+    <% elsif programme&.started? %>
+      <%= render 'programme_types/prompts/started', programme: programme %>
+    <% end %>
+
+    <%= render 'shared/todos/list',
+               assignable: @programme_type,
+               completable: programme,
+               task_type: 'ActivityType',
+               label: t('common.labels.pupil_led_activities') %>
+
+    <%= render 'shared/todos/list',
+               assignable: @programme_type,
+               completable: programme,
+               task_type: 'InterventionType',
+               label: t('common.labels.energy_saving_actions') %>
+  <% end %>
+
+  <% if !Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_old, current_user) %>
+    <%= render TogglerDropdownComponent.new(
+          title: 'Deprecated',
+          hide: Flipper.enabled?(:todos_old, current_user)
+        ) do %>
+
+      <% if current_user_school && !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>
+        <%= render 'prompt', programme_type: @programme_type, school: current_user_school %>
+      <% end %>
+
+      <% if @user_progress.completed?(@programme_type) %>
+        <%= render 'completed', programme_type: @programme_type, school: current_user_school %>
+      <% elsif @user_progress.enrolled?(@programme_type) %>
+        <%= render 'started', programme_type: @programme_type, school: current_user_school %>
+      <% end %>
+      <% if @user_progress.in_progress?(@programme_type) %>
+        <h3><%= t('programme_types.show.current_progress') %></h3>
+      <% else %>
+        <h3><%= t('programme_types.show.activities') %></h3>
+      <% end %>
+      <% @programme_type.activity_types_by_position.each_with_index do |activity_type, idx| %>
+        <div class="row mt-4">
+          <div class="col-sm-2 text-center align-self-center">
+            <% if @user_progress.enrolled?(@programme_type) %>
+              <% if @user_progress.completed_activity?(@programme_type, activity_type) %>
+                <span class="h4 check"><%= far_icon('check-circle text-success fa-2x') %></span>
+              <% else %>
+                <span class="h4 check"><%= far_icon('circle text-muted fa-2x') %></span>
+              <% end %>
+            <% else %>
+              <span class="h4"><%= idx + 1 %>.</span>
+            <% end %>
+          </div>
+          <div class="col-sm-10">
+            <h4>
+              <% if @user_progress.enrolled?(@programme_type) && @user_progress.completed_activity?(@programme_type, activity_type) %>
+                <%= activity_type.name %>
+              <% else %>
+                <%= link_to activity_type.name, activity_type_path(activity_type) %>
+              <% end %>
+            </h4>
+            <div class="row">
+              <div class="col-sm-2"><%= t('programme_types.show.points') %></div>
+              <div class="col-sm-1">
+                <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
+              </div>
+              <% if @user_progress.completed_activity?(@programme_type, activity_type) %>
+                <div class="col-sm-3">
+                  <%= t('programme_types.show.completed_on') %>
+                </div>
+                <div class="col-sm-6">
+                  <%= link_to nice_dates(@user_progress.completed_activity(@programme_type, activity_type).happened_on),
+                              school_activity_path(current_user_school,
+                                                   @user_progress.completed_activity(@programme_type, activity_type)) %>
+                </div>
+              <% end %>
+
+            </div>
+
+            <div class="col-sm-2">
+            </div>
+
+          </div>
+        </div>
       <% end %>
     <% end %>
-  </div>
-</div>
-
-<% if current_user.nil? %>
-  <%= render 'prompt_login', programme_type: @programme_type %>
-<% end %>
-
-<% if current_user_school && !@user_progress.enrolled?(@programme_type) && can?(:start_programme, current_user_school) %>
-  <%= render 'prompt', programme_type: @programme_type, school: current_user_school %>
-<% end %>
-
-<% if @user_progress.completed?(@programme_type) %>
-  <%= render 'completed', programme_type: @programme_type, school: current_user_school %>
-<% elsif @user_progress.enrolled?(@programme_type) %>
-  <%= render 'started', programme_type: @programme_type, school: current_user_school %>
-<% end %>
-
-<% if @user_progress.in_progress?(@programme_type) %>
-  <h3><%= t('programme_types.show.current_progress') %></h3>
-<% else %>
-  <h3><%= t('programme_types.show.activities') %></h3>
-<% end %>
-
-<% @programme_type.activity_types_by_position.each_with_index do |activity_type, idx| %>
-  <div class="row mt-4">
-    <div class="col-sm-2 text-center align-self-center">
-      <% if @user_progress.enrolled?(@programme_type) %>
-        <% if @user_progress.completed_activity?(@programme_type, activity_type) %>
-          <span class="h4 check"><%= far_icon("check-circle text-success fa-2x") %></span>
-        <% else %>
-          <span class="h4 check"><%= far_icon("circle text-muted fa-2x") %></span>
-        <% end %>
-      <% else %>
-        <span class="h4"><%= idx + 1 %>.</span>
-      <% end %>
-    </div>
-    <div class="col-sm-10">
-      <h4>
-        <% if @user_progress.enrolled?(@programme_type) && @user_progress.completed_activity?(@programme_type, activity_type) %>
-          <%= activity_type.name %>
-        <% else %>
-          <%= link_to activity_type.name, activity_type_path(activity_type) %>
-        <% end %>
-      </h4>
-      <div class="row">
-        <div class="col-sm-2"><%= t('programme_types.show.points') %></div>
-        <div class="col-sm-1">
-          <%= render 'activity_types/activity_type_score', activity_type: activity_type %>
-        </div>
-        <% if @user_progress.completed_activity?(@programme_type, activity_type) %>
-          <div class="col-sm-3">
-            <%= t('programme_types.show.completed_on') %>
-          </div>
-          <div class="col-sm-6">
-            <%= link_to nice_dates(@user_progress.completed_activity(@programme_type, activity_type).happened_on), school_activity_path(current_user_school, @user_progress.completed_activity(@programme_type, activity_type)) %>
-          </div>
-        <% end %>
-
-      </div>
-
-      <div class="col-sm-2">
-      </div>
-
-    </div>
-  </div>
+  <% end %>
 <% end %>

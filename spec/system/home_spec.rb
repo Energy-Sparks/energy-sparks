@@ -1,16 +1,110 @@
 require 'rails_helper'
 
 RSpec.describe 'home', type: :system do
-  it 'has a home page' do
-    visit root_path
-    expect(page.has_content?('Energy Sparks'))
+  describe 'Home page' do
+    context without_feature: :new_home_page do
+      it 'has a home page' do
+        visit root_path
+        expect(page.has_content?('Energy Sparks'))
+      end
+    end
+
+    context with_feature: :new_home_page do
+      context 'with all components available' do
+        include_context 'with blog cache'
+
+        before do
+          create(:testimonial, category: :default)
+          visit root_path
+        end
+
+        it 'renders all the components' do
+          expect(page).to have_css('#hero')
+          expect(page).to have_css('#stats-header')
+          expect(page).to have_css('#stats')
+          expect(page).to have_css('#testimonials')
+          expect(page).to have_css('#features-header')
+          expect(page).to have_css('#features')
+          expect(page).to have_css('#buttons')
+          expect(page).to have_css('#general')
+          expect(page).to have_css('#organisations-header')
+          expect(page).to have_css('#organisations')
+        end
+      end
+
+      context 'without blog cache' do
+        before do
+          visit root_path
+        end
+
+        it 'does not render the blog components' do
+          expect(page).not_to have_css('#blog-header')
+          expect(page).not_to have_css('#blog')
+        end
+      end
+
+      context 'without tesimonials in the :default category' do
+        before do
+          create(:testimonial, category: :audit)
+          visit energy_audits_path
+        end
+
+        it 'does not render the tesimonials component' do
+          expect(page).not_to have_css('#testimonials')
+        end
+      end
+    end
+  end
+
+  describe 'Energy audits page' do
+    context with_feature: :new_audits_page do
+      context 'with all components available' do
+        before do
+          create(:testimonial, category: :audit)
+          visit energy_audits_path
+        end
+
+        it 'renders all the components' do
+          expect(page).to have_css('#hero')
+          expect(page).to have_css('#onsite')
+          expect(page).to have_css('#onsite-prices')
+          expect(page).to have_css('#desktop')
+          expect(page).to have_css('#testimonials')
+        end
+      end
+
+      context 'without tesimonials in the :audit category' do
+        before do
+          create(:testimonial, category: :default)
+          visit energy_audits_path
+        end
+
+        it 'does not render the tesimonials component' do
+          expect(page).not_to have_css('#testimonials')
+        end
+      end
+    end
+  end
+
+  describe 'Education workshops page' do
+    context with_feature: :new_workshops_page do
+      before do
+        visit education_workshops_path
+      end
+
+      it 'renders all the components' do
+        expect(page).to have_css('#hero')
+        expect(page).to have_css('#workshops-header')
+        expect(page).to have_css('#workshops')
+        expect(page).to have_css('#audience')
+        expect(page).to have_css('#details')
+      end
+    end
   end
 
   it 'allows locale switch retaining extra parameters' do
-    ClimateControl.modify FEATURE_FLAG_LOCALE_SWITCHER_BUTTONS: 'true' do
-      visit root_path(foo: :bar)
-      expect(page).to have_link('Cymraeg', href: 'http://cy.example.com/?foo=bar')
-    end
+    visit root_path(foo: :bar)
+    expect(page).to have_link('Cymraeg', href: 'http://cy.example.com/?foo=bar')
   end
 
   context 'with marketing pages' do
@@ -65,7 +159,9 @@ RSpec.describe 'home', type: :system do
 
     it 'links to the marketing page from home page' do
       visit root_path
-      click_on('Find out more')
+      within('header') do
+        click_on('Find out more')
+      end
       expect(page).to have_current_path(find_out_more_campaigns_path)
     end
   end
@@ -117,10 +213,7 @@ RSpec.describe 'home', type: :system do
 
   it 'has a datasets page' do
     visit root_path
-    click_on('About us')
-    within('#about-menu') do
-      click_on('Datasets')
-    end
+    click_on('Datasets')
     expect(page.has_content?('Data used in Energy Sparks'))
   end
 
@@ -129,6 +222,7 @@ RSpec.describe 'home', type: :system do
     let!(:newsletter_2) { create(:newsletter, published_on: Date.parse('02/01/2019')) }
     let!(:newsletter_3) { create(:newsletter, published_on: Date.parse('03/01/2019')) }
     let!(:newsletter_4) { create(:newsletter, published_on: Date.parse('04/01/2019')) }
+    let!(:newsletter_5) { create(:newsletter, published_on: Date.parse('05/01/2019')) }
 
     it 'shows the latest newsletters only' do
       visit root_path
@@ -137,6 +231,7 @@ RSpec.describe 'home', type: :system do
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
+      expect(page).to have_content(newsletter_5.title)
 
       click_on 'More newsletters'
 
@@ -144,6 +239,7 @@ RSpec.describe 'home', type: :system do
       expect(page).to have_content(newsletter_2.title)
       expect(page).to have_content(newsletter_3.title)
       expect(page).to have_content(newsletter_4.title)
+      expect(page).to have_content(newsletter_5.title)
     end
   end
 

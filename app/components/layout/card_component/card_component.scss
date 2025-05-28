@@ -1,0 +1,10 @@
+.layout-card-component {
+  background: none;
+
+  @include media-breakpoint-up(md) {
+    .card-img-top {
+      height: 15vw;
+      object-fit: cover;
+    }
+  }
+}

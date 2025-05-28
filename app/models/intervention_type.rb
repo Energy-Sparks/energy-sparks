@@ -52,6 +52,7 @@ class InterventionType < ApplicationRecord
   has_many :alert_type_rating_intervention_types, dependent: nil
   has_many :alert_type_ratings, through: :alert_type_rating_intervention_types
 
+  # old relationships to be removed when todos feature removed
   has_many :audit_intervention_types, dependent: nil
   has_many :audits, through: :audit_intervention_types
 
@@ -73,11 +74,12 @@ class InterventionType < ApplicationRecord
   scope :custom_last,           -> { order(:custom) }
   scope :between,               ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :not_including,         ->(records = []) { where.not(id: records) }
+  scope :tx_resources,          -> { active.order(:id) }
 
   before_save :copy_searchable_attributes
 
   def actions_for_school(school)
-    observations.for_school(school)
+    observations.visible.for_school(school)
   end
 
   # override default name for this resource in transifex
@@ -85,17 +87,37 @@ class InterventionType < ApplicationRecord
     name
   end
 
-  def self.tx_resources
-    active.order(:id)
-  end
-
   def count_existing_for_academic_year(school, academic_year)
     school.observations.where(intervention_type: self).where(at: academic_year.start_date..academic_year.end_date).count
+  end
+
+  def public_type
+    :action
   end
 
   private
 
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
+  end
+
+  class << self
+    private
+
+    def searchable_filter(show_all: false)
+      if show_all
+        %|"#{table_name}"."active" in ('true', 'false') AND "#{table_name}"."custom" = 'false'|
+      else
+        %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+      end
+    end
+
+    def searchable_body_field
+      'description'
+    end
+
+    def searchable_metadata_fields
+      %w[name summary]
+    end
   end
 end

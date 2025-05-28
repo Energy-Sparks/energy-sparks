@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 describe Charts::MeterSelection do
-  subject(:selection) { described_class.new(school, meter_collection, :electricity) }
+  subject(:selection) { described_class.new(school, aggregate_school_service, :electricity) }
 
   let(:school) { create(:school) }
+
+  let(:aggregate_school_service) do
+    instance_double(AggregateSchoolService, aggregate_school: meter_collection)
+  end
 
   let(:meter_collection) do
     build(:meter_collection, :with_aggregate_meter, fuel_type: :electricity)
@@ -36,7 +40,7 @@ describe Charts::MeterSelection do
     end
 
     context 'with a filter' do
-      subject(:selection) { described_class.new(school, meter_collection, :electricity, filter: :non_heating_only?) }
+      subject(:selection) { described_class.new(school, aggregate_school_service, :electricity, filter: :non_heating_only?) }
 
       it 'applies the filter' do
         allow(meters.first).to receive(:non_heating_only?).and_return(true)
@@ -46,7 +50,7 @@ describe Charts::MeterSelection do
     end
 
     context 'with a fuel type' do
-      subject(:selection) { described_class.new(school, meter_collection, :gas, include_whole_school: false) }
+      subject(:selection) { described_class.new(school, aggregate_school_service, :gas, include_whole_school: false) }
 
       it 'selects the correct meters' do
         expect(selection.meter_selection_options).to be_empty
@@ -69,7 +73,7 @@ describe Charts::MeterSelection do
     end
 
     context 'with window' do
-      subject(:selection) { described_class.new(school, meter_collection, :electricity, date_window: 10) }
+      subject(:selection) { described_class.new(school, aggregate_school_service, :electricity, date_window: 10) }
 
       it 'returns the expected dates' do
         # electricity meters have 30 days by default, the aggregate will have 8 days

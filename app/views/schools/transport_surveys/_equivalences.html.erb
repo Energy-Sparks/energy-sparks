@@ -1,5 +1,5 @@
 <div class="illustration-background">
-  <%= component 'equivalence_carousel', id: 'survey_carousel' do |carousel| %>
+  <%= render Layout::CarouselComponent.new(id: 'survey_carousel', arrows: :bottom) do |carousel| %>
     <% @transport_survey.equivalences.each_with_index do |equivalence, index| %>
       <% carousel.with_equivalence image_name: equivalence[:svg],
                                    classes: "carousel-item #{'active' if index.zero?}" do |e| %>

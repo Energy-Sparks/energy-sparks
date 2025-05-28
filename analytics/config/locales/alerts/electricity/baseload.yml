@@ -1,0 +1,20 @@
+---
+en:
+  analytics:
+    alert_change_in_electricity_baseload_short_term:
+      analysis_description: Recent change in baseload
+      timescale: last week compared with average over last year
+    alert_electricity_baseload_versus_benchmark:
+      summary:
+        high: Your baseload is high, reducing it could save %{saving}pa
+        ok: You are doing well - you are an exemplar school
+      timescale: last year
+    alert_intraweek_baseload_variation:
+      timescale: over the last year
+    alert_seasonal_baseload_variation:
+      timescale: over the last year
+    alert_summer_holiday_refrigeration_analysis:
+      summary:
+        high: You have the potential to save %{saving}pa from more efficient refrigeration
+        ok: Either you don't switch your fridges off over summer or they are very efficient
+      timescale: at least one summer holiday

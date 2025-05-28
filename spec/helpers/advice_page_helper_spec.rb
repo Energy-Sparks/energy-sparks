@@ -45,25 +45,6 @@ describe AdvicePageHelper do
     end
   end
 
-  describe '.chart_start_month_year' do
-    it 'returns month and year' do
-      expect(helper.chart_start_month_year(Date.parse('20210101'))).to eq('December 2019')
-    end
-  end
-
-  describe '.chart_end_month_year' do
-    it 'returns month and year' do
-      expect(helper.chart_end_month_year(Date.parse('20210101'))).to eq('December 2020')
-    end
-  end
-
-  describe '#months_between' do
-    it 'calculates the floored number of months between two dates' do
-      expect(helper.months_between((Date.new(2022, 12, 31) - 2.years), Date.new(2022, 12, 31))).to eq(24)
-      expect(helper.months_between((Date.new(2022, 12, 31) - 2.years + 1.day), Date.new(2022, 12, 31))).to eq(23)
-    end
-  end
-
   describe '.advice_page_path' do
     it 'returns path to insights by default' do
       expect(helper.advice_page_path(school, advice_page)).to end_with("/schools/#{school.slug}/advice/baseload/insights")
@@ -128,13 +109,8 @@ describe AdvicePageHelper do
 
     describe '.dashboard_alert_groups' do
       it 'returns list of groups with alerts' do
-        expect(helper.dashboard_alert_groups(dashboard_alerts)).to eq(%w[change advice])
-      end
-    end
-
-    describe '.dashboard_alerts_for_group' do
-      it 'returns alerts for group' do
-        expect(helper.dashboard_alerts_for_group(dashboard_alerts, 'change')).to eq([dashboard_alert_change])
+        expect(helper.dashboard_alert_groups(dashboard_alerts)).to \
+          eq([['change', [dashboard_alert_change]], ['advice', [dashboard_alert_advice]]])
       end
     end
 

@@ -6,12 +6,7 @@
 
   <%= render 'analysis' %>
 
-  <% if @how_we_analysed_modal %>
-    <%= render(FootnoteModalComponent.new(title: t('advice_pages.how_have_we_analysed_your_data.page_title'),
-                                          modal_id: 'how-have-we-analysed-your-data-footnotes')) do |component| %>
-      <% component.with_body_content do %>
-        <%= render 'schools/advice/how_have_we_analysed_your_data' %>
-      <% end %>
-    <% end %>
+  <% cache [@school.latest_content, @advice_page.fuel_type, I18n.locale], expires_in: 4.hours do %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
   <% end %>
 <% end %>

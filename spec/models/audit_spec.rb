@@ -269,5 +269,42 @@ describe Audit do
         end
       end
     end
+
+    context 'with Todos' do
+      let(:school) { create(:school) }
+      let(:activity_type) { create(:activity_type) }
+      let(:intervention_type) { create(:intervention_type) }
+
+      let(:audit_params) do
+        {
+          title: 'Test title',
+          file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'documents', 'fake-bill.pdf'), 'application/pdf'),
+          published: true,
+          activity_type_todos_attributes: [
+            { task_id: activity_type.id, task_type: 'ActivityType', position: 0, notes: 'Some notes' }
+          ],
+          intervention_type_todos_attributes: [
+            { task_id: intervention_type.id, task_type: 'InterventionType', position: 0, notes: 'Other notes' }
+          ]
+        }
+      end
+
+      context 'when creating an audit' do
+        it 'creates audit with tasks' do
+          audit = school.audits.create!(audit_params)
+
+          expect(audit.activity_type_tasks.first).to eq activity_type
+          expect(audit.intervention_type_tasks.first).to eq intervention_type
+        end
+      end
+    end
+  end
+
+  it_behaves_like 'an assignable' do
+    subject(:assignable) { create(:audit, school:) }
+  end
+
+  it_behaves_like 'a completable' do
+    subject(:completable) { create(:audit, school:) }
   end
 end

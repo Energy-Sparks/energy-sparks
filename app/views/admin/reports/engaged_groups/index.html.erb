@@ -1,0 +1,43 @@
+<%= render 'admin/reports/title', title: 'Engaged Groups' %>
+<p>
+  The table below lists "engaged schools" for each school group. An engaged school has done one of the following since
+  the start of the current academic year (<%= nice_dates(AcademicYear.current.start_date) %>):
+</p>
+<ul>
+  <li>
+    Recorded a pupil activity or adult action, set a target, started a programme, received an audit, recorded some
+    temperatures or run a transport survey
+  </li>
+  <li>
+    <b>OR</b> had at least one school or pupil user login to the application. Users need to log in to use the above
+    features, but some users may log in but not otherwise engage with that functionality, by including logged in visits
+    in our list of engaged schools we can more better track 'silent' users and schools.
+  </li>
+</ul>
+<table id="engaged-groups-table" class="table table-sorted table-sm">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>Group Type</th>
+      <th>Admin</th>
+      <th>Active Schools</th>
+      <th>Engaged Schools</th>
+      <th>Percentage of Engaged Schools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @engaged_groups.each do |school_group| %>
+      <tr>
+        <td><%= link_to school_group.name, admin_reports_engaged_schools_path(school_group_id: school_group.id) %></td>
+        <td><span class="badge badge-pill badge-primary"><%= school_group.group_type.humanize %></span></td>
+        <td><%= school_group.admin_user_name %></td>
+        <td><%= school_group.active_count %></td>
+        <td><%= school_group.engaged_count %></td>
+        <% percentage = school_group.engaged_count.to_f / school_group.active_count %>
+        <td data-order="<%= percentage %>">
+            <%= FormatEnergyUnit.format(:percent, percentage) unless school_group.active_count.zero? %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

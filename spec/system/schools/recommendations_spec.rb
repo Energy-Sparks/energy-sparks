@@ -3,6 +3,8 @@ require 'rails_helper'
 describe 'Recommendations Page', type: :system, include_application_helper: true do
   let(:key_stage_1) { create :key_stage, name: 'KS1'}
   let!(:school) { create :school, name: 'School Name', key_stages: [key_stage_1] }
+  let!(:programme_type) { }
+
   let!(:setup_data) {}
   let(:user) {}
 
@@ -49,16 +51,14 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
   it_behaves_like 'a page with breadcrumbs', ['Schools', 'School Name', 'Recommended activities and actions']
 
   it 'has the title' do
-    within('h1') do
-      expect(page).to have_content('Recommended activities and actions')
-    end
+    expect(page).to have_content('Recommended activities and actions')
   end
 
   it 'has the intro' do
     expect(page).to have_content('Find your next energy saving activity to score points for your school,')
   end
 
-  context 'with prompts' do
+  context 'with prompts', without_feature: :todos do
     context 'programme prompt' do
       let(:programme_type) { create(:programme_type_with_activity_types, bonus_score: 12) }
       let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
@@ -74,7 +74,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
         let(:activity_type) { programme_type.activity_types.first }
         let(:setup_data) { school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now) }
 
-        it_behaves_like 'a join programme prompt', programme: 'Programme A', activity_count: 1
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', task_count: 1
       end
 
       context 'when two programme activities have been completed' do
@@ -84,7 +84,7 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
           end
         end
 
-        it_behaves_like 'a join programme prompt', programme: 'Programme A', activity_count: 2
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', task_count: 2
       end
 
       context 'when all programme activities have been completed' do
@@ -108,6 +108,69 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       let(:setup_data) do
         SiteSettings.create!(audit_activities_bonus_points: 50)
         create(:audit, :with_activity_and_intervention_types, school: school)
+      end
+
+      it_behaves_like 'a rich audit prompt'
+    end
+  end
+
+  context 'with prompts', with_feature: :todos do
+    before do
+      visit school_recommendations_url(school)
+    end
+
+    context 'programme prompt' do
+      let(:programme_type) { create(:programme_type, :with_todos, bonus_score: 12) }
+      let(:setup_data) { create(:programme, programme_type: programme_type, started_on: Time.zone.today, school: school) }
+
+      it_behaves_like 'a complete programme prompt', with_programme: true
+    end
+
+    context 'join programme prompt' do
+      let(:bonus_points) { 14 }
+      let(:programme_type) { create(:programme_type, :with_todos, title: 'Programme A', bonus_score: bonus_points) }
+
+      context 'when one programme activity has been completed' do
+        let(:activity_type) { programme_type.activity_type_tasks.first }
+        let(:setup_data) { school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now) }
+
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', task_count: 1
+      end
+
+      context 'when two programme activities have been completed' do
+        let(:setup_data) do
+          programme_type.activity_type_tasks.first(2).each do |activity_type|
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+          end
+        end
+
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', task_count: 2
+      end
+
+      context 'when all programme tasks have been completed' do
+        let(:setup_data) do
+          programme_type.activity_type_tasks.each do |activity_type|
+            school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
+          end
+          programme_type.intervention_type_tasks.each do |intervention_type|
+            school.observations.intervention.create!(intervention_type: intervention_type, at: Time.zone.now)
+          end
+        end
+
+        it_behaves_like 'a join programme prompt', programme: 'Programme A', completed: true, bonus_points: 14
+
+        context 'when there are no bonus points' do
+          let(:bonus_points) { 0 }
+
+          it_behaves_like 'a join programme prompt', programme: 'Programme A', completed: true, bonus_points: 0
+        end
+      end
+    end
+
+    context 'audit prompt' do
+      let(:setup_data) do
+        SiteSettings.create!(audit_activities_bonus_points: 50)
+        create(:audit, :with_todos, school: school)
       end
 
       it_behaves_like 'a rich audit prompt'

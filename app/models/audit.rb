@@ -20,6 +20,9 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 class Audit < ApplicationRecord
+  include Todos::Assignable
+  include Todos::Completable
+
   belongs_to :school, inverse_of: :audits
   has_one_attached :file
   has_rich_text :description
@@ -40,21 +43,26 @@ class Audit < ApplicationRecord
 
   scope :published, -> { where(published: true) }
   scope :by_date,   -> { order(created_at: :desc) }
+  scope :completable, -> { published }
 
-  def completed_activity_types
+  def assignable
+    self
+  end
+
+  def activity_types_completed
     activity_types.where(id: school.activities.where(happened_on: created_at..).pluck(:activity_type_id))
   end
 
-  def completed_intervention_types
+  def intervention_types_completed
     intervention_types.where(id: school.observations.intervention.where(at: created_at..).pluck(:intervention_type_id))
   end
 
   def activity_types_remaining
-    activity_types - completed_activity_types
+    activity_types - activity_types_completed
   end
 
   def intervention_types_remaining
-    intervention_types - completed_intervention_types
+    intervention_types - intervention_types_completed
   end
 
   def tasks_remaining?
@@ -74,11 +82,33 @@ class Audit < ApplicationRecord
     activities_completed? ? 0 : SiteSettings.current.audit_activities_bonus_points
   end
 
+  ## To be removed when :todos feature removed
   def create_activities_completed_observation!
     return unless SiteSettings.current.audit_activities_bonus_points
     return unless activities_completed?
     return if observations.audit_activities_completed.any? # Only one audit activities completed observation is permitted per audit
 
     self.observations.create!(observation_type: :audit_activities_completed, points: SiteSettings.current.audit_activities_bonus_points)
+  end
+
+  def completed?
+    observations.audit_activities_completed.any?
+  end
+
+  def tasks_completed_on
+    observations.audit_activities_completed.last.at
+  end
+
+  ## NB: using same bonus score and observation as just activities being completed as above!
+  def complete!
+    # I think we should raise here too if the site has no bonus points set
+    return unless SiteSettings.current.audit_activities_bonus_points
+    # There is no flag on audit to say all tasks are completed, apart from observation being present
+    # So halt here if observation is present
+    return if completed?
+    # Are there todos and are they complete?
+    return unless completable?
+
+    self.observations.audit_activities_completed.create!(points: SiteSettings.current.audit_activities_bonus_points)
   end
 end

@@ -9,6 +9,13 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+      day: "tuesday"
     ignore:
-      - dependency-name: "energy-sparks_analytics"
-      - dependency-name: "statsample"
+      # seems like once dependabot has opened a PR for a new minor version it won't do others even if they're security
+      # updates - so ignore new minor versions (they need manual intervention anyway)
+      - dependency-name: "rails"
+        update-types: ["version-update:semver-minor"]
+      # upgrading to bootstrap 5 will be a bigger manual job
+      - dependency-name: "bootstrap"
+        update-types: ["version-update:semver-major"]
+    open-pull-requests-limit: 20 # default 5

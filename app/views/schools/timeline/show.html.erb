@@ -15,13 +15,14 @@
 <% else %>
   <div class="row justify-content-md-center">
     <div class="col col-md-10">
-      <%= component 'timeline',
-                    observations: @observations,
-                    school: @school,
-                    user: current_user,
-                    observation_style: :default,
-                    show_header: false,
-                    show_actions: true %>
+      <%= render TimelineComponent.new(
+            observations: @observations,
+            school: @school,
+            user: current_user,
+            observation_style: :default,
+            show_header: false,
+            show_actions: true
+          ) %>
     </div>
   </div>
 <% end %>

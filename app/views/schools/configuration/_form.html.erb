@@ -38,7 +38,7 @@
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id,
                    options_from_collection_for_select(@scoreboards, 'id', 'name', @school&.scoreboard&.id),
-                   {},
+                   { include_blank: true },
                    { class: 'form-control' } %>
     </div>
   </div>
@@ -75,7 +75,7 @@
                      'title',
                      @school&.solar_pv_tuos_area&.id
                    ),
-                   {},
+                   { include_blank: true },
                    { class: 'form-control' } %>
     </div>
   </div>

@@ -83,7 +83,7 @@ describe 'downloads', type: :system do
       # Make sure the page is a CSV
       header = page.response_headers['Content-Disposition']
       expect(header).to match(/^attachment/)
-      expect(header).to match(/#{filtered_school.name.parameterize}-amr-raw-readings.csv$/)
+      expect(header).to match(/#{filtered_school.name.parameterize}-amr-raw-readings.+\.csv$/)
 
       expect(page.source).to have_content AmrDataFeedReading::CSV_HEADER_DATA_FEED_READING
 

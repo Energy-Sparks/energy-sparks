@@ -2,14 +2,16 @@
 en:
   mailchimp_signups:
     index:
+      follow_up: You will shortly receive an email to confirm your subscription.
+      select_interests: You must select one or more email types to subscribe
       subscription_confirmed: Subscription confirmed
       thank_you_for_subscribing: Thank you for subscribing!
-      your_subscription_has_been_confirmed: Your subscription to our list has been confirmed
+      unable_to_process_subscription: Unable to process Mailchimp newsletter subscription
     mailchimp_form:
       email_address: Email address *
-      please_specify: Please specify
-      school_name: School name (if appropriate)
+      email_preferences: Email preferences
+      school_name: School (or other organisation) name
       subscribe: Subscribe
-      user_name: User name *
+      user_name: Name *
     new:
-      sign_up_to_the_energy_sparks_newsletter: Sign up to the Energy Sparks newsletter
+      sign_up_to_the_energy_sparks_newsletter: Sign up to our newsletter

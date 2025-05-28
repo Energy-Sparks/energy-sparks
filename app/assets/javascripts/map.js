@@ -27,13 +27,21 @@ function fireRequestForJson(mapDiv) {
   });
 
   function onEachFeature(feature, layer) {
-    layer.bindPopup(feature.properties.schoolPopupHtml);
+    // dynamically load the popup content when clicked
+    layer.bindPopup(function(target) {
+      const popup = target.getPopup();
+      fetch('/map/popup?id=' + feature.id).then(response => response.text()).then(
+          function(html) {
+            popup.setContent(html);
+          }
+      );
+      return 'Loading';
+    });
   }
 
   function makeMap() {
-
     // approx centre of full UK map
-    var center = [54.9, -2.1942];
+    var center = [54.90, -3.4936];
 
     // approx area for full UK map
     var maxBounds = [[61, 3], [49, -10]];
@@ -72,30 +80,29 @@ function fireRequestForJson(mapDiv) {
     return map;
   }
 
-  $.when(features).done(function() {
+  var map = makeMap();
 
+  $.when(features).done(function() {
     // Add requested external GeoJSON to map
     var markers = L.geoJSON(features.responseJSON, {
-      onEachFeature: onEachFeature,
-      pointToLayer: function (feature, latlng) {
-        return L.marker(latlng);
-      }
+      onEachFeature: onEachFeature
     });
 
     // apply clustering
     var clusters = L.markerClusterGroup({
+      chunkedLoading: true,
       maxClusterRadius: function(zoom) {
-        return (zoom > 7 ? 0 : 20);
+        if (zoom > 12)
+          return 0;
+        else if (zoom > 9) {
+          return 30;
+        }
+        else {
+          return 40;
+        }
       }
     });
     clusters.addLayers(markers);
-
-    var map = makeMap();
     map.addLayer(clusters);
-
-    // bound the map to the markers, if present
-    if (markers.getBounds().isValid()) {
-      map.fitBounds(markers.getBounds(), {padding: [20,20]});
-    }
   });
 }

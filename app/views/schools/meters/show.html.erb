@@ -10,15 +10,24 @@
 </div>
 
 <div class="mb-2 alert alert-secondary row">
-  <div class="col-md-5">
+  <div>
     <% if @meter.amr_validated_readings.any? %>
       <%= link_to "#{fa_icon('file-download')} #{t('schools.meters.show.download_readings')}".html_safe,
                   school_meter_path(@school, @meter, format: 'csv'), class: 'btn btn-secondary btn-sm' %>
     <% end %>
     <%= link_to t('common.labels.edit'), edit_school_meter_path(@school, @meter), class: 'btn btn-sm btn-primary' %>
-    <% if can?(:report_on, @meter) && @meter.amr_validated_readings.any? %>
-      <%= link_to t('common.labels.report'),
-                  admin_reports_amr_validated_reading_path(@meter),
+    <% if can?(:report_on, @meter) %>
+      <% if @meter.amr_validated_readings.any? %>
+        <%= link_to t('common.labels.report'),
+                    admin_reports_amr_validated_reading_path(@meter),
+                    class: 'btn btn-secondary btn-sm' %>
+      <% end %>
+      <%= link_to t('schools.meters.show.loading_report'),
+                  admin_reports_meter_loading_reports_path(mpxn: @meter.mpan_mprn),
+                  class: 'btn btn-secondary btn-sm' %>
+
+      <%= link_to t('schools.meters.show.data_feed_config_report'),
+                  admin_reports_unvalidated_readings_path({ mpans: { list: @meter.mpan_mprn } }),
                   class: 'btn btn-secondary btn-sm' %>
     <% end %>
     <% if can?(:view_meter_attributes, @meter) %>
@@ -38,8 +47,6 @@
     <% if current_user.admin? %>
       <%= render 'admin/issues/modal', label: t('schools.meters.meter_issues.button_label'), meter: @meter %>
     <% end %>
-  </div>
-  <div class="col-md-7">
     <% if @meter.dcc_meter? %>
       <% if @meter.can_withdraw_consent? && can?(:withdraw_consent, @meter) %>
         <%= link_to t('schools.meters.show.withdraw_consent'),
@@ -56,49 +63,79 @@
                     inventory_school_meter_path(@school, @meter),
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
-      <% if can?(:reload, @meter) %>
-        <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
-                    method: :post, class: 'btn btn-secondary btn-sm' %>
-      <% end %>
       <% if can?(:view_tariff_reports, @meter) %>
         <%= link_to t('schools.meters.show.tariff_report'),
                     smart_meter_tariffs_school_energy_tariffs_path(@school),
                     class: 'btn btn-secondary btn-sm' %>
       <% end %>
     <% end %>
+    <% if can?(:reload, @meter) && (@meter.dcc_meter? || @meter.perse_api) %>
+      <%= link_to 'Reload', reload_school_meter_path(@school, @meter),
+                  method: :post, class: 'btn btn-secondary btn-sm' %>
+    <% end %>
   </div>
 </div>
-
-<div class="row">
-  <div class="col-md-5">
-    <h3><%= t('schools.meters.show.basic_information') %></h3>
+<div>
+  <h3><%= t('schools.meters.show.basic_information') %></h3>
+  <dl class="row">
+    <dt class="col-sm-3">MPAN/MPRN</dt>
+    <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
+    <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>
+    <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.type') %></dt>
+    <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.status') %></dt>
+    <dd class="col-sm-9"><%= @meter.active ? t('common.labels.active') : t('common.labels.inactive') %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.created') %></dt>
+    <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
+    <dt class="col-sm-3"><%= t('common.labels.last_updated') %></dt>
+    <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
+  </dl>
+</div>
+<% if current_user.admin? %>
+  <div>
+    <h3><%= t('schools.meters.show.admin_details') %></h3>
     <dl class="row">
-      <% if current_user.admin? %>
-        <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
-        <dd class="col-sm-9">
-          <% if @meter.data_source %>
-            <%= link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) %>
-          <% else %>
-            <%= t('common.labels.not_set') %>
-          <% end %>
-          </dd>
-      <% end %>
-      <dt class="col-sm-3">MPAN/MPRN</dt>
-      <dd class="col-sm-9"><%= @meter.mpan_mprn %></dd>
-      <dt class="col-sm-3"><%= t('schools.meters.show.serial_number') %></dt>
-      <dd class="col-sm-9"><%= @meter.meter_serial_number %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.type') %></dt>
-      <dd class="col-sm-9"><%= @meter.meter_type.capitalize %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.status') %></dt>
-      <dd class="col-sm-9"><%= @meter.active ? t('common.labels.active') : t('common.labels.inactive') %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.created') %></dt>
-      <dd class="col-sm-9"><%= nice_date_times @meter.created_at %></dd>
-      <dt class="col-sm-3"><%= t('common.labels.last_updated') %></dt>
-      <dd class="col-sm-9"><%= nice_date_times @meter.updated_at %></dd>
+      <dt class="col-sm-3"><%= t('schools.meters.index.meter_system') %></dt>
+      <dd class="col-sm-9"><%= @meter.t_meter_system %></dd>
+
+      <dt class="col-sm-3"><%= t('schools.meters.show.data_source') %></dt>
+      <dd class="col-sm-9">
+        <% if @meter.data_source %>
+          <%= link_to(@meter.data_source.name, admin_data_source_path(@meter.data_source)) %>
+        <% else %>
+          <%= t('common.labels.not_set') %>
+        <% end %>
+        </dd>
+
+      <dt class="col-sm-3"><%= t('schools.meters.index.procurement_route') %></dt>
+      <dd class="col-sm-9">
+        <%= if @meter.procurement_route
+              link_to label_with_wbr(@meter.procurement_route.try(:organisation_name)),
+                      admin_procurement_route_path(@meter.procurement_route)
+            end %>
+      </dd>
+
+      <dt class="col-sm-3"><%= t('schools.meters.index.admin_meter_status') %></dt>
+      <dd class="col-sm-9">
+        <% if @meter.admin_meter_status.nil? && @meter.admin_meter_status_label.present? %>
+          <span data-toggle="tooltip" title="Default <%= @meter.fuel_type.to_s.humanize.downcase %> admin meter status for this school's school group">
+            <%= label_with_wbr(@meter.admin_meter_status_label) %>
+          </span>
+        <% else %>
+          <span><%= label_with_wbr(@meter.admin_meter_status_label) %></span>
+        <% end %>
+      </dd>
+
+      <dt class="col-sm-3"><%= t('schools.meters.index.manual_reads') %></dt>
+      <dd class="col-sm-9"><%= @meter.manual_reads %></dd>
+
+      <dt class="col-sm-3">Gas unit</dt>
+      <dd class="col-sm-9"><%= options_for_gas_unit.to_h(&:reverse)[@meter.gas_unit] %></dd>
     </dl>
   </div>
-  <div class="col-md-7">
-    <% if current_user.admin? %>
+  <% if Meter::MAIN_METER_TYPES.include?(@meter.meter_type.to_sym) %>
+    <div>
       <h3><%= t('schools.meters.show.dcc_information') %></h3>
       <% if @meter.dcc_meter? %>
         <dl class="row">
@@ -124,6 +161,20 @@
           <dd class="col-sm-9"><%= @n3rgy&.available? %></dd>
         </dl>
       <% end %>
-    <% end %>
-  </div>
-</div>
+    </div>
+    <div>
+      <h3>Perse Metering</h3>
+        <dl class="row">
+          <dt class="col-sm-3">Perse API</dt>
+          <dd class="col-sm-9">
+            <%= options_for_perse_api.to_h(&:reverse)[@meter.perse_api] %>
+          </dd>
+          <% config = AmrDataFeedConfig.find_by(identifier: 'perse-half-hourly-api') %>
+          <% if config %>
+            <dt class="col-sm-3">Latest reading</dt>
+            <dd class="col-sm-9"><%= Amr::PerseUpsert.new.latest_reading_date(@meter) || 'None' %></dd>
+          </dl>
+          <% end %>
+    </div>
+  <% end %>
+<% end %>

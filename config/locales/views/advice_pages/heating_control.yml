@@ -20,7 +20,7 @@ en:
         school_day_heating:
           title: Gas usage for heating during the day
         seasonal_control:
-          estimated_savings_html: Your school could reduce its gas usage by %{estimated_savings_kwh} kWh by turning its boiler off in warm weather. For example earlier in the Spring and later in the Autumn. This would save %{estimated_savings_gbp} and %{estimated_savings_co2} kg CO2 annually.
+          estimated_savings_html: Your school could reduce its gas usage by %{estimated_savings_kwh} kWh by turning its boiler off in warmer weather. For example earlier in the Spring and later in the Autumn. This would save %{estimated_savings_gbp} and %{estimated_savings_co2} kg CO2 annually.
           heating_on_in_warm_weather_days: Last year your school heating was on for %{days} days during warm weather. This is %{adjective}.
           percent_html: This represents %{percent} of your annual heating consumption
           title: Seasonal control
@@ -39,7 +39,7 @@ en:
           title: How gas usage varies during the school day in winter
         heating_on_off_by_week:
           header: You can drill-down to individual days by clicking on the bars on the chart.
-          subtitle_html: This graph shows when the heating and hot water was on between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>, including when the heating was left on in warm weather.
+          subtitle_html: This graph shows when the heating and hot water was on between <span class='start-date'>%{start_date}</span> and <span class='end-date'>%{end_date}</span>, including when the heating was left on in warmer weather.
           title: Seasonal control chart
       holiday_notice: Try to turn off your heating and hot water during holiday periods. If school premises are used by the community during holidays, then adjust your timings to match just those days and times when the school needs to be heated
       insights:
@@ -57,6 +57,16 @@ en:
         view_our_analysis_html: <a href="%{href}">View our analysis</a>
         warm_weather:
           title: Leaving the heating on during warm weather
+      not_enough_data:
+        p1: 'When we have additional data for your school we will be able to provide you with detailed analysis which will include:'
+        p1_li1: recommendations for how to adjust your heating timings
+        p1_li2: the seasonal variation in your gas consumption for heating and hot water
+        p1_li3: additional alerts and insights, including when your heating is coming on in warmer weather
+        p2: 'In the meantime you can use the rest of our analysis to help you monitor the gas used for heating and hot water:'
+        p2_li1_html: our <a href="%{gas_recent_changes_analysis_school_advice_path}#compare-recent-days">recent changes page</a> includes a chart that shows when you are using gas during the day, to help identify when your heating is coming on
+        p2_li2_html: the <a href="%{gas_recent_changes_analysis_school_advice_path}#impact-of-temperature">recent changes page</a> shows the impact of temperature on gas consumption, to help you identify if the heating timings are correct
+        p2_li3_html: our <a href="gas_out_of_hours_analysis_school_advice_path#usage_by_day_of_weekout">out of school hours analysis</a> shows when you are consuming gas over the school week, weekend and evening to help you adjust your heating timings
+        title: We have limited gas data for your school
       page_title: Heating control analysis
       tables:
         columns:

@@ -29,28 +29,6 @@ module AdvicePageHelper
     FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
-  def chart_start_month_year(date = Time.zone.today)
-    month_year(date.last_month - 1.year)
-  end
-
-  def chart_end_month_year(date = Time.zone.today)
-    month_year(date.last_month)
-  end
-
-  def month_year(date)
-    I18n.t('date.month_names')[date.month] + ' ' + date.year.to_s
-  end
-
-  def partial_year_note(year, amr_start_date, amr_end_date)
-    if year == amr_start_date.year && (amr_start_date > Date.new(year, 1, 1))
-      I18n.t('advice_pages.tables.labels.partial')
-    elsif year == amr_end_date.year && amr_end_date < Date.new(year, 12, 31)
-      I18n.t('advice_pages.tables.labels.partial')
-    else
-      ''
-    end
-  end
-
   def advice_baseload_high?(estimated_savings_vs_benchmark)
     estimated_savings_vs_benchmark > 0.0
   end
@@ -74,23 +52,6 @@ module AdvicePageHelper
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
     (current - base) / base
-  end
-
-  def recent_data?(end_date)
-    end_date > (Time.zone.today - 30.days)
-  end
-
-  def one_years_data?(start_date, end_date)
-    (end_date - 364) >= start_date
-  end
-
-  def months_analysed(start_date, end_date)
-    months = months_between(start_date, end_date)
-    months > 12 ? 12 : months
-  end
-
-  def months_between(start_date, end_date)
-    ((end_date - start_date).to_f / 365 * 12).floor
   end
 
   def annual_usage_breakdown_totals_for(annual_usage_breakdown, unit = :kwh)
@@ -183,13 +144,12 @@ module AdvicePageHelper
     AlertType.where(class_name: class_names)
   end
 
-  # alert type groups have a specific order here
   def dashboard_alert_groups(dashboard_alerts)
-    %w[priority change benchmarking advice].select { |group| dashboard_alerts_for_group(dashboard_alerts, group).any? }
-  end
-
-  def dashboard_alerts_for_group(dashboard_alerts, group)
-    dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
+    # alert type groups have a specific order here
+    %w[priority change benchmarking advice].filter_map do |group|
+      alerts = dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
+      [group, alerts] if alerts.any?
+    end
   end
 
   def t_weekday(week_day)

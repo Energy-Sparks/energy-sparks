@@ -76,7 +76,9 @@ RSpec.describe 'scoreboards', :scoreboards do
 
     it 'doesn\'t list the scoreboard' do
       visit schools_path
-      click_on 'Scoreboards'
+      within '#our-schools' do
+        click_on 'Scoreboards'
+      end
       expect(page).to have_content('Super scoreboard')
       expect(page).to have_no_content('Private scoreboard')
     end

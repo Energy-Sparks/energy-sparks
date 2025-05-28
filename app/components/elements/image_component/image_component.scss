@@ -1,0 +1,7 @@
+img.elements-image-component {
+  &.fit {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}

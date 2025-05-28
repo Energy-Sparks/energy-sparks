@@ -17,12 +17,12 @@
 #  default_procurement_route_gas_id         :bigint(8)
 #  default_procurement_route_solar_pv_id    :bigint(8)
 #  default_scoreboard_id                    :bigint(8)
-#  default_solar_pv_tuos_area_id            :bigint(8)
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
+#  mailchimp_fields_changed_at              :datetime
 #  name                                     :string           not null
 #  public                                   :boolean          default(TRUE)
 #  slug                                     :string           not null
@@ -30,16 +30,14 @@
 #
 # Indexes
 #
-#  index_school_groups_on_default_issues_admin_user_id   (default_issues_admin_user_id)
-#  index_school_groups_on_default_scoreboard_id          (default_scoreboard_id)
-#  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
-#  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
+#  index_school_groups_on_default_issues_admin_user_id  (default_issues_admin_user_id)
+#  index_school_groups_on_default_scoreboard_id         (default_scoreboard_id)
+#  index_school_groups_on_default_template_calendar_id  (default_template_calendar_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_issues_admin_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (default_scoreboard_id => scoreboards.id)
-#  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
 #
 
@@ -48,6 +46,9 @@ class SchoolGroup < ApplicationRecord
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include Scorable
+  include MailchimpUpdateable
+
+  watch_mailchimp_fields :name
 
   friendly_id :name, use: %i[finders slugged history]
 
@@ -66,7 +67,6 @@ class SchoolGroup < ApplicationRecord
   has_many :school_issues, through: :schools, source: :issues
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
-  belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :default_weather_station, class_name: 'WeatherStation',
                                        optional: true
@@ -97,8 +97,8 @@ class SchoolGroup < ApplicationRecord
   scope :is_public, -> { where(public: true) }
 
   scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  # TODO
-  scope :by_keyword, ->(keyword) { where('name LIKE ?', "%#{keyword}%").order(:name)}
+  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
+  scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
 
   validates :name, presence: true
 

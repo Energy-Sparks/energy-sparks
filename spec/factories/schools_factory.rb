@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :school do
-    sequence(:urn)
+    sequence(:urn, 10_000)
     sequence(:number_of_pupils)
     sequence(:name, 'School AAAAA1')
     school_type     { :primary }
@@ -27,6 +27,18 @@ FactoryBot.define do
     trait :with_school_group do
       after(:create) do |school, _evaluator|
         school.update(school_group: create(:school_group))
+      end
+    end
+
+    trait :with_scoreboard do
+      after(:create) do |school, _evaluator|
+        school.update(scoreboard: create(:scoreboard))
+      end
+    end
+
+    trait :with_local_authority do
+      after(:create) do |school, _evaluator|
+        school.update(local_authority_area: create(:local_authority_area))
       end
     end
 
@@ -83,6 +95,25 @@ FactoryBot.define do
       end
     end
 
+    trait :with_meter_dates do
+      transient do
+        fuel_type { :electricity }
+        reading_start_date { 1.year.ago }
+        reading_end_date { Time.zone.today }
+      end
+
+      after(:create) do |school, evaluator|
+        school.configuration.update!(
+          aggregate_meter_dates: {
+            evaluator.fuel_type => {
+              start_date: evaluator.reading_start_date.iso8601,
+              end_date: evaluator.reading_end_date.iso8601
+            }
+          }
+        )
+      end
+    end
+
     # Creates a school with a school group, calendar, fuel configuration, single meter
     # and tariffs for that meter. Should be sufficient for passing to the analytics for
     # most analysis.
@@ -99,6 +130,7 @@ FactoryBot.define do
       end
       with_school_group
       with_fuel_configuration
+      with_meter_dates
       after(:create) do |school, evaluator|
         if evaluator.calendar
           school.update(calendar: evaluator.calendar)

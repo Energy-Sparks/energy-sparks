@@ -1,9 +1,9 @@
-<div id="<%= id %>" class="pupil-explore-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <div class="h-100 mb-2 rounded bg-light %>">
     <div class="row pt-4 pl-4 pr-4">
       <div class="col-2 d-none d-md-block">
         <h4>
-          <%= component 'icon', name: icon, fuel_type: fuel_type, icon_set: icon_set, style: :circle, size: 'f4' %>
+          <%= render IconComponent.new(name: icon, fuel_type: fuel_type, icon_set: icon_set, style: :circle, size: 'f4') %>
         </h4>
       </div>
       <div class="col-12 col-xl-10 d-md-flex flex-wrap justify-items-center align-items-center">
@@ -18,4 +18,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

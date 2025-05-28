@@ -1,0 +1,28 @@
+<%= tag.div id: id, class: classes do %>
+  <% if tags.any? %>
+    <div class='pb-2'>
+      <% tags.each do |tag| %>
+        <%= tag %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= header %>
+  <%= price %>
+  <% if date || author %>
+    <div class='pb-3 small text-complement'>
+      <%= date if date %>
+      <% if author %>
+        <%= t('common.author_html', author: author.to_s.html_safe) %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= description %>
+  <div>
+    <% buttons.each do |button| %>
+      <%= button %>
+    <% end %>
+  </div>
+  <% links.each do |link| %>
+    <%= link %>
+  <% end %>
+<% end %>

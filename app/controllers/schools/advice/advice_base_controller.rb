@@ -17,15 +17,14 @@ module Schools
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
       before_action :set_page_title, only: [:insights, :analysis, :learn_more]
-      before_action :set_counts, only: [:insights, :analysis, :learn_more]
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
+      before_action :set_analysis_dates, only: %i[insights analysis]
       before_action :check_can_run_analysis, only: [:insights, :analysis]
       before_action :set_data_warning, only: [:insights, :analysis]
       before_action :set_page_subtitle, only: [:insights, :analysis]
       before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
       before_action :set_insights_next_steps, only: [:insights]
-      before_action :set_economic_tariffs_change_caveats, only: [:insights, :analysis]
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
@@ -64,10 +63,6 @@ module Schools
         @latest_dashboard_alerts ||= @school.latest_dashboard_alerts.management_dashboard
       end
 
-      def set_economic_tariffs_change_caveats
-        @economic_tariffs_change_caveats = nil
-      end
-
       def set_insights_next_steps
         @advice_page_insights_next_steps = if_exists('insights.next_steps')
       end
@@ -87,11 +82,6 @@ module Schools
         ]
       end
 
-      def set_counts
-        @priority_count = @school.latest_management_priorities.count
-        @alert_count = @school.latest_dashboard_alerts.management_dashboard.count
-      end
-
       def if_exists(key)
         full_key = "advice_pages.#{@advice_page.key}.#{key}"
         if I18n.exists?(full_key, I18n.locale)
@@ -100,11 +90,7 @@ module Schools
       end
 
       def set_data_warning
-        @data_warning = !recent_data?(advice_page_end_date)
-      end
-
-      def advice_page_end_date
-        @advice_page_end_date ||= AggregateSchoolService.analysis_date(aggregate_school, advice_page_fuel_type)
+        @data_warning = !@analysis_dates.recent_data
       end
 
       def set_tab_name
@@ -140,51 +126,8 @@ module Schools
         @advice_page.school_has_fuel_type?(@school)
       end
 
-      def start_end_dates
-        {
-          earliest_reading:  analysis_start_date,
-          last_reading:  analysis_end_date,
-        }
-      end
-
       def advice_page_fuel_type
         @advice_page.fuel_type&.to_sym
-      end
-
-      def analysis_start_date
-        aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.start_date
-      end
-
-      def analysis_end_date
-        aggregate_school.aggregate_meter(advice_page_fuel_type).amr_data.end_date
-      end
-
-      # for charts that use the last full week
-      def last_full_week_start_date(end_date)
-        end_date.prev_year.end_of_week
-      end
-
-      # for charts that use the last full week
-      # end of the week is Saturday
-      def last_full_week_end_date(end_date)
-        end_date.end_of_week - 1
-      end
-
-      def analysis_dates
-        start_date = analysis_start_date
-        end_date = analysis_end_date
-
-        ActiveSupport::OrderedOptions.new.merge(
-          start_date: start_date,
-          end_date: end_date,
-          one_year_before_end: end_date - 1.year,
-          one_years_data?: one_years_data?(start_date, end_date),
-          last_full_week_start_date: last_full_week_start_date(end_date),
-          last_full_week_end_date: last_full_week_end_date(end_date),
-          recent_data: recent_data?(end_date),
-          months_of_data: months_between(start_date, end_date),
-          months_analysed: months_analysed(start_date, end_date)
-        )
       end
 
       # Should return an object that conforms to interface described
@@ -212,7 +155,7 @@ module Schools
       end
 
       def set_analysis_dates
-        @analysis_dates = analysis_dates
+        @analysis_dates = Schools::AnalysisDates.new(@school, advice_page_fuel_type)
       end
     end
   end

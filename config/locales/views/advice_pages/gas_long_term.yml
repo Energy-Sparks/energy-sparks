@@ -34,15 +34,16 @@ en:
           title: Annual gas use comparison with other schools
         gas_by_month_year:
           explanation: This chart can be a quick way to spot whether changes to heating and hot water control are having an impact on your gas consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
-          subtitle_html: This chart shows the monthly gas consumption from %{start_date} to <span class='end-date'>%{end_date}</span> for <span class='meter'>%{meter}</span>
-          subtitle_two_years_html: This chart shows the difference in gas consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months for <span class='meter'>%{meter}</span>
+          subtitle_html: This chart shows the monthly gas consumption from <span class='start-date'>%{start_date}</span> to <span class='end-date'>%{end_date}</span> for <span class='meter'>%{meter}</span>
+          subtitle_two_years_html: This chart shows the difference in gas consumption for the academic year ending on <span class='end-date'>%{end_date}</span> and the previous academic year for <span class='meter'>%{meter}</span>
           title: Monthly gas consumption comparison
-          title_two_years: Monthly gas consumption comparison over the last two years
+          title_two_years: Monthly gas consumption comparison over the last few academic years
         gas_longterm_trend:
           explanation: Reducing gas consumption can be achieved by turning your school's thermostat down, reducing out of hours usage, insulating your buildings or installing a new more efficient gas boiler.
           subtitle_html: This chart, and the table below give the breakdown of gas consumption between school day open and closed, holidays and weekends for each full year of data we have for <span class='meter'>%{meter}</span>
           temp_compensation: There is no temperature compensation applied to this chart. You should expect the amount of gas used each year to vary and broadly follow degree days - the colder it is outside, the more gas should be used in the school.
           title: Change in gas consumption over the last few years
+          title_academic_year: Change in gas consumption over the last few academic years
         group_by_week_gas:
           explanation_html: |-
             <p>

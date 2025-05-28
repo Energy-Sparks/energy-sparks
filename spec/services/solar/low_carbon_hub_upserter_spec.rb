@@ -47,10 +47,11 @@ module Solar
     let(:expected_exported_solar_pv_mpan) { "6#{mpan}".to_i }
 
     context 'with no existing meters' do
-      it 'creates new pseudo meters' do
+      it 'creates new inactive pseudo meters' do
         expect do
           LowCarbonHubUpserter.new(installation: low_carbon_hub_installation, readings: readings, import_log: import_log).perform
         end.to change(Meter, :count).by(3)
+        expect(low_carbon_hub_installation.meters.inactive.count).to be(3)
         expect(low_carbon_hub_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
         expect(low_carbon_hub_installation.meters.solar_pv.first.name).to eq('Solar pv')
         expect(low_carbon_hub_installation.meters.electricity.last.mpan_mprn).to eq(expected_electricity_mpan)
@@ -83,10 +84,11 @@ module Solar
       let!(:existing_pseudo_meter) { create(:electricity_meter, low_carbon_hub_installation: low_carbon_hub_installation, name: 'Existing meter', mpan_mprn: expected_electricity_mpan, school: low_carbon_hub_installation.school, pseudo: true)}
 
       context 'with all fields' do
-        it 'creates new pseudo meters where required' do
+        it 'creates new inactive pseudo meters where required' do
           expect do
             LowCarbonHubUpserter.new(installation: low_carbon_hub_installation, readings: readings, import_log: import_log).perform
           end.to change(Meter, :count).by(2)
+          expect(low_carbon_hub_installation.meters.inactive.count).to be(2)
           expect(low_carbon_hub_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
           expect(low_carbon_hub_installation.meters.solar_pv.first.name).to eq('Solar pv')
           expect(low_carbon_hub_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)
@@ -112,10 +114,11 @@ module Solar
       context 'with no installation or pseudo flag' do
         let!(:existing_pseudo_meter) { create(:electricity_meter, low_carbon_hub_installation: nil, name: 'Existing meter', mpan_mprn: expected_electricity_mpan, school: low_carbon_hub_installation.school, pseudo: false)}
 
-        it 'creates new pseudo meters where required' do
+        it 'creates new inactive pseudo meters where required' do
           expect do
             LowCarbonHubUpserter.new(installation: low_carbon_hub_installation, readings: readings, import_log: import_log).perform
           end.to change(Meter, :count).by(2)
+          expect(low_carbon_hub_installation.meters.inactive.count).to be(2)
           expect(low_carbon_hub_installation.meters.solar_pv.first.mpan_mprn).to eq(expected_solar_pv_mpan)
           expect(low_carbon_hub_installation.meters.solar_pv.first.name).to eq('Solar pv')
           expect(low_carbon_hub_installation.meters.exported_solar_pv.last.mpan_mprn).to eq(expected_exported_solar_pv_mpan)

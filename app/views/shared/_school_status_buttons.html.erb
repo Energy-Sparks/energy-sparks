@@ -29,12 +29,11 @@
     <%= link_to 'Data visible', school_data_enabled_path(school), class: 'badge badge-pill badge-success',
                                                                   method: :delete, data: { confirm: 'Are you sure?' } %>
   <% else %>
-    <%= link_to 'Data visible', school_data_enabled_path(school), class: 'badge badge-pill badge-danger',
-                                                                  method: :post, data: { confirm: 'Are you sure?' } %>
+    <%= link_to 'Data visible', school_review_path(school), class: 'badge badge-pill badge-danger' %>
   <% end %>
 <% end %>
 
-<% if can?(:regenerate_school_data, school) %>
+<% if school.process_data? && can?(:regenerate_school_data, school) %>
   <%= link_to school_batch_runs_path(school), title: 'Regenerate', class: 'badge badge-pill badge-warning' do %>
     <%= fa_icon('arrows-rotate', 'data-toggle': 'tooltip', title: 'Regenerate') %>
   <% end %>

@@ -1,14 +1,6 @@
 <div class="row justify-content-md-center">
   <div class="col col-md-10 col-lg-8">
-
-    <% if @list %>
-      <h1><%= t('mailchimp_signups.new.sign_up_to_the_energy_sparks_newsletter') %></h1>
-      <%= render 'mailchimp_form', list: @list, config: @config %>
-    <% else %>
-      <p>
-        <%= link_to t('common.labels.home'), root_path, class: 'btn btn-small btn-primary' %>
-      </p>
-    <% end %>
-
+    <h1><%= t('mailchimp_signups.new.sign_up_to_the_energy_sparks_newsletter') %></h1>
+    <%= render 'mailchimp_form', contact: @contact, email_types: @email_types %>
   </div>
 </div>

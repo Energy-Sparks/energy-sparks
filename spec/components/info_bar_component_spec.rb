@@ -7,14 +7,15 @@ RSpec.describe InfoBarComponent, type: :component do
   let(:button_title)  { 'Click me' }
   let(:button_link)   { 'http://www.example.com' }
   let(:icon)          { '<i class="fas fa-school fa-3x"></i>' }
-  let(:status)        { :neutral }
+  let(:status)        { :positive }
   let(:all_params) do
     {
       icon: icon.html_safe,
       title: title,
       buttons: { button_title => button_link },
       classes: 'extra-classes',
-      style: :compact
+      style: :compact,
+      status: status
     }
   end
 
@@ -31,7 +32,7 @@ RSpec.describe InfoBarComponent, type: :component do
   end
 
   it 'renders the right status' do
-    expect(html).to have_css('.neutral')
+    expect(html).to have_css('.positive')
   end
 
   it 'centers the items in the row' do

@@ -1,0 +1,19 @@
+<%= render PageNavComponent.new name: t('categories.nav.title'),
+                                icon: nil, href: support_path,
+                                options: { user: current_user, match_controller: true } do |c| %>
+
+ <% categories.each do |category| %>
+   <% c.with_section name: category.title,
+                     expanded: current_category == category,
+                     icon: category.icon,
+                     classes: 'generic-section',
+                     options: { match_controller: false } do |s| %>
+
+     <% scope = current_user&.admin? ? category.pages : category.pages.published %>
+     <% scope.by_title.each do |page| %>
+       <% s.with_item(name: page.title,
+                      href: category_page_path(page.category, page), classes: 'small generic-item') %>
+     <% end %>
+   <% end %>
+ <% end %>
+<% end %>
