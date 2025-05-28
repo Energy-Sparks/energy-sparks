@@ -21,7 +21,6 @@ RSpec.describe Report::BaseloadAnomaly do
   def assert_result(anomaly, previous_date_average_baseload = nil, current_date_average_baseload = 0.0)
     expect(anomaly.meter).to eq(meter)
     expect(anomaly.reading_date).to eq(reading_date)
-    # FIXME
     expect(anomaly.previous_day_baseload).to be_within(0.0000001).of(previous_date_average_baseload) if previous_date_average_baseload
     expect(anomaly.today_baseload).to be_within(0.0000001).of(current_date_average_baseload)
   end

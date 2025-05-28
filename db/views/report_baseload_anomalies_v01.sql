@@ -57,7 +57,7 @@ WITH unnested_readings_with_index AS (
     JOIN meters m ON amr.meter_id = m.id
     -- the cross join lateral joins the amr_validated_readings to each of their kwh readings
     -- the values are unnested with their index in the original array
-    CROSS JOIN LATERAL unnest(amr.kwh_data_x48) WITH ORDINALITY AS t(val, ordinality)
+    CROSS JOIN LATERAL UNNEST(amr.kwh_data_x48) WITH ORDINALITY AS t(val, ordinality)
   WHERE
     -- include previous day
     amr.reading_date >= CURRENT_DATE - INTERVAL '31 days'
