@@ -92,12 +92,21 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
       it_behaves_like 'a correctly populated users section'
       it_behaves_like 'a correctly populated metering section', admin: true
 
-      it 'has correct admin section' do
+      it 'has admin links for managing school' do
         within('#admin') do
           expect(html).to have_link(I18n.t('manage_school_menu.school_configuration'),
                          href: edit_school_configuration_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.meter_attributes'),
                          href: admin_school_meter_attributes_path(school))
+          expect(html).to have_link(I18n.t('manage_school_menu.batch_reports'),
+                         href: school_reports_path(school))
+          expect(html).to have_link(I18n.t('manage_school_menu.remove_school'),
+                         href: removal_admin_school_path(school))
+        end
+      end
+
+      it 'has admin links for managing related content' do
+        within('#admin') do
           expect(html).to have_link(I18n.t('manage_school_menu.manage_audits'),
                          href: school_audits_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.manage_partners'),
@@ -106,8 +115,6 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
                          href: admin_school_issues_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.batch_reports'),
                          href: school_reports_path(school))
-          expect(html).to have_link(I18n.t('manage_school_menu.remove_school'),
-                         href: removal_admin_school_path(school))
         end
       end
 

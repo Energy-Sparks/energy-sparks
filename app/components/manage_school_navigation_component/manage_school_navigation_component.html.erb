@@ -1,7 +1,7 @@
-<%= component 'page_nav', name: t('advice_pages.nav.overview'),
-                          classes: classes,
-                          icon: nil, href: settings_school_path(school),
-                          options: { user: current_user, match_controller: true } do |c| %>
+<%= render PageNavComponent.new name: t('advice_pages.nav.overview'),
+                                classes: classes,
+                                icon: nil, href: settings_school_path(school),
+                                options: { user: current_user, match_controller: true } do |c| %>
 
   <% c.with_section name: t('components.manage_school_navigation.settings'),
                     icon: 'gear',
