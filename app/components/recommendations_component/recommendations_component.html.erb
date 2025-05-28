@@ -9,7 +9,8 @@
     <% items.first(limit).each_with_index do |item, i| %>
       <div class="card<%= responsive_classes(i) %>">
         <%= link_to item.href do %>
-          <%= image_tag(item.image, class: 'card-img-top img-fluid activity-card-img') %>
+          <% image_link = item.image.is_a?(String) ? item.image : cdn_link_url(item.image) %>
+          <%= image_tag(image_link, class: 'card-img-top img-fluid activity-card-img') %>
         <% end %>
         <div class="card-body">
           <p class="card-text">

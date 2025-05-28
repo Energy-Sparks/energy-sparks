@@ -1,5 +1,4 @@
 class ResourceFilesController < ApplicationController
-  include StorageHelper
   skip_before_action :authenticate_user!
 
   def index
@@ -10,7 +9,8 @@ class ResourceFilesController < ApplicationController
   def download
     resource = ResourceFile.find_by(id: params[:id])
     if resource.present?
-      serve_from_storage(resource.file, params[:serve])
+      disposition = params[:serve] == 'download' ? 'attachment' : 'inline'
+      redirect_to cdn_link_url(resource.file, params: { disposition: disposition })
     else
       route_not_found
     end

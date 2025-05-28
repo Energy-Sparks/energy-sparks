@@ -62,15 +62,18 @@ Rails.application.routes.draw do
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
 
   direct :cdn_link do |model, options|
+    expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
+    asset_host = ENV.fetch('ASSET_HOST') { 'localhost:3000' }
+
     if model.respond_to?(:signed_id)
       route_for(
         :rails_service_blob_proxy,
-        model.signed_id,
+        model.signed_id(expires_in: expires_in),
         model.filename,
-        options.merge(host: ENV.fetch('ASSET_HOST'))
+        options.merge(host: asset_host)
       )
     else
-      signed_blob_id = model.blob.signed_id
+      signed_blob_id = model.blob.signed_id(expires_in: expires_in)
       variation_key = model.variation.key
       filename = model.blob.filename
 
@@ -79,7 +82,7 @@ Rails.application.routes.draw do
         signed_blob_id,
         variation_key,
         filename,
-        options.merge(host: ENV.fetch('ASSET_HOST'))
+        options.merge(host: asset_host)
       )
     end
   end

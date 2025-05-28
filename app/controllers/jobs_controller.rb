@@ -1,5 +1,4 @@
 class JobsController < ApplicationController
-  include StorageHelper
   skip_before_action :authenticate_user!
 
   def index
@@ -9,7 +8,8 @@ class JobsController < ApplicationController
   def download
     job = Job.find_by(id: params[:id])
     if job.present?
-      serve_from_storage(job.file, params[:serve])
+      disposition = params[:serve] == 'download' ? 'attachment' : 'inline'
+      redirect_to cdn_link_url(job.file, params: { disposition: disposition })
     else
       route_not_found
     end
