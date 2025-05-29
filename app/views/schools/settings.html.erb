@@ -22,7 +22,7 @@
     <% end %>
   <% end %>
 
-  <%= render TitledSectionComponent.new(id: 'settings-section') do |section| %>
+  <%= render TitledSectionComponent.new(id: 'settings-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
       <h2><%= t('components.manage_school_navigation.settings') %></h2>
     <% end %>
@@ -60,7 +60,7 @@
     <% end %>
   <% end %>
 
-  <%= render TitledSectionComponent.new(id: 'users-section') do |section| %>
+  <%= render TitledSectionComponent.new(id: 'users-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
       <h2><%= t('components.manage_school_navigation.users') %></h2>
     <% end %>
@@ -94,7 +94,7 @@
     <% end %>
   <% end %>
 
-  <%= render TitledSectionComponent.new(id: 'metering-section') do |section| %>
+  <%= render TitledSectionComponent.new(id: 'metering-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
       <h2><%= t('components.manage_school_navigation.metering') %></h2>
     <% end %>
@@ -120,7 +120,7 @@
     <% end %>
   <% end %>
 
-  <%= render TitledSectionComponent.new(id: 'content-section') do |section| %>
+  <%= render TitledSectionComponent.new(id: 'content-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
       <h2><%= t('components.manage_school_navigation.content') %></h2>
     <% end %>
