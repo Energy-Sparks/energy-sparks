@@ -4,7 +4,7 @@ linters:
   AllowedScriptType:
     allowed_types:
       - 'application/json'
-      - 'application/ld+json'
+      - 'application/ld+json' # allow schema.org markup, e.g. jobs page
       - 'text/javascript'
   Rubocop:
     enabled: true
