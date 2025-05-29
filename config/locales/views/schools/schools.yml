@@ -276,10 +276,10 @@ en:
         inactive_meters: Inactive meters
         large_gaps: Gaps
         latest: To
-        manage_solar_api_feeds: Manage Solar API feeds
+        manage_solar_api_feeds: Solar Feeds
         manual_reads: Manual reads?
         meter: Meter
-        meter_reviews: Meter reviews
+        meter_reviews: Meter Reviews
         meter_system: Meter system
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name

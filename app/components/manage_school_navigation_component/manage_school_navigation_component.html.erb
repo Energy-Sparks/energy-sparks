@@ -43,10 +43,6 @@
       <% s.with_item(name: t('manage_school_menu.manage_meters'),
                      href: school_meters_path(school), classes: 'small') %>
     <% end %>
-    <% if can? :manage, MeterReview %>
-      <% s.with_item(name: t('schools.meters.index.meter_reviews'),
-                     href: admin_school_meter_reviews_path(school), classes: 'small') %>
-    <% end %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('manage_school_menu.manage_tariffs'),
                      href: school_energy_tariffs_path(school), classes: 'small') %>
@@ -72,6 +68,10 @@
     <% if can? :manage_solar_feed_configuration, School %>
       <% s.with_item(name: t('schools.meters.index.manage_solar_api_feeds'),
                      href: school_solar_feeds_configuration_index_path(school), classes: 'small') %>
+    <% end %>
+    <% if can? :manage, MeterReview %>
+      <% s.with_item(name: t('schools.meters.index.meter_reviews'),
+                     href: admin_school_meter_reviews_path(school), classes: 'small') %>
     <% end %>
     <% if can? :manage, SchoolMeterAttribute %>
       <% s.with_item(name: t('manage_school_menu.meter_attributes'),
