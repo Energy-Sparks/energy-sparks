@@ -20,7 +20,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
     end
 
     it 'I can add, edit and delete an rtone variant installation' do
-      click_on 'Manage Solar API feeds'
+      click_on 'Solar Feeds'
 
       expect(page).to have_content('This school has no Rtone Variant API feeds')
       click_on 'New Rtone Variant API feed'
@@ -58,7 +58,7 @@ RSpec.describe 'Rtone variant installation management', :low_carbon_hub_installa
       let!(:installation) { create(:rtone_variant_installation, school: school) }
 
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'displays the check button with a question mark by default' do

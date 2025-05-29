@@ -164,13 +164,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           context 'that is the same as the logged in user' do
             let!(:issues_admin) { admin }
 
-            it { expect(page).to have_link('Default Issues Admin • You', href: issues_link) }
+            it { expect(page).to have_link('Admin • You', href: issues_link) }
           end
 
           context 'that is a different user' do
             let!(:issues_admin) { create(:admin) }
 
-            it { expect(page).to have_link("Default Issues Admin • #{issues_admin.display_name}", href: issues_link) }
+            it { expect(page).to have_link("Admin • #{issues_admin.display_name}", href: issues_link) }
           end
 
           context 'no issues admin user is set' do

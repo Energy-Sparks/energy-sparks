@@ -23,7 +23,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
     context 'when adding a new installation' do
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'has no installation by default' do
@@ -57,7 +57,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
       let(:new_api_key)   { '99999' }
 
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'displays the feed config' do
@@ -146,7 +146,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
       let!(:installation) { create(:solar_edge_installation_with_meters_and_validated_readings, school: school) }
 
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'removes meters and readings on deletion' do
