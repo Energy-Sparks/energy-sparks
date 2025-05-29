@@ -1,6 +1,19 @@
 <%= render 'schools/school_page_with_navigation', school: @school,
                                                   page_title: 'manage_school_menu.manage_school' do %>
 
+  <% if current_user.admin? && @school&.school_group %>
+    <div class='row mb-2'>
+      <div class="col d-flex justify-content-end align-items-baseline">
+          <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
+          <%= if @school.issues.status_open.any?
+                link_to "View school issues (#{@school.issues.status_open.count})",
+                        admin_school_issues_path(school_id: @school.slug),
+                        class: 'btn btn-sm btn-secondary'
+              end %>
+      </div>
+    </div>
+  <% end %>
+
   <% if can? :manage, DashboardMessage %>
     <%= render 'admin/shared/dashboard_message', messageable: @school %>
   <% elsif @school.dashboard_message %>

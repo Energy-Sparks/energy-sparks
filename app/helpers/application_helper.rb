@@ -563,4 +563,9 @@ module ApplicationHelper
       'home-page'
     end
   end
+
+  def admin_user_label(school_group)
+    name = school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name
+    "Admin • #{name}"
+  end
 end
