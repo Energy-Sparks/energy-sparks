@@ -22,7 +22,17 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
         expect(html).to have_link(I18n.t('manage_school_menu.school_calendar'), href: calendar_path(school))
         expect(html).to have_link(I18n.t('manage_school_menu.manage_users'), href: school_users_path(school))
         expect(html).to have_link(I18n.t('manage_school_menu.alert_contacts'), href: school_contacts_path(school))
+      end
+    end
+  end
+
+  shared_examples 'a correctly populated content section' do
+    it 'has the correct links' do
+      within('#settings') do
         expect(html).to have_link(I18n.t('manage_school_menu.digital_signage'), href: school_digital_signage_path(school))
+        expect(html).to have_link(I18n.t('components.manage_school_navigation.history'), href: school_timeline_path(school))
+        expect(html).to have_link(I18n.t('components.manage_school_navigation.temperatures'), href: school_temperature_observations_path(school))
+        expect(html).to have_link(I18n.t('components.manage_school_navigation.transport_surveys'), href: school_transport_surveys_path(school))
       end
     end
   end
@@ -77,6 +87,7 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
       it_behaves_like 'a correctly populated settings section'
       it_behaves_like 'a correctly populated users section'
       it_behaves_like 'a correctly populated metering section'
+      it_behaves_like 'a correctly populated content section'
     end
 
     context 'with admin' do
@@ -91,6 +102,7 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
 
       it_behaves_like 'a correctly populated settings section'
       it_behaves_like 'a correctly populated users section'
+      it_behaves_like 'a correctly populated content section'
       it_behaves_like 'a correctly populated metering section', admin: true
 
       it 'has admin links for managing school' do

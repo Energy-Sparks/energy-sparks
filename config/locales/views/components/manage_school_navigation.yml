@@ -3,6 +3,10 @@ en:
   components:
     manage_school_navigation:
       admin: Admin
+      content: Content
+      history: History
       metering: Metering
       settings: Settings
+      temperatures: Temperatures
+      transport_surveys: Transport surveys
       users: Users

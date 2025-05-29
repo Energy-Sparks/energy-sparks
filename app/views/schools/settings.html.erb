@@ -57,12 +57,6 @@
         <% p.with_link { link_to t('schools.settings.manage_link'), calendar_path(@school.calendar) } %>
         <%= t('schools.settings.settings.school_calendar') %>
       <% end if @school.calendar && can?(:show, @school.calendar) %>
-
-      <%= render PromptComponent.new(icon: 'tv', style: :compact, status: :none) do |p| %>
-        <% p.with_title { t('manage_school_menu.digital_signage') } %>
-        <% p.with_link { link_to t('schools.settings.manage_link'), school_digital_signage_path(@school) } %>
-        <%= t('schools.settings.settings.digital_signage') %>
-      <% end %>
     <% end %>
   <% end %>
 
@@ -125,10 +119,38 @@
 
       <%= render PromptComponent.new(icon: 'download', style: :compact, status: :none) do |p| %>
         <% p.with_title { t('schools.meters.index.school_downloads') } %>
-        <% p.with_link { link_to t('schools.settings.download_link'), school_downloads_path(@school) } %>
+        <% p.with_link { link_to t('schools.settings.view_link'), school_downloads_path(@school) } %>
         <%= t('schools.settings.metering.school_downloads') %>
       <% end %>
 
+    <% end %>
+  <% end %>
+
+  <%= render TitledSectionComponent.new(id: 'content-section') do |section| %>
+    <% section.with_title do %>
+      <h2><%= t('components.manage_school_navigation.content') %></h2>
+    <% end %>
+    <% section.with_body do %>
+      <%= render PromptComponent.new(icon: 'tv', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.digital_signage') } %>
+        <% p.with_link { link_to t('schools.settings.view_link'), school_digital_signage_path(@school) } %>
+        <%= t('schools.settings.settings.digital_signage') %>
+      <% end %>
+      <%= render PromptComponent.new(icon: 'timeline', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('components.manage_school_navigation.history') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_timeline_path(@school) } %>
+        <%= t('schools.settings.settings.history') %>
+      <% end %>
+      <%= render PromptComponent.new(icon: 'temperature-half', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('components.manage_school_navigation.temperatures') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_temperature_observations_path(@school) } %>
+        <%= t('schools.settings.settings.temperatures') %>
+      <% end %>
+      <%= render PromptComponent.new(icon: 'car', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('components.manage_school_navigation.transport_surveys') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_transport_surveys_path(@school) } %>
+        <%= t('schools.settings.settings.transport_surveys') %>
+      <% end %>
     <% end %>
   <% end %>
 
