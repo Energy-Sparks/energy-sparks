@@ -652,7 +652,6 @@ en:
         add_alert_contacts: Add alert subscribers
         add_pupil_login: Missing pupil login
         add_users: Add school users
-        manage_alert_contacts: Manage subscribers to weekly energy analysis alerts
         manage_users: Manage school users and pupil logins
       view_link: View
     show:
