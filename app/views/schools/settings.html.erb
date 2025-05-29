@@ -83,12 +83,6 @@
             </span>
           <% end %>
         <% end %>
-      <% end if can? :manage_users, @school %>
-
-      <%= render PromptComponent.new(icon: 'envelope', style: :compact, status: :none) do |p| %>
-        <% p.with_title { t('manage_school_menu.manage_alert_contacts') } %>
-        <% p.with_link { link_to t('schools.settings.manage_link'), school_users_path(@school) } %>
-        <%= t('schools.settings.users.manage_alert_contacts') %>
         <% unless @school.contacts.any? %>
           <% p.with_pill do %>
             <span class="badge badge-danger">
@@ -96,7 +90,7 @@
             </span>
           <% end %>
         <% end %>
-      <% end if can? :manage, Contact %>
+      <% end if can? :manage_users, @school %>
     <% end %>
   <% end %>
 
@@ -145,12 +139,12 @@
         <% p.with_title { t('components.manage_school_navigation.temperatures') } %>
         <% p.with_link { link_to t('schools.settings.manage_link'), school_temperature_observations_path(@school) } %>
         <%= t('schools.settings.settings.temperatures') %>
-      <% end %>
+      <% end if can? :manage, Observation %>
       <%= render PromptComponent.new(icon: 'car', style: :compact, status: :none) do |p| %>
         <% p.with_title { t('components.manage_school_navigation.transport_surveys') } %>
         <% p.with_link { link_to t('schools.settings.manage_link'), school_transport_surveys_path(@school) } %>
         <%= t('schools.settings.settings.transport_surveys') %>
-      <% end %>
+      <% end if can? :manage, TransportSurvey %>
     <% end %>
   <% end %>
 
