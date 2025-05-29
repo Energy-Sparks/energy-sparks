@@ -15,7 +15,7 @@ module Solar
       log_perform_start
       @readings.each do |meter_type, details|
         attributes = meter_model_attributes(details).stringify_keys
-        meter = find_meter(meter_type, details) do |new_record|
+        meter = find_meter_or_create(meter_type, details) do |new_record|
           new_record.assign_attributes({ name: meter_type.to_s.humanize, active: false }.merge(attributes))
         end
         meter.update!(attributes) unless meter.attributes >= attributes
@@ -39,9 +39,9 @@ module Solar
                         "for #{@installation.display_name}"
     end
 
-    def find_meter(meter_type, details)
+    def find_meter_or_create(meter_type, details, &block)
       Meter.find_or_create_by!(meter_type:, mpan_mprn: synthetic_mpan(meter_type, details),
-                               school: @installation.school)
+                               school: @installation.school, &block)
     end
 
     def data_feed_reading_array(readings_hash, meter_id, mpan_mprn)

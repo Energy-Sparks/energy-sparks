@@ -15,7 +15,7 @@ module Solar
       Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(details[:serial_number].last(12), meter_type)
     end
 
-    def find_meter(meter_type, details)
+    def find_meter_or_create(meter_type, details)
       Meter.find_by!(meter_type:, meter_serial_number: details[:serial_number], solis_cloud_installation: @installation)
     end
   end
