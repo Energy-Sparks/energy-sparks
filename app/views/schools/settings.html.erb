@@ -20,12 +20,6 @@
         <%= t('schools.settings.settings.edit_school_details') %>
       <% end %>
 
-      <%= render PromptComponent.new(icon: 'building', style: :compact, status: :none) do |p| %>
-        <% p.with_title { t('manage_school_menu.your_school_estate') } %>
-        <% p.with_link { link_to t('schools.settings.manage_link'), edit_school_your_school_estate_path(@school) } %>
-        <%= t('schools.settings.settings.your_school_estate') %>
-      <% end %>
-
       <%= render PromptComponent.new(icon: 'clock', style: :compact, status: :none) do |p| %>
         <% p.with_title { t('manage_school_menu.edit_school_times') } %>
         <% p.with_link { link_to t('schools.settings.manage_link'), edit_school_times_path(@school) } %>
@@ -39,12 +33,23 @@
         <% end %>
       <% end %>
 
+      <%= render PromptComponent.new(icon: 'building', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.your_school_estate') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), edit_school_your_school_estate_path(@school) } %>
+        <%= t('schools.settings.settings.your_school_estate') %>
+      <% end %>
+
       <%= render PromptComponent.new(icon: 'calendar-days', style: :compact, status: :none) do |p| %>
         <% p.with_title { t('manage_school_menu.school_calendar') } %>
         <% p.with_link { link_to t('schools.settings.manage_link'), calendar_path(@school.calendar) } %>
         <%= t('schools.settings.settings.school_calendar') %>
       <% end if @school.calendar && can?(:show, @school.calendar) %>
 
+      <%= render PromptComponent.new(icon: 'tv', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.digital_signage') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_digital_signage_path(@school) } %>
+        <%= t('schools.settings.settings.digital_signage') %>
+      <% end %>
     <% end %>
   <% end %>
 

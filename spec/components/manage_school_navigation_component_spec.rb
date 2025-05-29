@@ -22,6 +22,7 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
         expect(html).to have_link(I18n.t('manage_school_menu.school_calendar'), href: calendar_path(school))
         expect(html).to have_link(I18n.t('manage_school_menu.manage_users'), href: school_users_path(school))
         expect(html).to have_link(I18n.t('manage_school_menu.alert_contacts'), href: school_contacts_path(school))
+        expect(html).to have_link(I18n.t('manage_school_menu.digital_signage'), href: school_digital_signage_path(school))
       end
     end
   end
@@ -98,8 +99,8 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
                          href: edit_school_configuration_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.meter_attributes'),
                          href: admin_school_meter_attributes_path(school))
-          expect(html).to have_link(I18n.t('manage_school_menu.batch_reports'),
-                         href: school_reports_path(school))
+          expect(html).to have_link('Review school setup',
+                         href: school_review_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.remove_school'),
                          href: removal_admin_school_path(school))
         end

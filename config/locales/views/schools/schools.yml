@@ -641,6 +641,7 @@ en:
         school_downloads: Download copies of your meter data
       settings:
         add_community_use: Add community use times
+        digital_signage: Display your analysis on public signage around the schools
         edit_school_details: School address, pupil numbers, floor area and other settings
         edit_school_times: Manage school opening hours and community use times
         school_calendar: Manage your school calendar, including term times and inset days
