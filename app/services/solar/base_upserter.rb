@@ -39,9 +39,9 @@ module Solar
                         "for #{@installation.display_name}"
     end
 
-    def find_meter_or_create(meter_type, details, &block)
+    def find_meter_or_create(meter_type, details, &)
       Meter.find_or_create_by!(meter_type:, mpan_mprn: synthetic_mpan(meter_type, details),
-                               school: @installation.school, &block)
+                               school: @installation.school, &)
     end
 
     def data_feed_reading_array(readings_hash, meter_id, mpan_mprn)
