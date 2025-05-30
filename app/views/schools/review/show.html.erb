@@ -2,7 +2,8 @@
 
 <% content_for :dashboard_header do %>
   <%# i18n-tasks-use t('schools.review.title') %>
-  <%= render DashboardHeaderComponent.new school: @school, audience: :adult, title: 'schools.review.title', intro: nil %>
+  <%= render DashboardHeaderComponent.new school: @school, audience: :adult, title: t('schools.review.title'),
+                                          intro: nil %>
 <% end %>
 
 <div class="container">
