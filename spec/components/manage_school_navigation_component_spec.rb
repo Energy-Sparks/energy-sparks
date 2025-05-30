@@ -109,12 +109,19 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
         within('#admin') do
           expect(html).to have_link(I18n.t('manage_school_menu.school_configuration'),
                          href: edit_school_configuration_path(school))
-          expect(html).to have_link(I18n.t('manage_school_menu.meter_attributes'),
-                         href: admin_school_meter_attributes_path(school))
           expect(html).to have_link('Review school setup',
                          href: school_review_path(school))
           expect(html).to have_link(I18n.t('manage_school_menu.remove_school'),
                          href: removal_admin_school_path(school))
+        end
+      end
+
+      it 'has admin links for managing analysis' do
+        within('#admin') do
+          expect(html).to have_link(I18n.t('manage_school_menu.meter_attributes'),
+                         href: admin_school_meter_attributes_path(school))
+          expect(html).to have_link(I18n.t('components.manage_school_navigation.exclusions'),
+                         href: school_school_alert_type_exclusions_path(school))
         end
       end
 
