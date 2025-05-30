@@ -97,6 +97,10 @@
       <% s.with_item(name: t('manage_school_menu.expert_analysis'),
                      href: admin_school_analysis_path(school), classes: 'small') %>
     <% end %>
+    <% if can?(:manage_exclusions, school) %>
+      <% s.with_item(name: t('components.manage_school_navigation.exclusions'),
+                     href: school_school_alert_type_exclusions_path(school), classes: 'small') %>
+    <% end %>
     <% if can? :remove_school, school %>
       <% s.with_item(name: t('manage_school_menu.remove_school'),
                      href: removal_admin_school_path(school), classes: 'small') %>
