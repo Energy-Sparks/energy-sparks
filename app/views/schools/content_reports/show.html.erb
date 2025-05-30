@@ -1,16 +1,30 @@
-<h1><%= @school.name %> content run: <%= nice_date_times(@run.created_at) %></h1>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Content Run" do %>
 
-<h3>Pupil dashboard alerts</h3>
+  <h2><%= nice_date_times(@run.created_at) %></h2>
 
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @pupil_dashboard_alerts, school: @school,
-                                      content_field: :pupil_dashboard_title, show_all: true %>
-<hr>
+  <p>
+    The dashboard alerts shown below include debug information with links to the original alert content, alert type, etc.
+  </p>
 
-<h3>Adult dashboard alerts</h3>
+  <p>Jump to: <a href="#adult">adult</a> or <a href="#pupil">pupil</a> alerts</p>
 
-<%= render 'shared/dashboard_alerts', show_debug: true, dashboard_alerts: @management_dashboard_alerts,
-                                      school: @school, content_field: :management_dashboard_title, show_all: true %>
-<hr>
+  <%= render AlertsComponent.new(id: 'adult',
+                                 school: @school,
+                                 audience: :adult,
+                                 dashboard_alerts: @management_dashboard_alerts,
+                                 show_links: true,
+                                 debug: true) do |c| %>
+    <% c.with_title { 'All adult dashboard alerts' } %>
+  <% end %>
 
-<%= render 'management/management_priorities/list', show_debug: true, management_priorities: @management_priorities,
-                                                    school: @school, show_more: false %>
+  <%= render AlertsComponent.new(id: 'pupil',
+                                 school: @school,
+                                 audience: :pupil,
+                                 dashboard_alerts: @pupil_dashboard_alerts,
+                                 show_links: true,
+                                 debug: true) do |c| %>
+    <% c.with_title { 'All pupil dashboard alerts' } %>
+  <% end %>
+
+<% end %>

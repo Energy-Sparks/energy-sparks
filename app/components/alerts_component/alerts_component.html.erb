@@ -32,6 +32,15 @@
           <% end if show_links %>
         <% end %>
         <%= alert_content.send(content_field) %>
+        <% if debug %>
+          <p class="small">
+            <strong>Debug</strong>:
+            <%= link_to 'Alert', school_alert_path(@school, alert_content.alert) %>,
+            Alert Type: <%= link_to alert_content.alert_type.title, admin_alert_type_path(alert_content.alert_type) %>,
+            Priority: <%= alert_content.priority %>
+          </p>
+        <% end %>
+
     <% end %>
   <% end %>
 <% end %>

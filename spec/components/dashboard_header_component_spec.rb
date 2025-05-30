@@ -32,8 +32,8 @@ RSpec.describe DashboardHeaderComponent, type: :component do
   context 'with alternative text' do
     let(:params) do
       {
-        title: 'advice_pages.baseload.analysis.title',
-        intro: 'advice_pages.baseload.analysis.summary',
+        title: I18n.t('advice_pages.baseload.analysis.title'),
+        intro: I18n.t('advice_pages.baseload.analysis.summary'),
         school: school
       }
     end

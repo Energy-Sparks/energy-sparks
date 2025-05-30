@@ -1,5 +1,5 @@
 <%= render 'schools/school_page_with_navigation', school: @school,
-                                                  page_title: 'manage_school_menu.manage_school' do %>
+                                                  page_title: t('manage_school_menu.manage_school') do %>
 
   <% if current_user.admin? && @school&.school_group %>
     <div class='row mb-2'>
