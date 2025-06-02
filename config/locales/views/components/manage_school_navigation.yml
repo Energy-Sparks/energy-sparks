@@ -4,6 +4,7 @@ en:
     manage_school_navigation:
       admin: Admin
       content: Content
+      exclusions: Alert exclusions
       history: History
       metering: Metering
       settings: Settings

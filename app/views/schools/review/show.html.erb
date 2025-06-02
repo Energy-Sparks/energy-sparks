@@ -1,6 +1,5 @@
 <%= render 'schools/school_page_with_navigation', school: @school,
                                                   page_title: t('schools.review.title', school_name: @school.name) do %>
-
   <% if current_user.admin? && @school&.school_group %>
     <div class='row mb-2'>
       <div class="col d-flex justify-content-end align-items-baseline">
