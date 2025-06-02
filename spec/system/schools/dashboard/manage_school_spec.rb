@@ -132,7 +132,7 @@ RSpec.describe 'manage school', type: :system do
       expect(page).to have_link('Email and SMS reports')
     end
 
-    context 'with status toggles' do
+    context 'with status toggles', with_feature: :new_manage_school_pages do
       it 'links to the configuration page for data access settings' do
         visit school_path(school)
         click_on('Public')
