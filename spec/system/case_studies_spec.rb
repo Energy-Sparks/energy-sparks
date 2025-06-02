@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'case_studies', type: :system do
+RSpec.describe 'case_studies', :include_application_helper do
   context 'when there is an existing case study' do
     let!(:case_study) do
       CaseStudy.create!(title: 'First Case Study', position: 1,
@@ -17,11 +17,11 @@ RSpec.describe 'case_studies', type: :system do
     end
 
     it 'shows the expected link' do
-      expect(page).to have_link I18n.t('case_studies.download'), href: "/case_studies/#{case_study.id}/download?locale=en"
+      expect(page).to have_link(I18n.t('case_studies.download'), href: case_study_download_path(case_study, locale: :en))
     end
 
     it 'serves the file' do
-      find("a[href='/case_studies/#{case_study.id}/download?locale=en']").click
+      find("a[href='/case-studies/#{case_study.id}/download?locale=en']").click
       expect(page).to have_http_status(:ok)
     end
 
@@ -31,7 +31,7 @@ RSpec.describe 'case_studies', type: :system do
       end
 
       it 'the welsh link is not displayed' do
-        expect(page).to have_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=en"
+        expect(page).to have_link(I18n.t('case_studies.download', locale: :cy), href: case_study_download_path(case_study, locale: :en))
       end
     end
   end
@@ -56,11 +56,11 @@ RSpec.describe 'case_studies', type: :system do
     end
 
     it 'shows the welsh link' do
-      expect(page).to have_link I18n.t('case_studies.download', :locale => :cy), href: "/case_studies/#{case_study.id}/download?locale=cy"
+      expect(page).to have_link(I18n.t('case_studies.download', locale: :cy), href: case_study_download_path(case_study, locale: :cy))
     end
 
     it 'serves the file' do
-      find("a[href='/case_studies/#{case_study.id}/download?locale=cy']").click
+      find("a[href='/case-studies/#{case_study.id}/download?locale=cy']").click
       expect(page).to have_http_status(:ok)
     end
   end
