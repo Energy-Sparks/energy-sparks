@@ -113,6 +113,11 @@ class SchoolsController < ApplicationController
     end
   end
 
+  def settings
+    authorize! :manage_settings, @school
+    render :settings, layout: 'dashboards'
+  end
+
   private
 
   def set_search_scope

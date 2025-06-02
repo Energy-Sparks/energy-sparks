@@ -327,6 +327,10 @@ Rails.application.routes.draw do
   end
 
   resources :schools do
+    member do
+      get :settings
+    end
+
     resources :activities do
       member do
         get :completed
