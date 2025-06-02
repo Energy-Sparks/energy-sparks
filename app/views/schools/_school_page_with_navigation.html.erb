@@ -2,7 +2,6 @@
 
 <% if Flipper.enabled?(:new_manage_school_pages, current_user) %>
   <% content_for :dashboard_header do %>
-    <%# i18n-tasks-use t(page_title) %>
     <%= render DashboardHeaderComponent.new title: page_title,
                                             intro: nil,
                                             show_school: false,
