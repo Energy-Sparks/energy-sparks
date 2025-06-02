@@ -48,21 +48,29 @@ describe 'School Alert Type Exclusions', :include_application_helper do
         end
       end
 
-      it 'allows deletion', :js do
-        within('#exclusions') do
-          accept_confirm do
-            click_on('Delete')
+      context 'when deleting', :js do
+        before do
+          within('#exclusions') do
+            accept_confirm do
+              click_on('Delete')
+            end
           end
         end
-        expect(page).to have_content('Exclusion deleted')
-        expect(page).to have_content('School does not have any exclusions')
+
+        it 'deletes the exclusion' do
+          expect(page).to have_content('Exclusion deleted')
+          expect(page).to have_content('School does not have any exclusions')
+        end
       end
     end
 
     context 'when adding an exclusion' do
-      it 'allows exclusion to be created' do
+      before do
         fill_in 'Reason', with: 'This is my reason'
         click_on 'Add Exclusion'
+      end
+
+      it 'allows exclusion to be created' do
         expect(page).to have_content('Exclusion created')
         within('#exclusions') do
           expect(page).to have_content('This is my reason')

@@ -1,4 +1,4 @@
-<% content_for :page_title, "#{t(page_title)} | #{school.name}" %>
+<% content_for :page_title, "#{page_title} | #{school.name}" %>
 
 <% if Flipper.enabled?(:new_manage_school_pages, current_user) %>
   <% content_for :dashboard_header do %>
