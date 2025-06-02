@@ -4146,7 +4146,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_23_084317) do
               t.ordinality AS index
              FROM ((amr_validated_readings amr
                JOIN meters m ON ((amr.meter_id = m.id)))
-               CROSS JOIN LATERAL unnest(amr.kwh_data_x48) WITH ORDINALITY t(val, ordinality))
+               CROSS JOIN LATERAL UNNEST(amr.kwh_data_x48) WITH ORDINALITY t(val, ordinality))
             WHERE ((amr.reading_date >= (CURRENT_DATE - 'P31D'::interval)) AND (m.meter_type = 0) AND (m.active = true))
           ), unnested_readings_with_index_and_ranking AS (
            SELECT unnested_readings_with_index.id,
