@@ -10,8 +10,9 @@ module Admin
 
     def create
       if @resource.save
+        notice = on_create_success
         redirect_to polymorphic_path([:admin, self.class::MODEL]),
-                    notice: "New #{self.class::MODEL.model_name.human} created."
+                    notice: notice || "New #{self.class::MODEL.model_name.human} created."
       else
         render :new
       end
@@ -19,6 +20,7 @@ module Admin
 
     def update
       if @resource.update(resource_params)
+        on_update_success
         redirect_to polymorphic_path([:admin, self.class::MODEL]),
                     notice: "#{self.class::MODEL.model_name.human} was updated."
       else
@@ -32,5 +34,9 @@ module Admin
       fields = self.class::MODEL.column_names.map(&:to_sym) - %i[id created_at updated_at]
       params.require(self.class::MODEL.name.underscore.to_sym).permit(*fields)
     end
+
+    def on_create_success; end
+
+    def on_update_success; end
   end
 end

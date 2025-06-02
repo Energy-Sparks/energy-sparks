@@ -7,86 +7,55 @@ module Admin
     JOB_CLASS = Solar::SolisCloudLoaderJob
     MODEL = SolisCloudInstallation
 
-    def create
-      @installation = SolisCloudInstallation.new(
-        api_id: resource_params[:api_id],
-        api_secret: resource_params[:api_secret],
-        amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'solis-cloud')
-      )
-      if @installation.save
-        begin
-          @installation.update_station_list
-        rescue StandardError
-          notice = 'SolisCloud installation was created but did not verify'
-        else
-          notice = 'SolisCloud installation was successfully created.'
-        end
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice:
-
-      else
-        render :new
-      end
-    rescue StandardError => e
-      Rollbar.error(e, job: :solar_download, school: @school)
-      flash[:error] = e.message
-      render :new
-    end
-
-    # def update
-    #   if @installation.update(resource_params)
-    #     redirect_to school_solar_feeds_configuration_index_path(@school), notice: 'SolisCloud API feed was updated'
-    #   else
-    #     render :edit
-    #   end
-    # end
-
     def check
       begin
         @api_ok = @resource.update_inverter_detail_list.present?
       rescue StandardError
         @api_ok = false
       end
-      respond_to(&:js)
+      respond_to do |format|
+        format.html { redirect_to edit_admin_solis_cloud_installation_path(@resource) }
+        format.js
+      end
     end
 
-    # def show; end
-
-    # def new; end
-
-    # def edit; end
-
-    # def update
-    #   if @installation.update(resource_params)
-    #     redirect_to school_solar_feeds_configuration_index_path(@school),
-    #                 notice: "#{self.class::NAME} API feed was updated"
-    #   else
-    #     render :edit
-    #   end
-    # end
-
     def destroy
-      @installation.meters.each { |meter| MeterManagement.new(meter).delete_meter! }
-      @installation.destroy
-      redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{self.class::NAME} API feed deleted"
+      @resource.meters.each { |meter| MeterManagement.new(meter).delete_meter! }
+      @resource.destroy
+      redirect_to admin_solis_cloud_installations_path, notice: "#{self.class::NAME} API feed deleted"
     end
 
     def submit_job
-      self.class::JOB_CLASS.perform_later(installation: @installation, notify_email: current_user.email)
-      redirect_to school_solar_feeds_configuration_index_path(@school),
+      self.class::JOB_CLASS.perform_later(installation: @resource, notify_email: current_user.email)
+      redirect_to admin_solis_cloud_installations_path,
                   notice: 'Loading job has been submitted. ' \
                           "An email will be sent to #{current_user.email} when complete."
     end
 
     private
 
-    def set_breadcrumbs
-      @breadcrumbs = [{ name: 'Solar API Feeds' }]
+    def on_create_success
+      @installation.update_inverter_detail_list
+    rescue StandardError
+      'SolisCloud installation was created but did not verify'
     end
 
-    private
+    def on_update_success
+      if params[:button]&.start_with?('remove_meter_')
+        Meter.find(params[:button].split('_').last)&.destroy
+      elsif params[:button]&.start_with?('create_meter_')
+        serial = params[:button].split('_').last
+        Meter.create!(meter_serial_number: serial, school_id: params[:inverters][serial],
+                      solis_cloud_installation: @resource,
+                      meter_type: :solar_pv, pseudo: true, active: false,
+                      mpan_mprn: Solar::SolisCloudUpserter.mpan(serial),
+                      name: meter_name(serial))
+      end
+    end
 
-    def resource_params
-      params.require(:solis_cloud_installation).permit(:api_id, :api_secret)
+    def meter_name(serial)
+      inverter = @resource.inverter_detail_list.find { |inverter| inverter['sn'] == serial }
+      "SolisCloud #{inverter&.[]('name') || inverter&.[]('stationName') || serial}"
     end
   end
 end
