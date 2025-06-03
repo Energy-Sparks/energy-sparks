@@ -4,6 +4,8 @@ module Schools
     include DashboardPriorities
     load_and_authorize_resource :school
 
+    layout Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
+
     def index
       authorize! :view_content_reports, @school
       @content_generation_runs = @school.content_generation_runs.order(created_at: :desc)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_28_093314) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_30_103504) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1532,7 +1532,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_28_093314) do
     t.text "reason"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "created_by_id"
     t.index ["alert_type_id"], name: "index_school_alert_type_exclusions_on_alert_type_id"
+    t.index ["created_by_id"], name: "index_school_alert_type_exclusions_on_created_by_id"
     t.index ["school_id"], name: "index_school_alert_type_exclusions_on_school_id"
   end
 
@@ -2271,6 +2273,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_28_093314) do
   add_foreign_key "rtone_variant_installations", "schools"
   add_foreign_key "school_alert_type_exclusions", "alert_types", on_delete: :cascade
   add_foreign_key "school_alert_type_exclusions", "schools", on_delete: :cascade
+  add_foreign_key "school_alert_type_exclusions", "users", column: "created_by_id"
   add_foreign_key "school_batch_run_log_entries", "school_batch_runs", on_delete: :cascade
   add_foreign_key "school_batch_runs", "schools", on_delete: :cascade
   add_foreign_key "school_group_clusters", "school_groups", on_delete: :cascade
@@ -4143,7 +4146,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_28_093314) do
               t.ordinality AS index
              FROM ((amr_validated_readings amr
                JOIN meters m ON ((amr.meter_id = m.id)))
-               CROSS JOIN LATERAL UNNEST(amr.kwh_data_x48) WITH ORDINALITY t(val, ordinality))
+               CROSS JOIN LATERAL unnest(amr.kwh_data_x48) WITH ORDINALITY t(val, ordinality))
             WHERE ((amr.reading_date >= (CURRENT_DATE - 'P31D'::interval)) AND (m.meter_type = 0) AND (m.active = true))
           ), unnested_readings_with_index_and_ranking AS (
            SELECT unnested_readings_with_index.id,

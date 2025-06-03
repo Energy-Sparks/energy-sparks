@@ -19,7 +19,7 @@ RSpec.describe 'SolisCloud installation management' do
     end
 
     context 'when adding a new installation' do
-      before { click_on 'Manage Solar API feeds' }
+      before { click_on 'Solar Feeds' }
 
       it 'has no installation by default' do
         expect(page).to have_content('This school has no SolisCloud sites')
@@ -60,7 +60,7 @@ RSpec.describe 'SolisCloud installation management' do
     context 'with an existing installation' do
       let!(:installation) { create(:solis_cloud_installation, school: school, station_list:) }
 
-      before { click_on 'Manage Solar API feeds' }
+      before { click_on 'Solar Feeds' }
 
       it 'displays the feed config' do
         expect(page).to have_content(installation.api_id)
