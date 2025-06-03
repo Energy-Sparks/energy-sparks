@@ -42,10 +42,10 @@ class SolisCloudInstallation < ApplicationRecord
   end
 
   def create_meter(meter_serial_number, school_id)
-    Meter.create!(meter_serial_number:, school_id:, solis_cloud_installation_id: id,
-                  meter_type: :solar_pv, pseudo: true, active: false,
-                  mpan_mprn: self.class.mpan(meter_serial_number),
-                  name: meter_name(meter_serial_number))
+    Meter.create(meter_serial_number:, school_id:, solis_cloud_installation_id: id,
+                 meter_type: :solar_pv, pseudo: true, active: false,
+                 mpan_mprn: self.class.mpan(meter_serial_number),
+                 name: meter_name(meter_serial_number))
   end
 
   def self.mpan(serial_number)

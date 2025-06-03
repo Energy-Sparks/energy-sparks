@@ -19,8 +19,7 @@ module Admin
     end
 
     def update
-      if @resource.update(resource_params)
-        on_update_success
+      if @resource.update(resource_params) && on_update_success
         redirect_to polymorphic_path([:admin, self.class::MODEL]),
                     notice: "#{self.class::MODEL.model_name.human} was updated."
       else
@@ -37,6 +36,8 @@ module Admin
 
     def on_create_success; end
 
-    def on_update_success; end
+    def on_update_success
+      true
+    end
   end
 end

@@ -106,6 +106,7 @@ en:
               less_than: Must be less than £1.00. It is likely you have entered your rate in pence. Please convert your rate to pounds before entering it into Energy Sparks.
     models:
       secr_co2_equivalence: SECR CO₂ equivalence
+      solis_cloud_installation: SolisCloud API feed
       transport_survey:
         one: Transport survey
         other: Transport surveys

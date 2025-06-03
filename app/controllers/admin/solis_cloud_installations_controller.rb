@@ -2,9 +2,12 @@
 
 module Admin
   class SolisCloudInstallationsController < AdminCrudController
-    NAME = 'SolisCloud'
-    ID_PREFIX = 'solis-cloud'
     MODEL = SolisCloudInstallation
+
+    def create
+      @resource.amr_data_feed_config = AmrDataFeedConfig.find_by(identifier: 'solis-cloud')
+      super
+    end
 
     def check
       begin
@@ -21,7 +24,7 @@ module Admin
     def destroy
       @resource.meters.each { |meter| MeterManagement.new(meter).delete_meter! }
       @resource.destroy
-      redirect_to admin_solis_cloud_installations_path, notice: "#{self.class::NAME} API feed deleted"
+      redirect_to admin_solis_cloud_installations_path, notice: "#{self.class::MODEL.model_name.human} API feed deleted"
     end
 
     def submit_job
@@ -37,7 +40,7 @@ module Admin
       @installation.update_inverter_detail_list
       nil # use the standard notice
     rescue StandardError
-      'SolisCloud installation was created but did not verify'
+      "#{self.class::MODEL.model_name.human} was created but did not verify"
     end
 
     def on_update_success
@@ -46,8 +49,10 @@ module Admin
         MeterManagement.new(meter).delete_meter! if meter
       elsif params[:button]&.start_with?('create_meter_')
         serial = params[:button].split('_').last
-        @resource.create_meter(serial, params[:inverters][serial])
+        @meter = @resource.create_meter(serial, params[:inverters][serial])
+        return @meter.persisted?
       end
+      true
     end
   end
 end
