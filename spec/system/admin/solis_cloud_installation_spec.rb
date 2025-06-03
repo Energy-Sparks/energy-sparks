@@ -6,61 +6,52 @@ require 'dashboard'
 RSpec.describe 'SolisCloud installation management' do
   include ActiveJob::TestHelper
 
-  let!(:school) { create(:school) }
-  let(:station_list) { [{ id: 1 }, { id: 2 }] }
-
   context 'when an admin' do
     let!(:admin) { create(:admin) }
 
     before do
       create(:amr_data_feed_config, identifier: 'solis-cloud')
       sign_in(admin)
-      visit school_meters_path(school)
     end
 
     context 'when adding a new installation' do
-      before { click_on 'Solar Feeds' }
-
-      it 'has no installation by default' do
-        expect(page).to have_content('This school has no SolisCloud sites')
-      end
+      before { visit admin_solis_cloud_installations_path }
 
       def create_new_installation_with_expectations
         click_on 'New SolisCloud API feed'
-        expect(page).to have_content('Add a new SolisCloud Site')
+        expect(page).to have_content('New SolisCloud API feed')
 
-        fill_in(:solis_cloud_installation_api_id, with: 'api_id')
-        fill_in(:solis_cloud_installation_api_secret, with: 'api_secret')
+        fill_in('API ID', with: 'api_id')
+        fill_in('API secret', with: 'api_secret')
 
-        expect { click_on 'Submit' }.to change(SolisCloudInstallation, :count).by(1)
+        expect { click_on 'Create SolisCloud API feed' }.to change(SolisCloudInstallation, :count).by(1)
 
         expect(page).to have_content('api_id')
-        expect(page).to have_content('api_secret')
 
         expect(SolisCloudInstallation.last.api_id).to eq('api_id')
         expect(SolisCloudInstallation.last.api_secret).to eq('api_secret')
       end
 
       it 'allows an installation to be added' do
-        stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/userStationList')
+        stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/inverterDetailList')
           .to_return(headers: { 'content-type': 'application/json' },
-                     body: { data: { page: { records: station_list } } }.to_json)
+                     body: { data: { records: [] } }.to_json)
         create_new_installation_with_expectations
-        expect(page).to have_content('SolisCloud installation was successfully created')
+        expect(SolisCloudInstallation.last.inverter_detail_list).not_to be_nil
+        expect(page).to have_content('SolisCloud API feed was created')
       end
 
       it 'allows an installation to be added with incorrect credentials' do
-        stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/userStationList')
-          .to_return(status: 403)
         create_new_installation_with_expectations
-        expect(page).to have_content('SolisCloud installation was created')
+        expect(page).to have_content('SolisCloud API feed was created but did not verify')
       end
     end
 
     context 'with an existing installation' do
-      let!(:installation) { create(:solis_cloud_installation, school: school, station_list:) }
+      let!(:installation) { create(:solis_cloud_installation, inverter_detail_list: [{ sn: '123' }]) }
+      let!(:school) { create(:school) }
 
-      before { click_on 'Solar Feeds' }
+      before { visit admin_solis_cloud_installations_path }
 
       it 'displays the feed config' do
         expect(page).to have_content(installation.api_id)
@@ -68,11 +59,9 @@ RSpec.describe 'SolisCloud installation management' do
 
       it 'allows editing' do
         click_on 'Edit'
-        expect(page).to have_content('Update SolisCloud Site')
-
+        expect(page).to have_content('Edit SolisCloud API feed')
         fill_in(:solis_cloud_installation_api_id, with: 'new_id')
-        click_on 'Submit'
-
+        click_on 'Update SolisCloud API feed'
         expect(page).to have_content('SolisCloud API feed was updated')
         expect(page).to have_content('new_id')
         expect(SolisCloudInstallation.last.api_id).to eq('new_id')
@@ -90,36 +79,49 @@ RSpec.describe 'SolisCloud installation management' do
                                     .and change(AmrValidatedReading, :count).by(-1)
       end
 
-      it 'allows viewing' do
+      it 'allows creating a meter' do
         click_on(installation.api_id)
-        expect(page).to have_content('Station 1')
+        select(school.name, from: 'inverters_123')
+        click_on('Create')
+        expect(installation.meters.pluck(:meter_serial_number)).to eq(['123'])
+      end
+
+      it 'allows creating a meter with school as station name' do
+        installation.update!(inverter_detail_list: [{ sn: '1234', stationName: school.name }])
+        click_on(installation.api_id)
+        click_on('Create')
+        expect(installation.meters.pluck(:meter_serial_number)).to eq(['1234'])
+      end
+
+      def expect_icon(icon)
+        within "#check-button-#{installation.id}" do
+          expect(page).to have_css("i[class*='#{icon}']")
+        end
       end
 
       it 'displays the check button with a question mark by default' do
-        within "#solis-cloud-#{installation.id}-test" do
+        expect_icon('fa-circle-question')
+        within "#check-button-#{installation.id}" do
           expect(page).to have_content('Check')
           expect(page).to have_css("i[class*='fa-circle-question']")
         end
       end
 
       context 'when checking an installation', :js do
-        def expect_icon(icon)
-          find("#solis-cloud-#{installation.id}-test").click
-          within "#solis-cloud-#{installation.id}-test" do
-            expect(page).to have_css("i[class*='#{icon}']")
-          end
-        end
+        before { find("#check-button-#{installation.id}").click }
 
         it 'succeeds' do
-          stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/userStationList')
+          stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/inverterDetailList')
             .to_return(headers: { 'content-type': 'application/json' },
-                       body: { data: { page: { records: station_list } } }.to_json)
+                       body: { data: { records: [{}] } }.to_json)
+          find("#check-button-#{installation.id}").click
           expect_icon('fa-circle-check')
         end
 
         it 'fails' do
-          stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/userStationList')
+          stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/inverterDetailList')
             .to_return(status: 403)
+          find("#check-button-#{installation.id}").click
           expect_icon('fa-circle-xmark')
         end
       end
