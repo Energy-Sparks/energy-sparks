@@ -1,84 +1,92 @@
-<% if @school.deleted? %>
-  <h1><%= @school.name %></h1>
-  <p>This school was deleted on <%= @school.removal_date %></p>
-<% elsif @school.archived? %>
-  <h1><%= @school.name %></h1>
-  <p>This school has been archived.</p>
-  <%= link_to 'Reenable school', reenable_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
-<% elsif @school_remover.school_ready? %>
-  <h1>Removing <%= @school.name %></h1>
-  <% if @school.users.any? %>
-    <h2>User status</h2>
-    <% unless @school_remover.users_ready? %>
-      <%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
-        <p>School cannot be removed while it has active users.</p>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Removal" do %>
+
+  <% if @school.deleted? %>
+    <h2><%= @school.name %></h2>
+    <p>This school was deleted on <%= @school.removal_date %></p>
+  <% elsif @school.archived? %>
+    <h2><%= @school.name %></h2>
+    <p>This school has been archived.</p>
+    <%= link_to 'Reenable school', reenable_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
+  <% elsif @school_remover.school_ready? %>
+    <h2>Removing <%= @school.name %></h2>
+    <% if @school.users.any? %>
+      <h3>User status</h3>
+      <% unless @school_remover.users_ready? %>
+        <%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
+          <p>School cannot be removed while it has active users.</p>
+        <% end %>
+      <% end %>
+      <p>Current users:</p>
+      <ol>
+        <% @school.users.each do |user| %>
+          <li><%= user.email %><%= user.inactive? ? ' (DISABLED)' : '' %></li>
+        <% end %>
+      </ol>
+      <% unless @school_remover.users_ready? %>
+        <div class="mt-4">
+          <p>Disabling a user account will prevent the user from ever logging in again. If they are
+          linked to other schools, they'll still be able to login but will be removed from
+          this school.</p>
+          <%= button_to 'Disable user accounts', deactivate_users_admin_school_path(@school), method: :post,
+                                                                                              class: 'btn btn-primary' %>
+        </div>
       <% end %>
     <% end %>
-    <p>Current users:</p>
-    <ol>
-      <% @school.users.each do |user| %>
-        <li><%= user.email %><%= user.inactive? ? ' (DISABLED)' : '' %></li>
+
+    <% if @school.meters.any? %>
+      <h3>Meter status</h3>
+      <% unless @school_remover.meters_ready? %>
+        <%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
+          <p>School cannot be removed while it has active meters</p>
+        <% end %>
       <% end %>
-    </ol>
-    <% unless @school_remover.users_ready? %>
+      <p>Current meters:</p>
+      <ol>
+        <% @school.meters.each do |meter| %>
+          <li><%= meter.mpan_mprn %><%= meter.active? ? '' : ' (INACTIVE)' %></li>
+        <% end %>
+      </ol>
+    <% end %>
+
+    <% unless @school_remover.meters_ready? %>
       <div class="mt-4">
-        <p>Disabling a user account will prevent the user from ever logging in again. If they are
-        linked to other schools, they'll still be able to login but will be removed from
-        this school.</p>
-        <%= button_to 'Disable user accounts', deactivate_users_admin_school_path(@school), method: :post,
-                                                                                            class: 'btn btn-primary' %>
+        <p>Archiving meters will mark them all as inactive. Validated data will be removed, but unvalidated
+          data will remain linked to the meter.</p>
+        <%= button_to 'Archive meters',
+                      archive_meters_admin_school_path(@school),
+                      method: :post,
+                      class: 'btn btn-primary' %>
+      </div>
+      <div class="mt-4">
+        <p>
+          Deactivating and deleting meter data, will mark meters as inactive. Validated data will be removed and
+          the unvalidated data will be unlinked from the meter.
+        </p>
+        <%= button_to 'Deactivate all meters and delete data',
+                      delete_meters_admin_school_path(@school),
+                      method: :post,
+                      class: 'btn btn-primary' %>
       </div>
     <% end %>
-  <% end %>
 
-  <% if @school.meters.any? %>
-    <h2>Meter status</h2>
-    <% unless @school_remover.meters_ready? %>
-      <%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
-        <p>School cannot be removed while it has active meters</p>
-      <% end %>
+    <% if @school.active && @school_remover.can_remove_school? %>
+      <h3>School ready for removal</h3>
+      <div class="mt-4">
+        <p>Archiving a school will mark it as inactive and disable data processing. An archive school can be later
+        re-enabled</p>
+        <%= button_to 'Archive school', archive_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
+      </div>
+      <div class="mt-4">
+        <p>Deleting a school will do the same, but also flag the school as deleted. A deleted school cannot be re-enabled.</p>
+        <%= button_to 'Delete school', delete_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
+      </div>
     <% end %>
-    <p>Current meters:</p>
-    <ol>
-      <% @school.meters.each do |meter| %>
-        <li><%= meter.mpan_mprn %><%= meter.active? ? '' : ' (INACTIVE)' %></li>
-      <% end %>
-    </ol>
+
+  <% else %>
+    <h2><%= @school.name %></h2>
+    <p>This school is still visible so cannot be deleted or archived.</p>
+    <p>Mark school has not visible to hide it from the website.</p>
   <% end %>
 
-  <% unless @school_remover.meters_ready? %>
-    <div class="mt-4">
-      <p>Archiving meters will mark them all as inactive. Validated data will be removed, but unvalidated
-        data will remain linked to the meter.</p>
-      <%= button_to 'Archive meters', archive_meters_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
-    </div>
-    <div class="mt-4">
-      <p>
-        Deactivating and deleting meter data, will mark meters as inactive. Validated data will be removed and
-        the unvalidated data will be unlinked from the meter.
-      </p>
-      <%= button_to 'Deactivate all meters and delete data',
-                    delete_meters_admin_school_path(@school),
-                    method: :post,
-                    class: 'btn btn-primary' %>
-    </div>
-  <% end %>
-
-  <% if @school.active && @school_remover.can_remove_school? %>
-    <h2>School ready for removal</h2>
-    <div class="mt-4">
-      <p>Archiving a school will mark it as inactive and disable data processing. An archive school can be later
-      re-enabled</p>
-      <%= button_to 'Archive school', archive_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
-    </div>
-    <div class="mt-4">
-      <p>Deleting a school will do the same, but also flag the school as deleted. A deleted school cannot be re-enabled.</p>
-      <%= button_to 'Delete school', delete_admin_school_path(@school), method: :post, class: 'btn btn-primary' %>
-    </div>
-  <% end %>
-
-<% else %>
-  <h1><%= @school.name %></h1>
-  <p>This school is still visible so cannot be deleted or archived.</p>
-  <p>Mark school has not visible to hide it from the website.</p>
 <% end %>

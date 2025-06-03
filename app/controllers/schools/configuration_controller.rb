@@ -2,6 +2,8 @@ module Schools
   class ConfigurationController < ApplicationController
     before_action :set_school, :load_scoreboards
 
+    layout Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
+
     def new
       if @school.school_group
         @school.template_calendar = @school.school_group.default_template_calendar

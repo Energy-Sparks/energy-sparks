@@ -327,6 +327,10 @@ Rails.application.routes.draw do
   end
 
   resources :schools do
+    member do
+      get :settings
+    end
+
     resources :activities do
       member do
         get :completed
@@ -424,6 +428,7 @@ Rails.application.routes.draw do
       resources :subscription_generation_runs, only: [:index, :show]
       resources :alert_subscription_events, only: [:show]
       resources :reports, only: [:index]
+      resources :school_alert_type_exclusions, only: [:index, :destroy, :create]
 
       resources :meters do
         member do

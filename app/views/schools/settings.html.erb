@@ -1,0 +1,151 @@
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: t('manage_school_menu.manage_school') do %>
+
+  <% if current_user.admin? && @school&.school_group %>
+    <div class='row mb-2'>
+      <div class="col d-flex justify-content-end align-items-baseline">
+          <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
+          <%= if @school.issues.status_open.any?
+                link_to "View school issues (#{@school.issues.status_open.count})",
+                        admin_school_issues_path(school_id: @school.slug),
+                        class: 'btn btn-sm btn-secondary'
+              end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if can? :manage, DashboardMessage %>
+    <%= render 'admin/shared/dashboard_message', messageable: @school %>
+  <% elsif @school.dashboard_message %>
+    <%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
+      <%= @school.dashboard_message.message %>
+    <% end %>
+  <% end %>
+
+  <%= render TitledSectionComponent.new(id: 'settings-section', classes: 'scrollable-title') do |section| %>
+    <% section.with_title do %>
+      <h2><%= t('components.manage_school_navigation.settings') %></h2>
+    <% end %>
+    <% section.with_body do %>
+      <%= render PromptComponent.new(icon: 'school', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.edit_school_details') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), edit_school_path(@school) } %>
+        <%= t('schools.settings.settings.edit_school_details') %>
+      <% end %>
+
+      <%= render PromptComponent.new(icon: 'clock', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.edit_school_times') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), edit_school_times_path(@school) } %>
+        <%= t('schools.settings.settings.edit_school_times') %>
+        <% unless @school.school_times.community_use.any? %>
+          <% p.with_pill do %>
+            <span class="badge badge-warning">
+              <%= t('schools.settings.settings.add_community_use') %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <%= render PromptComponent.new(icon: 'building', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.your_school_estate') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), edit_school_your_school_estate_path(@school) } %>
+        <%= t('schools.settings.settings.your_school_estate') %>
+      <% end %>
+
+      <%= render PromptComponent.new(icon: 'calendar-days', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.school_calendar') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), calendar_path(@school.calendar) } %>
+        <%= t('schools.settings.settings.school_calendar') %>
+      <% end if @school.calendar && can?(:show, @school.calendar) %>
+    <% end %>
+  <% end %>
+
+  <%= render TitledSectionComponent.new(id: 'users-section', classes: 'scrollable-title') do |section| %>
+    <% section.with_title do %>
+      <h2><%= t('components.manage_school_navigation.users') %></h2>
+    <% end %>
+    <% section.with_body do %>
+      <%= render PromptComponent.new(icon: 'users', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.manage_users') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_users_path(@school) } %>
+        <%= t('schools.settings.users.manage_users') %>
+        <% unless @school.users.pupil.any? %>
+          <% p.with_pill do %>
+            <span class="badge badge-warning">
+              <%= t('schools.settings.users.add_pupil_login') %>
+            </span>
+          <% end %>
+        <% end %>
+        <% unless @school.users.alertable.any? %>
+          <% p.with_pill do %>
+            <span class="badge badge-danger">
+              <%= t('schools.settings.users.add_users') %>
+            </span>
+          <% end %>
+        <% end %>
+        <% unless @school.contacts.any? %>
+          <% p.with_pill do %>
+            <span class="badge badge-danger">
+              <%= t('schools.settings.users.add_alert_contacts') %>
+            </span>
+          <% end %>
+        <% end %>
+      <% end if can? :manage_users, @school %>
+    <% end %>
+  <% end %>
+
+  <%= render TitledSectionComponent.new(id: 'metering-section', classes: 'scrollable-title') do |section| %>
+    <% section.with_title do %>
+      <h2><%= t('components.manage_school_navigation.metering') %></h2>
+    <% end %>
+    <% section.with_body do %>
+      <%= render PromptComponent.new(icon: 'gauge', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.manage_meters') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_meters_path(@school) } %>
+        <%= t('schools.settings.metering.manage_meters') %>
+      <% end if can? :index, Meter %>
+
+      <%= render PromptComponent.new(icon: 'sterling-sign', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.manage_tariffs') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_energy_tariffs_path(@school) } %>
+        <%= t('schools.settings.metering.manage_tariffs') %>
+      <% end if can? :manage, EnergyTariff %>
+
+      <%= render PromptComponent.new(icon: 'download', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('schools.meters.index.school_downloads') } %>
+        <% p.with_link { link_to t('schools.settings.view_link'), school_downloads_path(@school) } %>
+        <%= t('schools.settings.metering.school_downloads') %>
+      <% end %>
+
+    <% end %>
+  <% end %>
+
+  <%= render TitledSectionComponent.new(id: 'content-section', classes: 'scrollable-title') do |section| %>
+    <% section.with_title do %>
+      <h2><%= t('components.manage_school_navigation.content') %></h2>
+    <% end %>
+    <% section.with_body do %>
+      <%= render PromptComponent.new(icon: 'tv', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('manage_school_menu.digital_signage') } %>
+        <% p.with_link { link_to t('schools.settings.view_link'), school_digital_signage_path(@school) } %>
+        <%= t('schools.settings.settings.digital_signage') %>
+      <% end %>
+      <%= render PromptComponent.new(icon: 'timeline', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('components.manage_school_navigation.history') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_timeline_path(@school) } %>
+        <%= t('schools.settings.settings.history') %>
+      <% end %>
+      <%= render PromptComponent.new(icon: 'temperature-half', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('components.manage_school_navigation.temperatures') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_temperature_observations_path(@school) } %>
+        <%= t('schools.settings.settings.temperatures') %>
+      <% end if can? :manage, Observation %>
+      <%= render PromptComponent.new(icon: 'car', style: :compact, status: :none) do |p| %>
+        <% p.with_title { t('components.manage_school_navigation.transport_surveys') } %>
+        <% p.with_link { link_to t('schools.settings.manage_link'), school_transport_surveys_path(@school) } %>
+        <%= t('schools.settings.settings.transport_surveys') %>
+      <% end if can? :manage, TransportSurvey %>
+    <% end %>
+  <% end %>
+
+<% end %>

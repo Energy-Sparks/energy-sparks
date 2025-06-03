@@ -1,62 +1,66 @@
-<% content_for :page_title, "Completed Meter Review for #{@school.name}" %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Completed Meter Review" do %>
 
-<h1>Completed Meter review for <%= @school.name %></h1>
+  <div class="row mb-2">
+   <div class="col">
+    <p>
+    This review was completed on <%= nice_date_times(@meter_review.created_at) %> by <%= @meter_review.user.name %>
+    </p>
 
-<div class="row mb-2">
- <div class="col">
-  <p>
-  This review was completed on <%= nice_date_times(@meter_review.created_at) %> by <%= @meter_review.user.name %>
-  </p>
+    <p>
+    At that time, <%= @school.name %> had <%= link_to 'given consent',
+                                                      admin_consent_grant_path(@meter_review.consent_grant) %>.
+    </p>
+   </div>
+  </div>
 
-  <p>
-  At that time, <%= @school.name %> had <%= link_to "given consent", admin_consent_grant_path(@meter_review.consent_grant) %>.
-  </p>
- </div>
-</div>
+  <div class="row">
+   <div class="col">
+      <h4>Review summary</h4>
 
-<div class="row">
- <div class="col">
-    <h4>Review summary</h4>
-
-    <div class="card-group">
-        <div class="card bg-light">
-          <div class="card-body">
-            The following meters were reviewed:
-            <ul class="unstyled-list">
-              <% @meter_review.meters.each do |meter| %>
-                <li><%= link_to meter.mpan_mprn, school_meter_path(@school, meter) %></li>
-              <% end %>
-            </ul>
+      <div class="card-group">
+          <div class="card bg-light">
+            <div class="card-body">
+              The following meters were reviewed:
+              <ul class="unstyled-list">
+                <% @meter_review.meters.each do |meter| %>
+                  <li><%= link_to meter.mpan_mprn, school_meter_path(@school, meter) %></li>
+                <% end %>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <%= link_to 'View all meters', school_meters_path(@school), class: 'btn btn-sm btn-default',
+                                                                          target: '_blank', rel: 'noopener' %>
+            </div>
           </div>
-          <div class="card-footer">
-            <%= link_to "View all meters", school_meters_path(@school), class: "btn btn-sm btn-default", target: "_blank" %>
-          </div>
-        </div>
 
-        <div class="card bg-light">
-          <div class="card-body">
-            The following documents confirmed access:
-            <ul class="unstyled-list">
-              <% @meter_review.consent_documents.each do |bill| %>
-                <li><%= link_to bill.title, school_consent_document_path(@school, bill) %></li>
-              <% end %>
-            </ul>
+          <div class="card bg-light">
+            <div class="card-body">
+              The following documents confirmed access:
+              <ul class="unstyled-list">
+                <% @meter_review.consent_documents.each do |bill| %>
+                  <li><%= link_to bill.title, school_consent_document_path(@school, bill) %></li>
+                <% end %>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <%= link_to 'View all documents', school_consent_documents_path(@school),
+                          class: 'btn btn-sm btn-default', target: '_blank', rel: 'noopener' %>
+            </div>
           </div>
-          <div class="card-footer">
-            <%= link_to "View all documents", school_consent_documents_path(@school), class: "btn btn-sm btn-default", target: "_blank" %>
-          </div>
-        </div>
 
-    </div>
+      </div>
 
-    <div class="row mt-1 mb-1">
-     <div class="col">
-       <hr>
-       <div class="btn-group">
-         <%= link_to "View pending reviews", admin_meter_reviews_path, class: "btn btn-default" %>
+      <div class="row mt-1 mb-1">
+       <div class="col">
+         <hr>
+         <div class="btn-group">
+           <%= link_to 'View pending reviews', admin_meter_reviews_path, class: 'btn btn-default' %>
+         </div>
        </div>
-     </div>
-    </div>
+      </div>
 
- </div>
-</div>
+   </div>
+  </div>
+
+<% end %>

@@ -201,7 +201,7 @@ class Ability
       # type of user
       can %i[
         show show_pupils_dash update manage_school_times manage_users
-        show_management_dash read start_programme read_restricted_analysis read_restricted_advice
+        show_management_dash read start_programme read_restricted_analysis read_restricted_advice manage_settings
       ], School, school_scope
 
       can :manage, Contact, user_id: user.id

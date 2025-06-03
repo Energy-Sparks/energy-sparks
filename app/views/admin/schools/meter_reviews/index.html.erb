@@ -1,22 +1,22 @@
-<% content_for :page_title, "Completed Meter Reviews for #{@school.name}" %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Meter Reviews" do %>
 
-<h1>Completed Meter reviews for <%= @school.name %></h1>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Date completed</th>
-      <th>Number of meters</th>
-      <th>Reviewer</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @meter_reviews.each do |review| %>
+  <table class="table">
+    <thead>
       <tr>
-        <td><%= link_to nice_date_times(review.created_at), admin_school_meter_review_path(@school, review) %></td>
-        <td><%= review.meters.count %></td>
-        <td><%= review.user.name %></td>
+        <th>Date completed</th>
+        <th>Number of meters</th>
+        <th>Reviewer</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @meter_reviews.each do |review| %>
+        <tr>
+          <td><%= link_to nice_date_times(review.created_at), admin_school_meter_review_path(@school, review) %></td>
+          <td><%= review.meters.count %></td>
+          <td><%= review.user.name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
