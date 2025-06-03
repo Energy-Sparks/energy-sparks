@@ -7,7 +7,7 @@ RSpec.describe 'case_studies', type: :system do
     let!(:case_study) do
       CaseStudy.create!(title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
-      organisation: school)
+      organisation_type: :school)
     end
 
     before do
@@ -52,7 +52,7 @@ RSpec.describe 'case_studies', type: :system do
       CaseStudy.create!(title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
       file_cy: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
-      organisation: school)
+      organisation_type: :school)
     end
 
     before do
