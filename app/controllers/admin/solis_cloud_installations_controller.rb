@@ -4,7 +4,6 @@ module Admin
   class SolisCloudInstallationsController < AdminCrudController
     NAME = 'SolisCloud'
     ID_PREFIX = 'solis-cloud'
-    JOB_CLASS = Solar::SolisCloudLoaderJob
     MODEL = SolisCloudInstallation
 
     def check
@@ -26,7 +25,7 @@ module Admin
     end
 
     def submit_job
-      self.class::JOB_CLASS.perform_later(installation: @resource, notify_email: current_user.email)
+      Solar::SolisCloudLoaderJob.perform_later(installation: @resource, notify_email: current_user.email)
       redirect_to admin_solis_cloud_installations_path,
                   notice: 'Loading job has been submitted. ' \
                           "An email will be sent to #{current_user.email} when complete."
@@ -36,6 +35,7 @@ module Admin
 
     def on_create_success
       @installation.update_inverter_detail_list
+      nil # use the standard notice
     rescue StandardError
       'SolisCloud installation was created but did not verify'
     end

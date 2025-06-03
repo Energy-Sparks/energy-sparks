@@ -3,6 +3,7 @@ require 'dashboard'
 module Solar
   class SolisCloudUpserter < BaseUpserter
     def self.mpan(serial_number)
+      # serial number in api response appear to be hex, truncate to max length our mpan function supports for solar
       Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(serial_number.to_i(16).to_s.last(13), :solar_pv)
     end
 
