@@ -42,20 +42,12 @@ module Admin
 
     def on_update_success
       if params[:button]&.start_with?('remove_meter_')
-        Meter.find(params[:button].split('_').last)&.destroy
+        meter = Meter.find(params[:button].split('_').last)
+        MeterManagement.new(meter).delete_meter! if meter
       elsif params[:button]&.start_with?('create_meter_')
         serial = params[:button].split('_').last
-        Meter.create!(meter_serial_number: serial, school_id: params[:inverters][serial],
-                      solis_cloud_installation: @resource,
-                      meter_type: :solar_pv, pseudo: true, active: false,
-                      mpan_mprn: Solar::SolisCloudUpserter.mpan(serial),
-                      name: meter_name(serial))
+        @resource.create_meter(serial, params[:inverters][serial])
       end
-    end
-
-    def meter_name(serial)
-      inverter = @resource.inverter_detail_list.find { |inverter| inverter['sn'] == serial }
-      "SolisCloud #{inverter&.[]('name') || inverter&.[]('stationName') || serial}"
     end
   end
 end

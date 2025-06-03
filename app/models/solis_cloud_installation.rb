@@ -40,4 +40,23 @@ class SolisCloudInstallation < ApplicationRecord
     update!(inverter_detail_list:)
     inverter_detail_list
   end
+
+  def create_meter(meter_serial_number, school_id)
+    Meter.create!(meter_serial_number:, school_id:, solis_cloud_installation_id: id,
+                  meter_type: :solar_pv, pseudo: true, active: false,
+                  mpan_mprn: self.class.mpan(meter_serial_number),
+                  name: meter_name(meter_serial_number))
+  end
+
+  def self.mpan(serial_number)
+    # serial number in api response appear to be hex, truncate to max length our mpan function supports for solar
+    Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(serial_number.to_i(16).to_s.last(13), :solar_pv)
+  end
+
+  private
+
+  def meter_name(serial)
+    inverter = inverter_detail_list.find { |inverter| inverter['sn'] == serial }
+    "SolisCloud #{inverter&.[]('name') || inverter&.[]('stationName') || serial}"
+  end
 end
