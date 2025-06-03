@@ -108,8 +108,6 @@ RSpec.describe 'SolisCloud installation management' do
       end
 
       context 'when checking an installation', :js do
-        before { find("#check-button-#{installation.id}").click }
-
         it 'succeeds' do
           stub_request(:post, 'https://www.soliscloud.com:13333/v1/api/inverterDetailList')
             .to_return(headers: { 'content-type': 'application/json' },
