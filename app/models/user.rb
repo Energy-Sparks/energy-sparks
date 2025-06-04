@@ -59,6 +59,8 @@ class User < ApplicationRecord
                          :active
   after_destroy :reset_mailchimp_contact
 
+  before_save :enforce_role_associations, if: :role_changed?
+
   after_save :update_contact
   # Email is primary key in Mailchimp, trigger immediate update if its is changed, otherwise
   # subsequent updates will fail
@@ -383,6 +385,18 @@ class User < ApplicationRecord
   end
 
   private
+
+  def enforce_role_associations
+    # when becoming a group admin remove individual school associations
+    if role_changed?(from: 'school_admin', to: 'group_admin')
+      self.cluster_schools.destroy_all
+    end
+
+    # when becoming a school admin remove link to school group
+    if role_changed?(from: 'group_admin', to: 'school_admin')
+      self.school_group = nil
+    end
+  end
 
   def reset_mailchimp_contact
     return unless mailchimp_status.present?
