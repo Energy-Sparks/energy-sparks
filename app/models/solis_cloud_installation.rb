@@ -25,6 +25,11 @@ class SolisCloudInstallation < ApplicationRecord
 
   validates :api_id, :api_secret, presence: true
 
+  def self.mpan(serial_number)
+    # serial number in api response appear to be hex, truncate to max length our mpan function supports for solar
+    Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(serial_number.to_i(16).to_s.last(13), :solar_pv)
+  end
+
   def display_name
     api_id
   end
@@ -47,13 +52,6 @@ class SolisCloudInstallation < ApplicationRecord
                  mpan_mprn: self.class.mpan(meter_serial_number),
                  name: meter_name(meter_serial_number))
   end
-
-  def self.mpan(serial_number)
-    # serial number in api response appear to be hex, truncate to max length our mpan function supports for solar
-    Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(serial_number.to_i(16).to_s.last(13), :solar_pv)
-  end
-
-  private
 
   def meter_name(serial)
     inverter = inverter_detail_list.find { |inverter| inverter['sn'] == serial }

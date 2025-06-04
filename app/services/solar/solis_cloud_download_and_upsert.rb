@@ -57,7 +57,7 @@ module Solar
             raise
           end
         end
-        [:solar_pv, { name: detail&.[]('name'), serial_number: meter.meter_serial_number, readings: }]
+        [:solar_pv, { serial_number: meter.meter_serial_number, readings: }]
       end
     end
 

@@ -4,8 +4,8 @@ module Solar
   class SolisCloudUpserter < BaseUpserter
     private
 
-    def meter_model_attributes(_details)
-      {}
+    def meter_model_attributes(details)
+      { name: @installation.meter_name(details[:serial_number]) }
     end
 
     def synthetic_mpan(_meter_type, details)
