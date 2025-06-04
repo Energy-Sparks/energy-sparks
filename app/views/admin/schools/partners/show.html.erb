@@ -1,19 +1,27 @@
-<h2><%= @school.name %> - Partners</h2>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Partners" do %>
 
-<p><%= link_to 'Partners', admin_partners_path, class: ''%> associated with this school.</p>
+  <p><%= link_to 'Partners', admin_partners_path, class: '' %> associated with this school.</p>
 
-<%= form_tag admin_school_partners_path(@school), method: :put do %>
-  <%= submit_tag 'Update associated partners', class: 'btn btn-primary mb-3'%>
+  <%= form_tag admin_school_partners_path(@school), method: :put do %>
+    <%= submit_tag 'Update associated partners', class: 'btn btn-primary mb-3' %>
 
-  <% @partners.each do |partner| %>
-    <ul class="list-unstyled school-partners">
-        <li>
-          <%= number_field_tag  "school_partners[#{partner.id}][position]", @positions[partner.id], min: 0, max: 99, step: 1 %>
-          <%= label_tag "school_partners[#{partner.id}][position]", partner.display_name %>
-          <%= hidden_field_tag  "school_partners[#{partner.id}][partner_id]", partner.id %>
-        </li>
-    </ul>
+    <% @partners.each do |partner| %>
+      <ul class="list-unstyled school-partners">
+          <li>
+            <%= number_field_tag "school_partners[#{partner.id}][position]",
+                                 @positions[partner.id],
+                                 min: 0,
+                                 max: 99,
+                                 step: 1,
+                                 autocomplete: 'nope' %>
+            <%= label_tag "school_partners[#{partner.id}][position]", partner.display_name %>
+            <%= hidden_field_tag "school_partners[#{partner.id}][partner_id]", partner.id %>
+          </li>
+      </ul>
+    <% end %>
+
+    <%= submit_tag 'Update associated partners', class: 'btn btn-primary' %>
   <% end %>
 
-  <%= submit_tag 'Update associated partners', class: 'btn btn-primary'%>
 <% end %>
