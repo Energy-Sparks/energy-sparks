@@ -44,13 +44,13 @@ namespace :after_party do
     # About 31 users currently
     to_promote.each do |school_admin|
       # AR callback on model will remove the cluster schools
-      school_admin.update(role: :group_admin, school_group: cluster_schools.first.school_group)
+      school_admin.update(role: :group_admin, school_group: school_admin.cluster_schools.first.school_group)
     end
 
     # Remove school group association from following individual school_admins who don't meet the
     # above criteria. These have been manually checked
     [6868, 5889, 5890].each do |school_admin_id|
-      User.find(school_admin_id).update(school_group: nil)
+      User.find_by_id(school_admin_id)&.update(school_group: nil)
     end
 
     # Update task as completed.  If you remove the line below, the task will
