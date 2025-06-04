@@ -32,7 +32,7 @@ class RedirectsController < ApplicationController
     when 'pupils'
       pupils_school_path(school)
     else
-      "/schools/#{school.slug}/#{path}"
+      "/schools/#{school.slug}/#{ActionController::Base.helpers.sanitize(path)}"
     end
   end
 end
