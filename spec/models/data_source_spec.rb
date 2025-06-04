@@ -16,16 +16,17 @@ RSpec.describe DataSource, type: :model do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
 
-    let(:header) { 'School group,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
+    let(:header) { 'School group,Admin,School,MPAN/MPRN,Meter type,Active,Half-Hourly,First validated meter reading,Last validated meter reading,Admin Meter Status,Open issues count,Open issues' }
 
     before { freeze_time }
 
     context 'with meters' do
       let(:admin_meter_status) { AdminMeterStatus.create(label: 'On Data Feed') }
       let!(:meters) do
+        school_group = create(:school_group, default_issues_admin_user: create(:admin))
         [
           create(:gas_meter, data_source: data_source, school: create(:school, active: true), admin_meter_status: admin_meter_status, created_at: 3.seconds.ago),
-          create(:gas_meter, data_source: data_source, school: create(:school, :with_school_group, active: true), admin_meter_status: admin_meter_status, created_at: 2.seconds.ago),
+          create(:gas_meter, data_source: data_source, school: create(:school, school_group: school_group, active: true), admin_meter_status: admin_meter_status, created_at: 2.seconds.ago),
           create(:gas_meter, data_source: data_source, school: create(:school, active: false), admin_meter_status: admin_meter_status, created_at: 1.second.ago)
         ]
       end
@@ -52,6 +53,7 @@ RSpec.describe DataSource, type: :model do
             (
               [
                 meters[i].school.school_group.try(:name),
+                meters[i].school.school_group&.default_issues_admin_user&.try(:name),
                 meters[i].school.name,
                 meters[i].mpan_mprn,
                 meters[i].meter_type.humanize,
