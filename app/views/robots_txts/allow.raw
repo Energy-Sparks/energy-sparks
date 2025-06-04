@@ -75,3 +75,6 @@ Disallow: /
 
 User-agent: ClaudeBot
 Disallow: /
+
+User-agent: Scrapy
+Disallow: /
