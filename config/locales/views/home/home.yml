@@ -103,6 +103,10 @@ en:
     title_html: Stay up to date&hellip;
   newsletters:
     title: Newsletters
+  redirects:
+    choose_school:
+      intro: You have followed a school-specific link. Choose one of your schools to continue
+      title: Choose a school to continue
   school_count:
     one: 1 school
     other: "%{count} schools"
