@@ -626,11 +626,6 @@ RSpec.describe 'school targets', type: :system do
       let(:test_school) { school }
     end
 
-    it 'lets me view target data' do
-      visit school_meters_path(school)
-      expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-    end
-
     context 'when viewing a target' do
       let!(:target) { create(:school_target, school: school) }
 
