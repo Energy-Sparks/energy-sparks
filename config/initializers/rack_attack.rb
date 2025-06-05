@@ -11,6 +11,11 @@ unless Rails.env.test?
         [/scrapy/i].any? { |pattern| req.user_agent =~ pattern }
       end
 
+      blocklist('ban crawlers') do |req|
+        # after maxretry requests over findtime ban for bantime
+        Allow2Ban.filter(req.ip, maxretry: 60, findtime: 30.seconds, bantime: 15.minutes) { true }
+      end
+
       ### Configure Cache ###
 
       # If you don't want to use Rails.cache (Rack::Attack's default), then
