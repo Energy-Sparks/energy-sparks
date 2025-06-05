@@ -28,17 +28,21 @@
         <%= grid.with_card do |card| %>
           <%= card.with_image(src: case_study.image, rounded: :top) if case_study.image.attached? && @show_images %>
           <%= card.with_feature_card(
-                theme: :dark, size: :sm,
+                theme: :light, size: :sm,
                 classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' if !case_study.image.attached? || !@show_images}"
               ) do |feature| %>
-            <%= feature.with_tag(case_study.organisation_type_label) %>
-            <%= feature.with_header(title: case_study.title, classes: '') %>
+            <% case_study.tag_list.each do |tag| %>
+              <%= feature.with_tag(tag) %>
+            <% end %>
+            <%= feature.with_header(title: case_study.title) %>
             <%= feature.with_description { case_study.description.to_s } %>
             <%= feature.with_link(
-                  href: case_study_serve_path(case_study, locale: case_study.file_locale, serve: :download)
-                ) do
-                  t('common.labels.download')
-                end %>
+                  href: case_study_download_path(
+                    case_study,
+                    locale: case_study.file_locale
+                  ),
+                  download: true
+                ) { t('common.labels.download') } %>
           <% end %>
         <% end %>
       <% end %>

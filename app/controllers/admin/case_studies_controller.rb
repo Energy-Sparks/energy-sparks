@@ -17,6 +17,7 @@ module Admin
     end
 
     def create
+      @case_study = CaseStudy.new(case_study_params.merge(created_by: current_user))
       if @case_study.save
         redirect_to admin_case_studies_path, notice: 'Case study was successfully created.'
       else
@@ -25,7 +26,7 @@ module Admin
     end
 
     def update
-      if @case_study.update(case_study_params)
+      if @case_study.update(case_study_params.merge(updated_by: current_user))
         redirect_to admin_case_studies_path, notice: 'Case study was successfully updated.'
       else
         render :edit
@@ -41,7 +42,7 @@ module Admin
 
     def case_study_params
       translated_params = t_params(CaseStudy.mobility_attributes + CaseStudy.t_attached_attributes)
-      params.require(:case_study).permit(translated_params, :title, :description, :position, :organisation_type, :image)
+      params.require(:case_study).permit(translated_params, :title, :description, :position, :organisation_type, :image, :published)
     end
   end
 end

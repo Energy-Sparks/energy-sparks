@@ -2,23 +2,18 @@
   <%= simple_form_for([:admin, case_study]) do |f| %>
     <div class="row">
       <div class="col-6">
-        <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
-          <%= f.input t_field(:title, locale), label: CaseStudy.human_attribute_name(:title), as: :string %>
+        <%= render 'admin/shared/locale_tabs', f: f, field: :tags do |locale| %>
+          <%= f.input t_field(:tags, locale),
+                      label: CaseStudy.human_attribute_name(:tags),
+                      hint: 'comma seperated' %>
         <% end %>
-        <%= f.input :organisation_type,
-                    as: :select,
-                    collection: CaseStudy.organisation_types.keys.map { |key|
-                      [case_study.organisation_type_label, key]
-                    },
-                    include_blank: false,
-                    label: 'Organisation type' %>
 
-        <%= f.input :position %>
-
+        <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+          <%= f.input t_field(:title, locale), label: CaseStudy.human_attribute_name(:title) %>
+        <% end %>
         <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
           <div class="description-trix-editor-<%= locale %>">
-            <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description),
-                                                                as: :string %>
+            <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description) %>
           </div>
         <% end %>
       </div>
@@ -37,9 +32,11 @@
         <%= render 'admin/shared/locale_tabs', f: f, field: :file do |locale| %>
           <%= f.input t_field(:file, locale), label: CaseStudy.human_attribute_name(:file) %>
         <% end %>
+        <%= render 'admin/cms/change_history', model: case_study %>
       </div>
     </div>
     <div class="mt-2">
+      <%= f.input :published, as: :boolean %>
       <%= f.submit 'Save case study', class: 'btn btn-primary btn-small' %>
       <%= link_to 'Back', admin_case_studies_path, class: 'btn btn-secondary btn-small' %>
     </div>

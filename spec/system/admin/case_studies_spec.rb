@@ -53,7 +53,9 @@ RSpec.describe 'Admin case studies', type: :system do
       it 'lists the case study' do
         expect(page).to have_content(case_study.title)
         expect(page).to have_content(case_study.description)
-        expect(page).to have_content(case_study.organisation_type_label)
+        case_study.tag_list.each do |tag|
+          expect(page).to have_content(tag)
+        end
         expect(page).to have_link('Read case study', href: case_study_download_path(case_study.file))
       end
 
@@ -87,6 +89,7 @@ RSpec.describe 'Admin case studies', type: :system do
         it { expect(page).to have_content('Energy saving success') }
       end
     end
+
 
     context 'when editing an existing case study' do
       let!(:case_study) { create(:case_study, title_en: 'Old title', position: 1) }

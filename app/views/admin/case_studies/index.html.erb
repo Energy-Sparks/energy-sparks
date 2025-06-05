@@ -10,14 +10,14 @@
     <% @case_studies.each do |case_study| %>
       <div class='clearfix border rounded bg-light p-2 row mb-2'>
         <div class='col-md-12'>
-          <h4 class='pb-0'>
-            <span class='d-inline-block text-truncate' style="max-width: 95%">
-              <span class="badge bg-secondary font-weight-normal">
-                <%= case_study.position %>
-                </span>
-                <%= case_study.title %>
+          <h4 class='pb-0 d-flex align-items-center'>
+            <span class="badge rounded-pill bg-white text-dark font-weight-normal border">
+              <%= case_study.position %>
             </span>
-            <span class='float-right pb-2'>
+            <span class='d-inline-block text-truncate ps-2' style="max-width: 90%">
+              <%= case_study.title %>
+            </span>
+            <span class='ml-auto pb-2'>
               <small>
                 <% if case_study.image.attached? %>
                   <span title='has image' data-toggle='tooltip'><%= render IconComponent.new(name: 'image') %></span>
@@ -26,23 +26,31 @@
                     <%= render IconComponent.new(name: 'triangle-exclamation') %>
                   </span>
                 <% end %>
+                 <% if case_study.published %>
+                  <span title='published' data-toggle='tooltip'><%= render IconComponent.new(name: 'eye') %></span>
+                <% else %>
+                  <span title='hidden' data-toggle='tooltip'>
+                    <%= render IconComponent.new(name: 'eye-slash') %>
+                  </span>
+                <% end %>
               </small>
             </span>
           </h4>
-            <div class='pl-2 pb-2'>
+            <div class='ps-3 pb-2'>
             <span data-toggle="collapse"
                   href="#case_study-<%= case_study.id %>" role="button" aria-expanded="true"
                   aria-controls="case_study-<%= case_study.id %>"
                   class="toggler text-decoration-none collapsed">
               <%= toggler %>
             </span>
-            <span class="badge rounded-pill bg-info font-weight-normal">
-              <%= CaseStudy.human_enum_name(:organisation_type, case_study.organisation_type) %>
-            </span>
             <span class="badge rounded-pill bg-white text-dark font-weight-normal border">
-              Download: <%= t_attached_links(case_study, :file, ' • ') %>
+              Downloads: <%= t_attached_links(case_study, :file, ' • ') %>
             </span>
-
+            <% case_study.tag_list.each do |tag| %>
+              <span class="badge bg-success font-weight-normal">
+                <%= tag %>
+              </span>
+            <% end %>
             <span class='float-right'>
               <%= link_to 'Edit', edit_admin_case_study_path(case_study), class: 'btn btn-sm' %>
               <%= link_to 'Delete', admin_case_study_path(case_study),
@@ -53,14 +61,16 @@
           </div>
 
           <div class="collapse" id="case_study-<%= case_study.id %>">
-            <%= render Layout::GridComponent.new(cols: 3, classes: 'py-2') do |grid| %>
+            <%= render Layout::GridComponent.new(cols: 3, classes: 'py-2 pl-2') do |grid| %>
               <%= grid.with_card do |card| %>
                 <%= card.with_image(src: case_study.image, rounded: :top) if case_study.image.attached? %>
                 <%= card.with_feature_card(
-                      theme: :dark, size: :sm,
+                      theme: :light, size: :sm,
                       classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' unless case_study.image.attached?}"
                     ) do |feature| %>
-                  <%= feature.with_tag(case_study.organisation_type_label) %>
+                  <% case_study.tag_list.each do |tag| %>
+                    <%= feature.with_tag(tag) %>
+                  <% end %>
                   <%= feature.with_header(title: case_study.title) %>
                   <%= feature.with_description { case_study.description.to_s } %>
                   <%= feature.with_link(

@@ -3,7 +3,11 @@ class CaseStudiesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index
-    @case_studies = CaseStudy.order(:position)
+    @case_studies = if Flipper.enabled?(:new_case_studies_page, current_user)
+                      CaseStudy.published.order(:position)
+                    else
+                      CaseStudy.order(:position)
+                    end
 
     if Flipper.enabled?(:new_case_studies_page, current_user)
       @show_images = @case_studies.without_images.none? || params[:show_images]
@@ -20,7 +24,7 @@ class CaseStudiesController < ApplicationController
   end
 
   def download
-    resource = CaseStudy.find_by(id: params[:id])
+    resource = CaseStudy.published.find_by(id: params[:id])
     if resource.present?
       file = resource.t_attached(:file, params[:locale])
       serve_from_storage(file, params[:serve])
