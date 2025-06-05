@@ -3,6 +3,8 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
+    layout 'dashboards'
+
     def index
       @subscription_generation_runs = @subscription_generation_runs.order(created_at: :desc)
     end

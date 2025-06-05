@@ -291,7 +291,6 @@ cy:
         validate_meter_readings: Dilysu darlleniadau mesurydd
         validated: Dilyswyd
         validated_readings: Darlleniadau sydd wedi'u Dilysu
-        view_target_data: Gweld data targed
         zero_days: Dim dyddiau
       inventory:
         meter_title: 'Mesurydd: %{meter_mpan_mprn}'

@@ -1,29 +1,24 @@
-<% content_for :page_title do %>Email and SMS reports for <%= @school.name %><% end %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Email and SMS reports" do %>
 
-<div class="row padded-row">
-  <div class="col-md-12">
-    <h1 property="name"><%= link_to @school.name, @school %> email and SMS reports</h1>
-    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
+  <div class="row padded-row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Events</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @subscription_generation_runs.each do |run| %>
+          <tr>
+            <td><%= nice_date_times(run.created_at) %></td>
+            <td><%= run.alert_subscription_events.count %></td>
+            <td><%= link_to 'View', school_subscription_generation_run_path(@school, run), class: 'btn' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
-</div>
-
-<h1>Email and SMS runs</h1>
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Events</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @subscription_generation_runs.each do |run| %>
-      <tr>
-        <td><%= nice_date_times(run.created_at) %></td>
-        <td><%= run.alert_subscription_events.count %></td>
-        <td><%= link_to 'View', school_subscription_generation_run_path(@school, run), class: 'btn' %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% end %>

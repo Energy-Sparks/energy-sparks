@@ -2,6 +2,8 @@ module Schools
   class AlertReportsController < ApplicationController
     load_and_authorize_resource :school
 
+    layout 'dashboards'
+
     def index
       authorize! :view_content_reports, @school
       @alert_generation_runs = @school.alert_generation_runs.order(created_at: :desc)

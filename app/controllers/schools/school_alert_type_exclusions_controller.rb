@@ -3,6 +3,8 @@ module Schools
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
+    layout 'dashboards'
+
     def index
       authorize! :manage_exclusions, @school
       exclusions_and_types

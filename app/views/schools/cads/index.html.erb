@@ -1,51 +1,58 @@
-<h1>Manage CADs</h1>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} CADs" do %>
 
-<div>
-  <%= link_to 'View live data', school_live_data_path(@school), class: 'btn btn-secondary' %>
-</div>
+  <div>
+    <%= link_to 'View live data', school_live_data_path(@school), class: 'btn btn-secondary' %>
+  </div>
 
-<br>
-<br>
+  <br>
+  <br>
 
-<h2>CADs</h2>
+  <h2>CADs</h2>
 
-<% if @cads.any? %>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Device identifier</th>
-      <th scope="col">Meter</th>
-      <th scope="col">Max power</th>
-      <th scope="col">Test mode?</th>
-      <th scope="col">Refresh interval</th>
-      <th scope="col">Active?</th>
-      <th scope="col"></th>
-    </tr>
-    </thead>
-    <tbody>
-      <% @cads.each do |cad| %>
-        <tr>
-          <td><%= cad.name %></td>
-          <td><%= cad.device_identifier %></td>
-          <td><%= cad.meter.display_name if cad.meter.present? %></td>
-          <td><%= cad.max_power %> kW</td>
-          <td><%= y_n(cad.test_mode) %></td>
-          <td><%= cad.refresh_interval %> secs</td>
-          <td><%= y_n(cad.active) %></td>
-          <td>
-            <%= link_to 'Test', school_cad_live_data_path(@school, cad), class: 'btn btn-primary' %>
-            <%= link_to 'Edit', edit_school_cad_path(@school, cad), class: 'btn btn-primary' %>
-            <%= link_to 'Delete', school_cad_path(@school, cad), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <h4>There are no CADs set up yet</h4>
+  <% if @cads.any? %>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Device identifier</th>
+        <th scope="col">Meter</th>
+        <th scope="col">Max power</th>
+        <th scope="col">Test mode?</th>
+        <th scope="col">Refresh interval</th>
+        <th scope="col">Active?</th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+        <% @cads.each do |cad| %>
+          <tr>
+            <td><%= cad.name %></td>
+            <td><%= cad.device_identifier %></td>
+            <td><%= cad.meter.display_name if cad.meter.present? %></td>
+            <td><%= cad.max_power %> kW</td>
+            <td><%= y_n(cad.test_mode) %></td>
+            <td><%= cad.refresh_interval %> secs</td>
+            <td><%= y_n(cad.active) %></td>
+            <td>
+              <%= link_to 'Test', school_cad_live_data_path(@school, cad), class: 'btn btn-primary' %>
+              <%= link_to 'Edit', edit_school_cad_path(@school, cad), class: 'btn btn-primary' %>
+              <%= link_to 'Delete',
+                          school_cad_path(@school, cad),
+                          method: :delete,
+                          data: { confirm: 'Are you sure?' },
+                          class: 'btn btn-danger' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <h4>There are no CADs set up yet</h4>
+  <% end %>
+
+  <div>
+    <%= link_to 'Add CAD', new_school_cad_path(@school), class: 'btn btn-primary' %>
+  </div>
+
 <% end %>
-
-<div>
-  <%= link_to 'Add CAD', new_school_cad_path(@school), class: 'btn btn-primary' %>
-</div>

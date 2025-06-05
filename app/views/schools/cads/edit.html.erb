@@ -1,5 +1,6 @@
-<h1>Edit CAD</h1>
-
-<%= simple_form_for([@school, @cad]) do |f| %>
-  <%= render 'form', f: f, submit: 'Save' %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Edit CAD" do %>
+  <%= simple_form_for([@school, @cad]) do |f| %>
+    <%= render 'form', f: f, submit: 'Save' %>
+  <% end %>
 <% end %>
