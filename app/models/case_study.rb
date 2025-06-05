@@ -2,11 +2,24 @@
 #
 # Table name: case_studies
 #
-#  created_at :datetime         not null
-#  id         :bigint(8)        not null, primary key
-#  position   :integer          default(0), not null
-#  title      :string
-#  updated_at :datetime         not null
+#  created_at    :datetime         not null
+#  created_by_id :bigint(8)
+#  id            :bigint(8)        not null, primary key
+#  position      :integer          default(0), not null
+#  published     :boolean          default(FALSE), not null
+#  title         :string
+#  updated_at    :datetime         not null
+#  updated_by_id :bigint(8)
+#
+# Indexes
+#
+#  index_case_studies_on_created_by_id  (created_by_id)
+#  index_case_studies_on_updated_by_id  (updated_by_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
+#  fk_rails_...  (updated_by_id => users.id) ON DELETE => nullify
 #
 
 class CaseStudy < Cms::Base
