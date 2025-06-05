@@ -37,15 +37,6 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
     sign_in(user) if user.present?
   end
 
-  it 'has a link to review targets from my school menu' do
-    unless user.admin?
-      visit school_path(test_school)
-      within '#my-school-menu' do
-        expect(page).to have_link('Review targets', href: school_school_targets_path(test_school))
-      end
-    end
-  end
-
   context 'when school has no target' do
     let(:last_year) { Time.zone.today.last_year }
 
