@@ -20,7 +20,8 @@ module Pupils
       pupil = school.authenticate_pupil(password)
       if pupil
         sign_in(:user, pupil)
-        redirect_to pupils_school_path(school), notice: t('devise.sessions.new.signed_in_successfully')
+        redirect_path = stored_location_for(:user) || pupils_school_path(school)
+        redirect_to redirect_path, notice: t('devise.sessions.new.signed_in_successfully')
       else
         redirect_to new_user_session_path(role: 'pupil', school: school), alert: t('errors.messages.invalid_password')
       end
