@@ -1,10 +1,6 @@
 <%= render 'schools/school_page_with_navigation', school: @school,
                                                   page_title: "#{@school.name} Heating Model Fitting" do %>
 
-  <%= if @show_measurement_units
-        render 'shared/measurement_picker', measurement_options: @measurement_options, measurement: @measurement
-      end %>
-
   <div class="row">
     <div class="col">
       <p>
@@ -38,4 +34,7 @@
     </div>
   <% end %>
 
+  <% cache [@school.latest_content, :gas, I18n.locale], expires_in: 4.hours do %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
+  <% end %>
 <% end %>
