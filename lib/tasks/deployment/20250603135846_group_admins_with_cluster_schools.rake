@@ -6,11 +6,12 @@ namespace :after_party do
 
     # Find group admins who have also been manually linked to schools, e.g. were
     # originally school admins. Remove all those associations as they're unnecessary
-    # but are impacting engagement reporting.
+    # but are impacting engagement reporting. Also remove any direct school links.
     #
     # 32 users
     User.group_admin.joins(:cluster_schools_users).distinct.each do |group_admin|
       group_admin.cluster_schools.destroy_all
+      group_admin.update(school: nil)
     end
 
     # Find users who are school admins but are also linked to school groups, e.g. were
@@ -20,6 +21,7 @@ namespace :after_party do
     User.school_admin.where.not(school_group: nil).find_each do |school_admin|
       if school_admin.cluster_schools.sort == school_admin.school_group.schools.sort
         school_admin.update(role: :group_admin)
+        school_admin.update(school: nil)
       end
     end
 
@@ -44,7 +46,11 @@ namespace :after_party do
     # About 31 users currently
     to_promote.each do |school_admin|
       # AR callback on model will remove the cluster schools
-      school_admin.update(role: :group_admin, school_group: school_admin.cluster_schools.first.school_group)
+      school_admin.update(
+        role: :group_admin,
+        school: nil,
+        school_group: school_admin.cluster_schools.first.school_group
+      )
     end
 
     # Remove school group association from following individual school_admins who don't meet the
