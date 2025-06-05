@@ -462,29 +462,5 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         expect(school.meters.count).to eq(0)
       end
     end
-
-    context 'when checking target data' do
-      context 'and there is enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
-      end
-
-      context 'and there is not enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
-      end
-    end
   end
 end

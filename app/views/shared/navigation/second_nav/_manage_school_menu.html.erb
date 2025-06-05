@@ -44,12 +44,6 @@
     <%= if can? :manage, Audit
           link_to t('manage_school_menu.manage_audits'), school_audits_path(school), class: 'dropdown-item'
         end %>
-    <%= if can? :manage, SchoolPartner
-          link_to t('manage_school_menu.manage_partners'), admin_school_partners_path(school), class: 'dropdown-item'
-        end %>
-    <%= if can? :manage, Cad
-          link_to t('manage_school_menu.manage_cads'), school_cads_path(school), class: 'dropdown-item'
-        end %>
     <%= if school.school_group && can?(:manage, school.school_group)
           link_to t('manage_school_menu.manage_school_group'), admin_school_group_path(school.school_group),
                   class: 'dropdown-item'
@@ -60,10 +54,6 @@
     <%= if can? :view_content_reports, school
           link_to t('manage_school_menu.batch_reports'), school_reports_path(school), class: 'dropdown-item'
         end %>
-    <%= if current_user.admin?
-          link_to t('schools.meters.index.view_target_data'), admin_school_target_data_path(school),
-                  class: 'dropdown-item'
-        end %>
     <%= if current_user.admin? && Targets::SchoolTargetService.targets_enabled?(school) &&
            can?(:manage, SchoolTarget) && Targets::SchoolTargetService.new(school).enough_data?
           link_to t('manage_school_menu.review_targets'), school_school_targets_path(school), class: 'dropdown-item'
@@ -73,6 +63,11 @@
         end %>
     <%= if can? :remove_school, school
           link_to t('manage_school_menu.remove_school'), removal_admin_school_path(school), class: 'dropdown-item'
+        end %>
+    <%= if can? :manage_settings, school
+          link_to t('components.manage_school_navigation.settings'),
+                  settings_school_path(school),
+                  class: 'dropdown-item'
         end %>
   </div>
 </li>

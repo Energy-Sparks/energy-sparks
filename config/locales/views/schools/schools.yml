@@ -294,7 +294,6 @@ en:
         validate_meter_readings: Validate meter readings
         validated: Validated
         validated_readings: Validated Readings
-        view_target_data: View target data
         zero_days: Zero days
       inventory:
         meter_title: 'Meter: %{meter_mpan_mprn}'
