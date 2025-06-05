@@ -268,6 +268,7 @@ en:
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
         admin_meter_status: Meter status
+        completed_meter_reviews: Completed DCC meter reviews
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Source
         first: From
@@ -275,10 +276,10 @@ en:
         inactive_meters: Inactive meters
         large_gaps: Gaps
         latest: To
-        manage_solar_api_feeds: Manage Solar API feeds
+        manage_solar_api_feeds: Solar Feeds
         manual_reads: Manual reads?
         meter: Meter
-        meter_reviews: Completed DCC meter reviews
+        meter_reviews: Meter Reviews
         meter_system: Meter system
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
@@ -631,6 +632,28 @@ en:
           other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
+    settings:
+      manage_link: Manage
+      metering:
+        manage_meters: View and manage your school electricity and gas meters
+        manage_tariffs: Manage current and historical energy tariffs for your school
+        school_downloads: Download copies of your meter data
+      settings:
+        add_community_use: Add community use times
+        digital_signage: Display your analysis on public signage around the schools
+        edit_school_details: School address, pupil numbers, floor area and other settings
+        edit_school_times: Manage school opening hours and community use times
+        history: Manage the activities and actions previously recorded by your school
+        school_calendar: Manage your school calendar, including term times and inset days
+        temperatures: View and manage classroom temperatures recorded by pupils
+        transport_surveys: View and manage the results of surveys carried out by pupils
+        your_school_estate: Add details about your school buildings and heating sources
+      users:
+        add_alert_contacts: Add alert subscribers
+        add_pupil_login: Missing pupil login
+        add_users: Add school users
+        manage_users: Manage school users and pupil logins
+      view_link: View
     show:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
@@ -708,7 +731,6 @@ en:
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
       index:
         account_confirmed: Account confirmed?
-        add_existing_user_as_admin: Add an existing Energy Sparks user as a school admin
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
@@ -735,10 +757,10 @@ en:
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
-        title: New %{user_role} account
+        title: Add %{user_role} account
     your_school_estates:
       edit:
-        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        description: Energy Sparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
         heating_sources:
           air_source_heat_pump:
             percentage: What percentage of the school floor area is using the air source heat pump for heating?

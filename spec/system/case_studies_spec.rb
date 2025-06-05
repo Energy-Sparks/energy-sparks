@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe 'case_studies', :include_application_helper do
-  let(:school) { create(:school) }
-
   context 'when there is an existing case study' do
     let!(:case_study) do
       CaseStudy.create!(title: 'First Case Study', position: 1,
@@ -32,7 +30,7 @@ RSpec.describe 'case_studies', :include_application_helper do
         visit case_studies_path(locale: 'cy')
       end
 
-      it 'the english link is displayed' do
+      it 'the welsh link is not displayed' do
         expect(page).to have_link(I18n.t('case_studies.download', locale: :cy), href: case_study_download_path(case_study, locale: :en))
       end
     end

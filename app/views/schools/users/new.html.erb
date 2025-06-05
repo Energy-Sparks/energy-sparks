@@ -1,7 +1,13 @@
 <h1><%= t('schools.users.new.title', user_role: t_role(@user.role).downcase) %></h1>
-<p><%= t('schools.users.new.introduction') %></p>
 <%= simple_form_for @user, url: school_users_path(@school) do |f| %>
   <%= f.hidden_field :role %>
-  <%= render 'form', f: f %>
-  <%= f.submit t('schools.users.new.create_account'), class: 'btn btn-rounded'%>
+  <% if @user.role == 'school_admin' && !@new_school_admin && !params.key?(:new_user_form) %>
+    <%= f.input :email %>
+    <%= f.submit t('common.labels.continue'), class: 'btn btn-rounded' %>
+  <% else %>
+    <p><%= t('schools.users.new.introduction') %></p>
+    <%= render 'form', f: f %>
+    <%= hidden_field_tag :new_user_form %>
+    <%= f.submit t('schools.users.new.create_account'), class: 'btn btn-rounded' %>
+  <% end %>
 <% end %>

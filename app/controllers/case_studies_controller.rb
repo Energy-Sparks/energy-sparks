@@ -1,5 +1,4 @@
-class CaseStudiesController < ApplicationController
-  include StorageHelper
+class CaseStudiesController < DownloadableController
   skip_before_action :authenticate_user!
 
   def index
@@ -23,13 +22,13 @@ class CaseStudiesController < ApplicationController
     render :index, layout: layout
   end
 
-  def download
-    resource = CaseStudy.published.find_by(id: params[:id])
-    if resource.present?
-      file = resource.t_attached(:file, params[:locale])
-      serve_from_storage(file, params[:serve])
-    else
-      route_not_found
-    end
+  private
+
+  def downloadable_model_class
+    CaseStudy
+  end
+
+  def file(model)
+    model.t_attached(:file, params[:locale])
   end
 end
