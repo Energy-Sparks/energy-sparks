@@ -1,12 +1,10 @@
 class CaseStudiesController < DownloadableController
   skip_before_action :authenticate_user!
 
+  layout Flipper.enabled?(:new_case_studies_page) ? 'home' : 'application'
+
   def index
-    @case_studies = if Flipper.enabled?(:new_case_studies_page, current_user)
-                      CaseStudy.published.order(:position)
-                    else
-                      CaseStudy.order(:position)
-                    end
+    @case_studies = CaseStudy.published.order(:position)
 
     if Flipper.enabled?(:new_case_studies_page, current_user)
       @show_images = @case_studies.without_images.none? || params[:show_images]
@@ -17,9 +15,6 @@ class CaseStudiesController < DownloadableController
         end
       end
     end
-
-    layout = Flipper.enabled?(:new_case_studies_page, current_user) ? 'home' : 'application'
-    render :index, layout: layout
   end
 
   private
