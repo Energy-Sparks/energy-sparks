@@ -112,6 +112,15 @@ RSpec.describe 'User alert management', :include_application_helper do
       it_behaves_like 'an alert management page' do
         let(:schools) { user.school_group.schools.visible }
       end
+
+      context 'with an extra alert' do
+        let!(:contact) { create(:contact_with_name_email_phone, user: user) }
+
+        it 'displays the extra school' do
+          refresh
+          expect(page).to have_content(contact.school.name)
+        end
+      end
     end
 
     context 'with an admin' do
