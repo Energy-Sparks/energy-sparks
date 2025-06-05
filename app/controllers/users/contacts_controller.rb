@@ -14,7 +14,7 @@ module Users
       # if user has been signed up for alerts from other schools, then include these
       # so they can unsubscribe
       user_contact_schools = @user.contacts.map(&:school).select(&:visible)
-      @schools = @schools + user_contact_schools if (user_contact_schools - @schools).any?
+      @schools = @schools | user_contact_schools
       @show_clusters = @schools.any? { |s| s.school_group_cluster.present? }
       render :index, layout: 'dashboards'
     end
