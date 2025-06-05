@@ -11,23 +11,15 @@ module Admin
     before_action :build_aggregate_school
     before_action :set_measurement_options
 
+    layout 'dashboards'
+
     def analysis
       heat_meter = @aggregate_school.all_heat_meters.first
       redirect_to admin_school_analysis_tab_path(@school, tab: :heating_model_fitting, mpan_mprn: heat_meter.mpan_mprn)
     end
 
     def show
-      render_generic_chart_template
-    end
-
-    private
-
-    def build_aggregate_school
-      # use for heat model fitting tabs
-      @aggregate_school = aggregate_school
-    end
-
-    def render_generic_chart_template(extra_chart_config = {})
+      extra_chart_config = {}
       extra_chart_config[:mpan_mprn] = params[:mpan_mprn] if params[:mpan_mprn].present?
 
       @measurement = measurement_unit(params[:measurement])
@@ -37,8 +29,13 @@ module Admin
       @title = title_and_chart_configuration[:name]
       @charts = title_and_chart_configuration[:charts]
       @show_measurement_units = title_and_chart_configuration.fetch(:change_measurement_units, true)
+    end
 
-      render :generic_chart_template
+    private
+
+    def build_aggregate_school
+      # use for heat model fitting tabs
+      @aggregate_school = aggregate_school
     end
 
     def title_and_chart_configuration
