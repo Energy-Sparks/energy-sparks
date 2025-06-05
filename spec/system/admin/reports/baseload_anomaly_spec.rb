@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 describe 'Baseload anomaly report' do
-  let(:meter) { create(:electricity_meter, school: create(:school, :with_school_group)) }
+  let(:school_group) { create(:school_group, default_issues_admin_user: create(:admin)) }
+  let(:meter) { create(:electricity_meter, school: create(:school, school_group: school_group)) }
 
   let(:reading_date) { Date.yesterday }
 
@@ -19,8 +20,8 @@ describe 'Baseload anomaly report' do
   it 'displays the table' do
     rows = all('tr').map { |tr| tr.all('th, td').map(&:text) }
     expect(rows).to eq([
-                         ['School Group', 'School', 'Meter', 'Meter Name', 'Reading Date', 'Previous Baseload', 'Baseload', 'Chart'],
-                         [meter.school_group.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, reading_date.iso8601, '20', '0', 'Chart']
+                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Reading Date', 'Previous Baseload', 'Baseload', 'Chart'],
+                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, reading_date.iso8601, '20', '0', 'Chart']
                        ])
   end
 
@@ -28,7 +29,7 @@ describe 'Baseload anomaly report' do
     click_on 'Download as CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
-      eq("School Group,School,Meter,Meter Name,Reading Date,Previous Baseload,Baseload,Chart\n" \
-         "#{meter.school_group.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{reading_date},20,0,#{analysis_school_advice_baseload_url(meter.school, host: 'example.com')}\n")
+      eq("School Group,Admin,School,Meter,Meter Name,Reading Date,Previous Baseload,Baseload,Chart\n" \
+         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{reading_date},20,0,#{analysis_school_advice_baseload_url(meter.school, host: 'example.com')}\n")
   end
 end

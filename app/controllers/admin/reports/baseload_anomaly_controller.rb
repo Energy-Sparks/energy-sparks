@@ -13,6 +13,8 @@ module Admin
           Column.new(:school_group,
                      ->(anomaly) { anomaly.meter.school&.school_group&.name },
                      ->(anomaly, csv) { csv && link_to(csv, school_group_path(anomaly.meter.school&.school_group)) }),
+          Column.new(:admin,
+                     ->(anomaly) { anomaly.meter.school&.school_group&.default_issues_admin_user&.name }),
           Column.new(:school,
                      ->(anomaly) { anomaly.meter.school.name },
                      ->(anomaly, csv) { link_to(csv, school_path(anomaly.meter.school)) }),
