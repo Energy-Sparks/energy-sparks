@@ -15,14 +15,14 @@
     <% end %>
   </div>
 
- <div class="container mt-4">
-  <%= render Layout::GridComponent.new(
-        id: 'case-studies',
-        cols: 3,
-        classes: 'container pb-4',
-        cell_classes: 'mb-4',
-        component_classes: 'h-100'
-      ) do |grid| %>
+  <div class="container mt-4">
+    <%= render Layout::GridComponent.new(
+          id: 'case-studies',
+          cols: 3,
+          classes: 'container pb-4',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100'
+        ) do |grid| %>
 
       <% @case_studies.each do |case_study| %>
         <%= grid.with_card do |card| %>
@@ -45,6 +45,15 @@
                 ) { t('common.labels.download') } %>
           <% end %>
         <% end %>
+      <% end %>
+    <% end %>
+    <%= render Layout::CarouselComponent.new(id: 'testimonials',
+                                             show_markers: false,
+                                             theme: :accent,
+                                             classes: 'rounded-xl p-4 mb-5 mx-3',
+                                             show_arrows: :side) do |carousel| %>
+      <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
       <% end %>
     <% end %>
   </div>

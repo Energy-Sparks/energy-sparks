@@ -85,10 +85,10 @@ RSpec.describe CaseStudy, type: :model do
     end
 
     context 'when there are extra spaces in the tags' do
-      let!(:case_study) { create(:case_study, tags_en: ',  one, two,      three, ,') }
+      let!(:case_study) { create(:case_study, tags_en: ',  one, two,      three three, ,') }
 
       it 'sanitizes the tags' do
-        expect(case_study.tags_en).to eq('one, two, three')
+        expect(case_study.tags_en).to eq('one, two, three three')
       end
     end
 

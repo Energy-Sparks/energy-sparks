@@ -24,6 +24,16 @@ RSpec.describe 'Admin case studies', type: :system do
         expect(page).to have_content('You need to sign in or sign up before continuing.')
       end
     end
+
+    context 'when creating a new case study' do
+      before do
+        visit new_admin_case_study_path
+      end
+
+      it 'does not authorise viewing' do
+        expect(page).to have_content('You need to sign in or sign up before continuing.')
+      end
+    end
   end
 
   describe 'when logged in as a non admin user' do
@@ -34,6 +44,16 @@ RSpec.describe 'Admin case studies', type: :system do
     context 'when visiting the index' do
       before do
         visit admin_case_studies_path
+      end
+
+      it 'does not authorise viewing' do
+        expect(page).to have_content('You are not authorized to view that page.')
+      end
+    end
+
+    context 'when creating a new case study' do
+      before do
+        visit new_admin_case_study_path
       end
 
       it 'does not authorise viewing' do
@@ -52,85 +72,134 @@ RSpec.describe 'Admin case studies', type: :system do
 
       it 'lists the case study' do
         expect(page).to have_content(case_study.title)
-        expect(page).to have_content(case_study.description)
+        expect(page).to have_content(case_study.description.to_plain_text)
         case_study.tag_list.each do |tag|
           expect(page).to have_content(tag)
         end
-        expect(page).to have_link('Read case study', href: case_study_download_path(case_study.file))
+        expect(page).to have_link('Download', href: case_study_download_path(case_study, locale: :en))
+      end
+
+      it 'is published' do
+        expect(page).to have_css('i.fa-eye')
+      end
+
+      context 'when the case study is not published' do
+        let!(:case_study) { create(:case_study, published: false) }
+
+        it 'shows the unpublished icon' do
+          expect(page).to have_css('i.fa-eye-slash')
+        end
+      end
+
+      it 'is has image' do
+        expect(page).to have_css('i.fa-image')
+      end
+
+      context 'when there is no image' do
+        let!(:case_study) { create(:case_study, image: nil) }
+
+        it 'shows the no image icon' do
+          expect(page).to have_css('i.fa-triangle-exclamation')
+        end
       end
 
       it { expect(page).to have_link('Edit') }
       it { expect(page).to have_link('New') }
       it { expect(page).to have_link('Delete') }
-    end
 
-    context 'when creating a new case study' do
-      before { click_on 'New' }
-
-      context 'with invalid attributes' do
+      context 'when editing a case study' do
         before do
-          within('.description-trix-editor-en') { fill_in_trix with: 'Switch off the lights!' }
-          fill_in 'Position', with: '1'
-          click_on 'Save case study'
+          click_on('Edit', match: :first)
         end
 
-        it { expect(page).to have_content("Title\ncan't be blank") }
-      end
+        context 'with invalid attributes' do
+          before do
+            fill_in :case_study_title_en, with: ''
+            click_on 'Save case study'
+          end
 
-      context 'with valid attributes' do
-        before do
-          within('.description-trix-editor-en') { fill_in_trix with: 'Switch off the lights!' }
-          fill_in :case_study_title_en, with: 'Energy saving success'
-          fill_in 'Position', with: '1'
-          attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/images/newsletter-placeholder.png'))
-          click_on 'Save case study'
+          it { expect(page).to have_content("Title *\ncan't be blank") }
         end
 
-        it { expect(page).to have_content('Energy saving success') }
+        context 'with valid attributes' do
+          before do
+            fill_in :case_study_title_en, with: 'Updated title'
+            within('.description-trix-editor-en') do
+              fill_in_trix with: 'Updated description'
+            end
+            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/newsletter-placeholder.png'))
+            attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
+            fill_in :case_study_tags_en, with: 'en1, en2'
+            uncheck :case_study_published
+
+            click_on 'Save case study'
+          end
+
+          it { expect(page).to have_content('Updated title') }
+          it { expect(page).to have_content('Updated description') }
+          it { expect(page).to have_content('en1 en2') }
+          it { expect(page).to have_content('Case study was successfully updated.') }
+        end
       end
-    end
 
-
-    context 'when editing an existing case study' do
-      let!(:case_study) { create(:case_study, title_en: 'Old title', position: 1) }
-
-      before do
-        before { click_link('Edit', match: :first) }
-      end
-
-      context 'with invalid attributes' do
+      context 'when creating a new case study' do
         before do
-          fill_in :case_study_title_en, with: ''
-          click_on 'Save case study'
+          click_on 'New'
         end
 
-        it { expect(page).to have_content("Title *\ncan't be blank") }
-      end
+        context 'with invalid attributes' do
+          before do
+            click_on 'Save case study'
+          end
 
-      context 'with valid attributes' do
-        before do
-          fill_in :case_study_title_en, with: 'Updated title'
-          click_on 'Save Case study'
+          it { expect(page).to have_content("Title *\ncan't be blank") }
         end
 
-        it { expect(page).to have_content('Updated title') }
-        it { expect(page).to have_content('Case study was successfully updated.') }
+        context 'with valid attributes' do
+          before do
+            fill_in :case_study_title_en, with: 'New Case Study Title'
+            within('.description-trix-editor-en') do
+              fill_in_trix with: 'This is a new case study description.'
+            end
+            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/newsletter-placeholder.png'))
+            attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
+            fill_in :case_study_tags_en, with: 'new, example'
+            check :case_study_published
+
+            click_on 'Save case study'
+          end
+
+          it { expect(page).to have_content('New Case Study Title') }
+          it { expect(page).to have_content('This is a new case study description.') }
+          it { expect(page).to have_content('new example') }
+          it { expect(page).to have_content('Case study was successfully created.') }
+
+          it 'is published' do
+            expect(page).to have_css('i.fa-eye')
+          end
+
+          it 'has image' do
+            expect(page).to have_css('i.fa-image')
+          end
+
+          it { expect(CaseStudy.last.file_en.attached?).to be true }
+        end
       end
-    end
 
-    context 'when deleting a case study' do
-      let!(:case_study) { create(:case_study, title_en: 'Delete me', position: 1) }
+      context 'when deleting a case study' do
+        let(:case_study) { create(:case_study, title_en: 'Delete me', position: 0) }
 
-      before do
-        click_on('Delete', match: :first)
-      end
+        before do
+          click_on('Delete', match: :first)
+        end
 
-      it 'shows the index page' do
-        expect(page).to have_current_path(admin_case_studies_path)
-      end
+        it 'shows the index page' do
+          expect(page).to have_current_path(admin_case_studies_path)
+        end
 
-      it 'no longer lists the case study' do
-        expect(page).not_to have_content('Delete me')
+        it 'no longer lists the case study' do
+          expect(page).not_to have_content('Delete me')
+        end
       end
     end
   end

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'case_studies', :include_application_helper do
-  context 'when there is an existing case study' do
+  context 'when there is an existing case study', toggle_context: :new_case_studies_page do
     let!(:case_study) do
-      CaseStudy.create!(title: 'First Case Study', position: 1,
+      create(:case_study, title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'))
     end
 
@@ -11,8 +11,7 @@ RSpec.describe 'case_studies', :include_application_helper do
       visit case_studies_path
     end
 
-    it 'shows me the resources page' do
-      expect(page).to have_content 'Case Studies'
+    it 'displays the index page' do
       expect(page).to have_content 'First Case Study'
     end
 
@@ -25,28 +24,20 @@ RSpec.describe 'case_studies', :include_application_helper do
       expect(page).to have_http_status(:ok)
     end
 
-    context 'a welsh download is not available', toggle_feature: :new_case_studies_page do
+    context 'a welsh download is not available' do
       before do
         visit case_studies_path(locale: 'cy')
       end
 
-      it 'the welsh link is not displayed' do
+      it 'the link is to the english download' do
         expect(page).to have_link(I18n.t('case_studies.download', locale: :cy), href: case_study_download_path(case_study, locale: :en))
       end
     end
   end
 
-  context 'when case study does not exist', toggle_feature: :new_case_studies_page do
-    before do
-      visit case_study_download_path('unknown')
-    end
-
-    it_behaves_like 'a 404 error page'
-  end
-
-  context 'when a welsh download is available' do
+  context 'when a welsh download is available', toggle_context: :new_case_studies_page do
     let!(:case_study) do
-      CaseStudy.create!(title: 'First Case Study', position: 1,
+      create(:case_study, title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
       file_cy: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'))
     end
@@ -62,6 +53,99 @@ RSpec.describe 'case_studies', :include_application_helper do
     it 'serves the file' do
       find("a[href='/case-studies/#{case_study.id}/download?locale=cy']").click
       expect(page).to have_http_status(:ok)
+    end
+  end
+
+  context 'when case study is not published', toggle_context: :new_case_studies_page do
+    let!(:case_study) { create(:case_study, published: false) }
+
+    before do
+      visit case_studies_path
+    end
+
+    it 'does not display the case study' do
+      expect(page).not_to have_content(case_study.title)
+    end
+  end
+
+  context 'when case study does not exist', toggle_context: :new_case_studies_page do
+    before do
+      visit case_study_download_path('unknown')
+    end
+
+    it_behaves_like 'a 404 error page'
+  end
+
+  context 'with new page layout', with_feature: :new_case_studies_page do
+    let!(:testimonial) { create(:testimonial) }
+    let!(:case_study) { create(:case_study, tags: 'one, two, three', image: fixture_file_upload('spec/fixtures/images/newsletter-placeholder.png')) }
+
+    before do
+      visit case_studies_path
+    end
+
+    it 'renders all the components' do
+      expect(page).to have_css('#hero')
+      expect(page).to have_css('#case-studies')
+      expect(page).to have_css('#testimonials')
+    end
+
+    it 'shows the case study title' do
+      expect(page).to have_content(case_study.title)
+    end
+
+    it 'shows the case study description' do
+      expect(page).to have_content(case_study.description.to_plain_text)
+    end
+
+    it 'shows the case study tags' do
+      case_study.tag_list.each do |tag|
+        expect(page).to have_content(tag)
+      end
+    end
+
+    it 'shows the download link' do
+      expect(page).to have_link(I18n.t('case_studies.download'), href: case_study_download_path(case_study, locale: :en))
+    end
+
+    context 'when some case studies do not have images' do
+      let!(:case_study_without_image) { create(:case_study, image: nil) }
+
+      before do
+        visit case_studies_path
+      end
+
+      it 'shows both case studies text' do
+        expect(page).to have_content(case_study.title)
+        expect(page).to have_content(case_study_without_image.title)
+      end
+
+      it 'does not show any images' do
+        expect(page).not_to have_css("img[src*='newsletter-placeholder.png']")
+      end
+
+      context 'when show_images param is set' do
+        before do
+          visit case_studies_path(show_images: true)
+        end
+
+        it 'shows images for case studies with images' do
+          expect(page).to have_css("img[src*='newsletter-placeholder.png']")
+        end
+      end
+    end
+
+    context 'when all case studies have images' do
+      let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/sheffield.png')) }
+
+      before do
+        visit case_studies_path
+      end
+
+      it 'shows images for all case studies' do
+        expect(page).to have_css("img[src*='newsletter-placeholder.png']")
+        expect(page).to have_css("img[src*='sheffield.png']")
+      end
     end
   end
 end

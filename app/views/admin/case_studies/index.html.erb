@@ -2,6 +2,8 @@
   <h1>
     Case Studies
     <%= link_to 'New', new_admin_case_study_path, class: 'btn btn-sm' %>
+    <%= link_to 'Default index', case_studies_path, class: 'btn btn-sm' %>
+    <%= link_to 'Index with images', case_studies_path(show_images: true), class: 'btn btn-sm' %>
   </h1>
 </div>
 
@@ -74,7 +76,8 @@
                   <%= feature.with_header(title: case_study.title) %>
                   <%= feature.with_description { case_study.description.to_s } %>
                   <%= feature.with_link(
-                        href: case_study_serve_path(case_study, locale: case_study.file_locale, serve: :download)
+                        href: case_study_download_path(case_study, locale: case_study.file_locale),
+                        download: true
                       ) do
                         t('common.labels.download')
                       end %>
