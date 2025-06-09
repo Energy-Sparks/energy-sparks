@@ -16,4 +16,8 @@
   <p>This configuration is used to setup rtone api feeds that use the alternate setup first seen in some Newport
      school</p>
   <%= render 'rtone_variant_feeds', school: @school, rtone_variant_installations: @rtone_variant_installations %>
+
+  <h3>SolisCloud</h3>
+  <%= render 'solis_cloud_feeds', school: @school %>
+
 <% end %>

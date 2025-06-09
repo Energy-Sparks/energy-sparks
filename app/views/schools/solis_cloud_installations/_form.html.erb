@@ -1,9 +1,18 @@
 <%= simple_form_for [school, installation] do |form| %>
   <%= render 'shared/errors', subject: installation, subject_name: 'solis cloud api feed' %>
-  <%= form.input :api_id, as: :string, label: 'API ID',
-                          hint: 'The Solis Cloud API Key' %>
-  <%= form.input :api_secret, as: :string, label: 'API Secret',
-                              hint: 'The Solid Cloud API Secret' %>
+  <% unless @installation.persisted? %>
+    <div class='form-group'>
+      <%= label_tag 'Use Existing Installation', nil, class: 'form-control-label' %>
+      <% options = [['Select an existing installation', '']] + SolisCloudInstallation.all.map do |i|
+           ["API ID: #{i.api_id}, inverter stations: " \
+            "#{i.inverter_detail_list.map { |d| d['stationName'] }.uniq.join(', ')}", i.id]
+         end %>
+      <%= select_tag 'existing', options_for_select(options), class: 'form-control select' %>
+    </div>
+    <p>or create a new one</p>
+  <% end %>
+  <%= form.input :api_id, as: :string, label: 'API ID', hint: 'The Solis Cloud API Key' %>
+  <%= form.input :api_secret, as: :string, label: 'API Secret', hint: 'The Solid Cloud API Secret' %>
   <div class="actions">
     <%= form.submit 'Submit', class: 'btn btn-primary' %>
   </div>

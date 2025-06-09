@@ -22,6 +22,8 @@ class SolisCloudInstallation < ApplicationRecord
   belongs_to :amr_data_feed_config
 
   has_many :meters, dependent: nil
+  has_many :solis_cloud_installation_schools, dependent: nil
+  has_many :schools, through: :solis_cloud_installation_schools
 
   validates :api_id, :api_secret, presence: true
 
