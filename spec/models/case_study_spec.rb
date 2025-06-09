@@ -30,7 +30,7 @@ RSpec.describe CaseStudy, type: :model do
 
     context 'when some case studies do not have images attached' do
       let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/placeholder.png')) }
-      let!(:case_study_without_image) { create(:case_study) }
+      let!(:case_study_without_image) { create(:case_study, image: nil) }
 
       it 'returns only case studies without images' do
         expect(CaseStudy.without_images).to match_array([case_study_without_image])
@@ -38,8 +38,8 @@ RSpec.describe CaseStudy, type: :model do
     end
 
     context 'when no case studies have images attached' do
-      let!(:case_study_without_image_1) { create(:case_study) }
-      let!(:case_study_without_image_2) { create(:case_study) }
+      let!(:case_study_without_image_1) { create(:case_study, image: nil) }
+      let!(:case_study_without_image_2) { create(:case_study, image: nil) }
 
       it 'returns all case studies' do
         expect(CaseStudy.without_images).to match_array([case_study_without_image_1, case_study_without_image_2])

@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Elements::IframeComponent, :include_application_helper, type: :component do
+  # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:src) { 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
@@ -44,4 +45,5 @@ RSpec.describe Elements::IframeComponent, :include_application_helper, type: :co
 
     it { expect(html).to have_css('iframe.custom-class') }
   end
+  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

@@ -10,19 +10,6 @@ en:
         summary: Summary
       activity_type_todos:
         task: Activity
-      case_study:
-        organisation_type:
-          infant: Infant School
-          junior: Junior School
-          local_authority: Local Authority
-          middle: Middle School
-          mixed_primary_and_secondary: 'Mixed: Primary and Secondary School'
-          multi_academy_trust: Multi-Academy Trust
-          primary: Primary School
-          school: School
-          school_group: School Group
-          secondary: Secondary School
-          special: Special or Alternative Provision
       consent_grant:
         job_title: Job title
         name: Name

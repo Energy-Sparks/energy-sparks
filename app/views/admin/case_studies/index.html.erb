@@ -2,10 +2,14 @@
   <h1>
     Case Studies
     <%= link_to 'New', new_admin_case_study_path, class: 'btn btn-sm' %>
-    <%= link_to 'Default index', case_studies_path, class: 'btn btn-sm' %>
-    <%= link_to 'Index with images', case_studies_path(show_images: true), class: 'btn btn-sm' %>
   </h1>
+
 </div>
+
+  <p>
+    By default, the <%= link_to 'case studies page', case_studies_path %> only shows images for case studies if all
+    have images attached. <%= link_to 'View the page with images', case_studies_path(show_images: true) %>
+  </p>
 
 <div classes='container'>
   <div class="p-2">
