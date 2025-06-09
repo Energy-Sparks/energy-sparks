@@ -2,10 +2,8 @@ module Publishable
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :created_by, class_name: 'User', optional: true
-    belongs_to :updated_by, class_name: 'User', optional: true
-
     scope :published, -> { where(published: true) }
+    scope :tx_resources, -> { published.order(:id) }
   end
 
   def publishable?
@@ -18,7 +16,9 @@ module Publishable
   # or if its publishable
   def change_publication_status?
     if published_changed?(from: false, to: true) && !publishable?
-      errors.add(:published, "cannot publish #{self.model_name.to_s.downcase} without any published pages")
+      message = "Cannot publish #{self.model_name.to_s.downcase}"
+      message += self.class.publishable_error_without
+      errors.add(:published, message)
     end
   end
 end

@@ -2,30 +2,19 @@
 #
 # Table name: case_studies
 #
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
-#  position      :integer          default(0), not null
-#  published     :boolean          default(FALSE), not null
-#  title         :string
-#  updated_at    :datetime         not null
-#  updated_by_id :bigint(8)
-#
-# Indexes
-#
-#  index_case_studies_on_created_by_id  (created_by_id)
-#  index_case_studies_on_updated_by_id  (updated_by_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
-#  fk_rails_...  (updated_by_id => users.id) ON DELETE => nullify
+#  created_at :datetime         not null
+#  id         :bigint(8)        not null, primary key
+#  position   :integer          default(0), not null
+#  title      :string
+#  updated_at :datetime         not null
 #
 
 class CaseStudy < Cms::Base
   extend Mobility
   include TransifexSerialisable
   include TranslatableAttachment
+  include Publishable
+  include Trackable
 
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
@@ -36,6 +25,7 @@ class CaseStudy < Cms::Base
   translates :description, backend: :action_text
 
   has_one_attached :image # assume this doesn't need to be translatable
+
   t_has_one_attached :file
 
   validates :title_en, :file_en, presence: true
@@ -49,6 +39,7 @@ class CaseStudy < Cms::Base
   # Sanitise tags input to ensure no leading/trailing spaces and no empty tag
   I18n.available_locales.each do |locale|
     define_method("tags_#{locale}=") do |tags_string|
+      tags_string ||= ''
       super(tags_string.split(',').map(&:strip).reject(&:blank?).join(', '))
     end
   end

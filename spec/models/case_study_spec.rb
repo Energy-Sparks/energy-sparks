@@ -8,6 +8,14 @@ RSpec.describe CaseStudy, type: :model do
     it 'returns case studies in id order' do
       expect(CaseStudy.tx_resources).to match_array([case_study_1, case_study_2])
     end
+
+    context 'when there is an unpublished case study' do
+      let!(:unpublished) { create(:case_study, title: 'two', position: 3, published: false) }
+
+      it 'does not include unpublished case studies' do
+        expect(CaseStudy.tx_resources).not_to include(unpublished)
+      end
+    end
   end
 
   describe '.without_images' do
@@ -45,30 +53,51 @@ RSpec.describe CaseStudy, type: :model do
     end
   end
 
-  describe '#organisation_type_name' do
-    let(:case_study) { build(:case_study, organisation: organisation) }
+  describe '#tag_list' do
+    context 'when there are no tags' do
+      let!(:case_study) { create(:case_study, tags: nil) }
 
-    context 'when organisation is a School' do
-      let(:organisation) { build(:school, school_type: 'primary') }
-
-      it 'returns the translated school type' do
-        expect(case_study.organisation_type_name).to eq('Primary')
+      it 'returns an empty array' do
+        expect(case_study.tag_list).to eq([])
       end
     end
 
-    context 'when organisation is a SchoolGroup' do
-      let(:organisation) { build(:school_group, group_type: 'multi_academy_trust') }
+    context 'when there are tags' do
+      let!(:case_study) { create(:case_study, tags: 'one, two, three') }
 
-      it 'returns the translated group type' do
-        expect(case_study.organisation_type_name).to eq('Multi-Academy Trust')
+      it 'returns a list of tags' do
+        expect(case_study.tag_list).to match_array(['one', 'two', 'three'])
+      end
+    end
+  end
+
+  describe '#tags_{locale}=' do
+    let!(:case_study) { create(:case_study, tags_en: 'one, two, three', tags_cy: 'un, dau, tri') }
+
+    context 'when english and welsh tags are set' do
+      it 'stores the english tags' do
+        expect(case_study.tags_en).to eq('one, two, three')
+      end
+
+      it 'stores the welsh tags' do
+        expect(case_study.tags_cy).to eq('un, dau, tri')
       end
     end
 
-    context 'when organisation is neither a School nor a SchoolGroup' do
-      let(:organisation) { }
+    context 'when there are extra spaces in the tags' do
+      let!(:case_study) { create(:case_study, tags_en: ',  one, two,      three, ,') }
 
-      it 'returns the default school label' do
-        expect(case_study.organisation_type_name).to eq('School')
+      it 'sanitizes the tags' do
+        expect(case_study.tags_en).to eq('one, two, three')
+      end
+    end
+
+    context 'when there are no tags' do
+      let!(:case_study_no_tags) { create(:case_study, tags: nil) }
+
+      it 'stores nil' do
+        expect(case_study_no_tags.tags_en).to be_nil
+        expect(case_study_no_tags.tags_cy).to be_nil
       end
     end
   end
