@@ -31,6 +31,32 @@ describe User do
     expect(user.school_name).to eq('Big School')
   end
 
+  describe 'when role is changed' do
+    describe 'when group admin becomes school admin' do
+      let!(:user) { create(:group_admin) }
+
+      before do
+        user.update!(role: :school_admin, school: create(:school), staff_role: create(:staff_role, :management))
+      end
+
+      it 'updates the role' do
+        expect(user.school_group).to be_nil
+      end
+    end
+
+    describe 'when school admin becomes group admin' do
+      let!(:user) { create(:school_admin, :with_cluster_schools) }
+
+      before do
+        user.update!(role: :group_admin, school_group: create(:school_group))
+      end
+
+      it 'removes the schools' do
+        expect(user.cluster_schools).to be_empty
+      end
+    end
+  end
+
   describe '#default_school_group' do
     subject(:default_school_group) { user.default_school_group }
 

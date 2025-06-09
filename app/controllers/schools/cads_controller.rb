@@ -5,6 +5,8 @@ module Schools
 
     skip_before_action :authenticate_user!, only: [:live_data]
 
+    layout 'dashboards'
+
     def index
     end
 
