@@ -21,13 +21,14 @@ class CaseStudy < Cms::Base
   }
 
   translates :title, type: :string, fallbacks: { cy: :en }
+
+  # it was decided to keep tags in a string field for now, rather than a seperate model
   translates :tags, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
-
+  t_has_one_attached :file
   has_one_attached :image # assume this doesn't need to be translatable
 
-  t_has_one_attached :file
-
+  validates :image, content_type: { in: [:png, :jpeg] }
   validates :title_en, :file_en, presence: true
   validates :position, numericality: true, presence: true
 

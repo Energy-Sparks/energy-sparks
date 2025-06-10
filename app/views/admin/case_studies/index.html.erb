@@ -2,14 +2,14 @@
   <h1>
     Case Studies
     <%= link_to 'New', new_admin_case_study_path, class: 'btn btn-sm' %>
+    <%= link_to 'Case studies page', case_studies_path, class: 'btn btn-sm' %>
   </h1>
-
 </div>
 
-  <p>
-    By default, the <%= link_to 'case studies page', case_studies_path %> only shows images for case studies if all
-    have images attached. <%= link_to 'View the page with images', case_studies_path(show_images: true) %>
-  </p>
+<% unless @case_studies.published.without_images.none? %>
+  <p>Currently, some published case studies do not have images attached, so images are not displayed on the page
+  <%= admin_link(case_studies_path(show_images: true), to: 'Show page with images') %></p>
+<% end %>
 
 <div classes='container'>
   <div class="p-2">
@@ -17,10 +17,10 @@
       <div class='clearfix border rounded bg-light p-2 row mb-2'>
         <div class='col-md-12'>
           <h4 class='pb-0 d-flex align-items-center'>
-            <span class="badge rounded-pill bg-white text-dark font-weight-normal border">
+            <span class="badge rounded-pill bg-white text-dark font-weight-normal border" title='position on page' data-toggle='tooltip'>
               <%= case_study.position %>
             </span>
-            <span class='d-inline-block text-truncate ps-2' style="max-width: 90%">
+            <span class='d-inline-block text-truncate ps-2' style="max-width: 80%">
               <%= case_study.title %>
             </span>
             <span class='ml-auto pb-2'>
@@ -46,7 +46,7 @@
             <span data-toggle="collapse"
                   href="#case_study-<%= case_study.id %>" role="button" aria-expanded="true"
                   aria-controls="case_study-<%= case_study.id %>"
-                  class="toggler text-decoration-none collapsed">
+                  class="toggler text-decoration-none<%= ' collapsed' unless case_study.id.to_s == params[:id] %>">
               <%= toggler %>
             </span>
             <span class="badge rounded-pill bg-white text-dark font-weight-normal border">
@@ -66,7 +66,7 @@
             </span>
           </div>
 
-          <div class="collapse" id="case_study-<%= case_study.id %>">
+          <div class="collapse<%= ' show' if case_study.id.to_s == params[:id] %>" id="case_study-<%= case_study.id %>">
             <%= render Layout::GridComponent.new(cols: 3, classes: 'py-2 pl-2') do |grid| %>
               <%= grid.with_card do |card| %>
                 <%= card.with_image(src: case_study.image, rounded: :top) if case_study.image.attached? %>

@@ -115,10 +115,12 @@ RSpec.describe 'Admin case studies', type: :system do
         context 'with invalid attributes' do
           before do
             fill_in :case_study_title_en, with: ''
+            attach_file(:case_study_image, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             click_on 'Save case study'
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
+          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
         end
 
         context 'with valid attributes' do
@@ -127,7 +129,7 @@ RSpec.describe 'Admin case studies', type: :system do
             within('.description-trix-editor-en') do
               fill_in_trix with: 'Updated description'
             end
-            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/newsletter-placeholder.png'))
+            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/boiler.jpg'))
             attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             fill_in :case_study_tags_en, with: 'en1, en2'
             uncheck :case_study_published
@@ -139,6 +141,11 @@ RSpec.describe 'Admin case studies', type: :system do
           it { expect(page).to have_content('Updated description') }
           it { expect(page).to have_content('en1 en2') }
           it { expect(page).to have_content('Case study was successfully updated.') }
+
+          it 'resizes images to 1400px width max' do
+            case_study.reload.image.analyze
+            expect(case_study.image.metadata[:width]).to eq(1400)
+          end
         end
       end
 
@@ -149,10 +156,12 @@ RSpec.describe 'Admin case studies', type: :system do
 
         context 'with invalid attributes' do
           before do
+            attach_file(:case_study_image, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             click_on 'Save case study'
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
+          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
         end
 
         context 'with valid attributes' do
@@ -161,7 +170,7 @@ RSpec.describe 'Admin case studies', type: :system do
             within('.description-trix-editor-en') do
               fill_in_trix with: 'This is a new case study description.'
             end
-            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/newsletter-placeholder.png'))
+            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/boiler.jpg'))
             attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             fill_in :case_study_tags_en, with: 'new, example'
             check :case_study_published
@@ -169,10 +178,20 @@ RSpec.describe 'Admin case studies', type: :system do
             click_on 'Save case study'
           end
 
+          it 'shows the index page' do
+            expect(page).to have_current_path(admin_case_study_path(CaseStudy.last))
+          end
+
           it { expect(page).to have_content('New Case Study Title') }
           it { expect(page).to have_content('This is a new case study description.') }
           it { expect(page).to have_content('new example') }
           it { expect(page).to have_content('Case study was successfully created.') }
+
+          it 'resizes images to 1400px width max' do
+            case_study = CaseStudy.last
+            case_study.image.analyze
+            expect(CaseStudy.last.image.metadata[:width]).to be(1400)
+          end
 
           it 'is published' do
             expect(page).to have_css('i.fa-eye')
