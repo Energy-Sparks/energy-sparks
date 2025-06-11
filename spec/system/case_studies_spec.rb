@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'case_studies', :include_application_helper do
+  let(:user) { }
+
+  before { sign_in(user) if user }
+
   context 'when there is an existing case study', toggle_context: :new_case_studies_page do
     let!(:case_study) do
       create(:case_study, title: 'First Case Study', position: 1,
@@ -129,8 +133,28 @@ RSpec.describe 'case_studies', :include_application_helper do
           visit case_studies_path(show_images: true)
         end
 
-        it 'shows images for case studies with images' do
-          expect(page).to have_css("img[src*='newsletter-placeholder.png']")
+        context 'when user is admin' do
+          let(:user) { create(:admin) }
+
+          it 'shows images for case studies with images' do
+            expect(page).to have_css("img[src*='newsletter-placeholder.png']")
+          end
+        end
+
+        context 'when there is no user' do
+          let(:user) { }
+
+          it 'does not show images for case studies with images' do
+            expect(page).not_to have_css("img[src*='newsletter-placeholder.png']")
+          end
+        end
+
+        context 'when user is not admin' do
+          let(:user) { create(:group_admin) }
+
+          it 'does not show images for case studies with images' do
+            expect(page).not_to have_css("img[src*='newsletter-placeholder.png']")
+          end
         end
       end
     end

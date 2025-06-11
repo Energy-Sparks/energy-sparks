@@ -7,7 +7,7 @@ class CaseStudiesController < DownloadableController
     @case_studies = CaseStudy.published.order(:position)
 
     if Flipper.enabled?(:new_case_studies_page, current_user)
-      @show_images = @case_studies.without_images.none? || params[:show_images] && current_user&.admin?
+      @show_images = @case_studies.without_images.none? || (params[:show_images] && current_user&.admin?)
 
       if params[:show_images]
         @case_studies = @case_studies.to_a.sort_by do |cs|
