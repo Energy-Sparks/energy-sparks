@@ -921,7 +921,6 @@ DEPENDENCIES
   lograge
   lookbook
   mailgun_rails
-  mini_magick
   mobility (~> 1.3.2)
   mobility-actiontext (~> 1.1.1)
   momentjs-rails

@@ -40,11 +40,11 @@ gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
 gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
-gem 'mini_magick'
 gem 'momentjs-rails'
 gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
+
 
 # Pagination
 gem 'pagy'
