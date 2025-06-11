@@ -9,7 +9,7 @@
 #  updated_at :datetime         not null
 #
 
-class CaseStudy < Cms::Base
+class CaseStudy < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
   include TranslatableAttachment
