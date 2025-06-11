@@ -16,6 +16,8 @@ class CaseStudy < Cms::Base
   include Publishable
   include Trackable
 
+  has_many :testimonials, dependent: :restrict_with_error
+
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
   }

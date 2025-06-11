@@ -11,6 +11,12 @@
   <%= admin_link(case_studies_path(show_images: true), to: 'Show page with images') %></p>
 <% end %>
 
+<p>
+  Only published case studies will appear on the case studies page, however
+  unpublished case studies will still be available to download if a direct link is followed.
+  This is to preserve the integrity of any case studies links used elsewhere on the site.
+</p>
+
 <div classes='container'>
   <div class="p-2">
     <% @case_studies.each do |case_study| %>
