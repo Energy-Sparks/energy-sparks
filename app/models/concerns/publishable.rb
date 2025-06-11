@@ -16,7 +16,7 @@ module Publishable
   # or if its publishable
   def change_publication_status?
     if published_changed?(from: false, to: true) && !publishable?
-      message = "Cannot publish #{self.model_name.to_s.downcase}"
+      message = "Cannot publish #{self.class.name.demodulize.to_s.downcase} "
       message += self.class.publishable_error_without
       errors.add(:published, message)
     end

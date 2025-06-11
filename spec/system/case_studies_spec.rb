@@ -8,7 +8,7 @@ RSpec.describe 'case_studies', :include_application_helper do
   context 'when there is an existing case study', toggle_context: :new_case_studies_page do
     let!(:case_study) do
       create(:case_study, title: 'First Case Study', position: 1,
-      file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'))
+      file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/laptop.jpg'))
     end
 
     before do
@@ -42,8 +42,8 @@ RSpec.describe 'case_studies', :include_application_helper do
   context 'when a welsh download is available', toggle_context: :new_case_studies_page do
     let!(:case_study) do
       create(:case_study, title: 'First Case Study', position: 1,
-      file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'),
-      file_cy: fixture_file_upload(Rails.root + 'spec/fixtures/images/newsletter-placeholder.png'))
+      file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/laptop.jpg'),
+      file_cy: fixture_file_upload(Rails.root + 'spec/fixtures/images/laptop.jpg'))
     end
 
     before do
@@ -82,7 +82,7 @@ RSpec.describe 'case_studies', :include_application_helper do
 
   context 'with new page layout', with_feature: :new_case_studies_page do
     let!(:testimonial) { create(:testimonial) }
-    let!(:case_study) { create(:case_study, tags: 'one, two, three', image: fixture_file_upload('spec/fixtures/images/newsletter-placeholder.png')) }
+    let!(:case_study) { create(:case_study, tags: 'one, two, three', image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
 
     before do
       visit case_studies_path
@@ -125,7 +125,7 @@ RSpec.describe 'case_studies', :include_application_helper do
       end
 
       it 'does not show any images' do
-        expect(page).not_to have_css("img[src*='newsletter-placeholder.png']")
+        expect(page).not_to have_css("img[src*='laptop.jpg']")
       end
 
       context 'when show_images param is set' do
@@ -137,7 +137,7 @@ RSpec.describe 'case_studies', :include_application_helper do
           let(:user) { create(:admin) }
 
           it 'shows images for case studies with images' do
-            expect(page).to have_css("img[src*='newsletter-placeholder.png']")
+            expect(page).to have_css("img[src*='laptop.jpg']")
           end
         end
 
@@ -145,7 +145,7 @@ RSpec.describe 'case_studies', :include_application_helper do
           let(:user) { }
 
           it 'does not show images for case studies with images' do
-            expect(page).not_to have_css("img[src*='newsletter-placeholder.png']")
+            expect(page).not_to have_css("img[src*='laptop.jpg']")
           end
         end
 
@@ -153,22 +153,22 @@ RSpec.describe 'case_studies', :include_application_helper do
           let(:user) { create(:group_admin) }
 
           it 'does not show images for case studies with images' do
-            expect(page).not_to have_css("img[src*='newsletter-placeholder.png']")
+            expect(page).not_to have_css("img[src*='laptop.jpg']")
           end
         end
       end
     end
 
     context 'when all case studies have images' do
-      let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/sheffield.png')) }
+      let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/pupils-jumping.jpg')) }
 
       before do
         visit case_studies_path
       end
 
       it 'shows images for all case studies' do
-        expect(page).to have_css("img[src*='newsletter-placeholder.png']")
-        expect(page).to have_css("img[src*='sheffield.png']")
+        expect(page).to have_css("img[src*='laptop.jpg']")
+        expect(page).to have_css("img[src*='pupils-jumping.jpg']")
       end
     end
   end

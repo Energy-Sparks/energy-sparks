@@ -20,8 +20,8 @@ RSpec.describe CaseStudy, type: :model do
 
   describe '.without_images' do
     context 'when all case studies have images attached' do
-      let!(:case_study_with_image_1) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/placeholder.png')) }
-      let!(:case_study_with_image_2) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/placeholder.png')) }
+      let!(:case_study_with_image_1) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
+      let!(:case_study_with_image_2) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
 
       it 'returns nothing' do
         expect(CaseStudy.without_images).to be_empty
@@ -29,7 +29,7 @@ RSpec.describe CaseStudy, type: :model do
     end
 
     context 'when some case studies do not have images attached' do
-      let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/placeholder.png')) }
+      let!(:case_study_with_image) { create(:case_study, image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
       let!(:case_study_without_image) { create(:case_study, image: nil) }
 
       it 'returns only case studies without images' do
