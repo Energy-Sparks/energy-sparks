@@ -57,6 +57,7 @@ class SolisCloudInstallation < ApplicationRecord
 
   def meter_name(serial)
     inverter = inverter_detail_list.find { |inverter| inverter['sn'] == serial }
-    "SolisCloud #{inverter&.[]('name') || inverter&.[]('stationName') || serial}"
+    name = "#{[inverter['name'], inverter['stationName']].compact.join(' / ')} (#{inverter['sno']})" if inverter
+    "SolisCloud - #{name || serial}"
   end
 end

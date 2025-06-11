@@ -3,7 +3,7 @@
 module Schools
   class SolarEdgeInstallationsController < BaseInstallationsController
     ID_PREFIX = 'solar-edge'
-    NAME = 'SolarEdge'
+    NAME = 'SolarEdge API feed'
     JOB_CLASS = Solar::SolarEdgeLoaderJob
 
     def show

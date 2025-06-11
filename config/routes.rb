@@ -832,12 +832,6 @@ Rails.application.routes.draw do
 
     resources :local_distribution_zones, except: [:destroy]
     resources :secr_co2_equivalences, except: [:destroy, :show]
-    resources :solis_cloud_installations do
-      member do
-        post :check
-        post :submit_job
-      end
-    end
   end # Admin name space
 
   get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
