@@ -49,6 +49,7 @@
 
     .badge {
       background-color: $yellow-light;
+      color: $blue-dark;
     }
 
     .btn-secondary {
@@ -58,6 +59,10 @@
 
   &.theme-accent {
     background-color: $yellow-pale;
+
+    .badge {
+      background-color: $yellow-medium; // This is not in the design (open to other options!)
+    }
 
     .btn-secondary {
       @include button-outline-variant($blue-very-dark, $blue-very-dark, $yellow-light);

@@ -1,11 +1,12 @@
 module Layout
   class GridComponent < LayoutComponent
-    attr_reader :cols, :rows, :feature
+    attr_reader :cols, :feature
 
     renders_many :cells, types: types(
       type(:block, Elements::BlockComponent),
       type(:icon, IconComponent),
       type(:image, Elements::ImageComponent),
+      type(:iframe, Elements::IframeComponent),
       type(:paragraph, Elements::TagComponent, :p),
       type(:prompt_list, PromptListComponent),
       type(:stats_card, Cards::StatsComponent),
@@ -29,17 +30,16 @@ module Layout
     end
 
     def responsive_classes(klass)
-      if cols == 2 && klass == Elements::ImageComponent
+      if cols == 2 && klass == Elements::ImageComponent || klass == Elements::IframeComponent
         # ensure image always comes first on 2 col layouts
         return 'order-first-md-down pb-4 pb-lg-0'
       end
     end
 
-    def initialize(cols:, rows: 1, feature: false, cell_classes: '', **_kwargs)
+    def initialize(cols:, feature: false, cell_classes: '', **_kwargs)
       super
       @feature = feature
       @cols = cols
-      @rows = rows
 
       @cell_classes = cell_classes
     end
