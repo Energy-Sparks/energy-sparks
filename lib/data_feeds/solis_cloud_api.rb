@@ -17,13 +17,18 @@ module DataFeeds
       get_data('/v1/api/userStationList', {})
     end
 
-    limit_method :station_day, rate: 1, interval: 2 unless Rails.env.test?
-    def station_day(id, day)
-      get_data('/v1/api/stationDay', { id: id, money: 'GBP', time: day.iso8601, timeZone: 44 })
+    def inverter_detail_list
+      get_data('/v1/api/inverterDetailList', {})
     end
 
-    def inverter_day(serial_num, day)
-      get_data('/v1/api/inverterDay', { sn: serial_num, money: 'GBP', time: day.iso8601, timeZone: 44 })
+    limit_method :station_day, rate: 1, interval: 2 unless Rails.env.test?
+    def station_day(id, day)
+      get_data('/v1/api/stationDay', { id: id, money: 'GBP', time: day.iso8601, timeZone: 0 })
+    end
+
+    limit_method :inverter_day, rate: 2, interval: 1, balanced: true unless Rails.env.test? # API docs say 2 times/sec
+    def inverter_day(serial, day)
+      get_data('/v1/api/inverterDay', { sn: serial, money: 'GBP', time: day.iso8601, timeZone: 0 })
     end
 
     private
