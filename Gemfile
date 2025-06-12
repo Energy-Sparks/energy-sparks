@@ -35,6 +35,7 @@ gem 'energy-sparks_analytics', path: 'analytics'
 gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 
 # Assets
+gem 'active_storage_validations'
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
 gem 'importmap-rails'
