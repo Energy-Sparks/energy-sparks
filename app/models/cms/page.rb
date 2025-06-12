@@ -47,6 +47,10 @@ module Cms
 
     accepts_nested_attributes_for :sections
 
+    def self.publishable_error_without
+      'without any published sections'
+    end
+
     def publishable?
       sections.published.any?
     end

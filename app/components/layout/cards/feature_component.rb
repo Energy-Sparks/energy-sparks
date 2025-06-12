@@ -4,7 +4,7 @@ module Layout
       attr_reader :size, :position
 
       renders_one :header, ->(**kwargs) do
-        Elements::HeaderComponent.new(**{ level: header_size, theme: @theme }.merge(kwargs))
+        Elements::HeaderComponent.new(**{ level: header_size }.merge(kwargs))
       end
       renders_one :price, ->(**kwargs) do
         Elements::PriceComponent.new(**merge_classes('', kwargs))
@@ -17,7 +17,7 @@ module Layout
         Elements::TagComponent.new(:a, *args, **merge_classes('', kwargs))
       end
       renders_one :description, ->(**kwargs) do
-        Elements::TagComponent.new(:p, **merge_classes('pt-2 pb-2', kwargs))
+        Elements::TagComponent.new(:div, **merge_classes('pt-2 pb-4', kwargs))
       end
       renders_many :buttons, ->(*args, **kwargs) do
         Elements::ButtonComponent.new(*args, **merge_classes('mb-1 mr-2', kwargs))
