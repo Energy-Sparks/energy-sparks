@@ -2,6 +2,12 @@
 en:
   case_studies:
     download: Download
+    feature:
+      description_html: |-
+        How can schools cut energy costs and reduce emissions? How can teachers inspire their pupils to become the sustainability leaders of tomorrow?
+        <br><br>
+        Energy Sparks works with %{count} schools across England, Wales and Scotland. Read our case studies to discover how we are supporting schools to become climate champions.
+      title: Case studies that spark something
     more_case_studies: More case studies
     title: Case Studies
   home:

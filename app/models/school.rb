@@ -115,8 +115,9 @@ class School < ApplicationRecord
   extend FriendlyId
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
-  include EnumDataSharing
   include MailchimpUpdateable
+  include Enums::DataSharing
+  include Enums::SchoolType
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
 
@@ -219,9 +220,6 @@ class School < ApplicationRecord
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
-
-  enum :school_type, { primary: 0, secondary: 1, special: 2, infant: 3, junior: 4, middle: 5,
-                       mixed_primary_and_secondary: 6 }
 
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }

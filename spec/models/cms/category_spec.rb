@@ -33,12 +33,14 @@ describe Cms::Category do
         subject(:category) { create(:category, published: published) }
 
         it { expect(category.save).to be(false) }
+        it { expect { category.save! }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Published Cannot publish category without any published pages') }
       end
 
       context 'with no published pages' do
         subject(:category) { create(:category, :with_pages, published: published, pages_published: false) }
 
         it { expect(category.save).to be(false) }
+        it { expect { category.save! }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Published Cannot publish category without any published pages') }
       end
 
       context 'with published pages' do

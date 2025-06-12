@@ -7,7 +7,7 @@
     </div>
   <% end %>
   <%= header %>
-  <%= price %>
+  <%= price if price %>
   <% if date || author %>
     <div class='pb-3 small text-complement'>
       <%= date if date %>
@@ -16,12 +16,14 @@
       <% end %>
     </div>
   <% end %>
-  <%= description %>
-  <div>
-    <% buttons.each do |button| %>
-      <%= button %>
-    <% end %>
-  </div>
+  <%= description if description %>
+  <% if buttons.any? %>
+    <div>
+      <% buttons.each do |button| %>
+        <%= button %>
+      <% end %>
+    </div>
+  <% end %>
   <% links.each do |link| %>
     <%= link %>
   <% end %>
