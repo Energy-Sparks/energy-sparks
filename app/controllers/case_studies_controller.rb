@@ -1,6 +1,8 @@
 class CaseStudiesController < DownloadableController
   skip_before_action :authenticate_user!
 
+  layout :choose_layout
+
   def index
     @case_studies = CaseStudy.published.order(:position)
 
@@ -18,6 +20,14 @@ class CaseStudiesController < DownloadableController
   end
 
   private
+
+  def choose_layout
+    if Flipper.enabled?(:new_case_studies_page, current_user)
+      'home'
+    else
+      'application'
+    end
+  end
 
   def downloadable_model_class
     CaseStudy
