@@ -15,8 +15,6 @@ class CaseStudiesController < DownloadableController
         end
       end
     end
-
-    render layout: Flipper.enabled?(:new_case_studies_page) ? 'home' : 'application'
   end
 
   private
