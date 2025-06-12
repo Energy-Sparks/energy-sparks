@@ -26,7 +26,9 @@
 
       <% @case_studies.each do |case_study| %>
         <%= grid.with_card do |card| %>
-          <%= card.with_image(src: case_study.image, rounded: :top) if case_study.image.attached? && @show_images %>
+          <%= if case_study.image.attached? && @show_images
+                card.with_image(src: cdn_link_url(case_study.image), rounded: :top)
+              end %>
           <%= card.with_feature_card(
                 theme: :light, size: :sm,
                 classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' if !case_study.image.attached? || !@show_images}"

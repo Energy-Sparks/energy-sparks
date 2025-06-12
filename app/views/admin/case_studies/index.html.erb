@@ -75,7 +75,7 @@
           <div class="collapse<%= ' show' if case_study.id.to_s == params[:id] %>" id="case_study-<%= case_study.id %>">
             <%= render Layout::GridComponent.new(cols: 3, classes: 'py-2 pl-2') do |grid| %>
               <%= grid.with_card do |card| %>
-                <%= card.with_image(src: case_study.image, rounded: :top) if case_study.image.attached? %>
+                <%= card.with_image(src: cdn_link_url(case_study.image), rounded: :top) if case_study.image.attached? %>
                 <%= card.with_feature_card(
                       theme: :light, size: :sm,
                       classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' unless case_study.image.attached?}"

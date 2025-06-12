@@ -45,7 +45,6 @@ gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
 gem 'sass-rails' # Use SCSS for stylesheets
 gem 'terser'
 
-
 # Pagination
 gem 'pagy'
 

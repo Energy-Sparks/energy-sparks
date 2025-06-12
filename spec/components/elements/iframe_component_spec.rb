@@ -3,18 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe Elements::IframeComponent, :include_application_helper, type: :component do
-  # rubocop:disable RSpec/MultipleMemoizedHelpers
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:src) { 'https://www.youtube.com/embed/dQw4w9WgXcQ' }
-  let(:base_params) { { type: :youtube, src: src, id: id, classes: classes } }
+  let(:params) { { type: :youtube, src: src, id: id, classes: classes } }
 
   let(:html) do
     render_inline(Elements::IframeComponent.new(**params))
   end
 
   context 'with base params' do
-    let(:params) { base_params }
+    let(:params) { super() }
 
     it_behaves_like 'an application component' do
       let(:expected_classes) { "#{classes}.overflow-hidden.h-100" }
@@ -31,7 +30,7 @@ RSpec.describe Elements::IframeComponent, :include_application_helper, type: :co
   end
 
   context 'with non-youtube type' do
-    let(:params) { base_params.merge(type: :generic) }
+    let(:params) { super().merge(type: :generic) }
 
     it { expect(html).to have_css('iframe') }
     it { expect(html).not_to have_css('iframe[style*="object-fit: cover"]') }
@@ -41,9 +40,8 @@ RSpec.describe Elements::IframeComponent, :include_application_helper, type: :co
   end
 
   context 'with custom iframe_classes' do
-    let(:params) { base_params.merge(iframe_classes: 'custom-class') }
+    let(:params) { super().merge(iframe_classes: 'custom-class') }
 
     it { expect(html).to have_css('iframe.custom-class') }
   end
-  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end
