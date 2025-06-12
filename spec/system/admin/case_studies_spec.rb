@@ -120,6 +120,7 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
+          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
         end
 
         context 'with valid attributes' do
@@ -160,6 +161,7 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
+          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
         end
 
         context 'with valid attributes' do

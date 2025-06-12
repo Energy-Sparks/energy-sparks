@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [ master ]
+  pull_request:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -24,6 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
+      - name: Install ImageMagick
+        run: sudo apt update && sudo apt install -y imagemagick
       - run: bundle exec rspec --profile 10
         env:
           KNAPSACK_GENERATE_REPORT: true
