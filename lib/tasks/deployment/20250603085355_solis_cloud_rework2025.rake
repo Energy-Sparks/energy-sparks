@@ -12,6 +12,7 @@ namespace :after_party do
     SolisCloudInstallation.find_each do |installation|
       installation.update_inverter_detail_list.each do |inverter|
         school_id = School.find_by(name: inverter['stationName'])&.id || existing_schools[installation.api_id]
+        installation.school_ids << school_id
         installation.create_meter(inverter['sn'], school_id)
       end
     end
