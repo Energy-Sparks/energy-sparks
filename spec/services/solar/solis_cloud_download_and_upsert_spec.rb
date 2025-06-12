@@ -35,7 +35,8 @@ describe Solar::SolisCloudDownloadAndUpsert do
                    .download_and_upsert
     expect(installation.meters.reload.count).to eq(1)
     expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[24] }).to eq(['8.5'])
-    expect(installation.meters.pluck(:name)).to contain_exactly('SolisCloud INV 3 Bluebell')
+    expect(installation.meters.pluck(:name)).to \
+      contain_exactly('SolisCloud - INV 3 Bluebell / Northwood College (1C5015)')
   end
 
   it 'works with no specified start and end dates' do
