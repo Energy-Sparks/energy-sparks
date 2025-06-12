@@ -31,7 +31,7 @@ class CaseStudy < ApplicationRecord
   has_one_attached :image # assume this doesn't need to be translatable
 
   validates :image,
-              content_type: { in: [:png, :jpeg] },
+              content_type: ['image/png', 'image/jpeg'],
               dimension: { width: { min: 700, max: 1400 } } # betwen half and full container width size to be conservative
 
   validates :title_en, :file_en, presence: true
