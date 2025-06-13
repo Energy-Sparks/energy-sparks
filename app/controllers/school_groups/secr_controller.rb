@@ -6,13 +6,17 @@ module SchoolGroups
       raise CanCan::AccessDenied unless current_user.admin? || current_user.group_admin?
 
       set_breadcrumbs(name: I18n.t('school_groups.sub_nav.secr_report'))
-      @start_date = MeterMonthlySummary.start_date(Time.zone.today, 2)
+      @dates = Periods::FixedAcademicYear.enumerator(MeterMonthlySummary.start_date(Time.zone.today, 2),
+                                                     Time.zone.today).to_a.reverse
+      @start_date = @dates[0][0]
       @meters = @school_group.meters.active.where('schools.active')
       respond_to do |format|
         format.html
         format.csv do
-          type = params[:csv]
-          send_data csv_report(type), filename: EnergySparks::Filenames.csv("secr-#{type}")
+          type, previous = params[:csv].split('_')
+          year = @dates[previous.nil? ? 0 : 1][0].year
+          send_data csv_report(type, year),
+                    filename: EnergySparks::Filenames.csv("secr-#{type}-#{year}#{(year + 1).to_s.last(2)}")
         end
       end
     end
@@ -35,12 +39,12 @@ module SchoolGroups
     TYPE_MAPPING = { self: :self_consume, export: :export }.stringify_keys.freeze
     private_constant :TYPE_MAPPING
 
-    def csv_report(type)
+    def csv_report(type, year)
       CSV.generate do |csv|
         csv << csv_headers
         @meters.public_send(type == 'gas' ? :gas : :electricity)
                .order('schools.name, meters.mpan_mprn').each do |meter|
-          summary = meter.meter_monthly_summaries.find_by(year: @start_date.year,
+          summary = meter.meter_monthly_summaries.find_by(year:,
                                                           type: TYPE_MAPPING.fetch(type, :consumption))
           next if summary.nil?
 

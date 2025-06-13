@@ -17,17 +17,25 @@
 #  index_secr_co2_equivalences_on_year  (year) UNIQUE
 #
 class SecrCo2Equivalence < ApplicationRecord
-  # sourced from https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting
-
+  # sourced from condensed set file on
+  # https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting
+  # UK electricity sheet, Electricity generated
   validates :electricity_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  # next to above
   validates :electricity_co2e_co2, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  # Fuels sheet, Natural Gas, kWh (Gross CV)
   validates :natural_gas_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  # next to above
   validates :natural_gas_co2e_co2, presence: true, numericality: { greater_than: 0, less_than: 1 }
+  # Transmission and distribution sheet
   validates :transmission_distribution_co2e, presence: true, numericality: { greater_than: 0, less_than: 1 }
   validates :year, presence: true, uniqueness: true, numericality: { greater_than: 2020, less_than: 2050 }
 
+  def self.factor(year, type)
+    find_by(year:)&.public_send(type)
+  end
 
   def self.emissions(year, type, consumption)
-    (find_by(year:).public_send(type) * consumption).round(2)
+    (factor(year, type) * consumption).round(2)
   end
 end

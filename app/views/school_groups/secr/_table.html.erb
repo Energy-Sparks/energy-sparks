@@ -1,0 +1,102 @@
+<p><%= title %></p>
+<% gas_factor = SecrCo2Equivalence.factor(year, :natural_gas_co2e) %>
+<% if gas_factor.nil? %>
+  Missing conversion factor for year <%= year %>
+<% else %>
+  <table id="table1" class="table table-sm">
+    <thead>
+      <tr>
+        <th></th>
+        <th><%= t('school_groups.secr.table.consumption') %></th>
+        <th><%= t('school_groups.secr.table.conversion_factor') %></th>
+        <th><%= t('school_groups.secr.table.emissions') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% gas_consumption = MeterMonthlySummary.total_sum(meters.gas, year, :consumption)
+         gas_emissions = gas_factor * gas_consumption %>
+      <tr>
+        <td><b><%= t('school_groups.secr.table.scope1_total') %></b></td>
+        <td><%= number_with_delimiter(gas_consumption) %></td>
+        <td></td>
+        <td><%= number_with_delimiter(gas_emissions.round(2)) %></td>
+      </tr>
+      <tr>
+        <td><%= t('school_groups.secr.table.gas_consumption') %></td>
+        <td><%= number_with_delimiter(gas_consumption) %></td>
+        <td><%= gas_factor %></td>
+        <td><%= number_with_delimiter(gas_emissions.round(2)) %></td>
+      </tr>
+      <% electricity_consumption = MeterMonthlySummary.total_sum(meters.electricity, year, :consumption)
+         self_consumption = MeterMonthlySummary.total_sum(meters.electricity.map, year, :self_consume)
+         electricity_factor = SecrCo2Equivalence.factor(year, :electricity_co2e)
+         electricity_emissions = electricity_factor&.*(electricity_consumption) %>
+      <tr>
+        <td><b><%= t('school_groups.secr.table.scope2_total') %></b></td>
+        <td><%= number_with_delimiter(electricity_consumption + self_consumption) %></td>
+        <td></td>
+        <td><%= number_with_delimiter(electricity_emissions.round(2)) %></td>
+      </tr>
+      <tr>
+        <td><%= t('school_groups.secr.table.purchased_electricity') %></td>
+        <td><%= number_with_delimiter(electricity_consumption) %></td>
+        <td><%= electricity_factor %></td>
+        <td><%= number_with_delimiter(electricity_emissions.round(2)) %></td>
+      </tr>
+      <tr>
+        <td><%= t('school_groups.secr.table.solar_self_consumption') %></td>
+        <td><%= number_with_delimiter(self_consumption) %></td>
+        <td></td>
+        <td>0.00</td>
+      </tr>
+      <% transmission_factor = SecrCo2Equivalence.factor(year, :transmission_distribution_co2e)
+         transmission_emissions = transmission_factor&.*(electricity_consumption) %>
+      <tr>
+        <td><b><%= t('school_groups.secr.table.scope3_total') %></b></td>
+        <td><%= number_with_delimiter(electricity_consumption) %></td>
+        <td></td>
+        <td><%= number_with_delimiter(transmission_emissions.round(2)) %></td>
+      </tr>
+      <tr>
+        <td><%= t('school_groups.secr.table.transmission_and_distribution') %></td>
+        <td><%= number_with_delimiter(electricity_consumption) %></td>
+        <td><%= transmission_factor %></td>
+        <td><%= number_with_delimiter(transmission_emissions.round(2)) %></td>
+      </tr>
+      <% total_consumption = gas_consumption + self_consumption + electricity_consumption
+         total_emissions = gas_emissions + electricity_emissions + transmission_emissions %>
+      <tr>
+        <td><b><%= t('school_groups.secr.table.total') %></b></td>
+        <td><%= number_with_delimiter(total_consumption.round(2)) %></td>
+        <td></td>
+        <td><%= number_with_delimiter(total_emissions.round(2)) %></td>
+      </tr>
+      <% solar_export = MeterMonthlySummary.total_sum(meters.active.electricity, year, :export).abs
+         solar_emissions = electricity_factor * solar_export %>
+      <tr>
+        <td><%= t('school_groups.secr.table.solar_export') %></td>
+        <td><%= number_with_delimiter(solar_export) %></td>
+        <td><%= electricity_factor %></td>
+        <td><%= number_with_delimiter(solar_emissions.round(2)) %></td>
+      </tr>
+      <tr>
+        <td><b><%= t('school_groups.secr.table.net') %></b></td>
+        <td><%= number_with_delimiter((net = total_consumption - solar_export).round(2)) %></td>
+        <td></td>
+        <td><%= number_with_delimiter((total_emissions - solar_emissions).round(2)) %></td>
+      </tr>
+      <tr>
+        <td><b><%= t('school_groups.secr.table.intensity_ratio') %></b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><%= t('school_groups.secr.table.co2e_per_pupil') %></td>
+        <td></td>
+        <td></td>
+        <td><%= net.zero? ? 0 : (number_of_pupils / net).round(4) %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

@@ -186,6 +186,13 @@ en:
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
     secr:
+      carbon_emission_factors_html: |-
+        <h4>Carbon Emission Factors</h4>
+        <p>The emission factors in the table above come from the
+        <a href='https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting'>
+        Government conversion factors for company reporting of greenhouse gas emissions</a>. We have applied the
+        ‘Majority’ approach - applying the factors from the calendar year in which the greatest portion of your data
+        falls should. For example, for the academic year 2023/24, we have applied the 2024 conversion factors.</p>
       csv:
         consumption_for_the_year: Consumption for the year
         earliest_validated_reading: Earliest validated reading
@@ -193,21 +200,25 @@ en:
         meter_name: Meter name
         meter_serial: Meter serial
         quality: Quality
+      data_quality_html: |-
+        <h4>Data quality</h4>
+        <p>In the CSV downloads, we use the following data quality codes. You may wish to replace data for months that
+        are highlighted as having missing or estimated data.</p>
+        <ul>
+        <li>I - incomplete</li>
+        <li>A - actual</li>
+        <li>E - estimated</li>
+        <li>C - corrected</li>
+        </ul>
+      downloads:
+        electricity_consumption: electricity consumption %{year}
+        gas_consumption: gas consumption %{year}
+        introduction: 'The following CSV downloads can be used to identify:'
+        solar_export: solar export %{year}
+        solar_self_consumption: solar self consumption %{year}
+        title: Detailed data downloads
       introduction: Using your half-hourly meter data, Energy Sparks is able to provide a summary of your consumption and carbon emissions to support production of your annual SECR reports.
       section1:
-        footnotes_html: |-
-          <i>Supporting notes</i>
-          <p>
-          The above figures are based on the following data points. See the data downloads below for details of
-          individuals schools, meters and data quality issues.
-          </p>
-          <ul>
-          <li>Number of active schools: %{active_schools}</li>
-          <li>Number of active gas meters: %{gas_meters}</li>
-          <li>Number of active electricity meters: %{electricity_meters}</li>
-          <li>Number of schools with metered solar: %{metered_solar_schools}</li>
-          <li>Number of schools with estimated solar: %{estimated_solar_schools}</li>
-          </ul>
         gas_consumption: Gas consumption
         intensity_ratio: Intensity ratio
         introduction_html: |-
@@ -236,14 +247,44 @@ en:
         title: Summary of Consumption and Emissions
         total: Total
         transmission_and_distribution: Electricity transmission and distribution
-      section2:
-        electricity_consumption: electricity consumption
-        gas_consumption: gas consumption
-        introduction: 'CSV downloads for the last academic year %{year} of the following:'
-        solar_export: solar export
-        solar_self_consumption: solar self consumption
-        title: SECR reporting data
+      supporting_notes_html: |-
+        <h4>Supporting notes</h4>
+        <p>
+        The above figures are based on the following data points. See the data downloads below for details of
+        individuals schools, meters and data quality issues.
+        </p>
+        <ul>
+        <li>Number of active schools: %{active_schools}</li>
+        <li>Number of active gas meters: %{gas_meters}</li>
+        <li>Number of active electricity meters: %{electricity_meters}</li>
+        <li>Number of schools with metered solar: %{metered_solar_schools}</li>
+        <li>Number of schools with estimated solar: %{estimated_solar_schools}</li>
+        <li>Number of pupils: %{number_of_pupils}</li>
+        </ul>
+      table:
+        co2e_per_pupil: Tonnes CO2e per pupil
+        consumption: Consumption (kWh)
+        conversion_factor: Conversion factor (kg CO₂e / kWh)
+        emissions: Emissions (tonnes CO₂e)
+        gas_consumption: Gas consumption
+        intensity_ratio: Intensity ratio
+        net: Net
+        purchased_electricity: Purchased electricity
+        scope1_total: Scope 1 Total
+        scope2_total: Scope 2 Total
+        scope3_total: Scope 3 Total
+        solar_export: Solar export
+        solar_self_consumption: Solar self consumption
+        total: Total
+        transmission_and_distribution: Electricity transmission and distribution
+      tabs:
+        data: Your data and conversion factors
+        usage: How to use the Energy Sparks SECR reporting tool
       title: SECR Reporting Data
+      usage:
+        current_table_title: Current academic year (%{start_date} to %{end_date})
+        introduction: The following tables provide a summary of your consumption and emissions for the last two academic years (%{last_start_date} to %{last_end_date} and %{current_start_date} to %{current_end_date}).
+        previous_table_title: Previous academic year (%{start_date} to %{end_date})
     show:
       change_units: Change units
       metric:
