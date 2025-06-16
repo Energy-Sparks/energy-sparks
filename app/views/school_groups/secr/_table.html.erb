@@ -1,7 +1,7 @@
 <p><%= title %></p>
 <% gas_factor = SecrCo2Equivalence.factor(year, :natural_gas_co2e) %>
 <% if gas_factor.nil? %>
-  Missing conversion factor for year <%= year %>
+  <%= t('school_groups.secr.table.missing', year:) %>
 <% else %>
   <table id="table1" class="table table-sm">
     <thead>

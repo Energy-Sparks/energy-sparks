@@ -1,42 +1,11 @@
 <%= content_for :page_title, t('school_groups.secr.title') %>
 <h1><%= t('school_groups.secr.title') %></h1>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active"
-       id="home-tab"
-       data-toggle="tab"
-       href="#usage"
-       role="tab"
-       aria-controls="home"
-       aria-selected="true">
-      <%= t('school_groups.secr.tabs.usage') %>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link"
-       id="profile-tab"
-       data-toggle="tab"
-       href="#data"
-       role="tab"
-       aria-controls="profile"
-       aria-selected="false">
-      <%= t('school_groups.secr.tabs.data') %>
-    </a>
-  </li>
-</ul>
-
-<div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active"
-       id="usage"
-       role="tabpanel"
-       aria-labelledby="home-tab">
-  </div>
-
-  <div class="tab-pane fade"
-       id="data"
-       role="tabpanel"
-       aria-labelledby="profile-tab">
+<%= render TabsComponent.new do |component| %>
+  <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage'), active: true) do %>
+    <%= t('school_groups.secr.usage_html') %>
+  <% end %>
+  <% component.with_tab(name: :data, label: t('school_groups.secr.tabs.data')) do %>
     <p><%= t('school_groups.secr.usage.introduction', last_start_date: @dates[0][0].to_fs(:es_short),
                                                       last_end_date: @dates[0][1].to_fs(:es_short),
                                                       current_start_date: @dates[1][0].to_fs(:es_short),
@@ -86,32 +55,5 @@
                       school_group_secr_index_path(@school_group, format: :csv, csv: :export) %></li>
     </ul>
     <%= t('school_groups.secr.data_quality_html') %>
-  </div>
-</div>
-
-<p><%= t('school_groups.secr.introduction') %></p>
-<h2><%= t('school_groups.secr.section1.title') %></h2>
-<%= end_date = Periods::FixedAcademicYear.enumerator(@start_date, @start_date + 1.year).to_a[-1][1].to_fs(:es_short)
-    t('school_groups.secr.section1.introduction_html', start_date: @start_date.to_fs(:es_short), end_date:) %>
-
-<% academic_year = "#{@start_date.year}/#{(@start_date.year + 1).to_s[-2..]}" %>
-<h2><%= t('school_groups.secr.section1.table2_title') %></h2>
-<p><%= t('school_groups.secr.section1.table2_introduction_html', year: academic_year) %></p>
-<table id="table2" class="table table-sm">
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>kg CO2e</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% SecrCo2Equivalence.find_by(year: @start_date.year).attributes.each do |name, value| %>
-      <% if name.include?('co2e') %>
-        <tr>
-          <td><%= SecrCo2Equivalence.human_attribute_name(name) %></td>
-          <td><%= value %></td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
+  <% end %>
+<% end %>

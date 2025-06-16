@@ -1,0 +1,22 @@
+
+<ul class="nav nav-tabs" role="tablist">
+  <% tabs.each do |tab| %>
+    <% classes = ['nav-link']
+       classes << 'active' if tab.active %>
+    <li class="nav-item">
+      <%= link_to tab.label, "##{tab.name}", id: tab.link_id, 'aria-controls': tab.name, 'data-toggle': :tab,
+                                             role: :tab, 'aria-selected': tab.active, class: classes %>
+    </li>
+  <% end %>
+</ul>
+<div class="tab-content">
+  <% tabs.each do |tab| %>
+    <% classes = %w[tab-pane fade]
+       classes.push('show', 'active') if tab.active %>
+    <%= content_tag :div, id: tab.name, 'aria-labelledby': tab.link_id, role: :tabpanel, class: classes do %>
+      <div class="mt-3">
+        <%= tab -%>
+      </div>
+    <% end %>
+  <% end %>
+</div>
