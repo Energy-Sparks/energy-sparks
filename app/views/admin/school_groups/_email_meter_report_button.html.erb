@@ -1,5 +1,6 @@
 <!-- Button trigger modal -->
-<button type="button" class="<%= local_assigns[:class] %>" data-toggle="modal" data-target="#meter_report-<%= school_group.id %>">
+<button type="button" class="<%= local_assigns[:class] %>"
+        data-toggle="modal" data-target="#meter_report-<%= school_group.id %>">
   <%= fa_icon('envelope') %> Meter report
 </button>
 
@@ -14,7 +15,11 @@
       </div>
       <%= form_tag deliver_admin_school_group_meter_report_path(school_group), method: :post do %>
         <div class="modal-body">
-          <div><strong>To: </strong><span class="badge border badge-pill border-secondary font-weight-normal"><%= current_user.email %></span>
+          <div>
+            <strong>To: </strong>
+            <span class="badge border text-dark rounded-pill border-secondary font-weight-normal">
+              <%= current_user.email %>
+            </span>
           </div>
           <div class="pb-2"><strong>Group: </strong><%= school_group.name %>
           </div>
@@ -25,11 +30,15 @@
           </div>
           <div class="form-check">
             <%= radio_button_tag :all_meters, 'true', false, id: "#{school_group.id}-all", class: 'form-check-input' %>
-            <%= label_tag "#{school_group.id}-all", 'Active and inactive meters', class: 'form-check-label'%>
+            <%= label_tag "#{school_group.id}-all", 'Active and inactive meters', class: 'form-check-label' %>
           </div>
         </div>
         <div class="modal-footer">
-          <%= button_tag(type: 'submit', class: 'btn btn-sm', data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" }) do %>
+          <%= button_tag(
+                type: 'submit',
+                class: 'btn btn-sm',
+                data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" }
+              ) do %>
             <%= fa_icon('envelope') %> Email meter report
           <% end %>
           <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>
