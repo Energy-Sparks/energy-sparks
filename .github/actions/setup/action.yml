@@ -17,3 +17,6 @@ runs:
     - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rake assets:precompile
       shell: bash
+    - if: ${{ inputs.ruby-only == 'false' }}
+      run: sudo apt update && sudo apt install -y imagemagick
+      shell: bash

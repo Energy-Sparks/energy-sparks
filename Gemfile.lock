@@ -99,6 +99,12 @@ GEM
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
+    active_storage_validations (3.0.0)
+      activejob (>= 6.1.4)
+      activemodel (>= 6.1.4)
+      activestorage (>= 6.1.4)
+      activesupport (>= 6.1.4)
+      marcel (>= 1.0.3)
     activejob (7.2.2.1)
       activesupport (= 7.2.2.1)
       globalid (>= 0.3.6)
@@ -671,7 +677,7 @@ GEM
     rspec-support (3.13.3)
     rss (0.3.1)
       rexml
-    rubocop (1.75.8)
+    rubocop (1.76.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -679,10 +685,10 @@ GEM
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 2.9.3, < 3.0)
-      rubocop-ast (>= 1.44.0, < 2.0)
+      rubocop-ast (>= 1.45.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.44.1)
+    rubocop-ast (1.45.1)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     rubocop-capybara (2.22.1)
@@ -790,12 +796,12 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.6.0-aarch64-linux-gnu)
-    sqlite3 (2.6.0-arm-linux-gnu)
-    sqlite3 (2.6.0-arm64-darwin)
-    sqlite3 (2.6.0-x86-linux-gnu)
-    sqlite3 (2.6.0-x86_64-darwin)
-    sqlite3 (2.6.0-x86_64-linux-gnu)
+    sqlite3 (2.7.0-aarch64-linux-gnu)
+    sqlite3 (2.7.0-arm-linux-gnu)
+    sqlite3 (2.7.0-arm64-darwin)
+    sqlite3 (2.7.0-x86-linux-gnu)
+    sqlite3 (2.7.0-x86_64-darwin)
+    sqlite3 (2.7.0-x86_64-linux-gnu)
     stateful_enum (0.7.0)
     stringio (3.1.7)
     terminal-notifier (2.0.0)
@@ -861,6 +867,7 @@ PLATFORMS
 
 DEPENDENCIES
   MailchimpMarketing
+  active_storage_validations
   after_party
   annotate
   auto_strip_attributes (~> 2.5)

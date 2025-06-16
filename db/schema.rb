@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_30_103504) do
+ActiveRecord::Schema[7.2].define(version: 2025_06_04_134906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -614,6 +614,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_30_103504) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "published", default: false, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.index ["created_by_id"], name: "index_case_studies_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_case_studies_on_updated_by_id"
   end
 
   create_table "cluster_schools_users", id: false, force: :cascade do |t|
@@ -2189,6 +2194,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_30_103504) do
   add_foreign_key "calendar_events", "calendar_event_types", on_delete: :restrict
   add_foreign_key "calendar_events", "calendars", on_delete: :cascade
   add_foreign_key "calendars", "calendars", column: "based_on_id", on_delete: :restrict
+  add_foreign_key "case_studies", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "case_studies", "users", column: "updated_by_id", on_delete: :nullify
   add_foreign_key "cluster_schools_users", "schools", on_delete: :cascade
   add_foreign_key "cluster_schools_users", "users", on_delete: :cascade
   add_foreign_key "cms_categories", "users", column: "created_by_id", on_delete: :nullify
