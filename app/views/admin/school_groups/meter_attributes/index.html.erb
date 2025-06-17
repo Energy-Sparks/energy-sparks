@@ -1,6 +1,6 @@
 <h1>Meter attributes: <%= @school_group.name %></h1>
 <%= render TabsComponent.new do |component| %>
-  <% component.with_tab(name: :'database-meter-attributes', label: 'Group-wide attributes', active: true) do %>
+  <% component.with_tab(name: :'database-meter-attributes', label: 'Group-wide attributes') do %>
     <%= render 'shared/meter_attributes/new_select',
                available_meter_attributes: @available_meter_attributes,
                create_path: new_admin_school_group_meter_attribute_path(@school_group) %>
