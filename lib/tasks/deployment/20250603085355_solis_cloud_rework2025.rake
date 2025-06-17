@@ -9,11 +9,19 @@ namespace :after_party do
                         ['1300386381677086829', 587],
                         ['1300386381677086560', 627]].to_h
 
+    Meter.find_by(mpan_mprn: 70_000_001_855_509).update!(school_id: 256)
+
     SolisCloudInstallation.find_each do |installation|
+      meters = installation.meters.to_a
       installation.update_inverter_detail_list.each do |inverter|
-        school_id = School.find_by(name: inverter['stationName'])&.id || existing_schools[installation.api_id]
-        installation.school_ids << school_id
-        installation.create_meter(inverter['sn'], school_id)
+        school = School.find_by(name: inverter['stationName']) || School.find(existing_schools[installation.api_id])
+        installation.schools << school unless installation.schools.include?(school)
+        meter = meters.find { |meter| meter.meter_serial_number == inverter['stationId'] }
+        if meter
+          meter.update!(name: installation.meter_name(inverter['sn']), meter_serial_number: inverter['sn'])
+        elsif meters.pluck(:meter_serial_number).exclude?(inverter['sn'])
+          installation.create_meter(inverter['sn'], school.id)
+        end
       end
     end
 
