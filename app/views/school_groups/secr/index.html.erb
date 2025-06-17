@@ -2,7 +2,7 @@
 <h1><%= t('school_groups.secr.title') %></h1>
 
 <%= render TabsComponent.new do |component| %>
-  <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage'), active: true) do %>
+  <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage')) do %>
     <%= t('school_groups.secr.usage_html') %>
   <% end %>
   <% component.with_tab(name: :data, label: t('school_groups.secr.tabs.data')) do %>
