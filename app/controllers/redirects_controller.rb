@@ -1,31 +1,37 @@
 class RedirectsController < ApplicationController
-  skip_before_action :authenticate_user!
+  layout 'dashboards'
 
+  skip_before_action :authenticate_user!
   helper_method :school_redirect_path
 
   def school_page_redirect
-    unless current_user.present?
-      store_location_for(:user, "/s/#{params[:path]}")
-      redirect_to new_user_session_path, notice: I18n.t('users.index.redirect') and return
-    end
-    user_role = current_user.role.to_sym
-    if user_role == :group_admin || (user_role == :school_admin && current_user.has_other_schools?)
-      @path = params[:path]
-      @schools = if current_user.group_admin?
-                   current_user.school_group.schools.visible.by_name
-                 else
-                   current_user.cluster_schools.visible.by_name
-                 end
-      render :choose_school, layout: 'dashboards'
+    new_session and return if current_user.nil?
+
+    if current_user.group_admin? || (current_user.school_admin? && current_user.has_other_schools?)
+      choose_school
+    elsif current_user.admin?
+      redirect_to school_redirect_path(School.data_enabled.sample, params[:path]),
+                    notice: 'Notice for admin users: you have followed a shortlink and have been redirected to a random school'
     else
-      school = user_role == :admin ? School.data_enabled.sample : current_user.school
-      redirect_to school_redirect_path(school, params[:path])
+      redirect_to school_redirect_path(current_user_school, params[:path])
     end
   end
 
   private
 
-  def school_redirect_path(school, path)
+  def new_session
+    store_location_for(:user, request.path)
+    redirect_to new_user_session_path, notice: I18n.t('users.index.redirect')
+  end
+
+  def choose_school
+    @path = params[:path]
+    @schools = current_user.group_admin? ? current_user.school_group.schools : current_user.cluster_schools
+    @schools = @schools.visible.by_name
+    render :choose_school
+  end
+
+  def school_redirect_path(school, path = nil)
     case path
     when 'dashboard'
       school_path(school)

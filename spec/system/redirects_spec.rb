@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'User account page and updates', :include_application_helper do
+  let(:base) { '/user/school' }
+
   context 'when visiting a school redirect' do
-    let(:path) { '/s/advice' }
+    let(:path) { "#{base}/advice" }
 
     context 'without a session' do
       let!(:school) { create(:school, :with_school_group) }
@@ -60,7 +62,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       context 'with dashboard redirect' do
-        let(:path) { '/s/dashboard' }
+        let(:path) { "#{base}/dashboard" }
 
         it 'has redirected' do
           expect(page).to have_current_path school_path(user.school), ignore_query: true
@@ -68,7 +70,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
 
       context 'with pupil dashboard redirect' do
-        let(:path) { '/s/pupils' }
+        let(:path) { "#{base}/pupils" }
 
         it 'has redirected' do
           expect(page).to have_current_path pupils_school_path(user.school), ignore_query: true

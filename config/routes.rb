@@ -61,7 +61,7 @@ Rails.application.routes.draw do
 
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
 
-  get '/s/*path', to: 'redirects#school_page_redirect', as: :school_page_redirect
+  get '/user/school(/*path)', to: 'redirects#school_page_redirect', as: :school_page_redirect, constraints: { path: /.*/ }
 
   direct :cdn_link do |model, options|
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
