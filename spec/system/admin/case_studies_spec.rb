@@ -91,7 +91,7 @@ RSpec.describe 'Admin case studies', type: :system do
         end
       end
 
-      it 'is has image' do
+      it 'has image' do
         expect(page).to have_css('i.fa-image')
       end
 
@@ -115,7 +115,7 @@ RSpec.describe 'Admin case studies', type: :system do
         context 'with invalid attributes' do
           before do
             fill_in :case_study_title_en, with: ''
-            attach_file(:case_study_image, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
+            attach_file 'Image', Rails.root.join('spec/fixtures/documents/fake-bill.pdf')
             click_on 'Save case study'
           end
 
@@ -129,7 +129,7 @@ RSpec.describe 'Admin case studies', type: :system do
             within('.description-trix-editor-en') do
               fill_in_trix with: 'Updated description'
             end
-            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/boiler.jpg'))
+            attach_file 'Image', Rails.root.join('spec/fixtures/images/boiler.jpg')
             attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             fill_in :case_study_tags_en, with: 'en1, en2'
             uncheck :case_study_published
@@ -156,7 +156,7 @@ RSpec.describe 'Admin case studies', type: :system do
 
         context 'with invalid attributes' do
           before do
-            attach_file(:case_study_image, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
+            attach_file 'Image', Rails.root.join('spec/fixtures/documents/fake-bill.pdf')
             click_on 'Save case study'
           end
 
@@ -170,7 +170,7 @@ RSpec.describe 'Admin case studies', type: :system do
             within('.description-trix-editor-en') do
               fill_in_trix with: 'This is a new case study description.'
             end
-            attach_file(:case_study_image, Rails.root.join('spec/fixtures/images/boiler.jpg'))
+            attach_file 'Image', Rails.root.join('spec/fixtures/images/boiler.jpg')
             attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             fill_in :case_study_tags_en, with: 'new, example'
             check :case_study_published

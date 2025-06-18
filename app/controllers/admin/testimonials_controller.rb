@@ -1,9 +1,14 @@
 module Admin
   class TestimonialsController < AdminController
     include LocaleHelper
+    include ImageResizer
+
     include ActiveStorage::SetCurrent
 
     before_action :load_testimonials, only: [:index, :show]
+    before_action only: [:create, :update] do
+      resize_image(testimonial_params[:image], max_width: 1400)
+    end
 
     load_and_authorize_resource
 

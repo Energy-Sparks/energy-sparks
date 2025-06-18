@@ -1,10 +1,14 @@
 module Admin
   class CaseStudiesController < AdminController
     include LocaleHelper
+    include ImageResizer
+
     load_and_authorize_resource
 
     before_action :load_case_studies, only: [:index, :show]
-    before_action :resize_image, only: [:create, :update]
+    before_action only: [:create, :update] do
+      resize_image(case_study_params[:image], max_width: 1400)
+    end
 
     def index
     end
@@ -50,17 +54,6 @@ module Admin
     def case_study_params
       translated_params = t_params(CaseStudy.mobility_attributes + CaseStudy.t_attached_attributes)
       params.require(:case_study).permit(translated_params, :position, :image, :published)
-    end
-
-    # Resize image to a max width of 1400px (current max container width) to prevent overly large files
-    # and considering future inline use. As it is, these will never be wider than 510px.
-    def resize_image
-      (image = case_study_params[:image]) || return
-
-      ImageProcessing::MiniMagick
-        .source(image)
-        .resize_to_limit(1400, nil)
-        .call(destination: image.tempfile.path)
     end
   end
 end
