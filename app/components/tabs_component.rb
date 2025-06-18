@@ -23,6 +23,11 @@ class TabsComponent < ApplicationComponent
     end
   end
 
+  def initialize(id: nil, classes: '', top_margin: true)
+    super(id:, classes:)
+    @top_margin = top_margin
+  end
+
   def before_render
     tabs.first.active = true
   end
