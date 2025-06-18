@@ -105,7 +105,7 @@
       <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
     <% end %>
   <% end %>
-  <% issues_label = lambda(type, count) do
+  <% issues_label = lambda do |type, count|
        "#{type} Issues and Notes #{content_tag(:span, count, class: %w[badge badge-secondary])}".html_safe
      end %>
   <% component.with_tab(name: :'school-group-issues',

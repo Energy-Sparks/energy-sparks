@@ -14,14 +14,14 @@
        schools = @school_group.schools.active
        number_of_pupils = schools.sum(:number_of_pupils) %>
     <%= render 'table', meters:,
-                        year: @dates[1][0].year + 1,
+                        year: @dates[1][0].year + (@dates[1][1].month > 3 ? 1 : 0),
                         title: t('school_groups.secr.usage.current_table_title', start_date: @dates[1][0],
                                                                                  end_date: @dates[1][1]),
                         number_of_pupils: %>
     <%= render 'table', meters:,
-                        year: @dates[0][0].year + 1,
-                        title: t('school_groups.secr.usage.current_table_title', start_date: @dates[0][0],
-                                                                                 end_date: @dates[0][1]),
+                        year: @dates[0][1].year,
+                        title: t('school_groups.secr.usage.previous_table_title', start_date: @dates[0][0],
+                                                                                  end_date: @dates[0][1]),
                         number_of_pupils: %>
     <%= schools = schools.pluck(:id)
         t('school_groups.secr.supporting_notes_html',

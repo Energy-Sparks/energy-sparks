@@ -217,36 +217,6 @@ en:
         solar_export: solar export %{year}
         solar_self_consumption: solar self consumption %{year}
         title: Detailed data downloads
-      introduction: Using your half-hourly meter data, Energy Sparks is able to provide a summary of your consumption and carbon emissions to support production of your annual SECR reports.
-      section1:
-        gas_consumption: Gas consumption
-        intensity_ratio: Intensity ratio
-        introduction_html: |-
-          <p>
-          The following table provides a summary of your consumptions and emissions for the last academic year (%{start_date} to %{end_date}). Consumption is based on the latest data available to Energy Sparks, which may not be completed. Emissions are calculated using the latest carbon emission factors which are quoted below.
-          </p>
-          <p>
-          We do not recommend including these figures in your SECR reporting without first confirming that Energy Sparks has access to data for all of your schools and meters in each school.
-          </p>
-          <p>
-          We may also be using estimated solar data if we do not have access to data from your solar monitoring system.
-          </p>
-          <p>
-          Data quality issues might also impact our ability to provide accurate figures. See below for downloads of data that can help you identify gaps and support you in producing a more complete report if we do not yet have all of your schools or meters on our system.
-          </p>
-        net: Net
-        pupil_intensity: Tonnes CO2e per pupil
-        purchased_electricity: Purchased Electricity
-        scope1: Scope 1
-        scope2: Scope 2
-        scope3: Scope 3
-        solar_export: Solar export
-        solar_self_consumption: Solar self consumption
-        table2_introduction_html: The following emissions factors are those produced by UK government for reporting emissions for the last academic year %{year} and have been used in calculating the above figures.
-        table2_title: Carbon Emission Factors
-        title: Summary of Consumption and Emissions
-        total: Total
-        transmission_and_distribution: Electricity transmission and distribution
       supporting_notes_html: |-
         <h4>Supporting notes</h4>
         <p>

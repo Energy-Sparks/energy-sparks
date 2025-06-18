@@ -14,7 +14,7 @@ module SchoolGroups
         format.html
         format.csv do
           type, previous = params[:csv].split('_')
-          year = @dates[previous.nil? ? 0 : 1][0].year
+          year = @dates[previous.nil? ? 1 : 0][0].year
           send_data csv_report(type, year),
                     filename: EnergySparks::Filenames.csv("secr-#{type}-#{year}#{(year + 1).to_s.last(2)}")
         end
@@ -42,10 +42,8 @@ module SchoolGroups
     def csv_report(type, year)
       CSV.generate do |csv|
         csv << csv_headers
-        @meters.public_send(type == 'gas' ? :gas : :electricity)
-               .order('schools.name, meters.mpan_mprn').each do |meter|
-          summary = meter.meter_monthly_summaries.find_by(year:,
-                                                          type: TYPE_MAPPING.fetch(type, :consumption))
+        @meters.public_send(type == 'gas' ? :gas : :electricity).order('schools.name, meters.mpan_mprn').each do |meter|
+          summary = meter.meter_monthly_summaries.find_by(year:, type: TYPE_MAPPING.fetch(type, :consumption))
           next if summary.nil?
 
           csv << [
