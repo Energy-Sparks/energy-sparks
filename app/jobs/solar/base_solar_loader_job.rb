@@ -11,10 +11,10 @@ module Solar
       @installation = installation
       @upserter = upserter(start_date, end_date)
       @upserter.perform
-      send_notification(notify_email)
+      send_notification(notify_email, import_log: @upserter.import_log)
     rescue StandardError => e
       EnergySparks::Log.exception(e, job: :import_solar_edge_readings)
-      send_failure_notification(notify_email, e)
+      send_notification(notify_email, error: e)
       false
     end
 
@@ -28,26 +28,12 @@ module Solar
       raise 'Not implemented'
     end
 
-    def send_notification(notify_email)
+    def send_notification(notify_email, import_log: nil, error: false)
       SolarLoaderJobMailer.with(to: notify_email,
                                 solar_feed_type: solar_feed_type,
                                 installation: @installation,
-                                import_log: @upserter.import_log).job_complete.deliver_now
-    end
-
-    def send_failure_notification(notify_email, error)
-      SolarLoaderJobMailer.with(to: notify_email,
-                                solar_feed_type: solar_feed_type,
-                                installation: @installation,
-                                error: error).job_failed.deliver_now
-    end
-
-    def results_url
-      if @upserter.import_log.errors?
-        admin_reports_amr_data_feed_import_logs_errors_path({ config: { config_id: @upserter.import_log.amr_data_feed_config.id } })
-      else
-        school_meters_path(@installation.school)
-      end
+                                import_log:,
+                                error:).job_complete.deliver_now
     end
   end
 end
