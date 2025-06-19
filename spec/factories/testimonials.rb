@@ -4,7 +4,7 @@ FactoryBot.define do
     category { :default }
     name { 'Testimonial name' }
     organisation { 'Testimonial organisation' }
-    image { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/placeholder.png'), 'image/png') }
+    image { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/images/pupils-jumping.jpg'), 'image/jpeg') }
 
     # Translated attributes
     title_en { 'Testimonial title in English' }

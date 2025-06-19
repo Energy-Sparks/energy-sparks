@@ -23,13 +23,13 @@
     </div>
   </div>
 
-  <%= render AdminUserListComponent.new(id: 'unattached-users',
-                                        users: @group_admins,
-                                        show_organisation: false) %>
+  <%= render Admin::UserListComponent.new(id: 'unattached-users',
+                                          users: @group_admins,
+                                          show_organisation: false) %>
 
 <% end %>
 
 <h2>School Users</h2>
 
-<%= render AdminUserListComponent.new(id: 'all-school-users',
-                                      schools: @school_group.schools.by_name) %>
+<%= render Admin::UserListComponent.new(id: 'all-school-users',
+                                        schools: @school_group.schools.by_name) %>

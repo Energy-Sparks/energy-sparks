@@ -1,0 +1,14 @@
+<% content_for :page_title, header %>
+
+<div class="row">
+  <div class="col d-flex flex-wrap align-items-center justify-content-between">
+    <%= header %>
+    <% if buttons.any? %>
+      <div>
+        <% buttons.each do |button| %>
+          <%= button %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
