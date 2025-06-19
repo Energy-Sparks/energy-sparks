@@ -7,7 +7,7 @@ module Admin
 
     before_action :load_testimonials, only: [:index, :show]
     before_action only: [:create, :update] do
-      resize_image(testimonial_params[:image], max_width: 1400)
+      resize_image(testimonial_params[:image])
     end
 
     load_and_authorize_resource

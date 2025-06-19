@@ -197,7 +197,7 @@ RSpec.describe 'Admin case studies', type: :system do
             expect(page).to have_css('i.fa-eye')
           end
 
-          it 'has image' do
+          it 'has an image' do
             expect(page).to have_css('i.fa-image')
           end
 

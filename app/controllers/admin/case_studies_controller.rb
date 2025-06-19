@@ -7,7 +7,7 @@ module Admin
 
     before_action :load_case_studies, only: [:index, :show]
     before_action only: [:create, :update] do
-      resize_image(case_study_params[:image], max_width: 1400)
+      resize_image(case_study_params[:image])
     end
 
     def index

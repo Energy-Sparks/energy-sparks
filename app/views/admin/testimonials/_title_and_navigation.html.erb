@@ -1,9 +1,5 @@
-<div class="row">
-  <div class="col d-flex flex-wrap align-items-center justify-content-between">
-    <h1><%= title %></h1>
-    <div>
-      <%= link_to 'New', new_admin_testimonial_path, class: 'btn' %>
-      <%= link_to 'Testimonials', admin_testimonials_path, class: 'btn' %>
-    </div>
-  </div>
-</div>
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'New', new_admin_testimonial_path %>
+  <% header_nav.with_button 'Testimonials', admin_testimonials_path %>
+<% end %>
