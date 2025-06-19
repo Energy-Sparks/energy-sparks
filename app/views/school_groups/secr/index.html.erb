@@ -1,6 +1,5 @@
 <%= content_for :page_title, t('school_groups.secr.title') %>
 <h1><%= t('school_groups.secr.title') %></h1>
-
 <%= render TabsComponent.new do |component| %>
   <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage')) do %>
     <%= t('school_groups.secr.usage.purpose_of_this_tool_html') %>
