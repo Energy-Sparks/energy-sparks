@@ -7,23 +7,19 @@ RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component 
     described_class.new(**params)
   end
 
-  let(:id) { 'user-table' }
-  let(:classes) { 'extra-classes' }
-  let(:users) { nil }
-  let(:schools) { nil }
-
   let(:params) do
     {
       schools: schools,
       users: users,
-      id: id,
-      classes: classes,
+      id: 'user-table',
+      classes: 'extra-classes',
       show_organisation: true
     }
   end
 
   describe '#users_to_display' do
     context 'with users' do
+      let(:schools) { nil }
       let(:users) { [create(:school_admin), create(:staff)] }
 
       it 'yields all of the users' do
@@ -33,23 +29,25 @@ RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component 
 
     context 'with schools' do
       let(:school) { create(:school) }
-
-      let(:school_admin) { create(:school_admin, school:, email: "admin@#{school.name.parameterize}.com") }
-      let(:staff) { create(:staff, school:, email: "employee@#{school.name.parameterize}.com") }
-      let(:pupil) { create(:pupil, school:, email: "pupil@#{school.name.parameterize}.com") }
       let(:school_admin_2) { create(:school_admin) }
+      let(:users) do
+        [create(:school_admin, school:, email: "admin@#{school.name.parameterize}.com"),
+         create(:staff, school:, email: "employee@#{school.name.parameterize}.com"),
+         create(:pupil, school:, email: "pupil@#{school.name.parameterize}.com")] + [school_admin_2]
+      end
 
       let(:schools) { [school, school_admin_2.school] }
 
       it 'yields all school users' do
         expect do |b|
           component.users_to_display(&b)
-        end.to yield_successive_args(school_admin, staff, pupil, school_admin_2)
+        end.to yield_successive_args(*users)
       end
     end
   end
 
   context 'when rendering' do
+    let(:schools) { nil }
     let(:user) { create(:school_admin, :subscribed_to_alerts) }
     let(:users) { [user] }
 
@@ -58,8 +56,8 @@ RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component 
     end
 
     it_behaves_like 'an application component' do
-      let(:expected_classes) { classes }
-      let(:expected_id) { id }
+      let(:expected_classes) { params[:classes] }
+      let(:expected_id) { params[:id] }
     end
 
     it 'shows expected columns' do
