@@ -124,7 +124,7 @@ Metrics/PerceivedComplexity:
   Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
 Metrics/ClassLength:
   Enabled: false
