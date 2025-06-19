@@ -1,6 +1,5 @@
 <h1>Meter attributes: <%= @school.name %></h1>
-
-<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+<p><%= link_to 'School meter management', school_meters_path(@school) %></p>
 
 <ul class="nav nav-tabs" id="top-level-meter-attribute-tabs">
   <li class="nav-item">
@@ -11,39 +10,25 @@
   </li>
 </ul>
 
-<ul class="nav nav-tabs mt-3" id="meter-attribute-tabs" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">Attributes</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="deleted-meter-attributes-tab" data-toggle="tab" href="#deleted-meter-attributes-content" role="tab" aria-controls="deleted-meter-attributes-content" aria-selected="false">Deleted</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="all-meter-attributes-tab" data-toggle="tab" href="#all-meter-attributes-content" role="tab" aria-controls="all-meter-attributes-content" aria-selected="false">Final</a>
-  </li>
-</ul>
-
-<div class="tab-content" id="meter-attributes-tabs-content">
-  <div class="tab-pane fade show active" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
-
+<%= render TabsComponent.new(classes: 'mt-3', top_margin: false) do |component| %>
+  <% component.with_tab(name: :'database-meter-attributes', label: 'Attributes') do %>
     <table class="table">
       <% @meters.each do |meter| %>
-        <%= render 'meter_attributes_table', school: @school, available_meter_attributes: @available_meter_attributes, meter: meter %>
+        <%= render 'meter_attributes_table', school: @school, available_meter_attributes: @available_meter_attributes,
+                                             meter: meter %>
       <% end %>
     </table>
-  </div>
-
-  <div class="tab-pane fade" id="deleted-meter-attributes-content" role="tabpanel" aria-labelledby="deleted-meter-attributes-tab">
+  <% end %>
+  <% component.with_tab(name: :'deleted-meter-attributes', label: 'Deleted') do %>
     <h2>Deleted attributes</h2>
     <table class="table">
       <% @meters.each do |meter| %>
         <%= render 'deleted_attributes_table', school: @school, meter: meter %>
       <% end %>
     </table>
-  </div>
-
-  <div class="tab-pane fade" id="all-meter-attributes-content" role="tabpanel" aria-labelledby="all-meter-attributes-tab">
+  <% end %>
+  <% component.with_tab(name: :'all-meter-attributes', label: 'Final') do %>
     <h2>Full attributes</h2>
     <%= print_meter_attributes(@school) %>
-  </div>
-</div>
+  <% end %>
+<% end %>
