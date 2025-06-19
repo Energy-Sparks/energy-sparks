@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe AdminUserListComponent, :include_url_helpers, type: :component do
+RSpec.describe Admin::UserListComponent, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
