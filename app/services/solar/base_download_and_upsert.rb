@@ -11,7 +11,7 @@ module Solar
     def perform
       download_and_upsert
     rescue StandardError => e
-      EnergySparks::Log.exception(e, job: job, school: school.name, start_date:, end_date:,
+      EnergySparks::Log.exception(e, job: job, school: school&.name, start_date:, end_date:,
                                      installation_id: @installation.id)
       import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date} : " \
                                          "#{e.class} #{e.message}")
@@ -38,7 +38,7 @@ module Solar
     end
 
     def school
-      @installation.school
+      @installation.try(:school)
     end
 
     def latest_reading

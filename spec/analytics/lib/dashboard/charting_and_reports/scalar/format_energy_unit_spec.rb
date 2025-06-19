@@ -237,6 +237,8 @@ describe FormatEnergyUnit, :aggregate_failures do
       it 'formats correctly' do
         expect(FormatUnit.format(:£, 10)).to eq '£10'
         expect(FormatUnit.format(:£, 10, :html)).to eq '&pound;10'
+        expect(FormatUnit.format(:£, Float::NAN)).to eq 'Uncalculable'
+        expect(FormatUnit.format(:£, Float::INFINITY)).to eq 'Infinity'
       end
     end
 

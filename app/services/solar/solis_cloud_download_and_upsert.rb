@@ -9,6 +9,10 @@ module Solar
 
     private
 
+    def school
+      nil
+    end
+
     def job
       :solis_cloud_download
     end
