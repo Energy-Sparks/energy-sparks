@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-# module Logging
-#  logger.level = :debug
-# end
-
-describe ValidateAMRData, type: :service do
+describe Aggregation::ValidateAmrData, type: :service do
   subject(:validator) do
     described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
   end
@@ -18,14 +14,8 @@ describe ValidateAMRData, type: :service do
   let(:max_days_missing_data) { 50 }
 
   context 'with real data' do
-    let(:meter_collection) { @acme_academy }
+    let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false) }
     let(:meter) { meter_collection.meter?(1_591_058_886_735) }
-
-    # using before(:all) here to avoid slow loading of YAML
-    before(:all) do
-      @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false)
-    end
-
     let(:validator) do
       described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
     end
@@ -47,6 +37,10 @@ describe ValidateAMRData, type: :service do
 
   context 'with override_night_to_zero' do
     before { meter.meter_correction_rules << { override_night_to_zero: nil } }
+
+    def arbitrary_night_readings(meter)
+      meter.amr_data.to_a.sort.map { |data| data[1].kwh_data_x48[5] }
+    end
 
     it 'replace night time readings with a rule' do
       validator.validate(debug_analysis: true)
@@ -77,7 +71,29 @@ describe ValidateAMRData, type: :service do
     end
   end
 
-  def arbitrary_night_readings(meter)
-    meter.amr_data.to_a.sort.map { |data| data[1].kwh_data_x48[5] }
+  context 'with valid readings' do
+    let(:meter_collection) do
+      build(:meter_collection, :with_electricity_meter, kwh_data_x48: Array.new(48, 50.0), dcc_meter: true)
+    end
+
+    it 'handles valid readings' do
+      validator.validate
+      reading = meter.amr_data.first[1]
+      expect(reading.type).to eq('ORIG')
+    end
+  end
+
+  context 'with invalid readings' do
+    let(:meter_collection) do
+      build(:meter_collection, :with_electricity_meter, kwh_data_x48: Array.new(48, 0.5).tap { |a| a[0] = 51 },
+                                                        dcc_meter: true)
+    end
+
+    it 'handles invalid readings' do
+      validator.validate
+      reading = meter.amr_data.first[1]
+      expect(reading.kwh_data_x48[0]).to eq(0.5)
+      expect(reading.type).to eq('DMP1') # corrected from nil
+    end
   end
 end
