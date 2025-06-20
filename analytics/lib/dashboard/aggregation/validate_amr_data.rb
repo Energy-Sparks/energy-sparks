@@ -457,7 +457,9 @@ class ValidateAMRData
   def bad_dcc_value?(kwh)
     # there may be other bad values in future
     # none of this is documented by the DCC......
-    kwh.between?(186227.0864, 186227.0866)
+    kwh.between?(186227.0864, 186227.0866) ||
+      (@meter.fuel_type == :electricity && kwh > 50) ||
+      (@meter.fuel_type == :gas && kwh > 900)
   end
 
   # A specific built in correction that will substitute any nil readings with
