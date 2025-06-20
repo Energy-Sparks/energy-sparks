@@ -377,8 +377,7 @@ class ManagementSummaryTable < ContentBase
   end
 
   def rails_date(date)
-    # iso8601 blows up non rails/ActiveSupport code
-    Object.const_defined?('Rails') ? date.iso8601 : date
+    date
   end
 
   def date_available_from(period, fuel_type_data)

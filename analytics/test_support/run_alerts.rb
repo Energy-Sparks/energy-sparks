@@ -2,7 +2,7 @@
 require 'require_all'
 require_relative '../lib/dashboard.rb'
 require_rel '../test_support'
-require './script/report_config_support.rb'
+require_relative '../script/report_config_support.rb'
 require 'hashdiff'
 
 class RunAlerts < RunAnalyticsTest
