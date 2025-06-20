@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-# module Logging
-#  logger.level = :debug
-# end
-
-describe ValidateAMRData, type: :service do
+describe Aggregation::ValidateAmrData, type: :service do
   subject(:validator) do
     described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
   end
@@ -18,14 +14,8 @@ describe ValidateAMRData, type: :service do
   let(:max_days_missing_data) { 50 }
 
   context 'with real data' do
-    let(:meter_collection) { @acme_academy }
+    let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false) }
     let(:meter) { meter_collection.meter?(1_591_058_886_735) }
-
-    # using before(:all) here to avoid slow loading of YAML
-    before(:all) do
-      @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false)
-    end
-
     let(:validator) do
       described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
     end
