@@ -2,34 +2,30 @@ require 'rails_helper'
 
 RSpec.describe 'home', type: :system do
   describe 'Home page' do
-    context without_feature: :new_home_page do
-      it 'has a home page' do
-        visit root_path
-        expect(page.has_content?('Energy Sparks'))
-      end
+    it 'has a home page' do
+      visit root_path
+      expect(page.has_content?('Energy Sparks'))
     end
 
-    context with_feature: :new_home_page do
-      context 'with all components available' do
-        include_context 'with blog cache'
+    context 'with all components available' do
+      include_context 'with blog cache'
 
-        before do
-          create(:testimonial, category: :default)
-          visit root_path
-        end
+      before do
+        create(:testimonial, category: :default)
+        visit root_path
+      end
 
-        it 'renders all the components' do
-          expect(page).to have_css('#hero')
-          expect(page).to have_css('#stats-header')
-          expect(page).to have_css('#stats')
-          expect(page).to have_css('#testimonials')
-          expect(page).to have_css('#features-header')
-          expect(page).to have_css('#features')
-          expect(page).to have_css('#buttons')
-          expect(page).to have_css('#general')
-          expect(page).to have_css('#organisations-header')
-          expect(page).to have_css('#organisations')
-        end
+      it 'renders all the components' do
+        expect(page).to have_css('#hero')
+        expect(page).to have_css('#stats-header')
+        expect(page).to have_css('#stats')
+        expect(page).to have_css('#testimonials')
+        expect(page).to have_css('#features-header')
+        expect(page).to have_css('#features')
+        expect(page).to have_css('#buttons')
+        expect(page).to have_css('#general')
+        expect(page).to have_css('#organisations-header')
+        expect(page).to have_css('#organisations')
       end
 
       context 'without blog cache' do
@@ -156,14 +152,6 @@ RSpec.describe 'home', type: :system do
       end
       expect(page).to have_current_path(find_out_more_campaigns_path)
     end
-
-    it 'links to the marketing page from home page' do
-      visit root_path
-      within('header') do
-        click_on('Find out more')
-      end
-      expect(page).to have_current_path(find_out_more_campaigns_path)
-    end
   end
 
   it 'has a contact page' do
@@ -215,55 +203,6 @@ RSpec.describe 'home', type: :system do
     visit root_path
     click_on('Datasets')
     expect(page.has_content?('Data used in Energy Sparks'))
-  end
-
-  context 'with newsletters' do
-    let!(:newsletter_1) { create(:newsletter, published_on: Date.parse('01/01/2019')) }
-    let!(:newsletter_2) { create(:newsletter, published_on: Date.parse('02/01/2019')) }
-    let!(:newsletter_3) { create(:newsletter, published_on: Date.parse('03/01/2019')) }
-    let!(:newsletter_4) { create(:newsletter, published_on: Date.parse('04/01/2019')) }
-    let!(:newsletter_5) { create(:newsletter, published_on: Date.parse('05/01/2019')) }
-
-    it 'shows the latest newsletters only' do
-      visit root_path
-
-      expect(page).not_to have_content(newsletter_1.title)
-      expect(page).to have_content(newsletter_2.title)
-      expect(page).to have_content(newsletter_3.title)
-      expect(page).to have_content(newsletter_4.title)
-      expect(page).to have_content(newsletter_5.title)
-
-      click_on 'More newsletters'
-
-      expect(page).to have_content(newsletter_1.title)
-      expect(page).to have_content(newsletter_2.title)
-      expect(page).to have_content(newsletter_3.title)
-      expect(page).to have_content(newsletter_4.title)
-      expect(page).to have_content(newsletter_5.title)
-    end
-  end
-
-  context 'with case studies' do
-    let!(:case_study_1) { create(:case_study, position: 1) }
-    let!(:case_study_2) { create(:case_study, position: 2) }
-    let!(:case_study_3) { create(:case_study, position: 3) }
-    let!(:case_study_4) { create(:case_study, position: 4) }
-
-    it 'shows the latest case studies only and all on a separate page' do
-      visit root_path
-
-      expect(page).to have_content(case_study_1.title)
-      expect(page).to have_content(case_study_2.title)
-      expect(page).to have_content(case_study_3.title)
-      expect(page).not_to have_content(case_study_4.title)
-
-      click_on 'More case studies'
-
-      expect(page).to have_content(case_study_1.title)
-      expect(page).to have_content(case_study_2.title)
-      expect(page).to have_content(case_study_3.title)
-      expect(page).to have_content(case_study_4.title)
-    end
   end
 
   context 'school admin user' do
