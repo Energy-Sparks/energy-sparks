@@ -155,7 +155,9 @@ class FormatEnergyUnit
 
   def self.format_pounds(unit, value, medium, user_numeric_comprehension_level, no_dp = false)
     user_numeric_comprehension_level = :no_decimals if no_dp
-    if value.magnitude >= 1.0
+    if (value.respond_to?(:nan?) && value.nan?) || (value.respond_to?(:infinite?) && value.infinite?)
+      scale_num(value)
+    elsif value.magnitude >= 1.0
       # £-40.00 => -£40.00
       I18n.t(key_for_unit(unit, medium), sign: (value < 0.0 ? '-' : ''), value: scale_num(value.magnitude, true, user_numeric_comprehension_level))
     else
