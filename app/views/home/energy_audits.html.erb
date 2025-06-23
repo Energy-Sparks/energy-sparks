@@ -1,4 +1,4 @@
-<% cache_if current_user.nil?, ['energy-audits', I18n.locale], expires_in: 1.hour do %>
+<% cache ['energy-audits', I18n.locale], expires_in: 1.hour do %>
   <% content_for :page_title, t('energy_audits.title') %>
   <div class="container-fluid adult mb-5 py-5">
     <%= render Layout::GridComponent.new(
