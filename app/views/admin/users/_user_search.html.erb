@@ -13,9 +13,9 @@
         <p>First 50 users with email matching search...</p>
       </div>
     </div>
-    <%= render AdminUserListComponent.new(id: 'found-users',
-                                          users: @search_users,
-                                          show_organisation: true) %>
+    <%= render Admin::UserListComponent.new(id: 'found-users',
+                                            users: @search_users,
+                                            show_organisation: true) %>
   <% elsif params[:search].present? %>
   <div class="row mt-4">
     <div class="col">
