@@ -1,4 +1,4 @@
-<p><%= title %></p>
+<h4><%= title %></h4>
 <% gas_factor = SecrCo2Equivalence.factor(year, :natural_gas_co2e) %>
 <% if gas_factor.nil? %>
   <%= t('school_groups.secr.table.missing', year:) %>
@@ -47,7 +47,7 @@
         <td><%= t('school_groups.secr.table.solar_self_consumption') %></td>
         <td><%= number_with_delimiter(self_consumption) %></td>
         <td></td>
-        <td>0.00</td>
+        <td>0.0</td>
       </tr>
       <% transmission_factor = SecrCo2Equivalence.factor(year, :transmission_distribution_co2e)
          transmission_emissions = transmission_factor&.*(electricity_consumption) %>
