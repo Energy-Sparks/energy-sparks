@@ -51,7 +51,7 @@ describe 'School group SECR' do
               ['Gas consumption', '0', '0.18', '0.0'],
               ['Scope 2 Total', '0', '', '0.0'],
               ['Purchased electricity', '0', '0.207074', '0.0'],
-              ['Solar self consumption', '0', '', '0.00'],
+              ['Solar self consumption', '0', '', '0.0'],
               ['Scope 3 Total', '0', '', '0.0'],
               ['Electricity transmission and distribution', '0', '0.0183', '0.0'],
               ['Total', '0', '', '0.0'],
