@@ -45,7 +45,7 @@ class CaseStudy < ApplicationRecord
 
   validates :image,
               content_type: ['image/png', 'image/jpeg'],
-              dimension: { width: { min: 700, max: 1400 } } # betwen half and full container width size to be conservative
+              dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
 
   validates :title_en, :file_en, presence: true
   validates :position, numericality: true, presence: true
