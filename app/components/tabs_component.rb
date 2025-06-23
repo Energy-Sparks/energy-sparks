@@ -7,8 +7,8 @@ class TabsComponent < ApplicationComponent
     attr_reader :name, :label
     attr_accessor :active
 
-    def initialize(name:, label:)
-      super()
+    def initialize(name:, label:, **_kwargs)
+      super
       @name = name
       @label = label
       @active = false
@@ -23,8 +23,8 @@ class TabsComponent < ApplicationComponent
     end
   end
 
-  def initialize(id: nil, classes: '', top_margin: true)
-    super(id:, classes:)
+  def initialize(top_margin: true, **_kwargs)
+    super
     @top_margin = top_margin
   end
 

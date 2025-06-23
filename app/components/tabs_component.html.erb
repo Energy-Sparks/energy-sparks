@@ -14,11 +14,9 @@
        classes.push('show', 'active') if tab.active %>
     <%= content_tag :div, id: tab.name, 'aria-labelledby': tab.link_id, role: :tabpanel, class: classes do %>
       <% if @top_margin %>
-        <div class="mt-3">
-          <%= tab -%>
-        </div>
+        <div class="mt-3"><%= tab %></div>
       <% else %>
-        <%= tab -%>
+        <%= tab %>
       <% end %>
     <% end %>
   <% end %>
