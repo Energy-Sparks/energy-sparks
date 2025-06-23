@@ -19,10 +19,9 @@ module Solar
           new_record.assign_attributes({ name: meter_type.to_s.humanize, active: false }.merge(attributes))
         end
         meter.update!(attributes) unless meter.attributes >= attributes
-        mpan_mprn = synthetic_mpan(meter_type, details)
         Amr::DataFeedUpserter.new(@amr_data_feed_config,
                                   @amr_data_feed_import_log,
-                                  data_feed_reading_array(details[:readings], meter.id, mpan_mprn)).perform
+                                  data_feed_reading_array(details[:readings], meter.id, meter.mpan_mprn)).perform
         log_perform_upsert
       end
     end
@@ -40,7 +39,8 @@ module Solar
     end
 
     def find_meter_or_create(meter_type, details, &)
-      Meter.find_or_create_by!(meter_type:, mpan_mprn: synthetic_mpan(meter_type, details),
+      Meter.find_or_create_by!(meter_type:,
+                               mpan_mprn: synthetic_mpan(meter_type, details),
                                school: @installation.school, &)
     end
 

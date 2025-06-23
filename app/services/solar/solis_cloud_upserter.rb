@@ -8,10 +8,6 @@ module Solar
       { name: @installation.meter_name(details[:serial_number]) }
     end
 
-    def synthetic_mpan(_meter_type, details)
-      SolisCloudInstallation.mpan(details[:serial_number])
-    end
-
     def find_meter_or_create(meter_type, details)
       Meter.find_by!(meter_type:, meter_serial_number: details[:serial_number], solis_cloud_installation: @installation)
     end
