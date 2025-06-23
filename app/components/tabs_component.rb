@@ -3,6 +3,15 @@
 class TabsComponent < ApplicationComponent
   renders_many :tabs, 'TabComponent'
 
+  def initialize(top_margin: true, **_kwargs)
+    super
+    @top_margin = top_margin
+  end
+
+  def before_render
+    tabs.first.active = true
+  end
+
   class TabComponent < ApplicationComponent
     attr_reader :name, :label
     attr_accessor :active
@@ -21,14 +30,5 @@ class TabsComponent < ApplicationComponent
     def call
       content
     end
-  end
-
-  def initialize(top_margin: true, **_kwargs)
-    super
-    @top_margin = top_margin
-  end
-
-  def before_render
-    tabs.first.active = true
   end
 end
