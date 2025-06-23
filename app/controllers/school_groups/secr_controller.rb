@@ -6,15 +6,14 @@ module SchoolGroups
       raise CanCan::AccessDenied unless current_user.admin? || current_user.group_admin?
 
       set_breadcrumbs(name: I18n.t('school_groups.sub_nav.secr_report'))
-      @dates = Periods::FixedAcademicYear.enumerator(MeterMonthlySummary.start_date(Time.zone.today, 2),
-                                                     Time.zone.today).to_a.reverse
-      @start_date = @dates[0][0]
+      @last_two_academic_year_periods = Periods::FixedAcademicYear.enumerator(
+        MeterMonthlySummary.start_date(Time.zone.today, 2), Time.zone.today).to_a.reverse
       @meters = @school_group.meters.active.where('schools.active')
       respond_to do |format|
         format.html
         format.csv do
           type, previous = params[:csv].split('_')
-          year = @dates[previous.nil? ? 1 : 0][0].year
+          year = @last_two_academic_year_periods[previous.nil? ? 1 : 0][0].year
           send_data csv_report(type, year),
                     filename: EnergySparks::Filenames.csv("secr-#{type}-#{year}#{(year + 1).to_s.last(2)}")
         end
@@ -29,8 +28,8 @@ module SchoolGroups
        t('school_groups.secr.csv.meter_serial'),
        t('school_groups.secr.csv.meter_name'),
        t('school_groups.secr.csv.consumption_for_the_year'),
-       ((9..12).map { |m| [@start_date.year, m] } +
-        (1..8).map { |m| [@start_date.year + 1, m] })
+       ((9..12).map { |m| [@last_two_academic_year_periods[0][0].year, m] } +
+        (1..8).map { |m| [@last_two_academic_year_periods[0][0].year + 1, m] })
             .map { |year, month| [Date.new(year, month, 1).strftime('%b-%Y'), t('school_groups.secr.csv.quality')] },
        t('school_groups.secr.csv.earliest_validated_reading'),
        t('school_groups.secr.csv.latest_validated_reading')].flatten
