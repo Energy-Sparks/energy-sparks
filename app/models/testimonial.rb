@@ -32,7 +32,7 @@ class Testimonial < ApplicationRecord
 
   validates :image,
               content_type: ['image/png', 'image/jpeg'],
-              dimension: { width: { min: 700, max: 1400 } } # betwen half and full container width size to be conservative
+              dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
 
   scope :active, -> { where(active: true) }
   scope :tx_resources, -> { active.order(:id) }
