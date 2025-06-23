@@ -85,18 +85,16 @@ RSpec.describe 'home', type: :system do
   end
 
   describe 'Education workshops page' do
-    context with_feature: :new_workshops_page do
-      before do
-        visit education_workshops_path
-      end
+    before do
+      visit education_workshops_path
+    end
 
-      it 'renders all the components' do
-        expect(page).to have_css('#hero')
-        expect(page).to have_css('#workshops-header')
-        expect(page).to have_css('#workshops')
-        expect(page).to have_css('#audience')
-        expect(page).to have_css('#details')
-      end
+    it 'renders all the components' do
+      expect(page).to have_css('#hero')
+      expect(page).to have_css('#workshops-header')
+      expect(page).to have_css('#workshops')
+      expect(page).to have_css('#audience')
+      expect(page).to have_css('#details')
     end
   end
 
