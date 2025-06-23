@@ -1,5 +1,10 @@
 <h4><%= title %></h4>
-<% gas_factor = SecrCo2Equivalence.factor(year, :natural_gas_co2e) %>
+
+<% year = period[0].year
+   # using ‘Majority’ approach - applying the factors from the calendar year in which the greatest portion of your data
+   # falls should.
+   equivalence_year = period[0].year + (period[1].month > 3 ? 1 : 0)
+   gas_factor = SecrCo2Equivalence.factor(equivalence_year, :natural_gas_co2e) %>
 <% if gas_factor.nil? %>
   <%= t('school_groups.secr.table.missing', year:) %>
 <% else %>
@@ -14,76 +19,79 @@
     </thead>
     <tbody>
       <% gas_consumption = MeterMonthlySummary.total_sum(meters.gas, year, :consumption)
-         gas_emissions = gas_factor * gas_consumption %>
+         gas_emissions = gas_factor * gas_consumption / 1000
+         def format_number(number)
+           number_with_delimiter(number.round(2))
+         end %>
       <tr>
         <td><b><%= t('school_groups.secr.table.scope1_total') %></b></td>
-        <td><%= number_with_delimiter(gas_consumption) %></td>
+        <td><%= format_number(gas_consumption) %></td>
         <td></td>
-        <td><%= number_with_delimiter(gas_emissions.round(2)) %></td>
+        <td><%= format_number(gas_emissions) %></td>
       </tr>
       <tr>
         <td><%= t('school_groups.secr.table.gas_consumption') %></td>
-        <td><%= number_with_delimiter(gas_consumption) %></td>
+        <td><%= format_number(gas_consumption) %></td>
         <td><%= gas_factor %></td>
-        <td><%= number_with_delimiter(gas_emissions.round(2)) %></td>
+        <td><%= format_number(gas_emissions) %></td>
       </tr>
       <% electricity_consumption = MeterMonthlySummary.total_sum(meters.electricity, year, :consumption)
          self_consumption = MeterMonthlySummary.total_sum(meters.electricity.map, year, :self_consume)
-         electricity_factor = SecrCo2Equivalence.factor(year, :electricity_co2e)
-         electricity_emissions = electricity_factor&.*(electricity_consumption) %>
+         electricity_factor = SecrCo2Equivalence.factor(equivalence_year, :electricity_co2e)
+         electricity_emissions = electricity_factor * electricity_consumption / 1000 %>
       <tr>
         <td><b><%= t('school_groups.secr.table.scope2_total') %></b></td>
-        <td><%= number_with_delimiter(electricity_consumption + self_consumption) %></td>
+        <td><%= format_number(electricity_consumption + self_consumption) %></td>
         <td></td>
-        <td><%= number_with_delimiter(electricity_emissions.round(2)) %></td>
+        <td><%= format_number(electricity_emissions) %></td>
       </tr>
       <tr>
         <td><%= t('school_groups.secr.table.purchased_electricity') %></td>
-        <td><%= number_with_delimiter(electricity_consumption) %></td>
+        <td><%= format_number(electricity_consumption) %></td>
         <td><%= electricity_factor %></td>
-        <td><%= number_with_delimiter(electricity_emissions.round(2)) %></td>
+        <td><%= format_number(electricity_emissions) %></td>
       </tr>
       <tr>
         <td><%= t('school_groups.secr.table.solar_self_consumption') %></td>
-        <td><%= number_with_delimiter(self_consumption) %></td>
+        <td><%= format_number(self_consumption) %></td>
         <td></td>
         <td>0.0</td>
       </tr>
-      <% transmission_factor = SecrCo2Equivalence.factor(year, :transmission_distribution_co2e)
-         transmission_emissions = transmission_factor&.*(electricity_consumption) %>
+      <% transmission_factor = SecrCo2Equivalence.factor(equivalence_year, :transmission_distribution_co2e)
+         transmission_emissions = transmission_factor * electricity_consumption / 1000 %>
       <tr>
         <td><b><%= t('school_groups.secr.table.scope3_total') %></b></td>
-        <td><%= number_with_delimiter(electricity_consumption) %></td>
+        <td><%= format_number(electricity_consumption) %></td>
         <td></td>
-        <td><%= number_with_delimiter(transmission_emissions.round(2)) %></td>
+        <td><%= format_number(transmission_emissions) %></td>
       </tr>
       <tr>
         <td><%= t('school_groups.secr.table.transmission_and_distribution') %></td>
-        <td><%= number_with_delimiter(electricity_consumption) %></td>
+        <td><%= format_number(electricity_consumption) %></td>
         <td><%= transmission_factor %></td>
-        <td><%= number_with_delimiter(transmission_emissions.round(2)) %></td>
+        <td><%= format_number(transmission_emissions) %></td>
       </tr>
       <% total_consumption = gas_consumption + self_consumption + electricity_consumption
          total_emissions = gas_emissions + electricity_emissions + transmission_emissions %>
       <tr>
         <td><b><%= t('school_groups.secr.table.total') %></b></td>
-        <td><%= number_with_delimiter(total_consumption.round(2)) %></td>
+        <td><%= format_number(total_consumption) %></td>
         <td></td>
-        <td><%= number_with_delimiter(total_emissions.round(2)) %></td>
+        <td><%= format_number(total_emissions) %></td>
       </tr>
       <% solar_export = MeterMonthlySummary.total_sum(meters.active.electricity, year, :export).abs
-         solar_emissions = electricity_factor * solar_export %>
+         solar_emissions = electricity_factor * solar_export / 1000 %>
       <tr>
         <td><%= t('school_groups.secr.table.solar_export') %></td>
-        <td><%= number_with_delimiter(solar_export) %></td>
+        <td><%= format_number(solar_export) %></td>
         <td><%= electricity_factor %></td>
-        <td><%= number_with_delimiter(solar_emissions.round(2)) %></td>
+        <td><%= format_number(solar_emissions) %></td>
       </tr>
       <tr>
         <td><b><%= t('school_groups.secr.table.net') %></b></td>
-        <td><%= number_with_delimiter((net = total_consumption - solar_export).round(2)) %></td>
+        <td><%= format_number(net = total_consumption - solar_export) %></td>
         <td></td>
-        <td><%= number_with_delimiter((total_emissions - solar_emissions).round(2)) %></td>
+        <td><%= format_number(total_emissions - solar_emissions) %></td>
       </tr>
       <tr>
         <td><b><%= t('school_groups.secr.table.intensity_ratio') %></b></td>

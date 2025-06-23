@@ -18,12 +18,12 @@
        number_of_pupils = schools.sum(:number_of_pupils)
        periods = @last_two_academic_year_periods %>
     <%= render 'table', meters:,
-                        year: periods[1][0].year + (periods[1][1].month > 3 ? 1 : 0),
+                        period: periods[1],
                         title: t('school_groups.secr.data.current_table_title', start_date: periods[1][0],
                                                                                 end_date: periods[1][1]),
                         number_of_pupils: %>
     <%= render 'table', meters:,
-                        year: periods[0][1].year,
+                        period: periods[0],
                         title: t('school_groups.secr.data.previous_table_title', start_date: periods[0][0],
                                                                                  end_date: periods[0][1]),
                         number_of_pupils: %>
