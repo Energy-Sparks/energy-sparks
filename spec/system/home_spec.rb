@@ -26,28 +26,30 @@ RSpec.describe 'home', type: :system do
         expect(page).to have_css('#general')
         expect(page).to have_css('#organisations-header')
         expect(page).to have_css('#organisations')
+        expect(page).to have_css('#blog-header')
+        expect(page).to have_css('#blog')
+      end
+    end
+
+    context 'without blog cache' do
+      before do
+        visit root_path
       end
 
-      context 'without blog cache' do
-        before do
-          visit root_path
-        end
+      it 'does not render the blog components' do
+        expect(page).not_to have_css('#blog-header')
+        expect(page).not_to have_css('#blog')
+      end
+    end
 
-        it 'does not render the blog components' do
-          expect(page).not_to have_css('#blog-header')
-          expect(page).not_to have_css('#blog')
-        end
+    context 'without any tesimonials in the :default category' do
+      before do
+        create(:testimonial, category: :audit)
+        visit energy_audits_path
       end
 
-      context 'without tesimonials in the :default category' do
-        before do
-          create(:testimonial, category: :audit)
-          visit energy_audits_path
-        end
-
-        it 'does not render the tesimonials component' do
-          expect(page).not_to have_css('#testimonials')
-        end
+      it 'does not render the tesimonials component' do
+        expect(page).not_to have_css('#testimonials')
       end
     end
   end
