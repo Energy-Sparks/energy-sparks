@@ -1,24 +1,4 @@
 cy:
   education_workshops:
-    availability: Sylwch, dim ond i ysgolion sydd â chyfrif Sbarcynni gweithredol y mae gweithdai addysg ar gael ar hyn o bryd. Mae gweithdai personol ar gael yn y rhan fwyaf o ardaloedd Cymru a Lloegr. Ar hyn o bryd dim ond yn yr Alban y gallwn gynnig gweithdai rhithwir.
     book: Archebu gweithdy
-    cost_html: "<p>Mae gweithdai ar gael am dâl o £250 i £500 yn dibynnu ar leoliad a ph'un a ydynt yn cael eu darparu yn bersonol neu ar-lein. Mae gostyngiadau ar gael os ydym yn gallu cydlynu gweithdai ar gyfer nifer o ysgolion o fewn yr un Ymddiriedolaeth Aml-Academi neu Awdurdod Lleol i gwtogi ar deithio. Bydd rhai ysgolion mewn rhanbarthau dynodedig yn gymwys ar gyfer gweithdai personol am ddim. Byddwn yn rhoi gwybod i chi os ydych yn gymwys i gael gweithdy am ddim neu'n darparu dyfynbris cywir ar ôl i chi gwblhau'r ffurflen archebu gweithdy.</p>"
-    intro_html: |-
-      <p>
-        Er mwyn cefnogi ymgysylltiad ac ysgogi effaith, mae Sbarcynni yn cynnig gweithdai addysg personol a rhithwir hanner diwrnod i ysgolion sy'n cymryd rhan ledled y DU. Gall gweithdai addysg gynnwys:
-      </p>
-      <ul>
-        <li>Cynulliadau</li>
-        <li>Gweithdai tîm eco a dosbarth</li>
-        <li>Hyfforddiant personol ar ddefnyddio Sbarcynni ar gyfer arweinwyr timau eco, staff ystadau a rheolwyr busnes.</li>
-      </ul>
-      <p>
-        Byddwn yn gweithio gyda’ch ysgol i gyflwyno gweithdy sy’n diwallu anghenion a diddordebau eich ysgol. Gall sesiynau gynnwys:
-      </p>
-      <ul>
-        <li>Rhyfelwyr ynni: Cyflwynwch eich disgyblion i'r ynni a ddefnyddiwn yn ein cartrefi a'n hysgolion</li>
-        <li>Ein hysgol, ein hinsawdd: Dysgwch sut y gall y newidiadau bach a wnawn yn ein hysgol effeithio ar yr hinsawdd</li>
-        <li>Ditectifs ynni: Dysgwch sut i gynnal awdit ynni ac adnabod y defnyddwyr ynni mwyaf o amgylch yr ysgol</li>
-        <li>Sylwch ar yr hyn sy’n boeth: Dysgwch sut i ddadansoddi siartiau gwresogi ac archwilio tymheredd a gwres yn eich ysgol gan ddefnyddio camera delweddu thermol</li>
-      </ul>
     title: Gweithdai Addysg

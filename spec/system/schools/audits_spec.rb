@@ -287,7 +287,7 @@ describe 'Audits', :include_application_helper, type: :system do
       end
 
       it 'shows introductory page' do
-        expect(page).to have_content('Energy Sparks offers two types of energy audits')
+        expect(page).to have_content('Energy audits: turn data into action')
       end
     end
 
@@ -316,7 +316,7 @@ describe 'Audits', :include_application_helper, type: :system do
       it 'gives link to book another audit' do
         visit school_audits_path(school)
         click_link 'Book another audit'
-        expect(page).to have_content('Energy Sparks offers two types of energy audits')
+        expect(page).to have_content('Energy audits: turn data into action')
       end
 
       it 'doesnt show admin options on list of audits' do
@@ -386,7 +386,7 @@ describe 'Audits', :include_application_helper, type: :system do
 
       it 'gives link to book another audit' do
         click_link 'Book another audit'
-        expect(page).to have_content('Energy Sparks offers two types of energy audits')
+        expect(page).to have_content('Energy audits: turn data into action')
       end
 
       it 'doesnt show admin options on list of audits' do

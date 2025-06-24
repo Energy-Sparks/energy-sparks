@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe BlogService, type: :service do
-  before { Flipper.enable(:new_home_page) }
-  after { Flipper.disable(:new_home_page) }
-
   include_context 'with cache'
 
   let(:fixture_path) { File.expand_path('spec/fixtures/files/blog-feed.xml', Dir.pwd) }

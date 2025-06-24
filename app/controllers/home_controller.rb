@@ -129,9 +129,7 @@ class HomeController < ApplicationController
   end
 
   def set_blog_service
-    if Flipper.enabled?(:new_home_page, current_user)
-      @blog = BlogService.new
-    end
+    @blog = BlogService.new
   end
 
   def redirect_if_logged_in
