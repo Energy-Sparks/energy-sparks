@@ -4,7 +4,6 @@ module Solar
   class SolisCloudDownloadAndUpsert < BaseDownloadAndUpsert
     def download_and_upsert
       readings = download
-      p readings
       SolisCloudUpserter.new(installation: @installation, readings:, import_log:).perform
     end
 
@@ -72,11 +71,8 @@ module Solar
     def zero_leftover(array)
       # first entries can sometimes carry over total from previous day, reset those to zero
       index = array.find_index { |x| x < 1 }
-      if index
-        array.each_with_index { |_, i| array[i] = 0 if i < index }
-      else
-        array
-      end
+      array.each_with_index { |_, i| array[i] = 0 if i < index } unless index.nil?
+      array
     end
 
     def fill_missing(array)
@@ -86,7 +82,6 @@ module Solar
       (0..(array.length - 1)).map { |i| format('%<hour>02d:%<min>02d', hour: i / 2, min: (i % 2) * 30) }
                              .index_with(nil)
                              .merge(array.to_h)
-                             .tap { |a| p a }
                              .values
                              .map { |value| value.nil? ? previous : previous = value }
     end
@@ -106,10 +101,6 @@ module Solar
           .then { |half_hourly| zero_leftover(half_hourly) }
           .then { |half_hourly| calculate_differences(half_hourly) }
           .then { |half_hourly| half_hourly.fill(nil, half_hourly.length..47) }
-
-      # zero_leftover(half_hourly)
-      # [half_hourly.first] + half_hourly[..47].each_cons(2).map { |previous, current| current - previous }
-      #                                        .fill(nil, half_hourly.length..47)
     end
   end
 end
