@@ -75,4 +75,23 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     task.invoke
     expect(installation.amr_data_feed_config.amr_data_feed_import_logs.first.error_messages).not_to be_nil
   end
+
+  it 'handles no data' do
+    stub_station_day(meter.meter_serial_number, '2025-01-09', { data: [] }.to_json)
+    task.invoke('2025-01-09', '2025-01-09')
+    expect(meter.amr_data_feed_readings.first.readings).to eq(Array.new(48, nil))
+  end
+
+  it 'handles one data item' do
+    stub_station_day(meter.meter_serial_number, '2025-01-09', { data: [{ timeStr: '00:02', eToday: 100 }] }.to_json)
+    task.invoke('2025-01-09', '2025-01-09')
+    expect(meter.amr_data_feed_readings.first.readings).to eq([100].map(&:to_s) + Array.new(47, nil))
+  end
+
+  it 'handles data with gaps' do
+    stub_station_day(meter.meter_serial_number, '2025-01-09',
+                     { data: [{ timeStr: '00:02', eToday: 100 }, { timeStr: '01:02', eToday: 200 }] }.to_json)
+    task.invoke('2025-01-09', '2025-01-09')
+    expect(meter.amr_data_feed_readings.first.readings).to eq([100, 0, 100].map(&:to_s) + Array.new(45, nil))
+  end
 end

@@ -4,6 +4,7 @@ module Solar
   class SolisCloudDownloadAndUpsert < BaseDownloadAndUpsert
     def download_and_upsert
       readings = download
+      p readings
       SolisCloudUpserter.new(installation: @installation, readings:, import_log:).perform
     end
 
@@ -54,7 +55,6 @@ module Solar
           Rails.logger.debug { "SolisCloud download for #{meter.meter_serial_number} #{date}" }
           begin
             day = api.inverter_day(meter.meter_serial_number, date)
-            # sometimes the data attribute can be nil
             [date, convert_invertor_day(day['data'])] if day['data']
           rescue StandardError => e
             e.rollbar_context = { solis_cloud_inverter_id: meter.meter_serial_number, date:, day: }
@@ -70,18 +70,46 @@ module Solar
     end
 
     def zero_leftover(array)
-      # first entries can sometimes be non zero
+      # first entries can sometimes carry over total from previous day, reset those to zero
       index = array.find_index { |x| x < 1 }
-      array.each_with_index { |_, i| array[i] = 0 if i < index } if index
+      if index
+        array.each_with_index { |_, i| array[i] = 0 if i < index }
+      else
+        array
+      end
+    end
+
+    def fill_missing(array)
+      return [] if array.empty?
+
+      previous = 0
+      (0..(array.length - 1)).map { |i| format('%<hour>02d:%<min>02d', hour: i / 2, min: (i % 2) * 30) }
+                             .index_with(nil)
+                             .merge(array.to_h)
+                             .tap { |a| p a }
+                             .values
+                             .map { |value| value.nil? ? previous : previous = value }
+    end
+
+    def calculate_differences(array)
+      return [] if array.empty?
+
+      [array[0]] + array.each_cons(2).map { |previous, current| current - previous }
     end
 
     def convert_invertor_day(data)
-      half_hourly = data.pluck('timeStr', 'eToday')
-                        .map { |time, total| [Time.parse(time).utc, total] }
-                        .group_by { |time, _| nearest_half_hour(time) }
-                        .map { |boundary, group| group.min_by { |time, _| (boundary - time).abs }[1] }
-      zero_leftover(half_hourly)
-      [half_hourly.first] + half_hourly[..47].each_cons(2).map { |prev, curr| curr - prev }
+      data.pluck('timeStr', 'eToday')
+          .map { |time, total| [Time.parse(time).utc, total] }
+          .group_by { |time, _| nearest_half_hour(time) }
+          .map { |boundary, group| [boundary.strftime('%H:%M'), group.min_by { |time, _| (boundary - time).abs }[1]] }
+          .then { |half_hourly| fill_missing(half_hourly[0..47]) }
+          .then { |half_hourly| zero_leftover(half_hourly) }
+          .then { |half_hourly| calculate_differences(half_hourly) }
+          .then { |half_hourly| half_hourly.fill(nil, half_hourly.length..47) }
+
+      # zero_leftover(half_hourly)
+      # [half_hourly.first] + half_hourly[..47].each_cons(2).map { |previous, current| current - previous }
+      #                                        .fill(nil, half_hourly.length..47)
     end
   end
 end
