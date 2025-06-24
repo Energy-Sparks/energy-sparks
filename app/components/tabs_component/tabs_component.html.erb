@@ -1,4 +1,4 @@
-<%= content_tag(:ul, class: %w[nav nav-tabs url-aware] + [@classes], role: :tablist) do %>
+<%= content_tag(:ul, class: ['nav nav-tabs url-aware', @classes], role: :tablist) do %>
   <% tabs.each do |tab| %>
     <% classes = ['nav-link']
        classes << 'active' if tab.active %>
