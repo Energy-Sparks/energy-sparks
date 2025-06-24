@@ -4,7 +4,7 @@ RSpec.describe 'home', type: :system do
   describe 'Home page' do
     it 'has a home page' do
       visit root_path
-      expect(page.has_content?('Energy Sparks'))
+      expect(page).to have_content 'Helping schools cut energy costs and fight climate change'
     end
 
     context 'with all components available' do
