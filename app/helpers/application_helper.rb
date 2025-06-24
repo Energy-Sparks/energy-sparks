@@ -556,8 +556,7 @@ module ApplicationHelper
   end
 
   def home_class
-    if Flipper.enabled?(:new_home_page, current_user) &&
-       controller_name == 'home' && %w[index show].include?(action_name)
+    if controller_name == 'home' && %w[index show].include?(action_name)
       'home'
     else
       'home-page'
