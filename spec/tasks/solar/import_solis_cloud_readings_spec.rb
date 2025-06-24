@@ -55,13 +55,6 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[24] }).to eq(['8.5'])
   end
 
-  it 'works with nil data' do
-    stub_station_day(meter.meter_serial_number, '2025-01-09', { data: nil }.to_json)
-    task.invoke('2025-01-09', '2025-01-09')
-    expect(installation.amr_data_feed_config.amr_data_feed_import_logs).to \
-      contain_exactly(have_attributes(error_messages: nil, records_imported: 0))
-  end
-
   it 'with existing readings, it reloads last five days' do
     travel_to(Date.new(2023, 11, 16))
     (Date.new(2023, 11, 10)..Date.new(2023, 11, 15)).each { |day| stub_stations_day(day.iso8601) }
@@ -74,6 +67,13 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     stub.to_return(status: 403)
     task.invoke
     expect(installation.amr_data_feed_config.amr_data_feed_import_logs.first.error_messages).not_to be_nil
+  end
+
+  it 'works with nil data' do
+    stub_station_day(meter.meter_serial_number, '2025-01-09', { data: nil }.to_json)
+    task.invoke('2025-01-09', '2025-01-09')
+    expect(installation.amr_data_feed_config.amr_data_feed_import_logs).to \
+      contain_exactly(have_attributes(error_messages: nil, records_imported: 0))
   end
 
   def readings
