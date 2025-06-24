@@ -9,6 +9,8 @@ namespace :after_party do
                         ['1300386381677086829', 587],
                         ['1300386381677086560', 627]].to_h
 
+    AmrDataFeedReading.where(amr_data_feed_config: AmrDataFeedConfig.find_by!(identifier: 'solis-cloud')).delete_all
+
     SolisCloudInstallation.find_each do |installation|
       installation.meters.find_each { |meter| MeterManagement.new(meter).delete_meter! }
       installation.update_inverter_detail_list.each do |inverter|
