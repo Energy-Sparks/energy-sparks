@@ -45,7 +45,7 @@ RSpec.describe 'home', type: :system do
     context 'without any tesimonials in the :default category' do
       before do
         create(:testimonial, category: :audit)
-        visit energy_audits_path
+        visit root_path
       end
 
       it 'does not render the tesimonials component' do
@@ -55,48 +55,44 @@ RSpec.describe 'home', type: :system do
   end
 
   describe 'Energy audits page' do
-    context with_feature: :new_audits_page do
-      context 'with all components available' do
-        before do
-          create(:testimonial, category: :audit)
-          visit energy_audits_path
-        end
-
-        it 'renders all the components' do
-          expect(page).to have_css('#hero')
-          expect(page).to have_css('#onsite')
-          expect(page).to have_css('#onsite-prices')
-          expect(page).to have_css('#desktop')
-          expect(page).to have_css('#testimonials')
-        end
+    context 'with all components available' do
+      before do
+        create(:testimonial, category: :audit)
+        visit energy_audits_path
       end
 
-      context 'without tesimonials in the :audit category' do
-        before do
-          create(:testimonial, category: :default)
-          visit energy_audits_path
-        end
+      it 'renders all the components' do
+        expect(page).to have_css('#hero')
+        expect(page).to have_css('#onsite')
+        expect(page).to have_css('#onsite-prices')
+        expect(page).to have_css('#desktop')
+        expect(page).to have_css('#testimonials')
+      end
+    end
 
-        it 'does not render the tesimonials component' do
-          expect(page).not_to have_css('#testimonials')
-        end
+    context 'without tesimonials in the :audit category' do
+      before do
+        create(:testimonial, category: :default)
+        visit energy_audits_path
+      end
+
+      it 'does not render the tesimonials component' do
+        expect(page).not_to have_css('#testimonials')
       end
     end
   end
 
   describe 'Education workshops page' do
-    context with_feature: :new_workshops_page do
-      before do
-        visit education_workshops_path
-      end
+    before do
+      visit education_workshops_path
+    end
 
-      it 'renders all the components' do
-        expect(page).to have_css('#hero')
-        expect(page).to have_css('#workshops-header')
-        expect(page).to have_css('#workshops')
-        expect(page).to have_css('#audience')
-        expect(page).to have_css('#details')
-      end
+    it 'renders all the components' do
+      expect(page).to have_css('#hero')
+      expect(page).to have_css('#workshops-header')
+      expect(page).to have_css('#workshops')
+      expect(page).to have_css('#audience')
+      expect(page).to have_css('#details')
     end
   end
 
