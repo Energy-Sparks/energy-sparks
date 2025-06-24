@@ -5,7 +5,7 @@ RSpec.describe 'case_studies', :include_application_helper do
 
   before { sign_in(user) if user }
 
-  context 'when there is an existing case study', toggle_context: :new_case_studies_page do
+  context 'when there is an existing case study' do
     let!(:case_study) do
       create(:case_study, title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/laptop.jpg'))
@@ -39,7 +39,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
   end
 
-  context 'when a welsh download is available', toggle_context: :new_case_studies_page do
+  context 'when a welsh download is available' do
     let!(:case_study) do
       create(:case_study, title: 'First Case Study', position: 1,
       file_en: fixture_file_upload(Rails.root + 'spec/fixtures/images/laptop.jpg'),
@@ -60,7 +60,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
   end
 
-  context 'when case study is not published', toggle_context: :new_case_studies_page do
+  context 'when case study is not published' do
     let!(:case_study) { create(:case_study, published: false) }
 
     before do
@@ -72,7 +72,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
   end
 
-  context 'when case study does not exist', toggle_context: :new_case_studies_page do
+  context 'when case study does not exist' do
     before do
       visit case_study_download_path('unknown')
     end
@@ -80,7 +80,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     it_behaves_like 'a 404 error page'
   end
 
-  context 'with new page layout', with_feature: :new_case_studies_page do
+  context 'with new page layout' do
     let!(:testimonial) { create(:testimonial) }
     let!(:case_study) { create(:case_study, tags: 'one, two, three', image: fixture_file_upload('spec/fixtures/images/laptop.jpg')) }
 

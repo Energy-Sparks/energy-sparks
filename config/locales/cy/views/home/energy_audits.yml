@@ -1,35 +1,3 @@
 cy:
   energy_audits:
-    availability: Mae Sbarcynni yn cynnig dau fath o archwiliadau ynni, archwiliadau ynni rhithwir ar-lein ac archwiliadau ynni ar y safle. Dim ond i ysgolion sydd â chyfrifon Sbarcynni gweithredol y cynigir y gwasanaethau hyn ar hyn o bryd.
-    onsite:
-      intro_html: |-
-        <h4 id="onsite-energy-audits"><strong>Archwiliadau ynni ar y safle</strong></h4>
-        <p>
-          Mae'r archwiliadau ynni hyn yn cynnwys dadansoddi data defnydd ynni, ymweliad safle a defnyddio camera delweddu thermol yn ystod misoedd y gaeaf, adroddiad a chynllun gweithredu. Darperir dyfynbrisiau cywir yn seiliedig ar safle, gofynion a lleoliad yr ysgol. Isod mae costau dangosol:
-        </p>
-        <ul>
-          <li>Ysgol Gynradd: £950 + TAW</li>
-          <li>Ysgol uwchradd un safle: £1,650 + TAW</li>
-          <li>Ysgol uwchradd annibynnol neu aml-safle: £2,250 + TAW</li>
-        </ul>
-        <p>
-         Yn ddelfrydol hoffem gynnwys y myfyrwyr yn ein harchwiliadau, gan ddarparu cyfleoedd i fyfyrwyr gysgodi ein harchwilydd yn ystod y dydd, defnyddio'r camera delweddu thermol ac fel arfer rydym yn cynnwys sesiwn adborth cychwynnol i'r tîm eco a'r staff ar ddiwedd yr ymweliad.
-        </p>
-    quote: Cysylltwch â ni am ddyfynbris
     title: Archwiliadau Ynni
-    virtual:
-      availability: Codir £350 + TAW am archwiliadau ynni rhithwir.
-      intro_html: |-
-        <h4 id="virtual-energy-audits"><strong>Archwiliadau ynni rhithwir</h4>
-        <p>
-          Cynhelir archwiliadau ynni rhithwir heb ymweliad â'r ysgol ac maent yn seiliedig ar asesiad yr archwilydd ynni o ddata defnydd ynni eich ysgol fel y'i cyflwynir ar Sbarcynni. Mae’r archwiliad yn cynnwys awr o gyfarfod ar-lein gyda chynrychiolwyr ysgolion, fel arfer y rheolwr ystad neu ofalwr, rheolwr busnes, arweinydd tîm eco ac un neu ddau o gynrychiolwyr myfyrwyr.
-        </p>
-        <p>
-          Yn ystod y cyfarfod ar-lein, byddem yn disgwyl i chi ddarparu gwybodaeth am eich ysgol, ei ffabrig, ei system wresogi, systemau dŵr poeth, TGCh a goleuo i helpu gyda’r broses archwilio. Yna bydd ein harchwilydd yn mynd â chi drwy unrhyw faterion a amlygwyd yn y dadansoddiad Sbarcynni ac yn rhoi cyngor ar y ffordd orau o leihau defnydd.
-        </p>
-        <p>
-          Mae'r prif ffocws, i ddechrau, ar enillion cost isel cyflym, fel edrych ar newid amserau boeleri. Gall y sesiwn hefyd adolygu buddsoddiadau cyfalaf strategol, er enghraifft, edrych ar fanteision uwchraddio i oleuadau LED.
-        </p>
-        <p>
-          Ar ôl y cyfarfod, bydd ein harchwilydd yn cyhoeddi ‘eitemau gweithredu’ ysgrifenedig i bob parti eu cyflawni, gallai hyn gynnwys gweithgareddau y gall y disgyblion eu gwneud i helpu. Cytunir ar gyfarfodydd neu gerrig milltir dilynol, sy'n cynnwys dadansoddiad pellach, adborth o newidiadau a wnaed, a chefnogaeth bosibl o ran cael cymorth gyda chontractwyr a dyfynbrisiau.
-        </p>
