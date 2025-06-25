@@ -37,15 +37,14 @@
           id: 'audience',
           cols: 2,
           theme: :light,
-          classes: 'rounded-xl p-4 mt-5 mb-6',
-          cell_classes: ''
+          classes: 'rounded-xl p-4 mt-5 mb-6'
         ) do |grid| %>
       <%= grid.with_image(src: 'pupil-whiteboard.jpg') %>
       <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
-        <%= feature.with_header(title: t('education_workshops.audience.title'), classes: '') %>
+        <%= feature.with_header(title: t('education_workshops.audience.title')) %>
         <%= feature.with_description { t('education_workshops.audience.description_html') } %>
         <%= feature.with_button(t('education_workshops.book'),
-                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary, classes: 'mr-2') %>
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary) %>
       <% end %>
     <% end %>
 

@@ -163,3 +163,21 @@ en:
         price_large: "£595 + VAT"
         title: Individual state schools
       title: Pricing
+  pricing:
+    call_to_action:
+      description_html: Enrol today to join our growing network of <strong>%{count}</strong> schools. Still have questions? Get in touch to request more information.
+      title: Ready to cut costs and spark pupils' commitment to sustainability?
+    feature:
+      description: Save up to 40% on energy bills with our unique school-specific energy management tool and education programme
+      title: Start cutting energy costs and fight climate change
+    free_places:
+      description_html: |-
+        Funding from charitable trusts and foundations, community energy companies and corporate partners allows Energy Sparks to provide its services free of charge, or at a subsidised rate, to a limited number of schools in certain regions of the UK.
+        <br><br>
+        Energy Sparks is seeking new funders to allow us to maintain and extend our free offer to more state schools.
+        <br><br>
+        We will let you know if you are eligible for a funded place when you enrol your school, Trust or Local Authority.
+      title: Free places
+    looking_for_info: Looking for more information?
+    product_features:
+      title: Product features
