@@ -86,7 +86,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       expect(attribute.to_analytics.to_s).to include('800')
 
 
-      within '#database-meter-attributes-content' do
+      within '#database-meter-attributes' do
         click_on 'Edit'
       end
 
@@ -100,7 +100,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       attribute.reload
       expect(attribute.replaced_by).to eq(new_attribute)
 
-      within '#database-meter-attributes-content' do
+      within '#database-meter-attributes' do
         click_on 'Delete'
       end
       expect(gas_meter.meter_attributes.active.size).to eq(0)
@@ -123,7 +123,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       fill_in 'Reason', with: 'Testing'
       click_on 'Create'
 
-      within '#database-meter-attributes-content' do
+      within '#database-meter-attributes' do
         click_on 'Edit'
       end
 
@@ -154,7 +154,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       fill_in 'Reason', with: 'Testing'
       click_on 'Create'
 
-      within '#database-meter-attributes-content' do
+      within '#database-meter-attributes' do
         click_on 'Edit'
       end
 

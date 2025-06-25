@@ -1,136 +1,58 @@
 <%= content_for :page_title, t('school_groups.secr.title') %>
 <h1><%= t('school_groups.secr.title') %></h1>
-<p><%= t('school_groups.secr.introduction') %></p>
-<h2><%= t('school_groups.secr.section1.title') %></h2>
-<%= end_date = Periods::FixedAcademicYear.enumerator(@start_date, @start_date + 1.year).to_a[-1][1].to_fs(:es_short)
-    t('school_groups.secr.section1.introduction_html', start_date: @start_date.to_fs(:es_short), end_date:) %>
-<table id="table1" class="table table-sm">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Consumption (kWh)</th>
-      <th>Emission (metric tonnes CO2e)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% meters = @school_group.meters.active.where('schools.active') %>
-    <tr>
-      <td><b><%= t('school_groups.secr.section1.scope1') %></b></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.gas_consumption') %></td>
-      <td><%= gas_consumption =
-                MeterMonthlySummary.total_sum(meters.gas, @start_date.year, :consumption) %></td>
-      <td><%= gas_emissions =
-                SecrCo2Equivalence.emissions(@start_date.year, :natural_gas_co2e, gas_consumption) %></td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.solar_self_consumption') %></td>
-      <td><%= self_consumption =
-                MeterMonthlySummary.total_sum(meters.electricity.map, @start_date.year, :self_consume) %></td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.total') %></td>
-      <td><%= (gas_consumption + self_consumption).round(2) %></td>
-      <td><%= gas_emissions %></td>
-    </tr>
-    <tr>
-      <td><b><%= t('school_groups.secr.section1.scope2') %></b></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.purchased_electricity') %></td>
-      <td><%= electricity_consumption =
-                MeterMonthlySummary.total_sum(meters.electricity, @start_date.year, :consumption) %></td>
-      <td><%= electricity_emissions =
-                SecrCo2Equivalence.emissions(@start_date.year, :electricity_co2e, electricity_consumption) %></td>
-    </tr>
-    <tr>
-      <td><b><%= t('school_groups.secr.section1.scope3') %></b></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.transmission_and_distribution') %></td>
-      <td>-</td>
-      <td><%= transmission_emissions = SecrCo2Equivalence.emissions(@start_date.year, :transmission_distribution_co2e,
-                                                                    electricity_consumption) %></td>
-    </tr>
-    <tr>
-      <td><b><%= t('school_groups.secr.section1.total') %></b></td>
-      <td><%= (total_consumption = gas_consumption + self_consumption + electricity_consumption).round(2) %></td>
-      <td><%= (gas_emissions + electricity_emissions + transmission_emissions).round(2) %></td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.solar_export') %></td>
-      <td><%= solar_export =
-                - MeterMonthlySummary.total_sum(meters.active.electricity, @start_date.year, :export) %></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><b><%= t('school_groups.secr.section1.net') %></b></td>
-      <td><%= (net = total_consumption - solar_export).round(2) %></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><b><%= t('school_groups.secr.section1.intensity_ratio') %></b></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td><%= t('school_groups.secr.section1.pupil_intensity') %></td>
-      <td><%= net.zero? ? 0 : (@school_group.schools.sum(:number_of_pupils) / net).round(4) %></td>
-      <td></td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan="3">
-        <%= schools = @school_group.schools.active.pluck(:id)
-            t('school_groups.secr.section1.footnotes_html',
-              active_schools: schools.length,
-              gas_meters: meters.gas.count,
-              electricity_meters: meters.electricity.count,
-              metered_solar_schools: (MeterAttribute.metered_solar.pluck(:school_id) & schools).length,
-              estimated_solar_schools: (MeterAttribute.solar_pv.pluck(:school_id) & schools).length) %>
-      </td>
-    </tr>
-  </tfoot>
-</table>
-<% academic_year = "#{@start_date.year}/#{(@start_date.year + 1).to_s[-2..]}" %>
-<h2><%= t('school_groups.secr.section1.table2_title') %></h2>
-<p><%= t('school_groups.secr.section1.table2_introduction_html', year: academic_year) %></p>
-<table id="table2" class="table table-sm">
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>kg CO2e</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% SecrCo2Equivalence.find_by(year: @start_date.year).attributes.each do |name, value| %>
-      <% if name.include?('co2e') %>
-        <tr>
-          <td><%= SecrCo2Equivalence.human_attribute_name(name) %></td>
-          <td><%= value %></td>
-        </tr>
+<%= render TabsComponent.new do |component| %>
+  <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage')) do %>
+    <%= t('school_groups.secr.usage.purpose_of_this_tool_html') %>
+    <%= t('school_groups.secr.usage.what_is_included_html') %>
+    <%= t('school_groups.secr.usage.how_to_identify_gaps_html') %>
+    <%= t('school_groups.secr.usage.how_to_improve_html') %>
+  <% end %>
+  <% component.with_tab(name: :data, label: t('school_groups.secr.tabs.data')) do %>
+    <% kwargs = %i[last current]
+                .zip(@last_two_academic_year_periods)
+                .map { |type, period| { "#{type}_start_date": period[0], "#{type}_end_date": period[1] } }
+                .reduce(&:merge) %>
+    <p><%= t('school_groups.secr.data.introduction', **kwargs.transform_values { |date| date.to_fs(:es_short) }) %></p>
+    <% meters = @school_group.meters.active.where('schools.active')
+       schools = @school_group.schools.active
+       number_of_pupils = schools.sum(:number_of_pupils)
+       periods = @last_two_academic_year_periods %>
+    <%= render 'table', meters:,
+                        period: periods[1],
+                        title: t('school_groups.secr.data.current_table_title', start_date: periods[1][0],
+                                                                                end_date: periods[1][1]),
+                        number_of_pupils: %>
+    <%= render 'table', meters:,
+                        period: periods[0],
+                        title: t('school_groups.secr.data.previous_table_title', start_date: periods[0][0],
+                                                                                 end_date: periods[0][1]),
+                        number_of_pupils: %>
+    <%= schools = schools.pluck(:id)
+        t('school_groups.secr.data.supporting_notes_html',
+          active_schools: schools.length,
+          gas_meters: meters.gas.count,
+          electricity_meters: meters.electricity.count,
+          metered_solar_schools: (MeterAttribute.metered_solar.pluck(:school_id) & schools).length,
+          estimated_solar_schools: (MeterAttribute.solar_pv.pluck(:school_id) & schools).length,
+          number_of_pupils:) %>
+    <%= t('school_groups.secr.data.carbon_emission_factors_html') %>
+    <h2><%= t('school_groups.secr.data.downloads.title') %></h2>
+    <p><%= t('school_groups.secr.data.downloads.introduction') %></p>
+    <ul>
+      <% types = %w[electricity gas self export]
+         years = @last_two_academic_year_periods.map { | date| "#{date[0].year}/#{(date[0].year + 1).to_s.last(2)}" }
+         years.each_with_index do |year, i|
+           types.each do |type| %>
+          <% csv = "#{type}#{i.zero? ? '_previous' : ''}" %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.electricity') %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.gas') %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.self') %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.export') %>
+          <li><%= link_to t("school_groups.secr.data.downloads.#{type}", year:),
+                          school_group_secr_index_path(@school_group, format: :csv, csv:) %></li>
+        <% end %>
       <% end %>
-    <% end %>
-  </tbody>
-</table>
-<h2><%= t('school_groups.secr.section2.title') %></h2>
-<p><%= t('school_groups.secr.section2.introduction', year: academic_year) %></p>
-<ul>
-  <li><%= link_to t('school_groups.secr.section2.electricity_consumption'),
-                  school_group_secr_index_path(@school_group, format: :csv, csv: :electricity) %></li>
-  <li><%= link_to t('school_groups.secr.section2.gas_consumption'),
-                  school_group_secr_index_path(@school_group, format: :csv, csv: :gas) %></li>
-  <li><%= link_to t('school_groups.secr.section2.solar_self_consumption'),
-                  school_group_secr_index_path(@school_group, format: :csv, csv: :self) %></li>
-  <li><%= link_to t('school_groups.secr.section2.solar_export'),
-                  school_group_secr_index_path(@school_group, format: :csv, csv: :export) %></li>
-</ul>
+    </ul>
+    <%= t('school_groups.secr.data.data_quality_html') %>
+  <% end %>
+<% end %>
