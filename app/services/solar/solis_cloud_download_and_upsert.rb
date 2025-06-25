@@ -34,15 +34,18 @@ module Solar
       x48
     end
 
-    def start_date(date_string = nil)
+    def start_date(date_string: nil, meter: nil)
       if @requested_start_date
         @requested_start_date
-      elsif latest_reading
-        latest_reading - 5.days
-      elsif date_string
-        Date.parse(date_string)
       else
-        1.year.ago
+        latest_reading = meter&.amr_data_feed_readings&.maximum(:reading_date)
+        if latest_reading
+          latest_reading - 5.days
+        elsif date_string
+          Date.parse(date_string)
+        else
+          1.year.ago.to_date
+        end
       end
     end
 
@@ -50,7 +53,7 @@ module Solar
       api = DataFeeds::SolisCloudApi.new(@installation.api_id, @installation.api_secret)
       @installation.meters.map do |meter|
         detail = @installation.inverter_detail_list.find { |inverter| inverter['sn'] == meter.meter_serial_number }
-        readings = (start_date(detail&.[]('fisGenerateTimeStr'))..end_date).filter_map do |date|
+        readings = (start_date(date_string: detail&.[]('fisGenerateTimeStr'), meter:)..end_date).filter_map do |date|
           Rails.logger.debug { "SolisCloud download for #{meter.meter_serial_number} #{date}" }
           begin
             day = api.inverter_day(meter.meter_serial_number, date)
