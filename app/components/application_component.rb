@@ -17,6 +17,7 @@ class ApplicationComponent < ViewComponent::Base
   # end
 
   def initialize(*_args, id: nil, classes: '', **_kwargs)
+    super()
     @id = id
     @classes = class_names(classes)
 
