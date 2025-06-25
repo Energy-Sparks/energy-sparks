@@ -39,4 +39,8 @@ module SchoolGroupsHelper
     when :thermostatic_control then :thermostatic_control
     end
   end
+
+  def secr_format_number(number)
+    number_with_delimiter(number.round(2))
+  end
 end
