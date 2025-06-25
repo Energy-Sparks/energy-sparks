@@ -1,39 +1,34 @@
 <h1>Meter attributes: <%= @school_group.name %></h1>
-
-
-<ul class="nav nav-tabs" id="meter-attribute-tabs" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="database-meter-attributes-tab" data-toggle="tab" href="#database-meter-attributes-content" role="tab" aria-controls="database-meter-attributes-content" aria-selected="true">Group-wide attributes</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="deleted-meter-attributes-tab" data-toggle="tab" href="#deleted-meter-attributes-content" role="tab" aria-controls="deleted-meter-attributes-content" aria-selected="true">Deleted attributes</a>
-  </li>
-</ul>
-<div class="tab-content" id="meter-attributes-tabs-content">
-  <div class="tab-pane fade show active pt-4" id="database-meter-attributes-content" role="tabpanel" aria-labelledby="database-meter-attributes-tab">
-    <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_admin_school_group_meter_attribute_path(@school_group) %>
+<%= render TabsComponent.new do |component| %>
+  <% component.with_tab(name: :'database-meter-attributes', label: 'Group-wide attributes') do %>
+    <%= render 'shared/meter_attributes/new_select',
+               available_meter_attributes: @available_meter_attributes,
+               create_path: new_admin_school_group_meter_attribute_path(@school_group) %>
     <table class="table mt-3">
       <% @meter_attributes.each do |meter_attribute| %>
         <%= render 'admin/schools/school_attributes/meter_attribute', meter_attribute: meter_attribute do %>
           <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_school_group_meter_attribute_path(@school_group, meter_attribute), class: 'btn btn-sm' %>
-            <%= button_to 'Delete', admin_school_group_meter_attribute_path(@school_group, meter_attribute), method: :delete, class: 'btn btn-sm' %>
-            <%= link_to 'History', admin_school_group_meter_attribute_path(@school_group, meter_attribute), class: 'btn btn-sm' %>
+            <%= link_to 'Edit', edit_admin_school_group_meter_attribute_path(@school_group, meter_attribute),
+                        class: 'btn btn-sm' %>
+            <%= button_to 'Delete', admin_school_group_meter_attribute_path(@school_group, meter_attribute),
+                          method: :delete, class: 'btn btn-sm' %>
+            <%= link_to 'History', admin_school_group_meter_attribute_path(@school_group, meter_attribute),
+                        class: 'btn btn-sm' %>
           </div>
         <% end %>
       <% end %>
     </table>
-  </div>
-  <div class="tab-pane fade" id="deleted-meter-attributes-content" role="tabpanel" aria-labelledby="deleted-database-meter-attributes-tab">
-
+  <% end %>
+  <% component.with_tab(name: :'deleted-meter-attributes', label: 'Deleted attributes') do %>
     <table class="table mt-3">
       <% @deleted_meter_attributes.each do |meter_attribute| %>
         <%= render 'admin/schools/school_attributes/meter_attribute', meter_attribute: meter_attribute do %>
           <div class="btn-group">
-            <%= link_to 'History', admin_school_group_meter_attribute_path(@school_group, meter_attribute), class: 'btn btn-sm' %>
+            <%= link_to 'History', admin_school_group_meter_attribute_path(@school_group, meter_attribute),
+                        class: 'btn btn-sm' %>
           </div>
         <% end %>
       <% end %>
     </table>
-  </div>
-</div>
+  <% end %>
+<% end %>

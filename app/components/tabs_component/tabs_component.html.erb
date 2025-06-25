@@ -1,0 +1,23 @@
+<%= content_tag(:ul, class: ['nav nav-tabs url-aware', @classes], role: :tablist) do %>
+  <% tabs.each do |tab| %>
+    <% classes = ['nav-link']
+       classes << 'active' if tab.active %>
+    <li class="nav-item">
+      <%= link_to tab.label, "##{tab.name}", id: tab.link_id, 'aria-controls': tab.name, 'data-toggle': :tab,
+                                             role: :tab, 'aria-selected': tab.active, class: classes %>
+    </li>
+  <% end %>
+<% end %>
+<div class="tab-content">
+  <% tabs.each do |tab| %>
+    <% classes = %w[tab-pane fade]
+       classes.push('show', 'active') if tab.active %>
+    <%= content_tag :div, id: tab.name, 'aria-labelledby': tab.link_id, role: :tabpanel, class: classes do %>
+      <% if @top_margin %>
+        <div class="mt-3"><%= tab %></div>
+      <% else %>
+        <%= tab %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
