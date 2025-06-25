@@ -36,11 +36,6 @@ class SolisCloudInstallation < ApplicationRecord
     api_id
   end
 
-  def latest_electricity_reading
-    reading_date = AmrDataFeedReading.where(meter_id: meters).maximum(:reading_date)
-    reading_date ? Date.parse(reading_date) : nil
-  end
-
   def update_inverter_detail_list
     api = DataFeeds::SolisCloudApi.new(api_id, api_secret)
     inverter_detail_list = api.inverter_detail_list.dig('data', 'records') || []
