@@ -84,6 +84,8 @@ module Aggregation
       # in which these values occur
       remove_dcc_bad_data_readings if @meter.dcc_meter
 
+      remove_negative_readings
+
       # Adjusts amr data start/end by one day to ignore days with partial data
       # (This overlaps with the remove_final_meter_reading_if_today check done
       # in previous step)
@@ -445,6 +447,16 @@ module Aggregation
       end
 
       logger.info "Leaving #{ok_data.length} days of dcc data with no bad values"
+    end
+
+    def remove_negative_readings
+      @amr_data.each_date_kwh do |date, days_kwh_x48|
+        x48_negative_nil = days_kwh_x48.map { |kwh| kwh.negative? ? nil : kwh }
+        if days_kwh_x48 != x48_negative_nil
+          data = OneDayAMRReading.new(meter_id, date, 'RNEG', nil, DateTime.now, days_kwh_x48)
+          @amr_data.add(date, data)
+        end
+      end
     end
 
     # typical problem for DCC provided data, has partial data for today from 4.00am batch
