@@ -24,6 +24,7 @@ module SchoolGroups
 
     def csv_headers
       [t('common.school'),
+       t('activerecord.attributes.school.number_of_pupils'),
        'MPXN',
        t('school_groups.secr.csv.meter_serial'),
        t('school_groups.secr.csv.meter_name'),
@@ -47,6 +48,7 @@ module SchoolGroups
 
           csv << [
             meter.school.name,
+            meter.school.number_of_pupils,
             meter.mpan_mprn,
             meter.meter_serial_number,
             meter.name,
