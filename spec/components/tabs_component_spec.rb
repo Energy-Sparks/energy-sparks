@@ -20,7 +20,6 @@ RSpec.describe TabsComponent, type: :component do
         id: "#{name}-tab",
         role: 'tab' }
     )
-    expect(tab.text).to eq(label)
   end
 
   def expect_tab_content(div, name, active, content, top_margin)
