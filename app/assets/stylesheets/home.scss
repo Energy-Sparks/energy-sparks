@@ -1,5 +1,4 @@
-// outer div has the .home-page class when :new_home_page feature is switched off
-// and we're not currently looking at the home page
+// outer div has the .home class when we're on the new home page, otherwise it's .home-page for the old css (still used by some marketing pages)
 
 .home-page {
   section.alerts .alert {
@@ -283,10 +282,11 @@
   }
 }
 
-// outer div has this class when :new_home_page feature is switched on and if we're on the home page
+// outer div has this class when we're on the home page
 
 .home {
   section.alerts .alert {
     margin-bottom: 0px;
   }
 }
+
