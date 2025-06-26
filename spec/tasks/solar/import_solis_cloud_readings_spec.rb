@@ -107,4 +107,11 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     task.invoke('2025-01-09', '2025-01-09')
     expect(readings).to eq([100, 0, 100].map(&:to_s) + Array.new(45, nil))
   end
+
+  it 'handles data on 45 mins boundary' do
+    stub_inverter_day(meter.meter_serial_number, '2025-01-09',
+                      { data: [{ timeStr: '00:45', eToday: 1 }, { timeStr: '00:46', eToday: 2 }] }.to_json)
+    task.invoke('2025-01-09', '2025-01-09')
+    expect(readings).to eq([0, 2].map(&:to_s) + Array.new(46, nil))
+  end
 end
