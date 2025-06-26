@@ -102,8 +102,8 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
   end
 
   it 'handles data with gaps' do
-    stub_station_day(meter.meter_serial_number, '2025-01-09',
-                     { data: [{ timeStr: '00:02', eToday: 100 }, { timeStr: '01:02', eToday: 200 }] }.to_json)
+    stub_inverter_day(meter.meter_serial_number, '2025-01-09',
+                      { data: [{ timeStr: '00:02', eToday: 100 }, { timeStr: '01:02', eToday: 200 }] }.to_json)
     task.invoke('2025-01-09', '2025-01-09')
     expect(readings).to eq([100, 0, 100].map(&:to_s) + Array.new(45, nil))
   end
