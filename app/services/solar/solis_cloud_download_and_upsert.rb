@@ -40,7 +40,7 @@ module Solar
       else
         latest_reading = meter&.amr_data_feed_readings&.maximum(:reading_date)
         if latest_reading
-          latest_reading - 5.days
+          Date.parse(latest_reading) - 5.days
         elsif date_string
           Date.parse(date_string)
         else
