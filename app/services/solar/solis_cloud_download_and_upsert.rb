@@ -68,7 +68,7 @@ module Solar
     end
 
     def nearest_half_hour(time)
-      time.dup.change(hour: time.hour + (time.min > 45 ? 1 : 0), min: time.min > 15 && time.min < 45 ? 30 : 0)
+      time.dup.change(hour: time.hour + (time.min >= 45 ? 1 : 0), min: time.min >= 15 && time.min < 45 ? 30 : 0)
     end
 
     def zero_leftover(array)
