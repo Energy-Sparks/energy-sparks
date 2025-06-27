@@ -9,7 +9,7 @@ cy:
             title: Defnydd o drydan fesul wythnos am y 14 mis diwethaf
           management_dashboard_group_by_week_electricity:
             title: Defnydd diweddar o drydan fesul wythnos
-          table_footer: Gall fod rhesymau dros rai gwyliau i ddefnyddio mwy o ynni, er enghraifft goleuadau diogelwch ychwanegol yn y gaeaf neu gontractwyr yn gweithio ar eiddo ysgol. Yn ddelfrydol, dylai'r gwyliau cryno fod yn is na gwyliau eraill oherwydd gellir diffodd mwy o offer a chyfarpar.
+          table_footer: Gall fod rhesymau pam fod rhai gwyliau yn defnyddio mwy o ynni, er enghraifft goleuadau diogelwch ychwanegol yn y gaeaf neu gontractwyr yn gweithio ar eiddo ysgol. Yn ddelfrydol, dylai gwyliau'r haf fod yn is na gwyliau eraill oherwydd gellir diffodd mwy o offer a chyfarpar.
           table_intro: Mae’r tabl isod yn dangos crynodeb o’ch defnydd trydan gwyliau ysgol y llynedd. Mae'n cynnwys defnydd ynni cyfartalog y dydd i alluogi cymhariaeth ar gyfer gwyliau o hyd gwahanol.
           title: Defnydd gwyliau
         last_twelve_months:
@@ -20,16 +20,17 @@ cy:
             time_of_use: Amser defnydd
             total: Cyfanswm
           table_introduction: Mae'r tabl isod yn dangos faint o drydan a ddefnyddiwyd pan mae'r ysgol ar agor neu ar gau ar ddiwrnod ysgol yn ogystal ag ar benwythnosau a gwyliau.
+          table_title: Crynodeb ysgol gyfan
           title: 12 mis diwethaf
         summary: Mae'r adran hon yn rhoi dadansoddiad manylach o ddefnydd trydan eich ysgol y tu allan i oriau ysgol a rhai pethau i gadw llygad amdanynt. Er mwyn rheoli ynni'n dda, rydych am i'r rhan fwyaf o'ch defnydd ynni fod pan fydd yr ysgol ar agor.
         title: Dadansoddiad
         usage_by_day_of_week:
           daytype_breakdown_electricity_tolerant_chart:
-            subtitle_html: Mae'r siart hwn yn dangos manylion o'ch defnydd o drydan rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>
+            subtitle_html: Mae'r siart hwn yn dangos dadansoddiad o'ch defnydd o drydan rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span> ar gyfer <span class="meter">%{meter}</span>
             title: Manylion defnydd trydan
           electricity_by_day_of_week_tolerant_chart:
             footer: Bydd rhywfaint o ddefnydd trydan ar benwythnosau o offer a dyfeisiau sy'n cael eu gadael ymlaen, ond dylai'r ysgol anelu at leihau'r rhain. Mae ysgolion sydd â defnydd isel o drydan ar benwythnosau yn anelu at ddiffodd cymaint o offer â phosibl ar brynhawn dydd Gwener, gan roi rhestr wirio weithiau i'r gofalwr neu'r staff glanhau o'r hyn y dylent fod yn ei ddiffodd.
-            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y trydan a ddefnyddir gan eich ysgol rhwng <span class="start-date">%{start_date}</span> a %{end_date}, wedi'i ddadansoddi fesul diwrnod yr wythnos ac amser defnyddio
+            subtitle_html: Mae'r siart hwn yn dangos cyfanswm y trydan a ddefnyddir gan <span class="meter">%{meter}</span> rhwng <span class="start-date">%{start_date}</span> a <span class="end-date">%{end_date}</span>, wedi'i dorri i lawr yn ôl diwrnod yr wythnos ac amser defnyddio
             title: Defnydd trydan fesul diwrnod yr wythnos
           title: Defnydd fesul diwrnod yr wythnos
       insights:

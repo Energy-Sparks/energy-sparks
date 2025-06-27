@@ -7,6 +7,7 @@ cy:
       many: '%{count} o weithredoedd'
       other: '%{count} o weithredoedd'
     application: Sbarcynni
+    author_html: gan %{author}
     back_to_top: Yn ôl i'r brig
     bar_charts: Siartiau bar
     confirm: Ydych chi'n siŵr?
@@ -39,6 +40,8 @@ cy:
       download: Lawrlwytho
       edit: Golygu
       enable: Galluogi
+      energy_saving_actions: Camau gweithredu arbed ynni
+      enquire_now: Holwch nawr
       finish: Gorffen
       finished: Wedi gorffen
       home: Hafan
@@ -54,15 +57,21 @@ cy:
       not_set: Heb ei osod
       place: Lle
       previous: Blaenorol
+      prices: Prisiau
       pupil_activities: Gweithgareddau disgyblion
+      pupil_led_activities: Gweithgareddau dan arweiniad disgyblion
+      read_more: Darllen rhagor
       remove: Tynnu
       report: Adrodd
       restart: Ail-ddechrau
       save: Cadw
       start: Dechrau
+      starting_from: Gan ddechrau o
       status: Statws
       submit: Cyflwyno
+      subscribe: Tanysgrifio
       type: Math
+      unsubscribe: Dad-danysgrifio
       update: Diweddaru
       upload: Uwchlwytho
       view: Gweld
@@ -73,6 +82,7 @@ cy:
       yes_label: 'Ie'
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
+    points_html: "%{count} o bwyntiau"
     privacy_policy: polisi preifatrwydd
     school: Ysgol
     school_types:

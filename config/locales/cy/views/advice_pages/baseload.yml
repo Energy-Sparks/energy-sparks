@@ -9,7 +9,9 @@ cy:
         baseload_low_extra_savings_html: Pe baech yn cyfateb llwyth sylfaenol ysgolion sy'n perfformio orau gallech arbed %{estimated_savings} y flwyddyn.
         charts:
           baseload_chart_considerations:
-            - Os mae eich llwyth sylfaenol wedi newid, er enghraifft yn cynyddu neu'n lleihau yn sydyn, dylech allu olrhain ac egluro achos y newid hwn. Ystyriwch a yw'r ysgol wedi prynu offer newydd yn ddiweddar. Mae gostyngiad mawr dros wyliau'r haf yn dda, mae'n dangos bod offer wedi cael eu diffodd. Efallai cafodd oergelloedd a rhewgelloedd yn y gegin eu gwagio neu eu cyfuno. Ystyriwch pa mor arwyddocaol yw'r gostyngiad hwnnw - os cânt eu hachosi gan ddiffodd oergelloedd a rhewgelloedd, efallai y byddant yn ddigon aneffeithlon i ofyn am rai newydd. Meddyliwch a all eich ysgol ailadrodd y gostyngiad hwnnw ar gyfer gwyliau eraill, neu hyd yn oed penwythnosau.
+            - Os yw eich llwyth sylfaenol wedi newid, er enghraifft cynyddu neu leihau'n sydyn, dylech allu olrhain ac egluro achos y newid hwn. Ystyriwch a yw'r ysgol wedi prynu offer newydd yn ddiweddar neu a yw offer wedi'i wasanaethu. Gwiriwch ddyddiad y newid yn erbyn unrhyw gofnod o waith a wnaed yn yr ysgol.
+            - Gallai cynnydd sydyn yn y gaeaf fod yn gysylltiedig â gadael gwres ymlaen dros nos. Efallai y bydd hyn yn angenrheidiol yn ystod cyfnodau oer iawn, ond mae'n ddefnyddiol gwirio bod lefelau llwyth sylfaenol yn dychwelyd i normal ar ôl i'r cyfnod oer fynd heibio.
+            - Mae gostyngiad mawr iawn dros wyliau'r haf yn beth da, mae'n dangos bod offer wedi'u diffodd. Efallai bod oergelloedd a rhewgelloedd yn y gegin wedi'u gwagio neu eu cyfuno. Ystyriwch pa mor arwyddocaol yw'r gostyngiad hwnnw - os caiff ei achosi gan ddiffodd oergelloedd a rhewgelloedd, efallai eu bod yn ddigon aneffeithlon i fod angen eu disodli. Meddyliwch a all eich ysgol efelychu'r gostyngiad hwnnw ar gyfer gwyliau eraill, neu hyd yn oed penwythnosau.
           baseload_chart_explanation: Mae pob pwynt yn y siart hwn yn cynrychioli'r llwyth sylfaenol cyfartalog dros yr oriau y mae ysgol ar gau ar y diwrnod hwnnw. Gallwch glicio ar bwynt yn y siart a bydd yn drilio i lawr i ddangos y defnydd llawn o drydan i chi ar y diwrnod hwnnw.
           baseload_chart_subtitle_html: Mae'r siart hwn yn dangos llwyth sylfaenol trydan eich ysgol rhwng<span class="start-date">%{start_month_year}</span> a <span class="end-date">%{end_month_year}</span>.
           baseload_chart_title:
@@ -95,7 +97,7 @@ cy:
           percentage_of_total: "% o gyfanswm y llwyth sylfaenol"
           potential_saving_co2: Gostyngiad CO2 (kg)
           potential_saving_gbp: Arbediad potensial (£)
-          year: Blwyddyn
+          year: Blwyddyn Academaidd
         labels:
           all_meters: Pob mesurydd
       what_is_baseload_html: |-

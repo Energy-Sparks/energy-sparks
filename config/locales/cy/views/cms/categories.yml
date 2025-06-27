@@ -1,0 +1,14 @@
+cy:
+  categories:
+    index:
+      subtitle: Porwch neu chwiliwch drwy ein tudalennau cymorth cynhwysfawr
+      title: Dod o hyd i gymorth a chefnogaeth
+    nav:
+      title: Mynegai cymorth
+  pages:
+    search:
+      browse: Pori'r holl dudalennau cymorth
+      button: Chwilio
+      training: Cofrestru ar gyfer cwrs hyfforddi
+    section_nav:
+      title: Mynd i adran

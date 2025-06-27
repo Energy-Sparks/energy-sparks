@@ -62,7 +62,7 @@ cy:
         send_me_reset_password_instructions: Anfonwch gyfarwyddiadau ailosod cyfrinair ataf
     sessions:
       new:
-        adult_title: Mewngofnodwch i Sbarcynni
+        adult_title: Mewngofnodi i Sbarcynni
         email_address_and_password: cyfeiriad e-bost a chyfrinair
         log_in_with_your_email_address_and_password: Mewngofnodwch gyda'ch cyfeiriad e-bost a'ch cyfrinair
         log_in_with_your_pupil_password: Mewngofnodwch gyda'ch cyfrinair disgybl

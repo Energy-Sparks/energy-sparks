@@ -1,0 +1,19 @@
+cy:
+  mailchimp:
+    audience_manager:
+      interests:
+        energy_saving_leadership:
+          description_html: Ydych chi'n cael trafferth perswadio'ch cydweithwyr i weithredu ar arbed ynni? Cofrestrwch i dderbyn syniadau ar sut i adeiladu ymdrech gymunedol o amgylch torri costau ynni a charbon. Byddwch yn derbyn cyngor, awgrymiadau a straeon llwyddiant ysbrydoledig. Mae gennym gyngor i arweinwyr mewn ysgolion (gan gynnwys arweinwyr cynaliadwyedd), yn ogystal â chyngor gan Ymddiriedolaethau Aml-Academi. Anfonir ar ddechrau pob tymor.
+          name: Arweinyddiaeth arbed ynni
+        engaging_pupils_in_energy_saving_and_climate:
+          description_html: Byddwch yn derbyn awgrymiadau gweithgareddau, adnoddau, ysbrydoliaeth a straeon llwyddiant gan ysgolion eraill i'ch helpu i ymgysylltu disgyblion mewn arbed ynni a gweithredu ar yr hinsawdd. Byddwch hefyd yn derbyn diweddariadau ar gystadlaethau hwyliog. Anfonir ar ddiwedd pob hanner tymor.
+          name: Ymgysylltu disgyblion ag arbed ynni a'r hinsawdd
+        getting_the_most_out_of_energy_sparks:
+          description_html: Byddwch yn derbyn awgrymiadau, syniadau ac ysbrydoliaeth i'ch helpu i wneud y mwyaf o arbed ynni ac ymgysylltiad disgyblion ar draws eich ystâd(au) ysgol. Anfonir bob mis.
+          name: Manteisio i'r eithaf ar Sbarcynni
+        tailored_advice_and_support:
+          description_html: O bryd i'w gilydd, hoffem anfon negeseuon e-bost atoch gyda chyngor a chymorth wedi'u teilwra yn seiliedig ar arsylwadau o ddata ynni eich ysgol a'r heriau rheoli ynni rydym yn credu y gallai eich ysgol fod yn eu hwynebu.
+          name: Cyngor a chefnogaeth wedi'u teilwra
+        training_opportunities:
+          description_html: Mae Sbarcynni yn cynnal cyfres o sesiynau hyfforddi ar-lein am ddim i'ch helpu i gael y gorau o'n platfform. Cofrestrwch i glywed am y cyfleoedd hyfforddi sydd ar gael bob hanner tymor.
+          name: Cyfleoedd hyfforddi

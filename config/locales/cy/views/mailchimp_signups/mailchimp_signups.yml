@@ -1,12 +1,16 @@
 cy:
   mailchimp_signups:
     index:
+      follow_up: Byddwch yn derbyn e-bost yn fuan i gadarnhau eich tanysgrifiad.
+      select_interests: Rhaid i chi ddewis un neu fwy o fathau o e-bost i danysgrifio
       subscription_confirmed: Cadarnhawyd y tanysgrifiad
       thank_you_for_subscribing: Diolch am danysgrifio!
+      unable_to_process_subscription: Methu â phrosesu tanysgrifiad cylchlythyr Mailchimp
     mailchimp_form:
       email_address: Cyfeiriad e-bost *
-      school_name: Enw’r ysgol (os yw’n briodol)
+      email_preferences: Dewisiadau e-bost
+      school_name: Enw'r ysgol (neu sefydliad arall)
       subscribe: Tanysgrifio
-      user_name: Enw defnyddiwr *
+      user_name: Enw *
     new:
-      sign_up_to_the_energy_sparks_newsletter: Cofrestrwch i dderbyn cylchlythyr Sbarcynni
+      sign_up_to_the_energy_sparks_newsletter: Cofrestru i'n cylchlythyr

@@ -19,7 +19,7 @@ cy:
                 trydan yn y dyfodol agos?
               </p>
         comparison:
-          title: Cymhariaeth cost ar gyfer y 2 flynedd ddiwethaf
+          title: Cymhariaeth cost ar gyfer y 2 flynedd academaidd ddiwethaf
         cost_breakdown_by_charge:
           title: Dadansoddiad cost yn ôl tâl am y %{period} diwethaf
         cost_breakdown_by_meter:
@@ -51,9 +51,9 @@ cy:
           subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span> ar gyfer yr ysgol gyfan
           title: Cydrannau cost trydan ar gyfer yr ychydig wythnosnau diwethaf
         cost_comparison_last_2_years_accounting:
-          meter_title: Cymhariaeth costau trydan ar gyfer y 2 flynedd ddiwethaf ar gyfer %{meter}
-          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
-          title: Cymhariaeth costau trydan am y 2 flynedd ddiwethaf
+          meter_title: Cymhariaeth costau trydan ar gyfer y 2 flynedd academaidd ddiwethaf ar gyfer %{meter}
+          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y flwyddyn academaidd yn diweddu ar <span class='end-date'>%{end_date}</span> â'r flwyddyn academaidd blaenorol
+          title: Cymhariaeth costau trydan am y 2 flynedd academaidd ddiwethaf
       insights:
         current_costs:
           title: Eich costau presennol
