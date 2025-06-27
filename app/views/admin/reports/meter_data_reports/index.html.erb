@@ -1,0 +1,37 @@
+<% content_for :page_title, @title %>
+<div class="row">
+  <div class="col">
+    <h1><%= @title %></h1>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center">
+  <p>
+     <span class="badge badge-info">Updated <%= @frequency %> </span> <%= @description %>
+  </p>
+  <% if lookup_context.exists?('definition', lookup_context.prefixes, true) %>
+  <p>
+    <a class="btn btn-sm btn-info" data-toggle="collapse" href="#help" role="button" aria-expanded="false" aria-controls="help">
+      View help
+    </a>
+  </p>
+  <% end %>
+</div>
+
+<% if lookup_context.exists?('definition', lookup_context.prefixes, true) %>
+  <div class="row">
+    <div class="col">
+      <div class="collapse" id="help">
+        <%= render 'definition' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= render 'report_filters', path: @path %>
+
+<div class="row">
+  <div class="col">
+    <%= render 'admin/reports/column_table', columns: @columns, rows: @rows %>
+  </div>
+</div>

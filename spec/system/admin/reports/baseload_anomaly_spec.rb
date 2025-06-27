@@ -26,7 +26,7 @@ describe 'Baseload anomaly report' do
   end
 
   it 'allows csv download' do
-    click_on 'Download as CSV'
+    click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
       eq("School Group,Admin,School,Meter,Meter Name,Reading Date,Previous Baseload,Baseload,Chart\n" \
