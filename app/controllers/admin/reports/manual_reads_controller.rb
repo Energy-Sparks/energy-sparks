@@ -45,7 +45,10 @@ module Admin
       end
 
       def results
-        Meter.active.where(manual_reads: true)
+        results = Meter.active.where(manual_reads: true).with_school_and_group
+        results = results.for_school_group(SchoolGroup.find(params[:school_group])) if params[:school_group].present?
+        results = results.for_admin(User.admin.find(params[:user])) if params[:user].present?
+        results
       end
 
       def path

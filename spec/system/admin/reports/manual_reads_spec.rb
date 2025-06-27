@@ -19,7 +19,7 @@ describe 'Manual Reads Report' do
   end
 
   it 'allows csv download' do
-    click_on 'Download as CSV'
+    click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
       eq("Group Name,School Name,Group Owner,MPAN,Meter Type,Data Source,Last Validated Date,Issues,Notes\n" \
