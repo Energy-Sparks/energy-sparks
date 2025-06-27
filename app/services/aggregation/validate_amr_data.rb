@@ -465,9 +465,7 @@ module Aggregation
     end
 
     def bad_dcc_value?(kwh)
-      # there may be other bad values in future
-      # none of this is documented by the DCC......
-      kwh.between?(186_227.0864, 186_227.0866)
+      BadValues.bad_dcc_value?(kwh, @meter.meter_type)
     end
 
     # A specific built in correction that will substitute any nil readings with
