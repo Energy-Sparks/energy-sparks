@@ -8,7 +8,7 @@ require 'benchmark/memory'
 #
 # The "validation" process involves applying a set of data quality checks and validation
 # rules to each meter in the collection. This involves, e.g. substituting for missing or
-# bad data. The is delegated to the +ValidateAMRData+ class.
+# bad data. The is delegated to the +ValidateAmrData+ class.
 #
 # The "aggregation" process involves a variety of steps, including:
 #
@@ -148,7 +148,8 @@ class AggregateDataService
   def validate_meter_list(list_of_meters)
     log "Validating #{list_of_meters.length} meters"
     list_of_meters.each do |meter|
-      validate_meter = ValidateAMRData.new(meter, MAX_DAYS_MISSING_DATA, @meter_collection.holidays, @meter_collection.temperatures)
+      validate_meter = Aggregation::ValidateAmrData.new(meter, MAX_DAYS_MISSING_DATA, @meter_collection.holidays,
+                                                        @meter_collection.temperatures)
       validate_meter.validate
     rescue StandardError => e
       add_rollbar_context_if_available(meter, e)

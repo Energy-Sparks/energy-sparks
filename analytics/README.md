@@ -8,7 +8,7 @@ Energy Sparks is a UK based charity which helps schools reduce their carbon emis
 
 This library provides a number of functions
 - validation and aggregation used to produce a wide variety of energy and carbon emission charts
-  - validation via `AggregateDataService.validate_meter_data` and `ValidateAMRData` which it uses
+  - validation via `AggregateDataService.validate_meter_data` and `ValidateAmrData` which it uses
   - aggregation via `AggregateDataService.aggregate_heat_and_electricity_meters`
 - energy equivalences to aid understanding e.g. 'the energy you used today is equivalent to the carbon emissions of driving a car 100 km'
 - 'alerts' framework
