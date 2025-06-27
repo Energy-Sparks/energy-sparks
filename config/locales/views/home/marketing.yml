@@ -164,6 +164,17 @@ en:
         title: Individual state schools
       title: Pricing
   pricing:
+    additional_services:
+      desktop_audits:
+        price: "£390 + VAT"
+        title: Desktop audits
+      on_site_audits:
+        price: "£950 to £2,250 + VAT"
+        title: On-site audits
+      title: Our additional services
+      workshops:
+        price: "£250 to £550 + VAT"
+        title: Energy saving workshops
     call_to_action:
       description_html: Enrol today to join our growing network of <strong>%{count}</strong> schools. Still have questions? Get in touch to request more information.
       title: Ready to cut costs and spark pupils' commitment to sustainability?
@@ -179,5 +190,17 @@ en:
         We will let you know if you are eligible for a funded place when you enrol your school, Trust or Local Authority.
       title: Free places
     looking_for_info: Looking for more information?
+    per_school_per_year: Per school per year
+    prices:
+      independent:
+        price: "£595 + VAT"
+        title: Independent schools
+      mat_and_la:
+        price: "£545 + VAT"
+        title: Multi-Academy Trust and Local Authority clusters
+      state:
+        price: "£545 to £595 + VAT"
+        subtext: lower price for schools with < 250 pupils
+        title: Individual state schools
     product_features:
       title: Product features

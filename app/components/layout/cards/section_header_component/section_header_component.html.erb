@@ -3,7 +3,7 @@
     <%= header %>
     <%= description if description %>
     <% if buttons.any? %>
-      <div class='mb-2 ms-2'>
+      <div class='mb-2 ms-2 <%= description ? 'mt-4' : 'mt-2' %>'>
         <% buttons.each do |button| %>
           <%= button %>
         <% end %>

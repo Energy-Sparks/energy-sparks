@@ -18,6 +18,21 @@
           title: t('pricing.product_features.title')
         ) %>
 
+    <%= render(Elements::TableComponent.new(classes: 'table table-striped')) do |table| %>
+      <% table.with_header do |header| %>
+        <%= header.with_cell('#') %>
+        <%= header.with_cell('First') %>
+        <%= header.with_cell('Last') %>
+        <%= header.with_cell('Handle') %>
+      <% end %>
+
+      <% table.with_row(row_scope: 1) do |row| %>
+        <%= row.with_cell('Mark') %>
+        <%= row.with_cell('Otto') %>
+        <%= row.with_cell('@mdo') %>
+      <% end %>
+    <% end %>
+
     <%= render Layout::Cards::SectionHeaderComponent.new(
           id: 'looking-for-info'
         ) do |section_header| %>
@@ -36,10 +51,93 @@
           theme: :light,
           classes: 'rounded-xl p-4 mt-5 mb-6'
         ) do |grid| %>
-      <%= grid.with_image(src: 'pupil-whiteboard.jpg') %>
+      <%= grid.with_image(src: 'funders.png') %>
       <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
         <%= feature.with_header(title: t('pricing.free_places.title')) %>
         <%= feature.with_description { t('pricing.free_places.description_html') } %>
+      <% end %>
+    <% end %>
+
+    <h3><%= t('common.labels.pricing') %></h3>
+    <%= render Layout::GridComponent.new(
+          id: 'prices',
+          cols: 3,
+          classes: 'mb-5',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100 p-4 rounded-xl'
+        ) do |grid| %>
+      <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
+        <%= feature.with_header(title: t('pricing.prices.state.title')) %>
+        <%= feature.with_price(
+              label: t('pricing.per_school_per_year'),
+              price: t('pricing.prices.state.price'),
+              subtext: t('pricing.prices.state.subtext'),
+              classes: 'mt-auto match-row-height'
+            ) %>
+        <%= feature.with_button t('enrol.enrol_now'),
+                                enrol_our_school_path, style: :primary, classes: 'mt-4' %>
+      <% end %>
+      <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
+        <%= feature.with_header(title: t('pricing.prices.independent.title')) %>
+        <%= feature.with_price(
+              label: t('pricing.per_school_per_year'),
+              price: t('pricing.prices.independent.price'),
+              classes: 'mt-auto match-row-height'
+            ) %>
+        <%= feature.with_button t('enrol.enrol_now'),
+                                enrol_our_school_path, style: :primary, classes: 'mt-4' %>
+      <% end %>
+      <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
+        <%= feature.with_header(title: t('pricing.prices.mat_and_la.title')) %>
+        <%= feature.with_price(
+              label: t('pricing.per_school_per_year'),
+              price: t('pricing.prices.mat_and_la.price'),
+              classes: 'mt-auto match-row-height'
+            ) %>
+        <%= feature.with_button t('home.buttons.book_a_demo'),
+                                book_demo_campaigns_path,
+                                style: :primary, classes: 'mt-4' %>
+      <% end %>
+    <% end %>
+
+    <h3><%= t('pricing.additional_services.title') %></h3>
+    <%= render Layout::GridComponent.new(
+          id: 'additional-services',
+          cols: 3,
+          classes: 'mb-5',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100 p-4 rounded-xl'
+        ) do |grid| %>
+      <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
+        <%= feature.with_header(title: t('pricing.additional_services.workshops.title')) %>
+        <%= feature.with_price(
+              label: t('education_workshops.prices_range_from'),
+              price: t('pricing.additional_services.workshops.price'),
+              classes: 'mt-auto'
+            ) %>
+        <%= feature.with_button t('home.buttons.find_out_more'),
+                                education_workshops_path, style: :primary, classes: 'mt-4' %>
+      <% end %>
+      <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
+        <%= feature.with_header(title: t('pricing.additional_services.on_site_audits.title')) %>
+        <%= feature.with_price(
+              label: t('education_workshops.prices_range_from'),
+              price: t('pricing.additional_services.on_site_audits.price'),
+              classes: 'mt-auto'
+            ) %>
+        <%= feature.with_button t('home.buttons.find_out_more'),
+                                energy_audits_path, style: :primary, classes: 'mt-4' %>
+      <% end %>
+      <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
+        <%= feature.with_header(title: t('pricing.additional_services.desktop_audits.title')) %>
+        <%= feature.with_price(
+              label: t('common.labels.starting_from'),
+              price: t('pricing.additional_services.desktop_audits.price'),
+              classes: 'mt-auto'
+            ) %>
+        <%= feature.with_button t('home.buttons.find_out_more'),
+                                energy_audits_path,
+                                style: :primary, classes: 'mt-4' %>
       <% end %>
     <% end %>
 
