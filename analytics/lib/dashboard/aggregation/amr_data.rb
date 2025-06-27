@@ -595,6 +595,16 @@ class AMRData < HalfHourlyData
     end
   end
 
+  def each_date_kwh
+    return enum_for(:each_date_kwh) unless block_given?
+
+    (start_date..end_date).each do |date|
+      next unless date_exists?(date)
+
+      yield(date, days_kwh_x48(date))
+    end
+  end
+
   private
 
   # go through amr_data creating 'histogram' of type of amr_data by type (original data v. substituted)
