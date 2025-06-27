@@ -45,12 +45,13 @@ class ImportNotifier
 
   def find_meters_running_behind
     Meter.active
+         .with_school_and_group
          .joins(:school)
          .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
          .joins(:amr_validated_readings)
          .where(schools: { active: true })
          .joins('LEFT JOIN school_groups on schools.school_group_id = school_groups.id')
-         .group('meters.id, data_sources.import_warning_days, school_groups.name, schools.name')
+         .group('meters.id, data_sources.import_warning_days, school_groups_schools.id, schools.id')
          .having(
            <<-SQL.squish
              MAX(amr_validated_readings.reading_date) < NOW() - COALESCE(
@@ -65,6 +66,6 @@ class ImportNotifier
                                                                      ) * '1 day'::interval
            SQL
          )
-         .order('school_groups.name asc, meters.meter_type asc, schools.name asc, meters.mpan_mprn asc')
+         .order('school_groups_schools.id asc, meters.meter_type asc, schools.id asc, meters.mpan_mprn asc')
   end
 end
