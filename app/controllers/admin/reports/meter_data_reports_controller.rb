@@ -41,21 +41,22 @@ module Admin
         @columns = columns
       end
 
+      # Standard set of columns for the results table, assumes each row is a Meter
       def columns
         [
           Column.new(:school_group,
-                     ->(row) { row.meter.school&.school_group&.name },
-                     ->(row, csv) { csv && link_to(csv, school_group_path(row.meter.school&.school_group)) }),
+                     ->(meter) { meter.school&.school_group&.name },
+                     ->(meter, csv) { csv && link_to(csv, school_group_path(meter.school&.school_group)) }),
           Column.new(:admin,
-                     ->(row) { row.meter.school&.school_group&.default_issues_admin_user&.name }),
+                     ->(meter) { meter.school&.school_group&.default_issues_admin_user&.name }),
           Column.new(:school,
-                     ->(row) { row.meter.school.name },
-                     ->(row, csv) { link_to(csv, school_path(row.meter.school)) }),
+                     ->(meter) { meter.school.name },
+                     ->(meter, csv) { link_to(csv, school_path(meter.school)) }),
           Column.new(:meter,
-                     ->(row) { row.meter.mpan_mprn },
-                     ->(row, csv) { link_to(csv, school_meter_path(row.meter.school, row.meter)) }),
+                     ->(meter) { meter.mpan_mprn },
+                     ->(meter, csv) { link_to(csv, school_meter_path(meter.school, meter)) }),
           Column.new(:meter_name,
-                     ->(row) { row.meter&.name })
+                     ->(meter) { meter&.name })
         ]
       end
 

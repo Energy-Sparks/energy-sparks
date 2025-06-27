@@ -6,20 +6,7 @@ module Admin
       private
 
       def columns
-        [
-          Column.new(:school_group,
-                     ->(meter) { meter.school&.school_group&.name },
-                     ->(meter, csv) { csv && link_to(csv, school_group_path(meter.school&.school_group)) }),
-          Column.new(:admin,
-                     ->(meter) { meter.school&.school_group&.default_issues_admin_user&.name }),
-          Column.new(:school,
-                     ->(meter) { meter.school.name },
-                     ->(meter, csv) { link_to(csv, school_path(meter.school)) }),
-          Column.new(:meter,
-                     ->(meter) { meter.mpan_mprn },
-                     ->(meter, csv) { link_to(csv, school_meter_path(meter.school, meter)) }),
-          Column.new(:meter_name,
-                     ->(meter) { meter&.name }),
+        super + [
           Column.new(:meter_type,
                      ->(meter) { meter.meter_type.to_s }),
           Column.new(:data_source,
