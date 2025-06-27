@@ -9,6 +9,17 @@ module Admin
       before_action :set_metadata
       before_action :set_columns
 
+      def index
+        @results = results
+        respond_to do |format|
+          format.html
+          format.csv do
+            send_data(csv_report(@columns, @results),
+                      filename: EnergySparks::Filenames.csv(controller_name))
+          end
+        end
+      end
+
       private
 
       def set_metadata
