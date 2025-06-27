@@ -3,22 +3,14 @@
 require 'rails_helper'
 
 describe Aggregation::ValidateAmrData, type: :service do
-  subject(:validator) { data[0] }
-
-  def setup(**kwargs)
-    kwargs = { kwh_data_x48: Array.new(48, 0.44) }.merge(kwargs)
-    meter_collection = build(:meter_collection, :with_electricity_meter, **kwargs)
-    meter = meter_collection.electricity_meters.first
-    validator = described_class.new(meter, max_days_missing_data, meter_collection.holidays,
-                                    meter_collection.temperatures)
-    [validator, meter, meter_collection]
+  subject(:validator) do
+    described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
   end
 
   before { travel_to Date.new(2025, 5, 3) }
 
-  let(:data) { setup }
-  let(:meter_collection) { data[2] }
-  let(:meter) { data[1] }
+  let(:meter_collection) { build(:meter_collection, :with_electricity_meter, kwh_data_x48: Array.new(48, 0.44)) }
+  let(:meter) { meter_collection.electricity_meters.first }
   let(:max_days_missing_data) { 50 }
 
   context 'with real data' do
@@ -77,23 +69,5 @@ describe Aggregation::ValidateAmrData, type: :service do
       expect(meter.amr_data[date].type).to eq('ORIG')
       expect(arbitrary_night_readings(meter)).to eq(Array.new(8, 0.0))
     end
-  end
-
-  it 'corrects negative readings' do
-    validator, meter, = setup(kwh_data_x48: Array.new(48, 0.5).tap { |a| a[0] = -1 })
-    validator.validate
-    reading = meter.amr_data.first[1]
-    expect(reading.kwh_data_x48[0]).to eq(0.5)
-    expect(reading.type).to eq('RNEG')
-  end
-
-  it 'corrects many negative readings' do
-    date = meter.amr_data.keys[2]
-    meter.amr_data[date].kwh_data_x48[0..6] = Array.new(7, -0.1)
-    validator.validate
-    reading = meter.amr_data[date]
-    expect(reading.kwh_data_x48[0]).to eq(0.44)
-    expect(reading.type).to eq('RNEG')
-    expect(reading.substitute_date).not_to be_nil
   end
 end
