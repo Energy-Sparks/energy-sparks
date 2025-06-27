@@ -29,18 +29,12 @@ FactoryBot.define do
     trait :with_electricity_meter do
       transient do
         kwh_data_x48 { nil }
-        dcc_meter { false }
       end
 
       after(:build) do |meter_collection, evaluator|
         amr_data = build(:amr_data, :with_date_range, start_date: evaluator.start_date, end_date: evaluator.end_date,
                                                       kwh_data_x48: evaluator.kwh_data_x48)
-        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection,
-                                                       type: :electricity,
-                                                       amr_data: amr_data,
-                                                       tariff_start_date: evaluator.start_date,
-                                                       tariff_end_date: evaluator.end_date,
-                                                       dcc_meter: evaluator.dcc_meter)
+        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :electricity, amr_data: amr_data, tariff_start_date: evaluator.start_date, tariff_end_date: evaluator.end_date)
         meter_collection.add_electricity_meter(meter)
       end
     end
