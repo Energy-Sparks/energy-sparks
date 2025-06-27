@@ -596,6 +596,8 @@ class AMRData < HalfHourlyData
   end
 
   def each_date_kwh
+    return enum_for(:each_date_kwh) unless block_given?
+
     (start_date..end_date).each do |date|
       next unless date_exists?(date)
 
