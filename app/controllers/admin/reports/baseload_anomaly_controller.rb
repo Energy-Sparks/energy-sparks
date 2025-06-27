@@ -2,47 +2,56 @@
 
 module Admin
   module Reports
-    class BaseloadAnomalyController < AdminController
-      include Columns
-      include ActionView::Helpers::UrlHelper
-      include ApplicationHelper
+    class BaseloadAnomalyController < MeterDataReportsController
+      private
 
-      def index
-        @anomalies = Report::BaseloadAnomaly.all.with_meter_school_and_group.default_order
-        @columns = [
+      def results
+        results = Report::BaseloadAnomaly.all.with_meter_school_and_group
+        results = results.for_school_group(SchoolGroup.find(params[:school_group])) if params[:school_group].present?
+        results = results.for_admin(User.admin.find(params[:user])) if params[:user].present?
+        results.default_order
+      end
+
+      def columns
+        [
           Column.new(:school_group,
-                     ->(anomaly) { anomaly.meter.school&.school_group&.name },
-                     ->(anomaly, csv) { csv && link_to(csv, school_group_path(anomaly.meter.school&.school_group)) }),
+                     ->(row) { row.meter.school&.school_group&.name },
+                     ->(row, csv) { csv && link_to(csv, school_group_path(row.meter.school&.school_group)) }),
           Column.new(:admin,
-                     ->(anomaly) { anomaly.meter.school&.school_group&.default_issues_admin_user&.name }),
+                     ->(row) { row.meter.school&.school_group&.default_issues_admin_user&.name }),
           Column.new(:school,
-                     ->(anomaly) { anomaly.meter.school.name },
-                     ->(anomaly, csv) { link_to(csv, school_path(anomaly.meter.school)) }),
+                     ->(row) { row.meter.school.name },
+                     ->(row, csv) { link_to(csv, school_path(row.meter.school)) }),
           Column.new(:meter,
-                     ->(anomaly) { anomaly.meter.mpan_mprn },
-                     ->(anomaly, csv) { link_to(csv, school_meter_path(anomaly.meter.school, anomaly.meter)) }),
+                     ->(row) { row.meter.mpan_mprn },
+                     ->(row, csv) { link_to(csv, school_meter_path(row.meter.school, row.meter)) }),
           Column.new(:meter_name,
-                     ->(anomaly) { anomaly.meter&.name }),
+                     ->(row) { row.meter&.name }),
           Column.new(:reading_date,
-                     ->(anomaly) { anomaly.reading_date }),
+                     ->(row) { row.reading_date }),
           Column.new(:previous_baseload,
-                     ->(anomaly) {  FormatEnergyUnit.format(:kw, anomaly.previous_day_baseload.to_f, :html, false, true, :benchmark) },
-                     ->(anomaly) {  FormatEnergyUnit.format(:kw, anomaly.previous_day_baseload.to_f, :text, false, true, :benchmark) }),
+                     ->(row) {  FormatEnergyUnit.format(:kw, row.previous_day_baseload.to_f, :html, false, true, :benchmark) },
+                     ->(row) {  FormatEnergyUnit.format(:kw, row.previous_day_baseload.to_f, :text, false, true, :benchmark) }),
           Column.new(:baseload,
-                     ->(anomaly) {  FormatEnergyUnit.format(:kw, anomaly.today_baseload.to_f, :html, false, true, :benchmark) },
-                     ->(anomaly) {  FormatEnergyUnit.format(:kw, anomaly.today_baseload.to_f, :text, false, true, :benchmark) }),
+                     ->(row) {  FormatEnergyUnit.format(:kw, row.today_baseload.to_f, :html, false, true, :benchmark) },
+                     ->(row) {  FormatEnergyUnit.format(:kw, row.today_baseload.to_f, :text, false, true, :benchmark) }),
           Column.new(:chart,
-                     ->(anomaly) { analysis_school_advice_baseload_url(anomaly.meter.school) },
-                     ->(anomaly) { link_to('Chart', analysis_school_advice_baseload_path(anomaly.meter.school))},
+                     ->(row) { analysis_school_advice_baseload_url(row.meter.school) },
+                     ->(row) { link_to('Chart', analysis_school_advice_baseload_path(row.meter.school))},
                      html_data: { sortable: false })
         ]
-        respond_to do |format|
-          format.html
-          format.csv do
-            send_data(csv_report(@columns, @anomalies),
-                      filename: EnergySparks::Filenames.csv('baseload-anomalies'))
-          end
-        end
+      end
+
+      def path
+        'admin_reports_baseload_anomaly_index_path'
+      end
+
+      def description
+        'Shows sudden changes in baseload for active electricity meters over the last 30 days.'
+      end
+
+      def title
+        'Baseload anomalies'
       end
     end
   end

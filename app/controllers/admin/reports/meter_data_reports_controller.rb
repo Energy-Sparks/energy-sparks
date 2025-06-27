@@ -1,0 +1,72 @@
+# frozen_string_literal: true
+
+module Admin
+  module Reports
+    class MeterDataReportsController < AdminController
+      include Columns
+      include ActionView::Helpers::UrlHelper
+      include ApplicationHelper
+      before_action :set_metadata
+      before_action :set_columns
+
+      def index
+        @results = results
+        respond_to do |format|
+          format.html
+          format.csv do
+            send_data(csv_report(@columns, @results),
+                      filename: EnergySparks::Filenames.csv(controller_name))
+          end
+        end
+      end
+
+      private
+
+      def set_metadata
+        @title = title
+        @description = description
+        @frequency = frequency
+        @path = path
+      end
+
+      def title; end
+      def description; end
+      def path; end
+
+      def frequency
+        :daily
+      end
+
+      def set_columns
+        @columns = columns
+      end
+
+      # Standard set of columns for the results table, assumes each row is a Meter
+      def columns
+        [
+          Column.new(:school_group,
+                     ->(meter) { meter.school&.school_group&.name },
+                     ->(meter, csv) { csv && link_to(csv, school_group_path(meter.school&.school_group)) }),
+          Column.new(:admin,
+                     ->(meter) { meter.school&.school_group&.default_issues_admin_user&.name }),
+          Column.new(:school,
+                     ->(meter) { meter.school.name },
+                     ->(meter, csv) { link_to(csv, school_path(meter.school)) }),
+          Column.new(:meter,
+                     ->(meter) { meter.mpan_mprn },
+                     ->(meter, csv) { link_to(csv, school_meter_path(meter.school, meter)) }),
+          Column.new(:meter_name,
+                     ->(meter) { meter&.name })
+        ]
+      end
+
+      def set_breadcrumbs
+        @breadcrumbs = [
+          { name: 'Admin', href: admin_path },
+          { name: 'Reports', href: admin_reports_path },
+          { name: title }
+        ]
+      end
+    end
+  end
+end

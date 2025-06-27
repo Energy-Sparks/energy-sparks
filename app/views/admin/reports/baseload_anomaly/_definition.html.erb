@@ -1,11 +1,5 @@
-<%= render 'admin/reports/title', title: 'Baseload Anomalies' %>
-
 <p>
-  Shows sudden changes in baseload for individual meters over the last 30 days.
-</p>
-
-<p>
-  A "sudden change" here is defined as::
+  A "sudden change" here is defined as either:
 </p>
 
 <ul>
@@ -16,9 +10,3 @@
 <p>
   The 0.5kW condition is there to rule out meters where the usage is usually low or possibly intermittent (e.g. for a science block or other limited use area of a site).
 </p>
-
-<p><%= link_to 'Download as CSV', admin_reports_baseload_anomaly_index_path(format: :csv), class: 'btn btn-sm' %></p>
-
-<div class="row">
-  <%= render 'admin/reports/column_table', columns: @columns, rows: @anomalies %>
-</div>
