@@ -1,0 +1,41 @@
+cy:
+  users:
+    contacts:
+      create:
+        failed: Methwyd â thanysgrifio i rybuddion
+        subscribed: Wedi tanysgrifio i rybuddion
+        unsubscribed: Wedi dad-danysgrifio i rybuddion
+    edit:
+      account_updated: Diweddarwyd y cyfrif
+    edit_password:
+      current_password: Cyfrinair cyfredol
+      password_updated: Cyfrinair wedi'i ddiweddaru
+    emails:
+      index:
+        footer_html: |-
+          <p>
+            Sylwer, os penderfynwch optio allan o bob e-bost, mae'n bosib y bydd angen i ni
+          gysylltu â chi o hyd gyda gwybodaeth bwysig am eich cyfrif neu ddefnydd eich ysgol o Sbarcynni.
+          </p>
+        intro_html: |-
+          <p>
+            Rydym yn gwybod pa mor brysur ydych chi - rhowch wybod i ni beth yw eich diddordebau isod, fel y gallwn sicrhau ein bod ni'n anfon y wybodaeth a fydd fwyaf defnyddiol i chi atoch chi.
+          </p>
+          <p>
+            Gallwch ddiweddaru eich dewisiadau unrhyw bryd.
+          </p>
+      update:
+        updated: Dewisiadau e-bost wedi'u diweddaru
+    index:
+      redirect: Mae angen i chi fewngofnodi er mwyn gweld a diweddaru eich cyfrif
+    show:
+      change_password: Newid cyfrinair
+      joined: Gwnaethoch ymuno â Sbarcynni ar %{date}
+      manage_alerts: Rheoli rhybuddion
+      my_account: Fy nghyfrif
+      school_summary:
+        cluster_admin_html: Rydych yn %{role} ar gyfer %{count} ysgol
+        group_admin_html: Rydych yn %{role} ar gyfer %{count} ysgol yn <a href="%{url}">%{link_text}</a>
+        school_user_html: Rydych yn ddefnyddiwr %{role} ar gyfer <a href="%{url}">%{link_text}</a>
+      update_account: Diweddaru cyfrif
+      update_email_preferences: Diweddaru dewisiadau e-bost

@@ -75,5 +75,4 @@ jobs:
       with:
         ruby-only: true
     - name: Run standard test
-      run: ANALYTICSTESTDIR=test_output bundle exec ruby script/standard/standard_test_github_actions.rb
-      working-directory: analytics
+      run: bundle exec ruby analytics/script/standard/standard_test_github_actions.rb
