@@ -14,6 +14,7 @@
                      include_blank: 'Any Admin User',
                      class: 'form-control-sm' %>
     </span>
+    <%= yield %>
     <span class="float-right">
       <%= submit_tag 'Filter', class: 'btn btn-sm' %>
       <%= link_to 'CSV',

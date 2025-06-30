@@ -7,12 +7,15 @@ module Admin
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
       before_action :set_metadata
-      before_action :set_columns
+
+      layout 'admin_reports'
 
       def index
         @results = results
         respond_to do |format|
-          format.html
+          format.html do
+            @columns = columns.filter(&:display_html)
+          end
           format.csv do
             send_data(csv_report(@columns, @results),
                       filename: EnergySparks::Filenames.csv(controller_name))
@@ -23,10 +26,16 @@ module Admin
       private
 
       def set_metadata
+        @container = container_class
         @title = title
         @description = description
         @frequency = frequency
         @path = path
+        @columns = columns
+      end
+
+      def container_class
+        'container'
       end
 
       def title; end
@@ -35,10 +44,6 @@ module Admin
 
       def frequency
         :daily
-      end
-
-      def set_columns
-        @columns = columns
       end
 
       # Standard set of columns for the results table, assumes each row is a Meter

@@ -10,7 +10,9 @@
     <% rows.find_each do |row| %>
         <tr>
         <% columns.each do |column| %>
-            <td><%= column.td(row) %></td>
+            <td data-order="<%= column.data_order(row) %>">
+              <%= column.td(row) %>
+            </td>
         <% end %>
         </tr>
     <% end %>

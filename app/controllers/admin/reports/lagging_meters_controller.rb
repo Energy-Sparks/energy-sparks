@@ -7,6 +7,7 @@ module Admin
 
       def results
         results = ImportNotifier.new.meters_running_behind
+        results = results.where(meter_type: params[:meter_type]) if params[:meter_type].present?
         results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:user]) } }) if params[:user].present?
         results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) }) if params[:school_group].present?
         results
@@ -32,8 +33,18 @@ module Admin
           Column.new(:'issues_&_notes',
                      nil,
                      ->(meter) { render_to_string(partial: 'admin/issues/modal', locals: { meter: }) },
-                     display: :html)
+                     display: :html),
+          Column.new(:issues,
+                     ->(meter) { meter.issues.issue.count },
+                     display: :csv),
+          Column.new(:notes,
+                    ->(meter) { meter.issues.note.count },
+                     display: :csv)
         ]
+      end
+
+      def container_class
+        'container-fluid'
       end
 
       def frequency

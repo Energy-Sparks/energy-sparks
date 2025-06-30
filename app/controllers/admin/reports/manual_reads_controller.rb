@@ -12,7 +12,7 @@ module Admin
           Column.new(:data_source,
                      ->(meter) { meter.data_source&.name }),
           Column.new(:last_validated_date,
-                     ->(meter) { meter.last_validated_reading&.strftime('%d/%m/%Y') },
+                     ->(meter) { meter.last_validated_reading&.iso8601 },
                      ->(meter) { nice_dates(meter.last_validated_reading) }),
           Column.new(:'issues_&_notes',
                      nil,
