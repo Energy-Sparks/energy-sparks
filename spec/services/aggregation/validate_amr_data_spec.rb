@@ -2,11 +2,7 @@
 
 require 'rails_helper'
 
-# module Logging
-#  logger.level = :debug
-# end
-
-describe ValidateAMRData, type: :service do
+describe Aggregation::ValidateAmrData, type: :service do
   subject(:validator) do
     described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
   end
@@ -18,14 +14,8 @@ describe ValidateAMRData, type: :service do
   let(:max_days_missing_data) { 50 }
 
   context 'with real data' do
-    let(:meter_collection) { @acme_academy }
+    let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false) }
     let(:meter) { meter_collection.meter?(1_591_058_886_735) }
-
-    # using before(:all) here to avoid slow loading of YAML
-    before(:all) do
-      @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy', validate_and_aggregate: false)
-    end
-
     let(:validator) do
       described_class.new(meter, max_days_missing_data, meter_collection.holidays, meter_collection.temperatures)
     end
@@ -47,6 +37,10 @@ describe ValidateAMRData, type: :service do
 
   context 'with override_night_to_zero' do
     before { meter.meter_correction_rules << { override_night_to_zero: nil } }
+
+    def arbitrary_night_readings(meter)
+      meter.amr_data.to_a.sort.map { |data| data[1].kwh_data_x48[5] }
+    end
 
     it 'replace night time readings with a rule' do
       validator.validate(debug_analysis: true)
@@ -75,9 +69,5 @@ describe ValidateAMRData, type: :service do
       expect(meter.amr_data[date].type).to eq('ORIG')
       expect(arbitrary_night_readings(meter)).to eq(Array.new(8, 0.0))
     end
-  end
-
-  def arbitrary_night_readings(meter)
-    meter.amr_data.to_a.sort.map { |data| data[1].kwh_data_x48[5] }
   end
 end
