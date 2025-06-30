@@ -112,7 +112,7 @@ cy:
             <li>arweiniad ar >%{actions_count} o weithredoedd effeithlonrwydd ynni isel a di-gost a arweinir gan oedolion</li>
             <li>data solar integredig (os yw'n berthnasol)</li>
             <li>cefnogaeth gydag uwchraddio mesuryddion i fesuryddion bob hanner awr (os oes angen)</li>
-          </ul>
+            </ul>
         title: Nodweddion safonol
       free_places:
         detail_html: |-
@@ -156,9 +156,9 @@ cy:
           price: "£250-£500, yn dibynnu ar leoliad"
           title: Gweithdai addysgol yn yr ysgol
       state_schools:
-        note: fesul ysgol fesul blwyddyn, <250 disgyblion
-        note_large: fesul ysgol fesul blwyddyn, >250 disgyblion
+        note: fesul ysgol y flwyddyn, gyda llai na 250 o ddisgyblion
+        note_large: fesul ysgol y flwyddyn, gyda mwy na 250 o ddisgyblion
         price: "£545 + TAW"
-        price_large: "£595 + VAT"
+        price_large: "£595 + TAW"
         title: Ysgolion gwladol unigol
       title: Prisio
