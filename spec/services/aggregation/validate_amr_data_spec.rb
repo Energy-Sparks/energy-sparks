@@ -79,18 +79,13 @@ describe Aggregation::ValidateAmrData, type: :service do
     end
   end
 
-  context 'with dcc bad values' do
-    let(:meter_collection) do
-      build(:meter_collection, :with_electricity_meter, kwh_data_x48: Array.new(48, 0.44), dcc_meter: true)
-    end
-
-    it 'corrects error code values' do
-      date = meter.amr_data.keys.sort[1]
-      meter.amr_data[date].kwh_data_x48[0] = 4_294_967.295
-      validator.validate
-      expect(meter.amr_data[date].type).to eq('DMP1')
-      expect(meter.amr_data[date].kwh_data_x48[0]).to eq(0.44)
-    end
+  it 'corrects dcc known bad values' do
+    validator, meter, = setup(dcc_meter: true)
+    date = meter.amr_data.keys.sort[1]
+    meter.amr_data[date].kwh_data_x48[0] = 4_294_967.295
+    validator.validate
+    expect(meter.amr_data[date].type).to eq('DCCP')
+    expect(meter.amr_data[date].kwh_data_x48[0]).to eq(0.44)
   end
 
   it 'corrects negative readings' do
