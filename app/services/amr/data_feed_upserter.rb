@@ -72,7 +72,6 @@ module Amr
 
     def do_upsert
       on_duplicate = @amr_data_feed_config.allow_merging ? Arel.sql(ON_DUPLICATE_UPDATE_CLAUSE) : :update
-
       @array_of_data_feed_reading_hashes.each_slice(100).sum do |batch|
         result = AmrDataFeedReading.upsert_all(batch, unique_by: %i[mpan_mprn reading_date], on_duplicate:)
         result.rows.flatten.size
