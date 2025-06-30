@@ -1,10 +1,70 @@
 <%= simple_form_for [school, installation] do |form| %>
   <%= render 'shared/errors', subject: installation, subject_name: 'solis cloud api feed' %>
-  <%= form.input :api_id, as: :string, label: 'API ID',
-                          hint: 'The Solis Cloud API Key' %>
-  <%= form.input :api_secret, as: :string, label: 'API Secret',
-                              hint: 'The Solid Cloud API Secret' %>
-  <div class="actions">
-    <%= form.submit 'Submit', class: 'btn btn-primary' %>
-  </div>
+  <% if @installation.persisted? %>
+    <h3>Inverters</h3>
+    <h4>Unassigned</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Meter Name</th>
+          <th>Meter serial</th>
+          <th>Pseudo MPAN</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @installation.inverter_detail_list.each do |inverter| %>
+          <% next if @installation.meters.pluck(:meter_serial_number).include?(inverter['sn']) %>
+          <tr>
+            <td><%= [inverter['stationName'], inverter['name']].compact.join(' / ') %></td>
+            <td><%= inverter['sn'] %></td>
+            <td>-</td>
+            <td><%= button_tag('Assign', value: "assign_meter_#{inverter['sn']}", class: 'btn btn-primary') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <h4>Assigned</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Meter Name</th>
+          <th>Meter serial</th>
+          <th>Pseudo MPAN</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @installation.meters.where(school: @school).order(:name).each do |meter| %>
+          <tr>
+            <td><%= meter.name %></td>
+            <td><%= meter.meter_serial_number %></td>
+            <td><%= link_to meter.mpan_mprn, school_meter_path(meter.school_id, meter.id) %></td>
+            <td><%= button_tag('Unassign', value: "unassign_meter_#{meter.id}", class: 'btn btn-primary') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="actions">
+      <%= link_to 'Back', school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
+    </div>
+    <div class="other-actions">
+      <%= link_to 'Update Inverter List', check_school_solis_cloud_installation_path(@school, @installation),
+                  method: :post, class: 'btn btn-primary mb-4' %>
+    </div>
+  <% else %>
+    <div class='form-group'>
+      <%= label_tag 'Use Existing Installation', nil, class: 'form-control-label' %>
+      <% options = [['Select an existing installation', '']] +
+                   SolisCloudInstallation.where.not(id: @school.solis_cloud_installations).map do |i|
+                     ["API ID: #{i.api_id}, inverter stations: " \
+                      "#{i.inverter_detail_list.map { |d| d['stationName'] }.uniq.join(', ')}", i.id]
+                   end %>
+      <%= select_tag 'existing', options_for_select(options), class: 'form-control select' %>
+    </div>
+    <p>or create a new one</p>
+  <% end %>
+  <%= form.input :api_id, as: :string, label: 'API ID', hint: 'The Solis Cloud API Key' %>
+  <%= form.input :api_secret, as: :string, label: 'API Secret', hint: 'The Solid Cloud API Secret' %>
+  <div class="actions"><%= form.submit 'Submit', class: 'btn btn-primary' %></div>
 <% end %>

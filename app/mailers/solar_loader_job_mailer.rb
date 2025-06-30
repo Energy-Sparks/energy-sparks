@@ -3,18 +3,15 @@ class SolarLoaderJobMailer < ApplicationMailer
   layout 'admin_mailer'
 
   def job_complete
-    to, @solar_feed_type, @installation, @import_log = params.values_at(:to, :solar_feed_type, :installation, :import_log)
-    mail(to: to, subject: subject(@solar_feed_type, @installation, :completed))
-  end
-
-  def job_failed
-    to, @solar_feed_type, @installation, @error = params.values_at(:to, :solar_feed_type, :installation, :error)
-    mail(to: to, subject: subject(@solar_feed_type, @installation, :failed))
+    to, @solar_feed_type, @installation, @import_log, @error =
+      params.values_at(:to, :solar_feed_type, :installation, :import_log, :error)
+    @import_subject = @installation.respond_to?(:school) ? @installation.school.name : @installation.display_name
+    mail(to:, subject:)
   end
 
   private
 
-  def subject(solar_feed_type, installation, status)
-    "[energy-sparks-#{env}] #{solar_feed_type} Import for #{installation.school.name} #{status.to_s.humanize}"
+  def subject
+    "[energy-sparks-#{env}] #{@solar_feed_type} Import for #{@import_subject} #{@error ? :failed : :completed}"
   end
 end
