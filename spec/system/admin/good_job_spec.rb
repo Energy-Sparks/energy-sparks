@@ -11,7 +11,7 @@ RSpec.describe 'good_job' do
     end
 
     it 'is not visible by a non-admin' do
-      sign_in(create(:school_admin))
+      sign_in(create((User.roles.keys - ['admin']).sample.to_sym))
       visit admin_good_job_path
       expect(page).to have_text(/^Routing Error\nNo route matches/)
     end
