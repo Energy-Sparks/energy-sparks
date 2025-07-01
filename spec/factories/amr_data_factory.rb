@@ -10,7 +10,7 @@ FactoryBot.define do
 
     trait :single_day do
       after(:build) do |data|
-        data.add(Date.today, build(:one_day_amr_reading))
+        data.add(Time.zone.today, build(:one_day_amr_reading))
       end
     end
 
@@ -37,7 +37,7 @@ FactoryBot.define do
     trait :with_days do
       transient do
         day_count { 7 }
-        end_date { Date.today }
+        end_date { Time.zone.today }
         kwh_data_x48 { nil }
       end
 
@@ -65,7 +65,8 @@ FactoryBot.define do
 
       after(:build) do |amr_data, evaluator|
         carbon_intensity = if evaluator.grid_carbon_intensity.nil?
-                             build(:grid_carbon_intensity, start_date: evaluator.start_date, end_date: evaluator.end_date)
+                             build(:grid_carbon_intensity, start_date: evaluator.start_date,
+                                                           end_date: evaluator.end_date)
                            else
                              evaluator.grid_carbon_intensity
                            end
