@@ -123,6 +123,7 @@ class SchoolFactory
         school = Marshal.load(File.open(marshal_filename)) unless dont_load == true
       }
     end
+    school[:school_data][:location] ||= [50, 0]
     school
   end
 
