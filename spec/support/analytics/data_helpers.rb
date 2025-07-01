@@ -14,10 +14,7 @@ module EnergySparksAnalyticsDataHelpers
 
     data = load_meter_collection(file_name: file_name)
     @@meter_collections[cache_key] = meter_collection = create_meter_collection(data)
-    if validate_and_aggregate
-      meter_collection.school.instance_variable_set(:@location, [50, 0])
-      validate_and_aggregate(meter_collection)
-    end
+    validate_and_aggregate(meter_collection) if validate_and_aggregate
     meter_collection
   end
 

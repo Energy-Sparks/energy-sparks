@@ -99,7 +99,7 @@ module Aggregation
       # to an empty array and can only be added to
       meter_corrections unless @meter.meter_correction_rules.nil?
 
-      Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.solar_pv_panels?
+      Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.solar_pv_real_metering?
 
       # Scans the amr data to look for gaps that are larger than @max_days_missing_data
       # If found, then AMR data start date will be moved to the final day of the gap.
