@@ -167,6 +167,12 @@ RSpec.describe 'home', type: :system do
     expect(page.has_content?('Pricing'))
   end
 
+  it 'has a support us page' do
+    visit root_path
+    click_on('Support us')
+    expect(page.has_content?('Support us'))
+  end
+
   describe 'having a training page' do
     let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
     let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }

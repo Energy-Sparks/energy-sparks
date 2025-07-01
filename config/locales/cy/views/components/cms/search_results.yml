@@ -1,0 +1,11 @@
+cy:
+  components:
+    cms:
+      search_results:
+        get_in_touch: Cysylltwch i ofyn cwestiwn
+        no_results_prompt: 'Methu â dod o hyd i''r hyn rydych chi''n chwilio amdano? Rhowch gynnig ar fireinio''ch chwiliad, neu:'
+        results_html:
+          one: Canfuwyd <span class="count">1</span> o ganlyniadau ar gyfer "<span class="keywords">%{keywords}</span>"
+          two: Canfuwyd <span class="count">%{count}</span> o ganlyniadau ar gyfer "<span class="keywords">%{keywords}</span>"
+          many: Canfuwyd <span class="count">%{count}</span> o ganlyniadau ar gyfer "<span class="keywords">%{keywords}</span>"
+          other: Canfuwyd <span class="count">%{count}</span> o ganlyniadau ar gyfer "<span class="keywords">%{keywords}</span>"

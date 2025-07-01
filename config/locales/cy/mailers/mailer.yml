@@ -15,6 +15,7 @@ cy:
       take_action_choose: Dewiswch weithgaredd
       take_action_message: Cwblhewch un o'n gweithgareddau dan arweiniad disgyblion neu oedolion a argymhellir i ddechrau lleihau eich defnydd o ynni
       title: Eich rhybuddion wythnosol
+      unsubscribe_message_html: Gallwch ddad-danysgrifio o'r e-byst hyn drwy <a href="%{profiles_url}">ddiweddaru eich proffil</a> ar Sbarcynni
       view_your_progress_report: Gweld eich adroddiad cynnydd
       view_your_school_dashboard: Gweld dangosfwrdd eich ysgol
       why_am_i_receiving_these_emails: Pam ydw i'n derbyn yr e-byst hyn?

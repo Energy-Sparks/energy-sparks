@@ -1,0 +1,12 @@
+cy:
+  components:
+    manage_school_navigation:
+      admin: Gweinyddwr
+      content: Cynnwys
+      exclusions: Gwaharddiadau rhybudd
+      history: Hanes
+      metering: Mesurydd
+      settings: Gosodiadau
+      temperatures: Tymhereddau
+      transport_surveys: Arolygon trafnidiaeth
+      users: Defnyddwyr
