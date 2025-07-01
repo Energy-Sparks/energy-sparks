@@ -23,13 +23,6 @@ cy:
       school:
         activation_date: Dyddiad gweithredu
         address: Cyfeiriad
-        heating_air_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell aer
-        heating_biomass: Mae gan ein hysgol foeler biomas
-        heating_district_heating: Mae gan ein hysgol wresogi ardal
-        heating_ground_source_heat_pump: Mae gan ein hysgol bwmp gwres o'r ddaear
-        heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
-        heating_oil: Mae ein hysgol yn defnyddio olew ar gyfer gwresogi
-        heating_water_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell dŵr
         cooks_dinners_for_other_schools: Mae'r gegin yn coginio ciniawau ar gyfer ysgolion eraill
         cooks_dinners_for_other_schools_count: Ar gyfer faint o ysgolion mae eich ysgol yn coginio cinio?
         cooks_dinners_onsite: Ciniawau yn cael eu coginio ar y safle
@@ -38,6 +31,17 @@ cy:
         floor_area: Arwynebedd llawr mewn metrau sgwâr
         funding_status: Statws ariannu
         has_swimming_pool: Mae gan ein hysgol ei phwll nofio ei hun
+        heating_air_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell aer
+        heating_biomass: Mae gan ein hysgol foeler biomas
+        heating_chp: Mae gan ein hysgol system gwres a phŵer cyfun (CHP)
+        heating_district_heating: Mae gan ein hysgol wresogi ardal
+        heating_electric: Mae gan ein hysgol wresogi trydan
+        heating_gas: Mae ein hysgol yn defnyddio nwy ar gyfer gwresogi
+        heating_ground_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell ddaear
+        heating_lpg: Mae ein hysgol yn defnyddio LPG ar gyfer gwresogi
+        heating_oil: Mae ein hysgol yn defnyddio olew ar gyfer gwresogi
+        heating_underfloor: Mae gan ein hysgol wresogi dan y llawr
+        heating_water_source_heat_pump: Mae gan ein hysgol bwmp gwres ffynhonnell dŵr
         indicated_has_solar_panels: Mae gan ein hysgol baneli solar ffotofoltaig
         indicated_has_storage_heaters: Mae gan ein hysgol stôr-wresogyddion nos
         latitude: Lledred
@@ -50,6 +54,12 @@ cy:
         serves_dinners: Mae ein hysgol yn gweini cinio ysgol ar y safle
         urn: Cyfeirnod Unigryw
         website: Gwefan
+      secr_co2_equivalence:
+        electricity_co2e: Trydan kg CO₂e
+        electricity_co2e_co2: Trydan kg CO₂e o CO₂
+        natural_gas_co2e: Nwy naturiol kg CO₂e
+        natural_gas_co2e_co2: Nwy naturiol kg CO₂e o CO₂
+        transmission_distribution_co2e: Trosglwyddo a dosbarthu kg CO₂e
       transport_survey/response:
         id: Rhif adnabod
         journey_minutes: Munudau taith
@@ -85,7 +95,13 @@ cy:
         restrict_dependent_destroy:
           has_many: Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli
           has_one: Methu â dileu cofnod oherwydd bod dibynnydd %{record} yn bodoli
+      models:
+        energy_tariff_price:
+          attributes:
+            value:
+              less_than: Rhaid iddo fod yn llai na £1.00. Mae'n debygol eich bod wedi nodi eich cyfradd mewn ceiniogau. Troswch eich cyfradd i bunnoedd cyn ei nodi yn Sbarcynni.
     models:
+      secr_co2_equivalence: Cywerthedd CO₂ SECR
       transport_survey:
         one: Arolwg trafnidiaeth
         two: Arolygon trafnidiaeth

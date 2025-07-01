@@ -96,6 +96,7 @@ module Aggregation
       # Note: @meter.meter_correction_rules will never be nil, as its initialised
       # to an empty array and can only be added to
       meter_corrections unless @meter.meter_correction_rules.nil?
+
       Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.solar_pv_panels?
 
       # Scans the amr data to look for gaps that are larger than @max_days_missing_data
@@ -464,9 +465,7 @@ module Aggregation
     end
 
     def bad_dcc_value?(kwh)
-      # there may be other bad values in future
-      # none of this is documented by the DCC......
-      kwh.between?(186_227.0864, 186_227.0866)
+      BadValues.bad_dcc_value?(kwh, @meter.meter_type)
     end
 
     # A specific built in correction that will substitute any nil readings with

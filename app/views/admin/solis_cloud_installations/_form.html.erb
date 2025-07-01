@@ -1,0 +1,51 @@
+<%= simple_form_for([:admin, @resource]) do |f| %>
+  <%= f.input :api_id %>
+  <%= f.input :api_secret %>
+  <%= f.submit class: 'btn btn-primary mb-2' %>
+  <% if @resource.persisted? %>
+    <h4>Inverters</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>School</th>
+          <th>Meter Name</th>
+          <th>Meter serial</th>
+          <th>Pseudo MPAN</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @resource.meters.each do |meter| %>
+          <tr>
+            <td><%= link_to meter.school.name, school_meters_path(meter.school_id) %></td>
+            <td><%= meter.name %></td>
+            <td><%= meter.meter_serial_number %></td>
+            <td><%= link_to meter.mpan_mprn, school_meter_path(meter.school_id, meter.id) %></td>
+            <td><%= button_tag('Remove', value: "remove_meter_#{meter.id}", class: 'btn btn-primary') %></td>
+          </tr>
+        <% end %>
+        <% @resource.inverter_detail_list.each do |inverter| %>
+          <% next if @resource.meters.pluck(:meter_serial_number).include?(inverter['sn']) %>
+          <tr>
+            <td>
+              <%= select_tag "inverters[#{inverter['sn']}]",
+                             options_from_collection_for_select(School.by_name, :id, :name,
+                                                                ->(school) { school.name == inverter['stationName'] }),
+                             prompt: "Select a School (station name: #{inverter['stationName']})",
+                             class: 'form-control select' %>
+              <% if @meter&.errors&.any? %>
+                <div class="invalid-feedback"><%= @meter.errors.map(&:message).join(', ') %></div>
+              <% end %>
+            </td>
+            <td><%= inverter['name'] %></td>
+            <td><%= inverter['sn'] %></td>
+            <td>-</td>
+            <td><%= button_tag('Create', value: "create_meter_#{inverter['sn']}", class: 'btn btn-primary') %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to 'Update Inverter List', check_admin_solis_cloud_installation_path(@resource),
+                method: :post, class: 'btn btn-primary' %>
+  <% end %>
+<% end %>
