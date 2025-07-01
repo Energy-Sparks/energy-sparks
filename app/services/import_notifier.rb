@@ -44,28 +44,36 @@ class ImportNotifier
   private
 
   def find_meters_running_behind
-    Meter.active
-         .with_school_and_group
-         .joins(:school)
-         .joins('LEFT JOIN data_sources on data_sources.id = meters.data_source_id')
-         .joins(:amr_validated_readings)
-         .where(schools: { active: true })
-         .joins('LEFT JOIN school_groups on schools.school_group_id = school_groups.id')
-         .group('meters.id, data_sources.import_warning_days, school_groups_schools.id, schools.id')
-         .having(
-           <<-SQL.squish
-             MAX(amr_validated_readings.reading_date) < NOW() - COALESCE(
-                                                                       data_sources.import_warning_days,
-                                                                       (
-                                                                          SELECT site_settings.default_import_warning_days
-                                                                          FROM site_settings
-                                                                          ORDER BY created_at
-                                                                          DESC
-                                                                          LIMIT 1
-                                                                        )
-                                                                     ) * '1 day'::interval
-           SQL
-         )
-         .order('school_groups_schools.id asc, meters.meter_type asc, schools.id asc, meters.mpan_mprn asc')
+    outdated_meter_ids = Meter
+      .joins('LEFT JOIN data_sources ON data_sources.id = meters.data_source_id')
+      .joins(:school)
+      .joins(<<-SQL.squish)
+        JOIN LATERAL (
+          SELECT id, reading_date
+          FROM amr_validated_readings
+          WHERE amr_validated_readings.meter_id = meters.id
+          ORDER BY reading_date DESC
+          LIMIT 1
+        ) AS max_reading ON true
+      SQL
+      .where(active: true, schools: { active: true })
+      .where(<<-SQL.squish)
+        max_reading.reading_date <
+          NOW() - COALESCE(
+            data_sources.import_warning_days,
+            (
+              SELECT site_settings.default_import_warning_days
+              FROM site_settings
+              ORDER BY created_at DESC
+              LIMIT 1
+            )
+          ) * INTERVAL '1 day'
+      SQL
+      .pluck(:id)
+
+    Meter
+        .includes(:school, { school: :school_group }, :procurement_route, :data_source, :admin_meter_status, :issues)
+        .where(id: outdated_meter_ids)
+        .order({ school_groups: { name: :asc } }, :meter_type, :school_id, :mpan_mprn)
   end
 end

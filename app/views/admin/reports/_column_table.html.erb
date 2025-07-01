@@ -7,7 +7,7 @@
     </tr>
   </thead>
   <tbody>
-    <% rows.find_each do |row| %>
+    <% rows.each do |row| %>
         <tr>
         <% columns.each do |column| %>
             <td data-order="<%= column.data_order(row) %>">

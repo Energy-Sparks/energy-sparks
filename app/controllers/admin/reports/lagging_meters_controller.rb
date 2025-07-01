@@ -56,7 +56,7 @@ module Admin
       end
 
       def description
-        'List of meters that are running behind'
+        'List of meters that have stale data'
       end
 
       def title
