@@ -294,7 +294,7 @@ describe ImportNotifier do
                end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Bath Admin'].join(','),
               ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
                sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Sheffield Admin'].join(',')])
+               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')])
       end
     end
   end
