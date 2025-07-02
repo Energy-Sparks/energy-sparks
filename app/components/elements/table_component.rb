@@ -13,11 +13,6 @@ module Elements
       RowComponent.new(**kwargs)
     }
 
-    def initialize(**_kwargs)
-      super
-      add_classes('table')
-    end
-
     class RowComponent < ApplicationComponent
       renders_many :cells, types: {
         cell: {
@@ -29,10 +24,6 @@ module Elements
           as: :header_cell
         }
       }
-
-      def initialize(**_kwargs)
-        super
-      end
 
       def call
         tag.tr(class: classes) do

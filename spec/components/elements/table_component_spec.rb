@@ -98,17 +98,12 @@ RSpec.describe Elements::TableComponent, :include_application_helper, type: :com
   shared_examples 'a data cell with attributes' do |type: 'td'|
     it { expect(html).to have_css("table tr #{type}", text: 'Cell') }
 
-    context 'with valid attributes' do
+    context 'with valid options' do
       it { expect(html).to have_css("table tr #{type}[colspan=\"2\"]") }
       it { expect(html).to have_css("table tr #{type}[rowspan=\"2\"]") }
       it { expect(html).to have_css("table tr #{type}[headers=\"header1\"]") }
       it { expect(html).to have_css("table tr #{type}[width=\"100px\"]") }
       it { expect(html).to have_css("table tr #{type}[height=\"50px\"]") }
-    end
-
-    context 'with invalid th attributes', if: type == 'th' do
-      it { expect(html).to have_css('table tr th[scope="col"]') }
-      it { expect(html).to have_css('table tr th[abbr="abbr"]') }
     end
 
     context 'with invalid options' do
@@ -117,6 +112,11 @@ RSpec.describe Elements::TableComponent, :include_application_helper, type: :com
       it 'does not render invalid attributes' do
         expect(html).not_to have_css("table tr #{type}[invalid]")
       end
+    end
+
+    context 'with valid th options', if: type == 'th' do
+      it { expect(html).to have_css('table tr th[scope="col"]') }
+      it { expect(html).to have_css('table tr th[abbr="abbr"]') }
     end
 
     context 'with invalid scope', if: type == 'th' do

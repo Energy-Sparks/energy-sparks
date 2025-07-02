@@ -14,7 +14,7 @@
 
   <div class="container">
     <h2><%= t('pricing.product_features.title') %></h2>
-    <%= render(Elements::TableComponent.new(classes: 'table table-lined')) do |table| %>
+    <%= render(Elements::TableComponent.new(id: :features, classes: 'table table-lined')) do |table| %>
       <%= table.with_head_row do |header| %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.compare'),
                                     scope: 'col', width: '50%') %>
