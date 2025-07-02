@@ -747,6 +747,8 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
 
       resources :baseload_anomaly, only: [:index]
+      resources :blank_readings, only: [:index]
+
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
@@ -782,6 +784,7 @@ Rails.application.routes.draw do
       resource :unvalidated_readings, only: [:show]
       resources :user_logins, only: [:index]
       resources :work_allocation, only: [:index]
+      resources :zero_readings, only: [:index]
     end
 
     resource :settings, only: [:show, :update]

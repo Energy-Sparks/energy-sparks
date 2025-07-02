@@ -2,7 +2,7 @@
 
 module Admin
   module Reports
-    class ManualReadsController < MeterDataReportsController
+    class ManualReadsController < BaseMeterReportsController
       private
 
       def columns
@@ -25,10 +25,6 @@ module Admin
                      ->(meter) { meter.issues.note.count },
                      display: :csv)
         ]
-      end
-
-      def frequency
-        :on_demand
       end
 
       def results

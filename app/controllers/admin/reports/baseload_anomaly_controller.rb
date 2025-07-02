@@ -2,7 +2,7 @@
 
 module Admin
   module Reports
-    class BaseloadAnomalyController < MeterDataReportsController
+    class BaseloadAnomalyController < BaseMeterReportsController
       private
 
       def results
@@ -40,6 +40,10 @@ module Admin
                      ->(row) { link_to('Chart', analysis_school_advice_baseload_path(row.meter.school))},
                      html_data: { sortable: false })
         ]
+      end
+
+      def frequency
+        :daily
       end
 
       def path

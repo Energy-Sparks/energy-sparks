@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+# Base class for admin reports that present meter or reading level data
+# Provides a basic framework for implementing the reports and some standard
+# columns
 module Admin
   module Reports
-    class MeterDataReportsController < AdminController
+    class BaseMeterReportsController < AdminController
       include Columns
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
@@ -34,19 +37,26 @@ module Admin
         @columns = columns
       end
 
+      # Report title
+      def title; end
+      # Single line description of report
+      # Add a _help.html.erb partial to add more detail
+      def description; end
+      # Path to report for filtering, should be a string
+      def path; end
+
+      # How frequently are the reports contents updated?
+      def frequency
+        :on_demand
+      end
+
+      # Override to be 'container-fluid' for very wide reports
       def container_class
         'container'
       end
 
-      def title; end
-      def description; end
-      def path; end
-
-      def frequency
-        :daily
-      end
-
       # Standard set of columns for the results table, assumes each row is a Meter
+      # Override to add additional columns for the report
       def columns
         [
           Column.new(:school_group,
