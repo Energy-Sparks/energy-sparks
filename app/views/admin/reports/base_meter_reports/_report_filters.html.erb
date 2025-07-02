@@ -1,5 +1,5 @@
 <div class="clearfix bg-light py-2 px-2 my-2 border rounded">
-  <%= form_tag send(path), method: :get do |f| %>
+  <%= form_tag url_for(controller: controller_path, action: :index, only_path: true), method: :get do |f| %>
     <span class="nowrap">
       <%= label_tag :school_group, nil, class: 'small' %>
       <%= select_tag :school_group,

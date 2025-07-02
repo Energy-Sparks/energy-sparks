@@ -46,10 +46,6 @@ module Admin
         :daily
       end
 
-      def path
-        'admin_reports_baseload_anomaly_index_path'
-      end
-
       def description
         'Shows sudden changes in baseload for active electricity meters over the last 30 days.'
       end

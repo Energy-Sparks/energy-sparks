@@ -34,10 +34,6 @@ module Admin
         results
       end
 
-      def path
-        'admin_reports_manual_reads_path'
-      end
-
       def description
         'List of meters configured as needing manual reads'
       end

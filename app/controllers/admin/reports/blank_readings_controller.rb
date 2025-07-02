@@ -13,10 +13,6 @@ module Admin
         results
       end
 
-      def path
-        'admin_reports_blank_readings_path'
-      end
-
       def description
         'Meters where we have received one or more days of entirely blank data in the last 24 hours'
       end

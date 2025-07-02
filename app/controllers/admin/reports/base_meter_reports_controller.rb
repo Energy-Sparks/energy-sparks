@@ -33,7 +33,6 @@ module Admin
         @title = title
         @description = description
         @frequency = frequency
-        @path = path
         @columns = columns
       end
 
@@ -42,8 +41,6 @@ module Admin
       # Single line description of report
       # Add a _help.html.erb partial to add more detail
       def description; end
-      # Path to report for filtering, should be a string
-      def path; end
 
       # How frequently are the reports contents updated?
       def frequency

@@ -9,10 +9,6 @@ module Admin
         filter_results(ImportNotifier.new.meters_running_behind)
       end
 
-      def path
-        'admin_reports_lagging_meters_path'
-      end
-
       def description
         'List of meters that have stale data'
       end

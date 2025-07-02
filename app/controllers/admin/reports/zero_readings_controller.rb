@@ -9,10 +9,6 @@ module Admin
         filter_results(ImportNotifier.new.meters_with_zero_data)
       end
 
-      def path
-        'admin_reports_zero_readings_path'
-      end
-
       def description
         'Meters where we have received one or more days of entirely zero readings in the last 24 hours'
       end
