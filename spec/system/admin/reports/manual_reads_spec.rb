@@ -4,11 +4,17 @@ require 'rails_helper'
 
 describe 'Manual Reads Report' do
   let!(:meter) { create(:gas_meter, school: create(:school, :with_school_group), manual_reads: true) }
+  let(:page_title) { 'Manually read meters' }
 
   before do
     sign_in(create(:admin))
     visit admin_reports_path
-    click_on 'Manual reads meter report'
+    click_on page_title
+  end
+
+  it_behaves_like 'an admin meter report', help: false do
+    let(:title) { page_title }
+    let(:description) { 'List of meters configured as needing manual reads' }
   end
 
   it 'displays the table' do
