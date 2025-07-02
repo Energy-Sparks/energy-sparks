@@ -13,23 +13,51 @@
   </div>
 
   <div class="container">
-    <%= render Elements::HeaderComponent.new(
-          id: 'product_features', level: 2,
-          title: t('pricing.product_features.title')
-        ) %>
 
-    <%= render(Elements::TableComponent.new(classes: 'table table-striped')) do |table| %>
-      <% table.with_header do |header| %>
-        <%= header.with_cell('#') %>
-        <%= header.with_cell('First') %>
-        <%= header.with_cell('Last') %>
-        <%= header.with_cell('Handle') %>
+    <h2><%= t('pricing.product_features.title') %></h2>
+    <%= render(Elements::TableComponent.new(classes: 'table table-lined')) do |table| %>
+      <%= table.with_header_row do |header| %>
+        <%= header.with_header_cell(I18n.t('pricing.product_features.compare'),
+                                    scope: 'col', classes: 'h4', width: '50%') %>
+        <%= header.with_header_cell(I18n.t('pricing.product_features.starter'),
+                                    scope: 'col', classes: 'text-center h4', width: '25%') %>
+        <%= header.with_header_cell(I18n.t('pricing.product_features.standard'),
+                                    scope: 'col', classes: 'text-center h4', width: '25%') %>
       <% end %>
 
-      <% table.with_row(row_scope: 1) do |row| %>
-        <%= row.with_cell('Mark') %>
-        <%= row.with_cell('Otto') %>
-        <%= row.with_cell('@mdo') %>
+      <% I18n.t('pricing.product_features.categories').each do |category| %>
+        <%= table.with_row(classes: '') do |row| %>
+          <%= row.with_header_cell(colspan: 3, classes: '') do %>
+            <%= category[:title] %>
+          <% end %>
+        <% end %>
+
+        <% category[:features].each do |feature| %>
+          <%= table.with_row do |row| %>
+            <%= row.with_cell do %>
+              <%= feature[:title] %>
+              <% if feature.key?(:info) %>
+                <%= tag.span(data: { toggle: 'tooltip', placement: 'top' }, title: feature[:info]) do %>
+                  <%= render IconComponent.new(name: 'circle-info') %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <%= row.with_cell(classes: 'text-center align-middle') do %>
+              <% if feature.key?(:starter_icon) %>
+                <%= render IconComponent.new(name: feature[:starter_icon]) %>
+              <% else %>
+                <%= feature[:starter] %>
+              <% end %>
+            <% end %>
+            <%= row.with_cell(classes: 'text-center align-middle') do %>
+              <% if feature.key?(:standard_icon) %>
+                <%= render IconComponent.new(name: feature[:standard_icon]) %>
+              <% else %>
+                <%= feature[:standard] %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
 

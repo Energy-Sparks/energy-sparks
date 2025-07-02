@@ -2,16 +2,21 @@ module Elements
   class TableComponentPreview < ViewComponent::Preview
     def default
       render(Elements::TableComponent.new(classes: 'table table-bordered')) do |table|
-        table.with_header do |header|
-          header.with_cell('School')
-          header.with_cell('Gas (kWh)')
-          header.with_cell('Electricity (kWh)')
-          header.with_cell('Total CO₂ (kg)')
-          header.with_cell('Cost (£)')
+        table.with_header_row do |header|
+          header.with_header_cell('School', scope: 'col')
+          header.with_header_cell('Gas (kWh)', scope: 'col')
+          header.with_header_cell('Electricity (kWh)', scope: 'col')
+          header.with_header_cell('Total CO₂ (kg)', scope: 'col')
+          header.with_header_cell('Cost (£)', scope: 'col')
         end
 
         table.with_row do |row|
-          row.with_cell('Otley Primary School')
+          row.with_cell('Other')
+          row.with_cell('Units', colspan: 4)
+        end
+
+        table.with_row do |row|
+          row.with_header_cell('Westgate Primary School', scope: 'row')
           row.with_cell('12,345')
           row.with_cell('8,910')
           row.with_cell('4,321')
@@ -19,7 +24,7 @@ module Elements
         end
 
         table.with_row do |row|
-          row.with_cell('Guiseley Academy')
+          row.with_header_cell('Prince Henry’s Grammar School', scope: 'row')
           row.with_cell('22,010')
           row.with_cell('15,876')
           row.with_cell('6,789')
@@ -27,7 +32,9 @@ module Elements
         end
 
         table.with_row do |row|
-          row.with_cell('Ilkley High School')
+          row.with_header_cell(scope: 'row') do
+            'Ilkley Grammar School'
+          end
           row.with_cell('19,250')
           row.with_cell('13,040')
           row.with_cell('5,432')

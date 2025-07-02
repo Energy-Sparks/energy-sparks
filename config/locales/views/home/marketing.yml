@@ -203,4 +203,84 @@ en:
         subtext: lower price for schools with < 250 pupils
         title: Individual state schools
     product_features:
+      categories:
+      - title: Education and Advice
+        features:
+        - title: Access to pupil activities with downloadable lesson plans, workshops and additional resources
+          starter: 140+
+          standard: 140+
+        - title: Guidance on adult led low and no-cost energy efficiency actions
+          starter: 60+
+          standard: 60+
+        - title: Regular newsletters and blog posts with energy saving advice, ideas and tips
+          starter_icon: circle-check
+          standard_icon: circle-check
+        - title: Record energy saving activities and actions to score points and build a record of interventions
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Participate in our competitions and events
+          starter_icon: xmark
+          standard_icon: circle-check
+      - title: Energy Management Tool
+        features:
+        - title: School-specific energy analysis based on half-hourly data
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Prioritised energy saving recommendations
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Adult dashboard with key insights and alerts
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Pupil dashboard with easy to understand equivalences and prompts to take action
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: User accounts
+          starter_icon: xmark
+          standard: Unlimited
+        - title: Interactive energy usage charts
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Emailed energy use insights and alerts
+          starter_icon: xmark
+          standard: Weekly
+        - title: Track progress by setting energy saving targets
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Compare energy use against similar schools
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Integrated data from your solar panels
+          starter_icon: xmark
+          standard: Unlimited
+      - title: Onboarding and Support
+        features:
+        - title: Dedicated account manager
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Energy management email support
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Sustainability education email support
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Webinar training
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Support with upgrading meters to half-hourly metering
+          starter_icon: xmark
+          standard: On request
+      - title: Additional Fees and Options
+        features:
+        - title: Private energy analysis
+          starter_icon: xmark
+          standard_icon: sterling-sign
+          info: "£95 + VAT per school per year"
+        - title: Analysis of data for more than 5 meters
+          starter_icon: xmark
+          standard_icon: sterling-sign
+          info: "£25 + VAT per meter"
+      compare: Compare
+      standard: Standard
+      starter: Starter
       title: Product features

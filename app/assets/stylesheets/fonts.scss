@@ -90,3 +90,8 @@ $fonts: (
     @include font($name);
   }
 }
+
+.header-font {
+  font-family: $header-font-family;
+  font-weight: $header-font-weight;
+}
