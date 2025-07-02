@@ -291,7 +291,7 @@ describe ImportNotifier do
               'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
               ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
                bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Bath Admin'].join(','),
+               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Bath Admin'].join(','),
               ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
                sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
                end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')])
