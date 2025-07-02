@@ -18,7 +18,12 @@
     <span class="float-right">
       <%= submit_tag 'Filter', class: 'btn btn-sm' %>
       <%= link_to 'CSV',
-                  send(path, params.permit(:user, :school_group).merge(format: :csv)),
+                  url_for(
+                    controller: controller_path,
+                    action: :index,
+                    only_path: true,
+                    **params.permit!.merge(format: :csv)
+                  ),
                   class: 'btn btn-sm' %>
     </span>
   <% end %>
