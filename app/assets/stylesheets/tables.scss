@@ -6,8 +6,7 @@
       }
 
       th {
-        @extend .header-font;
-        @include font('f3');
+        @extend h3;
         border: 0px;
       }
     }

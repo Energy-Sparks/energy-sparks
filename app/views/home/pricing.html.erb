@@ -18,11 +18,11 @@
     <%= render(Elements::TableComponent.new(classes: 'table table-lined')) do |table| %>
       <%= table.with_header_row do |header| %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.compare'),
-                                    scope: 'col', classes: 'h4', width: '50%') %>
+                                    scope: 'col', classes: '', width: '50%') %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.starter'),
-                                    scope: 'col', classes: 'text-center h4', width: '25%') %>
+                                    scope: 'col', classes: 'text-center', width: '25%') %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.standard'),
-                                    scope: 'col', classes: 'text-center h4', width: '25%') %>
+                                    scope: 'col', classes: 'text-center', width: '25%') %>
       <% end %>
 
       <% I18n.t('pricing.product_features.categories').each do |category| %>
@@ -86,7 +86,7 @@
       <% end %>
     <% end %>
 
-    <h3><%= t('common.labels.pricing') %></h3>
+    <h2><%= t('common.labels.pricing') %></h2>
     <%= render Layout::GridComponent.new(
           id: 'prices',
           cols: 3,
@@ -128,7 +128,7 @@
       <% end %>
     <% end %>
 
-    <h3><%= t('pricing.additional_services.title') %></h3>
+    <h2><%= t('pricing.additional_services.title') %></h2>
     <%= render Layout::GridComponent.new(
           id: 'additional-services',
           cols: 3,
