@@ -13,12 +13,11 @@
   </div>
 
   <div class="container">
-
     <h2><%= t('pricing.product_features.title') %></h2>
     <%= render(Elements::TableComponent.new(classes: 'table table-lined')) do |table| %>
-      <%= table.with_header_row do |header| %>
+      <%= table.with_head_row do |header| %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.compare'),
-                                    scope: 'col', classes: '', width: '50%') %>
+                                    scope: 'col', width: '50%') %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.starter'),
                                     scope: 'col', classes: 'text-center', width: '25%') %>
         <%= header.with_header_cell(I18n.t('pricing.product_features.standard'),
@@ -26,14 +25,14 @@
       <% end %>
 
       <% I18n.t('pricing.product_features.categories').each do |category| %>
-        <%= table.with_row(classes: '') do |row| %>
+        <%= table.with_body_row do |row| %>
           <%= row.with_header_cell(colspan: 3, classes: '') do %>
             <%= category[:title] %>
           <% end %>
         <% end %>
 
         <% category[:features].each do |feature| %>
-          <%= table.with_row do |row| %>
+          <%= table.with_body_row do |row| %>
             <%= row.with_cell do %>
               <%= feature[:title] %>
               <% if feature.key?(:info) %>

@@ -1,29 +1,31 @@
 module Elements
   class TableComponent < ApplicationComponent
-    renders_many :header_rows, ->(**kwargs) {
-      RowComponent.new(**kwargs)
-    }
     renders_many :rows, ->(**kwargs) {
       RowComponent.new(**kwargs)
     }
-    renders_many :footer_rows, ->(**kwargs) {
+    renders_many :head_rows, ->(**kwargs) {
+      RowComponent.new(**kwargs)
+    }
+    renders_many :body_rows, ->(**kwargs) {
+      RowComponent.new(**kwargs)
+    }
+    renders_many :foot_rows, ->(**kwargs) {
       RowComponent.new(**kwargs)
     }
 
-    def initialize(classes: 'table', **_kwargs)
+    def initialize(**_kwargs)
       super
+      add_classes('table')
     end
-
-    private
 
     class RowComponent < ApplicationComponent
       renders_many :cells, types: {
         cell: {
-           renders: ->(*args, **kwargs, &block) { CellComponent.new(:td, *args, **kwargs, &block) },
+           renders: ->(*args, **kwargs, &block) { CellComponent.new(*args, **kwargs, &block) },
            as: :cell
         },
         header_cell: {
-          renders: ->(*args, **kwargs, &block) { HeaderCellComponent.new(:th, *args, **kwargs, &block) },
+          renders: ->(*args, **kwargs, &block) { HeaderCellComponent.new(*args, **kwargs, &block) },
           as: :header_cell
         }
       }
@@ -40,24 +42,51 @@ module Elements
     end
 
     class CellComponent < ApplicationComponent
-      def initialize(tag = :td, text = nil, **kwargs)
+      def initialize(text = nil, **kwargs)
         super
-        @tag = tag
+        @options = build_options(kwargs)
+        @tag = :td
         @text = text
-        @kwargs = kwargs.except(:classes).merge(id: id, class: classes)
       end
 
       def call
-        content_tag(@tag, **@kwargs) do
+        content_tag(@tag, **@options) do
           content || @text
         end
+      end
+
+      protected
+
+      def valid_options
+        [:id, :width, :height, :headers, :colspan, :rowspan]
+      end
+
+      def build_options(kwargs)
+        kwargs.slice(*valid_options).merge({ class: classes })
       end
     end
 
     class HeaderCellComponent < CellComponent
-      def initialize(tag = :th, text = nil, scope: nil, **kwargs)
-        raise ArgumentError, "Invalid scope: #{scope}. Scope must be 'col' or 'row'." if scope && scope != 'col' && scope != 'row'
+      def initialize(text = nil, **kwargs)
         super
+        validate_scope(kwargs[:scope])
+        @tag = :th
+      end
+
+      protected
+
+      def valid_options
+        super + [:scope, :abbr]
+      end
+
+      private
+
+      def valid_scopes
+        ['col', 'row', 'colgroup', 'rowgroup']
+      end
+
+      def validate_scope(scope)
+        raise ArgumentError.new('Invalid scope') if scope && !valid_scopes.include?(scope)
       end
     end
   end
