@@ -28,16 +28,25 @@ describe 'Lagging Meters Report', :include_application_helper do
   it 'displays the table' do
     expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to \
       eq([
-           ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Meter System', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date',
+           ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
+            'Meter Type', 'Meter System', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date',
             'Issues & Notes'],
-           [meter.school.school_group.name, '', meter.school.name, meter.mpan_mprn.to_s, meter.name, '', meter.t_meter_system, meter.data_source&.name, '', '', 'N', nice_dates(end_date), '']])
+           [
+             meter.school.school_group.name, '', meter.school.name, meter.mpan_mprn.to_s, meter.name,
+             '', meter.t_meter_system, meter.data_source&.name, '', '', 'N', nice_dates(end_date),
+             ''
+           ]
+         ])
   end
 
   it 'allows csv download' do
     click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
-    header = ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Meter System', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date',
-              'Issues', 'Notes']
+    header = ['School Group', 'Admin', 'School', 'Meter', 'Meter Name',
+              'Meter Type', 'Meter System', 'Data Source', 'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date',
+              'Issues',
+              'Notes'
+            ]
     expect(body).to \
       eq("#{header.join(',')}\n" \
          "#{meter.school.school_group.name},,#{meter.school.name},#{meter.mpan_mprn},#{meter.name},gas,#{meter.t_meter_system},#{meter.data_source&.name},,,N,#{end_date.to_date.iso8601},0,0\n")
