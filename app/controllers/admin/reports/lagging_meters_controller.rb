@@ -20,15 +20,17 @@ module Admin
           Column.new(:meter_system,
                      ->(meter) { meter.t_meter_system }),
           Column.new(:data_source,
-                     ->(meter) { meter.data_source&.name }),
+                     ->(meter) { meter.data_source&.name },
+                     ->(meter, csv) { csv && link_to(csv, admin_data_source_path(meter.data_source)) }),
           Column.new(:procurement_route,
-                     ->(meter) { meter.procurement_route&.organisation_name }),
+                     ->(meter) { meter.procurement_route&.organisation_name },
+                     ->(meter, csv) { csv && link_to(csv, admin_procurement_route_path(meter.procurement_route)) }),
           Column.new(:meter_status,
                      ->(meter) { meter.admin_meter_status_label }),
           Column.new(:manual_reads,
                      ->(meter) { meter.manual_reads ? 'Y' : 'N' }),
           Column.new(:last_validated_date,
-                     ->(meter) { meter.last_validated_reading&.strftime('%d/%m/%Y') },
+                     ->(meter) { meter.last_validated_reading&.iso8601 },
                      ->(meter) { nice_dates(meter.last_validated_reading) }),
           Column.new(:'issues_&_notes',
                      nil,
@@ -60,7 +62,7 @@ module Admin
       end
 
       def title
-        'Lagging meters'
+        'Meters with stale data'
       end
     end
   end

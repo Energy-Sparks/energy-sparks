@@ -9,7 +9,7 @@
     <p>
        <span class="badge badge-info">Updated <%= @frequency.to_s.humanize %> </span> <%= @description %>
     </p>
-    <% if lookup_context.exists?('definition', lookup_context.prefixes, true) %>
+    <% if lookup_context.exists?('help', lookup_context.prefixes, true) %>
     <p>
       <a class="btn btn-sm btn-info" data-toggle="collapse" href="#help" role="button" aria-expanded="false" aria-controls="help">
         View help
@@ -18,11 +18,11 @@
     <% end %>
   </div>
 
-  <% if lookup_context.exists?('definition', lookup_context.prefixes, true) %>
+  <% if lookup_context.exists?('help', lookup_context.prefixes, true) %>
     <div class="row">
       <div class="col">
         <div class="collapse" id="help">
-          <%= render 'definition' %>
+          <%= render 'help' %>
         </div>
       </div>
     </div>
