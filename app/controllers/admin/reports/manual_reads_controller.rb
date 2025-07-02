@@ -43,7 +43,7 @@ module Admin
       end
 
       def title
-        'Manual read meters'
+        'Manually read meters'
       end
     end
   end
