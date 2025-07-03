@@ -84,7 +84,7 @@ module Aggregation
       # in which these values occur
       remove_dcc_bad_data_readings if @meter.dcc_meter
 
-      remove_negative_readings
+      remove_negative_readings if %i[electricity gas].include?(@meter.meter_type)
 
       # Adjusts amr data start/end by one day to ignore days with partial data
       # (This overlaps with the remove_final_meter_reading_if_today check done

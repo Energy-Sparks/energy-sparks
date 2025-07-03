@@ -6,18 +6,19 @@ describe Aggregation::ValidateAmrData, type: :service do
   subject(:validator) { data[0] }
 
   def setup(**kwargs)
-    kwargs = { kwh_data_x48: Array.new(48, 0.44) }.merge(kwargs)
-    meter_collection = build(:meter_collection, :with_electricity_meter, **kwargs)
-    meter = meter_collection.electricity_meters.first
+    kwargs = { kwh_data_x48: Array.new(48, 0.44), day_count: 9 }.merge(kwargs)
+    meter = kwargs.include?(:meter) ? kwargs.delete(:meter) : build(:meter, type: :electricity, **kwargs)
+    meter_collection = build(:meter_collection)
+    meter.instance_variable_set(:@meter_collection, meter_collection)
     validator = described_class.new(meter, max_days_missing_data, meter_collection.holidays,
                                     meter_collection.temperatures)
-    [validator, meter, meter_collection]
+    [validator, meter]
   end
 
   before { travel_to Date.new(2025, 5, 3) }
 
   let(:data) { setup }
-  let(:meter_collection) { data[2] }
+  let(:meter_collection) { meter.meter_collection }
   let(:meter) { data[1] }
   let(:max_days_missing_data) { 50 }
 
@@ -79,30 +80,43 @@ describe Aggregation::ValidateAmrData, type: :service do
     end
   end
 
-  it 'corrects dcc known bad values' do
-    validator, meter, = setup(dcc_meter: true)
-    date = meter.amr_data.keys.sort[1]
-    meter.amr_data[date].kwh_data_x48[0] = 4_294_967.295
-    validator.validate
-    expect(meter.amr_data[date].type).to eq('DCCP')
-    expect(meter.amr_data[date].kwh_data_x48[0]).to eq(0.44)
-  end
-
-  it 'corrects negative readings' do
-    validator, meter, = setup(kwh_data_x48: Array.new(48, 0.5).tap { |a| a[0] = -1 })
-    validator.validate
-    reading = meter.amr_data.first[1]
-    expect(reading.kwh_data_x48[0]).to eq(0.5)
-    expect(reading.type).to eq('RNEG')
-  end
-
-  it 'corrects many negative readings' do
+  def validate_and_return_arbitrary_reading(**kwargs)
+    validator, meter = setup(**kwargs)
     date = meter.amr_data.keys[2]
-    meter.amr_data[date].kwh_data_x48[0..6] = Array.new(7, -0.1)
+    yield(meter.amr_data[date]) if block_given?
     validator.validate
-    reading = meter.amr_data[date]
+    meter.amr_data[date]
+  end
+
+  it 'corrects dcc known bad values' do
+    reading = validate_and_return_arbitrary_reading(dcc_meter: true) do |reading|
+      reading.kwh_data_x48[0] = 4_294_967.295
+    end
+    expect(reading.type).to eq('DCCP')
     expect(reading.kwh_data_x48[0]).to eq(0.44)
-    expect(reading.type).to eq('RNEG')
-    expect(reading.substitute_date).not_to be_nil
+  end
+
+  context 'with negative readings' do
+    it 'corrects negative readings' do
+      reading = validate_and_return_arbitrary_reading(kwh_data_x48: [-1] + Array.new(47, 0.5))
+      expect(reading.kwh_data_x48[0]).to eq(0.5)
+      expect(reading.type).to eq('RNEG')
+    end
+
+    it 'corrects many negative readings' do
+      reading = validate_and_return_arbitrary_reading { |reading| reading.kwh_data_x48[0..6] = Array.new(7, -0.1) }
+      expect(reading.kwh_data_x48[0]).to eq(0.44)
+      expect(reading.type).to eq('RNEG')
+      expect(reading.substitute_date).not_to be_nil
+    end
+
+    %i[solar_pv exported_solar_pv].each do |type|
+      it "doesn't correct #{type} meters" do
+        meter = build(:meter, type:, kwh_data_x48: [-1] + Array.new(47, 0.0)) # rubocop:disable Performance/CollectionLiteralInLoop
+        reading = validate_and_return_arbitrary_reading(meter:)
+        expect(reading.type).to eq('ORIG')
+        expect(reading.kwh_data_x48[0]).to eq(-1)
+      end
+    end
   end
 end

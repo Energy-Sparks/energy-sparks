@@ -44,12 +44,9 @@ FactoryBot.define do
       after(:build) do |amr_data, evaluator|
         evaluator.day_count.times do |n|
           date = evaluator.end_date - n
-          reading = if evaluator.kwh_data_x48.nil?
-                      build(:one_day_amr_reading, date: date)
-                    else
-                      build(:one_day_amr_reading, date: date, kwh_data_x48: evaluator.kwh_data_x48)
-                    end
-          amr_data.add(date, reading)
+          kwargs = {}
+          kwargs[:kwh_data_x48] = evaluator.kwh_data_x48.dup unless evaluator.kwh_data_x48.nil?
+          amr_data.add(date, build(:one_day_amr_reading, date:, **kwargs))
         end
       end
     end
