@@ -311,7 +311,7 @@ class AMRData < HalfHourlyData
     co2_one_day(date) if type == :co2
   end
 
-  def check_for_bad_values
+  def check_for_bad_values(type: :kwh)
     problems = { missing: [], nan: [], infinite: [], nil: [] }
 
     (start_date..end_date).each do |date|
