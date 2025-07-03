@@ -6,7 +6,7 @@ RSpec.shared_examples_for 'an application component' do
   end
 
   it 'has the expected classes' do
-    expected_classes.split.each do |class_name|
+    expected_classes.split(/[\s.]+/).each do |class_name|
       expect(html).to have_css(":first-child[class*='#{class_name}']")
     end
   end
