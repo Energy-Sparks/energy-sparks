@@ -139,7 +139,7 @@ class AMRData < HalfHourlyData
     return @blended_rate[key]               if @blended_rate.key?(key)
     return 1.0 / @blended_rate[reverse_key] if @blended_rate.key?(reverse_key)
 
-    @blended_rate[key] ||= calculate_blended_rate(from_unit, to_unit, start_date, ed)
+    @blended_rate[key] ||= calculate_blended_rate(from_unit, to_unit, start_date, rate_end_date)
   end
 
   # calculates a blended rate x 48, based on aggregate data
