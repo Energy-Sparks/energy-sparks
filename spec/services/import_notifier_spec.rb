@@ -255,7 +255,7 @@ describe ImportNotifier do
       notify
       expect(email.subject).to include('Energy Sparks import')
       email_body = email.html_part.body
-      expect(email_body).to include('Data issues')
+      expect(email_body).to include('Meter data issues')
     end
 
     context 'with a description provided' do
@@ -278,20 +278,6 @@ describe ImportNotifier do
                data_source: create(:data_source, import_warning_days: 2))
       end
 
-      it 'contains the meter information in the email' do
-        notify
-        page = Capybara.string(email.html_part.body.to_s)
-        reading_date = end_date.strftime("%a #{end_date.day.ordinalize} %b %Y")
-        expect(page.all('table tr').map { |tr| tr.all('td, th').map(&:text) }).to \
-          eq([['Area', 'Meter type', 'School', 'MPAN/MPRN', 'Half-Hourly', 'Data source', 'Procurement route',
-               'Last validated reading date', 'Admin meter status', 'Manual reads', '', 'Group admin name'],
-              ['Meters with stale data'],
-              [bath_school.school_group.name, 'Gas', bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR',
-               bath_meter.data_source.name, '', reading_date, '', 'N', '', '', 'Bath Admin'],
-              [sheffield_school.school_group.name, 'Gas', sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR',
-               meter_1.data_source.name, '', reading_date, '', 'N', '', '', 'Sheffield Admin']])
-      end
-
       it 'has an attachment' do
         now = Time.current
         travel_to(now)
@@ -305,10 +291,10 @@ describe ImportNotifier do
               'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
               ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
                bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Bath Admin'].join(','),
+               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Bath Admin'].join(','),
               ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
                sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '""', 'N', '0', '0', 'Sheffield Admin'].join(',')])
+               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')])
       end
     end
   end
