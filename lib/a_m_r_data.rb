@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dashboard/utilities/half_hourly_data'
+
 # Timed data from a meter
 # references consumption data, costs and carbon emissions
 class AMRData < HalfHourlyData
