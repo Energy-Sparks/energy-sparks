@@ -1,13 +1,18 @@
 .table {
   &.table-lined {
     thead {
-      tr {
+      th {
+        @extend h3;
         border: 0;
       }
 
-      th {
-        @extend h3;
-        border: 0px;
+      th.title {
+        @extend h2;
+      }
+
+      td {
+        padding: 0;
+        border: 0;
       }
     }
 
@@ -15,9 +20,13 @@
       th {
         @extend h4;
         border: 0;
-        padding-top: 32px;
         padding-bottom: 24px;
       }
+
+      tr:not(:first-child) th {
+        padding-top: 32px;
+      }
+
       td {
         border-top: 0;
       }

@@ -179,8 +179,8 @@ en:
       description_html: Enrol today to join our growing network of <strong>%{count}</strong> schools. Still have questions? Get in touch to request more information.
       title: Ready to cut costs and spark pupils' commitment to sustainability?
     feature:
-      description: Save up to 40% on energy bills with our unique school-specific energy management tool and education programme
-      title: Start cutting energy costs and fight climate change
+      description: Save up to 40% on energy bills with our unique school-specific energy management platform and education programme
+      title: Cut costs and fight climate change with our energy management platform
     free_places:
       description_html: |-
         Funding from charitable trusts and foundations, community energy companies and corporate partners allows Energy Sparks to provide its services free of charge, or at a subsidised rate, to a limited number of schools in certain regions of the UK.
@@ -192,16 +192,18 @@ en:
     looking_for_info: Looking for more information?
     per_school_per_year: Per school per year
     prices:
-      independent:
+      large:
+        note: With more than 250 pupils
         price: "£595 + VAT"
-        title: Independent schools
+        title: Large schools
       mat_and_la:
+        note: Minimum 5 schools on the same energy contract
         price: "£545 + VAT"
         title: Multi-Academy Trust and Local Authority clusters
-      state:
-        price: "£545 to £595 + VAT"
-        subtext: lower price for schools with < 250 pupils
-        title: Individual state schools
+      small:
+        note: With less than 250 pupils
+        price: "£545 + VAT"
+        title: Small schools
     product_features:
       categories:
       - title: Education and Advice
@@ -235,12 +237,15 @@ en:
         - title: Pupil dashboard with easy to understand equivalences and prompts to take action
           starter_icon: xmark
           standard_icon: circle-check
-        - title: User accounts
-          starter_icon: xmark
-          standard: Unlimited
         - title: Interactive energy usage charts
           starter_icon: xmark
           standard_icon: circle-check
+        - title: User accounts
+          starter_icon: xmark
+          standard: Unlimited
+        - title: Meter level analysis
+          starter_icon: xmark
+          standard: Up to 5 meters
         - title: Emailed energy use insights and alerts
           starter_icon: xmark
           standard: Weekly
@@ -281,6 +286,10 @@ en:
           standard_icon: sterling-sign
           info: "£25 + VAT per meter"
       compare: Compare
-      standard: Standard
-      starter: Starter
+      standard:
+        description: Our standard product
+        title: Standard
+      starter:
+        description: Available to all UK schools without enrolling in Energy Sparks
+        title: Starter
       title: Product features
