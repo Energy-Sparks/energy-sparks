@@ -106,7 +106,7 @@ class ManagementSummaryTable < ContentBase
   end
 
   def meter_range_html
-    format_meter_range_html(summary_data)
+    format_meter_range_html(calculation_data)
   end
 
   private
@@ -255,8 +255,8 @@ class ManagementSummaryTable < ContentBase
     end
   end
 
-  def format_meter_range_html(summary_data)
-    text = summary_data.map do |fuel_type, period_data|
+  def format_meter_range_html(calculation_data)
+    text = calculation_data.map do |fuel_type, period_data|
       "#{fuel_type.to_s.humanize.capitalize} data range: #{formatted_date_range(period_data)}"
     end.join(' ')
 
@@ -377,8 +377,7 @@ class ManagementSummaryTable < ContentBase
   end
 
   def rails_date(date)
-    # iso8601 blows up non rails/ActiveSupport code
-    Object.const_defined?('Rails') ? date.iso8601 : date
+    date.iso8601
   end
 
   def date_available_from(period, fuel_type_data)

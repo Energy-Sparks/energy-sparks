@@ -19,7 +19,7 @@ cy:
         school_day_heating:
           title: Defnydd nwy ar gyfer gwresogi yn ystod y dydd
         seasonal_control:
-          estimated_savings_html: Gallai eich ysgol leihau ei defnydd o nwy gan %{estimated_savings_kwh} kWH trwy ddiffodd ei boeler mewn tywydd cynnes. Er enghraifft, yn gynharach yn y gwanwyn ac yn hwyrach yn yr hydref, Byddai hyn arbed %{estimated_savings_gbp} a %{estimated_savings_co2} kg CO2 yn flynyddol.
+          estimated_savings_html: Gallai eich ysgol leihau ei defnydd o nwy gan %{estimated_savings_kwh} kWH trwy ddiffodd ei boeler mewn tywydd cynnes. Er enghraifft, yn gynharach yn y gwanwyn ac yn hwyrach yn yr hydref. Byddai hyn yn arbed %{estimated_savings_gbp} a %{estimated_savings_co2} kg CO2 yn flynyddol.
           heating_on_in_warm_weather_days: Blwyddyn diwethaf roedd gwres eich ysgol ymlaen am %{days} o ddiwrnodau yn ystod tywydd cynnes. Mae hyn yn %{adjective}.
           percent_html: Mae hyn yn cynrychioli %{percent} o'ch defnydd gwres blynyddol
           title: Rheolaeth dymhorol

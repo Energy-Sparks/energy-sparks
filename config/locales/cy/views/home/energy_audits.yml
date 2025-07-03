@@ -1,3 +1,28 @@
 cy:
   energy_audits:
+    desktop:
+      description_html: |-
+        Cynhelir adolygiadau ynni bwrdd gwaith heb ymweliad ffisegol â'r ysgol ac maent yn seiliedig ar asesiad yr archwilydd ynni o ddata defnydd ynni eich ysgol, fel y'i cyflwynir ar Sbarcynni.
+        <br><br>
+        Mae'r adolygiad yn cynnwys cyfarfod ar-lein awr o hyd gyda chynrychiolwyr ysgolion (fel arfer y rheolwr ystad neu ofalwr, rheolwr busnes, arweinydd tîm eco ac un neu ddau o gynrychiolwyr y myfyrwyr). Mae'r prif ffocws ar enillion cyflym, cost isel fel newid amseriadau boeleri. Gall y sesiwn hefyd adolygu buddsoddiadau cyfalaf strategol, megis edrych ar fanteision uwchraddio i oleuadau LED.
+      price: "£390 + TAW"
+      title: Adolygiadau ynni bwrdd gwaith
+    feature:
+      description: Cael cipolwg manwl ar eich defnydd o ynni a chamau gweithredu â blaenoriaeth gyda'n harchwiliadau ynni pwrpasol. Ar gael i ysgolion sydd â chyfrif Sbarcynni gweithredol, rydym yn cynnig archwiliadau ar y safle ac opsiynau adolygu bwrdd gwaith i weddu i'ch anghenion a'ch cyllideb.
+      title: 'Archwiliadau ynni: troi data yn gamau gweithredu'
+    onsite:
+      description_html: |-
+        Yn dilyn dadansoddiad manwl o'ch data defnydd ynni ac ymweliad â'ch safle, byddwn yn rhoi adroddiad manwl a chynllun gweithredu i chi. Bydd yr ymweliad safle yn cynnwys defnyddio camera delweddu thermol ac offer monitro arall i nodi materion megis colli gwres o ddrysau a ffenestri, a phroblemau ag inswleiddio.
+        <br><br>
+        Rydym yn croesawu disgyblion i gymryd rhan yn ein harchwiliadau trwy gysgodi ein harchwiliwr a defnyddio ein camera delweddu thermol. Fel arfer rydym yn darparu sesiwn adborth cychwynnol i’r tîm eco a’r staff ar ddiwedd ein hymweliad, gan roi cyfle i ddisgyblion ofyn cwestiynau ac arwain ar y camau nesaf.
+      plus:
+        price: "£2,250 + TAW"
+        title: Ysgol aml-safle neu ysgol annibynnol
+      primary:
+        price: "£950 + TAW"
+        title: Ysgol gynradd
+      secondary:
+        price: "£1,650 + TAW"
+        title: Ysgol uwchradd
+      title: Archwiliadau ynni ar y safle
     title: Archwiliadau Ynni
