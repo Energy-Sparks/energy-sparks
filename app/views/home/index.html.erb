@@ -103,7 +103,7 @@
         ) do |grid| %>
       <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
         <%= feature.with_header(title: t('home.general.title')) %>
-        <%= feature.with_description { t('home.general.description_html', count: School.active.visible.count) } %>
+        <%= feature.with_description { t('home.general.description_html', count: schools_count) } %>
         <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
       <% end %>
       <%= grid.with_image(src: 'pupils-jumping.jpg') %>
@@ -120,7 +120,7 @@
     <%= render Layout::GridComponent.new(
           id: 'organisations',
           cols: 3,
-          classes: 'mt-4 mb-5',
+          classes: 'mb-5',
           cell_classes: 'mb-4',
           component_classes: 'h-100'
         ) do |grid| %>
@@ -160,17 +160,11 @@
           ) do |section_header| %>
         <%= section_header.with_header title: t('home.blog.header') %>
         <%= section_header.with_description { t('home.blog.description') } %>
+        <%= section_header.with_button t('home.buttons.newsletter_signup'),
+                                       new_mailchimp_signup_path, style: :success %>
+        <%= section_header.with_button t('home.buttons.view_blog'),
+                                       'http://blog.energysparks.uk', style: :secondary %>
       <% end %>
-      <div class='mb-4 pb-2 text-center'>
-        <%= render Elements::ButtonComponent.new(
-              t('home.buttons.newsletter_signup'),
-              new_mailchimp_signup_path, style: :success, classes: 'mr-2'
-            ) %>
-        <%= render Elements::ButtonComponent.new(
-              t('home.buttons.view_blog'),
-              'http://blog.energysparks.uk', style: :secondary
-            ) %>
-      </div>
 
       <%= render Layout::GridComponent.new(
             id: 'blog',

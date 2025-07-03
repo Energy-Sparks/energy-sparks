@@ -567,4 +567,8 @@ module ApplicationHelper
     name = school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name
     "Admin • #{name}"
   end
+
+  def schools_count
+    number_with_delimiter(School.active.visible.count)
+  end
 end
