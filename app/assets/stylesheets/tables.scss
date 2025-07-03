@@ -29,11 +29,8 @@
 
       td {
         border-top: 0;
+        border-bottom: 1px solid $grey-light;
       }
-    }
-
-    td {
-      border-bottom: 1px solid $grey-light;
     }
   }
 }
