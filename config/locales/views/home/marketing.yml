@@ -285,7 +285,6 @@ en:
           starter_icon: xmark
           standard_icon: sterling-sign
           info: "£25 + VAT per meter"
-      compare: Compare
       standard:
         description: Our standard product
         title: Standard
