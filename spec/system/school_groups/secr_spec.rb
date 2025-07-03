@@ -84,11 +84,11 @@ describe 'School group SECR' do
 
         def expect_csv(meter, amount)
           expect(page.body).to eq(
-            'School,MPXN,Meter serial,Meter name,Consumption for the year,' \
+            'School,Number of pupils,MPXN,Meter serial,Meter name,Consumption for the year,' \
             'Sep-2023,Quality,Oct-2023,Quality,Nov-2023,Quality,Dec-2023,Quality,Jan-2024,Quality,Feb-2024,Quality,' \
             'Mar-2024,Quality,Apr-2024,Quality,May-2024,Quality,Jun-2024,Quality,Jul-2024,Quality,Aug-2024,Quality,' \
             "Earliest validated reading,Latest validated reading\n" \
-            "#{school.name},#{meter.mpan_mprn},,#{meter.name}," \
+            "#{school.name},#{school.number_of_pupils},#{meter.mpan_mprn},,#{meter.name}," \
             "#{([(amount * 12).to_f.round(2).to_s] + ([amount.to_f.round(2).to_s, 'A'] * 12)).join(',')},,\n"
           )
         end
