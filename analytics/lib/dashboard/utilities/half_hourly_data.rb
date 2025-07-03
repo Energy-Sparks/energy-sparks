@@ -1,4 +1,5 @@
 require 'csv'
+require 'logger'
 
 # 'base' class used for holding half hourly data typical to schools' energy analysis
 # generally data held in derived classes e.g. temperatures, solar insolence, AMR data
