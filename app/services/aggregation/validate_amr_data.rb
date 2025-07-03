@@ -99,14 +99,14 @@ module Aggregation
       # to an empty array and can only be added to
       meter_corrections unless @meter.meter_correction_rules.nil?
 
+      Corrections::OverrideNightToZero.apply(nil, nil, @meter) if @meter.meter_type == :solar_pv
+
       # Scans the amr data to look for gaps that are larger than @max_days_missing_data
       # If found, then AMR data start date will be moved to the final day of the gap.
       # Means that if there are any big holes in the data, it will be skipped.
       #
       # Ignores gaps which might be filled in the next step
       check_for_long_gaps_in_data
-
-      # meter_corrections unless @meter.meter_correction_rules.nil?
 
       # Tries to find substitute data for all missing days.
       # Uses different approaches for gas and electricity data.
