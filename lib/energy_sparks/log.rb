@@ -7,7 +7,6 @@ module EnergySparks
 
       context[:exception_inspect] = exception.inspect
       ["Exception occurred: #{exception.message}", context.to_s, exception.backtrace&.first].each do |message|
-        puts message if Rails.env.test? && !ENV['CI']
         Rails.logger.error message
       end
       Rollbar.error(exception, **context)
