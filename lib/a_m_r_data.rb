@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'dashboard/utilities/half_hourly_data'
+require 'dashboard'
 
 # Timed data from a meter
 # references consumption data, costs and carbon emissions
