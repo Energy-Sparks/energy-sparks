@@ -761,6 +761,7 @@ Rails.application.routes.draw do
       resource :funder_allocations, only: [:show] do
         post :deliver
       end
+      resources :gas_anomaly, only: [:index]
       resources :good_jobs, only: :index
       get 'good_jobs/export', to: 'good_jobs#export'
 
