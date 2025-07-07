@@ -84,6 +84,8 @@ module Aggregation
       # in which these values occur
       remove_dcc_bad_data_readings if @meter.dcc_meter
 
+      remove_negative_readings if %i[electricity gas].include?(@meter.meter_type)
+
       # Adjusts amr data start/end by one day to ignore days with partial data
       # (This overlaps with the remove_final_meter_reading_if_today check done
       # in previous step)
@@ -411,10 +413,7 @@ module Aggregation
       too_much_bad_data = {}
       for_interpolation = {}
       ok_data = {}
-      (@amr_data.start_date..@amr_data.end_date).each do |date|
-        next unless @amr_data.date_exists?(date)
-
-        days_kwh_x48 = @amr_data.days_kwh_x48(date)
+      @amr_data.each_date_kwh do |date, days_kwh_x48|
         bad_value_count = days_kwh_x48.count { |kwh| bad_dcc_value?(kwh) }
         if bad_value_count > 7
           too_much_bad_data[date] = bad_value_count
@@ -445,6 +444,15 @@ module Aggregation
       end
 
       logger.info "Leaving #{ok_data.length} days of dcc data with no bad values"
+    end
+
+    def remove_negative_readings
+      @amr_data.each_date_kwh do |date, days_kwh_x48|
+        x48_negative_nil = days_kwh_x48.map { |kwh| kwh&.negative? ? nil : kwh }
+        if days_kwh_x48 != x48_negative_nil
+          @amr_data.add(date, OneDayAMRReading.new(meter_id, date, 'RNEG', nil, DateTime.now, x48_negative_nil))
+        end
+      end
     end
 
     # typical problem for DCC provided data, has partial data for today from 4.00am batch
@@ -531,15 +539,16 @@ module Aggregation
     # @param Integer max_missing_readings the maximum number of missing readings before day is removed
     # @param Float missing_data_value the value to check for, or nil
     def interpolate_partial_missing_data(max_missing_readings, missing_data_value)
-      (@amr_data.start_date..@amr_data.end_date).each do |date|
-        next unless @amr_data.date_exists?(date)
-
-        days_kwh_x48 = @amr_data.days_kwh_x48(date)
+      @amr_data.each_date_kwh do |date, days_kwh_x48|
         num_zero_values = days_kwh_x48.count(missing_data_value)
         next unless num_zero_values.positive? && num_zero_values <= max_missing_readings
 
+        type = if @amr_data[date].type == 'ORIG'
+                 (@meter.dcc_meter ? 'DMP' : 'CMP') + num_zero_values.to_s
+               else
+                 @amr_data[date].type
+               end
         days_kwh_x48 = interpolate_zero_readings(days_kwh_x48, missing_data_value: missing_data_value)
-        type = (@meter.dcc_meter ? 'DMP' : 'CMP') + num_zero_values.to_s
         updated_data = OneDayAMRReading.new(meter_id, date, type, nil, DateTime.now, days_kwh_x48)
         @amr_data.add(date, updated_data)
       end
@@ -573,12 +582,12 @@ module Aggregation
     #
     # @param Array missing_dates an array of Dates to process
     def substitute_partial_missing_data_with_whole_day(missing_dates)
-      missing_dates.each do |date|
+      missing_dates.each do |date, type|
         date, updated_one_day_reading = substitute_missing_electricity_data(date, 'S')
         if updated_one_day_reading.nil?
           logger.debug "Unable to override partial/missing data for #{@meter_id} on #{date}"
         else
-          updated_one_day_reading.set_type('CMPH')
+          updated_one_day_reading.set_type(type == 'ORIG' ? 'CMPH' : type)
           @amr_data.add(date, updated_one_day_reading.deep_dup)
         end
       end
@@ -593,16 +602,9 @@ module Aggregation
     # @param Float missing_data_value the value to check for, or nil
     # @return Array a list of the removed days
     def remove_readings_with_too_many_missing_partial_readings(max_missing_readings, missing_data_value)
-      missing_dates = []
-      (@amr_data.start_date..@amr_data.end_date).each do |date|
-        if @amr_data.date_exists?(date) && @amr_data.days_kwh_x48(date).count(missing_data_value) > max_missing_readings
-          missing_dates.push(date)
-        end
+      @amr_data.each_date_kwh.filter_map do |date, days_kwh_x48|
+        [date, @amr_data[date].type] if days_kwh_x48.count(missing_data_value) > max_missing_readings
       end
-      missing_dates.each do |date|
-        @amr_data.delete(date)
-      end
-      missing_dates
     end
 
     # Interpolate over missing readings (identified by +missing_data_value+)

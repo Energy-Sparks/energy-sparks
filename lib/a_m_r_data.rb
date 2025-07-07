@@ -1,8 +1,6 @@
-require_relative '../utilities/half_hourly_data'
-require_relative '../utilities/half_hourly_loader'
-require_relative '../../../app/services/baseload/baseload_calculator'
-require_relative '../../../app/services/baseload/statistical_baseload_calculator'
-require_relative '../../../app/services/baseload/overnight_baseload_calculator'
+# frozen_string_literal: true
+
+require 'dashboard'
 
 # Timed data from a meter
 # references consumption data, costs and carbon emissions
@@ -24,9 +22,10 @@ class AMRData < HalfHourlyData
     @total = {}
   end
 
-  def self.copy_amr_data(original_amr_data, sd = original_amr_data.start_date, ed = original_amr_data.end_date)
+  def self.copy_amr_data(original_amr_data, start_date = original_amr_data.start_date,
+                         end_date = original_amr_data.end_date)
     new_amr_data = AMRData.new(original_amr_data.type)
-    (sd..ed).each do |date|
+    (start_date..end_date).each do |date|
       new_amr_data.add(date, original_amr_data.clone_one_days_data(date))
     end
     new_amr_data
@@ -70,12 +69,14 @@ class AMRData < HalfHourlyData
   end
 
   def add(date, one_days_data)
-    raise EnergySparksUnexpectedStateException.new('AMR Data must not be nil') if one_days_data.nil?
+    raise EnergySparksUnexpectedStateException, 'AMR Data must not be nil' if one_days_data.nil?
+
     unless one_days_data.is_a?(OneDayAMRReading)
-      raise EnergySparksUnexpectedStateException.new("AMR Data now held as OneDayAMRReading not #{one_days_data.class.name}")
+      raise EnergySparksUnexpectedStateException,
+            "AMR Data now held as OneDayAMRReading not #{one_days_data.class.name}"
     end
     if date != one_days_data.date
-      raise EnergySparksUnexpectedStateException.new("AMR Data date mismatch not #{date} v. #{one_days_data.date}")
+      raise EnergySparksUnexpectedStateException, "AMR Data date mismatch not #{date} v. #{one_days_data.date}"
     end
 
     set_min_max_date(date)
@@ -93,14 +94,14 @@ class AMRData < HalfHourlyData
   end
 
   # warning doesn't set start_date, end_date
-  def delete_date_range(d1, d2)
-    (d1..d2).map do |date|
+  def delete_date_range(start_date, end_date)
+    (start_date..end_date).map do |date|
       delete(date)
     end
   end
 
-  def data(date, halfhour_index)
-    raise EnergySparksUnexpectedStateException.new('Deprecated call to amr_data.data()')
+  def data(_date, _halfhour_index)
+    raise EnergySparksUnexpectedStateException, 'Deprecated call to amr_data.data()'
   end
 
   # called from base class histogram function
@@ -122,79 +123,47 @@ class AMRData < HalfHourlyData
     co2_x48(date) if type == :co2
   end
 
-  private def co2_x48(date)
-    return @carbon_emissions.one_days_data_x48(date) unless @type == :solar_pv
-
-    @solar_pv_co2_x48_cache ||= {}
-    @solar_pv_co2_x48_cache[date] ||= calculate_solar_pv_co2_x48(date)
-    @solar_pv_co2_x48_cache[date]
-  end
-
-  # performance benefit in collatin the information
-  private def calculate_information_date_range_deprecated(start_date, end_date)
-    kwh = kwh_date_range(start_date, end_date, :kwh)
-    £   = kwh_date_range(start_date, end_date, :£)
-    co2 = kwh_date_range(start_date, end_date, :co2)
-
-    {
-      kwh: kwh,
-      co2: co2,
-      £: £,
-      co2_intensity_kw_per_kwh: co2 / kwh,
-      blended_£_per_kwh: £ / kwh
-    }
-  end
-
   def information_date_range_deprecated(start_date, end_date)
     @cached_information ||= {}
     @cached_information[start_date..end_date] ||= calculate_information_date_range_deprecated(start_date, end_date)
   end
 
-  def blended_£_per_kwh_date_range(start_date, end_date)
-    @blended_£_per_kwh_date_range ||= {}
-    @blended_£_per_kwh_date_range[start_date..end_date] ||= calculate_blended_£_per_kwh_date_range(start_date, end_date)
+  def blended_£_per_kwh_date_range(start_date, end_date) # rubocop:todo Naming/MethodName, Naming/AsciiIdentifiers
+    @blended_gbp_per_kwh_date_range ||= {}
+    @blended_gbp_per_kwh_date_range[start_date..end_date] ||=
+      calculate_blended_gbp_per_kwh_date_range(start_date, end_date)
   end
 
-  def blended_rate(from_unit, to_unit, sd = up_to_1_year_ago, ed = end_date)
+  def blended_rate(from_unit, to_unit, start_date = up_to_1_year_ago, rate_end_date = end_date)
     @blended_rate ||= {}
-    key         = [from_unit, to_unit,   sd, ed]
-    reverse_key = [to_unit,   from_unit, sd, ed]
+    key         = [from_unit, to_unit,   start_date, rate_end_date]
+    reverse_key = [to_unit,   from_unit, start_date, rate_end_date]
     return @blended_rate[key]               if @blended_rate.key?(key)
     return 1.0 / @blended_rate[reverse_key] if @blended_rate.key?(reverse_key)
 
-    @blended_rate[key] ||= calculate_blended_rate(from_unit, to_unit, sd, ed)
-  end
-
-  private def calculate_blended_rate(from_unit, to_unit, sd, ed)
-    from_value = kwh_date_range(sd, ed, from_unit)
-    to_value   = kwh_date_range(sd, ed, to_unit)
-    to_value / from_value
-  end
-
-  private def calculate_blended_£_per_kwh_date_range(sd, ed, datatype = :£)
-    blended_rate(:kwh, datatype, sd, ed)
+    @blended_rate[key] ||= calculate_blended_rate(from_unit, to_unit, start_date, rate_end_date)
   end
 
   # calculates a blended rate x 48, based on aggregate data
   # which could either be parameterised costs or pre-calculated
-  def blended_rate_£_per_kwh_x48(date, datatype = :£)
+  def blended_rate_£_per_kwh_x48(date, datatype = :£) # rubocop:todo Naming/MethodName, Naming/AsciiIdentifiers
     kwh_x48 = days_kwh_x48(date)
-    £_x48 = days_kwh_x48(date, datatype)
-    AMRData.fast_divide_x48_by_x48(£_x48, kwh_x48)
+    gbp_x48 = days_kwh_x48(date, datatype)
+    AMRData.fast_divide_x48_by_x48(gbp_x48, kwh_x48)
   end
 
-  def current_tariff_rate_£_per_kwh
+  def current_tariff_rate_£_per_kwh # rubocop:todo Naming/MethodName, Naming/AsciiIdentifiers
     # needs to average rate over up to last year because:
     # - the latest day might have 0 kWh, and therefore £0 so no implied rate
     # - for electricity with differential tariffs this is a blended rate - beware
-    @current_tariff_rate_£_per_kwh ||= calculate_blended_£_per_kwh_date_range(up_to_1_year_ago, end_date, :£current)
+    @current_tariff_rate_£_per_kwh ||= calculate_blended_gbp_per_kwh_date_range(up_to_1_year_ago, end_date, :£current) # rubocop:todo Naming/VariableName
   end
 
-  def historic_tariff_rate_£_per_kwh
+  def historic_tariff_rate_£_per_kwh # rubocop:todo Naming/MethodName, Naming/AsciiIdentifiers
     # needs to average rate over up to last year because:
     # - the latest day might have 0 kWh, and therefore £0 so no implied rate
     # - for electricity with differential tariffs this is a blended rate - beware
-    @historic_tariff_rate_£_per_kwh ||= calculate_blended_£_per_kwh_date_range(up_to_1_year_ago, end_date, :£)
+    @historic_tariff_rate_£_per_kwh ||= calculate_blended_gbp_per_kwh_date_range(up_to_1_year_ago, end_date, :£) # rubocop:todo Naming/VariableName
   end
 
   def calculate_solar_pv_co2_x48(date)
@@ -252,19 +221,19 @@ class AMRData < HalfHourlyData
     Array.new(48, kwh)
   end
 
-  def self.fast_multiply_x48_x_x48(a, b)
+  def self.fast_multiply_x48_x_x48(a, b) # rubocop:disable Naming/MethodParameterName
     c = one_day_zero_kwh_x48
     (0..47).each { |x| c[x] = a[x] * b[x] }
     c
   end
 
-  def self.fast_divide_x48_by_x48(a, b)
+  def self.fast_divide_x48_by_x48(a, b) # rubocop:disable Naming/MethodParameterName
     c = one_day_zero_kwh_x48
     (0..47).each { |x| c[x] = b[x] == 0.0 ? 0.0 : (a[x] / b[x]) }
     c
   end
 
-  def self.fast_add_x48_x_x48(a, b)
+  def self.fast_add_x48_x_x48(a, b) # rubocop:disable Naming/MethodParameterName
     c = one_day_zero_kwh_x48
     (0..47).each { |x| c[x] = a[x] + b[x] }
     c
@@ -285,7 +254,7 @@ class AMRData < HalfHourlyData
     AMRData.fast_multiply_x48_x_scalar(total, 1.0 / kwhs_x48.length)
   end
 
-  def self.fast_multiply_x48_x_scalar(a, scalar)
+  def self.fast_multiply_x48_x_scalar(a, scalar) # rubocop:disable Naming/MethodParameterName
     a.map { |v| v * scalar }
   end
 
@@ -317,13 +286,6 @@ class AMRData < HalfHourlyData
     co2_half_hour(date, halfhour_index) if type == :co2
   end
 
-  private def co2_half_hour(date, halfhour_index)
-    co2 = @carbon_emissions.co2_data_halfhour(date, halfhour_index)
-    return -1 * co2.magnitude if @type == :solar_pv
-
-    co2
-  end
-
   def kw(date, halfhour_index)
     kwh(date, halfhour_index) * 2.0
   end
@@ -349,10 +311,10 @@ class AMRData < HalfHourlyData
     co2_one_day(date) if type == :co2
   end
 
-  def check_for_bad_values(sd: start_date, ed: end_date, type: :kwh)
+  def check_for_bad_values(type: :kwh)
     problems = { missing: [], nan: [], infinite: [], nil: [] }
 
-    (sd..ed).each do |date|
+    (start_date..end_date).each do |date|
       if date_exists?(date)
         v = one_day_kwh(date, type)
         if v.nil?
@@ -367,13 +329,6 @@ class AMRData < HalfHourlyData
       end
     end
     problems
-  end
-
-  private def co2_one_day(date)
-    co2 = @carbon_emissions.one_day_total(date)
-    return -1 * co2.magnitude if @type == :solar_pv
-
-    co2
   end
 
   def clone_one_days_data(date)
@@ -419,11 +374,11 @@ class AMRData < HalfHourlyData
 
   def economics_date_range(date1, date2, community_use: nil)
     kwh = kwh_date_range(date1, date2, :kwh, community_use: community_use)
-    £ = kwh_date_range(date1, date2, :£, community_use: community_use)
+    gbp = kwh_date_range(date1, date2, :£, community_use: community_use)
     {
       kwh: kwh,
-      £: £,
-      rate: kwh == 0.0 ? current_tariff_rate_£_per_kwh : £ / kwh # risk this may end up being infinity
+      £: gbp,
+      rate: kwh == 0.0 ? current_tariff_rate_£_per_kwh : gbp / kwh # rubocop:todo Naming/AsciiIdentifiers -- risk this may end up being infinity
     }
   end
 
@@ -442,7 +397,7 @@ class AMRData < HalfHourlyData
     (date1..date2).each do |date|
       kwhs.push(one_day_kwh(date, type)) if date_exists?(date)
     end
-    kwhs.empty? ? 0.0 : (kwhs.inject(:+) / kwhs.length)
+    kwhs.empty? ? 0.0 : (kwhs.sum / kwhs.length)
   end
 
   def kwh_date_list(dates, type = :kwh)
@@ -492,7 +447,7 @@ class AMRData < HalfHourlyData
     reverse_sorted_peaks = peaks_by_day.sort_by { |_date, kw| -kw }
     return reverse_sorted_peaks if top_n.nil?
 
-    Hash[reverse_sorted_peaks[0...top_n]]
+    reverse_sorted_peaks[0...top_n].to_h
   end
 
   def peak_kws_date_range(date1 = start_date, date2 = end_date)
@@ -508,8 +463,8 @@ class AMRData < HalfHourlyData
   end
 
   def economic_cost_for_x48_kwhs(date, kwh_x48)
-    rate_£_per_kwh_x48 = blended_rate_£_per_kwh_x48(date)
-    res = AMRData.fast_multiply_x48_x_x48(kwh_x48, rate_£_per_kwh_x48)
+    rate_gbp_per_kwh_x48 = blended_rate_£_per_kwh_x48(date) # rubocop:todo Naming/AsciiIdentifiers
+    res = AMRData.fast_multiply_x48_x_x48(kwh_x48, rate_gbp_per_kwh_x48)
     res.sum
   end
 
@@ -522,13 +477,13 @@ class AMRData < HalfHourlyData
   end
 
   def summarise_bad_data
-    date, one_days_data = first
+    _, one_days_data = first
     logger.info '=' * 80
     logger.info "Bad data for meter #{one_days_data.meter_id}"
     logger.info "Valid data between #{start_date} and #{end_date}"
     key, _value = first
     logger.info "Ignored data between #{key} and #{start_date} - because of long gaps" if key < start_date
-    bad_data_stats = bad_data_count
+    bad_data_count
     percent_bad = 100.0
     percent_bad = (100.0 * (length - bad_data_count['ORIG'].length) / length).round(1) if bad_data_count.key?('ORIG')
     logger.info "bad data summary: #{percent_bad}% substituted"
@@ -545,13 +500,13 @@ class AMRData < HalfHourlyData
   end
 
   def summarise_bad_data_stdout
-    date, one_days_data = first
+    _, one_days_data = first
     puts '=' * 80
     puts "Bad data for meter #{one_days_data.meter_id}"
     puts "Valid data between #{start_date} and #{end_date}"
     key, _value = first
     puts "Ignored data between #{key} and #{start_date} - because of long gaps" if key < start_date
-    bad_data_stats = bad_data_count
+    bad_data_count
     percent_bad = 100.0
     percent_bad = (100.0 * (length - bad_data_count['ORIG'].length) / length).round(1) if bad_data_count.key?('ORIG')
     puts "bad data summary: #{percent_bad}% substituted"
@@ -567,9 +522,39 @@ class AMRData < HalfHourlyData
     puts "bad non finite data on these dates: #{bad_dates.join(';')}" unless bad_dates.empty?
   end
 
-  def dates_with_non_finite_values(sd = start_date, ed = end_date)
-    list = []
+  # take one set (dd_data) of half hourly data from self
+  # - avoiding performance hit of taking a copy
+  # caller expected to ensure start and end dates reasonable
+  def minus_self(dd_data, min_value = nil)
+    sd = [start_date, dd_data.start_date].max
+    ed = [end_date, dd_data.end_date].min
     (sd..ed).each do |date|
+      (0..47).each do |halfhour_index|
+        updated_kwh = kwh(date, halfhour_index) - dd_data.kwh(date, halfhour_index)
+        if min_value.nil?
+          set_kwh(date, halfhour_index, updated_kwh)
+        else
+          set_kwh(date, halfhour_index, [updated_kwh, min_value].max)
+        end
+      end
+    end
+  end
+
+  def each_date_kwh
+    return enum_for(:each_date_kwh) unless block_given?
+
+    (start_date..end_date).each do |date|
+      next unless date_exists?(date)
+
+      yield(date, days_kwh_x48(date))
+    end
+  end
+
+  private
+
+  def dates_with_non_finite_values
+    list = []
+    (start_date..end_date).each do |date|
       next if date_missing?(date)
 
       list.push(date) if days_kwh_x48(date).any? { |kwh| kwh.nil? || !kwh.finite? }
@@ -577,25 +562,52 @@ class AMRData < HalfHourlyData
     list
   end
 
-  # take one set (dd_data) of half hourly data from self
-  # - avoiding performance hit of taking a copy
-  # caller expected to ensure start and end dates reasonable
-  def minus_self(dd_data, min_value = nil)
-    sd = start_date > dd_data.start_date ? start_date : dd_data.start_date
-    ed = end_date < dd_data.end_date ? end_date : dd_data.end_date
-    (sd..ed).each do |date|
-      (0..47).each do |halfhour_index|
-        updated_kwh = kwh(date, halfhour_index) - dd_data.kwh(date, halfhour_index)
-        if min_value.nil?
-          set_kwh(date, halfhour_index, updated_kwh)
-        else
-          set_kwh(date, halfhour_index, updated_kwh > min_value ? updated_kwh : min_value)
-        end
-      end
-    end
+  def co2_x48(date)
+    return @carbon_emissions.one_days_data_x48(date) unless @type == :solar_pv
+
+    @solar_pv_co2_x48_cache ||= {}
+    @solar_pv_co2_x48_cache[date] ||= calculate_solar_pv_co2_x48(date)
+    @solar_pv_co2_x48_cache[date]
   end
 
-  private
+  # performance benefit in collatin the information
+  def calculate_information_date_range_deprecated(start_date, end_date)
+    kwh = kwh_date_range(start_date, end_date, :kwh)
+    gbp = kwh_date_range(start_date, end_date, :£)
+    co2 = kwh_date_range(start_date, end_date, :co2)
+
+    {
+      kwh: kwh,
+      co2: co2,
+      £: gbp,
+      co2_intensity_kw_per_kwh: co2 / kwh,
+      blended_£_per_kwh: gbp / kwh
+    }
+  end
+
+  def calculate_blended_rate(from_unit, to_unit, start_date, end_date)
+    from_value = kwh_date_range(start_date, end_date, from_unit)
+    to_value   = kwh_date_range(start_date, end_date, to_unit)
+    to_value / from_value
+  end
+
+  def calculate_blended_gbp_per_kwh_date_range(start_date, end_date, datatype = :£)
+    blended_rate(:kwh, datatype, start_date, end_date)
+  end
+
+  def co2_half_hour(date, halfhour_index)
+    co2 = @carbon_emissions.co2_data_halfhour(date, halfhour_index)
+    return -1 * co2.magnitude if @type == :solar_pv
+
+    co2
+  end
+
+  def co2_one_day(date)
+    co2 = @carbon_emissions.one_day_total(date)
+    return -1 * co2.magnitude if @type == :solar_pv
+
+    co2
+  end
 
   # go through amr_data creating 'histogram' of type of amr_data by type (original data v. substituted)
   # returns {type} = [list of dates of that type]
