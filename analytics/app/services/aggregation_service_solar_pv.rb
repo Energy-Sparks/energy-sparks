@@ -126,7 +126,7 @@ class AggregateDataServiceSolar
   # meter in the map, to replace the generation, export or self consumption values
   # (as required) within a data range with modelled solar data, using the Sheffield dataset
   #
-  # See +SolarPVPanels.process+
+  # See +Aggregation::SolarPvPanels.process+
   #
   # This is a data correction step that happens outside of the normal aggregation validation
   # process.
@@ -526,7 +526,7 @@ class AggregateDataServiceSolar
     # generation data
     #
     # real generation data but no export, so calculate
-    SolarPVPanelsMeteredProduction.new.process(pv_meter_map, @meter_collection)
+    Aggregation::SolarPvPanelsMeteredProduction.new.process(pv_meter_map, @meter_collection)
 
     # Ensure meter dates align
     truncate_to_mains_meter_dates(pv_meter_map)
