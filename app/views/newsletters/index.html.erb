@@ -1,34 +1,36 @@
-<% content_for :page_title, t('newsletters.title') %>
-<div class="application container">
-  <div class="row">
-    <div class="col">
-      <h1 id="intro"><%= t('newsletters.title') %></h1>
-    </div>
-  </div>
-  <% unless @newsletters.empty? %>
-    <% @newsletters.in_groups_of(4, nil).each do |group| %>
-      <div class="card-deck mb-4">
-        <% group.each do |newsletter| %>
-          <% if newsletter.nil? %>
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title"></h5>
-              </div>
-            </div>
-          <% else %>
-            <div class="card mb-3">
-              <% if newsletter.image.present? %>
-                <%= image_tag newsletter.image %>
-              <% else %>
-                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'img-fluid') %>
-              <% end %>
-              <div class="card-body">
-                <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
-              </div>
-            </div>
-          <% end %>
-        <% end %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('newsletters.title') %>
+  <div class="application container">
+    <div class="row">
+      <div class="col">
+        <h1 id="intro"><%= t('newsletters.title') %></h1>
       </div>
+    </div>
+    <% unless @newsletters.empty? %>
+      <% @newsletters.in_groups_of(4, nil).each do |group| %>
+        <div class="card-deck mb-4">
+          <% group.each do |newsletter| %>
+            <% if newsletter.nil? %>
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title"></h5>
+                </div>
+              </div>
+            <% else %>
+              <div class="card mb-3">
+                <% if newsletter.image.present? %>
+                  <%= image_tag newsletter.image %>
+                <% else %>
+                  <%= image_tag('stay-up-to-date/newsletter-placeholder.png', class: 'img-fluid') %>
+                <% end %>
+                <div class="card-body">
+                  <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>

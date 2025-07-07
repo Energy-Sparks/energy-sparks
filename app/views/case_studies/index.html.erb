@@ -1,4 +1,4 @@
-<% cache_if current_user.nil?, I18n.locale, expires_in: 1.hour do %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
   <% content_for :page_title, t('case_studies.title') %>
   <div class="container-fluid adult mb-5 py-4">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>

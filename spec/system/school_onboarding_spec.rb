@@ -452,6 +452,7 @@ RSpec.describe 'onboarding', :schools do
 
           context 'when school is later set as data enabled' do
             it 'sends data enabled emails' do
+              create(:consent_grant, school: school)
               school.update(visible: true)
               click_on 'Complete setup', match: :first
               SchoolCreator.new(school).make_data_enabled!

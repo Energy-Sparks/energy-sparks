@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
-  let!(:school_group) { create(:school_group, public: public, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
+  let!(:school_group) { create(:school_group, public: public, default_issues_admin_user: nil, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
   let(:public) { true }
 
   let!(:user)                  { create(:user) }
@@ -459,7 +459,7 @@ describe 'school groups', :school_groups, type: :system do
 
   context 'when logged in as the group admin' do
     let!(:user)           { create(:group_admin, school_group: school_group) }
-    let!(:school_group2)  { create(:school_group) }
+    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
@@ -502,7 +502,7 @@ describe 'school groups', :school_groups, type: :system do
 
   context 'when logged in as an admin' do
     let!(:user)           { create(:admin) }
-    let!(:school_group2)  { create(:school_group) }
+    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
@@ -555,7 +555,7 @@ describe 'school groups', :school_groups, type: :system do
   end
 
   context 'when logged in as a group admin for a different group' do
-    let!(:user) { create(:group_admin, school_group: create(:school_group)) }
+    let!(:user) { create(:group_admin, school_group: create(:school_group, default_issues_admin_user: nil)) }
 
     before do
       sign_in(user)

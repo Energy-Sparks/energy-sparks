@@ -477,7 +477,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     end
 
     describe 'Editing a school group' do
-      let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
+      let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_issues_admin_user: nil) }
 
       before do
         click_on 'Manage School Groups'

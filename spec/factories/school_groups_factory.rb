@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :school_group do
     sequence(:name) {|n| "School group #{n}"}
+    default_issues_admin_user { create(:admin) }
     public { true }
 
     trait :with_default_scoreboard do
