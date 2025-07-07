@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
-  let!(:school_group) { create(:school_group, public: public, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
+  let!(:school_group) { create(:school_group, public: public, default_issues_admin_user: nil, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
   let(:public) { true }
 
   let!(:user)                  { create(:user) }
