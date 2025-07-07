@@ -8,10 +8,8 @@ FactoryBot.define do
       school                  { build(:analytics_school) }
       holidays                { build(:holidays, :with_calendar_year) }
       random_generator        { nil }
-      temperatures do
-        build(:temperatures, :with_days, start_date: start_date, end_date: end_date, random_generator: random_generator)
-      end
-      solar_pv                { build(:solar_pv, :with_days, start_date: start_date, end_date: end_date) }
+      temperatures            { build(:temperatures, :with_days, start_date:, end_date:, random_generator:) }
+      solar_pv                { build(:solar_pv, :with_days, start_date:, end_date:, random_generator:) }
       grid_carbon_intensity   { build(:grid_carbon_intensity, :with_days, start_date: start_date, end_date: end_date) }
       pseudo_meter_attributes { {} }
       solar_irradiation       { nil }
@@ -49,7 +47,8 @@ FactoryBot.define do
     trait :with_gas_meter do
       after(:build) do |meter_collection, evaluator|
         amr_data = build(:amr_data, :with_date_range, start_date: evaluator.start_date, end_date: evaluator.end_date)
-        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :gas, amr_data: amr_data, tariff_start_date: evaluator.start_date, tariff_end_date: evaluator.end_date)
+        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :gas,
+                                                       amr_data: amr_data, tariff_start_date: evaluator.start_date, tariff_end_date: evaluator.end_date)
         meter_collection.add_heat_meter(meter)
       end
     end
@@ -127,6 +126,22 @@ FactoryBot.define do
       after(:build) do |meter_collection, evaluator|
         aggregate_meter = meter_collection.aggregate_meter(evaluator.fuel_type)
         aggregate_meter.sub_meters.merge!(evaluator.sub_meters)
+      end
+    end
+
+    trait :with_solar_sub_meters do
+      transient do
+        kwh_data_x48 { Array.new(48, 1) }
+      end
+
+      # af
+      with_sub_meters do
+        { sub_meters: {
+          mains_consume: build(:meter, type: :electricity),
+          generation: build(:meter, type: :solar_pv),
+          self_consume: build(:meter, type: :electricity),
+          export: build(:meter, type: :exported_solar_pv)
+        } }
       end
     end
   end
