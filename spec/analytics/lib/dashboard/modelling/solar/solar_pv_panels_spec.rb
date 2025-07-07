@@ -45,7 +45,7 @@ describe SolarPVPanels, type: :service do
                                                  end_date: Date.new(2023, 1, 31), kwh_data_x48: kwh_data_x48))
   end
 
-  let(:service) { described_class.new(meter_attributes, solar_pv, true) }
+  let(:service) { described_class.new(meter_attributes, solar_pv) }
 
   before do
     allow(holidays).to receive(:holiday?).and_return(is_holiday)

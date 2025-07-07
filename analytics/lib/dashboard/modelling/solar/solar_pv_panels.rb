@@ -24,12 +24,13 @@ class SolarPVPanels
   def self.create(meter, attribute_name)
     return unless meter.meter_attributes.key?(attribute_name)
 
-    new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv, attribute_name == :solar_pv)
+    new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv,
+        override_default: attribute_name == :solar_pv)
   end
 
   # @param [Hash] meter_attributes_config the :solar_pv meter attributes to process
   # @param [SolarPV] synthetic_sheffield_solar_pv_yields the Sheffield Solar data for this school
-  def initialize(meter_attributes_config, synthetic_sheffield_solar_pv_yields, override_default)
+  def initialize(meter_attributes_config, synthetic_sheffield_solar_pv_yields, override_default: true)
     unless meter_attributes_config.nil?
       @solar_pv_panel_config = SolarPVPanelConfiguration.new(meter_attributes_config, override_default)
     end
@@ -503,7 +504,7 @@ end
 # called where metered generation meter but no export or self consumption
 class SolarPVPanelsMeteredProduction < SolarPVPanels
   def initialize
-    super(nil, nil, true)
+    super(nil, nil)
     @real_production_data = true
   end
 
