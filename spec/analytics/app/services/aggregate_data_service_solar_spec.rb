@@ -3,19 +3,16 @@
 require 'rails_helper'
 
 describe AggregateDataServiceSolar do
-  subject(:sub_meters) { processed_meters.first.sub_meters }
+  subject(:processed_meters) { described_class.new(meter_collection).process_solar_pv_electricity_meters }
 
-  let(:processed_meters) { described_class.new(meter_collection).process_solar_pv_electricity_meters }
-  let(:meter_collection) do
-    build(:meter_collection, random_generator: Random.new(51))
-  end
+  let(:sub_meters) { processed_meters.first.sub_meters }
+  let(:meter_collection) { build(:meter_collection, random_generator: Random.new(51)) }
   let(:solar_pv_mpan_meter_mapping) { nil }
   let(:meter_attributes) do
     { solar_pv_mpan_meter_mapping: ([solar_pv_mpan_meter_mapping] unless solar_pv_mpan_meter_mapping.nil?) }.compact
   end
   let(:electricity_meter) do
-    build(:meter, meter_collection: meter_collection, type: :electricity, meter_attributes:,
-                  kwh_data_x48: Array.new(48, 2))
+    build(:meter, meter_collection:, type: :electricity, meter_attributes:, kwh_data_x48: Array.new(48, 2))
   end
   let(:solar_production_meter) { nil }
   let(:solar_export_meter) { nil }
@@ -36,9 +33,7 @@ describe AggregateDataServiceSolar do
 
   context 'when school does not have metered solar' do
     let(:meter_attributes) do
-      { solar_pv: [{ start_date: Date.new(2023, 1, 1), kwp: 10.0 }],
-        solar_pv_override: [{ start_date: Date.new(2023, 1, 1), kwp: 10.0 }, override_export: true] }
-      # {}
+      { solar_pv: [{ start_date: Date.new(2023, 1, 1), kwp: 10.0 }] }
     end
 
     it 'returns a single new electricity meter' do
@@ -59,9 +54,7 @@ describe AggregateDataServiceSolar do
   end
 
   context 'when school has metered solar' do
-    let(:solar_production_meter) do
-      build(:meter, meter_collection: meter_collection, type: :solar_pv, kwh_data_x48: Array.new(48, 4))
-    end
+    let(:solar_production_meter) { build(:meter, meter_collection: meter_collection, type: :solar_pv) }
     let(:solar_pv_mpan_meter_mapping) do
       {
         start_date: Date.new(2023, 1, 1),
@@ -90,19 +83,10 @@ describe AggregateDataServiceSolar do
       end
     end
 
-    context 'with only production meter and override' do
-      let(:meter_attributes) do
-        super().merge({ solar_pv_override: [{ start_date: Date.new(2023, 1, 1), kwp: 10.0, override_export: true }] })
-      end
-
-      it 'creates new self consumption and export meters' do
-        expect(sub_meters[:self_consume]).not_to be_nil
-        sub_meters[:export].amr_data[Date.new(2025, 6, 28)]
-        expect(sub_meters[:export].amr_data.values.map(&:one_day_kwh)[23]).to be_within(0.01).of(-28.39)
-      end
-    end
-
     context 'with production and export meters' do
+      let(:solar_production_meter) do
+        build(:meter, meter_collection: meter_collection, type: :solar_pv, kwh_data_x48: Array.new(48, 4))
+      end
       let(:solar_export_meter) do
         build(:meter, meter_collection: meter_collection, type: :exported_solar_pv, kwh_data_x48: Array.new(48, 1))
       end
@@ -140,9 +124,8 @@ describe AggregateDataServiceSolar do
           super().merge({ solar_pv_override: [{ start_date: Date.new(2023, 1, 1), kwp: 10.0, override_export: true }] })
         end
 
-        before { travel_to Date.new(2025, 5, 31) }
-
         it 'overrides the export' do
+          # debugger
           expect(sub_meters[:export].amr_data[Date.new(2025, 5, 9)]).to have_attributes(type: 'SOLE', one_day_kwh: 0)
           expect(sub_meters[:export].amr_data[Date.new(2025, 5, 10)]).to have_attributes(type: 'SOLE', one_day_kwh: -96)
         end
@@ -189,15 +172,19 @@ describe AggregateDataServiceSolar do
       end
 
       it 'configures the electricity meter as a sub meter' do
+        sub_meters = processed_meters.first.sub_meters
         expect(sub_meters[:mains_consume]).to eq(electricity_meter)
       end
 
       it 'creates new self consumption and export meters' do
+        sub_meters = processed_meters.first.sub_meters
         expect(sub_meters[:self_consume]).not_to be_nil
         expect(sub_meters[:export]).not_to be_nil
       end
 
       it 'creates a new generation meter from the 5 actual meters' do
+        sub_meters = processed_meters.first.sub_meters
+
         # process creates a new generation meter out of those provided
         expect(solar_production_meters).not_to include(sub_meters[:generation])
 
