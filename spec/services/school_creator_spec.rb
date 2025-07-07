@@ -121,10 +121,11 @@ describe SchoolCreator, :schools, type: :service do
 
   describe 'make_data_enabled!' do
     let(:visible) { true }
-    let(:school) { create(:school, data_enabled: false, visible:) }
     let!(:school_onboarding) { create(:school_onboarding, school:) }
 
     context 'without consent granted' do
+      let(:school) { create(:school, data_enabled: false, visible:) }
+
       it 'rejects call' do
         expect do
           service.make_data_enabled!
@@ -133,7 +134,7 @@ describe SchoolCreator, :schools, type: :service do
     end
 
     context 'with consent granted' do
-      let!(:consent_grant) { create(:consent_grant, school:) }
+      let(:school) { create(:school, :with_consent, data_enabled: false, visible:) }
 
       it 'broadcasts message' do
         expect do
@@ -158,7 +159,7 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       context 'when there is an activation date' do
-        let(:school) { create(:school, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
+        let(:school) { create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
 
         it 'does not change the activation date' do
           service.make_data_enabled!

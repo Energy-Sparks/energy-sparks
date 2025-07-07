@@ -24,6 +24,12 @@ FactoryBot.define do
       name { 'test school'}
     end
 
+    trait :with_consent do
+      after(:create) do |school, _evaluator|
+        create(:consent_grant, school:)
+      end
+    end
+
     trait :with_school_group do
       after(:create) do |school, _evaluator|
         school.update(school_group: create(:school_group))

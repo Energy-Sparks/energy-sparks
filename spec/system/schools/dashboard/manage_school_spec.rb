@@ -144,8 +144,7 @@ RSpec.describe 'manage school', type: :system do
         expect(school.data_sharing_within_group?).to be true
       end
 
-      it 'allows toggling visibility if consent granted' do
-        create :consent_grant, school: school
+      it 'allows toggling visibility' do
         visit school_path(school)
         click_on('Visible')
         school.reload
@@ -153,18 +152,6 @@ RSpec.describe 'manage school', type: :system do
         click_on('Visible')
         school.reload
         expect(school).to be_visible
-      end
-
-      it 'disallows toggling visibility if no consent' do
-        expect(school.consent_up_to_date?).to be false
-        visit school_path(school)
-        click_on('Visible')
-        school.reload
-        expect(school).not_to be_visible
-        click_on('Visible')
-        expect(page).to have_content('School cannot be made visible as we dont have a record of consent')
-        school.reload
-        expect(school).not_to be_visible
       end
 
       it 'allows toggling of data processing' do
@@ -192,6 +179,7 @@ RSpec.describe 'manage school', type: :system do
       end
 
       it 'allows toggling of data enabled via the review page' do
+        create(:consent_grant, school: school)
         visit school_path(school)
         click_on('Data visible')
         school.reload
