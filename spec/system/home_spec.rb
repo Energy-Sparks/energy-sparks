@@ -161,10 +161,30 @@ RSpec.describe 'home', type: :system do
     expect(page.has_content?('Contact us'))
   end
 
-  it 'has a pricing page' do
-    visit root_path
-    click_on('Pricing')
-    expect(page.has_content?('Pricing'))
+  describe 'Pricing page' do
+    context toggle_feature: :new_pricing_page do
+      it 'has a pricing page' do
+        visit root_path
+        click_on('Pricing')
+        expect(page.has_content?('Pricing'))
+      end
+    end
+
+    context 'with all components available', with_feature: :new_pricing_page do
+      before do
+        visit pricing_path
+      end
+
+      it 'renders all the components' do
+        expect(page).to have_css('#hero')
+        expect(page).to have_css('#features')
+        expect(page).to have_css('#looking-for-info')
+        expect(page).to have_css('#audience')
+        expect(page).to have_css('#prices')
+        expect(page).to have_css('#additional-services')
+        expect(page).to have_css('#general')
+      end
+    end
   end
 
   it 'has a support us page' do

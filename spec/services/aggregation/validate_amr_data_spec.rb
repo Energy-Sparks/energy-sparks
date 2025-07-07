@@ -104,9 +104,26 @@ describe Aggregation::ValidateAmrData, type: :service do
 
     %i[solar_pv exported_solar_pv].each do |type|
       it "doesn't correct #{type} meters" do
-        reading, = modify_arbitrary_reading_and_validate(create_meter(type:, kwh_data_x48: [-1] + ([0] * 47))) # rubocop:disable Performance/CollectionLiteralInLoop
+        kwh_data_x48 = Array.new(48, 0).tap { |a| a[24] = -1 }
+        reading, = modify_arbitrary_reading_and_validate(create_meter(type:, kwh_data_x48:))
         expect(reading.type).to eq('ORIG')
-        expect(reading.kwh_data_x48[0]).to eq(-1)
+        expect(reading.kwh_data_x48[24]).to eq(-1)
+      end
+    end
+  end
+
+  context 'with overnight solar' do
+    it 'zeroes' do
+      reading, = modify_arbitrary_reading_and_validate(create_meter(type: :solar_pv))
+      expect(reading.type).to eq('SOLN')
+      expect(reading.kwh_data_x48[0..3]).to eq([0.0] * 4)
+    end
+
+    %i[electricity exported_solar_pv gas].each do |type|
+      it "doesn't zero #{type}" do
+        reading, = modify_arbitrary_reading_and_validate(create_meter(type:))
+        expect(reading.type).to eq('ORIG')
+        expect(reading.kwh_data_x48[0..3]).to eq(Array.new(4, 0.44))
       end
     end
   end
