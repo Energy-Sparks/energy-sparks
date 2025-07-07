@@ -121,48 +121,61 @@ describe SchoolCreator, :schools, type: :service do
 
   describe 'make_data_enabled!' do
     let(:visible) { true }
-    let(:school) { create(:school, data_enabled: false, visible:) }
     let!(:school_onboarding) { create(:school_onboarding, school:) }
 
-    it 'broadcasts message' do
-      expect do
-        service.make_data_enabled!
-      end.to broadcast(:school_made_data_enabled)
-    end
-
-    it 'updates data enabled status' do
-      service.make_data_enabled!
-      expect(school.data_enabled).to be_truthy
-    end
-
-    it 'records event' do
-      service.make_data_enabled!
-      expect(school).to have_school_onboarding_event(:onboarding_data_enabled)
-    end
-
-    it 'records activation date' do
-      service.make_data_enabled!
-      school.reload
-      expect(school.activation_date).to eq(Time.zone.today)
-    end
-
-    context 'when there is an activation date' do
-      let(:school) { create(:school, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
-
-      it 'does not change the activation date' do
-        service.make_data_enabled!
-        school.reload
-        expect(school.activation_date).to eq(Time.zone.today - 1)
-      end
-    end
-
-    context 'where the school is not visible' do
-      let(:visible) { false }
+    context 'without consent granted' do
+      let(:school) { create(:school, data_enabled: false, visible:) }
 
       it 'rejects call' do
         expect do
           service.make_data_enabled!
         end.to raise_error SchoolCreator::Error
+      end
+    end
+
+    context 'with consent granted' do
+      let(:school) { create(:school, :with_consent, data_enabled: false, visible:) }
+
+      it 'broadcasts message' do
+        expect do
+          service.make_data_enabled!
+        end.to broadcast(:school_made_data_enabled)
+      end
+
+      it 'updates data enabled status' do
+        service.make_data_enabled!
+        expect(school.data_enabled).to be_truthy
+      end
+
+      it 'records event' do
+        service.make_data_enabled!
+        expect(school).to have_school_onboarding_event(:onboarding_data_enabled)
+      end
+
+      it 'records activation date' do
+        service.make_data_enabled!
+        school.reload
+        expect(school.activation_date).to eq(Time.zone.today)
+      end
+
+      context 'when there is an activation date' do
+        let(:school) { create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
+
+        it 'does not change the activation date' do
+          service.make_data_enabled!
+          school.reload
+          expect(school.activation_date).to eq(Time.zone.today - 1)
+        end
+      end
+
+      context 'where the school is not visible' do
+        let(:visible) { false }
+
+        it 'rejects call' do
+          expect do
+            service.make_data_enabled!
+          end.to raise_error SchoolCreator::Error
+        end
       end
     end
   end
@@ -173,7 +186,6 @@ describe SchoolCreator, :schools, type: :service do
     context 'where the school has not been created via the onboarding process' do
       let!(:school_admin) { create(:school_admin, school:) }
       let!(:staff) { create(:staff, school:) }
-      let!(:consent_grant) { create(:consent_grant, school:) }
 
       before do
         expect do
@@ -189,7 +201,6 @@ describe SchoolCreator, :schools, type: :service do
     context 'where the school has been created as part of the onboarding process' do
       let(:onboarding_user) { create(:onboarding_user) }
       let!(:school_onboarding) { create(:school_onboarding, school:, created_user: onboarding_user) }
-      let!(:consent_grant) { create(:consent_grant, school:) }
 
       it 'sets visibility' do
         service.make_visible!
