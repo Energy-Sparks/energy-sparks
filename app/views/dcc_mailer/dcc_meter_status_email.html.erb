@@ -5,6 +5,8 @@
 <table style="width: 100%; margin: 20px">
   <thead>
   <tr>
+    <th>School Group</th>
+    <th>Admin</th>
     <th>School</th>
     <th>Meter</th>
     <th>Type</th>
@@ -15,6 +17,10 @@
   <tbody>
   <% @meters.each do |meter| %>
     <tr>
+      <td>
+        <%= link_to meter.school&.school_group&.name, admin_school_groups_url(meter.school) if meter.school.school_group %>
+      </td>
+      <td><%= meter.school&.school_group&.default_issues_admin_user&.name %></td>
       <td><%= link_to meter.school.name, school_meters_url(meter.school) %></td>
       <td><%= link_to meter.mpan_mprn, school_meter_url(meter.school, meter) %></td>
       <td><%= meter.meter_type %></td>

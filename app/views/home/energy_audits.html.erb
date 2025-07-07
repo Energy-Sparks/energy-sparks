@@ -1,4 +1,4 @@
-<% cache_if current_user.nil?, I18n.locale, expires_in: 1.hour do %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
   <% content_for :page_title, t('energy_audits.title') %>
   <div class="container-fluid adult mb-5 py-5">
     <%= render Layout::GridComponent.new(
@@ -49,7 +49,7 @@
         <%= feature.with_price(
               label: t('common.labels.starting_from'),
               price: t('energy_audits.onsite.secondary.price'),
-              classes: 'mt-auto pt-4'
+              classes: 'mt-auto'
             ) %>
       <% end %>
       <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
