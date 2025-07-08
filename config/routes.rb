@@ -733,51 +733,61 @@ Rails.application.routes.draw do
 
     resources :activations, only: :index
     namespace :reports do
-      resources :good_jobs, only: :index
-      get 'good_jobs/export', to: 'good_jobs#export'
+      resources :activities, only: :index
+      resources :activity_types, only: [:index, :show]
       resources :alert_subscribers, only: :index
+      resources :amr_data_feed_import_logs, only: [:index]
+      resources :amr_reading_warnings, only: [:index]
+      get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
+      get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
+      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
+
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
       get 'amr_validated_readings/summary/:meter_id', to: 'amr_validated_readings#summary', as: :amr_validated_reading_summary, :defaults => { :format => :json }
 
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
-      get 'tariffs', to: 'tariffs#index', as: :tariffs
-      get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
-      resources :amr_data_feed_import_logs, only: [:index]
-      get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
-      get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
-      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
-      resources :mailchimp_status, only: [:index]
-      resources :recent_audits, only: [:index]
-      resources :tariff_import_logs, only: [:index]
-      resources :amr_reading_warnings, only: [:index]
-      resources :activities, only: :index
-      resources :interventions, only: :index
-      resources :school_targets, only: :index
-      resources :meter_reports, only: :index
-      resources :data_loads, only: :index
-      resources :transifex_loads, only: [:index, :show]
-      resources :activity_types, only: [:index, :show]
-      resources :dcc_status, only: [:index]
-      resources :solar_panels, only: [:index]
-      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
-      resources :community_use, only: [:index]
-      resources :intervention_types, only: [:index, :show]
-      resources :missing_alert_contacts, only: [:index]
-      resources :work_allocation, only: [:index]
-      resources :user_logins, only: [:index]
-      resources :meter_loading_reports, only: :index
-      resources :engaged_groups, only: [:index]
-      resources :heating_types, only: [:index]
-      resources :manual_reads, only: [:index]
-      resources :perse_meter, only: [:index]
       resources :baseload_anomaly, only: [:index]
-      resource :unvalidated_readings, only: [:show]
+      resources :blank_readings, only: [:index]
+
+      resources :community_use, only: [:index]
+      resources :data_loads, only: :index
+      resources :dcc_status, only: [:index]
+
+      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
+
+      resources :engaged_groups, only: [:index]
+      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
+
       resource :funder_allocations, only: [:show] do
         post :deliver
       end
-      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
+      resources :gas_anomaly, only: [:index]
+      resources :good_jobs, only: :index
+      get 'good_jobs/export', to: 'good_jobs#export'
+
+      resources :heating_types, only: [:index]
+      resources :interventions, only: :index
+      resources :intervention_types, only: [:index, :show]
+      resources :lagging_meters, only: [:index]
+      resources :mailchimp_status, only: [:index]
+      resources :manual_reads, only: [:index]
+      resources :meter_loading_reports, only: :index
+      resources :meter_reports, only: :index
+      resources :missing_alert_contacts, only: [:index]
+      resources :perse_meter, only: [:index]
+      resources :recent_audits, only: [:index]
+      resources :school_targets, only: :index
+      resources :solar_panels, only: [:index]
+      get 'tariffs', to: 'tariffs#index', as: :tariffs
+      get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
+      resources :tariff_import_logs, only: [:index]
+      resources :transifex_loads, only: [:index, :show]
+      resource :unvalidated_readings, only: [:show]
+      resources :user_logins, only: [:index]
+      resources :work_allocation, only: [:index]
+      resources :zero_readings, only: [:index]
     end
 
     resource :settings, only: [:show, :update]

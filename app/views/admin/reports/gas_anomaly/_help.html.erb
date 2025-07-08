@@ -1,0 +1,33 @@
+<p>
+  This report tries to identify gas meter readings which might have been loaded
+  with incorrect units, e.g. where data has been converted from kWh to cubic meters
+  and so its 10-11x higher than they should be.
+</p>
+<p>
+  However sudden increases in gas usage can happen when:
+</p>
+<ul>
+  <li>Heating is switched on after a holiday or weekend</li>
+  <li>Heating is switched on in the winter or during cold days</li>
+</ul>
+<p>
+  To try and reduce false positives, the report:
+</p>
+<ul>
+  <li>Compares each day with the same day the week earlier, e.g. a Monday with the previous Monday</li>
+  <li>Only compares days which are in holidays or term times, e.g. it won't compare a term day with a holiday day</li>
+  <li>Ignores increases where the previous day's usage was zero, e.g. the heating wasn't on</li>
+  <li>Ignores increases where there is a large temperature difference between the two days. Results are only shown for days where the difference in heating degree days between the two days is less than 2, e.g. the temperatures were very similar</li>
+</ul>
+<p>
+  However the report will still produce some results for comparisons where the
+  gas usage has increased for legitimate reasons. E.g. the heating needed to be
+  run for a longer period in the week. It seems impossible to remove these without also removing days where there are problems.
+</p>
+<p>
+  Each row in the table is linked to the weekly comparison chart that shows the
+  two full weeks of data that include the anomaly, for the specific meter.
+</p>
+<p>
+  The report is updated daily, only includes active gas meters, and only looks at the last 60 days worth of readings.
+</p>
