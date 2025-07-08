@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'User account page and updates', :include_application_helper do
-  let(:base) { '/user/school' }
+  let(:base) { '/r/school' }
 
   context 'when visiting a school redirect' do
     let(:path) { "#{base}/advice" }

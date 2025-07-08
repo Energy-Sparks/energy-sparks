@@ -7,7 +7,6 @@ class TestDirectory
   class EnvironmentVariableNotSet < StandardError; end
 
   def base_dir
-    raise EnvironmentVariableNotSet, "Missing environment variable #{base_dir_env_variable_name}, please set and create directory"  if base_dir_env_variable.nil?
     base_dir_env_variable
   end
 
@@ -78,11 +77,7 @@ class TestDirectory
   end
 
   def base_dir_env_variable
-    ENV[base_dir_env_variable_name]
-  end
-
-  def base_dir_env_variable_name
-    'ANALYTICSTESTDIR'
+    'analytics/test_output'
   end
 
   def meter_collection_dir_path
@@ -101,8 +96,6 @@ class TestDirectory
   end
 
   def make_dir(dir_name)
-    return if Object.const_defined?('Rails')
-
     unless File.exist?(dir_name)
       puts "Creating directory #{dir_name}"
       Dir.mkdir(dir_name)

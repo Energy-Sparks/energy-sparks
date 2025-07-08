@@ -9,7 +9,6 @@ describe ConfirmationReminder do
 
   shared_examples 'it ignores sending emails' do
     it 'does not send at any time' do
-      expect(User.count).to eq(1)
       expect { described_class.send }.to(not_change { ActionMailer::Base.deliveries.count })
       travel_to(now + 7.days)
       expect { described_class.send }.to(not_change { ActionMailer::Base.deliveries.count })

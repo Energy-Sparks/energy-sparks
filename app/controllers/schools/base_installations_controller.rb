@@ -22,8 +22,8 @@ module Schools
     end
 
     def destroy
-      @installation.meters.each { |meter| MeterManagement.new(meter).delete_meter! }
-      @installation.destroy
+      @installation.meters.where(school: @school).find_each { |meter| MeterManagement.new(meter).delete_meter! }
+      @installation.destroy if !@installation.respond_to?(:schools) || @installation.schools.empty?
       redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{self.class::NAME} API feed deleted"
     end
 

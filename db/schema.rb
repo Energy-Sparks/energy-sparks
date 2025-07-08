@@ -1899,16 +1899,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_03_154310) do
     t.index ["area_id"], name: "index_solar_pv_tuos_readings_on_area_id"
   end
 
-  create_table "solis_cloud_installations", force: :cascade do |t|
+  create_table "solis_cloud_installation_schools", force: :cascade do |t|
     t.bigint "school_id", null: false
+    t.bigint "solis_cloud_installation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_solis_cloud_installation_schools_on_school_id"
+    t.index ["solis_cloud_installation_id"], name: "idx_on_solis_cloud_installation_id_c29f887970"
+  end
+
+  create_table "solis_cloud_installations", force: :cascade do |t|
     t.bigint "amr_data_feed_config_id", null: false
     t.text "api_id"
     t.text "api_secret"
-    t.jsonb "station_list", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "inverter_detail_list", default: {}
     t.index ["amr_data_feed_config_id"], name: "index_solis_cloud_installations_on_amr_data_feed_config_id"
-    t.index ["school_id"], name: "index_solis_cloud_installations_on_school_id"
   end
 
   create_table "staff_roles", force: :cascade do |t|
@@ -2318,8 +2325,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_03_154310) do
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "schools", on_delete: :cascade
   add_foreign_key "solar_pv_tuos_readings", "areas", on_delete: :cascade
+  add_foreign_key "solis_cloud_installation_schools", "schools"
+  add_foreign_key "solis_cloud_installation_schools", "solis_cloud_installations"
   add_foreign_key "solis_cloud_installations", "amr_data_feed_configs", on_delete: :cascade
-  add_foreign_key "solis_cloud_installations", "schools", on_delete: :cascade
   add_foreign_key "subscription_generation_runs", "schools", on_delete: :cascade
   add_foreign_key "temperature_recordings", "locations", on_delete: :cascade
   add_foreign_key "temperature_recordings", "observations", on_delete: :cascade

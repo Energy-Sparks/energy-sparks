@@ -1,51 +1,52 @@
-<% content_for :page_title, t('training.title') %>
-<div class="application container">
-  <div class="row">
-    <div class="col">
-      <h1 id="intro"><%= t('training.title') %></h1>
-      <p><%= t('training.intro') %></p>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('training.title') %>
+  <div class="application container">
+    <div class="row">
+      <div class="col">
+        <h1 id="intro"><%= t('training.title') %></h1>
+        <p><%= t('training.intro') %></p>
+      </div>
     </div>
-  </div>
 
-  <div class="row justify-content-md-center">
-    <div class="col col-md-10">
-      <table class="table timeline">
-        <% @events.group_by { |evt| [evt.date.strftime('%Y'), evt.date.strftime('%-m')] }.each do |(year, month), grouped_events| %>
-        <thead>
-          <tr>
-            <th colspan="4">
-              <h5><%= title_for_month(month, year) %></h5>
-              <span class="text-muted"><%= t('timeline.events', count: grouped_events.size) %></span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% grouped_events.each do |event| %>
-            <tr scope="row">
-              <td></td>
-              <td class="timeline-border-left"></td>
-              <td class="p-3 text-center">
-                <% if event.sold_out? %>
-                  <%= fa_icon('calendar-times fa-2x') %>
-                <% else %>
-                  <%= fa_icon('calendar-check fa-2x') %>
-                <% end %>
-              </td>
-              <td>
-                <h3 class="pt-1"><strong><%= link_to event.name, event.url, target: '_blank', rel: 'noopener' %></strong></h3>
-                <span class="text-muted">
-                  <%= nice_date_times(event.date) %> |
-                  <%= event.sold_out? ? t('training.sold_out') : t('training.spaces_available') %>
-                </span>
-              </td>
-              <td class="text-right">
-              </td>
+    <div class="row justify-content-md-center">
+      <div class="col col-md-10">
+        <table class="table timeline">
+          <% @events.group_by { |evt| [evt.date.strftime('%Y'), evt.date.strftime('%-m')] }.each do |(year, month), grouped_events| %>
+          <thead>
+            <tr>
+              <th colspan="4">
+                <h5><%= title_for_month(month, year) %></h5>
+                <span class="text-muted"><%= t('timeline.events', count: grouped_events.size) %></span>
+              </th>
             </tr>
+          </thead>
+          <tbody>
+            <% grouped_events.each do |event| %>
+              <tr scope="row">
+                <td></td>
+                <td class="timeline-border-left"></td>
+                <td class="p-3 text-center">
+                  <% if event.sold_out? %>
+                    <%= fa_icon('calendar-times fa-2x') %>
+                  <% else %>
+                    <%= fa_icon('calendar-check fa-2x') %>
+                  <% end %>
+                </td>
+                <td>
+                  <h3 class="pt-1"><strong><%= link_to event.name, event.url, target: '_blank', rel: 'noopener' %></strong></h3>
+                  <span class="text-muted">
+                    <%= nice_date_times(event.date) %> |
+                    <%= event.sold_out? ? t('training.sold_out') : t('training.spaces_available') %>
+                  </span>
+                </td>
+                <td class="text-right">
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
           <% end %>
-        </tbody>
-        <% end %>
-      </table>
+        </table>
+      </div>
     </div>
   </div>
-
-</div>
+<% end %>

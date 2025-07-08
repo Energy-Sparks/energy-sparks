@@ -1,4 +1,4 @@
-<% cache_if current_user.nil?, I18n.locale, expires_in: 1.hour do %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
   <% content_for :page_title, t('education_workshops.title') %>
   <div class="container-fluid adult mb-4 py-5">
     <%= render Layout::GridComponent.new(
@@ -37,15 +37,14 @@
           id: 'audience',
           cols: 2,
           theme: :light,
-          classes: 'rounded-xl p-4 mt-5 mb-6',
-          cell_classes: ''
+          classes: 'rounded-xl p-4 mt-5 mb-6'
         ) do |grid| %>
       <%= grid.with_image(src: 'pupil-whiteboard.jpg') %>
       <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
-        <%= feature.with_header(title: t('education_workshops.audience.title'), classes: '') %>
+        <%= feature.with_header(title: t('education_workshops.audience.title')) %>
         <%= feature.with_description { t('education_workshops.audience.description_html') } %>
         <%= feature.with_button(t('education_workshops.book'),
-                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary, classes: 'mr-2') %>
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary) %>
       <% end %>
     <% end %>
 

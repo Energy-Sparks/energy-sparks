@@ -97,6 +97,7 @@ class OneDayAMRReading
     'PSTD' => { name: 'Partial data for end date - ignoring' },
     'PETD' => { name: 'Partial data for end date - ignoring' },
     'DCCP' => { name: 'Partial DCC data for interpolation' },
+    'RNEG' => { name: 'Removed negative readings' },
     'COVD' => { name: '3rd lockdown COVID adjustment T&T system' },
     'CAVG' => { name: 'calculated average school data' },
     'SOLN' => { name: 'Override night data with zero' }
