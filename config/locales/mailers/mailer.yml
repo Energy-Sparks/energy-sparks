@@ -123,30 +123,20 @@ en:
       the_energy_sparks_team: The Energy Sparks Team
       title: "%{school_name} energy data is now available on Energy Sparks"
     onboarded_email:
-      build_an_energy_saving_team_html: 'Build an energy saving team: <a href="%{root_url}activity_types/33">consider setting up a student team to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.'
-      familiarise_yourself_html: Familiarise yourself with using Energy Sparks, we have <a href="%{root_url}intervention_types/74">lots of useful guidance and information about training</a>.
       get_in_touch_message_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions.
-      in_the_mean_time: 'In the meantime, here is our quick guide for making the most of your Energy Sparks account:'
       join_a_webinar: Join a webinar
-      many_thanks: Many thanks
       need_some_help: Need some help?
       paragraph_1_html: While waiting you can use Energy Sparks to begin recording your energy saving activities. Explore our pupil-led <strong><a href="%{activity_categories_url}">activities and educational resources</a></strong> which are designed to teach your pupils about energy whilst saving money for their school.
       paragraph_2_html: We also have a range of <strong><a href="%{intervention_type_groups_url}">energy saving actions</a></strong> that you, other members of staff and volunteers can carry out to start improving you energy usage.
       paragraph_3_html: View your <strong><a href="%{school_url}">school dashboard</a></strong> for suggestions for how to get started.
       paragraph_4_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="%{user_guide_videos_url}">Training Videos</a> or join one of our <a href="%{training_url}">live webinar training</a> sessions.
       paragraph_5: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
-      review_our_range_html: Review our range of <a href="%{root_url}intervention_type_groups">energy saving actions</a> that you, other members of staff and volunteers can carry out to start improving your energy usage.
-      set_up_a_holiday_switch_off_routine_html: 'Set up a holiday switch off routine: On average, 15% of schools’ energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.'
-      sign_up_to_energy_saving_alerts_and_messages_html: 'Sign up to energy saving alerts and messages: Our alert system has helped some schools save thousands of pounds by notifying them about expected changes in their energy use. You can also receive regular tips and updates to help your school make the most of its Energy Sparks account throughout the year. <a href="%{root_url}profiles">Change your email preferences here.</a>'
       subject: "%{school} is now live on Energy Sparks"
       thanks_for_joining: Thanks for joining!
       the_energy_sparks_team: The Energy Sparks Team
       title: "%{school_name} is now live on Energy Sparks"
       we_are_working_message: We are working to get access to your school's energy data.
-      we_hope: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
       we_will_be_in_touch_shortly_message: We will be in touch shortly to confirm when we have completed getting access to your energy data.
-    onboarded_email_2025:
-      subject: "%{school} is now live on Energy Sparks"
     onboarding_email:
       paragraph_1_html: Thank you for enrolling %{school_name} onto the Energy Sparks programme (www.energysparks.uk).
       paragraph_2: We are excited to be introducing Energy Sparks to your school, and look forward to working with you to save energy.
@@ -181,7 +171,15 @@ en:
       view_your_school: View your school
   onboarding_mailer2025:
     onboarded_email:
+      build_an_energy_saving_team_html: 'Build an energy saving team: <a href="%{root_url}activity_types/33">consider setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.'
+      familiarise_yourself_html: Familiarise yourself with using Energy Sparks, we have <a href="%{root_url}intervention_types/74">lots of useful guidance and information about training</a>.
+      in_the_mean_time: 'In the meantime, here is our quick guide for making the most of your Energy Sparks account:'
+      many_thanks: Many thanks
+      review_our_range_html: Review our range of <a href="%{root_url}intervention_type_groups">energy saving actions</a> that you, other members of staff and volunteers can carry out to start improving your energy usage.
+      set_up_a_holiday_switch_off_routine_html: 'Set up a holiday switch off routine: On average, 15% of schools’ energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.'
+      sign_up_to_energy_saving_alerts_and_messages_html: 'Sign up to energy saving alerts and messages: Our alert system has helped some schools save thousands of pounds by notifying them about expected changes in their energy use. You can also receive regular tips and updates to help your school make the most of its Energy Sparks account throughout the year. <a href="%{root_url}profiles">Change your email preferences here.</a>'
       subject: "%{school} is now live on Energy Sparks"
+      we_hope: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
   target_mailer:
     admin_target_report:
       subject: Target Progress and Data Report
