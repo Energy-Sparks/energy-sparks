@@ -119,13 +119,17 @@ $(document).ready(function() {
 
     var minMaxReadings = setMinMaxReadings(chartDiv);
 
+    const params = new URLSearchParams(window.location.search);
+    const compare_to = params.get('compare_to');
+    const start_date = params.get('date');
+
     if ( period == 'weekly') {
-      var defaultDate = minMaxReadings.max.clone().startOf('week');
-      var defaultComparisonDate = defaultDate.clone().subtract(7, 'days');
+      var defaultDate = compare_to ? moment(compare_to).startOf('week') : minMaxReadings.max.clone().startOf('week');
+      var defaultComparisonDate = start_date ? moment(start_date).startOf('week') : defaultDate.clone().subtract(7, 'days');
     } else {
       var minMax = minMaxReadings;
-      var defaultDate = minMaxReadings.max;
-      var defaultComparisonDate = defaultDate.clone().subtract(1, 'days');
+      var defaultDate = compare_to ? moment(compare_to) : minMaxReadings.max;
+      var defaultComparisonDate = start_date ? moment(start_date) : defaultDate.clone().subtract(1, 'days');
     }
 
     var firstDataPicker = $(chartDiv).find("input[name='first-date-picker']");

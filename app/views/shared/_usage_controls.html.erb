@@ -57,7 +57,7 @@
             <%= label_tag :meter, t('charts.usage.select_meter.title') %>
             <div class="form-group">
               <%= select_tag :meter,
-                             options_for_select(options_for_meter_selection(meters)),
+                             options_for_select(options_for_meter_selection(meters), params[:mpxn]),
                              class: 'form-control' %>
             </div>
           </div>

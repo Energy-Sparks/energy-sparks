@@ -37,6 +37,10 @@ module Columns
       end
     end
 
+    def data_order(arg)
+      @csv_lambda.present? ? csv(arg) : ''
+    end
+
     def display_html
       %i[csv_and_html html].include?(@display)
     end

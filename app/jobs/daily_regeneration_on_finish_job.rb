@@ -8,7 +8,7 @@ class DailyRegenerationOnFinishJob < ApplicationJob
   end
 
   def perform(*)
-    views = Comparison::View.descendants + [Report::BaseloadAnomaly]
+    views = Comparison::View.descendants + [Report::BaseloadAnomaly, Report::GasAnomaly]
     views.each do |view_class|
       view_class.refresh
     rescue StandardError => e

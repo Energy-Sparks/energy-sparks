@@ -16,12 +16,9 @@
 #
 module Report
   class BaseloadAnomaly < ApplicationRecord
+    include Metered
+
     self.table_name_prefix = 'report_'
-
-    belongs_to :meter
-    scope :with_meter_school_and_group, -> { includes(:meter, meter: [:school, { school: :school_group }]) }
-
-    scope :default_order, -> { order(:meter_id, :reading_date) }
 
     def readonly?
       true

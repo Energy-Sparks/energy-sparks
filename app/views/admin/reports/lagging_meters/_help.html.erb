@@ -1,0 +1,14 @@
+<p>
+  "Stale data" here means that the most recent validated reading for the meter is older than a set number of days.
+</p>
+<p>
+  The number of days until a meter is considered to be "stale" is based on the "import_warning_days" setting
+  of the Data Source to which the meter is linked.
+</p>
+<p>
+  If a meter has not been linked to a data source, then the system wide
+  default of <%= SiteSettings.current.default_import_warning_days %> days is used.
+</p>
+<p>
+  The report includes data for all meter types.
+</p>

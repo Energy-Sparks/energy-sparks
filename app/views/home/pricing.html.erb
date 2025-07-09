@@ -9,7 +9,7 @@
           <%= feature.with_description { t('pricing.feature.description') } %>
           <%= feature.with_button t('enrol.enrol_now'), enrol_our_school_path, style: :primary %>
         <% end %>
-        <%= grid.with_image src: 'audit-desktop.jpg' %>
+        <%= grid.with_image src: 'pupil-screen.jpg' %>
       <% end %>
     </div>
 
@@ -127,7 +127,7 @@
             theme: :light,
             classes: 'rounded-xl p-4 mt-5 mb-5'
           ) do |grid| %>
-        <%= grid.with_image(src: 'funders.png') %>
+        <%= grid.with_image(src: 'funders.png', frame: true) %>
         <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
           <%= feature.with_header(title: t('pricing.free_places.title')) %>
           <%= feature.with_description { t('pricing.free_places.description_html') } %>

@@ -1,0 +1,7 @@
+<span class="nowrap ml-4">
+  <%= label_tag :meter_type, nil, class: 'small' %>
+  <%= select_tag :meter_type,
+                 options_for_select(Meter.meter_types.to_a, params[:meter_type]),
+                 include_blank: 'Any Meter Type',
+                 class: 'form-control-sm' %>
+</span>

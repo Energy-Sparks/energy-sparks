@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_06_09_140717) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_03_154310) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3646,6 +3646,42 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_09_140717) do
   SQL
   add_index "comparison_heating_coming_on_too_early", ["school_id"], name: "index_comparison_heating_coming_on_too_early_on_school_id", unique: true
 
+  create_view "comparison_heating_in_warm_weathers", materialized: true, sql_definition: <<-SQL
+      WITH gas AS (
+           SELECT alerts.alert_generation_run_id,
+              data.percent_of_annual_heating,
+              data.warm_weather_heating_days_all_days_kwh,
+              data.warm_weather_heating_days_all_days_co2,
+              data.warm_weather_heating_days_all_days_gbpcurrent,
+              data.warm_weather_heating_days_all_days_days
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data(percent_of_annual_heating double precision, warm_weather_heating_days_all_days_kwh double precision, warm_weather_heating_days_all_days_co2 double precision, warm_weather_heating_days_all_days_gbpcurrent double precision, warm_weather_heating_days_all_days_days double precision)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalHeatingSchoolDays'::text))
+          ), additional AS (
+           SELECT alerts.alert_generation_run_id,
+              alerts.school_id
+             FROM alerts,
+              alert_types
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
+          ), latest_runs AS (
+           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
+             FROM alert_generation_runs
+            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
+          )
+   SELECT latest_runs.id,
+      additional.school_id,
+      gas.percent_of_annual_heating,
+      gas.warm_weather_heating_days_all_days_kwh,
+      gas.warm_weather_heating_days_all_days_co2,
+      gas.warm_weather_heating_days_all_days_gbpcurrent,
+      gas.warm_weather_heating_days_all_days_days
+     FROM ((latest_runs
+       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
+       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)));
+  SQL
+  add_index "comparison_heating_in_warm_weathers", ["school_id"], name: "index_comparison_heating_in_warm_weathers_on_school_id", unique: true
+
   create_view "comparison_heating_vs_hot_waters", materialized: true, sql_definition: <<-SQL
       WITH gas AS (
            SELECT alerts.alert_generation_run_id,
@@ -4116,42 +4152,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_09_140717) do
   SQL
   add_index "comparison_weekday_baseload_variations", ["school_id"], name: "index_comparison_weekday_baseload_variations_on_school_id", unique: true
 
-  create_view "comparison_heating_in_warm_weathers", materialized: true, sql_definition: <<-SQL
-      WITH gas AS (
-           SELECT alerts.alert_generation_run_id,
-              data.percent_of_annual_heating,
-              data.warm_weather_heating_days_all_days_kwh,
-              data.warm_weather_heating_days_all_days_co2,
-              data.warm_weather_heating_days_all_days_gbpcurrent,
-              data.warm_weather_heating_days_all_days_days
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(percent_of_annual_heating double precision, warm_weather_heating_days_all_days_kwh double precision, warm_weather_heating_days_all_days_co2 double precision, warm_weather_heating_days_all_days_gbpcurrent double precision, warm_weather_heating_days_all_days_days double precision)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertSeasonalHeatingSchoolDays'::text))
-          ), additional AS (
-           SELECT alerts.alert_generation_run_id,
-              alerts.school_id
-             FROM alerts,
-              alert_types
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
-          ), latest_runs AS (
-           SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC
-          )
-   SELECT latest_runs.id,
-      additional.school_id,
-      gas.percent_of_annual_heating,
-      gas.warm_weather_heating_days_all_days_kwh,
-      gas.warm_weather_heating_days_all_days_co2,
-      gas.warm_weather_heating_days_all_days_gbpcurrent,
-      gas.warm_weather_heating_days_all_days_days
-     FROM ((latest_runs
-       JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
-       LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)));
-  SQL
-  add_index "comparison_heating_in_warm_weathers", ["school_id"], name: "index_comparison_heating_in_warm_weathers_on_school_id", unique: true
-
   create_view "report_baseload_anomalies", materialized: true, sql_definition: <<-SQL
       WITH unnested_readings_with_index AS (
            SELECT amr.id,
@@ -4212,5 +4212,43 @@ ActiveRecord::Schema[7.2].define(version: 2025_06_09_140717) do
     WHERE ((last_two_days_baseload.previous_day_baseload IS NOT NULL) AND (last_two_days_baseload.previous_day_baseload > 0.5) AND (((last_two_days_baseload.today_baseload >= (0)::numeric) AND (last_two_days_baseload.today_baseload < 0.01)) OR (last_two_days_baseload.previous_day_baseload >= (last_two_days_baseload.today_baseload * (5)::numeric))));
   SQL
   add_index "report_baseload_anomalies", ["id"], name: "index_report_baseload_anomalies_on_id", unique: true
+
+  create_view "report_gas_anomalies", materialized: true, sql_definition: <<-SQL
+      WITH readings_with_temperature_and_event AS (
+           SELECT amr.id,
+              amr.meter_id,
+              amr.reading_date,
+              amr.one_day_kwh,
+              round(avg(temp.temp), 2) AS average_temperature,
+              round(GREATEST((15.5 - avg(temp.temp)), (0)::numeric), 2) AS heating_degree_days,
+              calendar_events.calendar_event_type_id
+             FROM ((((((((amr_validated_readings amr
+               JOIN meters ON ((amr.meter_id = meters.id)))
+               JOIN schools ON ((meters.school_id = schools.id)))
+               JOIN calendars ON ((schools.calendar_id = calendars.id)))
+               JOIN calendar_events ON (((calendars.id = calendar_events.calendar_id) AND ((amr.reading_date >= calendar_events.start_date) AND (amr.reading_date <= calendar_events.end_date)))))
+               JOIN calendar_event_types ON ((calendar_events.calendar_event_type_id = calendar_event_types.id)))
+               JOIN weather_stations ON ((schools.weather_station_id = weather_stations.id)))
+               JOIN weather_observations ON (((weather_stations.id = weather_observations.weather_station_id) AND (weather_observations.reading_date = amr.reading_date))))
+               JOIN LATERAL unnest(weather_observations.temperature_celsius_x48) temp(temp) ON (true))
+            WHERE ((amr.reading_date >= (CURRENT_DATE - 'P67D'::interval)) AND (calendar_event_types.inset_day = false) AND (calendar_event_types.bank_holiday = false) AND (meters.active = true) AND (meters.meter_type = 1))
+            GROUP BY amr.id, amr.reading_date, calendar_events.calendar_event_type_id
+          )
+   SELECT today.id,
+      today.meter_id,
+      today.reading_date,
+      today.one_day_kwh AS today_kwh,
+      today.average_temperature AS today_temperature,
+      today.heating_degree_days AS today_degree_days,
+      previous_day.reading_date AS previous_reading_date,
+      previous_day.one_day_kwh AS previous_kwh,
+      previous_day.average_temperature AS previous_temperature,
+      previous_day.heating_degree_days AS previous_degree_days,
+      today.calendar_event_type_id
+     FROM (readings_with_temperature_and_event previous_day
+       LEFT JOIN readings_with_temperature_and_event today ON (((today.meter_id = previous_day.meter_id) AND (today.reading_date = (previous_day.reading_date + 'P7D'::interval)))))
+    WHERE ((previous_day.one_day_kwh IS NOT NULL) AND (previous_day.calendar_event_type_id = today.calendar_event_type_id) AND (previous_day.one_day_kwh > 0.0) AND (today.one_day_kwh > ((10)::numeric * previous_day.one_day_kwh)) AND (abs((today.heating_degree_days - previous_day.heating_degree_days)) < 2.0));
+  SQL
+  add_index "report_gas_anomalies", ["id"], name: "index_report_gas_anomalies_on_id", unique: true
 
 end
