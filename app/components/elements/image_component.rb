@@ -30,7 +30,7 @@ module Elements
     def call
       img = image_tag(@src, id: @id, class: classes, style: style)
       if @frame
-        classes = 'bg-white h-100 d-flex align-items-center'
+        classes = 'bg-white h-100 w-100 d-flex align-items-center justify-content-center'
         classes = class_names(classes, self.class.rounded[@rounded]) if @rounded
         tag.div(class: classes) { img }
       else
