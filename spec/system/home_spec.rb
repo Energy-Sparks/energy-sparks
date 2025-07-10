@@ -241,7 +241,7 @@ RSpec.describe 'home', type: :system do
     end
 
     context with_feature: :new_training_page do
-      let(:response) {}
+      let(:response) { JSON.parse(File.read(File.join(fixture_paths.first, 'events/events.json'))) }
 
       before do
         allow(EventbriteSDK).to receive(:get).and_return(response)
@@ -255,8 +255,6 @@ RSpec.describe 'home', type: :system do
       let(:displayed_events) { all('#events .card') }
 
       context 'when there are events' do
-        let(:response) { JSON.parse(File.read(File.join(fixture_paths.first, 'events/events.json'))) }
-
         let(:available) { displayed_events[0] }
         let(:sold_out) { displayed_events[3] }
 
