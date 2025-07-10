@@ -11,11 +11,11 @@ module Events
 
     # Returns an arry of EventBriteSDK::OrgEvent objects
     def fetch
-      @events ||= []
+      events ||= []
       query.each do |eventbrite_event|
-        @events << Events::Event.new(eventbrite_event)
+        events << Events::Event.new(eventbrite_event)
       end
-      return @events
+      return events
     rescue => e
       Rails.logger.error "Exception fetching Eventbrite events : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
