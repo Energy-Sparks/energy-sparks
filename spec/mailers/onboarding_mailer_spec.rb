@@ -261,7 +261,7 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#welcome_email' do
-    before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.welcome_email.deliver_now } }
+    before { user.after_confirmation }
 
     context 'preferred locale is cy' do
       let(:preferred_locale) { :cy }

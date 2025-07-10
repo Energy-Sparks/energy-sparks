@@ -9,12 +9,12 @@ class OnboardingMailer2025Preview < ActionMailer::Preview
 
   def welcome_email_school_admin
     user = User.school_admin.joins(:school).where(schools: { visible: true, data_enabled: false }).sample
-    OnboardingMailer2025.with(school: user.school, user:).welcome_email
+    OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
   end
 
   def welcome_email_staff
     user = User.staff.joins(:school).where(schools: { visible: true, data_enabled: false }).sample
-    OnboardingMailer2025.with(school: user.school, user:).welcome_email
+    OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
   end
 
   private

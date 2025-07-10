@@ -61,9 +61,7 @@ RSpec.describe OnboardingMailer2025 do
   describe '#welcome_email' do
     let(:school) { create_school(data_enabled: false) }
 
-    before do
-      user.after_confirmation
-    end
+    before { user.after_confirmation }
 
     context 'with a school admin, not data enabled' do
       let(:user) { create(:school_admin, school:) }
