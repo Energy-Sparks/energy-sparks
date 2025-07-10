@@ -1,4 +1,4 @@
-<%# cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
   <% content_for :page_title, t('training.title') %>
   <% if Flipper.enabled?(:new_training_page) %>
     <div class="container-fluid adult mb-5 py-5">
@@ -99,4 +99,4 @@
       </div>
     </div>
   <% end %>
-<%# end %>
+<% end %>
