@@ -41,7 +41,7 @@ RSpec.describe OnboardingMailer2025 do
   end
 
   def read_md(name)
-    File.read(File.join(__dir__, "#{name}.md")).gsub('[CALENDAR_ID]', school.calendar_id)
+    File.read(File.join(__dir__, "#{name}.md")).gsub('[CALENDAR_ID]', school.calendar_id.to_s)
   end
 
   describe '#onboarded_email' do
@@ -51,17 +51,10 @@ RSpec.describe OnboardingMailer2025 do
       end
     end
 
-    context 'when the preferred locale is en' do
-      it 'sends the onboarded email in en' do
-        expect(email.subject).to eq("#{school.name} is now live on Energy Sparks")
-        translations = I18n.t('onboarding_mailer2025.onboarded_email.', locale: preferred_locale)
-        expect(translations.length).to eq(9)
-        html = Nokogiri::HTML(email.html_part.decoded)
-        html.css('*[style]').each { |node| node.remove_attribute('style') }
-        translations.except(:subject).each_value do |text|
-          expect(html.to_s).to include(replace_variables(text))
-        end
-      end
+    it 'sends the onboarded email in en' do
+      expect(email.subject).to eq("#{school.name} is now live on Energy Sparks")
+      puts email_html_body_as_markdown
+      expect(email_html_body_as_markdown).to eq(read_md('onboarded'))
     end
   end
 
