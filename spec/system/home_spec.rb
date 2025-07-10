@@ -244,7 +244,7 @@ RSpec.describe 'home', type: :system do
       let(:response) { JSON.parse(File.read(File.join(fixture_paths.first, 'events/events.json'))) }
 
       before do
-        allow(EventbriteSDK).to receive(:get).and_return(response)
+        expect(EventbriteSDK).to receive(:get).and_return(response)
         visit root_path
         click_on('Our services')
         within('#our-services') do
