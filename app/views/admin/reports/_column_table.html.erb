@@ -1,4 +1,4 @@
-<table class="table table-condensed table-sorted" data-order='[[0, "asc"]]'>
+<table class="table advice-table table-hover table-condensed table-sorted" data-order='[[0, "asc"]]'>
   <thead>
     <tr>
         <% columns.each do |column| %>
@@ -7,10 +7,12 @@
     </tr>
   </thead>
   <tbody>
-    <% rows.find_each do |row| %>
+    <% rows.each do |row| %>
         <tr>
         <% columns.each do |column| %>
-            <td><%= column.td(row) %></td>
+            <td data-order="<%= column.data_order(row) %>">
+              <%= column.td(row) %>
+            </td>
         <% end %>
         </tr>
     <% end %>
