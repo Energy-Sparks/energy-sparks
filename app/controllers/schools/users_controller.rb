@@ -104,7 +104,7 @@ module Schools
         if existing_user&.role == 'group_admin'
           redirect = true
           notice = "As a group admin for #{existing_user.school_group.name}, this user is already able to administer " \
-                      'this school'
+                   'this school'
         elsif existing_user.present?
           existing_user.add_cluster_school(@school)
           existing_user.add_cluster_school(existing_user.school) unless existing_user.school.nil?

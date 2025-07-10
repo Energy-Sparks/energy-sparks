@@ -101,6 +101,9 @@ cy:
       subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_name} ar Sbarcynni
   mailer:
     get_in_touch: Cysylltwch
+  onboarding_mailer2025:
+    onboarded_email:
+      subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
   onboarding_mailer:
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni
