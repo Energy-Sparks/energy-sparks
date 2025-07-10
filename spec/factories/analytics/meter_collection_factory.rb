@@ -8,10 +8,8 @@ FactoryBot.define do
       school                  { build(:analytics_school) }
       holidays                { build(:holidays, :with_calendar_year) }
       random_generator        { nil }
-      temperatures do
-        build(:temperatures, :with_days, start_date: start_date, end_date: end_date, random_generator: random_generator)
-      end
-      solar_pv                { build(:solar_pv, :with_days, start_date: start_date, end_date: end_date) }
+      temperatures            { build(:temperatures, :with_days, start_date:, end_date:, random_generator:) }
+      solar_pv                { build(:solar_pv, :with_days, start_date:, end_date:, random_generator:) }
       grid_carbon_intensity   { build(:grid_carbon_intensity, :with_days, start_date: start_date, end_date: end_date) }
       pseudo_meter_attributes { {} }
       solar_irradiation       { nil }

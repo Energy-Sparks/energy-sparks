@@ -21,10 +21,19 @@ class SolarPVPanels
     SOLAR_PV_ONSITE_ELECTRIC_CONSUMPTION_METER_NAME
   ]
 
+  def self.create(meter, attribute_name)
+    return unless meter.meter_attributes.key?(attribute_name)
+
+    new(meter.meter_attributes[attribute_name], meter.meter_collection.solar_pv,
+        override_default: attribute_name == :solar_pv)
+  end
+
   # @param [Hash] meter_attributes_config the :solar_pv meter attributes to process
   # @param [SolarPV] synthetic_sheffield_solar_pv_yields the Sheffield Solar data for this school
-  def initialize(meter_attributes_config, synthetic_sheffield_solar_pv_yields)
-    @solar_pv_panel_config = SolarPVPanelConfiguration.new(meter_attributes_config) unless meter_attributes_config.nil?
+  def initialize(meter_attributes_config, synthetic_sheffield_solar_pv_yields, override_default: true)
+    unless meter_attributes_config.nil?
+      @solar_pv_panel_config = SolarPVPanelConfiguration.new(meter_attributes_config, override_default)
+    end
     @synthetic_sheffield_solar_pv_yields = synthetic_sheffield_solar_pv_yields
     @debug_date_range = nil # Date.new(2021, 6, 18)..Date.new(2021, 6, 19) # Date.new(2021, 6, 1)..Date.new(2021, 6, 7) || nil
     @real_production_data = false
@@ -74,7 +83,7 @@ class SolarPVPanels
   # @param [Date] date the day to calculate
   # @param [String] mpan the mpan for the meter
   def days_pv(date, mpan)
-    capacity = degraded_kwp(date)
+    capacity = degraded_kwp(date, :override_generation)
     pv_yield = @synthetic_sheffield_solar_pv_yields[date]
     scaled_pv_kwh_x48 = AMRData.one_day_zero_kwh_x48
     scaled_pv_kwh_x48 = AMRData.fast_multiply_x48_x_scalar(pv_yield, capacity / 2.0) unless capacity.nil? || pv_yield.nil?
@@ -420,7 +429,7 @@ class SolarPVPanels
   #
   # Otherwise returns the kwp value for the meters on that date, allowing for
   # panel degradation over time.
-  def degraded_kwp(date, override_key = :override_generation)
+  def degraded_kwp(date, override_key)
     @solar_pv_panel_config.degraded_kwp(date, override_key)
   end
 
