@@ -13,6 +13,7 @@ module Layout
         Elements::BadgeComponent.new(*args, **{ classes: 'font-weight-normal text-uppercase' }.merge(kwargs))
       end
       renders_one :date, ->(date) { short_dates(date.to_s.to_date) }
+      renders_one :datetime, ->(datetime) { nice_date_times(datetime.to_s.to_datetime) }
       renders_one :author, ->(*args, **kwargs) do
         Elements::TagComponent.new(:a, *args, **merge_classes('', kwargs))
       end

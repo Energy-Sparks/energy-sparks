@@ -5,18 +5,26 @@ module Events
       @eventbrite_api_token = eventbrite_api_token
     end
 
+    def events_without_images
+      @events.reject { |event| event.image_url.present? }
+    end
+
     # Returns an arry of EventBriteSDK::OrgEvent objects
-    def perform
-      events = []
+    def fetch
+      @events ||= []
       query.each do |eventbrite_event|
-        events << Events::Event.new(eventbrite_event)
+        @events << Events::Event.new(eventbrite_event)
       end
-      return events
+      return @events
     rescue => e
       Rails.logger.error "Exception fetching Eventbrite events : #{e.class} #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e)
       return []
+    end
+
+    def events
+      @events ||= fetch
     end
 
     private
@@ -38,7 +46,10 @@ module Events
     def query
       # expand: "ticket_availability" to get info whether sold out
       # limit to live only events, most recent first
-      EventbriteSDK::Organization.new(id: @org_id).events.retrieve(api_token: @eventbrite_api_token, query: { expand: 'ticket_availability', status: 'live', order_by: :start_asc })
+      EventbriteSDK::Organization.new(id: @org_id).events.retrieve(
+        api_token: @eventbrite_api_token,
+        query: { expand: 'ticket_availability', status: 'live', order_by: :start_asc }
+      )
     end
   end
 end
