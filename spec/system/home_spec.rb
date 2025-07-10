@@ -209,7 +209,7 @@ RSpec.describe 'home', type: :system do
   end
 
   describe 'Training page' do
-    context without_feature: 'new_training_page' do
+    context without_feature: :new_training_page do
       let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
       let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }
       let(:list_events) { double('list_events') }
@@ -240,7 +240,9 @@ RSpec.describe 'home', type: :system do
       end
     end
 
-    context with_feature: 'new_training_page' do
+    context with_feature: :new_training_page do
+      let(:response) {}
+
       before do
         allow(EventbriteSDK).to receive(:get).and_return(response)
         visit root_path
