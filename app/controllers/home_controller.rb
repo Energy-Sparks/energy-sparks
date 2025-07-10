@@ -5,8 +5,6 @@ class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
-  before_action :set_newsletters, only: [:index, :show]
-  before_action :set_case_studies, only: [:index, :show]
   before_action :set_blog_service, only: [:index, :show]
   before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
 
@@ -109,14 +107,6 @@ class HomeController < ApplicationController
       { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
       { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
     ]
-  end
-
-  def set_newsletters
-    @newsletters = Newsletter.order(published_on: :desc).limit(4)
-  end
-
-  def set_case_studies
-    @case_studies = CaseStudy.order(position: :asc).limit(3)
   end
 
   def set_marketing_case_studies

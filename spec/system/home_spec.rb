@@ -152,14 +152,30 @@ RSpec.describe 'home', type: :system do
     end
   end
 
-  it 'has a contact page' do
-    visit root_path
-    click_on('About')
-    within('#about-menu') do
-      click_on('Contact')
+  describe 'Contact page' do
+    before do
+      visit root_path
+      click_on('About')
+      within('#about-menu') do
+        click_on('Contact')
+      end
     end
-    expect(page.has_content?('Contact us'))
+
+    it { expect(page).to have_content('Contact us') }
   end
+
+  describe 'Team page' do
+    before do
+      visit root_path
+      click_on('About')
+      within('#about-menu') do
+        click_on('Team')
+      end
+    end
+
+    it { expect(page).to have_content('Our Team') }
+  end
+
 
   describe 'Pricing page' do
     context toggle_feature: :new_pricing_page do
@@ -193,7 +209,7 @@ RSpec.describe 'home', type: :system do
     expect(page.has_content?('Support us'))
   end
 
-  describe 'having a training page' do
+  describe 'Training page' do
     let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
     let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }
     let(:list_events) { double('list_events') }
@@ -223,10 +239,42 @@ RSpec.describe 'home', type: :system do
     end
   end
 
-  it 'has a datasets page' do
-    visit root_path
-    click_on('Datasets')
-    expect(page.has_content?('Data used in Energy Sparks'))
+  describe 'Newsletters page' do
+    before do
+      visit root_path
+      click_on('Newsletters')
+    end
+
+    it { expect(page).to have_content('Newsletters') }
+  end
+
+  describe 'Datasets page' do
+    before do
+      visit root_path
+      click_on('Datasets')
+    end
+
+    it { expect(page).to have_content('Dataset attributions') }
+  end
+
+  describe 'Open data page' do
+    before do
+      visit root_path
+      click_on('Open data')
+    end
+
+    it { expect(page).to have_content('Data used in Energy Sparks') }
+  end
+
+  describe 'School statistics page' do
+    before do
+      visit root_path
+      within('footer') do
+        click_on('School statistics')
+      end
+    end
+
+    it { expect(page).to have_content('School Statistics') }
   end
 
   context 'school admin user' do

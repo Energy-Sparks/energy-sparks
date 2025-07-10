@@ -24,9 +24,19 @@ FactoryBot.define do
       name { 'test school'}
     end
 
-    trait :with_school_group do
+    trait :with_consent do
       after(:create) do |school, _evaluator|
-        school.update(school_group: create(:school_group))
+        create(:consent_grant, school:)
+      end
+    end
+
+    trait :with_school_group do
+      transient do
+        default_issues_admin_user { create(:admin) }
+      end
+
+      after(:create) do |school, evaluator|
+        school.update(school_group: create(:school_group, default_issues_admin_user: evaluator.default_issues_admin_user))
       end
     end
 

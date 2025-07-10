@@ -1,4 +1,4 @@
-<% cache_if current_user.nil?, I18n.locale, expires_in: 1.hour do %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
   <% content_for :page_title, t('common.labels.home') %>
   <div class="container-fluid adult mb-4 py-5">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, id: 'hero') do |grid| %>
@@ -71,7 +71,7 @@
 
     <%= render Layout::GridComponent.new(
           id: 'features',
-          cols: 3, classes: '',
+          cols: 3,
           cell_classes: 'mb-4',
           component_classes: 'rounded-xl'
         ) do |grid| %>

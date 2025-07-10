@@ -111,6 +111,12 @@ class Meter < ApplicationRecord
     joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
   }
 
+  scope :with_school_and_group, -> { includes(:school, school: :school_group) }
+
+  scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
+
+  scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
+
   # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
   # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
@@ -148,7 +154,7 @@ class Meter < ApplicationRecord
 
   def admin_meter_status_label
     for_fuel_type = (fuel_type == :exported_solar_pv ? :solar_pv : fuel_type)
-    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || ''
+    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || nil
   end
 
   def fuel_type

@@ -1,6 +1,6 @@
 module Elements
   class ImageComponent < ApplicationComponent
-    def initialize(src:, fit: true, collapse: false, width: nil, height: nil, rounded: :all, **_kwargs)
+    def initialize(src:, fit: true, collapse: false, width: nil, height: nil, rounded: :all, frame: false, **_kwargs)
       super
       @src = src
       @fit = fit
@@ -8,12 +8,14 @@ module Elements
       @width = width
       @height = height
       @rounded = rounded
+      @frame = frame
       validate
       setup_classes
     end
 
     def setup_classes
-      add_classes('fit') if @fit
+      add_classes('fit') if @fit && !@frame
+      add_classes('w-100') if @frame
       add_classes(self.class.rounded[@rounded]) if @rounded
       add_classes('d-none d-lg-block') if @collapse
     end
@@ -26,7 +28,14 @@ module Elements
     end
 
     def call
-      image_tag(@src, id: @id, class: classes, style: style)
+      img = image_tag(@src, id: @id, class: classes, style: style)
+      if @frame
+        classes = 'bg-white h-100 w-100 d-flex align-items-center justify-content-center'
+        classes = class_names(classes, self.class.rounded[@rounded]) if @rounded
+        tag.div(class: classes) { img }
+      else
+        img
+      end
     end
 
     def validate
