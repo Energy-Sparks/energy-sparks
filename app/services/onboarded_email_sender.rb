@@ -11,10 +11,7 @@ class OnboardedEmailSender
     users = @school.activation_users
     return unless users.any?
 
-    mailer = Flipper.enabled?(:onboarding_mailer_2025) ? OnboardingMailer2025 : OnboardingMailer
-    mailer.with_user_locales(users:, school: @school) do |mailer|
-      mailer.onboarded_email.deliver_now
-    end
+    OnboardingMailer.deliver_now(:onboarded_email, users:, school: @school)
     onboarding_service.record_event(@school.school_onboarding, :onboarded_email_sent)
   end
 

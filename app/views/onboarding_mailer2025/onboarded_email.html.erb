@@ -1,15 +1,15 @@
-<div class="mb-8"><%= t('onboarding_mailer.onboarded_email.we_are_working_message') %></div>
+<div class="mb-4"><%= t('onboarding_mailer.onboarded_email.we_are_working_message') %></div>
 <div><%= t('onboarding_mailer2025.onboarded_email.in_the_mean_time') %></div>
-<ul style="margin-top: 0">
+<ol style="margin-top: 0">
   <li><%= t('onboarding_mailer2025.onboarded_email.familiarise_yourself_html', root_url:) %></li>
   <li><%= t('onboarding_mailer2025.onboarded_email.build_an_energy_saving_team_html', root_url:) %></li>
   <li><%= t('onboarding_mailer2025.onboarded_email.set_up_a_holiday_switch_off_routine_html', root_url:) %></li>
-  <li><%= t('onboarding_mailer2025.onboarded_email.sign_up_to_energy_saving_alerts_and_messages_html', root_url:) %></li>
+  <li><%= t('onboarding_mailer2025.onboarded_email.sign_up_to_energy_saving_alerts_html', root_url:) %></li>
   <li><%= t('onboarding_mailer2025.onboarded_email.review_our_range_html', root_url:) %></li>
-</ul>
-<div class="mb-8"><%= t('onboarding_mailer.onboarded_email.we_will_be_in_touch_shortly_message') %></div>
-<div class="mb-8"><%= t('onboarding_mailer2025.onboarded_email.we_hope') %></div>
-<div class="mb-8"><%= t('onboarding_mailer.onboarded_email.get_in_touch_message_html', contact_url:) %></div>
+</ol>
+<div class="mb-4"><%= t('onboarding_mailer.onboarded_email.we_will_be_in_touch_shortly_message') %></div>
+<div class="mb-4"><%= t('onboarding_mailer2025.onboarded_email.we_hope') %></div>
+<div class="mb-4"><%= t('onboarding_mailer.onboarded_email.get_in_touch_message_html', contact_url:) %></div>
 <div>
   <%= t('onboarding_mailer2025.onboarded_email.many_thanks') %><br>
   <%= @school&.school_group&.default_issues_admin_user&.display_name %>

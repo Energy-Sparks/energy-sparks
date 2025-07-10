@@ -3,6 +3,14 @@
 class OnboardingMailer < LocaleMailer
   helper :application
 
+  def self.mailer
+    Flipper.enabled?(:onboarding_mailer_2025) ? OnboardingMailer2025 : self
+  end
+
+  def self.deliver_now(type, **kwargs)
+    mailer.with_user_locales(**kwargs) { |mailer| mailer.public_send(type).deliver_now }
+  end
+
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
@@ -49,7 +57,7 @@ class OnboardingMailer < LocaleMailer
   def welcome_email
     @school = params[:school]
     @title = @school.name
-    @to = user_emails(params[:users])
-    make_bootstrap_mail(to: @to)
+    @user = params[:user]
+    make_bootstrap_mail(to: @user.email)
   end
 end

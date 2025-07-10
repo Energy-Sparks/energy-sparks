@@ -289,11 +289,7 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    return unless school.present?
-
-    OnboardingMailer.with_user_locales(users: [self], school:) do |mailer|
-      mailer.welcome_email.deliver_now
-    end
+    OnboardingMailer.mailer.with(user: self, school:).welcome_email.deliver_now if school&.visible
   end
 
   def self.admin_user_export_csv
