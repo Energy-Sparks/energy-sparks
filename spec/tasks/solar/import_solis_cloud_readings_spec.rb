@@ -112,6 +112,16 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     stub_inverter_day(meter.meter_serial_number, '2025-01-09',
                       { data: [{ timeStr: '00:45', eToday: 1 }, { timeStr: '00:46', eToday: 2 }] }.to_json)
     task.invoke('2025-01-09', '2025-01-09')
-    expect(readings).to eq([0, 2].map(&:to_s) + Array.new(46, nil))
+    expect(readings).to eq([0, 0, 2].map(&:to_s) + Array.new(45, nil))
+  end
+
+  it 'handles incomplete and rolled over data' do
+    stub_inverter_day(meter.meter_serial_number, '2025-01-09',
+                      { data: [{ timeStr: '03:59', eToday: 255.4 },
+                               { timeStr: '04:29', eToday: 0 },
+                               { timeStr: '04:59', eToday: 0.1 }
+                               ] }.to_json)
+    task.invoke('2025-01-09', '2025-01-09')
+    expect(readings).to eq([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.1].map(&:to_s) + Array.new(37, nil))
   end
 end
