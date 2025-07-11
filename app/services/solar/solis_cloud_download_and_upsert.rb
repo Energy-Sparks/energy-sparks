@@ -73,7 +73,7 @@ module Solar
 
     def zero_leftover(array)
       # first entries can sometimes carry over total from previous day, reset those to zero
-      index = array.find_index { |_time, total| total < 1 }
+      index = array.find_index { |_time, total| total < 10 }
       array.each_with_index { |_, i| array[i][1] = 0 if i < index } unless index.nil?
       array
     end
