@@ -50,6 +50,8 @@ module Layout
 
     def column_classes
       case cols
+      when 1
+        'col-12'
       when 2
         'col-12 col-lg-6'
       when 3
