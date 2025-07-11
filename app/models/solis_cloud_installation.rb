@@ -36,8 +36,11 @@ class SolisCloudInstallation < ApplicationRecord
     api_id
   end
 
+  def api
+    DataFeeds::SolisCloudApi.new(api_id, api_secret)
+  end
+
   def update_inverter_detail_list
-    api = DataFeeds::SolisCloudApi.new(api_id, api_secret)
     inverter_detail_list = api.inverter_detail_list.dig('data', 'records') || []
     update!(inverter_detail_list:)
     inverter_detail_list
