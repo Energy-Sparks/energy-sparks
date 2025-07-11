@@ -24,6 +24,7 @@ module Pupils
     def fuel_type
       fuel_type = params[:category]
       fuel_type = 'solar' if fuel_type == 'solar_pv'
+      fuel_type = 'storage_heaters' if ['storage heaters', 'storage_heater'].include?(fuel_type)
       fuel_type
     end
 
