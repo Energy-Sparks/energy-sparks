@@ -241,20 +241,23 @@ RSpec.describe 'home', type: :system do
     end
 
     context with_feature: :new_training_page do
-      let(:response) { JSON.parse(File.read(File.join(fixture_paths.first, 'events/events.json'))) }
-
       before do
-        expect(EventbriteSDK).to receive(:get).with(any_args).and_return(response)
-        visit root_path
-        click_on('Our services')
-        within('#our-services') do
-          click_on('Training')
+        ClimateControl.modify EVENTBRITE_API_TOKEN: 'x', EVENTBRITE_ORG_ID: 'x' do
+          allow(EventbriteSDK).to receive(:get).and_return(response)
+
+          visit root_path
+          click_on('Our services')
+          within('#our-services') do
+            click_on('Training')
+          end
         end
       end
 
       let(:displayed_events) { all('#events .card') }
 
       context 'when there are events' do
+        let(:response) { JSON.parse(File.read(File.join(fixture_paths.first, 'events/events.json'))) }
+
         let(:available) { displayed_events[0] }
         let(:sold_out) { displayed_events[3] }
 
