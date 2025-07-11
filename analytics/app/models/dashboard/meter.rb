@@ -210,7 +210,7 @@ module Dashboard
     end
 
     def sheffield_simulated_solar_pv_panels?
-      !@solar_pv_setup.nil? && @solar_pv_setup.instance_of?(SolarPVPanels)
+      !@solar_pv_setup.nil? && @solar_pv_setup.instance_of?(Aggregation::SolarPvPanels)
     end
 
     def solar_pv_real_metering?
@@ -380,8 +380,8 @@ module Dashboard
 
     def process_meter_attributes
       @storage_heater_setup     = StorageHeater.new(attributes(:storage_heaters)) if @meter_attributes.key?(:storage_heaters)
-      @solar_pv_setup           = SolarPVPanels.create(self, :solar_pv)
-      @solar_pv_overrides       = SolarPVPanels.create(self, :solar_pv_override)
+      @solar_pv_setup           = Aggregation::SolarPvPanels.create(self, :solar_pv)
+      @solar_pv_overrides       = Aggregation::SolarPvPanels.create(self, :solar_pv_override)
       @solar_pv_real_metering   = true if @meter_attributes.key?(:solar_pv_mpan_meter_mapping)
       @partial_meter_coverage ||= PartialMeterCoverage.new(attributes(:partial_meter_coverage))
       @meter_tariffs = GenericTariffManager.new(self)

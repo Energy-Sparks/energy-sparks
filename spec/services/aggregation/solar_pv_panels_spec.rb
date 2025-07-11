@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SolarPVPanels, type: :service do
+describe Aggregation::SolarPvPanels, type: :service do # rubocop:todo RSpec/MultipleMemoizedHelpers
   # ranges for amr data
   let(:start_date)         { Date.new(2023, 1, 1) }
   let(:end_date)           { Date.new(2023, 1, 31) }
@@ -30,7 +30,7 @@ describe SolarPVPanels, type: :service do
   let(:pv_meter_map)       { SolarMeterMap.new }
 
   let(:is_holiday)         { false }
-  let(:holidays)           { double('holidays') }
+  let(:holidays)           { instance_double(Holidays, holiday?: is_holiday) }
 
   let(:meter_collection)   { build(:meter_collection, holidays: holidays) }
 
@@ -48,11 +48,10 @@ describe SolarPVPanels, type: :service do
   let(:service) { described_class.new(meter_attributes, solar_pv) }
 
   before do
-    allow(holidays).to receive(:holiday?).and_return(is_holiday)
     pv_meter_map[:mains_consume] = meter
   end
 
-  context 'when generating synthetic data' do
+  context 'when generating synthetic data' do # rubocop:todo RSpec/MultipleMemoizedHelpers
     before do
       service.process(pv_meter_map, meter_collection)
     end
@@ -87,7 +86,7 @@ describe SolarPVPanels, type: :service do
     it 'calculates export data' do
       days_data = pv_meter_map[:export].amr_data.days_kwh_x48(sunday)
       # should be exporting from periods 11-37 on the sunday based on AMR and solar data
-      expect(days_data[11..37].all? { |hh| hh < 0.0 }).to eq true
+      expect(days_data[11..37].all? { |hh| hh < 0.0 }).to be true
 
       days_data = pv_meter_map[:export].amr_data.days_kwh_x48(monday)
       # should not be exporting on the monday as school is occupied
@@ -114,18 +113,16 @@ describe SolarPVPanels, type: :service do
       days_data = pv_meter_map[:self_consume].amr_data.days_kwh_x48(monday)
       # should be consuming all of the generation on the monday when occupied
       # TODO this could be better: could check that we're consuming ~pv output
-      expect(days_data[11..37].all? { |hh| hh > 0.0 }).to eq true
+      expect(days_data[11..37].all? { |hh| hh > 0.0 }).to be true
     end
   end
 
   # Cross check values against spreadsheet with revised logic.
-  context 'with analysis-cross-check' do
+  context 'with analysis-cross-check' do # rubocop:todo RSpec/MultipleMemoizedHelpers
     let(:solar_pv_installation_date)  { Date.new(2022, 6, 8) }
     let(:kwp)                         { 24.0 }
 
-    it 'does expected calculations' do
-      date = Date.new(2022, 6, 8)
-
+    def run(date)
       # mains consumption
       reading = build(:one_day_amr_reading, date: date,
                                             kwh_data_x48: [3.4, 3.5, 3.5, 3.9, 3.6, 3.3, 3.7, 3.4, 3.2, 3.6, 3.1, 3, 2.3, 1.00, 0.2, 0.1, 0, 0, 0, 0.4, 0.3, 0.3, 0.1, 0.1, 0, 0, 0, 0, 0.3, 0, 0.1, 0.1, 1.2, 1.1, 1.3, 2.4, 2.7, 3.5, 3, 3.5, 3.2, 3.7, 3.2, 3.5, 3.6, 3.4, 3.3, 3.6])
@@ -145,11 +142,18 @@ describe SolarPVPanels, type: :service do
       pv_meter_map[:generation] = meter
 
       # This version of the class is for metered generation, so will use the above values
-      service = SolarPVPanelsMeteredProduction.new
-      allow(service).to receive(:yesterday_baseload_kw).and_return(6.88571428571428)
-      allow(service).to receive(:unoccupied?).and_return(true)
+      service = Aggregation::SolarPvPanelsMeteredProduction.new
+      allow(service).to receive_messages(yesterday_baseload_kw: 6.88571428571428, unoccupied?: true)
 
       service.process(pv_meter_map, meter_collection)
+
+      pv_meter_map
+    end
+
+    it 'does expected calculations' do
+      date = Date.new(2022, 6, 8)
+
+      pv_meter_map = run(date)
 
       # puts "MAINS"
       # puts pv_meter_map[:mains_consume].amr_data.days_kwh_x48(date).inspect
@@ -177,7 +181,7 @@ describe SolarPVPanels, type: :service do
     end
   end
 
-  context 'when overriding existing data' do
+  context 'when overriding existing data' do # rubocop:todo RSpec/MultipleMemoizedHelpers
     it 'should skip days when school is unoccupied'
     it 'should calculate expected export'
     it 'should calculate generation data'
