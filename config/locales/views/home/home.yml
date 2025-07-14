@@ -91,7 +91,13 @@ en:
     one: 1 school
     other: "%{count} schools"
   training:
+    feature:
+      description: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
+      title: Training
     intro: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
+    no_events:
+      description: New events are added regularly, so please check again soon
+      title: No events are currently scheduled
     sold_out: Sold out
     spaces_available: Spaces available
     title: Training

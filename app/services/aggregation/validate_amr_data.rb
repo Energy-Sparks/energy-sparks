@@ -835,7 +835,7 @@ module Aggregation
       ed = [end_date,   @meter.amr_data.end_date].min
       existing_kwh = sd <= ed ? @meter.amr_data.kwh_date_range(sd, ed) : 0.0
       logger.info "Correcting solar pv production data using Sheffield #{start_date} to #{end_date} current total kwh #{existing_kwh}"
-      pv = SolarPVPanels.new(@meter.attributes(:solar_pv), @meter.meter_collection.solar_pv)
+      pv = SolarPvPanels.new(@meter.attributes(:solar_pv), @meter.meter_collection.solar_pv)
       (start_date..end_date).each do |date|
         pv_days_readings = pv.days_pv(date, @meter.solar_pv)
         @amr_data.add(date, pv_days_readings)

@@ -176,7 +176,6 @@ RSpec.describe 'home', type: :system do
     it { expect(page).to have_content('Our Team') }
   end
 
-
   describe 'Pricing page' do
     context toggle_feature: :new_pricing_page do
       it 'has a pricing page' do
@@ -210,32 +209,88 @@ RSpec.describe 'home', type: :system do
   end
 
   describe 'Training page' do
-    let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
-    let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }
-    let(:list_events) { double('list_events') }
+    context without_feature: :new_training_page do
+      let(:sold_out) { OpenStruct.new(date: DateTime.tomorrow, name: 'Event 1', url: 'http://hello', sold_out?: true) }
+      let(:spaces_available) { OpenStruct.new(date: DateTime.now + 10.days, name: 'Event 2', url: 'http://hello2', sold_out?: false) }
+      let(:list_events) { double('list_events') }
 
-    before do
-      visit root_path
-      click_on('Our services')
+      before do
+        visit root_path
+        click_on('Our services')
 
-      expect(Events::ListEvents).to receive(:new).and_return(list_events)
-      expect(list_events).to receive(:perform).and_return([sold_out, spaces_available])
+        expect(Events::ListEvents).to receive(:new).and_return(list_events)
+        expect(list_events).to receive(:events_without_images).and_return([])
+        expect(list_events).to receive(:events).and_return([sold_out, spaces_available])
 
-      within('#our-services') do
-        click_on('Training')
+        within('#our-services') do
+          click_on('Training')
+        end
+      end
+
+      it { expect(page).to have_content('Training') }
+
+      it 'has available event' do
+        expect(page).to have_content('Event 1')
+        expect(page).to have_content('Spaces available')
+      end
+
+      it 'has sold out event' do
+        expect(page).to have_content('Event 2')
+        expect(page).to have_content('Sold out')
       end
     end
 
-    it { expect(page).to have_content('Training') }
+    context with_feature: :new_training_page do
+      before do
+        ClimateControl.modify EVENTBRITE_API_TOKEN: 'x', EVENTBRITE_ORG_ID: 'x' do
+          allow(EventbriteSDK).to receive(:get).and_return(response)
 
-    it 'has available event' do
-      expect(page).to have_content('Event 1')
-      expect(page).to have_content('Spaces available')
-    end
+          visit root_path
+          click_on('Our services')
+          within('#our-services') do
+            click_on('Training')
+          end
+        end
+      end
 
-    it 'has sold out event' do
-      expect(page).to have_content('Event 2')
-      expect(page).to have_content('Sold out')
+      let(:displayed_events) { all('#events .card') }
+
+      context 'when there are events' do
+        let(:response) { JSON.parse(File.read(File.join(fixture_paths.first, 'events/events.json'))) }
+
+        let(:available) { displayed_events[0] }
+        let(:sold_out) { displayed_events[3] }
+
+        it { expect(page).to have_css('#events') }
+        it { expect(displayed_events.count).to eq 4 }
+        it { expect(page).to have_content('Training') }
+        it { expect(page).to have_content('This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.') }
+
+        it 'has available event' do
+          expect(available).to have_css("img[src*='https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F113596237%2F481005514167%2F1%2Foriginal.20201005-092822?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C161%2C1086%2C543&s=1279466ca350155300d6b315d128f3d9']")
+          expect(available).to have_content('Energy Sparks induction session')
+          expect(available).to have_content('An online induction to help you get started reducing energy consumption with Energy Sparks.')
+          expect(available).to have_content('Spaces available')
+          expect(available).to have_link('Sign up', href: 'https://www.eventbrite.co.uk/e/energy-sparks-induction-session-tickets-138294742297')
+        end
+
+        it 'has sold out event' do
+          expect(sold_out).to have_css("img[src*='https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F113596237%2F481005514167%2F1%2Foriginal.20201005-092822?h=200&w=450&auto=format%2Ccompress&q=75&sharp=10&rect=0%2C161%2C1086%2C543&s=1279466ca350155300d6b315d128f3d9']")
+          expect(sold_out).to have_content('Another Energy Sparks induction session')
+          expect(sold_out).to have_content('Another online induction to help you get started reducing energy consumption with Energy Sparks.')
+          expect(sold_out).to have_content('Sold out')
+          expect(sold_out).to have_link('More information', href: 'https://www.eventbrite.co.uk/e/energy-sparks-induction-session-tickets-141010286563')
+        end
+      end
+
+      context 'when there are no events' do
+        let(:response) { { 'events': [] } }
+
+        it { expect(page).not_to have_css('#events') }
+        it { expect(displayed_events.count).to eq 0 }
+        it { expect(page).to have_content('No events are currently scheduled')}
+        it { expect(page).to have_content('New events are added regularly, so please check again soon')}
+      end
     end
   end
 

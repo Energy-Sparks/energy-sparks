@@ -8,9 +8,9 @@
   <% end %>
   <%= header %>
   <%= price if price %>
-  <% if date || author %>
+  <% if date || datetime || author %>
     <div class='pb-3 small text-complement'>
-      <%= date if date %>
+      <%= date || datetime %>
       <% if author %>
         <%= t('common.author_html', author: author.to_s.html_safe) %>
       <% end %>
