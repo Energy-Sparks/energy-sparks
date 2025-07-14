@@ -41,7 +41,7 @@ class CaseStudy < ApplicationRecord
   translates :tags, type: :string, fallbacks: { cy: :en }
   translates :description, backend: :action_text
   t_has_one_attached :file
-  has_one_attached :image # assume this doesn't need to be translatable
+  has_one_attached :image
 
   validates :image,
               content_type: ['image/png', 'image/jpeg'],
@@ -49,6 +49,14 @@ class CaseStudy < ApplicationRecord
 
   validates :title_en, :file_en, presence: true
   validates :position, numericality: true, presence: true
+
+  def publishable?
+    image.attached?
+  end
+
+  def self.publishable_error_without
+    'without image'
+  end
 
   def tag_list
     return [] if tags.blank?

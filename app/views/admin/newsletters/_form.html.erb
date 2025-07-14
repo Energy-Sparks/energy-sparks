@@ -1,7 +1,29 @@
-<%= simple_form_for([:admin, @newsletter]) do |f| %>
-  <%= f.input :title, as: :string %>
-  <%= f.input :url, as: :string %>
-  <%= f.input :published_on, as: :tempus_dominus_date, default_date: Date.today, input_html: { class: "form-control form-control-lg" } %>
-  <%= f.input :image, hint: "Please use an image with a width of 300 pixels and a height of 200 pixels" %>
-  <%= f.button :submit %>
-<% end %>
+<div class="border rounded bg-light p-4">
+  <%= simple_form_for([:admin, @newsletter]) do |f| %>
+    <div class="row">
+      <div class="col-6">
+          <%= f.input :title, as: :string %>
+          <%= f.input :url, as: :string %>
+          <%= f.input :published_on, as: :tempus_dominus_date,
+                                     default_date: Time.zone.today,
+                                     input_html: { class: 'form-control form-control-lg' } %>
+          <div class='pb-3'>
+            <% if @newsletter.image.attached? && @newsletter.image.persisted? %>
+              <div class="mt-2">
+                <p>Current Image:</p>
+                <%= image_tag @newsletter.image, class: 'img-thumbnail' %>
+              </div>
+            <% else %>
+              No image attached
+            <% end %>
+            <%= f.input :image, class: 'form-control' %>
+          </div>          <%= f.input :published, as: :boolean %>
+          <%= f.button :submit %>
+      </div>
+      <div class="col-6">
+        <h4>Change history</h4>
+        <%= render 'admin/cms/change_history', model: @newsletter %>
+      </div>
+    </div>
+  <% end %>
+</div>

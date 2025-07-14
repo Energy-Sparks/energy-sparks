@@ -1,6 +1,11 @@
 module Admin
   class NewslettersController < AdminController
+    include ImageResizer
+
     load_and_authorize_resource
+    before_action only: [:create, :update] do
+      resize_image(newsletter_params[:image])
+    end
 
     # GET /newsletters
     def index

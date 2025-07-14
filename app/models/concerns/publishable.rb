@@ -4,6 +4,8 @@ module Publishable
   included do
     scope :published, -> { where(published: true) }
     scope :tx_resources, -> { published.order(:id) }
+
+    validate :change_publication_status?, on: :update
   end
 
   def publishable?

@@ -101,4 +101,13 @@ RSpec.describe CaseStudy, type: :model do
       end
     end
   end
+
+  context 'when attempting to publish with no image' do
+    let!(:case_study_no_image) { create(:case_study, image: nil, published: false) }
+
+    it 'raises' do
+      case_study_no_image.published = true
+      expect { case_study_no_image.save! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
 end
