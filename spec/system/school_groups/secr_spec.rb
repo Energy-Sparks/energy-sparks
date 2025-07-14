@@ -45,7 +45,7 @@ describe 'School group SECR' do
       end
 
       it 'displays the table' do
-        click_on('Your data and conversion factors')
+        click_on('Data')
         expect(all('tbody tr').map { |tr| tr.all('td').map(&:text) }).to \
           eq([['Scope 1 Total', '1,200.0', '', '0.22'],
               ['Gas consumption', '1,200.0', '0.18', '0.22'],
