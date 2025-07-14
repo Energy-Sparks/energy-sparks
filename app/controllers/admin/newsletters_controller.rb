@@ -52,7 +52,7 @@ module Admin
     private
 
     def newsletter_params
-      params.require(:newsletter).permit(:title, :url, :published_on, :image)
+      params.require(:newsletter).permit(:title, :url, :published_on, :published, :image)
     end
   end
 end
