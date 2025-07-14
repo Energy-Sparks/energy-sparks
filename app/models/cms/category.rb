@@ -33,6 +33,7 @@ module Cms
     translates :description, type: :string, fallbacks: { cy: :en }
 
     validates_presence_of :title, :description
+    validate :change_publication_status?, on: :update
 
     has_many :pages, class_name: 'Cms::Page', dependent: :restrict_with_error
 

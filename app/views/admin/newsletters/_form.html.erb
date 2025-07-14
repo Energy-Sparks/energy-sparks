@@ -16,9 +16,11 @@
             <% else %>
               No image attached
             <% end %>
-            <%= f.input :image, class: 'form-control' %>
-          </div>          <%= f.input :published, as: :boolean %>
-          <%= f.button :submit %>
+            <%= f.input :image, as: :file, label: 'Image', hint: 'Must be PNG or JPG' %>
+          </div>
+          <%= f.input :published, as: :boolean %>
+          <%= f.submit 'Save', class: 'btn btn-primary btn-small' %>
+          <%= link_to 'Back', admin_newsletters_path, class: 'btn btn-secondary btn-small' %>
       </div>
       <div class="col-6">
         <h4>Change history</h4>

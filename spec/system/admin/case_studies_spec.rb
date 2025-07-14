@@ -96,7 +96,7 @@ RSpec.describe 'Admin case studies', type: :system do
       end
 
       context 'when there is no image' do
-        let!(:case_study) { create(:case_study, image: nil) }
+        let!(:case_study) { create(:case_study, image: nil, published: false) }
 
         it 'shows the no image icon' do
           expect(page).to have_css('i.fa-triangle-exclamation')
@@ -162,6 +162,15 @@ RSpec.describe 'Admin case studies', type: :system do
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
           it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
+        end
+
+        context 'when publishing without an image' do
+          before do
+            check :case_study_published
+            click_on 'Save case study'
+          end
+
+          it { expect(page).to have_content('No image attached') }
         end
 
         context 'with valid attributes' do

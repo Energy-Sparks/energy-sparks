@@ -46,17 +46,10 @@ class CaseStudy < ApplicationRecord
   validates :image,
               content_type: ['image/png', 'image/jpeg'],
               dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
+  validates :image, presence: true, if: :publishing?
 
   validates :title_en, :file_en, presence: true
   validates :position, numericality: true, presence: true
-
-  def publishable?
-    image.attached?
-  end
-
-  def self.publishable_error_without
-    'without image'
-  end
 
   def tag_list
     return [] if tags.blank?

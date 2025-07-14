@@ -26,7 +26,7 @@ module Admin
 
     # POST /newsletters
     def create
-      @newsletter = Newsletter.new(newsletter_params)
+      @newsletter = Newsletter.new(newsletter_params.merge(created_by: current_user))
       if @newsletter.save
         redirect_to admin_newsletters_path, notice: 'Newsletter was successfully created.'
       else
@@ -36,7 +36,7 @@ module Admin
 
     # PATCH/PUT /newsletters/1
     def update
-      if @newsletter.update(newsletter_params)
+      if @newsletter.update(newsletter_params.merge(updated_by: current_user))
         redirect_to admin_newsletters_path, notice: 'Newsletter was successfully updated.'
       else
         render :edit

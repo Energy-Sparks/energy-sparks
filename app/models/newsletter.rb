@@ -34,15 +34,8 @@ class Newsletter < ApplicationRecord
   has_one_attached :image
 
   validates_presence_of :title, :url, :published_on
+  validates :image, presence: true, if: :publishing?
   validates :image,
     content_type: ['image/png', 'image/jpeg'],
     dimension: { width: { min: 300, max: 1400 } } # betwen 300 (existing images) and full container width size to be conservative
-
-  def publishable?
-    image.attached?
-  end
-
-  def self.publishable_error_without
-    'without image'
-  end
 end
