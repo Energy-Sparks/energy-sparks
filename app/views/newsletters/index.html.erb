@@ -27,7 +27,12 @@
 
         <% @newsletters.each do |newsletter| %>
           <%= grid.with_card do |card| %>
-            <%= card.with_image(src: cdn_link_url(newsletter.image), rounded: :top) if newsletter.image.attached? %>
+            <%= if newsletter.image.attached?
+                  card.with_image(src:
+              cdn_link_url(newsletter.image),
+                                  rounded: :top, classes:
+              'border-light border-top border-left border-right')
+                end %>
             <%= card.with_feature_card(
                   theme: :light, size: :sm,
                   classes: 'p-4 rounded-bottom-xl'
