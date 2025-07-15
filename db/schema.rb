@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_03_154310) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_11_133624) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1405,6 +1405,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_03_154310) do
     t.date "published_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "published", default: false, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.index ["created_by_id"], name: "index_newsletters_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_newsletters_on_updated_by_id"
   end
 
   create_table "observations", force: :cascade do |t|
@@ -2273,6 +2278,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_03_154310) do
   add_foreign_key "meters", "schools", on_delete: :cascade
   add_foreign_key "meters", "solar_edge_installations", on_delete: :cascade
   add_foreign_key "meters", "solis_cloud_installations", on_delete: :cascade
+  add_foreign_key "newsletters", "users", column: "created_by_id", on_delete: :nullify
+  add_foreign_key "newsletters", "users", column: "updated_by_id", on_delete: :nullify
   add_foreign_key "observations", "activities", on_delete: :nullify
   add_foreign_key "observations", "audits"
   add_foreign_key "observations", "intervention_types", on_delete: :restrict

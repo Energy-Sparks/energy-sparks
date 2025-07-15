@@ -74,7 +74,12 @@ class HomeController < ApplicationController
   end
 
   def training
-    @events = Events::ListEvents.new.perform
+    list_events = Events::ListEvents.new
+    @events = list_events.events
+
+    unless Flipper.enabled?(:training_page, current_user)
+      @show_images = list_events.events_without_images.none? || (params[:show_images] && current_user&.admin?)
+    end
   end
 
   def user_guide_videos

@@ -253,8 +253,8 @@ en:
         total: Total
         transmission_and_distribution: Electricity transmission and distribution
       tabs:
-        data: Your data and conversion factors
-        usage: How to use the Energy Sparks SECR reporting tool
+        data: Data
+        usage: Instructions
       title: SECR Reporting Data
       usage:
         how_to_identify_gaps_html: |-
@@ -304,7 +304,7 @@ en:
         what_is_included_html: |-
           <h3>What is included in the report?</h3>
           <p>
-          The data tab includes gas and electricity consumption, conversion factors and related emissions data in a
+          The Data tab includes gas and electricity consumption, conversion factors and related emissions data in a
           format compatible with SECR reporting. However you will need to check that it is complete and add any other
           required data.
           </p>
