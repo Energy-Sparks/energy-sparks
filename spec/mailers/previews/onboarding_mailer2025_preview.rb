@@ -17,6 +17,20 @@ class OnboardingMailer2025Preview < ActionMailer::Preview
     OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
   end
 
+  def welcome_email_data_visible
+    user = User.joins(:school).where(schools: { visible: true, data_enabled: true }).sample
+    OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
+  end
+
+  def self.welcome_existing_params
+    { school_id: DashboardMessage.where(messageable_type: :School).sample.messageable_id }
+  end
+
+  def welcome_existing
+    school = School.find(params[:school_id])
+    OnboardingMailer2025.with(school:, user: school.users.sample, locale:).welcome_existing
+  end
+
   private
 
   def locale

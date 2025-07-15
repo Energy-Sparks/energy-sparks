@@ -104,6 +104,8 @@ cy:
   onboarding_mailer2025:
     onboarded_email:
       subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
+    welcome_email:
+      subject: Croeso i Sbarcynni
   onboarding_mailer:
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni

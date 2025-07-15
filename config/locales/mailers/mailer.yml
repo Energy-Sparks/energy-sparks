@@ -170,20 +170,20 @@ en:
       title: Thanks for confirming your Energy Sparks user account.
       view_your_school: View your school
   onboarding_mailer2025:
+    build_an_energy_saving_team_html: 'Build an energy saving team: <a href="%{root_url}activity_types/33">consider setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.'
+    find_your_biggest_html: 'Find your biggest energy saving opportunities: we analyse your energy data and help you prioritise the action you take to reduce your costs and carbon dioxide emissions. <a href="%{url}">Find these here</a>.'
+    here_is_our_quick_guide: 'Here is our quick guide for making the most of your Energy Sparks account:'
+    many_thanks: Many thanks
     onboarded_email:
-      build_an_energy_saving_team_html: 'Build an energy saving team: <a href="%{root_url}activity_types/33">consider setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.'
       familiarise_yourself_html: Familiarise yourself with using Energy Sparks, we have <a href="%{root_url}intervention_types/74">lots of useful guidance and information about training</a>.
       in_the_mean_time: 'In the meantime, here is our quick guide for making the most of your Energy Sparks account:'
-      many_thanks: Many thanks
       review_our_range_html: Review our range of <a href="%{root_url}intervention_type_groups">energy saving actions</a> that you, other members of staff and volunteers can carry out to start improving your energy usage.
-      set_up_a_holiday_switch_off_routine_html: 'Set up a holiday switch off routine: On average, 15% of schools'' energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.'
-      sign_up_to_energy_saving_alerts_html: 'Sign up to energy saving alerts and messages: Our alert system has helped some schools save thousands of pounds by notifying them about expected changes in their energy use. You can also receive regular tips and updates to help your school make the most of its Energy Sparks account throughout the year. <a href="%{root_url}profiles">Change your email preferences here.</a>'
       subject: "%{school} is now live on Energy Sparks"
-      we_hope: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
+    set_up_a_holiday_switch_off_routine_html: 'Set up a holiday switch off routine: On average, 15% of schools'' energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.'
+    sign_up_to_energy_saving_alerts_html: 'Sign up to energy saving alerts and messages: Our alert system has helped some schools save thousands of pounds by notifying them about expected changes in their energy use. You can also receive regular tips and updates to help your school make the most of its Energy Sparks account throughout the year. <a href="%{root_url}profiles">Change your email preferences here.</a>'
+    we_hope: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
     welcome_email:
       check_your_school_details_html: 'Check your school details are correct on Energy Sparks: Making sure that your <a href="%{details_url}">school details</a>, <a href="%{times_url}">opening times</a> and <a href="%{calendar_url}">school calendar</a> are correct can improve the support you receive from us.'
-      find_your_biggest_html: 'Find your biggest energy saving opportunities: we analyse your energy data and help you prioritise the action you take to reduce your costs and carbon dioxide emissions. <a href="%{url}">Find these here</a>.'
-      here_is_our_quick_guide: 'Here is our quick guide for making the most of your Energy Sparks account:'
       set_up_with_a_staff_account: You have been set up with a staff account. If you think you might need to check and update school details, you will need an admin account.
       subject: Welcome to Energy Sparks
       thank_you_for_confirming: Thank you for confirming your Energy Sparks user account.
@@ -191,6 +191,12 @@ en:
       we_are_current_working: We are currently working to get energy data for your school and will let you know when it becomes available.
       we_have_now: We have now set up your Energy Sparks account and soon you will be able to use it to see how much energy your school is using and find out about the greatest energy saving opportunities based on your current energy use.
       you_can_now_use: You can now use Energy Sparks to see how much energy your school is using, find out about the greatest energy saving opportunities and explore our activities and educational resources designed to teach your pupils about energy whilst saving money for their school.
+    welcome_existing:
+      dashboard_message: 'Please note: %{message}'
+      need_some_help_html: If you feel like you need some help using Energy Sparks, we have lots of useful guidance and information about training <a href="%{root_url}intervention_types/74">here</a>.
+      subject: Welcome to the %{school} Energy Sparks account
+      we_are_pleased_html: We are pleased to welcome you to the Energy Sparks account for %{school}. Although you might already be familiar with Energy Sparks, this email contains important information to help familiarise you with data for %{school} and to give you some reminders in case you need them. You can use Energy Sparks to <a href="%{url}">see how much energy your school is using</a>.
+      we_estimated_that_html: We estimate that your highest priority energy saving opportunity is to %{opportunity}. Doing this could save you as much as %{gbp_saving} and %{co2_saving}kg CO₂ per year.
   target_mailer:
     admin_target_report:
       subject: Target Progress and Data Report

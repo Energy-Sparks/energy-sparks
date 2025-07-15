@@ -91,4 +91,23 @@ RSpec.describe OnboardingMailer2025 do
       end
     end
   end
+
+  describe '#welcome_existing' do
+    let(:school) { create_school(dashboard_message: create(:dashboard_message)) }
+
+    before do
+      create(:management_priority, content_generation_run: create(:content_generation_run, school:),
+                                   alert: create(:alert, template_data: { average_one_year_saving_gbp: '£1' },
+                                                         variables: { average_one_year_saving_gbp: 1,
+                                                                      one_year_saving_co2: 1 }))
+      OnboardingMailer.mailer.with(user:, school:, locale: preferred_locale).welcome_existing.deliver_now
+    end
+
+    it 'sends the expected email' do
+      # debugger
+      # management_priority
+      expect(email.subject).to eq('Welcome to the Test School Energy Sparks account')
+      expect(email_html_body_as_markdown).to eq(read_md('welcome_existing'))
+    end
+  end
 end
