@@ -7,7 +7,9 @@
         <% grid.with_feature_card size: :xl do |feature| %>
           <%= feature.with_header title: t('mailchimp.latest_news_title') %>
           <%= feature.with_description { t('mailchimp.never_share_your_email_promise') } %>
-          <%= feature.with_button t('mailchimp.signup_now'), user_emails_path(current_user), style: :primary %>
+          <%= feature.with_button t('mailchimp.signup_now'),
+                                  current_user ? user_emails_path(current_user) : new_mailchimp_signup_path,
+                                  style: :primary %>
 
         <% end %>
         <%= grid.with_image src: 'laptop.jpg' %>
