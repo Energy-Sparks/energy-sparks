@@ -27,7 +27,7 @@
           <% else %>
             No image attached
           <% end %>
-          <%= f.input :image, class: 'form-control' %>
+          <%= f.input :image, as: :file, label: 'Image', hint: 'Must be PNG or JPG' %>
         </div>
         <%= render 'admin/shared/locale_tabs', f: f, field: :file do |locale| %>
           <%= f.input t_field(:file, locale), label: CaseStudy.human_attribute_name(:file) %>
@@ -37,7 +37,7 @@
     </div>
     <div class="mt-2">
       <%= f.input :published, as: :boolean %>
-      <%= f.submit 'Save case study', class: 'btn btn-primary btn-small' %>
+      <%= f.submit 'Save', class: 'btn btn-primary btn-small' %>
       <%= link_to 'Back', admin_case_studies_path, class: 'btn btn-secondary btn-small' %>
     </div>
   <% end %>
