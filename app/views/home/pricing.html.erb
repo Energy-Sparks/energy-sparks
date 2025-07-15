@@ -25,9 +25,9 @@
 
         <%= table.with_head_row do |header| %>
           <%= header.with_cell %>
-          <%= header.with_cell(I18n.t('pricing.product_features.starter.description'),
+          <%= header.with_cell(I18n.t('pricing.product_features.starter.description_html').html_safe,
                                classes: 'text-center text-muted') %>
-          <%= header.with_cell(I18n.t('pricing.product_features.standard.description'),
+          <%= header.with_cell(I18n.t('pricing.product_features.standard.description_html').html_safe,
                                classes: 'text-center text-muted') %>
         <% end %>
 
@@ -69,7 +69,7 @@
             id: 'looking-for-info'
           ) do |section_header| %>
         <%= section_header.with_header title: t('pricing.looking_for_info') %>
-        <%= section_header.with_button t('home.buttons.book_a_demo'),
+        <%= section_header.with_button t('home.buttons.watch_a_demo'),
                                        book_demo_campaigns_path,
                                        style: :primary %>
         <%= section_header.with_button t('home.buttons.read_case_studies'),

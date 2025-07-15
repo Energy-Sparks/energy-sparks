@@ -246,7 +246,7 @@ en:
         - title: Interactive energy usage charts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Meter level insights
+        - title: Meter level analysis and charts
           starter_icon: xmark
           standard_icon: circle-check
         - title: Track progress by setting energy-saving targets
@@ -289,9 +289,9 @@ en:
           standard_icon: sterling-sign
           info: "£25 + VAT per meter"
       standard:
-        description: Available to UK schools with an Energy Sparks account
+        description_html: Available to UK schools with an<br>Energy Sparks account
         title: Standard
       starter:
-        description: Available to all UK schools without an Energy Sparks account
+        description_html: Available to all UK schools without an<br>Energy Sparks account
         title: Starter
       title: Product features
