@@ -5,8 +5,8 @@
       <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, cell_classes: 'my-auto',
                                            id: 'hero') do |grid| %>
         <% grid.with_feature_card size: :xl do |feature| %>
-          <%= feature.with_header title: t('pricing.feature.title') %>
-          <%= feature.with_description { t('pricing.feature.description') } %>
+          <%= feature.with_header title: t('product.feature.title') %>
+          <%= feature.with_description { t('product.feature.description') } %>
           <%= feature.with_button t('enrol.enrol_now'), enrol_our_school_path, style: :primary %>
         <% end %>
         <%= grid.with_image src: 'pupil-screen.jpg' %>
@@ -16,22 +16,22 @@
     <div class="container">
       <%= render(Elements::TableComponent.new(id: :features, classes: 'table table-lined')) do |table| %>
         <%= table.with_head_row do |header| %>
-          <%= header.with_header_cell(t('pricing.product_features.title'), classes: 'title align-middle', width: '50%') %>
-          <%= header.with_header_cell(I18n.t('pricing.product_features.starter.title'),
+          <%= header.with_header_cell(t('product.product_features.title'), classes: 'title align-middle', width: '50%') %>
+          <%= header.with_header_cell(I18n.t('product.product_features.starter.title'),
                                       scope: 'col', classes: 'text-center align-middle', width: '25%') %>
-          <%= header.with_header_cell(I18n.t('pricing.product_features.standard.title'),
+          <%= header.with_header_cell(I18n.t('product.product_features.standard.title'),
                                       scope: 'col', classes: 'text-center align-middle', width: '25%') %>
         <% end %>
 
         <%= table.with_head_row do |header| %>
           <%= header.with_cell %>
-          <%= header.with_cell(I18n.t('pricing.product_features.starter.description_html').html_safe,
+          <%= header.with_cell(I18n.t('product.product_features.starter.description_html').html_safe,
                                classes: 'text-center text-muted') %>
-          <%= header.with_cell(I18n.t('pricing.product_features.standard.description_html').html_safe,
+          <%= header.with_cell(I18n.t('product.product_features.standard.description_html').html_safe,
                                classes: 'text-center text-muted') %>
         <% end %>
 
-        <% I18n.t('pricing.product_features.categories').each do |category| %>
+        <% I18n.t('product.product_features.categories').each do |category| %>
           <%= table.with_body_row do |row| %>
             <%= row.with_header_cell(colspan: 3, classes: '') do %>
               <%= category[:title] %>
@@ -68,7 +68,7 @@
       <%= render Layout::Cards::SectionHeaderComponent.new(
             id: 'looking-for-info'
           ) do |section_header| %>
-        <%= section_header.with_header title: t('pricing.looking_for_info') %>
+        <%= section_header.with_header title: t('product.looking_for_info') %>
         <%= section_header.with_button t('home.buttons.watch_a_demo'),
                                        book_demo_campaigns_path,
                                        style: :primary %>
@@ -86,33 +86,33 @@
             component_classes: 'h-100 p-4 rounded-xl'
           ) do |grid| %>
         <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
-          <%= feature.with_header(title: t('pricing.prices.small.title')) %>
+          <%= feature.with_header(title: t('product.prices.small.title')) %>
           <%= feature.with_price(
-                label: t('pricing.prices.small.note'),
-                price: t('pricing.prices.small.price'),
-                subtext: t('pricing.per_school_per_year'),
+                label: t('product.prices.small.note'),
+                price: t('product.prices.small.price'),
+                subtext: t('product.per_school_per_year'),
                 classes: 'mt-auto'
               ) %>
           <%= feature.with_button t('enrol.enrol_now'),
                                   enrol_our_school_path, style: :primary, classes: 'mt-4' %>
         <% end %>
         <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
-          <%= feature.with_header(title: t('pricing.prices.large.title')) %>
+          <%= feature.with_header(title: t('product.prices.large.title')) %>
           <%= feature.with_price(
-                label: t('pricing.prices.large.note'),
-                price: t('pricing.prices.large.price'),
-                subtext: t('pricing.per_school_per_year'),
+                label: t('product.prices.large.note'),
+                price: t('product.prices.large.price'),
+                subtext: t('product.per_school_per_year'),
                 classes: 'mt-auto'
               ) %>
           <%= feature.with_button t('enrol.enrol_now'),
                                   enrol_our_school_path, style: :primary, classes: 'mt-4' %>
         <% end %>
         <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
-          <%= feature.with_header(title: t('pricing.prices.mat_and_la.title')) %>
+          <%= feature.with_header(title: t('product.prices.mat_and_la.title')) %>
           <%= feature.with_price(
-                label: t('pricing.prices.mat_and_la.note'),
-                price: t('pricing.prices.mat_and_la.price'),
-                subtext: t('pricing.per_school_per_year'),
+                label: t('product.prices.mat_and_la.note'),
+                price: t('product.prices.mat_and_la.price'),
+                subtext: t('product.per_school_per_year'),
                 classes: 'mt-auto'
               ) %>
           <%= feature.with_button t('home.buttons.book_a_demo'),
@@ -129,12 +129,12 @@
           ) do |grid| %>
         <%= grid.with_image(src: 'funders.png', frame: true) %>
         <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
-          <%= feature.with_header(title: t('pricing.free_places.title')) %>
-          <%= feature.with_description { t('pricing.free_places.description_html') } %>
+          <%= feature.with_header(title: t('product.free_places.title')) %>
+          <%= feature.with_description { t('product.free_places.description_html') } %>
         <% end %>
       <% end %>
 
-      <h2><%= t('pricing.additional_services.title') %></h2>
+      <h2><%= t('product.additional_services.title') %></h2>
       <%= render Layout::GridComponent.new(
             id: 'additional-services',
             cols: 3,
@@ -143,30 +143,30 @@
             component_classes: 'h-100 p-4 rounded-xl'
           ) do |grid| %>
         <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
-          <%= feature.with_header(title: t('pricing.additional_services.workshops.title')) %>
+          <%= feature.with_header(title: t('product.additional_services.workshops.title')) %>
           <%= feature.with_price(
                 label: t('education_workshops.prices_range_from'),
-                price: t('pricing.additional_services.workshops.price'),
+                price: t('product.additional_services.workshops.price'),
                 classes: 'mt-auto'
               ) %>
           <%= feature.with_button t('home.buttons.find_out_more'),
                                   education_workshops_path, style: :primary, classes: 'mt-4' %>
         <% end %>
         <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
-          <%= feature.with_header(title: t('pricing.additional_services.on_site_audits.title')) %>
+          <%= feature.with_header(title: t('product.additional_services.on_site_audits.title')) %>
           <%= feature.with_price(
                 label: t('education_workshops.prices_range_from'),
-                price: t('pricing.additional_services.on_site_audits.price'),
+                price: t('product.additional_services.on_site_audits.price'),
                 classes: 'mt-auto'
               ) %>
           <%= feature.with_button t('home.buttons.find_out_more'),
                                   energy_audits_path, style: :primary, classes: 'mt-4' %>
         <% end %>
         <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
-          <%= feature.with_header(title: t('pricing.additional_services.desktop_audits.title')) %>
+          <%= feature.with_header(title: t('product.additional_services.desktop_audits.title')) %>
           <%= feature.with_price(
                 label: t('common.labels.starting_from'),
-                price: t('pricing.additional_services.desktop_audits.price'),
+                price: t('product.additional_services.desktop_audits.price'),
                 classes: 'mt-auto'
               ) %>
           <%= feature.with_button t('home.buttons.find_out_more'),
@@ -183,8 +183,8 @@
             cell_classes: 'my-auto'
           ) do |grid| %>
         <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
-          <%= feature.with_header(title: t('pricing.call_to_action.title')) %>
-          <%= feature.with_description { t('pricing.call_to_action.description_html', count: schools_count) } %>
+          <%= feature.with_header(title: t('product.call_to_action.title')) %>
+          <%= feature.with_description { t('product.call_to_action.description_html', count: schools_count) } %>
           <%= feature.with_button t('enrol.enrol_now'), enrol_our_school_path, style: :primary %>
           <%= feature.with_button(t('common.labels.request_more_info'), more_information_campaigns_path,
                                   style: :secondary) %>

@@ -163,7 +163,7 @@ en:
         price_large: "£595 + VAT"
         title: Individual state schools
       title: Pricing for standard product
-  pricing:
+  product:
     additional_services:
       desktop_audits:
         price: "£390 + VAT"

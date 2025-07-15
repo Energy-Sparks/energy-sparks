@@ -33,7 +33,7 @@ class HomeController < ApplicationController
   def education_workshops
   end
 
-  def pricing
+  def product
   end
 
   def contact
