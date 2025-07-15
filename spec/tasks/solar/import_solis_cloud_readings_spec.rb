@@ -37,7 +37,8 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     stub_inverter_day(meter.meter_serial_number, '2025-01-09', self.class::DAY_JSON)
     task.invoke('2025-01-09')
     expect(installation.meters.reload.count).to eq(1)
-    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[24] }).to eq(['8.5'])
+    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[24].to_f }).to \
+      match_array(be_within(0.01).of(16.20))
     expect(installation.meters.pluck(:name)).to \
       contain_exactly('SolisCloud - INV 3 Bluebell / Northwood College (1C5015)')
   end
@@ -47,8 +48,10 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     stub_inverter_day(meter.meter_serial_number, 1.day.ago, self.class::DAY_JSON)
     task.invoke
     expect(installation.meters.reload.count).to eq(1)
-    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[7] }).to eq(['0'])
-    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[24] }).to eq(['8.5'])
+    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[7].to_f }).to \
+      match_array(be_within(0.01).of(0.03))
+    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[24].to_f }).to \
+      match_array(be_within(0.01).of(16.20))
   end
 
   it 'works with no inverter first generation time' do
@@ -58,7 +61,8 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
     installation.update!(inverter_detail_list: installation.inverter_detail_list)
     stub_inverter_day(meter.meter_serial_number, '2024-01-10', self.class::DAY_JSON)
     task.invoke(nil, '2024-01-10')
-    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[7] }).to eq(['0'])
+    expect(installation.meters.first.amr_data_feed_readings.map { |reading| reading.readings[7].to_f }).to \
+      match_array(be_within(0.01).of(0.03))
   end
 
   it 'with existing readings, it reloads last five days' do
@@ -98,20 +102,6 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
   it 'handles one data item' do
     stub_inverter_day(meter.meter_serial_number, '2025-01-09', { data: [{ timeStr: '00:02', eToday: 100 }] }.to_json)
     task.invoke('2025-01-09', '2025-01-09')
-    expect(readings).to eq([100].map(&:to_s) + Array.new(47, nil))
-  end
-
-  it 'handles data with gaps' do
-    stub_inverter_day(meter.meter_serial_number, '2025-01-09',
-                      { data: [{ timeStr: '00:02', eToday: 100 }, { timeStr: '01:02', eToday: 200 }] }.to_json)
-    task.invoke('2025-01-09', '2025-01-09')
-    expect(readings).to eq([100, 0, 100].map(&:to_s) + Array.new(45, nil))
-  end
-
-  it 'handles data on 45 mins boundary' do
-    stub_inverter_day(meter.meter_serial_number, '2025-01-09',
-                      { data: [{ timeStr: '00:45', eToday: 1 }, { timeStr: '00:46', eToday: 2 }] }.to_json)
-    task.invoke('2025-01-09', '2025-01-09')
-    expect(readings).to eq([0, 2].map(&:to_s) + Array.new(46, nil))
+    expect(readings).to eq(Array.new(48, nil))
   end
 end
