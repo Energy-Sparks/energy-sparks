@@ -295,12 +295,37 @@ RSpec.describe 'home', type: :system do
   end
 
   describe 'Newsletters page' do
-    before do
-      visit root_path
-      click_on('Newsletters')
+    context without_feature: :new_newsletters_page do
+      before do
+        visit root_path
+        click_on('Newsletters')
+      end
+
+      it { expect(page).to have_content('Newsletters') }
     end
 
-    it { expect(page).to have_content('Newsletters') }
+    context with_feature: :new_newsletters_page do
+      let(:user) {}
+
+      before do
+        create(:newsletter)
+        sign_in(user) if user
+        visit root_path
+        click_on('Newsletters')
+      end
+
+      it { expect(page).to have_css('#newsletters') }
+
+      context 'when signed in' do
+        let(:user) { create(:school_admin) }
+
+        it { expect(page).to have_link('Sign-up now', href: user_emails_path(user))}
+      end
+
+      context 'when not signed in' do
+        it { expect(page).to have_link('Sign-up now', href: new_mailchimp_signup_path)}
+      end
+    end
   end
 
   describe 'Datasets page' do
