@@ -116,7 +116,7 @@ describe Aggregation::ValidateAmrData, type: :service do
 
       context 'when there are no possible substitutes' do
         it 'falls back to other validations' do
-          reading, validator = modify_arbitrary_reading_and_validate(create_meter(kwh_data_x48: Array.new(48, -0.1)))
+          reading, = modify_arbitrary_reading_and_validate(create_meter(kwh_data_x48: Array.new(48, -0.1)))
           expect(reading.type).to eq('PROB') # small amount missing, so will be filled with PROB data
         end
       end
