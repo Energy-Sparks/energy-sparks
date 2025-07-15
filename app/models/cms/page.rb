@@ -38,7 +38,6 @@ module Cms
     enum(:audience, %w[anyone school_users school_admins group_admins].to_h { |v| [v, v] })
 
     validates_presence_of :title, :description
-    validate :change_publication_status?, on: :update
 
     belongs_to :category, class_name: 'Cms::Category'
     has_many :sections, class_name: 'Cms::Section', dependent: :nullify
