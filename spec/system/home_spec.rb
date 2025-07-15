@@ -310,9 +310,6 @@ RSpec.describe 'home', type: :system do
       before do
         create(:newsletter)
         sign_in(user) if user
-      end
-
-      before do
         visit root_path
         click_on('Newsletters')
       end
