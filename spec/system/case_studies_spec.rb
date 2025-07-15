@@ -113,7 +113,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
 
     context 'when some case studies do not have images' do
-      let!(:case_study_without_image) { create(:case_study, image: nil) }
+      let!(:case_study_without_image) { build(:case_study, image: nil).tap { |cs| cs.save(validate: false) } }
 
       before do
         visit case_studies_path

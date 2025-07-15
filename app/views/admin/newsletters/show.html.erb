@@ -1,14 +1,16 @@
-<h1><%= @newsletter.title %></h1>
-
-<p><%= link_to 'All newsletters', admin_newsletters_path %></p>
-
+<%= render 'title_and_navigation', title: "Newsletters: #{@newsletter.title}" %>
 
 <dl>
+  <dt>Title</dt><dd><%= @newsletter.title %></dd>
   <dt>Url</dt><dd><%= link_to @newsletter.url, @newsletter.url %></dd>
   <dt>Published on</dt><dd><%= nice_dates @newsletter.published_on %></dd>
+  <dt>Published</dt><dd><%= checkmark(@newsletter.published) %></dd>
 </dl>
 
 <p><%= image_tag @newsletter.image %></p>
 
 <%= link_to 'Edit', edit_admin_newsletter_path(@newsletter), class: 'btn' %>
-<%= link_to 'Destroy', admin_newsletter_path(@newsletter), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+<%= link_to 'Destroy', admin_newsletter_path(@newsletter),
+            method: :delete,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn' %>

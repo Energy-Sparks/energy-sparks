@@ -5,6 +5,7 @@ class CaseStudiesController < DownloadableController
 
   def index
     @case_studies = CaseStudy.published.order(:position)
+
     @show_images = @case_studies.without_images.none? || (params[:show_images] && current_user&.admin?)
 
     if params[:show_images] && current_user&.admin? # show case studies with images first

@@ -25,7 +25,7 @@
           <td><%= link_to page.category.title, edit_admin_cms_category_path(page) %></td>
           <td><%= link_to page.title, edit_admin_cms_page_path(page) %></td>
           <td><%= t("page.audience.#{page.audience}") %></td>
-          <td><%= fa_icon(page.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+          <td><%= checkmark page.published? %></td>
           <td><%= page.sections.published.count %> / <%= page.sections.count %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_page_path(page), class: 'btn' %>

@@ -96,7 +96,7 @@ RSpec.describe 'Admin case studies', type: :system do
       end
 
       context 'when there is no image' do
-        let!(:case_study) { create(:case_study, image: nil) }
+        let!(:case_study) { create(:case_study, image: nil, published: false) }
 
         it 'shows the no image icon' do
           expect(page).to have_css('i.fa-triangle-exclamation')
@@ -116,7 +116,7 @@ RSpec.describe 'Admin case studies', type: :system do
           before do
             fill_in :case_study_title_en, with: ''
             attach_file 'Image', Rails.root.join('spec/fixtures/documents/fake-bill.pdf')
-            click_on 'Save case study'
+            click_on 'Save'
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
@@ -134,7 +134,7 @@ RSpec.describe 'Admin case studies', type: :system do
             fill_in :case_study_tags_en, with: 'en1, en2'
             uncheck :case_study_published
 
-            click_on 'Save case study'
+            click_on 'Save'
           end
 
           it { expect(page).to have_content('Updated title') }
@@ -157,11 +157,20 @@ RSpec.describe 'Admin case studies', type: :system do
         context 'with invalid attributes' do
           before do
             attach_file 'Image', Rails.root.join('spec/fixtures/documents/fake-bill.pdf')
-            click_on 'Save case study'
+            click_on 'Save'
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
           it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
+        end
+
+        context 'when publishing without an image' do
+          before do
+            check :case_study_published
+            click_on 'Save'
+          end
+
+          it { expect(page).to have_content('No image attached') }
         end
 
         context 'with valid attributes' do
@@ -175,7 +184,7 @@ RSpec.describe 'Admin case studies', type: :system do
             fill_in :case_study_tags_en, with: 'new, example'
             check :case_study_published
 
-            click_on 'Save case study'
+            click_on 'Save'
           end
 
           it 'shows the index page' do

@@ -25,7 +25,7 @@
                   end %></td>
           <td><%= link_to section.page.title, edit_admin_cms_page_path(section.page) if section.page %></td>
           <td><%= link_to section.title, edit_admin_cms_section_path(section) %></td>
-          <td><%= fa_icon(section.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+          <td><%= checkmark section.published? %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_section_path(section), class: 'btn' %>
             <%= link_to 'View', category_page_path(section.page.category,
