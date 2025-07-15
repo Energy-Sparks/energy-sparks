@@ -72,8 +72,8 @@
         <%= section_header.with_button t('home.buttons.watch_a_demo'),
                                        book_demo_campaigns_path,
                                        style: :primary %>
-        <%= section_header.with_button t('home.buttons.read_case_studies'),
-                                       case_studies_path,
+        <%= section_header.with_button t('common.labels.request_more_info'),
+                                       more_information_campaigns_path,
                                        style: :secondary %>
       <% end %>
 
@@ -115,7 +115,7 @@
                 subtext: t('product.per_school_per_year'),
                 classes: 'mt-auto'
               ) %>
-          <%= feature.with_button t('home.buttons.book_a_demo'),
+          <%= feature.with_button t('home.buttons.watch_a_demo'),
                                   book_demo_campaigns_path,
                                   style: :primary, classes: 'mt-4' %>
         <% end %>
@@ -131,6 +131,7 @@
         <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
           <%= feature.with_header(title: t('product.free_places.title')) %>
           <%= feature.with_description { t('product.free_places.description_html') } %>
+          <%= feature.with_button t('support_us.title'), support_us_path, style: :primary %>
         <% end %>
       <% end %>
 
