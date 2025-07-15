@@ -23,7 +23,7 @@
         <tr>
           <th><%= render IconComponent.new(name: category.icon) if category.icon %></th>
           <td><%= link_to category.title, edit_admin_cms_category_path(category) %></td>
-          <td><%= fa_icon(category.published? ? 'check-circle text-success' : 'times-circle text-danger') %></td>
+          <td><%= checkmark category.published? %></td>
           <td><%= category.pages.published.count %> / <%= category.pages.count %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_category_path(category), class: 'btn' %>
