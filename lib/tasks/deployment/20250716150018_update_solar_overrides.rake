@@ -22,7 +22,7 @@ namespace :after_party do
         attribute_manager.update!(
           attribute.id,
           backwards_compatible_config,
-          'Make config compatible with old code. See history for original config/reason',
+          'Made config compatible with code before bug fix. See history for original config/reason',
           admin
         )
       end
