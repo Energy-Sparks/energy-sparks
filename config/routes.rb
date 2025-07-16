@@ -5,15 +5,15 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  # Old urls maintained to avoid breakage
+  # Old urls maintained to avoid breakage. Retains parameters in the redirect
   %w[
     for-schools for-local-authorities for-multi-academy-trusts
     for-teachers for-pupils for-management
     enrol find-out-more pricing
      ].each do |path|
-      get path, to: redirect('/product')
+      get path, to: redirect(path: '/product')
   end
-  get '/campaigns/find-out-more', to: redirect('/product')
+  get '/campaigns/find-out-more', to: redirect(path: '/product')
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'

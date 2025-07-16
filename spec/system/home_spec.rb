@@ -102,16 +102,33 @@ RSpec.describe 'home', type: :system do
   end
 
   context 'with marketing pages' do
-    let(:case_study) { create(:case_study) }
+    let(:utm_params) do
+      {
+      utm_medium: 'email',
+      utm_campaign: 'test',
+      utm_source: 'somewhere'
+      }
+    end
 
-    it 'redirects old pages' do
+    let(:old_paths) do
       %w[
         for-schools for-local-authorities for-multi-academy-trusts
         for-teachers for-pupils for-management
         enrol find-out-more pricing
-      ].each do |path|
+      ]
+    end
+
+    it 'redirects old pages to product page' do
+      old_paths.each do |path|
         get "/#{path}"
         expect(response).to redirect_to(product_path)
+      end
+    end
+
+    it 'preserves utm params in redirect' do
+      old_paths.each do |path|
+        get "/#{path}", params: utm_params
+        expect(response).to redirect_to(product_path + '?' + utm_params.to_query)
       end
     end
   end
