@@ -1,5 +1,5 @@
 <% cache_if current_user.nil?, I18n.locale, expires_in: 1.hour do %>
-  <% content_for :page_title, t('marketing.pricing.title') %>
+  <% content_for :page_title, t('product.feature.title') %>
   <div class="container-fluid adult mb-4 py-5">
     <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, cell_classes: 'my-auto',
                                          id: 'hero') do |grid| %>
