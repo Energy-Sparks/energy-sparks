@@ -4,7 +4,7 @@ class OnboardingMailer < LocaleMailer
   helper :application
 
   def self.mailer
-    Flipper.enabled?(:onboarding_mailer_2025) ? OnboardingMailer2025 : self
+    OnboardingMailer2025.enabled? ? OnboardingMailer2025 : self
   end
 
   def self.deliver_now(type, **kwargs)

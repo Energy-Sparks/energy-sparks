@@ -7,19 +7,33 @@ class OnboardingMailer2025Preview < ActionMailer::Preview
                               locale:).onboarded_email
   end
 
+  def self.welcome_email_params(users, data_enabled)
+    { user_id: users.joins(:school).where(schools: { visible: true, data_enabled: }).sample&.id }
+  end
+
+  def self.welcome_email_school_admin_params
+    welcome_email_params(User.school_admin, false)
+  end
+
   def welcome_email_school_admin
-    user = User.school_admin.joins(:school).where(schools: { visible: true, data_enabled: false }).sample
+    user = User.find(params[:user_id])
     OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
+  end
+
+  def self.welcome_email_staff_params
+    welcome_email_params(User.staff, false)
   end
 
   def welcome_email_staff
-    user = User.staff.joins(:school).where(schools: { visible: true, data_enabled: false }).sample
-    OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
+    welcome_email_school_admin
+  end
+
+  def self.welcome_email_data_visible_params
+    welcome_email_params(User, true)
   end
 
   def welcome_email_data_visible
-    user = User.joins(:school).where(schools: { visible: true, data_enabled: true }).sample
-    OnboardingMailer2025.with(school: user.school, user:, locale:).welcome_email
+    welcome_email_school_admin
   end
 
   def self.welcome_existing_params
@@ -29,6 +43,26 @@ class OnboardingMailer2025Preview < ActionMailer::Preview
   def welcome_existing
     school = School.find(params[:school_id])
     OnboardingMailer2025.with(school:, user: school.users.sample, locale:).welcome_existing
+  end
+
+  def self.data_enabled_email_admin_params
+    { school_id: DashboardMessage.where(messageable_type: :School)
+                                 .joins('JOIN schools ON schools.id = dashboard_messages.messageable_id AND ' \
+                                        'schools.visible AND schools.data_enabled').sample&.messageable_id }
+  end
+
+  def data_enabled_email_admin
+    school = School.find(params[:school_id])
+    OnboardingMailer2025.with(school:, users: school.users.school_admin, locale:).data_enabled_email
+  end
+
+  def self.data_enabled_email_staff_params
+    data_enabled_email_admin_params
+  end
+
+  def data_enabled_email_staff
+    school = School.find(params[:school_id])
+    OnboardingMailer2025.with(school:, users: school.users.staff, locale:, staff: true).data_enabled_email
   end
 
   private

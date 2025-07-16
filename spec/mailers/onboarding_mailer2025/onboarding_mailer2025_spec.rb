@@ -92,20 +92,36 @@ RSpec.describe OnboardingMailer2025 do
     end
   end
 
+  def create_management_priority
+    create(:management_priority, content_generation_run: create(:content_generation_run, school:),
+                                   alert: create(:alert, template_data: { average_one_year_saving_gbp: '£1' },
+                                                         variables: { average_one_year_saving_gbp: 1,
+                                                                      one_year_saving_co2: 1 }))
+  end
+
   describe '#welcome_existing' do
     let(:school) { create_school(dashboard_message: create(:dashboard_message)) }
 
     before do
-      create(:management_priority, content_generation_run: create(:content_generation_run, school:),
-                                   alert: create(:alert, template_data: { average_one_year_saving_gbp: '£1' },
-                                                         variables: { average_one_year_saving_gbp: 1,
-                                                                      one_year_saving_co2: 1 }))
+      create_management_priority
       OnboardingMailer.mailer.with(user:, school:, locale: preferred_locale).welcome_existing.deliver_now
     end
 
     it 'sends the expected email' do
       expect(email.subject).to eq('Welcome to the Test School Energy Sparks account')
       expect(email_html_body_as_markdown).to eq(read_md('welcome_existing'))
+    end
+  end
+
+  describe '#data_enabled_email' do
+    let(:school) { create_school(dashboard_message: create(:dashboard_message)) }
+    let(:user) { create(:staff, school:) }
+
+    it 'sends the expect email' do
+      create_management_priority
+      DataEnabledEmailSender.new(school).send
+      expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
+      expect(email_html_body_as_markdown).to eq(read_md('data_enabled_email'))
     end
   end
 end

@@ -6,12 +6,12 @@
   <div class="mb-4"><%= t('onboarding_mailer2025.welcome_email.we_have_now') %></div>
   <div class="mb-4"><%= t('onboarding_mailer2025.welcome_email.we_are_current_working') %></div>
   <% if @user.staff? %>
-    <div class="mb-4"><%= t('onboarding_mailer2025.welcome_email.set_up_with_a_staff_account') %></div>
+    <div class="mb-4"><%= t('onboarding_mailer2025.set_up_with_a_staff_account') %></div>
   <% end %>
   <div><%= t('onboarding_mailer2025.onboarded_email.in_the_mean_time') %></div>
 <% end %>
 <ol style="margin-top: 0">
-  <li><%= t('onboarding_mailer2025.onboarded_email.familiarise_yourself_html', root_url:) %></li>
+  <li><%= t('onboarding_mailer2025.familiarise_yourself_html', root_url:) %></li>
   <% if @school.data_visible? %>
     <li><%= t('onboarding_mailer2025.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>
   <% end %>
@@ -30,7 +30,4 @@
 <% end %>
 <div class="mb-4"><%= t('onboarding_mailer2025.we_hope') %></div>
 <div class="mb-4"><%= link_to t('onboarding_mailer2025.welcome_email.view_your_school'), school_url(@school) %></div>
-<div>
-  <%= t('onboarding_mailer2025.many_thanks') %><br>
-  <%= @school&.school_group&.default_issues_admin_user&.display_name %>
-</div>
+<%= render 'closing' %>
