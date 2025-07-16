@@ -7,7 +7,7 @@
         <%= feature.with_header title: t('case_studies.feature.title'), classes: 'mt-3 mt-lg-0' %>
         <%= feature.with_description { t('case_studies.feature.description_html', count: School.active.visible.count) } %>
         <%= feature.with_button t('nav.enrol'), product_path, style: :primary %>
-        <%= feature.with_button t('home.buttons.book_a_demo'),
+        <%= feature.with_button t('home.buttons.watch_a_demo'),
                                 book_demo_campaigns_path,
                                 style: :secondary %>
       <% end %>
