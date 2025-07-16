@@ -9,13 +9,10 @@ Rails.application.routes.draw do
   %w[
     for-schools for-local-authorities for-multi-academy-trusts
     for-teachers for-pupils for-management
-    enrol find-out-more
+    enrol find-out-more pricing
      ].each do |path|
       get path, to: redirect('/product')
   end
-
-  # Old pricing page
-  get '/pricing', to: redirect('/product')
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'

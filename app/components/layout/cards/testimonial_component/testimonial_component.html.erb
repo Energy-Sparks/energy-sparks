@@ -12,8 +12,8 @@
         <%= case_study %>
         <% if controller.instance_of?(CaseStudiesController) %>
            <%= render Elements::ButtonComponent.new(
-                 t('nav.enrol'),
-                 find_out_more_campaigns_path,
+                 t('home.buttons.find_out_more'),
+                 product_path,
                  style: :secondary, classes: 'mb-1'
                ) %>
         <% else %>
