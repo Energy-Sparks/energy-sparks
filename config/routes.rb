@@ -13,6 +13,7 @@ Rails.application.routes.draw do
      ].each do |path|
       get path, to: redirect('/product')
   end
+  get '/campaigns/find-out-more', to: redirect('/product')
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
@@ -92,7 +93,6 @@ Rails.application.routes.draw do
 
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
-      get 'find-out-more', as: :find_out_more
       get 'more-information', as: :more_information
       get 'book-demo', as: :book_demo
       post :submit_contact
