@@ -143,7 +143,9 @@ RSpec.describe 'home', type: :system do
   describe 'Product page' do
     before do
       visit root_path
-      click_on('Energy management tool')
+      within('#services') do
+        click_on('Energy management tool')
+      end
     end
 
     it 'renders all the components' do
