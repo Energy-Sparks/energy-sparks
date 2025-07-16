@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe 'Users' do
+  include ActiveJob::TestHelper
+
   let!(:admin) { create(:admin) }
 
   before { sign_in(admin) }
@@ -73,6 +75,18 @@ describe 'Users' do
         expect(User).not_to exist(user.id)
         expect(ConsentGrant).to exist(consent_grant.id)
       end
+    end
+
+    it 'edits a user' do
+      school = create(:school)
+      visit admin_users_path
+      click_on 'Edit'
+      select school.name, from: 'school'
+      click_on 'Update User'
+      expect(page).to have_text('User was successfully updated.')
+      perform_enqueued_jobs
+      expect(ActionMailer::Base.deliveries.length).to eq(1)
+      expect(ActionMailer::Base.deliveries.last.subject).to eq("Welcome to the #{school.name} Energy Sparks account")
     end
   end
 end

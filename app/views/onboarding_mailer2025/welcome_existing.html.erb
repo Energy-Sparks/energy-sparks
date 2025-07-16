@@ -6,10 +6,12 @@
                           message: @school.dashboard_message&.message) %></div>
 <% end %>
 <% if @top_priority %>
-  <div class="mb-4"><%= t('onboarding_mailer2025.welcome_existing.we_estimated_that_html',
-                          opportunity: @top_priority.management_priorities_title.to_plain_text.downcase,
-                          gbp_saving: format_unit(@top_priority.alert.variables['average_one_year_saving_gbp'], :£),
-                          co2_saving: format_unit(@top_priority.alert.variables['one_year_saving_co2'], :co2)) %></div>
+  <div class="mb-4">
+    <%= t('onboarding_mailer2025.welcome_existing.we_estimated_that_html',
+          opportunity: @top_priority.management_priorities_title.to_plain_text.delete("\u00A0").downcase,
+          gbp_saving: format_unit(@top_priority.alert.variables['average_one_year_saving_gbp'], :£),
+          co2_saving: format_unit(@top_priority.alert.variables['one_year_saving_co2'], :co2)) %>
+  </div>
 <% end %>
 <div><%= t('onboarding_mailer2025.here_is_our_quick_guide') %></div>
 <ol style="margin-top: 0">

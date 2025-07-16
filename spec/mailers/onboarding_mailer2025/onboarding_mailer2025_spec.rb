@@ -104,8 +104,6 @@ RSpec.describe OnboardingMailer2025 do
     end
 
     it 'sends the expected email' do
-      # debugger
-      # management_priority
       expect(email.subject).to eq('Welcome to the Test School Energy Sparks account')
       expect(email_html_body_as_markdown).to eq(read_md('welcome_existing'))
     end

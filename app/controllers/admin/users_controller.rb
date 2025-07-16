@@ -34,8 +34,14 @@ module Admin
     end
 
     def update
+      school_ids = -> { (@user.cluster_school_ids + [@user.school_id]).compact.uniq }
+      before_school_ids = school_ids.call
       @user.assign_attributes(user_params)
       if @user.save(context: :form_update)
+        (school_ids.call - before_school_ids).each do |school_id|
+          OnboardingMailer2025.mailer.with(user: @user, school: School.find(school_id),
+                                           locale: @user.preferred_locale).welcome_existing.deliver_later
+        end
         redirect_to admin_users_path, notice: 'User was successfully updated.'
       else
         set_schools_options
