@@ -23,7 +23,7 @@ class OnboardingMailer2025Preview < ActionMailer::Preview
   end
 
   def self.welcome_existing_params
-    { school_id: DashboardMessage.where(messageable_type: :School).sample.messageable_id }
+    { school_id: DashboardMessage.where(messageable_type: :School).sample&.messageable_id }
   end
 
   def welcome_existing
