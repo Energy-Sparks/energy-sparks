@@ -84,6 +84,7 @@ describe 'Users' do
       select school.name, from: 'school'
       click_on 'Update User'
       expect(page).to have_text('User was successfully updated.')
+      expect(admin.cluster_schools).to eq([school])
       perform_enqueued_jobs
       expect(ActionMailer::Base.deliveries.length).to eq(1)
       expect(ActionMailer::Base.deliveries.last.subject).to eq("Welcome to the #{school.name} Energy Sparks account")
