@@ -10,13 +10,7 @@
       <%= organisation %>
       <div class='mt-3'>
         <%= case_study %>
-        <% if controller.instance_of?(CaseStudiesController) %>
-           <%= render Elements::ButtonComponent.new(
-                 t('nav.enrol'),
-                 product_path,
-                 style: :secondary, classes: 'mb-1'
-               ) %>
-        <% else %>
+        <% unless controller.instance_of?(CaseStudiesController) %>
             <%= render Elements::ButtonComponent.new(
                   t('components.testimonial.more_case_studies'),
                   case_studies_path,

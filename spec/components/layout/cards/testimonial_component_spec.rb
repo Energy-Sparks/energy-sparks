@@ -50,7 +50,6 @@ RSpec.describe Layout::Cards::TestimonialComponent, :include_application_helper,
       let(:controller_class) { CaseStudiesController }
 
       it { expect(html).not_to have_link('More case studies', href: '/case-studies') }
-      it { expect(html).to have_link('Enrol', href: '/product') }
     end
   end
 
