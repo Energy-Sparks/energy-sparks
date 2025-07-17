@@ -40,8 +40,8 @@ class LandingPagesController < ApplicationController
     redirect_to school_group_path(find_example_local_authority)
   end
 
-  # Display contact form, to book a demo
-  def book_demo
+  # Display contact form, to watch demo
+  def watch_demo
   end
 
   # Display contact form, to request more information
@@ -58,7 +58,7 @@ class LandingPagesController < ApplicationController
   # Final step either shows confirmation or embedded booking form
   def thank_you
     case params[:request_type].to_sym
-    when :book_demo
+    when :watch_demo
       @calendly_data_url = calendly_data_url
       render :book_demo_final
     else

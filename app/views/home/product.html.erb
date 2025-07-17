@@ -69,7 +69,7 @@
         ) do |section_header| %>
       <%= section_header.with_header title: t('product.looking_for_info') %>
       <%= section_header.with_button t('home.buttons.watch_a_demo'),
-                                     book_demo_campaigns_path(utm_params_for_redirect),
+                                     watch_demo_campaigns_path(utm_params_for_redirect),
                                      style: :primary %>
       <%= section_header.with_button t('common.labels.request_more_info'),
                                      more_information_campaigns_path(utm_params_for_redirect),
@@ -115,7 +115,7 @@
               classes: 'mt-auto'
             ) %>
         <%= feature.with_button t('home.buttons.watch_a_demo'),
-                                book_demo_campaigns_path(utm_params_for_redirect),
+                                watch_demo_campaigns_path(utm_params_for_redirect),
                                 style: :primary, classes: 'mt-4' %>
       <% end %>
     <% end %>

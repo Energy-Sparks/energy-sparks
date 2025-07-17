@@ -6,56 +6,6 @@ cy:
     book_demo_final:
       intro: Diolch i chi am lenwi'r ffurflen ymholiad, dewiswch ddyddiad ac amser i gadarnhau eich demo Sbarcynni.
       title: Dewiswch y dyddiad a'r amser ar gyfer eich demo
-    find_out_more:
-      benefits:
-        costs: Arbedwch hyd at 40% oddi ar filiau ynni ysgol
-        emissions: Torri olion traed carbon ysgolion
-        pupils: Rhoi'r wybodaeth a'r sgiliau i ddisgyblion leihau gwastraff ynni yn yr ysgol
-      book_demo: Archebwch demo
-      costs:
-        bullets: |-
-          <ul>
-            <li>Arbedwch £5,000 y flwyddyn ar gyfer yr ysgol gynradd gyfartalog</li>
-            <li>Arbedwch £21,000 y flwyddyn ar gyfer yr ysgol uwchradd gyfartalog</li>
-          </ul>
-        case_study: Torrodd Academi Northampton ei defnydd o nwy gan 40%
-        quote_html: |-
-          Ni all unrhyw un gymryd camau tuag at sero net heb ddata ac mae Sbarcynni yn darparu'r data.<br><br>
-          Mae hefyd yn darparu hyn mewn ffordd hygyrch i ddisgyblion sy’n galluogi cynaliadwyedd i gael ei integreiddio i’r cwricwlwm.
-          Y siawns orau o frwydro yn erbyn yr argyfwng hinsawdd yw trwy rymuso'r genhedlaeth nesaf a dyna mae Sbarcynni yn ei wneud.
-        quote_source: Heart Education Trust
-        sub_title: 'Mae ein hofferyn rheoli ynni yn dadansoddi eich defnydd o nwy a thrydan ac yn darparu argymhellion hawdd eu gweithredu i:'
-        title: Arbed arian
-      emissions:
-        case_study: Mae Ysgol Uwchradd Mallaig wedi torri biliau gwres gan 38%
-        sub_title_1: Defnyddio argymhellion i helpu i ddatblygu cynllun gweithredu hinsawdd i leihau allyriadau carbon
-        sub_title_2: Gosod targedau i leihau'r defnydd o ynni
-        title: Torri Allyriadau Carbon
-      final_prompt:
-        booking: Archebwch eich sesiwn demo rhad ac am ddim heddiw neu gofynnwch am ragor o wybodaeth
-        question: Barod i dorri costau ynni a sbarduno ymrwymiad disgyblion i gynaliadwyedd?
-      find_out_more: Dysgu rhagor
-      learn_why:
-        title: Dysgwch pam fod dros %{school_count} o ysgolion a %{mat_count} ymddiriedolaeth yn defnyddio Sbarcynni
-      pupils:
-        case_study: 'Ysgol Gyntaf Damers: Pencampwyr y Bwrdd Sgorio Cenedlaethol'
-        quote: Mae Sbarcynni yn rhannu data go iawn gyda disgyblion yn seiliedig ar eu gweithredoedd. Mae mor werthfawr ar gyfer eu dysgu ac yn dangos yn glir sut y gallwn ni i gyd gael mwy o effaith ar ein byd.
-        quote_source: Ysgol Gynradd Prendergast, Sir Benfro
-        sub_title_1: Cyrchu dros %{activities_count} o adnoddau addysg y gellir eu lawrlwytho i ddatblygu dealltwriaeth disgyblion o ddefnydd ynni a'i effaith
-        sub_title_2: Cofnodi gweithgareddau i gymryd rhan yn ein cystadlaethau ac ennill gwobrau
-        title: Grymuso Disgyblion
-      sub_title: Mae Sbarcynni yn elusen sy'n cynnig offeryn rheoli ynni a rhaglen addysg unigryw sy'n benodol i ysgolion
-      testimonial:
-        quote: Rwy'n meddwl bod Sbarcynni yn anhygoel. Mae'n gwneud synnwyr llwyr o'r data darlleniadau mesuryddion bob hanner awr llethol, sy'n golygu dim byd ar fil ynni...Mewn ychydig wythnosau yn unig rydym wedi gwneud newidiadau sylweddol a fydd yn eu tro yn lleihau ein hallyriadau carbon ac yn helpu i arbed costau i’r ysgol...
-        quote_job: Rheolwr Busnes
-        quote_organisation: Ysgol Gynradd Sunnyfield, Doncaster
-        quote_source: Emma Oxtoby
-      title: Ydych chi'n barod i dorri costau ynni ac ôl troed carbon eich ysgol?
-      tool:
-        case_study: Datgelodd Academi Harris Sutton £20k mewn arbedion posib
-        sub_title_1: Derbyn dadansoddiad o ddefnydd nwy a thrydan eich ysgol, awgrymiadau gweithredu, a blaenoriaethau arbed ynni trwy ddangosfyrddau disgyblion a staff ac e-byst rhybuddio wythnosol
-        sub_title_2: Meincnodi defnydd ynni ysgolion yn erbyn ysgolion tebyg eraill ledled y wlad neu yn eich Ymddiriedolaeth gan ddefnyddio ein dangosfyrddau
-        title: Cymerwch reolaeth
     form:
       fields:
         consent: Cytunaf i dderbyn diweddariadau achlysurol am gynnyrch a gwasanaethau a gynigir gan Sbarcynni

@@ -4,56 +4,6 @@ en:
     book_demo_final:
       intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
       title: Choose the date and time for your demo
-    find_out_more:
-      benefits:
-        costs: Save up to 40% off school energy bills
-        emissions: Cut school carbon footprints
-        pupils: Give pupils the knowledge and skills to cut energy waste at school
-      book_demo: Book a demo
-      costs:
-        bullets: |-
-          <ul>
-            <li>Save £5,000 per year for the average primary school</li>
-            <li>Save £21,000 per year for the average secondary school</li>
-          </ul>
-        case_study: Northampton Academy cut its gas consumption by 40%
-        quote_html: |-
-          No one can take action towards net zero without data and Energy Sparks provides the data.<br><br>
-          It also provides this in a pupil accessible way that enables sustainability to be integrated into the curriculum.
-          The best chance of fighting the climate crisis is by empowering the next generation and that's what Energy Sparks does.
-        quote_source: Heart Education Trust
-        sub_title: 'Our energy management tool analyses your gas and electricity consumption and provides easy to implement recommendations to:'
-        title: Save money
-      emissions:
-        case_study: Mallaig High School cut heating bills by 38%
-        sub_title_1: Use recommendations to help develop a climate action plan to reduce carbon emissions
-        sub_title_2: Set targets to reduce energy usage
-        title: Cut Carbon Emissions
-      final_prompt:
-        booking: Book your free demo session today or request more information
-        question: Ready to cut energy costs and spark pupils' commitment to sustainability?
-      find_out_more: Find out more
-      learn_why:
-        title: Learn why over %{school_count} schools and %{mat_count} trusts are using Energy Sparks
-      pupils:
-        case_study: 'Damers First School: National Scoreboard Champions'
-        quote: Energy Sparks shares real data with pupils based on their actions. It is so valuable for their learning and shows clearly how we can all make a greater impact on our world.
-        quote_source: Prendergast Primary, Pembrokeshire
-        sub_title_1: Access over %{activities_count} downloadable education resources to develop pupil understanding of energy use and its impact
-        sub_title_2: Record activities to participate in our competitions and win prizes
-        title: Empower Pupils
-      sub_title: Energy Sparks is a charity that offers a unique school-specific energy management tool and education programme
-      testimonial:
-        quote: I think Energy Sparks is amazing. It just makes complete sense of the overwhelming half-hour meter readings data, which means nothing on an energy bill...In only a few weeks we have made significant changes which will in turn reduce our carbon emissions and assist in cost savings for the school...
-        quote_job: Business Manager
-        quote_organisation: Sunnyfield Primary School, Doncaster
-        quote_source: Emma Oxtoby
-      title: Are you ready to cut your school energy costs and carbon footprint?
-      tool:
-        case_study: Harris Academy Sutton uncovered £20k in potential savings
-        sub_title_1: Receive analysis of your schools’ gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
-        sub_title_2: Benchmark school energy use against other similar schools around the country or in your Trust using our dashboards
-        title: Take control
     form:
       fields:
         consent: I agree to receive occasional updates about products and services offered by Energy Sparks
@@ -86,8 +36,8 @@ en:
         with more information about our services.
       title: Request more information about Energy Sparks
     watch_demo:
-      intro: Please provide us with your contact details and some information about your organisation.
-      title: Book your demo of Energy Sparks
+      intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
+      title: Watch an Energy Sparks demo
   product:
     additional_services:
       desktop_audits:
