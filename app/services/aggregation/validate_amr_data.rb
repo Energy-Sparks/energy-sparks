@@ -1223,6 +1223,7 @@ module Aggregation
       model_parameters = heating_model.regression_model_parameters(substitute_day)
 
       if model_parameters[:base_temperature] && substitute_day_temperature > model_parameters[:base_temperature]
+        logger.warn "Warning: #{substitute_day} temperature #{substitute_day_temperature} is above model base temp, using unmodified data"
         return @amr_data.days_kwh_x48(substitute_day)
       end
 
