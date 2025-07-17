@@ -40,8 +40,11 @@ module Admin
       if @user.save(context: :form_update)
         if OnboardingMailer2025.enabled?
           (school_ids.call - before_school_ids).each do |school_id|
-            OnboardingMailer2025.mailer.with(user: @user, school: School.find(school_id),
-                                             locale: @user.preferred_locale).welcome_existing.deliver_later
+            school = School.find(school_id)
+            next unless school.data_visible?
+
+            OnboardingMailer2025.with(user: @user, school:, locale: @user.preferred_locale)
+                                .welcome_existing.deliver_later
           end
         end
         redirect_to admin_users_path, notice: 'User was successfully updated.'

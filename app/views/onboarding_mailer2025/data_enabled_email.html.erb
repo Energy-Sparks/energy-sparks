@@ -28,6 +28,7 @@
     </ol>
   </div>
   <%= t('onboarding_mailer2025.data_enabled_email.below_are_a_few_html',
+        root_url:,
         users_url: school_users_url(@school),
         opening_time: format_school_time(@school.school_times.school_day.minimum(:opening_time)),
         closing_time: format_school_time(@school.school_times.school_day.maximum(:closing_time)),

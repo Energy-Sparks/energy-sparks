@@ -5,8 +5,6 @@ Please note: MyText
 
 We estimate that your highest priority energy saving opportunity is to a thing has happened. Doing this could save you as much as £1 and 1kg CO₂ per year.
 
-You have been set up with a staff account. If you think you might need to check and update school details, you will need an admin account.
-
 Here is our quick guide for making the most of your Energy Sparks account:
 
 1. **Familiarise yourself** with using Energy Sparks, we have [lots of useful guidance and information about training](http://localhost/intervention_types/74).

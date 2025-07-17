@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe OnboardingMailer do
+  include ActiveJob::TestHelper
+
   let(:school)            { create(:school, name: 'Test School', school_group: create(:school_group)) }
   let(:preferred_locale)  { :cy }
   let(:user)              { create(:onboarding_user, school: school, preferred_locale: preferred_locale) }
@@ -261,7 +263,10 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#welcome_email' do
-    before { user.after_confirmation }
+    before do
+      user.after_confirmation
+      perform_enqueued_jobs
+    end
 
     context 'preferred locale is cy' do
       let(:preferred_locale) { :cy }

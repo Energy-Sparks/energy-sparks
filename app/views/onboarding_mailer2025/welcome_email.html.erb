@@ -25,9 +25,6 @@
               calendar_url: calendar_url(@school.calendar_id)) %></li>
   <% end %>
 </ol>
-<% if !@school.data_enabled %>
-  <div class="mb-4"><%= t('onboarding_mailer.onboarded_email.we_will_be_in_touch_shortly_message') %></div>
-<% end %>
 <div class="mb-4"><%= t('onboarding_mailer2025.we_hope') %></div>
 <div class="mb-4"><%= link_to t('onboarding_mailer2025.welcome_email.view_your_school'), school_url(@school) %></div>
 <%= render 'closing' %>

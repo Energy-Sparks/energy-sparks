@@ -7,10 +7,6 @@ class OnboardingMailer < LocaleMailer
     OnboardingMailer2025.enabled? ? OnboardingMailer2025 : self
   end
 
-  def self.deliver_now(type, **kwargs)
-    mailer.with_user_locales(**kwargs) { |mailer| mailer.public_send(type).deliver_now }
-  end
-
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name

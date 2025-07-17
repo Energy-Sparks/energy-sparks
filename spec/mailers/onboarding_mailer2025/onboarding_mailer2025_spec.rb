@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe OnboardingMailer2025 do
+  include ActiveJob::TestHelper
+
   let(:school) { create_school }
   let(:preferred_locale) { :en }
   let(:user) { create(:onboarding_user, school:, preferred_locale:) }
@@ -21,11 +23,16 @@ RSpec.describe OnboardingMailer2025 do
   end
 
   def email
+    expect(ActionMailer::Base.deliveries.length).to eq(1)
     ActionMailer::Base.deliveries.last
   end
 
+  def email_html_content
+    Nokogiri::HTML(email.html_part.decoded).css('.row:nth-of-type(3)')
+  end
+
   def email_html_body_as_markdown
-    ReverseMarkdown.convert(Nokogiri::HTML(email.html_part.decoded).css('.row:nth-of-type(3)'))
+    ReverseMarkdown.convert(email_html_content)
                    .gsub("\n\n| &nbsp; |\n\n", "\n\n").gsub("| \n", '').gsub(' |', '')
                    .split("\n").map(&:strip).join("\n")
   end
@@ -35,22 +42,32 @@ RSpec.describe OnboardingMailer2025 do
   end
 
   describe '#onboarded_email' do
-    before do
-      described_class.with_user_locales(users: [user], school: school) do |mailer|
-        mailer.onboarded_email.deliver_now
-      end
+    def setup_and_send(preferred_locale)
+      create(:school_admin, school:, preferred_locale:)
+      OnboardedEmailSender.new(school).send
     end
 
     it 'sends the onboarded email in en' do
+      setup_and_send(:en)
       expect(email.subject).to eq("#{school.name} is now live on Energy Sparks")
-      expect(email_html_body_as_markdown).to eq(read_md('onboarded'))
+      expect(email_html_body_as_markdown).to eq(read_md('onboarded_email'))
+    end
+
+    it 'sends the onboarded email in cy' do
+      setup_and_send(:cy)
+      expect(email.subject).to eq('Mae Test School bellach yn fyw ar Sbarcynni')
+      puts email_html_body_as_markdown
+      expect(email_html_body_as_markdown).to eq(read_md('onboarded_email_cy'))
     end
   end
 
   describe '#welcome_email' do
     let(:school) { create_school(data_enabled: false) }
 
-    before { user.after_confirmation }
+    before do
+      user.after_confirmation
+      perform_enqueued_jobs
+    end
 
     context 'with a school admin, not data enabled' do
       let(:user) { create(:school_admin, school:) }
@@ -104,13 +121,30 @@ RSpec.describe OnboardingMailer2025 do
 
   describe '#data_enabled_email' do
     let(:school) { create_school(dashboard_message: create(:dashboard_message)) }
-    let(:user) { create(:staff, school:) }
 
-    it 'sends the expect email' do
+    def setup_and_send(user_type, preferred_locale)
       create_management_priority
+      create(user_type, school:, preferred_locale:)
       DataEnabledEmailSender.new(school).send
+    end
+
+    it 'sends the staff email' do
+      setup_and_send(:staff, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
       expect(email_html_body_as_markdown).to eq(read_md('data_enabled_email'))
+    end
+
+    it 'sends the admin email' do
+      setup_and_send(:school_admin, :en)
+      expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
+      expect(email_html_body_as_markdown).to eq(read_md('data_enabled_email_admin'))
+    end
+
+    it 'sends the staff email in welsh' do
+      setup_and_send(:staff, :cy)
+      expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
+      expect(email_html_content.css('a').map { |a| URI(a['href']).host }.uniq).to \
+        contain_exactly('cy.localhost', 'www.youtube.com')
     end
   end
 end
