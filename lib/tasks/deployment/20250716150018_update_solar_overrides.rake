@@ -9,7 +9,7 @@ namespace :after_party do
       # for backwards compatibility with old behaviour all options need to be on
       unless attribute.input_data['override_generation'] == '1' &&
              attribute.input_data['override_export'] == '1' &&
-             attribute.input_data['override_export'] == '1'
+             attribute.input_data['override_self_consume'] == '1'
 
         backwards_compatible_config = attribute.input_data.merge(
           'override_generation' => '1',
