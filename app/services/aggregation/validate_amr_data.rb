@@ -19,7 +19,7 @@ module Aggregation
     MAXSEARCHRANGEFORCORRECTEDDATA = 100
     NO_MODEL = 0 # model calc failed
 
-    attr_reader :data_problems, :meter_id
+    attr_reader :data_problems, :meter_id, :meter
 
     def initialize(dashboard_meter, max_days_missing_data, holidays, temperatures)
       @meter = dashboard_meter
@@ -603,7 +603,11 @@ module Aggregation
     # @return Array a list of the removed days
     def remove_readings_with_too_many_missing_partial_readings(max_missing_readings, missing_data_value)
       @amr_data.each_date_kwh.filter_map do |date, days_kwh_x48|
-        [date, @amr_data[date].type] if days_kwh_x48.count(missing_data_value) > max_missing_readings
+        if days_kwh_x48.count(missing_data_value) > max_missing_readings
+          reading = [date, @amr_data[date].type]
+          @amr_data.delete(date)
+          reading
+        end
       end
     end
 
@@ -882,7 +886,7 @@ module Aggregation
         @amr_data.set_start_date(min_date)
         msg =  "Ignoring all data before #{min_date.strftime(FSTRDEF)}"
         msg += " as gap of more than #{@max_days_missing_data} days "
-        msg += "#{@amr_data.keys.index(min_date) - 1} days of data ignored"
+        msg += "#{@amr_data.keys.index(min_date) - 1} days of data ignored" if @amr_data.keys.index(min_date)
         logger.info msg
         substitute_data = Array.new(48, 0.0)
         @amr_data.add(min_date, OneDayAMRReading.new(meter_id, min_date, 'LGAP', nil, DateTime.now, substitute_data))
