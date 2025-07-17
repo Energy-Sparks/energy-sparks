@@ -277,7 +277,7 @@ describe User do
       other_user = create(:user, role: :guest, confirmed_at: nil)
       expect(other_user.confirmed?).to be(false)
       expect(other_user.confirm).to be(true)
-
+      perform_enqueued_jobs
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Please confirm your account on Energy Sparks')
     end
