@@ -1,31 +1,32 @@
 
-
-<div class="mb-4"><%= t('onboarding_mailer2025.data_enabled_email.we_are_pleased_html', url: school_url(@school)) %>
-</div>
-<% if @school.dashboard_message&.message %>
-  <div class="mb-4"><%= t('onboarding_mailer2025.welcome_existing.dashboard_message',
-                          message: @school.dashboard_message&.message) %></div>
-<% end %>
-<% if @top_priority %>
-  <div class="mb-4">
-    <%= t('onboarding_mailer2025.welcome_existing.we_estimated_that_html',
-          opportunity: @top_priority.management_priorities_title.to_plain_text.delete("\u00A0").downcase,
-          gbp_saving: format_unit(@top_priority.alert.variables['average_one_year_saving_gbp'], :£),
-          co2_saving: format_unit(@top_priority.alert.variables['one_year_saving_co2'], :co2)) %>
-  </div>
-<% end %>
-<% if @staff %>
-  <div class="mb-4"><%= t('onboarding_mailer2025.set_up_with_a_staff_account') %></div>
-<% end %>
-<div><%= t('onboarding_mailer2025.here_is_our_quick_guide') %></div>
-<ol style="margin-top: 0">
-  <li><%= t('onboarding_mailer2025.familiarise_yourself_html') %></li>
-  <li><%= t('onboarding_mailer2025.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>
-  <li><%= t('onboarding_mailer2025.build_an_energy_saving_team_html', root_url:) %></li>
-  <li><%= t('onboarding_mailer2025.set_up_a_holiday_switch_off_routine_html', root_url:) %></li>
-  <li><%= t('onboarding_mailer2025.sign_up_to_energy_saving_alerts_html', root_url:) %></li>
-</ol>
 <div class="space-y-4 mb-4">
+  <div><%= t('onboarding_mailer2025.data_enabled_email.we_are_pleased_html', url: school_url(@school)) %>
+  </div>
+  <% if @school.dashboard_message&.message %>
+    <div><%= t('onboarding_mailer2025.welcome_existing.dashboard_message',
+               message: @school.dashboard_message&.message) %></div>
+  <% end %>
+  <% if @top_priority %>
+    <div>
+      <%= t('onboarding_mailer2025.welcome_existing.we_estimated_that_html',
+            opportunity: @top_priority.management_priorities_title.to_plain_text.delete("\u00A0").downcase,
+            gbp_saving: format_unit(@top_priority.alert.variables['average_one_year_saving_gbp'], :£),
+            co2_saving: format_unit(@top_priority.alert.variables['one_year_saving_co2'], :co2)) %>
+    </div>
+  <% end %>
+  <% if @staff %>
+    <div><%= t('onboarding_mailer2025.set_up_with_a_staff_account') %></div>
+  <% end %>
+  <div>
+    <div><%= t('onboarding_mailer2025.here_is_our_quick_guide') %></div>
+    <ol style="margin: 0">
+      <li><%= t('onboarding_mailer2025.familiarise_yourself_html', root_url:) %></li>
+      <li><%= t('onboarding_mailer2025.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>
+      <li><%= t('onboarding_mailer2025.build_an_energy_saving_team_html', root_url:) %></li>
+      <li><%= t('onboarding_mailer2025.set_up_a_holiday_switch_off_routine_html', root_url:) %></li>
+      <li><%= t('onboarding_mailer2025.sign_up_to_energy_saving_alerts_html', root_url:) %></li>
+    </ol>
+  </div>
   <%= t('onboarding_mailer2025.data_enabled_email.below_are_a_few_html',
         users_url: school_users_url(@school),
         opening_time: format_school_time(@school.school_times.school_day.minimum(:opening_time)),

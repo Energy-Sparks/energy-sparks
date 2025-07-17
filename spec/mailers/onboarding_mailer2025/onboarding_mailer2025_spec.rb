@@ -20,18 +20,8 @@ RSpec.describe OnboardingMailer2025 do
     create(:school, name: 'Test School', school_group: create(:school_group), **kwargs)
   end
 
-  def replace_variables(email_content)
-    prefix = preferred_locale == :en ? '' : "#{preferred_locale}."
-    ActionController::Base.helpers.sanitize(email_content.gsub('%<root_url>s', "http://#{prefix}localhost/"))
-  end
-
   def email
     ActionMailer::Base.deliveries.last
-  end
-
-  def email_html_body_as_text
-    Nokogiri::HTML(email.html_part.decoded).css('.row:nth-of-type(3)').text.gsub(/\n\s*/, "\n")
-            .gsub(/[\u00A0\n]+/, "\n\n").strip
   end
 
   def email_html_body_as_markdown
@@ -53,7 +43,6 @@ RSpec.describe OnboardingMailer2025 do
 
     it 'sends the onboarded email in en' do
       expect(email.subject).to eq("#{school.name} is now live on Energy Sparks")
-      puts email_html_body_as_markdown
       expect(email_html_body_as_markdown).to eq(read_md('onboarded'))
     end
   end
@@ -94,9 +83,9 @@ RSpec.describe OnboardingMailer2025 do
 
   def create_management_priority
     create(:management_priority, content_generation_run: create(:content_generation_run, school:),
-                                   alert: create(:alert, template_data: { average_one_year_saving_gbp: '£1' },
-                                                         variables: { average_one_year_saving_gbp: 1,
-                                                                      one_year_saving_co2: 1 }))
+                                 alert: create(:alert, template_data: { average_one_year_saving_gbp: '£1' },
+                                                       variables: { average_one_year_saving_gbp: 1,
+                                                                    one_year_saving_co2: 1 }))
   end
 
   describe '#welcome_existing' do
