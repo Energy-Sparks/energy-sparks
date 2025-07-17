@@ -268,7 +268,7 @@ describe User do
     it 'sends welcome email after confirmation for school roles' do
       expect(user.confirmed?).to be(false)
       expect(user.confirm).to be(true)
-
+      perform_enqueued_jobs
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Welcome to Energy Sparks')
     end
