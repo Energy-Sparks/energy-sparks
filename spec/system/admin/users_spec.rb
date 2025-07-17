@@ -78,6 +78,7 @@ describe 'Users' do
     end
 
     it 'edits a user' do
+      Flipper.enable(:onboarding_mailer_2025)
       school = create(:school)
       visit admin_users_path
       click_on 'Edit'
