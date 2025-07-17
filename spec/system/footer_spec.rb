@@ -22,11 +22,11 @@ RSpec.describe 'Footer', type: :system do
       let(:block) { page.find(:css, 'footer .footer-top #services') }
 
       it { expect(block).to have_content 'Services' }
+      it { expect(block).to have_link 'Energy management tool', href: product_path }
       it { expect(block).to have_link 'Energy audits', href: energy_audits_path }
       it { expect(block).to have_link 'Education workshops', href: education_workshops_path }
       it { expect(block).to have_link 'Training', href: training_path }
-      it { expect(block).to have_link 'Find out more', href: find_out_more_path }
-      it { expect(block).to have_link 'Book a demo', href: book_demo_campaigns_path }
+      it { expect(block).to have_link 'Watch a demo', href: book_demo_campaigns_path }
       it { expect(block).to have_link 'Case studies', href: case_studies_path }
     end
 

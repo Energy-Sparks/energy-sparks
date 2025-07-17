@@ -5,17 +5,15 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  # old urls maintained to avoid breakage
-  get 'for-teachers', to: redirect('/for-schools')
-  get 'for-pupils', to: redirect('/for-schools')
-  get 'for-management', to: redirect('/for-schools')
-  get 'enrol', to: redirect('/find-out-more')
-
-  # Short link for marketing
-  get 'find-out-more', to: 'landing_pages#find_out_more', as: :find_out_more
-  get 'for-schools', to: 'home#for_schools'
-  get 'for-local-authorities', to: 'home#for_local_authorities'
-  get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
+  # Old urls maintained to avoid breakage. Retains parameters in the redirect
+  %w[
+    for-schools for-local-authorities for-multi-academy-trusts
+    for-teachers for-pupils for-management
+    enrol find-out-more pricing
+     ].each do |path|
+      get path, to: redirect(path: '/product')
+  end
+  get '/campaigns/find-out-more', to: redirect(path: '/product')
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
@@ -51,7 +49,7 @@ Rails.application.routes.draw do
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
   get 'education-workshops', to: 'home#education_workshops'
-  get 'pricing', to: 'home#pricing'
+  get 'product', to: 'home#product'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -95,7 +93,6 @@ Rails.application.routes.draw do
 
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
-      get 'find-out-more', as: :find_out_more
       get 'more-information', as: :more_information
       get 'book-demo', as: :book_demo
       post :submit_contact
@@ -890,5 +887,4 @@ Rails.application.routes.draw do
   match "/:code", to: "errors#show", via: :all, constraints: {
     code: /#{ErrorsController::CODES.join("|")}/
   }
-
 end

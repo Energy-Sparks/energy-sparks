@@ -102,6 +102,26 @@ describe Aggregation::ValidateAmrData, type: :service do
       expect(reading.substitute_date).to eq(Date.new(2025, 4, 27))
     end
 
+    context 'with entire day negative' do
+      context 'when there are possible substitutes' do
+        it 'substitutes the entire day' do
+          reading, = modify_arbitrary_reading_and_validate(create_meter) do |reading|
+            reading.kwh_data_x48[0..47] = Array.new(48, -0.1)
+          end
+          expect(reading.kwh_data_x48[0]).to eq(0.44)
+          expect(reading.type).to eq('RNEG')
+          expect(reading.substitute_date).to eq(Date.new(2025, 4, 27))
+        end
+      end
+
+      context 'when there are no possible substitutes' do
+        it 'falls back to other validations' do
+          reading, = modify_arbitrary_reading_and_validate(create_meter(kwh_data_x48: Array.new(48, -0.1)))
+          expect(reading.type).to eq('PROB') # small amount missing, so will be filled with PROB data
+        end
+      end
+    end
+
     %i[solar_pv exported_solar_pv].each do |type|
       it "doesn't correct #{type} meters" do
         kwh_data_x48 = Array.new(48, 0).tap { |a| a[24] = -1 }

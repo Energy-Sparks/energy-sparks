@@ -40,12 +40,9 @@ RSpec.describe 'Navigation -> top nav', type: :system do
     let(:our_services) { nav.find(:css, '#our-services') }
 
     it 'has all menu options' do
-      expect(our_services).to have_link('For Schools')
-      expect(our_services).to have_link('For Multi-Academy Trusts')
-      expect(our_services).to have_link('For Local Authorities')
+      expect(our_services).to have_link('Energy management tool')
       expect(our_services).to have_link('Energy audits')
       expect(our_services).to have_link('Education workshops')
-      expect(our_services).to have_link('Pricing')
       expect(our_services).to have_link('Training')
       expect(our_services).to have_link('Case studies')
       expect(our_services).to have_link('Newsletters')

@@ -6,8 +6,8 @@
       <% grid.with_feature_card size: :xl, cell_classes: 'my-auto' do |feature| %>
         <%= feature.with_header title: t('home.feature.header') %>
         <%= feature.with_description { t('home.feature.description_html') } %>
-        <%= feature.with_button t('nav.enrol'), find_out_more_campaigns_path, style: :primary %>
-        <%= feature.with_button t('home.buttons.book_a_demo'),
+        <%= feature.with_button t('home.buttons.our_tool'), product_path, style: :primary %>
+        <%= feature.with_button t('home.buttons.watch_a_demo'),
                                 book_demo_campaigns_path,
                                 style: :secondary %>
       <% end %>
@@ -85,11 +85,11 @@
 
     <div class='pb-4 mb-4 text-center' id='buttons'>
       <%= render Elements::ButtonComponent.new(
-            t('home.buttons.enrol_your_school'),
-            enrol_path, style: :primary, classes: 'mb-4 mr-2'
+            t('home.buttons.our_tool'),
+            product_path, style: :primary, classes: 'mb-4 mr-2'
           ) %>
       <%= render Elements::ButtonComponent.new(
-            t('home.buttons.book_a_demo'),
+            t('home.buttons.watch_a_demo'),
             book_demo_campaigns_path, style: :secondary, classes: 'mb-4'
           ) %>
     </div>
@@ -104,7 +104,7 @@
       <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
         <%= feature.with_header(title: t('home.general.title')) %>
         <%= feature.with_description { t('home.general.description_html', count: schools_count) } %>
-        <%= feature.with_button(t('home.buttons.find_out_more'), find_out_more_path, style: :primary) %>
+        <%= feature.with_button(t('home.buttons.find_out_more'), product_path, style: :primary) %>
       <% end %>
       <%= grid.with_image(src: 'pupils-jumping.jpg') %>
     <% end %>
@@ -129,7 +129,7 @@
         <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
           <%= feature.with_description { t('home.organisations.cards.school.description') } %>
-          <%= feature.with_link(href: for_schools_path) { t('common.labels.learn_more') } %>
+          <%= feature.with_link(href: product_path) { t('common.labels.learn_more') } %>
         <% end %>
       <% end %>
 
@@ -138,7 +138,7 @@
         <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
           <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
-          <%= feature.with_link(href: for_multi_academy_trusts_path) { t('common.labels.learn_more') } %>
+          <%= feature.with_link(href: product_path) { t('common.labels.learn_more') } %>
         <% end %>
       <% end %>
 
@@ -147,7 +147,7 @@
         <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'rounded-bottom-xl') do |feature| %>
           <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
           <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>
-          <%= feature.with_link(href: for_local_authorities_path) { t('common.labels.learn_more') } %>
+          <%= feature.with_link(href: product_path) { t('common.labels.learn_more') } %>
         <% end %>
       <% end %>
     <% end %>

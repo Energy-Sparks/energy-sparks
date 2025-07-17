@@ -102,53 +102,34 @@ RSpec.describe 'home', type: :system do
   end
 
   context 'with marketing pages' do
-    let(:case_study) { create(:case_study) }
-
-    before do
-      allow(CaseStudy).to receive(:find).and_return(case_study)
+    let(:utm_params) do
+      {
+      utm_medium: 'email',
+      utm_campaign: 'test',
+      utm_source: 'somewhere'
+      }
     end
 
-    it 'has a for-schools page' do
-      visit root_path
-      click_on('Our services')
-      within('#our-services') do
-        click_on('For Schools')
+    let(:old_paths) do
+      %w[
+        for-schools for-local-authorities for-multi-academy-trusts
+        for-teachers for-pupils for-management
+        enrol find-out-more pricing
+      ]
+    end
+
+    it 'redirects old pages to product page' do
+      old_paths.each do |path|
+        get "/#{path}"
+        expect(response).to redirect_to(product_path)
       end
-      expect(page).to have_current_path(find_out_more_campaigns_path)
     end
 
-    it 'redirects old pages' do
-      get for_teachers_path
-      expect(response).to redirect_to(for_schools_path)
-
-      get for_pupils_path
-      expect(response).to redirect_to(for_schools_path)
-
-      get for_management_path
-      expect(response).to redirect_to(for_schools_path)
-    end
-
-    it 'routes to the campaign page' do
-      visit find_out_more_path
-      expect(page).to have_content(I18n.t('campaigns.find_out_more.title'))
-    end
-
-    it 'has a for-local-authorities page' do
-      visit root_path
-      click_on('Our services')
-      within('#our-services') do
-        click_on('For Local Authorities')
+    it 'preserves utm params in redirect' do
+      old_paths.each do |path|
+        get "/#{path}", params: utm_params
+        expect(response).to redirect_to(product_path + '?' + utm_params.to_query)
       end
-      expect(page).to have_current_path(find_out_more_campaigns_path)
-    end
-
-    it 'has a for-multi-academy-trusts page' do
-      visit root_path
-      click_on('Our services')
-      within('#our-services') do
-        click_on('For Multi-Academy Trusts')
-      end
-      expect(page).to have_current_path(find_out_more_campaigns_path)
     end
   end
 
@@ -176,36 +157,32 @@ RSpec.describe 'home', type: :system do
     it { expect(page).to have_content('Our Team') }
   end
 
-  describe 'Pricing page' do
-    context toggle_feature: :new_pricing_page do
-      it 'has a pricing page' do
-        visit root_path
-        click_on('Pricing')
-        expect(page.has_content?('Pricing'))
+  describe 'Product page' do
+    before do
+      visit root_path
+      within('#services') do
+        click_on('Energy management tool')
       end
     end
 
-    context 'with all components available', with_feature: :new_pricing_page do
-      before do
-        visit pricing_path
-      end
-
-      it 'renders all the components' do
-        expect(page).to have_css('#hero')
-        expect(page).to have_css('#features')
-        expect(page).to have_css('#looking-for-info')
-        expect(page).to have_css('#audience')
-        expect(page).to have_css('#prices')
-        expect(page).to have_css('#additional-services')
-        expect(page).to have_css('#general')
-      end
+    it 'renders all the components' do
+      expect(page).to have_css('#hero')
+      expect(page).to have_css('#features')
+      expect(page).to have_css('#looking-for-info')
+      expect(page).to have_css('#audience')
+      expect(page).to have_css('#prices')
+      expect(page).to have_css('#additional-services')
+      expect(page).to have_css('#general')
     end
   end
 
-  it 'has a support us page' do
-    visit root_path
-    click_on('Support us')
-    expect(page.has_content?('Support us'))
+  describe 'Support us page' do
+    before do
+      visit root_path
+      click_on('Support us')
+    end
+
+    it { expect(page).to have_content 'Support us' }
   end
 
   describe 'Training page' do

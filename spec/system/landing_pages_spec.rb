@@ -29,39 +29,6 @@ describe 'landing pages', type: :system do
     allow(CaseStudy).to receive(:find).and_return(case_study)
   end
 
-  context 'when visiting initial landing page' do
-    before do
-      visit find_out_more_campaigns_path
-    end
-
-    it 'has book demo link' do
-      expect(page).to have_link('Book a demo', href: book_demo_campaigns_path)
-    end
-
-    it 'has find our more link' do
-      expect(page).to have_link('Find out more', href: more_information_campaigns_path)
-    end
-
-    context 'with UTM parameters' do
-      let(:expected_params) do
-        {
-          utm_medium: 'email',
-          utm_campaign: 'test',
-          utm_source: 'somewhere'
-        }
-      end
-
-      before do
-        visit find_out_more_campaigns_path(expected_params)
-      end
-
-      it 'adds campaign parameters to link' do
-        expect(page).to have_link('Book a demo', href: book_demo_campaigns_path(expected_params))
-        expect(page).to have_link('Find out more', href: more_information_campaigns_path(expected_params))
-      end
-    end
-  end
-
   def fill_in_form(organisation_type = org_type)
     fill_in('First Name', with: first_name)
     fill_in('Last Name', with: last_name)
@@ -77,8 +44,8 @@ describe 'landing pages', type: :system do
     let(:expected_utm_params) { {} }
 
     before do
-      visit find_out_more_campaigns_path(expected_utm_params)
-      click_link('Find out more', :match => :first)
+      visit product_path(expected_utm_params)
+      click_link('Request more information', :match => :first)
     end
 
     context 'with no UTM params' do
@@ -117,8 +84,8 @@ describe 'landing pages', type: :system do
     let(:expected_utm_params) { {} }
 
     before do
-      visit find_out_more_campaigns_path(expected_utm_params)
-      click_link('Book a demo', :match => :first)
+      visit product_path(expected_utm_params)
+      click_link('Watch a demo', :match => :first)
     end
 
     context 'with no UTM params' do

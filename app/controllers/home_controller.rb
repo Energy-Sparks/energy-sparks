@@ -6,7 +6,6 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
   before_action :set_blog_service, only: [:index, :show]
-  before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
 
   def index
   end
@@ -15,25 +14,13 @@ class HomeController < ApplicationController
     render :index
   end
 
-  def for_schools
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
-  def for_local_authorities
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
-  def for_multi_academy_trusts
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
   def energy_audits
   end
 
   def education_workshops
   end
 
-  def pricing
+  def product
   end
 
   def contact
@@ -112,15 +99,6 @@ class HomeController < ApplicationController
       { title: 'An introduction to Energy Sparks for eco teams', embed_url: 'https://www.youtube.com/embed/P9yJMOP9O9w' },
       { title: 'Saundersfoot CP School and Energy Sparks', embed_url: 'https://www.youtube.com/embed/Rg0znmJtr5s' },
     ]
-  end
-
-  def set_marketing_case_studies
-    @marketing_studies = {
-      costs: CaseStudy.find(15),
-      tool: CaseStudy.find(12),
-      pupils: CaseStudy.find(13),
-      emissions: CaseStudy.find(9)
-    }
   end
 
   def set_blog_service
