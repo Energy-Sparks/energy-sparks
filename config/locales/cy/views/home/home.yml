@@ -6,7 +6,6 @@ cy:
   home:
     buttons:
       find_out_more: Dysgu rhagor
-      book_a_demo: Archebwch demo
   mailchimp:
     example: 'ee: hello@example.com'
     latest_news_title: Cael y newyddion diweddaraf gan Sbarcynni yn eich mewnflwch

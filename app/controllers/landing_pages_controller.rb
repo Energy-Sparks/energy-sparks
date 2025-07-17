@@ -9,7 +9,7 @@ class LandingPagesController < ApplicationController
   before_action :set_org_types, only: [:book_demo, :more_information]
 
   def index
-    redirect_to find_out_more_campaigns_path
+    redirect_to product_path
   end
 
   def mat_pack
@@ -38,11 +38,6 @@ class LandingPagesController < ApplicationController
 
   def example_la_dashboard
     redirect_to school_group_path(find_example_local_authority)
-  end
-
-  # Main entry point
-  def find_out_more
-    render :find_out_more, layout: 'home'
   end
 
   # Display contact form, to book a demo
