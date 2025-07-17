@@ -170,7 +170,7 @@ en:
       title: Thanks for confirming your Energy Sparks user account.
       view_your_school: View your school
   onboarding_mailer2025:
-    build_an_energy_saving_team_html: <b>Build an energy saving team:</b><a href="%{root_url}activity_types/33">consider setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.
+    build_an_energy_saving_team_html: <b>Build an energy saving team:</b> consider <a href="%{root_url}activity_types/33">setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.
     data_enabled_email:
       below_are_a_few_html: |-
         <p>Below are a few other things that might help you when using Energy Sparks:</p>
@@ -181,11 +181,11 @@ en:
         </div>
         <div>
         <b>School holidays</b>
-        <p><b>On average, 15% of schools' energy is used during the holidays.</b> Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="https://energysparks.uk/intervention_types/71">example switch-off checklists</a> available for you to use.</p>
+        <p><b>On average, 15% of schools' energy is used during the holidays.</b> Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.</p>
         </div>
         <div>
         <b>Staff training</b>
-        <p>If you would like to receive further training on how to use Energy Sparks effectively at your school, you can sign up to one of our virtual induction sessions via <a href="https://energysparks.uk/training">our website</a>. Staff can also watch our pre-recorded introductory videos available at <a href="https://www.youtube.com/@energysparksuk">https://www.youtube.com/@energysparksuk</a>.</p>
+        <p>If you would like to receive further training on how to use Energy Sparks effectively at your school, you can sign up to one of our virtual induction sessions via <a href="%{root_url}training">our website</a>. Staff can also watch our pre-recorded introductory videos available at <a href="https://www.youtube.com/@energysparksuk">https://www.youtube.com/@energysparksuk</a>.</p>
         </div>
         <div>
         <b>Adding additional users</b>
@@ -199,7 +199,7 @@ en:
         </div>
         <div>
         <b>Record your activities</b>
-        <p>There are <a href="https://energysparks.uk/activity_categories">over 140 activities</a> on the Energy Sparks site for you to do with your students. Once you've completed an activity, don't forget to <a href="https://energysparks.uk/activity_categories">record it</a> on your Energy Sparks account. We also have <a href="https://energysparks.uk/intervention_type_groups">lots of adult-led energy-saving actions</a>. You can <a href="https://energysparks.uk/intervention_type_groups">record adult-led actions</a> on Energy Sparks and you'll gain points for them too. As you gain points, you'll move up the Energy Sparks <a href="https://energysparks.uk/scoreboards">scoreboard</a>. Each year we have exciting scoreboard prizes for the top scoring schools.</p>
+        <p>There are <a href="%{root_url}activity_categories">over 140 activities</a> on the Energy Sparks site for you to do with your students. Once you've completed an activity, don't forget to <a href="%{root_url}activity_categories">record it</a> on your Energy Sparks account. We also have <a href="%{root_url}intervention_type_groups">lots of adult-led energy-saving actions</a>. You can <a href="%{root_url}intervention_type_groups">record adult-led actions</a> on Energy Sparks and you'll gain points for them too. As you gain points, you'll move up the Energy Sparks <a href="%{root_url}scoreboards">scoreboard</a>. Each year we have exciting scoreboard prizes for the top scoring schools.</p>
         </div>
         <div>
         <b>Thanks for joining!</b>
@@ -213,7 +213,7 @@ en:
     many_thanks: Many thanks
     onboarded_email:
       in_the_mean_time: 'In the meantime, here is our quick guide for making the most of your Energy Sparks account:'
-      review_our_range_html: Review our range of <a href="%{root_url}intervention_type_groups">energy saving actions</a> that you, other members of staff and volunteers can carry out to start improving your energy usage.
+      review_our_range_html: <b>Review our range of <a href="%{root_url}intervention_type_groups">energy saving actions</a></b> that you, other members of staff and volunteers can carry out to start improving your energy usage.
       subject: "%{school} is now live on Energy Sparks"
     set_up_a_holiday_switch_off_routine_html: <b>Set up a holiday switch off routine:</b> On average, 15% of schools' energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.
     set_up_with_a_staff_account: You have been set up with a staff account. If you think you might need to check and update school details, you will need an admin account.
