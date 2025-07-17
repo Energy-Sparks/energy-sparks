@@ -1202,25 +1202,53 @@ module Aggregation
       (day_temp - substitute_temp).magnitude < criteria
     end
 
+    # Applies temperature compensation when substituting one day of gas readings for another.
+    #
+    # Uses the heating model to predict the kWh consumed for the missing day based on its temperature.
+    # The predicted consumption for the substitute day is calculated in the same way.
+    #
+    # These figures are used to create a ratio for adjusting the actual usage on the substitute day, e.g.
+    # so that its higher or lower based on the temperature of the missing day.
     def adjusted_substitute_heating_kwh(missing_day, substitute_day)
-      kwh_prediction_for_missing_day = heating_model.predicted_kwh(missing_day,
-                                                                   @temperatures.average_temperature(missing_day), substitute_day)
-      kwh_prediction_for_substitute_day = heating_model.predicted_kwh(substitute_day,
-                                                                      @temperatures.average_temperature(substitute_day))
+      substitute_day_temperature = @temperatures.average_temperature(substitute_day)
+      missing_day_temperature = @temperatures.average_temperature(missing_day)
+      # The base temperature of the model is the temperature above which we'd expect to use no gas
+      # If the substitute day temperature is above that, then just return the unmodified usage.
+      #
+      # Above that temperature we're either predicting negligible or zero usage
+      #
+      # This avoids kwh_prediction_for_substitute_day being
+      #  - a negligible value which results in the ratio being a huge multiplier
+      #  - a negative value, which otherwise results in zero usage.
+      model_parameters = heating_model.regression_model_parameters(substitute_day)
+
+      if model_parameters[:base_temperature] && substitute_day_temperature > model_parameters[:base_temperature]
+        return @amr_data.days_kwh_x48(substitute_day)
+      end
+
+      kwh_prediction_for_missing_day = heating_model.predicted_kwh(missing_day, missing_day_temperature, substitute_day)
+      kwh_prediction_for_substitute_day = heating_model.predicted_kwh(substitute_day, substitute_day_temperature)
+
+      # Predictions can be negative if the heating model has no base temperature.
+      # See +RegressionModelTemperature.predicted_kwh_temperature+
+      if kwh_prediction_for_missing_day.negative? && kwh_prediction_for_substitute_day.negative?
+        logger.debug "Warning: negative predictions for both missing day #{missing_day} and #{substitute_day} using unmodified data"
+        return @amr_data.days_kwh_x48(substitute_day)
+      elsif kwh_prediction_for_substitute_day == 0.0 && kwh_prediction_for_missing_day == 0.0
+        return @amr_data.days_kwh_x48(substitute_day)
+      elsif kwh_prediction_for_substitute_day == 0.0
+        logger.warn "Warning: zero predicted kwh for substitute day #{substitute_day} using unmodified data"
+        return @amr_data.days_kwh_x48(substitute_day)
+      end
 
       # using an adjustment of kWhs * (A + BTm)/(A + BTs), an alternative could be kWhs + B(Tm - Ts)
       prediction_ratio = kwh_prediction_for_missing_day / kwh_prediction_for_substitute_day
+
+      # Can be true if the heating model for either day has no base temperature
       if prediction_ratio.negative?
-        logger.debug "Warning: negative predicated data for missing day #{missing_day} from #{substitute_day} setting to zero"
-        prediction_ratio = 0.0
+        logger.debug "Warning: negative predicted data for missing day #{missing_day} using unmodified data from #{substitute_day}"
+        return @amr_data.days_kwh_x48(substitute_day)
       end
-
-      if kwh_prediction_for_substitute_day == 0.0
-        logger.warn "Warning: zero predicted kwh for substitute day #{substitute_day} setting prediction_ratio to 0.0 for #{missing_day}"
-        prediction_ratio = 1.0
-      end
-
-      prediction_ratio = 1.0 if kwh_prediction_for_substitute_day == 0.0 && kwh_prediction_for_missing_day == 0.0
 
       substitute_data = Array.new(48, 0.0)
       (0..47).each do |halfhour_index|
