@@ -78,7 +78,7 @@ function chartSuccess(chartConfig, chartData, chart) {
 
   if (chartType == 'bar' || chartType == 'column' || chartType == 'line') {
 
-    barColumnLine(chartData, chart, seriesData, chartConfig);
+    barColumnLine(chartData, chart, seriesData, chartConfig, $chartDiv);
 
   // Scatter
   } else if (chartType == 'scatter') {

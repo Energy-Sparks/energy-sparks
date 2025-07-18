@@ -1,0 +1,44 @@
+<h1><%= t('calendars.resync.title', calendar_title: @resync_service.calendar.title) %></h1>
+<p><%= link_to t('common.labels.view'), calendar_url(@resync_service.calendar), class: 'btn btn-secondary' %></p>
+
+<% if @resync_service.failures.any? %>
+  <h3><%= t('calendars.resync.failed_to_resync') %></h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th><%= t('calendars.resync.calendar') %></th>
+      <th><%= t('calendars.resync.error') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @resync_service.failures.each do |failure| %>
+      <tr scope="row">
+        <td><%= link_to failure[:calendar].title, calendar_url(failure[:calendar]), target: '_blank', rel: 'noopener' %></td>
+        <td><%= failure[:message] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if @resync_service.successes.any? %>
+  <h3><%= t('calendars.resync.successfully_resynced') %></h3>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th><%= t('calendars.resync.calendar') %></th>
+      <th><%= t('calendars.resync.events_deleted') %></th>
+      <th><%= t('calendars.resync.events_created') %></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @resync_service.successes.each do |success| %>
+      <tr scope="row">
+        <td><%= link_to success[:calendar].title, calendar_url(success[:calendar]), target: '_blank', rel: 'noopener' %></td>
+        <td><%= success[:deleted].count %></td>
+        <td><%= success[:created].count %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

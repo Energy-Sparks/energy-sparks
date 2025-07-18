@@ -41,10 +41,12 @@ en:
     how_have_we_analysed_your_data:
       calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
       cost_calculations: Cost calculations
-      cost_calculations_introduction_html: |-
-        <p>Consumption costs are estimated based on historic tariff information</p>
-        <p>Future savings are estimates based on your school's latest tariff information</p>
-        <p>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs</p>
+      cost_calculations_introduction:
+      - Consumption costs are calculated based on the unit prices of energy and do not take into account standing charges or other fees.
+      - Tariffs may be based on MAT or Local Authority averages, or an Energy Sparks default, if your school has not provided their actual tariffs.
+      - Consumption costs are estimated based on historic tariff information.
+      - Future savings are estimates based on your school's latest tariff information.
+      - Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs.
       energy_data: Energy data
       link_title: How did we calculate these figures?
       page_title: How have we analysed your data?
@@ -76,7 +78,6 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
-      name: Advice
       overview: Overview
       pages:
         baseload: Baseload
@@ -96,7 +97,6 @@ en:
         solar_pv: Solar PV
         storage_heaters: Storage heaters
         thermostatic_control: Thermostatic control
-        total_energy_use: Energy use summary
       sections:
         electricity: Electricity
         gas: Gas
@@ -106,6 +106,9 @@ en:
       message: We don't currently have %{fuel_type} data for your school, so are unable to run this analysis
       title: Unable to run requested analysis
     no_recent_data: no recent data
+    no_usage:
+      message: Our data shows that since %{date} your school has not used any %{fuel_type} out of hours. At present we are unable to provide further analysis.
+      title: No usage to report
     not_enough_data:
       available_from: Assuming we continue to regularly receive data we expect this analysis to be available after %{available_from}.
       learn_more_html: In the meantime you can <a href="%{learn_more_link}">learn more</a> about this topic.

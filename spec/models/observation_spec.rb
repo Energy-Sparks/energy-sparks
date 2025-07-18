@@ -33,55 +33,57 @@ describe Observation do
     end
   end
 
-  context 'creates an observation' do
+  context 'creating an observation' do
     context 'activities' do
-      it 'sets a score if an activity has an image in its activity description and the current observation score is non zero' do
-        activity = create(:activity, description: '<div><figure></figure></div>')
+      let(:activity_type) { create(:activity_type, score: 35) }
+      let(:happened_on) { }
+      let(:description) { '<div></div>' }
+      let!(:activity) { create(:activity, activity_type: activity_type, description: description, happened_on: happened_on) }
+      let(:observation) { build(:observation, observation_type: :activity, activity:, at: happened_on) }
+
+      before do
         SiteSettings.current.update(photo_bonus_points: 15)
-        # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, points: 10)
         observation.save
-        expect(observation.points).to eq(25)
       end
 
-      it 'sets a score if an activity has an image in its observation description and the current observation score is non zero' do
-        activity = create(:activity, description: '<div></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>', points: 10)
-        observation.save
-        expect(observation.points).to eq(25)
+      context 'within this academic year' do
+        let(:happened_on) { Time.zone.now }
+
+        context 'without an image' do
+          let(:description) { '<div></div>' }
+
+          it 'sets the points to the activity score' do
+            expect(observation.points).to eq(35)
+          end
+        end
+
+        context 'with an image' do
+          let(:description) { '<div><figure></figure></div>' }
+
+          it 'sets the points to the activity score plus bonus' do
+            expect(observation.points).to eq(50)
+          end
+        end
       end
 
-      it 'does not set a score if an activity has an image in its activity description but the current observation score is otherwise nil or zero' do
-        activity = create(:activity, description: '<div><figure></figure></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        # Notes: see ActivityCreator where observation points are assigned for activities
-        observation = build(:observation, observation_type: :activity, activity: activity, points: 0)
-        observation.save
-        expect(observation.points).to eq(0)
-        observation = build(:observation, observation_type: :activity, activity: activity, points: nil)
-        observation.save
-        expect(observation.points).to eq(nil)
-      end
+      context 'outside academic year' do
+        let(:happened_on) { 3.years.ago }
 
-      it 'does not set a score if an activity has an image in its observation description but the current observation score is otherwise nil or zero' do
-        activity = create(:activity, description: '<div></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div><figure></figure></div>', points: 0)
-        observation.save
-        expect(observation.points).to eq(0)
-      end
+        context 'without an image' do
+          let(:description) { '<div></div>' }
 
-      it 'does not sets a score if an activity has no image in its activity or observation description' do
-        activity = create(:activity, description: '<div></div>')
-        SiteSettings.current.update(photo_bonus_points: 15)
-        observation = build(:observation, observation_type: :activity, activity: activity, description: '<div></div>')
-        observation.save
-        expect(observation.points).to eq(nil)
+          it 'does not set points' do
+            expect(observation.points).to be_nil
+          end
+        end
+
+        context 'with an image' do
+          let(:description) { '<div><figure></figure></div>' }
+
+          it 'does not set points' do
+            expect(observation.points).to be_nil
+          end
+        end
       end
     end
 

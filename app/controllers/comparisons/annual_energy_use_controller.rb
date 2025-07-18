@@ -38,15 +38,14 @@ module Comparisons
       :annual_energy_use
     end
 
-    def advice_page_key
-      :total_energy_use
-    end
-
     def load_data
       Comparison::AnnualEnergyUse.for_schools(@schools).with_data.sort_default
     end
 
     def create_charts(results)
+      # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.electricity')
+      # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.gas')
+      # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.storage_heaters')
       create_multi_chart(results, {
         electricity_last_year_kwh: :electricity,
         gas_last_year_kwh: :gas,

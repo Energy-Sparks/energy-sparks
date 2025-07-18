@@ -63,7 +63,7 @@ RSpec.describe PodiumComponent, type: :component, include_url_helpers: true do
   end
 
   shared_examples 'a podium with overtake message' do |points: 50|
-    it { expect(html).to have_content("You only need to score #{points} points to overtake the next school!") }
+    it { expect(html).to have_content("You need to score more than #{points} points to overtake the next school!") }
   end
 
   context 'with all params' do

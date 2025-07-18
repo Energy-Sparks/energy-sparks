@@ -99,15 +99,15 @@ $(document).ready(function() {
     var i = 0;
     var stops = [];
     for (i = 0; i < 0.6; i += 0.01) {
-      stops.push([i, '<%= Colours::GREEN %>']);
+      stops.push([i, '<%= Colours.success %>']);
     }
     for (i = 0.6; i < 0.8; i += 0.01) {
-      stops.push([i, '<%= Colours::LIGHT_ORANGE %>']);
+      stops.push([i, '<%= Colours.warning %>']);
     }
     for (i = 0.8; i < 1.0; i += 0.01) {
-      stops.push([i, '<%= Colours::NEW_RED %>']);
+      stops.push([i, '<%= Colours.danger %>']);
     }
-    stops.push([1, '<%= Colours::NEW_RED %>']);
+    stops.push([1, '<%= Colours.danger %>']);
     return stops;
   }
 

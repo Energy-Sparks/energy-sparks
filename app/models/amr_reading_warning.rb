@@ -38,7 +38,8 @@ class AmrReadingWarning < ApplicationRecord
     6 => :duplicate_reading
   }.freeze
 
-  enum warning: [:blank_readings, :missing_readings, :missing_mpan_mprn, :missing_reading_date, :invalid_reading_date]
+  enum :warning, { blank_readings: 0, missing_readings: 1, missing_mpan_mprn: 2, missing_reading_date: 3,
+                   invalid_reading_date: 4 }
 
   def messages
     warning_symbols.map { |warning_symbol| AmrReadingData::WARNINGS[warning_symbol] }.join(', ')

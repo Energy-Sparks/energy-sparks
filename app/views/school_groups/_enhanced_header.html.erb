@@ -9,11 +9,11 @@
       <% if current_page?({ action: 'map' }) %>
         <%= if can?(:compare, @school_group)
               link_to(t('school_groups.header.view_group'), school_group_path(@school_group),
-                      class: 'btn btn-outline-dark rounded-pill font-weight-bold')
+                      class: 'btn btn-default')
             end %>
       <% else %>
         <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group),
-                    class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                    class: 'btn btn-default' %>
       <% end %>
     </div>
   </div>
@@ -37,7 +37,14 @@
   <div class='row'>
     <div class="col-md-12">
       <div class="container">
-        <%= render 'management/schools/dashboard_message', messageable: @school_group %>
+        <% if @school_group.try(:dashboard_message) %>
+          <%= render InfoBarComponent.new(
+                status: :neutral,
+                title: @school_group.dashboard_message.message,
+                icon: fa_icon('info-circle fa-3x'),
+                buttons: {}
+              ) %>
+        <% end %>
       </div>
     </div>
   </div>

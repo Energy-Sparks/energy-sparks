@@ -1,0 +1,13 @@
+---
+en:
+  components:
+    manage_school_navigation:
+      admin: Admin
+      content: Content
+      exclusions: Alert exclusions
+      history: History
+      metering: Metering
+      settings: Settings
+      temperatures: Temperatures
+      transport_surveys: Transport surveys
+      users: Users

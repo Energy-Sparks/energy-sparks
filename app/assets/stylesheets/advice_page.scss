@@ -20,7 +20,7 @@
 
 .advice-table {
   thead {
-    background-color: $dark-blue !important;
+    background-color: $header-dark !important;
     color: $white;
     th {
       border-bottom: 0px;
@@ -28,28 +28,20 @@
     }
   }
   .fa-arrow-circle-down {
-    color: $green;
+    color: $positive-dark;
   }
   .fa-arrow-circle-up {
-    color: $new-red;
+    color: $negative-dark;
   }
   .icon {
     width: 10px;
   }
   tr.positive-row {
-    border-left: 5px solid $green;
+    border-left: 5px solid $positive-dark;
   }
   tr.negative-row {
-    border-left: 5px solid $new-red;
+    border-left: 5px solid $negative-dark;
   }
-}
-
-.text-positive {
-  color: $green;
-}
-
-.text-negative {
-  color: $new-red;
 }
 
 .advice-table-caption {
@@ -71,7 +63,7 @@
 .advice-page-benchmark-muted-label {
   @extend .advice-page-benchmark-label;
   font-weight: bold;
-  color: $grey;
+  color: $grey-medium;
 }
 
 .advice-page-benchmark-colored-label {
@@ -82,8 +74,4 @@
     color: inherit;
     text-decoration: none;
   }
-}
-
-.advice-question-icon {
-  color: $bright-blue;
 }

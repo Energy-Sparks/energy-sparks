@@ -17,58 +17,65 @@
   </li>
 </ul>
 
-<%= render 'schools/advice/section_title', section_id: 'thermostatic_control_in_your_school', section_title: t('advice_pages.thermostatic_control.analysis.thermostatic_control_in_your_school') %>
+<%= render 'schools/advice/section_title', section_id: 'thermostatic_control_in_your_school',
+                                           section_title: t('advice_pages.thermostatic_control.analysis.thermostatic_control_in_your_school') %>
 
-<% rating_value = AnalyseHeatingAndHotWater::HeatingModel.find_r2_rating(@heating_thermostatic_analysis.r2, :rating_value) %>
-<%= component 'notice', status: notice_status_for(rating_value) do |c| %>
-  <%=
-    t('advice_pages.thermostatic_control.insights.thermostatic_control_r2_notice_html',
-      r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2),
-      r2: @heating_thermostatic_analysis.r2.round(2),
-      average_schools_r2: AnalyseHeatingAndHotWater::HeatingModel.average_schools_r2
-    )
-  %>
+<% rating_value = AnalyseHeatingAndHotWater::HeatingModel.find_r2_rating(@heating_thermostatic_analysis.r2,
+                                                                         :rating_value) %>
+<%= render PromptComponent.new(icon: :fire, fuel_type: :gas, status: notice_status_for(rating_value)) do |c| %>
+  <%= t('advice_pages.thermostatic_control.insights.thermostatic_control_r2_notice_html',
+        r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2),
+        r2: @heating_thermostatic_analysis.r2.round(2),
+        average_schools_r2: AnalyseHeatingAndHotWater::HeatingModel.average_schools_r2) %>
 <% end %>
-<br />
+<br>
 <%= t('advice_pages.thermostatic_control.analysis.scatter_chart_html') %>
 
 <p>
   <%= t('advice_pages.thermostatic_control.analysis.your_schools_R2_value',
         r2: @heating_thermostatic_analysis.r2.round(2),
-        r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2)
-       ) %>
+        r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2)) %>
 </p>
 
-<%= component 'chart', chart_type: :thermostatic_up_to_1_year, axis_controls: false, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :thermostatic_up_to_1_year, axis_controls: false, school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.title') %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.subtitle_html', start_date: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.one_year_before_end : @analysis_dates.start_date), end_date: short_dates(@analysis_dates.end_date)) %>
+    <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.subtitle_html',
+          start_date: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.one_year_before_end : @analysis_dates.start_date), end_date: short_dates(@analysis_dates.end_date)) %>
   <% end %>
   <% c.with_footer do %>
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_up_to_1_year.footer_html',
-          insulation_hotwater_heat_loss_estimate_kwh: format_unit(@heating_thermostatic_analysis.insulation_hotwater_heat_loss_estimate_kwh, :kwh),
-          insulation_hotwater_heat_loss_estimate_gbp: format_unit(@heating_thermostatic_analysis.insulation_hotwater_heat_loss_estimate_£, :£)
-    ) %>
+          insulation_hotwater_heat_loss_estimate_kwh: format_unit(
+            @heating_thermostatic_analysis.insulation_hotwater_heat_loss_estimate_kwh, :kwh
+          ),
+          insulation_hotwater_heat_loss_estimate_gbp: format_unit(
+            @heating_thermostatic_analysis.insulation_hotwater_heat_loss_estimate_£, :£
+          )) %>
   <% end %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model', section_title: t('advice_pages.thermostatic_control.analysis.how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model', section_title: t('advice_pages.thermostatic_control.analysis.how_to_calculate_a_theoretical_daily_gas_consumption_using_the_model') %>
 
 <%= t('advice_pages.thermostatic_control.analysis.for_energy_experts_html',
-  a: @heating_thermostatic_analysis.average_heating_school_day_a.round(0),
-  b: @heating_thermostatic_analysis.average_heating_school_day_b.round(1),
-  predicted_kwh_for_high: @heating_thermostatic_analysis.predicted_kwh_for_high_average_outside_temperature.round(0),
-  predicted_kwh_for_low: @heating_thermostatic_analysis.predicted_kwh_for_low_average_outside_temperature.round(0),
-  temperature_high: @heating_thermostatic_analysis.average_outside_temperature_high,
-  temperature_low: @heating_thermostatic_analysis.average_outside_temperature_low) %>
+      a: @heating_thermostatic_analysis.average_heating_school_day_a.round(0),
+      b: @heating_thermostatic_analysis.average_heating_school_day_b.round(1),
+      predicted_kwh_for_high: @heating_thermostatic_analysis.predicted_kwh_for_high_average_outside_temperature.round(0),
+      predicted_kwh_for_low: @heating_thermostatic_analysis.predicted_kwh_for_low_average_outside_temperature.round(0),
+      temperature_high: @heating_thermostatic_analysis.average_outside_temperature_high,
+      temperature_low: @heating_thermostatic_analysis.average_outside_temperature_low) %>
 
-<%= render 'schools/advice/section_title', section_id: 'using_days_with_large_diurnal_range_to_understand_thermostatic_control', section_title: t('advice_pages.thermostatic_control.analysis.using_days_with_large_diurnal_range_to_understand_thermostatic_control') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'using_days_with_large_diurnal_range_to_understand_thermostatic_control',
+           section_title: t('advice_pages.thermostatic_control.analysis.using_days_with_large_diurnal_range_to_understand_thermostatic_control') %>
 
 <%= t('advice_pages.thermostatic_control.analysis.an_alternative_way_of_looking_html') %>
 
-<%= component 'chart', chart_type: :thermostatic_control_large_diurnal_range, axis_controls: false, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :thermostatic_control_large_diurnal_range,
+                              axis_controls: false,
+                              school: @school) do |c| %>
   <% c.with_title do %>
     <%= t('advice_pages.thermostatic_control.analysis.thermostatic_control_large_diurnal_range.title') %>
   <% end %>

@@ -1,30 +1,79 @@
-.page-nav-component a.nav-link.item:hover {
-  background-color: $light-grey;
-}
-
-.page-nav-component a.nav-link.current {
-  font-weight: bolder;
-}
-
-@each $tag, $colour in $fuel-colours-light {
-  .page-nav-component a.nav-link.#{$tag}-item {
-    border-left: 1px solid $colour;
+.page-nav-component {
+  i { // style the chevron
+    color: $blue-dark;
   }
 
-  .page-nav-component a.nav-link.#{$tag}-item:hover {
-    background-color: rgba($colour, 0.5);
+  a.nav-link {
+    font-family: $header-font-family;
+    color: $blue-very-dark;
+    font-weight: $font-weight-semibold;
+
+    &:hover, &.current {
+      background-color: $grey-pale;
+    }
+
+    &.current {
+      font-weight: bold;
+    }
   }
 
-  .page-nav-component a.nav-link.#{$tag}-item.current {
-    background-color: rgba($colour, 0.5);
-    font-weight: bolder;
+  li.section {
+    border-top: 1px solid $grey-medium !important;
   }
-}
 
-@each $tag, $colour in $fuel-colours-dark {
-  .page-nav-component a.#{$tag}-section {
-    background-color: $colour;
-    color: $white;
-    font-weight: bold;
+  @each $fuel, $tones in $colours-fuel {
+    a.nav-link.#{$fuel}-item {
+      font-family: $default-font-family;
+      color: $blue-dark; // switch to $body-color when we've switch that over
+      font-weight: $default-font-weight;
+
+      &:hover, &.current {
+        border-radius: 5px;
+        background-color: map-get($tones, "light");
+      }
+
+      &.current {
+        font-weight: bold !important;
+      }
+    }
+
+    a.#{$fuel}-section {
+      font-weight: $font-weight-semibold;
+
+      &:hover {
+        background-color: transparent;
+      }
+
+      i.fuel {  // icon colour for fuel icon
+        color: map-get($tones, "dark");
+      }
+    }
+  }
+
+  a.nav-link.generic-item {
+    font-family: $default-font-family;
+    color: $blue-dark; // switch to $body-color when we've switch that over
+    font-weight: $default-font-weight;
+
+    &:hover, &.current {
+      border-radius: 5px;
+      background-color: $teal-light;
+    }
+
+    &.current {
+      font-weight: bold !important;
+    }
+  }
+
+  a.generic-section {
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    i.fuel {
+      color: $teal-dark;
+    }
   }
 }

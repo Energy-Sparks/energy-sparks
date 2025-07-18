@@ -50,7 +50,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content("#{observation.school.name} recorded \"#{observation.activity.display_name}\"") }
+      it { expect(html).to have_content("scored #{observation.activity.activity_type.score} points after they recorded \"#{observation.activity.display_name}\"") }
       it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
     end
 
@@ -58,7 +58,6 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :description }
 
       it { expect(html).to have_css('i.fa-clipboard-check') }
-      it { expect(html).to have_content("Recorded \"#{observation.activity.display_name}\"") }
       it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
     end
   end
@@ -145,6 +144,7 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :compact }
 
       it { expect(html).to have_css("i.fa-#{observation.intervention_type.intervention_type_group.icon}") }
+      it { expect(html).to have_content("scored #{observation.intervention_type.score} points after they recorded \"#{observation.intervention_type.name}\"") }
       it { expect(html).to have_link(observation.school.name, href: school_path(observation.school)) }
       it { expect(html).to have_link(observation.intervention_type.name, href: school_intervention_path(observation.school, observation)) }
     end
@@ -153,7 +153,6 @@ RSpec.describe ObservationComponent, type: :component, include_url_helpers: true
       let(:style) { :description }
 
       it { expect(html).to have_css("i.fa-#{observation.intervention_type.intervention_type_group.icon}") }
-      it { expect(html).to have_content("Recorded \"#{observation.intervention_type.name}\"") }
       it { expect(html).to have_link(observation.intervention_type.name, href: school_intervention_path(observation.school, observation)) }
     end
   end

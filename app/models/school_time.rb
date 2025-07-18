@@ -25,9 +25,10 @@ class SchoolTime < ApplicationRecord
   scope :unique_days, -> { distinct(:days).pluck(:day) }
   scope :unique_calendar_periods, -> { distinct(:calendar_periods).pluck(:calendar_period) }
 
-  enum day: [:monday, :tuesday, :wednesday, :thursday, :friday, :saturday, :sunday, :weekdays, :weekends, :everyday]
-  enum usage_type: [:school_day, :community_use]
-  enum calendar_period: [:term_times, :only_holidays, :all_year]
+  enum :day, { monday: 0, tuesday: 1, wednesday: 2, thursday: 3, friday: 4, saturday: 5, sunday: 6,
+               weekdays: 7, weekends: 8, everyday: 9 }
+  enum :usage_type, { school_day: 0, community_use: 1 }
+  enum :calendar_period, { term_times: 0, only_holidays: 1, all_year: 2 }
 
   validates :opening_time, :closing_time, :day, presence: true
   validates :opening_time, :closing_time, numericality: {
@@ -38,13 +39,15 @@ class SchoolTime < ApplicationRecord
   }
 
   # Can only have one of each school day per school
-  validates_uniqueness_of :day, scope: :school_id, conditions: -> { where(usage_type: :school_day) }, if: :school_day?, message: 'Cannot have duplicate school days'
+  validates :day, uniqueness: { scope: :school_id, conditions: lambda {
+    where(usage_type: :school_day)
+  }, if: :school_day?, message: 'Cannot have duplicate school days' }
 
   # School days must be a named day
-  validates_inclusion_of :day, in: %w(monday tuesday wednesday thursday friday), if: :school_day?
+  validates :day, inclusion: { in: %w[monday tuesday wednesday thursday friday], if: :school_day? }
 
   # School days must be term time
-  validates_inclusion_of :calendar_period, in: ['term_times'], if: :school_day?
+  validates :calendar_period, inclusion: { in: ['term_times'], if: :school_day? }
 
   validate :closing_after_opening
 
@@ -52,19 +55,19 @@ class SchoolTime < ApplicationRecord
 
   def opening_time=(time)
     time = time.delete(':') if time.respond_to?(:delete)
-    super(time)
+    super
   end
 
   def closing_time=(time)
     time = time.delete(':') if time.respond_to?(:delete)
-    super(time)
+    super
   end
 
   def community_use_defaults!
-    if self.usage_type.to_sym == :community_use
-      self.opening_time = nil
-      self.closing_time = nil
-    end
+    return unless usage_type.to_sym == :community_use
+
+    self.opening_time = nil
+    self.closing_time = nil
   end
 
   def overlaps_school_day?
@@ -72,26 +75,33 @@ class SchoolTime < ApplicationRecord
   end
 
   def overlaps_other?
-    overlapping(self.usage_type)
+    overlapping(usage_type)
   end
 
   def no_overlaps
-    return unless self.opening_time.present? && self.closing_time.present?
-    errors.add(:overlapping_time, 'Community use periods cannot overlap the school day') if usage_type == 'community_use' && overlaps_school_day?
+    return unless opening_time.present? && closing_time.present?
+
+    if usage_type == 'community_use' && overlaps_school_day?
+      errors.add(:overlapping_time,
+                 'Community use periods cannot overlap the school day')
+    end
     errors.add(:overlapping_time, 'Periods cannot overlap each other') if overlaps_other?
   end
 
   def closing_after_opening
-    errors.add(:closing_time, 'must be before opening time') if closing_time.present? && opening_time.present? && closing_time <= opening_time
+    return unless closing_time.present? && opening_time.present? && closing_time <= opening_time
+
+    errors.add(:closing_time,
+               'must be before opening time')
   end
 
   def to_analytics
     {
-      day: self.day.to_sym,
-      usage_type: self.usage_type.to_sym,
-      opening_time: convert_to_time_of_day(self.opening_time),
-      closing_time: convert_to_time_of_day(self.closing_time),
-      calendar_period: self.calendar_period.to_sym
+      day: day.to_sym,
+      usage_type: usage_type.to_sym,
+      opening_time: convert_to_time_of_day(opening_time),
+      closing_time: convert_to_time_of_day(closing_time),
+      calendar_period: calendar_period.to_sym
     }
   end
 
@@ -119,56 +129,56 @@ class SchoolTime < ApplicationRecord
   end
 
   def overlapping_times?(other)
-    return same_period?(other) || shorter_period?(other) || longer_period?(other) || overlaps_start?(other) || overlaps_end?(other)
+    same_period?(other) || shorter_period?(other) || longer_period?(other) || overlaps_start?(other) || overlaps_end?(other)
   end
 
   def same_period?(other)
-    other.opening_time == self.opening_time && other.closing_time == self.closing_time
+    other.opening_time == opening_time && other.closing_time == closing_time
   end
 
   def shorter_period?(other)
-    other.opening_time > self.opening_time && other.closing_time < self.closing_time
+    other.opening_time > opening_time && other.closing_time < closing_time
   end
 
   def longer_period?(other)
-    other.opening_time < self.opening_time && other.closing_time > self.closing_time
+    other.opening_time < opening_time && other.closing_time > closing_time
   end
 
   def overlaps_start?(other)
-    other.opening_time < self.opening_time && other.closing_time > self.opening_time && other.closing_time < self.closing_time
+    other.opening_time < opening_time && other.closing_time > opening_time && other.closing_time < closing_time
   end
 
   def overlaps_end?(other)
-    other.opening_time > self.opening_time && other.opening_time < self.closing_time
+    other.opening_time > opening_time && other.opening_time < closing_time
   end
 
   def overlapping_calendar_periods
-    case self.calendar_period
+    case calendar_period
     when 'term_times'
-      [self.calendar_period, 'all_year']
+      [calendar_period, 'all_year']
     when 'only_holidays'
-      [self.calendar_period, 'all_year']
+      [calendar_period, 'all_year']
     when 'all_year'
-      [self.calendar_period, 'term_times', 'only_holidays']
+      [calendar_period, 'term_times', 'only_holidays']
     else
-      [self.calendar_period]
+      [calendar_period]
     end
   end
 
   def overlapping_days
-    case self.day
+    case day
     when 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'
-      [self.day, 'weekdays', 'everyday']
+      [day, 'weekdays', 'everyday']
     when 'saturday', 'sunday'
-      [self.day, 'weekends', 'everyday']
+      [day, 'weekends', 'everyday']
     when 'weekdays'
-      [self.day, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+      [day, 'monday', 'tuesday', 'wednesday', 'thursday', 'friday']
     when 'weekends'
-      [self.day, 'saturday', 'sunday']
+      [day, 'saturday', 'sunday']
     when 'everyday'
       SchoolTime.days.keys.map(&:to_s)
     else
-      [self.day]
+      [day]
     end
   end
 

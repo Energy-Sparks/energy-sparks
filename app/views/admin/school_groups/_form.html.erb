@@ -45,14 +45,6 @@
       </div>
 
       <div class="form-group">
-        <%= f.label :default_solar_pv_tuos_area_id, 'Default Solar PV from The University of Sheffield Data Feed Area' %>
-        <%= f.select :default_solar_pv_tuos_area_id,
-                     options_from_collection_for_select(SolarPvTuosArea.order(:title), 'id', 'title',
-                                                        @school_group.default_solar_pv_tuos_area_id),
-                     { include_blank: true }, { class: 'form-control' } %>
-      </div>
-
-      <div class="form-group">
         <%= f.label :default_dark_sky_area_id, 'Default Dark Sky Weather Data Feed Area' %>
         <%= f.select :default_dark_sky_area_id,
                      options_from_collection_for_select(DarkSkyArea.order(:title), 'id', 'title',

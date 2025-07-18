@@ -1,0 +1,20 @@
+<%= render SearchResultsComponent.new do |c| %>
+  <% c.with_title do %>
+    <% if keyword %>
+      <%= I18n.t('components.search_results.keyword.title') %>
+    <% else %>
+      <%= letter %>
+    <% end %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= I18n.t("components.search_results.#{tab}.subtitle", count: count) %>
+  <% end %>
+  <% results.each do |result| %>
+    <% c.with_result do %>
+      <%= link_to result.name, tab == :schools ? school_path(result) : school_group_path(result) %>
+      <% if tab == :schools %>
+        - <span class="smaller"><%= result.school_group.name %></span>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -75,7 +75,7 @@
     <h2>Coloured by Fuel Type</h2>
 
     <table class="table">
-      <% %i[electricity gas storage_heater solar_pv export_solar_pv].each do |fuel_type| %>
+      <% %i[electricity gas storage_heater solar_pv exported_solar_pv].each do |fuel_type| %>
         <tr>
           <td><code>name: 'info-circle', fuel_type: :<%= fuel_type %></code></td>
           <td><%= render IconComponent.new(name: 'info-circle', fuel_type: fuel_type) %></td>
@@ -90,7 +90,7 @@
     <h2>With Icon Inferred From Fuel Type</h2>
 
     <table class="table">
-      <% %i[electricity gas storage_heater solar_pv export_solar_pv].each do |fuel_type| %>
+      <% %i[electricity gas storage_heater solar_pv exported_solar_pv].each do |fuel_type| %>
         <tr>
           <td><code>fuel_type: :<%= fuel_type %></code></td>
           <td><%= render IconComponent.new(fuel_type: fuel_type) %></td>
@@ -99,3 +99,52 @@
     </table>
   </div>
 </div>
+
+<div class="row">
+  <div class="col">
+    <h2>Email Footer Icons</h2>
+    <table class="table footer download-icons">
+      <% %i[linkedin x-twitter instagram facebook-square github].each do |name| %>
+        <tr>
+          <% args = { icon_set: 'fab', name: name, style: :circle } %>
+          <td><code><%= args.inspect %></code></td>
+          <td><%= render IconComponent.new(**args) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <h2>Email Alert Icons</h2>
+    <table class="table download-icons">
+      <% [%i[electricity bolt], %i[gas fire], [nil, :'calendar-alt'], %i[solar_pv sun],
+          %i[storage_heater fire-alt], %i[exported_solar_pv arrow-right]].each do |fuel_type, name| %>
+        <tr>
+          <% args = { fuel_type: fuel_type, name: name, style: :circle, size: 'f5' } %>
+          <td><code><%= args.inspect %></code></td>
+          <td><%= render IconComponent.new(**args) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<style>
+  .footer .fa-stack { color: <%= Colours.dark %>; }
+</style>
+<script src="https://unpkg.com/modern-screenshot"></script>
+<script>
+  document.querySelectorAll('table.download-icons .fa-stack').forEach(element => {
+    element.onclick = event => {
+      event.preventDefault()
+      modernScreenshot.domToPng(element).then(dataUrl => {
+        const link = document.createElement('a')
+        link.download = `${event.target.classList[event.target.classList.length-1]}.png`
+        link.href = dataUrl
+        link.click()
+      })
+    }
+  })
+</script>

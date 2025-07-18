@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'onboarding', :schools, type: :system do
+RSpec.describe 'onboarding', :schools do
   let(:admin)                     { create(:admin) }
-  let(:school_name)               { 'Oldfield Park Infants'}
+  let(:school_name)               { 'Oldfield Park Infants' }
 
   # This calendar is there to allow for the calendar area selection
   let(:template_calendar) { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
-  let(:solar_pv_area) { create(:solar_pv_tuos_area, title: 'BANES solar') }
-  let!(:consent_statement) { ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true) }
+  let!(:consent_statement) do
+    ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true)
+  end
 
   context 'as a user' do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
@@ -20,7 +23,6 @@ RSpec.describe 'onboarding', :schools, type: :system do
         event_names: [:email_sent],
         school_name: school_name,
         template_calendar: template_calendar,
-        solar_pv_tuos_area: solar_pv_area,
         created_by: admin
       )
     end
@@ -35,11 +37,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
         visit onboarding_path(onboarding)
       end
 
-      # Note: this is just to test the sequencing of the multi-stage form
-      # this test just fills in the required fields at each stage
-      # then checks it completes as expected.
-      # Add specific tests for each stage, rather than lots of assertions here
-      it 'walks through the expected sequence' do
+      def complete_onboarding(postcode: 'AB1 2CD', urn: '4444244')
         # Welcome
         click_on 'Start'
 
@@ -55,12 +53,20 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
         # School details
         expect(page).to have_content('Step 2: Tell us about your school')
-        fill_in 'Unique Reference Number', with: '4444244'
+        fill_in 'Unique Reference Number', with: urn
         fill_in 'Address', with: '1 Station Road'
-        fill_in 'Postcode', with: 'AB1 2CD'
+        fill_in 'Postcode', with: postcode
         fill_in 'Website', with: 'http://oldfield.sch.uk'
         choose('Primary')
         click_on 'Save school details'
+      end
+
+      # NOTE: this is just to test the sequencing of the multi-stage form
+      # this test just fills in the required fields at each stage
+      # then checks it completes as expected.
+      # Add specific tests for each stage, rather than lots of assertions here
+      it 'walks through the expected sequence' do
+        complete_onboarding
 
         onboarding.reload
         expect(onboarding).to have_event(:school_details_created)
@@ -87,29 +93,8 @@ RSpec.describe 'onboarding', :schools, type: :system do
       end
 
       it 'shows an error message for an invalid postcode' do
-        # Note: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
-
-        # Welcome
-        click_on 'Start'
-
-        # Account
-        expect(page).to have_content('Step 1: Create your school administrator account')
-        fill_in 'Your name', with: 'A Teacher'
-        select 'Headteacher', from: 'Role'
-        password = 'testtesttest1'
-        fill_in 'Password', with: password, match: :prefer_exact
-        fill_in 'Password confirmation', with: password
-        check :privacy
-        click_on 'Create my account'
-
-        # School details
-        expect(page).to have_content('Step 2: Tell us about your school')
-        fill_in 'Unique Reference Number', with: '4444244'
-        fill_in 'Address', with: '1 Station Road'
-        fill_in 'Postcode', with: 'AB 2CD'
-        fill_in 'Website', with: 'http://oldfield.sch.uk'
-        choose('Primary')
-        click_on 'Save school details'
+        # NOTE: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
+        complete_onboarding(postcode: 'AB 2CD')
         expect(page).to have_content('Step 2: Tell us about your school')
         expect(page).to have_content('is invalid and not found')
         fill_in 'Postcode', with: 'AB2 2CD'
@@ -117,6 +102,16 @@ RSpec.describe 'onboarding', :schools, type: :system do
         expect(page).to have_content('Step 2: Tell us about your school')
         expect(page).to have_content('not found')
         fill_in 'Postcode', with: 'AB1 2CD'
+        click_on 'Save school details'
+        expect(page).to have_content('Step 3: Grant consent')
+      end
+
+      it 'shows an error message for an invalid URN' do
+        complete_onboarding(urn: '9876543210')
+        expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_content("Unique Reference Number *\n" \
+                                     'the URN or SEED you have supplied appears to be invalid')
+        fill_in 'Unique Reference Number', with: '987654321'
         click_on 'Save school details'
         expect(page).to have_content('Step 3: Grant consent')
       end
@@ -208,7 +203,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
             expect(page).to have_content('Do you want to complete onboarding for Oldfield Park Infants using this school group admin account?')
           end
 
-          it 'allows them to complete onboarding', js: true do
+          it 'allows them to complete onboarding' do
             click_on 'Yes, use this account'
 
             # School details
@@ -236,6 +231,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
             expect(page).to have_content('extra+user@example.org')
             expect(page).to have_content('Headteacher')
+            expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
 
             click_on 'Continue'
 
@@ -307,9 +303,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
           onboarding.reload
           expect(onboarding).to have_event(:school_details_created)
-          expect(onboarding.school.indicated_has_solar_panels?).to eq(true)
-          expect(onboarding.school.indicated_has_storage_heaters?).to eq(true)
-          expect(onboarding.school.has_swimming_pool?).to eq(false)
+          expect(onboarding.school.indicated_has_solar_panels?).to be(true)
+          expect(onboarding.school.indicated_has_storage_heaters?).to be(true)
+          expect(onboarding.school.has_swimming_pool?).to be(false)
           expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
           expect(onboarding.school.percentage_free_school_meals).to eq(16)
           expect(onboarding.school.data_enabled).to be_falsy
@@ -424,7 +420,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
           staff = create(:staff, school: school, confirmed_at: nil)
           click_on 'Complete setup', match: :first
           email = ActionMailer::Base.deliveries.first
-          expect(email.subject).to eq('Energy Sparks: confirm your account')
+          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
           expect(email.to).to include(staff.email)
         end
 
@@ -456,6 +452,7 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
           context 'when school is later set as data enabled' do
             it 'sends data enabled emails' do
+              create(:consent_grant, school: school)
               school.update(visible: true)
               click_on 'Complete setup', match: :first
               SchoolCreator.new(school).make_data_enabled!
@@ -511,8 +508,10 @@ RSpec.describe 'onboarding', :schools, type: :system do
       end
 
       it 'inset days can be added' do
-        create :calendar_event_type, title: 'In school Inset Day', description: 'Training day in school', inset_day: true
-        create :academic_year, start_date: Date.new(2018, 9, 1), end_date: Date.new(2019, 8, 31), calendar: template_calendar
+        create(:calendar_event_type, title: 'In school Inset Day', description: 'Training day in school',
+                                     inset_day: true)
+        create(:academic_year, start_date: Date.new(2018, 9, 1), end_date: Date.new(2019, 8, 31),
+                               calendar: template_calendar)
         visit new_onboarding_completion_path(onboarding)
 
         # Inset days
@@ -540,7 +539,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
       it 'school details can be edited' do
         visit new_onboarding_completion_path(onboarding)
 
-        click_on 'Edit school details'
+        within '#accordion' do
+          click_on 'Edit school details'
+        end
         fill_in 'School name', with: 'Correct school'
         click_on 'Update school details'
         school.reload
@@ -552,8 +553,9 @@ RSpec.describe 'onboarding', :schools, type: :system do
 
         visit new_onboarding_completion_path(onboarding)
         expect(page).to have_content('You have not added any additional school accounts')
-        click_on 'Manage users'
-
+        within '#collapse-school-users' do
+          click_on 'Manage users'
+        end
         expect(page).to have_content('Manage your school accounts')
         click_on 'Add new account'
 

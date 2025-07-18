@@ -1,6 +1,6 @@
-<%= component 'titled_section', id: id, classes: classes do |section| %>
+<%= render TitledSectionComponent.new(classes: classes) do |section| %>
   <%= section.with_title do %>
-    <h2><%= t('advice_pages.total_energy_use.insights.comparison.title') %></h2>
+    <h2 id="<%= id %>" class="scrollable-title"><%= t('components.comparison_overview.title') %></h2>
   <% end %>
   <%= section.with_intro do %>
     <p>
@@ -12,7 +12,7 @@
     <p>
     <%= link_to t('schools.schools.compare_schools'),
                 "#{compare_index_path(school_group_ids: [school.school_group.id])}#groups",
-                class: 'btn btn-outline-dark' %>
+                class: 'btn btn-default' %>
     </p>
   <% end %>
   <% section.with_body do %>
@@ -23,9 +23,10 @@
               school_type: t("common.school_types.#{school.school_type}")) %>
       </p>
       <div class="col">
-        <%= component 'school_comparison',
-                      id: 'electricity-comparison',
-                      comparison: electricity_benchmarked_usage do |c| %>
+        <%= render SchoolComparisonComponent.new(
+              id: 'electricity-comparison',
+              comparison: electricity_benchmarked_usage
+            ) do |c| %>
           <% c.with_footer { advice_t('electricity_long_term.insights.comparison.callout_footer') } %>
         <% end %>
       </div>
@@ -38,9 +39,10 @@
               school_type: t("common.school_types.#{school.school_type}")) %>
       </p>
       <div class="col">
-        <%= component 'school_comparison',
-                      id: 'gas-comparison',
-                      comparison: gas_benchmarked_usage do |c| %>
+        <%= render SchoolComparisonComponent.new(
+              id: 'gas-comparison',
+              comparison: gas_benchmarked_usage
+            ) do |c| %>
           <% c.with_footer { advice_t('gas_long_term.insights.comparison.callout_footer') } %>
         <% end %>
       </div>

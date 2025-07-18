@@ -23,6 +23,7 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
   let!(:heating_control) { create(:advice_page, key: :heating_control, fuel_type: 'gas') }
   let!(:solar_pv) { create(:advice_page, key: :solar_pv, fuel_type: 'solar_pv') }
   let!(:storage_heaters) { create(:advice_page, key: :storage_heaters, fuel_type: 'storage_heater') }
+  let!(:electricity_meter_breakdown) { create(:advice_page, key: :electricity_meter_breakdown, multiple_meters: true) }
 
   shared_examples 'a properly rended prompt' do
     let(:expected_summary) { nil }
@@ -68,6 +69,16 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
         let(:expected_path) { insights_school_advice_solar_pv_path(school) }
         let(:expected_summary) { 'solar_pv.no_solar' }
         let(:expected_page) { solar_pv }
+      end
+
+      it { expect(html).to have_no_content(I18n.t("advice_pages.nav.pages.#{electricity_meter_breakdown.key}")) }
+
+      context 'with multiple meters' do
+        before do
+          create_list(:electricity_meter, 2, school: school)
+        end
+
+        it { expect(html).to have_content(I18n.t("advice_pages.nav.pages.#{electricity_meter_breakdown.key}")) }
       end
     end
 

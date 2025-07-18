@@ -1,74 +1,48 @@
-<div <%= "id=#{id}" if id %> class="timeline-component<%= classes %>">
-  <% if Flipper.enabled?(:new_dashboards_2024, user) %>
-    <div class="row">
-      <div class="col">
-        <%= component 'titled_section' do |section| %>
-          <% if show_header %>
-            <% section.with_title do %>
-              <h2 id="timeline"><%= t('timeline.whats_been_going_on') %></h2>
-            <% end %>
-            <% section.with_intro do %>
-              <p>
-                <%= t('schools.dashboards.timeline.intro') %>
-              </p>
-            <% end %>
-            <% section.with_link do %>
-              <p>
-                <%= link_to school_timeline_path(school), class: 'btn btn-outline-dark' do %>
-                  <%= t('activities.show.all_activities') %>
-                <% end %>
-              </p>
-            <% end %>
+<%= tag.div id: id, class: classes do %>
+  <div class="row">
+    <div class="col">
+      <%= render TitledSectionComponent.new do |section| %>
+        <% if show_header %>
+          <% section.with_title do %>
+            <h2 id="timeline"><%= t('timeline.whats_been_going_on') %></h2>
           <% end %>
-          <% section.with_body do %>
-            <div class="bg-white rounded p-4">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th><%= t('common.labels.date') %></th>
-                    <th><%= t('programme_types.show.points') %></th>
-                    <th><%= t('common.labels.activity') %></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% observations.each do |observation| %>
-                    <tr>
-                      <td><%= observation.at.to_fs(:es_short) %></td>
-                      <td><%= observation.points || '-' %></td>
-                      <td><%= component 'observation', observation: observation, show_actions: show_actions,
-                                                       style: :description %></td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
+          <% section.with_intro do %>
+            <p>
+              <%= t('schools.dashboards.timeline.intro') %>
+            </p>
+          <% end %>
+          <% section.with_link do %>
+            <p>
+              <%= link_to school_timeline_path(school), class: 'btn btn-default' do %>
+                <%= t('activities.show.all_activities') %>
+              <% end %>
+            </p>
           <% end %>
         <% end %>
-      </div>
-    </div>
-  <% else %>
-    <table class="table timeline teachers">
-      <% observations.group_by { |observation| [observation.at.strftime('%Y'), observation.at.strftime('%B')] }.each do |(year, month), grouped_observations| %>
-        <thead>
-          <tr>
-            <th colspan="4">
-              <h5><%= helpers.title_for_month(month, year) %></h5>
-              <span class="text-muted">
-                <%= t('components.timeline.action', count: grouped_observations.size) %>
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <% grouped_observations.each do |observation| %>
-            <tr scope="row">
-              <td></td>
-              <td class="timeline-border-left"></td>
-              <%= component 'observation', observation: observation, show_actions: show_actions %>
-            </tr>
-          <% end %>
-        </tbody>
+        <% section.with_body do %>
+          <div class="bg-white rounded p-4">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th><%= t('common.labels.date') %></th>
+                  <th><%= t('programme_types.show.points') %></th>
+                  <th><%= t('common.labels.activity') %></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% observations.each do |observation| %>
+                  <tr>
+                    <td><%= observation.at.to_fs(:es_short) %></td>
+                    <td><%= observation.points || '-' %></td>
+                    <td><%= render ObservationComponent.new(observation: observation, show_actions: show_actions,
+                                                            style: observation_style) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
       <% end %>
-    </table>
-  <% end %>
-</div>
+    </div>
+  </div>
+<% end %>

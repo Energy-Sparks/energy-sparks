@@ -1,32 +1,42 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Schools::Advice::BaseloadService, type: :service do
+  subject(:service) { described_class.new(school, aggregate_school_service) }
+
   let(:school) { create(:school) }
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:fuel_configuration) do
+    Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)
+  end
 
   let(:electricity_meters) { ['electricity-meter'] }
-  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter', aggregate_meter?: true)}
+  let(:electricity_aggregate_meter) { double('electricity-aggregated-meter', aggregate_meter?: true) }
 
-  let(:meter_collection) { double(:meter_collection, electricity_meters: electricity_meters, aggregated_electricity_meters: electricity_aggregate_meter) }
+  let(:aggregate_school_service) do
+    instance_double(AggregateSchoolService, meter_collection: meter_collection)
+  end
+
+  let(:meter_collection) do
+    meter_collection_double = instance_double(MeterCollection,
+                                              electricity_meters:,
+                                              aggregated_electricity_meters: electricity_aggregate_meter)
+    allow(amr_data).to receive_messages(start_date:, end_date:)
+    allow(electricity_aggregate_meter).to receive_messages(fuel_type: :electricity, amr_data:)
+    meter_collection_double
+  end
 
   let(:amr_data)    { double('amr-data') }
-  let(:start_date)  { Date.parse('20190101')}
-  let(:end_date)    { Date.parse('20210101')}
+  let(:start_date)  { Date.parse('20190101') }
+  let(:end_date)    { Date.parse('20210101') }
 
   let(:usage) { CombinedUsageMetric.new(£: 0, kwh: 0, co2: 0) }
   let(:average_baseload_kw) { 2.1 }
   let(:exemplar_average_baseload_kw) { 1.9 }
   let(:savings) { double(£: 1, co2: 2) }
 
-  let(:service)   { Schools::Advice::BaseloadService.new(school, meter_collection) }
-
   before do
     school.configuration.update!(fuel_configuration: fuel_configuration)
-    allow(amr_data).to receive(:start_date).and_return(start_date)
-    allow(amr_data).to receive(:end_date).and_return(end_date)
-    allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
-    allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
-    allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
   end
 
   describe '#has_electricity?' do
@@ -97,16 +107,6 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     end
   end
 
-  describe '#baseload_usage_benchmark' do
-    before do
-      allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:baseload_usage).and_return(usage)
-    end
-
-    it 'returns usage' do
-      expect(service.baseload_usage_benchmark).to eq(usage)
-    end
-  end
-
   describe '#estimated_savings' do
     before do
       allow_any_instance_of(Baseload::BaseloadBenchmarkingService).to receive(:estimated_savings).and_return(savings)
@@ -118,41 +118,53 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#annual_average_baseloads' do
-    let(:start_date) { Date.parse('20190101')}
-    let(:end_date) { Date.parse('20210101')}
+    let(:start_date) { Date.parse('20190101') }
+    let(:end_date) { Date.parse('20210101') }
+    let(:meter_collection) do
+      grid_carbon_intensity = build(:grid_carbon_intensity, :with_days, start_date:, end_date:,
+                                                                        kwh_data_x48: Array.new(48, 0.2))
+      build(:meter_collection, :with_fuel_and_aggregate_meters, start_date:, end_date:, grid_carbon_intensity:)
+    end
 
-    before do
-      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
-      allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
+    def round_floats(array)
+      array.each do |hash|
+        hash.each do |key, value|
+          hash[key] = value.round if value.is_a?(Float)
+        end
+      end
     end
 
     it 'returns usage by years' do
       result = service.annual_average_baseloads
-      expect(result.count).to eq(3)
-      expect(result[0][:year]).to eq(2019)
-      expect(result[0][:baseload_usage]).to eq(usage)
-      expect(result[2][:year]).to eq(2021)
-      expect(result[2][:baseload_usage]).to eq(usage)
+      expect(round_floats(result)).to eq(
+        [
+          { year: '2020/2021', partial: true, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 },
+          { year: '2019/2020', partial: false, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 },
+          { year: '2018/2019', partial: true, baseload: 2, baseload_usage_gbp: 1752, baseload_usage_co2: 3504 }
+        ]
+      )
     end
   end
 
   describe '#baseload_meter_breakdown' do
-    let(:meter_1)   { 1591058886735 }
+    let(:meter_1)   { 1_591_058_886_735 }
     let(:data)      { { meter_1 => { kw: 0, percent: 0, £: 0 } } }
     let(:breakdown) { Baseload::MeterBaseloadBreakdown.new(meter_breakdown: data) }
-    let!(:db_meter) { create(:electricity_meter, school: school, mpan_mprn: 1591058886735) }
+    let!(:db_meter) { create(:electricity_meter, school: school, mpan_mprn: 1_591_058_886_735) }
 
     before do
       allow_any_instance_of(Baseload::BaseloadMeterBreakdownService).to receive(:calculate_breakdown).and_return(breakdown)
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:annual_baseload_usage).and_return(usage)
       allow_any_instance_of(Baseload::BaseloadCalculationService).to receive(:average_baseload_kw).and_return(average_baseload_kw)
-      allow(meter_collection).to receive(:meter?).and_return(double('meter', fuel_type: :electricity, amr_data: amr_data))
+      allow(meter_collection).to receive(:meter?).and_return(double('meter', fuel_type: :electricity,
+                                                                             amr_data: amr_data))
     end
 
     it 'returns usage by years' do
       result = service.baseload_meter_breakdown
-      expect(result.keys).to match_array([meter_1])
-      expect(result[meter_1].to_h.keys).to match_array([:baseload_kw, :baseload_change_kw, :baseload_cost_£, :percentage_baseload, :baseload_previous_year_kw, :meter])
+      expect(result.keys).to contain_exactly(meter_1)
+      expect(result[meter_1].to_h.keys).to match_array(%i[baseload_kw baseload_change_kw baseload_cost_£
+                                                          percentage_baseload baseload_previous_year_kw meter])
       expect(result[meter_1].meter).to eq(db_meter)
       expect(result[meter_1].baseload_previous_year_kw).to eq(average_baseload_kw)
     end
@@ -184,14 +196,21 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
     it 'returns variation' do
       result = service.seasonal_variation
-      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw, :meter, :enough_data?])
+      expect(result.to_h.keys).to match_array(%i[estimated_saving_co2 estimated_saving_£ percentage summer_kw
+                                                 variation_rating winter_kw meter enough_data?])
     end
   end
 
   describe '#seasonal_variation_by_meter' do
     let(:seasonal_variation) { double(winter_kw: 1, summer_kw: 2, percentage: 3.0) }
-    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
-    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
+    let(:electricity_meter_1) do
+      double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity,
+             aggregate_meter?: false)
+    end
+    let(:electricity_meter_2) do
+      double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity,
+             aggregate_meter?: false)
+    end
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
     let(:enough_data) { true }
     let(:data_available_from) { nil }
@@ -206,7 +225,8 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns variation' do
       result = service.seasonal_variation_by_meter
       expect(result.keys).to match_array(%w[meter1 meter2])
-      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :percentage, :summer_kw, :variation_rating, :winter_kw, :meter, :enough_data?])
+      expect(result['meter1'].to_h.keys).to match_array(%i[estimated_saving_co2 estimated_saving_£ percentage
+                                                           summer_kw variation_rating winter_kw meter enough_data?])
     end
 
     context 'and theres not enough data' do
@@ -216,12 +236,15 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       it 'returns a limited variation' do
         result = service.seasonal_variation_by_meter
         expect(result.keys).to match_array(%w[meter1 meter2])
-        expect(result['meter1'].to_h.keys).to match_array([:meter, :enough_data?, :data_available_from])
+        expect(result['meter1'].to_h.keys).to match_array(%i[meter enough_data? data_available_from])
       end
     end
 
     context 'when there is a solar meter that hasnt been configured' do
-      let(:solar_meter) { double(mpan_mprn: 'solar_meter', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :solar_pv, aggregate_meter?: false) }
+      let(:solar_meter) do
+        double(mpan_mprn: 'solar_meter', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :solar_pv,
+               aggregate_meter?: false)
+      end
       let(:electricity_meters) { [electricity_meter_1, electricity_meter_2, solar_meter] }
 
       it 'returns variation for the actual electricity meters only' do
@@ -232,7 +255,9 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
   end
 
   describe '#intraweek_variation' do
-    let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, max_day: 0, min_day: 1) }
+    let(:intraweek_variation) do
+      double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, max_day: 0, min_day: 1)
+    end
 
     before do
       allow_any_instance_of(Baseload::IntraweekBaseloadService).to receive(:intraweek_variation).and_return(intraweek_variation)
@@ -241,14 +266,23 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
 
     it 'returns variation' do
       result = service.intraweek_variation
-      expect(result.to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating, :meter, :enough_data?, :min_day, :max_day])
+      expect(result.to_h.keys).to match_array(%i[estimated_saving_co2 estimated_saving_£ max_day_kw min_day_kw
+                                                 percent_intraday_variation variation_rating meter enough_data? min_day max_day])
     end
   end
 
   describe '#intraweek_variation_by_meter' do
-    let(:intraweek_variation) { double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, max_day: 0, min_day: 1) }
-    let(:electricity_meter_1) { double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
-    let(:electricity_meter_2) { double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity, aggregate_meter?: false) }
+    let(:intraweek_variation) do
+      double(max_day_kw: 1, min_day_kw: 2, percent_intraday_variation: 3, max_day: 0, min_day: 1)
+    end
+    let(:electricity_meter_1) do
+      double(mpan_mprn: 'meter1', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity,
+             aggregate_meter?: false)
+    end
+    let(:electricity_meter_2) do
+      double(mpan_mprn: 'meter2', amr_data: double(end_date: Date.parse('20200101')), fuel_type: :electricity,
+             aggregate_meter?: false)
+    end
     let(:electricity_meters) { [electricity_meter_1, electricity_meter_2] }
     let(:enough_data) { true }
     let(:data_available_from) { nil }
@@ -263,7 +297,8 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     it 'returns variation' do
       result = service.intraweek_variation_by_meter
       expect(result.keys).to match_array(%w[meter1 meter2])
-      expect(result['meter1'].to_h.keys).to match_array([:estimated_saving_co2, :estimated_saving_£, :max_day_kw, :min_day_kw, :percent_intraday_variation, :variation_rating, :meter, :enough_data?, :min_day, :max_day])
+      expect(result['meter1'].to_h.keys).to match_array(%i[estimated_saving_co2 estimated_saving_£ max_day_kw
+                                                           min_day_kw percent_intraday_variation variation_rating meter enough_data? min_day max_day])
     end
 
     context 'and theres not enough data' do
@@ -273,14 +308,14 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
       it 'returns a limited variation' do
         result = service.intraweek_variation_by_meter
         expect(result.keys).to match_array(%w[meter1 meter2])
-        expect(result['meter1'].to_h.keys).to match_array([:meter, :enough_data?, :data_available_from])
+        expect(result['meter1'].to_h.keys).to match_array(%i[meter enough_data? data_available_from])
       end
     end
   end
 
   describe '#calculate_rating_from_range' do
-    let(:good) {0.0}
-    let(:bad)  {0.5}
+    let(:good) { 0.0 }
+    let(:bad)  { 0.5 }
 
     it 'shows 0% as 10.0' do
       expect(service.calculate_rating_from_range(good, bad, 0)).to eq(10.0)

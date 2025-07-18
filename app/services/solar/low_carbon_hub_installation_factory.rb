@@ -37,7 +37,7 @@ module Solar
       username = installation.username || ENV['ENERGYSPARKSRBEEUSERNAME']
       password = installation.password || ENV['ENERGYSPARKSRBEEPASSWORD']
       begin
-        LowCarbonHubMeterReadings.new(username, password).full_installation_information(installation.is_a?(LowCarbonHubInstallation) ? installation.rbee_meter_id : installation.rtone_meter_id)
+        DataFeeds::LowCarbonHubMeterReadings.new(username, password).full_installation_information(installation.is_a?(LowCarbonHubInstallation) ? installation.rbee_meter_id : installation.rtone_meter_id)
         true
       rescue => e
         puts e.message
@@ -49,7 +49,7 @@ module Solar
     private
 
     def low_carbon_hub_api
-      @low_carbon_hub_api ||= LowCarbonHubMeterReadings.new(username, password)
+      @low_carbon_hub_api ||= DataFeeds::LowCarbonHubMeterReadings.new(username, password)
     end
 
     def information

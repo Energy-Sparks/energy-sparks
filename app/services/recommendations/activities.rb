@@ -11,7 +11,11 @@ module Recommendations
     end
 
     def audit_tasks
-      with_key_stage(school.audit_activity_types)
+      if Flipper.enabled?(:todos)
+        with_key_stage(school.audit_activity_type_tasks)
+      else
+        with_key_stage(school.audit_activity_types)
+      end
     end
 
     def task_tasks(task)

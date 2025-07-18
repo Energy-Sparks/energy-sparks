@@ -10,11 +10,7 @@ module Pupils
     before_action :set_breadcrumbs
 
     def index
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        render :template => (fuel_type ? "pupils/analysis/new/#{fuel_type}" : 'pupils/analysis/new/index')
-      else
-        render fuel_type || :index
-      end
+      render fuel_type || :index
     end
 
     def show
@@ -28,6 +24,7 @@ module Pupils
     def fuel_type
       fuel_type = params[:category]
       fuel_type = 'solar' if fuel_type == 'solar_pv'
+      fuel_type = 'storage_heaters' if ['storage heaters', 'storage_heater'].include?(fuel_type)
       fuel_type
     end
 

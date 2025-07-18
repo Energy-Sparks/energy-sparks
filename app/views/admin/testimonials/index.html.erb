@@ -1,0 +1,60 @@
+<%= render 'title_and_navigation', title: 'Testimonials' %>
+
+<div classes='container'>
+  <div class="p-2">
+    <% @testimonials.each do |testimonial| %>
+      <div class='clearfix border rounded bg-light p-2 row mb-2'>
+        <div class='col-md-12'>
+          <h4 class='pb-0'>
+            <span class='d-inline-block text-truncate' style="max-width: 95%"><%= testimonial.title %></span>
+            <span class='float-right pb-2'>
+              <small>
+                <% if testimonial.active %>
+                  <span title='active' data-toggle='tooltip'><%= render IconComponent.new(name: 'eye') %></span>
+                <% else %>
+                  <span title='inactive' data-toggle='tooltip'>
+                    <%= render IconComponent.new(name: 'eye-slash') %>
+                  </span>
+                <% end %>
+              </small>
+            </span>
+          </h4>
+          <div class='pl-2 pb-2'>
+            <span data-toggle="collapse"
+                  href="#testimonial-<%= testimonial.id %>" role="button" aria-expanded="true"
+                  aria-controls="testimonial-<%= testimonial.id %>"
+                  class="toggler text-decoration-none<%= ' collapsed' unless testimonial.id.to_s == params[:id] %>">
+              <%= toggler %>
+            </span>
+            <span class="badge badge-pill badge-info font-weight-normal">
+              <%= testimonial.category %>
+            </span>
+            <span class="badge badge-pill badge-light font-weight-normal border bg-white">
+              <%= testimonial.name %> • <%= testimonial.role %> • <%= testimonial.organisation %>
+            </span>
+
+            <span class='float-right'>
+              <%= link_to 'Edit', edit_admin_testimonial_path(testimonial), class: 'btn btn-sm' %>
+              <%= link_to 'Delete', admin_testimonial_path(testimonial),
+                          method: :delete,
+                          data: { confirm: 'Are you sure?' },
+                          class: 'btn btn-danger btn-sm' %>
+            </span>
+          </div>
+
+          <div class="collapse<%= ' show' if testimonial.id.to_s == params[:id] %>" id="testimonial-<%= testimonial.id %>">
+            <%= render Layout::Cards::TestimonialComponent.new(classes: 'p-4 rounded-xl mt-2 mb-2', theme: :light) do |card| %>
+              <%= card.with_image src: testimonial.image.url %>
+              <%= card.with_header title: testimonial.title %>
+              <%= card.with_quote { testimonial.quote } %>
+              <%= card.with_name { testimonial.name } %>
+              <%= card.with_role { testimonial.role } %>
+              <%= card.with_organisation { testimonial.organisation } %>
+              <%= card.with_case_study(testimonial.case_study) %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

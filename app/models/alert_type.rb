@@ -26,8 +26,6 @@
 #
 
 class AlertType < ApplicationRecord
-  SUB_CATEGORIES = [:hot_water, :heating, :baseload, :electricity_use, :solar_pv, :tariffs, :co2, :boiler_control, :overview, :storage_heaters].freeze
-
   belongs_to :advice_page, optional: true
 
   has_many :alerts
@@ -35,12 +33,13 @@ class AlertType < ApplicationRecord
   has_many :ratings, class_name: 'AlertTypeRating'
   has_many :school_alert_type_exclusions
 
-  enum source: [:analytics, :system, :analysis]
-  enum fuel_type: [:electricity, :gas, :storage_heater, :solar_pv], _suffix: :fuel_type
-  enum sub_category: SUB_CATEGORIES
-  enum frequency: [:termly, :weekly, :before_each_holiday]
-  enum group: [:advice, :benchmarking, :change, :priority]
-  enum link_to: [:insights_page, :analysis_page, :learn_more_page]
+  enum :source, { analytics: 0, system: 1, analysis: 2 }
+  enum :fuel_type, { electricity: 0, gas: 1, storage_heater: 2, solar_pv: 3 }, suffix: :fuel_type
+  enum :sub_category, { hot_water: 0, heating: 1, baseload: 2, electricity_use: 3, solar_pv: 4, tariffs: 5, co2: 6,
+                        boiler_control: 7, overview: 8, storage_heaters: 9 }
+  enum :frequency, { termly: 0, weekly: 1, before_each_holiday: 2 }
+  enum :group, { advice: 0, benchmarking: 1, change: 2, priority: 3 }
+  enum :link_to, { insights_page: 0, analysis_page: 1, learn_more_page: 2 }
 
   scope :enabled,       -> { where(enabled: true) }
   scope :electricity,   -> { where(fuel_type: :electricity) }
@@ -50,12 +49,13 @@ class AlertType < ApplicationRecord
 
   scope :editable, -> { where.not(background: true) }
 
-  validates_presence_of :frequency, :title, :class_name, :source, :group
+  validates :frequency, :title, :class_name, :source, :group, presence: true
 
   has_rich_text :description
 
   def display_fuel_type
     return 'No fuel type' if fuel_type.nil?
+
     fuel_type.humanize
   end
 
@@ -95,5 +95,9 @@ class AlertType < ApplicationRecord
 
   def worst_management_priority_rating
     ratings.where(management_priorities_active: true).order(:rating_from).last
+  end
+
+  def find_out_more?
+    advice_page.present? || class_name == 'AlertEnergyAnnualVersusBenchmark'
   end
 end

@@ -1,4 +1,14 @@
-<%= f.input :name, required: :true, label: t('schools.users.form.name') %>
-<%= f.input :email, required: :true, label: t('schools.users.form.email') %>
-<%= f.input :staff_role_id, label: t('schools.users.form.role'), required: :true, collection: StaffRole.translated_names_and_ids, hint: t('schools.users.form.what_is_their_primary_role') %>
-<%= f.input :preferred_locale, label: t('schools.users.form.preferred_locale'), required: :true, collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] }, prompt: '', hint: t('schools.users.form.preferred_locale_hint') %>
+<%= f.input :name, label: t('schools.users.form.name'), required: true %>
+<%= f.input :email, label: t('schools.users.form.email') %>
+<%= f.input :staff_role_id,
+            label: t('schools.users.form.role'),
+            required: true,
+            collection: StaffRole.translated_names_and_ids,
+            hint: t('schools.users.form.what_is_their_primary_role'),
+            prompt: '' %>
+<%= f.input :preferred_locale,
+            label: t('schools.users.form.preferred_locale'),
+            required: true,
+            collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] },
+            prompt: '',
+            hint: t('schools.users.form.preferred_locale_hint') %>

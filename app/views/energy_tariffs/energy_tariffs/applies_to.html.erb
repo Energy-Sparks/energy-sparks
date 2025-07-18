@@ -1,8 +1,13 @@
 <h1><%= t('schools.user_tariffs.applies_to.title') %></h1>
 
-<%= simple_form_for @energy_tariff, url: energy_tariffs_path(@energy_tariff, [], { action: :update_applies_to }), method: :post do |f| %>
+<%= simple_form_for @energy_tariff, url: energy_tariffs_path(@energy_tariff, [], { action: :update_applies_to }),
+                                    method: :post do |f| %>
   <div class="form-check meter-applies-to">
-    <%= f.input :applies_to, as: :radio_buttons, collection: EnergyTariff.applies_tos.keys.map { |applies_to_key| [t("schools.user_tariffs.choose_meters.#{applies_to_key}"), applies_to_key] }, label: t('schools.user_tariffs.choose_meters.tariff_applies_to') %>
-    <%= submit_tag t('common.labels.continue'), class: 'btn btn-info' %>
+    <%= f.input :applies_to, as: :radio_buttons,
+                             collection: EnergyTariff.applies_tos.keys.map { |applies_to_key|
+                               [t("schools.user_tariffs.choose_meters.#{applies_to_key}"), applies_to_key]
+                             },
+                             label: t('schools.user_tariffs.choose_meters.tariff_applies_to') %>
+    <%= submit_tag t('common.labels.continue'), class: 'btn btn-secondary' %>
   </div>
 <% end %>

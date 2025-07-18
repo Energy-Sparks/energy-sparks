@@ -1,4 +1,4 @@
-<%= component 'notice', status: :neutral do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <% c.with_link do
        link_to t("advice_pages.#{@advice_page.fuel_type}_meter_breakdown.insights.what_is_a_meter_breakdown.link"),
                learn_more_school_advice_gas_meter_breakdown_path(@school)

@@ -6,6 +6,8 @@ RSpec.describe 'storage heaters advice page', type: :system do
 
   include_context 'storage advice page'
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
     let(:school_period) { Holiday.new(:xmas, 'Xmas 2021/2022', Date.new(2021, 12, 18), Date.new(2022, 0o1, 3), nil) }

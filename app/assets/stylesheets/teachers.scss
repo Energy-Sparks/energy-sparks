@@ -6,13 +6,13 @@
   }
 
   .card.programme {
-    border: 2px solid $bg-positive;
+    border: 2px solid $positive-dark;
   }
 
   .card.activity {
-    border: 2px solid $grey;
+    border: 2px solid $grey-medium;
     .card-footer .rounded-pill {
-      background-color: $light-blue;
+      background-color: $blue-light;
     }
   }
 }

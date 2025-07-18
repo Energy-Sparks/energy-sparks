@@ -1,6 +1,6 @@
 .illustration-background {
   padding-top: 20px;
-  background: linear-gradient(to right, $bluey-white 0%, $bluey-white 15%, $bluey-grey 50%, $bluey-white 85%, $bluey-white 100%);
+  background: linear-gradient(to right, $blue-pale 0%, $blue-pale 15%, $grey-pale 50%, $blue-pale 85%, $blue-pale 100%);
 }
 
 .illustration-wrapper {
@@ -32,6 +32,24 @@
       font-size: $f3;
       line-height: 34px;
       padding-bottom: 10px;
+    }
+  }
+}
+
+// Used for public display version of equivalence
+// Force the text to match the header height and colours
+// so more readable from a distance
+.equivalence-component.public-displays.vertical {
+  .trix-content div, div {
+    @include font(f1);
+    font-family: $header-font-family;
+    font-weight: $header-font-weight;
+    color: $blue-very-dark;
+    padding-bottom: 10px;
+  }
+  .illustration-wrapper {
+    img {
+      height: 500px;
     }
   }
 }

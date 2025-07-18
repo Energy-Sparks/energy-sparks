@@ -75,6 +75,8 @@ describe 'heating_in_warm_weather' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

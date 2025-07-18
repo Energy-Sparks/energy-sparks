@@ -1,10 +1,21 @@
-<%= render 'schools/advice/section_title', section_id: 'school-day-heating', section_title: t('advice_pages.heating_control.analysis.school_day_heating.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'school-day-heating',
+           section_title: t('advice_pages.heating_control.analysis.school_day_heating.title') %>
 
-<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertHeatingComingOnTooEarly), show_links: false, show_icons: false %>
+<%= render AlertsComponent.new(
+      school: school,
+      dashboard_alerts: dashboard_alerts,
+      alert_types: alert_types_for_class(AlertHeatingComingOnTooEarly),
+      show_links: false
+    ) %>
 
-<%= component 'chart', chart_type: :gas_heating_season_intraday_up_to_1_year, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :gas_heating_season_intraday_up_to_1_year, school: school) do |c| %>
   <% c.with_title { t('advice_pages.heating_control.charts.gas_heating_season_intraday_up_to_1_year.title') } %>
-  <% c.with_subtitle { t('advice_pages.heating_control.charts.gas_heating_season_intraday_up_to_1_year.subtitle_html', start_date: analysis_dates.one_year_before_end.to_fs(:es_short), end_date: analysis_dates.end_date.to_fs(:es_short)) } %>
+  <% c.with_subtitle do
+       t('advice_pages.heating_control.charts.gas_heating_season_intraday_up_to_1_year.subtitle_html',
+         start_date: analysis_dates.one_year_before_end.to_fs(:es_short),
+         end_date: analysis_dates.end_date.to_fs(:es_short))
+     end %>
   <% c.with_footer do %>
     <%= t('advice_pages.heating_control.charts.gas_heating_season_intraday_up_to_1_year.footer_html') %>
   <% end %>

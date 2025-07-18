@@ -1,7 +1,15 @@
-.dashboard-learn-more-component.data-enabled {
-  background: #f2f6fc;
+.dashboard-learn-more-component h2 {
+  padding-top: 0px;
+}
+
+.dashboard-learn-more-component.data-enabled.adult {
+  background: $adult-light;
+}
+
+.dashboard-learn-more-component.data-enabled.pupil {
+  background: white;
 }
 
 .dashboard-learn-more-component.data-disabled {
-  background: #f8f9fa; // Bootstrap 4 bg-light
+  background: $light;
 }

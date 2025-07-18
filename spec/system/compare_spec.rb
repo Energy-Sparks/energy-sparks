@@ -237,6 +237,7 @@ describe 'compare pages', :compare, type: :system do
           variables: {
             electricity_economic_tariff_changed_this_year: true
           })
+      Comparison::BaseloadPerPupil.refresh
     end
   end
 

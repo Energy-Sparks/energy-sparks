@@ -1,0 +1,75 @@
+<%= tag.div id: id, class: class_names(classes, 'mt-4') do %>
+  <ul class="nav nav-tabs" id="search-tabs" role="tablist">
+    <% TABS.each do |tab| %>
+      <li class="nav-item">
+        <a class="nav-link <%= 'active' if tab_active?(tab) %>" id="<%= label(tab, 'tab') %>"
+           data-toggle="tab" href="#<%= label(tab, 'content') %>" role="tab" aria-controls="<%= label(tab, 'content') %>">
+           <%= t("components.school_search.#{tab}.tab") %>
+         </a>
+      </li>
+    <% end %>
+    <li class="nav-item ml-auto">
+      <h6><%= t(schools_total_key, count: schools_count) %></h6>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="search-tabs-content">
+    <% TABS.each do |tab| %>
+      <div class="tab-pane fade <%= 'show active' if tab_active?(tab) %>"
+           id="<%= label(tab, 'content') %>"
+           role="tabpanel"
+           aria-labelledby="<%= label(tab, 'tab') %>">
+        <div class="row mt-4">
+          <div class="col-12 col-md-2">
+          <%= form_tag schools_path,
+                       method: :get,
+                       id: label(tab, 'search'),
+                       remote: true do %>
+
+            <div class="input-group mb-3">
+              <%= text_field_tag :keyword, keyword, id: label(tab, 'keyword'), class: 'form-control', autocomplete: :off %>
+              <div class="input-group-append">
+                <button type="submit" id="<%= label(tab, 'search-submit') %>" class="school-search-component-button">
+                  <%= fa_icon('search') %>
+                </button>
+              </div>
+            </div>
+
+            <%= hidden_field_tag :scope, tab %>
+          <% end %>
+          </div>
+          <div class="col-12 col-md-10">
+            <nav aria-label="<%= t("components.school_search.#{tab}.pagination") %>">
+              <ul class=" pagination justify-content-start justify-content-md-end flex-wrap ">
+                <% ('A'..'Z').each do |letter| %>
+                  <li class=" page-item mr-1 letter <%= letter_status(tab, letter) %> ">
+                    <%= link_to letter,
+                                schools_path(letter: letter, scope: tab),
+                                class: 'page-link',
+                                title: letter_title(tab, letter),
+                                remote: true %>
+                  </li>
+                <% end %>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <hr>
+        <div id="<%= label(tab, 'results') %>">
+          <%= render SearchResultsComponent.new do |c| %>
+            <% c.with_title { default_results_title(tab) } %>
+            <% c.with_subtitle { default_results_subtitle(tab) } %>
+            <% default_results(tab).each do |result| %>
+              <% c.with_result do %>
+                <%= link_to result.name, tab == :schools ? school_path(result) : school_group_path(result) %>
+                <% if tab == :schools && result.school_group.present? %>
+                  - <span class=" smaller "><%= result.school_group.name %></span>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

@@ -1,64 +1,47 @@
-<% content_for :page_title, strip_tags(t('pupils.analysis.electricity_and_solar_data_html')) %>
+<%= render 'header', school: @school, fuel_type: :electricity_and_solar_pv %>
 
-<div class="d-flex justify-content-between align-items-center">
-  <div>
-    <%= link_to t('common.labels.back'), pupils_school_analysis_path(@school), class: 'btn btn-rounded' %>
-  </div>
-  <div>
-    <h1><%= t('pupils.analysis.electricity_and_solar_data_html') %></h1>
-  </div>
-  <div></div>
-</div>
-<hr>
-
-<h2><%= t('pupils.analysis.i_want_to') %></h2>
-
-<div class="row">
-
-  <%= render 'chart_link', school: @school, energy: :solar, chart_config: { energy: 'Electricity', presentation: 'kWh' } do %>
-    <%= t('pupils.analysis.find_when_electricity_used_html') %>
+<%= render TitledSectionComponent.new do |section| %>
+  <%= section.with_title do %>
+    <h2><%= t('pupils.analysis.i_would_like_to_know') %></h2>
   <% end %>
+  <%= section.with_body do %>
+    <div class="row">
+      <%= render PupilExploreComponent.new(school: @school, icon: 'clock', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_chart_link energy: 'Electricity', presentation: 'kWh', link_text: t('pupils.analysis.when') %>
+      <% end %>
 
-  <%= render 'chart_link', school: @school, energy: :solar,
-                           chart_config: { energy: 'Electricity+Solar PV', presentation: 'Solar' } do %>
-    <%= t('pupils.analysis.find_out_about_solar_html') %>
-  <% end %>
-
-  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: { period: :weekly } do %>
-    <%= t('pupils.analysis.compare_electricity_in_2_weeks') %>
-  <% end %>
-
-  <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity, usage_config: { period: :daily } do %>
-    <%= t('pupils.analysis.compare_electricity_on_2_days') %>
-  <% end %>
-
-  <% if @school.filterable_meters(:electricity).count > 1 %>
-    <%= render 'usage_link', school: @school, energy: :solar, supply: :electricity,
-                             usage_config: { period: :weekly, split_meters: true } do %>
-      <%= t('pupils.analysis.compare_electricity_use_by_meters') %>
-    <% end %>
-  <% end %>
-
-</div>
-
-<h2><%= sanitize t('pupils.analysis.i_want_to_look_at') %></h2>
-
-<div class="row">
-
-  <%= render 'chart_link', school: @school,
-                           energy: :solar,
-                           chart_config: { energy: 'Electricity', presentation: 'Pie' },
-                           centre: true do %>
-    <div class="p-4">
-      <%= fa_icon 'chart-pie fa-3x' %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'sun', fuel_type: :solar_pv,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_chart_link energy: 'Electricity+Solar PV', presentation: 'Solar',
+                             link_text: t('pupils.analysis.how_much_solar') %>
+      <% end %>
     </div>
-    <%= t('common.pie_charts') %>
   <% end %>
+<% end %>
 
-  <%= render 'category_link', school: @school, energy: :solar, category: :solar_bar,
-                              category_name: t('common.bar_charts'), icon: 'chart-bar' %>
+<%= render 'compare', school: @school, fuel_type: :electricity %>
 
-  <%= render 'category_link', school: @school, energy: :solar, category: :solar_line,
-                              category_name: t('common.line_graphs'), icon: 'chart-line' %>
+<%= render TitledSectionComponent.new do |section| %>
+  <%= section.with_title do %>
+    <h2><%= t('pupils.analysis.i_would_like_to_see') %></h2>
+  <% end %>
+  <%= section.with_body do %>
+    <div class="row">
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-pie', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_chart_link energy: 'Electricity', presentation: 'Pie', link_text: t('common.pie_charts') %>
+      <% end %>
 
-</div>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-bar', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_category category: :solar_bar, link_text: t('common.bar_charts') %>
+      <% end %>
+
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-line', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_category category: :solar_line, link_text: t('common.line_graphs') %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

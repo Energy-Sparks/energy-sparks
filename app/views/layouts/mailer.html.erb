@@ -4,9 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <%= stylesheet_link_tag 'application_mailer', media: 'all' %>
     <style>
-      .bg-black { background-color: <%= Colours::BLACK %>; }
-      .bg-dark-blue { background-color: <%= Colours::DARK_BLUE %>; }
-      .new-yellow { color: <%= Colours::NEW_YELLOW %>; }
+      .bg-esdark { background-color: <%= Colours.dark %>; }
+      .bg-header-dark { background-color: <%= Colours.header_dark %>; }
+      .body { color: <%= Colours.blue_dark %>; }
+      a { color: <%= Colours.blue_dark %>; text-decoration: underline; }
     </style>
   </head>
   <body class="bg-light">
@@ -15,41 +16,36 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-10">
           <div class="row mt-2">
-            <div class="col-12 bg-black">
+            <div class="col-12 bg-esdark">
               <%= link_to root_url do %>
-                <%= image_tag "nav-brand-transparent-#{I18n.locale}.png", class: 'ax-center', width: '300px',
-                                                                          height: '300px' %>
+                <%= image_tag "navigation-brand-transparent-#{I18n.locale}.png", class: 'py-4 ax-center h-10' %>
               <% end %>
             </div>
           </div>
           <div class="row">
-             <div class="col-12 bg-dark-blue">
-               <h4 class="ax-center text-white mt-2 mb-2"><strong><%= @title %></strong></h4>
+             <div class="col-12 bg-header-dark">
+               <h4 class="ax-center text-white my-2"><%= @title %></h4>
             </div>
           </div>
           <div class="row mt-4 mb-4">
             <div class="col-12">
-                  <%= yield %>
+              <%= yield %>
             </div>
           </div>
           <div class="row">
-            <div class="col-12 bg-black">
-               <span class="ax-center text-white mt-2"><strong><%= t(:get_in_touch, scope: [:mailer]) %></strong></span>
-               <span class="ax-center text-white mt-2 mb-2"><strong><a href="mailto:hello@energysparks.uk" class="new-yellow">hello@energysparks.uk</a></strong></span>
+            <div class="col-12 bg-esdark">
+               <div class="ax-center mt-2 text-white fw-700"><%= t(:get_in_touch, scope: [:mailer]) %></div>
+               <div class="ax-center mt-0"><a href="mailto:hello@energysparks.uk" class="text-sm text-white">hello@energysparks.uk</a></div>
             </div>
           </div>
           <div class="row">
-            <div class="col-12 bg-black">
-              <div class="stack-row gap-4 ax-center mt-2 mb-2">
-                   <a href="https://twitter.com/EnergySparks">
-                     <%= image_tag 'email/twitter-brands.png', width: '20px', height: '20px' %>
-                   </a>
-                   <a href="https://www.facebook.com/EnergySparksUK/">
-                     <%= image_tag 'email/facebook-brands.png', width: '20px', height: '20px' %>
-                   </a>
-                   <a href="https://github.com/Energy-Sparks/energy-sparks">
-                     <%= image_tag 'email/github-brands.png', width: '20px', height: '20px' %>
-                   </a>
+            <div class="col-12 bg-esdark">
+              <div class="stack-row ax-center my-2">
+                <a href="https://www.linkedin.com/company/energy-sparks/"><%= image_tag 'email/fa-linkedin.png' %></a>
+                <a href="https://x.com/EnergySparks"><%= image_tag 'email/fa-x-twitter.png' %></a>
+                <a href="https://www.instagram.com/energysparksuk/"><%= image_tag 'email/fa-instagram.png' %></a>
+                <a href="https://www.facebook.com/EnergySparksUK/"><%= image_tag 'email/fa-facebook-square.png' %></a>
+                <a href="https://github.com/energy-sparks/energy-sparks"><%= image_tag 'email/fa-github.png' %></a>
               </div>
             </div>
           </div>

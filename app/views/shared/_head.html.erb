@@ -21,14 +21,10 @@
 <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css' %>
 <%= stylesheet_link_tag \
       'https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css' %>
-<%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Inter:400,500,600,700|Quicksand:600,700&display=swap' %>
+<%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Inter:400,600,700|Quicksand:600,700&display=swap' %>
 <%= stylesheet_link_tag 'https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css' %>
 
-<% if Flipper.enabled?(:navigation, current_user, current_user&.school_group) %>
-  <%= stylesheet_link_tag 'redesign', media: 'all' %>
-<% else %>
-  <%= stylesheet_link_tag 'application', media: 'all' %>
-<% end %>
+<%= stylesheet_link_tag 'application', media: 'all' %>
 
 <%= javascript_importmap_tags %>
 

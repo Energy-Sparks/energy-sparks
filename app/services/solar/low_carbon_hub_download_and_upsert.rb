@@ -21,7 +21,7 @@ module Solar
     private
 
     def low_carbon_hub_api
-      @low_carbon_hub_api ||= LowCarbonHubMeterReadings.new(username, password)
+      @low_carbon_hub_api ||= DataFeeds::LowCarbonHubMeterReadings.new(username, password)
     end
 
     def username

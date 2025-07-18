@@ -10,7 +10,7 @@ en:
             title: Electricity use by week for the last 14 months
           management_dashboard_group_by_week_electricity:
             title: Recent electricity use by week
-          table_footer: There may be reasons for some holidays to have higher energy use, for example additional security lighting in winter or contractors working on school property. Ideally the summary holiday should be lower than other holidays as more equipment and appliances can be switched off.
+          table_footer: There may be reasons for some holidays to have higher energy use, for example additional security lighting in winter or contractors working on school property. Ideally the summer holiday should be lower than other holidays as more equipment and appliances can be switched off.
           table_intro: The table below shows a summary of your electricity usage during the last year of school holidays. It includes average energy use per day to enable comparison for different length holidays.
           title: Holiday usage
         last_twelve_months:

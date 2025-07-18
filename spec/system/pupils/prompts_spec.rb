@@ -17,7 +17,6 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user) { nil }
 
     it_behaves_like 'a complete programme prompt', displayed: false
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: false
     it_behaves_like 'a transport survey prompt', displayed: false
     it_behaves_like 'a temperature measuring prompt', displayed: false
   end
@@ -27,7 +26,6 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user)    { create(:staff, school: school2) }
 
     it_behaves_like 'a complete programme prompt', displayed: false
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: false
     it_behaves_like 'a transport survey prompt', displayed: false
     it_behaves_like 'a temperature measuring prompt', displayed: false
   end
@@ -36,7 +34,6 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
 
     it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: true
     it_behaves_like 'a transport survey prompt', displayed: true
     it_behaves_like 'a temperature measuring prompt', displayed: true
   end
@@ -45,7 +42,6 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
 
     it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: true
     it_behaves_like 'a transport survey prompt', displayed: true
     it_behaves_like 'a temperature measuring prompt', displayed: true
   end
@@ -54,7 +50,6 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user) { create(:school_admin, school: school, confirmed_at: confirmed_at) }
 
     it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: true
     it_behaves_like 'a transport survey prompt', displayed: true
     it_behaves_like 'a temperature measuring prompt', displayed: true
   end
@@ -65,7 +60,6 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user)          { create(:group_admin, school_group: school_group, school: school, confirmed_at: confirmed_at) }
 
     it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: true
     it_behaves_like 'a transport survey prompt', displayed: true
     it_behaves_like 'a temperature measuring prompt', displayed: true
   end
@@ -74,37 +68,7 @@ RSpec.describe 'pupil dashboard prompts', type: :system do
     let(:user) { create(:admin, confirmed_at: confirmed_at) }
 
     it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a recommendations scoreboard prompt', displayed: true
     it_behaves_like 'a transport survey prompt', displayed: true
     it_behaves_like 'a temperature measuring prompt', displayed: true
-  end
-
-  ## Testing functionality rather than just if prompts appear or not
-  context 'with working prompts' do
-    let(:user) { create(:staff, school: school, confirmed_at: confirmed_at) }
-
-    describe 'the recommendations scoreboard prompt' do
-      context 'when there is no scoreboard' do
-        it_behaves_like 'a recommendations scoreboard prompt', position: 0
-      end
-
-      context 'when school is part of a scoreboard' do
-        let(:scoreboard) { create(:scoreboard) }
-
-        it_behaves_like 'a recommendations scoreboard prompt', position: 0
-
-        context 'when school has the most points' do
-          let(:school) { create :school, :with_points, score_points: 100, scoreboard: scoreboard }
-
-          it_behaves_like 'a recommendations scoreboard prompt', position: 1, points: 100
-        end
-
-        context 'when school is second' do
-          let(:school) { create :school, :with_points, score_points: 10, scoreboard: scoreboard }
-
-          it_behaves_like 'a recommendations scoreboard prompt', position: 2, points: 10
-        end
-      end
-    end
   end
 end

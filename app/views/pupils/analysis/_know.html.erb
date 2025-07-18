@@ -1,16 +1,19 @@
-<%= component 'titled_section' do |section| %>
+<%= render TitledSectionComponent.new do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_know') %></h2>
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: school, icon: 'clock', fuel_type: fuel_type do |c| %>
+      <%= render PupilExploreComponent.new(school: school, icon: 'clock', fuel_type: fuel_type,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: energy, presentation: 'kWh', link_text: t('pupils.analysis.when') %>
       <% end %>
-      <%= component 'pupil_explore', school: school, icon: 'sterling-sign', fuel_type: fuel_type do |c| %>
+      <%= render PupilExploreComponent.new(school: school, icon: 'sterling-sign', fuel_type: fuel_type,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: energy, presentation: 'Cost', link_text: t('pupils.analysis.how_much') %>
       <% end %>
-      <%= component 'pupil_explore', school: school, icon: 'cloud', fuel_type: fuel_type do |c| %>
+      <%= render PupilExploreComponent.new(school: school, icon: 'cloud', fuel_type: fuel_type,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: energy, presentation: 'CO2', link_text: t('pupils.analysis.how_much_co2') %>
       <% end %>
     </div>

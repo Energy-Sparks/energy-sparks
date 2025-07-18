@@ -1,0 +1,9 @@
+<%= tag.div id: id, class: classes do %>
+  <% cells.each_slice(cols) do |cell_group| %>
+    <div class="row<%= ' gx-xl-4 gx-xxl-4' if feature %>">
+      <% cell_group.each do |cell| %>
+          <%= cell %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

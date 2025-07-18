@@ -10,8 +10,17 @@ RSpec.shared_examples 'an advice page' do
 
   it 'shows the page nav' do
     within '.advice-page-nav' do
-      expect(page).to have_content('Advice')
+      expect(page).to have_content(I18n.t('advice_pages.nav.overview'))
       expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
+    end
+  end
+end
+
+RSpec.shared_examples 'it responds to HEAD requests' do
+  [:insights, :analysis, :learn_more].each do |action|
+    it "return :ok with HEAD request to #{action}" do
+      process :head, polymorphic_path([action, school, :advice, advice_page.key.to_sym])
+      expect(response).to have_http_status(:ok)
     end
   end
 end

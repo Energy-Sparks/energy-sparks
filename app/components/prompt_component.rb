@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# Promopts are coloured by a status, which can be:
+# Prompts can be coloured by a status, which can be:
 # :none (grey?)
 # :positive
 # :negative
-# :neutral (blue)
+# :neutral (grey)
 
 # Basic versions has:
 # icon on left
@@ -19,18 +19,24 @@ class PromptComponent < ApplicationComponent
   renders_one :title
   renders_one :pill
 
-  attr_reader :icon, :style
+  attr_reader :icon, :style, :fuel_type
 
-  def initialize(id: nil, icon: nil, status: nil, style: :full, classes: '')
+  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '', always_render: false)
     super(id: id, classes: "#{status} #{classes}")
     @icon = icon
+    @fuel_type = fuel_type
     @status = status
     @style = style
+    @always_render = always_render
     validate
   end
 
+  def render_icon?
+    @fuel_type || @icon
+  end
+
   def render?
-    content
+    content || @always_render
   end
 
   def validate

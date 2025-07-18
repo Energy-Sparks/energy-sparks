@@ -45,7 +45,7 @@ module Solar
     let(:upserter) { Solar::LowCarbonHubDownloadAndUpsert.new(installation: installation, start_date: requested_start_date, end_date: requested_end_date)}
 
     before do
-      expect(LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
+      expect(DataFeeds::LowCarbonHubMeterReadings).to receive(:new).with(installation.username, installation.password).and_return(api)
     end
 
     it 'handles and log exceptions' do

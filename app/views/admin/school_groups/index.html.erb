@@ -1,6 +1,6 @@
 <h1>Manage School Groups</h1>
 <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-primary' %>
-<%= link_to "Export detail", admin_school_groups_path(format: :csv), class: 'btn' %>
+<%= link_to 'Export detail', admin_school_groups_path(format: :csv), class: 'btn' %>
 <p></p>
 <% if @school_groups.any? %>
   <table class="table table-condensed table-sorted">
@@ -22,7 +22,8 @@
       <% @school_groups.each do |school_group| %>
         <tr>
           <td><%= school_group.name %>
-            <%= dashboard_message_icon(school_group) %>
+            <%= link_to(dashboard_message_icon(school_group),
+                        edit_admin_school_group_dashboard_message_path(school_group)) %>
           </td>
           <td>
             <span class="badge badge-pill badge-primary"><%= school_group.group_type.humanize %></span>
@@ -30,9 +31,9 @@
           <td class="d-none d-sm-table-cell">
             <% if school_group.default_issues_admin_user %>
               <span class="badge border badge-pill border-secondary font-weight-normal">
-                <%= link_to (school_group.default_issues_admin_user == current_user ? "You" : school_group.default_issues_admin_user.display_name),
-                  polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
-                  class: 'text-decoration-none' %>
+                <%= link_to (school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name),
+                            polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
+                            class: 'text-decoration-none' %>
               </span>
             <% end %>
           </td>

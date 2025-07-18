@@ -1,63 +1,58 @@
 <%= content_for :page_title, t('pupils.schools.show.title', school_name: @school.name) %>
 
-<%= render 'shared/dashboard_title', school: @school do %>
-  <%= render 'pupil_dashboard_buttons', school: @school %>
+<% content_for :dashboard_header do %>
+  <%= render DashboardHeaderComponent.new(school: @school, audience: @audience) %>
 <% end %>
 
-<% if @show_data_enabled_features %>
-  <%= component 'dashboard_equivalences', school: @school, user: current_user, classes: 'illustration-background' %>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
+      <%= render DashboardEquivalencesComponent.new(
+            id: 'explore-energy-data',
+            school: @school,
+            user: current_user
+          ) %>
+    </div>
+  </div>
+  <%= render PupilDashboardLearnMoreComponent.new(
+        classes: 'mt-4 mb-4',
+        school: @school,
+        user: current_user
+      ) %>
+</div>
 
-  <h2 class="mt-2"><%= t('pupils.schools.show.look_at_the_energy_use') %>:</h2>
-  <%= render 'pupils/analysis/top_level', school: @school %>
-<% else %>
-  <%= component 'dashboard_equivalences', school: @school, user: current_user, classes: 'illustration-background' %>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
+      <%= render DashboardInsightsComponent.new(
+            id: 'alerts-and-reminders',
+            audience: @audience,
+            school: @school,
+            user: current_user,
+            progress_summary: @progress_summary
+          ) %>
+    </div>
+  </div>
+</div>
 
-  <%= component 'info_bar',
-                status: :neutral,
-                title: t('pupils.schools.show.setting_up'),
-                icon: fa_icon('info-circle fa-3x'),
-                buttons: {} %>
-<% end %>
+<div class="container-fluid bg-light pb-3">
+  <div class="container">
+    <%= render ScoreboardSummaryComponent.new(
+          id: 'scoreboard-summary',
+          podium: current_school_podium,
+          user: current_user,
+          audience: @audience,
+          classes: 'mt-4 pt-4'
+        ) %>
 
-<h2 class="mt-2"><%= t('pupils.schools.show.things_to_do') %></h2>
-<% if @dashboard_alerts && @dashboard_alerts.any? %>
-  <% @dashboard_alerts.each do |content| %>
-    <%= component 'info_bar',
-                  status: content.colour,
-                  title: content&.pupil_dashboard_title,
-                  icon: fa_icon(alert_icon(content&.alert, 'fa-3x')),
-                  buttons: dashboard_alert_buttons(@school, content) %>
-  <% end %>
-<% end %>
+    <%= render TimelineComponent.new(
+          school: @school,
+          observations: @observations,
+          user: current_user,
+          classes: 'mt-4'
+        ) %>
 
-<% if @show_temperature_observations %>
-  <% if @temperature_observations.empty? %>
-    <%= component 'info_bar',
-                  status: :neutral,
-                  title: t('pupils.schools.show.measure_temperatures'),
-                  icon: fa_icon('temperature-high fa-3x'),
-                  buttons: { t('pupils.schools.show.enter_temperatures') =>
-                              new_school_temperature_observation_path(@school, introduction: true) } %>
-  <% else %>
-    <%= component 'info_bar',
-                  status: :neutral,
-                  title: t('pupils.schools.show.updating_temperatures'),
-                  icon: fa_icon('temperature-high fa-3x'),
-                  buttons: { t('pupils.schools.show.previous_temperatures') =>
-                              school_temperature_observations_path(@school),
-                             t('pupils.schools.show.update_temperatures') =>
-                              new_school_temperature_observation_path(@school, introduction: true) } %>
-  <% end %>
-<% end %>
+    <%= render DashboardLoginComponent.new(school: @school, user: current_user) %>
 
-<%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
-<%= render 'schools/prompt_recommendations_scoreboard', school: @school %>
-<%= render 'schools/dashboard/transport_surveys', school: @school %>
-
-<%= component 'scoreboard_summary', podium: current_school_podium %>
-
-<br>
-
-<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
-
-<%= component 'dashboard_login', school: @school, user: current_user %>
+  </div>
+</div>

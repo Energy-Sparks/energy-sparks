@@ -1,124 +1,82 @@
-a,
-a:hover,
-a:focus,
-a:active,
-a.active {
-  color: $dark;
-  text-decoration: underline;
-  outline: none;
+.btn-default {
+  @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+
+  &.transparent {
+    background-color: transparent;
+    @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+  }
 }
 
-a.btn,
-a.btn:hover,
-a.btn:focus,
-a.btn:active,
-a.btn.active,
-a.badge,
-a.badge:hover,
-a.badge:focus,
-a.badge:active,
-a.badge.active,
-a.nav-link,
-a.nav-link:hover,
-a.nav-link:focus,
-a.nav-link:active,
-a.nav-link.active {
-  text-decoration: none;
-  outline: none;
-}
-
-a.badge.outline {
-  outline: solid;
-  outline-width: 1px;
-  outline-color: $light-grey;
-}
-
-.btn,
-.btn:hover,
-.btn:focus,
-.btn:active,
-.btn.active {
-  color: $dark;
-  background-image: linear-gradient($white, $light-grey);
-  border-color: $grey;
-  font-weight: 600 !important;
-  border-radius: 50rem !important;
-}
-
-.btn-outline-dark {
+.btn {
   background-color: $white;
-  background-image: none !important;
-  border-color: $dark;
+  @extend .btn-default;
 }
 
-.btn.bg-positive {
-  border-color: transparent;
-  border: none;
+@each $color, $value in $theme-colors {
+  @if $color != secondary { // secondary is same as default button design
+    .btn-#{$color} {
+      @include button-variant($value, $value);
+    }
+  }
+
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+
+    &.transparent {
+      background-color: transparent;
+      @include button-outline-variant($value);
+    }
+  }
 }
 
-.btn-outline-dark:hover {
-  color: $white;
+// primary, secondary and success all break from the normal bootstrap styles
+.btn-primary {
+  @include button-variant($blue-very-dark, $blue-very-dark, $blue-dark, $blue-dark);
 }
 
+.btn-success {
+  @include button-variant($teal-medium, $teal-medium, $teal-dark, $teal-dark);
+  color: $teal-very-dark;
+}
+
+// used in the footer newsletter signup form
+.btn-outline-white {
+  background-color: transparent;
+  @include button-outline-variant($white, $yellow-medium, transparent, $yellow-medium);
+}
+
+a.badge {
+  text-decoration: none;
+  .outline {
+    outline: solid;
+    outline-width: 1px;
+    outline-color: $grey-light;
+  }
+}
+
+// used for mailchimp
 .btn-dark-blue {
   color: $white;
-  background-color: $dark-blue;
+  background-color: $blue-dark;
   background-image: none;
 }
 
-.btn-no-border {
-  border: $btn-border-width solid transparent;
-}
-
 .btn-group {
-  .btn {
-    margin-left: 5px;
-    margin-right: 5px;
+   .btn {
+     margin-left: 5px;
+     margin-right: 5px;
+   }
+   &:not(.panel) {
+    .btn {
+      border-radius: $btn-border-radius !important;
+    }
   }
 }
 
 .btn-group-xs > .btn, .btn-xs {
-  padding: 1px 5px;
-  font-size: $f9;
-  line-height: 1.5;
-  border-radius: 3px;
-}
-
-.btn-fixed-width-100 {
-  width: 100px;
-}
-
-.navbar {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    outline: none;
-    text-decoration: none;
-    font-weight: bold;
-    color: $white;
-  }
-}
-
-li.nav-item a.btn,
-li.nav-item a.btn:hover,
-li.nav-item a.btn:focus,
-li.nav-item a.btn:active {
- // float: right;
-  margin-bottom: 3px;
-  color: $dark;
-  margin-right: 2px;
-  margin-left: 2px;
-}
-
-.sub-nav  {
-  li.nav-item a.btn,
-  li.nav-item a.btn:hover,
-  li.nav-item a.btn:focus,
-  li.nav-item a.btn:active {
-    margin-bottom: 0px;
-  }
+  padding: 0px 5px;
+  @include font(f9);
+  border-radius: 30px;
 }
 
 .card-deck.activities {
@@ -127,31 +85,7 @@ li.nav-item a.btn:active {
   a:focus,
   a:active,
   a.active {
-    color: $dark;
     outline: none;
-  }
-}
-
-.table.timeline {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
-    text-decoration: underline;
-    outline: none;
-    font-weight: normal;
-  }
-}
-
-div.activity_type {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $dark;
   }
 }
 
@@ -161,46 +95,13 @@ div.activity_type {
   text-decoration: inherit;
 }
 
-footer {
-  a,
-  a:hover,
-  a:focus,
-  a:active,
-  a.active {
-    color: $white;
-  }
-}
-
 section.highlight {
   a,
   a:hover,
   a:focus,
   a:active,
   a.active {
-    color: $dark-blue;
+    color: $blue-very-dark;
     outline: none;
-  }
-}
-
-
-// Extra small devices (portrait phones, less than 576px)
-@media (max-width: 575.98px) {
-  .btn,
-  .btn:hover,
-  .btn:focus,
-  .btn:active,
-  .btn.active {
-    @include font(f9);
-  }
-}
-
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .btn,
-  .btn:hover,
-  .btn:focus,
-  .btn:active,
-  .btn.active {
-    @include font(f9);
   }
 }

@@ -1,3 +1,4 @@
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
   <p><%= t('advice_pages.baseload.analysis.summary') %></p>
 
   <p><%= t('advice_pages.baseload.analysis.sections') %></p>
@@ -5,59 +6,79 @@
   <ul>
     <li><%= link_to(t('advice_pages.baseload.analysis.recent_trend.title'), '#recent-trend') %></li>
     <li><%= link_to(t('advice_pages.baseload.analysis.long_term_trends.title'), '#long-term-trends') %></li>
-    <% if @multiple_meters %>
+    <% if @service.multiple_electricity_meters? %>
       <li><%= link_to(t('advice_pages.baseload.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
     <% end %>
     <% if @analysis_dates.one_years_data? %>
       <li><%= link_to(t('advice_pages.baseload.analysis.seasonal_variation.title'), '#seasonal-variation') %></li>
       <li><%= link_to(t('advice_pages.baseload.analysis.weekday_variation.title'), '#weekday-variation') %></li>
     <% end %>
-    <% if @multiple_meters %>
+    <% if @service.multiple_electricity_meters? %>
       <li><%= link_to(t('advice_pages.baseload.analysis.meter_charts.title'), '#meter-charts') %></li>
     <% end %>
   </ul>
 
-
   <!--  RECENT TREND -->
 
-  <%= render 'schools/advice/section_title', section_id: 'recent-trend', section_title: t('advice_pages.baseload.analysis.recent_trend.title') %>
+  <%= render 'schools/advice/section_title', section_id: 'recent-trend',
+                                             section_title: t('advice_pages.baseload.analysis.recent_trend.title') %>
 
-  <%= render 'assessment', estimated_savings_vs_benchmark: @estimated_savings_vs_benchmark, estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar %>
+  <%= render 'assessment', estimated_savings_vs_benchmark: @service.estimated_savings(versus: :benchmark_school),
+                           estimated_savings_vs_exemplar: @service.estimated_savings(versus: :exemplar_school) %>
 
   <p>
-    <%= t('advice_pages.baseload.analysis.usage_last_month', baseload_usage: format_unit(@average_baseload_kw, :kw),
-                                                             count: @analysis_dates.months_analysed) %>
+    <%= t('advice_pages.baseload.analysis.usage_last_month',
+          baseload_usage: format_unit(@service.average_baseload_kw, :kw),
+          count: @analysis_dates.months_analysed) %>
     <%= t('advice_pages.baseload.analysis.usage_other',
-          benchmark_usage: format_unit(@average_baseload_kw_benchmark, :kw)) %>
+          benchmark_usage: format_unit(@service.average_baseload_kw_benchmark, :kw)) %>
   </p>
-  <p><%= t('advice_pages.baseload.analysis.usage_percent_html', percent: format_unit(@baseload_usage.percent, :percent)) %></p>
+  <p><%= t('advice_pages.baseload.analysis.usage_percent_html',
+           percent: format_unit(@service.annual_baseload_usage.percent, :percent)) %></p>
 
-  <%= component 'chart', chart_type: :baseload_lastyear, school: @school, fuel_type: @advice_page.fuel_type do |c| %>
-    <% c.with_title { t('advice_pages.baseload.analysis.charts.baseload_chart_title', count: @analysis_dates.months_analysed) } %>
-    <% c.with_subtitle { t('advice_pages.baseload.analysis.charts.baseload_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date)) } %>
+  <%= render ChartComponent.new(chart_type: :baseload_lastyear, school: @school, fuel_type: @advice_page.fuel_type) do |c| %>
+    <% c.with_title do
+         t('advice_pages.baseload.analysis.charts.baseload_chart_title',
+           count: @analysis_dates.months_analysed)
+       end %>
+    <% c.with_subtitle do
+         t('advice_pages.baseload.analysis.charts.baseload_chart_subtitle_html',
+           start_month_year: short_dates(
+             @analysis_dates.one_years_data? ? @analysis_dates.end_date - 1.year : @analysis_dates.start_date
+           ),
+           end_month_year: short_dates(@analysis_dates.end_date))
+       end %>
     <% c.with_footer do %>
       <p><%= t('advice_pages.baseload.analysis.charts.baseload_chart_explanation') %></p>
     <% end %>
   <% end %>
 
-  <% if @multiple_meters %>
-    <p><%= t('advice_pages.baseload.analysis.multiple_meters_suggestion_html', link: link_to(t('advice_pages.baseload.analysis.meter_breakdown.link_text'), '#meter-breakdown')) %></p>
+  <% if @service.multiple_electricity_meters? %>
+    <p><%= t('advice_pages.baseload.analysis.multiple_meters_suggestion_html',
+             link: link_to(t('advice_pages.baseload.analysis.meter_breakdown.link_text'), '#meter-breakdown')) %></p>
   <% end %>
 
-  <%= t('advice_pages.baseload.analysis.charts.baseload_chart_considerations') %>
-
+  <% t('advice_pages.baseload.analysis.charts.baseload_chart_considerations').each do |paragraph| %>
+    <p><%= paragraph %></p>
+  <% end %>
 
   <!--  LONG TERM TRENDS -->
-  <%= render 'schools/advice/section_title', section_id: 'long-term-trends', section_title: t('advice_pages.baseload.analysis.long_term_trends.title') %>
+  <%= render 'schools/advice/section_title', section_id: 'long-term-trends',
+                                             section_title: t('advice_pages.baseload.analysis.long_term_trends.title') %>
 
   <p><%= t('advice_pages.baseload.analysis.long_term_trends.intro') %></p>
   <p><%= t('advice_pages.baseload.analysis.long_term_trends.table_description') %></p>
 
-  <%= render 'long_term_trends_table', school: @school, annual_average_baseloads: @annual_average_baseloads, analysis_dates: @analysis_dates %>
+  <%= render 'long_term_trends_table', school: @school, annual_average_baseloads: @service.annual_average_baseloads,
+                                       analysis_dates: @analysis_dates %>
 
-  <%= component 'chart', chart_type: :baseload_versus_benchmarks, analysis_controls: true, school: @school do |c| %>
+  <%= render ChartComponent.new(chart_type: :baseload_versus_benchmarks, analysis_controls: true, school: @school) do |c| %>
     <% c.with_title { t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_title') } %>
-    <% c.with_subtitle { t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_subtitle_html', start_month_year: short_dates(@analysis_dates.start_date), end_month_year: short_dates(@analysis_dates.end_date.last_month)) } %>
+    <% c.with_subtitle do
+         t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_subtitle_html',
+           start_month_year: short_dates(@analysis_dates.start_date),
+           end_month_year: short_dates(@analysis_dates.end_date.last_month))
+       end %>
     <% c.with_footer do %>
       <p><%= t('advice_pages.baseload.analysis.charts.long_term_baseload_chart_explanation') %></p>
     <% end %>
@@ -65,61 +86,79 @@
 
   <!--  METER BREAKDOWN TABLE -->
 
-  <% if @multiple_meters %>
+  <% if @service.multiple_electricity_meters? %>
 
-    <%= render 'schools/advice/section_title', section_id: 'meter-breakdown', section_title: t('advice_pages.baseload.analysis.meter_breakdown.title') %>
+    <%= render 'schools/advice/section_title',
+               section_id: 'meter-breakdown',
+               section_title: t('advice_pages.baseload.analysis.meter_breakdown.title') %>
 
     <p><%= t('advice_pages.baseload.analysis.meter_breakdown.intro') %></p>
-    <p><%= t('advice_pages.baseload.analysis.meter_breakdown.table_description', months_analysed: @analysis_dates.months_analysed) %></p>
+    <p><%= t('advice_pages.baseload.analysis.meter_breakdown.table_description',
+             months_analysed: @analysis_dates.months_analysed) %></p>
 
-    <%= render 'meter_breakdown_table', school: @school, baseload_meter_breakdown: @baseload_meter_breakdown, baseload_meter_breakdown_total: @baseload_meter_breakdown_total %>
+    <%= render 'meter_breakdown_table',
+               school: @school,
+               baseload_meter_breakdown: @service.baseload_meter_breakdown,
+               baseload_meter_breakdown_total: @service.meter_breakdown_table_total %>
 
   <% end %>
 
   <% if @analysis_dates.one_years_data? %>
     <!--  SEASONAL VARIATION -->
-    <%= render 'schools/advice/section_title', section_id: 'seasonal-variation', section_title: t('advice_pages.baseload.analysis.seasonal_variation.title') %>
+    <%= render 'schools/advice/section_title',
+               section_id: 'seasonal-variation',
+               section_title: t('advice_pages.baseload.analysis.seasonal_variation.title') %>
 
-    <%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertSeasonalBaseloadVariation), show_links: false, show_icons: false %>
+    <%= render AlertsComponent.new(school: @school,
+                                   dashboard_alerts: @dashboard_alerts,
+                                   alert_types: alert_types_for_class(AlertSeasonalBaseloadVariation),
+                                   show_links: false) %>
 
     <p><%= t('advice_pages.baseload.analysis.seasonal_variation.intro_1') %></p>
     <p><%= t('advice_pages.baseload.analysis.seasonal_variation.intro_2') %></p>
 
-    <% if @multiple_meters %>
+    <% if @service.multiple_electricity_meters? %>
       <p><%= t('advice_pages.baseload.analysis.seasonal_variation.table_description') %></p>
-      <%= render 'seasonal_variation_breakdown_table', school: @school, seasonal_variation: @seasonal_variation, seasonal_variation_by_meter: @seasonal_variation_by_meter %>
+      <%= render 'seasonal_variation_breakdown_table', school: @school,
+                                                       seasonal_variation: @service.seasonal_variation,
+                                                       seasonal_variation_by_meter: @service.seasonal_variation_by_meter %>
     <% else %>
-      <%= render 'seasonal_variation_table', seasonal_variation: @seasonal_variation %>
+      <%= render 'seasonal_variation_table', seasonal_variation: @service.seasonal_variation %>
     <% end %>
 
     <!--  WEEKDAY VARIATION -->
 
-    <%= render 'schools/advice/section_title', section_id: 'weekday-variation', section_title: t('advice_pages.baseload.analysis.weekday_variation.title') %>
+    <%= render 'schools/advice/section_title',
+               section_id: 'weekday-variation',
+               section_title: t('advice_pages.baseload.analysis.weekday_variation.title') %>
     <p><%= t('advice_pages.baseload.analysis.weekday_variation.intro_1') %></p>
     <p><%= t('advice_pages.baseload.analysis.weekday_variation.intro_2') %></p>
 
-    <% if @multiple_meters %>
+    <% if @service.multiple_electricity_meters? %>
       <p><%= t('advice_pages.baseload.analysis.weekday_variation.table_description') %></p>
-      <%= render 'weekday_variation_breakdown_table', school: @school, intraweek_variation: @intraweek_variation, intraweek_variation_by_meter: @intraweek_variation_by_meter %>
+      <%= render 'weekday_variation_breakdown_table',
+                 school: @school,
+                 intraweek_variation: @service.intraweek_variation,
+                 intraweek_variation_by_meter: @service.intraweek_variation_by_meter %>
     <% else %>
-      <%= render 'weekday_variation_table', intraweek_variation: @intraweek_variation %>
+      <%= render 'weekday_variation_table', intraweek_variation: @service.intraweek_variation %>
     <% end %>
 
   <% end %>
 
   <!--  METER BREAKDOWN CHARTS -->
 
-  <% if @multiple_meters %>
+  <% if @service.multiple_electricity_meters? %>
+    <%= render 'schools/advice/section_title', section_id: 'meter-charts',
+                                               section_title: t('advice_pages.baseload.analysis.meter_charts.title') %>
 
-    <%= render 'schools/advice/section_title', section_id: 'meter-charts', section_title: t('advice_pages.baseload.analysis.meter_charts.title') %>
-
-    <%= component 'meter_selection_chart',
-        meter_selection: @meter_selection,
-        chart_type: :baseload,
-        analysis_controls: false,
-        chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle' do |c|
-    %>
+    <%= render MeterSelectionChartComponent.new(
+          meter_selection: @meter_selection,
+          chart_type: :baseload,
+          chart_subtitle_key: 'advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_subtitle'
+        ) do |c| %>
       <% c.with_title { I18n.t('advice_pages.baseload.analysis.charts.long_term_baseload_meter_chart_title') } %>
     <% end %>
 
   <% end %>
+<% end %>

@@ -1,28 +1,36 @@
-<p><%= t('advice_pages.heating_control.analysis.summary') %></p>
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
+  <p><%= t('advice_pages.heating_control.analysis.summary') %></p>
 
-<ul>
+  <ul>
+    <% if @analysis_dates.recent_data %>
+      <li><%= link_to(t('advice_pages.heating_control.analysis.heating_timings.title'), '#heating-timings') %></li>
+    <% end %>
+    <li><%= link_to(t('advice_pages.heating_control.analysis.school_day_heating.title'), '#school-day-heating') %></li>
+    <% if @multiple_meters %>
+      <li><%= link_to(t('advice_pages.heating_control.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
+    <% end %>
+    <% if @heating_control_service.enough_data_for_seasonal_analysis? %>
+      <li><%= link_to(t('advice_pages.heating_control.analysis.seasonal_control.title'), '#seasonal-control') %></li>
+    <% end %>
+  </ul>
+
   <% if @analysis_dates.recent_data %>
-    <li><%= link_to(t('advice_pages.heating_control.analysis.heating_timings.title'), '#heating-timings') %></li>
+    <%= render 'heating_timings', school: @school,
+                                  dashboard_alerts: @dashboard_alerts,
+                                  heating_control_service: @heating_control_service %>
   <% end %>
-  <li><%= link_to(t('advice_pages.heating_control.analysis.school_day_heating.title'), '#school-day-heating') %></li>
+
+  <%= render 'school_day_heating', school: @school, analysis_dates: @analysis_dates, dashboard_alerts: @dashboard_alerts %>
+
   <% if @multiple_meters %>
-    <li><%= link_to(t('advice_pages.heating_control.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
+    <%= render 'meter_breakdown', meter_selection: @meter_selection %>
   <% end %>
-  <% if @enough_data_for_seasonal_analysis %>
-    <li><%= link_to(t('advice_pages.heating_control.analysis.seasonal_control.title'), '#seasonal-control') %></li>
+
+  <% if @heating_control_service.enough_data_for_seasonal_analysis? %>
+    <%= render 'seasonal_control', school: @school,
+                                   analysis_dates: @analysis_dates,
+                                   seasonal_analysis: @heating_control_service.seasonal_analysis,
+                                   warm_weather_on_days_rating: @heating_control_service.warm_weather_on_days_rating,
+                                   dashboard_alerts: @dashboard_alerts %>
   <% end %>
-</ul>
-
-<% if @analysis_dates.recent_data %>
-  <%= render 'heating_timings', last_week_start_times: @last_week_start_times, estimated_savings: @estimated_savings, percentage_of_annual_gas: @percentage_of_annual_gas %>
-<% end %>
-
-<%= render 'school_day_heating', school: @school, analysis_dates: @analysis_dates, dashboard_alerts: @dashboard_alerts %>
-
-<% if @multiple_meters %>
-  <%= render 'meter_breakdown', meter_selection: @meter_selection %>
-<% end %>
-
-<% if @enough_data_for_seasonal_analysis %>
-  <%= render 'seasonal_control', school: @school, analysis_dates: @analysis_dates, seasonal_analysis: @seasonal_analysis, warm_weather_on_days_rating: @warm_weather_on_days_rating, dashboard_alerts: @dashboard_alerts %>
 <% end %>

@@ -9,9 +9,9 @@ class CalendarsController < ApplicationController
   def show
     @academic_year = academic_year
     @current_events = list_current_events(@academic_year)
-    if @calendar.schools.count == 1
-      @school = @calendar.schools.first
-    end
+    return unless @calendar.schools.count == 1
+
+    @school = @calendar.schools.first
   end
 
   def current_events
@@ -21,10 +21,10 @@ class CalendarsController < ApplicationController
   end
 
   def destroy
-    if @calendar.school? || @calendar.national?
-      redirect_to admin_calendars_path, notice: 'Cannot delete national or school calendars' if @calendar.school?
+    if (@calendar.school? || @calendar.national?) && @calendar.school?
+      redirect_to admin_calendars_path, notice: 'Cannot delete national or school calendars'
     end
-    if @calendar.regional? && @calendar.calendars.count > 0
+    if @calendar.regional? && @calendar.calendars.count.positive?
       redirect_to admin_calendars_path, notice: 'Cannot delete regional calendar with children'
     else
       @calendar.destroy
@@ -33,8 +33,9 @@ class CalendarsController < ApplicationController
   end
 
   def resync
-    @resync_service = CalendarResyncService.new(@calendar, 1.week.ago)
-    @resync_service.resync
+    CalendarResyncJob.perform_later(@calendar, 1.week.ago, current_user.email)
+    redirect_to calendar_path(@calendar), notice: 'Update job has been submitted. An email will be sent to ' \
+                                                  "#{current_user.email} when complete"
   end
 
   private
@@ -44,12 +45,13 @@ class CalendarsController < ApplicationController
   end
 
   def academic_year
-    academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq.sort_by(&:to_i).reject(&:nil?)
-    AcademicYear.find(academic_year_ids).select(&:current?).first
+    academic_year_ids = @calendar.calendar_events.pluck(:academic_year_id).uniq.sort_by(&:to_i).compact
+    AcademicYear.find(academic_year_ids).find(&:current?)
   end
 
   def list_current_events(academic_year)
     return [] unless academic_year
+
     next_academic_year = academic_year.next_year
     academic_year_filter = next_academic_year.present? ? [academic_year, next_academic_year] : academic_year
     @calendar.calendar_events.where(academic_year: academic_year_filter).order(:start_date)

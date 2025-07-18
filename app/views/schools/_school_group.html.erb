@@ -14,7 +14,7 @@
           <% end %>
         </div>
         <div class="padded-row">
-          <% school_group.schools.visible.by_name.each do |school| %>
+          <% school_group.schools.visible.by_name.select(:name, :slug).each do |school| %>
             <%= link_to "#{school.name}", school_path(school), class: 'nav-link' %>
           <% end %>
       </div>

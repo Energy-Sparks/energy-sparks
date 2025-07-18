@@ -11,7 +11,7 @@
     <div class='text-right'>
       <%= link_to t('school_groups.download_as_csv'),
                   priority_actions_school_group_path(@school_group, format: :csv),
-                  class: 'btn btn-sm btn-outline-dark rounded-pill font-weight-bold',
+                  class: 'btn btn-sm btn-default',
                   id: 'download-priority-actions-school-group-csv' %>
     </div>
 
@@ -39,13 +39,14 @@
               </span>
             </td>
             <td>
-              <%= component 'footnote_modal/link', modal_id: "action-#{alert_type_rating.id}" do %>
+              <%= render FootnoteModalComponent::Link.new(modal_id: "action-#{alert_type_rating.id}") do %>
                 <%= alert_type_rating.current_content.management_priorities_title %>
               <% end %>
-              <%= component 'footnote_modal',
-                            title: alert_type_rating.current_content.management_priorities_title.to_plain_text,
-                            modal_id: "action-#{alert_type_rating.id}",
-                            modal_dialog_classes: 'modal-xl modal-dialog-centered' do |component| %>
+              <%= render FootnoteModalComponent.new(
+                    title: alert_type_rating.current_content.management_priorities_title.to_plain_text,
+                    modal_id: "action-#{alert_type_rating.id}",
+                    modal_dialog_classes: 'modal-xl modal-dialog-centered'
+                  ) do |component| %>
                 <% component.with_body_content do %>
                   <%= render 'priority_action_modal',
                              alert_type_rating: alert_type_rating,

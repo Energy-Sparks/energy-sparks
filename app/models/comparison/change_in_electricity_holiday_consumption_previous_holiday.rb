@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: change_in_electricity_holiday_consumption_previous_holidays
+# Table name: comparison_change_in_electricity_holiday_consumption_previous_holidays
 #
 #  alert_generation_run_id    :bigint(8)
 #  current_period_end_date    :date
@@ -19,6 +19,10 @@
 #  school_id                  :bigint(8)
 #  tariff_has_changed         :boolean
 #  truncated_current_period   :boolean
+#
+# Indexes
+#
+#  idx_on_school_id_8c3fc8440e  (school_id) UNIQUE
 #
 module Comparison
   class ChangeInElectricityHolidayConsumptionPreviousHoliday < Comparison::View

@@ -29,8 +29,11 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     let(:expected_id) { id }
   end
 
+  it { expect(html).to have_content(I18n.t('components.dashboard_insights.title')) }
+
   it 'displays the reminders column' do
     expect(html).to have_css('#adult-reminders')
+    expect(html).to have_content(I18n.t('components.dashboard_insights.reminders.title'))
   end
 
   it 'does not display the alerts' do
@@ -38,10 +41,15 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   end
 
   context 'with alerts' do
+    before do
+      Flipper.enable :new_dashboards_2024 # alert component has conditional
+    end
+
     include_context 'with dashboard alerts'
 
     it 'displays the alerts column' do
       expect(html).to have_css('#adult-alerts')
+      expect(html).to have_content(I18n.t('advice_pages.index.alerts.title'))
     end
 
     it 'displays the alert text' do

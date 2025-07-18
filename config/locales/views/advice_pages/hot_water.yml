@@ -79,7 +79,7 @@ en:
         for_more_detail_html: For more detail, <a href='%{link}'>compare with other schools in your group</a>
         how_do_you_compare: How do you compare?
         improving_the_way_html_over_10pc_html: |-
-          <p>The table below shows that %{gas_better_control_saving_gbp_percent} of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you %{gas_better_control_saving_gbp} per year.
+          <p>The table below shows that %{gas_better_control_saving_gbp_percent} of the energy used to heat your hot water is used outside of school opening times. Adjusting your boiler settings to ensure that you are only heating water when it is needed could save you %{gas_better_control_saving_gbp} per year. Costs in this table are presented using your school’s current gas tariff.
           </p>
           <p>Or you could investigate replacing your current hot water system with point of use electric heaters.</p>
         improving_the_way_html_under_10pc_html: "<p>Your holiday and weekend hot water use is already very low. You could reduce your annual gas consumption for hot water by %{gas_better_control_saving_gbp_percent} by switching it off completely outside of school hours.</p>"

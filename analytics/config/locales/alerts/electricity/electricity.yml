@@ -1,0 +1,12 @@
+---
+en:
+  analytics:
+    alert_electricity_annual_versus_benchmark:
+      timescale: last year
+    alert_electricity_peak_kw_versus_benchmark:
+      timescale: up to a year
+    alert_electricity_usage_during_current_holiday:
+      holiday_cost_to_date: Your electricity usage during %{holiday_name} holiday up until %{date} has cost %{cost_to_date}.
+      holiday_predicted_cost: By the end of the holiday this will cost you %{predicted_cost}.
+      timescale: this holiday
+    annual_cost_with_adjective: "%{cost}pa, %{relative_percent} %{adjective} average"

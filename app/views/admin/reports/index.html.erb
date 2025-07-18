@@ -2,24 +2,24 @@
 
 <h1>Reports</h1>
 
-<h2>System</h2>
-
 <div class="row">
   <div class="col">
-    <h3>Schools & users</h3>
+    <h3>Onboarding & Funding</h3>
     <ul>
-      <li><%= link_to 'Recent audits', admin_reports_recent_audits_path %></li>
       <li><%= link_to 'Consents Granted', admin_consent_grants_path %></li>
-      <li><%= link_to 'Recently onboarded', completed_admin_school_onboardings_path %></li>
-      <li><%= link_to 'School targets', admin_reports_school_targets_path %></li>
-      <li><%= link_to 'Schools removed', admin_schools_removals_path %></li>
-      <li><%= link_to 'Issues & Notes', admin_issues_path %></li>
-      <li><%= link_to 'Work allocation', admin_reports_work_allocation_index_path %></li>
       <li><%= link_to 'Funder allocation report', admin_reports_funder_allocations_path %></li>
-      <li><%= link_to 'Engaged Schools', admin_reports_engaged_schools_path %></li>
+      <li><%= link_to 'Recently onboarded', completed_admin_school_onboardings_path %></li>
+      <li><%= link_to 'Schools removed', admin_schools_removals_path %></li>
     </ul>
 
-    <h3>Activities</h3>
+    <h3>Users & Engagement</h3>
+    <ul>
+      <li><%= link_to 'Engaged Groups', admin_reports_engaged_groups_path %></li>
+      <li><%= link_to 'Engaged Schools', admin_reports_engaged_schools_path %></li>
+      <li><%= link_to 'User logins', admin_reports_user_logins_path %></li>
+    </ul>
+
+    <h3>Activities & actions</h3>
 
     <ul>
       <li><%= link_to 'Activity type management report', admin_reports_activity_types_path %></li>
@@ -28,41 +28,72 @@
       <li><%= link_to 'Recently recorded interventions', admin_reports_interventions_path %></li>
     </ul>
 
-    <h3>Alert communications</h3>
+    <h3>Weekly Alerts</h3>
     <ul>
       <li><%= link_to 'Alert subscribers', admin_reports_alert_subscribers_path %></li>
-      <li><%= link_to 'Email unsubscriptions', admin_unsubscriptions_path %></li>
+      <li><%= link_to 'Missing Alert Subscribers', admin_reports_missing_alert_contacts_path %></li>
+    </ul>
+
+    <h3>Internal</h3>
+    <ul>
+      <li><%= link_to 'Issues & Notes', admin_issues_path %></li>
+      <li><%= link_to 'Work allocation', admin_reports_work_allocation_index_path %></li>
+    </ul>
+
+    <h3>Development</h3>
+
+    <ul>
+      <li><%= link_to 'Good Job Statistics', admin_reports_good_jobs_path %></li>
+      <li><%= link_to 'Mailchimp status', admin_reports_mailchimp_status_index_path %></li>
+      <li><%= link_to 'Transifex Content Loads', admin_reports_transifex_loads_path %></li>
     </ul>
   </div>
 
   <div class="col">
-    <h3>Data</h3>
+    <h3>School configuration</h3>
     <ul>
-      <li><%= link_to 'Unvalidated readings', admin_reports_unvalidated_readings_path %></li>
+      <li><%= link_to 'Community use', admin_reports_community_use_index_path %></li>
+      <li><%= link_to 'Heating Types', admin_reports_heating_types_path %></li>
+      <li><%= link_to 'Issues & Notes', admin_issues_path %></li>
+      <li><%= link_to 'Recent audits', admin_reports_recent_audits_path %></li>
+      <li><%= link_to 'School targets', admin_reports_school_targets_path %></li>
+      <li><%= link_to 'Solar panels', admin_reports_solar_panels_path %></li>
+    </ul>
+
+    <h3>Data Imports</h3>
+    <ul>
+      <li><%= link_to 'Data feed import logs', admin_reports_amr_data_feed_import_logs_path %></li>
+      <li>
+        Meters with:
+         <ul>
+           <li><%= link_to 'Blank readings', admin_reports_blank_readings_path %></li>
+           <li><%= link_to 'Stale data', admin_reports_lagging_meters_path %></li>
+           <li><%= link_to 'Zero readings', admin_reports_zero_readings_path %></li>
+         </ul>
+      </li>
+      <li><%= link_to 'Meter loading report', admin_reports_meter_loading_reports_path %></li>
       <li><%= link_to 'Recent manual imports', admin_reports_data_loads_path %></li>
-      <li><%= link_to 'AMR File imports report', admin_reports_amr_data_feed_import_logs_path %></li>
       <li><%= link_to 'School group meter reports', admin_reports_meter_reports_path %></li>
-      <li><%= link_to 'DCC Meter Status', admin_reports_dcc_status_index_path %></li>
+      <li><%= link_to 'Unvalidated readings', admin_reports_unvalidated_readings_path %></li>
+    </ul>
+
+    <h3>Meters & readings</h3>
+    <ul>
+      <li><%= link_to 'Baseload anomalies', admin_reports_baseload_anomaly_index_path %></li>
+      <li><%= link_to 'DCC meter status', admin_reports_dcc_status_index_path %></li>
+      <li><%= link_to 'Gas anomalies', admin_reports_gas_anomaly_index_path %></li>
+      <li><%= link_to 'Manually read meters', admin_reports_manual_reads_path %></li>
+      <li><%= link_to 'Perse meter summary', admin_reports_perse_meter_index_path %></li>
       <li><%= link_to 'PROB data report', admin_prob_data_reports_path %></li>
-      <li><%= link_to 'Solar Panels', admin_reports_solar_panels_path %></li>
-      <li><%= link_to 'Community Use', admin_reports_community_use_index_path %></li>
     </ul>
 
     <h3>Tariffs</h3>
     <ul>
-      <li><%= link_to 'Energy Tariffs', admin_reports_energy_tariffs_path %></li>
-      <li><%= link_to 'DCC Tariff imports report', admin_reports_tariff_import_logs_path %></li>
       <li><%= link_to 'DCC Tariffs report', admin_reports_tariffs_path %></li>
-    </ul>
-    <h3>Transifex</h3>
-    <ul>
-      <li><%= link_to 'Transifex Content Loads', admin_reports_transifex_loads_path %></li>
+      <li><%= link_to 'DCC Tariff imports report', admin_reports_tariff_import_logs_path %></li>
+      <li><%= link_to 'Energy Tariffs', admin_reports_energy_tariffs_path %></li>
     </ul>
 
-    <h3>Jobs</h3>
-    <ul>
-      <li><%= link_to 'Good Job Statistics', admin_reports_good_jobs_path %></li>
-    </ul>
   </div>
 </div>
 

@@ -5,6 +5,7 @@
   <li><a href="#longer-text">Longer text</a></li>
   <li><a href="#with-link">Link</a></li>
   <li><a href="#icon">Icon</a></li>
+  <li><a href="#fuel-type">Fuel type</a></li>
   <li><a href="#title">Title</a></li>
   <li><a href="#pill">Pills</a></li>
   <li><a href="#status">Status colours</a></li>
@@ -45,7 +46,16 @@
 <% end %>
 
 <h4 id='icon'>Icon</h4>
-<%= render PromptComponent.new icon: 'bolt' do |c| %>
+<%= render PromptComponent.new icon: 'calendar' do |c| %>
+  <% c.with_link { link_to 'This is the link', root_path } %>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin
+    odio in vestibulum. Duis a semper mi.
+  </p>
+<% end %>
+
+<h4 id='fuel-type'>Fuel type</h4>
+<%= render PromptComponent.new fuel_type: 'electricity' do |c| %>
   <% c.with_link { link_to 'This is the link', root_path } %>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id lorem dui. Quisque feugiat sollicitudin

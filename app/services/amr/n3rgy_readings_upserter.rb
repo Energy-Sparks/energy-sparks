@@ -12,7 +12,7 @@ module Amr
     def perform
       return if @readings.empty? || meter_readings.empty?
       Rails.logger.info "Upserting #{meter_readings} for #{@meter.mpan_mprn} at #{@meter.school.name}"
-      DataFeedUpserter.new(data_feed_reading_array(meter_readings), @amr_data_feed_import_log).perform
+      DataFeedUpserter.new(@amr_data_feed_config, @amr_data_feed_import_log, data_feed_reading_array(meter_readings)).perform
       Rails.logger.info "Upserted #{@amr_data_feed_import_log.records_updated} inserted #{@amr_data_feed_import_log.records_imported} for #{@meter.mpan_mprn} at #{@meter.school.name}"
     end
 

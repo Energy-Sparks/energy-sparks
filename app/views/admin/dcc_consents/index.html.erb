@@ -5,8 +5,8 @@
 
 <% if @dcc_consent_calcs.orphan_consents.any? %>
   <h2>MPANs in n3rgy list but not in our DCC records</h2>
-  <% @dcc_consent_calcs.orphan_consents.each do |mpxn|  %>
-    <p><%= "#{mpxn}" %></p>
+  <% @dcc_consent_calcs.orphan_consents.each do |mpxn| %>
+    <p><%= mpxn.to_s %></p>
   <% end %>
 <% end %>
 
@@ -44,16 +44,22 @@
         <td><%= meters.count if meter == meters.first %></td>
         <td><%= link_to meter.mpan_mprn, school_meter_path(school, meter) %></td>
         <td><%= meter.meter_type.capitalize %></td>
-        <td><%= link_to nice_dates(meter.meter_review.created_at), admin_school_meter_review_path(school, meter.meter_review) if meter.meter_review %></td>
+        <td><%= if meter.meter_review
+                  link_to nice_dates(meter.meter_review.created_at),
+                          admin_school_meter_review_path(school, meter.meter_review)
+                end %></td>
         <td><%= meter.meter_review.present? %></td>
         <td><%= meter.consent_granted? %></td>
         <td><%= meter.active? %></td>
         <td>
           <% if meter.can_withdraw_consent? && can?(:withdraw_consent, meter) %>
-            <%= link_to 'Withdraw consent', admin_withdraw_dcc_consent_path(mpxn: meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Withdraw consent',
+                        admin_withdraw_dcc_consent_path(mpxn: meter.mpan_mprn),
+                        method: :post, class: 'btn btn-secondary btn-sm' %>
           <% end %>
           <% if meter.can_grant_consent? && can?(:grant_consent, meter) %>
-            <%= link_to 'Grant consent', admin_grant_dcc_consent_path(mpxn: meter.mpan_mprn), method: :post, class: 'btn btn-info btn-sm' %>
+            <%= link_to 'Grant consent', admin_grant_dcc_consent_path(mpxn: meter.mpan_mprn),
+                        method: :post, class: 'btn btn-secondary btn-sm' %>
           <% end %>
         </td>
       </tr>

@@ -22,7 +22,8 @@
 #  updated_at                  :datetime         not null
 #
 class DataSource < ApplicationRecord
-  enum organisation_type: { energy_supplier: 0, procurement_organisation: 1, meter_operator: 2, council: 3, solar_monitoring_provider: 4 }
+  enum :organisation_type, { energy_supplier: 0, procurement_organisation: 1, meter_operator: 2, council: 3,
+                             solar_monitoring_provider: 4 }
   validates :name, presence: true, uniqueness: true
   has_many :meters
   has_many :issues, as: :issueable, dependent: :destroy
@@ -32,8 +33,9 @@ class DataSource < ApplicationRecord
     CSV.generate(headers: true) do |csv|
       csv << csv_headers
       meters.from_active_schools.order(:created_at).each do |meter|
-        csv << [
+        csv << ([
           meter&.school&.school_group&.name,
+          meter&.school&.school_group&.default_issues_admin_user&.name,
           meter&.school&.name,
           meter&.mpan_mprn,
           meter&.meter_type&.humanize,
@@ -42,8 +44,8 @@ class DataSource < ApplicationRecord
           meter&.first_validated_reading,
           meter&.last_validated_reading,
           meter&.admin_meter_status_label,
-          meter&.open_issues_count,
-        ] + meter&.open_issues_as_list
+          meter&.open_issues_count
+        ] + meter&.open_issues_as_list)
       end
     end
   end
@@ -51,6 +53,7 @@ class DataSource < ApplicationRecord
   private
 
   def csv_headers
-    ['School group', 'School', 'MPAN/MPRN', 'Meter type', 'Active', 'Half-Hourly', 'First validated meter reading', 'Last validated meter reading', 'Admin Meter Status', 'Open issues count', 'Open issues']
+    ['School group', 'Admin', 'School', 'MPAN/MPRN', 'Meter type', 'Active', 'Half-Hourly', 'First validated meter reading',
+     'Last validated meter reading', 'Admin Meter Status', 'Open issues count', 'Open issues']
   end
 end

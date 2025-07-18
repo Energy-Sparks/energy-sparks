@@ -1,57 +1,6 @@
-<!-- Footer -->
 <footer>
-  <div class="footer-above">
-    <div class="container">
-      <div class="row">
-        <div class="col-4">
-          <p>
-            <%= t('footer.registered_charity_notice') %>.
-          </p>
-          <div class="row">
-            <div class="col-2">
-              <%= fab_icon('creative-commons fa-2x') %>
-            </div>
-            <div class="col-10">
-              <p>
-                <%= t('footer.cc_licence_notice_html') %>.
-              </p>
-            </div>
-           </div>
-        </div>
-        <div class="col-5">
-          <p>
-            <%= t('footer.more_information') %>
-          </p>
-          <div class="row">
-            <div class="col">
-              <ul class="list-unstyled">
-                <li><%= link_to t('footer.terms_and_conditions'), terms_and_conditions_path %></li>
-                <li><%= link_to t('cookies.title'), cookies_path %></li>
-                <li><%= link_to t('about_menu.privacy_policy'), privacy_and_cookie_policy_path %></li>
-                <li><%= link_to t('footer.child_safeguarding_policy'), child_safeguarding_policy_path %></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-3">
-          <p><%= t('footer.follow_energy_sparks') %></p>
-          <ul class="list-inline">
-            <li class="list-inline-item p-2">
-              <a href="//twitter.com/EnergySparks" class=""><%= fab_icon('twitter fa-2x') %></a>
-            </li>
-            <li class="list-inline-item p-2">
-              <a href="//www.facebook.com/EnergySparksUK/" class=""><%= fab_icon('facebook-square fa-2x') %></a>
-            </li>
-            <li class="list-inline-item p-2">
-              <a href="//github.com/energy-sparks/energy-sparks" class=""><%= fab_icon('github fa-2x') %></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <%= render 'shared/footer/top' %>
+  <%= render 'shared/footer/second' %>
 </footer>
 
 <%= if Rails.env.production? && @analytics_code.present?

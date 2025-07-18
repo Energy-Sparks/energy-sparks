@@ -1,53 +1,62 @@
-<% content_for :page_title do %>
-  <%= @activity_type.name %>
-<% end %>
-
-<div class="row padded-row">
-  <div class="col-md-3">
-    <%= render 'activity_types/image', activity_type: @activity_type, css_class: "" %>
-  </div>
-  <div class="col-md-6">
-    <h2><%= @activity_type.name %></h2>
-    <p><%= @activity_type.summary %></p>
-    <div>
-      <%= render 'activity_types/activity_type_score', activity_type: @activity_type %>
-      <%= render 'activity_types/activity_type_key_stages', activity_type: @activity_type %>
-      <%= render 'activity_types/activity_type_subjects', activity_type: @activity_type %>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <%= link_to t('activity_types.show.view_related_activities', count: @activity_type.activity_category.activity_types.count), activity_category_path(@activity_type.activity_category), class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-  </div>
-</div>
-
-<% if current_user.nil? %>
-  <%= render 'shared/activities/prompt_login_to_record', label: 'activity', score: @activity_type.score, return_path: activity_type_path(@activity_type) %>
-<% end %>
-
-<% if can?(:create, Activity) && @can_be_completed_for_schools.present? %>
-  <% if @can_be_completed_for_schools.one? %>
-    <%= render 'activity_types/prompt_score', activity_type: @activity_type, school: @can_be_completed_for_schools.first %>
-  <% else %>
-    <%= render 'activity_types/prompt_score_for_group', activity_type: @activity_type, schools: @can_be_completed_for_schools %>
+<% cache_if current_user.nil?, [@activity_type, I18n.locale], expires_in: 1.hour do %>
+  <% content_for :page_title do %>
+    <%= @activity_type.name %>
   <% end %>
-<% end %>
 
-<% unless @activity_type.activities_for_school(current_user_school).empty? %>
-  <%= render 'activity_types/previous_records', activities: @activity_type.activities_for_school(current_user_school).by_date, school: current_user_school %>
-<% end %>
-
-<div class="row padded-row">
-  <div class="col-md-9">
-    <div class="activity_type">
-      <%= @activity_type_content %>
+  <div class="row padded-row">
+    <div class="col-md-3">
+      <%= render 'activity_types/image', activity_type: @activity_type, css_class: '' %>
+    </div>
+    <div class="col-md-6">
+      <h2><%= @activity_type.name %></h2>
+      <p><%= @activity_type.summary %></p>
+      <div>
+        <%= render 'activity_types/activity_type_score', activity_type: @activity_type %>
+        <%= render 'activity_types/activity_type_key_stages', activity_type: @activity_type %>
+        <%= render 'activity_types/activity_type_subjects', activity_type: @activity_type %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <%= link_to t('activity_types.show.view_related_activities',
+                    count: @activity_type.activity_category.activity_types.count),
+                  activity_category_path(@activity_type.activity_category), class: 'btn btn-default' %>
     </div>
   </div>
-  <div class="col-md-3">
-    <% if @activity_type.download_links.present? %>
-      <h4 style="padding-top: 0px;"><%= t('activity_types.show.download_resources') %></h4>
-      <div class="activity_type activity-type-download-links" data-event-value="<%= @activity_type.id %>">
-        <%= @activity_type.download_links %>
-      </div>
+
+  <% if current_user.nil? %>
+    <%= render 'shared/activities/prompt_login_to_record', label: 'activity', score: @activity_type.score,
+                                                           return_path: activity_type_path(@activity_type) %>
+  <% end %>
+
+  <% if can?(:create, Activity) && @can_be_completed_for_schools.present? %>
+    <% if @can_be_completed_for_schools.one? %>
+      <%= render 'activity_types/prompt_score', activity_type: @activity_type,
+                                                school: @can_be_completed_for_schools.first %>
+    <% else %>
+      <%= render 'activity_types/prompt_score_for_group', activity_type: @activity_type,
+                                                          schools: @can_be_completed_for_schools %>
     <% end %>
+  <% end %>
+
+  <% unless @activity_type.activities_for_school(current_user_school).empty? %>
+    <%= render 'activity_types/previous_records',
+               activities: @activity_type.activities_for_school(current_user_school).by_date,
+               school: current_user_school %>
+  <% end %>
+
+  <div class="row padded-row">
+    <div class="col-md-9">
+      <div class="activity_type">
+        <%= @activity_type_content %>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <% if @activity_type.download_links.present? %>
+        <h4 style="padding-top: 0px;"><%= t('activity_types.show.download_resources') %></h4>
+        <div class="activity_type activity-type-download-links" data-event-value="<%= @activity_type.id %>">
+          <%= @activity_type.download_links %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

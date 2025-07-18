@@ -17,6 +17,8 @@ module Comparisons
     helper_method :footnote_cache
     helper_method :unlisted_message
 
+    protect_from_forgery except: :unlisted
+
     def index
       respond_to do |format|
         format.html do

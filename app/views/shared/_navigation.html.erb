@@ -1,22 +1,4 @@
 <div class='fixed-top'>
-  <% if Flipper.enabled?(:navigation, current_user, current_user_default_school_group) %>
-    <%= render 'shared/navigation/top_nav' %>
-    <%= render 'shared/navigation/second_nav' %>
-  <% else %>
-    <% if show_sub_nav?(@school, @hide_subnav) %>
-      <%= render 'shared/nav', mini_nav: true %>
-      <%= render 'shared/sub_nav', podium: current_school_podium, school: @school || @tariff_holder %>
-    <% elsif @tariff_holder&.school? && show_sub_nav?(@tariff_holder, @hide_subnav) %>
-      <%= render 'shared/nav', mini_nav: true %>
-      <%= render 'shared/sub_nav', podium: current_school_podium, school: @tariff_holder %>
-    <% elsif @school_group && request.path.starts_with?('/school_groups') && can?(:update_settings, @school_group) %>
-      <%= render 'shared/nav', mini_nav: true %>
-      <%= render('school_groups/sub_nav', school_group: @school_group) if can?(:update_settings, @school_group || @tariff_holder) %>
-    <% elsif @tariff_holder&.school_group? && request.path.starts_with?('/school_groups') && can?(:update_settings, @tariff_holder) %>
-      <%= render 'shared/nav', mini_nav: true %>
-      <%= render('school_groups/sub_nav', school_group: @tariff_holder) if can?(:update_settings, @tariff_holder) %>
-    <% else %>
-      <%= render 'shared/nav' %>
-    <% end %>
-  <% end %>
+  <%= render 'shared/navigation/top_nav' %>
+  <%= render 'shared/navigation/second_nav' %>
 </div>

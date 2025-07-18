@@ -31,11 +31,10 @@ class AlertTypeRatingUnsubscription < ApplicationRecord
   belongs_to :contact
   belongs_to :alert_subscription_event, optional: true
 
-  enum scope: [:email, :sms]
-  enum unsubscription_period: [:one_month, :six_months, :forever]
+  enum :scope, { email: 0, sms: 1 }
+  enum :unsubscription_period, { one_month: 0, six_months: 1, forever: 2 }
 
-  scope :active, ->(today) { where('effective_until IS NULL OR effective_until < ?', today)}
-
+  scope :active, ->(today) { where('effective_until IS NULL OR effective_until < ?', today) }
 
   validates :alert_type_rating, :reason, :unsubscription_period, presence: true
 
@@ -48,10 +47,10 @@ class AlertTypeRatingUnsubscription < ApplicationRecord
       alert_subscription_event: event,
       contact: event.contact,
       alert_type_rating: event.content_version.alert_type_rating,
-      unsubscription_period: unsubscription_period,
-      effective_until: effective_until,
-      scope: scope,
-      reason: reason
+      unsubscription_period:,
+      effective_until:,
+      scope:,
+      reason:
     )
   end
 end

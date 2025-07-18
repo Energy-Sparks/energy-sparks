@@ -35,7 +35,7 @@ class ScoreboardSummaryComponent < ApplicationComponent
 
   def observations
     scope = other_schools? ? scoreboard.observations : Observation
-    scope.for_visible_schools.not_including(school).recorded_since(school.current_academic_year.start_date).by_date.limit(limit)
+    scope.for_visible_schools.not_including(school).recorded_since(school.current_academic_year.start_date..).by_date.with_points.sample(limit)
   end
 
   def timeline_title

@@ -1,0 +1,13 @@
+<%= render PromptComponent.new(icon: 'flag-checkered', status: :positive) do |c| %>
+  <b>
+    <%= t('programme_types.completed.you_completed_this_programme_on',
+          date: nice_dates(programme.ended_on)) %>
+  </b>
+  <% if programme.programme_type.repeatable?(programme.school) %>
+    <% c.with_link do %>
+      <%= link_to t('programme_types.completed.repeat'),
+                  school_programmes_path(programme.school, programme_type_id: programme.programme_type),
+                  method: :post %>
+    <% end %>
+  <% end %>
+<% end %>

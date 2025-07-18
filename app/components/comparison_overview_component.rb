@@ -5,18 +5,18 @@ class ComparisonOverviewComponent < ApplicationComponent
 
   attr_reader :school
 
-  def initialize(school:, meter_collection:, id: nil, classes: '')
-    super(id: id, classes: "comparison-overview-component #{classes}")
+  def initialize(school:, aggregate_school_service:, **_kwargs)
+    super
     @school = school
-    @meter_collection = meter_collection
+    @aggregate_school_service = aggregate_school_service
   end
 
   def can_benchmark_electricity?
-    @school.has_electricity? && electricity_usage_service.enough_data?
+    existing_benchmark?(:electricity)
   end
 
   def can_benchmark_gas?
-    @school.has_gas? && gas_usage_service.enough_data?
+    existing_benchmark?(:gas)
   end
 
   def electricity_benchmarked_usage
@@ -33,6 +33,19 @@ class ComparisonOverviewComponent < ApplicationComponent
 
   private
 
+  # This is an alternative to doing, e.g:
+  #
+  # @school.has_electricity? && electricity_usage_service.enough_data?
+  #
+  # Instead check to see if we've already generated a benchmark assessment for this school using the LongTermUsageService.
+  # If that exists then the school has the fuel type and enough data.
+  #
+  # Delays loading the meter collection from the Rails cache until we know we actually need it
+  def existing_benchmark?(fuel_type)
+    advice_page = AdvicePage.find_by_key("#{fuel_type}_long_term")
+    @school.advice_page_school_benchmarks.where(advice_page:).any?
+  end
+
   def gas_usage_service
     @gas_usage_service ||= usage_service(:gas)
   end
@@ -42,6 +55,6 @@ class ComparisonOverviewComponent < ApplicationComponent
   end
 
   def usage_service(fuel_type)
-    Schools::Advice::LongTermUsageService.new(@school, @meter_collection, fuel_type)
+    Schools::Advice::LongTermUsageService.new(@school, @aggregate_school_service, fuel_type)
   end
 end

@@ -1,7 +1,6 @@
 <% rating_value = AnalyseHeatingAndHotWater::HeatingModel.r2_rating_out_of_10(@heating_thermostatic_analysis.r2) %>
-<%= component 'notice', status: notice_status_for(rating_value) do |c| %>
+<%= render PromptComponent.new(icon: :fire_alt, fuel_type: :storage_heaters, status: notice_status_for(rating_value)) do |c| %>
   <%= t('advice_pages.storage_heaters.analysis.thermostatic_control.your_thermostatic_control_is_html',
-         r2: @heating_thermostatic_analysis.r2.round(2),
-         r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2)
-  ) %>
+        r2: @heating_thermostatic_analysis.r2.round(2),
+        r2_rating_adjective: AnalyseHeatingAndHotWater::HeatingModel.r2_rating_adjective(@heating_thermostatic_analysis.r2)) %>
 <% end %>

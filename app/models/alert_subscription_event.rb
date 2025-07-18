@@ -42,11 +42,12 @@ class AlertSubscriptionEvent < ApplicationRecord
   belongs_to :email, optional: true
   has_one    :sms_record
   belongs_to :find_out_more, optional: true
-  belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
+  belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion',
+                               foreign_key: :alert_type_rating_content_version_id
   belongs_to :subscription_generation_run
 
-  enum status: [:pending, :sent, :archived]
-  enum communication_type: [:email, :sms]
+  enum :status, { pending: 0, sent: 1, archived: 2 }
+  enum :communication_type, { email: 0, sms: 1 }
 
   validates :priority, numericality: true
 
@@ -58,7 +59,7 @@ class AlertSubscriptionEvent < ApplicationRecord
 
   def sms_content
     TemplateInterpolation.new(
-      content_version,
+      content_version
     ).interpolate(
       :sms_content,
       with: alert.template_variables

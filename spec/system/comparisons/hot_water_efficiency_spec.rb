@@ -27,8 +27,6 @@ describe 'hot_water_efficiency' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
@@ -58,7 +56,9 @@ describe 'hot_water_efficiency' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 
   context 'when there are schools with swimming pools' do
@@ -66,6 +66,7 @@ describe 'hot_water_efficiency' do
 
     before do
       create(:alert, school: other_school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+      Comparison.const_get(key.to_s.camelize).refresh
       visit "/comparisons/#{key}"
     end
 

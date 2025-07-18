@@ -1,0 +1,41 @@
+<div id='<%= task_type %>' class="mt-4">
+  <% if (todos = assignable.todos.by_task_type(task_type).positioned).any? %>
+    <h3><%= label %></h3>
+    <% todos.each_with_index do |todo, idx| %>
+      <% recording = todo.recording_for(completable: completable) if completable %>
+      <% icon = if completable
+                  recording ? 'circle-check text-success far' : 'circle text-muted far'
+                else
+                  (idx + 1).to_s
+                end %>
+      <%= render PromptComponent.new(
+            icon: icon,
+            status: recording ? :positive : :none,
+            always_render: true, classes: 'todo'
+          ) do |c| %>
+        <% if todo.notes %>
+          <p>
+            <%= todo.notes %>
+          </p>
+        <% end %>
+        <% c.with_title do %>
+          <%= todo.task.name %>
+        <% end %>
+        <% c.with_pill do %>
+          <%= render 'shared/tasks/score', task: todo.task %>
+        <% end %>
+        <% c.with_link do %>
+          <% if completable %>
+            <% if recording %>
+              <%= link_to t('tasks.completed_on', date: nice_dates(recording.happened_on)), recording_path(recording) %>
+            <% else %>
+              <%= link_to t("tasks.complete.#{todo.task.public_type}"), polymorphic_path(todo.task) %>
+            <% end %>
+          <% else %>
+            <%= link_to t("tasks.view.#{todo.task.public_type}"), polymorphic_path(todo.task) %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

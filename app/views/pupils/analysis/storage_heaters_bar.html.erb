@@ -1,30 +1,37 @@
-<% content_for :page_title, strip_tags(t('pupils.analysis.storage_heater_data_html')) %>
+<%= render 'header', school: @school, fuel_type: :storage_heater, category: :storage_heaters, link: true %>
 
-<div class="d-flex justify-content-between align-items-center">
-  <div>
-    <%= link_to t('common.labels.back'),  pupils_school_analysis_path(@school, category: :storage_heaters), class: 'btn btn-rounded' %>
-  </div>
-  <div>
-    <h1><%= t('pupils.analysis.storage_heater_data_html') %></h1>
-  </div>
-  <div></div>
-</div>
-<hr />
-
-<h2><%= t('pupils.analysis.i_want_to') %></h2>
-
-<div class="row">
-
-  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Bench'} do %>
-    <%= t('pupils.analysis.find_storage_heaters_comparison') %>
+<%= render TitledSectionComponent.new(classes: 'mt-2') do |section| %>
+  <%= section.with_title do %>
+    <h2><%= t('pupils.analysis.i_would_like_to_know') %></h2>
   <% end %>
+  <%= section.with_body do %>
+    <div class="row">
+      <%= render PupilExploreComponent.new(school: @school, icon: 'calendar-days', fuel_type: :storage_heaters,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Week',
+                             link_text: t('pupils.analysis.how_much_last_year') %>
+      <% end %>
 
-  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Week'} do %>
-    <%= t('pupils.analysis.find_storage_heaters_use_last_year') %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'calendar', fuel_type: :storage_heaters,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Year',
+                             link_text: t('pupils.analysis.how_changed_long_term') %>
+      <% end %>
+    </div>
   <% end %>
+<% end %>
 
-  <%= render 'chart_link', school: @school, energy: :storage, chart_config: {energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Year'} do %>
-    <%= t('pupils.analysis.find_storage_heaters_use_long_term') %>
+<%= render TitledSectionComponent.new(classes: 'mt-2') do |section| %>
+  <%= section.with_title do %>
+    <h2><%= t('pupils.analysis.i_would_like_to_compare') %></h2>
   <% end %>
-
-</div>
+  <%= section.with_body do %>
+    <div class="row">
+      <%= render PupilExploreComponent.new(school: @school, icon: 'scale-balanced', fuel_type: :storage_heaters,
+                                           classes: 'col-12 col-md-4') do |c| %>
+        <% c.with_chart_link energy: 'Storage Heaters', presentation: 'Bar', secondary_presentation: 'Bench',
+                             link_text: t('pupils.analysis.compare_electricity_across_schools') %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

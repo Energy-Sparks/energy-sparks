@@ -9,8 +9,8 @@ module Schools
 
     skip_before_action :authenticate_user!, only: [:index, :show]
 
-    before_action :check_aggregated_school_in_cache, only: :show
     before_action :redirect_if_disabled
+    before_action :load_advice_pages
     before_action :set_breadcrumbs
 
     def index
@@ -36,10 +36,10 @@ module Schools
         @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
-        render :current
+        render :current, layout: 'dashboards'
       else
         @observations = setup_target_timeline(@school_target)
-        render :expired
+        render :expired, layout: 'dashboards'
       end
     end
 
@@ -50,10 +50,10 @@ module Schools
       elsif @school.school_targets.any?(&:persisted?)
         @previous_school_target = @school.most_recent_target
         @school_target = target_service.build_target
-        render :new
+        render :new, layout: 'dashboards'
       else
         @school_target = target_service.build_target
-        render :first
+        render :first, layout: 'dashboards'
       end
     end
 
@@ -76,6 +76,7 @@ module Schools
         target_service.refresh_target(@school_target)
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
+        render :edit, layout: 'dashboards'
       end
     end
 
@@ -86,7 +87,7 @@ module Schools
         redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
       else
         target_service
-        render :edit
+        render :edit, layout: 'dashboards'
       end
     end
 
@@ -100,6 +101,10 @@ module Schools
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
+    end
+
+    def load_advice_pages
+      @advice_pages = AdvicePage.all
     end
 
     def school_target_params

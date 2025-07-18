@@ -36,5 +36,8 @@ module DataFeeds
       end
       missing_array.reject!(&:blank?)
     end
+
+    def set_up_data_feed
+    end
   end
 end

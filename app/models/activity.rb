@@ -30,6 +30,7 @@
 
 class Activity < ApplicationRecord
   include Description
+  include Todos::Recording
 
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities

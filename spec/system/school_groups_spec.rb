@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
-  let!(:school_group) { create(:school_group, public: public, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
+  let!(:school_group) { create(:school_group, public: public, default_issues_admin_user: nil, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
   let(:public) { true }
 
   let!(:user)                  { create(:user) }
@@ -28,7 +28,6 @@ describe 'school groups', :school_groups, type: :system do
         expect(page).to have_current_path('/users/sign_in', ignore_query: true)
       end
 
-      it_behaves_like 'does not show the sub navigation menu'
       it_behaves_like 'schools are filtered by permissions'
 
       describe 'showing recent usage tab' do
@@ -398,7 +397,6 @@ describe 'school groups', :school_groups, type: :system do
       let(:public) { false }
 
       it_behaves_like 'a private school group dashboard'
-      it_behaves_like 'does not show the sub navigation menu'
     end
   end
 
@@ -410,10 +408,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'does not show the sub navigation menu' do
-      it_behaves_like 'does not show the sub navigation menu'
-    end
 
     context 'with a public school group' do
       let(:public) { true }
@@ -443,10 +437,6 @@ describe 'school groups', :school_groups, type: :system do
 
     it_behaves_like 'shows the we are working with message'
 
-    context 'does not show the sub navigation menu' do
-      it_behaves_like 'does not show the sub navigation menu'
-    end
-
     context 'with a public school group' do
       let(:public) { true }
 
@@ -469,7 +459,7 @@ describe 'school groups', :school_groups, type: :system do
 
   context 'when logged in as the group admin' do
     let!(:user)           { create(:group_admin, school_group: school_group) }
-    let!(:school_group2)  { create(:school_group) }
+    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
@@ -484,14 +474,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'shows the sub navigation menu' do
-      it_behaves_like 'shows the sub navigation menu'
-      it 'shows only the sub nav manage school links available to a group admin' do
-        visit school_group_path(school_group)
-        expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs'])
-      end
-    end
 
     context 'group chart settings page' do
       it_behaves_like 'allows access to chart updates page and editing of default chart preferences'
@@ -520,7 +502,7 @@ describe 'school groups', :school_groups, type: :system do
 
   context 'when logged in as an admin' do
     let!(:user)           { create(:admin) }
-    let!(:school_group2)  { create(:school_group) }
+    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
@@ -535,14 +517,6 @@ describe 'school groups', :school_groups, type: :system do
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'shows the sub navigation menu' do
-      it_behaves_like 'shows the sub navigation menu'
-      it 'shows the sub nav manage school links available to an admin' do
-        visit school_group_path(school_group)
-        expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
-      end
-    end
 
     context 'group chart settings page' do
       it_behaves_like 'allows access to chart updates page and editing of default chart preferences'
@@ -581,17 +555,13 @@ describe 'school groups', :school_groups, type: :system do
   end
 
   context 'when logged in as a group admin for a different group' do
-    let!(:user) { create(:group_admin, school_group: create(:school_group)) }
+    let!(:user) { create(:group_admin, school_group: create(:school_group, default_issues_admin_user: nil)) }
 
     before do
       sign_in(user)
     end
 
     it_behaves_like 'shows the we are working with message'
-
-    context 'does not show the sub navigation menu' do
-      it_behaves_like 'does not show the sub navigation menu'
-    end
 
     context 'with a public school group' do
       let(:public) { true }

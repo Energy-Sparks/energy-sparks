@@ -1,123 +1,29 @@
 // Core colours for use across the application
 
-// Mappings to values found in initializers/colours.rb
-// Yellows
-$new-yellow: <%= Colours::NEW_YELLOW %>; // not used in the site but same colour is used in mailers & chart_data_values.rb
-$dark-yellow: <%= Colours::DARK_YELLOW %>; // podium
-$light-yellow: <%= Colours::LIGHT_YELLOW %>; // podium
+// The hex values for colours can be found in initializers/colours.rb
 
-// New Yellows (using in nav)
-$yellow-pale: <%= Colours::YELLOW_PALE %>;
-$yellow-light: <%= Colours::YELLOW_LIGHT %>;
-$yellow-medium: <%= Colours::YELLOW_MEDIUM %>;
-$yellow-dark: <%= Colours::YELLOW_DARK %>;
-$yellow-very-dark: <%= Colours::YELLOW_VERY_DARK %>;
+// The following creates a SASS variable for colours grouped in the Colours::PALETTE hash
+// e.g.: Colours.sass_variables :palette
+// creates variables for the :palette group, such as:
+// $yellow-pale: #fdefc8;
+// $blue-very-dark: #334375;
 
-// Oranges
-$dark-orange: <%= Colours::DARK_ORANGE %>;
-$light-orange: <%= Colours::LIGHT_ORANGE %>;
+// Examples of variables bought in from fuel, polarity and comparison groups:
+// $electric-dark: #007EFF;
+// $positive-dark: #10bca2;
+// $exemplar-school: #10bca2;
+<%= Colours.sass_variables :palette, :fuel, :polarity, :comparison, :bootstrap, :theme, :charts %>
 
-// Blues
-$dark-blue: <%= Colours::DARK_BLUE %>; // main nav blue
-$bright-blue: <%= Colours::BRIGHT_BLUE %>;
-$mid-blue: <%= Colours::MID_BLUE %>; // used in charts
-$light-blue: <%= Colours::LIGHT_BLUE %>;
-$lighter-light-blue: <%= Colours::LIGHTER_LIGHT_BLUE %>;
-$bluey-white: <%= Colours::BLUEY_WHITE %>; // used for background on pupil dashboards
+// Create SASS maps for each of these keys found in Colours::PALETTE hash
+// These will be named: $colours-fuel etc
+<%= Colours.sass_maps :palette, :fuel, :polarity, :comparison, :charts %>
 
-// New Blues (using in nav)
-$blue-very-dark: <%= Colours::BLUE_VERY_DARK %>; // new nav blue (adult) and headings
-$blue-dark: <%= Colours::BLUE_DARK %>; // paragraph text
-$blue-medium: <%= Colours::BLUE_MEDIUM %>; // used in nav so far
-
-// Greens
-$green: <%= Colours::GREEN %>;
-
-// Reds
-$new-red: <%= Colours::NEW_RED %>;
-$light-red: <%= Colours::LIGHT_RED %>;
-
-// PURPLES / PINKS
-$mid-purple: <%= Colours::MID_PURPLE %>;
-
-// Turquoise
-$turquoise: <%= Colours::TURQUOISE %>;
-$light-turquoise: <%= Colours::LIGHT_TURQUOISE %>;
-
-// Shades of grey
-$black: <%= Colours::BLACK %>;
-$dark: <%= Colours::DARK %>;
-$darker-grey: <%= Colours::DARKER_GREY %>;
-$dark-grey: <%= Colours::DARK_GREY %>;
-$silver: <%= Colours::SILVER %>;
-$grey: <%= Colours::GREY %>;
-$bluey-grey: <%= Colours::BLUEY_GREY %>; // used for background on pupil dashboards
-$light-grey: <%= Colours::LIGHT_GREY %>;
-$lighter-grey: <%= Colours::LIGHTER_GREY %>;
-$very-light-grey: <%= Colours::VERY_LIGHT_GREY %>;
-$white: <%= Colours::WHITE %>;
-
-// Fuel Types
-$electric-dark: <%= Colours::ELECTRIC_DARK %>; // very similar to $mid-blue
-$electric-middle: <%= Colours::ELECTRIC_MIDDLE %>; // used in charts only
-$electric-light: <%= Colours::ELECTRIC_LIGHT %>; // very similar to $light-blue
-
-$storage-dark: <%= Colours::STORAGE_DARK %>; // dark purple
-$storage-light: <%= Colours::STORAGE_LIGHT %>; // pinky purple
-
-$solar-dark: <%= Colours::SOLAR_DARK %>;
-$solar-light: <%= Colours::SOLAR_LIGHT %>;
-
-$gas-dark: <%= Colours::GAS_DARK %>; // mid orange
-$gas-middle: <%= Colours::GAS_MIDDLE %>; // used in charts only
-$gas-light: <%= Colours::GAS_LIGHT %>; // dark yellow
-
-$carbon-dark: <%= Colours::CARBON_DARK %>;
-$carbon-light: <%= Colours::CARBON_LIGHT %>;
-
-// Shortcuts
-$text: $dark;
-$bg-positive: $turquoise;
-$bg-neutral: $light-blue;
-$bg-negative: $new-red;
-
-$bg-positive-light: $light-turquoise;
-$bg-neutral-light: $lighter-light-blue;
-$bg-negative-light: $light-red;
-
-$blue-pale: <%= Colours::BLUE_PALE %>;
-$yellow-pale: <%= Colours::YELLOW_PALE %>;
-$green-pale: <%= Colours::GREEN_PALE %>;
-$purple-light: <%= Colours::PURPLE_LIGHT %>;
-$grey-light: <%= Colours::GREY_LIGHT %>;
-
-$fuel-colours-light: (
-  "electric" : $electric-light,
-  "gas"      : $gas-light,
-  "storage"  : $storage-light,
-  "solar"    : $solar-light,
-  "carbon"   : $carbon-light
-);
-
-$fuel-colours-dark: (
-  "electric" : $electric-dark,
-  "gas"      : $gas-dark,
-  "storage"  : $storage-dark,
-  "solar"    : $solar-dark,
-  "carbon"   : $carbon-dark
-);
-
-// Live Data
-$live-data-dark: $green;
-$live-data-light: $light-grey;
-
-// Comparisons
-$exemplar-school: $green;
-$benchmark-school: $light-orange;
-$other-school: $bg-negative;
-
-$colours-comparison: (
-  "exemplar_school": $exemplar-school,
-  "benchmark_school": $benchmark-school,
-  "other_school": $other-school
-);
+// Get a colour from a generated map
+// not used yet so need to check if working :-)
+@function colour-get($map, $name, $shade: false) {
+  @if $shade {
+    @return map-get(map-get($map, $name), $shade);
+  } @else {
+    @return map-get($map, $name);
+  }
+}

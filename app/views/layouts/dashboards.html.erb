@@ -5,8 +5,8 @@
   </head>
   <body>
     <%= render 'shared/navigation' %>
-    <div class="container-fluid <%= @audience %> pb-2">
-      <div class="container<%= nav_margin_classes %>">
+    <div class="container-fluid <%= @audience || :adult %> pb-2">
+      <div class="container navigation-margin">
         <%= render 'shared/breadcrumbs' %>
         <%= render 'shared/alerts' if flash.any? %>
         <%= yield :dashboard_header %>
@@ -15,7 +15,11 @@
     <%= yield %>
 
     <% if show_partner_footer?(@school) %>
-      <%= render 'shared/partners' %>
+      <div class="container-fluid bg-light">
+        <div class="container">
+          <%= render 'shared/partners' %>
+        </div>
+      </div>
     <% end %>
     <%= render 'shared/cookie_banner' %>
     <%= render 'shared/footer' %>

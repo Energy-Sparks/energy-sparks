@@ -18,7 +18,7 @@ module Amr
 
     def perform
       # if n3rgy dont provide us with dates, we can't load data
-      return if available_date_range.empty?
+      return 'no data available' if available_date_range.empty?
 
       # determine start/end dates for API request, allowing for
       # overrides and presence of previously loaded data
@@ -28,7 +28,7 @@ module Amr
       # can happen if available end from n3rgy is only part way through the day and
       # we've then set end_date to be end of the previous day to avoid loading
       # incomplete readings.
-      return if start_date > end_date
+      return 'start date after end date' if start_date > end_date
 
       import_log = create_import_log(start_date, end_date)
       readings = N3rgyDownloader.new(meter: @meter, start_date:, end_date:).readings
@@ -40,6 +40,7 @@ module Amr
       Rails.logger.error msg
       Rails.logger.error e.backtrace.join("\n")
       Rollbar.error(e, job: :n3rgy_download, meter_id: @meter.mpan_mprn, start_date:, end_date:)
+      msg
     end
 
     private
@@ -109,6 +110,9 @@ module Amr
 
       # encountered a data problem at n3rgy where availableCacheRange had a future date
       end_date = DateTime.now if end_date >= Time.zone.today
+
+      # temporary n3rgy issue with other dcc meters where need to avoid last day of readings
+      end_date -= 1.day if @meter.dcc_meter == 'other'
 
       # force to midnight (last reading of previous day) to avoid loading partial data if
       # n3rgy have a few hours for today

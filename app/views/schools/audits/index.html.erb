@@ -29,8 +29,10 @@
               <% if can? :manage, audit %>
                 <td>
                   <div class="btn-group">
-                    <%= link_to t('common.labels.edit'), edit_school_audit_path(@school, audit), class: 'btn btn-warning btn-sm' %>
-                    <%= link_to t('common.labels.remove'), school_audit_path(@school, audit), method: :delete, data: { confirm: t('common.confirm') }, class: 'btn btn-warning btn-sm' %>
+                    <%= link_to t('common.labels.edit'), edit_school_audit_path(@school, audit), class: 'btn btn-primary btn-sm' %>
+                    <%= link_to t('common.labels.remove'), school_audit_path(@school, audit),
+                                method: :delete, data: { confirm: t('common.confirm') },
+                                class: 'btn btn-warning btn-sm' %>
                   </div>
                 </td>
               <% end %>
@@ -41,7 +43,7 @@
     </div>
   </div>
   <div class="row mt-2">
-    <%= link_to t('schools.audits.index.book_another_audit'), energy_audits_path, class: 'btn btn-primary btn-sm'%>
+    <%= link_to t('schools.audits.index.book_another_audit'), energy_audits_path, class: 'btn btn-primary btn-sm' %>
   </div>
 <% else %>
   <div class="row">
@@ -53,6 +55,6 @@
 
 <% if can? :manage, Audit %>
   <div class="row mt-2">
-    <%= link_to t('schools.audits.index.new_audit'), new_school_audit_path(@school), class: 'btn btn-primary btn-sm'%>
+    <%= link_to t('schools.audits.index.new_audit'), new_school_audit_path(@school), class: 'btn btn-primary btn-sm' %>
   </div>
 <% end %>

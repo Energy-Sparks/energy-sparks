@@ -1,0 +1,21 @@
+{
+   "meta":{
+      "generated":"2022-02-08 12:48:09"
+   },
+   "data":[
+      {
+         "id":"03354",
+         "name":{
+            "en":"Nottingham Weather Centre"
+         },
+         "distance":0.0
+      },
+      {
+         "id":"EGXN0",
+         "name":{
+            "en":"Newton / Saxondale"
+         },
+         "distance":18234.0
+      }
+   ]
+}

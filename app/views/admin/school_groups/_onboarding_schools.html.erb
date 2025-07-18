@@ -40,14 +40,15 @@
                end %>
             <%= link_to issue_type_icons(issues, label: 'Issues'), issues_path, class: 'btn btn-sm' %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding),
-                        class: 'btn btn-warning btn-sm', method: :post %>
+                        class: 'btn btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
               <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
             <% else %>
-              <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-sm' %>
+              <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-primary btn-sm' %>
             <% end %>
-            <%= link_to 'Delete', admin_school_onboarding_path(onboarding), class: 'btn btn-sm', method: :delete,
-                                                                            data: { confirm: 'Are you sure?' } %>
+            <%= link_to 'Delete', admin_school_onboarding_path(onboarding),
+                        class: 'btn btn-danger btn-sm', method: :delete,
+                        data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
       <% end %>

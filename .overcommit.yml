@@ -33,6 +33,7 @@ PreCommit:
     exclude:
       - 'app/assets/images/**/*'
       - 'vendor/assets/**/*'
+      - 'spec/fixtures/**/*'
   I18nTasks:
     enabled: true
     requires_files: true # only run if specific files changes
@@ -50,4 +51,3 @@ PreCommit:
       - 'vendor/**/*'
       - 'app/assets/images/**/*'
       - 'public/error-fonts/*'
-

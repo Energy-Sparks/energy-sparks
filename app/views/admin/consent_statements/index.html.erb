@@ -26,8 +26,8 @@
           <div class="btn-group">
             <%= link_to 'View', admin_consent_statement_path(consent_statement), class: 'btn' %>
             <% if consent_statement.editable? %>
-                <%= link_to 'Edit', edit_admin_consent_statement_path(consent_statement), class: 'btn' %>
-                <%= link_to 'Delete', admin_consent_statement_path(consent_statement), method: :delete, data: {confirm: 'Are you sure?'}, class: 'btn' %>
+                <%= link_to 'Edit', edit_admin_consent_statement_path(consent_statement), class: 'btn btn-primary' %>
+                <%= link_to 'Delete', admin_consent_statement_path(consent_statement), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
             <% end %>
           </div>
         </td>
@@ -40,4 +40,4 @@
   <p>There are no consent statements</p>
 <% end %>
 
-<p><%= link_to 'New consent statement', new_admin_consent_statement_path, class: 'btn'%></p>
+<p><%= link_to 'New consent statement', new_admin_consent_statement_path, class: 'btn' %></p>

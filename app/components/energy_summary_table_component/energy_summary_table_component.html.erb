@@ -1,11 +1,7 @@
-<div id="<%= id %>" class="energy-summary-table-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if show_title? %>
-    <h2>
-      <% if Flipper.enabled?(:new_dashboards_2024, user) %>
-        <%= t('schools.show.recent_energy_usage') %>
-      <% else %>
-        <%= t('schools.show.summary_of_recent_energy_usage') %>
-      <% end %>
+    <h2 id="<%= id %>" class="scrollable-title">
+      <%= t('schools.show.recent_energy_usage') %>
     </h2>
   <% end %>
 
@@ -30,22 +26,19 @@
         <tr class="<%= data.period_key %>">
           <%# if showing the row for "Last week" show the fuel icon and name. Reduces clutter %>
           <% if row_for_last_week?(data) %>
-            <% if Flipper.enabled?(:new_dashboards_2024, user) %>
-              <td rowspan="2" class="align-middle icon <%= fuel_type_class(data.fuel_type) %>">
-                <%= component 'icon', fuel_type: data.fuel_type %>
-              </td>
-              <td rowspan="2" class="align-middle text-left">
+            <td rowspan="2" class="align-middle icon <%= fuel_type_class(data.fuel_type) %>">
+              <%= render IconComponent.new(fuel_type: data.fuel_type) %>
+              <% if data.fuel_type == :electricity && @school.has_solar_pv? %>
+                <%= render IconComponent.new(fuel_type: :solar_pv) %>
+              <% end %>
+            </td>
+            <td rowspan="2" class="align-middle text-left">
+              <% if data.fuel_type == :electricity && @school.has_solar_pv? %>
+                <%= t('common.electricity_and_solar_pv') %>
+              <% else %>
                 <%= t("common.#{data.fuel_type}") %>
-              </td>
-            <% else %>
-              <td class="icon"><%= component 'icon', fuel_type: data.fuel_type %></td>
-              <td class="text-left"><%= t("common.#{data.fuel_type}") %></td>
-            <% end %>
-          <% else %>
-            <% unless Flipper.enabled?(:new_dashboards_2024, user) %>
-              <td></td>
-              <td></td>
-            <% end %>
+              <% end %>
+            </td>
           <% end %>
           <td class="text-left"><%= data.period %></td>
           <% if data.has_data %>
@@ -67,12 +60,11 @@
   <% if footer? %>
     <%= footer %>
   <% else %>
-    <div class="<%= footer_classes %>">
+    <div class="table-caption">
       <%= overview_data.date_ranges %>
       <%= link_to_help_for_feature :management_summary_overview,
-                                   title: footer_link,
+                                   title: t('advice_pages.how_have_we_analysed_your_data.link_title'),
                                    user: user, css: 'strong' %>
     </div>
   <% end %>
-
-</div>
+<% end %>

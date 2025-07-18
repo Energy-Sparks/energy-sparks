@@ -1,6 +1,6 @@
 module IssuesHelper
   def issue_type_icon(issue_type, count = 0)
-    colour = count > 0 ? Issue.issue_type_classes[issue_type.to_sym] : 'secondary'
+    colour = count > 0 ? Issue.issue_type_classes[issue_type.to_sym] : 'grey-light'
     fa_icon("#{Issue.issue_type_image(issue_type)} text-#{colour}")
   end
 
@@ -8,7 +8,7 @@ module IssuesHelper
     counts = []
     icons = []
     Issue.issue_types.each_key do |issue_type|
-      count = issues.for_issue_types(issue_type).status_open.count
+      count = issues.is_a?(Hash) ? issues[issue_type] : issues.for_issue_types(issue_type).status_open.count
       unless count == 0 && hide_empty
         counts << pluralize(count, issue_type.to_s)
         icons << issue_type_icon(issue_type, count)

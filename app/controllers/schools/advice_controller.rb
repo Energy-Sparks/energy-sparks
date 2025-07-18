@@ -9,31 +9,30 @@ module Schools
     load_resource :school
     skip_before_action :authenticate_user!
     before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
+    # Redirect guest / not logged in users to the pupil dashboard if not
+    # data enabled to offer a better initial user experience
+    before_action :redirect_to_pupil_dash_if_not_data_enabled, only: [:show]
+
     before_action :school_inactive
     before_action :load_advice_pages
     before_action :set_tab_name
-    before_action :set_counts
     before_action :set_breadcrumbs
-
     before_action :check_aggregated_school_in_cache, only: [:show]
 
     def show
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        @audience = :adult
-        @meter_collection = aggregate_school # for comparison overview component
-        render :new_show, layout: 'dashboards'
-      else
-        @advice_page_benchmarks = @school.advice_page_school_benchmarks
-        render :show
-      end
+      @overview_data = Schools::ManagementTableService.new(@school).management_data
+      @aggregate_school_service = aggregate_school_service
+      render :show, layout: 'dashboards'
     end
 
     def priorities
       @management_priorities = sort_priorities
+      render :priorities, layout: 'dashboards'
     end
 
     def alerts
       @dashboard_alerts = setup_alerts(latest_dashboard_alerts, :management_dashboard_title, limit: nil)
+      render :alerts, layout: 'dashboards'
     end
 
     private
@@ -60,9 +59,12 @@ module Schools
       @advice_pages = AdvicePage.all
     end
 
-    def set_counts
-      @priority_count = latest_management_priorities.count
-      @alert_count = latest_dashboard_alerts.count
+    def not_signed_in?
+      !user_signed_in? || current_user.guest?
+    end
+
+    def redirect_to_pupil_dash_if_not_data_enabled
+      redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
     end
 
     def latest_dashboard_alerts

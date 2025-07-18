@@ -14,7 +14,7 @@ describe AmrReadingWarning, type: :system, include_application_helper: true do
   end
 
   it 'shows a benchmark result run and allows the user to drill down' do
-    click_on 'AMR File imports report'
+    click_on 'Data feed import logs'
     click_on 'Warnings'
 
     expect(page).to have_content('Warnings')

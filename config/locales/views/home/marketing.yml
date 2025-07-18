@@ -16,8 +16,8 @@ en:
       costs:
         bullets: |-
           <ul>
-            <li>Save £3,000 per year for the average primary school</li>
-            <li>Save £12,000 per year for the average secondary school</li>
+            <li>Save £5,000 per year for the average primary school</li>
+            <li>Save £21,000 per year for the average secondary school</li>
           </ul>
         case_study: Northampton Academy cut its gas consumption by 40%
         quote_html: |-
@@ -88,76 +88,135 @@ en:
         Please provide us with your contact details and some information about your organisation so that we can provide you
         with more information about our services.
       title: Request more information about Energy Sparks
-  marketing:
-    book_a_demo: Book a demo
-    pricing:
-      features:
-        detail_html: |-
-          <p>
-          Every school is provided with a publicly available energy management tool. The standard account is publicly visible to maximise engagement across the whole school community.
-          </p>
-          <p>
-          The energy management tool includes:
-          </p>
-          <ul>
-            <li>separate adult and pupil dashboards, tailored for each audience</li>
-            <li>school-specific energy analysis and prioritised recommendations</li>
-            <li>interactive energy usage charts</li>
-            <li>weekly emailed energy use alerts</li>
-            <li>ability to set energy saving targets and track progress</li>
-            <li>benchmarking of energy use against similar schools</li>
-            <li>unlimited user accounts</li>
-            <li>webinar training</li>
-            <li>email support with energy management and sustainability education</li>
-            <li>access to >%{activities_count} pupil activities with downloadable lesson plans, workshops and additional resources</li>
-            <li>guidance on >%{actions_count} adult led low and no-cost energy efficiency actions</li>
-            <li>analysis of up to 10 gas and electricity meters</li>
-            <li>integrated solar data (if relevant)</li>
-            <li>support with upgrading meters to half-hourly metering (if needed)</li>
-          </ul>
-        title: Standard features
-      free_places:
-        detail_html: |-
-          <p>
-            Funding from charitable trusts and foundations, community energy companies and corporate partners allows Energy Sparks to provide its services free of charge, or at a subsidised rate, to a limited number of schools in certain regions of the UK.
-          </p>
-          <p>
-            Energy Sparks is seeking new funders to allow us to maintain and extend our free offer to more state schools.
-          </p>
-          <p>
-            We will let you know if you are eligible for a funded place when you enrol your school, Trust or Local Authority.
-          </p>
-        title: Free places
-      groups:
-        price: "£495 + VAT"
-        title: Multi-Academy Trust and Local Authority clusters
-      independent_schools:
+  product:
+    additional_services:
+      desktop_audits:
+        price: "£390 + VAT"
+        title: Desktop energy reviews
+      on_site_audits:
+        price: "£950 to £2,250 + VAT"
+        title: On-site audits
+      title: Our additional services
+      workshops:
+        price: "£250 to £550 + VAT"
+        title: Energy saving workshops
+    call_to_action:
+      description_html: Enrol today to join our growing network of <strong>%{count}</strong> schools. Still have questions? Get in touch to request more information.
+      title: Ready to cut costs and inspire your pupils to become sustainability champions?
+    feature:
+      description: Save up to 40% on energy bills with our unique school-specific energy management tool and education programme
+      title: Cut costs and fight climate change with our energy management tool
+    free_places:
+      description_html: |-
+        Funding from charitable trusts and foundations, community energy companies and corporate partners allows Energy Sparks to provide its services free of charge, or at a subsidised rate, to a limited number of schools in certain regions of the UK.
+        <br><br>
+        Energy Sparks is seeking new funders to allow us to maintain and extend our free offer to more state schools.
+        <br><br>
+        We will let you know if you are eligible for a funded place when you enrol your school, Trust or Local Authority.
+      title: Free places
+    looking_for_info: Looking for more information?
+    per_school_per_year: Per school per year
+    prices:
+      large:
+        note: With more than 250 pupils
         price: "£595 + VAT"
-        title: Independent schools
-      note: per school per year
-      optional:
-        in_person_audits:
-          price_html: |-
-            <ul>
-              <li>Primary schools: £950 + VAT</li>
-              <li>Single site secondary schools: £1,650 + VAT</li>
-              <li>Multi-site secondary or independent schools: £2,250 + VAT</li>
-            </ul>
-          title: On-site energy audits
-        metering:
-          price: "£10 + VAT per meter"
-          title: Analysis of data from more than 10 meters
-        private_tool:
-          price: "£75 + VAT per school per year"
-          title: Private energy management tool, accessible only to staff
-        title: Additional optional services
-        virtual_audits:
-          price_html: "£350 + VAT"
-          title: Virtual energy audits and energy management mentoring
-        workshops:
-          price: "£250-£500, dependent on location"
-          title: In-school educational workshops
-      state_schools:
+        title: Large schools
+      mat_and_la:
+        note: Min. 5 schools on the same energy contract
         price: "£545 + VAT"
-        title: Individual state schools
-      title: Pricing
+        title: Multi-Academy Trust and Local Authority clusters
+      small:
+        note: With fewer than 250 pupils
+        price: "£545 + VAT"
+        title: Small schools
+    product_features:
+      categories:
+      - title: Education and advice
+        features:
+        - title: Access to pupil activities with supporting resources to increase energy and carbon literacy
+          starter: 140+
+          standard: 140+
+        - title: Guidance on adult-led, low- and no-cost energy-saving actions
+          starter: 60+
+          standard: 60+
+        - title: Regular newsletters and blog posts with energy-saving advice, ideas and tips
+          starter_icon: circle-check
+          standard_icon: circle-check
+        - title: Record energy-saving activities and actions to score points for our competitions and build a record of interventions
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Participate in our competitions and events
+          starter_icon: xmark
+          standard_icon: circle-check
+      - title: Energy management tool
+        features:
+        - title: User accounts
+          starter_icon: xmark
+          standard: Unlimited
+        - title: Energy-use insights and alerts sent by email
+          starter_icon: xmark
+          standard: Weekly
+        - title: School-specific energy analysis based on half-hourly gas, electricity and solar data
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Prioritised energy-saving recommendations
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Adult dashboard with key insights and alerts
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Pupil dashboard with easy-to-understand energy use comparisons and prompts to take action
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Interactive energy usage charts
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Meter level analysis and charts
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Track progress by setting energy-saving targets
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Compare energy use against similar schools
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Integrated data from your solar panels
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Multi-Academy Trust dashboard to provide energy management oversight across all schools
+          starter_icon: xmark
+          standard_icon: circle-check
+      - title: Onboarding and support
+        features:
+        - title: Dedicated account manager
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Energy management email support
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Sustainability education email support
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Webinar training
+          starter_icon: xmark
+          standard_icon: circle-check
+        - title: Support with upgrading to half-hourly meters
+          starter_icon: xmark
+          standard: On request
+      - title: Additional fees and options
+        features:
+        - title: Private account (standard accounts are publicly visible to empower the whole school community to engage with the energy data insights
+          starter_icon: xmark
+          standard_icon: sterling-sign
+          info: "£95 + VAT per school per year"
+        - title: Analysis of data for more than 5 meters
+          starter_icon: xmark
+          standard_icon: sterling-sign
+          info: "£25 + VAT per meter"
+      standard:
+        description_html: Available to UK schools with an<br>Energy Sparks account
+        title: Standard
+      starter:
+        description_html: Available to all UK schools without an<br>Energy Sparks account
+        title: Starter
+      title: Product features

@@ -1,0 +1,34 @@
+<div class="nested-fields">
+    <div class="row p-2">
+      <div class="col-md-5">
+        <div class="row">
+          <div class="col-1">
+            <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
+          </div>
+          <div class="col-11">
+            <%= f.select(
+                  :task_id,
+                  grouped_options_for_select(
+                    tasks,
+                    f.object.task_id
+                  ),
+                  { include_blank: true },
+                  { class: 'form-control select2' }
+                ) %>
+            <%= f.error :task, id: 'task_error' %>
+            <%= f.hidden_field :task_type, value: task_type %>
+            <%= f.hidden_field :position, class: 'position' %>
+            <%= f.hidden_field :id %>
+          </div>
+        </div>
+      </div>
+      <% if assignable.is_a?(Audit) %>
+        <div class="col-md-5">
+          <%= f.text_area :notes, label: false, class: 'form-control select2' %>
+        </div>
+      <% end %>
+      <div class="col-md-2">
+        <%= link_to_remove_association t('common.labels.remove'), f, class: 'btn' %>
+      </div>
+    </div>
+</div>

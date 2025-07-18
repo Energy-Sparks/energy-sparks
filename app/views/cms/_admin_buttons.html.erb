@@ -1,0 +1,27 @@
+<%= render Layout::Cards::AdminButtonPanelComponent.new(id: "#{content.model_name.element}-#{content.id}-admin-buttons",
+                                                        current_user: current_user, row: true) do |panel| %>
+  <% panel.with_status content.published ? 'Published' : 'Unpublished', style: content.published ? :info : :warning %>
+  <% panel.with_button "Edit #{content.model_name.human}", edit_polymorphic_path([:admin, content]) %>
+
+  <% case content %>
+  <% when Cms::Category %>
+    <% panel.with_button 'Add Page', new_admin_cms_page_path(category_id: content.id) %>
+  <% when Cms::Page %>
+    <% panel.with_button 'Add Section', new_admin_cms_section_path(page_id: content.id) %>
+  <% end %>
+
+  <% if content.published? %>
+    <% panel.with_button "Hide #{content.model_name.human}", polymorphic_path([:admin, content], action: :hide),
+                         data: {
+                           method: :put,
+                           confirm: 'Note this will remove the content from view, are you sure?'
+                         } %>
+  <% elsif content.publishable? %>
+    <% panel.with_button "Publish #{content.model_name.human}", polymorphic_path([:admin, content], action: :publish),
+                         data: {
+                           method: :put,
+                           confirm: 'Note this will make the content public, are you sure?'
+                         } %>
+  <% end %>
+
+<% end %>

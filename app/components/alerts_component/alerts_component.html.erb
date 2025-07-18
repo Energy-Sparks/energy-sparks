@@ -1,61 +1,46 @@
-<div id="<%= id %>" class="alerts-component <%= classes %>">
-  <% if Flipper.enabled?(:new_dashboards_2024, user) %>
-    <% if title? || link? %>
-      <div class="row">
-        <div class="col d-flex flex-wrap justify-content-between align-items-center">
-          <% if title? %>
-            <h3><%= title %></h3>
-          <% end %>
-          <% if link? %>
-            <div>
-              <%= link %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-    <% prompts.each do |prompt| %>
-      <%= prompt %>
-    <% end %>
-    <% alerts.each do |alert_content| %>
-      <%= component 'prompt', icon: alert_icon(alert_content.alert),
-                              status: status_for_alert_colour(alert_content.colour) do |prompt| %>
-          <% if alert_content.alert.advice_page.present? %>
-            <% prompt.with_link do %>
-              <%= link_to t('schools.show.find_out_more'),
-                          advice_page_path(school,
-                                           alert_content.alert.advice_page,
-                                           alert_content.alert.alert_type.advice_page_tab_for_link_to,
-                                           anchor: alert_content.alert.alert_type.link_to_section) %>
-            <% end %>
-          <% end %>
-          <%= alert_content.send(content_field) %>
-      <% end %>
-    <% end %>
-  <% else %>
-    <%# old style formatting used on advice pages will be removed %>
-    <% alerts.each do |alert_content| %>
-        <%= component 'notice', classes: 'mt-4', status: status_for_alert_colour(alert_content.colour) do |c| %>
-          <div class="row">
-            <% if show_icons %>
-              <div class="col-md-1 d-flex align-items-center">
-                <%= fa_icon(alert_icon(alert_content.alert, 'fa-3x')) %>
-              </div>
-            <% end %>
-            <div class="<%= show_icons ? 'col-md-11' : 'col-md-12' %>">
-              <%= alert_content.send(content_field) %>
-              <% if show_links && alert_content.alert.advice_page.present? %>
-                <div class="text-right">
-                  <%= link_to t('schools.show.find_out_more'),
-                              advice_page_path(school,
-                                               alert_content.alert.advice_page,
-                                               alert_content.alert.alert_type.advice_page_tab_for_link_to,
-                                               anchor: alert_content.alert.alert_type.link_to_section) %>
-                </div>
-              <% end %>
-            </div>
+<%= tag.div id: id, class: classes do %>
+  <% if title? || link? %>
+    <div class="row">
+      <div class="col d-flex flex-wrap justify-content-between align-items-center">
+        <% if title? %>
+          <h3><%= title %></h3>
+        <% end %>
+        <% if link? %>
+          <div>
+            <%= link %>
           </div>
         <% end %>
+      </div>
+    </div>
+  <% end %>
+  <% prompts.each do |prompt| %>
+    <%= prompt %>
+  <% end %>
+  <% alerts.each do |alert_content| %>
+    <%= render PromptComponent.new(
+          icon: alert_icon(alert_content.alert),
+          fuel_type: alert_content.alert_type.fuel_type,
+          status: status_for_alert_colour(alert_content.colour)
+        ) do |prompt| %>
+          <% if alert_content.find_out_more %>
+          <% prompt.with_link do %>
+            <%= link_to t('schools.show.find_out_more'),
+                        advice_page_path(school,
+                                         alert_content.advice_page,
+                                         alert_content.alert_type.advice_page_tab_for_link_to,
+                                         anchor: alert_content.alert_type.link_to_section) %>
+          <% end if show_links %>
+        <% end %>
+        <%= alert_content.send(content_field) %>
+        <% if debug %>
+          <p class="small">
+            <strong>Debug</strong>:
+            <%= link_to 'Alert', school_alert_path(@school, alert_content.alert) %>,
+            Alert Type: <%= link_to alert_content.alert_type.title, admin_alert_type_path(alert_content.alert_type) %>,
+            Priority: <%= alert_content.priority %>
+          </p>
+        <% end %>
+
     <% end %>
   <% end %>
-</div>
+<% end %>

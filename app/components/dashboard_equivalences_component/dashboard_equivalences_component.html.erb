@@ -1,10 +1,11 @@
-<div id="<%= id %>" class="dashboard-equivalences-component <%= classes %>">
+<%= tag.div id: id, class: class_names(classes, 'scrollable-title') do %>
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
     <div class="row">
       <div class="col-12 <%= two_column_class %>">
-        <%= component 'equivalence_carousel',
-                      id: 'pupil-left-carousel',
-                      classes: "row bg-light pt-3 rounded #{two_column_margin(true)}" do |carousel| %>
+        <%= render Layout::CarouselComponent.new(
+              id: 'pupil-left-carousel',
+              classes: "row bg-light pt-3 rounded #{two_column_margin(true)}"
+            ) do |carousel| %>
           <% left_carousel_equivalences.each_with_index do |equivalence_content, index| %>
             <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                          fuel_type: equivalence_content.equivalence_type.meter_type,
@@ -20,7 +21,7 @@
                                 fuel_type: fuel_type_label(equivalence_content)),
                               pupils_school_analysis_path(school,
                                                           category: analysis_category(equivalence_content)),
-                              class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                              class: 'btn btn-default' %>
                 <% else %>
                   <%= t('pupils.schools.show.how_will_school_compare') %>
                 <% end %>
@@ -31,9 +32,10 @@
       </div>
       <% unless single_fuel? %>
         <div class="col-12 <%= two_column_class %>">
-          <%= component 'equivalence_carousel',
-                        id: 'pupil-right-carousel',
-                        classes: "row bg-light pt-3 rounded #{two_column_margin(false)}" do |carousel| %>
+          <%= render Layout::CarouselComponent.new(
+                id: 'pupil-right-carousel',
+                classes: "row bg-light pt-3 rounded #{two_column_margin(false)}"
+              ) do |carousel| %>
             <% gas_and_storage_heaters.each_with_index do |equivalence_content, index| %>
               <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                            fuel_type: equivalence_content.equivalence_type.meter_type,
@@ -49,7 +51,7 @@
                                   fuel_type: fuel_type_label(equivalence_content)),
                                 pupils_school_analysis_path(school,
                                                             category: equivalence_content.equivalence_type.meter_type),
-                                class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                                class: 'btn btn-default' %>
                   <% else %>
                     <%= t('pupils.schools.show.how_will_school_compare') %>
                   <% end %>
@@ -61,7 +63,7 @@
       <% end %>
     </div>
   <% else %>
-    <%= component 'equivalence_carousel', id: 'pupil_carousel', show_markers: false do |carousel| %>
+    <%= render Layout::CarouselComponent.new(id: 'pupil_carousel', show_markers: false) do |carousel| %>
       <% equivalences.each_with_index do |equivalence_content, index| %>
         <% carousel.with_equivalence image_name: equivalence_content.equivalence_type.image_name,
                                      classes: "carousel-item #{'active' if index.zero?}" do |e| %>
@@ -73,7 +75,7 @@
               <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
                           pupils_school_analysis_path(school,
                                                       category: equivalence_content.equivalence_type.meter_type),
-                          class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                          class: 'btn btn-default' %>
             <% else %>
               <%= t('pupils.schools.show.how_will_school_compare') %>
             <% end %>
@@ -82,4 +84,4 @@
       <% end %>
     <% end %>
   <% end %>
-</div>
+<% end %>

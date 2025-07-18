@@ -12,11 +12,17 @@ en:
         once_confirmed_message: Once confirmed you will be able to login to see how much energy your school is using, find out about the greatest energy saving opportunities and explore our activities and educational resources designed to teach your pupils about energy whilst saving money for their school.
         please_confirm_your_energy_sparks_account: Please confirm your Energy Sparks account
         questions_or_concerns_please_contact: If you have any questions or concerns then please contact the
-        subject: 'Energy Sparks: confirm your account'
+        subject: Please confirm your account on Energy Sparks
         team_by_replying_to_this_email: team by replying to this email
         user_account_created_for_you_for: A user account has been created for you on Energy Sparks for %{resource_school_name}
+        user_account_created_for_you_for_reminder: A user account was recently created for you on Energy Sparks for %{resource_school_name}
         user_account_created_for_you_on: A user account has been created for you on Energy Sparks
+        user_account_created_for_you_on_reminder: A user account was recently created for you on Energy Sparks
         welcome: Welcome %{resource_name}
+      confirmation_instructions_final_reminder:
+        subject: 'Final reminder: please confirm your account on Energy Sparks'
+      confirmation_instructions_first_reminder:
+        subject: 'Reminder: please confirm your account on Energy Sparks'
       email_changed:
         email_has_been_changed: We're contacting you to notify you that your email has been changed to
         email_is_being_changed: We're contacting you to notify you that your email is being changed to
@@ -57,6 +63,7 @@ en:
         send_me_reset_password_instructions: Send me reset password instructions
     sessions:
       new:
+        adult_title: Sign in to Energy Sparks
         email_address_and_password: email address and password
         log_in_with_your_email_address_and_password: Log in with your email address and password
         log_in_with_your_pupil_password: Log in with your pupil password

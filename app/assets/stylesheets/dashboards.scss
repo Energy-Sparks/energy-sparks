@@ -6,7 +6,7 @@
       margin-bottom: 0px;
     }
     .dashboard-school-address {
-      color: $darker-grey !important;
+      color: $secondary !important;
       font-size: 80%;
       .badge {
         font-size: inherit;
@@ -42,7 +42,6 @@ div#management-energy-overview-tabs {
     }
   }
 }
-
 
 .timeline-border-left {
   border-left: 3px solid $dark;
@@ -112,20 +111,17 @@ div#management-energy-overview-tabs {
   border-width: 2px;
 }
 
-.info-bar.bg-neutral div .btn {
-  border-color: $bg-neutral;
-}
-
-.info-bar.bg-positive div .btn {
-  border-color: $bg-positive;
-}
-
-.info-bar.bg-negative div .btn {
-  border-color: $bg-negative;
+.info-bar {
+  @each $polarity, $tones in $colours-polarity {
+    // e.g. .bg-positive, .bg-neutral, .bg-negative
+    .bg-#{$polarity} div .btn {
+      border-color: map-get($tones, 'dark')
+    }
+  }
 }
 
 div.management-energy-saving-actions {
-  background-color: $light-grey;
+  background-color: $grey-light;
 }
 
 table.management-priorities {
@@ -133,17 +129,17 @@ table.management-priorities {
   border-spacing: 0px 15px;
   tbody {
     td {
-      border-top: 1px $grey solid;
-      border-bottom: 1px $grey solid;
+      border-top: 1px $grey-medium solid;
+      border-bottom: 1px $grey-medium solid;
       padding: 30px;
     }
     td:first-child{
-      border-left: 1px $grey solid;
+      border-left: 1px $grey-medium solid;
       border-top-left-radius: 10px;
       border-bottom-left-radius: 10px;
     }
     td:last-child{
-      border-right: 1px $grey solid;
+      border-right: 1px $grey-medium solid;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
     }
@@ -195,10 +191,10 @@ table.management-priorities {
 
 table {
   .fa-arrow-circle-down {
-    color: $green;
+    color: $success;
   }
   .fa-arrow-circle-up {
-    color: $new-red;
+    color: $danger;
   }
   .icon {
     width: 10px;
@@ -217,12 +213,12 @@ table {
 }
 
 .future-data {
-  color: $grey;
+  color: $grey-medium;
 }
 
 .old-data {
   background: $white;
-  color: $bg-negative;
+  color: $danger;
   sup {
     color: $black;
   }
@@ -251,7 +247,7 @@ table {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: $grey;
-  color: $text;
+  background: $grey-medium;
+  color: $body-color;
   border-radius: 0.75rem;
 }

@@ -1,49 +1,49 @@
 footer {
+  background-color: $grey-very-dark;
+  font-family: $header-font-family;
   color: $white;
-  text-align: left;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  background-color: $dark;
-}
+  @include font(f9);
+  font-weight: $font-weight-semibold; // 600
 
-footer p {
-  @include font(f8);
-  margin-right: 5px;
-}
+  a:link, a:visited {
+    color: $white;
+    text-decoration: none;
+  }
 
-footer li {
-  @include font(f8);
-}
+  .footer-top {
+    h1 {
+      @include font(f6);
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color: $white;
+      font-weight: $font-weight-bold; // 700
+    }
 
-.btn-outline {
-  color: $white;
-  border: solid 2px white;
-  background: transparent;
-  transition: all 0.3s ease-in-out;
-  margin-top: 10px;
-}
+    a:hover, a:focus, a:active {
+      color: $yellow-medium;
+    }
 
-.btn-outline:hover,
-.btn-outline:focus,
-.btn-outline:active,
-.btn-outline.active {
-  color: $light-blue;
-  background: $white;
-  border: solid 2px white;
-}
+    .form-control, .btn {
+      font-size: $f9;
+    }
+  }
 
-.btn-social {
-  display: inline-block;
-  height: 50px;
-  width: 50px;
-  border: 2px solid $white;
-  border-radius: 100%;
-  text-align: center;
-  line-height: 45px;
-}
+  .footer-second {
+    a:hover, a:focus, a:active {
+      color: $grey-dark;
+    }
 
-.btn:focus,
-.btn:active,
-.btn.active {
-  outline: none;
+    ul.list-inline {
+      li.list-inline-item {
+        margin-right: 0;
+
+        a:link, a:visited {
+          color: $grey-very-dark;
+        }
+        a:hover, a:focus, a:active {
+          color: $grey-dark;
+        }
+      }
+    }
+  }
 }

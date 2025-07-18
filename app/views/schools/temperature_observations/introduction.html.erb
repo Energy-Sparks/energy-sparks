@@ -5,7 +5,7 @@
     <%= t('schools.temperature_observations.introduction.why_are_we_doing_this_html') %>
   </div>
   <div class="col-4">
-    <%= image_tag("actions/thermometer.svg", class: "img-fluid") %>
+    <%= image_tag('actions/thermometer.svg', class: 'img-fluid') %>
   </div>
 </div>
 
@@ -43,11 +43,11 @@
 
     <%= simple_form_for [@school, Location.new] do |f| %>
       <%= f.input :name, as: :string %>
-      <%= f.submit class: 'btn' %>
+      <%= f.submit class: 'btn btn-primary' %>
     <% end %>
   </div>
 </div>
 
 <h2 class="mt-3"><%= t('schools.temperature_observations.introduction.ready_to_record_your_temperatures') %></h2>
 
-<%= link_to t('schools.temperature_observations.introduction.next'), new_school_temperature_observation_path(@school), class: 'btn' %>
+<%= link_to t('schools.temperature_observations.introduction.next'), new_school_temperature_observation_path(@school), class: 'btn btn-primary' %>

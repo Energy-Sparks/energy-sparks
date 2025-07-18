@@ -1,4 +1,4 @@
-<%= form_tag '', method: :get, id: 'chart-filter' do %>
+<%= form_tag '', method: :get, id: 'chart-filter', class: 'usage-controls' do %>
 
   <%= hidden_field_tag :period, period %>
   <%= hidden_field_tag :supply, supply %>
@@ -57,7 +57,7 @@
             <%= label_tag :meter, t('charts.usage.select_meter.title') %>
             <div class="form-group">
               <%= select_tag :meter,
-                             options_for_select(options_for_meter_selection(meters)),
+                             options_for_select(options_for_meter_selection(meters), params[:mpxn]),
                              class: 'form-control' %>
             </div>
           </div>

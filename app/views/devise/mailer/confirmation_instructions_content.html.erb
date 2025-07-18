@@ -5,17 +5,22 @@
 <p><%= t('devise.mailer.confirmation_instructions.welcome', resource_name: @resource.name) %>!</p>
 
 <div class="s-3"></div>
+<% key_suffix = defined?(reminder) && reminder ? '_reminder' : '' %>
 <% if @resource.school.present? %>
-  <p><%= t('devise.mailer.confirmation_instructions.user_account_created_for_you_for', resource_school_name: @resource.school.name) %>.</p>
+  <%# i18n-tasks-use t('devise.mailer.confirmation_instructions.user_account_created_for_you_for') %>
+  <p><%= t("devise.mailer.confirmation_instructions.user_account_created_for_you_for#{key_suffix}",
+           resource_school_name: @resource.school.name) %>.</p>
 <% else %>
-  <p><%= t('devise.mailer.confirmation_instructions.user_account_created_for_you_on') %>.</p>
+  <%# i18n-tasks-use t('devise.mailer.confirmation_instructions.user_account_created_for_you_on') %>
+  <p><%= t("devise.mailer.confirmation_instructions.user_account_created_for_you_on#{key_suffix}") %>.</p>
 <% end %>
 <div class="s-3"></div>
 <p>
 
 <p><%= t('devise.mailer.confirmation_instructions.before_you_begin') %></p>
 
-<%= link_to t('devise.mailer.confirmation_instructions.confirm_my_account'), confirmation_url(@resource, confirmation_token: @token), class: 'btn btn-primary mb-3 mt-3' %>
+<%= link_to t('devise.mailer.confirmation_instructions.confirm_my_account'),
+            confirmation_url(@resource, confirmation_token: @token), class: 'btn btn-primary mb-3 mt-3' %>
 
 <div class="s-3"></div>
 
@@ -26,5 +31,7 @@
 <div class="s-3"></div>
 
 <p>
-  <%= t('devise.mailer.confirmation_instructions.questions_or_concerns_please_contact') %> <%= t('common.application') %> <%= t('devise.mailer.confirmation_instructions.team_by_replying_to_this_email') %>.
+  <%= t('devise.mailer.confirmation_instructions.questions_or_concerns_please_contact') %>
+  <%= t('common.application') %>
+  <%= t('devise.mailer.confirmation_instructions.team_by_replying_to_this_email') %>.
 </p>

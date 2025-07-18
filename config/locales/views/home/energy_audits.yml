@@ -1,36 +1,29 @@
 ---
 en:
   energy_audits:
-    availability: Energy Sparks offers two types of energy audits, online virtual energy audits and on-site energy audits. These services are currently only offered to schools with active Energy Sparks accounts.
+    desktop:
+      description_html: |-
+        Desktop energy reviews take place without a physical visit to the school and are based on the energy auditor's assessment of your school's energy consumption data, as presented on Energy Sparks.
+        <br><br>
+        The review consists of a one-hour online meeting with school representatives (typically the estate manager or caretaker, business manager, eco-team lead and one or two student representatives). The main focus is on quick, low-cost wins like changing boiler timings. The session can also review strategic capital investments, such as looking at the benefits of upgrading to LED lighting.
+      price: "£390 + VAT"
+      title: Desktop energy reviews
+    feature:
+      description: Get a detailed insight into your energy consumption and priority actions with our bespoke energy audits. Available to schools with an active Energy Sparks account, we offer both on-site audits and desktop review options to suit your needs and budget.
+      title: 'Energy audits: turn data into action'
     onsite:
-      intro_html: |-
-        <h4 id="onsite-energy-audits"><strong>On-site energy audits</strong></h4>
-        <p>
-          These energy audits involve energy consumption data analysis, a site visit and use of a thermal imaging camera during the winter months, a report and action plan.  Accurate quotes will be provided based upon the school’s site, requirements and location. Below are indicative costs:
-        </p>
-        <ul>
-          <li>Primary school: £950 + VAT</li>
-          <li>Single site secondary school: £1,650 + VAT</li>
-          <li>Multi-site secondary or independent school: £2,250 + VAT</li>
-        </ul>
-        <p>
-          Ideally we like to involve the students in our audits, providing opportunities for students to shadow our auditor during the day, use the thermal imaging camera and we normally include an initial feedback session to the eco-team and staff at the end of the visit.
-        </p>
-    quote: Contact us for a quote
+      description_html: |-
+        Following a detailed analysis of your energy consumption data and a visit to your site, we will provide you with an in-depth report and action plan. The site visit will include the use of a thermal imaging camera and other monitoring equipment to identify issues such as heat loss from doors and windows, and problems with insulation.
+        <br><br>
+        We welcome pupils to participate in our audits by shadowing our auditor and using our thermal imaging camera. We normally provide an initial feedback session to the eco-team and staff at the end of our visit, giving pupils the chance to ask questions and lead on next steps.
+      plus:
+        price: "£2,250 + VAT"
+        title: Multi-site or independent school
+      primary:
+        price: "£950 + VAT"
+        title: Primary school
+      secondary:
+        price: "£1,650 + VAT"
+        title: Secondary school
+      title: On-site energy audits
     title: Energy Audits
-    virtual:
-      availability: Virtual energy audits are charged at £350 + VAT.
-      intro_html: |-
-        <h4 id="virtual-energy-audits"><strong>Virtual energy audits</strong></h4>
-        <p>
-          Virtual energy audits take place without a physical visit to the school and are based on the energy auditor's assessment of your school's energy consumption data as presented on Energy Sparks. The audit consists of a one hour online meeting with school representatives, typically the estate manager or caretaker, business manager, eco-team lead and one or two student representatives.
-        </p>
-        <p>
-          During the online meeting, we would expect you to provide information on your school, its fabric, heating, hot water systems, ICT and lighting to help with the audit process. Our auditor then takes you through any issues highlighted through the Energy Sparks analysis and provides advice on how best to reduce consumption.
-        </p>
-        <p>
-          The main focus, initially, is on quick low-cost wins, such as looking at changing boiler timings. The session can also review strategic capital investments, for example, looking at the benefits of upgrading to LED lighting.
-        </p>
-        <p>
-          After the meeting, our auditor will issue written ‘action items’ for each party to execute, this might include activities the pupils can do to help. Subsequent meetings or milestones are agreed, which includes further analysis, feedback from changes made, and potential support in terms of getting help with contractors and quotes.
-        </p>

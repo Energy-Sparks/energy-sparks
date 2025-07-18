@@ -1,0 +1,4 @@
+<%= render 'admin/title', title: controller.class::MODEL.model_name.human.pluralize %>
+<%= render 'index' %>
+<%= link_to "New #{controller.class::MODEL.model_name.human}", new_polymorphic_path([:admin, controller.class::MODEL]),
+            class: 'btn' %>

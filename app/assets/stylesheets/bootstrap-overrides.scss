@@ -1,0 +1,57 @@
+// Bootstrap overrides
+// For a complete list of variables that can be overridden in Bootstrap 4.6,
+// see here: https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss
+
+$headings-color: $blue-very-dark;
+$body-color: $blue-dark;
+$link-color: $blue-dark;
+$link-hover-color: $blue-very-dark;
+$link-decoration: underline;
+$tooltip-bg: $grey-very-dark;
+
+$btn-font-family: $header-font-family;
+$btn-font-weight: $font-weight-semibold;
+$btn-border-radius: 10rem;
+$btn-border-radius-sm: $btn-border-radius;
+$btn-border-radius-lg: $btn-border-radius;
+
+$custom-control-indicator-checked-bg: darken($teal-dark, 5%); // darkened slightly to match input accent color (base.scss)
+
+// These values correspond to the minimum width at which the breakpoint applies:
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1500px // Bootstrap 5 default is 1400px, but we have increased it until we have found a better solution to some chart and layout issues
+);
+
+// We have increased the xxl breakpoint to 1500px to avoid some layout issues that were occuring with 1400px (bootstrap 5 default):
+// Chart labels were single column rather than two (and smaller):
+// e.g. /schools/royal-high-senior-school-bath/advice/gas_meter_breakdown/analysis
+// The meters table is too wide:
+// e.g. /schools/marksbury-c-of-e-primary-school/meters
+// The learn more component buttons were wrapping:
+// e.g. /schools/marksbury-c-of-e-primary-school
+
+// These define the maximum width of the .container class at each breakpoint:
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1400px // Bootstrap 5 default is 1320px
+);
+
+// adds 6
+$spacer: 1rem; // bootstrap 4 default
+$spacers: (
+  0: 0,
+  1: ($spacer * .25),
+  2: ($spacer * .5),
+  3: $spacer,
+  4: ($spacer * 1.5),
+  5: ($spacer * 3),
+  6: ($spacer * 4) // extra
+);

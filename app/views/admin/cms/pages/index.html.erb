@@ -1,0 +1,53 @@
+<%= render 'admin/cms/title_and_navigation', title: 'Pages' %>
+
+<div class="row">
+  <div class="col">
+    <p><%= link_to 'New Page', new_admin_cms_page_path, class: 'btn' %></p>
+  </div>
+</div>
+
+<div class="row">
+ <div class="col">
+   <table class="table table-sorted">
+     <thead>
+       <tr>
+         <th>Category</th>
+         <th>Title</th>
+         <th>Audience</th>
+         <th>Published?</th>
+         <th data-orderable="false">Published Sections</th>
+         <th data-orderable="false">Actions</th>
+       </tr>
+     </thead>
+     <tbody>
+       <% @pages.each do |page| %>
+        <tr>
+          <td><%= link_to page.category.title, edit_admin_cms_category_path(page) %></td>
+          <td><%= link_to page.title, edit_admin_cms_page_path(page) %></td>
+          <td><%= t("page.audience.#{page.audience}") %></td>
+          <td><%= checkmark page.published? %></td>
+          <td><%= page.sections.published.count %> / <%= page.sections.count %></td>
+          <td>
+            <%= link_to 'Edit', edit_admin_cms_page_path(page), class: 'btn' %>
+            <%= link_to 'New Section', new_admin_cms_section_path(page_id: page.id), class: 'btn' %>
+            <%= link_to 'View', category_page_path(page.category, page), class: 'btn' %>
+            <% if page.published? %>
+            <%= link_to 'Hide',
+                        hide_admin_cms_page_path(page),
+                        method: :put,
+                        class: 'btn',
+                        data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
+            <% elsif page.publishable? %>
+            <%= link_to 'Publish',
+                        publish_admin_cms_page_path(page),
+                        method: :put,
+                        class: 'btn',
+                        data: { confirm: 'Note this will make the content public, are you sure?' } %>
+            <% end %>
+          </td>
+        </tr>
+       <% end %>
+     </tbody>
+   </table>
+ </div>
+</div>

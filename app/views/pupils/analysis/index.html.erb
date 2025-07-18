@@ -1,5 +1,35 @@
-<% content_for :page_title, t('pupils.analysis.look_at_energy_use') %>
+<% content_for :page_title, t('pupils.analysis.explore_energy_data') %>
 
-<h1><%= t('pupils.analysis.look_at_energy_use') %></h1>
+<%= render PupilDashboardLearnMoreComponent.new(
+      classes: 'mt-4 mb-4',
+      school: @school,
+      user: current_user
+    ) %>
 
-<%= render 'top_level', school: @school %>
+<% if @school.has_live_data? %>
+  <div class="row mt-4" id="live-data-link">
+      <div class="col-12 col-md-4">
+        <div class="mb-2 rounded h-100 bg-electric-light">
+          <div class="row p-4">
+            <div class="col">
+              <div class="row">
+                <div class="col">
+                  <h3>
+                    <%= render IconComponent.new(name: 'tachometer-alt', style: :circle, size: 'f3') %>
+                  </h3>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <h3>
+                    <%= link_to t('pupils.analysis.live_energy_data'), school_live_data_path(@school),
+                                class: 'text-decoration-none' %>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+<% end %>

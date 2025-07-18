@@ -164,13 +164,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           context 'that is the same as the logged in user' do
             let!(:issues_admin) { admin }
 
-            it { expect(page).to have_link('Default Issues Admin • You', href: issues_link) }
+            it { expect(page).to have_link('Admin • You', href: issues_link) }
           end
 
           context 'that is a different user' do
             let!(:issues_admin) { create(:admin) }
 
-            it { expect(page).to have_link("Default Issues Admin • #{issues_admin.display_name}", href: issues_link) }
+            it { expect(page).to have_link("Admin • #{issues_admin.display_name}", href: issues_link) }
           end
 
           context 'no issues admin user is set' do
@@ -267,49 +267,13 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         it_behaves_like 'admin dashboard messages' do
           let(:messageable) { school_group }
         end
-
-        context 'when clicking on the delete message link', js: true do
-          let(:message) { 'This is a school group message' }
-          let(:setup_data) { messageable.create_dashboard_message(message: message) }
-          let(:messageable) { school_group }
-
-          context 'delete a message' do
-            it 'deletes a message' do
-              expect(page).to have_content message
-              expect(page).to have_link('Edit message')
-              expect(page).to have_link('Delete message')
-              expect(page).not_to have_link('Set message')
-              accept_alert('Are you sure?') do
-                click_link 'Delete message'
-              end
-              expect(page).not_to have_content message
-              expect(page).not_to have_link('Edit message')
-              expect(page).not_to have_link('Delete message')
-              expect(page).to have_link('Set message')
-            end
-
-            it 'declines to delete a message' do
-              expect(page).to have_content message
-              expect(page).to have_link('Edit message')
-              expect(page).to have_link('Delete message')
-              expect(page).not_to have_link('Set message')
-              dismiss_confirm('Are you sure?') do
-                click_link 'Delete message'
-              end
-              expect(page).to have_content message
-              expect(page).to have_link('Edit message')
-              expect(page).to have_link('Delete message')
-              expect(page).not_to have_link('Set message')
-            end
-          end
-        end
       end
 
       describe 'Active schools tab' do
-        context 'when there are active schools' do
-          let(:school_onboarding) { create :school_onboarding, school_group: school_group }
-          let(:school) { create(:school, active: true, name: 'A School', school_group: school_group, school_onboarding: school_onboarding) }
-          let(:issues) { [create(:issue, issue_type: :note, school: school), create(:issue, issue_type: :issue, school: school)] }
+        shared_examples 'active schools tab' do
+          let(:issues) do
+            [create(:issue, issue_type: :note, school:), create(:issue, issue_type: :issue, school:)]
+          end
           let(:setup_data) { [school, issues] }
 
           it 'lists school in active tab' do
@@ -375,6 +339,18 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
             end
 
             it { expect(page).to have_current_path(school_meters_path(school)) }
+          end
+        end
+
+        context 'when there are active schools' do
+          include_examples 'active schools tab' do
+            let(:school) { create(:school, active: true, name: 'A School', school_group:) }
+          end
+        end
+
+        context 'when there are active non visible schools' do
+          include_examples 'active schools tab' do
+            let(:school) { create(:school, active: true, visible: false, name: 'A School', school_group:) }
           end
         end
 
@@ -501,7 +477,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     end
 
     describe 'Editing a school group' do
-      let!(:school_group) { create(:school_group, name: 'BANES', public: true) }
+      let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_issues_admin_user: nil) }
 
       before do
         click_on 'Manage School Groups'

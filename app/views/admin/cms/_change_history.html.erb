@@ -1,0 +1,22 @@
+<% unless model.new_record? %>
+  <table class="table table-striped">
+    <tr>
+      <td><%= t('schools.user_tariffs.show.created_at') %></td>
+      <td><%= model.created_at&.to_fs(:es_compact) %></td>
+    </tr>
+    <tr>
+      <td><%= t('schools.user_tariffs.show.created_by') %></td>
+      <td><%= model&.created_by&.display_name || 'unknown' %></td>
+    </tr>
+    <tr>
+      <td><%= t('schools.user_tariffs.show.updated_at') %></td>
+      <td>
+        <%= model&.updated_at&.to_fs(:es_compact) %>
+      </td>
+    </tr>
+    <tr>
+      <td><%= t('schools.user_tariffs.show.updated_by') %></td>
+      <td><%= model&.updated_by&.display_name || 'unknown' %></td>
+    </tr>
+  </table>
+<% end %>

@@ -6,15 +6,16 @@
 <div class="alert alert-primary">
   Dates: <%= @equivalence.from_date.try(:strftime, '%d/%m/%Y') %> - <%= @equivalence.to_date.try(:strftime, '%d/%m/%Y') %>
 </div>
-<%= component 'equivalence',
-              image_name: @equivalence_content.equivalence_type.image_name,
-              classes: 'illustration-background' do |c| %>
+<%= render EquivalenceComponent.new(
+      image_name: @equivalence_content.equivalence_type.image_name,
+      classes: 'illustration-background'
+    ) do |c| %>
   <% c.with_header do %>
     <%= @equivalence_content.equivalence %>
   <% end %>
   <p>
     <%= link_to t('pupils.schools.show.find_how_much_energy_used'),
                 pupils_school_analysis_path(@school),
-                class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                class: 'btn btn-default' %>
   </p>
 <% end %>

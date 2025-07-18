@@ -1,14 +1,28 @@
-<%= render 'schools/advice/section_title', section_id: 'seasonal-control', section_title: t('advice_pages.heating_control.analysis.seasonal_control.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'seasonal-control',
+           section_title: t('advice_pages.heating_control.analysis.seasonal_control.title') %>
 
-<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDays), show_links: false, show_icons: false %>
-<%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_class(AlertTurnHeatingOff), show_links: false, show_icons: false %>
+<%= render AlertsComponent.new(
+      school: school, dashboard_alerts: dashboard_alerts,
+      alert_types: alert_types_for_class(AlertSeasonalHeatingSchoolDays), show_links: false
+    ) %>
+<%= render AlertsComponent.new(
+      school: school, dashboard_alerts: dashboard_alerts,
+      alert_types: alert_types_for_class(AlertTurnHeatingOff), show_links: false
+    ) %>
 
-<%= render 'warm_weather_notice', seasonal_analysis: seasonal_analysis, warm_weather_on_days_rating: warm_weather_on_days_rating %>
+<%= render 'warm_weather_notice',
+           seasonal_analysis: seasonal_analysis,
+           warm_weather_on_days_rating: warm_weather_on_days_rating %>
 
 <%= render 'warm_weather_benefits', seasonal_analysis: seasonal_analysis %>
 
-<%= component 'chart', chart_type: :heating_on_off_by_week, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :heating_on_off_by_week, school: school) do |c| %>
   <% c.with_title { t('advice_pages.heating_control.charts.heating_on_off_by_week.title') } %>
-  <% c.with_subtitle { t('advice_pages.heating_control.charts.heating_on_off_by_week.subtitle_html', start_date: analysis_dates.last_full_week_start_date.to_fs(:es_short), end_date: analysis_dates.last_full_week_end_date.to_fs(:es_short)) } %>
+  <% c.with_subtitle do %>
+    <%= t('advice_pages.heating_control.charts.heating_on_off_by_week.subtitle_html',
+          start_date: analysis_dates.last_full_week_start_date.to_fs(:es_short),
+          end_date: analysis_dates.last_full_week_end_date.to_fs(:es_short)) %>
+  <% end %>
   <% c.with_header { t('advice_pages.heating_control.charts.heating_on_off_by_week.header') } %>
 <% end %>

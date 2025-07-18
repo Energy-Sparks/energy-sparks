@@ -35,13 +35,13 @@ class AdminMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes([:created_by, :updated_by, :issueable])
+    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes(%i[created_by updated_by issueable])
     title = "Issue report for #{@user.display_name}"
 
-    if @issues.any?
-      attachments['issues_report.csv'] = { mime_type: 'text/csv', content: build_issues_csv_for(@issues) }
-      mail(to: @user.email, subject: subject(title))
-    end
+    return unless @issues.any?
+
+    attachments['issues_report.csv'] = { mime_type: 'text/csv', content: build_issues_csv_for(@issues) }
+    mail(to: @user.email, subject: subject(title))
   end
 
   def funder_allocation_report
@@ -51,11 +51,32 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: subject(title))
   end
 
+  def engaged_schools_report(to, csv, previous_year, school_group_id)
+    school_group = SchoolGroup.find(school_group_id) if school_group_id.present?
+    now = Time.zone.now.iso8601
+    filename = ['engaged-schools-report']
+    filename << school_group.name.parameterize if school_group
+    filename << 'previous-year' if previous_year
+    filename << now.tr(':', '-')
+    attachments["#{filename.join('-')}.csv"] = { mime_type: 'text/csv', content: csv }
+    subject = ['Engaged schools report']
+    subject << "for #{school_group.name}" if school_group
+    subject << '(previous year)' if previous_year
+    subject << now
+    mail(to:, subject: subject.join(' '))
+  end
+
+  def stopped_data_feeds
+    @missing = params[:missing]
+    mail(to: params[:to], subject: subject('Stopped data feeds'))
+  end
+
   private
 
   def build_issues_csv_for(issues)
     CSV.generate(headers: true) do |csv|
-      csv << ['Issue type', 'Issue for', '', 'Group', 'Title', 'Fuel', 'Created By', 'Created', 'Updated By', 'Updated', 'View', 'Edit']
+      csv << ['Issue type', 'Issue for', '', 'Group', 'Title', 'Fuel', 'Created By', 'Created', 'Updated By',
+              'Updated', 'View', 'Edit']
       issues.each do |issue|
         csv << [
           issue.issue_type,

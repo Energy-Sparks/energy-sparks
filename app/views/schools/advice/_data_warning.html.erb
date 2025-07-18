@@ -1,3 +1,3 @@
-<%= component 'notice', status: :negative do |c| %>
+<%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do |c| %>
   <%= t('advice_pages.error.data_warning', fuel_type: fuel_type) %>
 <% end %>

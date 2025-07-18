@@ -3,8 +3,8 @@
 <div class="d-flex justify-content-between align-items-center">
   <h1>Activity Type Management Report</h1>
   <div>
-    <%= link_to "Recent activities", admin_reports_activities_path, class: "btn btn-outline-dark font-weight-bold" %>
-    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to 'Recent activities', admin_reports_activities_path, class: 'btn btn-default' %>
+    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-default' %>
   </div>
 </div>
 
@@ -40,8 +40,8 @@
       <th>Count</th>
       <th>Schools</th>
       <th>Suggested</th>
-      <th>Programmes</th>
       <th>Find Out Mores</th>
+      <th>Programmes</th>
       <th>Audits</th>
       <th></th>
     </tr>
@@ -54,9 +54,14 @@
         <td><%= at.activities.count %></td>
         <td><%= at.unique_school_count %></td>
         <td><%= at.suggested_from.count %></td>
-        <td><%= at.programme_types.count %></td>
         <td><%= at.referenced_from_find_out_mores.count %></td>
-        <td><%= at.audits.count %></td>
+        <% if Flipper.enabled?(:todos, current_user) %>
+          <td><%= at.programme_types_todo.count %></td>
+          <td><%= at.audits_todo.count %></td>
+        <% else %>
+          <td><%= at.programme_types.count %></td>
+          <td><%= at.audits.count %></td>
+        <% end %>
         <td><%= link_to 'Report', admin_reports_activity_type_path(at), class: 'btn btn-primary' %></td>
       </tr>
     <% end %>

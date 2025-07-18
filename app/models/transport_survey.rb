@@ -25,7 +25,7 @@ class TransportSurvey < ApplicationRecord
   validates :run_on, :school_id, presence: true
   validates :run_on, uniqueness: { scope: :school_id }
 
-  scope :recently_added, ->(date) { where('created_at >= ?', date)}
+  scope :recently_added, ->(date_range) { where(created_at: date_range)}
 
   def to_param
     run_on.to_s

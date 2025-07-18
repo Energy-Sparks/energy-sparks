@@ -346,40 +346,6 @@ describe Ability do
         end
       end
 
-      context 'when user is a volunteer' do
-        let(:user) { create(:volunteer, school: school) }
-
-        it_behaves_like 'a user who cannot manage site wide content'
-
-        context 'when school is visible' do
-          it_behaves_like 'they can access the school dashboard and data'
-          it_behaves_like 'they can record activities for their school'
-          it_behaves_like 'they can set targets'
-          it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
-
-          it 'allows access to restricted advice' do
-            expect(ability).to be_able_to(:read_restricted_analysis, school)
-            expect(ability).to be_able_to(:read_restricted_advice, school)
-          end
-        end
-
-        context 'when school is not visible' do
-          let(:visible) { false }
-
-          it_behaves_like 'they cannot access the school dashboard and data'
-        end
-
-        it_behaves_like 'they cannot manage other schools, groups and users'
-
-        it_behaves_like 'they can view school group but not manage it'
-
-        it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
-
-        it_behaves_like 'their access to other school dashboards is limited by data sharing settings' do
-          let(:user_group) { school_group }
-        end
-      end
-
       context 'with user is a pupil' do
         let(:user) { create(:pupil, school: school) }
 

@@ -65,14 +65,15 @@ describe 'heating_coming_on_too_early' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
 
     it_behaves_like 'a school comparison report with multiple tables',
-      table_titles: [I18n.t('comparisons.tables.heating_start_time'), I18n.t('comparisons.tables.optimum_start_analysis')]
+                    table_titles: [I18n.t('comparisons.tables.heating_start_time'),
+                                   I18n.t('comparisons.tables.optimum_start_analysis')] do
+      let(:expected_report) { report }
+    end
 
     it_behaves_like 'a school comparison report with a table' do
       let(:expected_report) { report }
@@ -130,10 +131,12 @@ describe 'heating_coming_on_too_early' do
 
     it_behaves_like 'a school comparison report with a chart' do
       let(:chart_name) { key }
+      let(:expected_report) { report }
     end
 
     it_behaves_like 'a school comparison report with a chart' do
       let(:chart_name) { :optimum_start_analysis }
+      let(:expected_report) { report }
     end
   end
 end

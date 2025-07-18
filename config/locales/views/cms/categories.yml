@@ -1,0 +1,15 @@
+---
+en:
+  categories:
+    index:
+      subtitle: Browse or search through our comprehensive support pages
+      title: Find help and support
+    nav:
+      title: Support index
+  pages:
+    search:
+      browse: Browse all support pages
+      button: Search
+      training: Sign up for a training course
+    section_nav:
+      title: Go to section

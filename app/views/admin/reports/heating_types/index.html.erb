@@ -1,0 +1,44 @@
+<%= render 'admin/reports/title', title: 'Heating Types' %>
+<p>These tables show the heating system specified for active schools.</p>
+<table id="heating-types" class="table table-sorted table-sm w-auto">
+  <thead>
+    <tr>
+      <th>Heating Type</th>
+      <th>School Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% School::HEATING_TYPES.each do |type| %>
+      <tr>
+        <td><%= controller.humanize_type(type) %></td>
+        <td><%= School.active.where("heating_#{type}": true).count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<table id="school-heating-types" class="table table-sorted table-sm table-responsive">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>School</th>
+      <% School::HEATING_TYPES.each do |type| %>
+        <th><%= controller.humanize_type(type) %></th>
+        <th>%</th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+      <% School.active.by_name.includes(:school_group).find_each do |school| %>
+        <tr>
+          <td><%= link_to(school.school_group.name, school_group_path(school.school_group)) %></td>
+          <td><%= link_to(school.name, school_path(school)) %></td>
+            <% School::HEATING_TYPES.each_with_index do |type, index| %>
+              <% heating_type_boolean = school.public_send(:"heating_#{type}")
+                 css_class = 'bg-light' if index.even? %>
+              <%= tag.td(checkmark(heating_type_boolean), class: css_class, "data-order": heating_type_boolean) %>
+              <%= tag.td(school.public_send("heating_#{type}_percent"), class: css_class) %>
+            <% end %>
+        </tr>
+      <% end %>
+  </tbody>
+</table>

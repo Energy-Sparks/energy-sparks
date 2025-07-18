@@ -3,7 +3,8 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= @intervention_type_group.name %></h1>
       <div>
-        <%= link_to t('intervention_type_groups.show.all_actions'), intervention_type_groups_path, class: 'btn btn-outline-dark rounded-pill font-weight-bold'  %>
+        <%= link_to t('intervention_type_groups.show.all_actions'), intervention_type_groups_path,
+                    class: 'btn btn-default' %>
       </div>
     </div>
   </div>
@@ -16,7 +17,8 @@
       <% end %>
     </p>
     <p>
-      <%= t('intervention_type_groups.show.introduction_html', count: @intervention_type_group.intervention_types.active.count) %>.
+      <%= t('intervention_type_groups.show.introduction_html',
+            count: @intervention_type_group.intervention_types.active.count) %>.
     </p>
   </div>
 </div>

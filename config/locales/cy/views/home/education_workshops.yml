@@ -1,24 +1,51 @@
 cy:
   education_workshops:
-    availability: Sylwch, dim ond i ysgolion sydd â chyfrif Sbarcynni gweithredol y mae gweithdai addysg ar gael ar hyn o bryd. Mae gweithdai personol ar gael yn y rhan fwyaf o ardaloedd Cymru a Lloegr. Ar hyn o bryd dim ond yn yr Alban y gallwn gynnig gweithdai rhithwir.
+    audience:
+      description_html: |-
+        Gall ein gweithdai gynnwys gwahanol elfennau i weddu i amrywiaeth o gynulleidfaoedd, gan gynnwys:
+        <ul>
+          <li>Gwasanaethau ysgol gyfan neu gyfnod allweddol</li>
+          <li>Sesiynau ar gyfer timau a dosbarthiadau eco</li>
+          <li>Hyfforddiant wyneb yn wyneb i staff ystad, rheolwyr busnes ac arweinwyr cynaliadwyedd ar sut i ddefnyddio Sbarcynni</li>
+        </ul>
+      title: Gweithdai ysgogol i ddisgyblion a staff
     book: Archebu gweithdy
-    cost_html: "<p>Mae gweithdai ar gael am dâl o £250 i £500 yn dibynnu ar leoliad a ph'un a ydynt yn cael eu darparu yn bersonol neu ar-lein. Mae gostyngiadau ar gael os ydym yn gallu cydlynu gweithdai ar gyfer nifer o ysgolion o fewn yr un Ymddiriedolaeth Aml-Academi neu Awdurdod Lleol i gwtogi ar deithio. Bydd rhai ysgolion mewn rhanbarthau dynodedig yn gymwys ar gyfer gweithdai personol am ddim. Byddwn yn rhoi gwybod i chi os ydych yn gymwys i gael gweithdy am ddim neu'n darparu dyfynbris cywir ar ôl i chi gwblhau'r ffurflen archebu gweithdy.</p>"
-    intro_html: |-
-      <p>
-        Er mwyn cefnogi ymgysylltiad ac ysgogi effaith, mae Sbarcynni yn cynnig gweithdai addysg personol a rhithwir hanner diwrnod i ysgolion sy'n cymryd rhan ledled y DU. Gall gweithdai addysg gynnwys:
-      </p>
-      <ul>
-        <li>Cynulliadau</li>
-        <li>Gweithdai tîm eco a dosbarth</li>
-        <li>Hyfforddiant personol ar ddefnyddio Sbarcynni ar gyfer arweinwyr timau eco, staff ystadau a rheolwyr busnes.</li>
-      </ul>
-      <p>
-        Byddwn yn gweithio gyda’ch ysgol i gyflwyno gweithdy sy’n diwallu anghenion a diddordebau eich ysgol. Gall sesiynau gynnwys:
-      </p>
-      <ul>
-        <li>Rhyfelwyr ynni: Cyflwynwch eich disgyblion i'r ynni a ddefnyddiwn yn ein cartrefi a'n hysgolion</li>
-        <li>Ein hysgol, ein hinsawdd: Dysgwch sut y gall y newidiadau bach a wnawn yn ein hysgol effeithio ar yr hinsawdd</li>
-        <li>Ditectifs ynni: Dysgwch sut i gynnal awdit ynni ac adnabod y defnyddwyr ynni mwyaf o amgylch yr ysgol</li>
-        <li>Sylwch ar yr hyn sy’n boeth: Dysgwch sut i ddadansoddi siartiau gwresogi ac archwilio tymheredd a gwres yn eich ysgol gan ddefnyddio camera delweddu thermol</li>
-      </ul>
+    details:
+      description_html: |-
+        Mae gweithdai ar gael ar sail taledig, gyda phrisiau'n amrywio o £250 i £550 yn dibynnu ar y lleoliad ac a gânt eu darparu yn bersonol neu ar-lein.<br><br>
+        Bydd rhai ysgolion mewn rhanbarthau dynodedig yn gymwys i gael gweithdai wyneb yn wyneb am ddim. Byddwn yn rhoi gwybod i chi a ydych chi'n gymwys i gael gweithdy am ddim neu'n darparu dyfynbris cywir ar ôl i chi lenwi'r ffurflen archebu gweithdy.
+      price: "£250 i £550 + TAW"
+      title: Manylion y gweithdy
+    feature:
+      description: P'un a ydych chi'n awyddus i ysbrydoli'r genhedlaeth nesaf o hyrwyddwyr arbed ynni, neu eisiau annog eich staff i dorri costau ac allyriadau, gall ein gweithdai eich helpu chi.
+      title: 'Gweithdai arbed ynni: ysgogi eich disgyblion a''ch staff'
+    prices_range_from: Mae'r prisiau'n amrywio o
     title: Gweithdai Addysg
+    workshops:
+      cards:
+        - title: Rhyfelwyr ynni
+          icon: person-rays
+          icon_colour: text-blue-dark
+          description: Cyflwynwch eich disgyblion i'r ynni a ddefnyddiwn yn ein cartrefi a'n hysgolion.
+        - title: Ein hysgol ni, ein hinsawdd ni
+          icon: earth-europe
+          icon_colour: text-electric
+          description: Dysgwch sut y gall y newidiadau bach a wnawn yn ein hysgol effeithio ar yr hinsawdd.
+        - title: Ditectifs ynni
+          icon: magnifying-glass-chart
+          icon_colour: text-teal-dark
+          description: Dysgwch sut i gynnal archwiliad ynni a nodi'r dyfeisiau sy'n lleibio ynni o amgylch yr ysgol.
+        - title: Gweld beth sydd ar dân
+          icon: fire
+          icon_colour: text-yellow-medium
+          description: Dysgwch sut i ddadansoddi siartiau gwresogi, ac archwilio tymheredd a gwres yn eich ysgol gan ddefnyddio camera delweddu thermol.
+        - title: Antarctica a Sbarcynni
+          icon: snowflake
+          icon_colour: text-blue-medium
+          description: Dysgwch am effaith newid hinsawdd ar Antarctica, a sut gall disgyblion ddefnyddio Sbarcynni i wneud gwahaniaeth.
+        - title: Gwasanaethau
+          icon: people-group
+          icon_colour: text-blue-dark
+          description: Addas ar gyfer yr ysgol gyfan, cyfnod allweddol neu grŵp blwyddyn.
+      description: 'Byddwn yn gweithio gyda chi i gyflwyno gweithdy sy''n cwrdd ag anghenion a diddordebau eich ysgol. Gallwn gynnal gwasanaethau sydd wedi’u cynllunio ar gyfer yr ysgol gyfan, neu gallwn deilwra’r rhain i weddu i grwpiau oedran neu gyfnodau allweddol penodol. Gall sesiynau gynnwys:'
+      title: Gweithdai sy'n ysbrydoli

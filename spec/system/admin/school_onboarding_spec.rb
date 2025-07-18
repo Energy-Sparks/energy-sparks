@@ -8,7 +8,6 @@ RSpec.describe 'onboarding', :schools do
 
   # This calendar is there to allow for the calendar area selection
   let!(:template_calendar)        { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
-  let(:solar_pv_area)             { create(:solar_pv_tuos_area, title: 'BANES solar') }
   let(:dark_sky_weather_area)     { create(:dark_sky_area, title: 'BANES dark sky weather') }
   let(:scoreboard)                { create(:scoreboard, name: 'BANES scoreboard') }
   let!(:weather_station)          { create(:weather_station, title: 'BANES weather') }
@@ -20,7 +19,6 @@ RSpec.describe 'onboarding', :schools do
       :school_group,
       name: 'BANES',
       default_template_calendar: template_calendar,
-      default_solar_pv_tuos_area: solar_pv_area,
       default_dark_sky_area: dark_sky_weather_area,
       default_weather_station: weather_station,
       default_scoreboard: scoreboard,
@@ -179,7 +177,11 @@ RSpec.describe 'onboarding', :schools do
         expect(school_onboarding.school.data_enabled).to be false
 
         visit school_path(school_onboarding.school)
-        click_on 'Data visible'
+        click_on 'Data visible' # goes to the review page
+
+        within('#review-buttons') do
+          click_on 'Data visible' # actually enable the school
+        end
 
         expect(ActionMailer::Base.deliveries.count).to eq(3)
 
@@ -291,7 +293,7 @@ RSpec.describe 'onboarding', :schools do
       school_group = create(:school_group)
       school = create(:school, country: :england, school_group:)
       onboarding = create(:school_onboarding, :with_events, event_names: [:onboarding_complete], school:)
-      within('#navbarNavDropdown') do
+      within('#nav-top') do
         click_on 'Manage'
         click_on 'Reports'
       end
@@ -300,9 +302,7 @@ RSpec.describe 'onboarding', :schools do
       expect(page).to have_content 'Schools recently onboarded'
 
       click_on onboarding.school_name
-      within('.dashboard-school-title') do
-        expect(page).to have_content(school.name)
-      end
+      expect(page).to have_content(school.name)
     end
   end
 end

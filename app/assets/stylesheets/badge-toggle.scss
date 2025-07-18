@@ -4,19 +4,19 @@
   }
 
   input.badge-toggle-#{$color} + label {
-    border: 1px solid $light-grey;
+    border: 1px solid $grey-light;
     @extend .badge;
   }
 
   input.badge-pill-toggle-#{$color} + label {
-    border: 1px solid $light-grey;
+    border: 1px solid $grey-light;
     @extend .badge;
     @extend .badge-pill;
   }
 
   input.badge-toggle-#{$color}:not(:checked) + label:hover,
   input.badge-pill-toggle-#{$color}:not(:checked) + label:hover {
-    background: $grey;
+    background: $grey-medium;
   }
   input.badge-toggle-#{$color} + label:active,
   input.badge-toggle-#{$color}:checked + label,

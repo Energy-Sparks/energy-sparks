@@ -11,9 +11,14 @@
   <% end %>
   <div class="alert alert-secondary mb-2">
     <% if can?(:validate_meters, @school) && @school.meters_with_readings.any? && @school.process_data? %>
-      <%= link_to t('schools.meters.index.validate_meter_readings'), school_meter_readings_validation_path(@school), method: :post, class: 'btn' %>
+      <%= link_to t('schools.meters.index.validate_meter_readings'), school_meter_readings_validation_path(@school),
+                  method: :post, class: 'btn' %>
     <% else %>
-      <button type="button" class="btn disabled" data-toggle="tooltip" data-placement="top" title="<%= t('schools.meters.index.data_processing_turned_on_message') %>">
+      <button type="button"
+              class="btn disabled"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="<%= t('schools.meters.index.data_processing_turned_on_message') %>">
         <%= t('schools.meters.index.validate_meter_readings') %>
       </button>
     <% end %>
@@ -21,12 +26,14 @@
     <%= link_to t('schools.meters.index.school_downloads'), school_downloads_path(@school), class: 'btn' %>
 
     <% if can? :manage_solar_feed_configuration, School %>
-      <%= link_to t('schools.meters.index.manage_solar_api_feeds'), school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
+      <%= link_to t('schools.meters.index.manage_solar_api_feeds'),
+                  school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
     <% end %>
 
     <% if can? :manage, MeterReview %>
       <% if @school.meters.reviewed_dcc_meter.any? %>
-        <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
+        <%= link_to t('schools.meters.index.completed_meter_reviews'),
+                    admin_school_meter_reviews_path(@school), class: 'btn' %>
       <% end %>
       <% if @pending_reviews %>
         <%= link_to t('schools.meters.index.review_meters'), new_admin_school_meter_review_path(@school), class: 'btn' %>
@@ -41,7 +48,7 @@
   </div>
 <% end %>
 
-<% colspan = current_user.admin? ? 16 : 11 %>
+<% colspan = current_user.admin? ? 15 : 10 %>
 <% first_colspan = current_user.admin? ? 6 : 2 %>
 
 <div class="table-responsive">
@@ -53,15 +60,12 @@
   <colgroup span="2"></colgroup>
   <thead>
     <tr>
-      <th></th>
       <th colspan="<%= first_colspan %>"></th>
       <th colspan="2"><%= t('schools.meters.index.readings') %></th>
       <th colspan="4"><%= t('schools.meters.index.validated_readings') %></th>
       <th colspan="1"></th>
-      <th colspan="1"></th>
     </tr>
     <tr>
-      <th scope="col"></th>
       <th scope="col"><%= t('schools.meters.index.meter') %></th>
       <th scope="col"><%= t('schools.meters.index.name') %></th>
       <% if current_user.admin? %>
@@ -70,13 +74,20 @@
         <th scope="col"><%= t('schools.meters.index.procurement_route') %></th>
         <th scope="col"><%= t('schools.meters.index.admin_meter_status') %></th>
       <% end %>
-      <th scope="col"><%= t('schools.meters.index.imported') %></th>
-      <th scope="col"><%= t('schools.meters.index.validated') %></th>
-      <th scope="col"><%= t('schools.meters.index.first') %></th>
-      <th scope="col"><%= t('schools.meters.index.latest') %></th>
-      <th scope="col"><%= t('schools.meters.index.zero_days') %></th>
-      <th scope="col"><%= t('schools.meters.index.large_gaps') %></th>
-      <th scope="col"></th>
+      <th scope="col" class="text-right">
+        <span title="<%= t('schools.meters.index.imported') %>">
+          <%= current_user.admin? ? fa_icon(:database) : t('schools.meters.index.imported') %>
+        <span>
+      </th>
+      <th scope="col" class="text-right">
+        <span title="<%= t('schools.meters.index.validated') %>">
+          <%= current_user.admin? ? fa_icon('square-check') : t('schools.meters.index.validated') %>
+        </span>
+      </th>
+      <th scope="col" class="text-center"><%= t('schools.meters.index.first') %>-<%= t('schools.meters.index.latest') %>
+      </th>
+      <th scope="col" class="text-right"><%= t('schools.meters.index.zero_days') %></th>
+      <th scope="col" class="text-right"><%= t('schools.meters.index.large_gaps') %></th>
       <th scope="col"></th>
     </tr>
   </thead>

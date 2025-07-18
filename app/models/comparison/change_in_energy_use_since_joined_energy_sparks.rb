@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: change_in_energy_use_since_joined_energy_sparks
+# Table name: comparison_change_in_energy_use_since_joined_energy_sparks
 #
 #  activation_date                    :date
 #  activationyear_electricity_note    :text
@@ -27,6 +27,10 @@
 #  storage_heater_previous_period_co2 :float
 #  storage_heater_previous_period_gbp :float
 #  storage_heater_previous_period_kwh :float
+#
+# Indexes
+#
+#  idx_on_school_id_f606257469  (school_id) UNIQUE
 #
 class Comparison::ChangeInEnergyUseSinceJoinedEnergySparks < Comparison::View
   include MultipleFuelComparisonView

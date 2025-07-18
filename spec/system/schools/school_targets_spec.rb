@@ -37,15 +37,6 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
     sign_in(user) if user.present?
   end
 
-  it 'has a link to review targets from my school menu' do
-    unless user.admin?
-      visit school_path(test_school)
-      within '#my_school_menu' do
-        expect(page).to have_link('Review targets', href: school_school_targets_path(test_school))
-      end
-    end
-  end
-
   context 'when school has no target' do
     let(:last_year) { Time.zone.today.last_year }
 
@@ -504,7 +495,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
 
     context 'with activities' do
       let!(:intervention_type)  { create(:intervention_type, name: 'Upgraded insulation') }
-      let!(:activity_type)      { create(:activity_type) }
+      let!(:activity_type)      { create(:activity_type, name: 'Did something cool') }
       let!(:intervention)       { create(:observation, :intervention, school: test_school, intervention_type: intervention_type, at: start_date + 1.day)}
       let!(:activity)           { create(:activity, school: test_school, activity_type: activity_type, happened_on: target_date - 1.day) }
 
@@ -514,8 +505,8 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
 
       it 'shows timeline' do
         expect(page).to have_content('A reminder of the energy saving activities and actions you recorded')
-        expect(page).to have_content('Completed an activity')
-        expect(page).to have_content('Upgraded insulation')
+        expect(page).to have_content(activity_type.name)
+        expect(page).to have_content(intervention_type.name)
       end
     end
 
@@ -586,7 +577,7 @@ RSpec.describe 'school targets', type: :system do
       it 'doesnt have a link to review targets' do
         visit school_path(school)
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
         end
       end
@@ -613,7 +604,7 @@ RSpec.describe 'school targets', type: :system do
       it 'doesnt have a link to review targets' do
         visit school_path(school)
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
         end
       end
@@ -633,11 +624,6 @@ RSpec.describe 'school targets', type: :system do
 
     include_examples 'managing targets' do
       let(:test_school) { school }
-    end
-
-    it 'lets me view target data' do
-      visit school_meters_path(school)
-      expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
     end
 
     context 'when viewing a target' do
@@ -718,7 +704,7 @@ RSpec.describe 'school targets', type: :system do
 
       it 'doesnt have a link to review targets' do
         expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-        within '#my_school_menu' do
+        within '#my-school-menu' do
           expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
         end
       end

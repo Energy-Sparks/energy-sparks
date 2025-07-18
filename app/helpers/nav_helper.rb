@@ -1,24 +1,8 @@
 module NavHelper
-  def on_test_link
-    if on_test?
-      link_to 'Test', '/', class: 'nav-item px-1'
-    end
-  end
-
-  # old nav
-  def navbar_image_link
-    title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
-    link_to '/home-page', class: 'navbar-brand', title: title do
-      image = I18n.locale == 'cy' ? 'nav-brand-transparent-cy.png' : 'nav-brand-transparent-en.png'
-      image_tag(image, class: 'd-inline-block align-top')
-    end
-  end
-
-  # new nav
   def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image = I18n.locale == 'cy' ? 'navigation-brand-transparent-cy.png' : 'navigation-brand-transparent-en.png'
+      image = I18n.locale == :cy ? 'navigation-brand-transparent-cy.png' : 'navigation-brand-transparent-en.png'
       image_tag(image)
     end
   end
@@ -47,26 +31,9 @@ module NavHelper
     I18n.available_locales - [I18n.locale]
   end
 
-  def locale_switcher_buttons
-    li_tags = other_locales.map {|locale| tag.li(link_to_locale(locale), class: 'nav-item pl-3 pr-3 nav-lozenge my-3px') }
-    tag.ul(safe_join(li_tags), class: 'navbar-nav navbar-expand')
-  end
-
   def link_to_locale(locale, **kwargs)
     secondary_presentation = request.params['secondary_presentation'] ? "/#{request.params['secondary_presentation']}" : ''
     link_to(locale_name_for(locale), url_for(subdomain: subdomain_for(locale), only_path: false, params: request.query_parameters) + secondary_presentation, **kwargs)
-  end
-
-  def sub_nav?
-    @sub_nav == true
-  end
-
-  def nav_margin_classes
-    if Flipper.enabled?(:navigation, current_user, current_user&.school_group)
-      ' navigation-margin'
-    else
-      sub_nav? ? ' sub-nav-margin' : ' top-nav-margin'
-    end
   end
 
   def conditional_application_container_classes
@@ -131,9 +98,10 @@ module NavHelper
     end
   end
 
-  def header_nav_link(link_text, link_path)
-    nav_class = 'btn btn-outline-dark rounded-pill font-weight-bold'
-    nav_class += ' disabled' if current_page?(link_path)
+  def header_nav_link(link_text, link_path, **kwargs)
+    return if current_page?(link_path) # don't show link if already on page
+    nav_class = 'btn '
+    nav_class += " #{kwargs[:class]}" if kwargs[:class]
     link_to link_text, link_path, class: nav_class
   end
 end

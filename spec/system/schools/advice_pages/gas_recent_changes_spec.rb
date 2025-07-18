@@ -13,6 +13,8 @@ RSpec.describe 'gas recent changes advice page', type: :system do
     let(:alert_text) { alert_notice }
   end
 
+  it_behaves_like 'it responds to HEAD requests'
+
   context 'as school admin' do
     let(:user) { create(:school_admin, school: school) }
 

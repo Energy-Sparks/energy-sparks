@@ -70,6 +70,7 @@ class ActivityType < ApplicationRecord
   scope :for_key_stages, ->(key_stages) { joins(:key_stages).where(key_stages: { id: key_stages.map(&:id) }).distinct }
   scope :for_subjects, ->(subjects) { joins(:subjects).where(subjects: { id: subjects.map(&:id) }).distinct }
   scope :not_including, ->(records = []) { where.not(id: records) }
+  scope :tx_resources, -> { active.order(:id) }
 
   validates_presence_of :name, :activity_category_id, :score
   validates_uniqueness_of :name, scope: :activity_category_id
@@ -78,12 +79,16 @@ class ActivityType < ApplicationRecord
 
   has_many :activity_type_suggestions
   has_many :suggested_types, through: :activity_type_suggestions
-  has_many :programme_activities
   has_many :activities, inverse_of: :activity_type
 
+  # old relationships to be removed when todos feature removed
+  has_many :programme_activities
+
+  # old relationships to be removed when todos feature removed
   has_many :programme_type_activity_types
   has_many :programme_types, through: :programme_type_activity_types
 
+  # old relationships to be removed when todos feature removed
   has_many :audit_activity_types
   has_many :audits, through: :audit_activity_types
 
@@ -132,17 +137,37 @@ class ActivityType < ApplicationRecord
     name
   end
 
-  def self.tx_resources
-    active.order(:id)
-  end
-
   def count_existing_for_academic_year(school, academic_year)
     school.activities.where(activity_type: self).where(happened_on: academic_year.start_date..academic_year.end_date).count
+  end
+
+  def public_type
+    :activity
   end
 
   private
 
   def copy_searchable_attributes
     self.write_attribute(:name, self.name(locale: :en))
+  end
+
+  class << self
+    private
+
+    def searchable_filter(show_all: false)
+      if show_all
+        %|"#{table_name}"."active" in ('true', 'false') AND "#{table_name}"."custom" = 'false'|
+      else
+        %|"#{table_name}"."active" = 'true' AND "#{table_name}"."custom" = 'false'|
+      end
+    end
+
+    def searchable_body_field
+      'description'
+    end
+
+    def searchable_metadata_fields
+      %w[name summary]
+    end
   end
 end

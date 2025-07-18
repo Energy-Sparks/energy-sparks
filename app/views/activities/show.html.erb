@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <h1><%= @activity.display_name %></h1>
     <p class="text-muted">
-      <span><%= link_to @school.name, school_path(@school) %>, <%= @activity.happened_on.strftime("%A, %d %B %Y") %></span><br>
+      <span><%= link_to @school.name, school_path(@school) %>, <%= @activity.happened_on.strftime('%A, %d %B %Y') %></span><br>
       <span class="badge badge-success" data-toggle="tooltip" data-placement="bottom" title="<%= t('activities.show.score_awarded_for_this_activity') %>"><%= @activity.activity_type.score %></span>
       <span class="badge badge-secondary" data-toggle="tooltip" data-placement="bottom" title="<%= t('activities.show.category_of_activity') %>"><%= @activity.activity_type.activity_category.name %></span>
       <span class="badge badge-primary" data-toggle="tooltip" data-placement="bottom" title="<%= t('activities.show.key_stages') %>"><%= @activity.activity_type.key_stage_list %></span>
@@ -26,7 +26,9 @@
       <p>
         <%= t('activities.show.no_entry') %>.
       </p>
-      <p><%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %></p>
+      <p><%= link_to t('activities.actions.edit'),
+                     edit_school_activity_path(@school, @activity),
+                     class: 'btn btn-primary' %></p>
     </div>
   </div>
 <% end %>
@@ -47,11 +49,17 @@
 <div class="row">
   <div class="col-md-12 activity">
     <p></p>
-    <%= link_to t('activities.show.all_activities'), school_activities_path(@school), class: 'btn btn-success' %>
+    <%= link_to t('activities.show.all_activities'), school_activities_path(@school), class: 'btn btn-secondary' %>
     <% if can? :manage, @activity %>
-      <%= link_to t('activities.actions.home'), school_path(@school), class: 'btn btn-primary' %>
-      <%= link_to t('activities.actions.edit'), edit_school_activity_path(@school, @activity), class: 'btn btn-warning' %>
-      <%= link_to t('activities.actions.delete'), school_activity_path(@school, @activity), method: :delete, data: {confirm: t('activities.actions.are_you_sure')}, class: 'btn btn-danger' %>
+      <%= link_to t('activities.actions.home'), school_path(@school),
+                  class: 'btn btn-primary' %>
+      <%= link_to t('activities.actions.edit'),
+                  edit_school_activity_path(@school, @activity),
+                  class: 'btn btn-primary' %>
+      <%= link_to t('activities.actions.delete'),
+                  school_activity_path(@school, @activity), method: :delete,
+                                                            data: { confirm: t('activities.actions.are_you_sure') },
+                                                            class: 'btn btn-danger' %>
     <% end %>
   </div>
 </div>

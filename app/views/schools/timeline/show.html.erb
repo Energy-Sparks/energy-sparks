@@ -10,21 +10,19 @@
   <% end %>
 </ul>
 
-<% if Flipper.enabled?(:new_dashboards_2024, current_user) %>
-  <%= component 'timeline',
-                observations: @observations,
-                school: @school,
-                user: current_user,
-                show_header: false,
-                show_actions: true %>
+<% if @observations.empty? %>
+  <h3><%= t('schools.timeline.no_events') %></h3>
 <% else %>
-  <% if @observations.empty? %>
-    <h3><%= t('schools.timeline.no_events') %></h3>
-  <% else %>
-    <div class="row justify-content-md-center">
-      <div class="col col-md-10">
-        <%= component 'timeline', observations: @observations, show_actions: true %>
-      </div>
+  <div class="row justify-content-md-center">
+    <div class="col col-md-10">
+      <%= render TimelineComponent.new(
+            observations: @observations,
+            school: @school,
+            user: current_user,
+            observation_style: :default,
+            show_header: false,
+            show_actions: true
+          ) %>
     </div>
-  <% end %>
+  </div>
 <% end %>

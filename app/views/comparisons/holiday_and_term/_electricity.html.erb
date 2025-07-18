@@ -1,7 +1,8 @@
-<%= component 'comparison_table',
-              report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
-              headers: @electricity_headers, colgroups: @electricity_colgroups,
-              advice_page_tab: advice_page_tab do |c| %>
+<%= render ComparisonTableComponent.new(
+      report: report, advice_page: AdvicePage.find_by!(key: :electricity_out_of_hours), table_name: table_name,
+      index_params: index_params, headers: @electricity_headers, colgroups: @electricity_colgroups,
+      advice_page_tab: :analysis, advice_page_anchor: 'holiday-usage'
+    ) do |c| %>
   <% @results.each do |result| %>
     <% next if result.electricity_current_period_kwh.blank? %>
     <% c.with_row do |r| %>

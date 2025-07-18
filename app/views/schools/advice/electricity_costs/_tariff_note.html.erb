@@ -1,12 +1,18 @@
 <% if complete_tariff_coverage %>
-  <%= component 'notice', status: :neutral, classes: 'mb-2' do |c| %>
+  <%= render PromptComponent.new(icon: :lightbulb, status: :neutral, classes: 'mb-2') do |c| %>
     <%= advice_t('electricity_costs.analysis.tariff_note.good_estimate') %>
   <% end %>
 <% else %>
-  <%= component 'notice', status: :negative, classes: 'mb-2' do |c| %>
-    <% c.with_link { link_to advice_t('electricity_costs.analysis.tariff_note.manage_tariffs'), school_energy_tariffs_path(school) } %>
+  <%= render PromptComponent.new(icon: :circle_exclamation, status: :negative, classes: 'mb-2') do |c| %>
+    <% c.with_link do
+         link_to advice_t('electricity_costs.analysis.tariff_note.manage_tariffs'),
+                 school_energy_tariffs_path(school)
+       end %>
     <p>
-      <%= advice_t('electricity_costs.analysis.tariff_note.poor_estimate', period_start_and_end: @periods_with_missing_tariffs.map{|range| [range[0].to_fs(:es_short), range[1].to_fs(:es_short)].to_sentence }.join(",")) %>
+      <%= advice_t('electricity_costs.analysis.tariff_note.poor_estimate',
+                   period_start_and_end: @periods_with_missing_tariffs.map do |range|
+                     [range[0].to_fs(:es_short), range[1].to_fs(:es_short)].to_sentence
+                   end.join(',')) %>
     </p>
   <% end %>
 <% end %>

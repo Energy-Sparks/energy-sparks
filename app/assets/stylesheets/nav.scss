@@ -1,168 +1,184 @@
-// Original navigation css
-// Switch to using redesign/nav.scss with navigation feature flag
+$togglers: (
+  "light": (
+    "icon": escape-svg($navbar-light-toggler-icon-bg),
+    "colour": $navbar-light-color,
+    "border": $navbar-light-toggler-border-color,
+  ),
+  "dark": (
+    "icon": escape-svg($navbar-dark-toggler-icon-bg),
+    "colour": $navbar-dark-color,
+    "border": $navbar-dark-toggler-border-color,
+  )
+);
 
-.navbar {
-  border-radius: 0;
-  background: $dark-blue;
-  font-family: "Quicksand", Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  border: none;
-  padding: 1px;
+@mixin toggler($type) {
+  $colour: map-get($togglers, $type);
 
-  img {
-    height: 45px;
-  }
-
-  .navbar-brand,
-  .navbar-brand:hover,
-  .navbar-brand:focus,
-  .navbar-brand:active,
-  .navbar-brand.active {
-    color: $white;
-    font-size: $f6;
-  }
-
-  .navbar-nav {
-    letter-spacing: 1px;
-  }
-
-  .navbar-toggle {
-    color: $white;
-    font-size: $f10;
-    border-color: $white;
-  }
-
-  .navbar-toggle:hover,
-  .navbar-toggle:focus {
-    background-color: $light-blue;
-    color: $white;
-    border-color: $light-blue;
-  }
-
-  .nav-link {
-    text-align: center;
-   vertical-align: center;
-   padding-top: 9px;
-  }
-
-  .dropdown-menu {
-    background: $dark-blue;
-    right: 0;
-    left: auto;
-  }
-
-  .scrollable-dropdown-menu {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  .dropdown-menu.scrollable {
-    max-height: 85vh;
-    overflow-y: auto;
-  }
-
-  .dropdown-item:hover {
-    color: $dark;
+  .navbar-toggler-icon {
+    background-image: map-get($colour, "icon");
+    width: 1.2em;
+    height: 1.2em;
   }
 
   .navbar-toggler {
-    border-color: $white;
-    margin: 6px;
-  }
-
-  .navbar-toggler-icon {
-    width: 1em;
-    height: 1.25em;
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba($white, 0.7)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+    color:  map-get($colour, "colour");
+    border-color: map-get($colour, "border");
+    padding: 4px;
+    border-radius: .375rem;
   }
 }
 
-.nav-tabs {
-  .nav-item {
-    .nav-link.active {
-      font-weight: 600;
+@mixin navbar-scroll {
+  // Allow scroll on collapse and left margin
+  .collapsing, .collapse.show {
+    max-height: 50vh;
+    overflow-y: auto;
+    margin-left: 10px;
+  }
+}
+
+@mixin navbar($background, $background-lozenge, $foreground-lozenge, $foreground, $hover) {
+  font-family: $header-font-family;
+  @include font(f8); // design says f6
+  color: $foreground;
+  background-color: $background;
+
+  & a:link, a:hover, a:focus, a:active {
+    font-weight: $font-weight-semibold;
+    text-decoration: none;
+  }
+
+  .dropdown-menu {
+    background-color: $background;
+    font: inherit;
+    padding: 4px;
+    margin-top: 0; // remove the gap between top of drowndown and navbar
+    border:0;
+
+    // make all dropdowns scrollable
+    max-height: 85vh;
+    overflow-y: auto;
+
+    .dropdown-item {
+      padding: 6px 10px;
+      color: $foreground;
+      background-color: $background;
+    }
+
+    .dropdown-divider {
+      border-top: 1px solid color-mix(in srgb, $foreground 50%, transparent);
+    }
+  }
+
+  // change menu dropdown arrow
+  // https://github.com/FortAwesome/font-awesome-sass/tree/master/assets/stylesheets/font-awesome
+  .dropdown-toggle::after {
+    border: none;
+
+    @extend .fa-solid;
+    content: fa-content($fa-var-chevron-down);
+    vertical-align: 0;
+  }
+
+  .nav-link {
+    color: $foreground;
+
+    &.dash {
+      color: $hover;
+    }
+  }
+
+  .nav-item.dropdown.show
+  .nav-link.dropdown-toggle,
+  .nav-link:hover,
+  .nav-link:focus,
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    color: $hover;
+  }
+
+  .nav-link.lozenge {
+    @extend .rounded-pill;
+    @include font(f9);
+    padding: 0px 12px !important;
+    margin: 4px 8px;
+    display:inline-block;
+    color: $foreground-lozenge;
+    background: $background-lozenge;
+
+    &:hover, &:focus, &:active {
+      color: $grey-very-dark;
+      background: $grey-medium;
+    }
+  }
+
+  // The Welsh and English navbars use different breakpoints (see navbar_expand_class helper)
+  // (due to equivalent Welsh menu items being longer and needing more space)
+
+  // For the English language site
+  @include media-breakpoint-down(md) {
+    &.navbar-expand-lg {
+      @include navbar-scroll;
+    }
+  }
+
+  // For the Welsh language site
+  @include media-breakpoint-down(lg) {
+    &.navbar-expand-xl {
+      @include navbar-scroll;
     }
   }
 }
 
-.nav-tabs.locales {
-  .nav-item {
-    .nav-link.active {
-      background: $light-grey;
-      border-color: $light-grey;
-    }
-  }
-}
-
-.tab-content.locales {
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: $light-grey;
-}
-
-@media (min-width: 992px) {
-  .navbar-brand {
-    font-size: $f5;
-  }
-}
-
-.navbar-mini {
-  background: $black;
-
-  .nav-item {
-    color: $white;
-  }
+nav.navbar-top {
+  @include navbar($background: $dark, $foreground: $white, $background-lozenge: $white, $foreground-lozenge: $blue-dark, $hover: $yellow-medium);
+  @include toggler('dark');
+  min-height: 70px; // design says 108
 
   img {
-    height: 40px;
+    height: 40px; // design says 60
+    margin-bottom: 6px; // move it up a bit as text in logo isn't vertically central to logo
+  }
+
+  .nav-link.lozenge {
+    border: 1px solid $blue-dark;
   }
 }
 
-.navbar {
-  .nav-item {
-    line-height: 2.2;
+nav.navbar-second {
+  min-height: 42px; // design says 50
+  padding-top: 4px;
+  padding-bottom: 4px;
+
+  .nav-link, .navbar-text {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .badge {
+    font-size: $f9;
+  }
+
+  &.adult {
+    @include navbar($background: $blue-very-dark, $foreground: $white, $background-lozenge: $blue-light, $foreground-lozenge: $blue-dark, $hover: $blue-light);
+    @include toggler('dark');
+    border-bottom: 1px solid $blue-dark; // Helps prevent blocks of blue-very-dark in main content merging in with nav
+  }
+
+  &.pupil {
+    @include navbar($background: $yellow-light, $foreground: $yellow-very-dark, $background-lozenge: $yellow-medium, $foreground-lozenge: $yellow-dark, $hover: $yellow-dark);
+    @include toggler('light');
+    border-bottom: 1px solid $yellow-pale; // Helps prevent blocks of blue-very-dark in main content merging in with nav
+
   }
 }
 
-.sub-navbar {
-  z-index: 10;
-
-  .nav-link {
-    display: inline;
-    text-align: center;
-    vertical-align: center;
-    padding: 0;
-  }
-
-  a.navbar-brand {
-    margin-left: 38px;
-  }
-}
-
-/* Trouble */
-/* Top, Right, Bottom, Left */
-
-.nav-lozenge {
-  white-space: nowrap;
-  background: $dark-blue;
-  background: linear-gradient(180deg, saturate($dark-blue, 5%), lighten($dark-blue, 10%));
-  border-radius: 25px;
-  border: 1px solid darken($dark-blue, 15%);
-  padding: 5px;
-
-  .nav-link {
-    display: inline;
-    text-align: center;
-    vertical-align: center;
-    padding: 0px;
-  }
-}
-
-.my-3px {
-  margin-top: 3px;
-  margin-bottom: 3px;
-}
-
-nav li {
-  font-size: $f8;
+.vr {
+  display: inline-block;
+  align-self: stretch;
+  width: 1px;
+  min-height: 1em;
+  background-color: currentColor;
+  margin: 4px 8px;
+  opacity: 0.5;
 }

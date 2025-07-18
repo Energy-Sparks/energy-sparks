@@ -1,10 +1,10 @@
-class SchoolComparisonComponent < ViewComponent::Base
+class SchoolComparisonComponent < ApplicationComponent
   renders_one :footer
 
   CATEGORIES = [:exemplar_school, :benchmark_school, :other_school].freeze
 
-  def initialize(id: 'comparison', comparison:)
-    @id = id
+  def initialize(id: 'comparison', comparison:, **_kwargs)
+    super
     @comparison = comparison
   end
 

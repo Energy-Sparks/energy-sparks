@@ -4,8 +4,8 @@
   <h1>Activity Type Recording Report</h1>
 
   <div>
-    <%= link_to "All activity types", admin_reports_activity_types_path, class: "btn btn-outline-dark font-weight-bold" %>
-    <%= link_to "All reports", admin_reports_path, class: "btn btn-outline-dark font-weight-bold" %>
+    <%= link_to 'All activity types', admin_reports_activity_types_path, class: 'btn btn-default' %>
+    <%= link_to 'All reports', admin_reports_path, class: 'btn btn-default' %>
   </div>
 </div>
 
@@ -15,7 +15,12 @@
       <p class="bg-warning">This activity is no longer active</p>
     <% end %>
     <p>
-    <strong>"<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>"</strong> has been recorded a total of <strong><%= @recorded %></strong> times by <strong><%= @school_count %></strong> schools.
+    <strong>
+      "<%= link_to @activity_type.name, admin_activity_type_path(@activity_type) %>"
+    </strong>
+    has been recorded a total of
+    <strong><%= @recorded %></strong> times by
+    <strong><%= @school_count %></strong> schools.
     </p>
   </div>
   <div class="col">
@@ -25,8 +30,6 @@
     </ul>
   </div>
 </div>
-
-
 
 <h2 id="recording-summary">Recording Summary</h2>
 
@@ -122,15 +125,20 @@
       <% end %>
     </ul>
   </div>
+  <% if Flipper.enabled?(:todos, current_user) %>
+    <%= render 'admin/shared/task_completables', task: @activity_type %>
+  <% else %>
+    <div class="col col-md-3">
+      <h3>Programmes</h3>
+      <ul>
+        <% @activity_type.programme_types.each do |programme_type| %>
+          <li><%= link_to programme_type.title, edit_admin_programme_type_path(programme_type) %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="col col-md-3">
-    <h3>Programmes</h3>
-    <ul>
-      <% @activity_type.programme_types.each do |programme_type| %>
-        <li><%= link_to programme_type.title, edit_admin_programme_type_path(programme_type) %></li>
-      <% end %>
-    </ul>
-  </div>
-  <div class="col col-md-6">
     <h3>Find Out More</h3>
     <ul>
       <% @activity_type.referenced_from_find_out_mores.each do |alert_type_rating| %>

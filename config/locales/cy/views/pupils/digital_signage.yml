@@ -1,0 +1,70 @@
+cy:
+  pupils:
+    digital_signage:
+      charts:
+        last-week:
+          dates: Yn dangos ynni a ddefnyddiwyd hyd at yr wythnos a ddaeth i ben ar %{last_end_date}
+          intro: Mae'r siart yn dangos yr egni a ddefnyddiwyd ar gyfer pob diwrnod
+          title: Faint o %{fuel_type} ddefnyddiodd eich ysgol dros y pythefnos diwethaf?
+        out-of-hours:
+          dates: Wrthi'n dangos ynni a ddefnyddiwyd rhwng %{start_date} a %{end_date}
+          intro: Mae’r siart yn dangos yr ynni a ddefnyddiwyd yn ystod dyddiau ysgol, penwythnosau, gwyliau a thu allan i oriau ysgol
+          title: Pryd wnaeth eich ysgol ddefnyddio %{fuel_type} dros y flwyddyn ddiwethaf?
+      index:
+        charts:
+          intro_html: Dangos siart defnydd ynni.
+          last-week:
+            description: Siart yn dangos cymhariaeth o ddefnydd ynni am y pythefnos diwethaf
+            title: Wythnos ddiwethaf
+          out-of-hours:
+            description: Siart yn dangos defnydd y tu allan i oriau am y 12 mis diwethaf
+            title: Tu allan i oriau
+          title: Siartiau defnydd ynni
+        equivalences:
+          intro_html: Dangos cywerthedd ar hap yn seiliedig ar ddefnydd ynni diweddar.
+          title: Cywertheddoedd ynni
+        intro_html: |-
+          <p>Mae llawer o ysgolion yn defnyddio arwyddion digidol i sicrhau bod gwybodaeth ar gael i staff, myfyrwyr ac ymwelwyr.</p>
+          <p>Mae Energy Sparks yn darparu rhai opsiynau ar gyfer arddangos agweddau ar eich dadansoddiad ynni o fewn system
+          </p>arwyddion digidol fel TriplePlay.
+          <p>Mae'r dolenni isod yn darparu mynediad i dudalennau gwe pwrpasol sy'n arddangos:</p>
+          <ul>
+            <li>cywerthedd ynni ar hap, sy'n rhoi defnydd ynni mewn cyd-destun</li>
+            <li>siartiau sy'n crynhoi'r defnydd ynni diweddar, a chymhariaeth o'r defnydd ynni yn ystod oriau ysgol, gwyliau
+            a phenwythnosau</li>
+          </ul>
+          <p>Rydym wedi darparu sawl opsiwn i ganiatáu ichi ddewis pa wybodaeth fydd yn cael ei harddangos</p>
+          <p>Mae'r tudalennau wedi'u fformatio i'w harddangos ar baneli, e.e. wedi'u gosod mewn mannau cyhoeddus neu ystafelloedd dosbarth. Gellir eu defnyddio
+          mewn unrhyw system arwyddion digidol sy'n gallu arddangos neu fewnosod tudalen we. Ond rhaid i'ch system gefnogi
+          nôl cynnwys, data a javascript yn uniongyrchol o'n gwefan</p>.
+          <p>Nid yw'r tudalennau'n diweddaru'n awtomatig felly mae'n well eu hymgorffori mewn carwsél cynnwys presennol neu
+          arddangosfa sy'n adnewyddu'n rheolaidd.</p>
+          <p>Os oes gennych gwestiynau am ddefnyddio'r nodwedd hon, cysylltwch â ni yn
+          <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a></p>
+        prompt:
+          link_text: Cysylltwch
+          text: Os hoffech chi gael cymorth i brofi sut allwch chi ymgorffori ein dadansoddiad yn eich arwyddion digidol, neu os oes gennych chi unrhyw gwestiynau neu adborth, yna cysylltwch â ni. Ein nod yw sicrhau bod y nodwedd hon yn gweithio gydag amrywiaeth o systemau arwyddion digidol gwahanol.
+          title: Rydym yn gwahodd ysgolion i roi cynnig ar y nodwedd Sbarcynni newydd hon
+        public_data_html: "<p>Ar hyn o bryd dim ond i ysgolion sy'n rhannu eu dadansoddiad yn gyhoeddus trwy eu dangosfyrddau disgyblion ac oedolion \n</p>y mae ein nodwedd arwyddion digidol ar gael.\n<p><a href='mailto:hello@energysparks.uk'>Cysylltwch</a> os hoffech chi adolygu eich gosodiadau rhannu\ndata. Neu os oes gennych ddiddordeb mewn trafod sut y gallem ymestyn y nodwedd hon i gefnogi ysgolion sydd â\ndewisiadau rhannu data mwy cyfyngedig.</p>"
+        school_group:
+          data_sharing:
+            title: Rhannu cyhoeddus
+          downloads:
+            intro_html: |-
+              <p>Mae'r dolenni isod yn caniatáu ichi lawrlwytho rhestr gyflawn o URLau ar gyfer yr ysgolion yn eich grŵp sy'n
+              rhannu eu dadansoddiad yn gyhoeddus. Bwriad y rhain
+              yw helpu i sefydlu arddangosfeydd os yw'r system arwyddion digidol yn cael ei rheoli'n ganolog o fewn MAT neu
+              </p>Awdurdod Lleol.
+              <p>Os yw ysgolion unigol yn gyfrifol am eu harwyddion eu hunain, cyfeiriwch at y tudalennau penodol i'r ysgol.
+              </p>Gellir cael mynediad at y rhain o'r ddewislen "Rheoli Ysgol" wrth edrych ar ddangosfwrdd ysgol.
+            title: Arwyddion a reolir yn ganolog
+          links:
+            charts: siartiau
+            equivalences: cywerthoedd
+        title: Tudalennau arwyddion digidol
+      table:
+        columns:
+          chart_type: Math o Siart
+          description: Disgrifiad
+          link: Dolen
+          url_pattern: Patrwm URL

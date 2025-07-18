@@ -1,17 +1,15 @@
 .prompt-component {
   border-radius: 8px;
   &.none {
-    background-color: $light !important;
+    background-color: $grey-pale !important;
   }
-  &.negative {
-    background-color: $light-red !important;
+
+  @each $polarity, $tones in $colours-polarity {
+    &.#{$polarity} {
+      background-color: map-get($tones, 'light') !important;
+    }
   }
-  &.positive {
-    background-color: $green !important;
-  }
-  &.neutral {
-    background-color: $electric-light !important;
-  }
+
   div.row {
     margin: 0.25rem 0.25rem;
   }

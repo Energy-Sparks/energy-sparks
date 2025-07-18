@@ -76,13 +76,16 @@ FactoryBot.define do
       transient do
         reading_count { 1 }
         config        { create(:amr_data_feed_config) }
+        readings      { Array.new(48, rand) }
+        reading_date_format { '%b %e %Y %I:%M%p' }
       end
 
       after(:create) do |meter, evaluator|
         end_date = Date.parse('01/06/2019')
         start_date = end_date - (evaluator.reading_count - 1).days
         (start_date..end_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config)
+          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime(evaluator.reading_date_format),
+                                         readings: evaluator.readings, amr_data_feed_config: evaluator.config)
         end
       end
     end
@@ -125,12 +128,12 @@ FactoryBot.define do
         config        { create(:amr_data_feed_config) }
         end_date      { Date.parse('01/06/2019') }
         start_date    { end_date - (reading_count - 1).days }
-        log           { create(:amr_data_feed_import_log, amr_data_feed_config: config) }
+        import_log    { create(:amr_data_feed_import_log, amr_data_feed_config: config) }
       end
 
       after(:create) do |meter, evaluator|
         (evaluator.start_date.to_date..evaluator.end_date.to_date).each do |this_date|
-          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.log)
+          create(:amr_data_feed_reading, meter: meter, reading_date: this_date.strftime('%b %e %Y %I:%M%p'), amr_data_feed_config: evaluator.config, amr_data_feed_import_log: evaluator.import_log)
         end
       end
     end

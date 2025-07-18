@@ -1,6 +1,6 @@
 module Alerts
   class DeleteContentGenerationRunService
-    DEFAULT_OLDER_THAN = 1.month.ago.beginning_of_month
+    DEFAULT_OLDER_THAN = 14.days.ago.to_date
     attr_reader :older_than
 
     def initialize(older_than = DEFAULT_OLDER_THAN)

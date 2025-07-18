@@ -2,6 +2,7 @@ div.school-card-row {
   padding-bottom: 30px;
 }
 
+/* UNUSED?
 .activity-card {
   border: 5px solid $green;
 
@@ -24,95 +25,63 @@ div.school-card-row {
     border-color: $green;
   }
 }
+*/
 
-.gas-card {
-  border: 5px solid $gas-light;
 
-  .card-header {
-    background-color: $white;
-    border-bottom: 0px;
-  }
+// e.g. .gas-card, .electric-card
+@each $fuel in (gas, electric) {
+  .#{$fuel}-card {
+    border: 5px solid colour-get($colours-fuel, $fuel, 'light');
 
-  .card-footer {
-    background-color: $white;
-    border-top: 0px;
-  }
+    .card-header {
+      background-color: $white;
+      border-bottom: 0px;
+    }
 
-  .card-body {
-    padding-top: 0px;
-  }
+    .card-footer {
+      background-color: $white;
+      border-top: 0px;
+    }
 
-  .btn {
-    background-color: $gas-dark;
-    border-color: $gas-dark;
-  }
-}
+    .card-body {
+      padding-top: 0px;
+    }
 
-.electricity-card {
-  border: 5px solid $electric-light;
-
-  .card-header {
-    background-color: $white;
-    border-bottom: 0px;
-  }
-
-  .card-footer {
-    background-color: $white;
-    border-top: 0px;
-  }
-
-  .card-body {
-    padding-top: 0px;
-  }
-
-  .btn {
-    background-color: $electric-dark;
-    border-color: $electric-dark;
+    .btn {
+      background-color: colour-get($colours-fuel, $fuel, 'dark');
+      border-color: colour-get($colours-fuel, $fuel, 'dark');
+    }
   }
 }
 
-.electricity-light {
-  border: 2px solid $electric-light;
-}
+// used in _usage_control.html.erb
+// these currently use chart fuel colours as opposed to site fuel colours
+.usage-controls {
+  @each $fuel, $tones in $colours-fuel {
+    $fuel-name: if($fuel == 'electric', 'electricity', $fuel);
 
-.electricity-dark {
-  border: 2px solid $electric-dark;
-}
+    //e.g. .electricity-light, .gas-light, .storage-light, .solar-light
+    .#{$fuel-name}-light {
+      border: 2px solid colour-get($colours-charts, 'chart', "#{$fuel}_light");
+    }
 
-.gas-light {
-  border: 2px solid $gas-light;
-}
-
-.gas-dark {
-  border: 2px solid $gas-dark;
-}
-
-.storage-light {
-  border: 2px solid $storage-light;
-}
-
-.storage-dark {
-  border: 2px solid $storage-dark;
-}
-
-.solar-light {
-  border: 2px solid $solar-light;
-}
-
-.solar-dark {
-  border: 2px solid $solar-dark;
+    //e.g. .electricity-dark, .gas-dark, .storage-dark, .solar-dark
+    .#{$fuel-name}-dark {
+      border: 2px solid colour-get($colours-charts, 'chart', "#{$fuel}_dark");
+    }
+  }
 }
 
 .live-data-light {
-  border: 2px solid $live-data-light;
+  border: 2px solid $grey-light;
 }
 
 .live-data-dark {
-  border: 2px solid $live-data-dark;
+  border: 2px solid $teal-dark;
 }
 
 .secondary-card {
-  border: 5px solid $darker-grey;
+  border: 5px solid $secondary;
 
   .card-header {
     background-color: $white;
@@ -127,7 +96,6 @@ div.school-card-row {
   .card-body {
     padding-top: 0px;
   }
-
 }
 
 .dashboard {
@@ -142,21 +110,6 @@ div.school-card-row {
       border-top: 0px;
     }
   }
-}
-
-#activity-cards {
-  padding-bottom: 60px;
-
-  .dashboard {
-    .card {
-      border: 5px solid $green;
-    }
-    .btn {
-      background-color: $green;
-      border-color: $green;
-    }
-  }
-
 }
 
 div.award {

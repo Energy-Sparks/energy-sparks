@@ -1,22 +1,37 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Schools::EngagedSchoolService, type: :service do
-  subject(:service) { described_class.new(school) }
+  subject(:service) { described_class.new(school, AcademicYear.current.start_date..) }
 
   let!(:school) { create(:school, :with_school_group) }
 
-  describe '.list_engaged_schools' do
-    let!(:inactive)  { create(:school, :with_school_group, :with_points, active: false) }
-    let!(:school)    { create(:school, :with_school_group, :with_points, active: true) }
+  describe '.list_schools' do
+    let!(:school) do
+      create(:school, :with_school_group, :with_points,
+             calendar: create(:calendar, :with_previous_and_next_academic_years))
+    end
+    let(:schools) { described_class.list_schools(false, nil) }
 
-    let(:engaged_schools) { Schools::EngagedSchoolService.list_engaged_schools }
+    before { create(:school, :with_school_group, :with_points, active: false) }
 
-    it 'returns active schools with recent activities' do
-      expect(engaged_schools.count).to eq 1
+    it 'returns schools' do
+      expect(schools.count).to eq 2
+      expect(schools.find { |service| service.school.id = school.id }.recent_activity_count).to eq(1)
     end
 
     it 'wraps schools in the service' do
-      expect(engaged_schools.first.school).to eq school
+      expect(schools.map(&:school)).to include(school)
+    end
+
+    context 'with the previous year' do
+      let(:schools) { described_class.list_schools(true, nil) }
+
+      it 'returns active schools with recent activities' do
+        expect(schools.count).to eq 2
+        expect(schools.find { |service| service.school.id = school.id }.recent_activity_count).to eq(0)
+      end
     end
   end
 
@@ -30,7 +45,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#recent_action_count' do
-    let!(:action)               { create(:observation, :intervention, school: school) }
+    let!(:action)               { create(:observation, :intervention, school:) }
     let(:recent_action_count)   { service.recent_action_count }
 
     it 'returns the expected count' do
@@ -39,7 +54,7 @@ describe Schools::EngagedSchoolService, type: :service do
   end
 
   describe '#recently_enrolled_programme_count' do
-    let!(:programme) { create(:programme, school: school) }
+    let!(:programme) { create(:programme, school:) }
     let(:recently_enrolled_programme_count) { service.recently_enrolled_programme_count }
 
     it 'returns the expected count' do
@@ -55,7 +70,7 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     context 'with a target' do
-      let!(:school_target) { create(:school_target, school: school) }
+      let!(:school_target) { create(:school_target, school:) }
 
       it 'returns the true' do
         expect(target).to be true
@@ -71,7 +86,7 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     context 'with a target' do
-      let!(:transport_survey) { create(:transport_survey, school: school) }
+      let!(:transport_survey) { create(:transport_survey, school:) }
 
       it 'returns true' do
         expect(survey).to be true
@@ -87,7 +102,7 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     context 'with a target' do
-      let!(:temperature_recordings) { create(:observation, :temperature, school: school) }
+      let!(:temperature_recordings) { create(:observation, :temperature, school:) }
 
       it 'returns true' do
         expect(temperatures).to be true
@@ -103,7 +118,7 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     context 'with recent users' do
-      let!(:user) { create(:school_admin, school: school, last_sign_in_at: Time.zone.today)}
+      let!(:user) { create(:school_admin, school:, last_sign_in_at: Time.zone.today) }
 
       it 'returns count of recent users' do
         expect(count).to eq 1
@@ -117,7 +132,7 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     it 'returns true' do
-      create(:observation, :audit, school: school)
+      create(:observation, :audit, school:)
       expect(service.audits?).to be true
     end
   end

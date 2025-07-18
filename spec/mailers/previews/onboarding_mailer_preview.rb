@@ -11,10 +11,6 @@ class OnboardingMailerPreview < ActionMailer::Preview
     OnboardingMailer.with(email: 'test@test.com', school_onboardings: [SchoolOnboarding.incomplete.first], locale: locale).reminder_email
   end
 
-  def activation_email
-    OnboardingMailer.with(school: School.visible.first, users: School.visible.first.users.school_admin, locale: locale).activation_email
-  end
-
   def onboarded_email
     OnboardingMailer.with(school: School.visible.first, users: School.visible.first.users.school_admin, locale: locale).onboarded_email
   end

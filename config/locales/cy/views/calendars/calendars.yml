@@ -23,9 +23,11 @@ cy:
       status: Statws
       type: Math
     event_modal:
-      calendar_event: Digwyddiad Calendr
+      edit_calendar_event: Golygu Digwyddiad Calendr
+      edit_existing: Golygu Presennol
       end_date: Dyddiad Gorffen
       event_type: Math o Ddigwyddiad
+      new_calendar_event: Digwyddiad Calendr Newydd
       save_changes: Cadw Newidiadau
       start_date: Dyddiad Cychwyn
     legend:
@@ -49,7 +51,7 @@ cy:
       all_calendars: Pob calendr
       amend_existing_events_message: Gallwch ddiwygio digwyddiadau presennol, fel y tymhorau ysgol drwy glicio arnynt, diweddaru'r dyddiadau a chadw'r newidiadau
       calendar_view: Gwedd calendr
-      confirm_message: Bydd hyn yn copïo'r holl ddigwyddiadau sydd wedi'u golygu yn y 7 diwrnod i galendrau plant. Ydych chi'n siŵr?
+      confirm_message: Bydd hyn yn copïo'r holl ddigwyddiadau sydd wedi'u golygu yn y 7 diwrnod diwethaf i galendrau plant. Ydych chi'n siŵr?
       current_events: Digwyddiadau presennol
       title: "Calendr %{calendar_title}"
       update_dependent_schools: Diweddaru ysgolion dibynnol

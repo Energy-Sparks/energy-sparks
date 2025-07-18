@@ -26,23 +26,6 @@ module DataFeeds
       end
     end
 
-    describe 'with no gsp_id' do
-      before do
-        solar_pv_tuos_area.update(gsp_id: nil)
-      end
-
-      it 'looks up the id' do
-        expect(solar_pv_tuos_interface).to receive(:find_areas) do
-          [{ gsp_id: 123, gsp_name: gsp_name, pes_id: 999 }]
-        end
-        allow(solar_pv_tuos_interface).to receive(:historic_solar_pv_data) do
-          [{ start_date => good_generation_readings }, nil, nil]
-        end
-        spvtl = SolarPvTuosLoader.new(start_date, start_date + 1.day, solar_pv_tuos_interface)
-        expect { spvtl.import }.to change(SolarPvTuosReading, :count).from(0).to(1)
-      end
-    end
-
     describe 'with good data' do
       before do
         expect(solar_pv_tuos_interface).not_to receive(:find_areas)

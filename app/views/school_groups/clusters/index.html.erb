@@ -1,13 +1,19 @@
-<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.clusters.index.title').capitalize %>
+<% content_for :page_title, "#{@school_group.name} | #{t('school_groups.clusters.index.title').capitalize}" %>
 
 <h1><%= @school_group.name %> <%= t('school_groups.clusters.index.title') %></h1>
 
-<p><%= t('school_groups.clusters.intro', group_type: t("school_groups.clusters.group_type.#{@school_group.group_type}")) %></p>
-  <%= link_to t('school_groups.clusters.index.create_new'), new_school_group_cluster_path(@school_group), class: 'btn btn-sm my-2' %>
-
+<p>
+  <%= t('school_groups.clusters.intro',
+        group_type: t("school_groups.clusters.group_type.#{@school_group.group_type}")) %>
+</p>
+  <%= link_to t('school_groups.clusters.index.create_new'),
+              new_school_group_cluster_path(@school_group),
+              class: 'btn btn-sm my-2' %>
   <% if @clusters.any? %>
     <% @clusters.by_name.each do |cluster| %>
-      <%= simple_form_for [@school_group, cluster], url: unassign_school_group_cluster_path(@school_group, cluster), method: 'post' do |f| %>
+      <%= simple_form_for [@school_group, cluster],
+                          url: unassign_school_group_cluster_path(@school_group, cluster),
+                          method: 'post' do |f| %>
       <div class="row pb-2 px-2">
         <div class="standout info col rounded">
           <h4>
@@ -16,16 +22,21 @@
             </span>
             <%= fa_icon 'users' %> <%= t('school_groups.clusters.index.cluster', cluster: cluster.name) %>
             <%= render 'schools_count', count: cluster.schools.count %>
-            <%= link_to t('common.labels.edit'), edit_school_group_cluster_path(@school_group, cluster), class: 'ml-1 btn btn-sm' %>
-            <%= link_to t('common.labels.delete'), school_group_cluster_path(@school_group, cluster), method: :delete, data: { confirm:  t('common.confirm') }, class: 'ml-1 btn btn-sm btn-danger' %>
+            <%= link_to t('common.labels.edit'),
+                        edit_school_group_cluster_path(@school_group, cluster),
+                        class: 'ml-1 btn btn-sm' %>
+            <%= link_to t('common.labels.delete'),
+                        school_group_cluster_path(@school_group, cluster),
+                        method: :delete, data: { confirm: t('common.confirm') },
+                        class: 'ml-1 btn btn-sm btn-danger' %>
             <div class="float-right">
-              <%= submit_tag 'Unassign selected', class: "btn btn-sm", disabled: !cluster.schools.any? %>
+              <%= submit_tag 'Unassign selected', class: 'btn btn-sm', disabled: cluster.schools.none? %>
             </div>
           </h4>
           <div class="collapse show pb-1" id="cluster-<%= cluster.id %>">
             <%= render 'schools',
-              schools: cluster.schools.by_name,
-              message: t('school_groups.clusters.index.no_schools') %>
+                       schools: cluster.schools.by_name,
+                       message: t('school_groups.clusters.index.no_schools') %>
           </div>
         </div>
       </div>
@@ -46,15 +57,16 @@
         <div class="float-right form-inline">
           <small>
             <%= t('school_groups.clusters.index.move_selected') %>
-            <%= select_tag :id, options_from_collection_for_select(@school_group.clusters.by_name, :id, :name), class: 'ml-1 form-control', include_blank: t('school_groups.clusters.index.select_cluster') %>
+            <%= select_tag :id, options_from_collection_for_select(@school_group.clusters.by_name, :id, :name),
+                           class: 'ml-1 form-control', include_blank: t('school_groups.clusters.index.select_cluster') %>
             <%= submit_tag t('school_groups.clusters.index.move'), class: 'ml-1 form-control btn btn-sm' %>
           </small>
         </div>
       </h4>
       <div class="collapse show pb-1" id="cluster-unassigned">
         <%= render 'schools',
-          schools: @school_group.schools.active.by_name.not_in_cluster,
-          message: t('school_groups.clusters.index.all_schools') %>
+                   schools: @school_group.schools.active.by_name.not_in_cluster,
+                   message: t('school_groups.clusters.index.all_schools') %>
       </div>
     </div>
   </div>

@@ -1,0 +1,46 @@
+{
+   "meta":{
+      "generated":"2022-02-08 12:25:56"
+   },
+   "data":{
+      "id":"03354",
+      "name":{
+         "en":"Nottingham Weather Centre"
+      },
+      "country":"GB",
+      "region":"ENG",
+      "identifier":{
+         "national":null,
+         "wmo":"03354",
+         "icao":null
+      },
+      "location":{
+         "latitude":53.0,
+         "longitude":-1.25,
+         "elevation":117
+      },
+      "timezone":"Europe/London",
+      "inventory":{
+         "model":{
+            "start":"2018-01-28",
+            "end":"2022-01-30"
+         },
+         "hourly":{
+            "start":"2018-01-27",
+            "end":"2022-01-21"
+         },
+         "daily":{
+            "start":"2018-01-28",
+            "end":"2022-01-18"
+         },
+         "monthly":{
+            "start":2018,
+            "end":2021
+         },
+         "normals":{
+            "start":1961,
+            "end":1990
+         }
+      }
+   }
+}

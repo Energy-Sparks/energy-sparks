@@ -10,16 +10,11 @@ RSpec.describe AdviceRemindersComponent, :include_application_helper, :include_u
   let(:id) { 'custom-id'}
   let(:classes) { 'extra-classes' }
   let(:user) { create(:admin) }
-  let(:alert_count) { 0 }
-  let(:priority_count) { 0 }
-
   let(:school) { create(:school) }
 
   let(:params) do
     {
       school: school,
-      alert_count: alert_count,
-      priority_count: priority_count,
       user: user,
       id: id,
       classes: classes
@@ -86,8 +81,7 @@ RSpec.describe AdviceRemindersComponent, :include_application_helper, :include_u
     it { expect(html).to have_no_link(I18n.t('common.labels.view_opportunities'), href: priorities_school_advice_path(school)) }
 
     context 'with alerts and priorities' do
-      let(:alert_count) { 1 }
-      let(:priority_count) { 1 }
+      include_context 'with dashboard alerts'
 
       it { expect(html).to have_content(I18n.t('schools.school_targets.achieving_your_targets.view_recent_alerts')) }
       it { expect(html).to have_link(I18n.t('common.labels.view_alerts'), href: alerts_school_advice_path(school)) }

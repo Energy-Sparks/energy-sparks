@@ -1,59 +1,51 @@
 <div>
 
-  <div class="indicates-required"><span class="asterisk">*</span> indicates required field</div>
+  <p class="indicates-required"><span class="asterisk">*</span> indicates required field</p>
 
-  <br/>
+  <%= form_tag mailchimp_signups_path, id: 'mailchimp-form', class: 'mailchimp-form' do %>
 
-  <%= form_tag mailchimp_signups_path, class: 'mailchimp-form' do %>
-
-    <%= hidden_field_tag :list_id, list.id %>
-    <%= hidden_field_tag :tags, config.tags %>
+    <% if current_user %>
+      <%= hidden_field_tag :contact_source, 'User' %>
+    <% end %>
 
     <div class="mc-field-group form-group row">
-      <div class="col-sm-3">
-        <%= label_tag :user_name, t('mailchimp_signups.mailchimp_form.user_name') %>
+      <div class="col-sm-4">
+        <%= label_tag :name, t('mailchimp_signups.mailchimp_form.user_name') %>
       </div>
-      <div class="col-sm-9">
-        <%= text_field_tag "merge_fields[FULLNAME]", config.user_name, class: 'form-control', required: true %>
+      <div class="col-sm-8">
+        <%= text_field_tag :name, contact.name, class: 'form-control', required: true, autocomplete: 'on',
+                                                disabled: current_user.present? && contact.name.present? %>
       </div>
     </div>
 
     <div class="mc-field-group form-group row">
-      <div class="col-sm-3">
-        <%= label_tag t('mailchimp_signups.mailchimp_form.school_name') %>
-      </div>
-      <div class="col-sm-9">
-        <%= text_field_tag "merge_fields[SCHOOL]", config.school_name, class: 'form-control'  %>
-      </div>
-    </div>
-
-    <div class="mc-field-group form-group row">
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <%= label_tag :email_address, t('mailchimp_signups.mailchimp_form.email_address') %>
       </div>
-      <div class="col-sm-9">
-        <%= text_field_tag :email_address, config.email_address, class: 'form-control', required: true %>
+      <div class="col-sm-8">
+        <%= text_field_tag :email_address, contact.email_address, class: 'form-control', required: true,
+                                                                  disabled: current_user.present?, autocomplete: 'on' %>
       </div>
     </div>
 
-    <% list.categories.each do |category| %>
+    <% unless current_user.present? %>
       <div class="mc-field-group form-group row">
-        <div class="col-sm-3">
-          <%= label_tag "interests[#{category.id}]", "#{category.title} *" %>
+        <div class="col-sm-4">
+          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.school_name') %>
         </div>
-        <div class="col-sm-9">
-          <% category.interests.each do |interest| %>
-            <div class="form-check">
-              <%= radio_button_tag "interests[#{category.id}]", interest.id, false, class: "form-check-input" %>
-              <%= label_tag "interests_#{category.id}_#{interest.id}", interest.name, value: interest.name, class: "form-check-label" %>
-            </div>
-            <% if interest.name == 'Other' %>
-              <%= text_field_tag "merge_fields[#{other_field_name(category.title)}]", '', class: 'form-control hidden', placeholder: t('mailchimp_signups.mailchimp_form.please_specify'), class: 'hidden' %>
-            <% end %>
-          <% end %>
+        <div class="col-sm-8">
+          <%= text_field_tag :school, contact.school, class: 'form-control', autocomplete: 'on' %>
         </div>
       </div>
     <% end %>
+
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %> *
+      </div>
+    </div>
+
+    <%= render 'users/emails/mailchimp_interest_fields', email_types: @email_types, interests: @interests %>
 
     <%= submit_tag t('mailchimp_signups.mailchimp_form.subscribe'), class: 'btn btn-success' %>
 

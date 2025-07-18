@@ -1,9 +1,9 @@
 module Schools
   module Advice
     class CostsService
-      def initialize(school, meter_collection, fuel_type)
+      def initialize(school, aggregate_school_service, fuel_type)
         @school = school
-        @meter_collection = meter_collection
+        @aggregate_school_service = aggregate_school_service
         @fuel_type = fuel_type
       end
 
@@ -34,7 +34,7 @@ module Schools
 
       # find the analytics meter for a given mpan
       def analytics_meter_for_mpan(mpan_mprn)
-        @meter_collection.meter?(mpan_mprn)
+        meter_collection.meter?(mpan_mprn)
       end
 
       def calculate_costs_for_latest_twelve_months(meter = aggregate_meter)
@@ -74,7 +74,7 @@ module Schools
       end
 
       def aggregate_meter
-        @meter_collection.aggregate_meter(@fuel_type)&.original_meter
+        meter_collection.aggregate_meter(@fuel_type)&.original_meter
       end
 
       def analysis_end_date(meter = aggregate_meter)
@@ -90,7 +90,7 @@ module Schools
       end
 
       def reporting_meters
-        @meter_collection.real_meters2.select { |m| m.fuel_type == @fuel_type }
+        meter_collection.real_meters2.select { |m| m.fuel_type == @fuel_type }
       end
 
       def meter_costs_service(meter = aggregate_meter)
@@ -103,6 +103,10 @@ module Schools
 
       def tariff_information_service(meter = aggregate_meter)
         @tariff_information_service ||= Costs::TariffInformationService.new(meter, analysis_start_date, analysis_end_date)
+      end
+
+      def meter_collection
+        @aggregate_school_service.meter_collection
       end
     end
   end

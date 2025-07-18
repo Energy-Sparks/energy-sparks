@@ -8,47 +8,8 @@
   }
 }
 
-trix-editor {
-  min-height: 320px !important;
-  background: $white;
-}
-
-trix-toolbar .button_groups {
-  button.code {
-    display: none;
-  }
-  button.strike {
-    display: none;
-  }
-  button.increase {
-    display: none;
-  }
-  button.decrease {
-    display: none;
-  }
-}
-
-.activity-form trix-toolbar {
-  .trix-button--icon {
-    width: 3.6em;
-    height: 2.6em;
-  }
-
-  button.trix-button--icon-quote {
-    display: none;
-  }
-
-  button.trix-button--icon-code {
-    display: none;
-  }
-
-  .trix-button {
-    background: $white;
-  }
-}
-
 .select2-container--bootstrap .select2-results__group {
-  color: $text;
+  color: $body-color;
   font-size: $f4;
 }
 
@@ -65,7 +26,7 @@ trix-toolbar .button_groups {
   height:0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid $dark-grey;
+  border-top: 5px solid $grey-dark;
 }
 
 img.activity-card-img {

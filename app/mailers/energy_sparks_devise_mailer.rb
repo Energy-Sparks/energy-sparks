@@ -11,6 +11,20 @@ class EnergySparksDeviseMailer < Devise::Mailer
 
   layout 'mailer'
 
+  def confirmation_instructions_first_reminder(record, token, opts = {})
+    opts[:reminder] = true
+    # i18n-tasks-use t('devise.mailer.confirmation_instructions_first_reminder.subject')
+    opts[:subject_key] = :confirmation_instructions_first_reminder
+    confirmation_instructions(record, token, opts)
+  end
+
+  def confirmation_instructions_final_reminder(record, token, opts = {})
+    opts[:reminder] = true
+    # i18n-tasks-use t('devise.mailer.confirmation_instructions_final_reminder.subject')
+    opts[:subject_key] = :confirmation_instructions_final_reminder
+    confirmation_instructions(record, token, opts)
+  end
+
   protected
 
   def devise_mail(record, action, opts = {}, &block)
@@ -28,9 +42,7 @@ class EnergySparksDeviseMailer < Devise::Mailer
   end
 
   def active_locales_for_devise(record)
-    return record.school.email_locales if record.try(:school)
-    return record.school_group.email_locales if record.try(:school_group)
-    [:en]
+    (record.school || record.school_group)&.email_locales || [:en]
   end
 
   def devise_mail_for_locale(action, opts, locale, &block)
@@ -41,8 +53,8 @@ class EnergySparksDeviseMailer < Devise::Mailer
 
   def devise_mail_for_locales(action, opts, locales, &block)
     template = "#{action}_content"
-    subject = for_each_locale(locales) { subject_for(action) }.join(' / ')
-    @body = for_each_locale(locales) { render template, layout: nil }.join('<hr>')
-    make_bootstrap_mail headers_for(action, opts.merge(subject: subject)), &block
+    subject = for_each_locale(locales) { subject_for(opts[:subject_key] || action) }.join(' / ')
+    @body = for_each_locale(locales) { render template, layout: nil, locals: opts }.join('<hr>')
+    make_bootstrap_mail headers_for(action, opts.merge(subject:)), &block
   end
 end

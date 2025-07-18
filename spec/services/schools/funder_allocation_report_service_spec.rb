@@ -46,17 +46,19 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let(:school_group) { create(:school_group) }
 
     let!(:school_1) do
-      create(:school,
-             visible: true,
-             school_onboarding: school_onboarding,
-             school_group: school_group,
-             calendar: calendar,
-             country: :england,
-             region: :east_of_england,
-             local_authority_area: local_authority_area,
-             percentage_free_school_meals: 50,
-             funder: funder,
-             removal_date: nil)
+      school = create(:school,
+                      visible: true,
+                      school_onboarding: school_onboarding,
+                      school_group: school_group,
+                      calendar: calendar,
+                      country: :england,
+                      region: :east_of_england,
+                      local_authority_area: local_authority_area,
+                      percentage_free_school_meals: 50,
+                      funder: funder,
+                      removal_date: nil)
+      create(:staff, school:)
+      school
     end
 
     let!(:activities)  { create_list(:activity, 5, school: school_1) }
@@ -113,6 +115,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         'England',
         school_1.number_of_pupils,
         school_1.percentage_free_school_meals,
+        1,
         school_1.local_authority_area.name,
         school_1.region.humanize,
         5,
@@ -150,6 +153,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         'England',
         school_2.number_of_pupils,
         nil,
+        0,
         nil,
         nil,
         0,

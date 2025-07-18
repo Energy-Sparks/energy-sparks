@@ -1,25 +1,21 @@
-<div id="<%= id %>" class="pupil-explore-component col-12 col-md-4 <%= classes %>">
-  <div class="h-100 mb-2 rounded <%= fuel_type_background_class(fuel_type) %>">
-    <div class="row p-4">
-      <div class="col">
-        <div class="row">
-          <div class="col">
-            <h3>
-              <%= component 'icon', name: icon, icon_set: icon_set, style: :circle, size: 'f3' %>
-            </h3>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <h3>
-              <%= link %>
-            </h3>
-            <% if note? %>
-              <%= note %>
-            <% end %>
-          </div>
+<%= tag.div id: id, class: classes do %>
+  <div class="h-100 mb-2 rounded bg-light %>">
+    <div class="row pt-4 pl-4 pr-4">
+      <div class="col-2 d-none d-md-block">
+        <h4>
+          <%= render IconComponent.new(name: icon, fuel_type: fuel_type, icon_set: icon_set, style: :circle, size: 'f4') %>
+        </h4>
+      </div>
+      <div class="col-12 col-xl-10 d-md-flex flex-wrap justify-items-center align-items-center">
+        <div>
+          <h3>
+            <%= link %>
+          </h3>
+          <% if note? %>
+            <%= note %>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>

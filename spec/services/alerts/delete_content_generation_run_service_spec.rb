@@ -7,17 +7,15 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
 
   let(:service)   { Alerts::DeleteContentGenerationRunService.new }
 
-  it 'defaults to beginning of month, 1 month ago' do
-    expect(service.older_than).to eql(1.month.ago.beginning_of_month)
+  it 'defaults to two weeks ago' do
+    expect(service.older_than).to eql(14.days.ago.to_date)
   end
 
   it 'doesnt delete new runs' do
-    date_time = (Time.zone.now - 1.month)
+    date_time = (Time.zone.now - 14.days)
     school.content_generation_runs.create!(created_at: date_time + 1.day)
     school.content_generation_runs.create!(created_at: date_time + 1.week)
-    school.content_generation_runs.create!(created_at: date_time + 1.month)
     school.content_generation_runs.create!(created_at: Time.zone.now)
-    expect(ContentGenerationRun.count).to eq 4
     expect { service.delete! }.not_to change(ContentGenerationRun, :count)
   end
 
@@ -29,7 +27,7 @@ describe Alerts::DeleteContentGenerationRunService, type: :service do
     let(:content_version_1) { create(:alert_type_rating_content_version, alert_type_rating: alert_type_rating)}
     let(:alert_1) { create(:alert, alert_type: electricity_fuel_alert_type) }
     let(:alert_2) { create(:alert, alert_type: electricity_fuel_alert_type) }
-    older_than_date = Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN
+    let(:older_than_date) { Alerts::DeleteContentGenerationRunService::DEFAULT_OLDER_THAN }
     let(:content_generation_run_1) { create(:content_generation_run, school: school, created_at: older_than_date) }
     let(:content_generation_run_2) { create(:content_generation_run, school: school, created_at: older_than_date + 1.day) }
 

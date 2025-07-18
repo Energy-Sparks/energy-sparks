@@ -1,15 +1,15 @@
-<div id="<%= id %>" class="scoreboard-summary-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if Flipper.enabled?(:new_dashboards_2024, user) %>
     <div class="row">
       <div class="col-12 col-md-6">
         <div class="row">
           <div class="col">
             <% if title.present? %>
-              <h2 id="scoreboard-update"><%= title %></h2>
+              <h2 id="scoreboard-update" class="scrollable-title"><%= title %></h2>
             <% end %>
           </div>
         </div>
-        <% if podium.points_to_overtake && podium.school_position.position != 1 %>
+        <% if podium.points_to_overtake && podium&.school_position&.position != 1 %>
           <div class="row">
             <div class="col">
               <h4>
@@ -28,15 +28,15 @@
         <div class="row">
           <div class="col">
             <%= link_to t('common.labels.choose_activity'), school_recommendations_path(school, scope: audience),
-                        class: 'btn btn-outline-dark' %>
+                        class: 'btn btn-default' %>
           </div>
         </div>
       </div>
       <div class="col-12 col-md-6">
-        <%= component 'podium', podium: podium, user: user, classes: 'bg-white rounded p-4' %>
+        <%= render PodiumComponent.new(podium: podium, user: user, classes: 'bg-white rounded p-4') %>
       </div>
     </div>
-    <%= component 'titled_section', id: 'scoreboard-recent-activity', classes: 'mt-4' do |section| %>
+    <%= render TitledSectionComponent.new(id: 'scoreboard-recent-activity', classes: 'mt-4') do |section| %>
       <% section.with_title do %>
         <h2><%= timeline_title %></h2>
       <% end %>
@@ -50,16 +50,17 @@
           <p>
             <%= link_to t('components.scoreboard_summary.view_scoreboard'),
                         scoreboard_path(scoreboard),
-                        class: 'btn btn-outline-dark' %>
+                        class: 'btn btn-default' %>
           </p>
         <% end %>
       <% end %>
       <% section.with_body do %>
-        <%= component 'scoreboard_activity',
-                      podium: podium,
-                      observations: observations,
-                      show_positions: other_schools?,
-                      classes: 'bg-white rounded p-4' %>
+        <%= render ScoreboardActivityComponent.new(
+              podium: podium,
+              observations: observations,
+              show_positions: other_schools?,
+              classes: 'bg-white rounded p-4'
+            ) %>
       <% end %>
     <% end %>
   <% else %>
@@ -70,7 +71,7 @@
         <div class="col-lg card-deck actions">
           <div class="card">
             <div class="card-body">
-                <%= component 'podium', podium: podium %>
+                <%= render PodiumComponent.new(podium: podium) %>
             </div>
           </div>
         </div>
@@ -79,10 +80,10 @@
           <div class="card">
             <div class="card-body">
               <h4 class="text-center"><%= timeline_title %></h4>
-              <%= component 'compact_timeline', observations: observations %>
+              <%= render CompactTimelineComponent.new(observations: observations) %>
             </div>
           </div>
         </div>
       </div>
   <% end %>
-</div>
+<% end %>

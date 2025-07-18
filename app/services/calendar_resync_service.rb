@@ -1,5 +1,5 @@
 class CalendarResyncService
-  attr_reader :successes, :failures
+  attr_reader :successes, :failures, :calendar
 
   def initialize(calendar, from_date = nil)
     @calendar = calendar

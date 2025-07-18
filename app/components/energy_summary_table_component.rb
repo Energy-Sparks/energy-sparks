@@ -41,23 +41,10 @@ class EnergySummaryTableComponent < ApplicationComponent
   end
 
   def col(size = 1)
-    "col-#{size}" if Flipper.enabled?(:new_dashboards_2024, user)
+    "col-#{size}"
   end
 
   def no_data_message_class(data)
-    return data.message_class unless Flipper.enabled?(:new_dashboards_2024, user)
     data.message_class == 'old-data' ? data.message_class : 'future-data'
-  end
-
-  def footer_link
-    if Flipper.enabled?(:new_dashboards_2024, user)
-      I18n.t('advice_pages.how_have_we_analysed_your_data.link_title')
-    else
-      "#{I18n.t('schools.show.more_information')} #{fa_icon('info-circle')}".html_safe
-    end
-  end
-
-  def footer_classes
-    Flipper.enabled?(:new_dashboards_2024, user) ? 'table-caption' : 'text-right management-overview-caption'
   end
 end

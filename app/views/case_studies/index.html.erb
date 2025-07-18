@@ -1,3 +1,60 @@
-<% content_for :page_title, t('case_studies.title') %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('case_studies.title') %>
+  <div class="container-fluid adult mb-5 py-4">
+    <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
+      <% grid.with_iframe classes: 'rounded-xl', cell_classes: 'pr-xl-4', src: 'https://www.youtube.com/embed/PqoKZjwgmoY' %>
+      <% grid.with_feature_card size: :xl, cell_classes: 'my-auto pl-xl-4' do |feature| %>
+        <%= feature.with_header title: t('case_studies.feature.title'), classes: 'mt-3 mt-lg-0' %>
+        <%= feature.with_description { t('case_studies.feature.description_html', count: School.active.visible.count) } %>
+        <%= feature.with_button t('home.buttons.our_tool'), product_path, style: :primary %>
+        <%= feature.with_button t('home.buttons.watch_a_demo'),
+                                book_demo_campaigns_path,
+                                style: :secondary %>
+      <% end %>
+    <% end %>
+  </div>
 
-<%= render 'home/case_studies', case_studies: @case_studies, all_case_studies_count: 0 %>
+  <div class="container mt-4">
+    <%= render Layout::GridComponent.new(
+          id: 'case-studies',
+          cols: 3,
+          classes: 'pb-4',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100'
+        ) do |grid| %>
+
+      <% @case_studies.each do |case_study| %>
+        <%= grid.with_card do |card| %>
+          <%= if case_study.image.attached? && @show_images
+                card.with_image(src: cdn_link_url(case_study.image), rounded: :top)
+              end %>
+          <%= card.with_feature_card(
+                theme: :light, size: :sm,
+                classes: "p-4 rounded-xl #{'rounded-top-xl' unless case_study.image.attached? && @show_images}"
+              ) do |feature| %>
+            <% case_study.tag_list.each do |tag| %>
+              <%= feature.with_tag(tag) %>
+            <% end %>
+            <%= feature.with_header(title: case_study.title) %>
+            <%= feature.with_description { case_study.description.to_s } %>
+            <%= feature.with_link(
+                  href: case_study_download_path(
+                    case_study,
+                    locale: case_study.file_locale
+                  ), target: '_blank'
+                ) { t('common.labels.download') } %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <%= render Layout::CarouselComponent.new(id: 'testimonials',
+                                             show_markers: false,
+                                             theme: :accent,
+                                             classes: 'rounded-xl p-4 mb-5',
+                                             show_arrows: :side) do |carousel| %>
+      <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

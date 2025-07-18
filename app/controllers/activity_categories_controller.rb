@@ -7,7 +7,11 @@ class ActivityCategoriesController < ApplicationController
     @pupil_categories = ActivityCategory.pupil.by_name
     @activity_categories = ActivityCategory.featured.by_name.select { |activity_category| activity_category.activity_types.active.count >= 4 }
     @activity_count = ActivityType.active_and_not_custom.count
-    @programme_types = ProgrammeType.featured
+    if Flipper.enabled?(:todos, current_user)
+      @programme_types = ProgrammeType.featured.with_task_type(ActivityType)
+    else
+      @programme_types = ProgrammeType.featured
+    end
   end
 
   def show

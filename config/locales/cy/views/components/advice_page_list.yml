@@ -1,0 +1,5 @@
+cy:
+  components:
+    advice_page_list:
+      intro: Mae'r tudalennau hyn yn rhoi mwy o fewnwelediad a dadansoddiad o'r ffyrdd y mae eich ysgol yn defnyddio ynni. Amlygwyd meysydd sydd angen eu gwella neu lle rydych yn gwneud yn dda.
+      title: Esboniad o'ch defnydd o ynni

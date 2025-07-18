@@ -2,27 +2,24 @@
 en:
   alert_mailer:
     alert_email:
-      book_a_workshop: Book a workshop
-      book_an_audit: Book an audit
-      dashboard_and_analysis_message_html: Your <strong><a href='%{school_url}'>school dashboard</a></strong> always shows your latest alerts and our <strong><a href='%{school_analysis_index_url}'>detailed analysis</a></strong> of your energy usage will provide further insights
-      do_not_show_me_alerts_like_this: Don't show me alerts like this
-      education_workshops_message: Energy Sparks offers in-person and virtual half day education workshops and assemblies to participating schools across the UK
+      dashboard_and_analysis_message_2024_html: Your <a href='%{school_url}'>school dashboard</a> always shows a summary of your recent alerts and energy consumption. For a <a href='%{alerts_school_advice_url}'>full list of alerts</a> and our suggested <a href='%{priorities_school_advice_url}'>priority actions</a>, view our <a href='%{school_analysis_index_url}'>detailed analysis</a>
       find_out_more: Find out more
-      get_your_pupils_involved: Get your pupils involved
       if_you_have_any_feedback: If you have any feedback on these emails, please contact us at
       if_you_wish_to_completely_unsubscribe: If you wish to completely unsubscribe from these emails then contact your school administrator(s)
       latest_updates: Latest updates
-      need_more_help: Need more help
-      need_more_help_message: Energy Sparks offers online virtual energy audits and on-site energy audits to support you to develop your school's energy action plan
       paragraph_1_html: We analyse <a href='%{school_url}'>your school's</a> energy data to highlight where you are making progress or where you may be able to take steps to reduce your usage to save money and reduce carbon emissions
       set_a_new_target: Set a new target
       stay_up_to_date: Stay up to date
       subject: Energy Sparks alerts
+      subject_2024: "%{school_name} weekly alerts"
+      take_action_around_the_school: Take action around the school
+      take_action_choose: Choose activity
+      take_action_message: Complete one of our recommended pupil or adult led activities to start reducing your energy usage
       title: Your weekly alerts
+      unsubscribe_message_html: You can unsubscribe from these emails by <a href="%{profiles_url}">updating your profile</a> on Energy Sparks
       view_your_progress_report: View your progress report
       view_your_school_dashboard: View your school dashboard
       why_am_i_receiving_these_emails: Why am I receiving these emails?
-      you_can_stop_receiving: You can stop receiving, or temporarily pause individual alerts by clicking the links provided in this email
       you_have_been_signed_up: You have been signed up to receive energy alerts for your school
       your_school_has_current_target_html: Your school has set a target to reduce its energy usage by %{target_date}. <strong><a href='%{school_targets_url}'>Your school's progress report</a></strong> will help you monitor progress and suggest ways to take action
       your_school_has_target_html: Your school set a target to reduce its energy usage by %{target_date}. Its time to <a href='%{school_targets_url}'>review your progress</a> and set a new target for the year ahead
@@ -106,21 +103,6 @@ en:
   mailer:
     get_in_touch: Get in touch
   onboarding_mailer:
-    activation_email:
-      explore_activities: Explore activities
-      get_in_touch_html: <a href="%{contact_url}">Get in touch</a> if you have any further questions
-      header: "%{school_name} is now live on Energy Sparks"
-      join_a_webinar: Join a webinar
-      need_some_help: Need some help?
-      paragraph_1_html: You can now use Energy Sparks to begin recording your energy saving activities. Explore our pupil-led <strong><a href="%{activity_categories_url}">activities and educational resources</a></strong>which are designed to teach your pupils about energy whilst saving money for their school.
-      paragraph_2_html: We also have a range of <strong><a href="%{intervention_type_groups_url}">energy saving actions</a></strong> that you, other members of staff and volunteers can carry out to start improving you energy usage.
-      paragraph_3_html: View your <a href="%{school_url}">school dashboard</a> for suggestions for how to get started.
-      paragraph_4: We will be in touch shortly to confirm when we have completed getting access to your energy data.
-      paragraph_5_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="%{user_guide_videos_url}">Training Videos</a> or join one of our <a href="%{training_url}">live webinar training</a> sessions.
-      paragraph_6: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
-      subject: "%{school} is live on Energy Sparks"
-      thanks_for_joining: Thanks for joining!
-      the_energy_sparks_team: The Energy Sparks Team
     completion_email:
       find_them_on_energy_sparks: Find them on Energy Sparks
       subject: "%{school} (%{school_group}) has completed the onboarding process"

@@ -23,48 +23,48 @@
 // Leaflet cluster styles
 
 .marker-cluster-small {
-  background-color: $light-red;
+  background-color: $red-light;
 }
 
 .marker-cluster-small div {
-  background-color: $new-red;
+  background-color: $red-dark;
 }
 
 .marker-cluster-medium {
-  background-color: $light-red;
+  background-color: $red-light;
 }
 
 .marker-cluster-medium div {
-  background-color: $new-red;
+  background-color: $red-dark;
 }
 
 .marker-cluster-large {
-  background-color: $light-red;
+  background-color: $red-light;
 }
 .marker-cluster-large div {
-  background-color: $new-red;
+  background-color: $red-dark;
 }
 
 /* IE 6-8 fallback colors */
 .leaflet-oldie .marker-cluster-small {
-  background-color: $light-red;
+  background-color: $red-light;
 }
 .leaflet-oldie .marker-cluster-small div {
-  background-color: $new-red;
+  background-color: $red-dark;
 }
 
 .leaflet-oldie .marker-cluster-medium {
-  background-color: $light-red;
+  background-color: $red-light;
 }
 .leaflet-oldie .marker-cluster-medium div {
-  background-color: $new-red;
+  background-color: $red-dark;
 }
 
 .leaflet-oldie .marker-cluster-large {
-  background-color: $light-red;
+  background-color: $red-light;
 }
 .leaflet-oldie .marker-cluster-large div {
-  background-color: $new-red;
+  background-color: $red-dark;
 }
 
 .marker-cluster {

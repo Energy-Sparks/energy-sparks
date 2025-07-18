@@ -92,6 +92,14 @@
           <%= render 'shared/navigation/second_nav/my_schools_menu' %>
         <% end %>
 
+        <% if Flipper.enabled?(:profile_pages, current_user) %>
+          <li class="nav-item nowrap">
+            <% if user_signed_in? && current_user.has_profile? %>
+              <%= link_to fa_icon('user'), user_path(current_user), title: t('nav.my_account'), class: 'nav-link' %>
+            <% end %>
+          </li>
+        <% end %>
+
         <li class="nav-item nowrap">
           <% if user_signed_in? %>
             <!-- Sign out - context: user signed in -->

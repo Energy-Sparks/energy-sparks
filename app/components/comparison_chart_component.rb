@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 # For displaying stacked bar charts on the school comparison reports
-class ComparisonChartComponent < ViewComponent::Base
+class ComparisonChartComponent < ApplicationComponent
   renders_one :title
   renders_one :subtitle
   renders_one :introduction
 
-  attr_reader :id
-
-  def initialize(id:, x_axis:, x_data:, y_axis_label:)
-    @id = id
+  def initialize(x_axis:, x_data:, y_axis_label:, **_kwargs)
+    super
     @x_axis = x_axis
     @x_data = x_data
     @y_axis_label = y_axis_label

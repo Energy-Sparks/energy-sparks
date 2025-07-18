@@ -1,4 +1,4 @@
-<div class="pb-2">
+<%= tag.div id: id, class: class_names(classes, 'pb-2') do %>
   <strong><%= t("advice_pages.#{@advice_page_key}.page_title") %></strong>
   <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>
 
@@ -15,7 +15,7 @@
                 <div class="body m-2">
                   <h2>
                     <% if count.positive? %>
-                      <%= component 'footnote_modal/link', modal_id: modal_id_for(category) do %>
+                      <%= render FootnoteModalComponent::Link.new(modal_id: modal_id_for(category)) do %>
                         <%= label.first %>
                       <% end %>
                     <% else %>
@@ -27,9 +27,10 @@
                   <small><%= label.last.capitalize %></small>
                 </div>
                 <% if count.positive? %>
-                  <%= component 'footnote_modal',
-                                title: tag.small(modal_title_for(category)),
-                                modal_id: modal_id_for(category) do |component| %>
+                  <%= render FootnoteModalComponent.new(
+                        title: tag.small(modal_title_for(category)),
+                        modal_id: modal_id_for(category)
+                      ) do |component| %>
                     <% component.with_body_content do %>
                       <div class="text-left">
                         <%= t('school_groups.comparisons.modal_subtitle_html',
@@ -97,4 +98,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

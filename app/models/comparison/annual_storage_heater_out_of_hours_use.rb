@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: annual_storage_heater_out_of_hours_uses
+# Table name: comparison_annual_storage_heater_out_of_hours_uses
 #
 #  alert_generation_run_id  :bigint(8)
 #  holidays_gbp             :float
@@ -11,6 +11,10 @@
 #  schoolday_open_percent   :float
 #  weekends_gbp             :float
 #  weekends_percent         :float
+#
+# Indexes
+#
+#  idx_on_school_id_9addfaf1f6  (school_id) UNIQUE
 #
 class Comparison::AnnualStorageHeaterOutOfHoursUse < Comparison::View
   scope :with_data, -> { where.not(schoolday_open_percent: nil) }

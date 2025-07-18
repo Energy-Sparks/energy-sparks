@@ -1,7 +1,8 @@
 <li id="my-schools-menu" class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" id="switch_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('nav.my_schools') %></a>
+  <a class="nav-link dropdown-toggle" href="#" id="switch_school" data-toggle="dropdown" aria-haspopup="true"
+     aria-expanded="false"><%= t('nav.my_schools') %></a>
   <div class="dropdown-menu" aria-labelledby="switch_school">
-    <% current_user.cluster_schools_for_switching.each do |school| %>
+    <% current_user.cluster_schools.visible.by_name.select(:id, :name).each do |school| %>
       <%= link_to school.name, school_switcher_path(school_id: school.id), method: :post, class: 'dropdown-item' %>
     <% end %>
   </div>

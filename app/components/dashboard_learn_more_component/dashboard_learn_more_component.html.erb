@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="row dashboard-learn-more-component <%= classes %> p-4 d-flex flex-wrap align-items-center justify-content-between">
+<%= tag.div id: id, class: class_names(classes, 'row p-4 d-flex flex-wrap align-items-center justify-content-between') do %>
   <div>
     <div class="row">
       <div class="col">
@@ -17,16 +17,18 @@
   </div>
   <div>
     <% if data_enabled? %>
-      <div class="row">
-        <div class="col d-flex justify-content-center align-items-center">
-          <%= link_to t('schools.dashboards.learn_more.explore'),
-                      school_advice_path(school),
-                      class: 'btn btn-outline-dark mr-2' %>
-          <%= link_to t('schools.dashboards.learn_more.opportunities'),
-                      priorities_school_advice_path(school),
-                      class: 'btn btn-outline-dark' %>
+      <% if adult? %>
+        <div class="row">
+          <div class="col d-flex justify-content-center align-items-center">
+            <%= link_to t('components.dashboard_learn_more.adult.explore'),
+                        school_advice_path(school),
+                        class: 'btn btn-primary mr-2' %>
+            <%= link_to t('components.dashboard_learn_more.adult.opportunities'),
+                        priorities_school_advice_path(school),
+                        class: 'btn btn-secondary' %>
+          </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
-</div>
+<% end %>

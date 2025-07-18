@@ -1,18 +1,20 @@
 div.container-fluid.adult {
-  background: #f2f6fc;
+  background: $adult-light;
 }
 
 div.container-fluid.pupil {
   background: white;
 }
 
-div.dashboard-header-component h1 {
-  padding-top: 0px;
+.dashboard-header-component {
+  h1, h4 {
+    padding-top: 0px;
+  }
 }
 
 div.dashboard-header-component.pupil {
   #dashboard-header-school {
-    background: #f8f9fa; // Bootstrap 4 bg-light
+    background: $light;
   }
 }
 

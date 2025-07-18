@@ -37,14 +37,22 @@
       <li><%= link_to 'Programme Types', admin_programme_types_path %></li>
     </ul>
 
-    <h2>Comparison reports</h2>
+    <h2>Content Management</h2>
     <ul>
-      <li><%= link_to 'Report groups', admin_comparisons_report_groups_path %></li>
-      <li><%= link_to 'Reports', admin_comparisons_reports_path %></li>
-      <li><%= link_to 'Footnotes', admin_comparisons_footnotes_path %></li>
+      <li><%= link_to 'Case studies', admin_case_studies_path %></li>
+      <li><%= link_to 'Categories', admin_cms_categories_path %></li>
+      <li><%= link_to 'Help Pages', admin_help_pages_path %></li>
+      <li><%= link_to 'Jobs', admin_jobs_path %></li>
+      <li><%= link_to 'Newsletters', admin_newsletters_path %></li>
+      <li><%= link_to 'Pages', admin_cms_pages_path %></li>
+      <li><%= link_to 'Resources', admin_resource_files_path %></li>
+      <li><%= link_to 'Sections', admin_cms_sections_path %></li>
+      <li><%= link_to 'Team members', admin_team_members_path %></li>
+      <li><%= link_to 'Testimonials', admin_testimonials_path %></li>
+      <li><%= link_to 'Videos', admin_videos_path %></li>
     </ul>
-
   </div>
+
   <div class="col">
     <h2>Data, Tariffs, Meter attributes</h2>
     <ul>
@@ -55,6 +63,8 @@
       <li><%= link_to 'Data Sources', admin_data_sources_path %></li>
       <li><%= link_to 'Procurement Routes', admin_procurement_routes_path %></li>
       <li><%= link_to 'Global Meter Attributes', admin_global_meter_attributes_path %></li>
+      <li><%= link_to 'Local Distribution Zones', admin_local_distribution_zones_path %></li>
+      <li><%= link_to SecrCo2Equivalence.model_name.human.pluralize, admin_secr_co2_equivalences_path %></li>
     </ul>
 
     <h2>Alerts and Equivalences</h2>
@@ -63,24 +73,30 @@
       <li><%= link_to 'Equivalence Types', admin_equivalence_types_path %></li>
     </ul>
 
+    <h2>Development</h2>
+    <ul>
+      <li><%= link_to 'Background jobs', admin_good_job_path %></li>
+      <li><%= link_to 'Component previews', admin_components_path %></li>
+      <li><%= link_to 'Email previews', admin_mailer_previews_path %></li>
+      <li><%= link_to 'Feature flags', admin_flipper_path %></li>
+      <li><%= link_to 'Site colour palette', admin_colours_path %></li>
+      <li><%= link_to 'Chart preview', admin_chart_preview_path %></li>
+    </ul>
+
+    <h2>Comparison reports</h2>
+    <ul>
+      <li><%= link_to 'Report groups', admin_comparisons_report_groups_path %></li>
+      <li><%= link_to 'Reports', admin_comparisons_reports_path %></li>
+      <li><%= link_to 'Footnotes', admin_comparisons_footnotes_path %></li>
+    </ul>
+
     <h2>Other</h2>
     <ul>
-      <li><%= link_to 'Case studies', admin_case_studies_path %></li>
-      <li><%= link_to 'Help Pages', admin_help_pages_path %></li>
-      <li><%= link_to 'Jobs', admin_jobs_path %></li>
-      <li><%= link_to 'Newsletters', admin_newsletters_path %></li>
-      <li><%= link_to 'Partners', admin_partners_path %></li>
-      <li><%= link_to 'Resources', admin_resource_files_path %></li>
-      <li><%= link_to 'Site Settings', admin_settings_path %></li>
-      <li><%= link_to 'Team members', admin_team_members_path %></li>
-      <li><%= link_to 'Transport Types', admin_transport_types_path %></li>
-      <li><%= link_to 'Videos', admin_videos_path %></li>
-      <li><%= link_to 'Background Jobs', admin_good_job_path %></li>
-      <li><%= link_to 'Feature Flags', admin_flipper_path %></li>
       <li><%= link_to 'Admin meter statuses', admin_meter_statuses_path %></li>
       <li><%= link_to 'Funders', admin_funders_path %></li>
-      <li><%= link_to 'Email previews', admin_mailer_previews_path %></li>
-      <li><%= link_to 'Component previews', admin_component_previews_path %></li>
+      <li><%= link_to 'Partners', admin_partners_path %></li>
+      <li><%= link_to 'Site Settings', admin_settings_path %></li>
+      <li><%= link_to 'Transport Types', admin_transport_types_path %></li>
     </ul>
   </div>
 </div>

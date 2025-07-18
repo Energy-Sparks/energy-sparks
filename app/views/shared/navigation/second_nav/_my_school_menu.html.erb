@@ -1,16 +1,16 @@
 <li class="nav-item dropdown" id="my-school-menu">
-  <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('my_school_menu.my_school') %></a>
+  <a class="nav-link dropdown-toggle" href="#" id="my_school" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <%= t('my_school_menu.my_school') %>
+  </a>
   <div class="dropdown-menu" aria-labelledby="my_school">
     <!-- School -->
     <%= link_to current_user_school.name, school_path(current_user_school), class: 'dropdown-item' %>
 
-    <!-- Energy analysis -->
     <% if current_user_school.data_enabled? %>
+      <!-- Energy analysis -->
       <%= link_to t('my_school_menu.energy_analysis'), school_advice_path(current_user_school), class: 'dropdown-item' %>
-    <% end %>
 
-    <!-- Electricity, solar, gas and storage heater usage -->
-    <% if current_user_school.data_enabled? %>
+      <!-- Electricity / Electricity & solar usage -->
       <% if current_user_school.has_solar_pv? %>
         <%= link_to t('my_school_menu.electricity_and_solar_usage'),
                     pupils_school_analysis_path(current_user_school, category: :solar), class: 'dropdown-item' %>
@@ -18,10 +18,14 @@
         <%= link_to t('my_school_menu.electricity_usage'),
                     pupils_school_analysis_path(current_user_school, category: :electricity), class: 'dropdown-item' %>
       <% end %>
+
+      <!-- Gas usage -->
       <%= if current_user_school.has_gas?
             link_to t('my_school_menu.gas_usage'), pupils_school_analysis_path(current_user_school, category: :gas),
                     class: 'dropdown-item'
           end %>
+
+      <!-- Storage heater usage -->
       <%= if current_user_school.has_storage_heaters?
             link_to t('my_school_menu.storage_heater_usage'),
                     pupils_school_analysis_path(current_user_school, category: :storage_heaters), class: 'dropdown-item'
@@ -32,10 +36,7 @@
                       class: 'dropdown-item'
             end %>
       <% end %>
-    <% end %>
-
-    <!-- Review targets -->
-    <% if current_user_school.data_enabled? %>
+      <!-- Review targets -->
       <% if Targets::SchoolTargetService.targets_enabled?(current_user_school) &&
               can?(:manage, SchoolTarget) &&
               Targets::SchoolTargetService.new(current_user_school).enough_data? %>
@@ -59,13 +60,8 @@
     <% end %>
 
     <!-- My alerts -->
-    <% if current_user.contact_for_school %>
-      <%= link_to t('my_school_menu.my_alerts'),
-                  edit_school_contact_path(current_user_school, current_user.contact_for_school), class: 'dropdown-item' %>
-    <% elsif can? :create, Contact %>
-      <%= link_to t('my_school_menu.my_alerts'),
-                  new_school_contact_path(current_user_school, user_id: current_user.id), class: 'dropdown-item' %>
-    <% end %>
+    <%= link_to t('my_school_menu.my_alerts'),
+                user_contacts_path(current_user), class: 'dropdown-item' %>
 
     <!-- Download our data -->
     <% if current_user_school.data_enabled? %>

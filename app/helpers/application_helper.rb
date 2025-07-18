@@ -47,7 +47,7 @@ module ApplicationHelper
   def date_range_from_reading_gaps(readings_chunks)
     readings_chunks.map do |chunk|
       "#{chunk.size} days (#{short_dates(chunk.first.reading_date)} to #{short_dates(chunk.last.reading_date)})"
-    end.join('<br/>').html_safe
+    end.join('<br>').html_safe
   end
 
   def active(bool = true)
@@ -129,11 +129,11 @@ module ApplicationHelper
   def class_for_alert_rating(rating)
     return class_for_alert_colour(:unknown) if rating.nil?
     if rating > 9
-      class_for_alert_colour(:green)
+      class_for_alert_colour(:positive)
     elsif rating > 6
-      class_for_alert_colour(:yellow)
+      class_for_alert_colour(:neutral)
     else
-      class_for_alert_colour(:red)
+      class_for_alert_colour(:negative)
     end
   end
 
@@ -169,7 +169,9 @@ module ApplicationHelper
   end
 
   def alert_type_icon(alert_type, size = nil)
-    alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert_type.fuel_type)} #{size}"
+    icon = alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert_type.fuel_type)
+    icon += " #{size}" if size
+    icon
   end
 
   def alert_icon(alert, size = nil)
@@ -201,12 +203,10 @@ module ApplicationHelper
       'bg-electric-light'
     when :gas
       'bg-gas-light'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'bg-solar-light'
     when :storage_heater, :storage_heaters
       'bg-storage-light'
-    when :exported_solar_pv
-      'bg-solar-light'
     end
   end
 
@@ -216,12 +216,10 @@ module ApplicationHelper
       'text-electric'
     when :gas
       'text-gas'
-    when :solar_pv
+    when :solar_pv, :exported_solar_pv
       'text-solar'
     when :storage_heater, :storage_heaters
       'text-storage'
-    when :exported_solar_pv
-      'text-solar'
     end
   end
 
@@ -447,10 +445,18 @@ module ApplicationHelper
   end
 
   def dashboard_message_icon(messageable)
+    who = messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+
     if messageable.dashboard_message
       title = 'Dashboard message is shown for '
-      title += messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+      title += who
       tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+        fa_icon(:info)
+      end
+    else
+      title = 'Dashboard message is not set for '
+      title += who
+      tag.span class: 'badge badge-grey-light', title: title.to_s do
         fa_icon(:info)
       end
     end
@@ -460,13 +466,8 @@ module ApplicationHelper
     (fa_icon('chevron-up', class: 'fa-fw') + fa_icon('chevron-down', class: 'fa-fw')).html_safe
   end
 
-  def text_with_icon(text, icon)
-    (icon ? "#{fa_icon(icon)} #{text}" : text).html_safe
-  end
-
-  def component(name, *args, **kwargs, &block)
-    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
-    render(component.new(*args, **kwargs), &block)
+  def text_with_icon(text, icon, **kwargs)
+    (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
   end
 
   def school_name_group(school)
@@ -533,5 +534,41 @@ module ApplicationHelper
 
   def admin_button(path, to: 'Edit', tag: nil, classes: nil)
     admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-xs')
+  end
+
+  def email_with_wbr(email)
+    email.gsub(/@/, '@<wbr>').html_safe
+  end
+
+  def label_with_wbr(label)
+    return '' unless label.present?
+    label.gsub(%r{/}, '/<wbr>').html_safe
+  end
+
+  def recording_path(recording)
+    if recording.is_a?(Activity)
+      school_activity_path(recording.school, recording)
+    elsif recording.is_a?(Observation) && recording.observation_type == 'intervention'
+      school_intervention_path(recording.school, recording)
+    else
+      raise StandardError, 'Unsupported recording type'
+    end
+  end
+
+  def home_class
+    if controller_name == 'home' && %w[index show].include?(action_name)
+      'home'
+    else
+      'home-page'
+    end
+  end
+
+  def admin_user_label(school_group)
+    name = school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name
+    "Admin • #{name}"
+  end
+
+  def schools_count
+    number_with_delimiter(School.active.visible.count)
   end
 end

@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe TranslatableAttachment do
   class TranslatableDummy < ApplicationRecord
-    def self.load_schema!; end
+    establish_connection(adapter: 'sqlite3', database: ':memory:')
+    connection.create_table(:translatable_dummies)
 
     include TranslatableAttachment
 
@@ -14,43 +17,44 @@ describe TranslatableAttachment do
 
   let(:test) { TranslatableDummy.new }
 
-  let(:t_attachments) {[:file, :other]}
+  let(:t_attachments) { %i[file other] }
   let(:attachments) { [:normal] }
 
   describe '.t_has_one_attached' do
     context 'attachment_reflections' do
-      subject { test.class.attachment_reflections }
+      subject(:attachment_reflections) { test.class.attachment_reflections }
 
       it 'has attachments for each locale' do
         t_attachments.each do |attachment|
           I18n.available_locales.each do |locale|
-            expect(subject).to include("#{attachment}_#{locale}")
+            expect(attachment_reflections).to include("#{attachment}_#{locale}")
           end
         end
       end
 
       it 'has non-translated attachments' do
         attachments.each do |attachment|
-          expect(subject).to include(attachment.to_s)
+          expect(attachment_reflections).to include(attachment.to_s)
         end
       end
 
       it 'contains all attached attributes' do
-        expect(subject.count).to eq(t_attachments.count * I18n.available_locales.count + 1)
+        expect(attachment_reflections.count).to eq((t_attachments.count * I18n.available_locales.count) + 1)
       end
     end
   end
 
   describe '.t_attached_attributes' do
-    subject { test.class.t_attached_attributes }
-
     it 'returns a list of translated attached attributes' do
-      expect(subject).to eq([:file, :other])
+      expect(test.class.t_attached_attributes).to eq(%i[file other])
     end
   end
 
   describe '#t_attached_or_default' do
-    let(:attachment) { { io: File.open(Rails.root.join('spec', 'fixtures', 'images', 'sheffield.png')), filename: 'sheffield.png', content_type: 'image/png' } }
+    let(:attachment) do
+      { io: Rails.root.join('spec/fixtures/images/sheffield.png').open, filename: 'sheffield.png',
+        content_type: 'image/png' }
+    end
 
     after do
       I18n.locale = :en

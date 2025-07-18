@@ -3,7 +3,7 @@ en:
   terms_and_conditions:
     content_html: |-
       <h1 class="pt-3">Energy Sparks Terms and Conditions for participating schools and users</h1>
-      <p>Revision date&#58; 3rd October 2023</p>
+      <p>Revision date&#58; 8th November 2024</p>
       <h2> 1. We are Energy Sparks, a registered charity in England and Wales, registration 1189273. </h2>
       <h2> 2. You are a participating school or similar educational organisation or an Energy Sparks site user. </h2>
       <h2> 3. Energy Sparks service provision to schools </h2>
@@ -32,9 +32,8 @@ en:
       </ul>
       <h2>5. Fees</h2>
       <ul>
-        <li> 5.1 Funding from central government, local authorities and charitable trusts and foundations currently allows Energy Sparks to provide its services free of charge to around 1000 schools across the UK. Energy Sparks is seeking new funders to allow us to maintain and extend our free offer to more state schools.<br /><br />We may also support state schools as a paid for service. Access to the online tool, education resources, training webinars and email and phone support costs £475 per year per school for state schools joining us from a Multi-Academy Trust or Local Authority cluster or £525 per year for individual schools. We will confirm any costs in writing before we proceed with your school’s account set up.</li>
-        <li> 5.2 A participating school’s energy supplier or meter operator may charge the school a supplementary fee for supplying half hourly data which will be added to the school’s energy bill. The school’s energy contract manager or supplier will be able to provide further information. </li>
-        <li> 5.3 UK Independent schools are required to pay an annual fee to access Energy Sparks. The fee varies according to site complexity and numbers of meters. Contact us on hello@energysparks.uk for a quote. </li>
+        <li> 5.1 Funding from charitable trusts and foundations, community energy companies and corporate partners allows Energy Sparks to provide its services free of charge, or at a subsidised rate, to a limited number of schools in certain regions of the UK. Energy Sparks is seeking new funders to allow us to maintain and extend our free offer to more state schools. Schools receiving funded access to our services are expected to meet our engagement expectations detailed in section 4.<br>Schools that are not eligible for funded accounts will need to pay for our services. The current annual fees are available at <a href=%{pricing_url}>%{pricing_url}</a>.</li>
+        <li> 5.2 A participating school’s energy supplier or meter operator may charge the school a supplementary fee for supplying half hourly data which will be added to the school’s energy bill. The school’s energy contract manager or supplier will be able to provide further information.</li>
       </ul>
       <h2>6. Data Ownership and Protection / General Data Protection Regulation (GDPR)</h2>
       <ul>
@@ -59,6 +58,8 @@ en:
         </li>
         <li>6.5 Users are referred to Energy Sparks privacy and cookie policy at <a href=%{privacy_and_cookie_policy_url}>%{privacy_and_cookie_policy_url}</a> </li>
         <li>6.6 If a participating school or school user chooses to submit images, videos or attributed quotes of pupils to the Energy Sparks website, the school user will ensure that the school has the necessary parental permission for the pupil’s image or name to be shared.</li>
+        <li>6.7 If a school stops using Energy Sparks' services, their Energy Sparks account can be archived or deleted. An account can be archived if there is a reasonable likelihood that the school’s account will be reactivated in the next 18 months. This includes when the school is no longer eligible for a funded account but wants to remain on the waiting list should further funding become available in future. An account can also be archived if the school does not have capacity to engage with Energy Sparks at the present time, but hopes to re-engage within the next 18 months. Energy Sparks will also archive a school’s account should their funded access end and the school provides no further instructions on whether they wish to pay for their account.  Accounts will be fully deleted on request from a school or after they have been archived for more than 18 months.</li>
+        <li>An archived school account will not be publicly visible nor visible to logged in school users, but Energy Sparks will save the school’s account details including meter numbers, historic data and confirmed user details. Any unconfirmed user invitations will be deleted from the school’s records when the account is archived. A deleted school account will delete the school’s meter numbers, historic data and user information.</li>
       </ul>
       <h2>7. Energy and associated data collection, processing and management</h2>
       <ul>
@@ -67,22 +68,22 @@ en:
         <li>7.3 Energy Sparks will collect the school’s meter number and location from the school’s Local Authority, Multi-Academy Trust or energy supplier where available.</li>
         <li>7.4 Energy Sparks will use this consumption, generation and export data collected to support the Energy Sparks online energy management tool to enable users to see the school’s energy consumption, solar generation and export, and receive energy saving alerts and recommendations.</li>
         <li>7.5 Energy Sparks will collect and use consumption, generation and export data for as long as the school’s energy data remains displayed on the Energy Sparks website&#58; www.energysparks.uk.</li>
-        <li>7.6 Energy Sparks publishes most energy data to its website under an open licence which will allow it to be accessed, used and shared by anyone. Independent schools can opt-in to a private version of the Energy Sparks tool which means their energy data is only visible to logged in users. This service is available at extra cost. Contact us on hello@energysparks.uk for further information.</li>
-        <li>7.7 Participating schools have the right to withdraw consent to their data being published to Energy Sparks at any time. You can withdraw consent by emailing hello@energysparks.uk. Energy Sparks will then remove the school’s ongoing and historical energy data from the Energy Sparks website within one month.</li>
+        <li>7.6 Energy Sparks publishes most energy data to its website under an open licence which will allow it to be accessed, used and shared by anyone. Self-funding schools can opt-in to a private version of the Energy Sparks tool which means their energy data is only visible to logged in users. This service is available at extra cost with the current prices available at <a href=%{pricing_url}>%{pricing_url}</a>.</li>
+        <li>7.7 Participating schools have the right to withdraw consent to their data being published to Energy Sparks and have their account deleted at any time. You can ask for your account to be deleted by emailing hello@energysparks.uk. Energy Sparks will then remove the school’s meter information, ongoing and historical energy data and user details from the Energy Sparks website within one month. Any archived Energy Sparks accounts will also be deleted if they have been archived for more than 18 months.</li>
       </ul>
       <h2>8. Third party service providers</h2>
       <ul>
-        <li>8.1 If the school has an AMR meter providing half hourly energy consumption data, Energy Sparks may collect the energy data from the school’s supplier, meter operator or Local Authority. Further details about the way we obtain individual school’s data are available on request tby contacting us at hello@energysparks.uk.</li>
+        <li>8.1 If the school has an AMR meter providing half hourly energy consumption data, Energy Sparks may collect the energy data from the school’s supplier, meter operator or Local Authority. Further details about the way we obtain individual school’s data are available on request by contacting us at hello@energysparks.uk.</li>
         <li>8.2 If a school has solar panels Energy Sparks may obtain solar generation, export and grid consumption data from the school’s solar monitoring system. If this is not possible we will obtain modelled solar generation data from Solar PV Live, a service provided by the University of Sheffield.</li>
         <li>
-          8.3 If the school has a SMETS2 or SMETS1+ smart meter installed Energy Sparks uses n3rgy Ltd to collect energy data via the Data Communications Company (DCC). In this case, n3rgy Ltd provides full visibility and control of the information shared with Energy Sparks via a consumer portal (https://data.n3rgy.com/consumer) where authorised users can&#58;
+          8.3 If the school has a SMETS2 or SMETS1+ smart meter installed Energy Sparks uses n3rgy data Ltd to collect energy data via the Data Communications Company (DCC). In this case, n3rgy data Ltd provides full visibility and control of the information shared with Energy Sparks via a consumer portal (https://data.n3rgy.com/consumer) where authorised users can&#58;
           <ul>
             <li>8.3.1 Review which organisations you have granted data access to.</li>
             <li>8.3.2 See the last time they accessed your data.</li>
             <li>8.3.3 Withdraw consent for any or all of the organisations listed.</li>
           </ul>
         </li>
-        <li>8.4 All consumption, generation and tariff information gathered by n3rgy Ltd will also be anonymised and pooled within a data set which is made available to all organisations who use the n3rgy service. This enables n3rgy and its customers to better understand the way that we use, generate and pay for energy, with the intent to further improve our nation’s energy efficiency and carbon reduction. Due to the nature of anonymisation used, it is not possible to identify your data from this wider set, and therefore to remove your contribution.</li>
+        <li>8.4 All consumption, generation and tariff information gathered by n3rgy data Ltd will also be anonymised and pooled within a data set which is made available to all organisations who use the n3rgy data Ltd service. This enables n3rgy data Ltd and its customers to better understand the way that we use, generate and pay for energy, with the intent to further improve our nation’s energy efficiency and carbon reduction. Due to the nature of anonymisation used, it is not possible to identify your data from this wider set, and therefore to remove your contribution.</li>
         <li>8.5 Other third party data sets used by Energy Spark are listed at <a href='%{attribution_url}'>%{attribution_url}</a></li>
         <li>8.6 Energy Sparks uses a UK based AWS cloud based environment to manage and deploy our website and infrastructure. Energy Sparks uses Mailchimp to manage our email newsletter subscriber lists and send newsletters to our users.</li>
       </ul>

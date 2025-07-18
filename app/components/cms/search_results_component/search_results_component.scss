@@ -1,0 +1,23 @@
+.cms-search-results-component {
+  .search-result {
+    h5 {
+      a {
+        text-decoration: underline;
+      }
+    }
+
+    .badge {
+      font-size: $f9;
+      padding: 6px 14px;
+    }
+  }
+
+  #search-summary {
+    .count {
+      font-weight: bold;
+    }
+    .keywords {
+      font-weight: bold;
+    }
+  }
+}

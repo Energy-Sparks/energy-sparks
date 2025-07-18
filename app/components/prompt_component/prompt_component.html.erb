@@ -1,15 +1,15 @@
-<div id="<%= id %>" class="prompt-component mb-2 <%= classes %>">
+<%= tag.div id: id, class: class_names(classes, 'mb-2') do %>
   <%# Padding added to create space within div %>
   <div class="row pt-3 pb-3">
-    <% if icon.present? %>
+    <% if render_icon? %>
       <%# Icon is hidden on smallest size, visible from sm and above as single column %>
       <div class="d-none d-sm-block col-1">
-        <%= component 'icon', name: icon, style: :circle, size: 'f5' %>
+        <%= render IconComponent.new fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
       </div>
     <% end %>
     <%# if no icon then use full width row %>
     <%# Below md use full width, so text column wraps below icon. from md above use 2 cols %>
-    <div class="<%= icon.present? ? 'col-12 col-md-11' : 'col-12' %>">
+    <div class="<%= render_icon? ? 'col-12 col-md-11' : 'col-12' %>">
       <% if title? || pill? %>
         <div class="row">
           <div class="col">
@@ -45,4 +45,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

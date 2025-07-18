@@ -1,0 +1,14 @@
+$btn-border-radius: 24px;
+$btn-line-height: 24px;
+$btn-font-size: 16px;
+$font-size-base: 18px;
+
+$btn-themes: (
+  "primary": (
+    "background-color": transparent,
+    "color": #192a52,
+    "border-color": #192a52
+  )
+);
+
+//= @import bootstrap-email;

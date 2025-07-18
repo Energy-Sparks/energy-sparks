@@ -10,7 +10,7 @@ RSpec.describe AnalysisPageFinderController, type: :controller do
   describe 'GET #show' do
     context 'when redirecting to advice pages' do
       let(:feature_flag) { 'true' }
-      let(:school) { create(:school, urn: 'abc123') }
+      let(:school) { create(:school) }
       let(:advice_page) { create(:advice_page, key: 'baseload') }
       let!(:alert_type) { create(:alert_type, class_name: 'SomeAlertType', advice_page: advice_page) }
 

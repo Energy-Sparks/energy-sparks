@@ -18,7 +18,6 @@
 #  school_name              :string           not null
 #  school_will_be_public    :boolean          default(TRUE)
 #  scoreboard_id            :bigint(8)
-#  solar_pv_tuos_area_id    :bigint(8)
 #  template_calendar_id     :bigint(8)
 #  updated_at               :datetime         not null
 #  uuid                     :string           not null
@@ -26,15 +25,14 @@
 #
 # Indexes
 #
-#  index_school_onboardings_on_created_by_id          (created_by_id)
-#  index_school_onboardings_on_created_user_id        (created_user_id)
-#  index_school_onboardings_on_funder_id              (funder_id)
-#  index_school_onboardings_on_school_group_id        (school_group_id)
-#  index_school_onboardings_on_school_id              (school_id)
-#  index_school_onboardings_on_scoreboard_id          (scoreboard_id)
-#  index_school_onboardings_on_solar_pv_tuos_area_id  (solar_pv_tuos_area_id)
-#  index_school_onboardings_on_template_calendar_id   (template_calendar_id)
-#  index_school_onboardings_on_uuid                   (uuid) UNIQUE
+#  index_school_onboardings_on_created_by_id         (created_by_id)
+#  index_school_onboardings_on_created_user_id       (created_user_id)
+#  index_school_onboardings_on_funder_id             (funder_id)
+#  index_school_onboardings_on_school_group_id       (school_group_id)
+#  index_school_onboardings_on_school_id             (school_id)
+#  index_school_onboardings_on_scoreboard_id         (scoreboard_id)
+#  index_school_onboardings_on_template_calendar_id  (template_calendar_id)
+#  index_school_onboardings_on_uuid                  (uuid) UNIQUE
 #
 # Foreign Keys
 #
@@ -43,19 +41,17 @@
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
-#  fk_rails_...  (solar_pv_tuos_area_id => areas.id) ON DELETE => restrict
 #  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => nullify
 #
 
 class SchoolOnboarding < ApplicationRecord
-  include EnumDataSharing
+  include Enums::DataSharing
 
   validates :school_name, :contact_email, presence: true
 
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
-  belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
   belongs_to :scoreboard, optional: true
@@ -67,25 +63,26 @@ class SchoolOnboarding < ApplicationRecord
   has_many :issues, as: :issueable, dependent: :destroy
 
   scope :by_name, -> { order(school_name: :asc) }
-  scope :complete, -> { joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] }) }
+  scope :complete, lambda {
+    joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
+  }
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
-  scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: school_type }) }
+  scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
 
-  enum default_chart_preference: [:default, :carbon, :usage, :cost]
-  enum country: School.countries
+  enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
+  enum :country, School.countries
 
   def populate_default_values(user)
     assign_attributes({
-      uuid: SecureRandom.uuid,
-      created_by: user,
-      template_calendar: school_group&.default_template_calendar,
-      solar_pv_tuos_area: school_group&.default_solar_pv_tuos_area,
-      dark_sky_area: school_group&.default_dark_sky_area,
-      weather_station: school_group&.default_weather_station,
-      scoreboard: school_group&.default_scoreboard,
-      default_chart_preference: school_group&.default_chart_preference,
-      country: school_group&.default_country
-    })
+                        uuid: SecureRandom.uuid,
+                        created_by: user,
+                        template_calendar: school_group&.default_template_calendar,
+                        dark_sky_area: school_group&.default_dark_sky_area,
+                        weather_station: school_group&.default_weather_station,
+                        scoreboard: school_group&.default_scoreboard,
+                        default_chart_preference: school_group&.default_chart_preference,
+                        country: school_group&.default_country
+                      })
   end
 
   def has_event?(event_name)
@@ -101,7 +98,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def has_only_sent_email_or_reminder?
-    (events.pluck(:event).map(&:to_sym) - [:email_sent, :reminder_sent]).empty?
+    (events.pluck(:event).map(&:to_sym) - %i[email_sent reminder_sent]).empty?
   end
 
   def complete?
@@ -137,7 +134,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def additional_users_created?
-    school.present? && school.users.count {|u| !u.pupil?} > 1
+    school.present? && school.users.count { |u| !u.pupil? } > 1
   end
 
   def ready_for_review?
@@ -146,7 +143,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def email_locales
-    country == 'wales' ? [:en, :cy] : [:en]
+    country == 'wales' ? %i[en cy] : [:en]
   end
 
   def to_param
@@ -167,8 +164,10 @@ class SchoolOnboarding < ApplicationRecord
 
   def days_until_data_enabled
     return nil unless complete?
+
     data_enabled_on = first_made_data_enabled
     return nil unless data_enabled_on.present?
+
     (data_enabled_on.to_date - onboarding_completed_on.to_date).to_i
   end
 

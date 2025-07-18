@@ -5,7 +5,21 @@
 }
 
 .activity-suggestion {
-  border: 2px solid $grey;
+  border: 2px solid $grey-medium;
   padding: 30px;
   border-radius: 10px;
+}
+
+div.public-display-logo {
+  border-radius: 8px;
+  background-color: #192a52;
+  height: 60px;
+  margin-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+  padding-left: 16px;
+  img {
+    height: 40px;
+  }
 }

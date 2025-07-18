@@ -19,17 +19,23 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
            has_storage_heaters: false)
   end
 
-  let(:meter_collection) do
-    AggregateSchoolService.new(school).aggregate_school
-  end
+  let(:aggregate_school_service) { AggregateSchoolService.new(school) }
 
   let(:params) do
     {
       school: school,
-      meter_collection: meter_collection,
+      aggregate_school_service: aggregate_school_service,
       id: id,
       classes: classes
     }
+  end
+
+  before do
+    create(:advice_page, key: :electricity_long_term, fuel_type: :electricity)
+    create(:advice_page, key: :gas_long_term, fuel_type: :gas)
+    meter_collection = aggregate_school_service.aggregate_school
+    Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: school, aggregate_school: meter_collection).generate!
+    school.reload
   end
 
   describe '#can_benchmark_electricity?' do
@@ -47,7 +53,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
       it { expect(component.can_benchmark_electricity?).to be(false) }
     end
 
-    context 'with electricity enough data' do
+    context 'with electricity and enough data' do
       let(:school) { create(:school, :with_basic_configuration_single_meter_and_tariffs) }
 
       it { expect(component.can_benchmark_electricity?).to be(true) }
@@ -61,7 +67,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
       it { expect(component.can_benchmark_gas?).to be(false) }
     end
 
-    context 'with electricity but not enough data' do
+    context 'with gas but not enough data' do
       let(:school) do
         create(:school, :with_basic_configuration_single_meter_and_tariffs, fuel_type: :gas, reading_start_date: Time.zone.yesterday)
       end
@@ -69,7 +75,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
       it { expect(component.can_benchmark_gas?).to be(false) }
     end
 
-    context 'with electricity enough data' do
+    context 'with gas and enough data' do
       let(:school) do
         create(:school,
                             :with_basic_configuration_single_meter_and_tariffs,
@@ -81,7 +87,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
   end
 
   context 'when rendering' do
-    let(:html) do
+    subject(:html) do
       render_inline(component)
     end
 
@@ -91,7 +97,7 @@ RSpec.describe ComparisonOverviewComponent, :include_application_helper, :includ
     end
 
     it { expect(html).to have_content(I18n.t("school_groups.clusters.group_type.#{school.school_group.group_type}"))}
-    it { expect(html).to have_content(I18n.t('advice_pages.total_energy_use.insights.comparison.title')) }
+    it { expect(html).to have_content(I18n.t('components.comparison_overview.title')) }
 
     it {
       expect(html).to have_link(I18n.t('schools.schools.compare_schools',

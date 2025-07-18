@@ -13,14 +13,17 @@ Disallow: /schools/scoreboard
 Disallow: /schools/*/analysis
 Disallow: /schools/*/find_out_more/*
 Disallow: /schools/*/chart.json
+Disallow: /schools/*/usage
 Disallow: /schools/*/advice
 Disallow: /schools/*/advice/*
+Disallow: /schools/*/school_targets
 Disallow: /pupils/schools/*/analysis
 Disallow: /benchmark
 Disallow: /all_benchmarks
 Disallow: /users/sign_in
 Disallow: /activity_types/search
 Disallow: /compare/*
+Disallow: /comparisons
 
 User-agent: SemrushBot
 Disallow: /
@@ -53,4 +56,25 @@ User-agent: DataForSeoBot
 Disallow: /
 
 User-agent: YandexBot
+Disallow: /
+
+User-agent: SeekportBot
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Scrapy
 Disallow: /

@@ -1,0 +1,20 @@
+<table class="table advice-table table-hover table-condensed table-sorted" data-order='[[0, "asc"]]'>
+  <thead>
+    <tr>
+        <% columns.each do |column| %>
+          <%= content_tag(:th, column.name, data: column.html_data) %>
+        <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% rows.each do |row| %>
+        <tr>
+        <% columns.each do |column| %>
+            <td data-order="<%= column.data_order(row) %>">
+              <%= column.td(row) %>
+            </td>
+        <% end %>
+        </tr>
+    <% end %>
+  </tbody>
+</table>

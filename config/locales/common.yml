@@ -6,6 +6,7 @@ en:
       one: "%{count} action"
       other: "%{count} actions"
     application: Energy Sparks
+    author_html: by %{author}
     back_to_top: Back to top
     bar_charts: Bar charts
     confirm: Are you sure?
@@ -38,6 +39,8 @@ en:
       download: Download
       edit: Edit
       enable: Enable
+      energy_saving_actions: Energy saving actions
+      enquire_now: Enquire now
       finish: Finish
       finished: Finished
       home: Home
@@ -45,22 +48,33 @@ en:
       last_updated: Last updated
       last_week: Last week
       last_year: Last year
+      learn_more: Learn more
       manage: Manage
+      more_information: More information
       next: Next
       no_label: 'No'
       not_applicable: N/A
       not_set: Not set
       place: Place
       previous: Previous
+      prices: Prices
+      pricing: Pricing
       pupil_activities: Pupil activities
+      pupil_led_activities: Pupil-led activities
+      read_more: Read more
       remove: Remove
       report: Report
+      request_more_info: Request more information
       restart: Restart
       save: Save
+      sign_up: Sign up
       start: Start
+      starting_from: Starting from
       status: Status
       submit: Submit
+      subscribe: Subscribe
       type: Type
+      unsubscribe: Unsubscribe
       update: Update
       upload: Upload
       view: View
@@ -71,6 +85,7 @@ en:
       yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    points_html: "%{count} points"
     privacy_policy: privacy policy
     school: School
     school_types:

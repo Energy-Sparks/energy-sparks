@@ -1,100 +1,54 @@
 <%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
-<%= render 'shared/dashboard_title', school: @school do %>
-  <%= render 'adult_dashboard_buttons', school: @school, co2_pages: @co2_pages, public: true,
-                                        show_data_enabled_features: @show_data_enabled_features %>
+<% content_for :dashboard_header do %>
+  <%= render DashboardHeaderComponent.new(school: @school, audience: @audience) %>
 <% end %>
 
-<%= component 'energy_summary_table', id: 'management-overview-table', school: @school, user: current_user %>
-
-<h3><%= t('schools.show.act_on_energy_usage') %></h3>
-
-<%= render 'management/schools/targets/progress_notice', school: @school, progress_summary: @progress_summary %>
-
-<% if @dashboard_alerts %>
-  <%= render 'shared/dashboard_alerts', dashboard_alerts: @dashboard_alerts, school: @school,
-                                        content_field: :management_dashboard_title %>
-<% end %>
-
-<% if @show_standard_prompts %>
-  <%= render 'management/schools/dashboard_message', messageable: @school %>
-  <%= render 'management/schools/dashboard_message', messageable: @school.try(:school_group) %>
-<% end %>
-
-<% if @prompt_for_bill %>
-  <%= render 'management/schools/prompt_for_bill', school: @school %>
-<% end %>
-
-<% if @prompt_training %>
-  <%= render 'management/schools/prompt_training' %>
-<% end %>
-
-<% if @last_audit %>
-  <%= render 'schools/prompt_audit', audit: @last_audit %>
-<% end %>
-
-<% if @add_targets %>
-  <%= render 'management/schools/targets/add_targets', school: @school %>
-<% end %>
-
-<% if @review_targets %>
-  <%= render 'management/schools/targets/review_targets', school: @school %>
-<% end %>
-
-<% if @set_new_target %>
-  <%= render 'management/schools/targets/set_new_target', school: @school %>
-<% end %>
-
-<% if @show_standard_prompts %>
-  <%= render 'schools/prompt_to_complete_programme', programmes: @programmes_to_prompt %>
-  <%= render 'schools/prompt_recommendations', school: @school %>
-<% end %>
-
-<% if @add_pupils %>
-  <%= render 'management/schools/add_pupils', school: @school %>
-<% end %>
-
-<% if @add_contacts %>
-  <%= render 'management/schools/add_contacts', school: @school %>
-<% end %>
-
-<% if @overview_charts && @overview_charts.any? %>
-  <h3><%= t('schools.show.recent_energy_usage') %></h3>
-  <%= component 'dashboard_charts', school: @school %>
-<% elsif @show_data_enabled_features == false %>
-  <h3><%= t('schools.show.recent_energy_usage') %></h3>
-  <div class="chart-placeholder-image">
-    <div class="chart-placeholder-text">
-      <h1><%= t('schools.show.coming_soon') %></h1>
-      <p><%= t('schools.show.configuring_data_access') %></p>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col">
+      <%= render EnergySummaryTableComponent.new(
+            id: 'explore-energy-data',
+            school: @school,
+            user: current_user
+          ) %>
     </div>
   </div>
-<% end %>
-
-<%= component 'scoreboard_summary', podium: current_school_podium %>
-
-<% if @management_priorities && @management_priorities.any? %>
-  <h3><%= t('schools.show.energy_saving_opportunities') %></h3>
-  <%= render 'management/management_priorities/list', management_priorities: @management_priorities,
-                                                      school: @school,
-                                                      show_more: @show_more_management_priorities %>
-<% end %>
-
-<%= render 'shared/dashboard_timeline', school: @school, observations: @observations %>
-
-<%= component 'dashboard_login', school: @school, user: current_user %>
-
-<% if can?(:show_management_dash, @school) && @show_data_enabled_features %>
-  <div class="padded-row">
-    <div class="float-right">
-        <%= link_to url_for(report: true, switch: true), class: 'btn btn-outline-dark rounded-pill font-weight-bold' do %>
-          <%= fa_icon('file-alt') %>
-          <%= t('schools.show.print_view') %>
-        <% end %>
-        <%= if can?(:download_school_data, @school)
-              link_to t('schools.show.download_data'), school_downloads_path(@school),
-                      class: 'btn btn-outline-dark rounded-pill font-weight-bold'
-            end %>
+  <div class="row mt-4 mb-4">
+    <div class="col">
+      <%= render DashboardLearnMoreComponent.new(school: @school, user: current_user) %>
     </div>
   </div>
-<% end %>
+  <div class="row mt-4">
+    <div class="col">
+      <%= render DashboardInsightsComponent.new(
+            id: 'alerts-and-reminders',
+            audience: @audience,
+            school: @school,
+            user: current_user,
+            progress_summary: @progress_summary
+          ) %>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-light pb-3">
+  <div class="container">
+    <%= render ScoreboardSummaryComponent.new(
+          id: 'scoreboard-summary',
+          podium: current_school_podium,
+          user: current_user,
+          audience: @audience,
+          classes: 'mt-4 pt-4'
+        ) %>
+
+    <%= render TimelineComponent.new(
+          school: @school,
+          observations: @observations,
+          user: current_user,
+          classes: 'mt-4'
+        ) %>
+
+    <%= render DashboardLoginComponent.new(school: @school, user: current_user) %>
+  </div>
+</div>

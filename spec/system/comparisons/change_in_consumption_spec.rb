@@ -67,10 +67,6 @@ describe 'change_in_*_consumption_*' do
     end
   end
 
-  before do
-    visit "/comparisons/#{key}"
-  end
-
   describe 'change_in_electricity_holiday_consumption_previous_years_holiday' do
     let(:alert_class_name) { 'AlertPreviousYearHolidayComparisonElectricity' }
     let(:key) { :change_in_electricity_holiday_consumption_previous_years_holiday }

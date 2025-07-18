@@ -50,9 +50,9 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   include TransifexSerialisable
 
   belongs_to :alert_type_rating
-  belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', foreign_key: :replaced_by_id, optional: true
+  belongs_to :replaced_by, class_name: 'AlertTypeRatingContentVersion', optional: true
 
-  enum colour: [:negative, :neutral, :positive]
+  enum :colour, { negative: 0, neutral: 1, positive: 2 }
 
   translates :pupil_dashboard_title, backend: :action_text
   translates :management_dashboard_title, backend: :action_text
@@ -74,19 +74,19 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   }.freeze
 
   def self.functionality
-    [
-      :pupil_dashboard_alert,
-      :management_dashboard_alert,
-      :management_priorities, :sms, :email
+    %i[
+      pupil_dashboard_alert
+      management_dashboard_alert
+      management_priorities sms email
     ]
   end
 
   def self.template_fields
-    [
-      :pupil_dashboard_title,
-      :management_dashboard_title,
-      :email_title, :email_content, :sms_content,
-      :management_priorities_title
+    %i[
+      pupil_dashboard_title
+      management_dashboard_title
+      email_title email_content sms_content
+      management_priorities_title
     ]
   end
 
@@ -105,17 +105,17 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   def tx_valid_attribute(attr)
     case attr.to_sym
     when :pupil_dashboard_title
-      return alert_type_rating.pupil_dashboard_alert_active?
+      alert_type_rating.pupil_dashboard_alert_active?
     when :management_dashboard_title
-      return alert_type_rating.management_dashboard_alert_active?
+      alert_type_rating.management_dashboard_alert_active?
     when :management_priorities_title
-      return alert_type_rating.management_priorities_active?
+      alert_type_rating.management_priorities_active?
     when :email_title
-      return alert_type_rating.email_active?
+      alert_type_rating.email_active?
     when :email_content
-      return alert_type_rating.email_active?
+      alert_type_rating.email_active?
     when :sms_content
-      return alert_type_rating.sms_active?
+      alert_type_rating.sms_active?
     end
   end
 
@@ -124,40 +124,44 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   end
 
   def self.timing_fields
-    self.functionality.map {|function| [:"#{function}_start_date", :"#{function}_end_date"]}.flatten
+    functionality.map { |function| [:"#{function}_start_date", :"#{function}_end_date"] }.flatten
   end
 
   def self.weighting_fields
-    self.functionality.map {|function| :"#{function}_weighting"}
+    functionality.map { |function| :"#{function}_weighting" }
   end
 
   validates :colour, presence: true
 
   validates :pupil_dashboard_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.pupil_dashboard_alert_active? },
+            on: :create
   validates :sms_content,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.sms_active? },
+            on: :create
   validates :email_title, :email_content,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.email_active? },
+            on: :create
   validates :management_dashboard_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_dashboard_alert_active?},
-    on: :create
+            presence: true,
+            if: lambda { |content|
+              content.alert_type_rating && content.alert_type_rating.management_dashboard_alert_active?
+            },
+            on: :create
   validates :management_priorities_title,
-    presence: true,
-    if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active?},
-    on: :create
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active? },
+            on: :create
 
   functionality.each do |function|
     validates :"#{function}_weighting",
-      numericality: { greater_than_or_equal_to: 0 },
-      if: ->(content) { content.alert_type_rating && content.alert_type_rating.read_attribute(:"#{function}_active")}
+              numericality: { greater_than_or_equal_to: 0 },
+              if: lambda { |content|
+                content.alert_type_rating && content.alert_type_rating.read_attribute(:"#{function}_active")
+              }
   end
 
   validate on: :create do |content|
@@ -170,7 +174,6 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   scope :latest, -> { where(replaced_by_id: nil) }
 
-
   def meets_timings?(scope:, today:)
     start_date, end_date = start_end_end_date(scope)
     meets_start_date = start_date ? start_date <= today : true
@@ -180,18 +183,17 @@ class AlertTypeRatingContentVersion < ApplicationRecord
 
   def timings_are_correct(scope)
     start_date, end_date = start_end_end_date(scope)
-    if start_date.present? && end_date.present?
-      if end_date < start_date
-        errors.add(:"#{scope}_end_date", 'must be on or after start date')
-      end
-    end
+    return unless start_date.present? && end_date.present?
+    return unless end_date < start_date
+
+    errors.add(:"#{scope}_end_date", 'must be on or after start date')
   end
 
-private
+  private
 
   def start_end_end_date(scope)
     start_date_field = :"#{scope}_start_date"
     end_date_field = :"#{scope}_end_date"
-    return self[start_date_field], self[end_date_field]
+    [self[start_date_field], self[end_date_field]]
   end
 end

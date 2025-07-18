@@ -21,13 +21,13 @@ RSpec.describe WeatherStation, type: :model do
     it 'formats earliest' do
       create(:weather_observation, weather_station: station, reading_date: Date.yesterday)
       create(:weather_observation, weather_station: station, reading_date: Time.zone.today)
-      expect(station.first_observation_date).to eql(Date.yesterday.strftime('%d %b %Y'))
+      expect(station.earliest_observation_date).to eql(Date.yesterday)
     end
 
     it 'formats latest' do
       create(:weather_observation, weather_station: station, reading_date: Date.yesterday)
       create(:weather_observation, weather_station: station, reading_date: Time.zone.today)
-      expect(station.last_observation_date).to eql(Time.zone.today.strftime('%d %b %Y'))
+      expect(station.latest_observation_date).to eql(Time.zone.today)
     end
   end
 end

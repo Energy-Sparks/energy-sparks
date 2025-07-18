@@ -19,17 +19,21 @@
         <td class="fit"><%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %></td>
         <td width="100%" class="overflow">
           <%= render 'admin/issues/pinned', issue: issue %>
-          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br />
+          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br>
           <%= render 'admin/issues/meters', issue: issue %>
         </td>
         <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
         <td class="fit"><%= render 'admin/issues/created_by', issue: issue %></td>
         <td class="fit"><%= render 'admin/issues/owned_by', issue: issue %></td>
         <td class="fit"><%= render 'admin/issues/status', issue: issue %></td>
-        <td class="fit" data-order="<%= issue.updated_at %>"><div class="badge badge-pill bg-white text-dark font-weight-normal nowrap"><%= nice_date_times_today(issue.updated_at) %></div></td>
+        <td class="fit" data-order="<%= issue.updated_at %>">
+          <div class="badge badge-pill bg-white text-dark font-weight-normal nowrap">
+            <%= nice_date_times_today(issue.updated_at) %>
+          </div>
+        </td>
         <td class="fit nowrap text-right">
-          <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
-          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-info btn-sm' %>
+          <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: 'btn btn-primary btn-sm' %>
+          <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm edit' %>
         </td>
       </tr>
     <% end %>

@@ -40,8 +40,6 @@ describe 'annual_electricity_out_of_hours_use' do
   end
 
   context 'when viewing report' do
-    before { visit "/comparisons/#{key}" }
-
     it_behaves_like 'a school comparison report' do
       let(:expected_report) { report }
     end
@@ -79,6 +77,8 @@ describe 'annual_electricity_out_of_hours_use' do
       end
     end
 
-    it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a school comparison report with a chart' do
+      let(:expected_report) { report }
+    end
   end
 end

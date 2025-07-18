@@ -13,87 +13,13 @@ cy:
           </p>
         es_doesnt_have_all_meter_data_html: "<p>\n  Nid oes gan Sbarcynni set lawn o ddata mesuryddion ar gyfer rhai ysgolion, er enghraifft ysgolion gwledig gyda\nboeleri biomas neu olew, felly efallai na fydd cymhariaeth cyfanswm ynni yn berthnasol i bob ysgol. Mae'r cymhariaeth hon \n  yn eithrio budd unrhyw solar ffotofoltäig a allai gael ei osod - felly mae'n edrych ar y defnydd o ynni yn unig.\n</p>"
         es_exclude_storage_heaters_and_solar_pv: "<p>Nid yw'r dadansoddiad hwn yn cynnwys trydan a ddefnyddir gan stôr-wresogyddion a solar ffotofoltäig.</p>"
-        es_exclude_storage_heaters_and_solar_pv_data_html: "<p>Nid yw'r data'n cynnwys stôr-wresogyddion ac unrhyw arbediad y gallai'r ysgol ei gael o stôr-wresogyddion.</p>"
-        es_exclude_storage_heaters_and_solar_pv_html: |-
-          <p>Nid yw'r dadansoddiad hwn yn cynnwys trydan a ddefnyddir gan stôr-wresogyddion a
-           solar ffotofoltäig.
-          </p>
-        es_per_pupil_v_per_floor_area_html: "<p>\n   Yn gyffredinol, mae meincnodau fesul disgybl yn briodol ar gyfer trydan (gan y dylent fod yn gymesur â'r offer\n a ddefnyddir), ond mae meincnodau fesul arwynebedd llawr yn fwy priodol ar gyfer nwy (maint yr adeilad sydd angen gwresogi). At ei gilydd, \n   mae'n debyg bod cymharu defnydd ynni fesul disgybl yn fwy priodol yn y rhan fwyaf o achosion.\n</p>"
-        es_per_pupil_v_per_floor_area_useful_html: "<p>\n  Yn gyffredinol, mae meincnodau fesul disgybl yn briodol ar gyfer trydan (gan y dylent fod yn gymesur â'r offer \n a ddefnyddir), ond mae meincnodau fesul arwynebedd llawr yn fwy priodol ar gyfer nwy (maint yr adeilad sydd angen gwresogi). At ei gilydd, \n  mae'n debyg bod cymharu defnydd ynni fesul disgybl yn fwy priodol nag ar sail arwynebedd llawr, ond gall y dadansoddiad hwn\n fod yn ddefnyddiol mewn rhai amgylchiadau.\n</p>"
       chart_table_config:
-        annual_change_in_electricity_out_of_hours_use: Newid blynyddol yn y trydan a ddefnyddir y tu allan i oriau ysgol
-        annual_change_in_gas_out_of_hours_use: Newid blynyddol yn y nwy a ddefnyddir y tu allan i oriau ysgol
-        annual_change_in_storage_heater_out_of_hours_use: Newid blynyddol yn y defnydd o wresogyddion storio y tu allan i oriau ysgol
-        annual_electricity_costs_per_pupil: Defnydd trydan blynyddol fesul disgybl gyda photensial i arbed arian
-        annual_electricity_out_of_hours_use: Trydan a ddefnyddir y tu allan i oriau ysgol
-        annual_energy_costs: Cost flynyddol trydan, nwy, stôr-wresogyddion ac ynni cyfun
-        annual_energy_costs_per_floor_area: Cost ynni blynyddol fesul arwynebedd llawr
-        annual_energy_costs_per_pupil: Defnydd ynni blynyddol fesul disgybl
-        annual_gas_out_of_hours_use: Nwy a ddefnyddir y tu allan i oriau ysgol
-        annual_heating_costs_per_floor_area: Cost gwresogi blynyddol fesul arwynebedd llawr gyda photensial i arbed arian
         annual_storage_heater_out_of_hours_use: Stôr-wresogyddion a ddefnyddir y tu allan i oriau ysgol
-        autumn_term_2021_2022_energy_comparison: Tymor yr Hydref 2021 yn erbyn 2022 defnydd ynni
-        baseload_per_pupil: Llwyth sylfaen fesul disgybl
-        change_in_electricity_consumption_recent_school_weeks: Newid diweddar yn y defnydd o drydan
-        change_in_electricity_holiday_consumption_previous_holiday: Newid yn y defnydd o drydan rhwng y ddau wyliau diwethaf
-        change_in_electricity_holiday_consumption_previous_years_holiday: Newid yn y defnydd o drydan rhwng y gwyliau yma a'r un gwyliau llynedd
-        change_in_electricity_since_last_year: Newid blynyddol yn y defnydd o drydan
-        change_in_energy_since_last_year: Newid blynyddol yng nghyfanswm y defnydd o ynni
-        change_in_energy_use_since_joined_energy_sparks: Newid yn y defnydd o ynni ers i'r ysgol ymuno â Sbarcynni
-        change_in_gas_consumption_recent_school_weeks: Newid diweddar yn y defnydd o nwy
-        change_in_gas_holiday_consumption_previous_holiday: Newid yn y defnydd o nwy rhwng y ddau wyliau diwethaf
-        change_in_gas_holiday_consumption_previous_years_holiday: Newid yn y defnydd o nwy rhwng y gwyliau yma a'r un gwyliau llynedd
-        change_in_gas_since_last_year: Newid blynyddol yn y defnydd o nwy
-        change_in_solar_pv_since_last_year: Newid blynyddol mewn cynhyrchu solar ffotofoltaig ac arbedion CO2 o ganlyniad
         change_in_storage_heaters_since_last_year: Newid blynyddol mewn gwresogyddion stôr
-        data:
-          metering:
-            electricity: Trydan
-            gas: Nwy
-            storage_heaters: Stôr-wresogyddion
-        easter_shutdown_2023_energy_comparison: Cymhariaeth cau ar gyfer y Pasg 2023
-        electricity_consumption_during_holiday: Defnydd trydan yn ystod y gwyliau presennol
-        electricity_peak_kw_per_pupil: Uchafbwynt defnydd trydan diwrnod ysgol
-        electricity_targets: Cynnydd yn erbyn targed trydan
-        gas_consumption_during_holiday: Defnydd nwy yn ystod y gwyliau presennol
-        gas_targets: Cynnydd yn erbyn targed nwy
-        heat_saver_march_2024: Arbedwr Gwres Mawrth 2024
-        heating_coming_on_too_early: Amser cychwyn gwres
-        heating_in_warm_weather: Gwres a ddefnyddir mewn tywydd cynnes
-        holiday_usage_last_year: Cost yr ynni a ddefnyddiwyd yn ystod y gwyliau sydd i ddod y llynedd
-        hot_water_efficiency: Effeithlonrwydd Dŵr Poeth
-        jan_august_2022_2023_energy_comparison: Defnydd ynni Ionawr i Awst 2022 i 2023
-        layer_up_powerdown_day_november_2022: Newid mewn ynni ar gyfer diwrnod cydio mewn siwmper/pŵeru i lawr 11 Tachwedd 2022 (o gymharu â 12 Tachwedd 2021)
-        layer_up_powerdown_day_november_2023: Newid mewn ynni ar gyfer diwrnod cydio mewn siwmper pweru i lawr 24 Tachwedd 2023 (o gymharu â 17 Tachwedd 2023)
         optimum_start_analysis: Dadansoddiad cychwyn gorau posib
-        recent_change_in_baseload: Newid diweddar yn y llwyth sylfaenol
-        seasonal_baseload_variation: Amrywiad llwyth sylfaenol tymhorol
-        sept_nov_2021_2022_energy_comparison: Medi i Ragfyr 2021 yn erbyn defnydd ynni 2022
-        solar_generation_summary: Crynodeb cenhedlaeth solar
-        solar_pv_benefit_estimate: Mantais gosod PV solar
         storage_heater_consumption_during_holiday: Defnydd gwresogydd stôr yn ystod y gwyliau presennol
-        thermostat_sensitivity: Arbediad blynyddol trwy ostyngiad o 1C yn nhymheredd y thermostat
-        thermostatic_control: Ansawdd o reolaeth thermostatig
-        weekday_baseload_variation: Amrywiad llwyth sylfaenol yn ystod yr wythnos
-      chart_table_grouping:
-        date_limited_comparisons:
-          description: Mae'r meincnodau hyn yn cymharu perfformiad ysgolion ar draws ystodau dyddiadau penodol.
-          title: Dyddiad cymariaethau cyfyngedig
-        electricity_benchmarks:
-          description: Mae'r meincnodau hyn yn cymharu defnydd ysgolion o drydan, gan gynnwys defnydd y llynedd, newidiadau diweddar a hirdymor mewn defnydd, llwyth sylfaenol a pherfformiad yn erbyn targed yr ysgol.
-          title: Meincnodau Trydan
-        gas_and_storage_heater_benchmarks:
-          description: Mae'r meincnodau hyn yn cymharu defnydd ysgolion o wresogyddion nwy neu stôr, gan gynnwys defnydd y llynedd, newidiadau diweddar a hirdymor mewn defnydd, safon eu rheolaeth gwresogi a pherfformiad yn erbyn targed yr ysgol.
-          title: Meincnodau Stôr-wresogydd  a Gwresogydd Nwy
-        solar_benchmarks:
-          description: Mae'r meincnodau hyn yn cymharu cynhyrchiant solar ffotofoltäig ysgolion a manteision gosod solar.
-          title: Meincnodau Solar
-        total_energy_use_benchmarks:
-          description: Mae'r meincnodau hyn yn cymharu defnydd ynni cyfunol safle ysgol
-          title: Cyfanswm Meincnodau Defnydd Ynni
       configuration:
         column_groups:
-          change_since_joined_energy_sparks: Newid ers ymuno â Sbarcynni
           co2_kg: CO2 (kg)
           cost: Cost
           electricity_consumption: Defnydd o drydan
@@ -102,16 +28,12 @@ cy:
           kwh: kWh
           metering: Mesurydd
           percent_changed: Newid canrannol
-          solar: Solar
-          solar_pv_production: Cynhyrchu solar ffotofoltaig
           solar_self_consumption: Hunan-ddefnydd solar
           storage_heater_consumption: Defnydd stôr-wresogydd
-          total_energy_consumption: Cyfanswm y defnydd o ynni
         column_heading_explanation:
           last_year_definition_html: "<p>Cymariaethau mewn ysgolion &apos;y llynedd&apos; yn cael ei ddiffinio fel eleni hyd yn hyn.</p>"
           last_year_previous_year_definition_html: "<p>Cymariaethau mewn ysgolion &apos;y llynedd&apos; yn cael ei ddiffinio fel y flwyddyn hon hyd yma, &apos;y flwyddyn flaenorol&apos; yn cael ei ddiffinio fel y flwyddyn cyn.</p>"
         column_headings:
-          annualised_£_value_of_summer_holiday_reduction: £ gwerth blynyddol o ostyngiad gwyliau haf
           average_baseload_kw: Llwyth sylfaenol cyfartalog kW
           average_baseload_last_week_kw: Llwyth sylfaenol cyfartalog yr wythnos ddiwethaf (kW)
           average_baseload_last_year_kw: Llwyth sylfaenol cyfartalog y llynedd (kW)
@@ -120,29 +42,11 @@ cy:
           average_peak_kw: Uchafbwynt cyfartalog kw
           baseload_per_pupil_w: Llwyth sylfaen fesul disgybl (C)
           baseload_percent: Llwyth sylfaenol fel canran o gyfanswm y defnydd
-          blended_current_rate: Cyfradd gyfredol gymysg
-          change: Newid
-          change_co2: Newid o ran CO2
-          change_excluding_solar: Newid (ac eithrio solar)
-          change_in_annual_co2: Newid yn y CO2 blynyddol
-          change_in_annual_electricity_co2_excluding_solar: Newid yn y CO2 trydan blynyddol (ac eithrio solar)
-          change_in_annual_electricity_usage: Newid yn y defnydd blynyddol o drydan
-          change_in_annual_gas_co2: Newid yn y CO2 nwy blynyddol
-          change_in_annual_gas_storage_heater_usage: Newid yn y defnydd blynyddol o wresogyddion nwy/storfa
-          change_in_annual_solar_pv_co2: Newid yn y CO2 solar ffotofoltäig blynyddol
-          change_in_annual_storage_heater_co2: Newid yn y CO2 stôr-wresogydd blynyddol
           change_in_baseload_last_week_v_year_kw: Newid yn y llwyth sylfaenol wythnos diwethaf yn erbyn blwyddyn (kW)
           change_in_baseload_last_week_v_year_pct: Newid yn y llwyth sylfaenol wythnos diwethaf yn erbyn blwyddyn (%)
-          change_in_heating_costs_between_last_2_years: Newid mewn costau gwresogi rhwng y 2 flynedd ddiwethaf
           change_kwh: Newid kWh
           change_pct: Newid %
-          change_pct_co2: Newid o ran % CO2
-          change_pct_combo: Newid o ran % kWh/£
-          change_£: Newid £
           change_£current: Newid £ (tariff diweddaraf)
-          co2_last_year: CO2 (y llynedd)
-          co2_previous_year: CO2 (blwyddyn flaenorol)
-          colder?: Oerach?
           community: Cymuned
           community_usage_cost: Cost defnydd cymunedol
           cost_of_change_in_baseload: Cost newid yn y llwyth sylfaenol y flwyddyn nesaf
@@ -151,30 +55,22 @@ cy:
           day_of_week_with_minimum_baseload: Diwrnod o'r wythnos gydag isafswm llwyth sylfaenol
           efficiency_of_system: Effeithlonrwydd y system
           electricity: Trydan
-          electricity_co2_last_year: ' CO2  Trydan (y llynedd)'
-          electricity_co2_previous_year: CO2 Trydan (blwyddyn flaenorol)
           electricity_cost_ct: Cost trydan (tariff presennol)
           electricity_cost_ht: Cost trydan (tariff hanesyddol)
           electricity_kwh_per_pupil: Trydan kWh fesul disgybl fesul gwyliau
-          energy_sparks_join_date: Dyddiad ymuno Sbarcynni
-          energy_total: Ynni (cyfanswm)
-          estimate_of_annual_refrigeration_cost: Amcangyfrif o gost oeri blynyddol
           estimated: Amcangyfrif
           exemplar_peak_kw: 'kw brig enghreifftiol '
           floor_area: Arwynebedd llawr
           fuel: Tanwydd
           gas: Nwy
-          gas_co2_last_year: CO2 Nwy (y llynedd)
-          gas_co2_previous_year: CO2 Nwy (blwyddyn flaenorol)
           gas_cost_ct: Cost nwy (tariff presennol)
           gas_cost_ht: Cost nwy (tariff hanesyddol)
           gas_kwh_per_floor_area: Nwy kWh fesul arwynebedd llawr fesul gwyliau
+          heating_gas: Nwy Gwresogi
           holiday: Gwyliau
           holiday_usage_to_date: Defnydd gwyliau hyd yma
+          hot_water_gas: Nwy Dŵr Poeth
           kwh_consumption_since_target_set: Defnydd kWh ers gosod y targed
-          last_school_week: Wythnos ysgol olaf
-          last_school_week_temperature_adjusted: Wythnos ysgol olaf (tymheredd wedi'i addasu)
-          last_school_week_temperature_unadjusted: Wythnos ysgol olaf (tymheredd heb ei addasu)
           last_year: Y llynedd
           last_year_carbon_emissions_tonnes_co2: Allyriadau carbon y llynedd (tunelli CO2)
           last_year_consumption_kwh: Defnydd kWh y llynedd
@@ -182,85 +78,56 @@ cy:
           last_year_cost_£: Cost y llynedd £
           last_year_electricity_kwh_pupil: Trydan y llynedd kWh/disgybl
           last_year_electricity_£: Trydan y llynedd £
-          last_year_electricity_£_ct: Trydan y llynedd £ ar y tariff presennol
           last_year_electricity_£_pupil: Trydan y llynedd £/disgybl
-          last_year_electricity_£_pupil_ct: Trydan y llynedd  £/disgybl ar y tariff presennol
           last_year_energy_co2tonnes: CO2 Ynni y llynedd (tunelli)
-          last_year_energy_cost_£: Cost ynni y llynedd £
           last_year_energy_kgco2_pupil: Ynni y llynedd kgCO2/disgybl
           last_year_energy_kwh: Ynni y llynedd kWh
           last_year_energy_kwh_pupil: Ynni y llynedd kWh/disgybl
           last_year_energy_£_floor_area: Ynni y llynedd £/arwynebedd llawr
           last_year_energy_£_pupil: Y llynedd ynni £/disgybl
-          last_year_gas_costs_£: Costau nwy y llynedd
           last_year_gas_kwh_pupil: Nwy y llynedd kWh/disgybl
           last_year_gas_£: Y llynedd Nwy £
           last_year_heating_costs_per_floor_area: Costau gwresogi y llynedd  fesul arwynebedd llawr
-          last_year_kwh_consumption: Defnydd kWh y llynedd
           last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
           last_year_out_of_hours_cost: Cost y tu allan i oriau y llynedd
           last_year_out_of_hours_cost_ct: Cost y tu allan i oriau y llynedd ar y tariff cyfredol
           last_year_out_of_hours_kwh: Kwh y tu allan i oriau y llynedd
           last_year_saving_if_improve_to_exemplar: 'Cynilo os gwella i batrwm enghreifftiol y llynedd '
           last_year_saving_per_1c_reduction_in_thermostat: Arbed fesul gostyngiad o 1C mewn thermostat
-          last_year_storage_heater_costs_£: Costau stôr-wresogydd y llynedd
           last_year_storage_heater_kwh_pupil: kWh/disgybl stôr-wresogyddion y llynedd
           last_year_storage_heater_£: Stôr-wresogydd y llynedd £
           last_year_weekend_and_holiday_costs: Costau penwythnos a gwyliau llynedd
-          layer_down_day: Diwrnod haenu i lawr
           max_average_weekday_baseload_kw: Llwyth sylfaenol cyfartalog uchaf yn ystod yr wythnos kW
-          metering: Mesurydd
           min_average_weekday_baseload_kw: Isafswm llwyth sylfaenol yn ystod yr wythnos kW
           most_recent_holiday: Gwyliau mwyaf diweddar
-          name: Ysgol
-          no_recent_data: Dim data diweddar
           number_of_days_heating_on_in_warm_weather: Nifer y diwrnodau gwres ymlaen mewn tywydd cynnes
-          number_of_electricity_meters: Nifer y mesuryddion trydan
-          number_of_gas_meters: Nifer y mesuryddion nwy
           optimum_start_rating: Gradd cychwyn gorau posib
-          overall_change: Newid cyffredinol
-          overall_rating: Gradd gyffredinol
           overnight_charging: Gwefru dros nos
           payback_years: Talu yn ôl (blynyddoedd)
-          percent_above_or_below_last_year: Canran uwch neu is na'r llynedd
           percent_above_or_below_target_since_target_set: Canran uwchlaw neu islaw'r targed ers gosod y targed
           percent_increase_on_winter_baseload_over_summer: Cynnydd canrannol ar lwyth sylfaenol y gaeaf dros yr haf
           percentage_of_annual_heating_consumed_in_warm_weather: Canran y gwres blynyddol a ddefnyddir mewn tywydd cynnes
-          potential_annual_saving_£: Arbediad blynyddol posib £
-          potential_max_annual_saving_£: Arbediad blynyddol mwyaf posib £
+          percentage_of_gas_use_for_hot_water: Canran y defnydd o nwy ar gyfer dŵr poeth
           potential_saving: Arbediad posib (ar y tariff diweddaraf)
-          previous_day: Diwrnod blaenorol
-          previous_day_temperature_unadjusted: Diwrnod blaenorol (tymheredd heb ei addasu)
           previous_holiday: Gwyliau blaenorol
           previous_year: Gwyliau blaenorol
-          previous_year_electricity_£: Trydan y flwyddyn flaenorol £
-          previous_year_gas_costs_£: Costau nwy y flwyddyn flaenorol
           previous_year_out_of_hours_co2: Co2 y tu allan i oriau y llynedd?
           previous_year_out_of_hours_cost_ct: Cost y tu allan i oriau y flwyddyn flaenorol ar y tariff cyfredol
           previous_year_out_of_hours_kwh: 'kWh y tu allan i oriau y flwyddyn flaenorol '
-          previous_year_storage_heater_costs_£: Costau stôr-wresogydd storio y flwyddyn flaenorol
           previous_year_temperature_adjusted: Y flwyddyn flaenorol (wedi addasu o ran tymheredd)
-          previous_year_temperature_unadjusted: Y flwyddyn flaenorol (heb addasu o ran tymheredd)
           projected_usage_by_end_of_holiday: Defnydd rhagamcanol erbyn diwedd y gwyliau
           pupils: Disgyblion
-          rating: graddio
-          rating_based_on_number_of_recent_years_with_reduction: Graddio yn seiliedig ar nifer y blynyddoedd diwethaf gyda gostyngiad
-          reduction_in_baseload_over_summer_holidays: Gostyngiad yn y llwyth sylfaenol dros wyliau'r haf
-          reduction_in_kw_over_summer_holiday: Gostyngiad o ran kW dros wyliau'r haf
           reduction_in_mains_consumption_pct: Gostyngiad yn y defnydd o brif gyflenwad (%)
           regression_model_optimum_start_r2: Model atchweliad y cychwyn gorau posib r2
           regression_model_optimum_start_sensitivity_to_outside_temperature: Model atchweliad sensitifrwydd cychwyn gorau posib i dymheredd y tu allan
           regression_model_optimum_start_time: Amser cychwyn gorau posib model atchweliad
           saving_co2_kg: Arbed CO2 kg
-          saving_during_summer_holiday_from_baseload_reduction: Arbediad yn ystod gwyliau'r haf rhag lleihau'r llwyth sylfaenol
           saving_if_improve_to_exemplar: Arbediad os caiff ei wella i batrwm enghreifftiol (ar y tariff diweddaraf)
           saving_if_match_exemplar_£: Arbediad os yw'n cyfateb (£ ar y tariff diweddaraf)
           saving_if_matched_exemplar_school: Arbediad os yw'n cyfateb i ysgol enghreifftiol (gan ddefnyddio'r tariff diweddaraf)
-          saving_if_moved_to_exemplar: Arbediad os caiff ei symud i enghraifft (ar y tariff diweddaraf)
           saving_if_same_all_year_around: Arbediad os yr un peth drwy gydol y flwyddyn (ar y tariff diweddaraf)
           saving_improving_timing: Arbediad gwella amseru
           saving_optimal_panels: Arbediad blynyddol ar y tariff diweddaraf os gosodir y maint panel gorau posibl
-          saving_over_summer_holiday: Arbediad dros wyliau'r haf
           saving_through_improved_thermostatic_control: Arbediad trwy well rheolaeth thermostatig
           saving_through_turning_heating_off_in_warm_weather_kwh: Arbediad trwy ddiffodd y gwres mewn tywydd cynnes (kWh)
           saving_with_pou_electric_hot_water: Arbediad gyda dŵr poeth trydan POU
@@ -268,337 +135,31 @@ cy:
           school: Ysgol
           school_day_closed: Diwrnod Ysgol Ar Gau
           school_day_open: Diwrnod Ysgol Ar Agor
-          school_id: Dull adnabod ysgol
-          school_name: Enw'r ysgol
           size_kwp: 'Maint: kWp'
-          size_of_reduction_rating: Maint y radd ostyngiad
           solar_export: Allforio (kWh)
           solar_generation: Cenhedlaeth (kWh)
           solar_mains_consume: Defnydd o'r prif gyflenwad (kWh)
           solar_mains_onsite: Cyfanswm y defnydd ar y safle (kWh)
-          solar_pv: Solar ffotofoltaig
-          solar_pv_co2_last_year: CO2 solar ffotofoltäig (y llynedd)
-          solar_pv_co2_previous_year: CO2 solar ffotofoltäig (blwyddyn flaenorol)
           solar_self_consume: Hunan-ddefnydd (kWh)
           standard_deviation_of_start_time__hours_last_year: Gwyriad safonol amser cychwyn - oriau, y llynedd
           start_date_for_target: Dyddiad cychwyn ar gyfer y targed
-          storage_heater_co2_last_year: Stôr-wresogydd CO2 (y llynedd)
-          storage_heater_co2_previous_year: Stôr-wresogydd CO2 (blwyddyn flaenorol)
           storage_heaters: Stôr-wresogyddion
           summer_baseload_kw: Llwyth sylfaenol yr haf kW
           target_kwh_consumption: Targedu defnydd kWh
-          tariff_changed: tariff wedi newid
-          tariff_changed_period: cyfnod newid tariff
-          temperature_adjusted: Wedi addasu o ran tymheredd
           temperature_adjusted_kwh: Newid wedi addasu o ran tymheredd (kWh)
-          temperature_unadjusted: Heb addasu o ran tymheredd
           thermostatic_r2: R2 thermostatig
           total_energy_costs_£: Cyfanswm Costau Ynni £
           type: Math
-          unadjusted: Heb ei addasu
           unadjusted_kwh: Newid heb ei addasu (kWh)
-          urn: URN
           variation_in_baseload_between_days_of_week: Amrywiad yn llwyth sylfaenol rhwng diwrnodau'r wythnos
           w_floor_area: W/arwynebedd llawr
           weekend: Penwythnos
           winter_baseload_kw: Llwyth sylfaenol y gaeaf kW
-          year_before_joined: Blwyddyn cyn ymuno
-        no_schools_to_report_for_filter: Nid oes unrhyw ysgolion i adrodd eu bod yn defnyddio'r hidlydd hwn ar gyfer y meincnod hwn
-        the_tariff_has_changed_during_the_last_year_html: |-
-          <p>
-            (*5) Mae'r tariff wedi newid yn ystod y flwyddyn ddiwethaf ar gyfer yr ysgol hon.
-                Cyfrifir arbedion gan ddefnyddio'r tariff diweddaraf ond
-                cyfrifir gwerthoedd £ eraill gan ddefnyddio'r tariff perthnasol ar y pryd
-          </p>
       content:
-        annual_change_in_electricity_out_of_hours_use:
-          introduction_text_html: |-
-            <p>
-             Mae’r tabl hwn yn cymharu’r trydan a ddefnyddiwyd y tu allan i oriau ysgol dros y 12 mis diwethaf, â’r cyfnod blaenorol o 12 mis.
-            </p>
-        annual_change_in_gas_out_of_hours_use:
-          introduction_text_html: |-
-            <p>
-              Mae'r tabl hwn yn cymharu nwy a ddefnyddiwyd y tu allan i oriau ysgol dros y 12 mis diwethaf, â'r cyfnod blaenorol o 12 mis.
-            </p>
-        annual_change_in_out_of_hours_use:
-          table_html: |-
-            <p>
-             Os oes gan ysgol lai na 12 mis o ddata, yna ni ddangosir cymhariaeth. Os oes gan ysgol lai na 2 flynedd o ddata
-              yna dim ond y data ar gyfer y 12 mis diwethaf a ddangosir.
-            </p>
-            <p>
-              Costs areCyfrifir costau ar sail tariff presennol yr ysgol. calculated based on the school's current tariff.
-            </p>
-        annual_change_in_storage_heater_out_of_hours_use:
-          introduction_text_html: |-
-            <p>
-             Mae'r tabl hwn yn cymharu'r defnydd o wresogyddion storio y tu allan i oriau ysgol dros y 12 mis diwethaf, â'r cyfnod blaenorol o 12 mis.
-            </p>
-        annual_electricity_costs_per_pupil:
-          introduction_text_html: "<p>\n  Mae'r meincnod hwn yn cymharu cost trydan fesul disgybl yn y flwyddyn ddiwethaf.\n</p>\n<p>\n  Ni ddylai fod gwahaniaeth sylweddol rhwng ysgolion gan fod angen i bob ysgol ddefnyddio tua’r un faint o offer TGCh, \n  goleuadau ac oergelloedd fesul disgybl. Gall eithriadau gynnwys ysgolion sydd â phyllau nofio neu oleuadau llifogydd chwaraeon a all gynyddu'r \n  galw yn sylweddol. Mae gan ysgolion arbennig hefyd gostau trydan uwch fesul disgybl oherwydd dwysedd disgyblion is ac offer arbenigol.\n</p>\n<p>\n  Nid yw'r data yn cynnwys stôr-wresogyddion a adroddir mewn mannau eraill o dan y meincnodau 'gwresogi'.\n</p>"
-        annual_electricity_out_of_hours_use:
-          introduction_text_html: "<p>\n Mae'r siart hwn yn dangos dadansoddiad o bryd mae ysgolion yn defnyddio trydan. Mae diwrnod ysgol ar agor pan fydd yr ysgol ar agor i ddisgyblion a staff. \n Diwrnod ysgol ar gau yw pan fydd yr ysgol ar gau i ddisgyblion a staff dros nos.\n</p>\n<p>\n Mae'r rhan fwyaf o ysgolion yn wag am tua 85% o'r flwyddyn; rhwng 5:00pm a 7:30am ar ddiwrnodau ysgol, ar benwythnosau ac yn ystod gwyliau. \n  Ffocws ar leihau'r defnydd o drydan y tu allan i oriau; Mae diffodd peiriannau a gosod offer effeithlon yn aml yn rhoi ffordd gost-effeithiol i ysgolion \n   leihau eu defnydd cyffredinol. Dylai ysgolion anelu at leihau eu defnydd y tu allan i oriau o dan 25% o'r defnydd blynyddol. \n</p>"
-        annual_energy_costs:
-          introduction_text_html: |-
-            <p>
-              Mae'r meincnod hwn yn dangos faint y gwariodd pob ysgol ar ynni y llynedd.
-            </p>
-        annual_energy_costs_per_floor_area:
-          introduction_text_html: |-
-            <p>
-              Mae'r meincnod hwn yn ddewis arall i'r meincnod ynni fesul disgybl a ddefnyddir amlaf.
-            </p>
-        annual_energy_costs_per_pupil:
-          introduction_text_html: "<p>\n  Mae'r meincnod hwn yn cymharu'r ynni a ddefnyddiwyd fesul disgybl yn y flwyddyn ddiwethaf mewn kWh.\n  Byddwch yn ofalus wrth gymharu gwerthoedd kWh rhwng gwahanol fathau o danwydd, \n  yn dechnegol nid oes modd eu cymharu'n uniongyrchol gan eu bod yn fathau gwahanol o ynni.\n</p>"
-        annual_gas_out_of_hours_use:
-          introduction_text_html: |-
-            <p>Mae'r siart hwn yn dangos dadansoddiad o bryd mae ysgolion yn defnyddio nwy. Mae diwrnod ysgol ar agor pan fydd yr ysgol ar agor i ddisgyblion a staff. Diwrnod ysgol ar gau yw pan fydd yr ysgol ar gau i ddisgyblion a staff dros nos.</p>
-            <p>Mae'r rhan fwyaf o ysgolion yn wag am tua 85% o'r flwyddyn; rhwng 5:00pm a 7:30am ar ddiwrnodau ysgol, ar benwythnosau ac yn ystod gwyliau. Ffocws ar leihau'r defnydd o nwy y tu allan i oriau; mae troi systemau gwresogi a dŵr poeth i ffwrdd y tu allan i oriau yn rhoi ffordd gost-effeithiol i ysgolion leihau eu defnydd cyffredinol.</p>
-            <p>Dylai ysgolion anelu at leihau eu defnydd o nwy y tu allan i oriau o dan 35% o'u defnydd blynyddol.</p>
-        annual_heating_costs_per_floor_area:
-          introduction_text_html: |-
-            <p>Mae’r meincnod hwn yn cymharu costau stôr-wresogyddion nwy a y llynedd fesul arwynebedd llawr (m2).</p>
-            <p>Mae’r meincnod wedi’i addasu ar gyfer tymereddau rhanbarthol dros y flwyddyn ddiwethaf, fel bod ysgolion yn yr Alban, er enghraifft, yn cael eu cymharu ar yr un telerau ag ysgolion yn ne-orllewin cynhesach Lloegr.</p>
-            <p>Ar gyfer ysgolion sy'n cael eu gwresogi gan nwy, mae'r gost yn cynnwys nwy a ddefnyddir ar gyfer dŵr poeth a chan gegin yr ysgol.</p>
-            <p>Mae gan ysgolion sydd â photensial arbedion negyddol y defnydd o wres sy'n is nag un yr ysgolion gorau, sy'n dda. Ar gyfer ysgolion sydd â stôr-wresogyddion, cyfrifir costau gwresogi gan ddefnyddio prisiau tariff trydan gan gynnwys tariffau gwahaniaethol/economi-7 os yw ysgolion ar dariff o’r fath.</p>
-        annual_storage_heater_out_of_hours_use:
-          introduction_text_html: "<p>Mae stôr-wresogyddion yn defnyddio trydan ac yn storio gwres dros nos pan fo trydan yn rhatach (gan gymryd bod yr ysgol ar 'economi 7' neu dariff gwahaniaethol) ac yn rhyddhau'r gwres yn ystod y dydd.</p> <p>Gall sicrhau bod y gwres yn cael ei ddiffodd dros y penwythnos trwy osod amserydd 7 diwrnod fod yn ad-daliad byr iawn. Gall diffodd y gwresogyddion neu eu troi i lawr mor isel â phosib er mwyn osgoi difrod rhew arbed yn ystod gwyliau.</p>"
-        baseload_per_pupil:
-          introduction_text_html: |-
-            <p>
-              Llwyth sylfaenol ysgol yw'r trydan a ddefnyddir gan offer sy'n cael eu cadw'n rhedeg bob amser.
-            </p>
-            <p>
-              Dyma un o'r meincnodau mwyaf defnyddiol ar gyfer deall defnydd ysgol o drydan, gan fod 50% o drydan y rhan fwyaf o ysgolion yn cael ei ddefnyddio y tu allan i oriau. Bydd lleihau'r llwyth sylfaenol yn cael effaith fawr ar y defnydd cyffredinol o drydan.
-            </p>
-            <p>
-             Dylai pob ysgol anelu at leihau eu llwyth sylfaen trydan fesul disgybl i un yr ysgolion gorau. Mae ysgolion yn cyflawni tua'r un swyddogaeth yn fras, felly dylent allu cyflawni defnydd tebyg o drydan, yn enwedig y tu allan i oriau.
-            </p>
-        benchmark_autumn_2022_gas_table:
-          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
-        benchmark_baseload_base:
-          baseload_1_kw_change_range_£_html:
-            one_value_html: "<p>Mae cynnydd o 1 kW yn y llwyth sylfaenol yn cyfateb i gynnydd mewn costau trydan blynyddol o %{value_gbp}.</p>"
-            two_value_html: "<p>Mae cynnydd o 1 kW yn y llwyth sylfaenol yn cyfateb i gynnydd mewn costau trydan blynyddol o rhwng %{value_first_gbp} a %{value_last_gbp} yn dibynnu ar eich tariff presennol.</p>"
-        benchmark_change_adhoc_comparison_gas_table:
-          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
         benchmark_holidays_change_base:
-          period_type: gwyliau
           period_types: gwyliau
-        benchmark_jan_august_2022_2023_gas_table:
-          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
-        benchmark_layer_up_powerdown_day_november_2023_gas_table:
-          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
-        benchmark_sept_nov_2022_gas_table:
-          introduction_text: 'Mae''r colofnau newid yn cael eu cyfrifo gan ddefnyddio gwerthoedd tymheredd wedi''u haddasu:'
-        change_in_electricity_consumption_recent_school_weeks:
-          introduction_text_html: "<p>Mae'r meincnod hwn yn dangos y newid yn y defnydd o drydan dros y bythefnos ysgol ddiwethaf. Dylech ddisgwyl cynnydd bach yn y defnydd o drydan yn y gaeaf gyda mwy o ddefnydd o oleuadau a gostyngiad dilynol yn y gwanwyn.</p>"
-          period_type: wythnos ysgol
-          period_types: wythnosau ysgol
-        change_in_electricity_holiday_consumption_previous_holiday:
-          introduction_text_html: |-
-            <p>
-              Mae'r meincnod hwn yn dangos y newid yn y defnydd o drydan rhwng y ddau wyliau diweddaraf.
-            </p>
-            <p>
-             Mae'r gymhariaeth hon yn cymharu'r data diweddaraf sydd ar gael ar gyfer y gwyliau mwyaf diweddar â ffigur sydd wedi'i addasu ar gyfer y gwyliau blaenorol, gan raddio i'r un nifer o ddyddiau a'r tariff diweddaraf. Y newid mewn £ yw'r arbediad neu'r gost uwch ar gyfer y gwyliau diweddaraf hyd yma.
-            </p>
-        change_in_electricity_holiday_consumption_previous_years_holiday:
-          introduction_text_html: |-
-            <p>Mae'r meincnod hwn yn dangos y newid yn y defnydd o drydan rhwng y gwyliau mwyaf diweddar, a'r un gwyliau y llynedd.</p>
-            <p>Mae'r gymhariaeth hon yn cymharu'r data diweddaraf sydd ar gael ar gyfer y gwyliau mwyaf diweddar â ffigur wedi'i addasu ar gyfer y gwyliau blaenorol, gan raddio i'r un nifer o ddyddiau a'r tariff diweddaraf. Y newid mewn £ yw'r arbediad neu'r gost uwch ar gyfer y gwyliau diweddaraf hyd yma.</p>
-        change_in_electricity_since_last_year:
-          introduction_text_html: "<p>\n  Mae’r tabl hwn yn cymharu’r defnydd o drydan rhwng eleni hyd heddiw \n  (a ddiffinnir fel ‘y llynedd’ yn y tabl isod) a’r cyfnod cyfatebol \n  o’r flwyddyn flaenorol (a ddiffinnir fel ‘blwyddyn flaenorol’).\n</p>\n<p>\n  Sylwadau:\n  <ul>\n    <li>\n     gall y gwerthoedd kWh, CO2, £ symud i gyfeiriadau croes ac yn ôl \n      canrannau gwahanol oherwydd gall y canlynol amrywio rhwng \n     y ddwy flynedd:\n      <ul>\n        <li>dwysedd carbon y grid trydan</li>\n        <li>cyfran y trydan a ddefnyddir rhwng nos a dydd ar gyfer ysgolion â thariffau gwahaniaethol (economi 7)</li>\n      </ul>\n    </li>\n    <li>\n      dim ond os oes dwy flynedd o ddata ar gael ar gyfer yr ysgol y mae data yn ymddangos yn y golofn 'blwyddyn flaenorol'\n    </li>\n    <li>\n     y defnydd o drydan ar gyfer ysgolion sydd â solar ffotofoltäig yw cyfanswm\n      y trydan a ddefnyddir o'r grid cenedlaethol ynghyd â thrydan a \n      ddefnyddir o'r solar ffotofoltäig (hunan-ddefnydd) \n     ond nid yw'n cynnwys unrhyw solar ffotofoltäig dros ben sy'n cael ei allforio i'r grid\n    </li>\n    <li>\n      amcangyfrifir hunanddefnydd pan nad oes gennym solar ffotofoltäig wedi’i fesur, \n      ac felly ni fydd y defnydd cyffredinol o drydan hefyd yn 100% yn gywir, \n      ond bydd yn amcangyfrif ‘da’ o’r newid o flwyddyn i flwyddyn\n    </li>\n    <li>\n      Nid yw'r defnydd o drydan hefyd yn cynnwys stôr-wresogyddion \n      sy'n cael eu cymharu mewn cymhariaeth ar wahân\n    </li>\n  </ul>\n</p>"
-        change_in_energy_since_last_year:
-          introduction_text_html: "<p>\n Mae’r tabl hwn yn cymharu defnydd ‘ynni’ rhwng eleni hyd yma \n  (a ddiffinnir fel ‘y llynedd’ yn y tabl isod) a’r cyfnod cyfatebol\n  o’r flwyddyn flaenorol (a ddiffinnir fel ‘blwyddyn flaenorol’).\n</p>\n<p>\n  Sylwadau:\n  <ul>\n    <li>gall y gwerthoedd kWh, CO2, £ symud i gyfeiriadau croes ac yn ôl canrannau gwahanol oherwydd gall y canlynol amrywio rhwng y ddwy flynedd:\n      <ul>\n        <li>y cymysgedd o drydan a nwy</li>\n        <li> dwysedd carbon y grid trydan </li>\n        <li>cyfran y trydan a ddefnyddir rhwng nos a dydd ar gyfer ysgolion â thariffau gwahaniaethol (economi 7)</li>\n      </ul>\n    </li>\n    <li>dim ond os oes dwy flynedd o ddata ar gael ar gyfer yr ysgol y mae data yn ymddangos yn y golofn 'blwyddyn flaenorol'</li>\n    <li> allweddir y golofn tanwydd fel a ganlyn\n      <table  class=\"table table-striped table-sm\">\n        <tr><td>T</td><td>Trydan</td></tr>\n        <tr><td>N</td><td>Nwy</td></tr>\n        <tr><td>SG</td><td>Stôr-wresogyddion</td></tr>\n        <tr><td>S</td><td>Solar: Wedi'i fesur h.y. kWh, CO2 cywir</td></tr>\n        <tr><td>s</td><td>Solar: Amcangyfrif</td></tr>\n      </table>\n    </li>\n    <li>\n      mae'r golofn gost ar gyfer ysgolion â solar ffotofoltäig yn cynrychioli cost y defnydd yn unig\n      h.y. prif gyflenwad ynghyd â thrydan a ddefnyddir o’r paneli solar gan ddefnyddio gwerth economaidd hirdymor.\n     Nid yw'n defnyddio'r tariffau trydan na solar ffotofoltäig ar gyfer yr ysgol\n    </li>\n    <li>\n      mae'r ynni CO2 a kWh yn cynnwys net y trydan a'r gwerthoedd PV solar\n    </li>\n  </ul>\n</p>"
-        change_in_energy_use_since_joined_energy_sparks:
-          chart_interpretation_text_html: |-
-            <p>
-            Ni fydd pob ysgol yn cael ei chynrychioli yn y data hwn, gan fod angen gwerth 1 flwyddyn
-            o ddata arnom cyn i'r ysgol ymuno â Sbarcynni ac o leiaf 1 flwyddyn ar ôl
-            hynny i wneud y gymhariaeth.
-            </p>
-          introduction_text_html: |-
-            <p>
-            Mae'r meincnod yn cymharu'r newid yn y defnydd blynyddol o ynni ers i'r ysgol ymuno
-            â Sbarcynni. Felly am y flwyddyn cyn i'r ysgol ymuno â Sbarcynni yn erbyn
-            y flwyddyn ddiweddaraf.
-            </p>
-        change_in_energy_use_since_joined_full_data:
-          introduction_text_html: |-
-            <p>
-              Mae'r tabl hwn yn rhoi dadansoddiad manylach o'r data a ddarparwyd yn y siart
-              a'r tabl uchod.
-            </p>
-        change_in_gas_consumption_recent_school_weeks:
-          introduction_text_html: |-
-            <p>
-              Yn syml, mae'r gymhariaeth hon yn dangos y newid yn y defnydd o nwy dros y ddwy wythnos ysgol ddiwethaf. Gallech ddisgwyl cynnydd yn y defnydd o nwy yn y gaeaf wrth iddo oeri a gostyngiad dilynol yn y gwanwyn.
-            </p>
-        change_in_gas_holiday_consumption_previous_holiday:
-          introduction_text_html: |-
-            <p>Mae'r meincnod hwn yn dangos y newid yn y defnydd o nwy rhwng y ddau wyliau diweddaraf.</p>
-            <p>Mae'r gymhariaeth hon yn cymharu'r data diweddaraf sydd ar gael ar gyfer y gwyliau mwyaf diweddar â ffigur wedi'i addasu ar gyfer y gwyliau blaenorol, gan raddio i'r un nifer o ddyddiau ac addasu ar gyfer newidiadau mewn tymheredd allanol a'r tariff diweddaraf. Y newid mewn £ yw'r arbediad neu'r gost uwch ar gyfer y gwyliau diweddaraf hyd yma.</p>
-        change_in_gas_holiday_consumption_previous_years_holiday:
-          introduction_text_html: |-
-            <p>Mae'r meincnod hwn yn dangos y newid yn y defnydd o nwy rhwng y gwyliau mwyaf diweddar, a'r un gwyliau y llynedd.</p>
-            <p>Mae'r gymhariaeth hon yn cymharu'r data diweddaraf sydd ar gael ar gyfer y gwyliau mwyaf diweddar â ffigur wedi'i addasu ar gyfer y gwyliau blaenorol, gan raddio i'r un nifer o ddyddiau ac addasu ar gyfer newidiadau mewn tymheredd allanol a'r tariff diweddaraf. Y newid mewn £ yw'r arbediad neu'r gost uwch ar gyfer y gwyliau diweddaraf hyd yma.</p>
-        change_in_gas_since_last_year:
-          introduction_text_html: |-
-            <p>
-            Mae'r tabl hwn yn cymharu defnydd nwy rhwng eleni hyd yma
-            (a ddiffinnir fel 'y llynedd' yn y tabl isod) a'r cyfnod cyfatebol o'r flwyddyn flaenorol (a ddiffinnir fel 'blwyddyn flaenorol').
-            </p>
-            <p>
-            Mae'r golofnau 'wedi'u haddasu' yn cael eu haddasu ar gyfer gwahaniaeth
-            tymheredd rhwng y ddwy flynedd. Felly, er enghraifft, os oedd y flwyddyn flaenorol yn oerach
-            na'r llynedd, yna mae defnydd nwy wedi'i addasu y flwyddyn flaenorol
-            mewn kWh yn cael ei addasu i dymheredd y llynedd a byddai'n llai na gwerth
-            y flwyddyn flaenorol heb ei addasu. Mae'r newid canrannol wedi'i addasu yn ddangosydd gwell
-            o'r gwaith y gallai ysgol fod wedi'i wneud i leihau ei defnydd o ynni gan
-            nad yw'n dibynnu ar wahaniaethau tymheredd rhwng y ddwy flynedd.
-            </p>
-        change_in_solar_pv_since_last_year:
-          introduction_text_html: |-
-            <p>
-              Mae'r tabl hwn yn cymharu cynhyrchiant/generadu solar ffotofoltaig rhwng eleni hyd
-            heddiw (a ddiffinnir fel 'y llynedd' yn y tabl isod) a'r cyfnod
-            cyfatebol o'r flwyddyn flaenorol (a ddiffinnir fel 'blwyddyn flaenorol').
-            </p>
-            <p>
-              Lle nad oes gennym ddata mesuredig, defnyddiwyd amcangyfrifon lleol;
-              dylai'r newid canrannol fod yn weddol gywir
-              ond gall gwerthoedd kWh fod yn llai cywir gan ein bod yn tybio ar hyn o bryd
-              bod paneli'r ysgol yn wynebu tua'r de ac ar oleddf o 30 gradd.
-              Os oes gan baneli eich ysgol drefniant gwahanol, bydd y gwerthoedd kWh yn amrywio o'n hamcangyfrifon ni.
-            <p/>
-            <p>
-              Mae'r arbedion CO2 a gyflawnir drwy gynhyrchu trydan o'ch paneli solar yn
-              cael eu cyfrifo gan ddefnyddio dwyster carbon y grid trydan cenedlaethol.
-              Wrth i'r grid ddatgarboneiddio bydd y CO2 a wrthbwysir gan baneli solar yr ysgol
-              yn lleihau'n raddol h.y. bydd y budd CO2 yn lleihau.
-            </p>
-        change_in_storage_heaters_since_last_year:
-          introduction_text_html: |-
-            <p>
-              Mae'r tabl hwn yn cymharu'r defnydd o wresogyddion stôr rhwng eleni hyd heddiw
-              (a ddiffinnir fel 'y llynedd' yn y tabl isod) a'r cyfnod cyfatebol
-              o'r flwyddyn flaenorol (a ddiffinnir fel 'blwyddyn flaenorol').
-            </p>
-            <p>
-              Mae'r defnydd o wresogyddion stôr yn amcangyfrif gweddol gywir
-              oherwydd ar gyfer y rhan fwyaf o ysgolion rydym yn ei ddadgyfuno o'r defnydd o'r prif
-            gyflenwad gan nad yw gwresogyddion stôr fel arfer yn cael eu mesur ar. wahân.
-            </p>
-            <p>
-              Ar gyfer rhai ysgolion efallai y bydd y gwerthoedd cost yn cael eu goramcangyfrif gan
-              nad oes gennym wybodaeth ynghylch a yw gwresogyddion stôr eich ysgol yn
-              yn defnyddio tariff gwahaniaethol is neu dariff economi 7 is.
-            </p>
-            <p>
-              Gall y gwerthoedd kWh, CO2, £ symud i gyfeiriadau gwahanol ac yn ôl
-              canrannau gwahanol oherwydd gall y canlynol amrywio rhwng
-              y ddwy flynedd:
-              <ul>
-                <li>dwysedd carbon y grid trydan</li>
-                <li>cyfran y trydan a ddefnyddir rhwng nos a dydd ar gyfer ysgolion â thariffau gwahaniaethol (economi 7)</li>
-              </ul>
-            </p>
-            <p>
-              Mae'r golofnau 'wedi'u haddasu' yn cael eu haddasu ar gyfer gwahaniaeth
-              tymheredd rhwng y ddwy flynedd. Felly, er enghraifft, os oedd y flwyddyn flaenorol
-              yn oerach na'r llynedd, yna mae defnydd nwy wedi'i addasu y flwyddyn flaenorol
-              yn kWh yn cael ei addasu i dymheredd y llynedd a byddai'n llai na
-              gwerth y flwyddyn flaenorol heb ei addasu. Mae'r newid canrannol wedi'i addasu yn
-              ddangosydd gwell o'r gwaith y gallai ysgol fod wedi'i wneud i leihau ei defnydd o ynni
-              gan nad yw'n dibynnu ar wahaniaethau tymheredd rhwng y ddwy flynedd.
-            </p>
-        easter_shutdown_2023_energy_comparison:
-          introduction_text_html: |-
-            <p>
-            Mae’r meincnod hwn yn dangos y newid yn y defnydd o ynni rhwng y gwyliau diweddaraf, ac wythnos olaf y tymor ysgol blaenorol.
-            </p>
-            <p>
-            Mae'r gymhariaeth hon yn cymharu'r data diweddaraf sydd ar gael ar gyfer y gwyliau mwyaf diweddar â ffigur wedi'i addasu ar gyfer wythnos olaf y tymor ysgol, gan raddio i'r un nifer o ddyddiau ac addasu ar gyfer newidiadau mewn tymheredd allanol a'r tariff diweddaraf. Y newid mewn £ yw'r arbediad neu'r gost uwch ar gyfer y gwyliau diweddaraf hyd yma o'i gymharu â'r defnydd yn ystod y tymor.
-            </p>
-            <p>
-             Mae cynhyrchiad solar ffotofoltäig ysgolion wedi'i dynnu o'r gymhariaeth.
-            </p>
-            <p>
-             Mae'n anodd cymharu gwerthoedd CO2 ar gyfer trydan (gan gynnwys
-              lle mae'r CO2 wedi'i agregu ar draws gwresogyddion trydan, nwy, storio)
-              am gyfnodau byr gan ei fod yn dibynnu ar ddwysedd carbon
-              y grid cenedlaethol ar y diwrnodau sy'n cael eu cymharu a gallai hyn amrywio hyd at
-              300&percnt; o ddydd i ddydd.
-            </p>
-        electricity_consumption_during_holiday:
-          introduction_text_html: "<p>Mae'r meincnod hwn yn dangos y costau trydan rhagamcanol ar gyfer y gwyliau presennol. Ni ddangosir unrhyw ddata ar gyfer ysgol unwaith y bydd y gwyliau drosodd. Mae'r cyfrifiad rhagamcan yn seiliedig ar y patrymau defnydd yn ystod y gwyliau hyd yn hyn.</p>"
-        electricity_peak_kw_per_pupil:
-          introduction_text_html: "<p>Mae'r meincnod hwn yn dangos y defnydd pŵer dyddiol brig mewn ysgolion fesul arwynebedd llawr. Gallai gwerthoedd uchel o gymharu ag ysgolion eraill awgrymu goleuadau, offer neu offer cegin aneffeithlon. Yn gyffredinol, mae'r defnydd mwyaf yn digwydd yng nghanol y dydd.</p>"
-        electricity_targets:
-          introduction_text_html: "<p>Mae’r meincnod hwn yn dangos sut mae ysgol yn gwneud cynnydd yn erbyn y targed y mae wedi’i osod ar gyfer eleni.</p>"
         footnotes:
-          electricity:
-            change_rows_text: "<li>(*1) mae'r gymhariaeth wedi ei addasu oherwydd bod nifer y disgyblion wedi newid rhwng y ddau %{period_type_string}.</li>"
-            infinite_decrease_school_names_text: "<li>(*3) ysgolion lle mae'r newid canrannol yn -Mae anfeidredd yn cael ei achosi gan fod y defnydd trydan yn y %{period_type_string} cyfredol yn sero ond yn y %{period_type_string} blaenorol roedd yn fwy na sero</li>"
-            infinite_increase_school_names_text: "<li>(*2) ysgolion lle mae'r newid canrannol yn +Anfeidredd yn cael ei achosi gan fod y defnydd o drydan yn y %{period_type_string} blaenorol yn fwy na sero ond yn y %{period_type_string} sero cyfredol</li>"
-          gas:
-            change_rows_text: "<li>(*1) mae'r gymhariaeth wedi ei addasu oherwydd bod yr arwynebedd llawr wedi newid rhwng y ddau %{period_type_string} ar gyfer %{schools_to_sentence}.</li>"
-            infinite_decrease_school_names_text: "<li>(*3) ysgolion lle mae'r newid canrannol yn -Mae anfeidredd yn cael ei achosi gan fod y defnydd nwy yn y %{period_type_string} cyfredol yn sero ond yn y %{period_type_string} blaenorol roedd yn fwy na sero</li>"
-            infinite_increase_school_names_text: "<li>(*2)ysgolion lle mae'r newid canrannol yn +Anfeidredd yn cael ei achosi gan fod y defnydd o nwy yn y %{period_type_string} blaenorol yn fwy na sero ond yn y %{period_type_string} sero cyfredol</li>"
           notes: Nodiadau
-          rate_changed_in_period: "<li>(*6) ysgolion lle mae'r tariff economaidd wedi newid rhwng y ddau gyfnod, nid yw hyn yn cael ei adlewyrchu yn y &apos;%{change_gbp_current_header}&apos; colofn wrth iddo gael ei gyfrifo gan ddefnyddio'r tariff mwyaf diweddar.</li>"
-        gas_consumption_during_holiday:
-          introduction_text_html: |-
-            <p>Mae'r meincnod hwn yn dangos y costau nwy rhagamcanol ar gyfer y gwyliau presennol. Ni ddangosir unrhyw ddata ar gyfer ysgol unwaith y bydd y gwyliau drosodd. Mae'r cyfrifiad rhagamcan yn seiliedig ar y patrymau defnydd yn ystod y gwyliau hyd yn hyn.
-            </p>
-        gas_targets:
-          introduction_text_html: "<p>Mae’r meincnod hwn yn dangos sut mae ysgol yn gwneud cynnydd yn erbyn y targed y mae wedi’i osod ar gyfer eleni.</p>"
-        heating_coming_on_too_early:
-          introduction_text_html: |-
-            <p>Mae'r meincnod hwn yn dangos faint o'r gloch mae'r boeleri wedi bod yn cychwyn ar gyfartaledd yn ystod yr wythnos ddiwethaf a'r llynedd.</p>
-            <p>Mae gwres llawer o ysgolion yn dod ymlaen yn rhy gynnar yn y bore. Yn gyffredinol, ni ddylai boeleri gwresogi fod yn troi ymlaen cyn 5am mewn tywydd oer a 7am mewn tywydd mwynach. Os daw gwres eich ysgol ymlaen cyn hyn, dylech allu gwneud newidiadau i'r rheolyddion gwresogi i arbed ynni a llawer o arian.</p>
-        heating_in_warm_weather:
-          introduction_text_html: |-
-            <p>Mae ysgolion yn aml yn anghofio diffodd eu gwres mewn tywydd cynnes, mae tua 10% o ysgolion yn gadael eu gwres ymlaen drwy'r haf.</p>
-            <p>Mae’r meincnod hwn yn dangos faint o wres yr ysgol sy’n cael ei ddefnyddio mewn tywydd cynnes. Dylai ysgolion anelu at gadw eu gwres i ffwrdd cymaint â phosibl mewn tywydd cynnes. Mewn tywydd mwyn dylai'r niferoedd mawr o ddisgyblion ac offer trydanol fod yn ddigon i gadw'r ysgol yn gynnes unwaith y bydd ar agor am y dydd.</p>
-        holiday_usage_last_year:
-          introduction_text_html: "<p>Mae'r meincnod hwn yn dangos cost trydan a nwy a ddefnyddiwyd y llynedd ar gyfer y gwyliau sydd i ddod. Er enghraifft, os mai gwyliau haf 2023 yw'r gwyliau nesaf, bydd y data a ddangosir ar gyfer haf 2022. Mae hyn yn eich galluogi i nodi pa ysgolion yn eich grŵp sydd angen cymryd y camau mwyaf i leihau gwastraff gwyliau.</p> "
-        hot_water_efficiency:
-          introduction_text_html: "<p> Mae'r meincnod hwn yn dadansoddi effeithlonrwydd systemau dŵr poeth ysgolion a'r arbedion posibl naill ai o wella rheolaeth amseru systemau dŵr poeth presennol neu eu disodli'n gyfan gwbl â systemau dŵr poeth trydan pwynt defnyddio.<p>"
-        jan_august_2023_2023_energy_comparison:
-          introduction_text_html: |-
-            <p>
-            Mae'r meincnod hwn yn dangos y newid yn y defnydd o ynni rhwng Ionawr-Awst 2022 a 2023.
-            </p>
-            <p>
-            Mae'r tabl cyntaf yn rhoi crynodeb o'r newid cyffredinol yn y defnydd o ynni, ac mae'r tablau eraill yn rhoi
-            rhagor o fanylion am drydan, nwy a stôr-wresogyddion.
-            </p>
-        layer_up_powerdown_day_november_2022:
-          introduction_text_html: "<p>\n  Mae'r gymhariaeth isod ar gyfer stôr-wresogyddion a gwresogyddion nwy\nwedi gwneud iawn am dymheredd y cyfnod blaenorol i \ndymheredd y cyfnod presennol.\n  </p>\n<p>\n  Mae cynhyrchiad solar ffotofoltäig ysgolion wedi'i dynnu o'r gymhariaeth.\n</p>\n<p>\n  Mae'n anodd cymharu gwerthoedd CO2 ar gyfer trydan (gan gynnwys lle mae'r CO2\nwedi'i agregu ar draws gwresogyddion trydan, nwy, storio)\nam gyfnodau byr gan ei fod yn dibynnu ar ddwysedd carbon\ny grid cenedlaethol ar y diwrnodau sy'n cael eu cymharu a gallai hyn amrywio hyd at \n300&percnt; o ddydd i ddydd.\n</p>"
-        layer_up_powerdown_day_november_2023:
-          introduction_text_html: |-
-            <p>
-              Mae'r gymhariaeth isod ar gyfer nwy a stôr-wresogyddion wedi
-             gwneud iawn am dymheredd y cyfnod blaenorol
-             i dymheredd y cyfnod presennol.
-            </p>
-            <p>
-             Mae cynhyrchiad solar ffotofoltäig ysgolion wedi'i dynnu o'r gymhariaeth.
-            </p>
-            <p>
-              Mae'n anodd cymharu gwerthoedd CO2 ar gyfer trydan (gan gynnwys lle mae'r CO2
-             wedi'i agregu ar draws trydan, nwy, stôr-wresogyddion)
-             am gyfnodau byr gan ei fod yn dibynnu ar ddwysedd carbon
-             y grid cenedlaethol ar y diwrnodau sy'n cael eu cymharu a gallai hyn amrywio hyd at
-             300% o ddydd i ddydd.
-            </p>
-            <p>
-              Bydd y cyfanswm kWh, CO2 a newidiadau cost ond yn cynnwys y mathau o danwydd y mae gennym ddata ar eu cyfer. Felly, e.e. oherwydd nad oes gan ysgol ddata nwy ar gyfer
-            17 Tachwedd ni fydd yn ymddangos yn y tabl nwy, ond efallai y bydd ei data trydan yn bresennol o hyd.
-            </p>
         optimum_start_analysis:
           caveat_text_html: |-
             <p>
@@ -626,50 +187,3 @@ cy:
               Po agosaf at 1.0, po fwyaf o gydberthynas ydoedd ac felly, y
               mwyaf tebygol yw hi y bydd y rheolaeth gychwyn optimwm yn gweithio'n dda.
             </p>
-        recent_change_in_baseload:
-          introduction_text_html: "<p>Mae'r meincnod hwn yn cymharu llwyth sylfaenol presennol ysgol (y trydan a ddefnyddir gan beiriannau sy'n cael eu cadw i redeg bob amser) â'u llwyth sylfaenol cyfartalog dros y flwyddyn ddiwethaf. Dylai ysgolion anelu at leihau eu llwyth sylfaenol trydan dros amser, yn enwedig gan fod offer a goleuadau wedi dod yn llawer mwy effeithlon dros yr ychydig flynyddoedd diwethaf.</p>"
-        seasonal_baseload_variation:
-          introduction_text_html: |-
-            <p>Llwyth sylfaenol ysgol yw'r trydan a ddefnyddir gan offer sy'n cael eu cadw'n rhedeg bob amser.</p>
-            <p>Yn gyffredinol, dylai'r llwyth sylfaenol yn y gaeaf fod yn debyg iawn i'r haf. Yn ymarferol mae llawer o ysgolion yn gadael gwresogyddion trydan ymlaen dros nos pan fydd yr ysgol yn wag. Mae nodi a diffodd neu amseru offer o'r fath yn well yn ffordd gyflym o arbed trydan a chostau.</p>
-        solar_generation_summary:
-          introduction_text_html: |-
-            <p>
-            Yn crynhoi perfformiad y paneli solar a osodwyd ar yr ysgolion hyn dros y 12 mis diwethaf. Cyfwerth â'r tabl
-            "Manteision gosod paneli solar" ar ddadansoddiad solar unigol yr ysgol.
-            </p>
-        solar_pv_benefit_estimate:
-          introduction_text_html: |-
-            <p>
-              Mae'r meincnod hwn yn dangos y fantais o osod paneli solar ffotofoltäig mewn ysgolion nad oes
-              ganddynt baneli solar ffotofoltäig eisoes. Mae’r dadansoddiad hwn yn defnyddio data defnydd trydan bob hanner awr ar gyfer pob
-              ysgol dros y flwyddyn ddiwethaf ynghyd â data cynhyrchu solar bob hanner awr i gyfrifo’r
-              budd o osod paneli solar. Cyfrifir yr ad-daliad a'r arbedion gan ddefnyddio
-              tariff diweddaraf yr ysgol. Darperir rhagor o fanylion os byddwch yn ymchwilio i ddadansoddiad unigol ysgol - lle
-              cyflwynir ystod o wahanol senarios ar gyfer niferoedd gwahanol o baneli.
-            </p>
-        storage_heater_consumption_during_holiday:
-          introduction_text_html: |-
-            <p>
-              Mae'r meincnod hwn yn dangos costau rhagamcanol gwresogyddion storio ar gyfer y gwyliau presennol. Ni ddangosir unrhyw ddata ar gyfer ysgol unwaith y bydd y gwyliau drosodd. Mae'r cyfrifiad rhagamcan yn seiliedig ar y patrymau defnydd yn ystod y gwyliau hyd yn hyn.
-            </p>
-        thermostat_sensitivity:
-          introduction_text_html: "<p>Mae'r meincnod hwn yn dangos y budd o leihau'r tymheredd gosod gwresogi 1°C.</p> <p>Mae gwerth negyddol yn arwydd o reolaeth thermostatig wael iawn, lle na all modelu Sbarcynni wneud synnwyr o'r berthynas rhwng defnydd nwy yr ysgol a thymheredd allanol.</p>"
-        thermostatic_control:
-          introduction_text_html: |-
-            <p>
-              Mae’r meincnod hwn yn darparu mesur o reolaeth thermostatig yr ysgol, a’r potensial i arbed arian os caiff rheolaeth thermostatig ei wella.
-            </p>
-            <p>
-              Mae Sbarcynni yn cyfrifo ansawdd rheolaeth thermostatig ysgol gan ddefnyddio mesur o'r enw 'R2'. Dylai defnydd gwresogi ysgol fod yn llinol gymesur â'r tymheredd y tu allan, po oeraf yw hi, y mwyaf o ynni sydd ei angen i gadw'r ysgol yn gynnes. Mae'r 'R2' yn fesur o gydberthynas y defnydd hwn o wres â thymheredd y tu allan - po agosaf at 1.0 y gorau yw'r rheolaeth. Mae unrhyw werth uwch na 0.8 yn dda. Os oes gan ysgol werth o dan 0.5 mae'n awgrymu bod y rheolaeth thermostatig yn wael iawn a bod perthynas gyfyngedig rhwng y tymheredd a'r gwres a ddefnyddir i gadw'r ysgol yn gynnes.
-            </p>
-        weekday_baseload_variation:
-          introduction_text_html: |-
-            <p>
-              Llwyth sylfaenol ysgol yw'r trydan a ddefnyddir gan offer sy'n cael eu cadw'n rhedeg bob amser.
-            </p>
-            <p>
-              Yn gyffredinol, ni ddylai'r llwyth sylfaenol amrywio rhwng dyddiau'r wythnos a rhwng dyddiau'r wythnos a phenwythnosau.
-            </p>
-            <p>
-             Os oes amrywiad mawr, darganfyddwch beth sy'n achosi i'r llwyth sylfaenol fod yn uwch ar rai dyddiau o'r wythnos, a diffoddwch yr offer neu'r goleuadau sy'n achosi'r gwahaniaeth.

@@ -1,56 +1,65 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'Users', type: :system do
+describe 'Users' do
   let!(:admin) { create(:admin) }
 
-  describe 'searching for users' do
-    before do
-      sign_in(admin)
-    end
+  before { sign_in(admin) }
 
+  it 'accessible by menu' do
+    visit root_path
+    click_on 'Manage'
+    click_on 'Admin'
+    click_on 'Users'
+    expect(page).to have_current_path(admin_users_path)
+  end
+
+  describe 'searching for users' do
     let!(:user) { create(:user, email: 'testing@example.com') }
 
     it 'provides a case insensitive search' do
-      visit root_path
-      click_on 'Manage'
-      click_on 'Admin'
-      click_on 'Users'
-
-      expect(page.first('div#search_results')).not_to have_content('testing@example.com')
-      expect(page.first('div#search_results')).not_to have_content('No users found')
+      visit admin_users_path
+      expect(page.first('div#search_results')).to have_no_content('testing@example.com')
+      expect(page.first('div#search_results')).to have_no_content('No users found')
       fill_in 'Email', with: 'testing@example.com'
       click_on('Search')
       expect(page.first('div#search_results')).to have_content('testing@example.com')
-      expect(page.first('div#search_results')).not_to have_content('No users found')
+      expect(page.first('div#search_results')).to have_no_content('No users found')
       fill_in 'Email', with: 'test@example.com'
       click_on('Search')
-      expect(page.first('div#search_results')).not_to have_content('testing@example.com')
+      expect(page.first('div#search_results')).to have_no_content('testing@example.com')
       expect(page.first('div#search_results')).to have_content('No users found')
       fill_in 'Email', with: 'Testing@Example.Com'
       click_on('Search')
       expect(page.first('div#search_results')).to have_content('testing@example.com')
-      expect(page.first('div#search_results')).not_to have_content('No users found')
+      expect(page.first('div#search_results')).to have_no_content('No users found')
       fill_in 'Email', with: 'Example.Com'
       click_on('Search')
       expect(page.first('div#search_results')).to have_content('testing@example.com')
-      expect(page.first('div#search_results')).not_to have_content('No users found')
+      expect(page.first('div#search_results')).to have_no_content('No users found')
     end
   end
 
   describe 'managing users' do
-    before do
-      sign_in(admin)
+    it 'creates a user' do
+      visit admin_users_path
+      click_on 'New User'
+      fill_in 'Name', with: 'Random User'
+      email = 'random_user2948@example.com'
+      fill_in 'Email', with: email
+      select 'Admin', from: 'user_role'
+      click_on 'Create User'
+      user = User.find_by(email:)
+      expect(user.role).to eq('admin')
+      expect(user.created_by).to eq(admin)
     end
 
     it 'offers roles, but excluding Guest' do
-      visit root_path
-      click_on 'Manage'
-      click_on 'Admin'
-      click_on 'Users'
+      visit admin_users_path
       click_on 'New User'
-
       expect(page).to have_select(:user_role, with_options: ['Staff', 'Admin', 'School Admin'])
-      expect(page).not_to have_select(:user_role, with_options: ['Guest'])
+      expect(page).to have_no_select(:user_role, with_options: ['Guest'])
     end
 
     context 'when user exists with consent grant' do

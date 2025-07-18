@@ -1,13 +1,20 @@
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></strong></h4>
-<% if @advice_page.fuel_type %>
+<% if @advice_page&.fuel_type %>
   <p>
-    <%= t('advice_pages.how_have_we_analysed_your_data.calculations_based_on_fuel_type', fuel_type: I18n.t("common.#{@advice_page.fuel_type}"), start_date: short_dates(@analysis_dates&.start_date), end_date: short_dates(@analysis_dates&.end_date)) %>
+    <%= t('advice_pages.how_have_we_analysed_your_data.calculations_based_on_fuel_type',
+          fuel_type: I18n.t("common.#{@advice_page.fuel_type}"),
+          start_date: short_dates(@analysis_dates.start_date),
+          end_date: short_dates(@analysis_dates.end_date)) %>
   </p>
 <% else %>
   <table class="table table-sm">
     <thead class="thead-dark">
-      <th class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.fuel_type') %></th>
-      <th class="text-right"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.aggregated_meter_date_range') %></th>
+      <th class="text-left">
+        <%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.fuel_type') %>
+      </th>
+      <th class="text-right">
+        <%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.aggregated_meter_date_range') %>
+      </th>
     </thead>
     <tbody>
       <% @overview_data&.table_date_ranges&.each do |fuel_type, date_range| %>
@@ -24,38 +31,57 @@
 <p><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_introduction') %>.</p>
 <table class="table table-sm">
   <thead class="thead-dark">
-    <th class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.columns.characteristic') %></th>
-    <th class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.columns.value') %></th>
+    <th class="text-left">
+      <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.columns.characteristic') %>
+    </th>
+    <th class="text-left">
+      <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.columns.value') %>
+    </th>
   </thead>
   <tbody>
     <tr>
-      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.floor_area') %></td>
+      <td class="text-left">
+        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.floor_area') %>
+      </td>
       <td class="text-left"><%= @school.floor_area %>m<sup>2</sup></td>
     </tr>
     <tr>
-      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.location') %></td>
+      <td class="text-left">
+        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.location') %>
+      </td>
       <td class="text-left"><%= @school.full_location_to_s %></td>
     </tr>
     <tr>
-      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.pupils') %></td>
+      <td class="text-left">
+        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.pupils') %>
+      </td>
       <td class="text-left"><%= @school.number_of_pupils %></td>
     </tr>
     <tr>
-      <td class="text-left"><%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %></td>
+      <td class="text-left">
+        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %></td>
       <td><%= t("common.school_types.#{@school.school_type}") %></td>
     </tr>
   </tbody>
 </table>
 
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.cost_calculations') %></strong></h4>
-<%= t('advice_pages.how_have_we_analysed_your_data.cost_calculations_introduction_html') %>
+<% t('advice_pages.how_have_we_analysed_your_data.cost_calculations_introduction').each do |paragraph| %>
+  <p><%= paragraph %></p>
+<% end %>
 
-<% if @economic_tariffs_change_caveats %>
-  <%= t('advice_pages.how_have_we_analysed_your_data.your_electricity_tariffs_html',
-      last_change_date: short_dates(@economic_tariffs_change_caveats.last_change_date),
-      rate_before_gbp_per_kwh: format_unit(@economic_tariffs_change_caveats.rate_before_£_per_kwh, :£),
-      rate_after_gbp_per_kwh: format_unit(@economic_tariffs_change_caveats.rate_after_£_per_kwh, :£),
-      percent_change: format_unit(@economic_tariffs_change_caveats.percent_change, :percent)) %>
+<% if @advice_page&.fuel_type %>
+  <% caveats = Costs::EconomicTariffsChangeCaveatsService.new(
+       meter_collection: @aggregate_school_service.meter_collection,
+       fuel_type: @advice_page.fuel_type.to_sym
+     ).calculate_economic_tariff_changed %>
+  <%= if caveats
+        t('advice_pages.how_have_we_analysed_your_data.your_electricity_tariffs_html',
+          last_change_date: short_dates(caveats.last_change_date),
+          rate_before_gbp_per_kwh: format_unit(caveats.rate_before_£_per_kwh, :£),
+          rate_after_gbp_per_kwh: format_unit(caveats.rate_after_£_per_kwh, :£),
+          percent_change: format_unit(caveats.percent_change, :percent))
+      end %>
 <% end %>
 
 <h4><strong><%= t('advice_pages.how_have_we_analysed_your_data.school_comparisons') %></strong></h4>

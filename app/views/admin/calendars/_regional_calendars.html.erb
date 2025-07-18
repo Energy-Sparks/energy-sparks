@@ -13,15 +13,25 @@
     <% calendars.each do |calendar| %>
       <tr>
         <td><%= calendar.title %></td>
-        <td><%= link_to calendar.based_on.title, calendar_path(calendar.based_on) unless calendar.based_on.nil? %></td>
+        <td><%= link_to calendar.based_on.title, calendar_path(calendar.based_on) unless calendar.based_on.nil? %>
+        </td>
         <td><%= calendar.calendars.count %></td>
         <% last_term_date = calendar.calendar_events.terms.by_end_date.last %>
-        <td data-order="<%= last_term_date.end_date.strftime("%Y-%m-%d") if last_term_date.present? %>"><%= nice_dates(last_term_date&.end_date) %></td>
+        <td data-order="<%= last_term_date.end_date.strftime('%Y-%m-%d') if last_term_date.present? %>">
+          <%= nice_dates(last_term_date&.end_date) %>
+        </td>
         <td>
           <div class='btn-group'>
-          <%= link_to 'Show', calendar, class: 'btn btn-info' if can?(:read, calendar) %>
-          <%= link_to 'Delete', calendar, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' if calendar.calendars.count == 0 && can?(:destroy, calendar) %>
-          <%= link_to 'Edit', edit_admin_calendar_path(calendar), class: 'btn btn-info' if can?(:update, calendar) %>
+          <%= link_to 'Show', calendar, class: 'btn btn-primary' if can?(:read, calendar) %>
+          <%= if can?(:update, calendar)
+                link_to 'Edit', edit_admin_calendar_path(calendar),
+                        class: 'btn btn-secondary'
+              end %>
+          <%= if calendar.calendars.count.zero? && can?(:destroy, calendar)
+                link_to 'Delete', calendar, method: :delete,
+                                            data: { confirm: 'Are you sure?' },
+                                            class: 'btn btn-danger'
+              end %>
           </div>
         </td>
       </tr>

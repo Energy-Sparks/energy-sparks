@@ -15,7 +15,7 @@ module Schools
       end
 
       def set_heating_model_available
-        @heating_model_available = HeatingControlService.new(@school, aggregate_school).enough_data?
+        @heating_model_available = HeatingControlService.new(@school, aggregate_school_service).enough_data?
       end
     end
   end

@@ -1,0 +1,29 @@
+<% if @installation.inverter_detail_list.present? %>
+  <h2>Cached site information</h2>
+  <p>
+    The following is a summary of the site description. It was last refreshed on
+    <%= nice_date_times(@installation.updated_at) %>. Run Check API on the previous page to update this
+    cached copy.
+  </p>
+  <% @installation.inverter_detail_list.each do |inverter| %>
+    <h3>Inverter <%= inverter['id'] %></h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% inverter.each do |key, value| %>
+          <tr>
+            <th><%= key %></th>
+            <td><%= value %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% else %>
+  <p>There is no cached copy of the site metadata</p>
+<% end %>

@@ -6,18 +6,14 @@
     margin-bottom: 3px;
     margin-left: auto;
 
-    &-body {
-      background-color: $light-yellow;
+    .bar-body {
+      background-color: $yellow-light;
     }
 
-    &-current {
+    &.bar-current {
       .bar-body {
-        background-color: $dark-yellow;
+        background-color: $yellow-medium;
       }
     }
-  }
-
-  .grey {
-    border-color: $grey;
   }
 }

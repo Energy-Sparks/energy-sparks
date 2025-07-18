@@ -29,148 +29,181 @@ h1, .trix-content h1 {
 
 h2,
 .trix-content h2 {
-  padding-top: 10px;
-  padding-bottom: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
-h3, h4, h5, h6,
+h3, h4,
 .trix-content h3,
-.trix-content h4,
+.trix-content h4 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+h5, h6,
 .trix-content h5,
 .trix-content h6 {
- padding-top: 10px;
- padding-bottom: 10px;
-}
-
-.sub-navbar h3,
-.sub-navbar h4 {
-  padding-top: 11px;
-  padding-bottom: 11px;
-  margin: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: $dark-blue;
   font-family: $header-font-family;
   font-weight: $header-font-weight;
-}
 
-.trix-content div {
-  @include font(f6);
-}
-
-// Extra small devices (portrait phones, less than 576px)
-@media (max-width: 575.98px) {
-  h1, .trix-content h1 {
-    @include font(f4);
-    padding-top: 5px;
-    padding-bottom: 5px;
-  }
-
-  h2 {
-    @include font(f5);
-  }
-
-  h3 {
-    @include font(f6);
-  }
-
-  h4 {
-    @include font(f7);
-  }
-
-  h5 {
-    @include font(f8);
-  }
-
-  .trix-content div {
-    @include font(f8);
+  a,
+  a:hover,
+  a:focus,
+  a:active,
+  a.active {
+    color: $blue-very-dark;
+    text-decoration: none;
   }
 }
 
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) and (max-width: 767.98px) {
-  h1, .trix-content h1 {
-    @include font(f3);
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+@mixin responsive-typography {
+  @include responsive-typography-scale-up;
+}
 
-  h2 {
-    @include font(f4);
-  }
+@mixin responsive-typography-scale-up {
+  @media (min-width: map-get($grid-breakpoints, 'xl')) {
+    h1, h2 {
+      font-size: 3vw;
+      line-height: 4vw;
+    }
 
-  h3 {
-    @include font(f5);
-  }
+    h3, h4 {
+      font-size: 2vw;
+      line-height: 3vw;
+    }
 
-  h4 {
-    @include font(f6);
-  }
+    p, q {
+      font-size: 1.3vw;
+      line-height: 2vw;
+    }
 
-  h5 {
-    @include font(f7);
-  }
-
-  .trix-content div {
-    @include font(f7);
+    .btn {
+      font-size: 1.3vw;
+      line-height: 2vw;
+    }
   }
 }
 
-// Medium devices (tablets, 768px and up) // max-width: 991.98px
-@media (min-width: 768px) and (max-width: 991.98px) {
-  h1, .trix-content h1 {
-    @include font(f2);
-    padding-top: 10px;
-    padding-bottom: 10px;
+@mixin responsive-typography-original {
+
+  // Extra small devices (portrait phones, less than 576px)
+  @media (max-width: 575.98px) {
+    h1, .trix-content h1 {
+      @include font(f4);
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    h2 {
+      @include font(f5);
+    }
+
+    h3 {
+      @include font(f6);
+    }
+
+    h4 {
+      @include font(f7);
+    }
+
+    h5 {
+      @include font(f8);
+    }
+
+    .trix-content div {
+      @include font(f8);
+    }
   }
 
-  h2 {
-    @include font(f3);
+  // Small devices (landscape phones, 576px and up)
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    h1, .trix-content h1 {
+      @include font(f3);
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      @include font(f4);
+    }
+
+    h3 {
+      @include font(f5);
+    }
+
+    h4 {
+      @include font(f6);
+    }
+
+    h5 {
+      @include font(f7);
+    }
+
+    .trix-content div {
+      @include font(f7);
+    }
   }
 
-  h3 {
-    @include font(f4);
+  // Medium devices (tablets, 768px and up) // max-width: 991.98px
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    h1, .trix-content h1 {
+      @include font(f2);
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      @include font(f3);
+    }
+
+    h3 {
+      @include font(f4);
+    }
+
+    h4 {
+      @include font(f5);
+    }
+
+    h5 {
+      @include font(f5);
+    }
+
+    .trix-content div {
+      @include font(f6);
+    }
   }
 
-  h4 {
-    @include font(f5);
-  }
+  // Large devices (desktops, 992px and up)
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    h1, .trix-content h1 {
+      @include font(f2);
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
 
-  h5 {
-    @include font(f5);
-  }
+    h2 {
+      @include font(f3);
+    }
 
-  .trix-content div {
-    @include font(f6);
-  }
-}
+    h3 {
+      @include font(f4);
+    }
 
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  h1, .trix-content h1 {
-    @include font(f2);
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
+    h4 {
+      @include font(f5);
+    }
 
-  h2 {
-    @include font(f3);
-  }
+    h5 {
+      @include font(f5);
+    }
 
-  h3 {
-    @include font(f4);
-  }
-
-  h4 {
-    @include font(f5);
-  }
-
-  h5 {
-    @include font(f5);
-  }
-
-  .trix-content div {
-    @include font(f6);
+    .trix-content div {
+      @include font(f6);
+    }
   }
 }

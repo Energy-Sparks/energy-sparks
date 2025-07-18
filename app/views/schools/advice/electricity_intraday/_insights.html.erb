@@ -1,4 +1,4 @@
-<%= component 'notice', status: :neutral do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <% c.with_link do
        link_to t('advice_pages.electricity_intraday.insights.summary_link'),
                learn_more_school_advice_electricity_intraday_path(@school)
@@ -13,11 +13,10 @@
              'advice_pages.electricity_intraday.insights.your_current_peak_electricity_use.title'
            ) %>
 
-<%= component 'alerts', school: @school,
-                        dashboard_alerts: @dashboard_alerts,
-                        alert_types: alert_types_for_class(AlertElectricityPeakKWVersusBenchmark),
-                        show_links: false,
-                        show_icons: false %>
+<%= render AlertsComponent.new(school: @school,
+                               dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertElectricityPeakKWVersusBenchmark),
+                               show_links: false) %>
 
 <%= render 'insights_your_current_peak_electricity_use_table',
            average_peak_kw: @average_peak_kw,
@@ -32,7 +31,7 @@
       school_type: @school.school_type.downcase) %>
 
   <div class="col">
-    <%= component 'school_comparison', id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage do |c| %>
+    <%= render SchoolComparisonComponent.new(id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage) do |c| %>
       <% c.with_footer { advice_t('electricity_intraday.insights.how_do_you_compare.callout_footer') } %>
     <% end %>
   </div>

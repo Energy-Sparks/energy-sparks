@@ -3,9 +3,9 @@ module Schools
     class RecentChangesService
       include AnalysableMixin
 
-      def initialize(school:, meter_collection:, fuel_type:)
+      def initialize(school:, aggregate_school_service:, fuel_type:)
         @school = school
-        @meter_collection = meter_collection
+        @aggregate_school_service = aggregate_school_service
         @fuel_type = fuel_type
       end
 
@@ -106,7 +106,11 @@ module Schools
       end
 
       def aggregate_meter
-        @meter_collection.aggregate_meter(@fuel_type)
+        meter_collection.aggregate_meter(@fuel_type)
+      end
+
+      def meter_collection
+        @aggregate_school_service.meter_collection
       end
     end
   end

@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class StorageHeatersController < AdviceBaseController
-      before_action :load_dashboard_alerts, only: [:insights, :analysis, :learn_more]
-      before_action :set_seasonal_analysis, only: [:insights, :analysis]
-      before_action :set_annual_usage_breakdown, only: [:insights, :analysis]
-      before_action :set_usage_categories, only: [:insights, :analysis]
-      before_action :set_heating_thermostatic_analysis, only: [:insights, :analysis]
+      before_action :load_dashboard_alerts, only: %i[insights analysis learn_more]
+      before_action :set_seasonal_analysis, only: %i[insights analysis]
+      before_action :set_annual_usage_breakdown, only: %i[insights analysis]
+      before_action :set_usage_categories, only: %i[insights analysis]
+      before_action :set_heating_thermostatic_analysis, only: %i[insights analysis]
 
-      def insights
-      end
+      def insights; end
 
       def analysis
-        @analysis_dates = analysis_dates
         @holiday_usage = holiday_usage_calculation_service.school_holiday_calendar_comparison
       end
 
@@ -63,11 +63,14 @@ module Schools
       end
 
       def build_seasonal_analysis
-        ::Heating::SeasonalControlAnalysisService.new(meter_collection: aggregate_school, fuel_type: :storage_heater).seasonal_analysis
+        ::Heating::SeasonalControlAnalysisService.new(meter_collection: aggregate_school,
+                                                      fuel_type: :storage_heater).seasonal_analysis
       end
 
       def set_insights_next_steps
-        @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.insights.next_steps_html", case_study_1: "/case_studies/3/download?locale=#{I18n.locale}", case_study_2: "/case_studies/9/download?locale=#{I18n.locale}").html_safe
+        @advice_page_insights_next_steps = t("advice_pages.#{advice_page_key}.insights.next_steps_html",
+                                             case_study_1: "/case_studies/3/download?locale=#{I18n.locale}",
+                                             case_study_2: "/case_studies/9/download?locale=#{I18n.locale}").html_safe
       end
 
       def advice_page_key
@@ -75,7 +78,7 @@ module Schools
       end
 
       def set_usage_categories
-        @usage_categories = [:holiday, :weekend, :school_day_open, :school_day_closed]
+        @usage_categories = %i[holiday weekend school_day_open school_day_closed]
         @usage_categories += [:community] if @school.school_times.community_use.any?
         @usage_categories
       end

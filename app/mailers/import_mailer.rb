@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ImportMailer < ApplicationMailer
   helper :application, :issues
   layout 'admin_mailer'
@@ -8,7 +10,8 @@ class ImportMailer < ApplicationMailer
     @meters_with_zero_data = params[:meters_with_zero_data]
     subject_description = params[:description] || 'import report'
     subject = "[energy-sparks-#{env}] Energy Sparks #{subject_description}: #{Time.zone.today.strftime('%d/%m/%Y')}"
-    attachments[subject + '.csv'] = { mime_type: 'text/csv', content: to_csv }
+    attachments[EnergySparks::Filenames.csv(subject_description.parameterize)] = { mime_type: 'text/csv',
+                                                                                   content: to_csv }
     mail(to: 'operations@energysparks.uk', subject: subject)
   end
 
@@ -35,6 +38,7 @@ class ImportMailer < ApplicationMailer
       'Procurement route',
       'Last validated reading date',
       'Admin meter status',
+      'Manual reads',
       'Issues',
       'Notes',
       'Group admin name'
@@ -53,6 +57,7 @@ class ImportMailer < ApplicationMailer
       meter.procurement_route&.organisation_name,
       meter.last_validated_reading&.strftime('%d/%m/%Y'),
       meter.admin_meter_status_label,
+      meter.manual_reads ? 'Y' : 'N',
       meter.issues.issue.count,
       meter.issues.note.count,
       meter.school&.school_group&.default_issues_admin_user&.name

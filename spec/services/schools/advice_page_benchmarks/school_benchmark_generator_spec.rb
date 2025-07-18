@@ -121,6 +121,15 @@ RSpec.describe Schools::AdvicePageBenchmarks::SchoolBenchmarkGenerator, type: :s
           expect(AdvicePageSchoolBenchmark.count).to eq 0
         end
       end
+
+      context 'and school no longer has fuel type' do
+        let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false, has_gas: true, has_storage_heaters: true)}
+
+        it 'removes the benchmark' do
+          expect(result).to eq nil
+          expect(AdvicePageSchoolBenchmark.count).to eq 0
+        end
+      end
     end
   end
 end

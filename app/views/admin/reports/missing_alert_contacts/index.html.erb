@@ -1,0 +1,49 @@
+<%= render 'admin/reports/title', title: 'Schools missing alert contacts' %>
+
+<p>
+  This report lists all visible schools that do not have any alert contacts. This means
+  there are no users at the school who are receiving weekly alerts.
+</p>
+
+<p>
+  In addition to listing the group, funder and country for each school, the table shows the date the school completed
+  onboarding, whether the school is data enabled and the number of adult users at the school. Columns can be
+  sorted as required.
+</p>
+
+<table class="table table-sorted table-sm">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>School</th>
+      <th>Funder</th>
+      <th>Country</th>
+      <th>Onboarding completed</th>
+      <th>Data enabled?</th>
+      <th>Users</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @schools.each do |school| %>
+      <tr>
+        <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= school.funder&.name %></td>
+        <td><%= school.country.humanize %></td>
+        <td data-order="<%= school.school_onboarding&.completed_on&.iso8601 || 'last' %>">
+            <% if school.school_onboarding.present? %>
+              <%= nice_dates(school.school_onboarding.completed_on) %>
+            <% else %>
+              N/A
+            <% end %>
+        </td>
+        <td data-order="<%= school.data_enabled? ? '1' : '0' %>">
+          <%= checkmark(school.data_enabled?, off_class: 'text-muted') %>
+        </td>
+        <td><%= school.users.alertable.count %></td>
+        <td><%= link_to 'Users', school_users_path(school) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

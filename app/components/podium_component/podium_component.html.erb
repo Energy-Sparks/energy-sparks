@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="podium-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if podium.includes_school? && podium.school_has_points? %>
     <h4 class="<%= title_class %>">
       <% if national_podium.school_position %>
@@ -29,7 +29,7 @@
     <% end %>
   <% end %>
   <% if podium.school_has_points? || podium.positions.count > 1 %>
-    <div class="row align-items-end border-bottom grey">
+    <div class="row align-items-end border-bottom border-secondary">
       <% podium.low_to_high.each do |position| %>
         <div class="col-4 text-center">
           <% if podium.current_school?(position) %>
@@ -69,4 +69,4 @@
       <% end %>
     </div>
   <% end %>
-</div>
+<% end %>

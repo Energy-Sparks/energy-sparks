@@ -10,19 +10,7 @@ div.application.container {
 }
 
 .navigation-margin {
-  margin-top: 108px;
-}
-
-.top-nav-margin {
-  margin-top: 57px;
-}
-
-.sub-nav-margin {
-  margin-top: 100px;
-}
-
-section.home.alerts .alert {
-  margin-bottom: 0px;
+  margin-top: 114px;
 }
 
 address {
@@ -30,8 +18,13 @@ address {
   font-size: initial;
 }
 
-body p {
+p, q, .trix-content div {
   @include font(f6);
+}
+
+q {
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .small {
@@ -46,40 +39,25 @@ body p {
   white-space: nowrap;
 }
 
-.bg-positive {
-  background-image: linear-gradient(to right, $bg-positive 0%, $bg-positive-light 100%);
+$rounded-xl: 12px;
+
+.rounded-xl {
+  border-radius: $rounded-xl;
 }
 
-.bg-positive-dark {
-  background-color: $bg-positive;
+.rounded-top-xl {
+  border-top-left-radius: $rounded-xl;
+  border-top-right-radius: $rounded-xl;
 }
 
-.bg-positive-light {
-  background-color: $bg-positive-light;
+.rounded-bottom-xl {
+  border-bottom-left-radius: $rounded-xl;
+  border-bottom-right-radius: $rounded-xl;
 }
 
-.bg-neutral {
-  background-image: linear-gradient(to right, $bg-neutral 0%, $bg-neutral-light 100%);
-}
-
-.bg-negative {
-  background-image: linear-gradient(to right, $bg-negative 0%, $bg-negative-light 100%);
-}
-
-.bg-negative-dark {
-  background-color: $bg-negative;
-}
-
-.bg-negative-light {
-  background-color: $bg-negative-light;
-}
-
-.bg-light-blue {
-  background-image: linear-gradient(to right, $light-blue 0%, $lighter-light-blue 100%);
-}
-
-section.padded-section {
-  padding: 100px 0;
+.fa-li.fa-check {
+  color: $positive-dark;
+  padding-bottom: 100px;
 }
 
 div.padded-row {
@@ -91,51 +69,33 @@ div.callout-text {
   padding-right: 30px;
 }
 
-@media (max-width: 767px) {
-  section {
-    padding: 75px 0;
-  }
-  section.first {
-    padding-top: 75px;
-  }
-}
-
-div.bio {
-  border: none;
-}
-
-div.hide {
+div.hide, .hidden {
   display: none;
 }
 
-.hidden {
-  display: none;
+table th {
+  &.actions {
+    width: 20%;
+  }
+
+  &.description {
+    width: 50%;
+  }
 }
 
-table th.actions {
-  width: 20%;
-}
+.table td {
+  &.fit {
+    white-space: nowrap;
+    width: 1px;
+  }
 
-table th.description {
-  width: 50%;
+  &.overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 1px;
+  }
 }
-
-th.fixed-width-150 {
-  min-width: 150px;
-}
-
-.table td.fit {
-  white-space: nowrap;
-  width: 1px;
-}
-
-.table td.overflow {
-  white-space: nowrap;
-  text-overflow:ellipsis;
-  overflow: hidden;
-  max-width:1px;
-}
-
 
 div.meter-attributes {
   kbd {
@@ -150,34 +110,19 @@ div.meter-attributes {
   display: block !important;
 }
 
-
 // imput fields with specified 'pattern' will highlight when invalid
 input:invalid {
-  color: $new-red;
-}
-
-.funnel-image {
-  border-radius: 0.5rem 0.5rem;
-}
-
-.nav-anchor a {
-  position: absolute;
-  left: 0px;
-  top: -60px;
+  color: $danger;
 }
 
 .nav-anchor {
   position: relative;
-}
 
-.static-images {
-  height: 300px;
-  width: 400px;
-}
-
-.static-images.small {
-  height: 200px;
-  width: 300px;
+  a {
+    position: absolute;
+    left: 0px;
+    top: -60px;
+  }
 }
 
 .accordion-block {
@@ -204,6 +149,11 @@ dl dt {
   }
 }
 
+input, progress {
+  // had to darken slightly as the second accent colour (which is chosen by the browser) is either light or dark, depending on how dark the accent colour is.
+  accent-color: darken($teal-dark, 5%) !important;
+}
+
 .agreements {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -213,25 +163,26 @@ dl dt {
   white-space: pre-line;
 }
 
-.main-breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
-  content: quote(">");
-}
-
 .main-breadcrumbs {
   background-color: transparent;
   padding: 0;
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: quote(">");
+  }
 }
 
-.bg-dark-blue {
-  background-color: $dark-blue;
+.header-dark {
+  background-color: $header-dark;
 }
 
-.text-white {
+.bg-light-blue {
+  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
+}
+
+.badge-grey-light {
+  background-color: $grey-light;
   color: $white;
-}
-
-.text-dark-blue {
-  color: $dark-blue;
 }
 
 .card .card-footer.plain {
@@ -239,32 +190,16 @@ dl dt {
   background-color: white;
 }
 
-// fuel colour styles
-
-@each $tag, $colour in $fuel-colours-light {
-  .bg-#{$tag}-light {
-    background-color: $colour;
-  }
+.carousel-indicators li {
+  background: $grey-dark;
+  border:2px solid $grey-dark;
+  border-radius: 6px;
 }
 
-@each $tag, $colour in $fuel-colours-dark {
-  .bg-#{$tag}-dark {
-    background-color: $colour;
-  }
-  .text-#{$tag} {
-    color: $colour;
-  }
+.sortable-hide {
+  opacity:0;
 }
 
-@each $tag, $colour in $colours-comparison {
-  .bg-#{$tag} {
-    background-color: $colour !important;
-  }
-  .text-#{$tag} {
-    text-decoration: underline;
-    text-decoration-color: $colour;
-    text-decoration-thickness: 3px;
-    font-weight: bolder;
-  }
+.border-blue-dark {
+  border-color: $blue-dark !important;
 }
-

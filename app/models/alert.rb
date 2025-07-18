@@ -41,7 +41,7 @@
 #
 
 class Alert < ApplicationRecord
-  include EnumReportingPeriod
+  include Enums::ReportingPeriod
   include AlertTypeWithComparisonReport
 
   belongs_to :school,               inverse_of: :alerts
@@ -52,7 +52,9 @@ class Alert < ApplicationRecord
   has_many :find_out_mores, inverse_of: :alert
   has_many :alert_subscription_events
 
-  has_many :alert_type_ratings, ->(alert) { alert.rating.present? ? for_rating(alert.rating.to_f.round(1)) : none }, primary_key: 'alert_type_id', foreign_key: 'alert_type_id'
+  has_many :alert_type_ratings, lambda { |alert|
+    alert.rating.present? ? for_rating(alert.rating.to_f.round(1)) : none
+  }, primary_key: 'alert_type_id', foreign_key: 'alert_type_id'
   has_many :intervention_types, through: :alert_type_ratings
   has_many :activity_types, through: :alert_type_ratings
 
@@ -77,19 +79,17 @@ class Alert < ApplicationRecord
   scope :rating_between, ->(from, to) { where('rating BETWEEN ? AND ?', from, to) }
   scope :by_rating, ->(order: :asc) { order(rating: order) }
 
-  enum enough_data: [:enough, :not_enough, :minimum_might_not_be_accurate], _prefix: :data
-  enum relevance: [:relevant, :not_relevant, :never_relevant], _prefix: :relevance
+  enum :enough_data, { enough: 0, not_enough: 1, minimum_might_not_be_accurate: 2 }, prefix: :data
+  enum :relevance, { relevant: 0, not_relevant: 1, never_relevant: 2 }, prefix: :relevance
 
-  scope :without_exclusions, -> { joins(:alert_type).joins('LEFT OUTER JOIN school_alert_type_exclusions ON school_alert_type_exclusions.school_id = alerts.school_id AND school_alert_type_exclusions.alert_type_id = alert_types.id').where(school_alert_type_exclusions: { school_id: nil }) }
+  scope :without_exclusions, lambda {
+    joins(:alert_type).joins('LEFT OUTER JOIN school_alert_type_exclusions ON school_alert_type_exclusions.school_id = alerts.school_id AND school_alert_type_exclusions.alert_type_id = alert_types.id').where(school_alert_type_exclusions: { school_id: nil })
+  }
   scope :displayable, -> { where(displayable: true) }
 
-  def advice_page
-    alert_type.advice_page
-  end
+  delegate :advice_page, to: :alert_type
 
-  def frequency
-    alert_type.frequency
-  end
+  delegate :frequency, to: :alert_type
 
   def formatted_rating
     rating.nil? ? 'Unrated' : "#{rating.round(0)}/10"

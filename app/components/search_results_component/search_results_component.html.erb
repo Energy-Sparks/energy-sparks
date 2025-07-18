@@ -1,0 +1,19 @@
+<%= tag.div id: id, class: class_names(classes, 'row') do %>
+  <div class="col-12 col-md-2">
+    <h3>
+      <%= title %>
+    </h3>
+    <p>
+      <%= subtitle %>
+    </p>
+  </div>
+  <div class="col-12 col-md-10">
+    <% results.each do |result| %>
+      <ul class="list-unstyled">
+        <li>
+          <%= result %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+<% end %>

@@ -1,6 +1,6 @@
 <% if rtone_installations.any? %>
   <table class="table table-sm">
-    <tbody>
+    <thead>
       <tr>
         <th>RBee Id</th>
         <th>Username</th>
@@ -8,28 +8,34 @@
         <th>Last updated</th>
         <th>Actions</th>
       </tr>
+    </thead>
+    <tbody>
       <% rtone_installations.each do |installation| %>
         <tr>
           <td>
-            <%= link_to installation.rbee_meter_id, school_low_carbon_hub_installation_path(school, installation)
-            %>
+            <%= link_to installation.rbee_meter_id, school_low_carbon_hub_installation_path(school, installation) %>
           </td>
           <td><%= installation.username %></td>
           <td><%= installation.password %></td>
           <td><%= nice_date_times(installation.updated_at) %></td>
           <td>
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_school_low_carbon_hub_installation_path(school, installation), class: 'btn' %>
-              <%= link_to 'Delete', school_low_carbon_hub_installation_path(school, installation), method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn' %>
+            <%= link_to 'Edit', edit_school_low_carbon_hub_installation_path(school, installation), class: 'btn btn-sm' %>
+            <%= link_to 'Delete',
+                        school_low_carbon_hub_installation_path(school, installation),
+                        method: :delete,
+                        data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn btn-sm' %>
 
-              <%= link_to "#{fa_icon('circle-question')} Check API".html_safe, check_school_low_carbon_hub_installation_path(school, installation), id: "low-carbon-hub-#{installation.id}-test", method: :post, remote: true, class: 'btn check-button' %>
+            <%= link_to "#{fa_icon('circle-question')} Check API".html_safe,
+                        check_school_low_carbon_hub_installation_path(school, installation),
+                        id: "low-carbon-hub-#{installation.id}-test",
+                        method: :post,
+                        remote: true, class: 'btn btn-sm check-button' %>
 
-              <%= form_tag submit_job_school_low_carbon_hub_installation_path(school, installation), method: :post do %>
-                <%= button_tag(type: 'submit', id: "low-carbon-hub-#{installation.id}-run-load", class: 'btn') do %>
-                  <%= fa_icon('upload') %> Run Loader
-                <% end %>
+            <%= form_tag submit_job_school_low_carbon_hub_installation_path(school, installation), method: :post do %>
+              <%= button_tag(type: 'submit', id: "low-carbon-hub-#{installation.id}-run-load", class: 'btn btn-sm') do %>
+                <%= fa_icon('upload') %> Run Loader
               <% end %>
-            </div>
+            <% end %>
           </td>
         </tr>
       <% end %>
@@ -39,6 +45,7 @@
   <p>This school has no Rtone API feeds</p>
 <% end %>
 
-<p class="alert alert-warning">You cannot create a new new Rtone installation, or download data from an installation, between <%= start_time %> and <%= end_time %></p>
+<p class="alert alert-warning">You cannot create a new new Rtone installation, or
+  download data from an installation, between <%= start_time %> and <%= end_time %></p>
 
 <p><%= link_to 'New Rtone API feed', new_school_low_carbon_hub_installation_path, class: 'btn' %></p>

@@ -1,7 +1,7 @@
 {{#each responses}}
 <div class="alert alert-warning alert-dismissible fade show clearfix px-3" role="alert">
   <span>{{{unsaved_responses @root.notice this.length @key @root.today}}}</span>
-  <button data-date="{{@key}}" type="button" class="responses-remove btn-no-border btn-sm btn-light rounded-pill float-right ml-2">{{@root.buttons.remove}}</button>
-  <button data-date="{{@key}}" type="button" class="responses-save btn-no-border btn-sm btn-dark rounded-pill float-right">{{@root.buttons.save}}</button>
+  <button data-date="{{@key}}" type="button" class="responses-remove btn btn-sm btn-secondary float-right ml-2">{{@root.buttons.remove}}</button>
+  <button data-date="{{@key}}" type="button" class="responses-save btn btn-sm btn-primary float-right">{{@root.buttons.save}}</button>
 </div>
 {{/each}}

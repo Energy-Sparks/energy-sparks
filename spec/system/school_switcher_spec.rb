@@ -13,7 +13,7 @@ describe 'school switcher', type: :system do
     it 'shows a summary of the schools in the group' do
       visit school_path(school_1)
       expect(page).to have_content(school_1.name)
-      click_on('Switch school')
+      click_on('My schools')
       click_on(school_2.name)
       expect(page).to have_content(school_2.name)
       expect(user.reload.cluster_schools).to match_array([school_1, school_2])

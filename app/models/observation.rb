@@ -49,13 +49,14 @@
 
 class Observation < ApplicationRecord
   include Description
+  include Todos::Recording
 
   belongs_to :school
+
   has_many   :temperature_recordings
   has_many   :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
-
   belongs_to :intervention_type, optional: true
   belongs_to :activity, optional: true
   belongs_to :audit, optional: true # to be removed when column is removed
@@ -63,13 +64,19 @@ class Observation < ApplicationRecord
   belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
 
-  # If adding a new observation type remember to also modify the timeline component
-  # events: 3 has been removed
-  enum observation_type: { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6, audit_activities_completed: 7, transport_survey: 8 }
+  # When adding a new observation type, use the polymorphic `observable` relationship
+  # instead of adding a new foreign key / relationship. The goal is to transition existing relationships
+  # (e.g., programme, audit, school_target) to `observable` over time.
+  # Prioritize using the new model when working in these areas, as they are the easiest to migrate.
+  # If adding a new observation type, remember to also modify the timeline component
+
+  # NB: events: 3 has been removed
+  enum :observation_type, { temperature: 0, intervention: 1, activity: 2, audit: 4, school_target: 5, programme: 6,
+                            audit_activities_completed: 7, transport_survey: 8 }
 
   belongs_to :observable, polymorphic: true, optional: true
 
-  validates_presence_of :at, :school
+  validates :at, :school, presence: true
   validates_associated :temperature_recordings
 
   validates :intervention_type_id, presence: { message: 'please select an option' }, if: :intervention?
@@ -79,25 +86,33 @@ class Observation < ApplicationRecord
 
   accepts_nested_attributes_for :temperature_recordings, reject_if: :reject_temperature_recordings
 
+  scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
-  scope :in_academic_year_for, ->(school, date) { (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
-  scope :recorded_since, ->(date) { where('observations.created_at >= ?', date)}
-  scope :not_including, ->(school) { where.not(school: school).recorded_since(school.current_academic_year.start_date) }
+  scope :in_academic_year_for, lambda { |school, date|
+    (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
+  }
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
+  scope :recorded_since, ->(range) { where(created_at: range) }
+  scope :not_including, ->(school) { where.not(school:).recorded_since(school.current_academic_year.start_date..) }
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
-  scope :engagement, -> { where(observation_type: [:temperature, :intervention, :activity, :audit, :school_target, :programme, :transport_survey]) }
+  scope :engagement, lambda {
+    where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
+  }
 
   has_rich_text :description
 
-  before_save :add_points_for_interventions, if: :intervention?
-  before_save :add_bonus_points_for_included_images, if: proc { |observation| observation.activity? || observation.intervention? }
-
   before_validation :set_defaults, if: -> { observable_id }, on: :create
+  before_save :add_points_for_activities, if: :activity?
+  before_save :add_points_for_interventions, if: :intervention?
+
+  before_save :add_bonus_points_for_included_images, if: proc { |observation|
+    observation.activity? || observation.intervention?
+  }
 
   def description_includes_images?
     if intervention?
@@ -107,21 +122,29 @@ class Observation < ApplicationRecord
     end
   end
 
+  def happened_on
+    at.to_date
+  end
+
   private
+
+  def add_points_for_activities
+    self.points = activity.activity_type.score_when_recorded_at(school, at)
+  end
+
+  def add_points_for_interventions
+    self.points = intervention_type.score_when_recorded_at(school, at)
+  end
 
   def add_bonus_points_for_included_images
     # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
     # Only add bonus points if the current observation score is non zero
-    return unless self.points&.nonzero?
+    return unless points&.nonzero?
     # Only add bonus points if the description has an image
     return unless description_includes_images?
 
-    self.points = (self.points || 0) + SiteSettings.current.photo_bonus_points
-  end
-
-  def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(school, at)
+    self.points = (points || 0) + SiteSettings.current.photo_bonus_points
   end
 
   def reject_temperature_recordings(attributes)
@@ -131,7 +154,7 @@ class Observation < ApplicationRecord
   def set_defaults
     # set the observation type from the observable_type if not already set
     self.observation_type ||= observable_type.underscore.to_sym
-    self.school ||= self.observable.school if self.observable.school
+    self.school ||= observable.school if observable.school
     self.at ||= Time.zone.now
   end
 end

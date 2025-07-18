@@ -1,0 +1,46 @@
+{
+   "meta":{
+      "generated":"2022-02-08 12:45:27"
+   },
+   "data":{
+      "id":"EGXN0",
+      "name":{
+         "en":"Newton / Saxondale"
+      },
+      "country":"GB",
+      "region":"ENG",
+      "identifier":{
+         "national":null,
+         "wmo":null,
+         "icao":"EGXN"
+      },
+      "location":{
+         "latitude":52.9667,
+         "longitude":-0.9833,
+         "elevation":55
+      },
+      "timezone":"Europe/London",
+      "inventory":{
+         "model":{
+            "start":null,
+            "end":null
+         },
+         "hourly":{
+            "start":"1995-02-10",
+            "end":"2001-11-03"
+         },
+         "daily":{
+            "start":null,
+            "end":null
+         },
+         "monthly":{
+            "start":null,
+            "end":null
+         },
+         "normals":{
+            "start":1961,
+            "end":1990
+         }
+      }
+   }
+}

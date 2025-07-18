@@ -24,9 +24,11 @@ module Admin
       private
 
       def render_for(page)
-        @amr_data_feed_import_logs = AmrDataFeedImportLog.send(page).order(import_time: :desc)
-        @amr_data_feed_import_logs = @amr_data_feed_import_logs.where("file_name ILIKE '%#{params[:search]}%'") if params[:search]
-        @amr_data_feed_import_logs = @amr_data_feed_import_logs.where(amr_data_feed_config_id: params[:config][:config_id]) if params[:config] && params[:config][:config_id].present?
+        log = AmrDataFeedImportLog.send(page).order(import_time: :desc)
+        log = log.where('file_name ILIKE ?', "%#{params[:search]}%") if params[:search]
+        config_id = params.dig(:config, :config_id)
+        log = log.where(amr_data_feed_config_id: config_id) if config_id.present?
+        @amr_data_feed_import_logs = log
         @pagy, @logs = pagy(@amr_data_feed_import_logs)
       end
 

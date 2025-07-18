@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dashboard'
 
 module Amr
@@ -7,28 +9,18 @@ module Amr
     end
 
     def build
-      {
-        id: @active_record_school.id,
-        name: @active_record_school.name,
-        address: @active_record_school.address,
-        floor_area: floor_area,
-        number_of_pupils: @active_record_school.number_of_pupils,
-        school_type: @active_record_school.school_type,
-        area_name: @active_record_school.area_name,
-        urn: @active_record_school.urn,
-        postcode: @active_record_school.postcode,
-        country: country,
-        funding_status: funding_status,
-        activation_date: @active_record_school.activation_date,
-        created_at: @active_record_school.created_at,
-        school_times: @active_record_school.school_times_to_analytics,
-        community_use_times: @active_record_school.community_use_times_to_analytics,
-        location: location,
-        data_enabled: @active_record_school.data_enabled
-      }
+      attributes = @active_record_school.attributes.symbolize_keys
+      attributes.merge({
+                         floor_area:,
+                         country:,
+                         funding_status:,
+                         school_times: @active_record_school.school_times_to_analytics,
+                         community_use_times: @active_record_school.community_use_times_to_analytics,
+                         location:
+                       })
     end
 
-  private
+    private
 
     def country
       @active_record_school.country ? @active_record_school.country.to_sym : :england

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe AmrDataFeedConfig, type: :system do
+describe AmrDataFeedConfig do
   let!(:admin)              { create(:admin) }
-  let!(:config)             { create(:amr_data_feed_config) }
-  let!(:disabled_config)    { create(:amr_data_feed_config, description: 'Disabled', enabled: false)}
-  let!(:api_config)         { create(:amr_data_feed_config, description: 'API', source_type: :api)}
+  let!(:config)             { create(:amr_data_feed_config, owned_by: admin) }
+  let!(:disabled_config)    { create(:amr_data_feed_config, description: 'Disabled', enabled: false) }
+  let!(:api_config)         { create(:amr_data_feed_config, description: 'API', source_type: :api) }
 
   before do
     sign_in(admin)
@@ -20,8 +22,8 @@ describe AmrDataFeedConfig, type: :system do
 
     it 'displays only enabled non-api configurations' do
       expect(page).to have_content(config.description)
-      expect(page).not_to have_content(disabled_config.description)
-      expect(page).not_to have_content(api_config.description)
+      expect(page).to have_no_content(disabled_config.description)
+      expect(page).to have_no_content(api_config.description)
     end
 
     it 'allows navigation to view the configuration' do
@@ -29,6 +31,7 @@ describe AmrDataFeedConfig, type: :system do
         click_on config.description
       end
       expect(page).to have_content(config.description)
+      expect(page).to have_content(config.owned_by.name)
     end
 
     it 'includes a limited view in the overview table' do
@@ -37,6 +40,7 @@ describe AmrDataFeedConfig, type: :system do
         expect(page).to have_content(config.description)
         expect(page).to have_content(config.identifier)
         expect(page).to have_content(config.notes.to_plain_text)
+        expect(page).to have_content(config.owned_by.name)
         expect(page).to have_link('Upload')
         expect(page).to have_link('Edit')
       end
@@ -69,11 +73,17 @@ describe AmrDataFeedConfig, type: :system do
       within('.amr_data_feed_config_notes') do
         fill_in_trix with: 'My notes'
       end
+      fill_in 'Missing reading window', with: 2
+      select 'Manual only', from: 'Source type'
+      select admin.name, from: 'Owned by'
       click_on 'Update'
       config.reload
       expect(config.import_warning_days).to eq(21)
       expect(config.description).to eq('New title')
       expect(config.notes.to_plain_text).to eq('My notes')
+      expect(config.missing_reading_window).to eq(2)
+      expect(config.source_type).to eq('manual')
+      expect(config.owned_by).to eq(admin)
     end
   end
 end

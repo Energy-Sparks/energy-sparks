@@ -1,0 +1,35 @@
+<%= render 'admin/reports/title', title: 'User Logins' %>
+<div>
+  <%= form_with method: :get do |form| %>
+    <%= form.label :query, 'School Group:' %>
+    <%= form.collection_select :id, SchoolGroup.order(name: :asc), :id, :name %>
+    <%= form.submit 'Show' %>
+  <% end %>
+</div>
+<div>
+  <% if @school_group %>
+    <h2><%= @school_group.name %></h2>
+    <p><%= link_to 'Manage School Group Users', admin_school_group_users_path(@school_group) %></p>
+    <table id='user_logins' class="table table-striped table-sm table-sorted">
+      <thead>
+        <tr>
+          <th>School Name</th>
+          <th>Most recent adult login</th>
+          <th>Most recent pupil login</th>
+          <th data-orderable="false"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @school_group.schools.active.order(:name).each do |school| %>
+          <tr>
+            <td><%= link_to school.name, school_path(school) %></td>
+            <td><%= school.all_adult_school_users.pluck(:last_sign_in_at).compact.max %></td>
+            <td><%= school.users.pupil.order(last_sign_in_at: :desc).first&.last_sign_in_at %></td>
+            <td><%= link_to 'Manage Users', school_users_path(school) %>
+          </tr>
+        <% end %>
+      </tbody>
+
+  </table>
+  <% end %>
+</div>

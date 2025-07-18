@@ -45,7 +45,6 @@ cy:
     school_admin: Gweinyddwr Ysgol
     school_onboarding: Cofrestru
     staff: Staff
-    volunteer: Gwirfoddolwr
   staff_role:
     building_site_manager_or_caretaker: Rheolwr adeilad/safle neu ofalwr
     business_manager: Rheolwr busnes

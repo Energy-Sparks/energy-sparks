@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: heating_coming_on_too_early
+# Table name: comparison_heating_coming_on_too_early
 #
 #  alert_generation_run_id                  :bigint(8)
 #  average_start_time_hh_mm                 :time
@@ -15,8 +15,12 @@
 #  school_id                                :bigint(8)
 #  start_time_standard_devation             :float
 #
+# Indexes
+#
+#  index_comparison_heating_coming_on_too_early_on_school_id  (school_id) UNIQUE
+#
 class Comparison::HeatingComingOnTooEarly < Comparison::View
-  self.table_name = :heating_coming_on_too_early
+  self.table_name = :comparison_heating_coming_on_too_early
 
   scope :with_data, -> { where.not(avg_week_start_time: nil, average_start_time_hh_mm: nil) }
   scope :sort_default, -> { joins(:school).order('schools.name') }

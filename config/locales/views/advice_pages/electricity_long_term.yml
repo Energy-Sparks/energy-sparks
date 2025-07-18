@@ -34,13 +34,14 @@ en:
         electricity_by_month_year:
           explanation: This chart can be a quick way to spot whether energy saving behaviour and lighting and equipment updates are having an impact on your electricity consumption. You need to be careful when comparing months with holidays, particularly Easter, which some years is in March and other times in April.
           subtitle_html: This chart shows the monthly electricity consumption from <span class='start-date'>%{start_date}</span> to <span class='end-date'>%{end_date}</span> for <span class='meter'>%{meter}</span>
-          subtitle_two_years_html: This chart shows the difference in electricity consumption for the 12 months ending on <span class='end-date'>%{end_date}</span> and the previous 12 months for <span class='meter'>%{meter}</span>
+          subtitle_two_years_html: This chart shows the difference in electricity consumption for the academic year ending on <span class='end-date'>%{end_date}</span> and the previous academic year for <span class='meter'>%{meter}</span>
           title: Monthly electricity consumption comparison
-          title_two_years: Monthly electricity consumption comparison over the last two years
+          title_two_years: Monthly electricity consumption comparison over the last few academic years
         electricity_longterm_trend:
           explanation: Unless the school has had additional buildings added, if you are managing your electricity consumption well this should show a downward trend; more modern ICT equipment, LED lighting and behaviour change all contribute to reducing electricity usage.
           subtitle_html: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each full year of data we have for <span class='meter'>%{meter}</span>
           title: Change in electricity consumption over the last few years
+          title_academic_year: Change in electricity consumption over the last few academic years
         group_by_week_electricity:
           explanation_html: |-
             <p>

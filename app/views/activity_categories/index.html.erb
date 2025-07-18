@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <h1><%= t('activity_categories.title') %></h1>
       <%= link_to t('activity_categories.search'), search_activity_types_path,
-                  class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                  class: 'btn btn-default' %>
     </div>
   </div>
 </div>
@@ -40,21 +40,7 @@
     <%= render 'pupil_categories', activity_categories: @pupil_categories.first(4) %>
   <% end %>
 
-  <% if !@programme_types.blank? %>
-    <div class="row mt-3 bg-light">
-      <div class="col">
-        <div class="d-flex justify-content-between align-items-center">
-          <h4><%= t('activity_categories.our_programmes.title') %></h4>
-          <div>
-            <%= link_to t('activity_categories.view_all_programmes'), programme_types_path,
-                        class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
-          </div>
-        </div>
-        <p><%= t('activity_categories.our_programmes.introduction') %></p>
-      </div>
-    </div>
-    <%= render 'programme_types', programme_types: @programme_types.first(4) %>
-  <% end %>
+  <%= render 'shared/tasks/programme_types', programme_types: @programme_types %>
 
   <% @activity_categories.each do |activity_category| %>
     <div class="row mt-3">
@@ -65,7 +51,7 @@
             <%= link_to t('activity_categories.view_all',
                           count: activity_category.activity_types.active.count),
                         activity_category_path(activity_category),
-                        class: 'btn btn-outline-dark rounded-pill font-weight-bold' %>
+                        class: 'btn btn-default' %>
           </div>
         </div>
       </div>

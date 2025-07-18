@@ -1,0 +1,23 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(cols: 2) do |grid| %>
+    <%= grid.with_cell do %>
+      <%= image %>
+    <% end %>
+    <%= grid.with_cell(cell_classes: 'my-auto') do %>
+      <%= header %>
+      <%= quote %>
+      <%= name %><%= " - #{role}".html_safe if role %>
+      <%= organisation %>
+      <div class='mt-3'>
+        <%= case_study %>
+        <% unless controller.instance_of?(CaseStudiesController) %>
+            <%= render Elements::ButtonComponent.new(
+                  t('components.testimonial.more_case_studies'),
+                  case_studies_path,
+                  style: :secondary, classes: 'mb-1'
+                ) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,14 +1,17 @@
 <% if advice_baseload_high?(estimated_savings_vs_benchmark.£) %>
-  <%= component 'notice', status: :negative do %>
+  <%= render PromptComponent.new(icon: :bolt, fuel_type: :electricity, status: :negative) do %>
     <p><%= t('advice_pages.baseload.analysis.baseload_high') %></p>
-    <p><%= t('advice_pages.baseload.analysis.baseload_high_details_html', estimated_savings: format_unit(estimated_savings_vs_benchmark.£, :£)) %></p>
+    <p><%= t('advice_pages.baseload.analysis.baseload_high_details_html',
+             estimated_savings: format_unit(estimated_savings_vs_benchmark.£, :£)) %></p>
   <% end %>
 <% else %>
-  <%= component 'notice', status: :positive do %>
+  <%= render PromptComponent.new(icon: :bolt, fuel_type: :electricity, status: :positive) do %>
     <p><%= t('advice_pages.baseload.analysis.baseload_low') %></p>
-    <p><%= t('advice_pages.baseload.analysis.baseload_low_details_html', estimated_savings: format_unit(estimated_savings_vs_benchmark.£.abs, :£)) %></p>
+    <p><%= t('advice_pages.baseload.analysis.baseload_low_details_html',
+             estimated_savings: format_unit(estimated_savings_vs_benchmark.£.abs, :£)) %></p>
     <% if estimated_savings_vs_exemplar.£ > 0.0 %>
-      <p><%= t('advice_pages.baseload.analysis.baseload_low_extra_savings_html', estimated_savings: format_unit(estimated_savings_vs_exemplar.£, :£)) %>
+      <p><%= t('advice_pages.baseload.analysis.baseload_low_extra_savings_html',
+               estimated_savings: format_unit(estimated_savings_vs_exemplar.£, :£)) %>
     <% end %></p>
   <% end %>
 <% end %>

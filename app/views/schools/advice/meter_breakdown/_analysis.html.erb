@@ -14,7 +14,7 @@
            section_id: 'recent-trend',
            section_title: t('advice_pages.analysis.recent_trend.title') %>
 
-<%= component 'chart', chart_type: "group_by_week_#{advice_page.key}_one_year".to_sym, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: "group_by_week_#{advice_page.key}_one_year".to_sym, school: @school) do |c| %>
   <% c.with_title do
        t("advice_pages.#{advice_page.fuel_type}_long_term.charts.group_by_week_#{advice_page.key}_one_year.title")
      end %>
@@ -38,7 +38,7 @@
 <p><%= t("advice_pages.#{advice_page.fuel_type}_long_term.analysis.meter_breakdown.table_explanation") %></p>
 
 <% if analysis_dates.months_of_data > 1 %>
-  <%= component 'chart', chart_type: "group_by_month_#{advice_page.key}".to_sym, school: school do |c| %>
+  <%= render ChartComponent.new(chart_type: "group_by_month_#{advice_page.key}".to_sym, school: school) do |c| %>
     <% c.with_title do
          t("advice_pages.#{advice_page.key}.charts.group_by_month_#{advice_page.key}.title",
            fuel_type: I18n.t("analytics.common.#{advice_page.fuel_type}"))
@@ -63,7 +63,7 @@
     <%= t("advice_pages.#{advice_page.key}.analysis.long_term_trends.summary") %>
   </p>
 
-  <%= component 'chart', chart_type: "group_by_year_#{advice_page.key}".to_sym, school: school do |c| %>
+  <%= render ChartComponent.new(chart_type: "group_by_year_#{advice_page.key}".to_sym, school: school) do |c| %>
     <% c.with_title do
          t("advice_pages.#{advice_page.key}.charts.group_by_year_#{advice_page.key}.title",
            fuel_type: I18n.t("analytics.common.#{advice_page.fuel_type}"))

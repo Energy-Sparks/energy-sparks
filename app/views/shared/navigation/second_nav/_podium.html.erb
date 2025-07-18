@@ -2,7 +2,7 @@
   <div id='mini-podium' class="my-auto nowrap <%= navbar_hide_class %>">
     <%= link_to scoreboard_path(podium.scoreboard), class: 'nav-link lozenge' do %>
       <% if school.visible? && podium.includes_school? %>
-        <%= podium.school_position.points %> points
+        <%= t('nav.points', count: podium.school_position.points) %>
         <% if podium.school_position.recent_points > 0 %>
           <%= fa_icon('arrow-up', 'data-toggle': 'tooltip', title: t('scoreboard.score_tooltip')) %>
         <% end %>

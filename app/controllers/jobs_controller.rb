@@ -1,16 +1,13 @@
-class JobsController < ApplicationController
-  include StorageHelper
+class JobsController < DownloadableController
   skip_before_action :authenticate_user!
+
   def index
     @jobs = Job.current_jobs.by_created_date
   end
 
-  def download
-    job = Job.find_by(id: params[:id])
-    if job.present?
-      serve_from_storage(job.file, params[:serve])
-    else
-      render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
-    end
+  private
+
+  def downloadable_model_class
+    Job
   end
 end

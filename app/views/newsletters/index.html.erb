@@ -1,34 +1,83 @@
-<% content_for :page_title, t('newsletters.title') %>
-<div class="application container">
-  <div class="row">
-    <div class="col">
-      <h1 id="intro"><%= t('newsletters.title') %></h1>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('newsletters.title') %>
+  <% if Flipper.enabled?(:new_newsletters_page) %>
+    <div class="container-fluid adult mb-5 py-5">
+      <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, cell_classes: 'my-auto',
+                                           id: 'hero') do |grid| %>
+        <% grid.with_feature_card size: :xl do |feature| %>
+          <%= feature.with_header title: t('mailchimp.latest_news_title') %>
+          <%= feature.with_description { t('mailchimp.never_share_your_email_promise') } %>
+          <%= feature.with_button t('mailchimp.signup_now'),
+                                  current_user ? user_emails_path(current_user) : new_mailchimp_signup_path,
+                                  style: :primary %>
+
+        <% end %>
+        <%= grid.with_image src: 'laptop.jpg' %>
+      <% end %>
     </div>
-  </div>
-  <% unless @newsletters.empty? %>
-    <% @newsletters.in_groups_of(4, nil).each do |group| %>
-      <div class="card-deck mb-4">
-        <% group.each do |newsletter| %>
-          <% if newsletter.nil? %>
-            <div class="card mb-3">
-              <div class="card-body">
-                <h5 class="card-title"></h5>
-              </div>
-            </div>
-          <% else %>
-            <div class="card mb-3">
-              <% if newsletter.image.present? %>
-                <%= image_tag newsletter.image %>
-              <% else %>
-                <%= image_tag("stay-up-to-date/newsletter-placeholder.png", class: 'img-fluid') %>
-              <% end %>
-              <div class="card-body">
-                <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
-              </div>
-            </div>
+
+    <div class="container mt-4">
+      <%= render Layout::GridComponent.new(
+            id: 'newsletters',
+            cols: 3,
+            classes: 'pb-4',
+            cell_classes: 'mb-4',
+            component_classes: 'h-100'
+          ) do |grid| %>
+
+        <% @newsletters.each do |newsletter| %>
+          <%= grid.with_card do |card| %>
+            <%= if newsletter.image.attached?
+                  card.with_image(src:
+              cdn_link_url(newsletter.image),
+                                  rounded: :top, classes:
+              'border-light bg-light border-top border-left border-right')
+                end %>
+            <%= card.with_feature_card(
+                  theme: :light, size: :sm,
+                  classes: 'p-4 rounded-bottom-xl'
+                ) do |feature| %>
+              <%= feature.with_header(title: newsletter.title) %>
+              <%= feature.with_date(newsletter.published_on) %>
+              <%= feature.with_link(href: newsletter.url) { t('newsletters.view_newsletter') } %>
+            <% end %>
           <% end %>
         <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="application container">
+      <div class="row">
+        <div class="col">
+          <h1 id="intro"><%= t('newsletters.title') %></h1>
+        </div>
       </div>
-    <% end %>
+      <% unless @newsletters.empty? %>
+        <% @newsletters.in_groups_of(4, nil).each do |group| %>
+          <div class="card-deck mb-4">
+            <% group.each do |newsletter| %>
+              <% if newsletter.nil? %>
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title"></h5>
+                  </div>
+                </div>
+              <% else %>
+                <div class="card mb-3">
+                  <% if newsletter.image.present? %>
+                    <%= image_tag newsletter.image %>
+                  <% else %>
+                    <%= image_tag('stay-up-to-date/newsletter-placeholder.png', class: 'img-fluid') %>
+                  <% end %>
+                  <div class="card-body">
+                    <h5 class="card-title"><%= link_to newsletter.title, newsletter.url %></h5>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
   <% end %>
-</div>
+<% end %>

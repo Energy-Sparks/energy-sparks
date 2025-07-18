@@ -18,7 +18,7 @@ class ManualDataLoadRunJob < ApplicationJob
 
       amr_data_feed_import_log = create_import_log(amr_data_feed_config, amr_uploaded_reading.file_name)
 
-      Amr::ProcessAmrReadingData.new(amr_data_feed_import_log).perform(amr_uploaded_reading.valid_readings, amr_uploaded_reading.warnings)
+      Amr::ProcessAmrReadingData.new(amr_data_feed_config, amr_data_feed_import_log).perform(amr_uploaded_reading.valid_readings, amr_uploaded_reading.warnings)
 
       manual_data_load_run.info('Finished processing')
       amr_uploaded_reading.update!(imported: true)

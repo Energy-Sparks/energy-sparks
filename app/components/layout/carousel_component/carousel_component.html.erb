@@ -1,0 +1,33 @@
+<%= tag.div id: id, class: class_names(classes, 'carousel slide'), 'data-wrap': true, 'data-interval': false do %>
+
+  <div class="carousel-inner">
+    <% panels.each do |panel| %>
+      <%= panel %>
+    <% end %>
+  </div>
+  <% if panels.length > 1 %>
+    <% if show_arrows == :side %>
+      <%= render ArrowComponent.new(id: id, direction: :prev, classes: 'my-auto') %>
+      <%= render ArrowComponent.new(id: id, direction: :next, classes: 'my-auto') %>
+    <% end %>
+    <% if show_arrows == :bottom || show_markers? %>
+      <div class="carousel-controls row pb-3 rounded w-100">
+        <div class="col">
+          <% if show_arrows == :bottom %>
+            <%= render ArrowComponent.new(id: id, direction: :prev) %>
+          <% end %>
+            <ol class="carousel-indicators">
+              <% if show_markers? %>
+                <% panels.size.times do |n| %>
+                  <li data-target="#<%= id %>" data-slide-to="<%= n %>" class="<%= 'active' if n.zero? %>"></li>
+                <% end %>
+              <% end %>
+            </ol>
+          <% if show_arrows == :bottom %>
+            <%= render ArrowComponent.new(id: id, direction: :next) %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

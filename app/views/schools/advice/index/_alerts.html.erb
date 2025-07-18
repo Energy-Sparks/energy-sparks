@@ -1,6 +1,9 @@
 <% unless dashboard_alerts.empty? %>
-  <% dashboard_alert_groups(dashboard_alerts).each do |alert_group| %>
+  <% dashboard_alert_groups(dashboard_alerts).each do |alert_group, _alerts| %>
     <h3><%= t("advice_pages.alerts.groups.#{alert_group}") %></h3>
-    <%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts, alert_types: alert_types_for_group(alert_group), show_links: true, show_icons: false %>
+    <%= render AlertsComponent.new(school: school,
+                                   dashboard_alerts: dashboard_alerts,
+                                   alert_types: alert_types_for_group(alert_group),
+                                   show_links: true) %>
   <% end %>
 <% end %>

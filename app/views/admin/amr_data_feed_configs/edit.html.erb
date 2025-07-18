@@ -2,11 +2,25 @@
 
 <%= simple_form_for [:admin, @configuration] do |f| %>
   <%= f.input :description, as: :string, hint: 'A human-readable name for the configuration' %>
+  <%= f.input :owned_by_id, collection: User.admins_by_name, label_method: :display_name, include_blank: 'Unassigned',
+                            hint: 'Admin contact for the configuration' %>
   <%= f.input :notes, as: :rich_text_area, label: 'Notes',
                       hint: 'Provide additional notes about when the configuration is used' %>
   <%= f.input :import_warning_days,
-              hint: 'This is the number of days after which meter data using this configuration will be considered to be running behing. Used to drive admin import notification emails' %>
-  <%= f.input :missing_readings_limit,
-              hint: 'This is the maximum number of missing data points allowed in a day, above which the entire day will be ignored (without reporting). For row per reading formats this will currently always be set to 1 unless a number is configured here.' %>
+              hint: 'This is the number of days after which meter data using this configuration will be considered ' \
+                    'to be running behind. Used to drive admin import notification emails' %>
+  <% hint = if @configuration.allow_merging
+              'This format supports partial readings so this field just configures a warning threshold for admins. ' \
+              'Partial days will still be inserted.'
+            else
+              'This is the maximum number of missing data points allowed in a day, above which the entire day will ' \
+              'be  ignored (without reporting). For row per reading formats this will currently always be set to 1 ' \
+              'unless a number is configured here.'
+            end %>
+  <%= f.input :missing_readings_limit, hint: %>
+  <%= f.input :missing_reading_window, hint: 'Number of days not having received readings to trigger a warning email' %>
+  <% if @configuration.process_type == 's3_folder' %>
+    <%= f.input :source_type, collection: [['By Email or Manual', 'email'], ['Manual only', 'manual']] %>
+  <% end %>
   <%= f.submit 'Update', class: 'btn' %>
 <% end %>

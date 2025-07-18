@@ -1,8 +1,4 @@
-<% content_for :page_title, 'Recent audits' %>
-
-<div class="d-flex justify-content-between align-items-center">
-  <h1>Recent audits</h1>
-</div>
+<%= render 'admin/reports/title', title: 'Recent audits' %>
 
 <table class="table table-sorted dataTable table-sm">
   <thead>
@@ -22,7 +18,7 @@
       <tr>
         <td><%= link_to audit.school.name, school_path(audit.school) %></td>
         <td><%= link_to audit.title, school_audit_path(audit.school, audit) %></td>
-        <td><%= nice_dates(audit.created_at) %></td>
+        <td data-order="<%= audit.created_at.iso8601 %>"><%= nice_dates(audit.created_at) %></td>
         <td class='text-center'>
           <% if audit.published %>
             <i class="fas fa-check"></i>
@@ -33,11 +29,19 @@
             <i class="fas fa-check"></i>
           <% end %>
         </td>
-        <td><%= audit.activity_types.count %></td>
-        <td><%= audit.intervention_types.count %></td>
+        <% if Flipper.enabled?(:todos, current_user) %>
+          <td><%= audit.activity_type_todos.count %></td>
+          <td><%= audit.intervention_type_todos.count %></td>
+        <% else %>
+          <td><%= audit.activity_types.count %></td>
+          <td><%= audit.intervention_types.count %></td>
+        <% end %>
         <td>
-          <%= link_to 'Edit', edit_school_audit_path(audit.school, audit), class: "btn btn-sm" %>
-          <%= link_to 'Delete', school_audit_path(audit.school, audit), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+          <%= link_to 'Edit', edit_school_audit_path(audit.school, audit), class: 'btn btn-sm' %>
+          <%= link_to 'Delete', school_audit_path(audit.school, audit),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' },
+                      class: 'btn btn-danger btn-sm' %>
         </td>
       </tr>
     <% end %>

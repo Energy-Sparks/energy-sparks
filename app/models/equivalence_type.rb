@@ -13,8 +13,8 @@
 class EquivalenceType < ApplicationRecord
   has_many :content_versions, class_name: 'EquivalenceTypeContentVersion'
 
-  enum meter_type: [:electricity, :gas, :solar_pv, :storage_heaters]
-  enum time_period: {
+  enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, storage_heaters: 3 }
+  enum :time_period, {
     last_week: 10,
     last_school_week: 15,
     last_work_week: 16,
@@ -23,7 +23,10 @@ class EquivalenceType < ApplicationRecord
     last_academic_year: 31
   }
 
-  enum image_name: [:no_image, :petrol_car, :electric_car, :meal, :solar_panel, :books, :electric_shower, :house, :kettle, :phone, :pizza, :roast_meal, :television, :tree, :video_game, :offshore_wind_turbine, :onshore_wind_turbine, :gas_shower, :solar_panel_bw, :electric_car_bw, :meal_bw]
+  enum :image_name, { no_image: 0, petrol_car: 1, electric_car: 2, meal: 3, solar_panel: 4, books: 5,
+                      electric_shower: 6, house: 7, kettle: 8, phone: 9, pizza: 10, roast_meal: 11, television: 12,
+                      tree: 13, video_game: 14, offshore_wind_turbine: 15, onshore_wind_turbine: 16, gas_shower: 17,
+                      solar_panel_bw: 18, electric_car_bw: 19, meal_bw: 20 }
 
   validates :meter_type, :time_period, :image_name, presence: true
 
@@ -42,7 +45,7 @@ class EquivalenceType < ApplicationRecord
     end
   end
 
-private
+  private
 
   def save_and_replace(content, to_replace)
     transaction do

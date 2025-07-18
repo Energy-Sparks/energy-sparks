@@ -21,9 +21,7 @@ class SchoolTargetEvent < ApplicationRecord
 
   # first_target_sent: have we invited them to set their first target?
   # review_target_sent: have we asked them to set a new target?
-  enum event: {
-    first_target_sent: 0,
-    review_target_sent: 10,
-    first_target_reminder_sent: 20
-  }
+  enum :event, { first_target_sent: 0,
+                 review_target_sent: 10,
+                 first_target_reminder_sent: 20 }
 end
