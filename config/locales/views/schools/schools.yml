@@ -756,6 +756,7 @@ en:
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
+        introduction_admin: Enter the email of an existing admin to add them to this school, or provide a new email to create a new admin account
         title: Add %{user_role} account
     your_school_estates:
       edit:
