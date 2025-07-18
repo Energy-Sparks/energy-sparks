@@ -71,7 +71,11 @@ module Schools
     private
 
     def recently_logged_in
-      @recently_logged_in ||= @school.users.recently_logged_in(@date_range.begin)
+      @recently_logged_in ||= User.left_outer_joins(:cluster_schools_users)
+                                  .where(cluster_schools_users: { school_id: @school })
+                                  .or(@school.users)
+                                  .distinct
+                                  .recently_logged_in(@date_range.begin)
     end
   end
 end
