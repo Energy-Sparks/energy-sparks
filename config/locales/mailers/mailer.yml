@@ -66,6 +66,30 @@ en:
         title: Energy Sparks CEO
         video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools. Or join a <a href="%{book_demo_link}">weekly live demo</a> and Q&A session.
       subject: More information about Energy Sparks
+    video_demo:
+      ceo_name: Claudia
+      ceo_title: Energy Sparks CEO
+      dear: Dear %{name},
+      full_demo:
+        body: Take a closer look at the main features of our energy management tool and find out how Energy Sparks could help your school cut energy costs and carbon.
+        heading: Full demo (25 minutes)
+      intro: 'Thank you for registering to watch an Energy Sparks demo — we have two videos for you to choose from:'
+      next_steps:
+        convince:
+          body: We have an information pack with materials you might find helpful.
+          heading: Need help convincing your school’s decision makers?
+        enrol:
+          body: Take a look at our support page to learn about our metering and other requirements, then <strong>complete our enrolment form</strong>.
+          heading: Ready to enrol?
+        heading: 'Next steps:'
+        learn_more:
+          body: Most of our schools have publicly available data — why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in our newsletters, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+          heading: Want to learn more?
+      short_demo:
+        body: In this quick walkthrough of our energy management tool, you’ll learn more about our adult and pupil dashboards, energy-use charts, bespoke energy-saving advice, alerts and more.
+        heading: Short demo (5 minutes)
+      signoff: Kind regards,
+      subject: Thank you for your interest in Energy Sparks!
   consent_grant_mailer:
     email_consent:
       description: Your grant of consent to Energy Sparks

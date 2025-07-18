@@ -1,11 +1,11 @@
 cy:
   campaigns:
-    watch_demo:
-      intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni.
-      title: Archebwch eich demo o Sbarcynni
-    book_demo_final:
+    book_demo:
       intro: Diolch i chi am lenwi'r ffurflen ymholiad, dewiswch ddyddiad ac amser i gadarnhau eich demo Sbarcynni.
       title: Dewiswch y dyddiad a'r amser ar gyfer eich demo
+    demo:
+      intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni.
+      title: Archebwch eich demo o Sbarcynni
     form:
       fields:
         consent: Cytunaf i dderbyn diweddariadau achlysurol am gynnyrch a gwasanaethau a gynigir gan Sbarcynni

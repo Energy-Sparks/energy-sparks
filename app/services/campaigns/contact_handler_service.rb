@@ -87,8 +87,11 @@ module Campaigns
     end
 
     def email_user
-      return unless @request_type == :more_information
-      CampaignMailer.with(contact: @contact).send_information.deliver_now
+      if @request_type == :more_information
+        CampaignMailer.with(contact: @contact).send_information.deliver_now
+      elsif @request_type == :video_demo
+        CampaignMailer.with(contact: @contact).video_demo.deliver_now
+      end
     end
 
     # Attempt Capsule integration in dev/test to allow mocking in specs

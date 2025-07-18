@@ -1,4 +1,4 @@
-<%= form_for :contact, url: 'submit_contact' do |f| %>
+<%= form_for :contact, url: 'thank_you' do |f| %>
   <div class="form-row">
     <div class="form-group col-md-12">
       <%= f.label :first_name, t('campaigns.form.fields.first_name') %>
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <%= f.hidden_field :request_type, value: request_type %>
+  <%= f.hidden_field :source, value: source %>
   <%= f.hidden_field :utm_source, value: params[:utm_source] %>
   <%= f.hidden_field :utm_medium, value: params[:utm_medium] %>
   <%= f.hidden_field :utm_campaign, value: params[:utm_campaign] %>

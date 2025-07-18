@@ -1,9 +1,12 @@
 ---
 en:
   campaigns:
-    book_demo_final:
+    book_demo:
       intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
       title: Choose the date and time for your demo
+    demo:
+      intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
+      title: Watch an Energy Sparks demo
     form:
       fields:
         consent: I agree to receive occasional updates about products and services offered by Energy Sparks
@@ -35,9 +38,22 @@ en:
         Please provide us with your contact details and some information about your organisation so that we can provide you
         with more information about our services.
       title: Request more information about Energy Sparks
-    watch_demo:
-      intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
-      title: Watch an Energy Sparks demo
+    video_demo:
+      alternative_answer_html: Why not <a href='%{url}'>watch our shorter demo</a> for a quick overview of the Energy Sparks tool, including adult and pupil dashboards, energy-use charts, bespoke energy-saving advice and alerts.
+      alternative_question: Only got five minutes?
+      description_html: "<a href='%{url}'>Watch our demo video</a> for an in-depth look at all the main features of our energy management tool, and find out how Energy Sparks could help your school cut energy costs and carbon."
+      next_steps:
+        enrol:
+          answer_html: Take a look at our support page to learn about our metering and other requirements, then <a href='%{url}'>complete our enrolment form</a>.
+          question: Ready to enrol your school?
+        information_pack:
+          answer_html: "<a href='%{url}'>We have an information pack with materials</a> you might find helpful."
+          question: Need help convincing your school’s decision makers?
+        learn_more:
+          answer_html: Most of our schools have publicly available data – why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{url}'>our newsletters</a>, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+          question: Want to learn more?
+        title: Next steps
+      title: Thank you for your interest in Energy Sparks!
   product:
     additional_services:
       desktop_audits:

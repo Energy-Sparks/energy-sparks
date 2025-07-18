@@ -8,7 +8,7 @@
         <%= feature.with_description { t('case_studies.feature.description_html', count: School.active.visible.count) } %>
         <%= feature.with_button t('home.buttons.our_tool'), product_path, style: :primary %>
         <%= feature.with_button t('home.buttons.watch_a_demo'),
-                                watch_demo_campaigns_path,
+                                demo_campaigns_path,
                                 style: :secondary %>
       <% end %>
     <% end %>
