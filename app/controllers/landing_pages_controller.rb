@@ -6,7 +6,7 @@ class LandingPagesController < ApplicationController
 
   skip_before_action :authenticate_user!
   before_action :set_org_types, only: [:demo, :more_information]
-  layout 'home', only: [:demo, :more_information]
+  # layout 'home', only: [:demo, :more_information] # TODO
 
   def index
     redirect_to product_path
@@ -40,11 +40,11 @@ class LandingPagesController < ApplicationController
     redirect_to school_group_path(find_example_local_authority)
   end
 
-  # Display contact form, to obtain demo
+  # User would like a demo - display form
   def demo
   end
 
-  # Display contact form, to request more information
+  # User would like more information - display form
   def more_information
   end
 
@@ -58,8 +58,7 @@ class LandingPagesController < ApplicationController
 
   # Process forms and submit job
   def thank_you
-    contact_for_capsule
-    # CampaignContactHandlerJob.perform_later(request_type, contact)
+    CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
     case request_type
     when :book_demo
       redirect_to book_demo_campaigns_path(book_demo_params)
@@ -74,6 +73,12 @@ class LandingPagesController < ApplicationController
     @calendly_data_url = calendly_data_url
   end
 
+  # override the application helper version
+  def utm_params_for_redirect
+    contact_params.slice(:utm_source, :utm_medium, :utm_campaign).to_h
+  end
+  helper_method :utm_params_for_redirect
+
 private
 
   def request_type
@@ -83,7 +88,7 @@ private
   end
 
   def contact_for_capsule
-    contact = contact_params.except('request_type', 'utm_source', 'utm_medium', 'utm_campaign')
+    contact = contact_params.except('source', 'utm_source', 'utm_medium', 'utm_campaign')
     contact['consent'] = ActiveModel::Type::Boolean.new.cast(contact['consent'])
     contact.to_h
   end

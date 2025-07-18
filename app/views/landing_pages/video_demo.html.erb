@@ -21,15 +21,17 @@
   <h2><%= t('campaigns.video_demo.next_steps.title') %></h2>
   <%= render PromptComponent.new(icon: :check, status: :neutral) do |prompt| %>
     <% prompt.with_title { t('campaigns.video_demo.next_steps.enrol.question') } %>
-    <%= t('campaigns.video_demo.next_steps.enrol.answer_html', url: enrol_our_school_path) %>
+    <%= t('campaigns.video_demo.next_steps.enrol.answer_html', url: enrol_our_school_path(utm_params_for_redirect)) %>
   <% end %>
   <%= render PromptComponent.new(icon: :check, status: :neutral) do |prompt| %>
     <% prompt.with_title { t('campaigns.video_demo.next_steps.information_pack.question') } %>
     <%= t('campaigns.video_demo.next_steps.information_pack.answer_html', url: 'https://cdn.energysparks.uk/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcm9QIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--f35fa3e3ed82dbc5b767f4dac2f6240a018da30c/Energy%20Sparks%20marketing%20flyer%20for%20schools%202024.pdf?disposition=inline') %>
-  <% end %>
+<% end %>
   <%= render PromptComponent.new(icon: :check, status: :neutral) do |prompt| %>
     <% prompt.with_title { t('campaigns.video_demo.next_steps.learn_more.question') } %>
-    <%= t('campaigns.video_demo.next_steps.learn_more.answer_html', url: newsletters_path) %>
+    <%= t('campaigns.video_demo.next_steps.learn_more.answer_html',
+          newsletters_url: newsletters_path(utm_params_for_redirect),
+          schools_url: schools_path(utm_params_for_redirect)) %>
   <% end %>
 
 </div>
