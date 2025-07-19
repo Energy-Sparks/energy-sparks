@@ -375,14 +375,6 @@ module ApplicationHelper
     }
   end
 
-  def utm_params_for_redirect
-    {
-      utm_source: params[:utm_source],
-      utm_medium: params[:utm_medium],
-      utm_campaign: params[:utm_campaign]
-    }
-  end
-
   def add_or_remove(list, item)
     arr = list ? list.split(',').map(&:strip) : []
     arr.include?(item) ? arr.delete(item) : arr.append(item)

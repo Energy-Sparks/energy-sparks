@@ -79,6 +79,26 @@ RSpec.describe CampaignMailer do
     end
   end
 
+  describe '#school_demo' do
+    before do
+      CampaignMailer.with(contact: contact).school_demo.deliver_now
+    end
+
+    let(:org_type) { ['primary'] }
+
+    it 'send email with expected subject' do
+      expect(email.subject).to eq(I18n.t('campaign_mailer.school_demo.subject'))
+    end
+
+    it 'includes contact name' do
+      expect(email.html_part.decoded).to include('Jane')
+    end
+
+    it 'sends to correct email' do
+      expect(email.to).to eq(['jane@example.org'])
+    end
+  end
+
   describe '#send_information' do
     before do
       CampaignMailer.with(contact: contact).send_information.deliver

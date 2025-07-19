@@ -26,7 +26,7 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_link 'Energy audits', href: energy_audits_path }
       it { expect(block).to have_link 'Education workshops', href: education_workshops_path }
       it { expect(block).to have_link 'Training', href: training_path }
-      it { expect(block).to have_link 'Watch a demo', href: book_demo_campaigns_path }
+      it { expect(block).to have_link 'Watch a demo', href: watch_demo_campaigns_path }
       it { expect(block).to have_link 'Case studies', href: case_studies_path }
     end
 
