@@ -50,7 +50,6 @@ en:
           answer_html: Most of our <a href='%{schools_url}'>schools have publicly available data</a> – why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{newsletters_url}'>our newsletters</a>, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
           question: Want to learn more?
         title: Next steps
-      sub_title: Watch our demo
       title: Thank you for your interest in Energy Sparks!
     watch_demo:
       intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
