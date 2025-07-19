@@ -6,7 +6,7 @@ class LandingPagesController < ApplicationController
 
   skip_before_action :authenticate_user!
   before_action :set_org_types, only: [:watch_demo, :more_information]
-  # layout 'home', only: [:watch_demo, :more_information] # TODO
+  layout 'home', only: [:watch_demo, :more_information]
 
   def index
     redirect_to product_path
@@ -61,8 +61,9 @@ class LandingPagesController < ApplicationController
     CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
     case request_type
     when :group_demo
-      redirect_to group_demo_campaigns_path(group_demo_params)
-    when :school_demo # will be able to remove this once new info flow is in place (and using home layout)
+      @calendly_data_url = calendly_data_url
+      render :group_demo, layout: 'home'
+    when :school_demo # will be able to remove this (and just use else clause) once new info flow is in place (if we use same layout)
       render :school_demo, layout: 'home'
     else # currently group_info or school_info
       render request_type # , layout: 'home' # for new info flow
@@ -74,14 +75,6 @@ class LandingPagesController < ApplicationController
   end
 
 private
-
-  def group_demo_params
-    contact_params.slice('email', 'organisation').merge(utm_params)
-      .merge({
-        name: "#{contact_params['first_name']} #{contact_params['last_name']}",
-        tel: contact_params['tel'].gsub(/^0/, '+44'), # Ensures number is shown correctly in calendly widget
-      })
-  end
 
   # request_type can be one of:
   # :grouop_demo, :school_demo, :group_info or :school_info
@@ -100,10 +93,10 @@ private
 
   def calendly_data_url
     calendly_params = {
-      name: params[:name],
-      email: params[:email],
-      a1: params[:tel],
-      a2: params[:organisation]
+      name: "#{contact_params['first_name']} #{contact_params['last_name']}",
+      email: contact_params[:email],
+      a1: contact_params[:tel].gsub(/^0/, '+44'),
+      a2: contact_params[:organisation]
     }.to_param.gsub('+', '%20')
     "https://calendly.com/energy-sparks/mat-demo?#{calendly_params}"
   end
