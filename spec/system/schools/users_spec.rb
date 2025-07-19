@@ -378,7 +378,8 @@ describe 'School admin user management' do
           it 'notifies about a group admin' do
             fill_in 'Email', with: other_school_admin.email
             click_on 'Continue'
-            expect(page).to have_content('this user is already able to administer this school')
+            expect(page).to have_content("As a group admin for #{other_school_admin.school_group.name}, this user is" \
+                                         ' already able to administer this school')
           end
         end
       end
