@@ -2,7 +2,6 @@ module Schools
   class AdviceController < ApplicationController
     include NonPublicSchools
     include DashboardAlerts
-    include DashboardPriorities
     include SchoolInactive
     include SchoolAggregation
 
@@ -26,7 +25,7 @@ module Schools
     end
 
     def priorities
-      @management_priorities = sort_priorities
+      @management_priorities = Schools::Priorities.by_average_one_year_saving(latest_management_priorities)
       render :priorities, layout: 'dashboards'
     end
 
@@ -73,16 +72,6 @@ module Schools
 
     def latest_management_priorities
       @latest_management_priorities ||= @school.latest_management_priorities
-    end
-
-    def sort_priorities
-      setup_priorities(latest_management_priorities, limit: nil).sort do |a, b|
-        money_to_i(b.template_variables[:average_one_year_saving_gbp]) <=> money_to_i(a.template_variables[:average_one_year_saving_gbp])
-      end
-    end
-
-    def money_to_i(val)
-      val.gsub(/\D/, '').to_i
     end
   end
 end

@@ -718,6 +718,8 @@ en:
         energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
         energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
         subscribe_to_school_alerts: Subscribe to school alerts
+      create:
+        as_a_group_admin: As a group admin for %{school_group}, this user is already able to administer this school
       edit:
         title: Edit %{user_role} account
         update_account: Update account

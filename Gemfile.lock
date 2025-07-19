@@ -641,6 +641,8 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    reverse_markdown (3.0.0)
+      nokogiri
     rexml (3.4.1)
     rgeo (3.0.1)
     rgeo-geojson (2.2.0)
@@ -937,6 +939,7 @@ DEPENDENCIES
   rack-canonical-host
   rails (~> 7.2.2)
   rails-controller-testing
+  reverse_markdown
   rexml
   rgeo-geojson
   rollbar
