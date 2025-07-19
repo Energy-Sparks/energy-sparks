@@ -2,9 +2,14 @@
 <div class="space-y-4 mb-4">
   <div><%= t('onboarding_mailer2025.data_enabled_email.we_are_pleased_html', url: school_url(@school)) %>
   </div>
-  <% if @school.dashboard_message&.message %>
-    <div><%= t('onboarding_mailer2025.welcome_existing.dashboard_message',
-               message: @school.dashboard_message&.message) %></div>
+  <% if message = @school.dashboard_message&.message %>
+    <div>
+      <% if message.downcase.start_with?('please note ') %>
+        <%= message %>
+      <% else %>
+        <%= t('onboarding_mailer2025.welcome_existing.dashboard_message', message:) %>
+      <% end %>
+    </div>
   <% end %>
   <% if @top_priority %>
     <div>
@@ -19,7 +24,7 @@
   <% end %>
   <div>
     <div><%= t('onboarding_mailer2025.here_is_our_quick_guide') %></div>
-    <ol style="margin: 0">
+    <ol>
       <li><%= t('onboarding_mailer2025.familiarise_yourself_html', root_url:) %></li>
       <li><%= t('onboarding_mailer2025.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>
       <li><%= t('onboarding_mailer2025.build_an_energy_saving_team_html', root_url:) %></li>

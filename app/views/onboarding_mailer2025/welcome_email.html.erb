@@ -10,7 +10,7 @@
   <% end %>
   <div><%= t('onboarding_mailer2025.onboarded_email.in_the_mean_time') %></div>
 <% end %>
-<ol style="margin-top: 0">
+<ol>
   <li><%= t('onboarding_mailer2025.familiarise_yourself_html', root_url:) %></li>
   <% if @school.data_visible? %>
     <li><%= t('onboarding_mailer2025.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>

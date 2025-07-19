@@ -103,8 +103,7 @@ module Schools
         existing_user = User.find_by(email: @user.email)
         if existing_user&.role == 'group_admin'
           redirect = true
-          notice = "As a group admin for #{existing_user.school_group.name}, this user is already able to administer " \
-                   'this school'
+          notice = I18n.t('schools.users.create.as_a_group_admin ', school_group: existing_user.school_group.name)
         elsif existing_user.present?
           User.transaction do
             existing_user.add_cluster_school(@school)

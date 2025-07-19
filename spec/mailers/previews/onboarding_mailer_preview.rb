@@ -30,7 +30,7 @@ class OnboardingMailerPreview < ActionMailer::Preview
 
   def welcome_email
     OnboardingMailer.with(school: School.visible.first,
-                          users: School.visible.first.users.school_admin,
+                          user: School.visible.first.users.school_admin.first,
                           locale: locale).welcome_email
   end
 
