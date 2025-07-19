@@ -70,10 +70,6 @@ class LandingPagesController < ApplicationController
     end
   end
 
-  def group_demo
-    @calendly_data_url = calendly_data_url
-  end
-
 private
 
   # request_type can be one of:
