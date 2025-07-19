@@ -1,21 +1,22 @@
 <% content_for :page_title, t('campaigns.video_demo.title') %>
 
 <div class="container-fluid adult mb-4 py-4">
-  <%= render Layout::GridComponent.new(cols: 2, classes: 'container p-4', id: 'hero') do |grid| %>
-    <% grid.with_iframe classes: 'rounded-xl', cell_classes: 'pr-xl-4', src: 'https://www.youtube.com/embed/F5bL1_HsI0U' %>
-    <% grid.with_feature_card size: :xl, cell_classes: 'my-auto pl-xl-4' do |feature| %>
-      <%= feature.with_header title: t('campaigns.video_demo.title'), classes: 'mt-3 mt-lg-0' %>
-      <%= feature.with_description { t('campaigns.video_demo.description_html', url: 'https://www.youtube.com/watch?v=F5bL1_HsI0U') } %>
-    <% end %>
-  <% end %>
+  <div class="container">
+    <h1><%= t('campaigns.video_demo.title') %></h1>
+    <p><%= t('campaigns.video_demo.description_html', url: 'https://www.youtube.com/watch?v=F5bL1_HsI0U') %>
+  </div>
 </div>
 
 <div class="container mb-5">
-  <%= render Layout::Cards::SectionHeaderComponent.new(
-        id: 'alternative'
-      ) do |section_header| %>
-    <%= section_header.with_header title: t('campaigns.video_demo.alternative_question') %>
-    <%= section_header.with_description { t('campaigns.video_demo.alternative_answer_html', url: 'https://www.youtube.com/watch?v=lEiiEyAcVu4') } %>
+  <%= render Layout::GridComponent.new(cols: 2, classes: 'mt-5 mb-4', id: 'video') do |grid| %>
+    <% grid.with_iframe classes: 'rounded-xl', column_classes: 'col-lg-9',
+                        src: 'https://www.youtube.com/embed/F5bL1_HsI0U', min_height: '420px' %>
+    <% grid.with_feature_card size: :lg, column_classes: 'col-lg-3', cell_classes: 'my-auto' do |feature| %>
+      <%= feature.with_description do %>
+        <strong><%= t('campaigns.video_demo.alternative_question') %></strong>
+        <%= t('campaigns.video_demo.alternative_answer_html', url: 'https://www.youtube.com/watch?v=lEiiEyAcVu4') %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <h2><%= t('campaigns.video_demo.next_steps.title') %></h2>

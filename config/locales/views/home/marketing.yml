@@ -41,7 +41,7 @@ en:
     video_demo:
       alternative_answer_html: Why not <a href='%{url}'>watch our shorter demo</a> for a quick overview of the Energy Sparks tool, including adult and pupil dashboards, energy-use charts, bespoke energy-saving advice and alerts.
       alternative_question: Only got five minutes?
-      description_html: "<a href='%{url}'>Watch our demo video</a> for an in-depth look at all the main features of our energy management tool, and find out how Energy Sparks could help your school cut energy costs and carbon."
+      description_html: Watch our demo video for an in-depth look at all the main features of our energy management tool, and find out how Energy Sparks could help your school cut energy costs and carbon.
       next_steps:
         enrol:
           answer_html: Take a look at our support page to learn about our metering and other requirements, then <a href='%{url}'>complete our enrolment form</a>.
@@ -53,6 +53,7 @@ en:
           answer_html: Most of our <a href='%{schools_url}'>schools have publicly available data</a> – why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{newsletters_url}'>our newsletters</a>, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
           question: Want to learn more?
         title: Next steps
+      sub_title: Watch our demo
       title: Thank you for your interest in Energy Sparks!
   product:
     additional_services:
