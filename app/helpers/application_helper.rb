@@ -375,12 +375,8 @@ module ApplicationHelper
     }
   end
 
-  def utm_params_for_redirect
-    {
-      utm_source: params[:utm_source],
-      utm_medium: params[:utm_medium],
-      utm_campaign: params[:utm_campaign]
-    }
+  def utm_params
+    params.permit(:utm_source, :utm_medium, :utm_campaign).to_h.symbolize_keys
   end
 
   def add_or_remove(list, item)

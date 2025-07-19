@@ -84,9 +84,9 @@ Rails.application.routes.draw do
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'more-information', as: :more_information
-      get 'demo', as: :demo
-      get 'book_demo'
-      post 'thank_you'
+      get 'watch_demo', as: :watch_demo
+      get 'group-demo', as: :group_demo
+      post 'thank-you', as: :thank_you
       get 'mat-pack', as: :mat_pack
       get 'school-pack', as: :school_pack
       get 'example-adult-dashboard', as: :example_adult_dashboard

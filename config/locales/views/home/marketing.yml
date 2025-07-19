@@ -1,12 +1,6 @@
 ---
 en:
   campaigns:
-    book_demo:
-      intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
-      title: Choose the date and time for your demo
-    demo:
-      intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
-      title: Watch an Energy Sparks demo
     form:
       fields:
         consent: I agree to receive occasional updates about products and services offered by Energy Sparks
@@ -25,6 +19,9 @@ en:
         primary: Primary school (state)
         secondary: Secondary school (state)
         special: Special school (state)
+    group_demo:
+      intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
+      title: Choose the date and time for your demo
     more_info_final:
       case_studies_html: |-
         In the meantime, why not explore our <a href="%{case_study_link}">case studies</a> which showcase some of the
@@ -38,7 +35,7 @@ en:
         Please provide us with your contact details and some information about your organisation so that we can provide you
         with more information about our services.
       title: Request more information about Energy Sparks
-    video_demo:
+    school_demo:
       alternative_answer_html: Why not <a href='%{url}'>watch our shorter demo</a> for a quick overview of the Energy Sparks tool, including adult and pupil dashboards, energy-use charts, bespoke energy-saving advice and alerts.
       alternative_question: Only got five minutes?
       description_html: Watch our demo video for an in-depth look at all the main features of our energy management tool, and find out how Energy Sparks could help your school cut energy costs and carbon.
@@ -55,6 +52,9 @@ en:
         title: Next steps
       sub_title: Watch our demo
       title: Thank you for your interest in Energy Sparks!
+    watch_demo:
+      intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
+      title: Watch an Energy Sparks demo
   product:
     additional_services:
       desktop_audits:

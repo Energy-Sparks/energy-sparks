@@ -5,8 +5,8 @@ class LandingPagesController < ApplicationController
   GROUP_TYPES = [TRUST, LA].freeze
 
   skip_before_action :authenticate_user!
-  before_action :set_org_types, only: [:demo, :more_information]
-  # layout 'home', only: [:demo, :more_information] # TODO
+  before_action :set_org_types, only: [:watch_demo, :more_information]
+  # layout 'home', only: [:watch_demo, :more_information] # TODO
 
   def index
     redirect_to product_path
@@ -40,60 +40,51 @@ class LandingPagesController < ApplicationController
     redirect_to school_group_path(find_example_local_authority)
   end
 
-  # User would like a demo - display form
-  def demo
+  # User would like to watch a demo - display form
+  def watch_demo
   end
 
   # User would like more information - display form
   def more_information
   end
 
-  def book_demo_params
-    params = contact_params.slice('utm_source', 'utm_medium', 'utm_campaign', 'email', 'organisation')
+  # Process forms and submit job
+  def thank_you
+    CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
+    case request_type
+    when :group_demo
+      redirect_to group_demo_campaigns_path(group_demo_params)
+    when :school_demo # will be able to remove this once new info flow is in place (and using home layout)
+      render :school_demo, layout: 'home'
+    else # currently group_info or school_info
+      render request_type # , layout: 'home' # for new info flow
+    end
+  end
+
+  def group_demo
+    @calendly_data_url = calendly_data_url
+  end
+
+private
+
+  def group_demo_params
+    params = contact_params.slice('email', 'organisation').merge(utm_params)
     params.merge!({
       name: "#{contact_params['first_name']} #{contact_params['last_name']}",
       tel: contact_params['tel'].gsub(/^0/, '+44'), # Ensures number is shown correctly in calendly widget
     })
   end
 
-  # Process forms and submit job
-  def thank_you
-    CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
-    case request_type
-    when :book_demo
-      redirect_to book_demo_campaigns_path(book_demo_params)
-    when :video_demo
-      render :video_demo, layout: 'home'
-    else
-      render :more_info_final
-    end
-  end
-
-  def book_demo
-    @calendly_data_url = calendly_data_url
-  end
-
-  # override the application helper version
-  def utm_params_for_redirect
-    contact_params.slice(:utm_source, :utm_medium, :utm_campaign).to_h
-  end
-  helper_method :utm_params_for_redirect
-
-private
-
   def request_type
-    source = contact_params['source']&.to_sym
-    return :more_information unless source == :demo
-    includes_group? ? :book_demo : :video_demo
+    raise unless source.in?(%w[info demo]) # check this since it comes from form params
+    "#{contact_in_group? ? 'group' : 'school'}_#{source}".to_sym
   end
 
   def contact_for_capsule
-    contact = contact_params.except('source', 'utm_source', 'utm_medium', 'utm_campaign')
-    contact['consent'] = ActiveModel::Type::Boolean.new.cast(contact['consent'])
-    contact.to_h
+    contact_params.merge(consent: ActiveModel::Type::Boolean.new.cast(contact_params['consent'])).to_h.symbolize_keys
   end
 
-  def includes_group?
+  def contact_in_group?
     contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
   end
 
@@ -115,8 +106,11 @@ private
 
   def contact_params
     params.require(:contact).permit(:first_name, :last_name,
-      :job_title, :organisation, { org_type: [] }, :email, :tel, :consent, :source,
-      :utm_source, :utm_medium, :utm_campaign)
+      :job_title, :organisation, { org_type: [] }, :email, :tel, :consent)
+  end
+
+  def source
+    params.permit(:source)[:source]
   end
 
   def find_example_school

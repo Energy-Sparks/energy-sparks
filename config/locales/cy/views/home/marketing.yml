@@ -1,9 +1,9 @@
 cy:
   campaigns:
-    book_demo:
+    group_demo:
       intro: Diolch i chi am lenwi'r ffurflen ymholiad, dewiswch ddyddiad ac amser i gadarnhau eich demo Sbarcynni.
       title: Dewiswch y dyddiad a'r amser ar gyfer eich demo
-    demo:
+    watch_demo:
       intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni.
       title: Archebwch eich demo o Sbarcynni
     form:

@@ -1,0 +1,37 @@
+<% content_for :page_title, t('campaigns.school_demo.title') %>
+
+<div class="container-fluid adult mb-4 py-4">
+  <div class="container">
+    <h1><%= t('campaigns.school_demo.title') %></h1>
+    <p><%= t('campaigns.school_demo.description_html', url: 'https://www.youtube.com/watch?v=F5bL1_HsI0U') %>
+  </div>
+</div>
+
+<div class="container mb-5">
+  <%= render Layout::GridComponent.new(cols: 2, classes: 'mt-5 mb-4', id: 'video') do |grid| %>
+    <% grid.with_iframe classes: 'rounded-xl', column_classes: 'col-lg-9',
+                        src: 'https://www.youtube.com/embed/F5bL1_HsI0U', min_height: '420px' %>
+    <% grid.with_feature_card size: :lg, column_classes: 'col-lg-3', cell_classes: 'my-auto' do |feature| %>
+      <%= feature.with_description do %>
+        <strong><%= t('campaigns.school_demo.alternative_question') %></strong>
+        <%= t('campaigns.school_demo.alternative_answer_html', url: 'https://www.youtube.com/watch?v=lEiiEyAcVu4') %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <h2><%= t('campaigns.school_demo.next_steps.title') %></h2>
+  <%= render PromptComponent.new(icon: :check, status: :neutral) do |prompt| %>
+    <% prompt.with_title { t('campaigns.school_demo.next_steps.enrol.question') } %>
+    <%= t('campaigns.school_demo.next_steps.enrol.answer_html', url: enrol_our_school_path(utm_params)) %>
+  <% end %>
+  <%= render PromptComponent.new(icon: :check, status: :neutral) do |prompt| %>
+    <% prompt.with_title { t('campaigns.school_demo.next_steps.information_pack.question') } %>
+    <%= t('campaigns.school_demo.next_steps.information_pack.answer_html', url: 'https://cdn.energysparks.uk/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcm9QIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--f35fa3e3ed82dbc5b767f4dac2f6240a018da30c/Energy%20Sparks%20marketing%20flyer%20for%20schools%202024.pdf?disposition=inline') %>
+  <% end %>
+  <%= render PromptComponent.new(icon: :check, status: :neutral) do |prompt| %>
+    <% prompt.with_title { t('campaigns.school_demo.next_steps.learn_more.question') } %>
+    <%= t('campaigns.school_demo.next_steps.learn_more.answer_html',
+          newsletters_url: newsletters_path(utm_params),
+          schools_url: schools_path(utm_params)) %>
+  <% end %>
+</div>
