@@ -56,7 +56,6 @@ RSpec.describe OnboardingMailer2025 do
     it 'sends the onboarded email in cy' do
       setup_and_send(:cy)
       expect(email.subject).to eq('Mae Test School bellach yn fyw ar Sbarcynni')
-      puts email_html_body_as_markdown
       expect(email_html_body_as_markdown).to eq(read_md('onboarded_email_cy'))
     end
   end
