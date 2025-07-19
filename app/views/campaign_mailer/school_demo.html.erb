@@ -1,36 +1,43 @@
-<p><%= t('campaign_mailer.school_demo.dear', name: @contact[:first_name]) %></p>
-
+<p><%= t('campaign_mailer.school_demo.dear', name: @contact[:first_name]) %>,</p>
+<div class="s-3"></div>
 <p><%= t('campaign_mailer.school_demo.intro') %></p>
+<ul>
+  <li>
+    <strong>
+      <%= link_to t('campaign_mailer.school_demo.short_demo.heading'),
+                  short_demo_video_campaigns_url %>:
+    </strong>
+    <%= t('campaign_mailer.school_demo.short_demo.body') %>
+  </li>
+  <li>
+    <strong>
+      <%= link_to t('campaign_mailer.school_demo.full_demo.heading'),
+                  long_demo_video_campaigns_url %>:
+    </strong>
+    <%= t('campaign_mailer.school_demo.full_demo.body') %>
+  </li>
+</ul>
 
-<div class="mb-4">
-  <h5><strong><%= t('campaign_mailer.school_demo.short_demo.heading') %></strong></h5>
-  <p><%= t('campaign_mailer.school_demo.short_demo.body') %></p>
-</div>
-
-<div class="mb-4">
-  <h5><strong><%= t('campaign_mailer.school_demo.full_demo.heading') %></strong></h5>
-  <p><%= t('campaign_mailer.school_demo.full_demo.body') %></p>
-</div>
-
-<hr>
-
-<h5><strong><%= t('campaign_mailer.school_demo.next_steps.heading') %></strong></h5>
-
-<div class="mb-3">
-  <p><strong><%= t('campaign_mailer.school_demo.next_steps.enrol.heading') %></strong></p>
-  <p><%= t('campaign_mailer.school_demo.next_steps.enrol.body').html_safe %></p>
-</div>
-
-<div class="mb-3">
-  <p><strong><%= t('campaign_mailer.school_demo.next_steps.convince.heading') %></strong></p>
-  <p><%= t('campaign_mailer.school_demo.next_steps.convince.body') %></p>
-</div>
-
-<div class="mb-3">
-  <p><strong><%= t('campaign_mailer.school_demo.next_steps.learn_more.heading') %></strong></p>
-  <p><%= t('campaign_mailer.school_demo.next_steps.learn_more.body').html_safe %></p>
-</div>
+<strong><%= t('campaign_mailer.school_demo.next_steps.heading') %></strong>
+<ul>
+  <li>
+    <strong><%= t('campaign_mailer.school_demo.next_steps.enrol.question') %></strong>
+    <%= t('campaign_mailer.school_demo.next_steps.enrol.answer_html', url: enrol_our_school_url) %>
+  </li>
+  <li>
+    <strong><%= t('campaign_mailer.school_demo.next_steps.information_pack.question') %></strong>
+    <%= t('campaign_mailer.school_demo.next_steps.information_pack.answer_html',
+          url: 'https://cdn.energysparks.uk/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBcm9QIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--f35fa3e3ed82dbc5b767f4dac2f6240a018da30c/Energy%20Sparks%20marketing%20flyer%20for%20schools%202024.pdf?disposition=inline') %>
+  </li>
+  <li>
+    <strong><%= t('campaign_mailer.school_demo.next_steps.learn_more.question') %></strong>
+    <%= t('campaign_mailer.school_demo.next_steps.learn_more.answer_html',
+          newsletters_url: newsletters_url,
+          schools_url: schools_url) %>
+  </li>
+</ul>
 
 <p><%= t('campaign_mailer.school_demo.signoff') %>,</p>
+<div class="s-3"></div>
 <p><strong><%= t('campaign_mailer.school_demo.ceo_name') %></strong><br>
 <%= t('campaign_mailer.school_demo.ceo_title') %></p>

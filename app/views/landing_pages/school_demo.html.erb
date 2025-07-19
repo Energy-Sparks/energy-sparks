@@ -14,7 +14,7 @@
     <% grid.with_feature_card size: :lg, column_classes: 'col-lg-3', cell_classes: 'my-auto' do |feature| %>
       <%= feature.with_description do %>
         <strong><%= t('campaigns.school_demo.alternative_question') %></strong>
-        <%= t('campaigns.school_demo.alternative_answer_html', url: 'https://www.youtube.com/watch?v=lEiiEyAcVu4') %>
+        <%= t('campaigns.school_demo.alternative_answer_html', url: short_demo_video_campaigns_path(utm_params)) %>
       <% end %>
     <% end %>
   <% end %>

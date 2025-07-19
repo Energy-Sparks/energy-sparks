@@ -99,7 +99,7 @@ describe Campaigns::ContactHandlerService do
         expect(Rollbar).to have_received(:warning)
       end
 
-      it 'sends an email' do
+      it 'sends two emails' do
         expect(deliveries.count).to be(2)
       end
 

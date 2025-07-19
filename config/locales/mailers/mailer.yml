@@ -41,26 +41,26 @@ en:
     school_demo:
       ceo_name: Claudia
       ceo_title: Energy Sparks CEO
-      dear: Dear %{name},
+      dear: Dear %{name}
       full_demo:
         body: Take a closer look at the main features of our energy management tool and find out how Energy Sparks could help your school cut energy costs and carbon.
         heading: Full demo (25 minutes)
       intro: 'Thank you for registering to watch an Energy Sparks demo — we have two videos for you to choose from:'
       next_steps:
-        convince:
-          body: We have an information pack with materials you might find helpful.
-          heading: Need help convincing your school’s decision makers?
         enrol:
-          body: Take a look at our support page to learn about our metering and other requirements, then <strong>complete our enrolment form</strong>.
-          heading: Ready to enrol?
+          answer_html: Take a look at our support page to learn about our metering and other requirements, then <a href="%{url}">complete our enrolment form</a>.
+          question: Ready to enrol?
         heading: 'Next steps:'
+        information_pack:
+          answer_html: <a href="%{url}">We have an information pack with materials</a> you might find helpful.
+          question: Need help convincing your school’s decision makers?
         learn_more:
-          body: Most of our schools have publicly available data — why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in our newsletters, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
-          heading: Want to learn more?
+          answer_html: Most of our <a href='%{schools_url}'>schools have publicly available data</a> — why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{newsletters_url}'>our newsletters</a>, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+          question: Want to learn more?
       short_demo:
         body: In this quick walkthrough of our energy management tool, you’ll learn more about our adult and pupil dashboards, energy-use charts, bespoke energy-saving advice, alerts and more.
         heading: Short demo (5 minutes)
-      signoff: Kind regards,
+      signoff: Kind regards
       subject: Thank you for your interest in Energy Sparks!
     send_information:
       for_las:

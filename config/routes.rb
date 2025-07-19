@@ -93,6 +93,8 @@ Rails.application.routes.draw do
       get 'example-pupil-dashboard', as: :example_pupil_dashboard
       get 'example-mat-dashboard', as: :example_mat_dashboard
       get 'example-la-dashboard', as: :example_la_dashboard
+      get 'short-demo-video', as: :short_demo_video
+      get 'long-demo-video', as: :long_demo_video
       get 'demo-video', as: :demo_video
     end
   end

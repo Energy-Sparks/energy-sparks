@@ -24,6 +24,14 @@ class LandingPagesController < ApplicationController
     redirect_to 'https://www.youtube.com/watch?v=x2EeYWwdEpE'
   end
 
+  def short_demo_video
+    redirect_to 'https://www.youtube.com/watch?v=lEiiEyAcVu4'
+  end
+
+  def long_demo_video
+    redirect_to 'https://www.youtube.com/watch?v=F5bL1_HsI0U'
+  end
+
   def example_adult_dashboard
     redirect_to school_path(find_example_school)
   end
