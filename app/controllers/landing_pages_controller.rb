@@ -73,7 +73,7 @@ class LandingPagesController < ApplicationController
 private
 
   # request_type can be one of:
-  # :grouop_demo, :school_demo, :group_info or :school_info
+  # :group_demo, :school_demo, :group_info or :school_info
   def request_type
     raise unless source.in?(%w[info demo]) # check this since it comes from form params
     "#{contact_in_group? ? 'group' : 'school'}_#{source}".to_sym
