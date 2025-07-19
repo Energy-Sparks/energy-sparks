@@ -76,13 +76,15 @@ class LandingPagesController < ApplicationController
 private
 
   def group_demo_params
-    params = contact_params.slice('email', 'organisation').merge(utm_params)
-    params.merge!({
-      name: "#{contact_params['first_name']} #{contact_params['last_name']}",
-      tel: contact_params['tel'].gsub(/^0/, '+44'), # Ensures number is shown correctly in calendly widget
-    })
+    contact_params.slice('email', 'organisation').merge(utm_params)
+      .merge({
+        name: "#{contact_params['first_name']} #{contact_params['last_name']}",
+        tel: contact_params['tel'].gsub(/^0/, '+44'), # Ensures number is shown correctly in calendly widget
+      })
   end
 
+  # request_type can be one of:
+  # :grouop_demo, :school_demo, :group_info or :school_info
   def request_type
     raise unless source.in?(%w[info demo]) # check this since it comes from form params
     "#{contact_in_group? ? 'group' : 'school'}_#{source}".to_sym
