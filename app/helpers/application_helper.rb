@@ -375,10 +375,6 @@ module ApplicationHelper
     }
   end
 
-  def utm_params
-    params.permit(:utm_source, :utm_medium, :utm_campaign).to_h.symbolize_keys
-  end
-
   def add_or_remove(list, item)
     arr = list ? list.split(',').map(&:strip) : []
     arr.include?(item) ? arr.delete(item) : arr.append(item)
