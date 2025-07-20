@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module EnergySparks
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.0
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -71,5 +71,6 @@ module EnergySparks
     config.active_record.encryption.deterministic_key = 'eo84dBizRt6e4I68aD8IUrCBjuzTt7c7'
     config.active_record.encryption.key_derivation_salt = 'IXTWKMlViWaALgj3k2UNhIouWdOyXAwm'
     config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    config.active_storage.variant_processor = :mini_magick # keep old default for now, breaks validation
   end
 end
