@@ -97,6 +97,20 @@ RSpec.describe CampaignMailer do
     it 'sends to correct email' do
       expect(email.to).to eq(['jane@example.org'])
     end
+
+    it 'includes links to demos' do
+      expect(body).to have_link(href: short_demo_video_campaigns_url)
+      expect(body).to have_link(href: long_demo_video_campaigns_url)
+    end
+
+    it 'includes links to next steps' do
+      expect(body).to have_link(href: enrol_our_school_url)
+      expect(body).to have_link(href: school_pack_campaigns_url)
+      expect(body).to have_link(href: schools_url)
+      expect(body).to have_link(href: newsletters_url)
+    end
+
+    it 'includes link to support pages'
   end
 
   describe '#send_information' do
