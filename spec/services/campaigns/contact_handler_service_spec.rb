@@ -3,7 +3,8 @@ require 'rails_helper'
 describe Campaigns::ContactHandlerService do
   subject(:service) { described_class.new(request_type, contact) }
 
-  let(:request_type) { :book_demo }
+  let(:deliveries) { ActionMailer::Base.deliveries }
+  let(:request_type) { :school_demo }
   let(:contact) do
     {
       first_name: 'Jane',
@@ -20,11 +21,13 @@ describe Campaigns::ContactHandlerService do
   let(:capsule) { instance_double(CapsuleCrm::Client) }
 
   before do
+    deliveries.clear
     allow(CapsuleCrm::Client).to receive(:new).and_return(capsule)
   end
 
   describe '#perform' do
-    let(:email) { ActionMailer::Base.deliveries.last }
+    let(:admin_email) { ActionMailer::Base.deliveries.first }
+    let(:user_email) { ActionMailer::Base.deliveries.second }
 
     context 'with successful party creation in Capsule' do
       let(:party) do
@@ -42,22 +45,21 @@ describe Campaigns::ContactHandlerService do
       context 'with failed opportunity creation' do
         before do
           allow(capsule).to receive(:create_opportunity).and_raise(CapsuleCrm::ApiFailure)
+          allow(Rollbar).to receive(:warning)
+          service.perform
         end
 
-        it 'sends an email' do
-          expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
-          expect(ActionMailer::Base.deliveries.count).to eq 1
+        it 'sends two emails' do
+          expect(deliveries.count).to eq 2
         end
 
         it 'includes capsule link to contact' do
-          service.perform
-          expect(email.html_part.decoded).to include('View Contact')
-          expect(email.html_part.decoded).not_to include('View Opportunity')
+          expect(admin_email.html_part.decoded).to include('View Contact')
+          expect(admin_email.html_part.decoded).not_to include('View Opportunity')
         end
 
         it 'logs warning in Rollbar' do
-          expect(Rollbar).to receive(:warning)
-          service.perform
+          expect(Rollbar).to have_received(:warning)
         end
       end
 
@@ -72,17 +74,16 @@ describe Campaigns::ContactHandlerService do
 
         before do
           allow(capsule).to receive(:create_opportunity).and_return(opportunity)
+          service.perform
         end
 
-        it 'sends an email' do
-          expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
-          expect(ActionMailer::Base.deliveries.count).to eq 1
+        it 'sends two emails' do
+          expect(deliveries.count).to eq 2
         end
 
         it 'includes capsule links' do
-          service.perform
-          expect(email.html_part.decoded).to include('View Contact')
-          expect(email.html_part.decoded).to include('View Opportunity')
+          expect(admin_email.html_part.decoded).to include('View Contact')
+          expect(admin_email.html_part.decoded).to include('View Opportunity')
         end
       end
     end
@@ -90,42 +91,83 @@ describe Campaigns::ContactHandlerService do
     context 'with failed party creation in Capsule' do
       before do
         allow(capsule).to receive(:create_party).and_raise(CapsuleCrm::ApiFailure)
+        allow(Rollbar).to receive(:warning)
+        service.perform
       end
 
       it 'logs warning in Rollbar' do
-        expect(Rollbar).to receive(:warning)
-        service.perform
+        expect(Rollbar).to have_received(:warning)
       end
 
-      it 'sends an email' do
-        expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
+      it 'sends two emails' do
+        expect(deliveries.count).to be(2)
       end
 
       it 'does not include capsule links' do
-        service.perform
-        expect(email.html_part.decoded).not_to include('View Contact')
-        expect(email.html_part.decoded).not_to include('View Opportunity')
+        expect(admin_email.html_part.decoded).not_to include('View Contact')
+        expect(admin_email.html_part.decoded).not_to include('View Opportunity')
       end
     end
 
-    context 'with more information request' do
-      let(:request_type) { :more_information }
+    context 'when sending emails' do
+      let(:request_type) { }
+      let(:deliveries) { ActionMailer::Base.deliveries }
 
       before do
         allow(capsule).to receive(:create_party).and_raise(CapsuleCrm::ApiFailure)
+        service.perform
       end
 
-      it 'sends several emails' do
-        expect { service.perform }.to change(ActionMailer::Base.deliveries, :count)
-        expect(ActionMailer::Base.deliveries.count).to eq 2
+      context 'when request type is :school_info' do
+        let(:request_type) { :school_info }
 
-        expected_email_subjects = [
-          '[energy-sparks-unknown] Campaign form: Fake Academies - More information',
-          I18n.t('campaign_mailer.send_information.subject')
-        ]
+        it { expect(deliveries.size).to eq(2) }
 
-        subjects = ActionMailer::Base.deliveries.map(&:subject)
-        expect(subjects).to match_array(expected_email_subjects)
+        it 'sends admin email' do
+          expect(admin_email.subject).to eq '[energy-sparks-unknown] Campaign form: Fake Academies - School info'
+        end
+
+        it 'sends user email' do
+          expect(user_email.subject).to eq I18n.t('campaign_mailer.send_information.subject')
+        end
+      end
+
+      context 'when request type is :group_info' do
+        let(:request_type) { :group_info }
+
+        it { expect(deliveries.size).to eq(2) }
+
+        it 'sends admin email' do
+          expect(admin_email.subject).to eq '[energy-sparks-unknown] Campaign form: Fake Academies - Group info'
+        end
+
+        it 'sends user email' do
+          expect(user_email.subject).to eq I18n.t('campaign_mailer.send_information.subject')
+        end
+      end
+
+      context 'when request type is :school_demo' do
+        let(:request_type) { :school_demo }
+
+        it { expect(deliveries.size).to eq(2) }
+
+        it 'sends admin email' do
+          expect(admin_email.subject).to eq '[energy-sparks-unknown] Campaign form: Fake Academies - School demo'
+        end
+
+        it 'sends user email' do
+          expect(user_email.subject).to eq I18n.t('campaign_mailer.school_demo.subject')
+        end
+      end
+
+      context 'when request type is :group_demo' do
+        let(:request_type) { :group_demo }
+
+        it { expect(deliveries.size).to eq(1) }
+
+        it 'sends admin email' do
+          expect(admin_email.subject).to eq '[energy-sparks-unknown] Campaign form: Fake Academies - Group demo'
+        end
       end
     end
   end
@@ -147,7 +189,7 @@ describe Campaigns::ContactHandlerService do
           phoneNumbers: [{ number: '01225 444444' }],
           tags: [
             { name: 'Campaign' },
-            { name: 'Book demo' },
+            { name: 'School demo' },
             { name: 'Primary' },
             { name: 'Secondary' }
           ],
@@ -181,7 +223,7 @@ describe Campaigns::ContactHandlerService do
           milestone: { id: described_class::NEW_MILESTONE_ID },
           tags: [
             { name: 'Campaign' },
-            { name: 'Book demo' }
+            { name: 'School demo' }
           ]
         }
       })

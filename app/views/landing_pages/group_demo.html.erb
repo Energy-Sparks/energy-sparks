@@ -1,25 +1,18 @@
-<% content_for :page_title, t('campaigns.book_demo_final.title') %>
+<% content_for :page_title, t('campaigns.group_demo.title') %>
 
-<div class="row">
-  <div class="col-md-10">
-    <h1><%= t('campaigns.book_demo_final.title') %></h1>
+<div class="container-fluid adult py-4">
+  <div class="container text-center">
+    <h1><%= t('campaigns.group_demo.title') %></h1>
+    <p><%= t('campaigns.group_demo.intro') %></p>
   </div>
 </div>
 
-<div class="row">
+<div class="row pb-4">
   <div class="col-md-12">
-    <p><%= t('campaigns.book_demo_final.intro') %></p>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-
     <div class="calendly-inline-widget"
          data-url="<%= @calendly_data_url %>"
          style="min-width:320px;height:800px;"></div>
 
     <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-
   </div>
 </div>
