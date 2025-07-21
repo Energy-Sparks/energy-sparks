@@ -40,6 +40,10 @@
       <% end %>
     <% end %>
   </div>
+<% else %>
+  <div class="alert alert-secondary mb-2">
+    <%= link_to t('schools.meters.index.school_downloads'), school_downloads_path(@school), class: 'btn' %>
+  </div>
 <% end %>
 
 <% unless @invalid_mpan.empty? %>
@@ -127,7 +131,6 @@
       <%= render 'inactive_meters', inactive_meters: @inactive_pseudo_meters %>
     </tbody>
   <% end %>
-
 </table>
 </div>
 
