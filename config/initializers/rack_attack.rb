@@ -8,7 +8,7 @@ unless Rails.env.test?
       end
 
       blocklist('block bad user-agents') do |req|
-        [/scrapy/i].any? { |pattern| req.user_agent =~ pattern }
+        [/scrapy/i, /thinkbot/i].any? { |pattern| req.user_agent =~ pattern }
       end
 
       blocklist('ban crawlers') do |req|
