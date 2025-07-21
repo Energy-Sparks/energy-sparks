@@ -1,3 +1,8 @@
-<h1 class="mb-3"><%= t('onboarding_mailer.completion_email.title', school_name: @school_onboarding.school_name, school_group: @school_group_name) %></h1>
+<h1 class="mb-3">
+  <%= t('onboarding_mailer.completion_email.title', school_name: @school_onboarding.school_name,
+                                                    school_group: @school_group_name) %>
+</h1>
 
-<%= link_to t('onboarding_mailer.completion_email.find_them_on_energy_sparks'), school_url(@school_onboarding.school), class: 'btn btn-primary mb-3 mb-3'%>
+<%= link_to t('onboarding_mailer.completion_email.find_them_on_energy_sparks'),
+            school_url(@school_onboarding.school),
+            class: 'btn btn-primary mb-3 mb-3' %>
