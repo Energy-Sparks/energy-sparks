@@ -5,16 +5,6 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  # Old urls maintained to avoid breakage. Retains parameters in the redirect
-  %w[
-    for-schools for-local-authorities for-multi-academy-trusts
-    for-teachers for-pupils for-management
-    enrol find-out-more pricing
-     ].each do |path|
-      get path, to: redirect(path: '/product')
-  end
-  get '/campaigns/find-out-more', to: redirect(path: '/product')
-
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
   get 'case-studies/:id/download', to: 'case_studies#download', as: :case_study_download
@@ -94,15 +84,16 @@ Rails.application.routes.draw do
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
       get 'more-information', as: :more_information
-      get 'book-demo', as: :book_demo
-      post :submit_contact
-      get 'thank-you', as: :thank_you
+      get 'watch-demo', as: :watch_demo
+      post 'thank-you', as: :thank_you
       get 'mat-pack', as: :mat_pack
       get 'school-pack', as: :school_pack
       get 'example-adult-dashboard', as: :example_adult_dashboard
       get 'example-pupil-dashboard', as: :example_pupil_dashboard
       get 'example-mat-dashboard', as: :example_mat_dashboard
       get 'example-la-dashboard', as: :example_la_dashboard
+      get 'short-demo-video', as: :short_demo_video
+      get 'long-demo-video', as: :long_demo_video
       get 'demo-video', as: :demo_video
     end
   end
@@ -883,6 +874,17 @@ Rails.application.routes.draw do
   # Old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
+  # Old marketing URLs
+  %w[
+    for-schools for-local-authorities for-multi-academy-trusts
+    for-teachers for-pupils for-management
+    enrol find-out-more pricing
+     ].each do |path|
+      get path, to: redirect(path: '/product')
+  end
+  get '/campaigns/find-out-more', to: redirect(path: '/product')
+  get '/campaigns/book-demo', to: redirect(path: '/watch-demo')
 
   match "/:code", to: "errors#show", via: :all, constraints: {
     code: /#{ErrorsController::CODES.join("|")}/

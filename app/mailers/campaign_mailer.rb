@@ -11,6 +11,12 @@ class CampaignMailer < LocaleMailer
     make_bootstrap_mail(to: @contact[:email], subject: I18n.t('campaign_mailer.send_information.subject'))
   end
 
+  def school_demo
+    @contact = params[:contact]
+    @title = I18n.t('campaign_mailer.school_demo.subject')
+    make_bootstrap_mail(to: @contact[:email], subject: I18n.t('campaign_mailer.school_demo.subject'))
+  end
+
   private
 
   def notify_admin_subject(organisation, request_type)

@@ -25,8 +25,8 @@ module Layout
       end
     end
 
-    def cell(klass = nil, **kwargs, &block)
-      tag.div(class: class_names(column_classes, kwargs.delete(:cell_classes), @cell_classes, responsive_classes(klass)), &block)
+    def cell(klass = nil, column_classes: nil, **kwargs, &block)
+      tag.div(class: class_names(column_classes || default_column_classes, kwargs.delete(:cell_classes), @cell_classes, responsive_classes(klass)), &block)
     end
 
     def responsive_classes(klass)
@@ -48,7 +48,7 @@ module Layout
       cells.any?
     end
 
-    def column_classes
+    def default_column_classes
       case cols
       when 1
         'col-12'
