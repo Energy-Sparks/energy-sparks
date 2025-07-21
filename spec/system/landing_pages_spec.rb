@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe 'landing pages', type: :system do
-  let(:case_study) { create(:case_study) }
-
   let(:first_name) { 'First' }
   let(:last_name) { 'Last' }
   let(:job_title) { 'CFO' }
@@ -11,6 +9,7 @@ describe 'landing pages', type: :system do
   let(:organisation) { 'Fake Academies' }
   # https://fakenumber.org/united-kingdom
   let(:tel) { '01632 960241' }
+  let(:expected_org_type) {'multi_academy_trust' }
 
   let(:expected_contact) do
     {
@@ -18,15 +17,11 @@ describe 'landing pages', type: :system do
       last_name: last_name,
       job_title: job_title,
       organisation: organisation,
-      org_type: ['multi_academy_trust'],
+      org_type: [expected_org_type],
       email: email,
       tel: tel,
       consent: true
     }
-  end
-
-  before do
-    allow(CaseStudy).to receive(:find).and_return(case_study)
   end
 
   def fill_in_form(organisation_type = org_type)
@@ -40,7 +35,7 @@ describe 'landing pages', type: :system do
     check(:contact_consent)
   end
 
-  context 'when completing the more information workflow' do
+  describe 'More information workflow' do
     let(:expected_utm_params) { {} }
 
     before do
@@ -48,39 +43,62 @@ describe 'landing pages', type: :system do
       click_link('Request more information', :match => :first)
     end
 
-    context 'with no UTM params' do
-      it 'handles form submission correctly' do
-        expect(page).to have_content(I18n.t('campaigns.more_information.title'))
-        fill_in_form
-        expect(CampaignContactHandlerJob).to receive(:perform_later).with(:more_information, expected_contact)
-        allow(CampaignContactHandlerJob).to receive(:perform_later).and_return(true)
-        click_on('Next')
-        expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
-      end
+    it 'shows more information page' do
+      expect(page).to have_content(I18n.t('campaigns.more_information.title'))
     end
 
-    context 'with UTM params' do
-      let(:expected_utm_params) do
-        {
-          utm_medium: 'email',
-          utm_campaign: 'test',
-          utm_source: 'somewhere'
-        }
+    context 'when filling in the form' do
+      before do
+        allow(CampaignContactHandlerJob).to receive(:perform_later)
+        fill_in_form
+        click_on('Next')
       end
 
-      it 'passes params to final page' do
-        expect(page).to have_content(I18n.t('campaigns.more_information.title'))
-        fill_in_form
-        allow(CampaignContactHandlerJob).to receive(:perform_later).and_return(true)
-        click_on('Next')
-        expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
-        params = Rack::Utils.parse_nested_query(URI.parse(page.current_url).query).symbolize_keys!
-        expect(params).to include(expected_utm_params)
+      it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_info, expected_contact) }
+
+      context 'without UTM params' do
+        context 'when completing as a MAT' do
+          it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_info, expected_contact) }
+
+          it 'shows the more info page' do # will show the group specific info page
+            expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
+          end
+        end
+
+        context 'when completing as a school' do
+          let(:org_type) { 'Independent school' }
+          let(:expected_org_type) { 'independent' }
+
+          it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:school_info, expected_contact) }
+
+          it 'shows the more info page' do # currently shows same info as group. Wil show school info page.
+            expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
+          end
+        end
+      end
+
+      context 'with UTM params' do
+        let(:expected_utm_params) do
+          {
+            utm_medium: 'email',
+            utm_campaign: 'test',
+            utm_source: 'somewhere'
+          }
+        end
+
+        it 'handles form submission correctly' do
+          expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
+        end
+
+        it 'passes params to final page' do
+          params = Rack::Utils.parse_nested_query(URI.parse(page.current_url).query).symbolize_keys!
+          expect(params).to include(expected_utm_params)
+        end
       end
     end
   end
 
-  context 'when completing the book demo workflow' do
+  describe 'watch demo workflow' do
     let(:expected_utm_params) { {} }
 
     before do
@@ -88,51 +106,57 @@ describe 'landing pages', type: :system do
       click_link('Watch a demo', :match => :first)
     end
 
-    context 'with no UTM params' do
-      context 'when completing as a MAT' do
-        it 'handles form submission correctly' do
-          expect(page).to have_content(I18n.t('campaigns.book_demo.title'))
-          fill_in_form
-          expect(CampaignContactHandlerJob).to receive(:perform_later).with(:book_demo, expected_contact)
-          allow(CampaignContactHandlerJob).to receive(:perform_later).and_return(true)
-          click_on('Next')
-          expect(page).to have_content(I18n.t('campaigns.book_demo_final.title'))
-          expect(page).to have_css('.calendly-inline-widget')
-          widget = find('.calendly-inline-widget')
-          expect(widget['data-url']).to match('https://calendly.com/energy-sparks/mat-demo')
-        end
-      end
-
-      context 'when completing as a school' do
-        it 'shows the right calendar link' do
-          expect(page).to have_content(I18n.t('campaigns.book_demo.title'))
-          fill_in_form('Independent school')
-          click_on('Next')
-          expect(page).to have_content(I18n.t('campaigns.book_demo_final.title'))
-          expect(page).to have_css('.calendly-inline-widget')
-          widget = find('.calendly-inline-widget')
-          expect(widget['data-url']).to match('https://calendly.com/energy-sparks/demo-for-individual-schools')
-        end
-      end
+    it 'shows watch demo page' do
+      expect(page).to have_content(I18n.t('campaigns.watch_demo.title'))
     end
 
-    context 'with UTM params' do
-      let(:expected_utm_params) do
-        {
-          utm_medium: 'email',
-          utm_campaign: 'test',
-          utm_source: 'somewhere'
-        }
+    context 'when filling in the form' do
+      before do
+        allow(CampaignContactHandlerJob).to receive(:perform_later)
+        fill_in_form(org_type)
+        click_on('Next')
       end
 
-      it 'passes params to final page' do
-        expect(page).to have_content(I18n.t('campaigns.book_demo.title'))
-        fill_in_form
-        allow(CampaignContactHandlerJob).to receive(:perform_later).and_return(true)
-        click_on('Next')
-        expect(page).to have_content(I18n.t('campaigns.book_demo_final.title'))
-        params = Rack::Utils.parse_nested_query(URI.parse(page.current_url).query).symbolize_keys!
-        expect(params).to include(expected_utm_params)
+      context 'without UTM params' do
+        context 'when completing as a MAT' do
+          it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_demo, expected_contact) }
+
+          it 'shows the group demo page' do
+            expect(page).to have_content(I18n.t('campaigns.group_demo.title'))
+            expect(page).to have_css('.calendly-inline-widget')
+            widget = find('.calendly-inline-widget')
+            expect(widget['data-url']).to match('https://calendly.com/energy-sparks/mat-demo')
+          end
+        end
+
+        context 'when completing as a school' do
+          let(:org_type) { 'Independent school' }
+          let(:expected_org_type) { 'independent' }
+
+          it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:school_demo, expected_contact) }
+
+          it 'shows the school demo page' do
+            expect(page).to have_content(I18n.t('campaigns.school_demo.title'))
+          end
+        end
+      end
+
+      context 'with UTM params' do
+        let(:expected_utm_params) do
+          {
+            utm_medium: 'email',
+            utm_campaign: 'test',
+            utm_source: 'somewhere'
+          }
+        end
+
+        it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_demo, expected_contact) }
+
+        it 'passes params to final page' do
+          expect(page).to have_content(I18n.t('campaigns.group_demo.title'))
+          params = Rack::Utils.parse_nested_query(URI.parse(page.current_url).query).symbolize_keys!
+          expect(params).to include(expected_utm_params)
+        end
       end
     end
   end

@@ -69,10 +69,10 @@
         ) do |section_header| %>
       <%= section_header.with_header title: t('product.looking_for_info') %>
       <%= section_header.with_button t('home.buttons.watch_a_demo'),
-                                     book_demo_campaigns_path(utm_params_for_redirect),
+                                     watch_demo_campaigns_path(utm_params),
                                      style: :primary %>
       <%= section_header.with_button t('common.labels.request_more_info'),
-                                     more_information_campaigns_path(utm_params_for_redirect),
+                                     more_information_campaigns_path(utm_params),
                                      style: :secondary %>
     <% end %>
 
@@ -115,7 +115,7 @@
               classes: 'mt-auto'
             ) %>
         <%= feature.with_button t('home.buttons.watch_a_demo'),
-                                book_demo_campaigns_path(utm_params_for_redirect),
+                                watch_demo_campaigns_path(utm_params),
                                 style: :primary, classes: 'mt-4' %>
       <% end %>
     <% end %>
@@ -187,7 +187,7 @@
         <%= feature.with_description { t('product.call_to_action.description_html', count: schools_count) } %>
         <%= feature.with_button t('enrol.enrol_now'), enrol_our_school_path, style: :primary %>
         <%= feature.with_button(t('common.labels.request_more_info'),
-                                more_information_campaigns_path(utm_params_for_redirect), style: :secondary) %>
+                                more_information_campaigns_path(utm_params), style: :secondary) %>
       <% end %>
       <%= grid.with_image(src: 'pupils-jumping.jpg') %>
     <% end %>

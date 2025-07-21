@@ -55,6 +55,8 @@ class Activity < ApplicationRecord
 
   has_rich_text :description
 
+  after_save :update_observation_time
+
   self.ignored_columns = %w(deprecated_description)
 
   def display_name
@@ -63,5 +65,9 @@ class Activity < ApplicationRecord
 
   def points
     observations.sum(:points)
+  end
+
+  def update_observation_time
+    observations.update_all(at: happened_on) if happened_on_previously_changed?
   end
 end

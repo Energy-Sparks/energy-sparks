@@ -8,7 +8,7 @@
         <%= feature.with_description { t('home.feature.description_html') } %>
         <%= feature.with_button t('home.buttons.our_tool'), product_path, style: :primary %>
         <%= feature.with_button t('home.buttons.watch_a_demo'),
-                                book_demo_campaigns_path,
+                                watch_demo_campaigns_path,
                                 style: :secondary %>
       <% end %>
     <% end %>
@@ -90,7 +90,7 @@
           ) %>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.watch_a_demo'),
-            book_demo_campaigns_path, style: :secondary, classes: 'mb-4'
+            watch_demo_campaigns_path, style: :secondary, classes: 'mb-4'
           ) %>
     </div>
 

@@ -114,6 +114,25 @@ describe 'viewing and recording activities' do
         refresh
       end
 
+      context 'when updating the activity' do
+        let(:updated_date) { Date.new(2025, 1, 1) }
+
+        before do
+          visit school_activity_path(school, activity)
+          click_on 'Edit'
+          fill_in :activity_happened_on, with: updated_date.strftime('%d/%m/%Y')
+          click_on 'Update activity'
+        end
+
+        it 'shows the updates' do
+          expect(page).to have_content(activity_type.name)
+          expect(page).to have_content(updated_date.strftime('%A, %d %B %Y'))
+          activity.reload
+          expect(activity.happened_on).to eq(updated_date)
+          expect(activity.observations.first.at).to eq(updated_date)
+        end
+      end
+
       context 'when school is data enabled' do
         it 'sees previous records' do
           expect(page).to have_content('Activity previously completed')

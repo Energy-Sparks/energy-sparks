@@ -54,7 +54,7 @@
             <i class="fas fa-gear"></i>
           <% end %>
         <% end %>
-        <% if can?(:report_on, meter) && meter.amr_validated_readings.any? %>
+        <% if can?(:download_school_data, meter.school) && meter.amr_validated_readings.any? %>
           <%= link_to school_meter_path(@school, meter, format: 'csv'),
                       class: 'btn btn-secondary btn-sm', title: t('schools.meters.index.readings') do %>
             <i class="fas fa-file-download"></i>

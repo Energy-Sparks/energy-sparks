@@ -4,13 +4,15 @@
 
 <p><%= link_to t('schools.downloads.index.back_to_school_dashboard'), @school %></p>
 
-<p><%= link_to t('schools.downloads.index.download_meter_data_for_all_meters_combined'), school_meters_path(@school, format: :csv) %></p>
-
 <h2><%= t('schools.downloads.index.meters') %></h2>
+
+<p><%= link_to t('schools.downloads.index.download_meter_data_for_all_meters_combined'),
+               school_meters_path(@school, format: :csv) %></p>
+
 <p><%= t('schools.downloads.index.download_the_data_for_each_active_meter') %></p>
 <ul>
   <% @school.meters.active.order(:mpan_mprn).each do |meter| %>
-    <li><%= link_to icon_and_display_name(meter), school_meter_path(@school, meter, format: "csv")  %></li>
+    <li><%= link_to icon_and_display_name(meter), school_meter_path(@school, meter, format: 'csv') %></li>
   <% end %>
 </ul>
 
@@ -18,7 +20,8 @@
 <p><%= t('schools.downloads.index.download_the_data_for_each_inactive_meter') %></p>
 <ul>
   <% @school.meters.inactive.order(:mpan_mprn).each do |meter| %>
-    <li><%= link_to "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.display_name}".html_safe, school_meter_path(@school, meter, format: "csv")  %></li>
+    <li><%= link_to "#{fa_icon(fuel_type_icon(meter.meter_type))} #{meter.display_name}".html_safe,
+                    school_meter_path(@school, meter, format: 'csv') %></li>
   <% end %>
 </ul>
 <% end %>
@@ -27,20 +30,24 @@
 <p><%= t('schools.downloads.index.email_contact_message_html') %>.</p>
 
 <% if can?(:read, :meter_collection_download) %>
-  <hr/>
+  <hr>
   <h4>Download YAML files</h4>
   <div class="other-actions mb-3">
-    <%= link_to t('schools.downloads.index.unvalidated_meter_data'), admin_school_unvalidated_amr_data_path(@school, format: :yaml), class: 'btn' %>
-    <%= link_to t('schools.downloads.index.validated_meter_data'), admin_school_validated_amr_data_path(@school, format: :yaml), class: 'btn' %>
-    <%= link_to t('schools.downloads.index.aggregated_meter_collection'), admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn' %>
+    <%= link_to t('schools.downloads.index.unvalidated_meter_data'),
+                admin_school_unvalidated_amr_data_path(@school, format: :yaml), class: 'btn' %>
+    <%= link_to t('schools.downloads.index.validated_meter_data'),
+                admin_school_validated_amr_data_path(@school, format: :yaml), class: 'btn' %>
+    <%= link_to t('schools.downloads.index.aggregated_meter_collection'),
+                admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn' %>
   </div>
-  <hr/>
+  <hr>
 
   <h4>Download CSV file</h4>
   <div class="other-actions mb-3">
-    <%= link_to t('schools.downloads.index.unvalidated_meter_data_as_csv'), admin_reports_amr_data_feed_readings_path(school_id: @school.id, format: :csv), class: 'btn' %>
+    <%= link_to t('schools.downloads.index.unvalidated_meter_data_as_csv'),
+                admin_reports_amr_data_feed_readings_path(school_id: @school.id, format: :csv), class: 'btn' %>
   </div>
-  <hr/>
+  <hr>
 
   <% if @school.dark_sky_area.present? %>
     <h3><%= t('schools.downloads.index.dark_sky_data') %></h3>
@@ -48,7 +55,9 @@
     <p><%= t('schools.downloads.index.darksky_product_message_html') %></p>
 
     <p>
-      <%= link_to t('schools.downloads.index.darksky_weather_data_csv_for_your_area', dark_sky_area_title: @school.dark_sky_area.title), data_feeds_dark_sky_temperature_readings_path(@school.dark_sky_area, format: "csv") %>
+      <%= link_to t('schools.downloads.index.darksky_weather_data_csv_for_your_area',
+                    dark_sky_area_title: @school.dark_sky_area.title),
+                  data_feeds_dark_sky_temperature_readings_path(@school.dark_sky_area, format: 'csv') %>
     </p>
   <% end %>
 
@@ -56,10 +65,13 @@
   <p><%= t('schools.downloads.index.we_use_sheffield_solar_pv_api_message_html') %></p>
 
   <p>
-    <%= link_to t('schools.downloads.index.solar_pv_data_csv_for_your_area', solar_pv_tuos_area_title: @school.solar_pv_tuos_area.title), data_feeds_solar_pv_tuos_readings_path(@school.solar_pv_tuos_area, format: "csv") %>
+    <%= link_to t('schools.downloads.index.solar_pv_data_csv_for_your_area',
+                  solar_pv_tuos_area_title: @school.solar_pv_tuos_area.title),
+                data_feeds_solar_pv_tuos_readings_path(@school.solar_pv_tuos_area, format: 'csv') %>
   </p>
 
   <h3><%= t('schools.downloads.index.carbon_intensity_data') %></h3>
-  <p><%= link_to t('schools.downloads.index.carbon_intensity_data_csv'), data_feeds_carbon_intensity_readings_path(format: "csv") %></p>
+  <p><%= link_to t('schools.downloads.index.carbon_intensity_data_csv'),
+                 data_feeds_carbon_intensity_readings_path(format: 'csv') %></p>
 
 <% end %>
