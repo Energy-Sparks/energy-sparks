@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe 'School admin user management' do
+  include ActiveJob::TestHelper
+
   let(:school) { create(:school) }
   let(:school_admin) { create(:school_admin, school:) }
 
@@ -346,12 +348,16 @@ describe 'School admin user management' do
         end
 
         it 'adds the user' do
+          Flipper.enable(:onboarding_mailer_2025)
           fill_in 'Email', with: other_school_admin.email
           click_on 'Continue'
           expect(page).to have_content('Added user as a school admin')
           expect(page).to have_content(other_school_admin.name)
           other_school_admin.reload
           expect(other_school_admin.cluster_schools_for_switching).to eq([school])
+          perform_enqueued_jobs
+          expect(ActionMailer::Base.deliveries.last.subject).to \
+            eq("Welcome to the #{school.name} Energy Sparks account")
         end
 
         context 'when the other user is staff' do
@@ -372,7 +378,8 @@ describe 'School admin user management' do
           it 'notifies about a group admin' do
             fill_in 'Email', with: other_school_admin.email
             click_on 'Continue'
-            expect(page).to have_content('this user is already able to administer this school')
+            expect(page).to have_content("As a group admin for #{other_school_admin.school_group.name}, this user is" \
+                                         ' already able to administer this school')
           end
         end
       end

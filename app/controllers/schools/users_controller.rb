@@ -103,15 +103,21 @@ module Schools
         existing_user = User.find_by(email: @user.email)
         if existing_user&.role == 'group_admin'
           redirect = true
-          notice = "As a group admin for #{existing_user.school_group.name}, this user is already able to administer " \
-                      'this school'
+          notice = I18n.t('schools.users.create.as_a_group_admin', school_group: existing_user.school_group.name)
         elsif existing_user.present?
-          existing_user.add_cluster_school(@school)
-          existing_user.add_cluster_school(existing_user.school) unless existing_user.school.nil?
-          existing_user.role = :school_admin
-          @user = existing_user
-          redirect = @user.save
-          notice = 'Added user as a school admin' if redirect
+          User.transaction do
+            existing_user.add_cluster_school(@school)
+            existing_user.add_cluster_school(existing_user.school) unless existing_user.school.nil?
+            existing_user.role = :school_admin
+            @user = existing_user
+            redirect = @user.save
+            if redirect
+              notice = 'Added user as a school admin'
+              send_welcome_email if @user.school != @school
+            else
+              raise ActiveRecord::Rollback
+            end
+          end
         else
           @user.errors.clear
           @new_school_admin = true
@@ -120,6 +126,13 @@ module Schools
         redirect = @user.save
       end
       [redirect, notice]
+    end
+
+    def send_welcome_email
+      if OnboardingMailer2025.enabled?
+        OnboardingMailer2025.with(user: @user, school: @school, locale: @user.preferred_locale)
+                            .welcome_existing.deliver_later
+      end
     end
 
     def set_breadcrumbs

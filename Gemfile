@@ -170,6 +170,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'compare-xml' # used by rspec html matcher in analytics
+  gem 'reverse_markdown'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'
