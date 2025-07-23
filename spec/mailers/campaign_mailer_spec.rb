@@ -121,7 +121,7 @@ RSpec.describe CampaignMailer do
     let(:org_type) { ['primary'] }
 
     it 'send email with expected subject' do
-      expect(email.subject).to eq(I18n.t('campaign_mailer.send_information.subject'))
+      expect(email.subject).to eq(I18n.t('campaign_mailer.send_information_school.subject'))
     end
 
     it 'includes contact name' do

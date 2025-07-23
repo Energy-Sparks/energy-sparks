@@ -38,6 +38,9 @@ en:
       title: Please upload an energy bill for %{school_name}
       upload_bill: Upload your bill
   campaign_mailer:
+    final: We look forward to helping you save energy and fight climate change.
+    job_title: Energy Sparks CEO
+    name: Claudia
     school_demo:
       ceo_name: Claudia
       ceo_title: Energy Sparks CEO
@@ -62,34 +65,19 @@ en:
         heading: Short demo (5 minutes)
       signoff: Kind regards
       subject: Thank you for your interest in Energy Sparks!
-    send_information:
-      for_las:
-        enrol_html: If you are ready to proceed, please complete our Local Authority <a href="%{enrol_link}">enrolment form</a> to share further details about your schools and their energy supply arrangements.
-        group_dashboard_html: Local Authorities are provided with a <a href="%{group_dashboard_link}">group dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
-        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools or <a href="%{book_demo_link}">book a live demo</a> and Q&A session for your Local Authority.
-      for_mats:
-        enrol_html: If you are ready to proceed, please complete our Trust <a href="%{enrol_link}">enrolment form</a> to share further details about your schools and their energy supply arrangements.
-        group_dashboard_html: Multi-Academy Trusts are provided with a <a href="%{group_dashboard_link}">trust-wide dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
-        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools or <a href="%{book_demo_link}">book a live demo</a> and Q&A session for your Trust.
-      for_schools:
-        about_us: We are a registered charity that can help you save on energy costs and reduce your carbon footprint with our energy management tool and education programme.
-        case_studies: Case studies and information pack
-        case_studies_html: Explore our <a href="%{case_study_link}">case studies</a> which showcase some of the ways that Energy Sparks schools have saved energy and improved their pupils' energy and climate literacy.
-        dashboards: Take a look at the dashboards for some of our participating schools to understand how we can help you take control of your energy use and involve the whole school community in carbon reduction.
-        demo: Product Demo
-        download_pack_html: Download <a href="%{download_pack_link}">further information on our services</a> to share with colleagues and check out our <a href="%{prices_link}">current prices</a>.
-        enrol_html: <a href="%{enrol_link}">Complete our enrolment form</a> today to start your account setup.
-        example_adult_dashboard: Example adult dashboard
-        example_pupil_dashboard: Example pupil dashboard
-        examples: Example dashboards
-        final: We look forward to helping you save energy and fight climate change.
-        intro: Thank you for your interest in Energy Sparks.
-        name: Claudia
-        ready: Ready to get started?
-        sign_off: Kind regards
-        title: Energy Sparks CEO
-        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools. Or join a <a href="%{book_demo_link}">weekly live demo</a> and Q&A session.
+    send_information_school:
+      intro: Here is the information you requested about Energy Sparks
+      stats_html: |-
+        <p>
+        Did you know that in 2023/24:
+        </p>
+        <ul>
+          <li>The average Energy Sparks primary school saved £5,000 and 7 tonnes CO2</li>
+          <li>The average secondary school saved £21,000 and 26 tonnes CO2</li>
+          <li>Our best performing schools achieved 40% annual energy savings</li>
+        </ul>
       subject: More information about Energy Sparks
+    sign_off: Kind regards
   consent_grant_mailer:
     email_consent:
       description: Your grant of consent to Energy Sparks
