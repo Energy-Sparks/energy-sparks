@@ -24,14 +24,6 @@ cy:
         primary: Ysgol gynradd (gwladol)
         secondary: Ysgol uwchradd (gwladol)
         special: Ysgol arbennig (gwladol)
-    more_info_final:
-      case_studies_html: |-
-        Yn y cyfamser, beth am archwilio ein <a href="%{case_study_link}">hastudiaethau achos</a> sy'n arddangos rhai o'r ffyrdd y
-        mae ysgolion Sbarcynni wedi arbed ynni a gwella llythrennedd ynni a hinsawdd eu disgyblion.
-      final: Edrychwn ymlaen at eich helpu i arbed ynni a brwydro yn erbyn newid hinsawdd.
-      intro: Diolch am lenwi ein ffurflen ymholiad. Byddwn mewn cysylltiad â gwybodaeth bellach.
-      title: Diolch!
-      video_html: Neu gwyliwch ein <a href="%{video_link}">fideo rhagarweiniol</a> i ddysgu rhagor am yr hyn rydym yn ei gynnig i ysgolion.
     more_information:
       intro: |-
         Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni fel y gallwn roi

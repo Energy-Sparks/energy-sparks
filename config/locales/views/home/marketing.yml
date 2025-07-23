@@ -54,14 +54,6 @@ en:
           <p>In <a href="https://www.youtube.com/embed/vYoBT2KhP5U">our short introductory video</a> you can take a look at some of the main features of our tool, including our group dashboards, alerts and competitions.</p>
           <p>You can also read <a href="https://drive.google.com/file/u/1/d/1--XwBh2berFDki88fYjBRT4umqTXlifH/view?usp=share_link">our Energy Efficiency Report</a>, which outlines how we help schools and Multi-Academy Trusts to cut energy costs, reduce carbon emissions, and engage pupils.
           </p>
-    more_info_final:
-      case_studies_html: |-
-        In the meantime, why not explore our <a href="%{case_study_link}">case studies</a> which showcase some of the
-        ways that Energy Sparks schools have saved energy and improved their pupils' energy and climate literacy.
-      final: We look forward to helping you save energy and fight climate change.
-      intro: Thank you for completing our enquiry form. We will be in touch with further information.
-      title: Thank you!
-      video_html: Or watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools.
     more_information:
       intro: |-
         Please provide us with your contact details and some information about your organisation so that we can provide you
