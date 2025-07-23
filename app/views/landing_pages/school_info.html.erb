@@ -78,12 +78,12 @@
     <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
       <%= feature.with_header title: t('campaigns.school_info.closer_look.title') %>
       <%= feature.with_description do
-        t('campaigns.school_info.closer_look.description_html',
-          short_demo: short_demo_video_campaigns_path,
-          long_demo: long_demo_video_campaigns_path,
-          schools_path: schools_path,
-          product_path: product_path) }
-      end %>
+            t('campaigns.school_info.closer_look.description_html',
+              short_demo: short_demo_video_campaigns_path,
+              long_demo: long_demo_video_campaigns_path,
+              schools_path: schools_path,
+              product_path: product_path)
+          end %>
     <% end %>
     <%= grid.with_image src: 'for-schools.jpg', classes: 'rounded-xl' %>
   <% end %>
