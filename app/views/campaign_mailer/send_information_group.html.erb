@@ -25,10 +25,9 @@
 </h4>
 
 <div class="s-3"></div>
-t('campaigns.group_info.tool.description_html',
-    report_path: energy_efficiency_report_campaigns_url,
-    introductory_video: introductory_video_campaigns_url)
-%>
+<%= t('campaigns.group_info.tool.description_html',
+      report_path: energy_efficiency_report_campaigns_url,
+      introductory_video: introductory_video_campaigns_url) %>
 
 <div class="s-3"></div>
 <h4>
@@ -41,11 +40,10 @@ t('campaigns.group_info.tool.description_html',
                   else
                     example_la_dashboard_campaigns_url
                   end %>
-t('campaigns.group_info.closer_look.description_html',
-    example_path: example_path,
-    school_groups: schools_url(scope: :school_groups),
-    product_path: product_url)
-%>
+<%= t('campaigns.group_info.closer_look.description_html',
+      example_path: example_path,
+      school_groups: schools_url(scope: :school_groups),
+      product_path: product_url) %>
 
 <div class="s-3"></div>
 <h4>
@@ -58,11 +56,10 @@ t('campaigns.group_info.closer_look.description_html',
                 else
                   enrol_our_local_authority_url
                 end %>
-t('campaigns.group_info.next_steps.description_html',
-    enrol_group: group_path,
-    watch_demo: watch_demo_campaigns_url,
-    newsletter: new_mailchimp_signup_url)
-%>
+<%= t('campaigns.group_info.next_steps.description_html',
+      enrol_group: group_path,
+      watch_demo: watch_demo_campaigns_url,
+      newsletter: new_mailchimp_signup_url) %>
 
 <div class="s-3"></div>
 <p>
