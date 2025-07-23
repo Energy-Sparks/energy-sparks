@@ -66,7 +66,7 @@ class LandingPagesController < ApplicationController
     when :school_demo # will be able to remove this (and just use else clause) once new info flow is in place (if we use same layout)
       render :school_demo, layout: 'home'
     else # currently group_info or school_info
-      render request_type # , layout: 'home' # for new info flow
+      render request_type, layout: 'home'
     end
   end
 

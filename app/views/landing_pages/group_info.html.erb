@@ -1,2 +1,91 @@
-<%# Placeholder for new more information for groups page %>
-<%= render 'more_info' %>
+<% content_for :page_title, t('campaigns.more_info_final.title') %>
+
+<div class="container-fluid adult mb-4 py-4">
+  <div class="container">
+    <h1><%= t('campaigns.school_info.title') %></h1>
+    <p><%= t('campaigns.school_info.intro') %></p>
+  </div>
+</div>
+
+<div class="container">
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'stats-header'
+      ) do |section_header| %>
+    <%= section_header.with_header title: t('campaigns.school_info.stats.header') %>
+    <%= section_header.with_description { t('campaigns.school_info.stats.description_html') } %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(id: 'stats',
+                                       cols: 3, classes: 'mb-4',
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'bolt', style: :circle, classes: 'text-electric' %>
+      <%= card.with_header title: t('home.stats.card_1.header') %>
+      <%= card.with_figure t('campaigns.school_info.stats.card_1.figure') %>
+      <%= card.with_subtext { t('campaigns.school_info.stats.card_1.subtext') } %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
+      <%= card.with_header title: t('home.stats.card_2.header') %>
+      <%= card.with_figure t('home.stats.card_2.figure') %>
+      <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_icon name: 'hotel', style: :circle, classes: 'text-success' %>
+      <%= card.with_header title: t('home.stats.card_3.header') %>
+      <%= card.with_figure t('home.stats.card_3.figure') %>
+      <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(
+        id: 'tool', cols: 2, classes: 'mt-6 mb-3', cell_classes: ''
+      ) do |grid| %>
+    <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
+      <%= feature.with_header title: t('campaigns.school_info.tool.title') %>
+      <%= feature.with_description { t('campaigns.group_info.tool.description_html') } %>
+      <%= feature.with_button(t('home.buttons.our_tool'),
+                              product_path, style: :primary, classes: 'mr-2') %>
+      <%= feature.with_button(t('campaigns.school_info.tool.read_report'),
+                              'https://drive.google.com/file/u/1/d/1--XwBh2berFDki88fYjBRT4umqTXlifH/view?usp=share_link',
+                              style: :secondary, classes: 'mr-2') %>
+    <% end %>
+    <% grid.with_iframe classes: 'rounded-xl',
+                        src: 'https://www.youtube.com/embed/vYoBT2KhP5U', min_height: '420px' %>
+  <% end %>
+
+  <%= render Layout::CarouselComponent.new(id: 'testimonials',
+                                           show_markers: false,
+                                           theme: :accent,
+                                           classes: 'rounded-xl p-4 my-5',
+                                           show_arrows: :side) do |carousel| %>
+    <% Testimonial.all.default.shuffle.each do |testimonial| %>
+      <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+    <% end %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(
+        id: 'closer-look', cols: 2, classes: 'mt-6 mb-3', cell_classes: ''
+      ) do |grid| %>
+    <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
+      <%= feature.with_header title: t('campaigns.school_info.closer_look.title') %>
+      <%= feature.with_description { t('campaigns.group_info.closer_look.description_html') } %>
+    <% end %>
+    <%= grid.with_image src: 'for-schools.jpg', classes: 'rounded-xl' %>
+  <% end %>
+
+  <%= render Layout::GridComponent.new(
+        id: 'next-steps',
+        cols: 2,
+        theme: :light,
+        classes: 'rounded-xl mt-6 p-4 my-4',
+        cell_classes: 'my-auto'
+      ) do |grid| %>
+    <%= grid.with_image(src: 'pupils-jumping.jpg') %>
+    <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
+      <%= feature.with_header(title: t('campaigns.school_info.next_steps.title')) %>
+      <%= feature.with_description { t('campaigns.group_info.next_steps.description_html') } %>
+    <% end %>
+  <% end %>
+</div>
