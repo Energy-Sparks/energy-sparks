@@ -20,8 +20,8 @@ class LandingPagesController < ApplicationController
     redirect_to url_for(controller: :resource_files, action: :download, serve: :inline, id: 29)
   end
 
-  def demo_video
-    redirect_to 'https://www.youtube.com/watch?v=x2EeYWwdEpE'
+  def introductory_video
+    redirect_to 'https://www.youtube.com/embed/vYoBT2KhP5U'
   end
 
   def short_demo_video
@@ -32,12 +32,12 @@ class LandingPagesController < ApplicationController
     redirect_to 'https://www.youtube.com/watch?v=F5bL1_HsI0U'
   end
 
-  def example_adult_dashboard
-    redirect_to school_path(find_example_school)
+  def energy_efficiency_report
+    redirect_to 'https://drive.google.com/file/d/1--XwBh2berFDki88fYjBRT4umqTXlifH/view?usp=sharing'
   end
 
-  def example_pupil_dashboard
-    redirect_to pupils_school_path(find_example_school)
+  def impact_report
+    redirect_to 'https://drive.google.com/file/d/18HSpF2KGVVdsmzahxBg4tbQFiz84TWv2/view?usp=sharing'
   end
 
   def example_mat_dashboard
@@ -59,6 +59,7 @@ class LandingPagesController < ApplicationController
   # Process forms and submit job
   def thank_you
     CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
+    @org_type = contact_org_type(contact_params)
     case request_type
     when :group_demo
       @calendly_data_url = calendly_data_url
@@ -85,6 +86,12 @@ private
 
   def contact_in_group?
     contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
+  end
+
+  def contact_org_type(contact)
+    return :multi_academy_trust if contact[:org_type].include?(LandingPagesController::TRUST)
+    return :local_authority if contact[:org_type].include?(LandingPagesController::LA)
+    return :school
   end
 
   def calendly_data_url

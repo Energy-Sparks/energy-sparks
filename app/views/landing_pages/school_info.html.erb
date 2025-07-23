@@ -1,4 +1,4 @@
-<% content_for :page_title, t('campaigns.more_info_final.title') %>
+<% content_for :page_title, t('campaigns.school_info.title') %>
 
 <div class="container-fluid adult mb-4 py-4">
   <div class="container">
@@ -12,7 +12,9 @@
         id: 'stats-header'
       ) do |section_header| %>
     <%= section_header.with_header title: t('campaigns.school_info.stats.header') %>
-    <%= section_header.with_description { t('campaigns.school_info.stats.description_html') } %>
+    <%= section_header.with_description do
+          t('campaigns.school_info.stats.description_html', impact_report: impact_report_campaigns_path)
+        end %>
   <% end %>
 
   <%= render Layout::GridComponent.new(id: 'stats',
@@ -44,7 +46,12 @@
       ) do |grid| %>
     <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
       <%= feature.with_header title: t('campaigns.school_info.tool.title') %>
-      <%= feature.with_description { t('campaigns.school_info.tool.description_html') } %>
+      <%= feature.with_description do
+            t('campaigns.school_info.tool.description_html',
+              product_path: product_path,
+              introductory_video: introductory_video_campaigns_path,
+              energy_efficiency_report: energy_efficiency_report_campaigns_path)
+          end %>
       <%= feature.with_button(t('home.buttons.our_tool'),
                               product_path, style: :primary, classes: 'mr-2') %>
       <%= feature.with_button(t('campaigns.school_info.tool.read_report'),
@@ -60,7 +67,7 @@
                                            theme: :accent,
                                            classes: 'rounded-xl p-4 my-5',
                                            show_arrows: :side) do |carousel| %>
-    <% Testimonial.all.default.shuffle.each do |testimonial| %>
+    <% Testimonial.active.default.shuffle.each do |testimonial| %>
       <%= carousel.with_testimonial_card(testimonial: testimonial) %>
     <% end %>
   <% end %>
@@ -70,7 +77,13 @@
       ) do |grid| %>
     <% grid.with_feature_card(cell_classes: 'my-auto', size: :lg) do |feature| %>
       <%= feature.with_header title: t('campaigns.school_info.closer_look.title') %>
-      <%= feature.with_description { t('campaigns.school_info.closer_look.description_html') } %>
+      <%= feature.with_description do
+        t('campaigns.school_info.closer_look.description_html',
+          short_demo: short_demo_video_campaigns_path,
+          long_demo: long_demo_video_campaigns_path,
+          schools_path: schools_path,
+          product_path: product_path) }
+      end %>
     <% end %>
     <%= grid.with_image src: 'for-schools.jpg', classes: 'rounded-xl' %>
   <% end %>
@@ -85,7 +98,14 @@
     <%= grid.with_image(src: 'pupils-jumping.jpg') %>
     <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
       <%= feature.with_header(title: t('campaigns.school_info.next_steps.title')) %>
-      <%= feature.with_description { t('campaigns.school_info.next_steps.description_html') } %>
+      <%= feature.with_description do
+            t('campaigns.school_info.next_steps.description_html',
+              impact_report: impact_report_campaigns_path,
+              introductory_video: introductory_video_campaigns_path,
+              short_demo: short_demo_video_campaigns_path,
+              newsletter: new_mailchimp_signup_path,
+              enrol_path: enrol_our_school_path)
+          end %>
     <% end %>
   <% end %>
 

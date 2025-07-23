@@ -1,5 +1,98 @@
 require 'rails_helper'
 
+RSpec.shared_examples 'a more info page' do
+  it 'shows the hero' do
+    expect(page).to have_content(I18n.t('campaigns.school_info.title'))
+    expect(page).to have_content(I18n.t('campaigns.school_info.intro'))
+  end
+
+  it 'includes the stats section' do
+    within('#stats-header') do
+      expect(page).to have_link(href: impact_report_campaigns_path)
+    end
+    within('#stats') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.stats.card_1.subtext'))
+      expect(page).to have_content(I18n.t('home.stats.card_2.subtext'))
+      expect(page).to have_content(I18n.t('home.stats.card_3.subtext'))
+    end
+  end
+end
+
+RSpec.shared_examples 'a group info page' do
+  it_behaves_like 'a more info page'
+
+  it 'includes the tool section' do
+    within('#tool') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.tool.title'))
+      expect(page).to have_link(href: introductory_video_campaigns_path)
+      expect(page).to have_link(href: energy_efficiency_report_campaigns_path)
+    end
+  end
+
+  it 'includes the closer look section' do
+    within('#closer-look') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.closer_look.title'))
+      expect(page).to have_link(href: example_mat_dashboard_campaigns_path)
+      expect(page).to have_link(href: schools_path(scope: :school_groups))
+      expect(page).to have_link(href: product_path)
+    end
+  end
+
+  it 'includes the next steps section' do
+    within('#next-steps') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.next_steps.title'))
+      expect(page).to have_link(href: enrol_our_multi_academy_trust_path)
+      expect(page).to have_link(href: watch_demo_campaigns_path)
+      expect(page).to have_link(href: new_mailchimp_signup_path)
+    end
+  end
+
+  it 'includes the testimonials' do
+    within('#testimonials') do
+      expect(page).to have_content(group_testimonial.title_en)
+    end
+  end
+end
+
+RSpec.shared_examples 'a school info page' do
+  it_behaves_like 'a more info page'
+
+  it 'includes the tool section' do
+    within('#tool') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.tool.title'))
+      expect(page).to have_link(href: introductory_video_campaigns_path)
+      expect(page).to have_link(href: energy_efficiency_report_campaigns_path)
+    end
+  end
+
+  it 'includes the closer look section' do
+    within('#closer-look') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.closer_look.title'))
+      expect(page).to have_link(href: short_demo_video_campaigns_path)
+      expect(page).to have_link(href: long_demo_video_campaigns_path)
+      expect(page).to have_link(href: product_path)
+      expect(body).to have_link(href: schools_path)
+    end
+  end
+
+  it 'includes the next steps section' do
+    within('#next-steps') do
+      expect(page).to have_content(I18n.t('campaigns.school_info.next_steps.title'))
+      expect(page).to have_link(href: short_demo_video_campaigns_path)
+      expect(page).to have_link(href: introductory_video_campaigns_path)
+      expect(page).to have_link(href: impact_report_campaigns_path)
+      expect(page).to have_link(href: new_mailchimp_signup_path)
+      expect(page).to have_link('complete our enrolment form', href: enrol_our_school_path)
+    end
+  end
+
+  it 'includes the testimonials' do
+    within('#testimonials') do
+      expect(page).to have_content(school_testimonial.title_en)
+    end
+  end
+end
+
 describe 'landing pages', type: :system do
   let(:first_name) { 'First' }
   let(:last_name) { 'Last' }
@@ -36,6 +129,9 @@ describe 'landing pages', type: :system do
   end
 
   describe 'More information workflow' do
+    let!(:school_testimonial) { create(:testimonial, title_en: 'School') }
+    let!(:group_testimonial) { create(:testimonial, title_en: 'Group', category: :groups) }
+
     let(:expected_utm_params) { {} }
 
     before do
@@ -60,9 +156,7 @@ describe 'landing pages', type: :system do
         context 'when completing as a MAT' do
           it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:group_info, expected_contact) }
 
-          it 'shows the more info page' do # will show the group specific info page
-            expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
-          end
+          it_behaves_like 'a group info page'
         end
 
         context 'when completing as a school' do
@@ -71,9 +165,7 @@ describe 'landing pages', type: :system do
 
           it { expect(CampaignContactHandlerJob).to have_received(:perform_later).with(:school_info, expected_contact) }
 
-          it 'shows the more info page' do # currently shows same info as group. Wil show school info page.
-            expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
-          end
+          it_behaves_like 'a school info page'
         end
       end
 
@@ -87,7 +179,7 @@ describe 'landing pages', type: :system do
         end
 
         it 'handles form submission correctly' do
-          expect(page).to have_content(I18n.t('campaigns.more_info_final.title'))
+          expect(page).to have_content(I18n.t('campaigns.school_info.title'))
         end
 
         it 'passes params to final page' do
@@ -164,16 +256,6 @@ describe 'landing pages', type: :system do
   context 'when following redirects from emails' do
     let!(:mat_school_group) { create(:school_group, :with_active_schools, group_type: :multi_academy_trust)}
     let!(:la_school_group) { create(:school_group, group_type: :local_authority)}
-
-    it 'redirects to adult dashboard' do
-      visit example_adult_dashboard_campaigns_path
-      expect(page).to have_current_path(school_path(mat_school_group.schools.first))
-    end
-
-    it 'redirects to pupil dashboard' do
-      visit example_pupil_dashboard_campaigns_path
-      expect(page).to have_current_path(pupils_school_path(mat_school_group.schools.first))
-    end
 
     it 'redirects to MAT dashboard' do
       visit example_mat_dashboard_campaigns_path
