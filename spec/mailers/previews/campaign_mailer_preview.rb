@@ -17,13 +17,17 @@ class CampaignMailerPreview < ActionMailer::Preview
                      opportunity: opportunity).notify_admin
   end
 
-  def send_information
+  def send_information_school
+    CampaignMailer.with(contact: contact([:school])).send_information_school
+  end
+
+  def send_information_group
     org_type = if params[:org_type]
                  [params[:org_type]]
                else
-                 %w[primary multi_academy_trust].sample(1)
+                 %w[local_authority multi_academy_trust].sample(1)
                end
-    CampaignMailer.with(contact: contact(org_type)).send_information
+    CampaignMailer.with(contact: contact(org_type)).send_information_group
   end
 
   def school_demo
