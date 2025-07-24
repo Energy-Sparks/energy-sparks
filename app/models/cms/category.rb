@@ -4,7 +4,7 @@
 #
 #  created_at    :datetime         not null
 #  created_by_id :bigint(8)
-#  icon          :string
+#  icon          :string           default("question")
 #  id            :bigint(8)        not null, primary key
 #  published     :boolean          default(FALSE), not null
 #  slug          :string           not null
