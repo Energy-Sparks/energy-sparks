@@ -26,7 +26,7 @@ class Testimonial < ApplicationRecord
   translates :quote, type: :string, fallbacks: { cy: :en }
   translates :role, type: :string, fallbacks: { cy: :en }
 
-  enum :category, { default: 0, audit: 1 } # need more here
+  enum :category, { default: 0, audit: 1, groups: 2 } # need more here
 
   validates :image, :title_en, :name, :quote_en, :organisation, :category, presence: true
 

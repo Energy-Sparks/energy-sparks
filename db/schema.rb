@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_07_11_133624) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_24_141819) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -632,7 +632,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_11_133624) do
   end
 
   create_table "cms_categories", force: :cascade do |t|
-    t.string "icon"
+    t.string "icon", default: "question"
     t.string "slug", null: false
     t.boolean "published", default: false, null: false
     t.bigint "created_by_id"

@@ -27,7 +27,7 @@ module Schools
     def self.by_average_one_year_saving(priorities)
       interpolate(priorities).sort_by do |priority|
         money_to_i(priority.template_variables[:average_one_year_saving_gbp])
-      end
+      end.reverse
     end
 
     private_class_method def self.money_to_i(val)

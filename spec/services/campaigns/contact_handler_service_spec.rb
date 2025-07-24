@@ -128,7 +128,7 @@ describe Campaigns::ContactHandlerService do
         end
 
         it 'sends user email' do
-          expect(user_email.subject).to eq I18n.t('campaign_mailer.send_information.subject')
+          expect(user_email.subject).to eq I18n.t('campaign_mailer.send_information_school.subject')
         end
       end
 
@@ -142,7 +142,7 @@ describe Campaigns::ContactHandlerService do
         end
 
         it 'sends user email' do
-          expect(user_email.subject).to eq I18n.t('campaign_mailer.send_information.subject')
+          expect(user_email.subject).to eq I18n.t('campaign_mailer.send_information_school.subject')
         end
       end
 

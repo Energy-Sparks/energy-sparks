@@ -31,18 +31,6 @@ Not sure what's achievable? We've suggested an initial target based on our succe
 
 If you would like to receive further training on how to use Energy Sparks effectively at your school, you can sign up to one of our virtual induction sessions via [our website](http://localhost/training). Staff can also watch our pre-recorded introductory videos available at [https://www.youtube.com/@energysparksuk](https://www.youtube.com/@energysparksuk).
 
-**Adding additional users**
-
-To encourage your colleagues to get involved with Energy Sparks, you can set them up with a user account on Energy Sparks. We encourage all schools to have at least 3 staff with user accounts. To add your colleagues, click [here](http://localhost/schools/test-school/users). Enter their details and they will be issued with an account set-up email.
-
-**Update your opening hours to include after-school activities and any lettings**
-
-At the moment Energy Sparks is basing its analysis on school opening times of to . These should be the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school. Before and after school clubs can be included if the majority of the school is in use by pupils. External lettings or times when you have only a small proportion of your school estate in use by pupils should be listed under community use times.
-
-Many schools will have cleaning or other premises staff in the school outside of the times when they are open to pupils. Do not include these periods in your main school opening hours as we recommend that you should keep energy use to a minimum during these times.
-
-To set up your school opening hours, click [here](http://localhost/schools/test-school/times/edit).
-
 **Record your activities**
 
 There are [over 140 activities](http://localhost/activity_categories) on the Energy Sparks site for you to do with your students. Once you've completed an activity, don't forget to [record it](http://localhost/activity_categories) on your Energy Sparks account. We also have [lots of adult-led energy-saving actions](http://localhost/intervention_type_groups). You can [record adult-led actions](http://localhost/intervention_type_groups) on Energy Sparks and you'll gain points for them too. As you gain points, you'll move up the Energy Sparks [scoreboard](http://localhost/scoreboards). Each year we have exciting scoreboard prizes for the top scoring schools.

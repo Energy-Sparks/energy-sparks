@@ -86,9 +86,17 @@ module Campaigns
                        opportunity: opportunity).notify_admin.deliver_now
     end
 
+    def school_email?
+      return LandingPagesController::GROUP_TYPES.include?(@contact[:org_type])
+    end
+
     def email_user
       if @request_type.in?([:school_info, :group_info])
-        CampaignMailer.with(contact: @contact).send_information.deliver_now
+        if school_email?
+          CampaignMailer.with(contact: @contact).send_information_school.deliver_now
+        else
+          CampaignMailer.with(contact: @contact).send_information_group.deliver_now
+        end
       elsif @request_type == :school_demo
         CampaignMailer.with(contact: @contact).school_demo.deliver_now
       end

@@ -130,13 +130,13 @@ RSpec.describe OnboardingMailer2025 do
     it 'sends the staff email' do
       setup_and_send(:staff, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(email_html_body_as_markdown).to eq(read_md('data_enabled_email'))
+      expect(email_html_body_as_markdown.chomp).to eq(read_md('data_enabled_email').chomp)
     end
 
     it 'sends the admin email' do
       setup_and_send(:school_admin, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(email_html_body_as_markdown).to eq(read_md('data_enabled_email_admin'))
+      expect(email_html_body_as_markdown.chomp).to eq(read_md('data_enabled_email_admin').chomp)
     end
 
     it 'sends the staff email in welsh' do

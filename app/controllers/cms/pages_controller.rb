@@ -11,6 +11,7 @@ module Cms
     before_action :redirect_unless_feature_enabled?
     before_action :load_categories
     before_action :load_sections, only: [:show]
+    before_action :set_breadcrumbs
 
     layout 'dashboards'
 
@@ -33,6 +34,18 @@ module Cms
                 @page.sections.published
               end
       @sections = scope.positioned
+    end
+
+    def set_breadcrumbs
+      @breadcrumbs = [{ name: I18n.t('categories.nav.title'), href: support_path }]
+      if @page
+        @breadcrumbs = @breadcrumbs + [
+          { name: @page.category.title, href: category_path(@page.category) },
+          { name: @page.title, href: category_page_path(@page.category, @page) }
+        ]
+      else
+        @breadcrumbs << { name: I18n.t('pages.search.button'), href: search_path }
+      end
     end
   end
 end
