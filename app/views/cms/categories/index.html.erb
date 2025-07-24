@@ -10,8 +10,11 @@
 <div class="container">
   <%= render 'cms/search' %>
 
-  <%= render Layout::GridComponent.new(cols: 3, classes: 'pb-4 mt-4 mb-4',
-                                       cell_classes: 'mb-4') do |grid| %>
+  <%= render Layout::GridComponent.new(id: 'categories',
+                                       cols: 3,
+                                       classes: 'mb-4',
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
     <% @categories.each do |category| %>
       <% grid.with_stats_card do |card| %>
         <%= card.with_icon name: category.icon, style: :circle, classes: 'text-teal-dark' %>
