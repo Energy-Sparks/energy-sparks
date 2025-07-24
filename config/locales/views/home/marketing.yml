@@ -39,10 +39,11 @@ en:
             <li><b>Still have questions?</b> - Email us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></li>
           </ul>
       tool:
-        description_html: |-
+        description_1_html: |-
           <p>
           Our tool can identify huge potential savings. Harris Federation, for example, saved £165,000 on their energy bills with an automatic ICT shutdown.
           </p>
+        description_2_html: |-
           <p>
           They were inspired to do this by looking at their Energy Sparks group dashboard, which allowed them to see at a glance:
           </p>
@@ -51,9 +52,6 @@ en:
           How their schools’ energy use compares to other Energy Sparks schools of a similar size</li>
           <li>Prioritised actions (including potential savings) for schools</li>
           </ul>
-          <p>In <a href="%{introductory_video}">our short introductory video</a> you can take a look at some of the main features of our tool, including our group dashboards, alerts and competitions.</p>
-          <p>You can also read <a href="%{report_path}">our Energy Efficiency Report</a>, which outlines how we help schools and Multi-Academy Trusts to cut energy costs, reduce carbon emissions, and engage pupils.
-          </p>
     more_information:
       intro: |-
         Please provide us with your contact details and some information about your organisation so that we can provide you
@@ -107,12 +105,13 @@ en:
           <p>
           <a href="%{product_path}">Our energy management tool</a> allows schools to see their half-hourly energy usage alongside tailored analysis and insights that make it straightforward for school managers to understand what action needs to be taken.
           </p>
-          <p>In <a href="%{introductory_video}">our short introductory video</a> you can take a look at some of the main features of our tool, including our group dashboards, alerts and competitions.</p>
+        read_report: Read report
+        report_description_html: |-
           <p>
           You can also read <a href="%{energy_efficiency_report}">our Energy Efficiency Report</a>, which outlines how we help schools and Multi-Academy Trusts to cut energy costs, reduce carbon emissions, and engage pupils.
           </p>
-        read_report: Read report
         title: Energy management tool
+        video_description_html: <p>In <a href="%{introductory_video}">our short introductory video</a> you can take a look at some of the main features of our tool, including our group dashboards, alerts and competitions.</p>
     watch_demo:
       intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
       title: Watch an Energy Sparks demo
