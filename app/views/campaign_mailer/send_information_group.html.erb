@@ -35,13 +35,13 @@
 </h4>
 
 <div class="s-3"></div>
-<% example_path = if @contact_org_type == :multi_academy_trust
-                    example_mat_dashboard_campaigns_url
-                  else
-                    example_la_dashboard_campaigns_url
-                  end %>
+<% example_url = if @contact_org_type == :multi_academy_trust
+                   example_mat_dashboard_campaigns_url
+                 else
+                   example_la_dashboard_campaigns_url
+                 end %>
 <%= t('campaigns.group_info.closer_look.description_html',
-      example_path: example_path,
+      example_path: example_url,
       school_groups: schools_url(scope: :school_groups),
       product_path: product_url) %>
 
@@ -51,13 +51,13 @@
 </h4>
 
 <div class="s-3"></div>
-<% group_path = if @contact_org_type == :multi_academy_trust
-                  enrol_our_multi_academy_trust_url
-                else
-                  enrol_our_local_authority_url
-                end %>
+<% group_url = if @contact_org_type == :multi_academy_trust
+                 enrol_our_multi_academy_trust_url
+               else
+                 enrol_our_local_authority_url
+               end %>
 <%= t('campaigns.group_info.next_steps.description_html',
-      enrol_group: group_path,
+      enrol_group: group_url,
       watch_demo: watch_demo_campaigns_url,
       newsletter: new_mailchimp_signup_url) %>
 
