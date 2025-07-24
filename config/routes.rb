@@ -88,13 +88,13 @@ Rails.application.routes.draw do
       post 'thank-you', as: :thank_you
       get 'mat-pack', as: :mat_pack
       get 'school-pack', as: :school_pack
-      get 'example-adult-dashboard', as: :example_adult_dashboard
-      get 'example-pupil-dashboard', as: :example_pupil_dashboard
       get 'example-mat-dashboard', as: :example_mat_dashboard
       get 'example-la-dashboard', as: :example_la_dashboard
       get 'short-demo-video', as: :short_demo_video
       get 'long-demo-video', as: :long_demo_video
-      get 'demo-video', as: :demo_video
+      get 'introductory-video', as: :introductory_video
+      get 'energy-efficiency-report', as: :energy_efficiency_report
+      get 'impact-report', as: :impact_report
     end
   end
 

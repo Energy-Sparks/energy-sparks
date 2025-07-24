@@ -4,11 +4,17 @@ class CampaignMailer < LocaleMailer
     make_bootstrap_mail(to: 'hello@energysparks.uk', subject: notify_admin_subject(@contact[:organisation], @request_type))
   end
 
-  def send_information
+  def send_information_school
+    @contact = params[:contact]
+    @title = I18n.t('campaigns.school_info.title')
+    make_bootstrap_mail(to: @contact[:email], subject: I18n.t('campaign_mailer.send_information_school.subject'))
+  end
+
+  def send_information_group
     @contact = params[:contact]
     @contact_org_type = contact_org_type(@contact)
-    @title = I18n.t('campaign_mailer.send_information.subject')
-    make_bootstrap_mail(to: @contact[:email], subject: I18n.t('campaign_mailer.send_information.subject'))
+    @title = I18n.t('campaign_mailer.send_information_school.subject')
+    make_bootstrap_mail(to: @contact[:email], subject: I18n.t('campaign_mailer.send_information_school.subject'))
   end
 
   def school_demo

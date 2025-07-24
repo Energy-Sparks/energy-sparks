@@ -1,0 +1,82 @@
+<p>
+  <%= @contact[:first_name] %>,
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.send_information_school.intro') %>.
+</p>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.stats.header') %>
+</h4>
+
+<div class="s-3"></div>
+<%= t('campaign_mailer.send_information_school.stats_html') %>
+
+<p>
+  <%= t('campaigns.school_info.stats.description_html', impact_report: impact_report_campaigns_url) %>
+</p>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.tool.title') %>
+</h4>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.tool.description_html',
+      product_path: product_url) %>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.tool.video_description_html',
+      introductory_video: introductory_video_campaigns_url) %>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.tool.report_description_html',
+      energy_efficiency_report: energy_efficiency_report_campaigns_url) %>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.closer_look.title') %>
+</h4>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.closer_look.description_html',
+      short_demo: short_demo_video_campaigns_url,
+      long_demo: long_demo_video_campaigns_url,
+      schools_path: schools_url,
+      product_path: product_url) %>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.next_steps.title') %>
+</h4>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.next_steps.description_html',
+      impact_report: impact_report_campaigns_url,
+      introductory_video: introductory_video_campaigns_url,
+      short_demo: short_demo_video_campaigns_url,
+      newsletter: new_mailchimp_signup_url,
+      enrol_path: enrol_our_school_url) %>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.final') %>
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.sign_off') %>,
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.name') %>
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.job_title') %>
+</p>
