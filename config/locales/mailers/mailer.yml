@@ -38,6 +38,9 @@ en:
       title: Please upload an energy bill for %{school_name}
       upload_bill: Upload your bill
   campaign_mailer:
+    final: We look forward to helping you save energy and fight climate change.
+    job_title: Energy Sparks CEO
+    name: Claudia
     school_demo:
       ceo_name: Claudia
       ceo_title: Energy Sparks CEO
@@ -62,34 +65,19 @@ en:
         heading: Short demo (5 minutes)
       signoff: Kind regards
       subject: Thank you for your interest in Energy Sparks!
-    send_information:
-      for_las:
-        enrol_html: If you are ready to proceed, please complete our Local Authority <a href="%{enrol_link}">enrolment form</a> to share further details about your schools and their energy supply arrangements.
-        group_dashboard_html: Local Authorities are provided with a <a href="%{group_dashboard_link}">group dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
-        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools or <a href="%{book_demo_link}">book a live demo</a> and Q&A session for your Local Authority.
-      for_mats:
-        enrol_html: If you are ready to proceed, please complete our Trust <a href="%{enrol_link}">enrolment form</a> to share further details about your schools and their energy supply arrangements.
-        group_dashboard_html: Multi-Academy Trusts are provided with a <a href="%{group_dashboard_link}">trust-wide dashboard</a> to view the energy performance of all schools and their energy-saving priorities.
-        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools or <a href="%{book_demo_link}">book a live demo</a> and Q&A session for your Trust.
-      for_schools:
-        about_us: We are a registered charity that can help you save on energy costs and reduce your carbon footprint with our energy management tool and education programme.
-        case_studies: Case studies and information pack
-        case_studies_html: Explore our <a href="%{case_study_link}">case studies</a> which showcase some of the ways that Energy Sparks schools have saved energy and improved their pupils' energy and climate literacy.
-        dashboards: Take a look at the dashboards for some of our participating schools to understand how we can help you take control of your energy use and involve the whole school community in carbon reduction.
-        demo: Product Demo
-        download_pack_html: Download <a href="%{download_pack_link}">further information on our services</a> to share with colleagues and check out our <a href="%{prices_link}">current prices</a>.
-        enrol_html: <a href="%{enrol_link}">Complete our enrolment form</a> today to start your account setup.
-        example_adult_dashboard: Example adult dashboard
-        example_pupil_dashboard: Example pupil dashboard
-        examples: Example dashboards
-        final: We look forward to helping you save energy and fight climate change.
-        intro: Thank you for your interest in Energy Sparks.
-        name: Claudia
-        ready: Ready to get started?
-        sign_off: Kind regards
-        title: Energy Sparks CEO
-        video_html: Watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools. Or join a <a href="%{book_demo_link}">weekly live demo</a> and Q&A session.
+    send_information_school:
+      intro: Here is the information you requested about Energy Sparks
+      stats_html: |-
+        <p>
+        Did you know that in 2023/24:
+        </p>
+        <ul>
+          <li>The average Energy Sparks primary school saved £5,000 and 7 tonnes CO2</li>
+          <li>The average secondary school saved £21,000 and 26 tonnes CO2</li>
+          <li>Our best performing schools achieved 40% annual energy savings</li>
+        </ul>
       subject: More information about Energy Sparks
+    sign_off: Kind regards
   consent_grant_mailer:
     email_consent:
       description: Your grant of consent to Energy Sparks
@@ -196,7 +184,18 @@ en:
   onboarding_mailer2025:
     build_an_energy_saving_team_html: <b>Build an energy saving team:</b> consider <a href="%{root_url}activity_types/33">setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.
     data_enabled_email:
-      below_are_a_few_html: |-
+      below_are_a_few_admin_html: |-
+        <div>
+        <b>Adding additional users</b>
+        <p>To encourage your colleagues to get involved with Energy Sparks, you can set them up with a user account on Energy Sparks. We encourage all schools to have at least 3 staff with user accounts. To add your colleagues, click <a href="%{users_url}">here</a>. Enter their details and they will be issued with an account set-up email.</p>
+        </div>
+        <div>
+        <b>Update your opening hours to include after-school activities and any lettings</b>
+        <p>At the moment Energy Sparks is basing its analysis on school opening times of %{opening_time} to %{closing_time}. These should be the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school. Before and after school clubs can be included if the majority of the school is in use by pupils. External lettings or times when you have only a small proportion of your school estate in use by pupils should be listed under community use times.</p>
+        <p>Many schools will have cleaning or other premises staff in the school outside of the times when they are open to pupils. Do not include these periods in your main school opening hours as we recommend that you should keep energy use to a minimum during these times.</p>
+        <p>To set up your school opening hours, click <a href="%{times_url}">here</a>.
+        </div>
+      below_are_a_few_common_html: |-
         <p>Below are a few other things that might help you when using Energy Sparks:</p>
         <div>
         <b>Set your first energy-saving targets</b>
@@ -211,16 +210,7 @@ en:
         <b>Staff training</b>
         <p>If you would like to receive further training on how to use Energy Sparks effectively at your school, you can sign up to one of our virtual induction sessions via <a href="%{root_url}training">our website</a>. Staff can also watch our pre-recorded introductory videos available at <a href="https://www.youtube.com/@energysparksuk">https://www.youtube.com/@energysparksuk</a>.</p>
         </div>
-        <div>
-        <b>Adding additional users</b>
-        <p>To encourage your colleagues to get involved with Energy Sparks, you can set them up with a user account on Energy Sparks. We encourage all schools to have at least 3 staff with user accounts. To add your colleagues, click <a href="%{users_url}">here</a>. Enter their details and they will be issued with an account set-up email.</p>
-        </div>
-        <div>
-        <b>Update your opening hours to include after-school activities and any lettings</b>
-        <p>At the moment Energy Sparks is basing its analysis on school opening times of %{opening_time} to %{closing_time}. These should be the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school. Before and after school clubs can be included if the majority of the school is in use by pupils. External lettings or times when you have only a small proportion of your school estate in use by pupils should be listed under community use times.</p>
-        <p>Many schools will have cleaning or other premises staff in the school outside of the times when they are open to pupils. Do not include these periods in your main school opening hours as we recommend that you should keep energy use to a minimum during these times.</p>
-        <p>To set up your school opening hours, click <a href="%{times_url}">here</a>.
-        </div>
+      below_are_a_few_final_html: |-
         <div>
         <b>Record your activities</b>
         <p>There are <a href="%{root_url}activity_categories">over 140 activities</a> on the Energy Sparks site for you to do with your students. Once you've completed an activity, don't forget to <a href="%{root_url}activity_categories">record it</a> on your Energy Sparks account. We also have <a href="%{root_url}intervention_type_groups">lots of adult-led energy-saving actions</a>. You can <a href="%{root_url}intervention_type_groups">record adult-led actions</a> on Energy Sparks and you'll gain points for them too. As you gain points, you'll move up the Energy Sparks <a href="%{root_url}scoreboards">scoreboard</a>. Each year we have exciting scoreboard prizes for the top scoring schools.</p>
