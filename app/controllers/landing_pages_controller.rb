@@ -59,7 +59,7 @@ class LandingPagesController < ApplicationController
   # Process forms and submit job
   def thank_you
     CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
-    @org_type = contact_org_type(contact_params)
+    @org_type = self.class.contact_org_type(contact_params)
     case request_type
     when :group_demo
       @calendly_data_url = calendly_data_url
@@ -69,6 +69,12 @@ class LandingPagesController < ApplicationController
     else # currently group_info or school_info
       render request_type, layout: 'home'
     end
+  end
+
+  def self.contact_org_type(contact)
+    return :multi_academy_trust if contact[:org_type] == TRUST
+    return :local_authority if contact[:org_type] == LA
+    return :school
   end
 
 private
@@ -85,13 +91,7 @@ private
   end
 
   def contact_in_group?
-    contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
-  end
-
-  def contact_org_type(contact)
-    return :multi_academy_trust if contact[:org_type].include?(LandingPagesController::TRUST)
-    return :local_authority if contact[:org_type].include?(LandingPagesController::LA)
-    return :school
+    GROUP_TYPES.include?(contact_params[:org_type])
   end
 
   def calendly_data_url
@@ -112,7 +112,7 @@ private
 
   def contact_params
     params.require(:contact).permit(:first_name, :last_name,
-      :job_title, :organisation, { org_type: [] }, :email, :tel, :consent)
+      :job_title, :organisation, :org_type, :email, :tel, :consent)
   end
 
   def source
@@ -124,7 +124,7 @@ private
   end
 
   def find_example_group
-    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.multi_academy_trust.sample(1)
+    SchoolGroup.find_by_slug('the-gorse-academies-trust') || SchoolGroup.is_public.multi_academy_trust.sample(1)
   end
 
   def find_example_local_authority
