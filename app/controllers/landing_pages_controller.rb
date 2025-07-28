@@ -124,7 +124,7 @@ private
   end
 
   def find_example_group
-    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.multi_academy_trust.sample(1)
+    SchoolGroup.find_by_slug('the-gorse-academies-trust') || SchoolGroup.is_public.multi_academy_trust.sample(1)
   end
 
   def find_example_local_authority
