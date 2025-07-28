@@ -27,8 +27,8 @@
     <div class="form-group col-md-12">
       <%= f.label :org_type, t('campaigns.form.fields.org_type') %>
       <%= f.select :org_type, @org_types,
-                   { include_blank: false, include_hidden: false },
-                   { required: true, multiple: true, class: 'form-control select2 must-select' } %>
+                   { include_blank: true, include_hidden: false },
+                   { required: true, multiple: false, class: 'form-control must-select' } %>
     </div>
   </div>
   <div class="form-row">
