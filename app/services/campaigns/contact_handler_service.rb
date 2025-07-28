@@ -34,7 +34,7 @@ module Campaigns
         { name: 'Campaign' },
         { name: @request_type.to_s.humanize }
       ]
-      tags = tags + @contact[:org_type].map { |t| { name: t.to_s.humanize } }
+      tags = tags + [{ name: @contact[:org_type]&.to_s&.humanize }]
       {
         party: {
           type: :person,
@@ -86,17 +86,11 @@ module Campaigns
                        opportunity: opportunity).notify_admin.deliver_now
     end
 
-    def school_email?
-      return LandingPagesController::GROUP_TYPES.include?(@contact[:org_type])
-    end
-
     def email_user
-      if @request_type.in?([:school_info, :group_info])
-        if school_email?
-          CampaignMailer.with(contact: @contact).send_information_school.deliver_now
-        else
-          CampaignMailer.with(contact: @contact).send_information_group.deliver_now
-        end
+      if @request_type == :school_info
+        CampaignMailer.with(contact: @contact).send_information_school.deliver_now
+      elsif @request_type == :group_info
+        CampaignMailer.with(contact: @contact).send_information_group.deliver_now
       elsif @request_type == :school_demo
         CampaignMailer.with(contact: @contact).school_demo.deliver_now
       end

@@ -13,7 +13,7 @@ module Schools
       School.engaged(AcademicYear.current.start_date..).count
     end
 
-    def self.list_schools(previous_year, school_group_id)
+    def self.list_schools(previous_year, school_group_id, only_data_enabled: false)
       current_year = AcademicYear.current
       date_range = if previous_year
                      previous_year = current_year.previous_year
@@ -22,6 +22,7 @@ module Schools
                      current_year.start_date..
                    end
       schools = School.joins(:school_group)
+      schools = schools.data_enabled if only_data_enabled
       schools = schools.where(school_group_id: school_group_id) if school_group_id.present?
       schools.order('school_groups.name asc, name asc').map do |school|
         EngagedSchoolService.new(school, date_range)
