@@ -22,6 +22,7 @@ en:
     group_demo:
       intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
       title: Choose the date and time for your demo
+      watch_demo_html: You can also <a href="%{url}">watch our demo video</a> as well as booking a private demo.
     group_info:
       closer_look:
         description_html: |-
