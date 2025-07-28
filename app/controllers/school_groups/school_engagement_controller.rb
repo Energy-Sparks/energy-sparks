@@ -35,7 +35,7 @@ module SchoolGroups
                   Column.new(I18n.t('school_groups.school_engagement.active_users'),
                              ->(service) { service.recently_logged_in_user_count }),
                   Column.new(I18n.t('school_groups.school_engagement.last_visit'),
-                             ->(service) { service.most_recent_login&.to_fs(:es_compact) })]
+                             ->(service) { service.most_recent_login&.to_date&.to_fs(:es_compact) })]
       respond_to do |format|
         format.html
         format.csv { send_data csv_report(@columns, @rows), filename: EnergySparks::Filenames.csv('school-engagement') }
