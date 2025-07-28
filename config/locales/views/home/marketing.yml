@@ -161,83 +161,83 @@ en:
       categories:
       - title: Education and advice
         features:
-        - title: Access to pupil activities with supporting resources to increase energy and carbon literacy
+        - title_html: Access to <a href="/activity_categories" target="_new">pupil activities</a> with supporting resources to increase energy and carbon literacy
           starter: 140+
           standard: 140+
-        - title: Guidance on adult-led, low- and no-cost energy-saving actions
+        - title_html: Guidance on adult-led, low- and no-cost <a href="/intervention_type_groups" target="_new">energy-saving actions</a>
           starter: 60+
           standard: 60+
-        - title: Regular newsletters and blog posts with energy-saving advice, ideas and tips
+        - title_html: Regular <a href="/newsletters" target="_new">newsletters</a> and <a href="https://blog.energysparks.uk" target="_new">blog posts</a> with energy-saving advice, ideas and tips
           starter_icon: circle-check
           standard_icon: circle-check
-        - title: Record energy-saving activities and actions to score points for our competitions and build a record of interventions
+        - title_html: Record energy-saving activities and actions to score points for our competitions and build a record of interventions
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Participate in our competitions and events
+        - title_html: Participate in our competitions and events
           starter_icon: xmark
           standard_icon: circle-check
       - title: Energy management tool
         features:
-        - title: User accounts
+        - title_html: User accounts
           starter_icon: xmark
           standard: Unlimited
-        - title: Energy-use insights and alerts sent by email
+        - title_html: Energy-use insights and alerts sent by email
           starter_icon: xmark
           standard: Weekly
-        - title: School-specific energy analysis based on half-hourly gas, electricity and solar data
+        - title_html: School-specific energy analysis based on half-hourly gas, electricity and solar data
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Prioritised energy-saving recommendations
+        - title_html: Prioritised energy-saving recommendations
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Adult dashboard with key insights and alerts
+        - title_html: Adult dashboard with key insights and alerts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Pupil dashboard with easy-to-understand energy use comparisons and prompts to take action
+        - title_html: Pupil dashboard with easy-to-understand energy use comparisons and prompts to take action
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Interactive energy usage charts
+        - title_html: Interactive energy usage charts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Meter level analysis and charts
+        - title_html: Meter level analysis and charts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Track progress by setting energy-saving targets
+        - title_html: Track progress by setting energy-saving targets
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Compare energy use against similar schools
+        - title_html: <a href="/compare" target="_new">Compare energy</a> use against similar schools
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Integrated data from your solar panels
+        - title_html: Integrated data from your solar panels
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Multi-Academy Trust dashboard to provide energy management oversight across all schools
+        - title_html: Multi-Academy Trust dashboard to provide energy management oversight across all schools
           starter_icon: xmark
           standard_icon: circle-check
       - title: Onboarding and support
         features:
-        - title: Dedicated account manager
+        - title_html: Dedicated account manager
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Energy management email support
+        - title_html: Energy management email support
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Sustainability education email support
+        - title_html: Sustainability education email support
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Webinar training
+        - title_html: <a href="/training" target="_new">Webinar training</a>
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Support with upgrading to half-hourly meters
+        - title_html: Support with upgrading to half-hourly meters
           starter_icon: xmark
           standard: On request
       - title: Additional fees and options
         features:
-        - title: Private account (standard accounts are publicly visible to empower the whole school community to engage with the energy data insights
+        - title_html: Private account (standard accounts are publicly visible to empower the whole school community to engage with the energy data insights)
           starter_icon: xmark
           standard_icon: sterling-sign
           info: "£95 + VAT per school per year"
-        - title: Analysis of data for more than 5 meters
+        - title_html: Analysis of data for more than 5 meters
           starter_icon: xmark
           standard_icon: sterling-sign
           info: "£25 + VAT per meter"
