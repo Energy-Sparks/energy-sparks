@@ -30,8 +30,8 @@ class CampaignMailer < LocaleMailer
   end
 
   def contact_org_type(contact)
-    return :multi_academy_trust if contact[:org_type].include?(LandingPagesController::TRUST)
-    return :local_authority if contact[:org_type].include?(LandingPagesController::LA)
+    return :multi_academy_trust if contact[:org_type] == LandingPagesController::TRUST
+    return :local_authority if contact[:org_type] == LandingPagesController::LA
     return :school
   end
 end

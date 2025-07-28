@@ -40,7 +40,7 @@ RSpec.describe CampaignMailer do
 
   describe '#notify_admin' do
     let(:request_type) { :book_demo }
-    let(:org_type) { ['multi_academy_trust'] }
+    let(:org_type) { 'multi_academy_trust' }
     let(:party) do
       {
         'party' => {
@@ -100,7 +100,7 @@ RSpec.describe CampaignMailer do
       CampaignMailer.with(contact: contact).school_demo.deliver_now
     end
 
-    let(:org_type) { ['primary'] }
+    let(:org_type) { 'primary' }
 
     it_behaves_like 'a campaign mail was sent' do
       let(:name) { contact[:first_name] }
@@ -128,7 +128,7 @@ RSpec.describe CampaignMailer do
       CampaignMailer.with(contact: contact).send_information_school.deliver
     end
 
-    let(:org_type) { ['primary'] }
+    let(:org_type) { 'primary' }
 
     it_behaves_like 'a campaign mail was sent' do
       let(:name) { contact[:first_name] }
@@ -165,7 +165,7 @@ RSpec.describe CampaignMailer do
       CampaignMailer.with(contact: contact).send_information_group.deliver
     end
 
-    let(:org_type) { ['multi_academy_trust'] }
+    let(:org_type) { 'multi_academy_trust' }
 
     it_behaves_like 'a campaign mail was sent' do
       let(:name) { contact[:first_name] }
@@ -196,7 +196,7 @@ RSpec.describe CampaignMailer do
     end
 
     context 'when sending for a local authority' do
-      let(:org_type) { ['local_authority'] }
+      let(:org_type) { 'local_authority' }
 
       it 'includes the closer look section' do
         expect(body).to have_link(href: example_la_dashboard_campaigns_url)

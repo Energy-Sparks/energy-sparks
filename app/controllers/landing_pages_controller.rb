@@ -85,12 +85,12 @@ private
   end
 
   def contact_in_group?
-    contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
+    GROUP_TYPES.include?(contact_params[:org_type])
   end
 
   def contact_org_type(contact)
-    return :multi_academy_trust if contact[:org_type].include?(LandingPagesController::TRUST)
-    return :local_authority if contact[:org_type].include?(LandingPagesController::LA)
+    return :multi_academy_trust if contact[:org_type] == TRUST
+    return :local_authority if contact[:org_type] == LA
     return :school
   end
 
@@ -112,7 +112,7 @@ private
 
   def contact_params
     params.require(:contact).permit(:first_name, :last_name,
-      :job_title, :organisation, { org_type: [] }, :email, :tel, :consent)
+      :job_title, :organisation, :org_type, :email, :tel, :consent)
   end
 
   def source
