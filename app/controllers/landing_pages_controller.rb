@@ -59,7 +59,7 @@ class LandingPagesController < ApplicationController
   # Process forms and submit job
   def thank_you
     CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
-    @org_type = contact_org_type(contact_params)
+    @org_type = self.class.contact_org_type(contact_params)
     case request_type
     when :group_demo
       @calendly_data_url = calendly_data_url
@@ -69,6 +69,12 @@ class LandingPagesController < ApplicationController
     else # currently group_info or school_info
       render request_type, layout: 'home'
     end
+  end
+
+  def self.contact_org_type(contact)
+    return :multi_academy_trust if contact[:org_type] == TRUST
+    return :local_authority if contact[:org_type] == LA
+    return :school
   end
 
 private
@@ -86,12 +92,6 @@ private
 
   def contact_in_group?
     GROUP_TYPES.include?(contact_params[:org_type])
-  end
-
-  def contact_org_type(contact)
-    return :multi_academy_trust if contact[:org_type] == TRUST
-    return :local_authority if contact[:org_type] == LA
-    return :school
   end
 
   def calendly_data_url
