@@ -40,9 +40,9 @@ en:
   campaign_mailer:
     final: We look forward to helping you save energy and fight climate change.
     job_title: Energy Sparks CEO
-    name: Claudia
+    name: Claudia Towner
     school_demo:
-      ceo_name: Claudia
+      ceo_name: Claudia Towner
       ceo_title: Energy Sparks CEO
       dear: Dear %{name}
       full_demo:
