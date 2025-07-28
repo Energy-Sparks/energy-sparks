@@ -185,6 +185,18 @@ en:
         <p>This page summarises these potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
+    school_engagement:
+      active_users: Active users
+      completed_transport_survery: Completed transport survey
+      energy_saving_target: Energy saving target
+      intro_html: |-
+        <p>This report provides a summary of how your schools are engaging with the range of features provided by Energy Sparks.</p>
+        <p>We find that schools that more fully engage with the tools are more successful at reducing their energy consumption. There is also a minimum amount of engagement expected of all schools receiving free places.</p>
+        <p>The figures below show engagement since the start of September (English academic year) to date.</p>
+      last_visit: Last visit
+      received_an_audit: Received an audit
+      recorded_temperatures: Recorded temperatures
+      title: School engagement
     secr:
       csv:
         consumption_for_the_year: Consumption for the year
@@ -349,6 +361,7 @@ en:
       manage_group: Manage Group
       manage_partners: Manage partners
       manage_users: Manage users
+      school_engagement: School Engagement
       secr_report: SECR report
       set_message: Set message
     titles:
