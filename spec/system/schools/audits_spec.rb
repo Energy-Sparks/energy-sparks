@@ -218,7 +218,9 @@ describe 'Audits', :include_application_helper, type: :system do
           it 'shows activity type error message' do
             click_on 'Add activity'
             click_on('Create')
-            expect(page).to have_content('Audit activity types activity type must exist')
+            with_retry(Selenium::WebDriver::Error::UnknownError) do
+              expect(page).to have_content('Audit activity types activity type must exist')
+            end
             expect(page).to have_content("Audit activity types activity type can't be blank")
             within '#audit-activity-types' do
               expect(page).to have_content("must exist and can't be blank")
