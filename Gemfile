@@ -83,7 +83,7 @@ gem 'devise' # Use devise for authentication
 
 # Utils
 gem 'groupdate' # Use groupdate to group usage stats
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # for Windows
+gem 'tzinfo-data', platforms: %i[windows jruby] # for Windows
 
 # Bundle update installs 0.7.0 for some weird reason!
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.

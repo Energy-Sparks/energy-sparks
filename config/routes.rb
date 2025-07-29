@@ -276,6 +276,7 @@ Rails.application.routes.draw do
         end
       end
       resources :secr, only: [:index]
+      resources :school_engagement, only: [:index]
     end
     member do
       get :map

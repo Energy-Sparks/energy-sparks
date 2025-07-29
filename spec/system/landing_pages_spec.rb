@@ -110,7 +110,7 @@ describe 'landing pages', type: :system do
       last_name: last_name,
       job_title: job_title,
       organisation: organisation,
-      org_type: [expected_org_type],
+      org_type: expected_org_type,
       email: email,
       tel: tel,
       consent: true
