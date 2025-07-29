@@ -205,7 +205,9 @@ describe 'Audits', :include_application_helper, type: :system do
 
           it 'shows title and file error messages' do
             click_on('Create')
-            expect(page).to have_content("Title can't be blank")
+            with_retry(Selenium::WebDriver::Error::UnknownError) do
+              expect(page).to have_content("Title can't be blank")
+            end
             expect(page).to have_content("File can't be blank")
             within '.audit_title' do
               expect(page).to have_content("can't be blank")
@@ -230,7 +232,9 @@ describe 'Audits', :include_application_helper, type: :system do
           it 'shows intervention type error message' do
             click_on 'Add action'
             click_on('Create')
-            expect(page).to have_content('Audit intervention types intervention type must exist')
+            with_retry(Selenium::WebDriver::Error::UnknownError) do
+              expect(page).to have_content('Audit intervention types intervention type must exist')
+            end
             expect(page).to have_content("Audit intervention types intervention type can't be blank")
             within '#audit-intervention-types' do
               expect(page).to have_content("must exist and can't be blank")
@@ -253,7 +257,7 @@ describe 'Audits', :include_application_helper, type: :system do
             end
 
             click_on('Create')
-            expect(page).to have_content("can't be blank")
+            with_retry(Selenium::WebDriver::Error::UnknownError) { expect(page).to have_content("can't be blank") }
 
             fill_in 'Title', with: 'New audit'
             attach_file('audit[file]', Rails.root + 'spec/fixtures/images/newsletter-placeholder.png')
