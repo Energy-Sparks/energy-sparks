@@ -9,6 +9,14 @@
     .badge {
       font-size: $f9;
       padding: 6px 14px;
+
+      a {
+        text-decoration: none;
+      }
+
+      a:visited {
+        color: white;
+      }
     }
   }
 
