@@ -1,0 +1,10 @@
+---
+en:
+  components:
+    cms:
+      audience:
+        incorrect_permissions: You will not have permission to follow all of the instructions on this page.
+        logged_in: You are currently signed in as a %{role} user.
+        message: This page provides help for %{audience}.
+        not_logged_in_html: You will need to <a href="%{link}">sign-in</a> to follow the instructions on this page.
+        title: Audience
