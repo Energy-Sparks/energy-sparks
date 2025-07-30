@@ -2,7 +2,7 @@
 en:
   page:
     audience:
-      anyone: anyone using the Energy Sparks website
+      anyone: Anyone
       group_admins: Group admins
       school_admins: School and Group admins
-      school_users: all registered school users
+      school_users: School users

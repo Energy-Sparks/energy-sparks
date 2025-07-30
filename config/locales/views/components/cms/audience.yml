@@ -3,6 +3,11 @@ en:
   components:
     cms:
       audience:
+        descriptions:
+          anyone: anyone using the Energy Sparks website
+          group_admins: Group admins
+          school_admins: School and Group admins
+          school_users: all registered school users
         incorrect_permissions: You will not have permission to follow all of the instructions on this page.
         logged_in: You are currently signed in as a %{role} user.
         message: This page provides help for %{audience}.
