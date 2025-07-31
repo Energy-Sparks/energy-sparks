@@ -14,7 +14,7 @@ module Admin
       def create
         @page = ::Cms::Page.build(page_params.merge(created_by: current_user))
         if @page.save
-          redirect_to admin_cms_pages_path, notice: 'Page has been created'
+          redirect_to category_page_path(@page.category, @page), notice: 'Page has been created'
         else
           render :new
         end
@@ -35,7 +35,7 @@ module Admin
           end
         end
         if @page.update(page_params.merge(updated_by: current_user))
-          redirect_to admin_cms_pages_path, notice: 'Page has been updated'
+          redirect_to category_page_path(@page.category, @page), notice: 'Page has been updated'
         else
           render :edit
         end
@@ -43,12 +43,12 @@ module Admin
 
       def publish
         @page.update!(published: true, updated_by: current_user)
-        redirect_back fallback_location: admin_cms_pages_path, notice: 'Content published'
+        redirect_back fallback_location: category_page_path(@page.category, @page), notice: 'Content published'
       end
 
       def hide
         @page.update!(published: false, updated_by: current_user)
-        redirect_back fallback_location: admin_cms_pages_path, notice: 'Content hidden'
+        redirect_back fallback_location: category_page_path(@page.category, @page), notice: 'Content hidden'
       end
 
       private
