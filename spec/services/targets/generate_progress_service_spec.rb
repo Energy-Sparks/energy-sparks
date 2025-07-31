@@ -260,39 +260,47 @@ describe Targets::GenerateProgressService do
     end
 
     context 'when looking at monthly consumption data' do
-      let!(:school_target) { nil }
+      let!(:school_target) { nil } # just to prevent creating one above
 
-      def run(period_length)
-        end_date = Date.new(2025, 5, 15)
+      def run(end_date, period_length)
         meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: end_date - period_length,
                                                                            end_date:,
                                                                            kwh_data_x48: Array.new(48, 1))
-        create(:school_target, school:, electricity: 3,
-                               start_date: meter_collection.aggregate_meter(:electricity).amr_data.start_date,
-                               target_date: meter_collection.aggregate_meter(:electricity).amr_data.end_date)
-
         described_class.new(school, meter_collection).generate!
       end
 
-      it '2 years' do
-        target = run(2.years)
-        expect(target.electricity_monthly_consumption).to \
-          eq({ '2024' => [[1488, false], [1392, false], [1488, false], [1440, false], [1488, false],
-                          [1440, false, 1396.8], [1488, false, 1443.36], [1488, false, 1443.36], [1440, false, 1396.8],
-                          [1488, false, 1443.36], [1440, false, 1396.8], [1488, false, 1443.36]],
-               '2025' => [[1488, false, 1443.36], [1344, false, 1350.24], [1488, false, 1443.36],
-                          [1440, false, 1396.8]] })
+      it 'returns consumption figures for each month of targets' do
+        target = create(:school_target, school:, electricity: 3,
+                                        start_date: Date.new(2024, 5, 1), target_date: Date.new(2025, 5, 1))
+        run(Date.new(2025, 4, 15), 2.years)
+        expect(target.reload.electricity_monthly_consumption).to eq([[2024, 5, 1488, 1488, 1443.36, false],
+                                                                     [2024, 6, 1440, 1440, 1396.8, false],
+                                                                     [2024, 7, 1488, 1488, 1443.36, false],
+                                                                     [2024, 8, 1488, 1488, 1443.36, false],
+                                                                     [2024, 9, 1440, 1440, 1396.8, false],
+                                                                     [2024, 10, 1488, 1488, 1443.36, false],
+                                                                     [2024, 11, 1440, 1440, 1396.8, false],
+                                                                     [2024, 12, 1488, 1488, 1443.36, false],
+                                                                     [2025, 1, 1488, 1488, 1443.36, false],
+                                                                     [2025, 2, 1344, 1392, 1350.24, false],
+                                                                     [2025, 3, 1488, 1488, 1443.36, false],
+                                                                     [2025, 4, 720, 1440, 1396.8, true]])
       end
 
-      it '1 year' do
-        target = run(1.year)
-        expect(target.electricity_monthly_consumption).to eq({})
+      it 'when data covers last month' do
+        target = create(:school_target, school:, electricity: 3,
+                                        start_date: Date.new(2024, 5, 1), target_date: Date.new(2025, 5, 1))
+        run(Date.new(2025, 5, 15), 2.years)
+        target.reload
+        expect(target.electricity_monthly_consumption.first).to eq([2024, 5, 1488, nil, nil, true])
+        expect(target.electricity_monthly_consumption.last).to eq([2025, 4, 1440, 1440, 1396.8, false])
       end
 
-      it '14 months' do
-        target = run(14.months)
-        expect(target.electricity_monthly_consumption).to \
-          eq({ '2025' => [[1488, false], [1344, false], [1488, false], [1440, false, 1396.8]] })
+      it 'with insufficient data' do
+        target = create(:school_target, school:, electricity: 3,
+                                        start_date: Date.new(2024, 5, 1), target_date: Date.new(2025, 5, 1))
+        run(Date.new(2025, 5, 15), 1.year)
+        expect(target.reload.electricity_monthly_consumption).to be_nil
       end
     end
   end

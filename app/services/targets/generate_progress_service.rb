@@ -37,7 +37,7 @@ module Targets
         storage_heaters_progress: fuel_type_progress(:storage_heaters),
         storage_heaters_report: progress_report(:storage_heaters),
         storage_heaters_monthly_consumption: calculate_monthly_consumption(:storage_heaters),
-        report_last_generated: Time.zone.now,
+        report_last_generated: Time.zone.now
       )
       target
     end
@@ -49,30 +49,42 @@ module Targets
       value - reduction
     end
 
+    def calculate_month_consumption(beginning_of_month, fuel_type)
+      day_kwhs = (beginning_of_month..beginning_of_month.end_of_month).map do |date|
+        @aggregated_school.aggregate_meter(fuel_type).amr_data[date]&.one_day_kwh
+      end
+      [day_kwhs.compact.sum, day_kwhs.include?(nil)]
+    end
+
+    def calculate_monthly_consumption_each(fuel_type)
+      start_date = target.start_date.beginning_of_month
+      end_date = target.target_date.beginning_of_month.prev_day
+      (start_date..end_date).filter_map do |date|
+        next unless date.day == 1
+
+        previous_consumption, previous_missing = calculate_month_consumption(date - 1.year, fuel_type)
+        if previous_missing
+          previous_consumption = nil
+        else
+          target_consumption = apply_target_reduction(fuel_type, previous_consumption)
+        end
+        current_consumption, current_missing = calculate_month_consumption(date, fuel_type)
+        [date.year, date.month, current_consumption, previous_consumption, target_consumption,
+         previous_missing || current_missing]
+      end
+    end
+
     def calculate_monthly_consumption(fuel_type)
       return nil unless has_fuel_type_and_target?(fuel_type)
 
-      consumption = {}
-      amr_data = @aggregated_school.aggregate_meter(fuel_type).amr_data
+      if target["#{fuel_type}_monthly_consumption"]&.all? { |month| !month[5] } # all complete
+        return target["#{fuel_type}_monthly_consumption"]
+      end
 
-      end_date = (amr_data.end_date - 1.month).end_of_month
-      start_date = [amr_data.start_date.end_of_month.next_day, 2.years.ago(end_date.next_day).to_date].max
-      (start_date..end_date).group_by(&:beginning_of_month).each do |beginning_of_month, month_dates|
-        day_kwhs = month_dates.map do |date|
-          @aggregated_school.aggregate_meter(fuel_type).amr_data[date]&.one_day_kwh
-        end
-        consumption[beginning_of_month.year] ||= []
-        consumption[beginning_of_month.year][beginning_of_month.month - 1] =
-          [day_kwhs.compact.sum, day_kwhs.include?(nil)]
-      end
-      consumption.keys.sort.reverse_each do |year|
-        consumption[year].each_with_index do |month, i|
-          previous = consumption.dig(year - 1, i, 0)
-          month.append(apply_target_reduction(fuel_type, previous)) unless previous.nil?
-        end
-      end
-      # remove years with no target figures
-      consumption.reject { |_year, months| months.none? { |month| month&.length == 3 } }
+      consumption = calculate_monthly_consumption_each(fuel_type)
+      return nil if consumption.all? { |month| month[3].nil? } # not enough data
+
+      consumption
     end
 
     def fuel_type_progress(fuel_type)
