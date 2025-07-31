@@ -1,27 +1,24 @@
 require 'rails_helper'
 
 describe Targets::GenerateProgressService do
-  let!(:school)                   { create(:school) }
-  let!(:aggregated_school)        { double('meter-collection') }
-  let!(:school_target)            { create(:school_target, school: school) }
+  subject!(:service) { Targets::GenerateProgressService.new(school, aggregated_school) }
 
-  let(:fuel_electricity)          { Schools::FuelConfiguration.new(has_electricity: true) }
-  let(:school_target_fuel_types)  { ['electricity'] }
-
-  let!(:school_config)            { create(:configuration, school: school, fuel_configuration: fuel_electricity, school_target_fuel_types: school_target_fuel_types) }
-
-  let!(:service)                  { Targets::GenerateProgressService.new(school, aggregated_school) }
-
-  let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.beginning_of_month] }
-  let(:fuel_type)                 { :electricity }
-  let(:monthly_targets_kwh)       { [10, 10] }
-  let(:monthly_usage_kwh)         { [10, 5] }
-  let(:monthly_performance)       { [-0.25, 0.35] }
-  let(:cumulative_targets_kwh)    { [10, 20] }
-  let(:cumulative_usage_kwh)      { [10, 15] }
-  let(:cumulative_performance)    { [-0.99, 0.99] }
-  let(:partial_months)            { [false, true] }
-  let(:percentage_synthetic)      { [0, 0]}
+  let!(:school) { create(:school) }
+  let!(:aggregated_school) { instance_double(MeterCollection) }
+  let!(:school_target) { create(:school_target, school: school) }
+  let(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true) }
+  let(:school_target_fuel_types) { ['electricity'] }
+  let!(:school_config) { create(:configuration, school:, fuel_configuration:, school_target_fuel_types:) }
+  let(:months) { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.beginning_of_month] }
+  let(:fuel_type) { :electricity }
+  let(:monthly_targets_kwh) { [10, 10] }
+  let(:monthly_usage_kwh) { [10, 5] }
+  let(:monthly_performance) { [-0.25, 0.35] }
+  let(:cumulative_targets_kwh) { [10, 20] }
+  let(:cumulative_usage_kwh) { [10, 15] }
+  let(:cumulative_performance) { [-0.99, 0.99] }
+  let(:partial_months) { [false, true] }
+  let(:percentage_synthetic) { [0, 0] }
 
   let(:progress) do
     TargetsProgress.new(
@@ -42,6 +39,7 @@ describe Targets::GenerateProgressService do
 
   before do
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(aggregated_school)
+    allow(aggregated_school).to receive(:aggregate_meter).and_return(build(:meter))
   end
 
   describe '#cumulative_progress' do
@@ -69,7 +67,7 @@ describe Targets::GenerateProgressService do
 
     context 'for a fuel type' do
       context 'and its not present' do
-        let(:fuel_electricity) { Schools::FuelConfiguration.new(has_electricity: false) }
+        let(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: false) }
 
         it 'returns nil' do
           expect(service.cumulative_progress(:electricity)).to be_nil
@@ -90,7 +88,9 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and the data is lagging, only slightly' do
-      let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
+      let(:months)                    do
+        [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month]
+      end
 
       before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -116,7 +116,7 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and the data is lagging, only slightly' do
-      let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
+      let(:months) { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
       before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -142,7 +142,7 @@ describe Targets::GenerateProgressService do
     end
 
     context 'and the data is lagging, only slightly' do
-      let(:months)                    { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
+      let(:months) { [Time.zone.today.last_month.beginning_of_month, Time.zone.today.prev_month.beginning_of_month] }
 
       before do
         allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
@@ -158,7 +158,7 @@ describe Targets::GenerateProgressService do
   describe '#generate!' do
     it 'does nothing if school has no target' do
       SchoolTarget.all.destroy_all
-      expect(service.generate!).to be nil
+      expect(service.generate!).to be_nil
     end
 
     context 'with only electricity fuel type' do
@@ -224,7 +224,8 @@ describe Targets::GenerateProgressService do
         let(:error) { StandardError.new('test requested') }
 
         it 'reports to rollbar' do
-          expect(Rollbar).to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
+          expect(Rollbar).to receive(:error).with(error, scope: :generate_progress, school_id: school.id,
+                                                         school: school.name, fuel_type: :electricity)
           target
         end
 
@@ -242,7 +243,8 @@ describe Targets::GenerateProgressService do
         let(:error) { TargetDates::TargetDateBeforeFirstMeterStartDate.new('can be ignored') }
 
         it 'does not report to rollbar' do
-          expect(Rollbar).not_to receive(:error).with(error, scope: :generate_progress, school_id: school.id, school: school.name, fuel_type: :electricity)
+          expect(Rollbar).not_to receive(:error).with(error, scope: :generate_progress, school_id: school.id,
+                                                             school: school.name, fuel_type: :electricity)
           target
         end
 
@@ -254,6 +256,43 @@ describe Targets::GenerateProgressService do
           expect(target.electricity_progress).to eq({})
           expect(target.electricity_report).to be_nil
         end
+      end
+    end
+
+    context 'when looking at monthly consumption data' do
+      let!(:school_target) { nil }
+
+      def run(period_length)
+        end_date = Date.new(2025, 5, 15)
+        meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: end_date - period_length,
+                                                                           end_date:,
+                                                                           kwh_data_x48: Array.new(48, 1))
+        create(:school_target, school:, electricity: 3,
+                               start_date: meter_collection.aggregate_meter(:electricity).amr_data.start_date,
+                               target_date: meter_collection.aggregate_meter(:electricity).amr_data.end_date)
+
+        described_class.new(school, meter_collection).generate!
+      end
+
+      it '2 years' do
+        target = run(2.years)
+        expect(target.electricity_monthly_consumption).to \
+          eq({ '2024' => [[1488, false], [1392, false], [1488, false], [1440, false], [1488, false],
+                          [1440, false, 1396.8], [1488, false, 1443.36], [1488, false, 1443.36], [1440, false, 1396.8],
+                          [1488, false, 1443.36], [1440, false, 1396.8], [1488, false, 1443.36]],
+               '2025' => [[1488, false, 1443.36], [1344, false, 1350.24], [1488, false, 1443.36],
+                          [1440, false, 1396.8]] })
+      end
+
+      it '1 year' do
+        target = run(1.year)
+        expect(target.electricity_monthly_consumption).to eq({})
+      end
+
+      it '14 months' do
+        target = run(14.months)
+        expect(target.electricity_monthly_consumption).to \
+          eq({ '2025' => [[1488, false], [1344, false], [1488, false], [1440, false, 1396.8]] })
       end
     end
   end
