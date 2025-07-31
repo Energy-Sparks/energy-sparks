@@ -2,7 +2,7 @@
   <%= render PromptComponent.new(status: :none) do |c| %>
     <% c.with_title { t('components.cms.audience.title') } %>
     <p>
-    <%= t('components.cms.audience.message', audience: t("components.cms.audience.descriptions.#{@audience}")) %>
+      <%= t('components.cms.audience.message', audience: t("components.cms.audience.descriptions.#{@audience}")) %>
     </p>
     <% if @audience != :anyone %>
         <% if @role.nil? %>
@@ -11,7 +11,7 @@
             </p>
         <% else %>
             <p>
-            <%= t('components.cms.audience.logged_in', role: t("role.#{@role}")) %>
+              <%= t('components.cms.audience.logged_in', role: t("role.#{@role}")) %>
             </p>
             <% unless has_permission? %>
               <p>
