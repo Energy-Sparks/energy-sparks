@@ -37,10 +37,6 @@ class RedirectsController < ApplicationController
       school_path(school)
     when 'pupils'
       pupils_school_path(school)
-    when 'calendar'
-      calendar_path(school.calendar)
-    when 'scoreboard'
-      scoreboard_path(school.scoreboard)
     else
       "/schools/#{school.slug}/#{ActionController::Base.helpers.sanitize(path)}"
     end

@@ -118,6 +118,14 @@ class SchoolsController < ApplicationController
     render :settings, layout: 'dashboards'
   end
 
+  def scoreboard
+    redirect_to(scoreboard_path(@school.scoreboard))
+  end
+
+  def calendar
+    redirect_to(calendar_path(@school.calendar))
+  end
+
   private
 
   def set_search_scope
