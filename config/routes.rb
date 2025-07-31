@@ -322,8 +322,6 @@ Rails.application.routes.draw do
   resources :schools do
     member do
       get :settings
-      get :scoreboard
-      get :calendar
     end
 
     resources :activities do
