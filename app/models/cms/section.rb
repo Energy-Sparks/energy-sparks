@@ -47,7 +47,7 @@ module Cms
     attr_accessor :_delete
 
     scope :positioned, -> { order(position: :asc) }
-    scope :by_category_and_page, -> { joins(:page, { page: :category }).i18n.order(category_id: :asc, page_id: :asc, position: :asc) }
+    scope :by_category_and_page, -> { left_outer_joins(:page, { page: :category }).i18n.order(category_id: :asc, page_id: :asc, position: :asc) }
 
     private
 

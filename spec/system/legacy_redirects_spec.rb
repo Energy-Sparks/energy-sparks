@@ -26,11 +26,6 @@ describe 'legacy redirects', type: :system do
       visit "/schools/#{school.slug}/find_out_more/1234"
       expect(page).to have_current_path(school_advice_path(school), ignore_query: true)
     end
-
-    it 'redirects old scoreboard links' do
-      visit "/schools/#{school.slug}/scoreboard"
-      expect(page).to have_current_path(scoreboards_path, ignore_query: true)
-    end
   end
 
   context 'when accessing old analysis' do

@@ -7,10 +7,6 @@ if ENV.key?('GENERATE_SITEMAP')
     # Home controller stuff
     add root_path
 
-    add for_teachers_path
-    add for_pupils_path
-    add for_management_path
-    add for_teachers_path
     add home_page_path
     add contact_path
     add enrol_path

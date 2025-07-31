@@ -1,6 +1,6 @@
 cy:
   activity_categories:
-    introduction_1_html: Mae Sbarcynni yn darparu cefnogaeth helaeth i <a href='%{for_teachers_path}'>athrawon</a> a <a href='%{for_pupils_path}'>disgyblion</a> wrth ddysgu am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun.
+    introduction_1_html: Mae Sbarcynni yn darparu cefnogaeth helaeth i athrawon a disgyblion wrth ddysgu am ynni a newid hinsawdd o fewn cyd-destun eich ysgol eich hun.
     introduction_2_html:
       one: Defnyddiwch y dolenni isod i archwilio <strong>%{count}</strong> gweithgaredd sydd ar gael yn rhwydd.
       two: Defnyddiwch y dolenni isod i archwilio <strong>%{count}</strong> o weithgareddau sydd ar gael yn rhwydd.

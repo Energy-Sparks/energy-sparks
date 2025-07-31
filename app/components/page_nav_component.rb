@@ -47,7 +47,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def link_text
-      helpers.text_with_icon(name, icon, class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'float-right')
+      helpers.text_with_icon(content_tag(:span, name, class: 'nav-text'), icon, class: 'fuel fa-fw') + content_tag(:span, helpers.toggler, class: 'nav-toggle-icons')
     end
 
     def expanded?
@@ -74,8 +74,9 @@ class PageNavComponent < ViewComponent::Base
   class ItemComponent < ViewComponent::Base
     attr_reader :name, :href, :match_controller, :classes
 
-    def initialize(name:, href:, classes: nil, match_controller: false)
+    def initialize(name:, href:, note: nil, classes: nil, match_controller: false)
       @name = name
+      @note = note
       @href = href
       @match_controller = match_controller
       @classes = classes
@@ -93,7 +94,8 @@ class PageNavComponent < ViewComponent::Base
       args = { class: 'nav-link item' }
       args[:class] += " #{classes}" if classes
       args[:class] += ' current' if current_item?(href)
-      link_to(name, href, args)
+      note = @note.nil? ? '' : content_tag(:span, @note, class: 'nav-toggle-icons')
+      link_to(content_tag(:span, name, class: 'nav-text') + note, href, args)
     end
 
     def render?

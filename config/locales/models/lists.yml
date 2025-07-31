@@ -40,11 +40,11 @@ en:
   role:
     admin: Admin
     analytics: Analytics
-    group_admin: Group Admin
+    group_admin: Group admin
     guest: Guest
     pupil: Pupil
-    school_admin: School Admin
-    school_onboarding: Onboarding
+    school_admin: School admin
+    school_onboarding: Onboarding admin
     staff: Staff
   staff_role:
     building_site_manager_or_caretaker: Building/site manager or caretaker

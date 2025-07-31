@@ -6,9 +6,9 @@ RSpec.describe 'User account page and updates', :include_application_helper do
   context 'when visiting a school redirect' do
     let(:path) { "#{base}/advice" }
 
-    context 'without a session' do
-      let!(:school) { create(:school, :with_school_group) }
+    let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_calendar) }
 
+    context 'without a session' do
       before do
         visit path
       end
@@ -16,7 +16,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       it_behaves_like 'the page requires a login'
 
       context 'with a successful adult login' do
-        let!(:user) { create(:school_admin, password: 'thisismyuserpassword') }
+        let!(:user) { create(:school_admin, school: school, password: 'thisismyuserpassword') }
 
         before do
           fill_in 'Email', with: user.email
@@ -50,7 +50,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
     end
 
     context 'when logged in as a staff user' do
-      let!(:user) { create(:staff) }
+      let!(:user) { create(:staff, school: school) }
 
       before do
         sign_in(user)
@@ -76,10 +76,18 @@ RSpec.describe 'User account page and updates', :include_application_helper do
           expect(page).to have_current_path pupils_school_path(user.school), ignore_query: true
         end
       end
+
+      context 'with scoreboard redirect' do
+        let(:path) { "#{base}/scoreboard" }
+
+        it 'has redirected' do
+          expect(page).to have_current_path scoreboard_path(user.school.scoreboard), ignore_query: true
+        end
+      end
     end
 
     context 'when logged in as a school admin user' do
-      let!(:user) { create(:school_admin) }
+      let!(:user) { create(:school_admin, school: school) }
 
       before do
         sign_in(user)
@@ -88,6 +96,14 @@ RSpec.describe 'User account page and updates', :include_application_helper do
 
       it 'has redirected' do
         expect(page).to have_current_path school_advice_path(user.school), ignore_query: true
+      end
+
+      context 'with calendar redirect' do
+        let(:path) { "#{base}/calendar" }
+
+        it 'has redirected' do
+          expect(page).to have_current_path calendar_path(user.school.calendar), ignore_query: true
+        end
       end
     end
 

@@ -4,6 +4,8 @@
   }
 
   a.nav-link {
+    display: flex;
+    align-items: center;
     font-family: $header-font-family;
     color: $blue-very-dark;
     font-weight: $font-weight-semibold;
@@ -15,6 +17,14 @@
     &.current {
       font-weight: bold;
     }
+  }
+
+  a.nav-link i.fuel {
+    margin-right: 0.5em;
+  }
+
+  a.nav-link .nav-toggle-icons {
+    margin-left: auto; //pushes to the right by using up all remaining space as margin
   }
 
   li.section {

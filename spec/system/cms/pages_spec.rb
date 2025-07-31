@@ -10,6 +10,12 @@ describe 'view pages and sections' do
       let(:model) { cms_page }
     end
 
+    it 'has an audience section' do
+      within('div.cms-audience-component') do
+        expect(page).to have_content(I18n.t('components.cms.audience.title'))
+      end
+    end
+
     it 'displays the expected sections', if: sections do
       visible_sections.each do |cms_section|
         expect(page).to have_css("section.cms-page-section##{cms_section.slug}")

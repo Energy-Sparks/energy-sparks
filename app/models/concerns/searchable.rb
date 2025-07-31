@@ -10,7 +10,7 @@ module Searchable
     def search(query:, locale: :en, show_all: false)
       sql = ActiveRecord::Base.sanitize_sql_array(build_translated_search_sql(query:, locale:, show_all:))
       select("#{table_name}.*, search_results.rank, search_results.headline").joins(sql)
-                                                         .order('search_results.rank', "#{table_name}.id")
+                                                         .order('search_results.rank desc', "#{table_name}.id")
     end
 
     private
@@ -39,7 +39,8 @@ module Searchable
                 coalesce(rich_texts.body_field_text::text, '') ||
                 coalesce(mobility_strings.metadata_fields_text::text, '')
               ),
-              websearch_to_tsquery('#{dictionary}', #{search})
+              websearch_to_tsquery('#{dictionary}', #{search}),
+              'MaxFragments=1'
             ) AS headline
           FROM "#{table_name}"
           LEFT OUTER JOIN (

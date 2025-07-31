@@ -3,13 +3,15 @@
                                 options: { match_controller: true }) do |c| %>
   <% c.with_section toggler: false, visible: school.latest_adult_dashboard_alert_count&.positive?,
                     options: { match_controller: false } do |s| %>
-    <% s.with_item(name: "#{t('advice_pages.index.alerts.title')} (#{school.latest_adult_dashboard_alert_count})",
+    <% s.with_item(name: t('advice_pages.index.alerts.title'),
+                   note: "(#{school.latest_adult_dashboard_alert_count})",
                    href: alerts_school_advice_path(school), classes: 'section-link') %>
   <% end %>
   <% c.with_section toggler: false,
                     visible: school.latest_management_priority_count&.positive?,
                     options: { match_controller: false }  do |s| %>
-    <% s.with_item(name: "#{t('advice_pages.index.priorities.title')} (#{school.latest_management_priority_count})",
+    <% s.with_item(name: t('advice_pages.index.priorities.title'),
+                   note: "(#{school.latest_management_priority_count})",
                    href: priorities_school_advice_path(school),
                    classes: 'section-link') %>
   <% end %>

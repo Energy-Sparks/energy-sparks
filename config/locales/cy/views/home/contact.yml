@@ -4,7 +4,7 @@ cy:
       discover_html: Darganfod pa <a href='%{datasets_path}'>ddata agored</a> rydym yn eu defnyddio yn y gwasanaeth
       in_the_meantime: Yn y cyfamser gallwch
       learn_html: Dysgu sut i <a href='%{enrol_path}'>gofrestru eich ysgol</a>
-      read_html: Darllen <a href='%{for_teachers_path}'>am Sbarcynni</a> a nodau'r prosiect
+      read_html: Darllen <a href='%{product_path}'>am Sbarcynni</a> a nodau'r prosiect
       title: Gwybodaeth Bellach
     problem_reporting:
       content_1: Os ydych yn adrodd am broblem gyda'r gwasanaeth, ceisiwch gynnwys cymaint o fanylion â phosib yn eich e-bost, gan gynnwys pa borwr gwe a system weithredu rydych yn ei ddefnyddio, URL (cyfeiriad) y dudalen a phryd y cawsoch y broblem

@@ -23,10 +23,7 @@
     <div id="cms-page-body" class="col-md-5 col-lg-5 col-xl-7">
       <%= render 'cms/admin_buttons', content: @page, current_user: current_user %>
 
-      <%= render PromptComponent.new(status: :none) do |c| %>
-        <% c.with_title { 'Audience' } %>
-        <%= t("page.audience.#{@page.audience}") %>
-      <% end %>
+      <%= render Cms::AudienceComponent.new(page: @page, current_user: current_user) %>
 
       <% @sections.each do |section| %>
         <section id="<%= section.slug %>"

@@ -32,8 +32,8 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <span class="bg-teal-medium text-blue-very-dark text-uppercase mb-3 badge badge-primary">
-                  <%= section.page.category.title %>
+                <span class="bg-blue-very-dark text-white text-uppercase mb-3 badge badge-primary">
+                  <%= link_to section.page.category.title, category_path(section.page.category) %>
                 </span>
                 <% unless section.published %>
                   <span class="text-uppercase mb-3 badge badge-warning">

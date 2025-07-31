@@ -5,7 +5,7 @@ en:
       discover_html: Discover what <a href='%{datasets_path}'>open data</a> we use in the service
       in_the_meantime: In the meantime you can
       learn_html: Learn how to <a href='%{enrol_path}'>enrol your school</a>
-      read_html: Read <a href='%{for_teachers_path}'>about Energy Sparks</a> and the goals of the project
+      read_html: Read <a href='%{product_path}'>about Energy Sparks</a> and the goals of the project
       title: Further Information
     problem_reporting:
       content_1: If you are reporting a problem with the service, please try to include as much detail in your email as possible, including which web browser and operating system you are using, the URL (address) of the page and when you experienced the problem

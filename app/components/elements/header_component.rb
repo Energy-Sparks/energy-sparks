@@ -1,5 +1,7 @@
 module Elements
   class HeaderComponent < ApplicationComponent
+    attr_reader :title
+
     def initialize(title:, level: 1, url: nil, **_kwargs)
       super
       @title = title
