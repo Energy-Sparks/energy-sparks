@@ -10,22 +10,22 @@
    <table class="table table-sorted">
      <thead>
        <tr>
-         <th>Category</th>
          <th>Page</th>
          <th>Title</th>
          <th>Published?</th>
+         <th>Updated By</th>
+         <th>Updated At</th>
          <th data-orderable="false">Actions</th>
        </tr>
      </thead>
      <tbody>
        <% @sections.each do |section| %>
         <tr>
-          <td><%= if section.page
-                    link_to section.page.category.title, edit_admin_cms_category_path(section.page.category)
-                  end %></td>
           <td><%= link_to section.page.title, edit_admin_cms_page_path(section.page) if section.page %></td>
           <td><%= link_to section.title, edit_admin_cms_section_path(section) %></td>
           <td><%= checkmark section.published? %></td>
+          <td><%= section&.updated_by&.name %></td>
+          <td><%= nice_date_times(section.updated_at) if section.updated_at %></td>
           <td>
             <%= link_to 'Edit', edit_admin_cms_section_path(section), class: 'btn btn-sm' %>
             <% if section.page %>
