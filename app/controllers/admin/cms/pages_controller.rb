@@ -29,7 +29,7 @@ module Admin
           params[:page][:sections_attributes].each do |id, section_params|
             section_id = section_params[:id]
             if section_params[:_delete] == '1'
-              @page.sections.where(id: section_id).update(page_id: nil, position: nil)
+              @page.sections.where(id: section_id).update(page_id: nil, position: nil, published: false)
               params[:page][:sections_attributes].delete(id)
             end
           end

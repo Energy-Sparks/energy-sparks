@@ -26,20 +26,20 @@
           <td><%= checkmark category.published? %></td>
           <td><%= category.pages.published.count %> / <%= category.pages.count %></td>
           <td>
-            <%= link_to 'Edit', edit_admin_cms_category_path(category), class: 'btn' %>
-            <%= link_to 'New Page', new_admin_cms_page_path(category_id: category.id), class: 'btn' %>
-            <%= link_to 'View', category_path(category), class: 'btn' %>
+            <%= link_to 'Edit', edit_admin_cms_category_path(category), class: 'btn btn-sm' %>
+            <%= link_to 'New Page', new_admin_cms_page_path(category_id: category.id), class: 'btn btn-sm' %>
+            <%= link_to 'View', category_path(category), class: 'btn btn-sm' %>
             <% if category.published? %>
             <%= link_to 'Hide',
                         hide_admin_cms_category_path(category),
                         method: :put,
-                        class: 'btn',
+                        class: 'btn btn-sm',
                         data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
             <% elsif category.publishable? %>
             <%= link_to 'Publish',
                         publish_admin_cms_category_path(category),
                         method: :put,
-                        class: 'btn',
+                        class: 'btn btn-sm',
                         data: { confirm: 'Note this will make the content public, are you sure?' } %>
             <% end %>
           </td>

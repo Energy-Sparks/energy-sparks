@@ -27,22 +27,24 @@
           <td><%= link_to section.title, edit_admin_cms_section_path(section) %></td>
           <td><%= checkmark section.published? %></td>
           <td>
-            <%= link_to 'Edit', edit_admin_cms_section_path(section), class: 'btn' %>
-            <%= link_to 'View', category_page_path(section.page.category,
-                                                   section.page,
-                                                   anchor: section.slug), class: 'btn' %>
-            <% if section.published? %>
-            <%= link_to 'Hide',
-                        hide_admin_cms_section_path(section),
-                        method: :put,
-                        class: 'btn',
-                        data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
-            <% elsif section.publishable? %>
-            <%= link_to 'Publish',
-                        publish_admin_cms_section_path(section),
-                        method: :put,
-                        class: 'btn',
-                        data: { confirm: 'Note this will make the content public, are you sure?' } %>
+            <%= link_to 'Edit', edit_admin_cms_section_path(section), class: 'btn btn-sm' %>
+            <% if section.page %>
+              <%= link_to 'View', category_page_path(section.page.category,
+                                                     section.page,
+                                                     anchor: section.slug), class: 'btn btn-sm' %>
+              <% if section.published? %>
+              <%= link_to 'Hide',
+                          hide_admin_cms_section_path(section),
+                          method: :put,
+                          class: 'btn btn-sm',
+                          data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
+              <% elsif section.publishable? %>
+              <%= link_to 'Publish',
+                          publish_admin_cms_section_path(section),
+                          method: :put,
+                          class: 'btn btn-sm',
+                          data: { confirm: 'Note this will make the content public, are you sure?' } %>
+              <% end %>
             <% end %>
           </td>
         </tr>
