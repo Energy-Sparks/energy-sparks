@@ -859,8 +859,6 @@ Rails.application.routes.draw do
   # Old 'find out more' pages
   get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')
   get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice')
-  # Maintain old scoreboard URL
-  get '/schools/:name/scoreboard', to: redirect('/scoreboards')
 
   # Old analysis pages
   get '/schools/:name/analysis', to: redirect('/schools/%{name}/advice')
