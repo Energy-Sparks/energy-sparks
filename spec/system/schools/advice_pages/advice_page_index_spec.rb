@@ -169,13 +169,15 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_link("#{I18n.t('advice_pages.index.alerts.title')} (2)",
-                                     href: alerts_school_advice_path(school))
+        expect(page).to have_link(I18n.t('advice_pages.index.alerts.title'),
+                                  href: alerts_school_advice_path(school))
       }
+
+      it { expect(page).to have_content('(2)') }
 
       context 'it shows the alerts' do
         before do
-          click_on "#{I18n.t('advice_pages.index.alerts.title')} (2)"
+          click_on I18n.t('advice_pages.index.alerts.title')
         end
 
         it 'displays the alert group' do
@@ -196,13 +198,15 @@ RSpec.describe 'advice pages', :include_application_helper, type: :system do
       end
 
       it {
-        expect(page).to have_link("#{I18n.t('advice_pages.index.priorities.title')} (2)",
-                                     href: priorities_school_advice_path(school))
+        expect(page).to have_link(I18n.t('advice_pages.index.priorities.title'),
+                                  href: priorities_school_advice_path(school))
       }
+
+      it { expect(page).to have_content('(2)') }
 
       context 'it shows the priorities' do
         before do
-          click_on "#{I18n.t('advice_pages.index.priorities.title')} (2)"
+          click_on I18n.t('advice_pages.index.priorities.title')
         end
 
         it 'displays English alert text' do
