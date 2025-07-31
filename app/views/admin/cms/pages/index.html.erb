@@ -16,6 +16,8 @@
          <th>Audience</th>
          <th>Published?</th>
          <th data-orderable="false">Published Sections</th>
+         <th>Updated By</th>
+         <th>Updated At</th>
          <th data-orderable="false">Actions</th>
        </tr>
      </thead>
@@ -27,21 +29,23 @@
           <td><%= t("page.audience.#{page.audience}") %></td>
           <td><%= checkmark page.published? %></td>
           <td><%= page.sections.published.count %> / <%= page.sections.count %></td>
+          <td><%= page&.updated_by&.name %></td>
+          <td><%= nice_date_times(page.updated_at) if page.updated_at %></td>
           <td>
-            <%= link_to 'Edit', edit_admin_cms_page_path(page), class: 'btn' %>
-            <%= link_to 'New Section', new_admin_cms_section_path(page_id: page.id), class: 'btn' %>
-            <%= link_to 'View', category_page_path(page.category, page), class: 'btn' %>
+            <%= link_to 'Edit', edit_admin_cms_page_path(page), class: 'btn btn-sm' %>
+            <%= link_to 'New Section', new_admin_cms_section_path(page_id: page.id), class: 'btn btn-sm' %>
+            <%= link_to 'View', category_page_path(page.category, page), class: 'btn btn-sm' %>
             <% if page.published? %>
             <%= link_to 'Hide',
                         hide_admin_cms_page_path(page),
                         method: :put,
-                        class: 'btn',
+                        class: 'btn btn-sm',
                         data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
             <% elsif page.publishable? %>
             <%= link_to 'Publish',
                         publish_admin_cms_page_path(page),
                         method: :put,
-                        class: 'btn',
+                        class: 'btn btn-sm',
                         data: { confirm: 'Note this will make the content public, are you sure?' } %>
             <% end %>
           </td>
