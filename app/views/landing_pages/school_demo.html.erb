@@ -8,10 +8,14 @@
 </div>
 
 <div class="container mb-5">
-  <%= render Layout::GridComponent.new(cols: 1, classes: 'mt-2 mb-2', id: 'video') do |grid| %>
-    <% grid.with_iframe classes: 'rounded-xl', column_classes: 'col-md-12',
-                        src: 'https://www.youtube.com/embed/F5bL1_HsI0U', min_height: '420px' %>
-  <% end %>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <%= render Layout::GridComponent.new(cols: 1, classes: 'my-2', id: 'video') do |grid| %>
+        <% grid.with_iframe classes: 'rounded-xl', column_classes: 'col-md-12',
+                            src: 'https://www.youtube.com/embed/F5bL1_HsI0U', min_height: '420px' %>
+      <% end %>
+    </div>
+  </div>
 
   <p class="small">
     <strong><%= t('campaigns.school_demo.alternative_question') %></strong>
