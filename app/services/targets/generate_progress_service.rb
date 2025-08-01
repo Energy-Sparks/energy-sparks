@@ -45,7 +45,7 @@ module Targets
     private
 
     def apply_target_reduction(fuel_type, value)
-      reduction = value * (target_for_fuel_type(fuel_type) / 100.0)
+      reduction = value * (target[fuel_type] / 100.0)
       value - reduction
     end
 
@@ -76,10 +76,9 @@ module Targets
 
     def calculate_monthly_consumption(fuel_type)
       return nil unless has_fuel_type_and_target?(fuel_type)
-
-      if target["#{fuel_type}_monthly_consumption"]&.last&.[](5) # last month complete
-        return target["#{fuel_type}_monthly_consumption"]
-      end
+      # last month complete
+      consumption = target["#{fuel_type}_monthly_consumption"]
+      return consumption if consumption&.last&.[](5) == false
 
       consumption = calculate_monthly_consumption_between_target_dates(fuel_type)
       return nil if consumption.all? { |month| month[3].nil? } # not enough data
@@ -123,18 +122,7 @@ module Targets
     def has_target_for_fuel_type?(fuel_type)
       return false if target.blank?
 
-      target_for_fuel_type(fuel_type).present?
-    end
-
-    def target_for_fuel_type(fuel_type)
-      case fuel_type
-      when :electricity
-        target.electricity
-      when :gas
-        target.gas
-      when :storage_heater, :storage_heaters
-        target.storage_heaters
-      end
+      target[fuel_type].present?
     end
 
     def target
