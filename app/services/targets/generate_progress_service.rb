@@ -56,7 +56,7 @@ module Targets
       [day_kwhs.compact.sum, day_kwhs.include?(nil)]
     end
 
-    def calculate_monthly_consumption_each(fuel_type)
+    def calculate_monthly_consumption_for_target_dates(fuel_type)
       start_date = target.start_date.beginning_of_month
       end_date = target.target_date.beginning_of_month.prev_day
       (start_date..end_date).filter_map do |date|
@@ -81,7 +81,7 @@ module Targets
         return target["#{fuel_type}_monthly_consumption"]
       end
 
-      consumption = calculate_monthly_consumption_each(fuel_type)
+      consumption = calculate_monthly_consumption_for_target_dates(fuel_type)
       return nil if consumption.all? { |month| month[3].nil? } # not enough data
 
       consumption
