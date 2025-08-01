@@ -77,7 +77,7 @@ module Targets
     def calculate_monthly_consumption(fuel_type)
       return nil unless has_fuel_type_and_target?(fuel_type)
 
-      if target["#{fuel_type}_monthly_consumption"]&.all? { |month| !month[5] } # all complete
+      if target["#{fuel_type}_monthly_consumption"]&.last&.[](5) # last month complete
         return target["#{fuel_type}_monthly_consumption"]
       end
 
