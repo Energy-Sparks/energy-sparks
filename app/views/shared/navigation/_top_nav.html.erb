@@ -33,10 +33,11 @@
         <!-- About menu -->
         <%= render 'shared/navigation/top_nav/about_menu' %>
 
-        <!-- Support us link -->
-        <li class="nav-item">
-          <%= link_to t('support_us.title'), support_us_path, class: 'nav-link' %>
-        </li>
+        <% if Flipper.enabled?(:support_pages, current_user) %>
+          <li class="nav-item">
+            <%= link_to t('common_nav_bar_menus.help'), support_path, class: 'nav-link' %>
+          </li>
+        <% end %>
 
         <% if can?(:manage, :admin_functions) %>
           <!-- Manage menu - admin only -->
