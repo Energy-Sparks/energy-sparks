@@ -8,6 +8,11 @@
           <li><%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path %></li>
           <li><%= link_to t('our_schools_menu.view_schools'), schools_path %></li>
           <li><%= link_to t('our_schools_menu.scoreboards'), scoreboards_path %></li>
+          <% if Flipper.enabled?(:support_pages, current_user) %>
+            <li>
+              <%= link_to t('common_nav_bar_menus.help'), support_path %>
+            </li>
+          <% end %>
           <li><%= link_to t('about_menu.contact'), contact_path %></li>
         </ul>
       </div>
