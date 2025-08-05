@@ -25,62 +25,86 @@ module Targets
     end
 
     def generate!
-      return unless Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
+      return unless Targets::SchoolTargetService.targets_enabled?(@school)
 
-      target.update!(
-        electricity_progress: fuel_type_progress(:electricity),
-        electricity_report: progress_report(:electricity),
-        electricity_monthly_consumption: calculate_monthly_consumption(:electricity),
-        gas_progress: fuel_type_progress(:gas),
-        gas_report: progress_report(:gas),
-        gas_monthly_consumption: calculate_monthly_consumption(:gas),
-        storage_heaters_progress: fuel_type_progress(:storage_heaters),
-        storage_heaters_report: progress_report(:storage_heaters),
-        storage_heaters_monthly_consumption: calculate_monthly_consumption(:storage_heaters),
-        report_last_generated: Time.zone.now
-      )
+      @school.school_targets.find_each do |target|
+        next if target_complete?(target)
+
+        target.update!(
+          electricity_progress: fuel_type_progress(:electricity),
+          electricity_report: progress_report(:electricity),
+          electricity_monthly_consumption: calculate_monthly_consumption(:electricity, target),
+          gas_progress: fuel_type_progress(:gas),
+          gas_report: progress_report(:gas),
+          gas_monthly_consumption: calculate_monthly_consumption(:gas, target),
+          storage_heaters_progress: fuel_type_progress(:storage_heaters),
+          storage_heaters_report: progress_report(:storage_heaters),
+          storage_heaters_monthly_consumption: calculate_monthly_consumption(:storage_heaters, target),
+          report_last_generated: Time.zone.now
+        )
+      end
       target
     end
 
     private
 
-    def apply_target_reduction(fuel_type, value)
+    def target_complete?(target)
+      %i[electricity gas storage_heaters].all? do |fuel_type|
+        if fuel_type_and_target?(fuel_type, target)
+          consumption_complete?(fuel_type, target)
+        else
+          true
+        end
+      end
+    end
+
+    def consumption_complete?(fuel_type, target)
+      monthly_consumption(target, fuel_type)&.last&.[](4) == false
+    end
+
+    def monthly_consumption(target, fuel_type)
+      target["#{fuel_type}_monthly_consumption"]
+    end
+
+    def apply_target_reduction(fuel_type, value, target)
       reduction = value * (target[fuel_type] / 100.0)
       value - reduction
     end
 
     def calculate_month_consumption(beginning_of_month, fuel_type)
       day_kwhs = (beginning_of_month..beginning_of_month.end_of_month).map do |date|
-        @aggregated_school.aggregate_meter(fuel_type).amr_data[date]&.one_day_kwh
+        [date, @aggregated_school.aggregate_meter(fuel_type).amr_data[date]&.one_day_kwh]
       end
-      [day_kwhs.compact.sum, day_kwhs.include?(nil)]
+      kwhs = day_kwhs.map(&:second)
+      [kwhs.compact.sum, kwhs.include?(nil), day_kwhs.reverse.find { |_date, kwh| !kwh.nil? }&.first]
     end
 
-    def calculate_monthly_consumption_between_target_dates(fuel_type)
+    def calculate_monthly_consumption_between_target_dates(fuel_type, target)
       start_date = target.start_date.beginning_of_month
       end_date = target.target_date.beginning_of_month.prev_day
       (start_date..end_date).filter_map do |date|
         next unless date.day == 1
 
-        previous_consumption, previous_missing = calculate_month_consumption(date - 1.year, fuel_type)
+        previous_consumption, previous_missing, = calculate_month_consumption(date - 1.year, fuel_type)
         if previous_missing
           previous_consumption = nil
         else
-          target_consumption = apply_target_reduction(fuel_type, previous_consumption)
+          target_consumption = apply_target_reduction(fuel_type, previous_consumption, target)
         end
-        current_consumption, current_missing = calculate_month_consumption(date, fuel_type)
-        [date.year, date.month, current_consumption, previous_consumption, target_consumption,
-         previous_missing || current_missing]
+        current_consumption, current_missing, last_date = calculate_month_consumption(date, fuel_type)
+        month = [last_date, current_consumption, previous_consumption, target_consumption,
+                 previous_missing || current_missing]
+        month
       end
     end
 
-    def calculate_monthly_consumption(fuel_type)
-      return nil unless has_fuel_type_and_target?(fuel_type)
-      # last month complete
-      consumption = target["#{fuel_type}_monthly_consumption"]
-      return consumption if consumption&.last&.[](5) == false
+    def calculate_monthly_consumption(fuel_type, target)
+      return nil unless fuel_type_and_target?(fuel_type, target)
 
-      consumption = calculate_monthly_consumption_between_target_dates(fuel_type)
+      consumption = monthly_consumption(fuel_type, target)
+      return consumption if consumption_complete?(fuel_type, target)
+
+      consumption = calculate_monthly_consumption_between_target_dates(fuel_type, target)
       return nil if consumption.all? { |month| month[3].nil? } # not enough data
 
       consumption
@@ -108,18 +132,18 @@ module Targets
     end
 
     def can_generate_fuel_type?(fuel_type)
-      has_fuel_type_and_target?(fuel_type) && enough_data_to_calculate_target?(fuel_type)
+      fuel_type_and_target?(fuel_type, target) && enough_data_to_calculate_target?(fuel_type)
     end
 
-    def has_fuel_type_and_target?(fuel_type)
-      has_fuel_type?(fuel_type) && has_target_for_fuel_type?(fuel_type)
+    def fuel_type_and_target?(fuel_type, target)
+      fuel_type?(fuel_type) && target_for_fuel_type?(fuel_type, target)
     end
 
-    def has_fuel_type?(fuel_type)
+    def fuel_type?(fuel_type)
       @school.send(:"has_#{fuel_type}?")
     end
 
-    def has_target_for_fuel_type?(fuel_type)
+    def target_for_fuel_type?(fuel_type, target)
       return false if target.blank?
 
       target[fuel_type].present?
