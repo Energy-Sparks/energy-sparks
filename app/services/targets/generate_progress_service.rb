@@ -25,22 +25,24 @@ module Targets
     end
 
     def generate!
-      return unless Targets::SchoolTargetService.targets_enabled?(@school)
+      return unless Targets::SchoolTargetService.targets_enabled?(@school) && target.present?
 
+      target.update!(
+        electricity_progress: fuel_type_progress(:electricity),
+        electricity_report: progress_report(:electricity),
+        gas_progress: fuel_type_progress(:gas),
+        gas_report: progress_report(:gas),
+        storage_heaters_progress: fuel_type_progress(:storage_heaters),
+        storage_heaters_report: progress_report(:storage_heaters),
+        report_last_generated: Time.zone.now
+      )
       @school.school_targets.find_each do |target|
         next if target_complete?(target)
 
         target.update!(
-          electricity_progress: fuel_type_progress(:electricity),
-          electricity_report: progress_report(:electricity),
           electricity_monthly_consumption: calculate_monthly_consumption(:electricity, target),
-          gas_progress: fuel_type_progress(:gas),
-          gas_report: progress_report(:gas),
           gas_monthly_consumption: calculate_monthly_consumption(:gas, target),
-          storage_heaters_progress: fuel_type_progress(:storage_heaters),
-          storage_heaters_report: progress_report(:storage_heaters),
           storage_heaters_monthly_consumption: calculate_monthly_consumption(:storage_heaters, target),
-          report_last_generated: Time.zone.now
         )
       end
       target
