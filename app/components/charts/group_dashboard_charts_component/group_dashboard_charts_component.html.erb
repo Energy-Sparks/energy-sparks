@@ -1,0 +1,45 @@
+<%= render TitledSectionComponent.new(id: id, classes: classes) do |section| %>
+  <% if title? %>
+    <% section.with_title do %>
+      <%= title %>
+    <% end %>
+  <% end %>
+  <% if intro? %>
+    <% section.with_intro do %>
+      <%= intro %>
+    <% end %>
+  <% end %>
+  <% section.with_body do %>
+    <ul class="nav nav-tabs locales" id="management-energy-overview" role="tablist">
+      <% comparisons.each_with_index do |comparison, index| %>
+        <li class="nav-item">
+          <a class="nav-link <%= 'active' if index.zero? %>"
+             id="<%= comparison.key %>-tab" data-toggle="tab"
+             href="#<%= comparison.key %>-overview"
+             role="tab"
+             aria-controls="<%= comparison.key %>-overview"
+             aria-selected="true">
+              <%= comparison.title %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content" id="management-energy-overview-tabs">
+      <% comparisons.each_with_index do |comparison, index| %>
+        <div class="tab-pane fade show <%= 'active' if index.zero? %>"
+             id="<%= comparison.key %>-overview"
+             role="tabpanel"
+             aria-labelledby="<%= comparison.key %>-tab">
+
+             <div id="chart_wrapper_<%= comparison.key %>" class="chart-wrapper">
+               <div id="<%= comparison.key %>" class="analysis-chart tabbed <%= comparison.key %>-overview-analysis-chart"
+                    data-autoload-chart="<%= index.zero? %>"
+                    data-chart-config="<%= chart_config_json(comparison) %>">
+               </div>
+               <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
+             </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
