@@ -36,8 +36,6 @@ module Charts
       begin
         polymorphic_path(path, params: { school_group_ids: [@school_group.id] }, format: :json)
       rescue NoMethodError => e
-        puts e
-        puts e.backtrace
         nil
       end
     end
