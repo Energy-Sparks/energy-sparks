@@ -17,7 +17,7 @@ namespace :school do
 
       # After being redirected, auto refresh on an interval until the download form appears
       puts 'Submitted form, waiting for download'
-      get_download agent
+      get_download(agent, args)
     rescue => e
       warn e
       EnergySparks::Log.exception(e, {})
@@ -25,7 +25,7 @@ namespace :school do
   end
 end
 
-def get_download(agent)
+def get_download(agent, args)
   attempt = 0
   loop do
     sleep 3
