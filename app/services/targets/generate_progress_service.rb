@@ -94,8 +94,8 @@ module Targets
           target_consumption = apply_target_reduction(fuel_type, previous_consumption, target)
         end
         current_consumption, current_missing, last_date = calculate_month_consumption(date, fuel_type)
-        month = [last_date, current_consumption, previous_consumption, target_consumption,
-                 previous_missing || current_missing]
+        month = [date.year, date.month, current_consumption, previous_consumption, target_consumption,
+                 previous_missing || current_missing, last_date]
         month
       end
     end
@@ -109,7 +109,9 @@ module Targets
       consumption = calculate_monthly_consumption_between_target_dates(fuel_type, target)
       return nil if consumption.all? { |month| month[3].nil? } # not enough data
 
-      consumption
+      last_date = consumption.reverse.find { |month| !month.last.nil? }&.last
+
+      consumption.pluck(0..-2) + [last_date]
     end
 
     def fuel_type_progress(fuel_type)

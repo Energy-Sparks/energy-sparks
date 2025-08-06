@@ -275,20 +275,20 @@ describe Targets::GenerateProgressService do
       end
 
       def expected_month_consumption(year)
-        consumption = [["#{year}-05-31", 1488, 1488, 1443.36, false],
-                       ["#{year}-06-30", 1440, 1440, 1396.8, false],
-                       ["#{year}-07-31", 1488, 1488, 1443.36, false],
-                       ["#{year}-08-31", 1488, 1488, 1443.36, false],
-                       ["#{year}-09-30", 1440, 1440, 1396.8, false],
-                       ["#{year}-10-31", 1488, 1488, 1443.36, false],
-                       ["#{year}-11-30", 1440, 1440, 1396.8, false],
-                       ["#{year}-12-31", 1488, 1488, 1443.36, false],
-                       ["#{year + 1}-01-31", 1488, 1488, 1443.36, false],
-                       ["#{year + 1}-02-28", 1344, 1392, 1350.24, false],
-                       ["#{year + 1}-03-31", 1488, 1488, 1443.36, false],
-                       ["#{year + 1}-04-30", 1440, 1440, 1396.8, false]]
-        consumption[9] = ["#{year + 1}-02-29", 1392, 1344, 1303.68, false] if year == 2023
-        consumption[11] = ['2025-04-15', 720, 1440, 1396.8, true] if year == 2024
+        consumption = [[year, 5, 1488, 1488, 1443.36, false],
+                       [year, 6, 1440, 1440, 1396.8, false],
+                       [year, 7, 1488, 1488, 1443.36, false],
+                       [year, 8, 1488, 1488, 1443.36, false],
+                       [year, 9, 1440, 1440, 1396.8, false],
+                       [year, 10, 1488, 1488, 1443.36, false],
+                       [year, 11, 1440, 1440, 1396.8, false],
+                       [year, 12, 1488, 1488, 1443.36, false],
+                       [year + 1, 1, 1488, 1488, 1443.36, false],
+                       [year + 1, 2, 1344, 1392, 1350.24, false],
+                       [year + 1, 3, 1488, 1488, 1443.36, false],
+                       [year + 1, 4, 1440, 1440, 1396.8, false]]
+        consumption[9] = [2024, 2, 1392, 1344, 1303.68, false] if year == 2023
+        consumption[11] = [2025, 4, 720, 1440, 1396.8, true] if year == 2024
         consumption
       end
 
@@ -296,8 +296,9 @@ describe Targets::GenerateProgressService do
         target2023 = create(:school_target, school:, electricity: 3,
                                             start_date: Date.new(2023, 5, 1), target_date: Date.new(2024, 5, 1))
         meter_collection = run(Date.new(2025, 4, 15), 3.years)
-        expect(target2023.reload.electricity_monthly_consumption).to eq(expected_month_consumption(2023))
-        expect(target.reload.electricity_monthly_consumption).to eq(expected_month_consumption(2024))
+        expect(target2023.reload.electricity_monthly_consumption).to \
+          eq(expected_month_consumption(2023) + ['2024-04-30'])
+        expect(target.reload.electricity_monthly_consumption).to eq(expected_month_consumption(2024) + ['2025-04-15'])
         expect { described_class.new(school, meter_collection).generate! }.to \
           change { target.reload.updated_at }.and(not_change { target2023.reload.updated_at })
       end
@@ -305,8 +306,8 @@ describe Targets::GenerateProgressService do
       it 'when data covers last month' do
         run(Date.new(2025, 5, 15), 2.years)
         target.reload
-        expect(target.electricity_monthly_consumption.first).to eq(['2024-05-31', 1488, nil, nil, true])
-        expect(target.electricity_monthly_consumption.last).to eq(['2025-04-30', 1440, 1440, 1396.8, false])
+        expect(target.electricity_monthly_consumption.first).to eq([2024, 5, 1488, nil, nil, true])
+        expect(target.electricity_monthly_consumption[-2]).to eq([2025, 4, 1440, 1440, 1396.8, false])
       end
 
       it 'with insufficient data' do
@@ -316,7 +317,7 @@ describe Targets::GenerateProgressService do
 
       it 'works with an incomplete month' do
         run(Date.new(2025, 3, 15), 2.years)
-        expect(target.reload.electricity_monthly_consumption.last).to eq([nil, 0, 1440, 1396.8, true])
+        expect(target.reload.electricity_monthly_consumption[-2]).to eq([2025, 4, 0, 1440, 1396.8, true])
       end
     end
   end
