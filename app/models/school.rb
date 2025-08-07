@@ -549,9 +549,11 @@ class School < ApplicationRecord
     @latest_management_priority_count ||= latest_management_priorities.count
   end
 
-  def latest_management_priorities
+  def latest_management_priorities(exclude_capital: false)
     if latest_content
-      latest_content.management_priorities
+      priorities = latest_content.management_priorities
+      priorities = priorities.without_investment if exclude_capital
+      priorities
     else
       ManagementPriority.none
     end

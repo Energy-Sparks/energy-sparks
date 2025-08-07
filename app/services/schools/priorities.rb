@@ -30,6 +30,12 @@ module Schools
       end.reverse
     end
 
+    def self.by_energy_saving(priorities)
+      interpolate(priorities).sort_by do |priority|
+        priority.template_variables[:one_year_saving_kwh]
+      end
+    end
+
     private_class_method def self.money_to_i(val)
       val.gsub(/\D/, '').to_i
     end

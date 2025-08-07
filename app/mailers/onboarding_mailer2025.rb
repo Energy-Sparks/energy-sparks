@@ -15,7 +15,8 @@ class OnboardingMailer2025 < OnboardingMailer
     @school = params[:school]
     @title = @school.name
     @user = params[:user]
-    @top_priority = Schools::Priorities.by_average_one_year_saving(@school.latest_management_priorities).first
+    management_priorities = @school.latest_management_priorities(exclude_capital: true)
+    @top_priority = Schools::Priorities.by_energy_saving(management_priorities).first
     make_bootstrap_mail(to: @user.email, subject: default_i18n_subject(school: @school.name, locale: locale_param))
   end
 
@@ -24,7 +25,8 @@ class OnboardingMailer2025 < OnboardingMailer
     @school = params[:school]
     @users = params[:users]
     @staff = params[:staff]
-    @top_priority = Schools::Priorities.by_average_one_year_saving(@school.latest_management_priorities).first
+    management_priorities = @school.latest_management_priorities(exclude_capital: true)
+    @top_priority = Schools::Priorities.by_energy_saving(management_priorities).first
     super
   end
 end

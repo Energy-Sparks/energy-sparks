@@ -1210,8 +1210,12 @@ module Aggregation
     # These figures are used to create a ratio for adjusting the actual usage on the substitute day, e.g.
     # so that its higher or lower based on the temperature of the missing day.
     def adjusted_substitute_heating_kwh(missing_day, substitute_day)
-      substitute_day_temperature = @temperatures.average_temperature(substitute_day)
-      missing_day_temperature = @temperatures.average_temperature(missing_day)
+      model_parameters = heating_model.regression_model_parameters(substitute_day)
+
+      # the :none model indicates a regression for when the boiler is off, or for weekend/holiday for
+      # kitchen only meters. In this case don't try and do temperature compensation
+      return @amr_data.days_kwh_x48(substitute_day) if model_parameters[:model_name] == :none
+
       # The base temperature of the model is the temperature above which we'd expect to use no gas
       # If the substitute day temperature is above that, then just return the unmodified usage.
       #
@@ -1220,7 +1224,8 @@ module Aggregation
       # This avoids kwh_prediction_for_substitute_day being
       #  - a negligible value which results in the ratio being a huge multiplier
       #  - a negative value, which otherwise results in zero usage.
-      model_parameters = heating_model.regression_model_parameters(substitute_day)
+      substitute_day_temperature = @temperatures.average_temperature(substitute_day)
+      missing_day_temperature = @temperatures.average_temperature(missing_day)
 
       if model_parameters[:base_temperature] && substitute_day_temperature > model_parameters[:base_temperature]
         logger.warn "Warning: #{substitute_day} temperature #{substitute_day_temperature} is above model base temp, using unmodified data"
