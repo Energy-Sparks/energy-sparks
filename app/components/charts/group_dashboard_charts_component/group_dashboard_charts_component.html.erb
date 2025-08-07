@@ -14,7 +14,7 @@
       <% comparisons.each_with_index do |comparison, index| %>
         <li class="nav-item">
           <a class="nav-link <%= 'active' if index.zero? %>"
-             id="<%= comparison.key %>"
+             id="<%= comparison.key %>-tab"
              data-toggle="tab"
              href="#<%= comparison.key %>"
              role="tab"
