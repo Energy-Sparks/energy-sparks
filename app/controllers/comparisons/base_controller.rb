@@ -32,7 +32,6 @@ module Comparisons
           render partial: filter[:table_name].to_s
         end
         format.json do
-          puts create_chart_json.inspect
           render json: create_chart_json
         end
       end
@@ -154,18 +153,8 @@ module Comparisons
     def create_chart_json
       chart_data = create_charts(@results).first
       return {} unless chart_data && chart_data.is_a?(Hash)
-      ChartDataValues.as_chart_json(ChartDataValues.new(default_chart_config(chart_data),
-                                                         chart_data[:id]).process)
-    end
-
-    def default_chart_config(chart_data)
-      {
-        x_axis: chart_data[:x_axis],
-        x_data: chart_data[:x_data],
-        y_axis_label: chart_data[:y_axis_label],
-        chart1_type: :bar,
-        chart1_subtype: :stacked
-      }
+      chart_data = chart_data.except(:id).merge({ chart1_type: :bar, chart1_subtype: :stacked })
+      ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison).process)
     end
 
     def filter

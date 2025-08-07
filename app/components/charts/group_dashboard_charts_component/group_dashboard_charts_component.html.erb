@@ -11,31 +11,31 @@
   <% end %>
   <% section.with_body do %>
     <ul class="nav nav-tabs locales" id="management-energy-overview" role="tablist">
-      <% comparisons.each_with_index do |comparison, index| %>
+      <% reports.each_with_index do |report, index| %>
         <li class="nav-item">
           <a class="nav-link <%= 'active' if index.zero? %>"
-             id="<%= comparison.key %>-tab"
+             id="<%= report.key %>-tab"
              data-toggle="tab"
-             href="#<%= comparison.key %>"
+             href="#<%= report.key %>"
              role="tab"
-             aria-controls="<%= comparison.key %>-overview"
+             aria-controls="<%= report.key %>-overview"
              aria-selected="true">
-              <%= comparison.title %>
+              <%= report.title %>
           </a>
         </li>
       <% end %>
     </ul>
     <div class="tab-content" id="management-energy-overview-tabs">
-      <% comparisons.each_with_index do |comparison, index| %>
+      <% reports.each_with_index do |report, index| %>
         <div class="tab-pane fade show <%= 'active' if index.zero? %>"
-             id="<%= comparison.key %>"
+             id="<%= report.key %>"
              role="tabpanel"
-             aria-labelledby="<%= comparison.key %>-tab">
+             aria-labelledby="<%= report.key %>-tab">
 
-             <div id="chart_wrapper_<%= comparison.key %>" class="chart-wrapper">
-               <div id="<%= comparison.key %>-chart" class="analysis-chart tabbed <%= comparison.key %>-analysis-chart"
+             <div id="chart_wrapper_<%= report.key %>" class="chart-wrapper">
+               <div id="<%= report.key %>-chart" class="analysis-chart tabbed <%= report.key %>-analysis-chart"
                     data-autoload-chart="<%= index.zero? %>"
-                    data-chart-config="<%= chart_config_json(comparison) %>">
+                    data-chart-config="<%= chart_config_json(report) %>">
                </div>
                <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
              </div>

@@ -1,6 +1,6 @@
 module Charts
   class GroupDashboardChartsComponent < ApplicationComponent
-    attr_reader :school_group, :comparisons
+    attr_reader :school_group, :reports
 
     renders_one :title
     renders_one :intro
@@ -10,11 +10,11 @@ module Charts
                    **_kwargs)
       super
       @school_group = school_group
-      @comparisons = comparisons.map { |k| Comparison::Report.find_by_key(k) }
+      @reports = comparisons.map { |k| Comparison::Report.find_by_key(k) }
     end
 
     def render?
-      comparisons&.any?
+      reports&.any?
     end
 
     def chart_config_json(id)
@@ -34,8 +34,8 @@ module Charts
       # If the key is plural then rails routing works slightly  differently, so exclude :index component
       path << :index if report.key.singularize == report.key
       begin
-        polymorphic_path(path, params: { school_group_ids: [@school_group.id] }, format: :json)
-      rescue NoMethodError => e
+        polymorphic_path(path, params: { school_group_ids: [school_group.id] }, format: :json)
+      rescue NoMethodError
         nil
       end
     end
