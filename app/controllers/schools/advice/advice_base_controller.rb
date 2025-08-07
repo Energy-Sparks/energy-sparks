@@ -98,7 +98,7 @@ module Schools
       end
 
       def load_advice_page
-        @advice_page = AdvicePage.find_by_key(advice_page_key)
+        @advice_page = AdvicePage.find_by!(key: advice_page_key)
       end
 
       def check_authorisation

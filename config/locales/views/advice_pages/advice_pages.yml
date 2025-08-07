@@ -78,6 +78,7 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
+      manage_targets: Manage targets
       overview: Overview
       pages:
         baseload: Baseload
@@ -87,11 +88,13 @@ en:
         electricity_meter_breakdown: Meter comparisons
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
+        electricity_target: Target
         gas_costs: Tariffs and costs
         gas_long_term: Long term changes
         gas_meter_breakdown: Meter comparisons
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
+        gas_target: Target
         heating_control: Heating control
         hot_water: Hot water
         solar_pv: Solar PV

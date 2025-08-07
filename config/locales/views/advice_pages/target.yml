@@ -1,0 +1,15 @@
+---
+en:
+  advice_pages:
+    target:
+      insights:
+        what_is_your_target:
+          text_html: |-
+            <p>Setting a target to reduce your %{fuel_type} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target</p>
+            <p>Your school has set a target to reduce its %{fuel_type} by %{percent} before %{target_date}</p>
+          title: What is your target?
+        your_current_progress:
+          cumulative_consumption: Cumulative consumption
+          target_consumption: Target consumption
+          text_html: <p>View <a href="%{analysis_path}">your detailed progress report</a> or <a href="%{comparison_path}">compare progress with other schools in your group</a>.</p>
+          title: Your current progress

@@ -19,8 +19,13 @@
   <% c.with_section toggler: false,
                     visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget),
                     options: { match_controller: true } do |s| %>
-    <% s.with_item(name: t('manage_school_menu.review_targets'),
-                   href: school_school_targets_path(school), classes: 'section-link') %>
+    <% if Flipper.enabled?(:task_advice_pages_2025, current_user) %>
+      <% s.with_item(name: t('advice_pages.nav.manage_targets'),
+                     href: school_school_targets_path(school), classes: 'section-link') %>
+    <% else %>
+      <% s.with_item(name: t('manage_school_menu.review_targets'),
+                     href: school_school_targets_path(school), classes: 'section-link') %>
+    <% end %>
   <% end %>
 
   <% c.with_section(name: t('advice_pages.nav.sections.electricity'),

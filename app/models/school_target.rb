@@ -105,6 +105,19 @@ class SchoolTarget < ApplicationRecord
     TargetsProgress.new(**reformat_saved_report(report))
   end
 
+  MONTHLY_CONSUMPTION_FIELDS = %i[year month current_consumption previous_consumption target_consumption missing].freeze
+  private_constant :MONTHLY_CONSUMPTION_FIELDS
+
+  def monthly_consumption(fuel_type)
+    consumption = self["#{fuel_type}_monthly_consumption"]&.[](0..-2)
+    consumption&.map { |month| MONTHLY_CONSUMPTION_FIELDS.zip(month).to_h }
+  end
+
+  def monthly_consumption_last_day(fuel_type)
+    date = self["#{fuel_type}_monthly_consumption"]&.last
+    Date.parse(date) unless date.nil?
+  end
+
   private
 
   # ensure TargetsProgress is round-tripped properly
