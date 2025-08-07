@@ -14,8 +14,9 @@
       <% comparisons.each_with_index do |comparison, index| %>
         <li class="nav-item">
           <a class="nav-link <%= 'active' if index.zero? %>"
-             id="<%= comparison.key %>-tab" data-toggle="tab"
-             href="#<%= comparison.key %>-overview"
+             id="<%= comparison.key %>"
+             data-toggle="tab"
+             href="#<%= comparison.key %>"
              role="tab"
              aria-controls="<%= comparison.key %>-overview"
              aria-selected="true">
@@ -27,12 +28,12 @@
     <div class="tab-content" id="management-energy-overview-tabs">
       <% comparisons.each_with_index do |comparison, index| %>
         <div class="tab-pane fade show <%= 'active' if index.zero? %>"
-             id="<%= comparison.key %>-overview"
+             id="<%= comparison.key %>"
              role="tabpanel"
              aria-labelledby="<%= comparison.key %>-tab">
 
              <div id="chart_wrapper_<%= comparison.key %>" class="chart-wrapper">
-               <div id="<%= comparison.key %>" class="analysis-chart tabbed <%= comparison.key %>-overview-analysis-chart"
+               <div id="<%= comparison.key %>-chart" class="analysis-chart tabbed <%= comparison.key %>-analysis-chart"
                     data-autoload-chart="<%= index.zero? %>"
                     data-chart-config="<%= chart_config_json(comparison) %>">
                </div>
