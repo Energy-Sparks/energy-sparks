@@ -14,16 +14,16 @@ module Charts
     end
 
     def render?
-      reports&.any?
+      reports&.any? && school_group.visible_schools_count.positive?
     end
 
-    def chart_config_json(id)
+    def chart_config_json(report)
       {
-        chart_type: id,
+        chart_type: report.key,
         chart1_type: :bar,
         chart1_subtype: :stacked,
         no_zoom: true,
-        jsonUrl: comparison_report_path(id),
+        jsonUrl: comparison_report_path(report),
         transformations: [],
         annotations: []
       }.to_json
