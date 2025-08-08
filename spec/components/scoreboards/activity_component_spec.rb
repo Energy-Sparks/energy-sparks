@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Scoreboards::ScoreboardActivityComponent, :include_url_helpers, type: :component do
+RSpec.describe Scoreboards::ActivityComponent, :include_url_helpers, type: :component do
   subject(:html) do
     render_inline(described_class.new(**params))
   end

@@ -1,5 +1,5 @@
 module Scoreboards
-  class ScoreboardActivityComponent < ApplicationComponent
+  class ActivityComponent < ApplicationComponent
     attr_reader :observations
 
     def initialize(observations:, podium: nil, show_positions: true, id: nil, classes: '')
