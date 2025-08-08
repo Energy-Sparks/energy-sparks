@@ -20,7 +20,7 @@
       </div>
       <div class="row">
         <div class="col">
-          <%= link_to t('common.labels.choose_activity'), school_recommendations_path(school, scope: audience),
+          <%= link_to t('common.labels.choose_activity'), school_recommendations_path(podium.school, scope: audience),
                       class: 'btn btn-default' %>
         </div>
       </div>
@@ -34,7 +34,7 @@
     <% summary.with_timeline_link do %>
       <p>
         <%= link_to t('components.scoreboard_summary.view_scoreboard'),
-                    scoreboard_path(scoreboard),
+                    scoreboard_path(podium.scoreboard),
                     class: 'btn btn-default' %>
       </p>
     <% end %>
