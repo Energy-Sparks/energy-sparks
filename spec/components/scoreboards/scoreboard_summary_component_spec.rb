@@ -2,13 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers: true do
+RSpec.describe Scoreboards::ScoreboardSummaryComponent, :include_url_helpers, type: :component do
   let(:scoreboard) { create :scoreboard }
   let(:school) { create :school, scoreboard: scoreboard }
   let(:podium) { Podium.create(school: school, scoreboard: school.scoreboard) }
 
-  let(:all_params) { { podium: podium } }
-  let(:params) { all_params }
+  let(:params) { { podium: podium } }
 
   subject(:component) { described_class.new(**params) }
 
@@ -22,7 +21,7 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
     end
 
     context 'when there is another school on the podium' do
-      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+      before { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
       it 'shows scoreboard activity' do
         expect(html).to have_content('Recent activity on your scoreboard')
@@ -39,7 +38,7 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
       let(:school) { create :school, scoreboard: scoreboard, visible: false }
 
       context 'when there is another school on the podium' do
-        let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+        before { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
         it 'shows scoreboard activity' do
           expect(html).to have_content(I18n.t('components.scoreboard_summary.intro'))
@@ -55,7 +54,7 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
   end
 
   context 'when there is another school on the podium' do
-    let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+    before { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
     it 'shows scoreboard activity' do
       expect(html).to have_content('Recent activity on your scoreboard')
@@ -84,7 +83,7 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
     it { expect(component.other_schools?).to be(false) }
 
     context 'when there is another school on the podium' do
-      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+      before { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
       it { expect(component.other_schools?).to be(true) }
     end
@@ -92,13 +91,13 @@ RSpec.describe ScoreboardSummaryComponent, type: :component, include_url_helpers
 
   describe '#observations' do
     context 'with points' do
-      let!(:other_school) { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
+      before { create :school, :with_points, score_points: 50, scoreboard: scoreboard }
 
       it { expect(component.observations).not_to be_empty }
     end
 
     context 'with no points' do
-      let!(:other_school) { create :school, :with_points, score_points: 0, scoreboard: scoreboard }
+      before { create :school, :with_points, score_points: 0, scoreboard: scoreboard }
 
       it { expect(component.observations).to be_empty }
     end
