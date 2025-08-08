@@ -55,7 +55,7 @@
         <% end %>
       <% end %>
       <% section.with_body do %>
-        <%= render ScoreboardActivityComponent.new(
+        <%= render Scoreboards::ScoreboardActivityComponent.new(
               podium: podium,
               observations: observations,
               show_positions: other_schools?,
