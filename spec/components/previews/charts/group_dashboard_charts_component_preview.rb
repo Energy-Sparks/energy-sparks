@@ -1,3 +1,5 @@
+require 'erb'
+
 module Charts
   class GroupDashboardChartsComponentPreview < ViewComponent::Preview
     # @param title "Section title"
@@ -6,7 +8,7 @@ module Charts
       school_group = school_group(slug)
       component = Charts::GroupDashboardChartsComponent.new(school_group:)
       component.with_title do
-        "<h1>#{title} (#{school_group.name})</h1>".html_safe
+        "<h1>#{ERB::Util.html_escape(title)} (#{school_group.name})</h1>".html_safe
       end
       render(component)
     end
