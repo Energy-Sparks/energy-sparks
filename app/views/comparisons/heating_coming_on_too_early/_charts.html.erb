@@ -1,5 +1,5 @@
-<%= render ComparisonChartComponent.new(**@chart_heating_coming_on_too_early) %>
-<%= render ComparisonChartComponent.new(**@chart_optimum_start_analysis) do |component| %>
+<%= render Charts::ComparisonChartComponent.new(**@chart_heating_coming_on_too_early) %>
+<%= render Charts::ComparisonChartComponent.new(**@chart_optimum_start_analysis) do |component| %>
   <% component.with_title do %>
     <%= t('analytics.benchmarking.chart_table_config.optimum_start_analysis') %>
   <% end %>

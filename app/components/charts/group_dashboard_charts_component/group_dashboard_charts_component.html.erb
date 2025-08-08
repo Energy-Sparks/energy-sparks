@@ -1,0 +1,46 @@
+<%= render TitledSectionComponent.new(id: id, classes: classes) do |section| %>
+  <% if title? %>
+    <% section.with_title do %>
+      <%= title %>
+    <% end %>
+  <% end %>
+  <% if intro? %>
+    <% section.with_intro do %>
+      <%= intro %>
+    <% end %>
+  <% end %>
+  <% section.with_body do %>
+    <ul class="nav nav-tabs locales" id="management-energy-overview" role="tablist">
+      <% reports.each_with_index do |report, index| %>
+        <li class="nav-item">
+          <a class="nav-link <%= 'active' if index.zero? %>"
+             id="<%= report.key %>-tab"
+             data-toggle="tab"
+             href="#<%= report.key %>"
+             role="tab"
+             aria-controls="<%= report.key %>-overview"
+             aria-selected="true">
+              <%= report.title %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content" id="management-energy-overview-tabs">
+      <% reports.each_with_index do |report, index| %>
+        <div class="tab-pane fade show <%= 'active' if index.zero? %>"
+             id="<%= report.key %>"
+             role="tabpanel"
+             aria-labelledby="<%= report.key %>-tab">
+
+             <div id="chart_wrapper_<%= report.key %>" class="chart-wrapper">
+               <div id="<%= report.key %>-chart" class="analysis-chart tabbed <%= report.key %>-analysis-chart"
+                    data-autoload-chart="<%= index.zero? %>"
+                    data-chart-config="<%= chart_config_json(report) %>">
+               </div>
+               <div id='chart-error' class='d-none'><%= I18n.t('chart_data_values.standard_error_message') %></div>
+             </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
