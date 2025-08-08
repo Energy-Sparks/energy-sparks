@@ -1,0 +1,24 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Scoreboards::SummaryComponent.new(podium: podium, user: user) do |summary| %>
+    <% summary.with_title { t('components.scoreboards.group_summary.title') } %>
+    <% summary.with_description do %>
+      <div class="row">
+        <div class="col">
+          <%= t('components.scoreboards.group_summary.description_html') %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+        </div>
+      </div>
+    <% end %>
+    <% summary.with_timeline_title { t('components.scoreboards.group_summary.timeline.title') } %>
+    <% summary.with_timeline_description do %>
+      <p>
+        <%= t('components.scoreboards.group_summary.timeline.description') %>
+      </p>
+    <% end %>
+    <% summary.with_timeline_link do %>
+    <% end %>
+  <% end %>
+<% end %>

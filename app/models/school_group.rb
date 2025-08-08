@@ -65,6 +65,7 @@ class SchoolGroup < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :schools, source: :issues
+  has_many :observations, through: :schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
