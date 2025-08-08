@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Scoreboards::ScoreboardSummaryComponent, :include_url_helpers, type: :component do
+RSpec.describe Scoreboards::SchoolSummaryComponent, :include_url_helpers, type: :component do
   let(:scoreboard) { create :scoreboard }
   let(:school) { create :school, scoreboard: scoreboard }
   let(:podium) { Podium.create(school: school, scoreboard: school.scoreboard) }

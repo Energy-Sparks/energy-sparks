@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Scoreboards::ScoreboardSummaryComponent < ApplicationComponent
+class Scoreboards::SchoolSummaryComponent < ApplicationComponent
   attr_reader :podium, :user, :audience
 
   include ApplicationHelper
