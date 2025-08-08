@@ -1,5 +1,7 @@
 module Charts
   class GroupDashboardChartsComponentPreview < ViewComponent::Preview
+    # @param title "Section title"
+    # @param slug "Slug or id of school group"
     def example(slug: nil, title: 'Energy use')
       school_group = school_group(slug)
       component = Charts::GroupDashboardChartsComponent.new(school_group:)
