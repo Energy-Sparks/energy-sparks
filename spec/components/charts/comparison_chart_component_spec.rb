@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ComparisonChartComponent, type: :component, include_url_helpers: true do
+RSpec.describe Charts::ComparisonChartComponent, :include_url_helpers, type: :component do
   subject(:html) { render_inline(described_class.new(**params)) }
 
   let(:params) do
