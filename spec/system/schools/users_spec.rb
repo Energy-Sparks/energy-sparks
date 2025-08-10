@@ -230,7 +230,7 @@ describe 'School admin user management' do
       it 'only shows the email input' do
         visit school_users_path(school)
         click_on 'New school admin account'
-        expect(first('form').text).to eq('Email *')
+        expect(all('form label').map(&:text)).to eq(['Email *'])
       end
 
       it 'validates the email' do
@@ -238,7 +238,7 @@ describe 'School admin user management' do
         click_on 'New school admin account'
         fill_in 'Email', with: 'invalid email'
         click_on 'Continue'
-        expect(first('form').text).to eq("Email *\nis invalid")
+        expect(first('.form-group').text).to eq("Email *\nis invalid")
       end
 
       context 'when adding a user' do
