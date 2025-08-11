@@ -10,12 +10,13 @@ class TimelineComponent < ApplicationComponent
   def initialize(observations:,
                  show_header: true,
                  user: nil,
+                 table_opts: {},
                  **kwargs)
     super
     @observations = observations
     @user = user
     @show_header = show_header
-    @formatting_args = default_activity_component_options.merge(kwargs.except(:id, :classes))
+    @formatting_args = default_table_options.merge(table_opts)
   end
 
   def render?
@@ -24,7 +25,7 @@ class TimelineComponent < ApplicationComponent
 
   private
 
-  def default_activity_component_options
+  def default_table_options
     {
       show_actions: false,
       show_date: false,

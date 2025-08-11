@@ -17,8 +17,7 @@ RSpec.describe Scoreboards::ActivityComponent, :include_url_helpers, type: :comp
       observations: [observation],
       podium: Podium.create(school: create(:school), scoreboard: other_school.scoreboard),
       id: 'custom-id',
-      classes: 'extra-classes',
-      show_positions: true
+      classes: 'extra-classes'
     }
   end
 
@@ -29,8 +28,6 @@ RSpec.describe Scoreboards::ActivityComponent, :include_url_helpers, type: :comp
 
   it 'displays the observations' do
     expect(html).to have_selector(:table_row, [
-                                    '1st',
-                                    other_school.name,
                                     '10',
                                     activity.display_name
                                   ])
@@ -38,21 +35,42 @@ RSpec.describe Scoreboards::ActivityComponent, :include_url_helpers, type: :comp
 
   it { expect(html).to have_link(activity.display_name, href: school_activity_path(other_school, activity)) }
 
-  context 'when not showing positions' do
+  context 'when showing school names' do
     let(:params) do
       {
         observations: [observation],
         podium: Podium.create(school: create(:school), scoreboard: other_school.scoreboard),
         id: 'custom-id',
         classes: 'extra-classes',
-        show_positions: false
+        show_school: true
       }
     end
 
     it 'displays the observations' do
-      expect(html).not_to have_content(I18n.t('common.labels.place'))
+      expect(html).to have_content(I18n.t('common.school'))
       expect(html).to have_selector(:table_row, [
                                       other_school.name,
+                                      '10',
+                                      activity.display_name
+                                    ])
+    end
+  end
+
+  context 'when showing positions' do
+    let(:params) do
+      {
+        observations: [observation],
+        podium: Podium.create(school: create(:school), scoreboard: other_school.scoreboard),
+        id: 'custom-id',
+        classes: 'extra-classes',
+        show_positions: true
+      }
+    end
+
+    it 'displays the observations' do
+      expect(html).to have_content(I18n.t('common.labels.place'))
+      expect(html).to have_selector(:table_row, [
+                                      '1st',
                                       '10',
                                       activity.display_name
                                     ])

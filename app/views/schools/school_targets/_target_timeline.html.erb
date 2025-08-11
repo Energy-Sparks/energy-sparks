@@ -21,7 +21,7 @@
   <div class="row justify-content-md-center">
     <div class="col col-md-10">
       <%= render TimelineComponent.new(observations: observations,
-                                       show_date: true,
+                                       table_opts: { show_date: true },
                                        user: current_user) do |timeline| %>
              <% timeline.with_link do %>
                <p>

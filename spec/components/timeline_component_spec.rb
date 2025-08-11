@@ -12,8 +12,8 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
       observations: observations,
       classes: classes,
       id: id,
-      show_actions: true,
       show_header: true,
+      table_opts: { show_actions: true, show_date: true },
       user: user
     }
   end
