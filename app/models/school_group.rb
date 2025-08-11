@@ -185,10 +185,6 @@ class SchoolGroup < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
-  def scorable?
-    true
-  end
-
   # For those groups without a scoreboard OR a default calendar (around 3-4)
   # default to using the academic year defined for the national scoreboard
   def this_academic_year(today: Time.zone.today)
