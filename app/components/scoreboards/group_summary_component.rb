@@ -17,7 +17,7 @@ module Scoreboards
     end
 
     def observations
-      @school_group.observations
+      @school_group.observations.by_date.limit(20)
     end
 
     private
