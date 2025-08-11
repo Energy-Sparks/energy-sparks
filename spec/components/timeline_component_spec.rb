@@ -24,7 +24,7 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
 
   let(:user) { create(:admin) }
 
-  let(:html) do
+  subject(:html) do
     render_inline(TimelineComponent.new(**params))
   end
 
@@ -33,17 +33,11 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
     let(:expected_id) { id }
   end
 
-  context 'with new dashboard feature enabled' do
-    before do
-      Flipper.enable(:new_dashboards_2024)
-    end
+  it { expect(html).to have_content(I18n.t('timeline.whats_been_going_on'))}
+  it { expect(html).to have_content(I18n.t('schools.dashboards.timeline.intro'))}
+  it { expect(html).to have_link(I18n.t('activities.show.all_activities')), href: school_timeline_path(school)}
 
-    it { expect(html).to have_content(I18n.t('timeline.whats_been_going_on'))}
-    it { expect(html).to have_content(I18n.t('schools.dashboards.timeline.intro'))}
-    it { expect(html).to have_link(I18n.t('activities.show.all_activities')), href: school_timeline_path(school)}
+  it { expect(html).to have_selector(:table_row, [observation.at.to_fs(:es_short), observation.points, observation.activity.display_name])}
 
-    it { expect(html).to have_selector(:table_row, [observation.at.to_fs(:es_short), observation.points, observation.activity.display_name])}
-
-    it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
-  end
+  it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
 end

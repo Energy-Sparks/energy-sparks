@@ -3,8 +3,9 @@
 class TimelineComponent < ApplicationComponent
   attr_reader :observations, :show_actions, :user, :school, :show_header, :observation_style
 
+  renders_one :link
+
   def initialize(observations:,
-                 school: nil,
                  show_actions: false,
                  show_header: true,
                  observation_style: :description,
@@ -15,7 +16,6 @@ class TimelineComponent < ApplicationComponent
     @show_actions = show_actions
     @show_header = show_header
     @user = user
-    @school = school
     @observation_style = observation_style
   end
 
