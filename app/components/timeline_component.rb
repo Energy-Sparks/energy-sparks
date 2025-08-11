@@ -1,25 +1,36 @@
 # frozen_string_literal: true
 
 class TimelineComponent < ApplicationComponent
-  attr_reader :observations, :show_actions, :user, :school, :show_header, :observation_style
+  attr_reader :observations, :user, :show_header, :formatting_args
 
   renders_one :link
+  renders_one :title
+  renders_one :description
 
   def initialize(observations:,
-                 show_actions: false,
                  show_header: true,
-                 observation_style: :description,
                  user: nil,
-                 **_kwargs)
+                 **kwargs)
     super
     @observations = observations
-    @show_actions = show_actions
-    @show_header = show_header
     @user = user
-    @observation_style = observation_style
+    @show_header = show_header
+    @formatting_args = default_activity_component_options.merge(kwargs.except(:id, :classes))
   end
 
   def render?
     observations&.any?
+  end
+
+  private
+
+  def default_activity_component_options
+    {
+      show_actions: false,
+      show_date: false,
+      show_positions: false,
+      show_school: false,
+      observation_style: :description
+    }
   end
 end

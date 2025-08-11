@@ -16,6 +16,10 @@ module Scoreboards
       @podium ||= Podium.create(school: featured_school, scoreboard: @school_group)
     end
 
+    def observations
+      @school_group.observations
+    end
+
     private
 
     def featured_school

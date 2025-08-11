@@ -31,6 +31,7 @@
         <%= render Scoreboards::ActivityComponent.new(
               podium: podium,
               observations: observations,
+              show_school: true,
               show_positions: other_schools?,
               classes: 'bg-white rounded p-4'
             ) %>

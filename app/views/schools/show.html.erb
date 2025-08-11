@@ -45,7 +45,8 @@
     <%= render TimelineComponent.new(
           observations: @observations,
           user: current_user,
-          classes: 'mt-4'
+          classes: 'mt-4',
+          show_date: true
         ) do |timeline| %>
           <% timeline.with_link do %>
             <p>

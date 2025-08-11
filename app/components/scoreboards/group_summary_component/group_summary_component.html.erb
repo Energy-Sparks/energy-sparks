@@ -9,4 +9,15 @@
       </div>
     <% end %>
   <% end %>
+  <%= render TimelineComponent.new(observations: observations,
+                                   show_date: true,
+                                   show_school: true,
+                                   user: user, classes: 'mt-4') do |timeline| %>
+    <% timeline.with_title { t('components.scoreboards.group_summary.timeline.title') } %>
+    <% timeline.with_description do %>
+      <p>
+        <%= t('components.scoreboards.group_summary.timeline.description') %>
+      </p>
+    <% end %>
+  <% end %>
 <% end %>
