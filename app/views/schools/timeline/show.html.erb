@@ -20,7 +20,7 @@
             user: current_user,
             observation_style: :default,
             show_header: false,
-            table_opts: { show_actions: true, show_date: true }
+            table_opts: { show_actions: true, show_date: true, observation_style: :full }
           ) do |timeline| %>
             <% timeline.with_link do %>
               <p>
