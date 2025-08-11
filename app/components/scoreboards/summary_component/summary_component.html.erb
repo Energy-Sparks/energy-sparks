@@ -14,25 +14,27 @@
       <%= render Scoreboards::PodiumComponent.new(podium: podium, user: user, classes: 'bg-white rounded p-4') %>
     </div>
   </div>
-  <%= render TitledSectionComponent.new(id: 'scoreboard-recent-activity', classes: 'mt-4') do |section| %>
-    <% section.with_title do %>
-      <h2><%= timeline_title %></h2>
-    <% end %>
-    <% section.with_intro do %>
-      <%= timeline_description %>
-    <% end %>
-    <% if other_schools? %>
-      <% section.with_link do %>
-        <%= timeline_link %>
+  <% if show_recent_activity? %>
+    <%= render TitledSectionComponent.new(id: 'scoreboard-recent-activity', classes: 'mt-4') do |section| %>
+      <% section.with_title do %>
+        <h2><%= recent_activity_title %></h2>
       <% end %>
-    <% end %>
-    <% section.with_body do %>
-      <%= render Scoreboards::ActivityComponent.new(
-            podium: podium,
-            observations: observations,
-            show_positions: other_schools?,
-            classes: 'bg-white rounded p-4'
-          ) %>
+      <% section.with_intro do %>
+        <%= recent_activity_description %>
+      <% end %>
+      <% if other_schools? %>
+        <% section.with_link do %>
+          <%= recent_activity_link %>
+        <% end %>
+      <% end %>
+      <% section.with_body do %>
+        <%= render Scoreboards::ActivityComponent.new(
+              podium: podium,
+              observations: observations,
+              show_positions: other_schools?,
+              classes: 'bg-white rounded p-4'
+            ) %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

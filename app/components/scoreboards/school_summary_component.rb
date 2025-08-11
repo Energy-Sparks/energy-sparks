@@ -17,7 +17,7 @@ class Scoreboards::SchoolSummaryComponent < ApplicationComponent
     @title || I18n.t('components.scoreboard_summary.title')
   end
 
-  def timeline_title
+  def recent_activity_title
     if other_schools?
       I18n.t('components.scoreboard_summary.recent_scoreboard_activity')
     else

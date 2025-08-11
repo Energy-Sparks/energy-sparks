@@ -25,13 +25,13 @@
         </div>
       </div>
     <% end %>
-    <% summary.with_timeline_title { timeline_title } %>
-    <% summary.with_timeline_description do %>
+    <% summary.with_recent_activity_title { recent_activity_title } %>
+    <% summary.with_recent_activity_description do %>
       <p>
         <%= t('components.scoreboard_summary.recent_activity_intro') %>
       </p>
     <% end %>
-    <% summary.with_timeline_link do %>
+    <% summary.with_recent_activity_link do %>
       <p>
         <%= link_to t('components.scoreboard_summary.view_scoreboard'),
                     scoreboard_path(podium.scoreboard),
