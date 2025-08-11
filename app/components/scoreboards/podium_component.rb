@@ -2,12 +2,13 @@
 
 module Scoreboards
   class PodiumComponent < ApplicationComponent
-    attr_reader :podium, :id, :user
+    attr_reader :podium, :id, :user, :i18n_scope
 
-    def initialize(podium: nil, classes: nil, id: nil, user: nil, **_kwargs)
+    def initialize(podium: nil, classes: nil, id: nil, user: nil, i18n_scope: 'components.podium', **_kwargs)
       super
       @podium = podium
       @user = user
+      @i18n_scope = i18n_scope
     end
 
     def school
@@ -20,10 +21,6 @@ module Scoreboards
 
     def render?
       podium
-    end
-
-    def title_class
-      Flipper.enabled?(:new_dashboards_2024, user) ? 'mb-4' : 'text-center'
     end
   end
 end

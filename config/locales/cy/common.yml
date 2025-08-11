@@ -57,6 +57,7 @@ cy:
       not_applicable: Amh
       not_set: Heb ei osod
       place: Lle
+      points: Pwyntiau
       previous: Blaenorol
       prices: Prisiau
       pupil_activities: Gweithgareddau disgyblion
@@ -83,6 +84,7 @@ cy:
       yes_label: 'Ie'
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
+    points: pwyntiau
     points_html: "%{count} o bwyntiau"
     privacy_policy: polisi preifatrwydd
     school: Ysgol

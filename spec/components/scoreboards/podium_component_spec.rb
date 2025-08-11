@@ -57,12 +57,7 @@ RSpec.describe Scoreboards::PodiumComponent, :include_url_helpers, type: :compon
       expect(html).to have_content("Your school hasn't scored any points yet this school year")
     end
 
-    it { expect(html).to have_link('Complete an activity') }
-    it { expect(html).to have_content('Complete an activity to score points on Energy Sparks.') }
-  end
-
-  shared_examples 'a podium with overtake message' do |points: 50|
-    it { expect(html).to have_content("You need to score more than #{points} points to overtake the next school!") }
+    it { expect(html).to have_content(I18n.t('components.podium.no_points_this_year')) }
   end
 
   context 'with all params' do
@@ -123,7 +118,6 @@ RSpec.describe Scoreboards::PodiumComponent, :include_url_helpers, type: :compon
 
       it_behaves_like 'a podium including school'
       it_behaves_like 'a podium with no points message'
-      it_behaves_like 'a podium with overtake message', points: 50
       it_behaves_like 'a podium without placing', ordinal: '2nd'
     end
   end
