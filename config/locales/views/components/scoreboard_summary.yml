@@ -6,6 +6,5 @@ en:
       recent_activity: Recent activity across Energy Sparks
       recent_activity_intro: Schools score points by recording their activities to investigate their energy use, learning about energy, and taking energy saving actions around their school.
       recent_scoreboard_activity: Recent activity on your scoreboard
-      recent_scoreboard_activity_html: Recent activity on <a href="%{scoreboard_path}">your scoreboard</a>
       title: Scoreboard update
       view_scoreboard: View scoreboard
