@@ -2,10 +2,11 @@ module Scoreboards
   class GroupSummaryComponent < ApplicationComponent
     attr_reader :school_group, :user
 
-    def initialize(school_group:, user:, **kwargs)
+    def initialize(school_group:, user:, limit: 20, **kwargs)
       super
       @school_group = school_group
       @user = user
+      @limit = limit
     end
 
     def render?
@@ -17,7 +18,7 @@ module Scoreboards
     end
 
     def observations
-      @school_group.observations.by_date.limit(20)
+      @school_group.observations.by_date.limit(@limit)
     end
 
     private
