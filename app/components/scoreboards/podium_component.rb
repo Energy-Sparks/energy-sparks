@@ -2,7 +2,7 @@
 
 module Scoreboards
   class PodiumComponent < ApplicationComponent
-    attr_reader :podium, :id, :user, :i18n_scope, :path_to_scoreboard
+    attr_reader :podium, :id, :user, :i18n_scope
 
     # i18n-tasks-use t('components.podium.full_position_html')
     # i18n-tasks-use t('components.podium.scoreboard_position_html')
