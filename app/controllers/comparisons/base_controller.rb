@@ -31,6 +31,9 @@ module Comparisons
           response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
           render partial: filter[:table_name].to_s
         end
+        format.json do
+          render json: create_chart_json
+        end
       end
     end
 
@@ -145,6 +148,13 @@ module Comparisons
 
     def create_multi_chart(results, names, multiplier, y_axis_label, **kwargs)
       [create_chart(results, names, multiplier, y_axis_label, **kwargs)]
+    end
+
+    def create_chart_json
+      chart_data = create_charts(@results).first
+      return {} unless chart_data.is_a?(Hash)
+      chart_data = chart_data.except(:id).merge({ chart1_type: :bar, chart1_subtype: :stacked })
+      ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison).process)
     end
 
     def filter
