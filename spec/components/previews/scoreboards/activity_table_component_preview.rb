@@ -1,5 +1,5 @@
 module Scoreboards
-  class ActivityComponentPreview < ViewComponent::Preview
+  class ActivityTableComponentPreview < ViewComponent::Preview
     # @param show_school toggle "Show school names and links"
     # @param show_date toggle "Show date activities were recorded"
     # @param show_actions toggle "Show admin buttons"
@@ -20,7 +20,7 @@ module Scoreboards
         Observation.find_by(observation_type: :school_target),
       ].compact.sort_by(&:at).reverse
 
-      render(Scoreboards::ActivityComponent.new(observations:,
+      render(Scoreboards::ActivityTableComponent.new(observations:,
                                                 show_positions: false,
                                                 observation_style: observation_style.to_sym,
                                                 show_school:,
@@ -44,7 +44,7 @@ module Scoreboards
       school = slug ? School.find(slug) : School.active.sample
       podium = Podium.create(school: school, scoreboard: school.scoreboard)
       observations = school.scoreboard.observations.for_visible_schools.not_including(school).by_date.with_points.sample(limit)
-      render(Scoreboards::ActivityComponent.new(observations:,
+      render(Scoreboards::ActivityTableComponent.new(observations:,
                                                 podium:,
                                                 show_positions:,
                                                 observation_style: observation_style.to_sym,

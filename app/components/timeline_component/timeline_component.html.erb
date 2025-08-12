@@ -29,7 +29,7 @@
         <% end %>
         <% section.with_body do %>
           <div class="bg-white rounded p-4">
-            <%= render(Scoreboards::ActivityComponent.new(observations: observations, **formatting_args)) %>
+            <%= render(Scoreboards::ActivityTableComponent.new(observations: observations, **formatting_args)) %>
           </div>
         <% end %>
       <% end %>

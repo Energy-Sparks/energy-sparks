@@ -1,5 +1,5 @@
 module Scoreboards
-  class ActivityComponent < ApplicationComponent
+  class ActivityTableComponent < ApplicationComponent
     attr_reader :observations, :observation_style
 
     def initialize(observations:,
