@@ -165,7 +165,7 @@ en:
         download_the_data_for_each_active_meter: Download the data for each active meter
         download_the_data_for_each_inactive_meter: Download the data for each inactive meter
         downloads_for: Downloads for %{school_name}
-        email_contact_message_html: Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information
+        email_contact_message_html: Please contact <a href="mailto:support@energysparks.uk">support@energysparks.uk</a> for further information
         meters: Meters
         solar_pv_data: Solar PV Data
         solar_pv_data_csv_for_your_area: Solar PV data CSV for your area, %{solar_pv_tuos_area_title}

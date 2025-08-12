@@ -361,7 +361,7 @@ RSpec.describe ComparisonTableComponent, type: :component, include_url_helpers: 
       end
 
       it 'adds the formatted value' do
-        expect(html).to have_content('+50&percnt;')
+        expect(html).to have_content('+50%')
         expect(html).to have_css('i.fa-arrow-circle-up')
       end
 

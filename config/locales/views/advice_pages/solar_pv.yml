@@ -92,7 +92,7 @@ en:
             <p>Many schools have solar photovoltaic (solar PV) panels which produce energy from sunlight.</p>
             <p>The panels reduce both the school's electricity consumption from the national grid and its carbon emissions. Electricity produced from solar panels produces very little carbon.</p>
             <p>Solar PV works well for schools as they produce most energy around midday which is when a school typically uses most energy.</p>
-          if_you_do_get_solar_panels_installed_html: If you do get solar panels installed, don’t forget to let us know at <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a> so that we can configure them for your school
+          if_you_do_get_solar_panels_installed_html: If you do get solar panels installed, don’t forget to let us know at <a href='mailto:support@energysparks.uk'>support@energysparks.uk</a> so that we can configure them for your school
           installing_solar_panels_could_reduce_html: Installing solar panels could reduce the electricity you consume from the national grid by %{optimum_mains_reduction_percent} each year
           link: Learn more
           next_steps_html: |-

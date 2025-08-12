@@ -40,12 +40,12 @@ cy:
           <p>Nid yw'r tudalennau'n diweddaru'n awtomatig felly mae'n well eu hymgorffori mewn carwsél cynnwys presennol neu
           arddangosfa sy'n adnewyddu'n rheolaidd.</p>
           <p>Os oes gennych gwestiynau am ddefnyddio'r nodwedd hon, cysylltwch â ni yn
-          <a href='mailto:hello@energysparks.uk'>hello@energysparks.uk</a></p>
+          <a href='mailto:support@energysparks.uk'>support@energysparks.uk</a></p>
         prompt:
           link_text: Cysylltwch
           text: Os hoffech chi gael cymorth i brofi sut allwch chi ymgorffori ein dadansoddiad yn eich arwyddion digidol, neu os oes gennych chi unrhyw gwestiynau neu adborth, yna cysylltwch â ni. Ein nod yw sicrhau bod y nodwedd hon yn gweithio gydag amrywiaeth o systemau arwyddion digidol gwahanol.
           title: Rydym yn gwahodd ysgolion i roi cynnig ar y nodwedd Sbarcynni newydd hon
-        public_data_html: "<p>Ar hyn o bryd dim ond i ysgolion sy'n rhannu eu dadansoddiad yn gyhoeddus trwy eu dangosfyrddau disgyblion ac oedolion \n</p>y mae ein nodwedd arwyddion digidol ar gael.\n<p><a href='mailto:hello@energysparks.uk'>Cysylltwch</a> os hoffech chi adolygu eich gosodiadau rhannu\ndata. Neu os oes gennych ddiddordeb mewn trafod sut y gallem ymestyn y nodwedd hon i gefnogi ysgolion sydd â\ndewisiadau rhannu data mwy cyfyngedig.</p>"
+        public_data_html: "<p>Ar hyn o bryd dim ond i ysgolion sy'n rhannu eu dadansoddiad yn gyhoeddus trwy eu dangosfyrddau disgyblion ac oedolion \n</p>y mae ein nodwedd arwyddion digidol ar gael.\n<p><a href='mailto:support@energysparks.uk'>Cysylltwch</a> os hoffech chi adolygu eich gosodiadau rhannu\ndata. Neu os oes gennych ddiddordeb mewn trafod sut y gallem ymestyn y nodwedd hon i gefnogi ysgolion sydd â\ndewisiadau rhannu data mwy cyfyngedig.</p>"
         school_group:
           data_sharing:
             title: Rhannu cyhoeddus
