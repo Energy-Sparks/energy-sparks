@@ -1,4 +1,7 @@
 <%= tag.div id: id, class: classes do %>
+  <%# i18n-tasks-use t('components.scoreboards.group_summary.podium.full_position_html') %>
+  <%# i18n-tasks-use t('components.scoreboards.group_summary.podium.scoreboard_position_html') %>
+  <%# i18n-tasks-use t('components.scoreboards.group_summary.podium.no_points_this_year') %>
   <%= render Scoreboards::SummaryComponent.new(podium: podium,
                                                user: user,
                                                show_recent_activity: false,
