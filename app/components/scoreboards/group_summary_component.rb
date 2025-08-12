@@ -9,10 +9,6 @@ module Scoreboards
       @limit = limit
     end
 
-    def render?
-      podium&.scoreboard
-    end
-
     def podium
       @podium ||= Podium.create(school: featured_school, scoreboard: @school_group)
     end
@@ -24,8 +20,8 @@ module Scoreboards
     private
 
     def featured_school
-      scored_schools = @school_group.scored_schools # all scored schools in group
-      scored_schools.first # most points
+      scored_schools = @school_group.scored_schools
+      scored_schools.first
     end
   end
 end
