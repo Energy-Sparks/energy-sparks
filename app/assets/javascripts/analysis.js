@@ -179,19 +179,15 @@ function processAnalysisChartAjax(chartId, chartConfig, highchartsChart) {
     data: requestData,
     success: function (returnedData) {
       var thisChartData = returnedData;
-      console.log(thisChartData);
       if (thisChartData == undefined || thisChartData.length == 0) {
-        console.log('first');
         chartFailure(highchartsChart);
       } else if (thisChartData.series_data == null) {
-        console.log('second');
         chartFailure(highchartsChart);
       } else {
         chartSuccess(chartConfig, thisChartData, highchartsChart);
       }
     },
     error: function(broken) {
-              console.log('broke');
       chartFailure(highchartsChart);
     }
   });

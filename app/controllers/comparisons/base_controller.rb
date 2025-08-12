@@ -152,7 +152,7 @@ module Comparisons
 
     def create_chart_json
       chart_data = create_charts(@results).first
-      return {} unless chart_data && chart_data.is_a?(Hash)
+      return {} unless chart_data.is_a?(Hash)
       chart_data = chart_data.except(:id).merge({ chart1_type: :bar, chart1_subtype: :stacked })
       ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison).process)
     end

@@ -152,17 +152,22 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig, $cha
     $chartDiv.addClass('bar-chart');
 
     if (chartData.uses_time_of_day) {
-      highchartsChart.update({yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} }})
+      highchartsChart.update({ yAxis: { type: 'datetime', dateTimeLabelFormats: { day: '%H:%M'} } })
     }
 
-    highchartsChart.update({ chart: { inverted: true, marginLeft: 200, marginRight: 100 }, xAxis: [{ labels: { reserveSpace: true, align: 'left', style: { textOverflow: 'none' } } }], yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }], plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+    highchartsChart.update({
+      chart: { inverted: true, marginLeft: 200, marginRight: 100 },
+      xAxis: [{ labels: { reserveSpace: true, align: 'left', style: { textOverflow: 'none' } } }],
+      yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }],
+      plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) } } }
+    });
 
     if (chartData.x_max_value) {
-      highchartsChart.update({yAxis: { max: chartData.x_max_value }})
+      highchartsChart.update({ yAxis: { max: chartData.x_max_value } })
     }
 
     if (chartData.x_min_value) {
-      highchartsChart.update({yAxis: { min: chartData.x_min_value }})
+      highchartsChart.update({ yAxis: { min: chartData.x_min_value } })
     }
   }
 
@@ -171,7 +176,9 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig, $cha
     $chartDiv.addClass('line-chart');
 
     if (! y2AxisLabel) {
-      highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}});
+      highchartsChart.update({
+        plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: orderedPointFormat(yAxisLabel) }}}
+      });
     }
   }
 
@@ -180,18 +187,28 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig, $cha
     $chartDiv.addClass('column-chart');
 
     if (! noZoom) {
-      highchartsChart.update({ chart: { zoomType: 'x'}, subtitle: { text: document.ontouchstart === undefined ?  chartData.click_and_drag_message : chartData.pinch_and_zoom_message }});
+      highchartsChart.update({
+        chart: { zoomType: 'x'},
+        subtitle: { text: document.ontouchstart === undefined ?  chartData.click_and_drag_message : chartData.pinch_and_zoom_message }
+      });
     }
 
     if (subChartType == 'stacked') {
-      highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}}, yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }]});
+      highchartsChart.update({
+        plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) }, stacking: 'normal'}},
+        yAxis: [{title: { text: yAxisLabel }, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }]
+      });
     } else {
 
       if(seriesData[0]['day_format'] && seriesData[0]['day_format']) {
-        highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '', pointFormat: dayAndPointFormat(yAxisLabel)}}}});
+        highchartsChart.update({
+          plotOptions: { column: { tooltip: { headerFormat: '', pointFormat: dayAndPointFormat(yAxisLabel)}}}
+        });
       }
       else {
-        highchartsChart.update({ plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}});
+        highchartsChart.update({
+          plotOptions: { column: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel)}}}
+        });
       }
 
     }
@@ -205,8 +222,14 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig, $cha
 
     axisFontSize = '18px'
 
-    highchartsChart.addAxis({ title: { text: chartData.y2_axis_label, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} }, stackLabels: { style: { fontWeight: 'bold',  color: colour }}, opposite: true, max: chartData.y2_max });
-    highchartsChart.update({ plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: chartData.y2_point_format }}}});
+    highchartsChart.addAxis({
+      title: { text: chartData.y2_axis_label, rotation: 0, useHTML: true, margin: 10, style: {fontSize: axisFontSize} },
+      stackLabels: { style: { fontWeight: 'bold',  color: colour } },
+      opposite: true,
+      max: chartData.y2_max });
+    highchartsChart.update({
+      plotOptions: { line: { tooltip: { headerFormat: '<b>{point.key}</b><br>',  pointFormat: chartData.y2_point_format }}}
+    });
   }
 
   Object.keys(seriesData).forEach(function (key) {
