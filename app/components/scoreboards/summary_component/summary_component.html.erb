@@ -11,7 +11,10 @@
       <%= description %>
     </div>
     <div class="col-12 col-md-6">
-      <%= render Scoreboards::PodiumComponent.new(podium: podium, user: user, classes: 'bg-white rounded p-4') %>
+      <%= render Scoreboards::PodiumComponent.new(podium: podium,
+                                                  user: user,
+                                                  classes: 'bg-white rounded p-4',
+                                                  **podium_opts) %>
     </div>
   </div>
   <% if show_recent_activity? %>

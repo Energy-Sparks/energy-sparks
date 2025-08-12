@@ -1,5 +1,11 @@
 <%= tag.div id: id, class: classes do %>
-  <%= render Scoreboards::SummaryComponent.new(podium: podium, user: user, show_recent_activity: false) do |summary| %>
+  <%= render Scoreboards::SummaryComponent.new(podium: podium,
+                                               user: user,
+                                               show_recent_activity: false,
+                                               podium_opts: {
+                                                 i18n_scope: 'components.scoreboards.group_summary.podium',
+                                                 path_to_scoreboard: current_scores_school_group_path(school_group)
+                                               }) do |summary| %>
     <% summary.with_title { t('components.scoreboards.group_summary.title') } %>
     <% summary.with_description do %>
       <div class="row">

@@ -2,7 +2,7 @@ module Scoreboards
   class SummaryComponent < ApplicationComponent
     include ApplicationHelper
 
-    attr_reader :podium, :user
+    attr_reader :podium, :user, :podium_opts
 
     renders_one :title
     renders_one :description
@@ -10,12 +10,13 @@ module Scoreboards
     renders_one :recent_activity_description
     renders_one :recent_activity_link
 
-    def initialize(podium:, user:, show_recent_activity: true, **kwargs)
+    def initialize(podium:, user:, show_recent_activity: true, podium_opts: {}, **kwargs)
       super
       @podium = podium
       @featured_school = featured_school
       @user = user
       @show_recent_activity = show_recent_activity
+      @podium_opts = podium_opts
     end
 
     # TODO do we need helper?
