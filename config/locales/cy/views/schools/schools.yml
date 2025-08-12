@@ -166,7 +166,7 @@ cy:
         download_the_data_for_each_active_meter: Lawrlwythwch y data ar gyfer pob mesurydd gweithredol
         download_the_data_for_each_inactive_meter: Lawrlwythwch y data ar gyfer pob mesurydd anweithredol
         downloads_for: Lawrlwythiadau ar gyfer %{school_name}
-        email_contact_message_html: Cysylltwch â <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> am ragor o wybodaeth
+        email_contact_message_html: Cysylltwch â <a href="mailto:support@energysparks.uk">support@energysparks.uk</a> am ragor o wybodaeth
         meters: Mesuryddion
         solar_pv_data: Data Solar Ffotofoltaig
         solar_pv_data_csv_for_your_area: Data Solar Ffotofoltaig CSV ar gyfer eich ardal, %{solar_pv_tuos_area_title}
