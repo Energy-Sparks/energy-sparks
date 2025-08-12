@@ -19,7 +19,7 @@
   <% c.with_section toggler: false,
                     visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget),
                     options: { match_controller: true } do |s| %>
-    <% if Flipper.enabled?(:task_advice_pages_2025, current_user) %>
+    <% if Flipper.enabled?(:target_advice_pages_2025, current_user) %>
       <% s.with_item(name: t('advice_pages.nav.manage_targets'),
                      href: school_school_targets_path(school), classes: 'section-link') %>
     <% else %>
@@ -31,14 +31,14 @@
   <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
                     icon: fuel_type_icon(:electricity), classes: 'electric-section',
                     visible: school.has_electricity?) do |s| %>
-    <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, :electricity)).each do |ap| %>
+    <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, :electricity, current_user)).each do |ap| %>
       <% s.with_item(name: translated_label(ap), href: advice_page_path(school, ap), classes: 'small electric-item') %>
     <% end %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.gas'),
                     icon: fuel_type_icon(:gas), classes: 'gas-section',
                     visible: school.has_gas?) do |s| %>
-    <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, :gas)).each do |ap| %>
+    <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, :gas, current_user)).each do |ap| %>
       <% s.with_item(name: translated_label(ap), href: advice_page_path(school, ap), classes: 'small gas-item') %>
     <% end %>
   <% end %>

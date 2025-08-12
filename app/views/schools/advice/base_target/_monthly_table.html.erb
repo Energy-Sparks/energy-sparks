@@ -1,0 +1,37 @@
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <th><%= t('schools.school_targets.progress.current.month') %></th>
+    <th><%= t('advice_pages.target.analysis.monthly_progress.last_year') %></th>
+    <th><%= t('advice_pages.target.analysis.monthly_progress.target') %></th>
+    <th><%= t('advice_pages.target.analysis.monthly_progress.this_year') %></th>
+    <th><%= t('advice_pages.target.analysis.monthly_progress.percentage_change') %></th>
+    <th><%= t('advice_pages.target.analysis.monthly_progress.on_target') %></th>
+  </thead>
+  <tbody>
+    <% consumption.each do |month| %>
+      <tr>
+        <td><%= Date.new(month[:year], month[:month]).strftime('%B %Y') %></td>
+        <td><%= format_unit(month[:previous_consumption], :kw) %></td>
+        <td><%= format_unit(month[:target_consumption], :kw) %></td>
+        <%= tag.td(class: month[:missing] ? 'old-data' : nil) do %>
+          <% unless month[:current_consumption].zero? && month[:missing] %>
+            <%= format_unit(month[:current_consumption], :kw) %>
+          <% end %>
+        <% end %>
+        <td>
+          <% unless month[:missing] %>
+            <%= up_downify(format_unit(percent_change(month[:current_consumption], month[:target_consumption]),
+                                       :relative_percent),
+                           sanitize: false) %>
+          <% end %>
+        </td>
+        <td>
+          <% unless month[:missing] %>
+            <%= checkmark(month[:current_consumption] < month[:target_consumption]) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= tag.div(t('advice_pages.target.analysis.monthly_progress.partial'), class: 'text-right advice-table-caption') %>
