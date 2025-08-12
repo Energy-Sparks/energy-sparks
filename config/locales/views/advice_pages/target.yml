@@ -2,6 +2,20 @@
 en:
   advice_pages:
     target:
+      analysis:
+        cumulative_progress:
+          title: Cumulative progress
+        historical_progress:
+          intro: The following table shows your previous progress towards reducing your %{fuel_type} usage
+          title: Historical progress
+        monthly_progress:
+          last_year: Last year (kWh)
+          on_target: On target?
+          partial: Partial months are shown in red.
+          percentage_change: "% change"
+          target: Target (kWh)
+          this_year: This year (kWh)
+          title: Monthly progress
       insights:
         what_is_your_target:
           text_html: |-

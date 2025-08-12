@@ -1,4 +1,3 @@
-
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
         fuel_type: @advice_page.fuel_type&.to_sym,
@@ -8,9 +7,7 @@
 <%= render 'schools/advice/section_title',
            section_id: 'progress',
            section_title: t('advice_pages.target.insights.your_current_progress.title') %>
-<%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do |c| %>
-  <%= t('schools.show.not_meeting_target', fuels: @fuel_type) %>
-<% end %>
+<%= render 'meeting_target_prompt' %>
 <% if can?(:manage, @target) %>
   <%= link_to t('schools.school_targets.title.revise_your_target'),
               edit_school_school_target_path(@target.school, @target), class: 'btn btn-default' %>
@@ -24,15 +21,14 @@
   </thead>
   <tbody>
     <tr>
-      <% consumption = @target.monthly_consumption(@fuel_type).reject { |month| month[:missing] }
-         current_consumption = consumption.sum { |month| month[:current_consumption] }
-         target_consumption = consumption.sum { |month| month[:target_consumption] } %>
       <td><%= format_date_range([@target.start_date,
-                                 Date.new(consumption.last[:year], consumption.last[:month]).end_of_month]) %></td>
-      <td><%= format_unit(current_consumption, :kw) %></td>
-      <td><%= format_unit(target_consumption, :kw) %></td>
+                                 Date.new(@last_consumption_month[:year],
+                                          @last_consumption_month[:month]).end_of_month]) %></td>
+      <td><%= format_unit(@current_consumption, :kw) %></td>
+      <td><%= format_unit(@target_consumption, :kw) %></td>
       <td td class="text-right">
-        <%= up_downify(format_unit((current_consumption - target_consumption) / target_consumption, :relative_percent),
+        <%= up_downify(format_unit((percent_change(@current_consumption, @target_consumption),
+                                   :relative_percent),
                        sanitize: false) %></td>
     </tr>
   </tbody>

@@ -1,0 +1,4 @@
+<% meeting_target = @current_consumption <= @target_consumption %>
+<%= render PromptComponent.new(status: meeting_target ? :positive : :negative, icon: :circle_exclamation) do |c| %>
+  <%= t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}", fuels: @fuel_type) %>
+<% end %>
