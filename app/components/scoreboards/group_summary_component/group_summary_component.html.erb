@@ -16,6 +16,13 @@
           <%= t('components.scoreboards.group_summary.description_html') %>
         </div>
       </div>
+      <div class="row">
+        <div class="col">
+          <%= link_to t('components.scoreboard_summary.view_scoreboard'),
+                      current_scores_school_group_path(school_group),
+                      class: 'btn btn-default' %>
+        </div>
+      </div>
     <% end %>
   <% end %>
   <%= render TimelineComponent.new(observations: observations,
