@@ -19,7 +19,6 @@ module Scoreboards
       @podium_opts = podium_opts
     end
 
-    # TODO do we need helper?
     def render?
       podium&.scoreboard && helpers.can?(:read, podium.scoreboard)
     end
