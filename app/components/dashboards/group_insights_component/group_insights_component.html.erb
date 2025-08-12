@@ -1,0 +1,18 @@
+<%= tag.div id: id, class: classes do %>
+  <div class="row">
+    <div class="col-12">
+      <h2 id="<%= id %>" class="scrollable-title"><%= t('components.dashboard_insights.title') %></h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <%# split to 2 column view on larger screens if we are displaying alerts %>
+    <div class="col-12 col-lg-6">
+      <h3><%= t('components.dashboard_insights.reminders.title') %></h3>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <h3><%= t('advice_pages.index.alerts.title') %></h3>
+    </div>
+  </div>
+<% end %>
