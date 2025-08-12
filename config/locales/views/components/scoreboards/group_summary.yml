@@ -17,5 +17,5 @@ en:
           scoreboard_position_html: Your highest scoring school is in <strong>%{position_ordinal} place</strong> among <a href='%{scoreboard_path}'>%{scoreboard} schools</a>
         timeline:
           description: A list of recent pupil and adult-lead activities recorded by schools in this group
-          title: What's been going on at these schools?
+          title: What's been happening at these schools?
         title: Scoreboard update

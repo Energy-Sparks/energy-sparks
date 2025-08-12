@@ -37,6 +37,6 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
                                 href: current_scores_school_group_path(school_group))
     end
 
-    it { expect(html).to have_css('.timeline-component')}
+    it { expect(html).to have_content(I18n.t('components.scoreboards.group_summary.timeline.title'))}
   end
 end
