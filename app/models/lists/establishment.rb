@@ -48,7 +48,6 @@ module Lists
       # All headers from the CSV that match a database column when converted
       csv_headers = headers.filter { |h| Establishment.column_names.include?(convert_header(h)) }
       column_names = csv_headers.map { |h| convert_header(h) }
-      # debug_print_map(csv_headers, column_names)
 
       # URN is the only header mapped to a column that isn't just the header in snakecase
       csv_headers.append('URN')
@@ -84,7 +83,11 @@ module Lists
         elsif type == ActiveModel::Type::String
           ret[column_names[i]] = row[csv_headers[i]]
         elsif type == ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
-          ret[column_names[i]] = DateTime.parse(row[csv_headers[i]])
+          if row[csv_headers[i]] == ''
+            ret[column_names[i]] = nil
+          else
+            ret[column_names[i]] = DateTime.parse(row[csv_headers[i]])
+          end
         end
       end
       return ret
