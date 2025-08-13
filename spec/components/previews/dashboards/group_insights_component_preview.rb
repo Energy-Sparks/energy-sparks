@@ -1,10 +1,10 @@
 module Dashboards
   class GroupInsightsComponentPreview < ViewComponent::Preview
+    # @param slug select :group_options
     def example(slug: nil)
       school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
-      user = User.group_admin.last
-      component = Dashboards::GroupInsightsComponent.new(school_group: school_group, user: user)
-      render(component)
+      user = school_group.users.group_admin.sample
+      render(Dashboards::GroupInsightsComponent.new(school_group: school_group, user: user))
     end
 
     private
