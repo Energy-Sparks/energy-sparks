@@ -2,20 +2,52 @@
 #
 # Table name: lists_establishments
 #
-#  created_at                 :datetime         not null
-#  establishment_name         :string
-#  establishment_number       :integer
-#  establishment_status_code  :integer
-#  id                         :bigint(8)        not null, primary key
-#  la_code                    :integer
-#  last_changed_date          :datetime
-#  number_of_pupils           :integer
-#  percentage_fsm             :string
-#  postcode                   :string
-#  school_website             :string
-#  type_of_establishment_code :integer
-#  updated_at                 :datetime         not null
-#  uprn                       :string
+#  address3                        :string
+#  administrative_ward_code        :string
+#  boarders_code                   :integer
+#  census_date                     :datetime
+#  close_date                      :datetime
+#  county_name                     :string
+#  created_at                      :datetime         not null
+#  diocese_code                    :string
+#  district_administrative_code    :string
+#  easting                         :integer
+#  establishment_name              :string
+#  establishment_number            :integer
+#  establishment_status_code       :integer
+#  establishment_type_group_code   :integer
+#  federations_code                :integer
+#  fsm                             :integer
+#  gor_code                        :string
+#  gssla_code_name                 :string
+#  id                              :bigint(8)        not null, primary key
+#  la_code                         :integer
+#  last_changed_date               :datetime
+#  locality                        :string
+#  lsoa_code                       :string
+#  msoa_code                       :string
+#  northing                        :integer
+#  number_of_pupils                :integer
+#  nursery_provision_name          :string
+#  official_sixth_form_code        :integer
+#  open_date                       :datetime
+#  parliamentary_constituency_code :string
+#  percentage_fsm                  :string
+#  phase_of_education_code         :integer
+#  postcode                        :string
+#  previous_la_code                :integer
+#  school_capacity                 :integer
+#  school_website                  :string
+#  statutory_high_age              :integer
+#  statutory_low_age               :integer
+#  street                          :string
+#  town                            :string
+#  trusts_code                     :integer
+#  type_of_establishment_code      :integer
+#  ukprn                           :integer
+#  updated_at                      :datetime         not null
+#  uprn                            :string
+#  urban_rural_code                :string
 #
 module Lists
   class Establishment < ApplicationRecord
