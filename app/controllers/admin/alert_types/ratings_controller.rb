@@ -70,7 +70,9 @@ module Admin
           :sms_active, :email_active, :find_out_more_active,
           :pupil_dashboard_alert_active,
           :management_dashboard_alert_active,
-          :management_priorities_active, :analysis_active
+          :management_priorities_active,
+          :analysis_active,
+          :group_dashboard_alert_active
         )
       end
 

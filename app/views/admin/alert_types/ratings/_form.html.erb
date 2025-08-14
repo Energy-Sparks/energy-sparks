@@ -1,9 +1,11 @@
 <h3>General</h3>
 <%= form.input :description, hint: 'Only used in the admin interface' %>
 
-<% if alert_type.has_ratings?  %>
-  <%= form.input :rating_from, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
-  <%= form.input :rating_to, input_html: {min: 0, max: 10, step: 0.1}, hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place'%>
+<% if alert_type.has_ratings? %>
+  <%= form.input :rating_from, input_html: { min: 0, max: 10, step: 0.1 },
+                               hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place' %>
+  <%= form.input :rating_to, input_html: { min: 0, max: 10, step: 0.1 },
+                             hint: '0.0 to 10.0, alert ratings will be rounded to nearest decimal place' %>
 <% else %>
   <%= form.hidden_field :rating_from %>
   <%= form.hidden_field :rating_to %>
@@ -11,22 +13,35 @@
 
 <%= form.simple_fields_for :content, content do |content| %>
 
-  <%= content.input :colour, as: :select, collection: AlertTypeRatingContentVersion.colours.keys, include_blank: false, hint: 'For the background on dashboards', input_html: { class: 'colours' }, label_method: :humanize %>
+  <%= content.input :colour,
+                    as: :select,
+                    collection: AlertTypeRatingContentVersion.colours.keys,
+                    include_blank: false,
+                    hint: 'For the background on dashboards',
+                    input_html: { class: 'colours' },
+                    label_method: :humanize %>
 
   <h3>Variables</h3>
 
-  <%= render 'admin/shared/variables_accordion', template_variables: template_variables, units_field: :units, example_variables: example_variables %>
+  <%= render 'admin/shared/variables_accordion', template_variables: template_variables, units_field: :units,
+                                                 example_variables: example_variables %>
 
   <h3>Content</h3>
 
   <%= render 'content_section', form: form, content: content, field: :sms_active, field_name: 'SMS content' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'sms', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :sms), locales: I18n.available_locales do |locale| %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'sms',
+                                               preview_url: admin_alert_type_ratings_preview_path(alert_type,
+                                                                                                  template: :sms),
+                                               locales: I18n.available_locales do |locale| %>
       <%= content.input t_field(:sms_content, locale), label: 'SMS content' %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :email_active, field_name: 'Email content' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'email', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :email), locales: I18n.available_locales do |locale| %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'email',
+                                               preview_url: admin_alert_type_ratings_preview_path(alert_type,
+                                                                                                  template: :email),
+                                               locales: I18n.available_locales do |locale| %>
       <%= content.input t_field(:email_title, locale), as: :string %>
       <%= content.label 'Email content', for: t_field(:email_content, locale) %>
       <%= content.rich_text_area t_field(:email_content, locale) %>
@@ -34,23 +49,52 @@
   <% end %>
 
   <%= render 'content_section', form: form, field: :pupil_dashboard_alert_active, field_name: 'Pupil dashboard alert' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :pupil_dashboard_title), locales: I18n.available_locales do |locale| %>
-      <%= content.label "Pupil dashboard title", for: t_field(:pupil_dashboard_title, locale) %>
+    <% preview_url = admin_alert_type_ratings_preview_path(alert_type,
+                                                           template: :alert,
+                                                           field: :pupil_dashboard_title) %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'pupil_dashboard_alert',
+                                               preview_url:,
+                                               locales: I18n.available_locales do |locale| %>
+      <%= content.label 'Pupil dashboard title', for: t_field(:pupil_dashboard_title, locale) %>
       <%= content.rich_text_area t_field(:pupil_dashboard_title, locale) %>
     <% end %>
   <% end %>
 
-  <%= render 'content_section', form: form, field: :management_dashboard_alert_active, field_name: 'Adult dashboard alert' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :alert, field: :management_dashboard_title), locales: I18n.available_locales do |locale| %>
-      <%= content.label "Adult dashboard title", for: t_field(:management_dashboard_title, locale) %>
+  <%= render 'content_section', form: form, field: :management_dashboard_alert_active,
+                                field_name: 'Adult dashboard alert' do %>
+    <% preview_url = admin_alert_type_ratings_preview_path(alert_type,
+                                                           template: :alert,
+                                                           field: :management_dashboard_title) %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'management_dashboard_alert',
+                                               preview_url: preview_url,
+                                               locales: I18n.available_locales do |locale| %>
+      <%= content.label 'Adult dashboard title', for: t_field(:management_dashboard_title, locale) %>
       <%= content.rich_text_area t_field(:management_dashboard_title, locale) %>
     <% end %>
   <% end %>
 
   <%= render 'content_section', form: form, field: :management_priorities_active, field_name: 'Management priorities' do %>
-    <%= render 'admin/shared/preview_section', content: content, scope: 'management_priorities', preview_url: admin_alert_type_ratings_preview_path(alert_type, template: :management_priorities, field: :management_priorities_title), locales: I18n.available_locales do |locale| %>
-      <%= content.label "Management priorities title", for: t_field(:management_priorities_title, locale) %>
+    <% preview_url = admin_alert_type_ratings_preview_path(alert_type,
+                                                           template: :management_priorities,
+                                                           field: :management_priorities_title) %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'management_priorities',
+                                               preview_url: preview_url,
+                                               locales: I18n.available_locales do |locale| %>
+      <%= content.label 'Management priorities title', for: t_field(:management_priorities_title, locale) %>
       <%= content.rich_text_area t_field(:management_priorities_title, locale) %>
     <% end %>
   <% end %>
+
+  <%= render 'content_section', form: form, field: :group_dashboard_alert_active, field_name: 'Group dashboard alert' do %>
+    <% preview_url = admin_alert_type_ratings_preview_path(alert_type,
+                                                           template: :alert,
+                                                           field: :group_dashboard_title) %>
+    <%= render 'admin/shared/preview_section', content: content, scope: 'group_dashboard_alert',
+                                               preview_url: preview_url,
+                                               locales: I18n.available_locales do |locale| %>
+      <%= content.label 'Group dashboard title', for: t_field(:group_dashboard_title, locale) %>
+      <%= content.rich_text_area t_field(:group_dashboard_title, locale) %>
+    <% end %>
+  <% end %>
+
 <% end %>
