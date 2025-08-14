@@ -93,6 +93,7 @@
                                                preview_url: preview_url,
                                                locales: I18n.available_locales do |locale| %>
       <%= content.label 'Group dashboard title', for: t_field(:group_dashboard_title, locale) %>
+      <p><strong>Note</strong>: this field only supports the standard group dashboard variables (see above)</p>
       <%= content.rich_text_area t_field(:group_dashboard_title, locale) %>
     <% end %>
   <% end %>

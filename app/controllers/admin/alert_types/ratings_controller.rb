@@ -88,7 +88,15 @@ module Admin
       end
 
       def set_template_variables
-        @template_variables = @alert_type.cleaned_template_variables
+        @template_variables = @alert_type.cleaned_template_variables.merge(
+          "Group dashboard alert variables": {
+            number_of_schools: { description: 'Number of schools that have triggered this alert', units: :number },
+            schools: { description: 'Number of schools as a pluralised string, e.g. 1 school, 10 schools', units: :string },
+            total_one_year_saving_kwh: { description: 'Total one year saving if energy use was reduced/maintained across the schools', units: :kwh },
+            total_average_one_year_saving_gbp: { description: 'Total average savings if energy use was reduced/maintained across the schools', units: :£ },
+            total_one_year_saving_co2: { description: 'Total one year change in CO2  if energy use was reduced/maintained across the schools', units: :co2 }
+          }
+        )
       end
 
       def set_available_charts

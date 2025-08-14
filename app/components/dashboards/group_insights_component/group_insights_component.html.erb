@@ -18,7 +18,9 @@
     </div>
 
     <div class="col-12 col-lg-6">
-      <h3><%= t('advice_pages.index.alerts.title') %></h3>
+      <%= render Dashboards::GroupAlertsComponent.new(school_group: school_group, id: 'group-alerts') do |c| %>
+          <% c.with_title { t('advice_pages.index.alerts.title') } %>
+      <% end %>
     </div>
   </div>
 <% end %>

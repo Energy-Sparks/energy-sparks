@@ -21,7 +21,7 @@ module Dashboards
     end
 
     def prompt_for_tariff_review?
-      can_manage_group? && [3, 9].include(Time.zone.today.month)
+      can_manage_group? && [3, 9].include?(Time.zone.today.month)
     end
 
     # This will need review from the team
