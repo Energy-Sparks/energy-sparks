@@ -48,7 +48,6 @@ cy:
       current_progress: Cynnydd Presennol
       download: Lawrlwytho
       overview: Trosolwg
-      points: Pwyntiau
       view_all_programmes: Gweld pob rhaglen
     started:
       restart: Ailddechrau
