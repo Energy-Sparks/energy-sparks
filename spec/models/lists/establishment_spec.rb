@@ -10,11 +10,21 @@ module Lists
 
     describe '.read_data_csv_from_zip' do
       it 'finds data csv in zip file' do
-        expect {described_class.read_data_csv_from_zip('./spec/fixtures/import_establishments/example_zip_file.zip')}.not_to raise_error
+        expect {described_class.read_data_csv_from_zip('./spec/fixtures/import_establishments/zipped_sample.zip')}.not_to raise_error
       end
 
       it 'throws error when no data csv is found' do
         expect {described_class.read_data_csv_from_zip('./spec/fixtures/import_establishments/zip_with_invalid_csv.zip')}.to raise_error(LoadError)
+      end
+    end
+
+    describe '.import_from_zip' do
+      before do
+        described_class.import_from_zip('./spec/fixtures/import_establishments/zipped_sample.zip', 1000)
+      end
+
+      it 'adds something to database' do
+        expect(described_class.count).not_to eq(0)
       end
     end
 
