@@ -31,28 +31,51 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
                                      rating_to: 10.0))
   end
 
-  before do
-    school_group.schools.each do |school|
-      create(:alert,
-             school: school,
-             alert_generation_run: create(:alert_generation_run, school: school),
-             alert_type: content_version.alert_type_rating.alert_type,
-             rating: 6.0,
-             variables: {
-                   one_year_saving_kwh: 1.0,
-                   average_one_year_saving_gbp: 2.0,
-                   one_year_saving_co2: 3.0,
-                   time_of_year_relevance: 5.0
-             })
+
+  context 'when there is invalid data' do
+    before do
+      school_group.schools.each_with_index do |school, index|
+        create(:alert,
+               school: school,
+               alert_generation_run: create(:alert_generation_run, school: school),
+               alert_type: content_version.alert_type_rating.alert_type,
+               rating: 6.0,
+               variables: {
+                     one_year_saving_kwh: index == 0 ? nil : 1.0,
+                     average_one_year_saving_gbp: 2.0,
+                     one_year_saving_co2: 3.0,
+                     time_of_year_relevance: 5.0
+               })
+      end
+    end
+
+    it 'does not display the alert' do
+      expect(html).to have_css('div.prompt-component.negative')
     end
   end
 
-  it_behaves_like 'an application component' do
-    let(:expected_classes) { 'extra-classes' }
-    let(:expected_id) { 'custom-id' }
-  end
-
   context 'when there are alerts to display' do
+    before do
+      school_group.schools.each do |school|
+        create(:alert,
+               school: school,
+               alert_generation_run: create(:alert_generation_run, school: school),
+               alert_type: content_version.alert_type_rating.alert_type,
+               rating: 6.0,
+               variables: {
+                     one_year_saving_kwh: 1.0,
+                     average_one_year_saving_gbp: 2.0,
+                     one_year_saving_co2: 3.0,
+                     time_of_year_relevance: 5.0
+               })
+      end
+    end
+
+    it_behaves_like 'an application component' do
+      let(:expected_classes) { 'extra-classes' }
+      let(:expected_id) { 'custom-id' }
+    end
+
     it { expect(html).to have_content(I18n.t('advice_pages.index.alerts.title')) }
     it { expect(html).to have_link('Test', href: home_page_path) }
 
@@ -100,7 +123,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
     end
 
     context 'when there are variables in the content' do
-      let(:group_dashboard_title) { 'number: {{number_of_schools}}, schools: {{schools}}, {{total_one_year_saving_kwh}}, {{total_average_one_year_saving_gbp}}, {{total_one_year_saving_co2}}' }
+      let(:group_dashboard_title) { 'number: {{number_of_schools}}; schools: {{schools}}; describe_schools: {{describe_schools}}; {{total_one_year_saving_kwh}}, {{total_average_one_year_saving_gbp}}, {{total_one_year_saving_co2}}' }
 
       let(:content_version) do
         create(:alert_type_rating_content_version,
@@ -113,7 +136,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
 
       it 'interpolates correctly' do
-        expect(html).to have_content(' number: 2, schools: 2 schools, 2 kWh, £4, 6 kg CO2')
+        expect(html).to have_content(' number: 2; schools: 2 schools; describe_schools: two schools; 2 kWh, £4, 6 kg CO2')
       end
     end
   end

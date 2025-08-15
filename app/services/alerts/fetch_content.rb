@@ -23,11 +23,16 @@ module Alerts
       end
     end
 
+    def self.apply_weighting(rating, weighting, time_of_year_relevance)
+      ((11 - rating) * weighting * time_of_year_relevance) / 1000
+    end
 
     private
 
     def calculate_score(content_version, scope)
-      ((11 - @alert.rating) * content_version.read_attribute(:"#{scope}_weighting") * @alert.priority_data.fetch('time_of_year_relevance') {5.0}) / 1000
+      self.class.apply_weighting(@alert.rating,
+                                 content_version.read_attribute(:"#{scope}_weighting"),
+                                 @alert.priority_data.fetch('time_of_year_relevance') {5.0})
     end
   end
 end

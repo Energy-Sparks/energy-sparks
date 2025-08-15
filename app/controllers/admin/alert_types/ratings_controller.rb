@@ -94,7 +94,8 @@ module Admin
             schools: { description: 'Number of schools as a pluralised string, e.g. 1 school, 10 schools', units: :string },
             total_one_year_saving_kwh: { description: 'Total one year saving if energy use was reduced/maintained across the schools', units: :kwh },
             total_average_one_year_saving_gbp: { description: 'Total average savings if energy use was reduced/maintained across the schools', units: :£ },
-            total_one_year_saving_co2: { description: 'Total one year change in CO2  if energy use was reduced/maintained across the schools', units: :co2 }
+            total_one_year_saving_co2: { description: 'Total one year change in CO2  if energy use was reduced/maintained across the schools', units: :co2 },
+            describe_schools: { description: 'Description of number of schools: one school, two, a few, some, several, most, almost all, all schools', units: :string }
           }
         )
       end
