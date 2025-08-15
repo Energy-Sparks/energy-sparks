@@ -59,13 +59,13 @@ module Lists
 
     # Converts headers from camelcase to snakecase
     def self.convert_header(str)
-      return str.underscore.sub(' ', '_').remove('(', ')')
+      str.underscore.sub(' ', '_').remove('(', ')')
     end
 
     def self.read_data_csv_from_zip(path)
       Zip::File.open(path) do |zip|
         zip.each do |file|
-          if file.name[..13] == 'edubasealldata'
+          if file.name.start_with?('edubasealldata')
             return file.get_input_stream.read.force_encoding(Encoding::ISO_8859_1)
           end
         end
@@ -75,50 +75,37 @@ module Lists
 
     def self.import(csv_str, batch_size)
       rows = CSV.parse(csv_str, headers: true)
-      headers = rows.first.headers
 
-      # All headers from the CSV that match a database column when converted
-      csv_headers = headers.filter { |h| Establishment.column_names.include?(convert_header(h)) }
-      column_names = csv_headers.map { |h| convert_header(h) }
+      # Keys are headers from the CSV that match a database column when converted
+      headers_to_attributes = rows.first.headers.filter_map do |h|
+        [h, convert_header(h)] if Establishment.column_names.include?(convert_header(h))
+      end.to_h
+      headers_to_attributes['URN'] = 'id' # URN is the only header mapped to a column that isn't just the header in snakecase
 
-      # URN is the only header mapped to a column that isn't just the header in snakecase
-      csv_headers.append('URN')
-      column_names.append('id')
+      rows.map { |row| create_from_row(row, headers_to_attributes) }.each_slice(batch_size) { |batch| upsert_batch(batch) }
 
-      batch_counter = 0
-      batch = []
-      rows.each do |row|
-        batch.append(create_from_row(row, csv_headers, column_names))
-        batch_counter += 1
-        if batch_counter == batch_size
-          upsert_batch(batch)
-          batch_counter = 0
-          batch = []
-        end
-      end
-      upsert_batch(batch)
       puts 'Finished successfully'
     end
 
-    def self.upsert_batch(batch)
+    private_class_method def self.upsert_batch(batch)
       puts "Upserting batch of #{batch.length} entries"
       upsert_all(batch, unique_by: 'id')
     end
 
-    def self.create_from_row(row, csv_headers, column_names)
+    private_class_method def self.create_from_row(row, headers_to_attributes)
       ret = {}
-      (0..csv_headers.length - 1).each do |i|
+      headers_to_attributes.each_key do |h|
         # Use model attributes to detect which type to cast to
-        type = attribute_types[column_names[i]].class
-        if type == ActiveModel::Type::Integer
-          ret[column_names[i]] = row[csv_headers[i]].to_i
-        elsif type == ActiveModel::Type::String
-          ret[column_names[i]] = row[csv_headers[i]]
-        elsif type == ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
-          if row[csv_headers[i]] == ''
-            ret[column_names[i]] = nil
+        case attribute_types[headers_to_attributes[h]]
+        when ActiveModel::Type::Integer
+          ret[headers_to_attributes[h]] = row[h].to_i
+        when ActiveModel::Type::String
+          ret[headers_to_attributes[h]] = row[h]
+        when ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
+          if row[h] == ''
+            ret[headers_to_attributes[h]] = nil
           else
-            ret[column_names[i]] = DateTime.parse(row[csv_headers[i]])
+            ret[headers_to_attributes[h]] = DateTime.parse(row[h])
           end
         end
       end
