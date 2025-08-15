@@ -14,9 +14,10 @@ module Dashboards
     end
 
     # FIXME what if there's a var missing when summing?
-    # FIXME pluralisation of schools
     # FIXME sort and limit, but include outliers, e.g. if very small percentage or just 1-2?
-    # FIXME linking to the group advice page
+    #
+    # FIXME Create after party tasks with defaults for alert content, assume most things are active
+    # FIXME create var for some, most of, the majority, etc
     def alerts
       summarised_alerts.filter_map do |summarised_alert|
         latest_content_version = summarised_alert.alert_type_rating.current_content
@@ -40,7 +41,7 @@ module Dashboards
             total_one_year_saving_co2: helpers.format_unit(summarised_alert.total_one_year_saving_co2.magnitude, :co2, false),
           }
         )
-      end.sort(&:priority)
+      end.sort_by(&:priority)
     end
 
     def render?
@@ -63,7 +64,7 @@ module Dashboards
     # Fetch list of summarised alerts from database, then select one per alert_type based on the largest number of
     # schools that have triggered that alert.
     def summarised_alerts
-      @summarised_alerts ||= Alert.summarised_alerts(schools: @schools)
+      Alert.summarised_alerts(schools: @schools)
            .group_by(&:alert_type)
            .map { |_, alerts| alerts.max_by(&:number_of_schools) }.to_a
     end
