@@ -1,0 +1,36 @@
+.dashboards-group-savings-prompt-component {
+  background: $adult-light;
+
+  #prompt-title {
+    div.trix-content {
+      display: inline;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+
+      div {
+        display: inline;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+      }
+    }
+  }
+
+  #prompt-body {
+    div.trix-content {
+      display: inline;
+      div {
+        display: inline;
+      }
+    }
+  }
+
+}
+
+
+.dashboards-group-savings-prompt-component h2 {
+  padding-top: 0px;
+}
