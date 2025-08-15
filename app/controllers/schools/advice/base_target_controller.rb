@@ -13,7 +13,13 @@ module Schools
 
       def set_target
         @target = @school.most_recent_target
-        consumption = @target.monthly_consumption(@fuel_type).reject { |month| month[:missing] }
+        redirect_to school_school_targets_path(@school) and return if @target.nil?
+
+        consumption = @target.monthly_consumption(@fuel_type)
+        render 'not_enough_data' and return if consumption.nil?
+
+        # debugger
+        consumption.reject! { |month| month[:missing] }
         @last_consumption_month = consumption.last
         @current_consumption = consumption.sum { |month| month[:current_consumption] }
         @target_consumption = consumption.sum { |month| month[:target_consumption] }

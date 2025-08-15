@@ -21,8 +21,10 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= format_date_range([@target.start_date, Date.new(@last_consumption_month[:year],
-                                                              @last_consumption_month[:month]).end_of_month]) %></td>
+      <td><%= end_date = unless @last_consumption_month.nil?
+                           Date.new(@last_consumption_month[:year], @last_consumption_month[:month]).end_of_month
+                         end
+              format_date_range([@target.start_date, end_date]) %></td>
       <td><%= format_unit(@current_consumption, :kw) %></td>
       <td><%= format_unit(@target_consumption, :kw) %></td>
       <td td class="text-right">
