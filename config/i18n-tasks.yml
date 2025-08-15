@@ -169,6 +169,7 @@ ignore_unused:
   - 'pupils.default_equivalences.equivalence_*.*'
   - 'schools.prompts.programme.progress.*'
   - 'schools.prompts.audit.progress.*'
+  - 'components.dashboards.group_alerts.school_descriptions.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
