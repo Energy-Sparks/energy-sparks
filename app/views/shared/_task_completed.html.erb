@@ -44,7 +44,7 @@
   <% end %>
 <% end %>
 
-<%= render ScoreboardSummaryComponent.new(podium: current_school_podium, title: '') %>
+<%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, title: '') %>
 
 <h3><%= t('tasks.completed.what_next') %></h3>
 

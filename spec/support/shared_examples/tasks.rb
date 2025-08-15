@@ -14,7 +14,7 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
   end
 
   it 'has scoreboard summary component' do # not checking functionality here as this is done in the component
-    within 'div.podium-component' do
+    within 'div.scoreboards-podium-component' do
       if points > 0
         expect(page).to have_content("You are in #{ordinal} place")
       else

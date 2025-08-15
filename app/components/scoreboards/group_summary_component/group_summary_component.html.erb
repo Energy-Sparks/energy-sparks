@@ -1,0 +1,39 @@
+<%= tag.div id: id, class: classes do %>
+  <%# i18n-tasks-use t('components.scoreboards.group_summary.podium.full_position_html') %>
+  <%# i18n-tasks-use t('components.scoreboards.group_summary.podium.scoreboard_position_html') %>
+  <%# i18n-tasks-use t('components.scoreboards.group_summary.podium.no_points_this_year') %>
+  <%= render Scoreboards::SummaryComponent.new(podium: podium,
+                                               user: user,
+                                               show_recent_activity: false,
+                                               podium_opts: {
+                                                 i18n_scope: 'components.scoreboards.group_summary.podium',
+                                                 path_to_scoreboard: current_scores_school_group_path(school_group)
+                                               }) do |summary| %>
+    <% summary.with_title { t('components.scoreboards.group_summary.title') } %>
+    <% summary.with_description do %>
+      <div class="row">
+        <div class="col">
+          <%= t('components.scoreboards.group_summary.description_html') %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <%= link_to t('components.scoreboard_summary.view_scoreboard'),
+                      current_scores_school_group_path(school_group),
+                      class: 'btn btn-default' %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <%= render TimelineComponent.new(observations: observations,
+                                   show_header: true,
+                                   table_opts: { show_date: true, show_school: true },
+                                   user: user, classes: 'mt-4') do |timeline| %>
+    <% timeline.with_title { t('components.scoreboards.group_summary.timeline.title') } %>
+    <% timeline.with_description do %>
+      <p>
+        <%= t('components.scoreboards.group_summary.timeline.description') %>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>

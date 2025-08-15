@@ -5,6 +5,5 @@ cy:
       recent_activity: Gweithgarwch diweddar ar draws Sbarcynni
       recent_activity_intro: Mae ysgolion yn sgorio pwyntiau drwy gofnodi eu gweithgareddau i ymchwilio i'w defnydd o ynni, dysgu am ynni, a chymryd camau arbed ynni o amgylch eu hysgol.
       recent_scoreboard_activity: Gweithgaredd diweddar ar eich bwrdd sgorio
-      recent_scoreboard_activity_html: Gweithgarwch diweddar ar <a href="%{scoreboard_path}">eich sgorfwrdd</a>
       title: Diweddariad sgorfwrdd
       view_scoreboard: Gweld sgorfwrdd

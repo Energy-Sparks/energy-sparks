@@ -1,0 +1,48 @@
+<%= tag.div id: id, class: classes do %>
+  <table class="table">
+    <thead>
+      <tr>
+        <% if show_positions? %>
+          <th><%= t('common.labels.place') %></th>
+        <% end %>
+        <% if show_date? %>
+          <th><%= t('common.labels.date') %></th>
+        <% end %>
+        <% if show_school? %>
+          <th><%= t('common.school') %></th>
+        <% end %>
+        <th><%= t('common.labels.points') %></th>
+        <th><%= t('common.labels.activity') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% observations.each do |observation| %>
+        <tr>
+          <% if show_positions? %>
+            <td>
+              <%= position(observation.school) || '-' %>
+            </td>
+          <% end %>
+          <% if show_date? %>
+            <td>
+              <%= observation.at.to_fs(:es_short) %>
+            </td>
+          <% end %>
+          <% if show_school? %>
+            <td>
+              <%= link_to observation.school.name, school_path(observation.school) %>
+            </td>
+          <% end %>
+          <td>
+            <%= observation.points || '-' %>
+          </td>
+          <td>
+            <%= render ObservationComponent.new(observation: observation,
+                                                show_actions: show_actions?,
+                                                style: observation_style) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
