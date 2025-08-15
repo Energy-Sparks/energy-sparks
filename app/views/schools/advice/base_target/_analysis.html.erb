@@ -49,7 +49,7 @@
         <tr>
           <td><%= target.start_date.strftime('%B %Y') %></td>
           <td><%= format_unit(previous_consumption, :kw) %></td>
-          <td><%= format_unit(target_consumption, :kw) %></td>
+          <td><%= format_unit(current_consumption, :kw) %></td>
           <td>
             <%= up_downify(format_unit(percent_change(previous_consumption, current_consumption), :relative_percent),
                            sanitize: false) %>

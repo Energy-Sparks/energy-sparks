@@ -2,7 +2,7 @@
 
 module Schools
   module Advice
-    class GasTargetController < BaseOutOfHoursController
+    class GasTargetController < BaseTargetController
     end
   end
 end

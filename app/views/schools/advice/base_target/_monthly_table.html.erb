@@ -1,11 +1,13 @@
 <table class="mt-2 table table-sm advice-table">
   <thead>
-    <th><%= t('schools.school_targets.progress.current.month') %></th>
-    <th><%= t('advice_pages.target.analysis.monthly_progress.last_year') %></th>
-    <th><%= t('advice_pages.target.analysis.monthly_progress.target') %></th>
-    <th><%= t('advice_pages.target.analysis.monthly_progress.this_year') %></th>
-    <th><%= t('advice_pages.target.analysis.monthly_progress.percentage_change') %></th>
-    <th><%= t('advice_pages.target.analysis.monthly_progress.on_target') %></th>
+    <tr>
+      <th><%= t('schools.school_targets.progress.current.month') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.last_year') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.target') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.this_year') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.percentage_change') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.on_target') %></th>
+    </tr>
   </thead>
   <tbody>
     <% consumption.each do |month| %>

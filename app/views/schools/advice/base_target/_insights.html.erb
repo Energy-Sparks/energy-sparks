@@ -1,7 +1,7 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
         fuel_type: @advice_page.fuel_type&.to_sym,
-        percent: format_unit(@target.electricity, { units: :percent, options: { scale: false } }),
+        percent: format_unit(@target[@fuel_type], { units: :percent, options: { scale: false } }),
         target_date: @target.target_date.strftime('%B %Y')) %>
 <% end %>
 <%= render 'schools/advice/section_title',
@@ -21,15 +21,15 @@
   </thead>
   <tbody>
     <tr>
-      <td><%= end_date = unless @last_consumption_month.nil?
-                           Date.new(@last_consumption_month[:year], @last_consumption_month[:month]).end_of_month
-                         end
-              format_date_range([@target.start_date, end_date]) %></td>
-      <td><%= format_unit(@current_consumption, :kw) %></td>
-      <td><%= format_unit(@target_consumption, :kw) %></td>
-      <td td class="text-right">
-        <%= up_downify(format_unit(percent_change(@current_consumption, @target_consumption), :relative_percent),
-                       sanitize: false) %></td>
+      <% unless @last_consumption_month.nil? %>
+        <td><%= format_date_range([@target.start_date, Date.new(@last_consumption_month[:year],
+                                                                @last_consumption_month[:month]).end_of_month]) %></td>
+        <td><%= format_unit(@current_consumption, :kw) %></td>
+        <td><%= format_unit(@target_consumption, :kw) %></td>
+        <td td class="text-right">
+          <%= up_downify(format_unit(percent_change(@current_consumption, @target_consumption), :relative_percent),
+                         sanitize: false) %></td>
+      <% end %>
     </tr>
   </tbody>
 </table>

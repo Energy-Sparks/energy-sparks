@@ -35,13 +35,13 @@ en:
           electricity_meter_breakdown: A summary of use across your electricity meters
           electricity_out_of_hours: How much of your electricity use is outside of school hours?
           electricity_recent_changes: How has your electricity use changed over the last few weeks?
-          electricity_target: Progress towards reducing your electricity use
+          electricity_target: Target for reducing your electricity use
           gas_costs: Review how much your school has recently spent on gas
           gas_long_term: See long term trends in your gas use
           gas_meter_breakdown: A summary of use across your gas meters
           gas_out_of_hours: How much of your gas use is outside of school hours?
           gas_recent_changes: How has your gas use changed over the last few weeks?
-          gas_target: Progress towards reducing your gas use
+          gas_target: Target for reducing your gas use
           heating_control: Review your central heating timings and use of gas to heat the school
           hot_water: Understand the efficiency of your hot water system
           solar_pv:

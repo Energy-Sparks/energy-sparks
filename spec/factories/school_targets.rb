@@ -45,8 +45,8 @@ FactoryBot.define do
 
       after(:build) do |target, evaluator|
         target["#{evaluator.fuel_type}_monthly_consumption"] = (0..11).map do |i|
-          month = target.start_date.month + i
-          [target.start_date.year + (month / 13), month % 13, 1010, 1020, 1000, false]
+          month = target.start_date.month - 1 + i
+          [target.start_date.year + (month / 12), (month % 12) + 1, 1010, 1020, 1000, false]
         end
       end
     end
