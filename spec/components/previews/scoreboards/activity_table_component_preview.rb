@@ -21,11 +21,11 @@ module Scoreboards
       ].compact.sort_by(&:at).reverse
 
       render(Scoreboards::ActivityTableComponent.new(observations:,
-                                                show_positions: false,
-                                                observation_style: observation_style.to_sym,
-                                                show_school:,
-                                                show_date:,
-                                                show_actions:))
+                                                     show_positions: false,
+                                                     observation_style: observation_style.to_sym,
+                                                     show_school:,
+                                                     show_date:,
+                                                     show_actions:))
     end
 
     # @param slug "Slug or id of school to show"
@@ -45,12 +45,12 @@ module Scoreboards
       podium = Podium.create(school: school, scoreboard: school.scoreboard)
       observations = school.scoreboard.observations.for_visible_schools.not_including(school).by_date.with_points.sample(limit)
       render(Scoreboards::ActivityTableComponent.new(observations:,
-                                                podium:,
-                                                show_positions:,
-                                                observation_style: observation_style.to_sym,
-                                                show_school:,
-                                                show_date:,
-                                                show_actions:))
+                                                     podium:,
+                                                     show_positions:,
+                                                     observation_style: observation_style.to_sym,
+                                                     show_school:,
+                                                     show_date:,
+                                                     show_actions:))
     end
   end
 end
