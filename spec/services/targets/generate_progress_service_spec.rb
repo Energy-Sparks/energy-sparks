@@ -296,9 +296,8 @@ describe Targets::GenerateProgressService do
         target2023 = create(:school_target, school:, electricity: 3,
                                             start_date: Date.new(2023, 5, 1), target_date: Date.new(2024, 5, 1))
         meter_collection = run(Date.new(2025, 4, 15), 3.years)
-        expect(target2023.reload.electricity_monthly_consumption).to \
-          eq(expected_month_consumption(2023) + ['2024-04-30'])
-        expect(target.reload.electricity_monthly_consumption).to eq(expected_month_consumption(2024) + ['2025-04-15'])
+        expect(target2023.reload.electricity_monthly_consumption).to eq(expected_month_consumption(2023))
+        expect(target.reload.electricity_monthly_consumption).to eq(expected_month_consumption(2024))
         expect { described_class.new(school, meter_collection).generate! }.to \
           change { target.reload.updated_at }.and(not_change { target2023.reload.updated_at })
       end
@@ -307,7 +306,7 @@ describe Targets::GenerateProgressService do
         run(Date.new(2025, 5, 15), 2.years)
         target.reload
         expect(target.electricity_monthly_consumption.first).to eq([2024, 5, 1488, nil, nil, true])
-        expect(target.electricity_monthly_consumption[-2]).to eq([2025, 4, 1440, 1440, 1396.8, false])
+        expect(target.electricity_monthly_consumption.last).to eq([2025, 4, 1440, 1440, 1396.8, false])
       end
 
       it 'with insufficient data' do
@@ -317,7 +316,7 @@ describe Targets::GenerateProgressService do
 
       it 'works with an incomplete month' do
         run(Date.new(2025, 3, 15), 2.years)
-        expect(target.reload.electricity_monthly_consumption[-2]).to eq([2025, 4, 0, 1440, 1396.8, true])
+        expect(target.reload.electricity_monthly_consumption.last).to eq([2025, 4, 0, 1440, 1396.8, true])
       end
     end
   end
