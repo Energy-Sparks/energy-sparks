@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_13_085636) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_07_120146) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1216,8 +1216,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_085636) do
     t.integer "number_of_pupils"
     t.string "percentage_fsm"
     t.datetime "last_changed_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "establishment_type_group_code"
     t.datetime "open_date"
     t.datetime "close_date"
@@ -1250,6 +1248,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_13_085636) do
     t.string "msoa_code"
     t.string "lsoa_code"
     t.integer "fsm"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "local_authority_areas", force: :cascade do |t|
