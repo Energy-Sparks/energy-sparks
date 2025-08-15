@@ -123,7 +123,7 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
       context 'with the group admin' do
         let(:user) { create(:group_admin, school_group: school_group) }
 
-        it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.review_tariffs.note')) }
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.review_tariffs.note')) }
       end
     end
   end
