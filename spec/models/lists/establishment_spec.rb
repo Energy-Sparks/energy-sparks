@@ -18,7 +18,7 @@ module Lists
       end
     end
 
-    describe '.import_establishments' do
+    describe '.import' do
       context 'with empty database' do
         before do
           File.open('./spec/fixtures/import_establishments/establishments_sample.csv') do |file|
