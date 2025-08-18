@@ -58,7 +58,7 @@ en:
           answer_html: <a href="%{url}">We have an information pack with materials</a> you might find helpful.
           question: Need help convincing your school’s decision makers?
         learn_more:
-          answer_html: Most of our <a href='%{schools_url}'>schools have publicly available data</a> — why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{newsletters_url}'>our newsletters</a>, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+          answer_html: Most of our <a href='%{schools_url}'>schools have publicly available data</a> — why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{newsletters_url}'>our newsletters</a>, or you can contact us at <a href="mailto:support@energysparks.uk">support@energysparks.uk</a>.
           question: Want to learn more?
       short_demo:
         body: In this quick walkthrough of our energy management tool, you’ll learn more about our adult and pupil dashboards, energy-use charts, bespoke energy-saving advice, alerts and more.

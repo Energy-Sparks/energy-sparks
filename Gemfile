@@ -9,7 +9,7 @@ gem 'rails', '~> 7.2.2'
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.14'
-gem 'jbuilder', '~> 2.13' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.14' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -24,6 +24,7 @@ gem 'wisper' # publish subscribe for ruby objects
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
+gem 'mechanize' # For GIAS data downloader
 gem 'pg'
 gem 'scenic'
 
@@ -132,7 +133,6 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
-  gem 'mechanize' # For GIAS data downloader
   gem 'rails-controller-testing'
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
