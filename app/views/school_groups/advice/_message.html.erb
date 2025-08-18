@@ -1,0 +1,12 @@
+<% if show_standard_prompts?(school_group) &&
+      school_group.dashboard_message&.message&.present? %>
+  <div class='row'>
+    <div class="col-md-12">
+      <% if school_group.try(:dashboard_message) %>
+        <%= render PromptComponent.new(status: :negative, icon: 'info-circle') do %>
+            <%= school_group.dashboard_message.message %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -12,6 +12,12 @@
       <%= render 'school_groups/advice/nav', school_group: @school_group %>
     </div>
     <div class="col-md-9 col-lg-9 col-xl-10">
+      <%= render 'message', school_group: @school_group %>
+
+      <h2>
+        <%= t('advice_pages.index.priorities.table_title') %>
+      </h2>
+
       <%= render 'school_groups/advice/priority_table',
                  school_group: @school_group,
                  path: [:priorities, @school_group, :advice],

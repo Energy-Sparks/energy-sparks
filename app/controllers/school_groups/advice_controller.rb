@@ -3,6 +3,7 @@ module SchoolGroups
     include SchoolGroupAccessControl
     include SchoolGroupBreadcrumbs
     include Scoring
+    include Promptable
 
     load_resource :school_group
 
