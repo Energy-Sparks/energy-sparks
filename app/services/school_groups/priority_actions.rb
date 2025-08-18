@@ -5,6 +5,10 @@ module SchoolGroups
       @ratings_for_reporting = {}
     end
 
+    def priority_action_count
+      priority_actions.keys.count
+    end
+
     # returns a hash of alert_type_rating to a list of ManagementPriority
     # there will be at most one ManagementPriority for a given alert type rating for a school
     def priority_actions
