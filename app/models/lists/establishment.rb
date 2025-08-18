@@ -76,11 +76,11 @@ module Lists
     def self.import(csv_str, batch_size)
       rows = CSV.parse(csv_str, headers: true)
 
-      # Keys are headers from the CSV that match a database column when converted
+      # Array of pairs mapping headers from the CSV that match a database column when converted
       headers_to_attributes = rows.first.headers.filter_map do |h|
         [h, convert_header(h)] if Establishment.column_names.include?(convert_header(h))
-      end.to_h
-      headers_to_attributes['URN'] = 'id' # URN is the only header mapped to a column that isn't just the header in snakecase
+      end
+      headers_to_attributes.append(['URN', 'id']) # URN is the only header mapped to a column that isn't just the header in snakecase
 
       rows.map { |row| create_from_row(row, headers_to_attributes) }.each_slice(batch_size) { |batch| upsert_batch(batch) }
 
@@ -93,23 +93,9 @@ module Lists
     end
 
     private_class_method def self.create_from_row(row, headers_to_attributes)
-      ret = {}
-      headers_to_attributes.each_key do |h|
-        # Use model attributes to detect which type to cast to
-        case attribute_types[headers_to_attributes[h]]
-        when ActiveModel::Type::Integer
-          ret[headers_to_attributes[h]] = row[h].to_i
-        when ActiveModel::Type::String
-          ret[headers_to_attributes[h]] = row[h]
-        when ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
-          if row[h] == ''
-            ret[headers_to_attributes[h]] = nil
-          else
-            ret[headers_to_attributes[h]] = DateTime.parse(row[h])
-          end
-        end
+      headers_to_attributes.to_h do |header, attr_name|
+        [attr_name, attribute_types[attr_name].cast(row[header])]
       end
-      return ret
     end
   end
 end
