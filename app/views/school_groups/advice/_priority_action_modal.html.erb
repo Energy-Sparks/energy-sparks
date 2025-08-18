@@ -7,19 +7,22 @@
 <p><%= t('school_groups.priority_actions.modal_intro') %></p>
 
 <div class='text-right pt-3'>
-  <%= link_to t('school_groups.download_as_csv'), priority_actions_school_group_path(@school_group, format: :csv, alert_type_rating_ids: [alert_type_rating.id]), class: 'btn btn-sm btn-default', id: 'download-priority-actions-school-csv' %>
+  <%= link_to t('school_groups.download_as_csv'),
+              polymorphic_path(path, params: { format: :csv, alert_type_rating_ids: [alert_type_rating.id] }),
+              class: 'btn btn-sm btn-default',
+              id: 'download-priority-actions-school-csv' %>
 </div>
 
 <table class="table table-borderless table-sorted advice-table advice-priority-table" style="width: 100%;">
   <thead>
     <tr>
-      <th class="no-sort" colspan="<%= can?(:update_settings, @school_group) ? '2' : '1' %>"></th>
+      <th class="no-sort" colspan="<%= can?(:update_settings, school_group) ? '2' : '1' %>"></th>
       <th class="no-sort text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
       <th class="no-sort" colspan="1"></th>
     </tr>
     <tr>
       <th><%= t('common.school') %></th>
-      <% if can?(:update_settings, @school_group) %>
+      <% if can?(:update_settings, school_group) %>
         <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
       <% end %>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
@@ -34,7 +37,7 @@
         <td>
           <%= link_to saving.school.name, school_path(saving.school) %>
         </td>
-        <% if can?(:update_settings, @school_group) %>
+        <% if can?(:update_settings, school_group) %>
           <td class="text-right">
             <%= saving.school.school_group_cluster_name %>
           </td>
@@ -50,7 +53,10 @@
         </td>
         <td class="text-right">
           <% if alert_type_rating.alert_type.advice_page.present? %>
-            <%= link_to t('school_groups.priority_actions.view_analysis'), advice_page_path(saving.school, alert_type_rating.alert_type.advice_page, alert_type_rating.alert_type.advice_page_tab_for_link_to, anchor: alert_type_rating.alert_type.link_to_section) %>
+            <%= link_to t('school_groups.priority_actions.view_analysis'),
+                        advice_page_path(saving.school, alert_type_rating.alert_type.advice_page,
+                                         alert_type_rating.alert_type.advice_page_tab_for_link_to,
+                                         anchor: alert_type_rating.alert_type.link_to_section) %>
           <% end %>
         </td>
       </tr>
