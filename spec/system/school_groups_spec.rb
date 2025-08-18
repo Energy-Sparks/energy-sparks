@@ -242,7 +242,9 @@ describe 'school groups', :school_groups, type: :system do
       end
 
       describe 'showing priority actions' do
-        include_context 'school group priority actions'
+        include_context 'school group priority actions' do
+          let(:school_with_saving) { school_1 }
+        end
 
         before do
           visit priority_actions_school_group_path(school_group)

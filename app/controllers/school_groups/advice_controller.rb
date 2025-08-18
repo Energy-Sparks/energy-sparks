@@ -13,6 +13,8 @@ module SchoolGroups
 
     layout 'dashboards'
 
+    skip_before_action :authenticate_user!
+
     def show
       set_breadcrumbs(name: I18n.t('advice_pages.breadcrumbs.root'))
       @fuel_types = @school_group.fuel_types
