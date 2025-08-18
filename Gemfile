@@ -24,6 +24,7 @@ gem 'wisper' # publish subscribe for ruby objects
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
+gem 'mechanize' # For GIAS data downloader
 gem 'pg'
 gem 'scenic'
 
@@ -132,7 +133,6 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
   gem 'knapsack'
-  gem 'mechanize' # For GIAS data downloader
   gem 'rails-controller-testing'
   gem 'rspec-json_expectations'
   gem 'rspec-rails'
