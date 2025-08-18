@@ -17,6 +17,7 @@ module SchoolGroups
 
     def show
       set_breadcrumbs(name: I18n.t('advice_pages.breadcrumbs.root'))
+      @fuel_types = @school_group.fuel_types
 
       respond_to do |format|
         format.html {}
@@ -66,10 +67,6 @@ module SchoolGroups
     # Rely on CanCan to filter the list of schools to those that can be shown to the current user
     def load_schools
       @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
-    end
-
-    def load_school_group_fuel_types
-      @fuel_types = @school_group.fuel_types
     end
 
     # DOWNLOADS
