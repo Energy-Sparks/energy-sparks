@@ -1,0 +1,34 @@
+<%= tag.div id: id, class: class_names(classes, 'row p-4 d-flex flex-wrap align-items-center justify-content-between') do %>
+  <div>
+    <div class="row">
+      <div class="col">
+        <h2 id='prompt-title'>
+          <%= title %>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div id="prompt-body" class="col">
+        <p>
+          <%= t("#{metric}_prompt_html",
+                scope: 'components.dashboards.group_savings_prompt',
+                schools: school_count,
+                fuel_type: fuel_type,
+                saving: saving) %>
+        </p>
+        <p>
+          <%= t('components.dashboards.group_savings_prompt.note') %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      <div class="col d-flex justify-content-center align-items-center">
+        <%= link_to t('components.dashboards.group_savings_prompt.view_all_savings'),
+                    priority_actions_school_group_path(school_group),
+                    class: 'btn btn-primary mr-2' %>
+      </div>
+    </div>
+  </div>
+<% end %>

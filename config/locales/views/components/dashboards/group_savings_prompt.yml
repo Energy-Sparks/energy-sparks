@@ -1,0 +1,10 @@
+---
+en:
+  components:
+    dashboards:
+      group_savings_prompt:
+        co2_prompt_html: Take action in <strong>%{schools}</strong> to decrease the carbon emissions from your %{fuel_type} use by <strong>%{saving}</strong>.
+        gbp_prompt_html: Take action in <strong>%{schools}</strong> to decrease your %{fuel_type} costs over the next year by <strong>%{saving}</strong>.
+        kwh_prompt_html: Take action in <strong>%{schools}</strong> to decrease your %{fuel_type} use over the next year by <strong>%{saving}</strong>.
+        note: This is just one example of the potential savings we have identified across schools in this group
+        view_all_savings: View all savings
