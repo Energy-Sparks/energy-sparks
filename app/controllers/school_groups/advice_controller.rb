@@ -8,10 +8,6 @@ module SchoolGroups
 
     before_action :load_schools
     before_action :redirect_unless_authorised
-    before_action :load_school_group_fuel_types
-
-    # Extract more of this into a concern?
-    # what if not authorised?
 
     layout 'dashboards'
 
@@ -36,7 +32,7 @@ module SchoolGroups
         format.html do
           service = SchoolGroups::PriorityActions.new(@schools)
           @priority_actions = service.priority_actions
-          @total_savings = sort_total_savings(service.total_savings)
+          @total_savings = service.total_savings_by_average_one_year_saving
         end
         format.csv do
           send_data priority_actions_csv, filename: csv_filename_for('priority_actions')
@@ -69,11 +65,9 @@ module SchoolGroups
       @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
     end
 
-    # DOWNLOADS
     def csv_filename_for(action)
       title = I18n.t("school_groups.titles.#{action}")
-      name = "#{@school_group.name}-#{title}-#{Time.zone.now.strftime('%Y-%m-%d')}".parameterize
-      "#{name}.csv"
+      EnergySparks::Filenames.csv("#{@school_group.name}-#{title}".parameterize)
     end
 
     def include_cluster
@@ -89,12 +83,6 @@ module SchoolGroups
         ).export
       else
         SchoolGroups::PriorityActionsCsvGenerator.new(schools: @schools).export
-      end
-    end
-
-    def sort_total_savings(total_savings)
-      total_savings.sort do |a, b|
-        b[1].average_one_year_saving_gbp <=> a[1].average_one_year_saving_gbp
       end
     end
   end

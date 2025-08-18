@@ -23,7 +23,17 @@ module SchoolGroups
       end
     end
 
+    def total_savings_by_average_one_year_saving
+      sort_total_savings(total_savings)
+    end
+
     private
+
+    def sort_total_savings(total_savings)
+      total_savings.sort do |a, b|
+        b[1].average_one_year_saving_gbp <=> a[1].average_one_year_saving_gbp
+      end
+    end
 
     def sum_average_one_year_saving_gbp(priorities)
       priorities.reduce(0) {|sum, saving| sum + saving.average_one_year_saving_gbp }
