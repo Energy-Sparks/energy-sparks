@@ -6,7 +6,9 @@ RSpec.describe SchoolGroups::PriorityActionsCsvGenerator do
   let!(:school_1)              { create(:school, school_group: school_group, number_of_pupils: 10) }
   let!(:school_2)              { create(:school, school_group: school_group, number_of_pupils: 20) }
 
-  include_context 'school group priority actions'
+  include_context 'school group priority actions' do
+    let(:school_with_saving) { school_1 }
+  end
 
   context 'with school group data' do
     it 'returns priority actions data as a csv for a school group' do
