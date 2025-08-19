@@ -11,10 +11,14 @@
 # It's strongly recommended that you check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
 =======
 ActiveRecord::Schema[7.2].define(version: 2025_08_19_105012) do
 >>>>>>> 9c0e35fda (Import establishment links)
+=======
+ActiveRecord::Schema[7.2].define(version: 2025_08_19_141551) do
+>>>>>>> 596190c13 (Add establishment reference to Schools)
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1884,7 +1888,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_19_105012) do
     t.integer "heating_chp_percent", default: 0
     t.text "heating_chp_notes"
     t.bigint "local_distribution_zone_id"
+    t.bigint "establishment_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
     t.index ["local_distribution_zone_id"], name: "index_schools_on_local_distribution_zone_id"

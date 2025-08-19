@@ -19,6 +19,7 @@
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
 #  enable_targets_feature                  :boolean          default(TRUE)
+#  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
 #  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
@@ -93,6 +94,7 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
+#  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
 #  index_schools_on_local_distribution_zone_id  (local_distribution_zone_id)
