@@ -19,6 +19,7 @@ describe 'School group priorities page' do
 
     it_behaves_like 'a school group advice page' do
       let(:breadcrumb) { I18n.t('advice_pages.index.priorities.title') }
+      let(:title) { I18n.t('school_groups.advice.priorities.title') }
     end
 
     it_behaves_like 'it contains the expected data table', aligned: false, rows: false do

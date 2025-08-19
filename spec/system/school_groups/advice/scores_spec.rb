@@ -1,0 +1,146 @@
+require 'rails_helper'
+
+describe 'School group scores page' do
+  let(:scoreboard) { create(:scoreboard) }
+  let!(:school_group) { create(:school_group, public: true, default_scoreboard: scoreboard) }
+  let!(:school) do
+    create(:school, :with_points, score_points: 100, school_group: school_group, scoreboard: scoreboard)
+  end
+
+  # Avoids problem with showing national placing. National Scoreboard only runs from
+  # 1st Sept to 31st Jul.
+  around do |example|
+    travel_to Date.new(2025, 4, 1) do
+      example.run
+    end
+  end
+
+  it_behaves_like 'an access controlled group advice page' do
+    let(:path) { priorities_school_group_advice_path(school_group) }
+  end
+
+  context 'when not signed in' do
+    before do
+      visit scores_school_group_advice_path(school_group)
+    end
+
+    it_behaves_like 'a school group advice page' do
+      let(:breadcrumb) { I18n.t('school_groups.titles.current_scores') }
+      let(:title) { I18n.t('school_groups.advice.scores.title', name: school_group.name) }
+    end
+
+    it 'has link to group scoreboard' do
+      expect(page).to have_link(href: scoreboard_path(scoreboard))
+    end
+
+    it 'includes a link to previous year' do
+      expect(page).to have_content('View the final scores from last year')
+      click_on('View the final scores from last year')
+      expect(page).to have_content('These were the final scores from last year')
+      click_on('View the current scores')
+      expect(page).to have_content('These are the scores for the current academic year')
+    end
+
+    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      let(:table_id) { '#scoreboard' }
+      let(:expected_header) do
+        [
+          ['Position', 'School', 'Score']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          ['1', school.name, '100']
+        ]
+      end
+    end
+
+    context 'when the download button is clicked' do
+      before do
+        click_link('Download as CSV')
+      end
+
+      it_behaves_like 'it exports a group CSV correctly' do
+        let(:action_name) { I18n.t('school_groups.titles.current_scores') }
+        let(:expected_csv) do
+          [['Position', 'School', 'Score'],
+           ['1', school.name, '100']
+          ]
+        end
+      end
+    end
+  end
+
+  context 'when signed in as group admin' do
+    before do
+      sign_in(create(:group_admin, school_group: school_group))
+      visit scores_school_group_advice_path(school_group)
+    end
+
+    it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+      let(:table_id) { '#scoreboard' }
+      let(:expected_header) do
+        [
+          ['Position', 'School', 'Cluster', 'Score']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          ['1', school.name, 'Not set', '100']
+        ]
+      end
+    end
+
+    context 'when the download button is clicked' do
+      before do
+        click_link('Download as CSV')
+      end
+
+      it_behaves_like 'it exports a group CSV correctly' do
+        let(:action_name) { I18n.t('school_groups.titles.current_scores') }
+        let(:expected_csv) do
+          [['Position', 'School', 'Cluster', 'Score'],
+           ['1', school.name, 'Not set', '100']
+          ]
+        end
+      end
+    end
+
+    context 'when a cluster has been added' do
+      let!(:cluster) { create(:school_group_cluster, name: 'My Cluster', schools: [school]) }
+
+      before do
+        refresh
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#scoreboard' }
+        let(:expected_header) do
+          [
+            ['Position', 'School', 'Cluster', 'Score']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            ['1', school.name, 'My Cluster', '100']
+          ]
+        end
+      end
+
+      context 'when the download button is clicked' do
+        before do
+          click_link('Download as CSV')
+        end
+
+        it_behaves_like 'it exports a group CSV correctly' do
+          let(:action_name) { I18n.t('school_groups.titles.current_scores') }
+          let(:expected_csv) do
+            [['Position', 'School', 'Cluster', 'Score'],
+             ['1', school.name, 'My Cluster', '100']
+            ]
+          end
+        end
+      end
+    end
+  end
+end

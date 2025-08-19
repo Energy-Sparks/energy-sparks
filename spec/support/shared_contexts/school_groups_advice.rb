@@ -61,6 +61,10 @@ RSpec.shared_examples 'a school group advice page' do
       expect(page).to have_link(I18n.t('advice_pages.nav.overview'), href: school_group_advice_path(school_group))
     end
   end
+
+  it 'has the correct title' do
+    expect(page).to have_content(title)
+  end
 end
 
 RSpec.shared_examples 'it exports a group CSV correctly' do
