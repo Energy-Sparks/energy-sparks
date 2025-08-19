@@ -100,11 +100,11 @@ module Schools
     end
 
     def self.breadcrumb(current_user)
-      I18n.t(if Flipper.enabled?(:target_advice_pages2025, current_user)
-               'advice_pages.nav.manage_targets'
-             else
-               'manage_school_menu.review_targets'
-             end)
+      if Flipper.enabled?(:target_advice_pages2025, current_user)
+        I18n.t('advice_pages.nav.manage_targets')
+      else
+        I18n.t('manage_school_menu.review_targets')
+      end
     end
 
     private
