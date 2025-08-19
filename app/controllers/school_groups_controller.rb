@@ -60,8 +60,6 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_scores
-    redirect_to school_group_path(@school_group) and return unless @school_group.scorable?
-
     setup_scores_and_years(@school_group)
     respond_to do |format|
       format.html {}
