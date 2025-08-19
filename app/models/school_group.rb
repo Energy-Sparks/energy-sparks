@@ -65,6 +65,7 @@ class SchoolGroup < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :schools, source: :issues
+  has_many :observations, through: :schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
@@ -184,7 +185,28 @@ class SchoolGroup < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
+  # For those groups without a scoreboard OR a default calendar (around 3-4)
+  # default to using the academic year defined for the national scoreboard
+  def this_academic_year(today: Time.zone.today)
+    return super(today:) unless scorable_calendar.nil?
+    NationalScoreboard.new.this_academic_year(today:)
+  end
+
+  # For those groups without a scoreboard OR a default calendar (around 3-4)
+  # default to using the academic year defined for the national scoreboard
+  def previous_academic_year(today: Time.zone.today)
+    return super(today:) unless scorable_calendar.nil?
+    NationalScoreboard.new.previous_academic_year(today:)
+  end
+
+  # Groups may have their calendars and scoreboards set up in different ways
+  # depending on whether they are regionally located and centrally managed
+  #
+  # By default use the calendar for the scoreboard, this will be either the
+  # English or Scottish calendar by default. Otherwise use the default
+  # template calendar
   def scorable_calendar
+    return default_scoreboard.academic_year_calendar unless default_scoreboard.nil?
     default_template_calendar
   end
 end
