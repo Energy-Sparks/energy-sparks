@@ -136,7 +136,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
 
       it 'interpolates correctly' do
-        expect(html).to have_content(' number: 2; schools: 2 schools; describe_schools: two schools; 2 kWh, £4, 6 kg CO2')
+        expect(html).to have_content(' number: 2; schools: 2 schools; describe_schools: all schools; 2 kWh, £4, 6 kg CO2')
       end
     end
   end

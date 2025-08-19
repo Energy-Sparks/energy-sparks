@@ -49,25 +49,25 @@ module Dashboards
 
     def describe_school_count(count, schools)
       scope = 'components.dashboards.group_alerts.school_descriptions'
-      return I18n.t('no_schools', scope: scope) if schools == 0 || schools.nil?
-      percentage = count.to_f / schools
+      return I18n.t('no_schools', scope: scope) if schools.to_i <= 0
+      percentage = BigDecimal(count.to_s) / BigDecimal(schools.to_s)
 
-      if count == 1
+      if percentage == BigDecimal('1.0')
+        I18n.t('all', scope: scope)
+      elsif count == 1
         I18n.t('one', scope: scope)
       elsif count == 2
         I18n.t('two', scope: scope)
-      elsif count <= 4
+      elsif count < 4
         I18n.t('few', scope: scope)
-      elsif percentage < 0.25
+      elsif percentage <= BigDecimal('0.25')
         I18n.t('some', scope: scope)
-      elsif percentage <= 0.5
+      elsif percentage <= BigDecimal('0.5')
         I18n.t('several', scope: scope)
-      elsif percentage < 0.75
+      elsif percentage < BigDecimal('0.75')
         I18n.t('most', scope: scope)
-      elsif percentage < 1.0
+      elsif percentage < BigDecimal('1.0')
         I18n.t('almost_all', scope: scope)
-      elsif percentage == 1.0
-        I18n.t('all', scope: scope)
       else
         I18n.t('schools', scope: scope) # just in case
       end
