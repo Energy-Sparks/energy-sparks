@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class SchoolTargetsController < ApplicationController
     load_and_authorize_resource :school
@@ -7,7 +9,7 @@ module Schools
     include SchoolProgress
     include DashboardTimeline
 
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!, only: %i[index show]
 
     before_action :redirect_if_disabled
     before_action :load_advice_pages
@@ -57,17 +59,6 @@ module Schools
       end
     end
 
-    def create
-      authorize! :create, @school_target
-      if @school_target.save
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
-      elsif @school.has_target?
-        render :new
-      else
-        render :first
-      end
-    end
-
     def edit
       authorize! :edit, @school_target
       if @school_target.expired?
@@ -77,6 +68,17 @@ module Schools
         @prompt_to_review_target = prompt_to_review_target?
         @fuel_types_changed = fuel_types_changed
         render :edit, layout: 'dashboards'
+      end
+    end
+
+    def create
+      authorize! :create, @school_target
+      if @school_target.save
+        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
+      elsif @school.has_target?
+        render :new
+      else
+        render :first
       end
     end
 
@@ -97,10 +99,18 @@ module Schools
       redirect_to school_path(@school), notice: 'Target successfully removed'
     end
 
+    def self.breadcrumb(current_user)
+      I18n.t(if Flipper.enabled?(:target_advice_pages2025, current_user)
+               'advice_pages.nav.manage_targets'
+             else
+               'manage_school_menu.review_targets'
+             end)
+    end
+
     private
 
     def set_breadcrumbs
-      @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
+      @breadcrumbs = [{ name: self.class.breadcrumb(current_user) }]
     end
 
     def load_advice_pages
