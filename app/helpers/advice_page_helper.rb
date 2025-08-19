@@ -23,14 +23,14 @@ module AdvicePageHelper
     I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html)
     # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and not -4.7e-15)
     begin
       value = 0.0 if value&.between?(-0.001, 0.001)
     rescue ArgumentError
       # use original value, probably NaN
     end
-    FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
+    FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
   def advice_baseload_high?(estimated_savings_vs_benchmark)

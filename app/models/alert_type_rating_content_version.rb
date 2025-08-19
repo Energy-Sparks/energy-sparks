@@ -16,6 +16,9 @@
 #  find_out_more_table_variable          :text             default("none")
 #  find_out_more_title                   :string
 #  find_out_more_weighting               :decimal(, )      default(5.0)
+#  group_dashboard_alert_end_date        :date
+#  group_dashboard_alert_start_date      :date
+#  group_dashboard_alert_weighting       :decimal(, )      default(5.0)
 #  id                                    :bigint(8)        not null, primary key
 #  management_dashboard_alert_end_date   :date
 #  management_dashboard_alert_start_date :date
@@ -57,6 +60,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   translates :pupil_dashboard_title, backend: :action_text
   translates :management_dashboard_title, backend: :action_text
   translates :management_priorities_title, backend: :action_text
+  translates :group_dashboard_title, backend: :action_text
 
   translates :email_title, type: :string, fallbacks: { cy: :en }
   translates :email_content, backend: :action_text
@@ -68,6 +72,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     pupil_dashboard_title: { templated: true },
     management_dashboard_title: { templated: true },
     management_priorities_title: { templated: true },
+    group_dashboard_title: { templated: true },
     email_content: { templated: true },
     email_title: { templated: true },
     sms_content: { templated: true }
@@ -77,7 +82,10 @@ class AlertTypeRatingContentVersion < ApplicationRecord
     %i[
       pupil_dashboard_alert
       management_dashboard_alert
-      management_priorities sms email
+      management_priorities
+      sms
+      email
+      group_dashboard_alert
     ]
   end
 
@@ -87,6 +95,7 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       management_dashboard_title
       email_title email_content sms_content
       management_priorities_title
+      group_dashboard_title
     ]
   end
 
@@ -116,6 +125,8 @@ class AlertTypeRatingContentVersion < ApplicationRecord
       alert_type_rating.email_active?
     when :sms_content
       alert_type_rating.sms_active?
+    when :group_dashboard_title
+      alert_type_rating.group_dashboard_alert_active?
     end
   end
 
@@ -154,6 +165,10 @@ class AlertTypeRatingContentVersion < ApplicationRecord
   validates :management_priorities_title,
             presence: true,
             if: ->(content) { content.alert_type_rating && content.alert_type_rating.management_priorities_active? },
+            on: :create
+  validates :group_dashboard_title,
+            presence: true,
+            if: ->(content) { content.alert_type_rating && content.alert_type_rating.group_dashboard_alert_active? },
             on: :create
 
   functionality.each do |function|

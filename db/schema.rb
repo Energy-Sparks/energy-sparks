@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_07_120146) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -298,6 +298,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_07_120146) do
     t.date "management_dashboard_table_start_date"
     t.date "management_dashboard_table_end_date"
     t.decimal "management_dashboard_table_weighting", default: "5.0"
+    t.date "group_dashboard_alert_start_date"
+    t.date "group_dashboard_alert_end_date"
+    t.decimal "group_dashboard_alert_weighting", default: "5.0"
     t.index ["alert_type_rating_id"], name: "fom_content_v_fom_id"
   end
 
@@ -341,6 +344,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_07_120146) do
     t.boolean "management_dashboard_alert_active", default: false
     t.boolean "management_priorities_active", default: false
     t.boolean "management_dashboard_table_active", default: false
+    t.boolean "group_dashboard_alert_active", default: false
     t.index ["alert_type_id"], name: "index_alert_type_ratings_on_alert_type_id"
   end
 

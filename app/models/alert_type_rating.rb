@@ -7,6 +7,7 @@
 #  description                       :string           not null
 #  email_active                      :boolean          default(FALSE)
 #  find_out_more_active              :boolean          default(FALSE)
+#  group_dashboard_alert_active      :boolean          default(FALSE)
 #  id                                :bigint(8)        not null, primary key
 #  management_dashboard_alert_active :boolean          default(FALSE)
 #  management_dashboard_table_active :boolean          default(FALSE)
@@ -40,9 +41,11 @@ class AlertTypeRating < ApplicationRecord
   scope :pupil_dashboard_alert, -> { where(pupil_dashboard_alert_active: true) }
   scope :management_dashboard_alert, -> { where(management_dashboard_alert_active: true) }
   scope :management_priorities_title, -> { where(management_priorities_active: true) }
+  scope :group_dashboard_alert, -> { where(group_dashboard_alert_active: true) }
   scope :email_active, -> { where(email_active: true) }
   scope :sms_active, -> { where(sms_active: true) }
-  scope :with_dashboard_email_sms_alerts, -> { pupil_dashboard_alert.or(management_dashboard_alert).or(management_priorities_title).or(email_active).or(sms_active) }
+
+  scope :with_dashboard_email_sms_alerts, -> { pupil_dashboard_alert.or(management_dashboard_alert).or(management_priorities_title).or(email_active).or(sms_active).or(group_dashboard_alert) }
 
   validates :rating_from, :rating_to, :description, presence: true
   validates :rating_from, :rating_to, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 10 }
