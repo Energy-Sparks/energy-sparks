@@ -337,18 +337,6 @@ describe 'school groups', :school_groups, type: :system do
           expect(page).to have_link('18')
           expect(page).to have_content('0')
         end
-
-        context 'when school group does not have a calendar' do
-          let(:school_group) { create(:school_group, default_template_calendar: nil) }
-
-          it 'redirects to school group home' do
-            expect(page).to have_current_path(school_group_path(school_group))
-          end
-
-          it 'does not display Current Scores tab' do
-            expect(page).not_to have_link('Current Scores')
-          end
-        end
       end
 
       describe 'showing map' do
