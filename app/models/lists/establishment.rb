@@ -53,6 +53,28 @@ module Lists
   class Establishment < ApplicationRecord
     self.table_name = 'lists_establishments'
 
+    def links
+      Lists::EstablishmentLink.where(urn: id)
+    end
+
+    def open?
+      close_date.nil?
+    end
+
+    # Use the links table to find this establishment's successor. Will fail if it doesn't have one
+    def successor
+      links.filter(&:successor?).first.linked_establishment
+    end
+
+    # Skip through all links to get the most up-to-date establishment
+    def current_establishment
+      if open?
+        return self
+      else
+        return successor.current_establishment
+      end
+    end
+
     def self.import_from_zip(path, batch_size)
       Lists::Establishment.import(read_data_csv_from_zip(path), batch_size)
     end
@@ -88,7 +110,7 @@ module Lists
     end
 
     private_class_method def self.upsert_batch(batch)
-      puts "Upserting batch of #{batch.length} entries"
+      puts "Upserting batch of #{batch.length} entries to Lists::Establishments"
       upsert_all(batch, unique_by: 'id')
     end
 
