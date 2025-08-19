@@ -13,7 +13,8 @@
                   id: 'download-priority-actions-school-group-csv' %>
     </div>
 
-    <table class="table table-borderless table-sorted advice-table advice-priority-table">
+    <table id="school-group-priorities"
+           class="table table-borderless table-sorted advice-table advice-priority-table">
       <thead>
         <tr>
           <th colspan="3"></th>
@@ -28,7 +29,7 @@
           <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
         </tr>
       </thead>
-      <tbody id="school-group-priorities">
+      <tbody>
         <% total_savings.each do |alert_type_rating, savings| %>
           <tr>
             <td data-order="<%= alert_type_rating.alert_type.fuel_type %>">

@@ -13,7 +13,8 @@
               id: 'download-priority-actions-school-csv' %>
 </div>
 
-<table class="table table-borderless table-sorted advice-table advice-priority-table" style="width: 100%;">
+<table id="school-priorities-<%= alert_type_rating.id %>"
+       class="table table-borderless table-sorted advice-table advice-priority-table" style="width: 100%;">
   <thead>
     <tr>
       <th class="no-sort" colspan="<%= can?(:update_settings, school_group) ? '2' : '1' %>"></th>
