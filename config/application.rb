@@ -62,11 +62,11 @@ module EnergySparks
     config.i18n.enforce_available_locales = true
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
-    config.view_component.show_previews = true
-    config.view_component.preview_paths << "#{Rails.root}/spec/components/previews"
-    config.view_component.preview_route = "/admin/components/previews"
-    config.view_component.default_preview_layout = "component_preview"
-    config.view_component.preview_controller = "Admin::ComponentPreviewsController"
+    config.view_component.previews.enabled = true
+    config.view_component.previews.paths << "#{Rails.root}/spec/components/previews"
+    config.view_component.previews.route = "/admin/components/previews"
+    config.view_component.previews.default_layout = "component_preview"
+    config.view_component.previews.controller = "Admin::ComponentPreviewsController"
     config.active_record.encryption.primary_key = '0UmFz7KnehkidvKKhMWrnvStuFFzM0oK'
     config.active_record.encryption.deterministic_key = 'eo84dBizRt6e4I68aD8IUrCBjuzTt7c7'
     config.active_record.encryption.key_derivation_salt = 'IXTWKMlViWaALgj3k2UNhIouWdOyXAwm'

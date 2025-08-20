@@ -2,11 +2,13 @@
 
 <h1>Email previews</h1>
 
-<% ActionMailer::Preview.all.each do |mailer| %>
+<% ActionMailer::Preview.all.each do |mailer| # rubocop:disable Rails/FindEach %>
   <strong><%= mailer.name.underscore.humanize %></strong>
   <ul>
   <% mailer.emails.each do |email| %>
-    <li><%= link_to email, admin_mailer_preview_path(mailer.preview_name + '/' + email) %></li>
+    <% params_method = "#{email}_params"
+       params = mailer.respond_to?(params_method) ? mailer.public_send(params_method) : nil %>
+    <li><%= link_to email, admin_mailer_preview_path("#{mailer.preview_name}/#{email}", params:) %></li>
   <% end %>
   </ul>
 <% end %>

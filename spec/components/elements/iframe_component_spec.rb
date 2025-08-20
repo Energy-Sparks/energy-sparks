@@ -24,7 +24,6 @@ RSpec.describe Elements::IframeComponent, :include_application_helper, type: :co
     it { expect(html).to have_css("iframe[src='#{src}']") }
     it { expect(html).to have_css('iframe[frameborder="0"]') }
     it { expect(html).to have_css('iframe[allowfullscreen]') }
-    it { expect(html).to have_css('iframe[style*="object-fit: cover;"]') }
     it { expect(html).to have_css('iframe[style*="min-height: 320px;"]') }
     it { expect(html).to have_css('iframe.h-100.w-100') }
   end
@@ -43,5 +42,11 @@ RSpec.describe Elements::IframeComponent, :include_application_helper, type: :co
     let(:params) { super().merge(iframe_classes: 'custom-class') }
 
     it { expect(html).to have_css('iframe.custom-class') }
+  end
+
+  context 'with min_height' do
+    let(:params) { super().merge(min_height: '400px') }
+
+    it { expect(html).to have_css('iframe[style*="min-height: 400px;"]') }
   end
 end

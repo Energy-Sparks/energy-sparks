@@ -12,7 +12,6 @@ cy:
     index:
       introduction_1: Rhaglenni byr o weithgareddau cysylltiedig y gall disgyblion weithio drwyddynt gam wrth gam i gael mwy o effaith
       introduction_2: Fel defnyddiwr Sbarcynni gallwch chi gofrestru ar unrhyw un o'n rhaglenni a chofnodi gweithgareddau i olrhain eich cynnydd a sgorio pwyntiau ar gyfer eich ysgol.
-      page_title: Rhaglenni
       title: Ein Rhaglenni Arbed Ynni
     intention:
       adults: Mae'r rhaglen hon wedi'i bwriadu ar gyfer oedolion
@@ -49,7 +48,6 @@ cy:
       current_progress: Cynnydd Presennol
       download: Lawrlwytho
       overview: Trosolwg
-      points: Pwyntiau
       view_all_programmes: Gweld pob rhaglen
     started:
       restart: Ailddechrau

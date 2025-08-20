@@ -37,7 +37,7 @@
 
 <div class="container-fluid bg-light pb-3">
   <div class="container">
-    <%= render ScoreboardSummaryComponent.new(
+    <%= render Scoreboards::SchoolSummaryComponent.new(
           id: 'scoreboard-summary',
           podium: current_school_podium,
           user: current_user,
@@ -46,11 +46,19 @@
         ) %>
 
     <%= render TimelineComponent.new(
-          school: @school,
           observations: @observations,
           user: current_user,
-          classes: 'mt-4'
-        ) %>
+          classes: 'mt-4',
+          table_opts: { show_date: true }
+        ) do |timeline| %>
+          <% timeline.with_link do %>
+            <p>
+              <%= link_to school_timeline_path(@school), class: 'btn btn-default' do %>
+                <%= t('activities.show.all_activities') %>
+              <% end %>
+            </p>
+          <% end %>
+    <% end %>
 
     <%= render DashboardLoginComponent.new(school: @school, user: current_user) %>
 

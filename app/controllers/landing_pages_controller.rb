@@ -5,8 +5,8 @@ class LandingPagesController < ApplicationController
   GROUP_TYPES = [TRUST, LA].freeze
 
   skip_before_action :authenticate_user!
-  before_action :set_marketing_case_studies
-  before_action :set_org_types, only: [:book_demo, :more_information]
+  before_action :set_org_types, only: [:watch_demo, :more_information]
+  layout 'home', only: [:watch_demo, :more_information]
 
   def index
     redirect_to product_path
@@ -20,16 +20,24 @@ class LandingPagesController < ApplicationController
     redirect_to url_for(controller: :resource_files, action: :download, serve: :inline, id: 29)
   end
 
-  def demo_video
-    redirect_to 'https://www.youtube.com/watch?v=x2EeYWwdEpE'
+  def introductory_video
+    redirect_to 'https://www.youtube.com/embed/vYoBT2KhP5U'
   end
 
-  def example_adult_dashboard
-    redirect_to school_path(find_example_school)
+  def short_demo_video
+    redirect_to 'https://www.youtube.com/watch?v=lEiiEyAcVu4'
   end
 
-  def example_pupil_dashboard
-    redirect_to pupils_school_path(find_example_school)
+  def long_demo_video
+    redirect_to 'https://www.youtube.com/watch?v=F5bL1_HsI0U'
+  end
+
+  def energy_efficiency_report
+    redirect_to 'https://drive.google.com/file/d/1--XwBh2berFDki88fYjBRT4umqTXlifH/view?usp=sharing'
+  end
+
+  def impact_report
+    redirect_to 'https://drive.google.com/file/d/18HSpF2KGVVdsmzahxBg4tbQFiz84TWv2/view?usp=sharing'
   end
 
   def example_mat_dashboard
@@ -40,116 +48,83 @@ class LandingPagesController < ApplicationController
     redirect_to school_group_path(find_example_local_authority)
   end
 
-  # Display contact form, to book a demo
-  def book_demo
+  # User would like to watch a demo - display form
+  def watch_demo
   end
 
-  # Display contact form, to request more information
+  # User would like more information - display form
   def more_information
   end
 
   # Process forms and submit job
-  def submit_contact
-    contact = contact_for_capsule
-    CampaignContactHandlerJob.perform_later(request_type, contact)
-    redirect_to thank_you_campaigns_path(redirect_params(request_type, contact))
-  end
-
-  # Final step either shows confirmation or embedded booking form
   def thank_you
-    case params[:request_type].to_sym
-    when :book_demo
+    CampaignContactHandlerJob.perform_later(request_type, contact_for_capsule)
+    @org_type = self.class.contact_org_type(contact_params)
+    case request_type
+    when :group_demo
       @calendly_data_url = calendly_data_url
-      render :book_demo_final
-    else
-      render :more_info_final
+      render :group_demo, layout: 'home'
+    when :school_demo # will be able to remove this (and just use else clause) once new info flow is in place (if we use same layout)
+      render :school_demo, layout: 'home'
+    else # currently group_info or school_info
+      render request_type, layout: 'home'
     end
   end
 
-  private
+  def self.contact_org_type(contact)
+    return :multi_academy_trust if contact[:org_type] == TRUST
+    return :local_authority if contact[:org_type] == LA
+    return :school
+  end
 
+private
+
+  # request_type can be one of:
+  # :group_demo, :school_demo, :group_info or :school_info
   def request_type
-    contact_params['request_type'].present? ? contact_params['request_type'].to_sym : :more_information
+    raise unless source.in?(%w[info demo]) # check this since it comes from form params
+    "#{contact_in_group? ? 'group' : 'school'}_#{source}".to_sym
   end
 
   def contact_for_capsule
-    contact = contact_params.except('request_type', 'utm_source', 'utm_medium', 'utm_campaign')
-    contact['consent'] = ActiveModel::Type::Boolean.new.cast(contact['consent'])
-    contact.to_h
+    contact_params.merge(consent: ActiveModel::Type::Boolean.new.cast(contact_params['consent'])).to_h.symbolize_keys
   end
 
-  def trust_or_local_authority?
-    contact_params[:org_type].any? {|t| GROUP_TYPES.include? t }
-  end
-
-  def calendly_event_type
-    trust_or_local_authority? ? 'mat-demo' : 'demo-for-individual-schools'
+  def contact_in_group?
+    GROUP_TYPES.include?(contact_params[:org_type])
   end
 
   def calendly_data_url
-    event_type = params[:event_type] || 'demo-for-individual-schools'
     calendly_params = {
-      name: params[:name],
-      email: params[:email],
-      a1: params[:tel],
-      a2: params[:organisation]
-    }.to_param
-    "https://calendly.com/energy-sparks/#{event_type}?#{calendly_params}"
-  end
-
-  def redirect_params(request_type, contact)
-    params = {
-      request_type: request_type,
-      utm_source: contact_params['utm_source'],
-      utm_medium: contact_params['utm_medium'],
-      utm_campaign: contact_params['utm_campaign']
-    }
-    case request_type
-    when :book_demo
-      params.merge!({
-        event_type: calendly_event_type,
-        name: "#{contact['first_name']} #{contact['last_name']}",
-        email: contact['email'],
-        tel: contact['tel'].gsub(/^0/, '+44'), # Ensures number is shown correctly in calendly widget
-        organisation: contact['organisation']
-      })
-    else
-      params
-    end
-  end
-
-  def set_marketing_case_studies
-    @marketing_studies = {
-      costs: CaseStudy.find(15),
-      tool: CaseStudy.find(12),
-      pupils: CaseStudy.find(13),
-      emissions: CaseStudy.find(9)
-    }
+      name: "#{contact_params['first_name']} #{contact_params['last_name']}",
+      email: contact_params[:email],
+      a1: contact_params[:tel].gsub(/^0/, '+44'),
+      a2: contact_params[:organisation]
+    }.to_param.gsub('+', '%20')
+    "https://calendly.com/energy-sparks/mat-demo?#{calendly_params}"
   end
 
   def set_org_types
-    @org_types = {
-      I18n.t('campaigns.form.org_types.multi_academy_trust') => :multi_academy_trust,
-      I18n.t('campaigns.form.org_types.primary') => :primary,
-      I18n.t('campaigns.form.org_types.secondary') => :secondary,
-      I18n.t('campaigns.form.org_types.special') => :special,
-      I18n.t('campaigns.form.org_types.independent') => :independent,
-      I18n.t('campaigns.form.org_types.local_authority') => :local_authority
-    }
+    @org_types = %i[multi_academy_trust primary secondary special independent local_authority].index_by do |type|
+      I18n.t("campaigns.form.org_types.#{type}")
+    end
   end
 
   def contact_params
     params.require(:contact).permit(:first_name, :last_name,
-      :job_title, :organisation, { org_type: [] }, :email, :tel, :consent, :request_type,
-      :utm_source, :utm_medium, :utm_campaign)
+      :job_title, :organisation, :org_type, :email, :tel, :consent)
+  end
+
+  def source
+    params.permit(:source)[:source]
   end
 
   def find_example_school
-    School.find_by_id('northampton-academy') || School.data_enabled.visible.sample(1)
+    School.find_by_slug('northampton-academy') || School.data_enabled.visible.sample
   end
 
   def find_example_group
-    SchoolGroup.find_by_slug('united-learning') || SchoolGroup.is_public.multi_academy_trust.sample(1)
+    SchoolGroup.find_by_slug('the-gorse-academies-trust') || SchoolGroup.is_public.multi_academy_trust.sample(1)
   end
 
   def find_example_local_authority

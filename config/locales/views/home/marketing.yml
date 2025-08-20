@@ -1,62 +1,6 @@
 ---
 en:
   campaigns:
-    book_demo:
-      intro: Please provide us with your contact details and some information about your organisation.
-      title: Book your demo of Energy Sparks
-    book_demo_final:
-      intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
-      title: Choose the date and time for your demo
-    find_out_more:
-      benefits:
-        costs: Save up to 40% off school energy bills
-        emissions: Cut school carbon footprints
-        pupils: Give pupils the knowledge and skills to cut energy waste at school
-      book_demo: Book a demo
-      costs:
-        bullets: |-
-          <ul>
-            <li>Save £5,000 per year for the average primary school</li>
-            <li>Save £21,000 per year for the average secondary school</li>
-          </ul>
-        case_study: Northampton Academy cut its gas consumption by 40%
-        quote_html: |-
-          No one can take action towards net zero without data and Energy Sparks provides the data.<br><br>
-          It also provides this in a pupil accessible way that enables sustainability to be integrated into the curriculum.
-          The best chance of fighting the climate crisis is by empowering the next generation and that's what Energy Sparks does.
-        quote_source: Heart Education Trust
-        sub_title: 'Our energy management tool analyses your gas and electricity consumption and provides easy to implement recommendations to:'
-        title: Save money
-      emissions:
-        case_study: Mallaig High School cut heating bills by 38%
-        sub_title_1: Use recommendations to help develop a climate action plan to reduce carbon emissions
-        sub_title_2: Set targets to reduce energy usage
-        title: Cut Carbon Emissions
-      final_prompt:
-        booking: Book your free demo session today or request more information
-        question: Ready to cut energy costs and spark pupils' commitment to sustainability?
-      find_out_more: Find out more
-      learn_why:
-        title: Learn why over %{school_count} schools and %{mat_count} trusts are using Energy Sparks
-      pupils:
-        case_study: 'Damers First School: National Scoreboard Champions'
-        quote: Energy Sparks shares real data with pupils based on their actions. It is so valuable for their learning and shows clearly how we can all make a greater impact on our world.
-        quote_source: Prendergast Primary, Pembrokeshire
-        sub_title_1: Access over %{activities_count} downloadable education resources to develop pupil understanding of energy use and its impact
-        sub_title_2: Record activities to participate in our competitions and win prizes
-        title: Empower Pupils
-      sub_title: Energy Sparks is a charity that offers a unique school-specific energy management tool and education programme
-      testimonial:
-        quote: I think Energy Sparks is amazing. It just makes complete sense of the overwhelming half-hour meter readings data, which means nothing on an energy bill...In only a few weeks we have made significant changes which will in turn reduce our carbon emissions and assist in cost savings for the school...
-        quote_job: Business Manager
-        quote_organisation: Sunnyfield Primary School, Doncaster
-        quote_source: Emma Oxtoby
-      title: Are you ready to cut your school energy costs and carbon footprint?
-      tool:
-        case_study: Harris Academy Sutton uncovered £20k in potential savings
-        sub_title_1: Receive analysis of your schools’ gas and electricity use, action prompts, and energy-saving priorities via pupil and staff dashboards and weekly alert emails
-        sub_title_2: Benchmark school energy use against other similar schools around the country or in your Trust using our dashboards
-        title: Take control
     form:
       fields:
         consent: I agree to receive occasional updates about products and services offered by Energy Sparks
@@ -75,19 +19,103 @@ en:
         primary: Primary school (state)
         secondary: Secondary school (state)
         special: Special school (state)
-    more_info_final:
-      case_studies_html: |-
-        In the meantime, why not explore our <a href="%{case_study_link}">case studies</a> which showcase some of the
-        ways that Energy Sparks schools have saved energy and improved their pupils' energy and climate literacy.
-      final: We look forward to helping you save energy and fight climate change.
-      intro: Thank you for completing our enquiry form. We will be in touch with further information.
-      title: Thank you!
-      video_html: Or watch our <a href="%{video_link}">introductory video</a> to learn more about what we offer schools.
+    group_demo:
+      intro: Thank you for completing the enquiry form, please choose a date and time to confirm your Energy Sparks demo.
+      title: Choose the date and time for your demo
+      watch_demo_html: You can also <a href="%{url}">watch our demo video</a> as well as booking a private demo.
+    group_info:
+      closer_look:
+        description_html: |-
+          <ul>
+            <li><b><a href="%{example_path}">Explore a group dashboard</a></b> - to see how a real Trust is using the Energy Sparks tool to manage energy use across its schools.</li>
+            <li><b>Explore our schools</b> - see which other <a href="%{school_groups}">trusts and local authorities are already using our tool</a>.</li>
+            <li><b>Take a look at our <a href="%{product_path}">product page</a></b> - to see our prices and find out exactly what you get when you enrol.</li>
+          </ul>
+      next_steps:
+        description_html: |-
+          <ul>
+            <li><b>Ready to enrol?</b> - Take a look at our support page to learn about our metering and other requirements, then <a href="%{enrol_group}">complete our enrolment form</a>.</li>
+            <li><b><a href="%{watch_demo}">Book a demo</a></b> - In this private demo session, you will learn more about our energy management tool and find out how schools, Trusts and Local Authorities can use this to cut energy waste and carbon emissions. You are welcome to share the Google Meet link with colleagues so they can join the session too.</li>
+            <li><b><a href="%{newsletter}">Sign up to our newsletter</a></b> - for regular insights into how Energy Sparks can help you. </li>
+            <li><b>Still have questions?</b> - Email us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></li>
+          </ul>
+      tool:
+        description_1_html: |-
+          <p>
+          Our tool can identify huge potential savings. Harris Federation, for example, saved £165,000 on their energy bills with an automatic ICT shutdown.
+          </p>
+        description_2_html: |-
+          <p>
+          They were inspired to do this by looking at their Energy Sparks group dashboard, which allowed them to see at a glance:
+          </p>
+          <ul>
+          <li>Short- and long-term changes to energy use at each of their schools</li>
+          <li>How their schools’ energy use compares to other Energy Sparks schools of a similar size</li>
+          <li>Prioritised actions (including potential savings) for schools</li>
+          </ul>
     more_information:
       intro: |-
         Please provide us with your contact details and some information about your organisation so that we can provide you
         with more information about our services.
       title: Request more information about Energy Sparks
+    school_demo:
+      alternative_answer_html: Why not <a href='%{url}'>watch our shorter demo</a> for a quick overview of the Energy Sparks tool, including adult and pupil dashboards, energy-use charts, bespoke energy-saving advice and alerts.
+      alternative_question: Only got five minutes?
+      description_html: Watch our demo video for an in-depth look at all the main features of our energy management tool, and find out how Energy Sparks could help your school cut energy costs and carbon.
+      next_steps:
+        enrol:
+          answer_html: Take a look at our support page to learn about our metering and other requirements, then <a href='%{url}'>complete our enrolment form</a>.
+          question: Ready to enrol your school?
+        information_pack:
+          answer_html: "<a href='%{url}'>We have an information pack with materials</a> you might find helpful."
+          question: Need help convincing your school’s decision makers?
+        learn_more:
+          answer_html: Most of our <a href='%{schools_url}'>schools have publicly available data</a> – why not take a look at how they are using our platform. We also have a wealth of information on our support pages and in <a href='%{newsletters_url}'>our newsletters</a>, or you can contact us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+          question: Want to learn more?
+        title: Next steps
+      title: Thank you for your interest in Energy Sparks!
+    school_info:
+      closer_look:
+        description_html: |-
+          <ul>
+            <li><b>Watch a demo</b> - get a <a href="%{long_demo}">walkthrough of the main features of our energy management tool</a> and find out how Energy Sparks could help your school cut costs and carbon. <i>Only got five minutes?</i> Why not <a href="%{short_demo}">watch our shorter demo</a> for a quick overview instead.</li>
+            <li><b>Explore our schools</b> - most of the schools signed up with Energy Sparks have publicly available data. Why not <a href="%{schools_path}">take a look at how they are using our tool</a>?</li>
+            <li><b>Try some of our activities and actions</b> - these are free for everyone, and will give you an insight into how we help schools save energy. We particularly recommend <a href="/intervention_type_groups/3">looking at your heating configuration</a>, and <a href="/intervention_types/71">creating a holiday switch off list</a>.</li>
+            <li><b>Take a look at our <a href="%{product_path}">product page</a></b> - to see our prices and find out exactly what you get when you enrol.</li>
+          </ul>
+        title: Intrigued? Take a closer look
+      intro: Thank you for completing our enquiry form. We will be in touch with further information.
+      next_steps:
+        description_html: |-
+          <ul>
+            <li><b>Ready to enrol your school?</b> - Take a look at our support page to learn about our metering and other requirements, then <a href="%{enrol_path}">complete our enrolment form</a>.</li>
+            <li><b>Need to convince your colleagues?</b> - Why not share <a href="%{impact_report}">our impact overview</a>, <a href="%{introductory_video}">introductory video</a> and <a href="%{short_demo}">short demo</a> with them, to help them understand what we offer.</li>
+            <li><b><a href="%{newsletter}">Sign up to our newsletter</a></b> - for regular insights into how Energy Sparks can help you. </li>
+            <li><b>Still have questions?</b> - Email us at <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a></li>
+          </ul>
+        title: Next steps
+      stats:
+        card_1:
+          figure: 40%
+          subtext: Energy savings achieved by our best performing schools in 2023/24
+        description_html: Learn more about how we have supported schools in 2023/24 in <a href="%{impact_report}">our impact overview</a>
+        header: Our impact
+      title: Thank you for your interest in Energy Sparks!
+      tool:
+        description_html: |-
+          <p>
+          <a href="%{product_path}">Our energy management tool</a> allows schools to see their half-hourly energy usage alongside tailored analysis and insights that make it straightforward for school managers to understand what action needs to be taken.
+          </p>
+        read_report: Read report
+        report_description_html: |-
+          <p>
+          You can also read <a href="%{energy_efficiency_report}">our Energy Efficiency Report</a>, which outlines how we help schools and Multi-Academy Trusts to cut energy costs, reduce carbon emissions, and engage pupils.
+          </p>
+        title: Energy management tool
+        video_description_html: <p>In <a href="%{introductory_video}">our short introductory video</a> you can take a look at some of the main features of our tool, including our group dashboards, alerts and competitions.</p>
+    watch_demo:
+      intro: Please provide us with your contact details and some information about your organisation. We will then either invite you to book a live demo, or watch a pre-recorded demo.
+      title: Watch an Energy Sparks demo
   product:
     additional_services:
       desktop_audits:
@@ -133,83 +161,83 @@ en:
       categories:
       - title: Education and advice
         features:
-        - title: Access to pupil activities with supporting resources to increase energy and carbon literacy
+        - title_html: Access to <a href="/activity_categories" target="_new">pupil activities</a> with supporting resources to increase energy and carbon literacy
           starter: 140+
           standard: 140+
-        - title: Guidance on adult-led, low- and no-cost energy-saving actions
+        - title_html: Guidance on adult-led, low- and no-cost <a href="/intervention_type_groups" target="_new">energy-saving actions</a>
           starter: 60+
           standard: 60+
-        - title: Regular newsletters and blog posts with energy-saving advice, ideas and tips
+        - title_html: Regular <a href="/newsletters" target="_new">newsletters</a> and <a href="https://blog.energysparks.uk" target="_new">blog posts</a> with energy-saving advice, ideas and tips
           starter_icon: circle-check
           standard_icon: circle-check
-        - title: Record energy-saving activities and actions to score points for our competitions and build a record of interventions
+        - title_html: Record energy-saving activities and actions to score points for our competitions and build a record of interventions
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Participate in our competitions and events
+        - title_html: Participate in our competitions and events
           starter_icon: xmark
           standard_icon: circle-check
       - title: Energy management tool
         features:
-        - title: User accounts
+        - title_html: User accounts
           starter_icon: xmark
           standard: Unlimited
-        - title: Energy-use insights and alerts sent by email
+        - title_html: Energy-use insights and alerts sent by email
           starter_icon: xmark
           standard: Weekly
-        - title: School-specific energy analysis based on half-hourly gas, electricity and solar data
+        - title_html: School-specific energy analysis based on half-hourly gas, electricity and solar data
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Prioritised energy-saving recommendations
+        - title_html: Prioritised energy-saving recommendations
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Adult dashboard with key insights and alerts
+        - title_html: Adult dashboard with key insights and alerts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Pupil dashboard with easy-to-understand energy use comparisons and prompts to take action
+        - title_html: Pupil dashboard with easy-to-understand energy use comparisons and prompts to take action
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Interactive energy usage charts
+        - title_html: Interactive energy usage charts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Meter level analysis and charts
+        - title_html: Meter level analysis and charts
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Track progress by setting energy-saving targets
+        - title_html: Track progress by setting energy-saving targets
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Compare energy use against similar schools
+        - title_html: <a href="/compare" target="_new">Compare energy</a> use against similar schools
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Integrated data from your solar panels
+        - title_html: Integrated data from your solar panels
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Multi-Academy Trust dashboard to provide energy management oversight across all schools
+        - title_html: Multi-Academy Trust dashboard to provide energy management oversight across all schools
           starter_icon: xmark
           standard_icon: circle-check
       - title: Onboarding and support
         features:
-        - title: Dedicated account manager
+        - title_html: Dedicated account manager
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Energy management email support
+        - title_html: Energy management email support
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Sustainability education email support
+        - title_html: Sustainability education email support
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Webinar training
+        - title_html: <a href="/training" target="_new">Webinar training</a>
           starter_icon: xmark
           standard_icon: circle-check
-        - title: Support with upgrading to half-hourly meters
+        - title_html: Support with upgrading to half-hourly meters
           starter_icon: xmark
           standard: On request
       - title: Additional fees and options
         features:
-        - title: Private account (standard accounts are publicly visible to empower the whole school community to engage with the energy data insights
+        - title_html: Private account (standard accounts are publicly visible to empower the whole school community to engage with the energy data insights)
           starter_icon: xmark
           standard_icon: sterling-sign
           info: "£95 + VAT per school per year"
-        - title: Analysis of data for more than 5 meters
+        - title_html: Analysis of data for more than 5 meters
           starter_icon: xmark
           standard_icon: sterling-sign
           info: "£25 + VAT per meter"

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Footer', type: :system do
   before do
     Flipper.enable :footer
+    Flipper.enable :support_pages
     visit terms_and_conditions_path # visit a link that doesn't hit the db for test speed
   end
 
@@ -16,6 +17,7 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_link 'View schools', href: schools_path }
       it { expect(block).to have_link 'Scoreboards', href: scoreboards_path }
       it { expect(block).to have_link 'Contact', href: contact_path }
+      it { expect(block).to have_link I18n.t('common_nav_bar_menus.help'), href: support_path }
     end
 
     describe 'Services' do
@@ -26,7 +28,7 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_link 'Energy audits', href: energy_audits_path }
       it { expect(block).to have_link 'Education workshops', href: education_workshops_path }
       it { expect(block).to have_link 'Training', href: training_path }
-      it { expect(block).to have_link 'Watch a demo', href: book_demo_campaigns_path }
+      it { expect(block).to have_link 'Watch a demo', href: watch_demo_campaigns_path }
       it { expect(block).to have_link 'Case studies', href: case_studies_path }
     end
 

@@ -147,4 +147,102 @@ describe Aggregation::ValidateAmrData, type: :service do
       end
     end
   end
+
+  context 'when filling in missing readings' do
+    context 'with an electricity meter' do
+      subject(:substituted) { meter.amr_data[missing_date] }
+
+      let(:meter) { create_meter(type: :electricity) }
+      let(:missing_date) { meter.amr_data.end_date - 2 }
+
+      before do
+        meter.amr_data.delete(missing_date)
+        validator = create_validator(meter)
+        validator.validate
+      end
+
+      it 'applies a simple substitution' do
+        expect(substituted.type).to eq('ESS1')
+        expect(substituted.kwh_data_x48).to eq(meter.amr_data[substituted.substitute_date].kwh_data_x48)
+      end
+    end
+
+    context 'with a gas meter' do
+      subject(:substituted) { meter.amr_data[missing_date] }
+
+      let(:meter) { create_meter(type: :gas) }
+      let(:missing_date) { meter.amr_data.end_date - 2 }
+
+      context 'when there is no heating model' do
+        before do
+          meter.amr_data.delete(missing_date)
+          validator = create_validator(meter)
+          validator.validate
+        end
+
+        it 'applies a simple substitution' do
+          expect(substituted.type).to eq('GSS1')
+          expect(substituted.kwh_data_x48).to eq(meter.amr_data[substituted.substitute_date].kwh_data_x48)
+        end
+      end
+
+      context 'when there is a heating model' do
+        let(:regression_model_parameters) { { base_temperature: 1.0 } }
+        let(:missing_day_prediction) { 1.0 }
+        let(:substitute_day_prediction) { 2.0 }
+
+        before do
+          meter.amr_data.delete(missing_date)
+          model_cache = instance_double(AnalyseHeatingAndHotWater::ModelCache)
+          allow(AnalyseHeatingAndHotWater::ModelCache).to receive(:new).and_return(model_cache)
+
+          heating_model = instance_double(AnalyseHeatingAndHotWater::HeatingModelTemperatureSpace)
+          allow(model_cache).to receive(:create_and_fit_model).and_return(heating_model)
+          allow(heating_model).to receive_messages(
+            heat_on_missing_data?: true,
+            regression_model_parameters: regression_model_parameters,
+          )
+          allow(heating_model).to receive(:predicted_kwh).and_return(missing_day_prediction, substitute_day_prediction)
+
+          validator = create_validator(meter)
+          validator.validate
+        end
+
+        context 'when there are predicted differences in consumption' do
+          it 'applies a temperature compensation' do
+            expect(substituted.type).to eq('GSS1')
+            expect(substituted.one_day_kwh).to eq(meter.amr_data[substituted.substitute_date].one_day_kwh / 2)
+          end
+        end
+
+        context 'when there is no predicted usage' do
+          let(:missing_day_prediction) { 0.0 }
+          let(:substitute_day_prediction) { 0.0 }
+
+          it 'uses original readings' do
+            expect(substituted.type).to eq('GSS1')
+            expect(substituted.kwh_data_x48).to eq(meter.amr_data[substituted.substitute_date].kwh_data_x48)
+          end
+        end
+
+        context 'when there is a negative prediction' do
+          let(:substitute_day_prediction) { -0.5 }
+
+          it 'uses original readings' do
+            expect(substituted.type).to eq('GSS1')
+            expect(substituted.kwh_data_x48).to eq(meter.amr_data[substituted.substitute_date].kwh_data_x48)
+          end
+        end
+
+        context 'when temperatures are above base temperature' do
+          let(:regression_model_parameters) { { base_temperature: 0.0 } }
+
+          it 'uses original readings' do
+            expect(substituted.type).to eq('GSS1')
+            expect(substituted.kwh_data_x48).to eq(meter.amr_data[substituted.substitute_date].kwh_data_x48)
+          end
+        end
+      end
+    end
+  end
 end

@@ -56,6 +56,7 @@ en:
       not_applicable: N/A
       not_set: Not set
       place: Place
+      points: Points
       previous: Previous
       prices: Prices
       pricing: Pricing
@@ -85,8 +86,10 @@ en:
       yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    points: points
     points_html: "%{count} points"
     privacy_policy: privacy policy
+    programmes: Programmes
     school: School
     school_types:
       infant: Infant

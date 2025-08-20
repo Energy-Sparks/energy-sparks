@@ -13,6 +13,6 @@ class TimelineComponentPreview < ViewComponent::Preview
       Observation.find_by(observation_type: :school_target),
     ].compact.sort_by(&:at).reverse
 
-    render(TimelineComponent.new(school: observations.first.school, observations: observations, show_actions: true, user: User.admin.first))
+    render(TimelineComponent.new(observations: observations, show_actions: true, user: User.admin.first))
   end
 end
