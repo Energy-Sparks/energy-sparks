@@ -4,12 +4,35 @@ describe 'School group priorities page' do
   let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
   let!(:school) { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: 200.0) }
 
-  include_context 'school group priority actions' do
-    let(:school_with_saving) { school }
+  let(:alert_type_rating) do
+    create(:alert_type_rating,
+           management_priorities_active: true,
+           alert_type: create(:alert_type),
+           rating_from: 6.0,
+           rating_to: 10.0)
   end
 
   it_behaves_like 'an access controlled group advice page' do
     let(:path) { priorities_school_group_advice_path(school_group) }
+  end
+
+  before do
+    content_version = create(:alert_type_rating_content_version,
+               colour: :negative,
+               management_priorities_title: 'Spending too much money on heating',
+               alert_type_rating: alert_type_rating)
+    create(:alert,
+           school: school,
+           alert_generation_run: create(:alert_generation_run, school: school),
+           alert_type: content_version.alert_type_rating.alert_type,
+           rating: 6.0,
+           template_data: {
+                 one_year_saving_kwh: '2,200 kWh',
+                 average_one_year_saving_£: '£1,000',
+                 one_year_saving_co2: '1,100 kg CO2',
+                 time_of_year_relevance: 5.0
+           })
+    Alerts::GenerateContent.new(school).perform
   end
 
   context 'when not signed in' do
@@ -80,7 +103,7 @@ describe 'School group priorities page' do
           ]
         end
         let(:expected_rows) do
-          [[school.name, '0', '£1,000', '1,100', '']]
+          [[school.name, '2,200', '£1,000', '1,100', '']]
         end
       end
 
@@ -93,7 +116,7 @@ describe 'School group priorities page' do
           let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
           let(:expected_csv) do
             [['Fuel', 'Description', 'School', 'Number of pupils', 'Floor area (m2)', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-             ['Gas', 'Spending too much money on heating', school.name, '10', '200.0', '0', '£1000', '1100']
+             ['Gas', 'Spending too much money on heating', school.name, '10', '200.0', '2200', '£1000', '1100']
             ]
           end
         end
@@ -121,7 +144,7 @@ describe 'School group priorities page' do
           ]
         end
         let(:expected_rows) do
-          [[school.name, I18n.t('common.labels.not_set'), '0', '£1,000', '1,100', '']]
+          [[school.name, I18n.t('common.labels.not_set'), '2,200', '£1,000', '1,100', '']]
         end
       end
 
@@ -142,7 +165,7 @@ describe 'School group priorities page' do
             ]
           end
           let(:expected_rows) do
-            [[school.name, cluster.name, '0', '£1,000', '1,100', '']]
+            [[school.name, cluster.name, '2,200', '£1,000', '1,100', '']]
           end
         end
       end
@@ -156,7 +179,7 @@ describe 'School group priorities page' do
           let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
           let(:expected_csv) do
             [['Fuel', 'Description', 'School', 'Cluster', 'Number of pupils', 'Floor area (m2)', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-             ['Gas', 'Spending too much money on heating', school.name, I18n.t('common.labels.not_set'), '10', '200.0', '0', '£1000', '1100']
+             ['Gas', 'Spending too much money on heating', school.name, I18n.t('common.labels.not_set'), '10', '200.0', '2200', '£1000', '1100']
             ]
           end
         end
