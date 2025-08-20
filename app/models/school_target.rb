@@ -115,6 +115,15 @@ class SchoolTarget < ApplicationRecord
     consumption
   end
 
+  def monthly_consumption_meeting_target(fuel_type)
+    consumption = monthly_consumption(fuel_type, missing: false)
+    return nil if consumption.nil?
+
+    current_consumption = consumption.sum { |month| month[:current_consumption] }
+    target_consumption = consumption.sum { |month| month[:target_consumption] }
+    current_consumption <= target_consumption
+  end
+
   private
 
   # ensure TargetsProgress is round-tripped properly

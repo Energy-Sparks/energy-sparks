@@ -12,6 +12,7 @@ class DashboardInsightsComponent < ApplicationComponent
     @audience = audience
     @user = user
     @progress_summary = progress_summary
+    @target = school.most_recent_target
   end
 
   def alerts
@@ -34,7 +35,7 @@ class DashboardInsightsComponent < ApplicationComponent
 
   # display the alert column if the the school is data enabled and we have any content for that column
   def displaying_alerts?
-    data_enabled? && (alerts.any? || any_passing_targets? || any_failing_targets?)
+    data_enabled? && (alerts.any? || any_targets?)
   end
 
   def any_passing_targets?
@@ -43,5 +44,14 @@ class DashboardInsightsComponent < ApplicationComponent
 
   def any_failing_targets?
     reportable_progress?(@progress_summary) && @progress_summary.any_failing_targets?
+  end
+
+  def any_targets?
+    if Flipper.enabled?(:target_advice_pages2025, user)
+      [@target.electricity_monthly_consumption,
+       @target.gas_monthly_consumption].any?
+    else
+      any_passing_targets? || any_failing_targets?
+    end
   end
 end

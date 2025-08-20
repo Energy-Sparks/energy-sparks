@@ -150,9 +150,9 @@ module AdvicePageHelper
 
   def dashboard_alert_groups(dashboard_alerts)
     # alert type groups have a specific order here
-    %w[priority change benchmarking advice].filter_map do |group|
+    %i[priority change benchmarking advice].map do |group|
       alerts = dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
-      [group, alerts] if alerts.any?
+      [group, alerts]
     end
   end
 

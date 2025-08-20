@@ -41,12 +41,13 @@ FactoryBot.define do
     trait :with_monthly_consumption do
       transient do
         fuel_type { :electricity }
+        actual { 1010 }
       end
 
       after(:build) do |target, evaluator|
         target["#{evaluator.fuel_type}_monthly_consumption"] = (0..11).map do |i|
           month = target.start_date.month - 1 + i
-          [target.start_date.year + (month / 12), (month % 12) + 1, 1010, 1020, 1000, false]
+          [target.start_date.year + (month / 12), (month % 12) + 1, evaluator.actual, 1020, 1000, false]
         end
       end
     end

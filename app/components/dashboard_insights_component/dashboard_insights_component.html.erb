@@ -30,21 +30,36 @@
           <% c.with_link do %>
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(school) %>
           <% end %>
-          <% if any_failing_targets? %>
-            <%= c.with_prompt icon: 'tachometer-alt', status: :negative do |p| %>
-              <%= t('schools.show.not_meeting_target',
-                    fuels: t_fuels_as_sentence(progress_summary.failing_fuel_targets)) %>
-              <% p.with_link do %>
-                <%= link_to t('schools.show.review_progress'), school_school_targets_path(school) %>
+          <% if Flipper.enabled?(:target_advice_pages2025, user) %>
+            <% %i[electricity gas].each do |fuel_type|
+                 meeting_target = @target&.monthly_consumption_meeting_target(fuel_type)
+                 next if meeting_target.nil? %>
+              <%= c.with_prompt icon: fuel_type_icon(fuel_type), status: meeting_target ? :positive : :negative do |prompt| %>
+                <%= t(meeting_target ? 'schools.show.making_progress' : 'schools.show.not_meeting_target',
+                      fuels: fuel_type) %>
+                <% prompt.with_link do %>
+                  <%= link_to t('schools.show.review_progress'),
+                              polymorphic_path([school, :"advice_#{fuel_type}_target"]) %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-          <% if any_passing_targets? %>
-            <%= c.with_prompt icon: 'tachometer-alt', status: :positive do |p| %>
-              <%= t('schools.show.making_progress',
-                    fuels: t_fuels_as_sentence(progress_summary.passing_fuel_targets)) %>
-              <% p.with_link do %>
-                <%= link_to t('schools.show.review_progress'), school_school_targets_path(school) %>
+          <% else %>
+            <% if any_failing_targets? %>
+              <%= c.with_prompt icon: 'tachometer-alt', status: :negative do |p| %>
+                <%= t('schools.show.not_meeting_target',
+                      fuels: t_fuels_as_sentence(progress_summary.failing_fuel_targets)) %>
+                <% p.with_link do %>
+                  <%= link_to t('schools.show.review_progress'), school_school_targets_path(school) %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if any_passing_targets? %>
+              <%= c.with_prompt icon: 'tachometer-alt', status: :positive do |p| %>
+                <%= t('schools.show.making_progress',
+                      fuels: t_fuels_as_sentence(progress_summary.passing_fuel_targets)) %>
+                <% p.with_link do %>
+                  <%= link_to t('schools.show.review_progress'), school_school_targets_path(school) %>
+                <% end %>
               <% end %>
             <% end %>
           <% end %>
