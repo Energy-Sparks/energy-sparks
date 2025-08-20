@@ -41,6 +41,12 @@ describe 'School group priorities page' do
       end
     end
 
+    it 'has expected priority count in the navbar' do
+      within('#nav-section-priorities') do
+        expect(page).to have_content('(1)')
+      end
+    end
+
     context 'when downloading as a CSV' do
       before do
         click_link(I18n.t('school_groups.download_as_csv'), id: 'download-priority-actions-school-group-csv')

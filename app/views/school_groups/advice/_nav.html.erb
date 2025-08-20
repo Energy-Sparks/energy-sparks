@@ -1,13 +1,16 @@
 <%= render PageNavComponent.new(name: t('advice_pages.nav.overview'),
                                 icon: nil, href: school_group_advice_path(school_group),
                                 options: { match_controller: true }) do |c| %>
-  <% c.with_section toggler: false, visible: true,
+  <% c.with_section id: 'nav-section-alerts',
+                    toggler: false,
+                    visible: true,
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('advice_pages.index.alerts.title'),
                    note: '(X)',
                    href: alerts_school_group_advice_path(school_group), classes: 'section-link') %>
   <% end %>
-  <% c.with_section toggler: false,
+  <% c.with_section id: 'nav-section-priorities',
+                    toggler: false,
                     visible: @priority_action_count.positive?,
                     options: { match_controller: false }  do |s| %>
     <% s.with_item(name: t('advice_pages.index.priorities.title'),
