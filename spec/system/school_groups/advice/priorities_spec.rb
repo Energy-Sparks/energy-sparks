@@ -43,7 +43,7 @@ describe 'School group priorities page' do
 
     context 'when downloading as a CSV' do
       before do
-        click_link('Download as CSV', id: 'download-priority-actions-school-group-csv')
+        click_link(I18n.t('school_groups.download_as_csv'), id: 'download-priority-actions-school-group-csv')
       end
 
       it_behaves_like 'it exports a group CSV correctly' do
@@ -80,7 +80,7 @@ describe 'School group priorities page' do
 
       context 'when the download button is clicked' do
         before do
-          click_link('Download as CSV', id: 'download-priority-actions-school-csv')
+          click_link(I18n.t('school_groups.download_as_csv'), id: 'download-priority-actions-school-csv')
         end
 
         it_behaves_like 'it exports a group CSV correctly' do
@@ -115,12 +115,12 @@ describe 'School group priorities page' do
           ]
         end
         let(:expected_rows) do
-          [[school.name, 'Not set', '0', '£1,000', '1,100', '']]
+          [[school.name, I18n.t('common.labels.not_set'), '0', '£1,000', '1,100', '']]
         end
       end
 
       context 'when a cluster has been added' do
-        let!(:cluster) { create(:school_group_cluster, name: 'My Cluster', schools: [school]) }
+        let!(:cluster) { create(:school_group_cluster, schools: [school]) }
 
         before do
           refresh
@@ -136,21 +136,21 @@ describe 'School group priorities page' do
             ]
           end
           let(:expected_rows) do
-            [[school.name, 'My Cluster', '0', '£1,000', '1,100', '']]
+            [[school.name, cluster.name, '0', '£1,000', '1,100', '']]
           end
         end
       end
 
       context 'when the download button is clicked' do
         before do
-          click_link('Download as CSV', id: 'download-priority-actions-school-csv')
+          click_link(I18n.t('school_groups.download_as_csv'), id: 'download-priority-actions-school-csv')
         end
 
         it_behaves_like 'it exports a group CSV correctly' do
           let(:action_name) { I18n.t('school_groups.titles.priority_actions') }
           let(:expected_csv) do
             [['Fuel', 'Description', 'School', 'Cluster', 'Number of pupils', 'Floor area (m2)', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)'],
-             ['Gas', 'Spending too much money on heating', school.name, 'Not set', '10', '200.0', '0', '£1000', '1100']
+             ['Gas', 'Spending too much money on heating', school.name, I18n.t('common.labels.not_set'), '10', '200.0', '0', '£1000', '1100']
             ]
           end
         end

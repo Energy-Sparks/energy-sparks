@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'School group scores page' do
   let(:scoreboard) { create(:scoreboard) }
-  let!(:school_group) { create(:school_group, public: true, default_scoreboard: scoreboard) }
+  let!(:school_group) { create(:school_group, public: true) }
   let!(:school) do
     create(:school, :with_points, score_points: 100, school_group: school_group, scoreboard: scoreboard)
   end
@@ -29,16 +29,12 @@ describe 'School group scores page' do
       let(:title) { I18n.t('school_groups.advice.scores.title', name: school_group.name) }
     end
 
-    it 'has link to group scoreboard' do
-      expect(page).to have_link(href: scoreboard_path(scoreboard))
-    end
+    context 'when group has default scoreboard' do
+      let!(:school_group) { create(:school_group, public: true, default_scoreboard: scoreboard) }
 
-    it 'includes a link to previous year' do
-      expect(page).to have_content('View the final scores from last year')
-      click_on('View the final scores from last year')
-      expect(page).to have_content('These were the final scores from last year')
-      click_on('View the current scores')
-      expect(page).to have_content('These are the scores for the current academic year')
+      it 'has link to group scoreboard' do
+        expect(page).to have_link(href: scoreboard_path(scoreboard))
+      end
     end
 
     it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
@@ -57,7 +53,7 @@ describe 'School group scores page' do
 
     context 'when the download button is clicked' do
       before do
-        click_link('Download as CSV')
+        click_link(I18n.t('school_groups.download_as_csv'))
       end
 
       it_behaves_like 'it exports a group CSV correctly' do
@@ -66,6 +62,33 @@ describe 'School group scores page' do
           [['Position', 'School', 'Score'],
            ['1', school.name, '100']
           ]
+        end
+      end
+    end
+
+    context 'when viewing the previous years scores' do
+      before do
+        click_on(I18n.t('scoreboard.previous_scoreboard'))
+      end
+
+      it 'displays the right page' do
+        expect(page).to have_content(I18n.t('scoreboard.previous_scores'))
+        click_on(I18n.t('school_groups.current_scores.view_current_scores'))
+        expect(page).to have_content(I18n.t('school_groups.current_scores.introduction'))
+      end
+
+      context 'when the download button is clicked' do
+        before do
+          click_link(I18n.t('school_groups.download_as_csv'))
+        end
+
+        it_behaves_like 'it exports a group CSV correctly' do
+          let(:action_name) { I18n.t('school_groups.titles.previous_scores') }
+          let(:expected_csv) do
+            [['Position', 'School', 'Score'],
+             ['-', school.name, '0']
+            ]
+          end
         end
       end
     end
@@ -86,28 +109,28 @@ describe 'School group scores page' do
       end
       let(:expected_rows) do
         [
-          ['1', school.name, 'Not set', '100']
+          ['1', school.name, I18n.t('common.labels.not_set'), '100']
         ]
       end
     end
 
     context 'when the download button is clicked' do
       before do
-        click_link('Download as CSV')
+        click_link(I18n.t('school_groups.download_as_csv'))
       end
 
       it_behaves_like 'it exports a group CSV correctly' do
         let(:action_name) { I18n.t('school_groups.titles.current_scores') }
         let(:expected_csv) do
           [['Position', 'School', 'Cluster', 'Score'],
-           ['1', school.name, 'Not set', '100']
+           ['1', school.name, I18n.t('common.labels.not_set'), '100']
           ]
         end
       end
     end
 
     context 'when a cluster has been added' do
-      let!(:cluster) { create(:school_group_cluster, name: 'My Cluster', schools: [school]) }
+      let!(:cluster) { create(:school_group_cluster, schools: [school]) }
 
       before do
         refresh
@@ -122,21 +145,21 @@ describe 'School group scores page' do
         end
         let(:expected_rows) do
           [
-            ['1', school.name, 'My Cluster', '100']
+            ['1', school.name, cluster.name, '100']
           ]
         end
       end
 
       context 'when the download button is clicked' do
         before do
-          click_link('Download as CSV')
+          click_link(I18n.t('school_groups.download_as_csv'))
         end
 
         it_behaves_like 'it exports a group CSV correctly' do
           let(:action_name) { I18n.t('school_groups.titles.current_scores') }
           let(:expected_csv) do
             [['Position', 'School', 'Cluster', 'Score'],
-             ['1', school.name, 'My Cluster', '100']
+             ['1', school.name, cluster.name, '100']
             ]
           end
         end

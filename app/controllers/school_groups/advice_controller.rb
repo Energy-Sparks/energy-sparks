@@ -57,7 +57,7 @@ module SchoolGroups
           send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group,
                                                                 scored_schools: @scored_schools,
                                                                 include_cluster:).export,
-                    filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
+                    filename: csv_filename_for(params[:previous_year].present? ? 'previous_scores' : 'current_scores')
         end
       end
     end
