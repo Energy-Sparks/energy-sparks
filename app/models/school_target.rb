@@ -108,9 +108,11 @@ class SchoolTarget < ApplicationRecord
   MONTHLY_CONSUMPTION_FIELDS =
     %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
 
-  def monthly_consumption(fuel_type)
+  def monthly_consumption(fuel_type, missing: true)
     consumption = self["#{fuel_type}_monthly_consumption"]
-    consumption&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+    consumption&.map! { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+    consumption&.reject! { |month| month[:missing] } unless missing
+    consumption
   end
 
   private
