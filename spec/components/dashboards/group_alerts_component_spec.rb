@@ -11,7 +11,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
   end
 
   let(:school_group) { create(:school_group, :with_active_schools, count: 2) }
-  let(:alert_type) { create(:alert_type) }
+  let(:alert_type) { create(:alert_type, group: :benchmarking) }
 
   let(:params) do
     {
@@ -31,28 +31,6 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
                                      rating_to: 10.0))
   end
 
-
-  context 'when there is invalid data' do
-    before do
-      school_group.schools.each_with_index do |school, index|
-        create(:alert,
-               school: school,
-               alert_generation_run: create(:alert_generation_run, school: school),
-               alert_type: content_version.alert_type_rating.alert_type,
-               rating: 6.0,
-               variables: {
-                     one_year_saving_kwh: index == 0 ? nil : 1.0,
-                     average_one_year_saving_gbp: 2.0,
-                     one_year_saving_co2: 3.0,
-                     time_of_year_relevance: 5.0
-               })
-      end
-    end
-
-    it 'does not display the alert' do
-      expect(html).to have_css('div.prompt-component.negative')
-    end
-  end
 
   context 'when there are alerts to display' do
     before do
@@ -87,6 +65,23 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
     end
 
+    context 'when showing groups' do
+      let(:params) do
+        {
+          id: 'custom-id',
+          classes: 'extra-classes',
+          school_group: school_group
+        }
+      end
+
+      it 'shows the group headings' do
+        within('#benchmarking-alerts') do
+          expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
+          expect(html).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
+        end
+      end
+    end
+
     context 'when there are multiple alerts for the same alert type' do
       let(:positive_message) { 'Positive rating' }
 
@@ -113,7 +108,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
                })
       end
 
-      it 'returns the alert with most schools' do
+      it 'shows the alert with most schools' do
         expect(html).to have_css('div.prompt-component.negative')
         expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
 

@@ -127,10 +127,16 @@ class Alert < ApplicationRecord
           time_of_year_relevance float
         )
       WHERE alerts.school_id IN (#{schools.map(&:id).join(',')})
-        AND
-         alert_type_ratings.group_dashboard_alert_active = true
-        AND
-         alerts.rating BETWEEN alert_type_ratings.rating_from AND alert_type_ratings.rating_to
+      AND
+       alert_type_ratings.group_dashboard_alert_active = true
+      AND
+       alerts.rating BETWEEN alert_type_ratings.rating_from AND alert_type_ratings.rating_to
+      AND
+       average_one_year_saving_gbp IS NOT NULL
+      AND
+       one_year_saving_co2 IS NOT NULL
+      AND
+       one_year_saving_kwh IS NOT NULL
       GROUP BY alert_types.id, alert_type_ratings.id;
     SQL
     sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)

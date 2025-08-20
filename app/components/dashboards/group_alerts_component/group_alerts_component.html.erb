@@ -16,13 +16,30 @@
   <% prompts.each do |prompt| %>
     <%= prompt %>
   <% end %>
-  <% alerts.each do |alert_content| %>
-    <%= render PromptComponent.new(
-          icon: alert_type_icon(alert_content.alert_type),
-          fuel_type: alert_content.alert_type.fuel_type,
-          status: status_for_alert_colour(alert_content.colour)
-        ) do |prompt| %>
-        <%= alert_content.group_dashboard_title %>
+  <% if grouped? %>
+    <% grouped_alerts.each do |alert_group, alerts_in_group| %>
+      <div id="<%= alert_group %>-alerts">
+        <h3><%= t("advice_pages.alerts.groups.#{alert_group}") %></h3>
+        <% alerts_in_group.each do |alert_content| %>
+          <%= render PromptComponent.new(
+                icon: alert_type_icon(alert_content.alert_type),
+                fuel_type: alert_content.alert_type.fuel_type,
+                status: status_for_alert_colour(alert_content.colour)
+              ) do |prompt| %>
+              <%= alert_content.group_dashboard_title %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <% alerts.take(limit).each do |alert_content| %>
+      <%= render PromptComponent.new(
+            icon: alert_type_icon(alert_content.alert_type),
+            fuel_type: alert_content.alert_type.fuel_type,
+            status: status_for_alert_colour(alert_content.colour)
+          ) do |prompt| %>
+          <%= alert_content.group_dashboard_title %>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>

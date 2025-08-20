@@ -3,10 +3,10 @@
                                 options: { match_controller: true }) do |c| %>
   <% c.with_section id: 'nav-section-alerts',
                     toggler: false,
-                    visible: true,
+                    visible: @alert_count.positive?,
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('advice_pages.index.alerts.title'),
-                   note: '(X)',
+                   note: "(#{@alert_count})",
                    href: alerts_school_group_advice_path(school_group), classes: 'section-link') %>
   <% end %>
   <% c.with_section id: 'nav-section-priorities',

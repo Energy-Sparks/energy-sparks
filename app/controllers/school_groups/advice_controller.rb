@@ -71,6 +71,7 @@ module SchoolGroups
 
     def set_counts
       @priority_action_count = SchoolGroups::PriorityActions.new(@schools).priority_action_count
+      @alert_count = SchoolGroups::Alerts.new(@schools).summarise.count
     end
 
     def csv_filename_for(action)
