@@ -18,7 +18,8 @@
                    href: priorities_school_group_advice_path(school_group),
                    classes: 'section-link') %>
   <% end %>
-  <% c.with_section toggler: false,
+  <% c.with_section id: 'nav-section-scores',
+                    toggler: false,
                     visible: true,
                     options: { match_controller: false }  do |s| %>
     <% s.with_item(name: t('school_groups.titles.current_scores'),
