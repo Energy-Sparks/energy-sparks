@@ -14,12 +14,12 @@
 </div>
 
 <table id="school-priorities-<%= alert_type_rating.id %>"
-       class="table table-borderless table-sorted advice-table advice-priority-table" style="width: 100%;">
+       class="table table-borderless advice-table advice-priority-table" style="width: 100%;">
   <thead>
     <tr>
-      <th class="no-sort" colspan="<%= can?(:update_settings, school_group) ? '2' : '1' %>"></th>
-      <th class="no-sort text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
-      <th class="no-sort" colspan="1"></th>
+      <th colspan="<%= can?(:update_settings, school_group) ? '2' : '1' %>"></th>
+      <th class="text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
+      <th class="" colspan="1"></th>
     </tr>
     <tr>
       <th><%= t('common.school') %></th>
@@ -29,7 +29,7 @@
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
-      <th class="no-sort"></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
