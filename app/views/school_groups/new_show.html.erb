@@ -25,7 +25,7 @@
         </div>
         <div class="row">
           <div class="col">
-              <%= t('school_count', count: @school_group.visible_schools_count) %>
+              <%= t('school_count', count: @schools.count) %>
               <br>
               <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
           </div>
