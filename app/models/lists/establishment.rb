@@ -53,25 +53,29 @@ module Lists
   class Establishment < ApplicationRecord
     self.table_name = 'lists_establishments'
 
-    def links
-      Lists::EstablishmentLink.where(urn: id)
-    end
+    has_many :links, class_name: 'Lists::EstablishmentLink'
 
     def open?
       close_date.nil?
     end
 
+    def closed?
+      !open?
+    end
+
     # Use the links table to find this establishment's successor. Will fail if it doesn't have one
     def successor
-      links.filter(&:successor?).first.linked_establishment
+      link = links.filter(&:successor?).first
+      link.nil? ? nil : link.linked_establishment
     end
 
     # Skip through all links to get the most up-to-date establishment
     def current_establishment
       if open?
-        return self
+        self
       else
-        return successor.current_establishment
+        s = successor # may be nil, like in the case of an establishment that has closed and not been reopened
+        s.nil? ? self : s.current_establishment
       end
     end
 
@@ -107,6 +111,23 @@ module Lists
       rows.map { |row| create_from_row(row, headers_to_attributes) }.each_slice(batch_size) { |batch| upsert_batch(batch) }
 
       puts 'Finished successfully'
+    end
+
+    def self.find_establishment_id_for_school(sch, stats)
+      if exists?(sch.urn)
+        stats[:perfect] += 1
+        est = find(sch.urn)
+        return est.current_establishment.id
+      end
+
+      match = find_by('la_code::text || establishment_number::text = ?', sch.urn)
+      if match != nil
+        stats[:la_plus_en] += 1
+        return match.current_establishment.id
+      end
+
+      puts "Warning: Couldn\'t match school with ID #{sch.id} and URN #{sch.urn} to any establishment!"
+      stats[:unmatched] += 1
     end
 
     private_class_method def self.upsert_batch(batch)

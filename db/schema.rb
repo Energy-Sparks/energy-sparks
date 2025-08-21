@@ -1216,12 +1216,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_19_141551) do
     t.index ["rewriteable_type", "rewriteable_id"], name: "index_link_rewrites_on_rewriteable_type_and_rewriteable_id"
   end
 
-  create_table "lists_establishment_links", primary_key: ["urn", "link_urn"], force: :cascade do |t|
-    t.integer "urn", null: false
-    t.integer "link_urn", null: false
+  create_table "lists_establishment_links", primary_key: ["establishment_id", "linked_establishment_id"], force: :cascade do |t|
     t.string "link_name"
     t.string "link_type"
     t.datetime "link_established_date"
+    t.bigint "establishment_id", null: false
+    t.bigint "linked_establishment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["establishment_id"], name: "index_lists_establishment_links_on_establishment_id"
+    t.index ["linked_establishment_id"], name: "index_lists_establishment_links_on_linked_establishment_id"
   end
 
   create_table "lists_establishments", force: :cascade do |t|

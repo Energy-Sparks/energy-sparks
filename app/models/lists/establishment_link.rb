@@ -2,23 +2,25 @@
 #
 # Table name: lists_establishment_links
 #
-#  link_established_date :datetime
-#  link_name             :string
-#  link_type             :string
-#  link_urn              :integer          not null, primary key
-#  urn                   :integer          not null, primary key
+#  created_at              :datetime         not null
+#  establishment_id        :bigint(8)        not null, primary key
+#  link_established_date   :datetime
+#  link_name               :string
+#  link_type               :string
+#  linked_establishment_id :bigint(8)        not null, primary key
+#  updated_at              :datetime         not null
+#
+# Indexes
+#
+#  index_lists_establishment_links_on_establishment_id         (establishment_id)
+#  index_lists_establishment_links_on_linked_establishment_id  (linked_establishment_id)
 #
 module Lists
   class EstablishmentLink < ApplicationRecord
     self.table_name = 'lists_establishment_links'
 
-    def establishment
-      Lists::Establishment.find(urn)
-    end
-
-    def linked_establishment
-      Lists::Establishment.find(link_urn)
-    end
+    belongs_to :establishment, class_name: 'Lists::Establishment'
+    belongs_to :linked_establishment, class_name: 'Lists::Establishment'
 
     def successor?
       link_type.start_with?('Successor')
@@ -51,6 +53,8 @@ module Lists
       headers_to_attributes = rows.first.headers.filter_map do |h|
         [h, convert_header(h)] if EstablishmentLink.column_names.include?(convert_header(h))
       end
+      headers_to_attributes.append(['URN', 'establishment_id'])
+      headers_to_attributes.append(['LinkURN', 'linked_establishment_id'])
 
       rows.map { |row| create_from_row(row, headers_to_attributes) }.each_slice(batch_size) { |batch| upsert_batch(batch) }
 
