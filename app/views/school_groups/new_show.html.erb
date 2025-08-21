@@ -1,45 +1,23 @@
 <%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
 
 <% content_for :dashboard_header do %>
-  <div class="adult dashboard-header-component row">
-    <div id="dashboard-header-welcome" class="col-12 col-md-8 col-xl-9">
-      <div class="row">
-        <div class="col">
-          <h1><%= t('components.dashboard_header.title') %></h1>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <p>
-            <%= t('school_groups.show.intro_html') %>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-12 col-md-4 col-xl-3">
-      <div id="dashboard-header-school" class="px-3 py-2 rounded">
-        <div class="row">
-          <div class="col">
-            <h4><%= @school_group.name %></h4>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-              <%= t('school_count', count: @schools.count) %>
-              <br>
-              <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <span class="badge badge-secondary">
-              <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render(Layout::Cards::PageHeaderComponent.new(
+               title: t('components.dashboard_header.title'),
+               subtitle: t('school_groups.show.intro_html')
+             )) do |c| %>
+    <% c.with_callout(title: @school_group.name, classes: 'bg-white') do |callout| %>
+      <% callout.with_row do %>
+        <%= t('school_count', count: @schools.count) %>
+        <br>
+        <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
+      <% end %>
+      <% callout.with_row do %>
+        <span class="badge badge-secondary">
+          <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
+        </span>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div class="container">

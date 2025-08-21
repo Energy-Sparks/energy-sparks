@@ -1,7 +1,21 @@
 <%= content_for :page_title, t('pupils.schools.show.title', school_name: @school.name) %>
 
 <% content_for :dashboard_header do %>
-  <%= render DashboardHeaderComponent.new(school: @school, audience: @audience) %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(
+               title: t('components.dashboard_header.title'),
+               subtitle: t('components.dashboard_header.intro_html')
+             )) do |c| %>
+    <% c.with_callout(title: @school.name, classes: 'bg-grey-pale') do |callout| %>
+      <% callout.with_row do %>
+        <%= @school.address %> <%= @school.postcode %>
+      <% end %>
+      <% callout.with_row do %>
+        <span class="badge badge-secondary">
+          <%= t("common.school_types.#{@school.school_type}") %>
+        </span>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div class="container">
