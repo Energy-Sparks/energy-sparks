@@ -34,9 +34,9 @@
             <% %i[electricity gas].each do |fuel_type|
                  meeting_target = @target&.monthly_consumption_meeting_target(fuel_type)
                  next if meeting_target.nil? %>
-              <%= c.with_prompt icon: fuel_type_icon(fuel_type), status: meeting_target ? :positive : :negative do |prompt| %>
-                <%= t(meeting_target ? 'schools.show.making_progress' : 'schools.show.not_meeting_target',
-                      fuels: fuel_type) %>
+              <%= c.with_prompt icon: fuel_type_icon(fuel_type),
+                                status: meeting_target ? :positive : :negative do |prompt| %>
+                <%= meeting_target_text(meeting_target, fuel_type) %>
                 <% prompt.with_link do %>
                   <%= link_to t('schools.show.review_progress'),
                               polymorphic_path([school, :"advice_#{fuel_type}_target"]) %>

@@ -13,27 +13,22 @@
        !(Flipper.enabled?(:target_advice_pages2025) && group == :priority && target_consumptions.present?) %>
   <h4 class="py-4"><%= t("advice_pages.alerts.groups.#{group}") %></h4>
   <% alerts.each do |alert_content| %>
-    <div class="row rounded-lg <%= status_for_alert_colour(alert_content.colour) %>">
-      <div class="col-lg-1 py-3">
-        <%= image_tag "email/fa-#{alert_type_icon(alert_content.alert.alert_type)}.png", class: 'px-4' %>
-      </div>
-      <div class="col-lg-11 py-4 text-sm lh-base">
-        <strong><%= sanitize alert_content.email_title %></strong>
-        <%= alert_content.email_content %>
-        <% path = find_out_more_path_from_alert_content(school, alert_content, params: weekly_alert_utm_parameters,
-                                                                               mailer: true) %>
-        <%= link_to(t('alert_mailer.alert_email.find_out_more'), path, class: 'text my-4') if path %>
-      </div>
-    </div>
-    <div class="s-2"></div>
+    <%= render 'alert', status: alert_content.colour, icon: alert_type_icon(alert_content.alert.alert_type),
+                        link_text: t('alert_mailer.alert_email.find_out_more'),
+                        link_url: find_out_more_path_from_alert_content(school, alert_content,
+                                                                        params: weekly_alert_utm_parameters,
+                                                                        mailer: true) do %>
+      <strong><%= sanitize alert_content.email_title %></strong>
+      <%= alert_content.email_content %>
+    <% end %>
   <% end %>
   <% if group == :priority && Flipper.enabled?(:target_advice_pages2025) %>
     <% target_consumptions.each do |fuel_type, meeting_target| %>
       <%= render 'alert', status: meeting_target ? :positive : :negative, icon: fuel_type_icon(fuel_type),
                           link_text: t('schools.show.review_progress'),
-                          link_url: polymorphic_url([@school, :"advice_#{fuel_type}_target"]) do %>
-        <%= t(meeting_target ? 'schools.show.making_progress' : 'schools.show.not_meeting_target',
-              fuels: fuel_type) %>
+                          link_url: polymorphic_url([@school, :"advice_#{fuel_type}_target"],
+                                                    params: weekly_alert_utm_parameters, mailer: true) do %>
+        <%= meeting_target_text(meeting_target, fuel_type) %>
       <% end %>
     <% end %>
   <% end %>
