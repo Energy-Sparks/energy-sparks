@@ -10,15 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
-=======
-ActiveRecord::Schema[7.2].define(version: 2025_08_19_105012) do
->>>>>>> 9c0e35fda (Import establishment links)
-=======
 ActiveRecord::Schema[7.2].define(version: 2025_08_19_141551) do
->>>>>>> 596190c13 (Add establishment reference to Schools)
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
