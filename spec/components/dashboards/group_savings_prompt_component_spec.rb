@@ -56,6 +56,11 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
     it { expect(html).to have_content('2 schools') }
     it { expect(html).to have_content('2,222 kWh') }
 
+    it {
+      expect(html).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_savings'),
+                                   href: priorities_school_group_advice_path(school_group))
+    }
+
     context 'when displaying co2' do
       let(:metric) { :co2 }
 

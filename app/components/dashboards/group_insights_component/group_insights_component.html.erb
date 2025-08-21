@@ -20,6 +20,9 @@
     <div class="col-12 col-lg-6">
       <%= render Dashboards::GroupAlertsComponent.new(school_group: school_group, id: 'group-alerts') do |c| %>
           <% c.with_title { t('advice_pages.index.alerts.title') } %>
+          <% c.with_link do %>
+            <%= link_to t('schools.show.view_more_alerts'), alerts_school_group_advice_path(school_group) %>
+          <% end %>
       <% end %>
     </div>
   </div>

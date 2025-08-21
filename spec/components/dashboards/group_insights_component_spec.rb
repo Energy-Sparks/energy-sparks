@@ -52,6 +52,11 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
              })
     end
 
+    it {
+      expect(html).to have_link(I18n.t('schools.show.view_more_alerts'),
+                                   href: alerts_school_group_advice_path(school_group))
+    }
+
     it { expect(html).to have_css('#group-alerts') }
     it { expect(html).to have_css('div.prompt-component.positive') }
   end
