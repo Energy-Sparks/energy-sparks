@@ -161,6 +161,10 @@ class SchoolGroup < ApplicationRecord
     end
   end
 
+  def displayable_partners
+    partners
+  end
+
   def page_anchor
     name.parameterize
   end

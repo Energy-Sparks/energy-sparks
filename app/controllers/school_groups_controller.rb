@@ -18,13 +18,17 @@ class SchoolGroupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    respond_to do |format|
-      format.html {}
-      format.csv do
-        send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
-                                                            schools: @schools,
-                                                            include_cluster: include_cluster).export,
-                  filename: csv_filename_for('recent_usage')
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      render :new_show, layout: 'dashboards'
+    else
+      respond_to do |format|
+        format.html {}
+        format.csv do
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                              schools: @schools,
+                                                              include_cluster: include_cluster).export,
+                    filename: csv_filename_for('recent_usage')
+        end
       end
     end
   end
