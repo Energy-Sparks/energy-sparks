@@ -52,6 +52,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def priority_actions
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      redirect_to priorities_school_group_advice_path(@school_group) and return
+    end
     respond_to do |format|
       format.html do
         service = SchoolGroups::PriorityActions.new(@schools)
@@ -65,6 +68,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_scores
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      redirect_to scores_school_group_advice_path(@school_group) and return
+    end
     setup_scores_and_years(@school_group)
     respond_to do |format|
       format.html {}
