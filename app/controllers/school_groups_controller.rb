@@ -19,7 +19,7 @@ class SchoolGroupsController < ApplicationController
 
   def show
     if Flipper.enabled?(:group_dashboards_2025, current_user)
-      render :new_show, layout: 'dashboards'
+      render :show, layout: 'dashboards'
     else
       respond_to do |format|
         format.html {}

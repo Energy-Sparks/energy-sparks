@@ -1,19 +1,80 @@
-<%= render 'enhanced_header' %>
+<% if Flipper.enabled?(:group_dashboards_2025, current_user) %>
+  <%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
 
-<div class="row mt-4">
-  <div class="col-md-12">
-    <p>
-      <%= t("school_groups.show.recent_usage_intro.#{@school_group.group_type}") %>
-    </p>
-  </div>
-</div>
+  <% content_for :dashboard_header do %>
+    <%= render(Layout::Cards::PageHeaderComponent.new(
+                 title: t('components.dashboard_header.title'),
+                 subtitle: t('school_groups.show.intro_html')
+               )) do |c| %>
+      <% c.with_callout(title: @school_group.name, classes: 'bg-white') do |callout| %>
+        <% callout.with_row do %>
+          <%= t('school_count', count: @schools.count) %>
+          <br>
+          <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
+        <% end %>
+        <% callout.with_row do %>
+          <span class="badge badge-secondary">
+            <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
+          </span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 
-<div class="row mt-4">
-  <div class="col-md-12">
-    <%= render 'school_groups/advice/summary_table',
-               school_group: @school_group,
-               schools: @schools,
-               fuel_types: @fuel_types,
-               path: school_group_path(@school_group) %>
+  <div class="container">
+    <%= render Charts::GroupDashboardChartsComponent.new(
+          id: 'explore-energy-data',
+          school_group: @school_group
+        ) do |c| %>
+      <% c.with_title do %>
+        <h2>
+          <%= t('school_groups.show.energy_use.title') %>
+        </h2>
+      <% end %>
+    <% end %>
+
+    <%= render Dashboards::GroupSavingsPromptComponent.new(
+          school_group: @school_group,
+          schools: @schools
+        ) %>
+
+    <%= render Dashboards::GroupInsightsComponent.new(
+          id: 'alerts-and-reminders',
+          classes: 'mt-4',
+          school_group: @school_group,
+          user: current_user
+        ) %>
   </div>
-</div>
+
+  <div class="container-fluid bg-light pb-3">
+    <div class="container">
+      <%= render Scoreboards::GroupSummaryComponent.new(
+            id: 'scoreboard-summary',
+            classes: 'mt-4 pt-4',
+            school_group: @school_group,
+            limit: 10,
+            user: current_user
+          ) %>
+    </div>
+  </div>
+<% else %>
+  <%= render 'enhanced_header' %>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <p>
+        <%= t("school_groups.show.recent_usage_intro.#{@school_group.group_type}") %>
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <%= render 'school_groups/advice/summary_table',
+                 school_group: @school_group,
+                 schools: @schools,
+                 fuel_types: @fuel_types,
+                 path: school_group_path(@school_group) %>
+    </div>
+  </div>
+<% end %>
