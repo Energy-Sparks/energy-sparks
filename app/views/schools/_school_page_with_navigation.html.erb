@@ -2,10 +2,7 @@
 
 <% if Flipper.enabled?(:new_manage_school_pages, current_user) %>
   <% content_for :dashboard_header do %>
-    <%= render DashboardHeaderComponent.new title: page_title,
-                                            intro: nil,
-                                            show_school: false,
-                                            school: @school %>
+    <%= render(Layout::Cards::PageHeaderComponent.new(title: page_title)) %>
   <% end %>
 
   <div class="container">

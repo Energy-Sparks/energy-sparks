@@ -1,12 +1,19 @@
-<%= tag.div id: id, class: classes do %>
-  <div class="row">
-    <div class="col">
-      <h1><%= @title %></h1>
+<%= tag.div id: id, class: class_names(classes, 'row') do %>
+  <div class="<%= class_names('col-12', { 'col-12 col-md-8 col-xl-9': callout? }) %>">
+    <div class="row">
+      <div class="col">
+        <h1 class="<%= class_names(nil, { 'pt-0': callout? }) %>"><%= @title %></h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p><%= @subtitle if @subtitle %></p>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <p><%= @subtitle if @subtitle %></p>
+  <% if callout? %>
+    <div class="col-12 col-md-4 col-xl-3">
+        <%= callout %>
     </div>
-  </div>
+  <% end %>
 <% end %>

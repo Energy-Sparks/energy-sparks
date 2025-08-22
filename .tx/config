@@ -449,13 +449,6 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
-[o:energy-sparks:p:energy-sparks:r:views-components-dashboard_header-yml]
-file_filter  = config/locales/<lang>/views/components/dashboard_header.yml
-source_file  = config/locales/views/components/dashboard_header.yml
-source_lang  = en
-type         = YML
-minimum_perc = 100
-
 [o:energy-sparks:p:energy-sparks:r:views-components-dashboard_insights-yml]
 file_filter  = config/locales/<lang>/views/components/dashboard_insights.yml
 source_file  = config/locales/views/components/dashboard_insights.yml
@@ -798,4 +791,3 @@ source_file  = config/locales/views/users/users.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
-
