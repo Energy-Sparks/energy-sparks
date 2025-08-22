@@ -34,9 +34,7 @@ module SchoolGroups
     private
 
     def sort_total_savings(total_savings)
-      total_savings.sort do |a, b|
-        b[1].average_one_year_saving_gbp <=> a[1].average_one_year_saving_gbp
-      end
+      total_savings.sort_by { |_, v| v.average_one_year_saving_gbp }.reverse
     end
 
     def sum_average_one_year_saving_gbp(priorities)
