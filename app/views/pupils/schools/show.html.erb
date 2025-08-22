@@ -2,8 +2,8 @@
 
 <% content_for :dashboard_header do %>
   <%= render(Layout::Cards::PageHeaderComponent.new(
-               title: t('components.dashboard_header.title'),
-               subtitle: t('components.dashboard_header.intro_html')
+               title: t('common.labels.welcome'),
+               subtitle: t('schools.show.dashboard_subtitle_html')
              )) do |c| %>
     <% c.with_callout(title: @school.name, classes: 'bg-grey-pale') do |callout| %>
       <% callout.with_row do %>

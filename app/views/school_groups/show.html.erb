@@ -3,7 +3,7 @@
 
   <% content_for :dashboard_header do %>
     <%= render(Layout::Cards::PageHeaderComponent.new(
-                 title: t('components.dashboard_header.title'),
+                 title: t('common.labels.welcome'),
                  subtitle: t('school_groups.show.intro_html')
                )) do |c| %>
       <% c.with_callout(title: @school_group.name, classes: 'bg-white') do |callout| %>

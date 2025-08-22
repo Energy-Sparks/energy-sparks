@@ -28,7 +28,7 @@ describe 'School group dashboard page', :school_groups do
 
     it 'shows the page header' do
       within('div.layout-cards-page-header-component') do
-        expect(page).to have_content(I18n.t('components.dashboard_header.title'))
+        expect(page).to have_content(I18n.t('common.labels.welcome'))
       end
       within('div.layout-cards-page-header-component-callout-component') do
         expect(page).to have_content(I18n.t('school_count', count: school_group.schools.count))
