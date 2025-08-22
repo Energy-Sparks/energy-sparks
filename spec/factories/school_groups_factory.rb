@@ -26,7 +26,7 @@ FactoryBot.define do
       end
 
       after(:build) do |school_group, evaluator|
-        school_group.partners = create_list(:partner, evaluator.partner_count)
+        school_group.school_group_partners = create_list(:school_group_partner, evaluator.partner_count, school_group:)
       end
     end
   end

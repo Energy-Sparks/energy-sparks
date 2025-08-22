@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'School groups map page', :school_groups, type: :system do
+describe 'School groups map page', :school_groups do
   let!(:school_group) { create(:school_group, :with_active_schools, group_type: :general, public: true) }
   let!(:school) { create(:school, :with_fuel_configuration, name: 'Xavier School for Gifted Children', school_group: school_group) }
 
