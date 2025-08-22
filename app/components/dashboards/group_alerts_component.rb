@@ -22,31 +22,29 @@ module Dashboards
     end
 
     def alerts
-      @alerts ||= begin
-        SchoolGroups::Alerts.new(@schools).summarise.map do |summarised_alert|
-          latest_content_version = summarised_alert.alert_type_rating.current_content
+      @alerts ||= summarised_alerts.map do |summarised_alert|
+        latest_content_version = summarised_alert.alert_type_rating.current_content
 
-          TemplateInterpolation.new(
-            latest_content_version,
-            with_objects: {
-              alert_type: summarised_alert.alert_type,
-              advice_page: summarised_alert.alert_type.advice_page,
-              priority: calculate_priority(summarised_alert, latest_content_version)
-            },
-            proxy: [:colour]
-          ).interpolate(
-            :group_dashboard_title,
-            with: {
-              number_of_schools: helpers.number_with_delimiter(summarised_alert.number_of_schools),
-              schools: I18n.t('school_count', count: summarised_alert.number_of_schools),
-              describe_schools: describe_school_count(summarised_alert.number_of_schools, @schools.count),
-              total_one_year_saving_kwh: helpers.format_unit(summarised_alert.total_one_year_saving_kwh.magnitude, :kwh, false),
-              total_average_one_year_saving_gbp: helpers.format_unit(summarised_alert.total_average_one_year_saving_gbp.magnitude, :£, false, :ks2, :text),
-              total_one_year_saving_co2: helpers.format_unit(summarised_alert.total_one_year_saving_co2.magnitude, :co2, false),
-            }
-          )
-        end.sort_by(&:priority)
-      end
+        TemplateInterpolation.new(
+          latest_content_version,
+          with_objects: {
+            alert_type: summarised_alert.alert_type,
+            advice_page: summarised_alert.alert_type.advice_page,
+            priority: calculate_priority(summarised_alert, latest_content_version)
+          },
+          proxy: [:colour]
+        ).interpolate(
+          :group_dashboard_title,
+          with: {
+            number_of_schools: helpers.number_with_delimiter(summarised_alert.number_of_schools),
+            schools: I18n.t('school_count', count: summarised_alert.number_of_schools),
+            describe_schools: describe_school_count(summarised_alert.number_of_schools, @schools.count),
+            total_one_year_saving_kwh: helpers.format_unit(summarised_alert.total_one_year_saving_kwh.magnitude, :kwh, false),
+            total_average_one_year_saving_gbp: helpers.format_unit(summarised_alert.total_average_one_year_saving_gbp.magnitude, :£, false, :ks2, :text),
+            total_one_year_saving_co2: helpers.format_unit(summarised_alert.total_one_year_saving_co2.magnitude, :co2, false),
+          }
+        )
+      end.sort_by(&:priority)
     end
 
     def grouped_alerts
@@ -57,7 +55,11 @@ module Dashboards
     end
 
     def render?
-      prompts? || alerts.any?
+      prompts? || summarised_alerts.any?
+    end
+
+    def summarised_alerts
+      @summarised_alerts ||= SchoolGroups::Alerts.new(@schools).summarise
     end
 
     private

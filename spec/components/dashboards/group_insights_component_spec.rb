@@ -28,6 +28,7 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
 
     it { expect(html).to have_css('#group-reminders') }
     it { expect(html).to have_content(dashboard_message.message) }
+    it { expect(html).not_to have_css('#group-alerts') }
   end
 
   context 'when there are alerts' do
