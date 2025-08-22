@@ -65,7 +65,7 @@ RSpec.shared_context 'school group priority actions' do
   end
   let(:saving) do
     OpenStruct.new(
-      school: school_1,
+      school: school_with_saving,
       one_year_saving_kwh: 0,
       average_one_year_saving_gbp: 1000,
       one_year_saving_co2: 1100
@@ -78,7 +78,7 @@ RSpec.shared_context 'school group priority actions' do
   end
   let(:total_saving) do
     OpenStruct.new(
-      schools: [school_1],
+      schools: [school_with_saving],
       average_one_year_saving_gbp: 1000,
       one_year_saving_co2: 1100,
       one_year_saving_kwh: 2200
@@ -93,6 +93,7 @@ RSpec.shared_context 'school group priority actions' do
   before do
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:priority_actions).and_return(priority_actions)
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:total_savings).and_return(total_savings)
+    allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:total_savings_by_average_one_year_saving).and_return(total_savings)
   end
 end
 
