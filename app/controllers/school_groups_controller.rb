@@ -33,7 +33,9 @@ class SchoolGroupsController < ApplicationController
     end
   end
 
-  def map; end
+  def map
+    @grouped_schools = @school_group.grouped_schools_by_name(scope: School.visible.includes(:configuration).by_name)
+  end
 
   def comparisons
     respond_to do |format|
