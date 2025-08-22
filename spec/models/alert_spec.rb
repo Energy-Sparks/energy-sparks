@@ -171,9 +171,8 @@ describe Alert do
           }
         end
 
-        it 'returns nil for that variable' do
-          result = results.first
-          expect(result.total_one_year_saving_kwh).to be_nil
+        it 'removes those alerts' do
+          expect(results).to be_empty
         end
       end
     end

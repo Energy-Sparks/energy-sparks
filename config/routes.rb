@@ -277,7 +277,15 @@ Rails.application.routes.draw do
       end
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
+      resource :advice, controller: 'advice', only: [:show] do
+        collection do
+          get :priorities
+          get :alerts
+          get :scores
+        end
+      end
     end
+
     member do
       get :map
       get :recent_usage

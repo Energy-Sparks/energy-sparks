@@ -32,7 +32,8 @@ class PageNavComponent < ViewComponent::Base
 
     attr_reader :name, :icon, :visible, :classes, :options
 
-    def initialize(name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil, options: {})
+    def initialize(id: nil, name: nil, icon: nil, visible: true, toggler: true, expanded: true, classes: nil, options: {})
+      @id = id
       @name = name
       @classes = classes
       @icon = icon
@@ -43,7 +44,7 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def id
-      name.try(:parameterize)
+      @id || name.try(:parameterize)
     end
 
     def link_text

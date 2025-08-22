@@ -1,23 +1,29 @@
 module Dashboards
   # FIXME should use PromptList directly, and pass through additional prompts if possible.
   class GroupAlertsComponent < ApplicationComponent
-    attr_reader :school_group
+    ALERT_GROUPS = %w[priority change benchmarking advice].freeze # specific order
+
+    attr_reader :school_group, :limit
 
     renders_one :title
     renders_one :link
     renders_many :prompts, PromptComponent
 
-    def initialize(school_group:, **_kwargs)
+    def initialize(school_group:, limit: 3, grouped: false, **_kwargs)
       super
       @school_group = school_group
       @schools = @school_group.schools.active
+      @limit = limit
+      @grouped = grouped
+    end
+
+    def grouped?
+      @grouped
     end
 
     def alerts
-      summarised_alerts.filter_map do |summarised_alert|
+      @alerts ||= SchoolGroups::Alerts.new(@schools).summarise.map do |summarised_alert|
         latest_content_version = summarised_alert.alert_type_rating.current_content
-        next unless latest_content_version.meets_timings?(scope: :group_dashboard_alert, today: Time.zone.today)
-        next if summarised_alert.total_one_year_saving_kwh.nil? || summarised_alert.total_average_one_year_saving_gbp.nil? || summarised_alert.total_one_year_saving_co2.nil?
 
         TemplateInterpolation.new(
           latest_content_version,
@@ -39,6 +45,13 @@ module Dashboards
           }
         )
       end.sort_by(&:priority)
+    end
+
+    def grouped_alerts
+      ALERT_GROUPS.filter_map do |group|
+        in_group = alerts.select { |alert| alert.alert_type.group == group }
+        [group, in_group] if in_group.any?
+      end
     end
 
     def render?
@@ -81,17 +94,6 @@ module Dashboards
       Alerts::FetchContent.apply_weighting(summarised_alert.average_rating,
                                            latest_content_version.group_dashboard_alert_weighting,
                                            summarised_alert.time_of_year_relevance || 5.0)
-    end
-
-    # Fetch list of summarised alerts from database, then select one per alert_type based on the largest number of
-    # schools that have triggered that alert.
-    #
-    # Could refine this, e.g. if there is a small number of outliers, then include that alert as well to promote
-    # investigation.
-    def summarised_alerts
-      Alert.summarised_alerts(schools: @schools)
-           .group_by(&:alert_type)
-           .map { |_, alerts| alerts.max_by(&:number_of_schools) }.to_a
     end
   end
 end
