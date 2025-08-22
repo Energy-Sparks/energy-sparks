@@ -33,7 +33,9 @@
              aria-labelledby="<%= report.key %>-tab">
 
              <div id="chart_wrapper_<%= report.key %>" class="chart-wrapper">
-               <div id="<%= report.key %>-chart" class="analysis-chart tabbed <%= report.key %>-analysis-chart"
+               <div id="<%= report.key %>-chart"
+                    style="height: <%= [18 * school_group.visible_schools_count, 700].max %>px;"
+                    class="analysis-chart tabbed <%= report.key %>-analysis-chart"
                     data-autoload-chart="<%= index.zero? %>"
                     data-chart-config="<%= chart_config_json(report) %>">
                </div>
