@@ -136,7 +136,6 @@ RSpec.shared_examples 'target advice page' do
         January 2023 12,240 12,120 0&percnt; \
         January 2022 12,240 12,120 0&percnt;
       CONTENT
-      # debugger
     end
   end
 end
