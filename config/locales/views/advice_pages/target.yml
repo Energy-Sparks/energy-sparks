@@ -29,4 +29,5 @@ en:
           cumulative_consumption: Cumulative consumption
           target_consumption: Target consumption
           text_html: <p>View <a href="%{analysis_path}">your detailed progress report</a> or <a href="%{comparison_path}">compare progress with other schools in your group</a>.</p>
+          text_no_comparison_html: <p>View <a href="%{analysis_path}">your detailed progress report</a>.<p>
           title: Your current progress

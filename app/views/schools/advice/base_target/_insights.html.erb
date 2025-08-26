@@ -34,6 +34,11 @@
   </tbody>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption' %>
-<%= t('advice_pages.target.insights.your_current_progress.text_html',
-      analysis_path: electricity_target_analysis_school_advice_path(@school),
-      comparison_path: benchmarks_compare_index_path) %>
+<% analysis_path = polymorphic_path([@fuel_type, :target_analysis, @school, :advice])
+   if @fuel_type == :storage_heater %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_no_comparison_html', analysis_path:) %>
+<% else %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_html',
+        analysis_path:,
+        comparison_path: compare_for_school_group_path("#{@fuel_type}_targets", @school)) %>
+<% end %>

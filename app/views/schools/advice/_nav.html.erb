@@ -21,7 +21,11 @@
                     options: { match_controller: true } do |s| %>
     <% s.with_item(name: Schools::SchoolTargetsController.breadcrumb(current_user),
                    href: if Flipper.enabled?(:target_advice_pages2025, current_user)
-                           edit_school_school_target_path(school, school.most_recent_target)
+                           if @school.most_recent_target
+                             edit_school_school_target_path(school, school.most_recent_target)
+                           else
+                             new_school_school_target_path(school)
+                           end
                          else
                            school_school_targets_path(school)
                          end,
