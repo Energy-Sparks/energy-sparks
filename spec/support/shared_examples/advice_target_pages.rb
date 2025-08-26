@@ -10,7 +10,7 @@ def target_shared_examples(tab)
     end
 
     it_behaves_like 'an advice page tab', tab: do
-      let(:expected_page_title) { "Target for reducing your #{fuel_type} use" }
+      let(:expected_page_title) { "Progress towards reducing your #{fuel_type} use" }
     end
   end
 end
