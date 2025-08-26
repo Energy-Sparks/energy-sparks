@@ -3,6 +3,14 @@ FactoryBot.define do
     establishment_name { 'sample' }
     postcode { 'AB12 34C' }
     number_of_pupils { 100 }
-    last_changed_date { 1.month.ago }
+    open_date { DateTime.current }
+  end
+
+  factory :closed_establishment, class: 'Lists::Establishment' do
+    establishment_name { 'closed' }
+    postcode { 'AB12 34C' }
+    number_of_pupils { 100 }
+    open_date { DateTime.current }
+    close_date { DateTime.current }
   end
 end
