@@ -10,7 +10,7 @@ def target_shared_examples(tab)
     end
 
     it_behaves_like 'an advice page tab', tab: do
-      let(:expected_page_title) { "Progress towards reducing your #{fuel_type} use" }
+      let(:expected_page_title) { "Progress towards reducing your #{fuel_string} use" }
     end
   end
 end
@@ -41,7 +41,11 @@ RSpec.shared_examples 'target advice page' do
 
   def create_target(**kwargs)
     kwargs[:start_date] ||= Date.new(2024, 1, 1)
-    create(:school_target, :with_monthly_consumption, **{ fuel_type => 4 }, **kwargs, school:, fuel_type:)
+    create(:school_target, :with_monthly_consumption, **kwargs, school:, fuel_type:)
+  end
+
+  def fuel_string
+    fuel_type.to_s.humanize(capitalize: false)
   end
 
   context 'with the Insights tab' do
@@ -58,11 +62,11 @@ RSpec.shared_examples 'target advice page' do
       visit_path('Insights')
       expect(page).to have_content <<~CONTENT
         What is your target?
-        Setting a target to reduce your #{fuel_type} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target
-        Your school has set a target to reduce its #{fuel_type} by 4&percnt; before January 2025
+        Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target
+        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025
         Your current progress
         Back to top
-        Unfortunately you are not meeting your target to reduce your #{fuel_type} usage
+        Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
         Revise your target
         Period Cumulative consumption Target consumption % Change 01 Jan 2024 - 31 Dec 2024 12,120 12,000 0&percnt;
       CONTENT
@@ -75,7 +79,7 @@ RSpec.shared_examples 'target advice page' do
     def expected_content(extra_contents)
       <<~CONTENT
         What is your target?
-        Unfortunately you are not meeting your target to reduce your #{fuel_type} usage
+        Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
         Monthly progress Cumulative progress#{extra_contents}
         Monthly progress
         Back to top

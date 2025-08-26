@@ -27,7 +27,7 @@ module Schools
       end
 
       def advice_page_key
-        @fuel_type = self.class.name.split('::').last.underscore.split('_').first.to_sym
+        @fuel_type = self.class.name.split('::').last.underscore.split('_')[..-3].join('_').to_sym
         :"#{@fuel_type}_target"
       end
 

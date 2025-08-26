@@ -1,7 +1,7 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
-        fuel_type: @advice_page.fuel_type&.to_sym,
-        percent: format_unit(@target[@fuel_type], { units: :percent, options: { scale: false } }),
+        fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+        percent: format_unit(@target.target(@fuel_type), { units: :percent, options: { scale: false } }),
         target_date: @target.target_date.strftime('%B %Y')) %>
 <% end %>
 <%= render 'schools/advice/section_title',

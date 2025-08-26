@@ -47,6 +47,7 @@ en:
           solar_pv:
             has_solar: See the benefits of having solar panels on your school
             no_solar: See the potential benefits of installing solar panels on your school
+          storage_heater_target: Target for reducing your storage heater use
           storage_heaters: Review how much energy you consume to power your storage heaters
           thermostatic_control: Understand how well your gas use adapts to changing temperatures
         title: Overview

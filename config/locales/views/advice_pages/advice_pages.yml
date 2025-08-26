@@ -98,6 +98,7 @@ en:
         heating_control: Heating control
         hot_water: Hot water
         solar_pv: Solar PV
+        storage_heater_target: Target
         storage_heaters: Storage heaters
         thermostatic_control: Thermostatic control
       sections:
