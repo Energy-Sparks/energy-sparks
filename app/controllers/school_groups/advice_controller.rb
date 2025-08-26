@@ -1,22 +1,10 @@
 module SchoolGroups
-  class AdviceController < ApplicationController
-    include SchoolGroupAccessControl
-    include SchoolGroupBreadcrumbs
+  class AdviceController < SchoolGroups::Advice::BaseController
     include Scoring
     include Promptable
 
-    load_resource :school_group
-
-    before_action :load_schools
-    before_action :redirect_unless_authorised
-    before_action :set_counts
-
-    layout 'dashboards'
-
-    skip_before_action :authenticate_user!
-
     def show
-      set_breadcrumbs(name: I18n.t('advice_pages.breadcrumbs.root'))
+      build_breadcrumbs([name: I18n.t('advice_pages.breadcrumbs.root')])
       @fuel_types = @school_group.fuel_types
 
       respond_to do |format|
@@ -31,7 +19,7 @@ module SchoolGroups
     end
 
     def priorities
-      set_breadcrumbs(name: I18n.t('advice_pages.index.priorities.title'))
+      build_breadcrumbs([name: I18n.t('advice_pages.index.priorities.title')])
       respond_to do |format|
         format.html do
           service = SchoolGroups::PriorityActions.new(@schools)
@@ -45,11 +33,11 @@ module SchoolGroups
     end
 
     def alerts
-      set_breadcrumbs(name: I18n.t('advice_pages.index.alerts.title'))
+      build_breadcrumbs([name: I18n.t('advice_pages.index.alerts.title')])
     end
 
     def scores
-      set_breadcrumbs(name: I18n.t('school_groups.titles.current_scores'))
+      build_breadcrumbs([name: I18n.t('school_groups.titles.current_scores')])
       setup_scores_and_years(@school_group)
       respond_to do |format|
         format.html {}
@@ -64,14 +52,10 @@ module SchoolGroups
 
     private
 
-    # Rely on CanCan to filter the list of schools to those that can be shown to the current user
-    def load_schools
-      @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
-    end
+    def breadcrumbs; end
 
-    def set_counts
-      @priority_action_count = SchoolGroups::PriorityActions.new(@schools).priority_action_count
-      @alert_count = SchoolGroups::Alerts.new(@schools).summarise.count
+    def set_page_title
+      @advice_page_title = "#{t('advice_pages.index.title')} | #{@school_group.name}"
     end
 
     def csv_filename_for(action)

@@ -1,0 +1,26 @@
+<% content_for :page_title, "#{t('advice_pages.index.title')} | #{@school_group.name}" %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: t('school_groups.advice.show.title'),
+        subtitle: t('school_groups.advice.show.subtitle_html')
+      ) %>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
+      <%= render 'school_groups/advice/nav', school_group: @school_group %>
+    </div>
+    <div class="col-md-9 col-lg-9 col-xl-10">
+        <%= render 'school_groups/advice/advice_tabs',
+                   school_group: @school_group,
+                   advice_page_key: @advice_page_key,
+                   tab: @tab %>
+
+        <div class="mt-4" id="<%= @advice_page_key %>-<%= @tab %>">
+          <%= render 'analysis', school_group: @school_group %>
+        </div>
+    </div>
+  </div>
+</div>
