@@ -101,6 +101,59 @@ class Alert < ApplicationRecord
     end
   end
 
+  def self.summarised_alerts(schools:)
+    query = <<-SQL.squish
+      SELECT
+        alert_types.id AS alert_type_id,
+        alert_type_ratings.id AS alert_type_rating_id,
+        count(alerts.school_id) AS number_of_schools,
+        sum(var.one_year_saving_kwh) AS total_one_year_saving_kwh,
+        sum(var.average_one_year_saving_gbp) AS total_average_one_year_saving_gbp,
+        sum(var.one_year_saving_co2) AS total_one_year_saving_co2,
+        sum(alerts.rating) / count(alerts.school_id)::float AS average_rating,
+        min(var.time_of_year_relevance) AS time_of_year_relevance
+      FROM alerts
+        JOIN alert_types ON alerts.alert_type_id = alert_types.id
+        JOIN alert_type_ratings ON alert_type_ratings.alert_type_id = alert_types.id
+        JOIN (
+          SELECT DISTINCT ON (school_id) id
+          FROM alert_generation_runs
+          ORDER BY school_id, created_at DESC
+        ) latest_runs ON alerts.alert_generation_run_id = latest_runs.id,
+        JSONB_TO_RECORD(alerts.variables) AS var(
+          average_one_year_saving_gbp float,
+          one_year_saving_co2 float,
+          one_year_saving_kwh float,
+          time_of_year_relevance float
+        )
+      WHERE alerts.school_id IN (#{schools.map(&:id).join(',')})
+      AND
+       alert_type_ratings.group_dashboard_alert_active = true
+      AND
+       alerts.rating BETWEEN alert_type_ratings.rating_from AND alert_type_ratings.rating_to
+      AND
+       average_one_year_saving_gbp IS NOT NULL
+      AND
+       one_year_saving_co2 IS NOT NULL
+      AND
+       one_year_saving_kwh IS NOT NULL
+      GROUP BY alert_types.id, alert_type_ratings.id;
+    SQL
+    sanitized_query = ActiveRecord::Base.sanitize_sql_array(query)
+    Alert.connection.select_all(sanitized_query).map do |row|
+      result = ActiveSupport::OrderedOptions.new
+      result.alert_type = AlertType.find(row['alert_type_id'])
+      result.alert_type_rating = AlertTypeRating.find(row['alert_type_rating_id'])
+      result.number_of_schools = row['number_of_schools']
+      result.total_one_year_saving_kwh = row['total_one_year_saving_kwh']
+      result.total_average_one_year_saving_gbp = row['total_average_one_year_saving_gbp']
+      result.total_one_year_saving_co2 = row['total_one_year_saving_co2']
+      result.average_rating = row['average_rating']
+      result.time_of_year_relevance = row['time_of_year_relevance']
+      result
+    end
+  end
+
   private
 
   def template_data_for_locale(locale)
