@@ -21,23 +21,25 @@ class LandingPagesController < ApplicationController
   end
 
   def introductory_video
-    redirect_to 'https://www.youtube.com/embed/vYoBT2KhP5U'
+    redirect_to 'https://www.youtube.com/embed/vYoBT2KhP5U', allow_other_host: true
   end
 
   def short_demo_video
-    redirect_to 'https://www.youtube.com/watch?v=lEiiEyAcVu4'
+    redirect_to 'https://www.youtube.com/watch?v=lEiiEyAcVu4', allow_other_host: true
   end
 
   def long_demo_video
-    redirect_to 'https://www.youtube.com/watch?v=F5bL1_HsI0U'
+    redirect_to 'https://www.youtube.com/watch?v=F5bL1_HsI0U', allow_other_host: true
   end
 
   def energy_efficiency_report
-    redirect_to 'https://drive.google.com/file/d/1--XwBh2berFDki88fYjBRT4umqTXlifH/view?usp=sharing'
+    redirect_to 'https://drive.google.com/file/d/1--XwBh2berFDki88fYjBRT4umqTXlifH/view?usp=sharing',
+                allow_other_host: true
   end
 
   def impact_report
-    redirect_to 'https://drive.google.com/file/d/18HSpF2KGVVdsmzahxBg4tbQFiz84TWv2/view?usp=sharing'
+    redirect_to 'https://drive.google.com/file/d/18HSpF2KGVVdsmzahxBg4tbQFiz84TWv2/view?usp=sharing',
+                allow_other_host: true
   end
 
   def example_mat_dashboard
