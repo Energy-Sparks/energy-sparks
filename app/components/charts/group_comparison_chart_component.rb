@@ -1,17 +1,18 @@
 module Charts
   # Display a comparison report chart for a specific group only.
   class GroupComparisonChartComponent < ApplicationComponent
-    attr_reader :school_group, :report
+    attr_reader :school_group, :report, :tabbed
 
     renders_one :title
     renders_one :subtitle
     renders_one :header
     renders_one :footer
 
-    def initialize(school_group:, report:, **_kwargs)
+    def initialize(school_group:, report:, tabbed: false, **_kwargs)
       super
       @school_group = school_group
       @report = report
+      @tabbed = tabbed
     end
 
     private
