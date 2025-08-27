@@ -4,13 +4,9 @@ FactoryBot.define do
     postcode { 'AB12 34C' }
     number_of_pupils { 100 }
     open_date { DateTime.current }
-  end
 
-  factory :closed_establishment, class: 'Lists::Establishment' do
-    establishment_name { 'closed' }
-    postcode { 'AB12 34C' }
-    number_of_pupils { 100 }
-    open_date { DateTime.current }
-    close_date { DateTime.current }
+    factory :closed_establishment do
+      close_date { DateTime.current }
+    end
   end
 end

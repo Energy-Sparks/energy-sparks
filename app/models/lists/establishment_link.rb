@@ -20,14 +20,17 @@ module Lists
     include CsvImportable
     self.table_name = 'lists_establishment_links'
 
-    @csv_name_starts_with = 'links_edubasealldata'
-    @csv_special_columns = [['URN', 'establishment_id'], ['LinkURN', 'linked_establishment_id']]
+    def self.csv_name_starts_with
+      'links_edubasealldata'
+    end
+
+    def self.csv_special_columns
+      [['URN', 'establishment_id'], ['LinkURN', 'linked_establishment_id']]
+    end
 
     belongs_to :establishment, class_name: 'Lists::Establishment'
     belongs_to :linked_establishment, class_name: 'Lists::Establishment'
 
-    def successor?
-      link_type.start_with?('Successor')
-    end
+    scope :successors, -> { where('link_type LIKE \'Successor%\'') }
   end
 end

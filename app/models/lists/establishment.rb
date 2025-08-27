@@ -57,8 +57,13 @@ module Lists
 
     has_many :links, class_name: 'Lists::EstablishmentLink'
 
-    @csv_name_starts_with = 'edubasealldata'
-    @csv_special_columns = [['URN', 'id']]
+    def self.csv_name_starts_with
+      'edubasealldata'
+    end
+
+    def self.csv_special_columns
+      [['URN', 'id']]
+    end
 
     def open?
       close_date.nil?
@@ -70,7 +75,7 @@ module Lists
 
     # Use the links table to find this establishment's successor. Will fail if it doesn't have one
     def successor
-      link = links.filter(&:successor?).first
+      link = links.successors.first
       link.nil? ? nil : link.linked_establishment
     end
 
@@ -84,21 +89,22 @@ module Lists
       end
     end
 
-    def self.find_establishment_id_for_school(sch, stats)
+    def self.find_establishment_for_school(sch, stats)
       if exists?(sch.urn)
         stats[:perfect] += 1
         est = find(sch.urn)
-        return est.current_establishment.id
+        return est.current_establishment
       end
 
       match = find_by('la_code::text || establishment_number::text = ?', sch.urn)
       if match != nil
         stats[:la_plus_en] += 1
-        return match.current_establishment.id
+        return match.current_establishment
       end
 
       puts "Warning: Couldn\'t match school with ID #{sch.id} and URN #{sch.urn} to any establishment!"
       stats[:unmatched] += 1
+      return nil
     end
   end
 end

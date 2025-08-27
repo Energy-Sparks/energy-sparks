@@ -40,34 +40,37 @@ module Lists
     end
 
     describe 'uses links correctly' do
-      before do
-        create(:closed_establishment, id: 1)
-        create(:closed_establishment, id: 2)
-        create(:establishment, id: 3)
-        create(:establishment, id: 4)
-        create(:establishment_link_successor, establishment_id: 1, linked_establishment_id: 2)
-        create(:establishment_link_successor, establishment_id: 2, linked_establishment_id: 3)
-        create(:establishment_link_successor, establishment_id: 3, linked_establishment_id: 4)
-      end
-
       it 'identifies open establishment' do
-        expect(described_class.find(3).open?).to be(true)
+        est_current = create(:establishment)
+        expect(est_current.open?).to be(true)
       end
 
       it 'identifies closed establishment' do
-        expect(described_class.find(1).closed?).to be(true)
+        est_old = create(:closed_establishment)
+        expect(est_old.closed?).to be(true)
       end
 
-      it 'finds successor' do
-        expect(described_class.find(1).successor).to eq(described_class.find(2))
+      it 'finds successor establishment' do
+        est_old = create(:closed_establishment)
+        est_new = create(:establishment)
+        create(:establishment_link, establishment: est_old, linked_establishment: est_new)
+        expect(est_old.successor).to eq(est_new)
       end
 
       it 'finds latest establishment' do
-        expect(described_class.find(1).current_establishment).to eq(described_class.find(3))
+        est_oldest = create(:closed_establishment)
+        est_old = create(:closed_establishment)
+        est_current = create(:establishment)
+        create(:establishment_link, establishment: est_oldest, linked_establishment: est_old)
+        create(:establishment_link, establishment: est_old, linked_establishment: est_current)
+        expect(est_oldest.current_establishment).to eq(est_current)
       end
 
-      it 'doesn\'t use links for up-to-date establishment' do
-        expect(described_class.find(3).current_establishment).to eq(described_class.find(3))
+      it 'doesn\'t use links for open establishment' do
+        est_current = create(:establishment)
+        est_newer = create(:establishment)
+        create(:establishment_link, establishment: est_current, linked_establishment: est_newer)
+        expect(est_current.current_establishment).to eq(est_current)
       end
     end
   end

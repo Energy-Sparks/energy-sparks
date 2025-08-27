@@ -3,6 +3,14 @@ module CsvImportable
 
   # rubocop:disable Metrics/BlockLength
   class_methods do
+    def csv_name_starts_with
+      ''
+    end
+
+    def csv_special_columns
+      []
+    end
+
     def upsert_batch(batch)
       puts "Upserting batch of #{batch.length} entries to table"
       upsert_all(batch)
@@ -21,7 +29,7 @@ module CsvImportable
       headers_to_attributes = rows.first.headers.filter_map do |h|
         [h, convert_header(h)] if column_names.include?(convert_header(h))
       end
-      headers_to_attributes = headers_to_attributes.nil? ? @csv_special_columns : headers_to_attributes.union(@csv_special_columns)
+      headers_to_attributes = headers_to_attributes.nil? ? csv_special_columns : headers_to_attributes.union(csv_special_columns)
 
       rows.map { |row| create_from_row(row, headers_to_attributes) }.each_slice(batch_size) { |batch| upsert_batch(batch) }
 
@@ -32,11 +40,11 @@ module CsvImportable
     def read_csv_from_zip(path)
       Zip::File.open(path) do |zip|
         zip.each do |file|
-          if file.name.start_with?(@csv_name_starts_with)
+          if file.name.start_with?(csv_name_starts_with)
             return file.get_input_stream.read.force_encoding(Encoding::ISO_8859_1)
           end
         end
-        raise LoadError.new("Couldn't find file beginning with \"#{@csv_name_starts_with}\" in #{path}")
+        raise LoadError.new("Couldn't find file beginning with \"#{csv_name_starts_with}\" in #{path}")
       end
     end
 
