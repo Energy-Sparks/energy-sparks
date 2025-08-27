@@ -1,0 +1,21 @@
+
+<%= render SchoolGroupComparisonComponent.new(
+      id: 'group-comparison-baseload',
+      comparison: @baseload_comparison,
+      advice_page_key: @advice_page_key,
+      include_cluster: can?(:update_settings, @school_group)
+    ) do |component| %>
+  <% component.with_csv_download_link do %>
+    <%= link_to t('school_groups.download_as_csv'),
+                comparisons_school_group_path(@school_group,
+                                              format: :csv,
+                                              advice_page_keys: [@advice_page_key]),
+                class: 'btn btn-sm btn-default',
+                id: "download-comparisons-school-csv-#{@advice_page_key}" %>
+  <% end %>
+<% end %>
+<p class="pb-5">
+  <%= link_to t('school_groups.comparisons.view_detailed_comparison'),
+              compare_path(benchmark: compare_benchmark_key_for(@advice_page_key),
+                           school_group_ids: [@school_group.id]) %>
+</p>

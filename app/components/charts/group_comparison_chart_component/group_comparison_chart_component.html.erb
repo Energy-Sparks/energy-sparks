@@ -1,0 +1,24 @@
+<%= tag.div id: id, class: classes do %>
+  <div id="chart_wrapper_<%= report.key %>" class="chart-wrapper">
+    <% if title %>
+      <h4 id="chart-section-<%= chart_type %>" class="chart-title"><%= title %></h4>
+    <% end %>
+
+    <% if subtitle %>
+      <h5 class="chart-subtitle"><%= subtitle %></h5>
+    <% end %>
+
+    <%= header %>
+
+    <div id="<%= report.key %>-chart"
+          class="analysis-chart <%= report.key %>-analysis-chart"
+          data-autoload-chart="true"
+          data-chart-config="<%= chart_config_json %>">
+    </div>
+    <div id='chart-error'
+         class='d-none'>
+         <%= I18n.t('chart_data_values.standard_error_message') %>
+    </div>
+  </div>
+  <%= footer %>
+<% end %>

@@ -39,11 +39,16 @@ module SchoolGroups
       end
 
       def breadcrumbs
-        build_breadcrumbs([name: I18n.t("advice_pages.#{advice_page_key}.page_title")])
+        build_breadcrumbs([
+                            { name: I18n.t('advice_pages.breadcrumbs.root'), href: school_group_advice_path(@school_group) },
+                            { name: I18n.t("advice_pages.#{advice_page_key}.page_title") }
+                          ])
       end
 
       def set_advice_page
         @advice_page_key = advice_page_key
+        @advice_page = AdvicePage.find_by!(key: advice_page_key)
+        @advice_page_tab = advice_page_tab
       end
 
       def set_tab_name
