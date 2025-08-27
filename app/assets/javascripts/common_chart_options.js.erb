@@ -156,8 +156,8 @@ function barColumnLine(chartData, highchartsChart, seriesData, chartConfig, $cha
     }
 
     highchartsChart.update({
-      chart: { inverted: true, marginLeft: 200, marginRight: 100 },
-      xAxis: [{ labels: { reserveSpace: true, align: 'left', style: { textOverflow: 'none' } } }],
+      chart: { inverted: true, marginRight: 100 },
+      xAxis: [{ labels: { reserveSpace: true, align: 'right' } }],
       yAxis: [{ reversedStacks: false, stackLabels: { style: { fontWeight: 'bold',  color: '<%= Colours.chart_dark_blue %>' } } }],
       plotOptions: { bar: { tooltip: { headerFormat: '<b>{series.name}</b><br>', pointFormat: orderedPointFormat(yAxisLabel) } } }
     });
