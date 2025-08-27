@@ -1,0 +1,35 @@
+---
+en:
+  school_groups:
+    advice_pages:
+      baseload:
+        analysis:
+          comparisons:
+            chart:
+              header: The following chart shows a comparison of baseload per pupil across schools in this group. It can help to identify which schools are using the most electricity to keep appliances running.
+              subtitle: Baseload per pupil (W) based on the most recent 12 months of data for each school
+              title: Baseload per pupil
+            table:
+              header_html: |-
+                <p>
+                The following table provides a more detailed breakdown of the baseload per pupil for each school. The analysis is based on the latest 12 months of data for each school.
+                </p>
+                <p>
+                The table provides an indication of the costs of using electricity to keep appliances running all the time based on the current tariffs for each school.
+                Saving are based on estimating the reduces costs if each school reduced its baseload to match the best performing schools on Energy Sparks, adjusting for pupil numbers.
+                </p>
+            title: School comparison
+          potential_savings:
+            title: Potential savings
+          summary: This page provides an overview of the baseload across the schools in your group
+        insights:
+          current_baseload:
+            summary_html: |-
+              <p>
+              The following table summarises the current baseload per pupil and average baseload over the last 12 months for each school.
+              <p>
+              <p>
+              A <a href="%{link}">more detailed table and a chart</a> is also available.
+              </p>
+            title: Current baseload
+        page_title: Baseload analysis

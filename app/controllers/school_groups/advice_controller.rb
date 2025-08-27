@@ -54,7 +54,7 @@ module SchoolGroups
 
     def breadcrumbs; end
 
-    def set_page_title
+    def set_titles
       @advice_page_title = "#{t('advice_pages.index.title')} | #{@school_group.name}"
     end
 
