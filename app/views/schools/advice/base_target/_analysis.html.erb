@@ -49,19 +49,18 @@
       <th><%= t('advice_pages.target.analysis.historical_progress.previous_year') %></th>
       <th><%= t('advice_pages.target.analysis.historical_progress.target_year') %></th>
       <th><%= t('advice_pages.target.analysis.monthly_progress.percentage_change') %></th>
+      <th><%= t('advice_pages.target.analysis.historical_progress.target') %></th>
     </thead>
     <tbody>
       <% targets.each do |target, consumption|
-           previous_consumption = consumption.pluck(:previous_consumption).sum
+           target_consumption = consumption.pluck(:target_consumption).sum
            current_consumption = consumption.pluck(:current_consumption).sum %>
         <tr>
-          <td><%= target.start_date.strftime('%B %Y') %></td>
-          <td><%= format_unit(previous_consumption, :kw) %></td>
+          <td><%= formatted_target_date(target) %></td>
           <td><%= format_unit(current_consumption, :kw) %></td>
-          <td>
-            <%= up_downify(format_unit(percent_change(previous_consumption, current_consumption), :relative_percent),
-                           sanitize: false) %>
-          </td>
+          <td><%= format_unit(target_consumption, :kw) %></td>
+          <td><%= formatted_target_change(current_consumption, target_consumption) %></td>
+          <td><%= formatted_target(target) %></td>
         </tr>
       <% end %>
     </tbody>

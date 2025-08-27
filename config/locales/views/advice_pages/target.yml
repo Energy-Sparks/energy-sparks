@@ -9,6 +9,7 @@ en:
         historical_progress:
           intro: The following table shows your previous progress towards reducing your %{fuel_type} usage
           previous_year: Previous year (kWh)
+          target: Target
           target_date: Target date
           target_year: Target year (kWh)
           title: Historical progress

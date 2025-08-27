@@ -29,10 +29,7 @@
                                                                 @last_consumption_month[:month]).end_of_month]) %></td>
         <td><%= format_unit(@current_consumption, :kw) %></td>
         <td><%= format_unit(@target_consumption, :kw) %></td>
-        <td td class="text-right">
-          <%= up_downify(format_unit(percent_change(@current_consumption, @target_consumption), :relative_percent,
-                                     true, :target),
-                         sanitize: false) %></td>
+        <td td class="text-right"><%= formatted_target_change(@current_consumption, @target_consumption) %></td>
       <% end %>
     </tr>
   </tbody>

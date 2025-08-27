@@ -64,11 +64,13 @@ RSpec.shared_examples 'target advice page' do
         What is your target?
         Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target
         Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025
+        You can revise your target.
+        Learn more
         Your current progress
         Back to top
         Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
-        Revise your target
-        Period Cumulative consumption Target consumption % Change 01 Jan 2024 - 31 Dec 2024 12,120 12,000 0&percnt;
+        Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
+        01 Jan 2024 - 31 Dec 2024 12,120 12,000 +1&percnt;
       CONTENT
     end
   end
@@ -78,41 +80,43 @@ RSpec.shared_examples 'target advice page' do
 
     def expected_content(extra_contents)
       <<~CONTENT
-        What is your target?
-        Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
+        Progress report
         Monthly progress Cumulative progress#{extra_contents}
+        Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
         Monthly progress
         Back to top
+        This table summarises your progress to reduce your #{fuel_string} use by 4&percnt; on a month by month basis. Each entry in the table shows the target and actual consumption for every month in the target period. This table can be helpful in identifying which months have you have made the most savings or where your energy use has exceeded the target.
         Month Last year (kWh) Target (kWh) This year (kWh) % change On target? \
-        January 2024 1,020 1,000 1,010 0&percnt; \
-        February 2024 1,020 1,000 1,010 0&percnt; \
-        March 2024 1,020 1,000 1,010 0&percnt; \
-        April 2024 1,020 1,000 1,010 0&percnt; \
-        May 2024 1,020 1,000 1,010 0&percnt; \
-        June 2024 1,020 1,000 1,010 0&percnt; \
-        July 2024 1,020 1,000 1,010 0&percnt; \
-        August 2024 1,020 1,000 1,010 0&percnt; \
-        September 2024 1,020 1,000 1,010 0&percnt; \
-        October 2024 1,020 1,000 1,010 0&percnt; \
-        November 2024 1,020 1,000 1,010 0&percnt; \
-        December 2024 1,020 1,000 1,010 0&percnt;
-        Partial months are shown in red.
+        January 2024 1,020 1,000 1,010 +1&percnt; \
+        February 2024 1,020 1,000 1,010 +1&percnt; \
+        March 2024 1,020 1,000 1,010 +1&percnt; \
+        April 2024 1,020 1,000 1,010 +1&percnt; \
+        May 2024 1,020 1,000 1,010 +1&percnt; \
+        June 2024 1,020 1,000 1,010 +1&percnt; \
+        July 2024 1,020 1,000 1,010 +1&percnt; \
+        August 2024 1,020 1,000 1,010 +1&percnt; \
+        September 2024 1,020 1,000 1,010 +1&percnt; \
+        October 2024 1,020 1,000 1,010 +1&percnt; \
+        November 2024 1,020 1,000 1,010 +1&percnt; \
+        December 2024 1,020 1,000 1,010 +1&percnt;
+        Partial months are shown in red. How did we calculate these figures?
         Cumulative progress
         Back to top
+        This table summarises your overall progress towards reducing your #{fuel_string} use by 4&percnt;. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by January 2025.
         Month Last year (kWh) Target (kWh) This year (kWh) % change On target? \
-        January 2024 1,020 1,000 1,010 0&percnt; \
-        February 2024 2,040 2,000 2,020 0&percnt; \
-        March 2024 3,060 3,000 3,030 0&percnt; \
-        April 2024 4,080 4,000 4,040 0&percnt; \
-        May 2024 5,100 5,000 5,050 0&percnt; \
-        June 2024 6,120 6,000 6,060 0&percnt; \
-        July 2024 7,140 7,000 7,070 0&percnt; \
-        August 2024 8,160 8,000 8,080 0&percnt; \
-        September 2024 9,180 9,000 9,090 0&percnt; \
-        October 2024 10,200 10,000 10,100 0&percnt; \
-        November 2024 11,220 11,000 11,110 0&percnt; \
-        December 2024 12,240 12,000 12,120 0&percnt;
-        Partial months are shown in red.
+        January 2024 1,020 1,000 1,010 +1&percnt; \
+        February 2024 2,040 2,000 2,020 +1&percnt; \
+        March 2024 3,060 3,000 3,030 +1&percnt; \
+        April 2024 4,080 4,000 4,040 +1&percnt; \
+        May 2024 5,100 5,000 5,050 +1&percnt; \
+        June 2024 6,120 6,000 6,060 +1&percnt; \
+        July 2024 7,140 7,000 7,070 +1&percnt; \
+        August 2024 8,160 8,000 8,080 +1&percnt; \
+        September 2024 9,180 9,000 9,090 +1&percnt; \
+        October 2024 10,200 10,000 10,100 +1&percnt; \
+        November 2024 11,220 11,000 11,110 +1&percnt; \
+        December 2024 12,240 12,000 12,120 +1&percnt;
+        Partial months are shown in red. How did we calculate these figures?
       CONTENT
     end
 
@@ -125,16 +129,16 @@ RSpec.shared_examples 'target advice page' do
     it 'shows correct content with previous targets' do
       create_target
       create_target(start_date: Date.new(2023, 1, 1))
-      create_target(start_date: Date.new(2022, 1, 1))
+      create_target(start_date: Date.new(2022, 1, 1), target: 3)
       visit_path('Analysis')
 
       expect(page).to have_content(expected_content(' Historical progress') + <<~CONTENT)
         Historical progress
         Back to top
         The following table shows your previous progress towards reducing your #{fuel_type} usage
-        Target date Previous year (kWh) Target year (kWh) % change \
-        January 2023 12,240 12,120 0&percnt; \
-        January 2022 12,240 12,120 0&percnt;
+        Target date Previous year (kWh) Target year (kWh) % change Target \
+        January 2024 12,120 12,000 +1&percnt; 4&percnt; \
+        January 2023 12,120 12,000 +1&percnt; 3&percnt;
       CONTENT
     end
   end

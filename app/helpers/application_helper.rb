@@ -1,5 +1,6 @@
 module ApplicationHelper
   include Pagy::Frontend
+  include ActionView::Helpers::TagHelper
 
   def nice_date_times(datetime, options = {})
     return '' if datetime.nil?

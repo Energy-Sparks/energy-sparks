@@ -3,6 +3,8 @@
 module Schools
   module Advice
     class BaseTargetController < AdviceBaseController
+      include ApplicationHelper
+
       before_action :set_target, only: %i[insights analysis]
       before_action :set_consumption, only: %i[insights analysis]
 
@@ -36,19 +38,30 @@ module Schools
       end
 
       def percent_change(current_consumption, target_consumption)
-        (current_consumption - target_consumption) / target_consumption
+        (current_consumption - target_consumption) / target_consumption.to_f
       end
-      helper_method :percent_change
+      # helper_method :percent_change
 
-      def formatted_target
-        format_unit(@target.target(@fuel_type), { units: :percent, options: { scale: false } })
+      def formatted_target(target = nil)
+        format_unit((target || @target).target(@fuel_type), { units: :percent, options: { scale: false } })
       end
       helper_method :formatted_target
 
-      def formatted_target_date
-        @target.target_date.strftime('%B %Y')
+      def target_strftime(date)
+        date.strftime('%B %Y')
+      end
+      helper_method :target_strftime
+
+      def formatted_target_date(target = nil)
+        target_strftime((target || @target).target_date)
       end
       helper_method :formatted_target_date
+
+      def formatted_target_change(current_consumption, target_consumption)
+        change = percent_change(current_consumption, target_consumption)
+        up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
+      end
+      helper_method :formatted_target_change
     end
   end
 end
