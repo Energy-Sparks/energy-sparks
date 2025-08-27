@@ -36,4 +36,5 @@
     <% end %>
   </tbody>
 </table>
-<%= tag.div(t('advice_pages.target.analysis.monthly_progress.partial'), class: 'text-right advice-table-caption') %>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           additional_notice_text: t('advice_pages.target.analysis.monthly_progress.partial') %>

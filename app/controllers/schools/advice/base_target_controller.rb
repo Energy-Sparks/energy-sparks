@@ -32,13 +32,23 @@ module Schools
       end
 
       def set_page_subtitle
-        @advice_page_subtitle = I18n.t('advice_pages.target.insights.what_is_your_target.title')
+        super(section: 'target')
       end
 
       def percent_change(current_consumption, target_consumption)
         (current_consumption - target_consumption) / target_consumption
       end
       helper_method :percent_change
+
+      def formatted_target
+        format_unit(@target.target(@fuel_type), { units: :percent, options: { scale: false } })
+      end
+      helper_method :formatted_target
+
+      def formatted_target_date
+        @target.target_date.strftime('%B %Y')
+      end
+      helper_method :formatted_target_date
     end
   end
 end

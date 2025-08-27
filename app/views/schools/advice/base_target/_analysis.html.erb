@@ -1,4 +1,3 @@
-<%= render 'meeting_target_prompt' %>
 <% targets = @school.school_targets.by_start_date.filter_map do |target|
      [target, target.monthly_consumption(@fuel_type)] unless target == @target
    end %>
@@ -10,14 +9,23 @@
   <% end %>
 </ul>
 
+<%= render 'meeting_target_prompt' %>
+
 <%= render 'schools/advice/section_title',
            section_id: 'monthly-progress',
            section_title: t('advice_pages.target.analysis.monthly_progress.title') %>
+<p><%= t('advice_pages.target.analysis.monthly_progress.text_html',
+         fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+         percent: formatted_target) %></p>
 <%= render 'monthly_table', consumption: @target.monthly_consumption(@fuel_type) %>
 
 <%= render 'schools/advice/section_title',
            section_id: 'cumulative-progress',
            section_title: t('advice_pages.target.analysis.cumulative_progress.title') %>
+<p><%= t('advice_pages.target.analysis.cumulative_progress.text_html',
+         fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+         percent: formatted_target,
+         target_date: formatted_target_date) %></p>
 <%= consumption = @target.monthly_consumption(@fuel_type)
     consumption.each_with_index do |month, i|
       next if i.zero?

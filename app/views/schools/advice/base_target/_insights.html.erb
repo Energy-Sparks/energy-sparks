@@ -1,17 +1,20 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
         fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
-        percent: format_unit(@target.target(@fuel_type), { units: :percent, options: { scale: false } }),
-        target_date: @target.target_date.strftime('%B %Y')) %>
+        percent: formatted_target,
+        target_date: formatted_target_date) %>
+  <% if can?(:manage, @target) %>
+    <p><%= t('advice_pages.target.insights.what_is_your_target.revise_html',
+             path: edit_school_school_target_path(@target.school, @target)) %></p>
+  <% end %>
+  <% c.with_link do
+       link_to t('common.labels.learn_more'), polymorphic_path([@fuel_type, :target_learn_more, @school, :advice])
+     end %>
 <% end %>
 <%= render 'schools/advice/section_title',
            section_id: 'progress',
            section_title: t('advice_pages.target.insights.your_current_progress.title') %>
 <%= render 'meeting_target_prompt' %>
-<% if can?(:manage, @target) %>
-  <%= link_to t('schools.school_targets.title.revise_your_target'),
-              edit_school_school_target_path(@target.school, @target), class: 'btn btn-default' %>
-<% end %>
 <table class="mt-2 table table-sm advice-table">
   <thead>
     <th><%= t('advice_pages.tables.columns.period') %></th>
@@ -27,7 +30,8 @@
         <td><%= format_unit(@current_consumption, :kw) %></td>
         <td><%= format_unit(@target_consumption, :kw) %></td>
         <td td class="text-right">
-          <%= up_downify(format_unit(percent_change(@current_consumption, @target_consumption), :relative_percent),
+          <%= up_downify(format_unit(percent_change(@current_consumption, @target_consumption), :relative_percent,
+                                     true, :target),
                          sanitize: false) %></td>
       <% end %>
     </tr>
