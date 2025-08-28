@@ -6,28 +6,27 @@ module SchoolGroups
       include SchoolGroupBreadcrumbs
 
       load_resource :school_group
+      before_action :run_report
 
-      # FIXME
       def insights
-        categorised_schools = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools
-        @baseload_comparison = categorised_schools[:electricity][:baseload]
-
-        @baseload_per_pupil_report = Comparison::Report.find_by!(key: :baseload_per_pupil)
-        @results = load_data
+        @baseload_comparison = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools_for_advice_page(@advice_page)
         @insight_table_headers = insight_table_headers
       end
 
-      # FIXME
       def analysis
-        categorised_schools = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools
-        @baseload_comparison = categorised_schools[:electricity][:baseload]
+        @baseload_benchmarks = SchoolGroups::CategoriseSchools.new(schools: @schools).school_categories(@advice_page)
+        alert_type = AlertType.find_by_class_name('AlertElectricityBaseloadVersusBenchmark')
+        @baseload_alerts = SchoolGroups::Alerts.new(@schools).alerts(alert_type) if alert_type
 
-        @baseload_per_pupil_report = Comparison::Report.find_by!(key: :baseload_per_pupil)
-        @results = load_data
         @baseload_per_pupil_headers = Comparison::BaseloadPerPupil.report_headers
       end
 
       private
+
+      def run_report
+        @baseload_per_pupil_report = Comparison::Report.find_by!(key: :baseload_per_pupil)
+        @results = load_data
+      end
 
       def insight_table_headers
         [

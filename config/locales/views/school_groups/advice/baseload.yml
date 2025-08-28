@@ -20,6 +20,23 @@ en:
                 </p>
             title: School comparison
           potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Schools are benchmarked with comparable schools based on several key characteristics including floor area,
+                location, pupil numbers and type.
+                </p>
+                <p>
+                The following table summarises how we have benchmarked each school in your group according to its
+                baseload.</p>
+                <p>
+                "Exemplar" schools are in the top 17.5% on Energy Sparks. "Well managed" schools are in the top
+                30% of schools.
+                </p>
+                <p>
+                The savings for each school are based on reducing their baseload to match those of an Exemplar school
+                with similar characteristics.
+                </p>
             title: Potential savings
           summary: This page provides an overview of the baseload across the schools in your group
         insights:

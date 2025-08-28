@@ -10,7 +10,7 @@
       comparison: @baseload_comparison,
       advice_page_key: @advice_page_key,
       include_cluster: can?(:update_settings, @school_group),
-      show_modal: false
+      show_modal: true
     ) do |component| %>
   <% component.with_header do %>
     <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>

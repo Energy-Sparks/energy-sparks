@@ -13,6 +13,13 @@
            section_id: 'potential-savings',
            section_title: t('school_groups.advice_pages.baseload.analysis.potential_savings.title') %>
 
+<%= t('school_groups.advice_pages.baseload.analysis.potential_savings.table.header_html') %>
+
+<%= render 'savings_table', school_group: @school_group,
+                            alerts: @baseload_alerts,
+                            benchmarks: @baseload_benchmarks,
+                            advice_page: @advice_page %>
+
 <%= render 'schools/advice/section_title',
            section_id: 'comparison',
            section_title: t('school_groups.advice_pages.baseload.analysis.comparisons.title') %>
