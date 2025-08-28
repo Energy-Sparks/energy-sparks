@@ -20,6 +20,7 @@
 #  scoreboard_id            :bigint(8)
 #  template_calendar_id     :bigint(8)
 #  updated_at               :datetime         not null
+#  urn                      :integer
 #  uuid                     :string           not null
 #  weather_station_id       :bigint(8)
 #

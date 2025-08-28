@@ -878,6 +878,89 @@ class School < ApplicationRecord
     end
   end
 
+  def self.from_onboarding(onboarding)
+    sch = new
+    sch.data_enabled =                    false
+    sch.name =                            onboarding.school_name
+    sch.urn =                             onboarding.urn
+    sch.establishment_id =                onboarding.urn
+
+    return sch if sch.establishment.nil?
+
+    sch.establishment =                   sch.establishment.current_establishment
+    sch.urn =                             sch.establishment_id
+
+    est = sch.establishment
+    sch.name =                            est.establishment_name
+    sch.address =                         address_from_establishment(est)
+    sch.postcode =                        est.postcode
+    sch.website =                         est.school_website
+    sch.school_type =                     school_type_from_phase_of_education_code(est.phase_of_education_code)
+    sch.number_of_pupils =                est.number_of_pupils
+    sch.percentage_free_school_meals =    est.percentage_fsm
+    sch.region =                          region_from_gor_code(est.gor_code)
+    sch.local_authority_area =            LocalAuthorityArea.find_by(code: est.district_administrative_code)
+
+    return sch
+  end
+
+  # Any combinations of these five columns might be empty
+  # Formatting is the same as on the GIAS website, except for postcode after county name
+  def self.address_from_establishment(est)
+    return concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
+  end
+
+  def self.concatenate_address(elements)
+    return elements.filter(&:present?).join(', ')
+  end
+
+  def self.region_from_gor_code(gor_code)
+    case gor_code
+    when 'A'
+      return regions[:north_east]
+    when 'B'
+      return regions[:north_west]
+    when 'D'
+      return regions[:yorkshire_and_the_humber]
+    when 'E'
+      return regions[:east_midlands]
+    when 'F'
+      return regions[:west_midlands]
+    when 'G'
+      return regions[:east_of_england]
+    when 'H'
+      return regions[:london]
+    when 'J'
+      return regions[:south_east]
+    when 'K'
+      return regions[:south_west]
+    else
+      return nil
+    end
+  end
+
+  #
+  # TODO - finish mapping phases of education from establishment data
+  #
+  def self.school_type_from_phase_of_education_code(poe_code)
+    case poe_code
+    when 2 # "Primary"
+      return school_types[:primary]
+    when 3 # "Middle deemed primary"
+      return school_types[:middle]
+    when 4 # "Secondary"
+      return school_types[:secondary]
+    when 5 # "Middle deemed secondary"
+      return school_types[:middle]
+    else # 0 - "Not applicable"
+      # TODO
+      # 1 - "Nursery"
+      # 6 - "16 plus"
+      # 7 - "All-through"
+      return nil
+    end
+  end
+
   private
 
   def valid_uk_postcode
