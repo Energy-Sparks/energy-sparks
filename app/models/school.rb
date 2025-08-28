@@ -19,6 +19,7 @@
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
 #  enable_targets_feature                  :boolean          default(TRUE)
+#  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
 #  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
@@ -93,6 +94,7 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
+#  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
 #  index_schools_on_local_distribution_zone_id  (local_distribution_zone_id)
@@ -210,6 +212,8 @@ class School < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
 
+  belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
+
   belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
 
@@ -250,6 +254,8 @@ class School < ApplicationRecord
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id)) }
+
+  scope :with_establishment, -> { where.not(establishment_id: nil) }
 
   # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   scope :with_recent_engagement,
