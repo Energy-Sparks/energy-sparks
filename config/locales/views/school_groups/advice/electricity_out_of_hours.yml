@@ -51,4 +51,14 @@ en:
               A <a href="%{link}">more detailed table and a chart</a> is also available.
               </p>
             title: Out of hours use
+          what_is_out_of_hours_usage_html: |-
+            <p>
+              Out of hours electricity use is the amount of electricity used when the schools are closed - overnight, at weekends and during the holidays.
+            </p>
+            <p>
+              Reducing out of hours electricity use is one of the easiest, and cheapest ways of saving lots of energy.
+            </p>
+            <p>
+              Note: The analysis within this page is based on the school opening hours set for each school. It is best to set these to be as accurate as you can so that you receive appropriate advice.
+            </p>
         page_title: Out of hours electricity use

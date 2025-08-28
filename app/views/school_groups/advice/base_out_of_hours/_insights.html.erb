@@ -1,5 +1,5 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
-  <%= t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_html') %>
+  <%= t("school_groups.advice_pages.#{@advice_page_key}.insights.what_is_out_of_hours_usage_html") %>
 <% end %>
 
 <%= render 'schools/advice/section_title',
