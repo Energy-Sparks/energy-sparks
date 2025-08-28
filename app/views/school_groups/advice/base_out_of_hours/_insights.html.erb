@@ -1,0 +1,48 @@
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <%= t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_html') %>
+<% end %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t("advice_pages.#{@advice_page_key}.insights.comparison.title") %>
+
+<%= render SchoolGroupComparisonComponent.new(
+      id: "group-comparison-#{@advice_page_key}",
+      comparison: @comparison,
+      advice_page_key: @advice_page_key,
+      include_cluster: can?(:update_settings, @school_group),
+      show_modal: true
+    ) do |component| %>
+  <% component.with_header do %>
+    <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>
+  <% end %>
+<% end %>
+<p class="pb-5">
+  <%= link_to t('school_groups.comparisons.view_detailed_comparison'),
+              group_advice_page_path(@school_group, @advice_page_key, :analysis, anchor: 'potential-savings') %>
+</p>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'current',
+           section_title: t("school_groups.advice_pages.#{@advice_page_key}.insights.current_use.title") %>
+
+<%= t("school_groups.advice_pages.#{@advice_page_key}.insights.current_use.summary_html",
+      link: group_advice_page_path(@school_group, @advice_page_key, :analysis, anchor: 'comparison')) %>
+
+<%= render ComparisonTableComponent.new(
+      report: @report, advice_page: @advice_page, table_name: :table, index_params: index_params,
+      headers: @insight_table_headers, colgroups: [], advice_page_tab: @advice_page_tab
+    ) do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.send("#{@advice_page.fuel_type}_economic_tariff_changed_this_year") %>
+      <% r.with_var val: result.schoolday_open_percent, unit: :percent %>
+      <% r.with_var val: result.schoolday_closed_percent, unit: :percent %>
+      <% r.with_var val: result.holidays_percent, unit: :percent %>
+      <% r.with_var val: result.weekends_percent, unit: :percent %>
+      <% r.with_var val: result.community_percent, unit: :percent %>
+    <% end %>
+  <% end %>
+<% end %>
