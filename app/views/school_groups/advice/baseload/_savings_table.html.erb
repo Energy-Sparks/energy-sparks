@@ -1,4 +1,4 @@
-<table class="table table-sorted table-borderless advice-table advice-priority-table">
+<table id="baseload-savings" class="table table-sorted table-borderless advice-table advice-priority-table">
   <thead>
     <tr>
       <th colspan="<%= can?(:update_settings, school_group) ? '3' : '2' %>"></th>
@@ -33,7 +33,7 @@
             <%= t(benchmarks[school.id], scope: 'advice_pages.benchmarks', default: '-') %>
           </span>
         </td>
-        <% if alert.variables['one_year_saving_kwh'].positive? %>
+        <% if alert.variables['one_year_saving_kwh']&.positive? %>
           <td class="text-right" data-order="<%= alert.variables['one_year_saving_kwh'] %>">
             <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh, true, :benchmark) %>
           </td>
