@@ -1,6 +1,19 @@
 ---
 en:
   school_groups:
+    advice:
+      alerts:
+        subtitle_html: A summary of energy use alerts currently being shown to schools in this group
+        title: Recent alerts
+      priorities:
+        title: Energy saving opportunities
+      scores:
+        title: "%{name} Scoreboard"
+      show:
+        recent_energy_use:
+          title: Recent energy use
+        subtitle_html: Review latest energy use data for the group, explore potential savings and compare usage across the group
+        title: Energy efficiency overview
     chart_updates:
       bulk_update_charts:
         notice:
@@ -365,6 +378,7 @@ en:
       secr_report: SECR report
       set_message: Set message
     titles:
+      advice: Advice
       comparisons: Comparisons
       current_scores: Current Scores
       map: Map
