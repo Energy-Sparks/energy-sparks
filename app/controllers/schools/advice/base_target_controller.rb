@@ -21,7 +21,7 @@ module Schools
 
       def set_consumption
         consumption = @target.monthly_consumption(@fuel_type, missing: false)
-        render 'not_enough_data' and return if consumption.nil?
+        render 'new_target' and return if consumption.nil?
 
         @last_consumption_month = consumption.last
         @current_consumption = consumption.sum { |month| month[:current_consumption] }

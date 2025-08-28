@@ -74,7 +74,12 @@ module Schools
     def create
       authorize! :create, @school_target
       if @school_target.save
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
+        notice = t('schools.school_targets.new.successfully_created')
+        if Flipper.enabled?(:target_advice_pages2025, current_user)
+          redirect_to edit_school_school_target_path(@school, @school_target), notice:
+        else
+          redirect_to school_school_target_path(@school, @school_target), notice:
+        end
       elsif @school.has_target?
         render :new
       else
