@@ -33,7 +33,7 @@
             <%= t(benchmarks[school.id], scope: 'advice_pages.benchmarks', default: '-') %>
           </span>
         </td>
-        <% if alert.variables['one_year_saving_kwh']&.positive? %>
+        <% if benchmarks[school.id] != :exemplar_school && alert.variables['one_year_saving_kwh']&.positive? %>
           <td class="text-right" data-order="<%= alert.variables['one_year_saving_kwh'] %>">
             <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh, true, :benchmark) %>
           </td>

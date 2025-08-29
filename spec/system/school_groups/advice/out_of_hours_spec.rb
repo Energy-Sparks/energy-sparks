@@ -29,7 +29,7 @@ RSpec.shared_examples_for 'a group out of hours advice page' do
     create(:advice_page_school_benchmark,
             school: school,
             advice_page: advice_page,
-            benchmarked_as: :exemplar_school)
+            benchmarked_as: :benchmark_school)
 
     alert_run = create(:alert_generation_run, school: school)
 
@@ -103,7 +103,7 @@ RSpec.shared_examples_for 'a group out of hours advice page' do
           end
           let(:expected_rows) do
             [
-              [school.name, 'Exemplar', '100', '£200', '300', 'View analysis']
+              [school.name, 'Well managed', '100', '£200', '300', 'View analysis']
             ]
           end
         end
