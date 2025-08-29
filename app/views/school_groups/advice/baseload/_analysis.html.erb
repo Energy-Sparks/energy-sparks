@@ -1,0 +1,45 @@
+<p><%= t('school_groups.advice_pages.baseload.analysis.summary') %></p>
+
+<ul>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.baseload.analysis.potential_savings.title'), '#potential-savings') %>
+  </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.baseload.analysis.comparisons.title'), '#comparison') %>
+  </li>
+</ul>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'potential-savings',
+           section_title: t('school_groups.advice_pages.baseload.analysis.potential_savings.title') %>
+
+<%= t('school_groups.advice_pages.baseload.analysis.potential_savings.table.header_html') %>
+
+<%= render 'savings_table', school_group: @school_group,
+                            alerts: @baseload_alerts,
+                            benchmarks: @baseload_benchmarks,
+                            advice_page: @advice_page %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t('school_groups.advice_pages.baseload.analysis.comparisons.title') %>
+
+<%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
+                                                     report: @baseload_per_pupil_report) do |c| %>
+  <% c.with_title { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.title') } %>
+  <% c.with_subtitle { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.subtitle') } %>
+  <% c.with_header { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.header') } %>
+<% end %>
+
+<%= t('school_groups.advice_pages.baseload.analysis.comparisons.table.header_html') %>
+
+<%= render 'comparisons/baseload_per_pupil/table',
+           results: @results,
+           report: @baseload_per_pupil_report,
+           advice_page: @advice_page,
+           table_name: :table,
+           index_params: index_params,
+           headers: @baseload_per_pupil_headers,
+           colgroups: [],
+           advice_page_tab: @advice_page_tab,
+           table_number: 0 %>

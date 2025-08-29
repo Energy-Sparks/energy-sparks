@@ -12,7 +12,7 @@ module SchoolGroups
     def index
       raise CanCan::AccessDenied unless self.class.show?(current_user)
 
-      set_breadcrumbs(name: I18n.t('school_groups.sub_nav.school_engagement'))
+      build_breadcrumbs([name: I18n.t('school_groups.sub_nav.school_engagement')])
       @rows = Schools::EngagedSchoolService.list_schools(false, @school_group.id, only_data_enabled: true)
       @columns = [Column.new(I18n.t('common.school'),
                              ->(service) { service.school.name }),

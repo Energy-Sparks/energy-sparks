@@ -1,6 +1,10 @@
 <%= tag.div id: id, class: class_names(classes, 'pb-2') do %>
-  <strong><%= t("advice_pages.#{@advice_page_key}.page_title") %></strong>
-  <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>
+  <% if header? %>
+    <%= header %>
+  <% else %>
+    <strong><%= t("advice_pages.#{@advice_page_key}.page_title") %></strong>
+    <p><%= t("school_groups.comparisons.how_does_it_compare.#{@advice_page_key}", default: '') %></p>
+  <% end %>
 
   <div class="col">
     <div
@@ -14,7 +18,7 @@
                 <% label = t('school_count', count: count).split(' ') %>
                 <div class="body m-2">
                   <h2>
-                    <% if count.positive? %>
+                    <% if show_modal? && count.positive? %>
                       <%= render FootnoteModalComponent::Link.new(modal_id: modal_id_for(category)) do %>
                         <%= label.first %>
                       <% end %>
@@ -26,7 +30,7 @@
                 <div class="footer mb-2">
                   <small><%= label.last.capitalize %></small>
                 </div>
-                <% if count.positive? %>
+                <% if show_modal? && count.positive? %>
                   <%= render FootnoteModalComponent.new(
                         title: tag.small(modal_title_for(category)),
                         modal_id: modal_id_for(category)

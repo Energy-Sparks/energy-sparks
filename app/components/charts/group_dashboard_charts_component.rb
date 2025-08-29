@@ -16,28 +16,5 @@ module Charts
     def render?
       reports&.any? && school_group.visible_schools_count.positive?
     end
-
-    def chart_config_json(report)
-      {
-        chart_type: report.key,
-        chart1_type: :bar,
-        chart1_subtype: :stacked,
-        no_zoom: true,
-        jsonUrl: comparison_report_path(report),
-        transformations: [],
-        annotations: []
-      }.to_json
-    end
-
-    def comparison_report_path(report)
-      path = [:comparisons, report.key.to_sym]
-      # If the key is plural then rails routing works slightly  differently, so exclude :index component
-      path << :index if report.key.singularize == report.key
-      begin
-        polymorphic_path(path, params: { school_group_ids: [school_group.id] }, format: :json)
-      rescue NoMethodError
-        nil
-      end
-    end
   end
 end

@@ -50,10 +50,18 @@ RSpec.shared_examples 'an access controlled group advice page' do
   end
 end
 
-RSpec.shared_examples 'a school group advice page' do
-  it 'displays the right breadcrumb' do
+RSpec.shared_examples 'a school group advice page' do |index: true|
+  it 'displays the right breadcrumb', if: index do
     expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq([I18n.t('common.schools'), school_group.name, breadcrumb])
   end
+
+  it 'displays the right breadcrumb', unless: index do
+    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq([I18n.t('common.schools'),
+                                                                         school_group.name,
+                                                                         I18n.t('advice_pages.breadcrumbs.root'),
+                                                                         breadcrumb])
+  end
+
 
   it 'has the expected navigation' do
     expect(page).to have_css('#group-advice-page-nav')

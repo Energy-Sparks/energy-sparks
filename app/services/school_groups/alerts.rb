@@ -4,6 +4,8 @@ module SchoolGroups
       @schools = schools
     end
 
+    # Summarise alerts being shown across schools in the group, exclude any that aren't
+    # curerntly relevant for the group dashboard
     def summarise
       summarised_alerts.reject do |alert|
         content = alert.alert_type_rating.current_content
@@ -13,6 +15,14 @@ module SchoolGroups
            alert.total_average_one_year_saving_gbp,
            alert.total_one_year_saving_co2].any?(&:nil?)
       end
+    end
+
+    # Find the most recent alerts for a specific alert type
+    def alerts(alert_type)
+      alerts = Alert.latest_for_alert_type(schools: @schools, alert_type: alert_type).filter_map do |alert|
+        [alert.school, alert]
+      end
+      alerts.sort_by { |_, a| a.variables['average_one_year_saving_gbp'] }.reverse.to_h
     end
 
     private

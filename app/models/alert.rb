@@ -85,6 +85,23 @@ class Alert < ApplicationRecord
   scope :without_exclusions, lambda {
     joins(:alert_type).joins('LEFT OUTER JOIN school_alert_type_exclusions ON school_alert_type_exclusions.school_id = alerts.school_id AND school_alert_type_exclusions.alert_type_id = alert_types.id').where(school_alert_type_exclusions: { school_id: nil })
   }
+
+  scope :for_latest_run, -> {
+    joins(
+      <<-SQL.squish
+        JOIN (
+          SELECT DISTINCT ON (school_id) id
+          FROM alert_generation_runs
+          ORDER BY school_id, created_at DESC
+        ) latest_runs ON alerts.alert_generation_run_id = latest_runs.id
+      SQL
+    )
+  }
+
+  scope :latest_for_alert_type, ->(schools:, alert_type:) {
+    displayable.where(school: schools, alert_type: alert_type).for_latest_run
+  }
+
   scope :displayable, -> { where(displayable: true) }
 
   delegate :advice_page, to: :alert_type
