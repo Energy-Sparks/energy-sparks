@@ -1,0 +1,46 @@
+<p><%= t("school_groups.advice_pages.#{@advice_page_key}.analysis.summary") %></p>
+
+<ul>
+  <li>
+    <%= link_to(t("school_groups.advice_pages.#{@advice_page_key}.analysis.potential_savings.title"),
+                '#potential-savings') %>
+  </li>
+  <li>
+    <%= link_to(t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.title"), '#comparison') %>
+  </li>
+</ul>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'potential-savings',
+           section_title: t("school_groups.advice_pages.#{@advice_page_key}.analysis.potential_savings.title") %>
+
+<%= t("school_groups.advice_pages.#{@advice_page_key}.analysis.potential_savings.table.header_html") %>
+
+<%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
+                                                        alerts: @alerts,
+                                                        benchmarks: @benchmarks,
+                                                        advice_page: @advice_page %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.title") %>
+
+<%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
+                                                     report: @report) do |c| %>
+ <% c.with_title { I18n.t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.chart.title") } %>
+ <% c.with_subtitle { I18n.t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.chart.subtitle") } %>
+ <% c.with_header { I18n.t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.chart.header") } %>
+<% end %>
+
+<%= t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.table.header_html") %>
+
+<%= render "comparisons/#{@report.key}/table",
+           results: @results,
+           report: @report,
+           advice_page: @advice_page,
+           table_name: :table,
+           index_params: index_params,
+           headers: @report_headers,
+           colgroups: @report_colgroups,
+           advice_page_tab: @advice_page_tab,
+           table_number: 0 %>

@@ -35,6 +35,9 @@
     <% s.with_item(name: I18n.t('advice_pages.nav.pages.electricity_out_of_hours'),
                    href: school_group_advice_electricity_out_of_hours_path(school_group),
                    classes: 'small electric-item') %>
+    <% s.with_item(name: I18n.t('advice_pages.nav.pages.electricity_long_term'),
+                   href: school_group_advice_electricity_long_term_path(school_group),
+                   classes: 'small electric-item') %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.gas'),
                     icon: fuel_type_icon(:gas), classes: 'gas-section',

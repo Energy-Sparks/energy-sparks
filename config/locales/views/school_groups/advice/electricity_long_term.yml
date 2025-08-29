@@ -1,0 +1,52 @@
+---
+en:
+  school_groups:
+    advice_pages:
+      electricity_long_term:
+        analysis:
+          comparisons:
+            chart:
+              header: The following chart shows the change in electricity use for each school. The comparison is based on comparing the most recent 12 months of data for each school with the previous 12 month period.
+              subtitle: Percentage change in electricity use over the last two years for each school
+              title: Change in annual electricity use
+            table:
+              header_html: ''
+            title: School comparison
+          potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Schools are benchmarked with comparable schools based on several key characteristics including floor area,
+                location, pupil numbers and type.
+                </p>
+                <p>
+                The following table summarises how we have benchmarked each school in your group according to its
+                long term electricity use.</p>
+                <p>
+                "Exemplar" schools are in the top 17.5% on Energy Sparks. "Well managed" schools are in the top
+                30% of schools.
+                </p>
+                <p>
+                The savings for each school are based on reducing their use to match those of an Exemplar school
+                with similar characteristics.
+                </p>
+            title: Potential savings
+          summary: This page provides an overview of the annual electricity use across the schools in your group
+        insights:
+          current_use:
+            summary_html: |-
+              <p>
+              The following table summarises the long term usage across each school.
+              <p>
+              <p>
+              A <a href="%{link}">more detailed table and a chart</a> is also available.
+              </p>
+            title: Annual use
+          what_is_out_of_hours_usage_html: |-
+            <p>
+            Tracking long term trends in your selectricity use can help you to monitor your overall progress towards reducing your electricity costs and carbon emissions.
+            </p>
+            <p>
+            Viewing your electricity use over a whole year or more can help identify any seasonal variations in your usage and do forward planning.
+            </p>
+        page_title: Long term electricity use
