@@ -8,6 +8,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :urn %>
+    <%= f.text_field :urn, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
     <%= f.label :contact_email, 'Contact email address' %>
     <%= f.text_field :contact_email, class: 'form-control' %>
   </div>
@@ -42,7 +47,8 @@
   <h2>Funder</h2>
   <div class="form-group">
     <%= f.label :funder_id %>
-    <%= f.select :funder_id, options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),
+    <%= f.select :funder_id,
+                 options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),
                  { include_blank: true }, { class: 'form-control' } %>
   </div>
 

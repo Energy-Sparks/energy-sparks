@@ -89,11 +89,17 @@ module Lists
       end
     end
 
+    def self.current_establishment_from_urn(urn)
+      return nil unless exists?(urn)
+      est = find(urn)
+      return est.current_establishment
+    end
+
     def self.find_establishment_for_school(sch, stats)
-      if exists?(sch.urn)
+      est = current_establishment_from_urn(sch.urn)
+      unless est.nil?
         stats[:perfect] += 1
-        est = find(sch.urn)
-        return est.current_establishment
+        return est
       end
 
       match = find_by('la_code::text || establishment_number::text = ?', sch.urn)

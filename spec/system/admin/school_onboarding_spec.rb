@@ -53,6 +53,7 @@ RSpec.describe 'onboarding', :schools do
       click_on 'New School Onboarding'
 
       fill_in 'School name', with: school_name
+      fill_in 'Urn', with: 100000
       fill_in 'Contact email', with: 'oldfield@test.com'
 
       expect(page).to have_select('Data Sharing', selected: 'Public')
