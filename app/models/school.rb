@@ -19,6 +19,7 @@
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
 #  enable_targets_feature                  :boolean          default(TRUE)
+#  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
 #  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
@@ -93,6 +94,7 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
+#  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
 #  index_schools_on_local_distribution_zone_id  (local_distribution_zone_id)
@@ -125,6 +127,18 @@ class School < ApplicationRecord
 
   HEATING_TYPES = %i[gas electric oil lpg biomass underfloor district_heating ground_source_heat_pump
                      air_source_heat_pump water_source_heat_pump chp].freeze
+
+  GOR_CODE_TO_REGION = {
+    'A' => :north_east,
+    'B' => :north_west,
+    'D' => :yorkshire_and_the_humber,
+    'E' => :east_midlands,
+    'F' => :west_midlands,
+    'G' => :east_of_england,
+    'H' => :london,
+    'J' => :south_east,
+    'K' => :south_west
+  }.freeze
 
   friendly_id :slug_candidates, use: %i[finders slugged history]
 
@@ -210,6 +224,8 @@ class School < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
 
+  belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
+
   belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
 
@@ -250,6 +266,8 @@ class School < ApplicationRecord
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
 
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id)) }
+
+  scope :with_establishment, -> { where.not(establishment_id: nil) }
 
   # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   scope :with_recent_engagement,
@@ -869,6 +887,67 @@ class School < ApplicationRecord
       number_of_pupils.between?(250, 1700)
     else
       number_of_pupils.between?(10, 500)
+    end
+  end
+
+  def self.from_onboarding(onboarding)
+    est = Lists::Establishment.current_establishment_from_urn(onboarding.urn)
+
+    sch = new({
+      data_enabled:       false,
+      name:               onboarding.school_name,
+      establishment:      est,
+      urn:                onboarding.urn
+    })
+
+    return sch if sch.establishment.nil?
+
+    sch.assign_attributes({
+      urn:                            sch.establishment_id,
+      name:                           est.establishment_name,
+      address:                        address_from_establishment(est),
+      postcode:                       est.postcode,
+      website:                        est.school_website,
+      school_type:                    school_type_from_phase_of_education_code(est.phase_of_education_code),
+      number_of_pupils:               est.number_of_pupils,
+      percentage_free_school_meals:   est.percentage_fsm,
+      region:                         GOR_CODE_TO_REGION[est.gor_code],
+      country:                        est.gor_code == 'W' ? :wales : :england,
+      local_authority_area:           LocalAuthorityArea.find_by(code: est.district_administrative_code)
+    })
+
+    return sch
+  end
+
+  # Any combinations of these five columns might be empty
+  # Formatting is the same as on the GIAS website, except for postcode after county name
+  def self.address_from_establishment(est)
+    return concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
+  end
+
+  def self.concatenate_address(elements)
+    return elements.filter(&:present?).join(', ')
+  end
+
+  #
+  # TODO - finish mapping phases of education from establishment data
+  #
+  def self.school_type_from_phase_of_education_code(poe_code)
+    case poe_code
+    when 2 # "Primary"
+      return school_types[:primary]
+    when 3 # "Middle deemed primary"
+      return school_types[:middle]
+    when 4 # "Secondary"
+      return school_types[:secondary]
+    when 5 # "Middle deemed secondary"
+      return school_types[:middle]
+    else # 0 - "Not applicable"
+      # TODO
+      # 1 - "Nursery"
+      # 6 - "16 plus"
+      # 7 - "All-through"
+      return nil
     end
   end
 

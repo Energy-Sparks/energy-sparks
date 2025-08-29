@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_27_144136) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1208,6 +1208,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
     t.index ["rewriteable_type", "rewriteable_id"], name: "index_link_rewrites_on_rewriteable_type_and_rewriteable_id"
   end
 
+  create_table "lists_establishment_links", primary_key: ["establishment_id", "linked_establishment_id"], force: :cascade do |t|
+    t.string "link_name"
+    t.string "link_type"
+    t.datetime "link_established_date"
+    t.bigint "establishment_id", null: false
+    t.bigint "linked_establishment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["establishment_id"], name: "index_lists_establishment_links_on_establishment_id"
+    t.index ["linked_establishment_id"], name: "index_lists_establishment_links_on_linked_establishment_id"
+  end
+
   create_table "lists_establishments", force: :cascade do |t|
     t.integer "la_code"
     t.integer "establishment_number"
@@ -1727,6 +1739,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
     t.integer "country", default: 0, null: false
     t.bigint "funder_id"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
+    t.integer "urn"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
@@ -1875,7 +1888,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_14_082844) do
     t.integer "heating_chp_percent", default: 0
     t.text "heating_chp_notes"
     t.bigint "local_distribution_zone_id"
+    t.bigint "establishment_id"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
     t.index ["local_distribution_zone_id"], name: "index_schools_on_local_distribution_zone_id"

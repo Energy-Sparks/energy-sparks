@@ -2,29 +2,18 @@ require 'rails_helper'
 
 module Lists
   describe Establishment do
-    describe '.convert_header' do
-      it 'converts headers to snakecase correctly' do
-        expect(described_class.convert_header('EstablishmentName (code)')).to eq('establishment_name_code')
-      end
-    end
+    it_behaves_like 'a csvimportable', './spec/fixtures/import_establishments/zipped_sample.zip'
 
-    describe '.read_data_csv_from_zip' do
-      it 'finds data csv in zip file' do
-        expect {described_class.read_data_csv_from_zip('./spec/fixtures/import_establishments/zipped_sample.zip')}.not_to raise_error
+    describe '.current_establishment_from_urn' do
+      it 'returns nil when no establishment was found' do
+        expect(described_class.current_establishment_from_urn(0)).to be_nil
       end
 
-      it 'throws error when no data csv is found' do
-        expect {described_class.read_data_csv_from_zip('./spec/fixtures/import_establishments/zip_with_invalid_csv.zip')}.to raise_error(LoadError)
-      end
-    end
-
-    describe '.import_from_zip' do
-      before do
-        described_class.import_from_zip('./spec/fixtures/import_establishments/zipped_sample.zip', 1000)
-      end
-
-      it 'adds something to database' do
-        expect(described_class.count).not_to eq(0)
+      it 'gets the current establishment' do
+        create(:closed_establishment, id: 1)
+        create(:establishment, id: 2)
+        create(:establishment_link, establishment_id: 1, linked_establishment_id: 2)
+        expect(described_class.current_establishment_from_urn(1).id).to eq(2)
       end
     end
 
@@ -60,6 +49,41 @@ module Lists
         it 'updates columns' do
           expect(described_class.find(100000).number_of_pupils).to eq(249)
         end
+      end
+    end
+
+    describe 'uses links correctly' do
+      it 'identifies open establishment' do
+        est_current = create(:establishment)
+        expect(est_current.open?).to be(true)
+      end
+
+      it 'identifies closed establishment' do
+        est_old = create(:closed_establishment)
+        expect(est_old.closed?).to be(true)
+      end
+
+      it 'finds successor establishment' do
+        est_old = create(:closed_establishment)
+        est_new = create(:establishment)
+        create(:establishment_link, establishment: est_old, linked_establishment: est_new)
+        expect(est_old.successor).to eq(est_new)
+      end
+
+      it 'finds latest establishment' do
+        est_oldest = create(:closed_establishment)
+        est_old = create(:closed_establishment)
+        est_current = create(:establishment)
+        create(:establishment_link, establishment: est_oldest, linked_establishment: est_old)
+        create(:establishment_link, establishment: est_old, linked_establishment: est_current)
+        expect(est_oldest.current_establishment).to eq(est_current)
+      end
+
+      it 'doesn\'t use links for open establishment' do
+        est_current = create(:establishment)
+        est_newer = create(:establishment)
+        create(:establishment_link, establishment: est_current, linked_establishment: est_newer)
+        expect(est_current.current_establishment).to eq(est_current)
       end
     end
   end

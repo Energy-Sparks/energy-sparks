@@ -20,6 +20,7 @@
 #  scoreboard_id            :bigint(8)
 #  template_calendar_id     :bigint(8)
 #  updated_at               :datetime         not null
+#  urn                      :integer
 #  uuid                     :string           not null
 #  weather_station_id       :bigint(8)
 #
@@ -71,6 +72,15 @@ class SchoolOnboarding < ApplicationRecord
 
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, School.countries
+
+  before_save :update_country_from_urn
+
+  def update_country_from_urn
+    est = Lists::Establishment.current_establishment_from_urn(@urn)
+    unless est.nil?
+      est.gor_code == 'W' ? :wales : :england
+    end
+  end
 
   def populate_default_values(user)
     assign_attributes({
