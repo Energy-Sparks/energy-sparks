@@ -53,8 +53,12 @@
     </thead>
     <tbody>
       <% targets.each do |target, consumption|
-           target_consumption = consumption.pluck(:target_consumption).sum
-           current_consumption = consumption.pluck(:current_consumption).sum %>
+           current_consumption, target_consumption = if target.target_date < Date.new(2025, 9, 1)
+             target["#{@fuel_type}_progress"]&.values_at('usage', 'target')
+           else
+             [consumption.pluck(:target_consumption).compact.sum,
+              consumption.pluck(:current_consumption).compact.sum]
+           end %>
         <tr>
           <td><%= formatted_target_date(target) %></td>
           <td><%= format_unit(current_consumption, :kw) %></td>
