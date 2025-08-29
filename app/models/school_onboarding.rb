@@ -10,6 +10,7 @@
 #  dark_sky_area_id         :bigint(8)
 #  data_sharing             :enum             default("public"), not null
 #  default_chart_preference :integer          default("default"), not null
+#  full_school              :boolean          default(TRUE)
 #  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
 #  notes                    :text

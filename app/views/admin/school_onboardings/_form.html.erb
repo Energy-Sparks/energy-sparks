@@ -12,6 +12,9 @@
     <%= f.text_field :urn, class: 'form-control' %>
   </div>
 
+  <%= f.check_box :full_school, { checked: true } %>
+  <%= f.label :full_school %>
+
   <div class="form-group">
     <%= f.label :contact_email, 'Contact email address' %>
     <%= f.text_field :contact_email, class: 'form-control' %>
