@@ -1,0 +1,64 @@
+---
+en:
+  school_groups:
+    advice_pages:
+      electricity_out_of_hours:
+        analysis:
+          comparisons:
+            chart:
+              header: The following chart breaks down electricity use across different time periods for all schools in this group. "School day open" refers to the time when the school is open to pupils and staff. "School day closed" is when the school is closed to pupils and staff overnight.
+              subtitle: Percentage of electricity used for different time periods based on the most recent 12 months of data for each school
+              title: Annual Out Of Hours Electricity Use
+            table:
+              header_html: |-
+                <p>
+                The following table provides a more detailed breakdown of when electricity is being used for each school. The analysis is based on the latest 12 months of data for each school and the opening hours configured for each school.
+                </p>
+                <p>
+                The table provides an indication of the costs of out of hours electricity use (defined as when the school is closed, at weekend and during holidays), along with costs attributable to periods when the schools are used to host events, clubs or other private lettings.
+                </p>
+            title: School comparison
+          potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Schools are benchmarked with comparable schools based on several key characteristics including floor area,
+                location, pupil numbers and type.
+                </p>
+                <p>
+                The following table summarises how we have benchmarked each school in your group according to its
+                out of hours electricity use.</p>
+                <p>
+                "Exemplar" schools are in the top 17.5% on Energy Sparks. "Well managed" schools are in the top
+                30% of schools.
+                </p>
+                <p>
+                The savings for each school are based on reducing their use to match those of an Exemplar school
+                with similar characteristics.
+                </p>
+            title: Potential savings
+          summary: This page provides an overview of the electricity used outside of school hours across the schools in your group
+        insights:
+          current_use:
+            summary_html: |-
+              <p>
+              The following table summarises the current out of hours usage across each school.
+              <p>
+              <p>
+              "School day open" refers to the time when the school is open to pupils and staff. "School day closed" is when the school is closed to pupils and staff overnight.
+              </p>
+              <p>
+              A <a href="%{link}">more detailed table and a chart</a> is also available.
+              </p>
+            title: Out of hours use
+          what_is_out_of_hours_usage_html: |-
+            <p>
+              Out of hours electricity use is the amount of electricity used when the schools are closed - overnight, at weekends and during the holidays.
+            </p>
+            <p>
+              Reducing out of hours electricity use is one of the easiest, and cheapest ways of saving lots of energy.
+            </p>
+            <p>
+              Note: The analysis within this page is based on the school opening hours set for each school. It is best to set these to be as accurate as you can so that you receive appropriate advice.
+            </p>
+        page_title: Out of hours electricity use

@@ -15,10 +15,10 @@
 
 <%= t('school_groups.advice_pages.baseload.analysis.potential_savings.table.header_html') %>
 
-<%= render 'savings_table', school_group: @school_group,
-                            alerts: @baseload_alerts,
-                            benchmarks: @baseload_benchmarks,
-                            advice_page: @advice_page %>
+<%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
+                                                        alerts: @baseload_alerts,
+                                                        benchmarks: @baseload_benchmarks,
+                                                        advice_page: @advice_page %>
 
 <%= render 'schools/advice/section_title',
            section_id: 'comparison',
