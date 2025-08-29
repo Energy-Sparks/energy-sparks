@@ -41,7 +41,7 @@ describe 'School group baseload page' do
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: additional_data_alert,
                    variables: additional_data_variables)
 
-    create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :exemplar_school)
+    create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :benchmark_school)
     Comparison::BaseloadPerPupil.refresh
   end
 
@@ -108,7 +108,7 @@ describe 'School group baseload page' do
           end
           let(:expected_rows) do
             [
-              [school.name, 'Exemplar', '100', '£200', '300', 'View analysis']
+              [school.name, 'Well managed', '100', '£200', '300', 'View analysis']
             ]
           end
         end
