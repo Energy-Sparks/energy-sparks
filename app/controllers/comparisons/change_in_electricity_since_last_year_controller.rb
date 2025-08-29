@@ -22,6 +22,7 @@ module Comparisons
       Comparison::ChangeInElectricitySinceLastYear.for_schools(@schools).with_data.by_percentage_change(:previous_year_electricity_kwh, :current_year_electricity_kwh)
     end
 
+    # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.change_in_kwh_pct')
     def create_charts(results)
       calculation = lambda do |result|
         percent_change(result.previous_year_electricity_kwh, result.current_year_electricity_kwh) * 100.0
