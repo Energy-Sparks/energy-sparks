@@ -19,5 +19,15 @@ FactoryBot.define do
         school_group.schools = create_list(:school, evaluator.count, school_group: school_group, active: true, public: true)
       end
     end
+
+    trait :with_partners do
+      transient do
+        partner_count { 1 }
+      end
+
+      after(:build) do |school_group, evaluator|
+        school_group.school_group_partners = create_list(:school_group_partner, evaluator.partner_count, school_group:)
+      end
+    end
   end
 end

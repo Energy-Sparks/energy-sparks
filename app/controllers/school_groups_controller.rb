@@ -18,18 +18,24 @@ class SchoolGroupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    respond_to do |format|
-      format.html {}
-      format.csv do
-        send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
-                                                            schools: @schools,
-                                                            include_cluster: include_cluster).export,
-                  filename: csv_filename_for('recent_usage')
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      render :show, layout: 'dashboards'
+    else
+      respond_to do |format|
+        format.html {}
+        format.csv do
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                              schools: @schools,
+                                                              include_cluster: include_cluster).export,
+                    filename: csv_filename_for('recent_usage')
+        end
       end
     end
   end
 
-  def map; end
+  def map
+    @grouped_schools = @school_group.grouped_schools_by_name(scope: School.visible.includes(:configuration).by_name)
+  end
 
   def comparisons
     respond_to do |format|
@@ -48,6 +54,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def priority_actions
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      redirect_to priorities_school_group_advice_path(@school_group) and return
+    end
     respond_to do |format|
       format.html do
         service = SchoolGroups::PriorityActions.new(@schools)
@@ -61,6 +70,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_scores
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      redirect_to scores_school_group_advice_path(@school_group) and return
+    end
     setup_scores_and_years(@school_group)
     respond_to do |format|
       format.html {}

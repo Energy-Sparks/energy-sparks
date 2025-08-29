@@ -28,31 +28,20 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
 
     it { expect(html).to have_css('#group-reminders') }
     it { expect(html).to have_content(dashboard_message.message) }
+    it { expect(html).not_to have_css('#group-alerts') }
   end
 
   context 'when there are alerts' do
-    before do
-      school = create(:school, school_group: school_group)
-      version = create(:alert_type_rating_content_version,
-             colour: :positive,
-             alert_type_rating: create(:alert_type_rating,
-                                       group_dashboard_alert_active: true,
-                                       rating_from: 0.0,
-                                       rating_to: 4.0))
-      create(:alert,
-             school: school,
-             alert_generation_run: create(:alert_generation_run, school: school),
-             alert_type: version.alert_type_rating.alert_type,
-             rating: 2.0,
-             variables: {
-                       one_year_saving_kwh: 1.0,
-                       average_one_year_saving_gbp: 2.0,
-                       one_year_saving_co2: 3.0,
-                       time_of_year_relevance: 5.0
-             })
+    include_context 'with a group dashboard alert' do
+      let(:schools) { [school_group.schools.first] }
     end
 
+    it {
+      expect(html).to have_link(I18n.t('schools.show.view_more_alerts'),
+                                   href: alerts_school_group_advice_path(school_group))
+    }
+
     it { expect(html).to have_css('#group-alerts') }
-    it { expect(html).to have_css('div.prompt-component.positive') }
+    it { expect(html).to have_css('div.prompt-component.negative') }
   end
 end

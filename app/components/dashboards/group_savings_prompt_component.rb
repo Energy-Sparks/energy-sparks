@@ -20,7 +20,7 @@ module Dashboards
     end
 
     def school_count
-      I18n.t('school_count', count: @schools.count)
+      I18n.t('school_count', count: @savings.schools.count)
     end
 
     def saving

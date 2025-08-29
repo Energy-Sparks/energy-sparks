@@ -10,8 +10,8 @@
       <%= render 'shared/alerts' if flash.any? %>
       <%= yield %>
     </div>
-    <% if show_partner_footer?(@school) %>
-      <%= render 'shared/partners' %>
+    <% if show_partner_footer? %>
+      <%= render 'shared/partners', partnered: partnered %>
     <% end %>
     <%= render 'shared/cookie_banner' %>
     <%= render 'shared/footer' %>
