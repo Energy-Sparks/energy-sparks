@@ -34,13 +34,11 @@
 
 <%= t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.table.header_html") %>
 
-<%= render "comparisons/#{@report.key}/table",
+<%= render 'comparison_table',
            results: @results,
            report: @report,
            advice_page: @advice_page,
-           table_name: :table,
            index_params: index_params,
            headers: @report_headers,
            colgroups: @report_colgroups,
-           advice_page_tab: @advice_page_tab,
-           table_number: 0 %>
+           advice_page_tab: @advice_page_tab %>

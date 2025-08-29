@@ -18,6 +18,11 @@ module SchoolGroups
       def alert_class_name
         'AlertGasAnnualVersusBenchmark'
       end
+
+      def load_data
+        report_class.for_schools(@schools).where.not(temperature_adjusted_percent: nil)
+             .order(temperature_adjusted_percent: :asc)
+      end
     end
   end
 end
