@@ -128,6 +128,18 @@ class School < ApplicationRecord
   HEATING_TYPES = %i[gas electric oil lpg biomass underfloor district_heating ground_source_heat_pump
                      air_source_heat_pump water_source_heat_pump chp].freeze
 
+  GOR_CODE_TO_REGION = {
+    'A' => :north_east,
+    'B' => :north_west,
+    'D' => :yorkshire_and_the_humber,
+    'E' => :east_midlands,
+    'F' => :west_midlands,
+    'G' => :east_of_england,
+    'H' => :london,
+    'J' => :south_east,
+    'K' => :south_west
+  }.freeze
+
   friendly_id :slug_candidates, use: %i[finders slugged history]
 
   delegate :holiday_approaching?, :next_holiday, to: :calendar
@@ -879,27 +891,30 @@ class School < ApplicationRecord
   end
 
   def self.from_onboarding(onboarding)
-    sch = new
-    sch.data_enabled =                    false
-    sch.name =                            onboarding.school_name
-    sch.urn =                             onboarding.urn
-    sch.establishment_id =                onboarding.urn
+    est = Lists::Establishment.current_establishment_from_urn(onboarding.urn)
+
+    sch = new({
+      data_enabled:       false,
+      name:               onboarding.school_name,
+      establishment:      est,
+      urn:                onboarding.urn
+    })
 
     return sch if sch.establishment.nil?
 
-    sch.establishment =                   sch.establishment.current_establishment
-    sch.urn =                             sch.establishment_id
-
-    est = sch.establishment
-    sch.name =                            est.establishment_name
-    sch.address =                         address_from_establishment(est)
-    sch.postcode =                        est.postcode
-    sch.website =                         est.school_website
-    sch.school_type =                     school_type_from_phase_of_education_code(est.phase_of_education_code)
-    sch.number_of_pupils =                est.number_of_pupils
-    sch.percentage_free_school_meals =    est.percentage_fsm
-    sch.region =                          region_from_gor_code(est.gor_code)
-    sch.local_authority_area =            LocalAuthorityArea.find_by(code: est.district_administrative_code)
+    sch.assign_attributes({
+      urn:                            sch.establishment_id,
+      name:                           est.establishment_name,
+      address:                        address_from_establishment(est),
+      postcode:                       est.postcode,
+      website:                        est.school_website,
+      school_type:                    school_type_from_phase_of_education_code(est.phase_of_education_code),
+      number_of_pupils:               est.number_of_pupils,
+      percentage_free_school_meals:   est.percentage_fsm,
+      region:                         GOR_CODE_TO_REGION[est.gor_code],
+      country:                        est.gor_code == 'W' ? :wales : :england,
+      local_authority_area:           LocalAuthorityArea.find_by(code: est.district_administrative_code)
+    })
 
     return sch
   end
@@ -912,31 +927,6 @@ class School < ApplicationRecord
 
   def self.concatenate_address(elements)
     return elements.filter(&:present?).join(', ')
-  end
-
-  def self.region_from_gor_code(gor_code)
-    case gor_code
-    when 'A'
-      return regions[:north_east]
-    when 'B'
-      return regions[:north_west]
-    when 'D'
-      return regions[:yorkshire_and_the_humber]
-    when 'E'
-      return regions[:east_midlands]
-    when 'F'
-      return regions[:west_midlands]
-    when 'G'
-      return regions[:east_of_england]
-    when 'H'
-      return regions[:london]
-    when 'J'
-      return regions[:south_east]
-    when 'K'
-      return regions[:south_west]
-    else
-      return nil
-    end
   end
 
   #
