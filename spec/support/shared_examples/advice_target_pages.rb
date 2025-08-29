@@ -48,19 +48,17 @@ RSpec.shared_examples 'target advice page' do
     fuel_type.to_s.humanize(capitalize: false)
   end
 
+  def content(name)
+    find("##{fuel_type}_target-#{name}")
+  end
+
   context 'with the Insights tab' do
     target_shared_examples('Insights')
-
-    it 'says when there is not enough data' do
-      create(:school_target, school:)
-      visit_path('Insights')
-      expect(page).to have_content('Not enough data to run analysis')
-    end
 
     it 'has relevant content' do
       create_target
       visit_path('Insights')
-      expect(page).to have_content <<~CONTENT
+      expect(content('insights')).to have_content <<~CONTENT
         What is your target?
         Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target
         Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025
@@ -73,12 +71,41 @@ RSpec.shared_examples 'target advice page' do
         01 Jan 2024 - 31 Dec 2024 12,120 12,000 +1&percnt;
       CONTENT
     end
+
+    it 'new target with no consumption' do
+      create(:school_target, school:)
+      visit_path('Insights')
+      expect(content('insights')).to have_content(<<~CONTENT.chomp)
+        Waiting to process data for your new target
+        Data for your new target should be available tomorrow.
+        In the meantime you can learn more about this topic.
+      CONTENT
+    end
+
+    it 'target in future' do
+      create_target(start_date: 1.day.from_now)
+      visit_path('Insights')
+      expect(content('insights')).to \
+        have_content('The target date is in the future so no consumption has yet been recorded.')
+    end
+
+    it 'missing previous years data' do
+      create_target(target_consumption: nil, missing: true)
+      visit_path('Insights')
+      expect(content('insights')).to have_content(<<~CONTENT)
+        Your current progress
+        Back to top
+        Data from the previous year is missing so we can't calculate your target consumption.
+        Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
+        01 Jan 2024 - 31 Dec 2024 12,120 Previous year missing data
+      CONTENT
+    end
   end
 
   context 'with the Analysis tab' do
     target_shared_examples('Analysis')
 
-    def expected_content(extra_contents)
+    def expected_content(extra_contents = '')
       <<~CONTENT
         Progress report
         Monthly progress Cumulative progress#{extra_contents}
@@ -123,7 +150,7 @@ RSpec.shared_examples 'target advice page' do
     it 'has relevant content' do
       create_target
       visit_path('Analysis')
-      expect(page).to have_content(expected_content(''))
+      expect(content('analysis')).to have_content(expected_content)
     end
 
     it 'shows correct content with previous targets' do
@@ -131,14 +158,45 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: Date.new(2023, 1, 1))
       create_target(start_date: Date.new(2022, 1, 1), target: 3)
       visit_path('Analysis')
-
-      expect(page).to have_content(expected_content(' Historical progress') + <<~CONTENT)
+      expect(content('analysis')).to have_content(expected_content(' Historical progress') + <<~CONTENT)
         Historical progress
         Back to top
         The following table shows your previous progress towards reducing your #{fuel_type} usage
         Target date Previous year (kWh) Target year (kWh) % change Target \
         January 2024 12,120 12,000 +1&percnt; 4&percnt; \
         January 2023 12,120 12,000 +1&percnt; 3&percnt;
+      CONTENT
+    end
+
+    it 'new target with no consumption' do
+      create(:school_target, school:)
+      visit_path('Analysis')
+      expect(content('analysis')).to have_content(<<~CONTENT.chomp)
+        Waiting to process data for your new target
+        Data for your new target should be available tomorrow.
+        In the meantime you can learn more about this topic.
+      CONTENT
+    end
+
+    it 'target in future' do
+      create_target(start_date: 1.day.from_now)
+      visit_path('Analysis')
+      expect(content('analysis')).to \
+        have_content('The target date is in the future so no consumption has yet been recorded.')
+    end
+
+    it 'missing previous years data' do
+      create_target(target_consumption: nil, previous_consumption: nil, missing: true)
+      visit_path('Analysis')
+      expect(content('analysis')).to have_content(<<~CONTENT)
+        Progress report
+        Monthly progress Cumulative progress
+        Data from the previous year is missing so we can't calculate your target consumption.
+      CONTENT
+      expect(content('analysis')).to have_content(<<~CONTENT.chomp)
+        Month Last year (kWh) Target (kWh) This year (kWh) % change On target? \
+        January 2024 1,010 \
+        February 2024 1,010
       CONTENT
     end
   end

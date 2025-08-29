@@ -20,12 +20,14 @@ module Schools
       end
 
       def set_consumption
-        consumption = @target.monthly_consumption(@fuel_type, missing: false)
-        render 'new_target' and return if consumption.nil?
+        @consumption = ActiveSupport::OrderedOptions.new
+        @consumption.data = @target.monthly_consumption(@fuel_type)
+        render 'new_target' and return if @consumption.data.nil?
 
-        @last_consumption_month = consumption.last
-        @current_consumption = consumption.sum { |month| month[:current_consumption] }
-        @target_consumption = consumption.sum { |month| month[:target_consumption] }
+        non_missing = @consumption.data.reject { |month| month[:missing] }
+        @consumption.last_month = non_missing.last
+        @consumption.current = non_missing.sum { |month| month[:current_consumption] }
+        @consumption.target = non_missing.sum { |month| month[:target_consumption] }
       end
 
       def advice_page_key

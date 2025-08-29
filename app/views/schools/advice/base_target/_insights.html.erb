@@ -24,12 +24,23 @@
   </thead>
   <tbody>
     <tr>
-      <% unless @last_consumption_month.nil? %>
-        <td><%= format_date_range([@target.start_date, Date.new(@last_consumption_month[:year],
-                                                                @last_consumption_month[:month]).end_of_month]) %></td>
-        <td><%= format_unit(@current_consumption, :kw) %></td>
-        <td><%= format_unit(@target_consumption, :kw) %></td>
-        <td td class="text-right"><%= formatted_target_change(@current_consumption, @target_consumption) %></td>
+      <% if @consumption.last_month.nil? %>
+        <td><%= format_date_range([@target.start_date, Date.new(@consumption.data.last[:year],
+                                                                @consumption.data.last[:month]).end_of_month]) %></td>
+        <td><%= format_unit(@consumption.data.sum { |month| month[:current_consumption] }, :kw) %></td>
+        <td><%= target_consumption = @consumption.data.pluck(:target_consumption)
+                if target_consumption.include?(nil)
+                  t('advice_pages.target.insights.your_current_progress.target_missing')
+                else
+                  format_unit(target_consumption.sum, :kw)
+                end %></td>
+        <td></td>
+      <% else %>
+        <td><%= format_date_range([@target.start_date, Date.new(@consumption.last_month[:year],
+                                                                @consumption.last_month[:month]).end_of_month]) %></td>
+        <td><%= format_unit(@consumption.current, :kw) %></td>
+        <td><%= format_unit(@consumption.target, :kw) %></td>
+        <td td class="text-right"><%= formatted_target_change(@consumption.current, @consumption.target) %></td>
       <% end %>
     </tr>
   </tbody>

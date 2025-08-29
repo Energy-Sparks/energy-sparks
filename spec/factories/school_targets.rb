@@ -42,6 +42,10 @@ FactoryBot.define do
       transient do
         fuel_type { :electricity }
         target { 4 }
+        missing { false }
+        current_consumption { 1010 }
+        previous_consumption { 1020 }
+        target_consumption { 1000 }
       end
 
       after(:build) do |target, evaluator|
@@ -49,7 +53,8 @@ FactoryBot.define do
         target[attribute] = evaluator.target
         target["#{attribute}_monthly_consumption"] = (0..11).map do |i|
           month = target.start_date.month - 1 + i
-          [target.start_date.year + (month / 12), (month % 12) + 1, 1010, 1020, 1000, false]
+          [target.start_date.year + (month / 12), (month % 12) + 1, evaluator.current_consumption,
+           evaluator.previous_consumption, evaluator.target_consumption, evaluator.missing]
         end
       end
     end
