@@ -10,7 +10,11 @@ module Schools
 
       def insights; end
 
-      def analysis; end
+      def analysis
+        @historical_targets = @school.school_targets.by_start_date.filter_map do |target|
+          [target, target.monthly_consumption(@fuel_type)] unless target == @target
+        end
+      end
 
       private
 

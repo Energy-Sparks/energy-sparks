@@ -54,6 +54,10 @@ class SchoolTarget < ApplicationRecord
   after_update :ensure_observation_date_is_correct
   after_save :add_observation
 
+  alias_attribute :storage_heater, :storage_heaters
+  alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
@@ -96,7 +100,7 @@ class SchoolTarget < ApplicationRecord
   end
 
   def saved_progress_report_for(fuel_type)
-    fuel_type = target_attribute(fuel_type)
+    fuel_type = :storage_heaters if fuel_type == :storage_heater
     raise 'Invalid fuel type' unless %i[electricity gas storage_heaters].include?(fuel_type)
 
     report = self[:"#{fuel_type}_report"]
@@ -109,21 +113,17 @@ class SchoolTarget < ApplicationRecord
     %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
 
   def monthly_consumption(fuel_type, missing: true)
-    consumption = self["#{target_attribute(fuel_type)}_monthly_consumption"]
+    consumption = self["#{fuel_type}_monthly_consumption"]
                   &.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
     consumption&.reject! { |month| month[:missing] } unless missing
     consumption
   end
 
   def target(fuel_type)
-    self[target_attribute(fuel_type)]
+    self[fuel_type]
   end
 
   private
-
-  def target_attribute(fuel_type)
-    fuel_type == :storage_heater ? :"#{fuel_type}s" : fuel_type
-  end
 
   # ensure TargetsProgress is round-tripped properly
   def reformat_saved_report(report)

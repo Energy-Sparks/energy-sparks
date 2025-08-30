@@ -1,10 +1,7 @@
-<% targets = @school.school_targets.by_start_date.filter_map do |target|
-     [target, target.monthly_consumption(@fuel_type)] unless target == @target
-   end %>
 <ul>
   <li><%= link_to(t('advice_pages.target.analysis.monthly_progress.title'), '#monthly-progress') %></li>
   <li><%= link_to(t('advice_pages.target.analysis.cumulative_progress.title'), '#cumulative-progress') %></li>
-  <% if targets.any? %>
+  <% if @historical_targets.any? %>
     <li><%= link_to(t('advice_pages.target.analysis.historical_progress.title'), '#historical-progress') %></li>
   <% end %>
 </ul>
@@ -38,7 +35,7 @@
     end
     render 'monthly_table', consumption: %>
 
-<% if targets.any? %>
+<% if @historical_targets.any? %>
   <%= render 'schools/advice/section_title',
              section_id: 'historical-progress',
              section_title: t('advice_pages.target.analysis.historical_progress.title') %>
@@ -52,18 +49,17 @@
       <th><%= t('advice_pages.target.analysis.historical_progress.target') %></th>
     </thead>
     <tbody>
-      <% targets.each do |target, consumption|
-           current_consumption, target_consumption = if target.target_date < Date.new(2025, 9, 1)
+      <% @historical_targets.each do |target, consumption|
+           current, target_consumption = if target.target_date < Date.new(2025, 9, 1)
              target["#{@fuel_type}_progress"]&.values_at('usage', 'target')
            else
-             [consumption.pluck(:target_consumption).compact.sum,
-              consumption.pluck(:current_consumption).compact.sum]
+             [consumption.pluck(:current_consumption).compact.sum, consumption.pluck(:target_consumption).compact.sum]
            end %>
         <tr>
           <td><%= formatted_target_date(target) %></td>
-          <td><%= format_unit(current_consumption, :kw) %></td>
+          <td><%= format_unit(current, :kw) %></td>
           <td><%= format_unit(target_consumption, :kw) %></td>
-          <td><%= formatted_target_change(current_consumption, target_consumption) %></td>
+          <td><%= formatted_target_change(current, target_consumption) unless current.nil? %></td>
           <td><%= formatted_target(target) %></td>
         </tr>
       <% end %>
