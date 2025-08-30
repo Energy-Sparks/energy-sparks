@@ -2,10 +2,6 @@
 
 require 'rails_helper'
 
-# frozen_string_literal: true
-
-require 'rails_helper'
-
 def target_shared_examples(tab)
   context 'with shared examples' do
     before do
