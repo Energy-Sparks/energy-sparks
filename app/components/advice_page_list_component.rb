@@ -1,12 +1,13 @@
 class AdvicePageListComponent < ApplicationComponent
-  attr_reader :school
+  attr_reader :school, :current_user
 
   include ApplicationHelper
   include AdvicePageHelper
 
-  def initialize(school:, id: nil, classes: '')
+  def initialize(school:, current_user:, id: nil, classes: '')
     super(id: id, classes: classes)
     @school = school
+    @current_user = current_user
   end
 
   def advice_page_benchmarks

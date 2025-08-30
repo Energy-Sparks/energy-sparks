@@ -1,0 +1,56 @@
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <%= t('advice_pages.target.insights.what_is_your_target.text_html',
+        fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+        percent: formatted_target,
+        target_date: formatted_target_date) %>
+  <% if can?(:manage, @target) %>
+    <p><%= t('advice_pages.target.insights.what_is_your_target.revise_html',
+             path: edit_school_school_target_path(@target.school, @target)) %></p>
+  <% end %>
+  <% c.with_link do
+       link_to t('common.labels.learn_more'), polymorphic_path([@fuel_type, :target_learn_more, @school, :advice])
+     end %>
+<% end %>
+<%= render 'schools/advice/section_title',
+           section_id: 'progress',
+           section_title: t('advice_pages.target.insights.your_current_progress.title') %>
+<%= render 'meeting_target_prompt' %>
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <th><%= t('advice_pages.tables.columns.period') %></th>
+    <th><%= t('advice_pages.target.insights.your_current_progress.cumulative_consumption') %></th>
+    <th><%= t('advice_pages.target.insights.your_current_progress.target_consumption') %></th>
+    <th class="text-right"><%= t('advice_pages.baseload.current_baseload.tables.columns.percentage_change') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <% if @consumption.last_month.nil? %>
+        <td><%= format_date_range([@target.start_date, Date.new(@consumption.data.last[:year],
+                                                                @consumption.data.last[:month]).end_of_month]) %></td>
+        <td><%= format_unit(@consumption.data.sum { |month| month[:current_consumption] }, :kw) %></td>
+        <td><%= target_consumption = @consumption.data.pluck(:target_consumption)
+                if target_consumption.include?(nil)
+                  t('advice_pages.target.insights.your_current_progress.target_missing')
+                else
+                  format_unit(target_consumption.sum, :kw)
+                end %></td>
+        <td></td>
+      <% else %>
+        <td><%= format_date_range([@target.start_date, Date.new(@consumption.last_month[:year],
+                                                                @consumption.last_month[:month]).end_of_month]) %></td>
+        <td><%= format_unit(@consumption.current, :kw) %></td>
+        <td><%= format_unit(@consumption.target, :kw) %></td>
+        <td td class="text-right"><%= formatted_target_change(@consumption.current, @consumption.target) %></td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption' %>
+<% analysis_path = polymorphic_path([@fuel_type, :target_analysis, @school, :advice])
+   if @fuel_type == :storage_heater %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_no_comparison_html', analysis_path:) %>
+<% else %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_html',
+        analysis_path:,
+        comparison_path: compare_for_school_group_path("#{@fuel_type}_targets", @school)) %>
+<% end %>
