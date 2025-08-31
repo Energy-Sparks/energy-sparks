@@ -22,7 +22,7 @@ module Dashboards
     end
 
     def alerts
-      @alerts ||= SchoolGroups::Alerts.new(@schools).summarise.map do |summarised_alert|
+      @alerts ||= summarised_alerts.map do |summarised_alert|
         latest_content_version = summarised_alert.alert_type_rating.current_content
 
         TemplateInterpolation.new(
@@ -55,7 +55,11 @@ module Dashboards
     end
 
     def render?
-      prompts? || alerts.any?
+      prompts? || summarised_alerts.any?
+    end
+
+    def summarised_alerts
+      @summarised_alerts ||= SchoolGroups::Alerts.new(@schools).summarise
     end
 
     private

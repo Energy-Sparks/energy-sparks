@@ -3,9 +3,9 @@
 module SchoolGroupBreadcrumbs
   private
 
-  def set_breadcrumbs(last)
+  def build_breadcrumbs(extra)
     @breadcrumbs = [{ name: I18n.t('common.schools'), href: schools_path },
                     { name: @school_group.name, href: school_group_path(@school_group) },
-                    last]
+                    *extra]
   end
 end

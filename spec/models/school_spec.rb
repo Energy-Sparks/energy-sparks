@@ -378,13 +378,13 @@ describe School do
     end
 
     it 'finds all partners' do
-      expect(school.all_partners).to match([])
+      expect(school.displayable_partners).to match([])
       school.partners << partner
-      expect(school.all_partners).to match([partner])
+      expect(school.displayable_partners).to match([partner])
       school.school_group.partners << other_partner
-      expect(school.all_partners).to match([partner, other_partner])
+      expect(school.displayable_partners).to match([partner, other_partner])
       school.partners.destroy_all
-      expect(school.all_partners).to match([other_partner])
+      expect(school.displayable_partners).to match([other_partner])
     end
   end
 

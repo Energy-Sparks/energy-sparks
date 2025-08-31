@@ -4,35 +4,13 @@ describe 'School group priorities page' do
   let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
   let!(:school) { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: 200.0) }
 
-  let(:alert_type_rating) do
-    create(:alert_type_rating,
-           management_priorities_active: true,
-           alert_type: create(:alert_type),
-           rating_from: 6.0,
-           rating_to: 10.0)
-  end
 
   it_behaves_like 'an access controlled group advice page' do
     let(:path) { priorities_school_group_advice_path(school_group) }
   end
 
-  before do
-    content_version = create(:alert_type_rating_content_version,
-               colour: :negative,
-               management_priorities_title: 'Spending too much money on heating',
-               alert_type_rating: alert_type_rating)
-    create(:alert,
-           school: school,
-           alert_generation_run: create(:alert_generation_run, school: school),
-           alert_type: content_version.alert_type_rating.alert_type,
-           rating: 6.0,
-           template_data: {
-                 one_year_saving_kwh: '2,200 kWh',
-                 average_one_year_saving_£: '£1,000',
-                 one_year_saving_co2: '1,100 kg CO2',
-                 time_of_year_relevance: 5.0
-           })
-    Alerts::GenerateContent.new(school).perform
+  include_context 'with a group management priority' do
+    let(:schools) { [school] }
   end
 
   context 'when not signed in' do
@@ -95,7 +73,7 @@ describe 'School group priorities page' do
       end
 
       it_behaves_like 'it contains the expected data table', sortable: false do
-        let(:table_id) { "#school-priorities-#{alert_type_rating.id}"  }
+        let(:table_id) { "#school-priorities-#{priority_alert_type_rating.id}" }
         let(:expected_header) do
           [
             ['', 'Savings', ''],
@@ -136,7 +114,7 @@ describe 'School group priorities page' do
       end
 
       it_behaves_like 'it contains the expected data table', sortable: false do
-        let(:table_id) { "#school-priorities-#{alert_type_rating.id}"  }
+        let(:table_id) { "#school-priorities-#{priority_alert_type_rating.id}" }
         let(:expected_header) do
           [
             ['', 'Savings', ''],
@@ -157,7 +135,7 @@ describe 'School group priorities page' do
         end
 
         it_behaves_like 'it contains the expected data table', sortable: false do
-          let(:table_id) { "#school-priorities-#{alert_type_rating.id}"  }
+          let(:table_id) { "#school-priorities-#{priority_alert_type_rating.id}" }
           let(:expected_header) do
             [
               ['', 'Savings', ''],

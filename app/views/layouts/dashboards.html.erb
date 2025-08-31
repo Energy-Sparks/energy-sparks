@@ -14,10 +14,10 @@
     </div>
     <%= yield %>
 
-    <% if show_partner_footer?(@school) %>
+    <% if show_partner_footer? %>
       <div class="container-fluid bg-light">
         <div class="container">
-          <%= render 'shared/partners' %>
+          <%= render 'shared/partners', partnered: partnered %>
         </div>
       </div>
     <% end %>
