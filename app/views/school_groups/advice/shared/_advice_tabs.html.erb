@@ -3,14 +3,14 @@
     <%= render PageNavComponent::CollapseButton.new %>
   </li>
   <li class="nav-item">
-    <a class="nav-link <%= 'active' if tab == :insights %>" href="<%= group_advice_page_path(school_group,
-                                                                                             advice_page_key, :insights) %>">
+    <a class="nav-link <%= 'active' if tab == :insights %>" href="<%= advice_page_path(school_group,
+                                                                                       advice_page, :insights) %>">
       <%= t('advice_pages.tabs.insights') %>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <%= 'active' if tab == :analysis %>" href="<%= group_advice_page_path(school_group,
-                                                                                             advice_page_key, :analysis) %>">
+    <a class="nav-link <%= 'active' if tab == :analysis %>" href="<%= advice_page_path(school_group,
+                                                                                       advice_page, :analysis) %>">
       <%= t('advice_pages.tabs.analysis') %>
     </a>
   </li>
