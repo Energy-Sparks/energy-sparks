@@ -28,13 +28,13 @@ RSpec.describe Scoreboards::GroupSummaryComponent, :include_url_helpers, type: :
     it 'shows podium correctly' do
       within('.scoreboards-podium-component') do
         expect(html).to have_content('Your highest scoring school')
-        expect(html).to have_link(href: current_scores_school_group_path(school_group))
+        expect(html).to have_link(href: scores_school_group_advice_path(school_group))
       end
     end
 
     it 'links to scoreboard' do
       expect(html).to have_link(I18n.t('components.scoreboard_summary.view_scoreboard'),
-                                href: current_scores_school_group_path(school_group))
+                                href: scores_school_group_advice_path(school_group))
     end
 
     it { expect(html).to have_content(I18n.t('components.scoreboards.group_summary.timeline.title'))}
