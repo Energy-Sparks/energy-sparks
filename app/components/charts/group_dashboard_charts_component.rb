@@ -10,7 +10,7 @@ module Charts
                    **_kwargs)
       super
       @school_group = school_group
-      @reports = comparisons.map { |k| Comparison::Report.find_by_key(k) }
+      @reports = comparisons.filter_map { |k| Comparison::Report.find_by_key(k) }
     end
 
     def render?

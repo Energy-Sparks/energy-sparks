@@ -4,6 +4,19 @@ module Lists
   describe Establishment do
     it_behaves_like 'a csvimportable', './spec/fixtures/import_establishments/zipped_sample.zip'
 
+    describe '.current_establishment_from_urn' do
+      it 'returns nil when no establishment was found' do
+        expect(described_class.current_establishment_from_urn(0)).to be_nil
+      end
+
+      it 'gets the current establishment' do
+        create(:closed_establishment, id: 1)
+        create(:establishment, id: 2)
+        create(:establishment_link, establishment_id: 1, linked_establishment_id: 2)
+        expect(described_class.current_establishment_from_urn(1).id).to eq(2)
+      end
+    end
+
     describe '.import' do
       context 'with empty database' do
         before do

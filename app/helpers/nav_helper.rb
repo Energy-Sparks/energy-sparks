@@ -74,10 +74,6 @@ module NavHelper
     school.present? && school.id && hide_subnav.nil?
   end
 
-  def show_partner_footer?(school)
-    school.present? && school.id && school.all_partners.any?
-  end
-
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)
