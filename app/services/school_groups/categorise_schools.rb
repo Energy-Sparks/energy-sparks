@@ -13,14 +13,8 @@ module SchoolGroups
     end
 
     def categorise_schools_for_advice_page(advice_page)
-      results_by_benchmark = Hash.new { |h, k| h[k] = [] }
-
-      find_advice_page_school_benchmarks.each do |school_result|
-        next unless school_result['advice_page_key'] == advice_page.key
-        results_by_benchmark[SchoolResult.new(school_result).benchmarked_as] << school_result
-      end
-
-      results_by_benchmark
+      find_advice_page_school_benchmarks.select { |school_result| school_result['advice_page_key'] == advice_page.key }
+                                        .group_by { |school_result| SchoolResult.new(school_result).benchmarked_as }
     end
 
     def school_categories(advice_page)
