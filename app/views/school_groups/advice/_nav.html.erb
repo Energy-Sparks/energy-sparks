@@ -26,4 +26,11 @@
                    href: scores_school_group_advice_path(school_group),
                    classes: 'section-link') %>
   <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
+                    icon: fuel_type_icon(:electricity), classes: 'electric-section',
+                    visible: @fuel_types.include?(:electricity)) do |s| %>
+    <% s.with_item(name: I18n.t('advice_pages.nav.pages.baseload'),
+                   href: school_group_advice_baseload_path(school_group), classes: 'small electric-item') %>
+  <% end %>
+
 <% end %>

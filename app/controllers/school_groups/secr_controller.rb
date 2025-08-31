@@ -5,7 +5,7 @@ module SchoolGroups
     def index
       raise CanCan::AccessDenied unless current_user.admin? || current_user.group_admin?
 
-      set_breadcrumbs(name: I18n.t('school_groups.sub_nav.secr_report'))
+      build_breadcrumbs([name: I18n.t('school_groups.sub_nav.secr_report')])
       @last_two_academic_year_periods = Periods::FixedAcademicYear.enumerator(
         MeterMonthlySummary.start_date(Time.zone.today, 2), Time.zone.today).to_a.reverse
       @meters = @school_group.meters.active.where('schools.active')
