@@ -39,9 +39,9 @@ RSpec.shared_context 'with a group management priority' do
 
   before do
     content_version = create(:alert_type_rating_content_version,
-               colour: :negative,
-               management_priorities_title: 'Spending too much money on heating',
-               alert_type_rating: priority_alert_type_rating)
+      colour: :negative,
+      management_priorities_title: 'Spending too much money on heating',
+      alert_type_rating: priority_alert_type_rating)
     schools.each do |school|
       alert_run = school.latest_alert_run || create(:alert_generation_run, school: school)
       create(:alert,
