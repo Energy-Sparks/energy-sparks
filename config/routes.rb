@@ -278,7 +278,9 @@ Rails.application.routes.draw do
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
       resource :advice, controller: 'advice', only: [:show] do
-        [:baseload].each do |page|
+        [:baseload,
+         :electricity_out_of_hours,
+         :gas_out_of_hours].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
           [:insights, :analysis].each do |action|
