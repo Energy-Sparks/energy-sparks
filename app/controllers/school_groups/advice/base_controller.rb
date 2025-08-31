@@ -20,7 +20,7 @@ module SchoolGroups
       skip_before_action :authenticate_user!
 
       def show
-        redirect_to url_for([:insights, @school_group, :advice, advice_page_key])
+        redirect_to action: :insights
       end
 
       private

@@ -1,0 +1,59 @@
+<table id="<%= advice_page.key %>-savings" class="table table-sorted table-borderless advice-table advice-priority-table">
+  <thead>
+    <tr>
+      <th colspan="<%= can?(:update_settings, school_group) ? '3' : '2' %>"></th>
+      <th class="text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
+      <th class="" colspan="1"></th>
+    </tr>
+    <tr>
+      <th><%= t('common.school') %></th>
+      <% if can?(:update_settings, school_group) %>
+        <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
+      <% end %>
+      <th class="text-right"><%= t('school_groups.comparisons.category') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+      <th class="no-sort"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% alerts.each do |school, alert| %>
+      <tr>
+        <td>
+          <%= link_to school.name, school_path(school) %>
+        </td>
+        <% if can?(:update_settings, school_group) %>
+          <td class="text-right">
+            <%= school.school_group_cluster_name %>
+          </td>
+        <% end %>
+        <td class="text-right">
+          <span class="<%= class_names('badge', "bg-#{benchmarks[school.id]}") %>">
+            <%= t(benchmarks[school.id], scope: 'advice_pages.benchmarks', default: '-') %>
+          </span>
+        </td>
+        <% if benchmarks[school.id] != :exemplar_school && alert.variables['one_year_saving_kwh']&.positive? %>
+          <td class="text-right" data-order="<%= alert.variables['one_year_saving_kwh'] %>">
+            <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh, true, :benchmark) %>
+          </td>
+          <td class="text-right" data-order="<%= alert.variables['average_one_year_saving_gbp'] %>">
+            <%= format_unit(alert.variables['average_one_year_saving_gbp'], :£, true, :benchmark) %>
+          </td>
+          <td class="text-right" data-order="<%= alert.variables['one_year_saving_co2'] %>">
+            <%= format_unit(alert.variables['one_year_saving_co2'], :co2, true, :benchmark) %>
+          </td>
+        <% else %>
+          <td class="text-right" data-order="0">-</td>
+          <td class="text-right" data-order="0">-</td>
+          <td class="text-right" data-order="0">-</td>
+        <% end %>
+        <td class="text-right">
+          <%= link_to t('school_groups.priority_actions.view_analysis'),
+                      advice_page_path(school, advice_page) %>
+
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
