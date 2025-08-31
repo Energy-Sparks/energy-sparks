@@ -3,10 +3,11 @@
 <dl>
   <dt>School name:</dt>
   <dd><%= @school_onboarding.school_name %></dd>
+  <dt>URN:</dt>
+  <dd><%= @school_onboarding.urn %></dd>
   <dt>Contact email:</dt>
   <dd><%= @school_onboarding.contact_email %></dd>
 </dl>
 
-
-<%= button_to 'Send setup email', admin_school_onboarding_email_path(@school_onboarding), method: :post, class: 'btn btn-success'%>
-
+<%= button_to 'Send setup email', admin_school_onboarding_email_path(@school_onboarding), method: :post,
+                                                                                          class: 'btn btn-success' %>

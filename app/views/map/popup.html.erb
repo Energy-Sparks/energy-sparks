@@ -15,6 +15,9 @@
   <% if @school.has_solar_pv? %>
     &nbsp;<%= render IconComponent.new(fuel_type: :solar_pv) %>
   <% end %>
+  <% if @school.has_storage_heaters? %>
+    &nbsp;<%= render IconComponent.new(fuel_type: :storage_heater) %>
+  <% end %>
 </p>
 <p class="small">
   <%= I18n.t('maps.school_features.pupils') %>: <%= @school.number_of_pupils %>

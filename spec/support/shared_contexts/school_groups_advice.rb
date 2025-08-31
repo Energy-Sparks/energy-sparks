@@ -1,88 +1,62 @@
-RSpec.shared_examples 'an access controlled group advice page' do
-  let(:expected_redirect) { "/school_groups/#{school_group.slug}/map" }
-
-  context 'when the group is private' do
-    before do
-      school_group.update!(public: false)
-      sign_in(user) if user
-      visit path
-    end
-
-    context 'when not logged in' do
-      let(:user) { nil }
-
-      it 'has redirected' do
-        expect(page).to have_current_path(expected_redirect, ignore_query: true)
-      end
-    end
-
-    context 'when logged in' do
-      let(:user) { create(:group_admin, school_group: school_group) }
-
-      it 'has not redirected' do
-        expect(page).to have_current_path(path, ignore_query: true)
-      end
-    end
+RSpec.shared_context 'with a group dashboard alert' do
+  let(:dashboard_alert_content) do
+    create(:alert_type_rating_content_version,
+           colour: :negative,
+           group_dashboard_title: 'Spending too much money on gas',
+           alert_type_rating: create(:alert_type_rating,
+                                     group_dashboard_alert_active: true,
+                                     alert_type: create(:alert_type),
+                                     rating_from: 6.0,
+                                     rating_to: 10.0))
   end
 
-  context 'when the group is public but there are no active schools' do
-    before do
-      school_group.schools.update_all(active: false)
-      sign_in(user) if user
-      visit path
-    end
-
-    context 'when not logged in' do
-      let(:user) { nil }
-
-      it 'has redirected' do
-        expect(page).to have_current_path(expected_redirect, ignore_query: true)
-      end
-    end
-
-    context 'when logged in' do
-      let(:user) { create(:group_admin, school_group: school_group) }
-
-      it 'has redirected' do
-        expect(page).to have_current_path(expected_redirect, ignore_query: true)
-      end
+  before do
+    schools.each do |school|
+      alert_run = school.latest_alert_run || create(:alert_generation_run, school: school)
+      create(:alert,
+             school: school,
+             alert_generation_run: alert_run,
+             alert_type: dashboard_alert_content.alert_type_rating.alert_type,
+             rating: 6.0,
+             variables: {
+                   one_year_saving_kwh: 1.0,
+                   average_one_year_saving_gbp: 2.0,
+                   one_year_saving_co2: 3.0,
+                   time_of_year_relevance: 5.0
+             })
     end
   end
 end
 
-RSpec.shared_examples 'a school group advice page' do |index: true|
-  it 'displays the right breadcrumb', if: index do
-    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq([I18n.t('common.schools'), school_group.name, breadcrumb])
+RSpec.shared_context 'with a group management priority' do
+  let(:priority_alert_type_rating) do
+    create(:alert_type_rating,
+           management_priorities_active: true,
+           alert_type: create(:alert_type),
+           rating_from: 6.0,
+           rating_to: 10.0)
   end
 
-  it 'displays the right breadcrumb', unless: index do
-    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq([I18n.t('common.schools'),
-                                                                         school_group.name,
-                                                                         I18n.t('advice_pages.breadcrumbs.root'),
-                                                                         breadcrumb])
-  end
-
-
-  it 'has the expected navigation' do
-    expect(page).to have_css('#group-advice-page-nav')
-    within('#group-advice-page-nav') do
-      expect(page).to have_link(I18n.t('advice_pages.nav.overview'), href: school_group_advice_path(school_group))
+  before do
+    content_version = create(:alert_type_rating_content_version,
+      colour: :negative,
+      management_priorities_title: 'Spending too much money on heating',
+      alert_type_rating: priority_alert_type_rating)
+    schools.each do |school|
+      alert_run = school.latest_alert_run || create(:alert_generation_run, school: school)
+      create(:alert,
+             school: school,
+             alert_generation_run: alert_run,
+             alert_type: content_version.alert_type_rating.alert_type,
+             run_on: Time.zone.today,
+             rating: 6.0,
+             template_data: {
+                   one_year_saving_kwh: '2,200 kWh',
+                   average_one_year_saving_£: '£1,000',
+                   one_year_saving_co2: '1,100 kg CO2',
+                   time_of_year_relevance: 5.0
+             })
+      Alerts::GenerateContent.new(school).perform
     end
-  end
-
-  it 'has the correct title' do
-    expect(page).to have_content(title)
-  end
-end
-
-RSpec.shared_examples 'it exports a group CSV correctly' do
-  it 'the file has the expected name' do
-    header = page.response_headers['Content-Disposition']
-    expect(header).to match(/^attachment/)
-    "#{I18n.t('common.application').parameterize}-#{school_group.name.parameterize}-#{action_name.parameterize}-#{Time.current.iso8601.tr(':', '-')}.csv"
-  end
-
-  it 'the file has the expected content' do
-    expect(CSV.parse(page.body, liberal_parsing: true)).to eq(expected_csv)
   end
 end

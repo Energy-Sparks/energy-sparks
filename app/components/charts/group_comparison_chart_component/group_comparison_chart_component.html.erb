@@ -11,10 +11,10 @@
     <%= header %>
 
     <div id="<%= report.key %>-chart"
-          class="<%= class_names("analysis-chart #{report.key}-analysis-chart", tabbed: tabbed) %>"
-          style="height: <%= [18 * school_group.visible_schools_count, 700].max %>px;"
-          data-autoload-chart="true"
-          data-chart-config="<%= chart_config_json %>">
+         class="<%= class_names("analysis-chart #{report.key}-analysis-chart", tabbed: tabbed) %>"
+         style="height: <%= [18 * school_group.visible_schools_count, 700].max %>px;"
+         data-autoload-chart="true"
+         data-chart-config="<%= chart_config_json %>">
     </div>
     <div id='chart-error'
          class='d-none'>
