@@ -21,13 +21,20 @@ class EnergyEquivalences
   #
   # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
   #
-  YEAR = 2025
-  UK_ELECTRIC_GRID_CO2_KG_KWH = Rails.env.test? ? 0.20493 : SecrCo2Equivalence.find_by!(year: YEAR).electricity_co2e_co2
+  def self.secr_co2_equivalence(old, attribute)
+    if !Object.const_defined?('Rails') || Rails.env.test?
+      old
+    else
+      SecrCo2Equivalence.find_by!(year: 2025)[attribute]
+    end
+  end
+
+  UK_ELECTRIC_GRID_CO2_KG_KWH = secr_co2_equivalence(0.20493, :electricity_co2e_co2)
   UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
   UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2573
 
   UK_DOMESTIC_GAS_£_KWH = 0.0633
-  UK_GAS_CO2_KG_KWH = Rails.env.test? ? 0.18253 : SecrCo2Equivalence.find_by!(year: YEAR).natural_gas_co2e_co2
+  UK_GAS_CO2_KG_KWH = secr_co2_equivalence(0.18253, :natural_gas_co2e_co2)
   UK_GAS_£_KWH = BenchmarkMetrics.pricing.gas_price
   GAS_BOILER_EFFICIENCY = 0.7
 
