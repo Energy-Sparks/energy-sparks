@@ -1,7 +1,7 @@
 module SchoolGroups
   class DigitalSignageController < BaseController
     def index
-      set_breadcrumbs(name: I18n.t('manage_school_menu.digital_signage'))
+      build_breadcrumbs([name: I18n.t('manage_school_menu.digital_signage')])
     end
 
     def charts

@@ -3,6 +3,7 @@
 module Comparisons
   class BaseController < ApplicationController
     include UserTypeSpecific
+    include ComparisonTableGenerator
     skip_before_action :authenticate_user!
 
     before_action :filter
@@ -12,10 +13,6 @@ module Comparisons
     before_action :set_results, only: [:index]
     before_action :set_unlisted_schools_count, only: [:index]
     before_action :set_headers, only: [:index]
-
-    helper_method :index_params
-    helper_method :footnote_cache
-    helper_method :unlisted_message
 
     protect_from_forgery except: :unlisted
 
@@ -42,23 +39,16 @@ module Comparisons
       respond_to(&:js)
     end
 
-    # Used to store footnotes loaded by the comparison table component across multiple calls in one page
-    def footnote_cache
-      @footnote_cache ||= {}
-    end
-
     private
 
-    def header_groups
-      []
+    # Key for the Comparison::Report
+    def key
+      nil
     end
 
-    def colgroups(groups: nil)
-      (groups || header_groups).each { |group| group[:colspan] = group[:headers].count(&:itself) }
-    end
-
-    def headers(groups: nil)
-      (groups || header_groups).pluck(:headers).flatten.select(&:itself)
+    # Load the results from the view
+    def load_data
+      nil
     end
 
     def set_headers
@@ -81,35 +71,6 @@ module Comparisons
     def set_advice_page
       @advice_page = AdvicePage.find_by!(key: advice_page_key) if advice_page_key
       @advice_page_tab = advice_page_tab
-    end
-
-    # Key for the Comparison::Report
-    def key
-      nil
-    end
-
-    # Key for the AdvicePage used to link to school analysis
-    def advice_page_key
-      nil
-    end
-
-    # Tab of the advice page to link to by default
-    def advice_page_tab
-      :insights
-    end
-
-    # Load the results from the view
-    def load_data
-      nil
-    end
-
-    # Returns a list of table names. These correspond to a partial that should be
-    # found in the views folder for the comparison. By default assumes a single table
-    # which is defined in a file called _table.html.erb.
-    #
-    # Partials will be provided with the report, advice page, and results
-    def table_names
-      [:table]
     end
 
     def create_charts(_results)
@@ -164,10 +125,6 @@ module Comparisons
                         .to_hash.symbolize_keys
     end
 
-    def index_params
-      filter.merge(anchor: filter[:search])
-    end
-
     def set_schools
       @schools = included_schools
     end
@@ -180,10 +137,6 @@ module Comparisons
       filter = SchoolFilter.new(**school_params).filter
       filter = filter.accessible_by(current_ability, :show) unless include_invisible
       filter.pluck(:id)
-    end
-
-    def unlisted_message(count)
-      I18n.t('comparisons.unlisted.message', count: count)
     end
   end
 end
