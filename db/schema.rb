@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_27_144136) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1740,6 +1740,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_144136) do
     t.bigint "funder_id"
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.integer "urn"
+    t.boolean "full_school", default: true
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
@@ -1889,6 +1890,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_144136) do
     t.text "heating_chp_notes"
     t.bigint "local_distribution_zone_id"
     t.bigint "establishment_id"
+    t.boolean "full_school", default: true
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
     t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"

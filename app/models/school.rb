@@ -21,6 +21,7 @@
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
+#  full_school                             :boolean          default(TRUE)
 #  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
@@ -897,7 +898,8 @@ class School < ApplicationRecord
       data_enabled:       false,
       name:               onboarding.school_name,
       establishment:      est,
-      urn:                onboarding.urn
+      urn:                onboarding.urn,
+      full_school:        onboarding.full_school
     })
 
     return sch if sch.establishment.nil?

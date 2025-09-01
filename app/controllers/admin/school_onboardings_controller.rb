@@ -70,7 +70,8 @@ module Admin
         :school_group_id,
         :school_name,
         :school_will_be_public,
-        :urn
+        :urn,
+        :full_school
       )
     end
   end
