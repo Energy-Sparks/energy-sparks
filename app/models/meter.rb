@@ -91,7 +91,14 @@ class Meter < ApplicationRecord
   scope :dcc, -> { where(dcc_meter: %i[smets2 other]) }
   scope :consented, -> { dcc.where(consent_granted: true) }
   scope :not_recently_checked, -> { where('dcc_checked_at is NULL OR dcc_checked_at < ?', 7.days.ago) }
-  scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
+  scope :meters_to_check_against_dcc, -> do
+    main_meter
+      .not_dcc
+      .not_recently_checked
+      .joins(:school)
+      .where.not(schools: { active: false })
+  end
+
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
