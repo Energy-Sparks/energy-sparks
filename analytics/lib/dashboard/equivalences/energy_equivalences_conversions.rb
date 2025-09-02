@@ -18,19 +18,19 @@ class EnergyEquivalences
 
   J_TO_KWH = 1000.0 * 60 * 60
 
+  def self.load_from_yaml(name)
+    YAML.load_file(Pathname.new(__FILE__).sub_ext('.yaml'))[name]
+  end
+
   #
   # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
   #
-  def self.secr_co2_equivalence(old, attribute)
-    Rails.env.test? || ENV['CI'] == 'true' ? old : ::SecrCo2Equivalence.find_by!(year: 2025)[attribute]
-  end
-
-  UK_ELECTRIC_GRID_CO2_KG_KWH = secr_co2_equivalence(0.20493, :electricity_co2e_co2)
+  UK_ELECTRIC_GRID_CO2_KG_KWH = load_from_yaml(:electricity_co2e_co2)
   UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
   UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2573
 
   UK_DOMESTIC_GAS_£_KWH = 0.0633
-  UK_GAS_CO2_KG_KWH = secr_co2_equivalence(0.18253, :natural_gas_co2e_co2)
+  UK_GAS_CO2_KG_KWH = load_from_yaml(:natural_gas_co2e_co2)
   UK_GAS_£_KWH = BenchmarkMetrics.pricing.gas_price
   GAS_BOILER_EFFICIENCY = 0.7
 
