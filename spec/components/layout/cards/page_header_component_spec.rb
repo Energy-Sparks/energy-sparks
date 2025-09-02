@@ -37,4 +37,17 @@ RSpec.describe Layout::Cards::PageHeaderComponent, :include_application_helper, 
     it { expect(html).to have_content(title) }
     it { expect(html).to have_content(subtitle) }
   end
+
+  context 'with callout' do
+    let(:html) do
+      render_inline(described_class.new(**base_params)) do |c|
+        c.with_callout(title: 'Callout title') do |callout|
+          callout.with_row { 'Callout row'}
+        end
+      end
+    end
+
+    it { expect(html).to have_content('Callout title') }
+    it { expect(html).to have_content('Callout row') }
+  end
 end

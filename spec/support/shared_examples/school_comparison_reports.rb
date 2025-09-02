@@ -65,10 +65,11 @@ end
 RSpec.shared_examples 'a school comparison report with a table' do
   let(:table_name) { :table }
   let(:model) { Comparison.const_get(expected_report.key.camelize) }
+  let(:path) { "/comparisons/#{expected_report.key}" }
 
   before do
     model.refresh
-    visit "/comparisons/#{expected_report.key}"
+    visit path if path
   end
 
   it 'links each row to the relevant advice page' do
@@ -93,10 +94,11 @@ end
 RSpec.shared_examples 'a school comparison report with a chart' do
   let(:chart_name) { :comparison }
   let(:model) { Comparison.const_get(expected_report.key.camelize) }
+  let(:path) { "/comparisons/#{expected_report.key}" }
 
   before do
     model.refresh
-    visit "/comparisons/#{expected_report.key}"
+    visit path if path
   end
 
   it 'includes a chart' do

@@ -662,6 +662,7 @@ en:
       coming_soon: Energy data coming soon
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.
       create_pupil_account: Create a pupil account
+      dashboard_subtitle_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activity on your scoreboard</a>
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
       energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.

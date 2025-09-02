@@ -685,6 +685,7 @@ cy:
       configuring_data_access: Rydym yn ffurfweddu mynediad at eich data ynni a byddwn yn eich hysbysu pan fydd yn barod i'w archwilio.
       create_pupil_account: Creu cyfrif disgybl
       dashboard_title: Dangosfwrdd oedolion ar gyfer %{school_name}
+      dashboard_subtitle_html: <a href="#explore-energy-data">Archwiliwch y data ynni diweddaraf</a>, adolygu <a href="#alerts-and-reminders">rhybuddion defnydd ynni</a> diweddar a gweld y <a href="#scoreboard-update">gweithgarwch diweddaraf ar eich bwrdd sgorio</a>
       download_data: Lawrlwytho'ch data
       energy_bill_required: Rydym angen i chi ddarparu bil ynni diweddar ar gyfer eich ysgol i gadarnhau rhifau eich mesurydd. Bydd hyn yn helpu i sicrhau y gallwn gasglu, prosesu ac arddangos data eich ysgol.
       find_out_more: Dysgu rhagor
