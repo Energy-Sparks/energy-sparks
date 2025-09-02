@@ -30,7 +30,7 @@
               end %>
           <%= card.with_feature_card(
                 theme: :light, size: :sm,
-                classes: "p-4 rounded-xl #{'rounded-top-xl' unless case_study.image.attached? && @show_images}"
+                classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' unless case_study.image.attached? && @show_images}"
               ) do |feature| %>
             <% case_study.tag_list.each do |tag| %>
               <%= feature.with_tag(tag) %>

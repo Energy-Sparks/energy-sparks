@@ -132,14 +132,15 @@ RSpec.describe 'Admin case studies', type: :system do
             attach_file 'Image', Rails.root.join('spec/fixtures/images/boiler.jpg')
             attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             fill_in :case_study_tags_en, with: 'en1, en2'
+            fill_in 'Position', with: 3
             uncheck :case_study_published
-
             click_on 'Save'
           end
 
           it { expect(page).to have_content('Updated title') }
           it { expect(page).to have_content('Updated description') }
           it { expect(page).to have_content('en1 en2') }
+          it { expect(page).to have_content('3') }
           it { expect(page).to have_content('Case study was successfully updated.') }
 
           it 'resizes images to 1400px width max' do
@@ -182,8 +183,8 @@ RSpec.describe 'Admin case studies', type: :system do
             attach_file 'Image', Rails.root.join('spec/fixtures/images/boiler.jpg')
             attach_file(:case_study_file_en, Rails.root.join('spec/fixtures/documents/fake-bill.pdf'))
             fill_in :case_study_tags_en, with: 'new, example'
+            fill_in 'Position', with: 7
             check :case_study_published
-
             click_on 'Save'
           end
 
@@ -194,6 +195,7 @@ RSpec.describe 'Admin case studies', type: :system do
           it { expect(page).to have_content('New Case Study Title') }
           it { expect(page).to have_content('This is a new case study description.') }
           it { expect(page).to have_content('new example') }
+          it { expect(page).to have_content('7') }
           it { expect(page).to have_content('Case study was successfully created.') }
 
           it 'resizes images to 1400px width max' do
