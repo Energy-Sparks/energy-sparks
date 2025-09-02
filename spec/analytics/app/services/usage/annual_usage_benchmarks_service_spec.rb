@@ -72,6 +72,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
   describe '#annual_usage' do
     context 'with electricity' do
       it 'calculates the expected values for a benchmark school' do
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219)
         annual_usage = service.annual_usage(compare: :benchmark_school)
         expect(annual_usage.kwh).to be_within(0.01).of(219_000.0)
         expect(annual_usage.co2).to be_within(0.01).of(43_800.0) # 0.2 * kwh
@@ -79,6 +80,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
       end
 
       it 'calculates the expected values for an exemplar school' do
+        stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196)
         annual_usage = service.annual_usage(compare: :exemplar_school)
         expect(annual_usage.kwh).to be_within(0.01).of(196_000.0)
         expect(annual_usage.co2).to be_within(0.01).of(39_200.0) # 0.2 * kwh
@@ -91,6 +93,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
       let(:kwh_data_x48)  { Array.new(48) { 5.0 } }
 
       it 'calculates the expected values for a benchmark school' do
+        stub_const('BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_M2', 64)
         annual_usage = service.annual_usage(compare: :benchmark_school)
         expect(annual_usage.kwh).to be_within(0.01).of(320_000.0)
         expect(annual_usage.co2).to be_within(0.01).of(64_000.0) # 0.2 * kwh
@@ -98,6 +101,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
       end
 
       it 'calculates the expected values for an exemplar school' do
+        stub_const('BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2', 55)
         annual_usage = service.annual_usage(compare: :exemplar_school)
         expect(annual_usage.kwh).to be_within(0.01).of(275_000.0)
         expect(annual_usage.co2).to be_within(0.01).of(55_000.0) # 0.2 * kwh
@@ -109,6 +113,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
   describe '#estimate_savings' do
     context 'with electricity' do
       it 'calculates the expected values for a benchmark school' do
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219.0)
         savings = service.estimated_savings(versus: :benchmark_school)
         expect(savings.kwh).to be_within(0.01).of(44_280.0)
         expect(savings.£).to be_within(0.01).of(4428.0)
@@ -117,6 +122,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
       end
 
       it 'calculates the expected values for an exemplar school' do
+        stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196.0)
         savings = service.estimated_savings(versus: :exemplar_school)
         expect(savings.kwh).to be_within(0.01).of(21_280.0)
         expect(savings.£).to be_within(0.01).of(2128.0)
@@ -129,6 +135,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
       let(:fuel_type) { :gas }
 
       it 'calculates the expected values for a benchmark school' do
+        stub_const('BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_M2', 64)
         savings = service.estimated_savings(versus: :benchmark_school)
         expect(savings.kwh).to be_within(0.01).of(145_280.0)
         expect(savings.£).to be_within(0.01).of(14_528.0)
@@ -137,6 +144,7 @@ describe Usage::AnnualUsageBenchmarksService, :aggregate_failures, type: :servic
       end
 
       it 'calculates the expected values for an exemplar school' do
+        stub_const('BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2', 55)
         savings = service.estimated_savings(versus: :exemplar_school)
         expect(savings.kwh).to be_within(0.01).of(100_280.0)
         expect(savings.£).to be_within(0.01).of(10_028.0)
