@@ -16,9 +16,9 @@
 #
 
 require 'require_all'
-require_relative '../../lib/dashboard.rb'
-require_all './analytics/test_support/'
 require_relative '../../../config/environment'
+require_relative '../../lib/dashboard'
+require_all './analytics/test_support/'
 
 schools = [
   { name: 'acme-academy*', example_of: 'Github actions test data' }

@@ -22,11 +22,7 @@ class EnergyEquivalences
   # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
   #
   def self.secr_co2_equivalence(old, attribute)
-    if !Object.const_defined?('Rails') || Rails.env.test?
-      old
-    else
-      SecrCo2Equivalence.find_by!(year: 2025)[attribute]
-    end
+    Rails.env.test? || ENV['CI'] == 'true' ? old : SecrCo2Equivalence.find_by!(year: 2025)[attribute]
   end
 
   UK_ELECTRIC_GRID_CO2_KG_KWH = secr_co2_equivalence(0.20493, :electricity_co2e_co2)
