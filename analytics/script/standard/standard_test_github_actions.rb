@@ -30,14 +30,6 @@ overrides = {
 
 run_date = Date.new(2022, 2, 1)
 
-benchmark_params = {
-  benchmarks: {
-    calculate_and_save_variables: true,
-    asof_date: run_date,
-    run_content: { asof_date: run_date }
-  }
-}
-
 scripts = [
     { type: RunAdultDashboard },
     { type: RunAlerts,                parameters: { alerts:   { control: { asof_date: run_date } } } },
