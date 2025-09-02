@@ -161,6 +161,10 @@ class SchoolGroup < ApplicationRecord
     end
   end
 
+  def displayable_partners
+    partners
+  end
+
   def page_anchor
     name.parameterize
   end
@@ -208,5 +212,13 @@ class SchoolGroup < ApplicationRecord
   def scorable_calendar
     return default_scoreboard.academic_year_calendar unless default_scoreboard.nil?
     default_template_calendar
+  end
+
+  def grouped_schools_by_name(scope: nil)
+    selected_schools = scope ? schools.merge(scope) : schools
+    selected_schools.group_by do |school|
+      first_char = school.name[0]
+      /[A-Za-z]/.match?(first_char) ? first_char.upcase : '#'
+    end.sort.to_h
   end
 end

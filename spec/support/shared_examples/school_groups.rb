@@ -199,8 +199,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 0,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -212,8 +212,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 1,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -225,8 +225,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 3,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )

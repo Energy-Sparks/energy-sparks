@@ -3,31 +3,8 @@ require 'rails_helper'
 describe 'School group alerts page' do
   let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
 
-  let(:content_version) do
-    create(:alert_type_rating_content_version,
-           colour: :negative,
-           group_dashboard_title: 'Spending too much money on gas',
-           alert_type_rating: create(:alert_type_rating,
-                                     group_dashboard_alert_active: true,
-                                     alert_type: create(:alert_type),
-                                     rating_from: 6.0,
-                                     rating_to: 10.0))
-  end
-
-  before do
-    school_group.schools.each do |school|
-      create(:alert,
-             school: school,
-             alert_generation_run: create(:alert_generation_run, school: school),
-             alert_type: content_version.alert_type_rating.alert_type,
-             rating: 6.0,
-             variables: {
-                   one_year_saving_kwh: 1.0,
-                   average_one_year_saving_gbp: 2.0,
-                   one_year_saving_co2: 3.0,
-                   time_of_year_relevance: 5.0
-             })
-    end
+  include_context 'with a group dashboard alert' do
+    let(:schools) { school_group.schools }
   end
 
   it_behaves_like 'an access controlled group advice page' do
@@ -52,7 +29,7 @@ describe 'School group alerts page' do
 
     it 'displays the grouped alerts' do
       within('#advice-alerts') do
-        expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
+        expect(html).to have_content(dashboard_alert_content.group_dashboard_title.to_plain_text)
         expect(html).to have_content(I18n.t('advice_pages.alerts.groups.advice'))
       end
     end

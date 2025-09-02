@@ -1,7 +1,7 @@
-<div class="container-fluid d-flex justify-content-center pb-2 pt-2">
+<div id="partner-footer" class="container-fluid d-flex justify-content-center pb-2 pt-2">
   <div class="row">
     <div class="col-12">
-      <% @school.all_partners.each do |partner| %>
+      <% partnered.displayable_partners.each do |partner| %>
         <a href="<%= partner.url || '#' %>">
           <%= image_tag partner.image.variant(resize_to_limit: [100, 100]) %>
         </a>
@@ -14,7 +14,8 @@
     <div class="col-12">
       <span>
         <small>
-          <%= t('partners.supports_in_partnership_with', school_name: @school.name) %>&nbsp;<%= list_of_partners_as_links(@school.all_partners) %>
+          <%= t('partners.supports_in_partnership_with', school_name: partnered.name) %>&nbsp;
+          <%= list_of_partners_as_links(partnered.displayable_partners) %>
         </small>
       </span>
     </div>
