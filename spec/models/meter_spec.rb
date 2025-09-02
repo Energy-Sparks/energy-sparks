@@ -127,6 +127,25 @@ describe 'Meter', :meters do
         expect(Meter.unreviewed_dcc_meter).to match_array(electricity_meters_not_reviewed)
       end
     end
+
+    context 'when finding meters to check against DCC' do
+      it 'checks main meters' do
+        meter = create(:electricity_meter, dcc_meter: :no)
+        create(:electricity_meter, dcc_meter: :smets2)
+        expect(Meter.meters_to_check_against_dcc.first).to eq(meter)
+      end
+
+      it 'does not check recently checked meters' do
+        create(:electricity_meter, dcc_meter: :no, dcc_checked_at: 6.days.ago)
+        create(:electricity_meter, dcc_meter: :smets2)
+        expect(Meter.meters_to_check_against_dcc).to eq([])
+      end
+
+      it 'does not check meters for archived schools' do
+        create(:electricity_meter, dcc_meter: :no, school: create(:school, active: false, removal_date: 1.month.ago))
+        expect(Meter.meters_to_check_against_dcc).to eq([])
+      end
+    end
   end
 
   describe '#open_issues_count' do
