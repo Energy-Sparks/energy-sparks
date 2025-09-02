@@ -114,26 +114,9 @@ RSpec.shared_examples_for 'a group long term advice page' do
           let(:expected_report) { report }
           let(:expected_school) { school }
           let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page.key.to_sym]) }
-          let(:headers) do
-            ['School', 'Previous year', 'Last year', 'Change %', 'Previous year', 'Last year', 'Change %', 'Previous year',
-             'Last year', 'Change %', 'Estimated']
-          end
-          let(:expected_table) do
-            [
-              ['', 'kWh', 'CO2 (kg)', '£', 'Solar self consumption'],
-              headers,
-              [school.name, '1,000', '500', '-50&percnt;', '800', '400', '-50&percnt;', '£2,000', '£1,200', '-40&percnt;',
-               'Yes'],
-              ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
-            ]
-          end
-          let(:expected_csv) do
-            [
-              ['', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', '', 'Solar self consumption'],
-              headers,
-              [school.name, '1,000', '500', '-50', '800', '400', '-50', '2,000', '1,200', '-40', 'Yes']
-            ]
-          end
+          let(:headers) { comparison_table_headers }
+          let(:expected_table) { comparison_table }
+          let(:expected_csv) { comparison_csv }
         end
       end
     end
@@ -145,11 +128,31 @@ describe 'School group long term advice pages' do
     it_behaves_like 'a group long term advice page' do
       let(:fuel_type) { :electricity }
       let(:report_key) { :change_in_electricity_since_last_year }
-      let(:advice_page) { create(:advice_page, key: :electricity_long_term, fuel_type: fuel_type) }
+      let!(:advice_page) { create(:advice_page, key: :electricity_long_term, fuel_type: fuel_type) }
       let(:class_name) { 'AlertElectricityAnnualVersusBenchmark' }
       let(:report_class) { Comparison::ChangeInElectricitySinceLastYear }
       let(:insights_path) { insights_school_group_advice_electricity_long_term_path(school_group) }
       let(:analysis_path) { analysis_school_group_advice_electricity_long_term_path(school_group) }
+      let(:comparison_table_headers) do
+        ['School', 'Previous year', 'Last year', 'Change %', 'Previous year', 'Last year', 'Change %', 'Previous year',
+         'Last year', 'Change %', 'Estimated']
+      end
+      let(:comparison_table) do
+        [
+          ['', 'kWh', 'CO2 (kg)', '£', 'Solar self consumption'],
+          comparison_table_headers,
+          [school.name, '1,000', '500', '-50&percnt;', '800', '400', '-50&percnt;', '£2,000', '£1,200', '-40&percnt;',
+           'Yes'],
+          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]
+        ]
+      end
+      let(:comparison_csv) do
+        [
+          ['', 'kWh', '', '', 'CO2 (kg)', '', '', '£', '', '', 'Solar self consumption'],
+          headers,
+          [school.name, '1,000', '500', '-50', '800', '400', '-50', '2,000', '1,200', '-40', 'Yes']
+        ]
+      end
     end
   end
 
@@ -157,20 +160,40 @@ describe 'School group long term advice pages' do
     it_behaves_like 'a group long term advice page' do
       let(:fuel_type) { :gas }
       let(:report_key) { :change_in_gas_since_last_year }
-      let(:advice_page) { create(:advice_page, key: :gas_long_term, fuel_type: fuel_type) }
+      let!(:advice_page) { create(:advice_page, key: :gas_long_term, fuel_type: fuel_type) }
       let(:class_name) { 'AlertGasAnnualVersusBenchmark' }
       let(:variables) do
         {
           average_one_year_saving_gbp: 200.0,
           one_year_saving_kwh: 100.0,
           one_year_saving_co2: 300.0,
-          temperature_adjusted_previous_year_kwh: 7,
+          temperature_adjusted_previous_year_kwh: 1100,
           temperature_adjusted_percent: 8
         }
       end
       let(:report_class) { Comparison::ChangeInGasSinceLastYear }
       let(:insights_path) { insights_school_group_advice_gas_long_term_path(school_group) }
       let(:analysis_path) { analysis_school_group_advice_gas_long_term_path(school_group) }
+      let(:comparison_table_headers) do
+        ['School',
+         'Previous year', 'Previous year (temperature adjusted)', 'Last year',
+         'Previous year', 'Last year', 'Previous year', 'Last year',
+         'Unadjusted change (kWh)', 'Temperature adjusted change (kWh)']
+      end
+      let(:comparison_table) do
+        [['', 'kWh', 'CO2 (kg)', '£', 'Percent changed'],
+         headers,
+         [school.name, '1,000', '1,100', '500', '800', '400', '£2,000', '£1,200', '-50&percnt;', '+800&percnt;'],
+         ["Notes\nIn school comparisons 'last year' is defined as this year to date, 'previous year' is defined as the " \
+          'year before.']]
+      end
+      let(:comparison_csv) do
+        [
+          ['', 'kWh', '', '', 'CO2 (kg)', '', '£', '', 'Percent changed', ''],
+          headers,
+          [school.name, '1,000', '1,100', '500', '800', '400', '2,000', '1,200', '-50', '8']
+        ]
+      end
     end
   end
 end
