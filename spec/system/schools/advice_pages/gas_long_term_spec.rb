@@ -93,7 +93,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
                                                                 'Cost (£)' => '£17,000',
                                                                 'Change since previous year' => '-'
                                                               })
-          expect(page).to have_content("Exemplar\n<110,000 kWh")
+          expect(page).to have_content("Exemplar\n<100,000 kWh")
           expect(page).to have_content("Well managed\n<130,000 kWh")
         end
 
