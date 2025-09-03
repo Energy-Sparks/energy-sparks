@@ -54,7 +54,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
 
       it_behaves_like 'a school group advice page', index: false do
         let(:breadcrumb) { I18n.t("advice_pages.#{advice_page.key}.page_title") }
-        let(:title) { I18n.t("school_groups.advice_pages.#{advice_page.key}.page_title") }
+        let(:title) { I18n.t('school_groups.advice_pages.long_term.page_title', fuel_type: fuel_type) }
       end
 
       it 'has the comparisons section' do
@@ -64,7 +64,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       it 'has the current use section' do
-        expect(page).to have_content(I18n.t("school_groups.advice_pages.#{advice_page.key}.insights.current_use.title"))
+        expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.insights.current_use.title'))
         expect(page).to have_css("##{report_key}-table")
         within("##{report_key}-table") do
           expect(page).to have_content(school.name)
@@ -85,11 +85,11 @@ RSpec.shared_examples_for 'a group long term advice page' do
 
       it_behaves_like 'a school group advice page', index: false do
         let(:breadcrumb) { I18n.t("advice_pages.#{advice_page.key}.page_title") }
-        let(:title) { I18n.t("school_groups.advice_pages.#{advice_page.key}.page_title") }
+        let(:title) { I18n.t('school_groups.advice_pages.long_term.page_title', fuel_type: fuel_type) }
       end
 
       context 'with potential savings' do
-        it { expect(page).to have_content(I18n.t("school_groups.advice_pages.#{advice_page.key}.analysis.potential_savings.title")) }
+        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.analysis.potential_savings.title')) }
 
         it_behaves_like 'it contains the expected data table' do
           let(:table_id) { "##{advice_page.key}-savings" }
@@ -108,7 +108,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
       end
 
       context 'with comparison section' do
-        it { expect(page).to have_content(I18n.t("school_groups.advice_pages.#{advice_page.key}.analysis.comparisons.title")) }
+        it { expect(page).to have_content(I18n.t('school_groups.advice_pages.long_term.analysis.comparisons.title')) }
 
         it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }

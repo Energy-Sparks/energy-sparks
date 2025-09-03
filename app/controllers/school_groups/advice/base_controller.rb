@@ -27,7 +27,6 @@ module SchoolGroups
 
       def set_titles
         @page_title = t('page_title', scope: "school_groups.advice_pages.#{advice_page_key}", default: nil)
-        @page_subtitle = t('page_subtitle', scope: "school_groups.advice_pages.#{advice_page_key}", default: nil)
       end
 
       def set_fuel_types

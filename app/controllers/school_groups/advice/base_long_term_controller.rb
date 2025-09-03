@@ -26,7 +26,6 @@ module SchoolGroups
 
       def set_titles
         @page_title = t('page_title', scope: 'school_groups.advice_pages.long_term', fuel_type: @advice_page.fuel_type, default: nil)
-        @page_subtitle = t('page_subtitle', scope: 'school_groups.advice_pages.long_term', fuel_type: @advice_page.fuel_type, default: nil)
       end
 
       def run_report
