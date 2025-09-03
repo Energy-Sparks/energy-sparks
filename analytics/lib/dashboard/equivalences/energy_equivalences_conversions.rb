@@ -19,14 +19,18 @@ class EnergyEquivalences
   J_TO_KWH = 1000.0 * 60 * 60
 
   #
-  # updated with July 2024 figures - see the Analytics Benchmarking Values spreadsheet
+  # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
   #
-  UK_ELECTRIC_GRID_CO2_KG_KWH = 0.20493 # see SecrCo2Equivalence.electricity_co2e_co2
-  UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
-  UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2236
+  def self.secr_co2_equivalence(old, attribute)
+    Rails.env.test? || ENV['CI'] == 'true' ? old : SecrCo2Equivalence.find_by!(year: 2025)[attribute]
+  end
 
-  UK_DOMESTIC_GAS_£_KWH = 0.0548
-  UK_GAS_CO2_KG_KWH = 0.18253 # see SecrCo2Equivalence.natural_gas_co2e_co2
+  UK_ELECTRIC_GRID_CO2_KG_KWH = secr_co2_equivalence(0.20493, :electricity_co2e_co2)
+  UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
+  UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2573
+
+  UK_DOMESTIC_GAS_£_KWH = 0.0633
+  UK_GAS_CO2_KG_KWH = secr_co2_equivalence(0.18253, :natural_gas_co2e_co2)
   UK_GAS_£_KWH = BenchmarkMetrics.pricing.gas_price
   GAS_BOILER_EFFICIENCY = 0.7
 
@@ -36,10 +40,10 @@ class EnergyEquivalences
   ICE_LITRES_PER_100KM = 7.1
   LITRE_PETROL_KWH = 9.6
   LITRE_PETROL_CO2_KG = 2.07047
-  LITRE_PETROL_£ = 1.4569
+  LITRE_PETROL_£ = 1.3415
   ICE_KWH_KM = 0.7767
   ICE_CO2_KM = 0.16984
-  ICE_£_KM = 0.1134
+  ICE_£_KM = 0.1071
 
   BEV_KWH_PER_KM = 0.188
   BEV_£_PER_KM = BEV_KWH_PER_KM * UK_DOMESTIC_ELECTRICITY_£_KWH
@@ -65,7 +69,7 @@ class EnergyEquivalences
   KETTLE_KWH = KETTLE_LITRES * KETTLE_LITRE_BY_85C_KWH
   KETTLE_£ = KETTLE_KWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
-  SMARTPHONE_CHARGE_kWH = 3.6 * 2.0 / 1000.0 # 3.6V * 2.0 Ah / 1000
+  SMARTPHONE_CHARGE_kWH = 20.0 / 1000
   SMARTPHONE_CHARGE_£ = SMARTPHONE_CHARGE_kWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
   ONE_HOUR = 1.0
