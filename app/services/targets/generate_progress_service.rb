@@ -74,13 +74,7 @@ module Targets
       consumption = monthly_consumption(fuel_type, target)
       return consumption if consumption_complete?(fuel_type, target)
 
-      consumption = calculate_monthly_consumption_between_target_dates(fuel_type, target)
-      if consumption.all? { |month| month[SchoolTarget::MONTHLY_CONSUMPTION_FIELDS[:previous_consumption]].nil? }
-        # not enough data
-        return nil
-      end
-
-      consumption
+      calculate_monthly_consumption_between_target_dates(fuel_type, target)
     end
 
     def calculate_monthly_consumption_between_target_dates(fuel_type, target)
@@ -111,7 +105,7 @@ module Targets
       kwhs = (beginning_of_month..beginning_of_month.end_of_month).map do |date|
         @aggregated_school.aggregate_meter(fuel_type).amr_data[date]&.one_day_kwh
       end
-      [kwhs.compact.sum, kwhs.include?(nil)]
+      [kwhs.compact.empty? ? nil : kwhs.compact.sum, kwhs.include?(nil)]
     end
 
     def fuel_type_progress(fuel_type)
