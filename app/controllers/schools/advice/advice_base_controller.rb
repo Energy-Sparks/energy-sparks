@@ -103,10 +103,9 @@ module Schools
       end
 
       def check_authorisation
-        return unless @advice_page && @advice_page.restricted && cannot?(:read_restricted_advice, @school)
+        return unless @advice_page&.restricted && cannot?(:read_restricted_advice, @school)
 
-        redirect_to school_advice_path(@school),
-                    notice: 'Only an admin or staff user for this school can access this content'
+        redirect_to school_advice_path(@school), notice: t('advice_pages.authorisation_failed')
       end
 
       def check_has_fuel_type
