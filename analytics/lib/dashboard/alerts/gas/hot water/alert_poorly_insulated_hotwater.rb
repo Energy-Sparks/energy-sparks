@@ -82,7 +82,7 @@ class AlertHotWaterInsulationAdvice < AlertGasModelBase
     tariff_£_per_kwh = aggregate_meter.amr_data.current_tariff_rate_£_per_kwh
 
     @annual_hotwater_poor_insulation_heatloss_estimate_£    = savings_kwh * tariff_£_per_kwh
-    @annual_hotwater_poor_insulation_heatloss_estimate_co2  = savings_kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH
+    @annual_hotwater_poor_insulation_heatloss_estimate_co2  = savings_kwh * EnergyEquivalences.co2_kg_kwh(:gas)
     @annual_hotwater_poor_insulation_heatloss_estimate_kwh  = savings_kwh
     @annual_hotwater_poor_insulation_heatloss_estimate_percent = savings_percent
 
