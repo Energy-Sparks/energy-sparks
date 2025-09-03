@@ -22,8 +22,7 @@
       fuel_type: @advice_page.fuel_type) %>
 
 <%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
-                                                        alerts: @alerts,
-                                                        benchmarks: @benchmarks,
+                                                        categorised_savings: @categorised_savings,
                                                         advice_page: @advice_page %>
 
 <%= render 'schools/advice/section_title',
@@ -34,13 +33,13 @@
 <%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
                                                      report: @report) do |c| %>
   <% c.with_title do %>
-    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.title', fuel_type: @advice_page.fuel_type) } %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.title', fuel_type: @advice_page.fuel_type) %>
   <% end %>
   <% c.with_subtitle do %>
-    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.subtitle', fuel_type: @advice_page.fuel_type) } %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.subtitle', fuel_type: @advice_page.fuel_type) %>
   <% end %>
   <% c.with_header do %>
-    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.header', fuel_type: @advice_page.fuel_type) } %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.header', fuel_type: @advice_page.fuel_type) %>
   <% end %>
 <% end %>
 

@@ -15,9 +15,9 @@ module SchoolGroups
       end
 
       def analysis
-        @benchmarks = SchoolGroups::CategoriseSchools.new(schools: @schools).school_categories(@advice_page)
         alert_type = AlertType.find_by_class_name(alert_class_name)
-        @alerts = SchoolGroups::Alerts.new(@schools).alerts(alert_type) if alert_type
+        @alerts = alert_type ? SchoolGroups::Alerts.new(@schools).alerts(alert_type) : []
+        @categorised_savings = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_savings(@advice_page, @alerts)
         @report_headers = headers
         @report_colgroups = colgroups
       end
