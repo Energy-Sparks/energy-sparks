@@ -46,7 +46,6 @@ module Schools
       def percent_change(current_consumption, target_consumption)
         (current_consumption - target_consumption) / target_consumption.to_f
       end
-      # helper_method :percent_change
 
       def formatted_target(target = nil)
         format_unit((target || @target).target(@fuel_type), { units: :percent, options: { scale: false } })
