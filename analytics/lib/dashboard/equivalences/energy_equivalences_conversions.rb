@@ -100,7 +100,7 @@ class EnergyEquivalences
   SOLAR_PANEL_KWH_PER_YEAR = SOLAR_PANEL_KWP * SOLAR_PANEL_YIELD_PER_KWH_PER_KWP_PER_YEAR
 
   def self.co2_kg_kwh(fuel_type)
-    (@@co2_kg_kwh ||= set_co2_kg_kwh)[fuel_type]
+    (@@co2_kg_kwh ||= set_co2_kg_kwh).fetch(fuel_type)
   end
 
   private_class_method def self.set_co2_kg_kwh
@@ -112,9 +112,11 @@ class EnergyEquivalences
     end
   end
 
-  def self.all_equivalences
+  def self.all_equivalences(uk_electric_grid_co2_kg_kwh = nil)
     # cache to save 2ms calculation time, maintain max 100 entries to limit memory footprint
-    @@cached_equivalences ||= create_configuration
+    @@cached_equivalences = {} unless defined? @@cached_equivalences
+    @@cached_equivalences.delete(@@cached_equivalences.keys[0]) if @@cached_equivalences.length > 100
+    @@cached_equivalences[uk_electric_grid_co2_kg_kwh] ||= create_configuration(uk_electric_grid_co2_kg_kwh)
   end
 
   def self.equivalence_types(include_basic_types = true)
@@ -136,7 +138,7 @@ class EnergyEquivalences
     choices.keys
   end
 
-  private_class_method def self.create_configuration
+  private_class_method def self.create_configuration(uk_electric_grid_co2_kg_kwh)
     water_energy_description = "It takes #{X.format(:kwh, WATER_ENERGY_KWH_LITRE_PER_K)} of energy to heat 1 litre of water by 1C. "
 
     shower_description_to_kwh =\
@@ -175,7 +177,7 @@ class EnergyEquivalences
             "(In reality if you include the costs of maintenance, servicing, depreciation "\
             "it can cost about £0.30/km to travel by car). "
 
-    uk_electric_grid_co2_kg_kwh = co2_kg_kwh(:electricity)
+    uk_electric_grid_co2_kg_kwh ||= co2_kg_kwh(:electricity)
     bev_co2_per_km = BEV_KWH_PER_KM * uk_electric_grid_co2_kg_kwh
     bev_efficiency_description = "An electric car uses #{X.format(:kwh, BEV_KWH_PER_KM)} of electricity to travel 1 km. "
     bev_co2_description = "An electric car emits #{X.format(:co2, bev_co2_per_km)} of electricity to travel 1 km (emissons from the National Grid). "
