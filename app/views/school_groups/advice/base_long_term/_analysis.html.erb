@@ -33,15 +33,15 @@
 
 <%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
                                                      report: @report) do |c| %>
- <% c.with_title do %>
-  <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.title', fuel_type: @advice_page.fuel_type) } %>
- <% end %>
- <% c.with_subtitle do %>
-  <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.subtitle', fuel_type: @advice_page.fuel_type) } %>
- <% end %>
- <% c.with_header do %>
-  <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.header', fuel_type: @advice_page.fuel_type) } %>
- <% end %>
+  <% c.with_title do %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.title', fuel_type: @advice_page.fuel_type) } %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.subtitle', fuel_type: @advice_page.fuel_type) } %>
+  <% end %>
+  <% c.with_header do %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.header', fuel_type: @advice_page.fuel_type) } %>
+  <% end %>
 <% end %>
 
 <%= t('school_groups.advice_pages.long_term.analysis.comparisons.table.header_html',
