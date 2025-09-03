@@ -1,15 +1,16 @@
 <% unless @consumption.current.nil? || @consumption.target.nil? %>
-  <% meeting_target = @consumption.current <= @consumption.target
-     previous_year_missing = @consumption.last_month.nil? && @consumption.data.pluck(:target_consumption).include?(nil)
-     status = previous_year_missing ? false : meeting_target %>
-  <%= render PromptComponent.new(status: status ? :positive : :negative, icon: :circle_exclamation) do |c| %>
-    <% if @target.start_date > Date.current %>
-      <%= t('advice_pages.target.future_target_date') %>
-    <% elsif previous_year_missing %>
-      <%= t('advice_pages.target.missing_previous_year') %>
-    <% else %>
-      <%= t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}",
-            fuels: t("advice_pages.fuel_type.#{@fuel_type}")) %>
-    <% end %>
+  <% previous_year_missing = @consumption.last_month.nil? && @consumption.data.pluck(:target_consumption).include?(nil)
+     text, status = if @target.start_date > Date.current
+                      [t('advice_pages.target.future_target_date'), :positive]
+                    elsif previous_year_missing
+                      [t('advice_pages.target.missing_previous_year'), :negative]
+                    else
+                      meeting_target = @consumption.current <= @consumption.target
+                      [t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}",
+                         fuels: t("advice_pages.fuel_type.#{@fuel_type}")),
+                       meeting_target ? :positive : :negative]
+                    end %>
+  <%= render PromptComponent.new(status:, icon: :circle_exclamation) do |c| %>
+    <% text %>
   <% end %>
 <% end %>

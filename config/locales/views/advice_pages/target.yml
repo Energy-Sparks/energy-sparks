@@ -23,7 +23,8 @@ en:
           this_year: This year (kWh)
           title: Monthly progress
         title: Progress report
-      future_target_date: The target date is in the future so no consumption has yet been recorded.
+      expired_target_html: Target has expired, set a new one <a href="%{path}">here</a>.
+      future_target_date: Target date is in the future so no consumption has yet been recorded.
       insights:
         title: What is your target?
         what_is_your_target:

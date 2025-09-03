@@ -64,6 +64,7 @@ RSpec.shared_examples 'target advice page' do
         Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025
         You can revise your target.
         Learn more
+        Target has expired, set a new one here.
         Your current progress
         Back to top
         Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
@@ -86,7 +87,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: 1.day.from_now)
       visit_path('Insights')
       expect(content('insights')).to \
-        have_content('The target date is in the future so no consumption has yet been recorded.')
+        have_content('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
@@ -98,6 +99,15 @@ RSpec.shared_examples 'target advice page' do
         Data from the previous year is missing so we can't calculate your target consumption.
         Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
         01 Jan 2024 - 31 Dec 2024 12,120 Previous year missing data
+      CONTENT
+    end
+
+    it 'non expired target' do
+      create_target(start_date: 6.months.ago)
+      visit_path('Insights')
+      expect(content('insights')).to have_content(<<~CONTENT)
+        Learn more
+        Your current progress
       CONTENT
     end
   end
@@ -184,7 +194,7 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: 1.day.from_now)
       visit_path('Analysis')
       expect(content('analysis')).to \
-        have_content('The target date is in the future so no consumption has yet been recorded.')
+        have_content('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
