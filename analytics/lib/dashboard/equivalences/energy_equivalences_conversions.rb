@@ -104,7 +104,7 @@ class EnergyEquivalences
   end
 
   private_class_method def self.set_co2_kg_kwh
-    if Rails.env.test?
+    if Rails.env.test? || ENV['CI'] == 'true'
       { electricity: 0.20493, gas: 0.18253 }
     else
       equivalence = SecrCo2Equivalence.find_by!(year: 2025)
@@ -114,13 +114,12 @@ class EnergyEquivalences
 
   def self.all_equivalences
     # cache to save 2ms calculation time, maintain max 100 entries to limit memory footprint
-    @@cached_equivalences = nil if @@cached_equivalences.length > 100
     @@cached_equivalences ||= create_configuration
   end
 
   def self.equivalence_types(include_basic_types = true)
     list = all_equivalences
-    list.reject! {|k, _v| [:electricity, :gas].include? k } unless include_basic_types
+    list = list.reject {|k, _v| [:electricity, :gas].include? k } unless include_basic_types
     list.keys
   end
 
