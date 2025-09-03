@@ -311,12 +311,23 @@ describe Targets::GenerateProgressService do
 
       it 'with insufficient data' do
         run(Date.new(2025, 5, 15), 1.year)
-        expect(target.reload.electricity_monthly_consumption).to be_nil
+        expect(target.reload.electricity_monthly_consumption).to eq([[2024, 5, 816, nil, nil, true],
+                                                                     [2024, 6, 1440, nil, nil, true],
+                                                                     [2024, 7, 1488, nil, nil, true],
+                                                                     [2024, 8, 1488, nil, nil, true],
+                                                                     [2024, 9, 1440, nil, nil, true],
+                                                                     [2024, 10, 1488, nil, nil, true],
+                                                                     [2024, 11, 1440, nil, nil, true],
+                                                                     [2024, 12, 1488, nil, nil, true],
+                                                                     [2025, 1, 1488, nil, nil, true],
+                                                                     [2025, 2, 1344, nil, nil, true],
+                                                                     [2025, 3, 1488, nil, nil, true],
+                                                                     [2025, 4, 1440, nil, nil, true]])
       end
 
       it 'works with an incomplete month' do
         run(Date.new(2025, 3, 15), 2.years)
-        expect(target.reload.electricity_monthly_consumption.last).to eq([2025, 4, 0, 1440, 1396.8, true])
+        expect(target.reload.electricity_monthly_consumption.last).to eq([2025, 4, nil, 1440, 1396.8, true])
       end
     end
   end
