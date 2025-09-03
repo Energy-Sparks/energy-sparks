@@ -1,5 +1,6 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
-  <%= t("school_groups.advice_pages.#{@advice_page_key}.insights.what_is_out_of_hours_usage_html") %>
+  <%= t('school_groups.advice_pages.long_term.insights.what_is_out_of_hours_usage_html',
+        fuel_type: @advice_page.fuel_type) %>
 <% end %>
 
 <%= render 'schools/advice/section_title',
@@ -24,9 +25,11 @@
 
 <%= render 'schools/advice/section_title',
            section_id: 'current',
-           section_title: t("school_groups.advice_pages.#{@advice_page_key}.insights.current_use.title") %>
+           section_title: t('school_groups.advice_pages.long_term.insights.current_use.title',
+                            fuel_type: @advice_page.fuel_type) %>
 
-<%= t("school_groups.advice_pages.#{@advice_page_key}.insights.current_use.summary_html",
+<%= t('school_groups.advice_pages.long_term.insights.current_use.summary_html',
+      fuel_type: @advice_page.fuel_type,
       link: advice_page_path(@school_group, @advice_page, :analysis, anchor: 'comparison')) %>
 
 <%= render 'insights_table',
