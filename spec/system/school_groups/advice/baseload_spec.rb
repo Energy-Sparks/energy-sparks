@@ -117,7 +117,7 @@ describe 'School group baseload page' do
       context 'with comparison section' do
         it { expect(page).to have_content(I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.title')) }
 
-        it_behaves_like 'a school comparison report with a table' do
+        it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }
           let(:expected_school) { school }
           let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }

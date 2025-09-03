@@ -19,7 +19,7 @@
 <% end %>
 <p class="pb-5">
   <%= link_to t('school_groups.comparisons.view_detailed_comparison'),
-              group_advice_page_path(@school_group, @advice_page_key, :analysis, anchor: 'potential-savings') %>
+              advice_page_path(@school_group, @advice_page, :analysis, anchor: 'potential-savings') %>
 </p>
 
 <%= render 'schools/advice/section_title',
@@ -27,7 +27,7 @@
            section_title: t("school_groups.advice_pages.#{@advice_page_key}.insights.current_use.title") %>
 
 <%= t("school_groups.advice_pages.#{@advice_page_key}.insights.current_use.summary_html",
-      link: group_advice_page_path(@school_group, @advice_page_key, :analysis, anchor: 'comparison')) %>
+      link: advice_page_path(@school_group, @advice_page, :analysis, anchor: 'comparison')) %>
 
 <%= render ComparisonTableComponent.new(
       report: @report, advice_page: @advice_page, table_name: :table, index_params: index_params,

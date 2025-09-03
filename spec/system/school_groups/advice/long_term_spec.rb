@@ -110,7 +110,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
       context 'with comparison section' do
         it { expect(page).to have_content(I18n.t("school_groups.advice_pages.#{advice_page.key}.analysis.comparisons.title")) }
 
-        it_behaves_like 'a school comparison report with a table' do
+        it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }
           let(:expected_school) { school }
           let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page.key.to_sym]) }
