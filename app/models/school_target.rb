@@ -54,6 +54,10 @@ class SchoolTarget < ApplicationRecord
   after_update :ensure_observation_date_is_correct
   after_save :add_observation
 
+  alias_attribute :storage_heater, :storage_heaters
+  alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
@@ -108,9 +112,15 @@ class SchoolTarget < ApplicationRecord
   MONTHLY_CONSUMPTION_FIELDS =
     %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
 
-  def monthly_consumption(fuel_type)
+  def monthly_consumption(fuel_type, missing: true)
     consumption = self["#{fuel_type}_monthly_consumption"]
-    consumption&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+                  &.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+    consumption&.reject! { |month| month[:missing] } unless missing
+    consumption
+  end
+
+  def target(fuel_type)
+    self[fuel_type]
   end
 
   private

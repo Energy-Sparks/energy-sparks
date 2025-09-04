@@ -24,7 +24,8 @@
         <% end %>
       <% end %>
 
-      <%= render AdvicePageListComponent.new(id: 'detailed-analysis', classes: 'mt-4 mb-4', school: @school) %>
+      <%= render AdvicePageListComponent.new(id: 'detailed-analysis', classes: 'mt-4 mb-4', school: @school,
+                                             current_user:) %>
 
       <%= render AdviceRemindersComponent.new(
             school: @school,
