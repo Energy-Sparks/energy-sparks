@@ -1,17 +1,29 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
-        fuel_type: @advice_page.fuel_type&.to_sym,
-        percent: format_unit(@target[@fuel_type], { units: :percent, options: { scale: false } }),
-        target_date: @target.target_date.strftime('%B %Y')) %>
+        fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+        percent: formatted_target,
+        target_date: formatted_target_date) %>
+  <% if can?(:manage, @target) %>
+    <p><%= t('advice_pages.target.insights.what_is_your_target.revise_html',
+             path: edit_school_school_target_path(@target.school, @target)) %></p>
+  <% end %>
+  <% c.with_link do
+       link_to t('common.labels.learn_more'), polymorphic_path([@fuel_type, :target_learn_more, @school, :advice])
+     end %>
+<% end %>
+<% if @target.target_date < Date.current %>
+  <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do |c| %>
+    <% if @consumption.data.any? { |month| month[:missing] }
+         t('advice_pages.target.insights.expired_target_waiting')
+       else
+         t('advice_pages.target.insights.expired_target_html', path: new_school_school_target_path(@school))
+       end %>
+  <% end %>
 <% end %>
 <%= render 'schools/advice/section_title',
            section_id: 'progress',
            section_title: t('advice_pages.target.insights.your_current_progress.title') %>
 <%= render 'meeting_target_prompt' %>
-<% if can?(:manage, @target) %>
-  <%= link_to t('schools.school_targets.title.revise_your_target'),
-              edit_school_school_target_path(@target.school, @target), class: 'btn btn-default' %>
-<% end %>
 <table class="mt-2 table table-sm advice-table">
   <thead>
     <th><%= t('advice_pages.tables.columns.period') %></th>
@@ -21,19 +33,32 @@
   </thead>
   <tbody>
     <tr>
-      <% unless @last_consumption_month.nil? %>
-        <td><%= format_date_range([@target.start_date, Date.new(@last_consumption_month[:year],
-                                                                @last_consumption_month[:month]).end_of_month]) %></td>
-        <td><%= format_unit(@current_consumption, :kw) %></td>
-        <td><%= format_unit(@target_consumption, :kw) %></td>
-        <td td class="text-right">
-          <%= up_downify(format_unit(percent_change(@current_consumption, @target_consumption), :relative_percent),
-                         sanitize: false) %></td>
+      <% if @consumption.last_month.nil? %>
+        <td><%= "#{@target.start_date.to_fs(:es_short)} -" %></td>
+        <td><%= format_unit(@consumption.data.pluck(:current_consumption).compact.sum, :kw) %></td>
+        <td><%= target_consumption = @consumption.data.pluck(:target_consumption)
+                if target_consumption.include?(nil)
+                  t('advice_pages.target.insights.your_current_progress.target_missing')
+                else
+                  format_unit(target_consumption.sum, :kw)
+                end %></td>
+        <td></td>
+      <% else %>
+        <td><%= format_date_range([@target.start_date, Date.new(@consumption.last_month[:year],
+                                                                @consumption.last_month[:month]).end_of_month]) %></td>
+        <td><%= format_unit(@consumption.current, :kw) %></td>
+        <td><%= format_unit(@consumption.target, :kw) %></td>
+        <td td class="text-right"><%= formatted_target_change(@consumption.current, @consumption.target) %></td>
       <% end %>
     </tr>
   </tbody>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption' %>
-<%= t('advice_pages.target.insights.your_current_progress.text_html',
-      analysis_path: electricity_target_analysis_school_advice_path(@school),
-      comparison_path: benchmarks_compare_index_path) %>
+<% analysis_path = polymorphic_path([@fuel_type, :target_analysis, @school, :advice])
+   if @fuel_type == :storage_heater %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_no_comparison_html', analysis_path:) %>
+<% else %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_html',
+        analysis_path:,
+        comparison_path: compare_for_school_group_path("#{@fuel_type}_targets", @school)) %>
+<% end %>

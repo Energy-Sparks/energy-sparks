@@ -20,7 +20,17 @@
                     visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget),
                     options: { match_controller: true } do |s| %>
     <% s.with_item(name: Schools::SchoolTargetsController.breadcrumb(current_user),
-                   href: school_school_targets_path(school), classes: 'section-link') %>
+                   href: if Flipper.enabled?(:target_advice_pages2025, current_user)
+                           most_recent_target = @school.most_recent_target
+                           if most_recent_target && !most_recent_target.expired?
+                             edit_school_school_target_path(school, most_recent_target)
+                           else
+                             new_school_school_target_path(school)
+                           end
+                         else
+                           school_school_targets_path(school)
+                         end,
+                   classes: 'section-link') %>
   <% end %>
 
   <% c.with_section(name: t('advice_pages.nav.sections.electricity'),

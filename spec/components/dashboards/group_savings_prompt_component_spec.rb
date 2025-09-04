@@ -20,29 +20,8 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
     }
   end
 
-  before do
-    alert_type = create(:alert_type, fuel_type: :gas, frequency: :weekly)
-    create(:alert_type_rating_content_version,
-                             alert_type_rating: create(:alert_type_rating,
-                                                       alert_type: alert_type,
-                                                       management_priorities_active: true,
-                                                       description: 'high'),
-                              management_priorities_title: 'Spending too much money on heating'
-    )
-
-    school_group.schools.each do |school|
-      create(:alert, :with_run,
-        alert_type: alert_type,
-        run_on: Time.zone.today, school: school,
-        rating: 2.0,
-        template_data: {
-          average_one_year_saving_£: '£1,000',
-          one_year_saving_co2: '1,100 kg CO2',
-          one_year_saving_kwh: '1,111 kWh'
-        }
-      )
-      Alerts::GenerateContent.new(school).perform
-    end
+  include_context 'with a group management priority' do
+    let(:schools) { school_group.schools }
   end
 
   context 'with priority actions' do
@@ -54,7 +33,12 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
     it { expect(html).to have_content('Spending too much money on heating') }
     it { expect(html).to have_content('gas') }
     it { expect(html).to have_content('2 schools') }
-    it { expect(html).to have_content('2,222 kWh') }
+    it { expect(html).to have_content('4,400 kWh') }
+
+    it {
+      expect(html).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_savings'),
+                                   href: priorities_school_group_advice_path(school_group))
+    }
 
     context 'when displaying co2' do
       let(:metric) { :co2 }

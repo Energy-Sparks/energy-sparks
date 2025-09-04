@@ -1,0 +1,66 @@
+<div class="text-left">
+  <% if alert_type_rating.priority_action_modal_text? %>
+    <%= alert_type_rating.priority_action_modal_text.html_safe %>
+  <% end %>
+</div>
+
+<p><%= t('school_groups.priority_actions.modal_intro') %></p>
+
+<div class='text-right pt-3'>
+  <%= link_to t('school_groups.download_as_csv'),
+              polymorphic_path(path, params: { format: :csv, alert_type_rating_ids: [alert_type_rating.id] }),
+              class: 'btn btn-sm btn-default',
+              id: 'download-priority-actions-school-csv' %>
+</div>
+
+<table id="school-priorities-<%= alert_type_rating.id %>"
+       class="table table-borderless advice-table advice-priority-table" style="width: 100%;">
+  <thead>
+    <tr>
+      <th colspan="<%= can?(:update_settings, school_group) ? '2' : '1' %>"></th>
+      <th class="text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
+      <th class="" colspan="1"></th>
+    </tr>
+    <tr>
+      <th><%= t('common.school') %></th>
+      <% if can?(:update_settings, school_group) %>
+        <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
+      <% end %>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+      <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% sort_priority_actions(priority_actions[alert_type_rating]).each do |saving| %>
+      <tr>
+        <td>
+          <%= link_to saving.school.name, school_path(saving.school) %>
+        </td>
+        <% if can?(:update_settings, school_group) %>
+          <td class="text-right">
+            <%= saving.school.school_group_cluster_name %>
+          </td>
+        <% end %>
+        <td class="text-right" data-order="<%= saving.one_year_saving_kwh %>">
+          <%= format_unit(saving.one_year_saving_kwh, :kwh) %>
+        </td>
+        <td class="text-right" data-order="<%= saving.average_one_year_saving_gbp %>">
+          <%= format_unit(saving.average_one_year_saving_gbp, :£) %>
+        </td>
+        <td class="text-right" data-order="<%= saving.one_year_saving_co2 %>">
+          <%= format_unit(saving.one_year_saving_co2, :co2) %>
+        </td>
+        <td class="text-right">
+          <% if alert_type_rating.alert_type.advice_page.present? %>
+            <%= link_to t('school_groups.priority_actions.view_analysis'),
+                        advice_page_path(saving.school, alert_type_rating.alert_type.advice_page,
+                                         alert_type_rating.alert_type.advice_page_tab_for_link_to,
+                                         anchor: alert_type_rating.alert_type.link_to_section) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

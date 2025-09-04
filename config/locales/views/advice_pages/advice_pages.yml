@@ -15,6 +15,7 @@ en:
         title: Long term trends
       recent_trend:
         title: Recent trend
+    authorisation_failed: Only an admin or staff user for this school can access this content
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
@@ -98,6 +99,7 @@ en:
         heating_control: Heating control
         hot_water: Hot water
         solar_pv: Solar PV
+        storage_heater_target: Target
         storage_heaters: Storage heaters
         thermostatic_control: Thermostatic control
       sections:

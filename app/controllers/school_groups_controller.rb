@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class SchoolGroupsController < ApplicationController
+  include SchoolGroupAccessControl
   include PartnersHelper
   include Promptable
   include Scoring
@@ -10,25 +11,31 @@ class SchoolGroupsController < ApplicationController
 
   before_action :find_schools_and_partners
   before_action :redirect_unless_authorised, except: [:map]
-  before_action :build_breadcrumbs
+  before_action :breadcrumbs
   before_action :find_school_group_fuel_types
   before_action :set_show_school_group_message
 
   skip_before_action :authenticate_user!
 
   def show
-    respond_to do |format|
-      format.html {}
-      format.csv do
-        send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
-                                                            schools: @schools,
-                                                            include_cluster: include_cluster).export,
-                  filename: csv_filename_for('recent_usage')
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      render :show, layout: 'dashboards'
+    else
+      respond_to do |format|
+        format.html {}
+        format.csv do
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                              schools: @schools,
+                                                              include_cluster: include_cluster).export,
+                    filename: csv_filename_for('recent_usage')
+        end
       end
     end
   end
 
-  def map; end
+  def map
+    @grouped_schools = @school_group.grouped_schools_by_name(scope: School.visible.includes(:configuration).by_name)
+  end
 
   def comparisons
     respond_to do |format|
@@ -47,6 +54,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def priority_actions
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      redirect_to priorities_school_group_advice_path(@school_group) and return
+    end
     respond_to do |format|
       format.html do
         service = SchoolGroups::PriorityActions.new(@schools)
@@ -60,6 +70,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def current_scores
+    if Flipper.enabled?(:group_dashboards_2025, current_user)
+      redirect_to scores_school_group_advice_path(@school_group) and return
+    end
     setup_scores_and_years(@school_group)
     respond_to do |format|
       format.html {}
@@ -112,19 +125,12 @@ class SchoolGroupsController < ApplicationController
     @fuel_types = @school_group.fuel_types
   end
 
-  def redirect_unless_authorised
-    # no permission on group
-    redirect_to map_school_group_path(@school_group) and return if cannot?(:compare, @school_group)
-    # no permissions on any current schools in group
-    redirect_to map_school_group_path(@school_group) and return if @schools.empty?
-  end
-
   def find_school_group
     @school_group = SchoolGroup.find(params[:id])
   end
 
-  def build_breadcrumbs
-    set_breadcrumbs(name: I18n.t("school_groups.titles.#{action_name}"))
+  def breadcrumbs
+    build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
   end
 
   def find_schools_and_partners

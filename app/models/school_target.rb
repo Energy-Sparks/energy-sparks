@@ -54,6 +54,10 @@ class SchoolTarget < ApplicationRecord
   after_update :ensure_observation_date_is_correct
   after_save :add_observation
 
+  alias_attribute :storage_heater, :storage_heaters
+  alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
@@ -110,18 +114,13 @@ class SchoolTarget < ApplicationRecord
 
   def monthly_consumption(fuel_type, missing: true)
     consumption = self["#{fuel_type}_monthly_consumption"]
-    consumption&.map! { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+                  &.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
     consumption&.reject! { |month| month[:missing] } unless missing
     consumption
   end
 
-  def monthly_consumption_meeting_target(fuel_type)
-    consumption = monthly_consumption(fuel_type, missing: false)
-    return nil if consumption.nil?
-
-    current_consumption = consumption.sum { |month| month[:current_consumption] }
-    target_consumption = consumption.sum { |month| month[:target_consumption] }
-    current_consumption <= target_consumption
+  def target(fuel_type)
+    self[fuel_type]
   end
 
   private

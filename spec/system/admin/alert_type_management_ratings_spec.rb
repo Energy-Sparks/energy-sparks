@@ -155,6 +155,11 @@ RSpec.describe 'alert type management', type: :system do
           end
         end
 
+        check 'Group dashboard alert'
+        within('#group_dashboard_alert-en-content') do
+          fill_in_trix with: 'Content for group alert'
+        end
+
         click_on 'Create content'
 
         with_retry { expect(gas_fuel_alert_type.ratings.size).to eq(1) }
@@ -165,6 +170,7 @@ RSpec.describe 'alert type management', type: :system do
         expect(first_content.management_dashboard_title.to_plain_text).to eq('MDASH - Your school is using gas')
         expect(first_content.management_dashboard_title(locale: :cy).to_plain_text).to eq('MDASH WELSH - Your school is using gas')
         expect(first_content.management_priorities_title.to_plain_text).to eq('Your school is spending too much on gas')
+        expect(first_content.group_dashboard_title.to_plain_text).to eq('Content for group alert')
 
         click_on 'Edit'
 
