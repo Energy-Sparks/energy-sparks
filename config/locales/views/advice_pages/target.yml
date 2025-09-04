@@ -23,9 +23,10 @@ en:
           this_year: This year (kWh)
           title: Monthly progress
         title: Progress report
-      expired_target_html: Target has expired, set a new one <a href="%{path}">here</a>.
       future_target_date: Target date is in the future so no consumption has yet been recorded.
       insights:
+        expired_target_html: Target has expired, set a new one <a href="%{path}">here</a>.
+        expired_target_waiting: Target has expired but we are still waiting for data for it.
         title: What is your target?
         what_is_your_target:
           revise_html: <p>You can <a href="%{path}">revise your target</a>.
@@ -39,7 +40,7 @@ en:
           text_html: <p>View <a href="%{analysis_path}">your detailed progress report</a> or <a href="%{comparison_path}">compare progress with other schools in your group</a>.</p>
           text_no_comparison_html: <p>View <a href="%{analysis_path}">your detailed progress report</a>.<p>
           title: Your current progress
-      missing_previous_year: Data from the previous year is missing so we can't calculate your target consumption.
+      missing_previous_year_html: Data from the previous year is missing so we can't calculate your target consumption.  See <a href="%{path}">here</a> for more information about your usage.
       new_target:
         text: Data for your new target should be available tomorrow.
         title: Waiting to process data for your new target

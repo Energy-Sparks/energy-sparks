@@ -13,7 +13,11 @@
 <% end %>
 <% if @target.target_date < Date.current %>
   <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do |c| %>
-    <% t('advice_pages.target.expired_target_html', path: new_school_school_target_path(@school)) %>
+    <% if @consumption.data.any? { |month| month[:missing] }
+         t('advice_pages.target.insights.expired_target_waiting')
+       else
+         t('advice_pages.target.insights.expired_target_html', path: new_school_school_target_path(@school))
+       end %>
   <% end %>
 <% end %>
 <%= render 'schools/advice/section_title',
@@ -30,9 +34,8 @@
   <tbody>
     <tr>
       <% if @consumption.last_month.nil? %>
-        <td><%= format_date_range([@target.start_date, Date.new(@consumption.data.last[:year],
-                                                                @consumption.data.last[:month]).end_of_month]) %></td>
-        <td><%= format_unit(@consumption.data.sum { |month| month[:current_consumption] }, :kw) %></td>
+        <td><%= "#{@target.start_date.to_fs(:es_short)} -" %></td>
+        <td><%= format_unit(@consumption.data.pluck(:current_consumption).compact.sum, :kw) %></td>
         <td><%= target_consumption = @consumption.data.pluck(:target_consumption)
                 if target_consumption.include?(nil)
                   t('advice_pages.target.insights.your_current_progress.target_missing')

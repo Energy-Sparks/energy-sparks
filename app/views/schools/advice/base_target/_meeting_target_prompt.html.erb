@@ -3,7 +3,9 @@
      text, status = if @target.start_date > Date.current
                       [t('advice_pages.target.future_target_date'), :positive]
                     elsif previous_year_missing
-                      [t('advice_pages.target.missing_previous_year'), :negative]
+                      [t('advice_pages.target.missing_previous_year_html',
+                         path: polymorphic_path([@school, :advice, @fuel_type, :long_term])),
+                       :negative]
                     else
                       meeting_target = @consumption.current <= @consumption.target
                       [t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}",

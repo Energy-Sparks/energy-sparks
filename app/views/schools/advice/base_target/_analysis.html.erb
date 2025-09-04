@@ -29,7 +29,8 @@
 
       %i[previous target current].each do |field|
         unless month[:"#{field}_consumption"].nil? || month[:"#{field}_consumption"].zero?
-          month[:"#{field}_consumption"] = consumption[i - 1][:"#{field}_consumption"] + month[:"#{field}_consumption"]
+          previous = consumption[i - 1][:"#{field}_consumption"] || 0
+          month[:"#{field}_consumption"] = previous + month[:"#{field}_consumption"]
         end
       end
     end
