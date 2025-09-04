@@ -29,7 +29,7 @@ RSpec.shared_examples_for 'a group out of hours advice page' do
     create(:advice_page_school_benchmark,
             school: school,
             advice_page: advice_page,
-            benchmarked_as: :exemplar_school)
+            benchmarked_as: :benchmark_school)
 
     alert_run = create(:alert_generation_run, school: school)
 
@@ -103,7 +103,7 @@ RSpec.shared_examples_for 'a group out of hours advice page' do
           end
           let(:expected_rows) do
             [
-              [school.name, 'Exemplar', '100', '£200', '300', 'View analysis']
+              [school.name, 'Well managed', '100', '£200', '300', 'View analysis']
             ]
           end
         end
@@ -112,7 +112,7 @@ RSpec.shared_examples_for 'a group out of hours advice page' do
       context 'with comparison section' do
         it { expect(page).to have_content(I18n.t("school_groups.advice_pages.#{advice_page_key}.analysis.comparisons.title")) }
 
-        it_behaves_like 'a school comparison report with a table' do
+        it_behaves_like 'a school comparison report with a table', visit: false do
           let(:expected_report) { report }
           let(:expected_school) { school }
           let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }

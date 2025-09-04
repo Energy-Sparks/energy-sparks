@@ -14,10 +14,9 @@ module SchoolGroups
       end
 
       def analysis
-        @baseload_benchmarks = SchoolGroups::CategoriseSchools.new(schools: @schools).school_categories(@advice_page)
         alert_type = AlertType.find_by_class_name('AlertElectricityBaseloadVersusBenchmark')
-        @baseload_alerts = SchoolGroups::Alerts.new(@schools).alerts(alert_type) if alert_type
-
+        @baseload_alerts = alert_type ? SchoolGroups::Alerts.new(@schools).alerts(alert_type) : []
+        @categorised_savings = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_savings(@advice_page, @baseload_alerts)
         @baseload_per_pupil_headers = Comparison::BaseloadPerPupil.report_headers
       end
 

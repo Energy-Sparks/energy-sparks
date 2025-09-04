@@ -18,4 +18,31 @@
 #
 class Comparison::ChangeInElectricitySinceLastYear < Comparison::View
   scope :with_data, -> { where('previous_year_electricity_kwh IS NOT NULL AND current_year_electricity_kwh IS NOT NULL') }
+
+  def self.default_header_groups
+    [
+      { label: '',
+        headers: [I18n.t('analytics.benchmarking.configuration.column_headings.school')] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
+        ] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
+        ] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.gbp'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.change_pct')
+        ] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.solar_self_consumption'),
+        headers: [I18n.t('analytics.benchmarking.configuration.column_headings.estimated')] }
+    ]
+  end
 end
