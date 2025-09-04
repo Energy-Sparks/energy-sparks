@@ -171,7 +171,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     end
 
     it 'displays a positive gas prompt' do
-      create(:school_target, :with_monthly_consumption, school:, fuel_type: :gas, actual: 1000)
+      create(:school_target, :with_monthly_consumption, school:, fuel_type: :gas, current_consumption: 1000)
       expect(div_text).to eq(
         "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n\n" \
         'Review progress'

@@ -28,10 +28,8 @@ module Schools
         @consumption.data = @target.monthly_consumption(@fuel_type)
         render 'new_target' and return if @consumption.data.nil?
 
-        non_missing = @consumption.data.reject { |month| month[:missing] }
+        non_missing, @consumption.current, @consumption.target = @target.monthly_consumption_totals(@fuel_type)
         @consumption.last_month = non_missing.last
-        @consumption.current = non_missing.sum { |month| month[:current_consumption] }
-        @consumption.target = non_missing.sum { |month| month[:target_consumption] }
       end
 
       def advice_page_key
