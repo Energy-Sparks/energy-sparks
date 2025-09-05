@@ -58,6 +58,8 @@ class SchoolTarget < ApplicationRecord
   alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
   alias_attribute :storage_heater_progress, :storage_heaters_progress
 
+  FUEL_TYPES = %i[electricity gas storage_heater].freeze
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
@@ -112,15 +114,22 @@ class SchoolTarget < ApplicationRecord
   MONTHLY_CONSUMPTION_FIELDS =
     %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
 
-  def monthly_consumption(fuel_type, missing: true)
-    consumption = self["#{fuel_type}_monthly_consumption"]
-                  &.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
-    consumption&.reject! { |month| month[:missing] } unless missing
-    consumption
+  def monthly_consumption(fuel_type)
+    self["#{fuel_type}_monthly_consumption"]&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
   end
 
   def target(fuel_type)
     self[fuel_type]
+  end
+
+  def monthly_consumption_status(fuel_type)
+    status = ActiveSupport::OrderedOptions.new
+    status.consumption = monthly_consumption(fuel_type)
+    status.non_missing = status.consumption&.reject { |month| month[:missing] }
+    status.current_consumption = status.non_missing&.sum { |month| month[:current_consumption] }
+    status.target_consumption = status.non_missing&.sum { |month| month[:target_consumption] }
+    status.meeting_target = status.current_consumption && status.current_consumption <= status.target_consumption
+    status
   end
 
   private

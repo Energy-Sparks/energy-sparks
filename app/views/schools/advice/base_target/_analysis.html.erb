@@ -14,7 +14,7 @@
 <p><%= t('advice_pages.target.analysis.monthly_progress.text_html',
          fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
          percent: formatted_target) %></p>
-<%= render 'monthly_table', consumption: @consumption.data %>
+<%= render 'monthly_table', consumption: @consumption.consumption %>
 
 <%= render 'schools/advice/section_title',
            section_id: 'cumulative-progress',
@@ -23,7 +23,7 @@
          fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
          percent: formatted_target,
          target_date: formatted_target_date) %></p>
-<%= consumption = @consumption.data.map(&:dup)
+<%= consumption = @consumption.consumption.map(&:dup)
     consumption.each_with_index do |month, i|
       next if i.zero?
 
