@@ -26,6 +26,7 @@ module TargetsHelper
   end
 
   def meeting_target_text(meeting_target, fuel_type)
-    t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}", fuels: fuel_type)
+    t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}",
+      fuels: t("advice_pages.fuel_type.#{fuel_type}"))
   end
 end
