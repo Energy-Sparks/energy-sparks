@@ -5,7 +5,6 @@ $(document).ready(function() {
   //they should have already made any changes to the form we're using, so this just updates
   //the explanation and then triggers the data load
   function updateChart(chartDiv) {
-
     var chartContainer = $(chartDiv).find('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
@@ -20,6 +19,16 @@ $(document).ready(function() {
         // will either be name of a sub meter type or undefined
         chartConfig.sub_meter = definitions[1];
       }
+    }
+
+    const chart_type = $(chartDiv).find("select[name='chart_selection_chart_type']").val();
+    if (chart_type) {
+      chartConfig.type = chart_type;
+    }
+
+    const school_id = $(chartDiv).find("select[name='chart_selection_school_id']").val();
+    if (school_id) {
+      chartConfig.jsonUrl = `/schools/${school_id}/chart.json`;
     }
 
     updateMeterSpecificChartState(chartDiv, chartConfig);
@@ -112,6 +121,29 @@ $(document).ready(function() {
     });
   }
 
+  function setSelectorState(fuel_type, chartDiv) {
+    const chartSelector = chartDiv.find("select[name='chart_selection_chart_type']").first();
+    const chartOptions = chartSelector.find("option");
+
+    var firstOption = null;
+    $(chartOptions).each(function(index, option) {
+      option_fuel_type = $(option).data('fuel_type');
+      if (option_fuel_type == fuel_type) {
+        if (firstOption == null) {
+          firstOption = $(option).val();
+        }
+        option.disabled = false;
+        option.hidden = false;
+      } else {
+        option.disabled = true;
+        option.hidden = true;
+      }
+    });
+
+    chartSelector.val(firstOption);
+    chartSelector.select2({theme: 'bootstrap'});
+  }
+
   function initChart(chartDiv) {
 
     var supply = $(chartDiv).find("input[name='supply']").val();
@@ -148,7 +180,7 @@ $(document).ready(function() {
     var chartConfig = chartContainer.data('chart-config');
     setupAxisControls(chartContainer[0], chartConfig);
     setupAnalysisControls(chartContainer[0], chartConfig);
-
+    setSelectorState('electricity', $(chartDiv)); // FIXME select first option in fuel type options
     updateChart(chartDiv);
   }
 
@@ -162,6 +194,18 @@ $(document).ready(function() {
   $(document).on('change', "select[name='meter']", function() {
     logEvent('meter', '');
     updateChart($(this).closest('.charts'));
+  });
+
+  $(document).on('change', "select[name='chart_selection_school_id'], select[name='chart_selection_chart_type']", function() {
+    const chartDiv = $(this).closest('.charts');
+    updateChart(chartDiv);
+  });
+
+  $(document).on('change', "input[name='chart_selection_fuel_type']", function() {
+    const fuel_type = $(this).data('fuel_type');
+    const chartDiv = $(this).closest('.charts');
+    setSelectorState(fuel_type, chartDiv);
+    updateChart(chartDiv);
   });
 
 });
