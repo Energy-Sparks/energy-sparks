@@ -4,11 +4,11 @@
   .neutral { background-color: <%= Colours.neutral_light %>; }
   .lh-md { line-height: 1.75; }
 </style>
-<% target_consumptions = %i[electricity gas].filter_map do |fuel_type|
-     meeting_target = @school.current_target.monthly_consumption_meeting_target(fuel_type)
-     meeting_target.nil ? nil : [fuel_type, meeting_target]
+<% target_consumptions = SchoolTarget::FUEL_TYPES.filter_map do |fuel_type|
+     meeting_target = @school.current_target&.monthly_consumption_status(fuel_type)&.meeting_target
+     [fuel_type, meeting_target] unless meeting_target.nil?
    end %>
-<% dashboard_alert_groups(alert_contents).each do |group, alerts|
+<% dashboard_alert_groups(alert_contents, filter: false).each do |group, alerts|
      next if alerts.empty? &&
        !(Flipper.enabled?(:target_advice_pages2025) && group == :priority && target_consumptions.present?) %>
   <h4 class="py-4"><%= t("advice_pages.alerts.groups.#{group}") %></h4>

@@ -31,7 +31,7 @@
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(school) %>
           <% end %>
           <% if Flipper.enabled?(:target_advice_pages2025, user) %>
-            <% %i[electricity gas storage_heater].each do |fuel_type|
+            <% SchoolTarget::FUEL_TYPES.each do |fuel_type|
                  meeting_target = @target&.monthly_consumption_status(fuel_type)&.meeting_target
                  next if meeting_target.nil? %>
               <%= c.with_prompt icon: fuel_type_icon(fuel_type),
