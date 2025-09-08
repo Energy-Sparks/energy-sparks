@@ -43,7 +43,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
     end
   end
 
-  describe 'when logged in' do
+  describe 'when logged in as admin' do
     before { sign_in(admin) }
 
     describe 'Viewing the index' do
@@ -95,6 +95,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
             fill_in :testimonial_role_en, with: 'Updated role'
             fill_in 'Organisation', with: 'Updated organisation'
             select 'default', from: 'Category'
+            attach_file 'Image', Rails.root.join('spec/fixtures/images/boiler.jpg')
             check 'Active'
             click_on 'Save'
           end
@@ -106,6 +107,11 @@ describe 'admin testimonials', :include_application_helper, type: :system do
           it { expect(page).to have_content('Updated role') }
           it { expect(page).to have_content('Updated organisation') }
           it { expect(page).to have_content('default') }
+
+          it 'resizes images to 1400px width max' do
+            testimonial.reload.image.analyze
+            expect(testimonial.image.metadata[:width]).to eq(1400)
+          end
         end
       end
 
@@ -118,6 +124,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
 
         context 'with invalid attributes' do
           before do
+            attach_file 'Image', Rails.root.join('spec/fixtures/documents/fake-bill.pdf')
             # Submit the form without filling in required fields
             click_on 'Save'
           end
@@ -126,6 +133,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
           it { expect(page).to have_content("Quote *\ncan't be blank") }
           it { expect(page).to have_content("Name *\ncan't be blank") }
           it { expect(page).to have_content("Organisation *\ncan't be blank") }
+          it { expect(page).to have_content("Image *\nhas an invalid content type (authorized content types are PNG, JPG)") }
         end
 
         context 'with valid attributes' do
@@ -137,7 +145,7 @@ describe 'admin testimonials', :include_application_helper, type: :system do
             fill_in 'Organisation', with: 'New organisation'
             select 'default', from: 'Category'
             check 'Active'
-            attach_file 'Image', Rails.root + 'spec/fixtures/images/placeholder.png'
+            attach_file 'Image', Rails.root.join('spec/fixtures/images/boiler.jpg')
             click_on 'Save'
           end
 
@@ -148,6 +156,12 @@ describe 'admin testimonials', :include_application_helper, type: :system do
           it { expect(page).to have_content('New role') }
           it { expect(page).to have_content('New organisation') }
           it { expect(page).to have_content('default') }
+
+          it 'resizes images to 1400px width max' do
+            testimonial = Testimonial.last
+            testimonial.image.analyze
+            expect(Testimonial.last.image.metadata[:width]).to be(1400)
+          end
         end
       end
 

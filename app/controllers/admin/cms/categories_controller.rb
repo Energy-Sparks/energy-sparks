@@ -14,7 +14,7 @@ module Admin
       def create
         @category = ::Cms::Category.build(category_params.merge(created_by: current_user))
         if @category.save
-          redirect_to admin_cms_categories_path, notice: 'Category has been created'
+          redirect_to category_path(@category), notice: 'Category has been created'
         else
           render :new
         end
@@ -25,7 +25,7 @@ module Admin
 
       def update
         if @category.update(category_params.merge(updated_by: current_user))
-          redirect_to admin_cms_categories_path, notice: 'Category has been updated'
+          redirect_to category_path(@category), notice: 'Category has been updated'
         else
           render :edit
         end
@@ -33,12 +33,12 @@ module Admin
 
       def publish
         @category.update!(published: true, updated_by: current_user)
-        redirect_back fallback_location: admin_cms_categories_path, notice: 'Content published'
+        redirect_back fallback_location: category_path(@category), notice: 'Content published'
       end
 
       def hide
         @category.update!(published: false, updated_by: current_user)
-        redirect_back fallback_location: admin_cms_categories_path, notice: 'Content hidden'
+        redirect_back fallback_location: category_path(@category), notice: 'Content hidden'
       end
 
       private

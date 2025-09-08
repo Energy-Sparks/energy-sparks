@@ -4,7 +4,9 @@ FactoryBot.define do
   factory :meter, class: 'Dashboard::Meter' do
     transient do
       meter_collection        { nil }
-      amr_data                { build(:amr_data, :with_days, day_count: 30) }
+      kwh_data_x48            { nil }
+      day_count               { 30 }
+      amr_data                { build(:amr_data, :with_days, day_count:, kwh_data_x48:) }
       type                    { :gas }
       sequence(:identifier)   { |n| n }
       sequence(:name)         { |n| "Meter #{n}" }
@@ -17,13 +19,8 @@ FactoryBot.define do
     end
 
     initialize_with do
-      new(meter_collection: meter_collection,
-          amr_data: amr_data, type: type, identifier: identifier,
-          name: name, floor_area: floor_area, number_of_pupils: number_of_pupils,
-          solar_pv_installation: solar_pv_installation,
-          external_meter_id: external_meter_id,
-          dcc_meter: dcc_meter,
-          meter_attributes: meter_attributes)
+      new(meter_collection:, amr_data:, type:, identifier:, name:, floor_area:, number_of_pupils:,
+          solar_pv_installation:, external_meter_id:, dcc_meter:, meter_attributes:)
     end
 
     trait :with_flat_rate_tariffs do

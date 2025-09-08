@@ -5,18 +5,6 @@ Rails.application.routes.draw do
   get "/robots.txt" => "robots_txts#show", as: :robots
   get 'up' => 'rails/health#show', as: :rails_health_check
 
-  # old urls maintained to avoid breakage
-  get 'for-teachers', to: redirect('/for-schools')
-  get 'for-pupils', to: redirect('/for-schools')
-  get 'for-management', to: redirect('/for-schools')
-  get 'enrol', to: redirect('/find-out-more')
-
-  # Short link for marketing
-  get 'find-out-more', to: 'landing_pages#find_out_more', as: :find_out_more
-  get 'for-schools', to: 'home#for_schools'
-  get 'for-local-authorities', to: 'home#for_local_authorities'
-  get 'for-multi-academy-trusts', to: 'home#for_multi_academy_trusts'
-
   get 'case-studies', to: 'case_studies#index', as: :case_studies
   get 'case_studies/:id/:serve', to: 'case_studies#download'
   get 'case-studies/:id/download', to: 'case_studies#download', as: :case_study_download
@@ -51,7 +39,7 @@ Rails.application.routes.draw do
   get 'training', to: 'home#training'
   get 'energy-audits', to: 'home#energy_audits'
   get 'education-workshops', to: 'home#education_workshops'
-  get 'pricing', to: 'home#pricing'
+  get 'product', to: 'home#product'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
   get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
@@ -60,6 +48,10 @@ Rails.application.routes.draw do
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
+
+  get '/r/school(/*path)', to: 'redirects#school_page_redirect', as: :school_page_redirect, constraints: { path: /.*/ }
+  # Add the following route once group page redirects are implemented:
+  # get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
 
   direct :cdn_link do |model, options|
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
@@ -91,18 +83,18 @@ Rails.application.routes.draw do
 
   resources :campaigns, controller: 'landing_pages', only: [:index] do
     collection do
-      get 'find-out-more', as: :find_out_more
       get 'more-information', as: :more_information
-      get 'book-demo', as: :book_demo
-      post :submit_contact
-      get 'thank-you', as: :thank_you
+      get 'watch-demo', as: :watch_demo
+      post 'thank-you', as: :thank_you
       get 'mat-pack', as: :mat_pack
       get 'school-pack', as: :school_pack
-      get 'example-adult-dashboard', as: :example_adult_dashboard
-      get 'example-pupil-dashboard', as: :example_pupil_dashboard
       get 'example-mat-dashboard', as: :example_mat_dashboard
       get 'example-la-dashboard', as: :example_la_dashboard
-      get 'demo-video', as: :demo_video
+      get 'short-demo-video', as: :short_demo_video
+      get 'long-demo-video', as: :long_demo_video
+      get 'introductory-video', as: :introductory_video
+      get 'energy-efficiency-report', as: :energy_efficiency_report
+      get 'impact-report', as: :impact_report
     end
   end
 
@@ -284,7 +276,33 @@ Rails.application.routes.draw do
         end
       end
       resources :secr, only: [:index]
+      resources :school_engagement, only: [:index]
+      resource :advice, controller: 'advice', only: [:show] do
+        [:baseload,
+         :electricity_out_of_hours,
+         :gas_out_of_hours].each do |page|
+          # Override Rails default behaviour of mapping HEAD request to a GET and send to a
+          # generic action method that returns OK with no content.
+          [:insights, :analysis].each do |action|
+            match "#{page}/#{action}", controller: "advice/#{page}", action: 'handle_head', via: :head
+          end
+
+          resource page, controller: "advice/#{page}", only: [:show] do
+            member do
+              get :insights
+              get :analysis
+            end
+          end
+        end
+
+        collection do
+          get :priorities
+          get :alerts
+          get :scores
+        end
+      end
     end
+
     member do
       get :map
       get :recent_usage
@@ -460,7 +478,7 @@ Rails.application.routes.draw do
           post :submit_job
         end
       end
-      resources :solis_cloud_installations, only: [:new, :show, :create, :edit, :update, :destroy] do
+      resources :solis_cloud_installations, except: [:index] do
         member do
           post :check
           post :submit_job
@@ -729,51 +747,61 @@ Rails.application.routes.draw do
 
     resources :activations, only: :index
     namespace :reports do
-      resources :good_jobs, only: :index
-      get 'good_jobs/export', to: 'good_jobs#export'
+      resources :activities, only: :index
+      resources :activity_types, only: [:index, :show]
       resources :alert_subscribers, only: :index
+      resources :amr_data_feed_import_logs, only: [:index]
+      resources :amr_reading_warnings, only: [:index]
+      get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
+      get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
+      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
+
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
       get 'amr_validated_readings/summary/:meter_id', to: 'amr_validated_readings#summary', as: :amr_validated_reading_summary, :defaults => { :format => :json }
 
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings, defaults: { format: 'csv' }
-      get 'tariffs', to: 'tariffs#index', as: :tariffs
-      get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
-      resources :amr_data_feed_import_logs, only: [:index]
-      get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
-      get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
-      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
 
-      resources :mailchimp_status, only: [:index]
-      resources :recent_audits, only: [:index]
-      resources :tariff_import_logs, only: [:index]
-      resources :amr_reading_warnings, only: [:index]
-      resources :activities, only: :index
-      resources :interventions, only: :index
-      resources :school_targets, only: :index
-      resources :meter_reports, only: :index
-      resources :data_loads, only: :index
-      resources :transifex_loads, only: [:index, :show]
-      resources :activity_types, only: [:index, :show]
-      resources :dcc_status, only: [:index]
-      resources :solar_panels, only: [:index]
-      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
-      resources :community_use, only: [:index]
-      resources :intervention_types, only: [:index, :show]
-      resources :missing_alert_contacts, only: [:index]
-      resources :work_allocation, only: [:index]
-      resources :user_logins, only: [:index]
-      resources :meter_loading_reports, only: :index
-      resources :engaged_groups, only: [:index]
-      resources :heating_types, only: [:index]
-      resources :manual_reads, only: [:index]
-      resources :perse_meter, only: [:index]
       resources :baseload_anomaly, only: [:index]
-      resource :unvalidated_readings, only: [:show]
+      resources :blank_readings, only: [:index]
+
+      resources :community_use, only: [:index]
+      resources :data_loads, only: :index
+      resources :dcc_status, only: [:index]
+
+      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
+
+      resources :engaged_groups, only: [:index]
+      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
+
       resource :funder_allocations, only: [:show] do
         post :deliver
       end
-      get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
+      resources :gas_anomaly, only: [:index]
+      resources :good_jobs, only: :index
+      get 'good_jobs/export', to: 'good_jobs#export'
+
+      resources :heating_types, only: [:index]
+      resources :interventions, only: :index
+      resources :intervention_types, only: [:index, :show]
+      resources :lagging_meters, only: [:index]
+      resources :mailchimp_status, only: [:index]
+      resources :manual_reads, only: [:index]
+      resources :meter_loading_reports, only: :index
+      resources :meter_reports, only: :index
+      resources :missing_alert_contacts, only: [:index]
+      resources :perse_meter, only: [:index]
+      resources :recent_audits, only: [:index]
+      resources :school_targets, only: :index
+      resources :solar_panels, only: [:index]
+      get 'tariffs', to: 'tariffs#index', as: :tariffs
+      get 'tariffs/:meter_id', to: 'tariffs#show', as: :tariff
+      resources :tariff_import_logs, only: [:index]
+      resources :transifex_loads, only: [:index, :show]
+      resource :unvalidated_readings, only: [:show]
+      resources :user_logins, only: [:index]
+      resources :work_allocation, only: [:index]
+      resources :zero_readings, only: [:index]
     end
 
     resource :settings, only: [:show, :update]
@@ -856,8 +884,6 @@ Rails.application.routes.draw do
   # Old 'find out more' pages
   get '/schools/:name/find_out_more', to: redirect('/schools/%{name}/advice')
   get '/schools/:name/find_out_more/:id', to: redirect('/schools/%{name}/advice')
-  # Maintain old scoreboard URL
-  get '/schools/:name/scoreboard', to: redirect('/scoreboards')
 
   # Old analysis pages
   get '/schools/:name/analysis', to: redirect('/schools/%{name}/advice')
@@ -873,8 +899,18 @@ Rails.application.routes.draw do
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
+  # Old marketing URLs
+  %w[
+    for-schools for-local-authorities for-multi-academy-trusts
+    for-teachers for-pupils for-management
+    enrol find-out-more pricing
+     ].each do |path|
+      get path, to: redirect(path: '/product')
+  end
+  get '/campaigns/find-out-more', to: redirect(path: '/product')
+  get '/campaigns/book-demo', to: redirect(path: '/watch-demo')
+
   match "/:code", to: "errors#show", via: :all, constraints: {
     code: /#{ErrorsController::CODES.join("|")}/
   }
-
 end

@@ -7,6 +7,7 @@ cy:
       many: '%{count} o weithredoedd'
       other: '%{count} o weithredoedd'
     application: Sbarcynni
+    author_html: gan %{author}
     back_to_top: Yn ôl i'r brig
     bar_charts: Siartiau bar
     confirm: Ydych chi'n siŵr?
@@ -15,6 +16,7 @@ cy:
     electricity_and_solar_pv: Trydan a Solar Ffotofoltaig
     email_us: e-bostio ni
     exported_solar_pv: Solar ffotofoltaig wedi'i allforio
+    programmes: Rhaglenni
     gas: Nwy
     labels:
       actions: Gweithredoedd
@@ -39,6 +41,8 @@ cy:
       download: Lawrlwytho
       edit: Golygu
       enable: Galluogi
+      energy_saving_actions: Camau gweithredu arbed ynni
+      enquire_now: Holwch nawr
       finish: Gorffen
       finished: Wedi gorffen
       home: Hafan
@@ -53,16 +57,23 @@ cy:
       not_applicable: Amh
       not_set: Heb ei osod
       place: Lle
+      points: Pwyntiau
       previous: Blaenorol
+      prices: Prisiau
       pupil_activities: Gweithgareddau disgyblion
+      pupil_led_activities: Gweithgareddau dan arweiniad disgyblion
+      read_more: Darllen rhagor
       remove: Tynnu
       report: Adrodd
       restart: Ail-ddechrau
       save: Cadw
       start: Dechrau
+      starting_from: Gan ddechrau o
       status: Statws
       submit: Cyflwyno
+      subscribe: Tanysgrifio
       type: Math
+      unsubscribe: Dad-danysgrifio
       update: Diweddaru
       upload: Uwchlwytho
       view: Gweld
@@ -70,9 +81,12 @@ cy:
       view_now: Gweld nawr
       view_opportunities: Gweld cyfleoedd
       view_results: Gweld canlyniadau
+      welcome: Croeso
       yes_label: 'Ie'
     line_graphs: Graffiau llinell
     pie_charts: Siartiau cylch
+    points: pwyntiau
+    points_html: "%{count} o bwyntiau"
     privacy_policy: polisi preifatrwydd
     school: Ysgol
     school_types:

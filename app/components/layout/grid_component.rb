@@ -1,11 +1,12 @@
 module Layout
   class GridComponent < LayoutComponent
-    attr_reader :cols, :rows, :feature
+    attr_reader :cols, :feature
 
     renders_many :cells, types: types(
       type(:block, Elements::BlockComponent),
       type(:icon, IconComponent),
       type(:image, Elements::ImageComponent),
+      type(:iframe, Elements::IframeComponent),
       type(:paragraph, Elements::TagComponent, :p),
       type(:prompt_list, PromptListComponent),
       type(:stats_card, Cards::StatsComponent),
@@ -24,22 +25,21 @@ module Layout
       end
     end
 
-    def cell(klass = nil, **kwargs, &block)
-      tag.div(class: class_names(column_classes, kwargs.delete(:cell_classes), @cell_classes, responsive_classes(klass)), &block)
+    def cell(klass = nil, column_classes: nil, **kwargs, &block)
+      tag.div(class: class_names(column_classes || default_column_classes, kwargs.delete(:cell_classes), @cell_classes, responsive_classes(klass)), &block)
     end
 
     def responsive_classes(klass)
-      if cols == 2 && klass == Elements::ImageComponent
+      if cols == 2 && klass == Elements::ImageComponent || klass == Elements::IframeComponent
         # ensure image always comes first on 2 col layouts
         return 'order-first-md-down pb-4 pb-lg-0'
       end
     end
 
-    def initialize(cols:, rows: 1, feature: false, cell_classes: '', **_kwargs)
+    def initialize(cols:, feature: false, cell_classes: '', **_kwargs)
       super
       @feature = feature
       @cols = cols
-      @rows = rows
 
       @cell_classes = cell_classes
     end
@@ -48,8 +48,10 @@ module Layout
       cells.any?
     end
 
-    def column_classes
+    def default_column_classes
       case cols
+      when 1
+        'col-12'
       when 2
         'col-12 col-lg-6'
       when 3

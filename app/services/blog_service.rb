@@ -29,8 +29,6 @@ class BlogService
 
   # To be run from cron
   def update_cache!
-    return unless Flipper.enabled?(:new_home_page)
-
     items = fetch_items
     if items&.any?
       Rails.cache.write(@key, items)

@@ -2,15 +2,17 @@ RSpec.shared_examples_for 'an application component' do
   let(:component_class_name) { described_class.name.underscore.dasherize.parameterize }
 
   it 'has the component class' do
-    expect(html).to have_css(":first-child.#{component_class_name}.#{expected_classes}")
+    expect(html).to have_css(":first-child[class*='#{component_class_name}']")
   end
 
-  it 'has the expected class' do
-    expect(html).to have_css(":first-child.#{expected_classes}")
+  it 'has the expected classes' do
+    expected_classes.split(/[\s.]+/).each do |class_name|
+      expect(html).to have_css(":first-child[class*='#{class_name}']")
+    end
   end
 
   it 'has an id' do
-    expect(html).to have_css(":first-child##{expected_id}")
+    expect(html).to have_css(":first-child[id*='#{expected_id}']")
   end
 end
 

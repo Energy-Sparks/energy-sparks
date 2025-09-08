@@ -1,6 +1,13 @@
 <%= tag.div id: id, class: classes do %>
   <div class='col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-md-12 text-center'>
     <%= header %>
-    <%= description %>
+    <%= description if description %>
+    <% if buttons.any? %>
+      <div class='mb-2 ms-2 <%= description ? 'mt-4' : 'mt-2' %>'>
+        <% buttons.each do |button| %>
+          <%= button %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 <% end %>

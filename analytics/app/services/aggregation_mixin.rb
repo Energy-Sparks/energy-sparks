@@ -131,7 +131,7 @@ module AggregationMixin
     if %i[electricity aggregated_electricity].include?(fuel_type) # TODO(PH, 6Apr19) remove : aggregated_electricity once analytics meter meta data loading changed
       meter.amr_data.set_carbon_emissions(meter.id, nil, meter_collection.grid_carbon_intensity)
     else
-      meter.amr_data.set_carbon_emissions(meter.id, EnergyEquivalences::UK_GAS_CO2_KG_KWH, nil)
+      meter.amr_data.set_carbon_emissions(meter.id, EnergyEquivalences.co2_kg_kwh(:gas), nil)
     end
   end
 

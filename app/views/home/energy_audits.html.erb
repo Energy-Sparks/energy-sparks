@@ -1,5 +1,5 @@
-<% content_for :page_title, t('energy_audits.title') %>
-<% if Flipper.enabled?(:new_audits_page, current_user) %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('energy_audits.title') %>
   <div class="container-fluid adult mb-5 py-5">
     <%= render Layout::GridComponent.new(
           id: 'hero', cols: 2, classes: 'container', feature: true, cell_classes: 'my-auto'
@@ -49,7 +49,7 @@
         <%= feature.with_price(
               label: t('common.labels.starting_from'),
               price: t('energy_audits.onsite.secondary.price'),
-              classes: 'mt-auto pt-4'
+              classes: 'mt-auto'
             ) %>
       <% end %>
       <%= grid.with_feature_card(theme: :dark, size: :sm) do |feature| %>
@@ -65,9 +65,9 @@
     <%= render Layout::GridComponent.new(
           id: 'desktop',
           cols: 2,
-          classes: 'my-5 pb-4', cell_classes: ''
+          classes: 'my-5 pb-4'
         ) do |grid| %>
-      <%= grid.with_feature_card(classes: '', size: :lg, cell_classes: 'my-auto') do |feature| %>
+      <%= grid.with_feature_card(size: :lg, cell_classes: 'my-auto') do |feature| %>
         <%= feature.with_header(title: t('energy_audits.desktop.title')) %>
         <%= feature.with_price(
               label: t('common.labels.starting_from'),
@@ -92,42 +92,5 @@
         <%= carousel.with_testimonial_card(testimonial: testimonial) %>
       <% end %>
     <% end %>
-  </div>
-<% else %>
-  <div class="application container">
-    <h1><%= t('energy_audits.title') %></h1>
-
-    <div class="row">
-      <div class="col-md-12">
-        <%= t('energy_audits.availability') %>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col-md-12">
-        <%= t('energy_audits.onsite.intro_html') %>
-        <p>
-          <%= mail_to 'hello@energysparks.uk', t('energy_audits.quote'), class: 'btn' %>
-        </p>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col-md-12">
-        <%= t('energy_audits.virtual.intro_html') %>
-        <p>
-          <%= t('energy_audits.virtual.availability') %>
-        </p>
-        <%= mail_to 'hello@energysparks.uk', t('energy_audits.quote'), class: 'btn' %></a>
-      </div>
-    </div>
-
-    <div class="row pb-4 pt-4">
-      <div class="col-md-12">
-        <div class="d-flex justify-content-center">
-          <%= image_tag('thermal-camera.png', class: 'img-fluid') %>
-        </div>
-      </div>
-    </div>
   </div>
 <% end %>

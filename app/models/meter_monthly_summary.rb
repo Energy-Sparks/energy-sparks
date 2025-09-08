@@ -49,6 +49,11 @@ class MeterMonthlySummary < ApplicationRecord
     end
   end
 
+  def self.start_date(today, years)
+    year = today.month >= 9 ? today.year - (years - 1) : today.year - years
+    Date.new(year, 9, 1)
+  end
+
   private_class_method def self.consumption_and_quality(readings_by_month, quality_method)
     consumption = []
     quality = []
@@ -104,7 +109,7 @@ class MeterMonthlySummary < ApplicationRecord
         :actual
       elsif types.intersect?(%w[SOLR SOLO SOLE BKPV])
         :estimated
-      elsif types.intersect?(%w[PROB SOL0])
+      elsif types.intersect?(%w[PROB SOL0 ZMDR])
         :incomplete
       else
         raise "unknown #{types} - #{month_start} #{month_readings}"
@@ -115,10 +120,5 @@ class MeterMonthlySummary < ApplicationRecord
   private_class_method def self.calculate_missing_days(days_with_readings, month_start)
     all_days_in_month = (month_start..month_start.end_of_month)
     all_days_in_month.reject { |day| days_with_readings.include?(day) }
-  end
-
-  def self.start_date(today, years)
-    year = today.month >= 9 ? today.year - (years - 1) : today.year - years
-    Date.new(year, 9, 1)
   end
 end

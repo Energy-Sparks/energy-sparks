@@ -57,9 +57,8 @@ class User < ApplicationRecord
 
   watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id,
                          :active
-  after_destroy :reset_mailchimp_contact
-
   before_save :enforce_role_associations, if: :role_changed?
+  after_destroy :reset_mailchimp_contact
 
   after_save :update_contact
   # Email is primary key in Mailchimp, trigger immediate update if its is changed, otherwise
@@ -289,11 +288,9 @@ class User < ApplicationRecord
   end
 
   def after_confirmation
-    return unless school.present?
+    return unless school&.visible
 
-    OnboardingMailer.with_user_locales(users: [self], school:) do |mailer|
-      mailer.welcome_email.deliver_now
-    end
+    OnboardingMailer.mailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
   end
 
   def self.admin_user_export_csv
@@ -388,14 +385,12 @@ class User < ApplicationRecord
 
   def enforce_role_associations
     # when becoming a group admin remove individual school associations
-    if role_changed?(from: 'school_admin', to: 'group_admin')
-      self.cluster_schools.destroy_all
-    end
+    cluster_schools.destroy_all if role_changed?(from: 'school_admin', to: 'group_admin')
 
     # when becoming a school admin remove link to school group
-    if role_changed?(from: 'group_admin', to: 'school_admin')
-      self.school_group = nil
-    end
+    return unless role_changed?(from: 'group_admin', to: 'school_admin')
+
+    self.school_group = nil
   end
 
   def reset_mailchimp_contact

@@ -88,5 +88,6 @@ FactoryBot.define do
     frequency         { :weekly }
     class_name        { 'Alerts::System::DummyAlert' }
     description       { title }
+    group             { :advice }
   end
 end

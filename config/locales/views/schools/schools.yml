@@ -165,7 +165,7 @@ en:
         download_the_data_for_each_active_meter: Download the data for each active meter
         download_the_data_for_each_inactive_meter: Download the data for each inactive meter
         downloads_for: Downloads for %{school_name}
-        email_contact_message_html: Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information
+        email_contact_message_html: Please contact <a href="mailto:support@energysparks.uk">support@energysparks.uk</a> for further information
         meters: Meters
         solar_pv_data: Solar PV Data
         solar_pv_data_csv_for_your_area: Solar PV data CSV for your area, %{solar_pv_tuos_area_title}
@@ -660,6 +660,7 @@ en:
       coming_soon: Energy data coming soon
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.
       create_pupil_account: Create a pupil account
+      dashboard_subtitle_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activity on your scoreboard</a>
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
       energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.
@@ -718,6 +719,8 @@ en:
         energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
         energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
         subscribe_to_school_alerts: Subscribe to school alerts
+      create:
+        as_a_group_admin: As a group admin for %{school_group}, this user is already able to administer this school
       edit:
         title: Edit %{user_role} account
         update_account: Update account

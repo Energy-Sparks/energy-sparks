@@ -1,10 +1,18 @@
 # rubocop:disable Naming/AsciiIdentifiers
 module AdvicePageHelper
-  def advice_page_path(school, advice_page = nil, tab = :insights, params: {}, anchor: nil)
+  def advice_page_path(model, advice_page = nil, tab = :insights, params: {}, anchor: nil)
     if advice_page.present?
-      polymorphic_path([tab, school, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
+      polymorphic_path([tab, model, :advice, advice_page.key.to_sym], params: params, anchor: anchor)
     else
-      school_advice_path(school)
+      polymorphic_path([model, :advice])
+    end
+  end
+
+  def group_advice_page_path(school_group, advice_page_key = nil, tab = :insights, params: {}, anchor: nil)
+    if advice_page_key.present?
+      polymorphic_path([tab, school_group, :advice, advice_page_key], params: params, anchor: anchor)
+    else
+      school_group_advice_path(school_group)
     end
   end
 
@@ -23,10 +31,14 @@ module AdvicePageHelper
     I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2)
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html)
     # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and not -4.7e-15)
-    value = 0.0 if value&.between?(-0.001, 0.001)
-    FormatEnergyUnit.format(units, value, :html, false, in_table, user_numeric_comprehension_level).html_safe
+    begin
+      value = 0.0 if value&.between?(-0.001, 0.001)
+    rescue ArgumentError
+      # use original value, probably NaN
+    end
+    FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
   def advice_baseload_high?(estimated_savings_vs_benchmark)

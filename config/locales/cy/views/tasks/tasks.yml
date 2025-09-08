@@ -1,5 +1,8 @@
 cy:
   tasks:
+    complete:
+      action: Cwblhau gweithred
+      activity: Cwblhau gweithgaredd
     completed:
       action:
         no_points: Rydym wedi cofnodi eich gweithred
@@ -13,3 +16,10 @@ cy:
       points: Rydych chi newydd sgorio %{points} o bwyntiau
       share: Rhannwch yr hyn rydych chi wedi’i wneud ag eraill yng nghymuned yr ysgol
       what_next: Beth ydych chi eisiau ei wneud nesaf?
+    completed_on: Cwblhawyd ar %{date}
+    score:
+      action: Sgôr ar gyfer y weithred hon
+      activity: Sgôr ar gyfer y gweithgaredd hwn
+    view:
+      action: Gweld gweithred
+      activity: Gweld gweithgaredd

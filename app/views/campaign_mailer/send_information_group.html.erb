@@ -1,0 +1,91 @@
+<p>
+  <%= @contact[:first_name] %>,
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.send_information_school.intro') %>.
+</p>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.stats.header') %>
+</h4>
+
+<div class="s-3"></div>
+<%= t('campaign_mailer.send_information_school.stats_html') %>
+
+<p>
+  <%= t('campaigns.school_info.stats.description_html', impact_report: impact_report_campaigns_url) %>
+</p>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.tool.title') %>
+</h4>
+
+<div class="s-3"></div>
+<%= t('campaigns.group_info.tool.description_1_html') %>
+
+<div class="s-3"></div>
+<%= t('campaigns.group_info.tool.description_2_html') %>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.tool.video_description_html',
+      introductory_video: introductory_video_campaigns_url) %>
+
+<div class="s-3"></div>
+<%= t('campaigns.school_info.tool.report_description_html',
+      energy_efficiency_report: energy_efficiency_report_campaigns_url) %>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.closer_look.title') %>
+</h4>
+
+<div class="s-3"></div>
+<% example_url = if @contact_org_type == :multi_academy_trust
+                   example_mat_dashboard_campaigns_url
+                 else
+                   example_la_dashboard_campaigns_url
+                 end %>
+<%= t('campaigns.group_info.closer_look.description_html',
+      example_path: example_url,
+      school_groups: schools_url(scope: :school_groups),
+      product_path: product_url) %>
+
+<div class="s-3"></div>
+<h4>
+  <%= t('campaigns.school_info.next_steps.title') %>
+</h4>
+
+<div class="s-3"></div>
+<% group_url = if @contact_org_type == :multi_academy_trust
+                 enrol_our_multi_academy_trust_url
+               else
+                 enrol_our_local_authority_url
+               end %>
+<%= t('campaigns.group_info.next_steps.description_html',
+      enrol_group: group_url,
+      watch_demo: watch_demo_campaigns_url,
+      newsletter: new_mailchimp_signup_url) %>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.final') %>
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.sign_off') %>,
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.name') %>
+</p>
+
+<div class="s-3"></div>
+<p>
+  <%= t('campaign_mailer.job_title') %>
+</p>

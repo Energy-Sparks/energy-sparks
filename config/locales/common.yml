@@ -50,20 +50,25 @@ en:
       last_year: Last year
       learn_more: Learn more
       manage: Manage
+      more_information: More information
       next: Next
       no_label: 'No'
       not_applicable: N/A
       not_set: Not set
       place: Place
+      points: Points
       previous: Previous
       prices: Prices
+      pricing: Pricing
       pupil_activities: Pupil activities
       pupil_led_activities: Pupil-led activities
       read_more: Read more
       remove: Remove
       report: Report
+      request_more_info: Request more information
       restart: Restart
       save: Save
+      sign_up: Sign up
       start: Start
       starting_from: Starting from
       status: Status
@@ -78,11 +83,14 @@ en:
       view_now: View now
       view_opportunities: View opportunities
       view_results: View results
+      welcome: Welcome
       yes_label: 'Yes'
     line_graphs: Line graphs
     pie_charts: Pie charts
+    points: points
     points_html: "%{count} points"
     privacy_policy: privacy policy
+    programmes: Programmes
     school: School
     school_types:
       infant: Infant

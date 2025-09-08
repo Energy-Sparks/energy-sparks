@@ -2,6 +2,12 @@
 en:
   case_studies:
     download: Download
+    feature:
+      description_html: |-
+        Read our case studies for examples of how schools and Multi-Academy Trusts have used Energy Sparks to achieve amazing energy and carbon savings.
+        <br><br>
+        From tackling out-of-hours energy use to spotting problems with boilers and freezers to building a community effort around climate action - prepare to be inspired.
+      title: Get inspired with our case studies
     more_case_studies: More case studies
     title: Case Studies
   home:
@@ -9,20 +15,13 @@ en:
       description: Take a look at our blog for the latest updates and insights from our experts. You can also sign up for our newsletters to get ideas and inspiration delivered right to your inbox.
       header: Latest updates from our blog
     buttons:
-      book_a_demo: Book a demo
-      enrol_your_school: Enrol your school
       find_out_more: Find out more
       get_quote: Get quote
       newsletter_signup: Sign up to our newsletter
+      our_tool: Our energy management tool
       read_case_studies: Read case studies
       view_blog: View our blog
-    carousel:
-      message_1: Help your school save energy, money and prevent climate change.
-      message_2: Show your school how much and when you are using energy.
-      message_3: Get tailored energy saving advice designed just for your school.
-      message_4: Get automated alerts to let you know when your energy use changes.
-      message_5: Explore eco-team and classroom activities for pupils.
-      message_6: Share energy saving ideas and compete against other schools.
+      watch_a_demo: Watch a demo
     feature:
       description_html: Save up to 40% on energy bills with our unique school-specific energy management tool and education programme.
       header: Helping schools cut energy costs and fight climate change
@@ -42,19 +41,6 @@ en:
         statement: Share energy saving ideas and compete against other schools
       description: Energy Sparks provides near real-time energy data and school-specific insights to help you cut costs and carbon, as well as a range of resources and activities designed to inspire your pupils
       header: Data-driven tools that will change your school
-    funnels:
-      local_authority:
-        button: Energy Sparks for Local Authorities
-        text: Learn more about how Energy Sparks can work with Local Authorities to support schools in their area.
-        title: For Local Authorities
-      multi_academy:
-        button: Energy Sparks for Multi-Academy Trusts
-        text: Learn more about how Energy Sparks supports Multi-Academy Trusts.
-        title: For Multi-Academy Trusts
-      school:
-        button: Energy Sparks for Schools
-        text: Learn more about how Energy Sparks can support your school.
-        title: For schools
     general:
       description_html: Signing up to Energy Sparks is just the first step. We support our network of <strong>%{count}</strong> schools on their energy saving journey - from helping them to get set up, to providing a range of free training and 1:1 support. We also offer educational workshops and on-site energy audits.
       title: With you on your journey
@@ -71,9 +57,6 @@ en:
           title: For Schools
       description: We work with primary, secondary, special and independent schools to help them lower their energy consumption, cut costs and reduce their impact on the environment
       header: Working with schools of all types and sizes
-    quote:
-      job_title: Head of School
-      text_html: Engaging with Energy Sparks has been a really worthwhile experience. Not only has the school saved money, the children have become more aware of the ways that they can help to reduce energy use&hellip;
     stats:
       card_1:
         figure: 10%
@@ -92,22 +75,30 @@ en:
         subtext: Eco-team and curriculum-linked energy saving activities related to energy use data to maximise impact
       description: We provide data insights, action prompts and educational resources to help schools develop their climate action plans, make big energy and carbon savings, and develop pupils' sustainability skills
       header: Are you looking to cut energy bills and take action on climate change?
-    sub_title: A unique school-specific energy management tool and education programme
-    title: We help schools become more energy efficient and fight climate change.
   mailchimp:
     example: 'eg: hello@example.com'
     latest_news_title: Get the latest news from Energy Sparks in your inbox
-    more_newsletters: More newsletters
     never_share_your_email_promise: We'll never share your email with anyone else
     signup_now: Sign-up now
     title_html: Stay up to date&hellip;
   newsletters:
     title: Newsletters
+    view_newsletter: View newsletter
+  redirects:
+    choose_school:
+      intro: You have followed a school-specific link. Choose one of your schools to continue
+      title: Choose a school to continue
   school_count:
     one: 1 school
     other: "%{count} schools"
   training:
+    feature:
+      description: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
+      title: Training
     intro: This page lists all of our upcoming training sessions. Follow the links to our Eventbrite page to book your tickets.
+    no_events:
+      description: New events are added regularly, so please check again soon
+      title: No events are currently scheduled
     sold_out: Sold out
     spaces_available: Spaces available
     title: Training

@@ -7,21 +7,23 @@
     </div>
   <% end %>
   <%= header %>
-  <%= price %>
-  <% if date || author %>
+  <%= price if price %>
+  <% if date || datetime || author %>
     <div class='pb-3 small text-complement'>
-      <%= date if date %>
+      <%= date || datetime %>
       <% if author %>
         <%= t('common.author_html', author: author.to_s.html_safe) %>
       <% end %>
     </div>
   <% end %>
-  <%= description %>
-  <div>
-    <% buttons.each do |button| %>
-      <%= button %>
-    <% end %>
-  </div>
+  <%= description if description %>
+  <% if buttons.any? %>
+    <div>
+      <% buttons.each do |button| %>
+        <%= button %>
+      <% end %>
+    </div>
+  <% end %>
   <% links.each do |link| %>
     <%= link %>
   <% end %>

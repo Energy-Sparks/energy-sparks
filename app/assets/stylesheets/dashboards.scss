@@ -1,21 +1,9 @@
-.dashboard-title {
-  div.dashboard-school-title {
-    h1 {
-      padding-top: 10px;
-      padding-bottom: 0px;
-      margin-bottom: 0px;
-    }
-    .dashboard-school-address {
-      color: $secondary !important;
-      font-size: 80%;
-      .badge {
-        font-size: inherit;
-      }
-      small {
-        font-size: inherit;
-      }
-    }
-  }
+div.container-fluid.adult {
+  background: $adult-light;
+}
+
+div.container-fluid.pupil {
+  background: white;
 }
 
 div.dashboards {

@@ -9,7 +9,7 @@ gem 'rails', '~> 7.2.2'
 # Rails/Core
 gem 'bootsnap'
 gem 'image_processing', '~> 1.14'
-gem 'jbuilder', '~> 2.13' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'jbuilder', '~> 2.14' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
@@ -24,6 +24,7 @@ gem 'wisper' # publish subscribe for ruby objects
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
+gem 'mechanize' # For GIAS data downloader
 gem 'pg'
 gem 'scenic'
 
@@ -35,6 +36,7 @@ gem 'energy-sparks_analytics', path: 'analytics'
 gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 
 # Assets
+gem 'active_storage_validations'
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
 gem 'font-awesome-sass'
 gem 'importmap-rails'
@@ -82,7 +84,7 @@ gem 'devise' # Use devise for authentication
 
 # Utils
 gem 'groupdate' # Use groupdate to group usage stats
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby] # for Windows
+gem 'tzinfo-data', platforms: %i[windows jruby] # for Windows
 
 # Bundle update installs 0.7.0 for some weird reason!
 gem 'dotenv-rails' # Shim to load environment variables from .env into ENV in development.
@@ -170,6 +172,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'compare-xml' # used by rspec html matcher in analytics
+  gem 'reverse_markdown'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'show_me_the_cookies'

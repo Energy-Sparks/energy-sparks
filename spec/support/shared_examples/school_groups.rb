@@ -143,8 +143,8 @@ RSpec.shared_examples 'a page with a manage school group menu including admin li
 
   it 'shows standard items and admin links' do
     expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
-      ['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'SECR report', 'Edit group',
-       'Set message', 'Manage users', 'Manage partners', 'Group admin']
+      ['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'SECR report', 'School engagement',
+       'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin']
     )
   end
 end
@@ -155,8 +155,8 @@ RSpec.shared_examples 'a page with a manage school group menu not including admi
   end
 
   it 'shows standard items but not admin links' do
-    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters',
-                                                                                       'Manage tariffs', 'Digital signage'])
+    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to \
+      eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'School engagement'])
   end
 end
 
@@ -199,8 +199,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 0,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -212,8 +212,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 1,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -225,8 +225,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 3,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )

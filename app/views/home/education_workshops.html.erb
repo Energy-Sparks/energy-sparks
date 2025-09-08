@@ -1,5 +1,5 @@
-<% content_for :page_title, t('education_workshops.title') %>
-<% if Flipper.enabled?(:new_workshops_page, current_user) %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('education_workshops.title') %>
   <div class="container-fluid adult mb-4 py-5">
     <%= render Layout::GridComponent.new(
           id: 'hero', cols: 2, feature: true, classes: 'container'
@@ -37,15 +37,14 @@
           id: 'audience',
           cols: 2,
           theme: :light,
-          classes: 'rounded-xl p-4 mt-5 mb-6',
-          cell_classes: ''
+          classes: 'rounded-xl p-4 mt-5 mb-6'
         ) do |grid| %>
       <%= grid.with_image(src: 'pupil-whiteboard.jpg') %>
       <%= grid.with_feature_card(cell_classes: 'my-auto', size: :md) do |feature| %>
-        <%= feature.with_header(title: t('education_workshops.audience.title'), classes: '') %>
+        <%= feature.with_header(title: t('education_workshops.audience.title')) %>
         <%= feature.with_description { t('education_workshops.audience.description_html') } %>
         <%= feature.with_button(t('education_workshops.book'),
-                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary, classes: 'mr-2') %>
+                                'https://forms.gle/eREfqJgH5SRYQRah9', style: :primary) %>
       <% end %>
     <% end %>
 
@@ -68,31 +67,5 @@
       <% end %>
       <%= grid.with_image(src: 'workshops-hall.jpg') %>
     <% end %>
-  </div>
-<% else %>
-  <div class="application container">
-    <h1><%= t('education_workshops.title') %></h1>
-
-    <%= render 'two_column_image_deck',
-               column_one: 'for-schools/workshop-class.png',
-               column_two: 'for-schools/workshop-activity.png' %>
-
-    <div class="row">
-      <div class="col-md-12">
-        <%= t('education_workshops.intro_html') %>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <p>
-          <%= t('education_workshops.availability') %>
-        </p>
-        <%= t('education_workshops.cost_html') %>
-        <p>
-          <a href="https://forms.gle/eREfqJgH5SRYQRah9" class="btn"><%= t('education_workshops.book') %></a>
-        </p>
-      </div>
-    </div>
   </div>
 <% end %>

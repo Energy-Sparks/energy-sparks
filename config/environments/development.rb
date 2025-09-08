@@ -105,4 +105,12 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   config.action_view.annotate_rendered_view_with_filenames = ENV.fetch('ANNOTATE_RENDERED_VIEWS', false)
+
+  # Allow translations to be shown locally at cy.energysparks.development
+  config.hosts += [
+    "energysparks.development",
+    "cy.energysparks.development"
+  ]
+  # Alternative would be to set the tld_length to 0 to allow cy.localhost to work
+  # config.action_dispatch.tld_length = 0
 end

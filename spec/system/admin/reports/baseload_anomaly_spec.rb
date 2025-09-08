@@ -7,6 +7,7 @@ describe 'Baseload anomaly report' do
   let(:meter) { create(:electricity_meter, school: create(:school, school_group: school_group)) }
 
   let(:reading_date) { Date.yesterday }
+  let(:page_title) { 'Baseload anomalies' }
 
   before do
     create(:amr_validated_reading, meter: meter, reading_date: reading_date - 1, kwh_data_x48: Array.new(48, 10.0))
@@ -14,7 +15,13 @@ describe 'Baseload anomaly report' do
     Report::BaseloadAnomaly.refresh
     sign_in(create(:admin))
     visit admin_reports_path
-    click_on 'Baseload Anomalies'
+    click_on page_title
+  end
+
+  it_behaves_like 'an admin meter report' do
+    let(:title) { page_title }
+    let(:description) { 'Shows sudden changes in baseload for active electricity meters over the last 30 days.' }
+    let(:frequency) { :daily }
   end
 
   it 'displays the table' do
@@ -26,7 +33,7 @@ describe 'Baseload anomaly report' do
   end
 
   it 'allows csv download' do
-    click_on 'Download as CSV'
+    click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
       eq("School Group,Admin,School,Meter,Meter Name,Reading Date,Previous Baseload,Baseload,Chart\n" \

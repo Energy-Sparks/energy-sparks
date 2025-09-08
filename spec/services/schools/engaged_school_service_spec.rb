@@ -118,10 +118,13 @@ describe Schools::EngagedSchoolService, type: :service do
     end
 
     context 'with recent users' do
-      let!(:user) { create(:school_admin, school:, last_sign_in_at: Time.zone.today) }
+      before do
+        create(:school_admin, school:, last_sign_in_at: Time.zone.today)
+        create(:school_admin, :with_cluster_schools, school:, last_sign_in_at: Time.zone.today)
+      end
 
       it 'returns count of recent users' do
-        expect(count).to eq 1
+        expect(count).to eq 2
       end
     end
   end

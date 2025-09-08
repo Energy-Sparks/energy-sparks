@@ -34,7 +34,7 @@ module Layout
       # `#helpers` can't be used during initialization as it depends on the view context that only exists once a ViewComponent is passed to the Rails render pipeline.
       def before_render
         if @testimonial
-          with_image(src: @testimonial.image)
+          with_image(src: cdn_link_url(@testimonial.image))
           with_header(title: @testimonial.title)
           with_quote { @testimonial.quote }
           with_name { @testimonial.name }

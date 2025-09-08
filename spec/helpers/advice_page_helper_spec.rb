@@ -28,6 +28,7 @@ describe AdvicePageHelper do
       expect(helper.format_unit(1234567, :percent)).to eq('120,000,000&percnt;')
       expect(helper.format_unit(-4.736951571734001e-15, :percent)).to eq('0&percnt;')
       expect(helper.format_unit(0, :percent)).to eq('0&percnt;')
+      expect(helper.format_unit(Float::NAN, :£)).to eq('Uncalculable')
     end
   end
 

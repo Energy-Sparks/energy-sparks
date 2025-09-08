@@ -77,8 +77,8 @@ cy:
         gas: Nwy
         gascarbon: Dwysedd Carbon Nwy (kg/kWh)
         gridcarbon: Grid Dwysedd Carbon Trydan (kg/kWh)
-        heating_day: Gwres ymlaen mewn tywydd oer
-        heating_day_warm_weather: Gwres ymlaen mewn tywydd cynnes
+        heating_day: Gwresogi ymlaen mewn tywydd oerach
+        heating_day_warm_weather: Gwresogi ymlaen mewn tywydd cynhesach
         holiday: Gwyliau
         holiday_heating: Gwres Ymlaen yn ystod y Gwyliau
         holiday_hot_water_kitchen: Dŵr poeth/cegin yn unig Ymlaen yn ystod y Gwyliau

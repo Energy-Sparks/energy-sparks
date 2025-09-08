@@ -21,7 +21,7 @@ describe AggregateDataService, type: :service do
       # end
 
       it 'bubbles up exception' do
-        allow_any_instance_of(ValidateAMRData).to receive(:validate).and_raise('boom')
+        allow_any_instance_of(Aggregation::ValidateAmrData).to receive(:validate).and_raise('boom')
         meter_collection.add_heat_meter(meter)
         expect { service.validate_meter_data }.to raise_error(RuntimeError)
       end
@@ -29,7 +29,7 @@ describe AggregateDataService, type: :service do
       it 'adds context to Exception when Rollbar context is available' do
         error = FakeRollbarError.new
         meter_collection.add_heat_meter(meter)
-        allow_any_instance_of(ValidateAMRData).to receive(:validate).and_raise(error)
+        allow_any_instance_of(Aggregation::ValidateAmrData).to receive(:validate).and_raise(error)
         expect { service.validate_meter_data }.to raise_error(FakeRollbarError)
         expect(error.rollbar_context).to eql({
                                                mpan_mprn: meter.id

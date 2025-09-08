@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Mailchimp Status Report' do
   before do
     create_list(:school_admin, 3, mailchimp_status: :subscribed, mailchimp_updated_at: 1.day.ago)
-    create_list(:group_admin, 2, mailchimp_status: :unsubscribed, mailchimp_updated_at: 6.days.ago)
+    create_list(:group_admin, 2, school_group: create(:school_group, default_issues_admin_user: nil), mailchimp_status: :unsubscribed, mailchimp_updated_at: 6.days.ago)
     create(:school_admin, mailchimp_status: :subscribed, mailchimp_updated_at: 8.days.ago)
     create(:school_admin, :skip_confirmed, confirmed_at: nil, mailchimp_status: :subscribed)
     create(:school_admin)

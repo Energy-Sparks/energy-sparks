@@ -1,0 +1,20 @@
+module Charts
+  class GroupDashboardChartsComponent < ApplicationComponent
+    attr_reader :school_group, :reports
+
+    renders_one :title
+    renders_one :intro
+
+    def initialize(school_group:,
+                   comparisons: [:annual_energy_use, :annual_energy_costs_per_pupil, :annual_energy_costs_per_floor_area],
+                   **_kwargs)
+      super
+      @school_group = school_group
+      @reports = comparisons.filter_map { |k| Comparison::Report.find_by_key(k) }
+    end
+
+    def render?
+      reports&.any? && school_group.visible_schools_count.positive?
+    end
+  end
+end

@@ -1,6 +1,19 @@
 ---
 en:
   school_groups:
+    advice:
+      alerts:
+        subtitle_html: A summary of energy use alerts currently being shown to schools in this group
+        title: Recent alerts
+      priorities:
+        title: Energy saving opportunities
+      scores:
+        title: "%{name} Scoreboard"
+      show:
+        recent_energy_use:
+          title: Recent energy use
+        subtitle_html: Review latest energy use data for the group, explore potential savings and compare usage across the group
+        title: Energy efficiency overview
     chart_updates:
       bulk_update_charts:
         notice:
@@ -185,6 +198,18 @@ en:
         <p>This page summarises these potential savings across this entire group of schools. Click on a heading to view the savings for individual schools and explore the detailed analysis.</p>
       modal_intro: This action has been identified as a priority for the following schools.
       view_analysis: View analysis
+    school_engagement:
+      active_users: Active users
+      completed_transport_survery: Completed transport survey
+      energy_saving_target: Energy saving target
+      intro_html: |-
+        <p>This report provides a summary of how your schools are engaging with the range of features provided by Energy Sparks.</p>
+        <p>We find that schools that more fully engage with the tools are more successful at reducing their energy consumption. There is also a minimum amount of engagement expected of all schools receiving free places.</p>
+        <p>The figures below show engagement since the start of September (English academic year) to date.</p>
+      last_visit: Last visit
+      received_an_audit: Received an audit
+      recorded_temperatures: Recorded temperatures
+      title: School engagement
     secr:
       csv:
         consumption_for_the_year: Consumption for the year
@@ -193,10 +218,36 @@ en:
         meter_name: Meter name
         meter_serial: Meter serial
         quality: Quality
-      introduction: Using your half-hourly meter data, Energy Sparks is able to provide a summary of your consumption and carbon emissions to support production of your annual SECR reports.
-      section1:
-        footnotes_html: |-
-          <i>Supporting notes</i>
+      data:
+        carbon_emission_factors_html: |-
+          <h4>Carbon Emission Factors</h4>
+          <p>The emission factors in the table above come from the
+          <a href='https://www.gov.uk/government/collections/government-conversion-factors-for-company-reporting'>
+          Government conversion factors for company reporting of greenhouse gas emissions</a>. We have applied the
+          ‘Majority’ approach - applying the factors from the calendar year in which the greatest portion of your data
+          falls should. For example, for the academic year 2023/24, we have applied the 2024 conversion factors.</p>
+        current_table_title: Current academic year (%{start_date} to %{end_date})
+        data_quality_html: |-
+          <h4>Data quality</h4>
+          <p>In the CSV downloads, we use the following data quality codes. You may wish to replace data for months that
+          are highlighted as having missing or estimated data.</p>
+          <ul>
+          <li>I - incomplete</li>
+          <li>A - actual</li>
+          <li>E - estimated</li>
+          <li>C - corrected</li>
+          </ul>
+        downloads:
+          electricity: electricity consumption %{year}
+          export: solar export %{year}
+          gas: gas consumption %{year}
+          introduction: 'The following CSV downloads can be used to identify:'
+          self: solar self consumption %{year}
+          title: Detailed data downloads
+        introduction: The following tables provide a summary of your consumption and emissions for the last two academic years (%{last_start_date} to %{last_end_date} and %{current_start_date} to %{current_end_date}).
+        previous_table_title: Previous academic year (%{start_date} to %{end_date})
+        supporting_notes_html: |-
+          <h4>Supporting notes</h4>
           <p>
           The above figures are based on the following data points. See the data downloads below for details of
           individuals schools, meters and data quality issues.
@@ -207,45 +258,86 @@ en:
           <li>Number of active electricity meters: %{electricity_meters}</li>
           <li>Number of schools with metered solar: %{metered_solar_schools}</li>
           <li>Number of schools with estimated solar: %{estimated_solar_schools}</li>
+          <li>Number of pupils: %{number_of_pupils}</li>
           </ul>
+      table:
+        co2e_per_pupil: Tonnes CO2e per pupil
+        consumption: Consumption (kWh)
+        conversion_factor: Conversion factor (kg CO₂e / kWh)
+        emissions: Emissions (tonnes CO₂e)
         gas_consumption: Gas consumption
         intensity_ratio: Intensity ratio
-        introduction_html: |-
-          <p>
-          The following table provides a summary of your consumptions and emissions for the last academic year (%{start_date} to %{end_date}). Consumption is based on the latest data available to Energy Sparks, which may not be completed. Emissions are calculated using the latest carbon emission factors which are quoted below.
-          </p>
-          <p>
-          We do not recommend including these figures in your SECR reporting without first confirming that Energy Sparks has access to data for all of your schools and meters in each school.
-          </p>
-          <p>
-          We may also be using estimated solar data if we do not have access to data from your solar monitoring system.
-          </p>
-          <p>
-          Data quality issues might also impact our ability to provide accurate figures. See below for downloads of data that can help you identify gaps and support you in producing a more complete report if we do not yet have all of your schools or meters on our system.
-          </p>
+        missing: Missing conversion factors for year %{year}
         net: Net
-        pupil_intensity: Tonnes CO2e per pupil
-        purchased_electricity: Purchased Electricity
-        scope1: Scope 1
-        scope2: Scope 2
-        scope3: Scope 3
+        purchased_electricity: Purchased electricity
+        scope1_total: Scope 1 Total
+        scope2_total: Scope 2 Total
+        scope3_total: Scope 3 Total
         solar_export: Solar export
         solar_self_consumption: Solar self consumption
-        table2_introduction_html: The following emissions factors are those produced by UK government for reporting emissions for the last academic year %{year} and have been used in calculating the above figures.
-        table2_title: Carbon Emission Factors
-        title: Summary of Consumption and Emissions
         total: Total
         transmission_and_distribution: Electricity transmission and distribution
-      section2:
-        electricity_consumption: electricity consumption
-        gas_consumption: gas consumption
-        introduction: 'CSV downloads for the last academic year %{year} of the following:'
-        solar_export: solar export
-        solar_self_consumption: solar self consumption
-        title: SECR reporting data
+      tabs:
+        data: Data
+        usage: Instructions
       title: SECR Reporting Data
+      usage:
+        how_to_identify_gaps_html: |-
+          <h3>How to identify and fill gaps in data</h3>
+          <p>Data downloaded from Energy Sparks cannot cover all SECR reporting requirements. For example:</p>
+          <ul>
+          <li>Energy Sparks includes only gas and electricity data, we are unable to present consumption data for
+          alternative fuels such as oil or biomass.</li>
+          <li>Energy Sparks does not include energy data for transport or other activities.</li>
+          </ul>
+          <p>
+          There are likely to be additional gaps in data, so you should review available data in Energy Sparks and obtain
+          data via energy bills or other internal reporting processes to fill these gaps. For example:
+          <ul>
+          <li>Energy Sparks may not cover all schools within the MAT</li>
+          <li>Energy Sparks may not have access to data for all meters at all schools</li>
+          <li>There may be gaps in the reporting period - for example due to faulty meters</li>
+          <li>For some months, the data quality may be low due to meter issues or estimated consumption received from your energy supplier.</li>
+          </ul>
+          </p>
+          <p>
+          The Data tab contains CSV downloads of all available data for your schools on a monthly basis. Each month, a
+          quality code is given to the data to show whether it is complete or not.
+          </p>
+          <p>
+          If you update any monthly figures or fill any gaps, don’t forget to update the consumption totals and
+          recalculate emissions data.
+          </p>
+        how_to_improve_html: |-
+          <h3>How to improve this process in the future</h3>
+          <p>
+          This Energy Sparks tool is designed to support someone who has not compiled data for SECR reporting before.
+          Information here should make the process easier, reducing the need to collect information from your energy
+          bills. However, you will be able to compile your SECR report more quickly in future if consumption figures are collected from schools each month and recorded centrally.
+          </p>
+        purpose_of_this_tool_html: |-
+          <h3>Purpose of this tool</h3>
+          <p>
+          Multi-Academy Trusts consuming more than a set amount of energy are required to report their energy consumption and related greenhouse gas emissions. For more detail, see <a href=\"https://www.gov.uk/government/publications/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts/streamlined-energy-and-carbon-reporting-secr-for-academy-trusts\">Streamlined Energy and Carbon Reporting (SECR)
+          for academy trusts - GOV.UK</a>.
+          </p>
+          <p>
+          Energy Sparks provides a unique repository of energy data for MATs, and presents an opportunity to reduce the effort required by MAT staff in compiling their SECR reports. However, your Energy Sparks dataset will not always cover all energy data required. For example, we may not include all of your schools; some schools may have meters  that aren’t capable of sending data to us; or there may be gaps in some of the reported energy
+          data.
+          </p>
+          <p>The information below should support you to identify and fill any gaps.</p>
+        what_is_included_html: |-
+          <h3>What is included in the report?</h3>
+          <p>
+          The Data tab includes gas and electricity consumption, conversion factors and related emissions data in a
+          format compatible with SECR reporting. However you will need to check that it is complete and add any other
+          required data.
+          </p>
     show:
       change_units: Change units
+      energy_use:
+        title: Energy use
+      intro_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activities at these schools</a>.
       metric:
         change: "% Change"
         co2: CO2 (kg)
@@ -285,9 +377,11 @@ en:
       manage_group: Manage Group
       manage_partners: Manage partners
       manage_users: Manage users
+      school_engagement: School engagement
       secr_report: SECR report
       set_message: Set message
     titles:
+      advice: Advice
       comparisons: Comparisons
       current_scores: Current Scores
       map: Map
