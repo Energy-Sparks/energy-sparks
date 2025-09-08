@@ -1,0 +1,8 @@
+---
+en:
+  page:
+    audience:
+      anyone: Anyone
+      group_admins: Group admins
+      school_admins: School and Group admins
+      school_users: School users

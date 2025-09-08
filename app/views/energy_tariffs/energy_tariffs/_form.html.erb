@@ -7,13 +7,15 @@
 <div class="form-row">
   <div class="form-group col-md-6">
     <%= f.label :start_date %>
-    <%= component 'date_picker_form', form: f, field_name: :start_date, value: @energy_tariff.start_date&.strftime('%d/%m/%Y'), default_if_nil: '', errors: @energy_tariff.errors.messages[:start_date].to_sentence, hint: t('schools.user_tariffs.form.hints.start_date') %>
+    <%= render DatePickerFormComponent.new(form: f, field_name: :start_date,
+                                           value: @energy_tariff.start_date&.strftime('%d/%m/%Y'), default_if_nil: '', errors: @energy_tariff.errors.messages[:start_date].to_sentence, hint: t('schools.user_tariffs.form.hints.start_date')) %>
   </div>
 </div>
 <div class="form-row">
   <div class="form-group col-md-6">
     <%= f.label :end_date %>
-    <%= component 'date_picker_form', form: f, field_name: :end_date, value: @energy_tariff.end_date&.strftime('%d/%m/%Y'), default_if_nil: '', errors: @energy_tariff.errors.messages[:end_date].to_sentence, hint: t('schools.user_tariffs.form.hints.end_date') %>
+    <%= render DatePickerFormComponent.new(form: f, field_name: :end_date,
+                                           value: @energy_tariff.end_date&.strftime('%d/%m/%Y'), default_if_nil: '', errors: @energy_tariff.errors.messages[:end_date].to_sentence, hint: t('schools.user_tariffs.form.hints.end_date')) %>
   </div>
 </div>
-<%= f.submit t('common.labels.continue'), class: 'btn'%>
+<%= f.submit t('common.labels.continue'), class: 'btn' %>

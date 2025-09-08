@@ -1,33 +1,45 @@
-<h1>
-  <%= @solar_feed_type %> Import for <%= @installation.school.name %>
-</h1>
+<h1><%= @solar_feed_type %> Import for <%= @import_subject %></h1>
 
 <div class="s-3"></div>
-<% if @import_log.errors? %>
-  <p>
-    The requested import for <%= @solar_feed_type %> installation <%= @installation.display_name %> has failed.
-  </p>
-  <p>
-    The error reported was: <code><%= @import_log.error_messages %></code>
-  </p>
+<% if @error %>
+  <p>The requested import job has failed. An error has been logged.</p>
+  <div class="s-3"></div>
+  <p><code><%= @error.message %></code></p>
+<% elsif @import_log.errors? %>
+  <p>The requested import for <%= @solar_feed_type %> installation <%= @installation.display_name %> has failed.</p>
+  <p>The error reported was: <code><%= @import_log.error_messages %></code></p>
 <% else %>
   <p>
     The requested import for <%= @solar_feed_type %> installation <%= @installation.display_name %> has completed successfully.
   </p>
   <div class="s-3"></div>
-  <p>
-    <%= @import_log.records_imported %> records were imported and <%= @import_log.records_updated %> were updated.
-  </p>
+  <p><%= @import_log.records_imported %> records were imported and <%= @import_log.records_updated %> were updated.</p>
 <% end %>
 
 <div class="s-3"></div>
 <ul>
-  <li><%= link_to 'View the school meters', school_meters_url(@installation.school) %></li>
-  <% if @import_log.errors? %>
-    <li><%= link_to 'View the import logs', admin_reports_amr_data_feed_import_logs_errors_url({ config: { config_id: @import_log.amr_data_feed_config.id } }) %></li>
-  <% elsif @import_log.warnings? %>
-    <li><%= link_to 'View the import logs', admin_reports_amr_data_feed_import_logs_warnings_url({ config: { config_id: @import_log.amr_data_feed_config.id } }) %></li>
+  <% school = if @installation.respond_to?(:school)
+                @installation.school
+              else
+                schools = @installation.meters.map(&:school).uniq
+                schools.first if schools.length == 1
+              end %>
+  <% if school %>
+    <li><%= link_to 'View the school meters', school_meters_url(school) %></li>
   <% else %>
-    <li><%= link_to 'View the import logs', admin_reports_amr_data_feed_import_logs_successes_url({ config: { config_id: @import_log.amr_data_feed_config.id } }) %></li>
+    <% schools.each do |school| %>
+      <li><%= link_to "View meters of #{school.name}", school_meters_url(school) %></li>
+    <% end %>
+  <% end %>
+  <% if @import_log %>
+    <% config = { config: { config_id: @import_log.amr_data_feed_config.id } }
+       url = if @import_log.errors?
+               admin_reports_amr_data_feed_import_logs_errors_url(config)
+             elsif @import_log.warnings?
+               admin_reports_amr_data_feed_import_logs_warnings_url(config)
+             else
+               admin_reports_amr_data_feed_import_logs_successes_url(config)
+             end %>
+    <li><%= link_to 'View the import logs', url %></li>
   <% end %>
 </ul>

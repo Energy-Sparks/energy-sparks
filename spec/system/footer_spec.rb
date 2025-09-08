@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Footer', type: :system do
   before do
     Flipper.enable :footer
+    Flipper.enable :support_pages
     visit terms_and_conditions_path # visit a link that doesn't hit the db for test speed
   end
 
@@ -16,17 +17,18 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_link 'View schools', href: schools_path }
       it { expect(block).to have_link 'Scoreboards', href: scoreboards_path }
       it { expect(block).to have_link 'Contact', href: contact_path }
+      it { expect(block).to have_link I18n.t('common_nav_bar_menus.help'), href: support_path }
     end
 
     describe 'Services' do
       let(:block) { page.find(:css, 'footer .footer-top #services') }
 
       it { expect(block).to have_content 'Services' }
+      it { expect(block).to have_link 'Energy management tool', href: product_path }
       it { expect(block).to have_link 'Energy audits', href: energy_audits_path }
       it { expect(block).to have_link 'Education workshops', href: education_workshops_path }
       it { expect(block).to have_link 'Training', href: training_path }
-      it { expect(block).to have_link 'Find out more', href: find_out_more_path }
-      it { expect(block).to have_link 'Book a demo', href: book_demo_campaigns_path }
+      it { expect(block).to have_link 'Watch a demo', href: watch_demo_campaigns_path }
       it { expect(block).to have_link 'Case studies', href: case_studies_path }
     end
 
@@ -60,41 +62,30 @@ RSpec.describe 'Footer', type: :system do
       it { expect(block).to have_button('Sign-up now') }
       it { expect(block).to have_content "We'll never share your email with anyone else" }
 
-      # Not doing a full mailchimp test here, just that the form submits to the right place
-      context 'when signing up' do
-        let!(:newsletter) { create(:newsletter) }
-        let(:interests) { [OpenStruct.new(id: 1, name: 'Interest One')] }
-        let(:categories) { [OpenStruct.new(id: 1, title: 'Category One', interests: interests)] }
-        let(:list_with_interests) { OpenStruct.new(id: 1, categories: categories) }
+      context 'when user is signed in' do
+        before do
+          sign_in(create(:school_admin))
+          refresh
+        end
+
+        it { expect(block).to have_content 'Newsletter Signup' }
+        it { expect(block).to have_content 'Get the latest news from Energy Sparks in your inbox' }
+        it { expect(block).not_to have_field :email_address, placeholder: 'eg: hello@example.com' }
+        it { expect(block).to have_button('Sign-up now') }
+        it { expect(block).to have_content "We'll never share your email with anyone else" }
+      end
+
+      context 'when user is signed in', with_feature: :profile_pages do
+        let(:user) { create(:school_admin) }
 
         before do
-          allow_any_instance_of(MailchimpApi).to receive(:list_with_interests).and_return(list_with_interests)
-          allow_any_instance_of(MailchimpApi).to receive(:subscribe).and_return(true)
+          sign_in(user)
+          refresh
         end
 
-        context 'when email provided' do
-          before do
-            within '#newsletter-signup' do
-              fill_in :email_address, with: 'foo@bar.com'
-              click_on 'Sign-up now'
-            end
-          end
-
-          it { expect(page).to have_content('Sign up to the Energy Sparks newsletter') }
-          it { expect(page).to have_field(:email_address, with: 'foo@bar.com') }
-        end
-
-        context 'when email is not provided' do
-          before do
-            within '#newsletter-signup' do
-              fill_in :email_address, with: ''
-              click_on 'Sign-up now'
-            end
-          end
-
-          it { expect(page).to have_content('Sign up to the Energy Sparks newsletter') }
-          it { expect(page).to have_field(:email_address, with: nil) }
-        end
+        it { expect(block).to have_content 'Newsletter Signup' }
+        it { expect(block).to have_content 'Get the latest news from Energy Sparks in your inbox' }
+        it { expect(block).to have_link('Sign-up now', href: user_emails_path(user)) }
       end
     end
   end

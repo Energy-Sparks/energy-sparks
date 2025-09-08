@@ -1,33 +1,37 @@
 # frozen_string_literal: true
 
 class TimelineComponent < ApplicationComponent
-  include ApplicationHelper
+  attr_reader :observations, :user, :show_header, :formatting_args
 
-  attr_reader :observations, :show_actions, :id, :user, :school, :show_header, :observation_style
+  renders_one :link
+  renders_one :title
+  renders_one :description
 
   def initialize(observations:,
-                 school: nil,
-                 show_actions: false,
                  show_header: true,
-                 observation_style: :description,
-                 classes: nil,
-                 id: nil,
-                 user: nil)
+                 user: nil,
+                 table_opts: {},
+                 **kwargs)
+    super
     @observations = observations
-    @show_actions = show_actions
-    @show_header = show_header
-    @classes = classes
-    @id = id
     @user = user
-    @school = school
-    @observation_style = observation_style
-  end
-
-  def classes
-    " #{@classes}"
+    @show_header = show_header
+    @formatting_args = default_table_options.merge(table_opts)
   end
 
   def render?
     observations&.any?
+  end
+
+  private
+
+  def default_table_options
+    {
+      show_actions: false,
+      show_date: false,
+      show_positions: false,
+      show_school: false,
+      observation_style: :description
+    }
   end
 end

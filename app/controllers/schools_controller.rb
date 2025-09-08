@@ -5,11 +5,11 @@ class SchoolsController < ApplicationController
   include DashboardTimeline
   include SchoolProgress
 
-  load_and_authorize_resource except: [:show, :index]
+  load_and_authorize_resource except: %i[show index]
   load_resource only: [:show]
 
-  skip_before_action :authenticate_user!, only: [:index, :show]
-  before_action :set_key_stages, only: [:create, :edit, :update]
+  skip_before_action :authenticate_user!, only: %i[index show]
+  before_action :set_key_stages, only: %i[create edit update]
   before_action :set_search_scope, only: [:index]
 
   protect_from_forgery except: :index
@@ -40,11 +40,11 @@ class SchoolsController < ApplicationController
     if Flipper.enabled?(:new_schools_page, current_user)
       @letter = search_params.fetch(:letter, nil)
       @keyword = search_params.fetch(:keyword, nil)
-      if @keyword
-        @results = @scope.by_keyword(@keyword).by_name
-      else
-        @results = @scope.by_letter(@letter).by_name
-      end
+      @results = if @keyword
+                   @scope.by_keyword(@keyword).by_name
+                 else
+                   @scope.by_letter(@letter).by_name
+                 end
       @count = @results.count
       @school_count = School.visible.count
     else
@@ -62,7 +62,7 @@ class SchoolsController < ApplicationController
     # OR an adult user for this school, or a pupil that is trying to view the adult dashboard
     authorize! :show, @school
     @audience = :adult
-    @observations = setup_timeline(@school.observations)
+    @observations = setup_timeline(@school.observations.includes(:activity, :intervention_type))
     @progress_summary = progress_service.progress_summary if @school.data_enabled?
     render :show, layout: 'dashboards'
   end
@@ -113,7 +113,12 @@ class SchoolsController < ApplicationController
     end
   end
 
-private
+  def settings
+    authorize! :manage_settings, @school
+    render :settings, layout: 'dashboards'
+  end
+
+  private
 
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
@@ -130,11 +135,11 @@ private
   end
 
   def set_breadcrumbs
-    if action_name.to_sym == :edit
-      @breadcrumbs = [{ name: I18n.t('manage_school_menu.edit_school_details') }]
-    else
-      @breadcrumbs = [{ name: I18n.t('dashboards.adult_dashboard') }]
-    end
+    @breadcrumbs = if action_name.to_sym == :edit
+                     [{ name: I18n.t('manage_school_menu.edit_school_details') }]
+                   else
+                     [{ name: I18n.t('dashboards.adult_dashboard') }]
+                   end
   end
 
   def user_signed_in_and_linked_to_school?
@@ -151,7 +156,9 @@ private
   end
 
   def redirect_pupils
-    redirect_to pupils_school_path(@school) if user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+    return unless user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+
+    redirect_to pupils_school_path(@school)
   end
 
   def switch_dashboard?
@@ -167,40 +174,34 @@ private
   end
 
   def school_params
-    params.require(:school).permit(
-      :name,
-      :activation_date,
-      :school_type,
-      :funding_status,
-      :address,
-      :postcode,
-      :country,
-      :latitude,
-      :longitude,
-      :website,
-      :urn,
-      :number_of_pupils,
-      :floor_area,
-      :percentage_free_school_meals,
-      :indicated_has_solar_panels,
-      :indicated_has_storage_heaters,
-      :has_swimming_pool,
-      :serves_dinners,
-      :cooks_dinners_onsite,
-      :cooks_dinners_for_other_schools,
-      :cooks_dinners_for_other_schools_count,
-      :alternative_heating_oil,
-      :alternative_heating_lpg,
-      :alternative_heating_biomass,
-      :alternative_heating_district_heating,
-      :alternative_heating_ground_source_heat_pump,
-      :alternative_heating_air_source_heat_pump,
-      :alternative_heating_water_source_heat_pump,
-      :enable_targets_feature,
-      :public,
-      :chart_preference,
-      :funder_id,
-      key_stage_ids: []
-    )
+    allowed = %i[
+      name
+      activation_date
+      school_type
+      funding_status
+      address
+      postcode
+      country
+      latitude
+      longitude
+      website
+      urn
+      number_of_pupils
+      floor_area
+      percentage_free_school_meals
+      indicated_has_solar_panels
+      indicated_has_storage_heaters
+      has_swimming_pool
+      serves_dinners
+      cooks_dinners_onsite
+      cooks_dinners_for_other_schools
+      cooks_dinners_for_other_schools_count
+      enable_targets_feature
+      public
+      chart_preference
+      funder_id
+    ]
+    allowed += School::HEATING_TYPES.map { |type| :"heating_#{type}" }
+    params.require(:school).permit(*allowed, key_stage_ids: [])
   end
 end

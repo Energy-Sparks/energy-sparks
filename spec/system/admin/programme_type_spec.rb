@@ -1,8 +1,237 @@
 require 'rails_helper'
 
-describe 'programme type management', type: :system do
+describe 'programme type management', :include_application_helper, type: :system do
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
+
+  context with_feature: :todos_parallel do
+    let!(:programme_type) do
+      create(:programme_type, title: 'Test Programme',
+        activity_types: create_list(:activity_type, 3)) # old way
+    end
+
+    # new way
+    let!(:activity_type_todos) { create_list(:activity_type_todo, 2, assignable: programme_type) }
+    let!(:intervention_type_todos) { create_list(:intervention_type_todo, 2, assignable: programme_type) }
+
+    context 'when viewing programme type admin index' do
+      before do
+        sign_in(admin)
+        visit root_path
+        click_on 'Admin'
+        click_on 'Programme Types'
+      end
+
+      it 'displays a count of activities' do
+        expect(page).to have_selector(:table_row, { 'Activities in Programme' => 3 })
+      end
+
+      it 'displays a count of actions' do
+        expect(page).to have_selector(:table_row, { 'Actions in Programme' => 2 })
+      end
+
+      it 'has a button to edit activities (old way)' do
+        expect(page).to have_link('Edit activities')
+      end
+
+      context 'when clicking Edit activities button' do
+        before do
+          click_on 'Edit activities'
+        end
+
+        it { expect(page).not_to have_css('#activity-type-todos') }
+        it { expect(page).not_to have_css('#intervention-type-todos') }
+      end
+
+      it 'has a button to edit actions (new way)' do
+        expect(page).to have_link('Edit actions')
+      end
+
+      context 'when clicking Edit actions button' do
+        before do
+          click_on 'Edit actions'
+        end
+
+        it { expect(page).not_to have_css('#activity-type-todos') }
+        it { expect(page).to have_css('#intervention-type-todos') }
+      end
+    end
+  end
+
+  context with_feature: :todos do
+    before do
+      # enrolment only enabled if targets enabled...
+      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+    end
+
+    let!(:programme_type) { create(:programme_type, title: 'Test Programme') }
+    let!(:activity_type_todos) { create_list(:activity_type_todo, 3, assignable: programme_type) }
+    let!(:intervention_type_todos) { create_list(:intervention_type_todo, 3, assignable: programme_type) }
+
+    let!(:activity_type) { create(:activity_type) }
+    let!(:intervention_type) { create(:intervention_type) }
+
+    context 'viewing programme type admin index' do
+      before do
+        sign_in(admin)
+        visit root_path
+        click_on 'Admin'
+        click_on 'Programme Types'
+      end
+
+      it 'displays a count of activities' do
+        expect(page).to have_selector(:table_row, { 'Activities in Programme' => 3 })
+      end
+
+      it 'displays a count of actions' do
+        expect(page).to have_selector(:table_row, { 'Actions in Programme' => 3 })
+      end
+
+      it 'there should be a button to edit activities & actions' do
+        expect(page).to have_link('Edit activities & actions')
+      end
+
+      context 'when clicking Edit activities and actions button' do
+        before do
+          click_on 'Edit activities & actions'
+        end
+
+        it { expect(page).to have_content('Update the activities and actions') }
+      end
+    end
+
+    context 'editing tasks', :js do
+      before do
+        sign_in(admin)
+        visit edit_admin_programme_type_todos_path(programme_type)
+      end
+
+      it 'lists tasks in order' do
+        expect(page).to have_css('#activity-type-todos .nested-fields', count: 3)
+
+        displayed_activity_types = all('#activity-type-todos .nested-fields')
+        activity_type_todos.each_with_index do |todo, idx|
+          expect(displayed_activity_types[idx]).to have_content(todo.task.name)
+          expect(displayed_activity_types[idx]).not_to have_content(todo.notes)
+        end
+
+        expect(page).to have_css('#intervention-type-todos .nested-fields', count: 3)
+
+        displayed_intervention_types = all('#intervention-type-todos .nested-fields')
+        intervention_type_todos.each_with_index do |todo, idx|
+          expect(displayed_intervention_types[idx]).to have_content(todo.task.name)
+          expect(displayed_intervention_types[idx]).not_to have_content(todo.notes)
+        end
+      end
+
+      context 'when adding new tasks' do
+        before do
+          click_on 'Add activity'
+          click_on 'Add action'
+        end
+
+        context 'without selecting tasks' do
+          before do
+            click_on 'Save'
+            accept_alert
+          end
+
+          it 'displays errors for fields' do
+            expect(page).to have_content('Activity must exist')
+            expect(page).to have_content('Action must exist')
+          end
+        end
+
+        context 'when selecting tasks' do
+          before do # select new activities and interventions not yet selected
+            select_task(:activity_type, activity_type.name, 3)
+            select_task(:intervention_type, intervention_type.name, 3)
+            click_on 'Save'
+            accept_alert
+            click_on programme_type.title
+          end
+
+          it 'saves new activity type' do
+            displayed_tasks = page.all('#activity-type-tasks li').map(&:text)
+
+            expect(displayed_tasks.last).to have_content(activity_type.name)
+          end
+
+          it 'saves new intervention type' do
+            displayed_tasks = page.all('#intervention-type-tasks li').map(&:text)
+
+            expect(displayed_tasks.last).to have_content(intervention_type.name)
+          end
+        end
+      end
+
+      context 'when moving todos' do
+        context 'moving last activity to first' do
+          before do
+            handles = all('#activity-type-todos .nested-fields .handle')
+            handles.last.click
+            handles.last.drag_to(handles.first)
+          end
+
+          it 'changes activity order to THREE, ONE, TWO' do
+            displayed_todos = all('#activity-type-todos .nested-fields')
+
+            expect(displayed_todos[0]).to have_content(activity_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_content(activity_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_content(activity_type_todos[1].task.name)
+          end
+
+          context 'when saving' do
+            before do
+              click_on 'Save'
+              accept_alert
+              click_on programme_type.title
+            end
+
+            it 'saves new order' do
+              displayed_tasks = page.all('#activity-type-tasks li').map(&:text)
+
+              expect(displayed_tasks[0]).to have_content(activity_type_todos[2].task.name)
+              expect(displayed_tasks[1]).to have_content(activity_type_todos[0].task.name)
+              expect(displayed_tasks[2]).to have_content(activity_type_todos[1].task.name)
+            end
+          end
+        end
+
+        context 'moving last action to first' do
+          before do
+            handles = all('#intervention-type-todos .nested-fields .handle')
+            handles.last.click
+            handles.last.drag_to(handles.first)
+          end
+
+          it 'changes action order to THREE, ONE, TWO' do
+            displayed_todos = all('#intervention-type-todos .nested-fields')
+
+            expect(displayed_todos[0]).to have_content(intervention_type_todos[2].task.name)
+            expect(displayed_todos[1]).to have_content(intervention_type_todos[0].task.name)
+            expect(displayed_todos[2]).to have_content(intervention_type_todos[1].task.name)
+          end
+
+          context 'when saving' do
+            before do
+              click_on 'Save'
+              accept_alert
+              click_on programme_type.title
+            end
+
+            it 'saves new order' do
+              displayed_tasks = page.all('#intervention-type-tasks li').map(&:text)
+
+              expect(displayed_tasks[0]).to have_content(intervention_type_todos[2].task.name)
+              expect(displayed_tasks[1]).to have_content(intervention_type_todos[0].task.name)
+              expect(displayed_tasks[2]).to have_content(intervention_type_todos[1].task.name)
+            end
+          end
+        end
+      end
+    end
+  end
 
   describe 'managing' do
     before do
@@ -51,36 +280,38 @@ describe 'programme type management', type: :system do
       expect(page).to have_content('There are no programme types')
     end
 
-    context 'manages order' do
-      let!(:activity_category)  { create(:activity_category)}
-      let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
-      let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
-      let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
+    context 'when todos feature is switched off' do
+      context 'manages order' do
+        let!(:activity_category)  { create(:activity_category)}
+        let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
+        let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
+        let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
 
-      it 'assigns activity types to programme types via a text box position' do
-        description = 'SPN1'
-        old_title = 'Super programme number 1'
+        it 'assigns activity types to programme types via a text box position' do
+          description = 'SPN1'
+          old_title = 'Super programme number 1'
 
-        programme_type = ProgrammeType.create(description: description, title: old_title)
+          programme_type = ProgrammeType.create(description: description, title: old_title)
 
-        visit current_path
+          visit current_path
 
-        click_on 'Edit activities'
+          click_on 'Edit activities'
 
-        expect(page.find_field('Turn off the light').value).to be_blank
-        expect(page.find_field('Turn down the heating').value).to be_blank
+          expect(page.find_field('Turn off the light').value).to be_blank
+          expect(page.find_field('Turn down the heating').value).to be_blank
 
-        fill_in 'Turn down the heating', with: '1'
-        fill_in 'Turn off the lights', with: '2'
+          fill_in 'Turn down the heating', with: '1'
+          fill_in 'Turn off the lights', with: '2'
 
-        click_on 'Update associated activity type', match: :first
-        click_on old_title
+          click_on 'Update associated activity type', match: :first
+          click_on old_title
 
-        expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
-        expect(programme_type.programme_type_activity_types.first.position).to eq(1)
-        expect(programme_type.programme_type_activity_types.second.position).to eq(2)
+          expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
+          expect(programme_type.programme_type_activity_types.first.position).to eq(1)
+          expect(programme_type.programme_type_activity_types.second.position).to eq(2)
 
-        expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
+          expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
+        end
       end
     end
 
@@ -105,6 +336,7 @@ describe 'programme type management', type: :system do
         expect(page).to have_content('Total activities: 2')
         expect(page).to have_content(school.name)
         expect(page).to have_content('started')
+        expect(page).to have_content(nice_dates(programme.started_on))
         expect(page).to have_content('50 %')
       end
 

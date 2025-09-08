@@ -7,8 +7,8 @@
 @import "fonts";
 @import "bootstrap-overrides";
 @import "bootstrap";
+@import "bootstrap-bridge";
 
-@import "bootstrap-xl";
 @import "font-awesome";
 @import "base";
 @import "links";
@@ -39,6 +39,7 @@
 
 @import "actiontext";
 @import "trix_content";
+@import "trix_editor";
 
 @import "observations";
 @import "timeline";
@@ -57,5 +58,8 @@
 @import "comparisons";
 @import "standout";
 @import "cookie_banner";
+@import "themes";
+@import "palette";
+@import "tables";
 
 @import "../../components/**/*"; // loaded here so bootstrap SASS variables are available

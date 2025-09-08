@@ -1,0 +1,60 @@
+<%= render 'users/user_page', user: @user do %>
+  <div id="my-school-list">
+    <div class="row">
+      <div class="col">
+        <h2><%= t('users.show.manage_alerts') %></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <table id="my-schools" class="table table-sm table-sorted">
+          <thead>
+            <tr>
+              <th><%= t('common.school') %></th>
+              <% if @show_clusters %>
+                <th><%= t('school_groups.clusters.labels.cluster') %></th>
+              <% end %>
+              <th data-orderable="false"><%= t('advice_pages.index.alerts.title') %></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @schools.each do |school| %>
+              <tr>
+                <td>
+                  <%= link_to school.name, school_path(school) %>
+                </td>
+                <% if @show_clusters %>
+                  <td>
+                    <% if school.school_group_cluster.present? %>
+                      <%= school.school_group_cluster.name %>
+                    <% end %>
+                  </td>
+                <% end %>
+                <td>
+                  <%= link_to t('common.labels.view_alerts'), alerts_school_advice_path(school) %>
+                </td>
+                <% contact = @user.contacts.for_school(school).first %>
+                <td data-order="<%= contact.present? ? '1' : '0' %>">
+                  <% if contact.present? %>
+                    <%= link_to t('common.labels.unsubscribe'),
+                                user_contact_path(@user, contact),
+                                method: :delete,
+                                data: { confirm: t('common.confirm') },
+                                class: 'btn btn-danger' %>
+                  <% else %>
+                    <%= link_to t('common.labels.subscribe'),
+                                user_contacts_path(@user, school_id: school.id),
+                                method: :post,
+                                data: { confirm: t('common.confirm') },
+                                class: 'btn btn-success' %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

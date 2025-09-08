@@ -1,4 +1,4 @@
-<%= component 'prompt', status: :none, icon: :circle_exclamation do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :circle_exclamation) do |c| %>
   <%= t('advice_pages.hot_water.analysis.summary_notice') %>
 <% end %>
 <br>
@@ -17,12 +17,13 @@
   </li>
 </ul>
 
-<%= render 'schools/advice/section_title', section_id: 'hot_water_efficiency_improvement_options', section_title: t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options') %>
+<%= render 'schools/advice/section_title', section_id: 'hot_water_efficiency_improvement_options',
+                                           section_title: t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options') %>
 
-<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options_notice_html') %>
 <% end %>
-<br />
+<br>
 <%= t('advice_pages.hot_water.analysis.hot_water_efficiency_improvement_options_content_html') %>
 
 <%= render 'analysis_table' %>
@@ -57,40 +58,37 @@
 <%= t('advice_pages.hot_water.analysis.improved_boiler_control_content_html',
       gas_better_control_saving_gbp: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_£, :£),
       gas_better_control_saving_co2: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_co2, :co2),
-      gas_better_control_saving_co2_percent: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_co2_percent, :percent)
-  )
-%>
+      gas_better_control_saving_co2_percent: format_unit(
+        @gas_hot_water.investment_choices.gas_better_control.saving_co2_percent, :percent
+      )) %>
 
 <p><strong><%= t('advice_pages.hot_water.analysis.point_of_use_electric_heater_title') %></strong></p>
 <%= t('advice_pages.hot_water.analysis.point_of_use_electric_heater_content_html',
-       point_of_use_electric_saving_gbp: format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_£, :£),
-       point_of_use_electric_saving_co2: format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_co2, :co2),
-       point_of_use_electric_saving_co2_percent: format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_co2_percent, :percent)
-  )
-%>
+      point_of_use_electric_saving_gbp: format_unit(@gas_hot_water.investment_choices.point_of_use_electric.saving_£,
+                                                    :£),
+      point_of_use_electric_saving_co2: format_unit(
+        @gas_hot_water.investment_choices.point_of_use_electric.saving_co2, :co2
+      ),
+      point_of_use_electric_saving_co2_percent: format_unit(
+        @gas_hot_water.investment_choices.point_of_use_electric.saving_co2_percent, :percent
+      )) %>
 
-<%= render 'schools/advice/section_title', section_id: 'how_does_energy_sparks_calculate', section_title: t('advice_pages.hot_water.analysis.how_does_energy_sparks_calculate') %>
+<%= render 'schools/advice/section_title', section_id: 'how_does_energy_sparks_calculate',
+                                           section_title: t('advice_pages.hot_water.analysis.how_does_energy_sparks_calculate') %>
 <%= t('advice_pages.hot_water.analysis.how_does_energy_sparks_calculate_content_introduction_html') %>
 
-<%= component 'chart', chart_type: :hotwater, analysis_controls: false, school: @school do |c| %>
+<%= render ChartComponent.new(chart_type: :hotwater, analysis_controls: false, school: @school) do |c| %>
 <% end %>
 
 <% annual_litres = AnalyseHeatingAndHotWater::HotwaterModel.annual_school_hot_water_litres(@school.number_of_pupils) %>
 <% annual_kwh = AnalyseHeatingAndHotWater::HotwaterModel.heat_capacity_water_kwh(annual_litres) %>
 
-
 <%= t('advice_pages.hot_water.analysis.theoretically_every_pupil_uses_html',
-       number_of_pupils: @school.number_of_pupils,
-       theoretical_annual_hot_water_requirement_litres: format_unit(annual_litres, :litre),
-       theoretical_annual_hot_water_requirement_kwh: format_unit(annual_kwh, :kwh)
-  )
-%>
+      number_of_pupils: @school.number_of_pupils,
+      theoretical_annual_hot_water_requirement_litres: format_unit(annual_litres, :litre),
+      theoretical_annual_hot_water_requirement_kwh: format_unit(annual_kwh, :kwh)) %>
 <%= t('advice_pages.hot_water.analysis.we_calculate_the_efficiency_html',
-       theoretical_annual_hot_water_requirement_kwh: format_unit(annual_kwh, :kwh),
-       existing_gas_annual_kwh: format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.total, :kwh)
-  )
-%>
+      theoretical_annual_hot_water_requirement_kwh: format_unit(annual_kwh, :kwh),
+      existing_gas_annual_kwh: format_unit(@gas_hot_water.efficiency_breakdowns.daily.kwh.total, :kwh)) %>
 <%= t('advice_pages.hot_water.analysis.the_circulatory_gas_based_systems_html',
-  existing_gas_efficiency: format_unit(@gas_hot_water.investment_choices.existing_gas.efficiency, :percent)
-  )
-%>
+      existing_gas_efficiency: format_unit(@gas_hot_water.investment_choices.existing_gas.efficiency, :percent)) %>

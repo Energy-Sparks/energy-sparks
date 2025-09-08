@@ -17,81 +17,24 @@
       <h3><%= t('schools.your_school_estates.edit.swimming_pool') %></h3>
       <%= f.input :has_swimming_pool, label: t('schools.your_school_estates.edit.swimming_pool_label') %>
 
-      <h3><%= t('schools.your_school_estates.edit.alternative_heating_sources.header') %></h3>
-      <p><%= t('schools.your_school_estates.edit.alternative_heating_sources.description_1') %>.</p>
-      <p><%= t('schools.your_school_estates.edit.alternative_heating_sources.description_2') %>.</p>
+      <h3><%= t('schools.your_school_estates.edit.heating_sources.header') %></h3>
+      <p><%= t('schools.your_school_estates.edit.heating_sources.description_1') %>.</p>
+      <p><%= t('schools.your_school_estates.edit.heating_sources.description_2') %>.</p>
 
-      <%= f.input :alternative_heating_oil,
-                  label: t('.alternative_heating_sources.oil.label'),
-                  input_html: { data: { reveals: '.school_alternative_heating_oil_fields' } } %>
-      <div class='school_alternative_heating_oil_fields' data-revealed-by=".school_alternative_heating_oil">
-        <%= f.input :alternative_heating_oil_percent,
-                    label: t('.alternative_heating_sources.oil.percentage') %>
-        <%= f.input :alternative_heating_oil_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
+      <% School::HEATING_TYPES.each do |type| %>
+        <% fields_class = "school_heating_#{type}_fields" %>
+        <%= f.input :"heating_#{type}",
+                    label: t("activerecord.attributes.school.heating_#{type}"),
+                    input_html: { data: { reveals: ".#{fields_class}" } } %>
+        <div class="<%= fields_class %>" data-revealed-by=".school_heating_<%= type %>">
+          <%= f.input :"heating_#{type}_percent",
+                      label: t(".heating_sources.#{type}.percentage") %>
+          <%= f.input :"heating_#{type}_notes",
+                      label: t('.heating_sources.notes') %>
+        </div>
+      <% end %>
 
-      <%= f.input :alternative_heating_lpg,
-                  label: t('.alternative_heating_sources.lpg.label'),
-                  input_html: { data: { reveals: '.school_alternative_lpg_fields' } } %>
-      <div class='school_alternative_lpg_fields' data-revealed-by=".school_alternative_heating_lpg">
-        <%= f.input :alternative_heating_lpg_percent,
-                    label: t('.alternative_heating_sources.lpg.percentage') %>
-        <%= f.input :alternative_heating_lpg_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
-
-      <%= f.input :alternative_heating_biomass,
-                  label: t('.alternative_heating_sources.biomass.label'),
-                  input_html: { data: { reveals: '.school_alternative_biomass_fields' } } %>
-      <div class='school_alternative_biomass_fields' data-revealed-by=".school_alternative_heating_biomass">
-        <%= f.input :alternative_heating_biomass_percent,
-                    label: t('.alternative_heating_sources.biomass.percentage') %>
-        <%= f.input :alternative_heating_biomass_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
-
-      <%= f.input :alternative_heating_district_heating,
-                  label: t('.alternative_heating_sources.district_heating.label'),
-                  input_html: { data: { reveals: '.school_alternative_district_heating_fields' } } %>
-      <div class='school_alternative_district_heating_fields' data-revealed-by=".school_alternative_heating_district_heating">
-        <%= f.input :alternative_heating_district_heating_percent,
-                    label: t('.alternative_heating_sources.district_heating.percentage') %>
-        <%= f.input :alternative_heating_district_heating_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
-
-      <%= f.input :alternative_heating_ground_source_heat_pump,
-                  label: t('.alternative_heating_sources.ground_source_heat_pump.label'),
-                  input_html: { data: { reveals: '.school_alternative_ground_source_heat_pump_fields' } } %>
-      <div class='school_alternative_ground_source_heat_pump_fields' data-revealed-by=".school_alternative_heating_ground_source_heat_pump">
-        <%= f.input :alternative_heating_ground_source_heat_pump_percent,
-                    label: t('.alternative_heating_sources.ground_source_heat_pump.percentage') %>
-        <%= f.input :alternative_heating_ground_source_heat_pump_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
-
-      <%= f.input :alternative_heating_air_source_heat_pump,
-                  label: t('.alternative_heating_sources.air_source_heat_pump.label'),
-                  input_html: { data: { reveals: '.school_alternative_air_source_heat_pump_fields' } } %>
-      <div class='school_alternative_air_source_heat_pump_fields' data-revealed-by=".school_alternative_heating_air_source_heat_pump">
-        <%= f.input :alternative_heating_air_source_heat_pump_percent,
-                    label: t('.alternative_heating_sources.air_source_heat_pump.percentage') %>
-        <%= f.input :alternative_heating_air_source_heat_pump_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
-
-      <%= f.input :alternative_heating_water_source_heat_pump,
-                  label: t('.alternative_heating_sources.water_source_heat_pump.label'),
-                  input_html: { data: { reveals: '.school_alternative_water_source_heat_pump_fields' } } %>
-      <div class='school_alternative_water_source_heat_pump_fields' data-revealed-by=".school_alternative_heating_water_source_heat_pump">
-        <%= f.input :alternative_heating_water_source_heat_pump_percent,
-                    label: t('.alternative_heating_sources.water_source_heat_pump.percentage') %>
-        <%= f.input :alternative_heating_water_source_heat_pump_notes,
-                    label: t('.alternative_heating_sources.notes') %>
-      </div>
-
-      <%= f.submit t('common.labels.save'), class: 'btn btn-primary pt-6' %>
+      <%= f.submit t('common.labels.save'), class: 'btn btn-primary' %>
     <% end %>
   </div>
 </div>

@@ -11,11 +11,17 @@ cy:
         once_confirmed_message: Unwaith y bydd wedi’i gadarnhau byddwch yn gallu mewngofnodi i weld faint o ynni y mae eich ysgol yn ei ddefnyddio, cael gwybod am y cyfleoedd arbed ynni mwyaf ac archwilio ein gweithgareddau a’n hadnoddau addysgol sydd wedi’u cynllunio i addysgu’ch disgyblion am ynni tra’n arbed arian i’w hysgol.
         please_confirm_your_energy_sparks_account: Cadarnhewch eich cyfrif Sbarcynni
         questions_or_concerns_please_contact: Os oes gennych unrhyw gwestiynau neu bryderon yna cysylltwch â'r tîm
-        subject: 'Sbarcynni: cadarnhau eich cyfrif'
+        subject: Cadarnhewch eich cyfrif ar Sbarcynni
         team_by_replying_to_this_email: drwy ateb yr e-bost hwn
         user_account_created_for_you_for: Mae cyfrif defnyddiwr wedi ei greu ar eich cyfer ar Sbarcynni ar gyfer %{resource_school_name}
+        user_account_created_for_you_for_reminder: Crëwyd cyfrif defnyddiwr yn ddiweddar ar eich cyfer ar Sbarcynni ar gyfer %{resource_school_name}
         user_account_created_for_you_on: Mae cyfrif defnyddiwr wedi'i greu ar eich cyfer ar Sbarcynni
+        user_account_created_for_you_on_reminder: Crëwyd cyfrif defnyddiwr yn ddiweddar ar eich cyfer ar Sbarcynni
         welcome: Croeso %{resource_name}
+      confirmation_instructions_final_reminder:
+        subject: 'Nodyn atgoffa terfynol: cadarnhewch eich cyfrif ar Sbarcynni'
+      confirmation_instructions_first_reminder:
+        subject: 'Nodyn atgoffa: cadarnhewch eich cyfrif ar Sbarcynni'
       email_changed:
         email_has_been_changed: Rydym yn cysylltu â chi i'ch hysbysu bod eich e-bost wedi'i newid i
         email_is_being_changed: Rydym yn cysylltu â chi i'ch hysbysu bod eich e-bost yn cael ei newid i
@@ -56,6 +62,7 @@ cy:
         send_me_reset_password_instructions: Anfonwch gyfarwyddiadau ailosod cyfrinair ataf
     sessions:
       new:
+        adult_title: Mewngofnodi i Sbarcynni
         email_address_and_password: cyfeiriad e-bost a chyfrinair
         log_in_with_your_email_address_and_password: Mewngofnodwch gyda'ch cyfeiriad e-bost a'ch cyfrinair
         log_in_with_your_pupil_password: Mewngofnodwch gyda'ch cyfrinair disgybl

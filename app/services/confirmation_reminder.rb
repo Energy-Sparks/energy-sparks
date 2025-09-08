@@ -4,7 +4,7 @@
 #
 # Do not chase old accounts.
 module ConfirmationReminder
-  CONFIRMABLE_ROLES = [:staff, :school_admin, :group_admin, :volunteer].freeze
+  CONFIRMABLE_ROLES = [:staff, :school_admin, :group_admin].freeze
 
   def self.send
     now = Time.current

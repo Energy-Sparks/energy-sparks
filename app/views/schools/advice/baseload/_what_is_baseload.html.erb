@@ -1,10 +1,10 @@
-<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
-  <% c.with_link { link_to t('advice_pages.baseload.what_is_baseload_link'), learn_more_school_advice_baseload_path(school) } %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <% c.with_link do
+       link_to t('advice_pages.baseload.what_is_baseload_link'), learn_more_school_advice_baseload_path(school)
+     end %>
   <%= t('advice_pages.baseload.what_is_baseload_html') %>
   <%= t('advice_pages.baseload.for_each_1kw_reduction_html',
-        kwh_saving: format_unit(@saving_through_1_kw_reduction_in_baseload.kwh, :kwh),
-        gbp_saving: format_unit(@saving_through_1_kw_reduction_in_baseload.£, :£),
-        co2_saving: format_unit(@saving_through_1_kw_reduction_in_baseload.co2, :co2)
-      )
-  %>
+        kwh_saving: format_unit(saving_through_1_kw_reduction.kwh, :kwh),
+        gbp_saving: format_unit(saving_through_1_kw_reduction.£, :£),
+        co2_saving: format_unit(saving_through_1_kw_reduction.co2, :co2)) %>
 <% end %>

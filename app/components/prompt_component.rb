@@ -21,12 +21,13 @@ class PromptComponent < ApplicationComponent
 
   attr_reader :icon, :style, :fuel_type
 
-  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '')
+  def initialize(id: nil, icon: nil, fuel_type: nil, status: nil, style: :full, classes: '', always_render: false)
     super(id: id, classes: "#{status} #{classes}")
     @icon = icon
     @fuel_type = fuel_type
     @status = status
     @style = style
+    @always_render = always_render
     validate
   end
 
@@ -35,7 +36,7 @@ class PromptComponent < ApplicationComponent
   end
 
   def render?
-    content
+    content || @always_render
   end
 
   def validate

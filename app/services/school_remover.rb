@@ -16,7 +16,7 @@ class SchoolRemover
 
   def users_ready?
     # Requires all school users are access locked except those linked to another school
-    return true if @school.users.all?(&:access_locked?)
+    return true if @school.users.all?(&:inactive?)
 
     all_unlocked_users_are_linked_to_other_schools?
   end
@@ -53,7 +53,7 @@ class SchoolRemover
         elsif user.confirmed?
           # Lock account if user is linked to only this school
           user.contacts.for_school(@school).first&.destroy unless @archive
-          user.lock_access!(send_instructions: false)
+          user.disable!
         else
           user.destroy
         end
@@ -89,7 +89,7 @@ class SchoolRemover
   end
 
   def unlocked_user_ids
-    @unlocked_user_ids ||= @school.users.reject(&:access_locked?).pluck(:id)
+    @unlocked_user_ids ||= @school.users.reject(&:inactive?).pluck(:id)
   end
 
   def delete_school_issues

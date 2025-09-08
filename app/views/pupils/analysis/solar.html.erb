@@ -1,16 +1,18 @@
 <%= render 'header', school: @school, fuel_type: :electricity_and_solar_pv %>
 
-<%= component 'titled_section' do |section| %>
+<%= render TitledSectionComponent.new do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_know') %></h2>
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'clock', fuel_type: :electricity, classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'clock', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: 'Electricity', presentation: 'kWh', link_text: t('pupils.analysis.when') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'sun', fuel_type: :solar_pv, classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'sun', fuel_type: :solar_pv,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: 'Electricity+Solar PV', presentation: 'Solar',
                              link_text: t('pupils.analysis.how_much_solar') %>
       <% end %>
@@ -20,24 +22,24 @@
 
 <%= render 'compare', school: @school, fuel_type: :electricity %>
 
-<%= component 'titled_section' do |section| %>
+<%= render TitledSectionComponent.new do |section| %>
   <%= section.with_title do %>
     <h2><%= t('pupils.analysis.i_would_like_to_see') %></h2>
   <% end %>
   <%= section.with_body do %>
     <div class="row">
-      <%= component 'pupil_explore', school: @school, icon: 'chart-pie', fuel_type: :electricity,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-pie', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_chart_link energy: 'Electricity', presentation: 'Pie', link_text: t('common.pie_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'chart-bar', fuel_type: :electricity,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-bar', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_category category: :solar_bar, link_text: t('common.bar_charts') %>
       <% end %>
 
-      <%= component 'pupil_explore', school: @school, icon: 'chart-line', fuel_type: :electricity,
-                                     classes: 'col-12 col-md-4' do |c| %>
+      <%= render PupilExploreComponent.new(school: @school, icon: 'chart-line', fuel_type: :electricity,
+                                           classes: 'col-12 col-md-4') do |c| %>
         <% c.with_category category: :solar_line, link_text: t('common.line_graphs') %>
       <% end %>
     </div>

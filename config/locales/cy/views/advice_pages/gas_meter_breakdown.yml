@@ -1,0 +1,25 @@
+cy:
+  advice_pages:
+    gas_meter_breakdown:
+      analysis:
+        long_term_trends:
+          summary: Mae’r adran hon yn edrych ar newidiadau tymor hwy yn y defnydd o nwy sy’n cael eu monitro gan fesuryddion unigol yn eich ysgol.
+        sections: Mae'r adrannau canlynol yn rhoi mwy o ddadansoddiad o'r defnydd o nwy gan fesuryddion unigol
+      charts:
+        group_by_month_gas_meter_breakdown:
+          subtitle: Mae'r siart hwn yn dangos dadansoddiad misol o'r defnydd o nwy fesul mesurydd dros y deuddeg mis diwethaf
+          title: Defnydd misol o nwy fesul mesurydd
+        group_by_year_gas_meter_breakdown:
+          subtitle: Mae'r siart hwn yn dangos y newid blynyddol yn y defnydd o nwy fesul mesurydd
+          title: Defnydd blynyddol o nwy fesul mesurydd
+      insights:
+        current_usage:
+          title: Eich defnydd presennol o nwy fesul mesurydd
+        what_is_a_meter_breakdown:
+          link: Dysgu rhagor
+          text_html: |-
+            <p>
+            Mae gan eich ysgol sawl mesurydd nwy. Bydd cymharu defnydd nwy ar draws mesuryddion yn eich helpu i ganolbwyntio ar
+            wella effeithlonrwydd ynni mewn rhai rhannau o'ch ysgol a all fod â phatrymau defnydd gwahanol.
+            </p>
+      page_title: Cymharu'r defnydd o nwy fesul mesurydd

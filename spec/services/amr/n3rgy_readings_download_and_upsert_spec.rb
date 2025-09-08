@@ -6,7 +6,7 @@ module Amr
   describe N3rgyReadingsDownloadAndUpsert do
     subject(:upserter) { described_class.new(config:, meter:) }
 
-    let(:config) { create(:amr_data_feed_config, process_type: :n3rgy_api) }
+    let(:config) { create(:amr_data_feed_config, process_type: :n3rgy_api, source_type: :api) }
     let(:meter) { create(:electricity_meter) }
 
     let(:downloader) { instance_double(Amr::N3rgyDownloader) }

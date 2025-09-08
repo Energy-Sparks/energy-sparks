@@ -1,89 +1,95 @@
-<% content_for :page_title, "Complete Meter Review for #{@school.name}" %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "Complete Meter Review for #{@school.name}" do %>
 
-<h1>Complete meter review for <%= @school.name %></h1>
+  <div class="row">
+   <div class="col">
+     <p>
+       To enable the following meters for access via the n3rgy API, we must review
+       whether the school has given us appropriate consent and have provided sufficient
+       proof of access to the meters.
+     </p>
+     <p>
+       Only complete the review if you are confident that these meters belong to the
+       school.
+     </p>
+   </div>
 
-<div class="row">
- <div class="col">
-   <p>
-     To enable the following meters for access via the n3rgy API, we must review
-     whether the school has given us appropriate consent and have provided sufficient
-     proof of access to the meters.
-   </p>
-   <p>
-     Only complete the review if you are confident that these meters belong to the
-     school.
-   </p>
- </div>
+  </div>
 
-</div>
+  <div class="row mb-2">
+   <div class="col">
+     <%= fa_icon(@school.consent_up_to_date? ? 'check-circle text-success' : 'times-circle text-danger') %>
+     <% if @school.consent_up_to_date? %>
+      This school has <%= link_to 'granted consent', school_consent_grants_path(@school) %> using the latest consent statement
+     <% else %>
+      This school has not <%= link_to 'granted consent', school_consent_grants_path(@school) %> using the latest consent statement
+      <div class="alert alert-danger d-flex flex-wrap justify-content-between">
+        <span>
+        We do not have up to date consent for <%= @school.name %> so meters cannot be
+        activated. The form is disabled.
+        </span>
+        <%= link_to 'Request consent', new_admin_school_consent_request_path(@school), class: 'btn' %>
+      </div>
+     <% end %>
+   </div>
+  </div>
 
-<div class="row mb-2">
- <div class="col">
-   <%= fa_icon(@school.consent_up_to_date? ? 'check-circle text-success' : 'times-circle text-danger') %>
-   <% if @school.consent_up_to_date? %>
-    This school has <%= link_to 'granted consent', school_consent_grants_path(@school) %> using the latest consent statement
-   <% else %>
-    This school has not <%= link_to 'granted consent', school_consent_grants_path(@school) %> using the latest consent statement
-    <div class="alert alert-danger d-flex flex-wrap justify-content-between">
-      <span>
-      We do not have up to date consent for <%= @school.name %> so meters cannot be
-      activated. The form is disabled.
-      </span>
-      <%= link_to 'Request consent', new_admin_school_consent_request_path(@school), class: 'btn' %>
-    </div>
-   <% end %>
- </div>
-</div>
+  <div class="row">
+   <div class="col">
+      <h4>Review form</h4>
+      <%= simple_form_for @meter_review, url: admin_school_meter_reviews_path(@school) do |f| %>
 
-<div class="row">
- <div class="col">
-    <h4>Review form</h4>
-    <%= simple_form_for @meter_review, url: admin_school_meter_reviews_path(@school) do |f| %>
-
-      <div class="card-group">
-          <div class="card bg-light">
-            <div class="card-body">
-              <%= f.association :meters, label: 'Which meters can be activated?', as: :check_boxes,
-                                         collection: @pending_meters, value_method: :id, label_method: :mpan_mprn %>
+        <div class="card-group">
+            <div class="card bg-light">
+              <div class="card-body">
+                <%= f.association :meters, label: 'Which meters can be activated?', as: :check_boxes,
+                                           collection: @pending_meters, value_method: :id, label_method: :mpan_mprn %>
+              </div>
+              <div class="card-footer">
+                <%= link_to 'View meters', school_meters_path(@school), class: 'btn btn-sm btn-default',
+                                                                        target: '_blank', rel: 'noopener' %>
+              </div>
             </div>
-            <div class="card-footer">
-              <%= link_to 'View meters', school_meters_path(@school), class: 'btn btn-sm btn-default',
-                                                                      target: '_blank', rel: 'noopener' %>
-            </div>
-          </div>
 
-          <div class="card bg-light">
-            <div class="card-body">
-              <%= f.association :consent_documents,
-                                label: 'Which documents were checked?',
-                                as: :check_boxes,
-                                collection: @school.consent_documents,
-                                value_method: :id,
-                                label_method: :title %>
+            <div class="card bg-light">
+              <div class="card-body">
+                <%= f.association :consent_documents,
+                                  label: 'Which documents were checked?',
+                                  as: :check_boxes,
+                                  collection: @school.consent_documents,
+                                  value_method: :id,
+                                  label_method: :title %>
+              </div>
+              <div class="card-footer">
+                <%= link_to 'View documents', school_consent_documents_path(@school), class: 'btn btn-sm btn-default',
+                                                                                      target: '_blank', rel: 'noopener' %>
+                <% if @school.bill_requested %>
+                  <%= link_to 'Clear bill request', clear_admin_school_bill_requests_path(@school),
+                              method: :post, class: 'btn btn-sm btn-default' %>
+                <% else %>
+                  <%= link_to 'Request bill', new_admin_school_bill_request_path(@school),
+                              class: 'btn btn-sm btn-default' %>
+                <% end %>
+              </div>
             </div>
-            <div class="card-footer">
-              <%= link_to 'View documents', school_consent_documents_path(@school), class: 'btn btn-sm btn-default',
-                                                                                    target: '_blank', rel: 'noopener' %>
-              <%= link_to 'Request bill', new_admin_school_bill_request_path(@school), class: 'btn btn-sm btn-default' %>
-            </div>
-          </div>
+        </div>
+
+        <div class="row mt-1 mb-1">
+         <div class="col">
+           <div class="mt-4">
+             <%= f.button :submit, 'Complete review', "data-confirm": 'Are you sure?',
+                                                      disabled: !@school.consent_up_to_date? %>
+           </div>
+           <hr>
+           <div class="btn-group">
+             <%= link_to 'See all pending reviews', admin_meter_reviews_path, class: 'btn btn-default' %>
+           </div>
+         </div>
+        </div>
 
       </div>
 
-      <div class="row mt-1 mb-1">
-       <div class="col">
-         <div class="mt-4">
-           <%= f.button :submit, 'Complete review', "data-confirm": 'Are you sure?',
-                                                    disabled: !@school.consent_up_to_date? %>
-         </div>
-         <hr>
-         <div class="btn-group">
-           <%= link_to 'See all pending reviews', admin_meter_reviews_path, class: 'btn btn-default' %>
-         </div>
-       </div>
-      </div>
+      <% end %>
+  </div>
 
-    </div>
-
-    <% end %>
-</div>
+<% end %>

@@ -1,66 +1,23 @@
-<% content_for :page_title, 'DCC Meter Status' %>
-
-<div class="d-flex justify-content-between align-items-center">
-  <h1>DCC Meter Status</h1>
-
-  <div>
-    <%= link_to "All reports", admin_reports_path, class: "btn btn-default" %>
-  </div>
-</div>
+<%= render 'admin/reports/title', title: 'DCC Meter Status' %>
 
 <h2>DCC Meter Summary</h2>
 
-<p>There are currently <strong><%= @dcc_meters.count %></strong> DCC meters in the system, across <strong><%= @schools.count %> schools</strong>.</p>
+<p>There are currently <strong><%= @dcc_meters.count('meters.id') %></strong> DCC meters in the system, across
+   <strong><%= @schools_count %> schools</strong>.</p>
 
-<p>This table summarises the current status of all the DCC meters in the system. For a list of MPANs that n3rgy believe we can access, see <a href="#n3rgy-mpans">the following table</a></p>
+<p>This table summarises the current status of all the DCC meters in the system. For a list of MPANs that n3rgy
+   believe we can access, see <a href="#n3rgy-mpans">the following table</a></p>
 
-<p>
-  If a meter is shown as "Consented?" then we have informed n3rgy that we have been given consent, and are expecting to be able to receive data. We only set this value to true if we have successfully updated n3rgy.
-</p>
+<p>If a meter is shown as "Consented?" then we have informed n3rgy that we have been given consent, and are expecting
+   to be able to receive data. We only set this value to true if we have successfully updated n3rgy.</p>
 
-<p>
-  The "Consent Confirmed?" column indicates whether n3rgy has recorded that we currently have
-  consent to access  meter. If there's a discrepancy then there has been a problem at their end.
-</p>
+<p>The "Consent Confirmed?" column indicates whether n3rgy has recorded that we currently have
+   consent to access  meter. If there's a discrepancy then there has been a problem at their end.</p>
+
+<p><%= link_to 'Download as CSV', admin_reports_dcc_status_index_path(format: :csv), class: 'btn' %></p>
 
 <% if @dcc_meters.any? %>
-  <table class="table table-condensed table-sorted">
-    <thead>
-      <tr>
-        <th>School</th>
-        <th>Type</th>
-        <th>MPAN</th>
-        <th>Meter Name</th>
-        <th>Active?</th>
-        <th>Consented?</th>
-        <th>Consent confirmed?</th>
-        <th>Earliest validated</th>
-        <th>Latest validated</th>
-        <th class="data-orderable">Issues</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @dcc_meters.each do |meter| %>
-        <tr class="<%= highlight_consent_mismatch?(@mpxns, meter) ? 'bg-danger text-white' : '' %>">
-          <td><%= link_to meter.school.name, school_meters_path(meter.school) %></td>
-          <td><%= fa_icon(fuel_type_icon(meter.meter_type)) %></td>
-          <td><%= meter.mpan_mprn %></td>
-          <td><%= link_to meter.name_or_mpan_mprn, school_meter_path(meter.school, meter) %></td>
-          <td><%= meter.active %></td>
-          <td><%= meter.consent_granted %></td>
-          <td><%= consented_in_n3rgy?(@mpxns, meter) %></td>
-          <td><%= meter.first_validated_reading %></td>
-          <td><%= meter.last_validated_reading %></td>
-          <td>
-           <% if meter.issues.any? %>
-              <%= render 'admin/issues/modal', meter: meter, view_mode: true %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render 'admin/reports/column_table', columns: @columns, rows: @dcc_meters %>
 <% end %>
 
 <h2 id="n3rgy-mpans">N3rgy Consented MPANs</h2>

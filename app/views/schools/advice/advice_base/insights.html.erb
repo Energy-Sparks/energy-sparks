@@ -14,19 +14,15 @@
     <p><%= @advice_page_insights_next_steps %></p>
   <% end %>
 
-  <%= component 'recommendations', recommendations: @activity_types,
-                                   title: t('advice_pages.insights.recommendations.activities_title'), classes: 'pb-4' %>
+  <%= render RecommendationsComponent.new(recommendations: @activity_types,
+                                          title: t('advice_pages.insights.recommendations.activities_title'),
+                                          classes: 'pb-4') %>
 
-  <%= component 'recommendations', recommendations: @intervention_types,
-                                   title: t('advice_pages.insights.recommendations.actions_title'), classes: 'pb-4' %>
+  <%= render RecommendationsComponent.new(recommendations: @intervention_types,
+                                          title: t('advice_pages.insights.recommendations.actions_title'),
+                                          classes: 'pb-4') %>
 
-  <% if @how_we_analysed_modal %>
-    <%= component 'footnote_modal',
-                  title: t('advice_pages.how_have_we_analysed_your_data.page_title'),
-                  modal_id: 'how-have-we-analysed-your-data-footnotes' do |component| %>
-      <% component.with_body_content do %>
-        <%= render 'schools/advice/how_have_we_analysed_your_data' %>
-      <% end %>
-    <% end %>
+  <% cache [@school.latest_content, @advice_page.fuel_type, I18n.locale], expires_in: 4.hours do %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
   <% end %>
 <% end %>

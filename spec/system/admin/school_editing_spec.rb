@@ -124,12 +124,12 @@ RSpec.describe 'editing school details', type: :system do
       expect(school.indicated_has_solar_panels).to be true
       expect(school.indicated_has_storage_heaters).to be true
       expect(school.has_swimming_pool).to be true
-      expect(school.alternative_heating_oil).to be true
-      expect(school.alternative_heating_lpg).to be true
-      expect(school.alternative_heating_biomass).to be true
-      expect(school.alternative_heating_ground_source_heat_pump).to be true
-      expect(school.alternative_heating_air_source_heat_pump).to be true
-      expect(school.alternative_heating_water_source_heat_pump).to be true
+      expect(school.heating_oil).to be true
+      expect(school.heating_lpg).to be true
+      expect(school.heating_biomass).to be true
+      expect(school.heating_ground_source_heat_pump).to be true
+      expect(school.heating_air_source_heat_pump).to be true
+      expect(school.heating_water_source_heat_pump).to be true
     end
   end
 

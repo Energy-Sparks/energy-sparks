@@ -179,5 +179,11 @@ RSpec.describe 'heating control advice page', type: :system do
 
       it_behaves_like 'an advice page tab', tab: 'Learn More'
     end
+
+    context 'with not enough data' do
+      let(:enough_data) { false }
+
+      it { expect(page).to have_content(I18n.t('advice_pages.heating_control.not_enough_data.title')) }
+    end
   end
 end

@@ -1,27 +1,24 @@
 cy:
   alert_mailer:
     alert_email:
-      book_a_workshop: Archebu gweithdy
-      book_an_audit: Archebu archwiliad
-      dashboard_and_analysis_message_html: Mae <strong><a href='%{school_url}'>dangosfwrdd eich ysgol</a></strong> bob amser yn dangos eich rhybuddion diweddaraf a bydd ein <strong><a href='%{school_analysis_index_url}'>dadansoddiad manwl</a></strong> o'ch defnydd o ynni yn rhoi mewnwelediad pellach
-      do_not_show_me_alerts_like_this: Peidio â dangos rhybuddion fel hyn i fi
-      education_workshops_message: Mae Sbarcynni yn cynnig gweithdai addysg hanner diwrnod personol a rhithwir a gwasanaethau i ysgolion sy'n cymryd rhan ledled y DU
+      dashboard_and_analysis_message_2024_html: Mae eich <a href='%{school_url}'>dangosfwrdd ysgol</a> bob amser yn dangos crynodeb o'ch rhybuddion diweddar a'ch defnydd o ynni. I gael <a href='%{alerts_school_advice_url}'>rhestr lawn o rybuddion</a> a'n <a href='%{priorities_school_advice_url}'>camau gweithredu blaenoriaeth a awgrymir</a>, edrychwch ar ein <a href='%{school_analysis_index_url}'>dadansoddiad manwl</a>
       find_out_more: Dysgu rhagor
-      get_your_pupils_involved: Cael eich disgyblion i gymryd rhan
       if_you_have_any_feedback: Os oes gennych unrhyw adborth ar yr e-byst hyn, cysylltwch â ni yn
       if_you_wish_to_completely_unsubscribe: Os ydych yn dymuno dad-danysgrifio o'r e-byst hyn yn llwyr yna cysylltwch â gweinyddwr/wyr eich ysgol
       latest_updates: Diweddariadau diweddaraf
-      need_more_help: Angen mwy o help
-      need_more_help_message: Mae Sbarcynni yn cynnig archwiliadau ynni rhithwir ar-lein ac archwiliadau ynni ar y safle i'ch cefnogi i ddatblygu cynllun gweithredu ynni eich ysgol
       paragraph_1_html: Rydym yn dadansoddi data ynni <a href='%{school_url}'>eich ysgol</a> i amlygu lle rydych yn gwneud cynnydd neu lle y gallech gymryd camau i leihau eich defnydd i arbed arian a lleihau allyriadau carbon
       set_a_new_target: Gosod targed newydd
       stay_up_to_date: Cadwch yn gyfoes
       subject: Rhybuddion Sbarcynni
+      subject_2024: "Rhybuddion wythnosol %{school_name}"
+      take_action_around_the_school: Gweithredwch o amgylch yr ysgol
+      take_action_choose: Dewiswch weithgaredd
+      take_action_message: Cwblhewch un o'n gweithgareddau dan arweiniad disgyblion neu oedolion a argymhellir i ddechrau lleihau eich defnydd o ynni
       title: Eich rhybuddion wythnosol
+      unsubscribe_message_html: Gallwch ddad-danysgrifio o'r e-byst hyn drwy <a href="%{profiles_url}">ddiweddaru eich proffil</a> ar Sbarcynni
       view_your_progress_report: Gweld eich adroddiad cynnydd
       view_your_school_dashboard: Gweld dangosfwrdd eich ysgol
       why_am_i_receiving_these_emails: Pam ydw i'n derbyn yr e-byst hyn?
-      you_can_stop_receiving: Gallwch roi'r gorau i dderbyn, neu oedi dros dro rhybuddion unigol drwy glicio ar y dolenni a ddarperir yn yr e-bost hwn
       you_have_been_signed_up: Rydych wedi cofrestru i dderbyn rhybuddion ynni ar gyfer eich ysgol
       your_school_has_current_target_html: Mae eich ysgol wedi gosod targed i leihau ei defnydd o ynni erbyn%{target_date}. <strong><a href='%{school_targets_url}'>Bydd adroddiad cynnydd eich ysgol</a></strong>  yn eich helpu i fonitro cynnydd ac awgrymu ffyrdd o weithredu
       your_school_has_target_html: Gwnaeth eich ysgol osod targed i leihau ei defnydd o ynni erbyn %{target_date}. Mae'n bryd <a href='%{school_targets_url}'>adolygu eich cynnydd</a> a gosod targed newydd ar gyfer y flwyddyn i ddod
@@ -40,34 +37,13 @@ cy:
       title: Uwchlwythwch fil ynni ar gyfer %{school_name}
       upload_bill: Uwchlwythwch eich bil
   campaign_mailer:
-    send_information:
-      for_las:
-        enrol_html: Os ydych yn barod i barhau, llenwch ein <a href="%{enrol_link}">ffurflen gofrestru</a> Awdurdod Lleol i rannu rhagor o fanylion am eich ysgolion a’u trefniadau cyflenwad ynni.
-        group_dashboard_html: Rhoddir <a href="%{group_dashboard_link}">dangosfwrdd grŵp</a> i Awdurdodau Lleol i weld perfformiad ynni pob ysgol a’u blaenoriaethau arbed ynni.
-        video_html: Gwyliwch ein <a href="%{video_link}">fideo rhagarweiniol</a> i ddysgu rhagor am yr hyn rydym yn ei gynnig i ysgolion neu <a href="%{book_demo_link}">archebwch demo byw</a> a sesiwn Holi ac Ateb ar gyfer eich Awdurdod Lleol.
-      for_mats:
-        enrol_html: Os ydych yn barod i barhau, llenwch ein <a href="%{enrol_link}">ffurflen gofrestru</a> Ymddiriedolaeth i rannu rhagor o fanylion am eich ysgolion a’u trefniadau cyflenwad ynni.
-        group_dashboard_html: Rhoddir <a href="%{group_dashboard_link}">dangosfwrdd ar gyfer yr ymddiriedolaeth i gyd</a> i Ymddiriedolaethau Aml-Academi i weld perfformiad ynni pob ysgol a’u blaenoriaethau arbed ynni.
-        video_html: Gwyliwch ein <a href="%{video_link}">fideo rhagarweiniol</a> i ddysgu rhagor am yr hyn rydym yn ei gynnig i ysgolion neu <a href="%{book_demo_link}">archebwch demo byw</a> a sesiwn Holi ac Ateb ar gyfer eich Ymddiriedolaeth.
-      for_schools:
-        about_us: Rydym yn elusen gofrestredig a all eich helpu i arbed costau ynni a lleihau eich ôl troed carbon gyda'n hofferyn rheoli ynni a'n rhaglen addysg.
-        case_studies: Astudiaethau achos a phecyn gwybodaeth
-        case_studies_html: Archwiliwch ein <a href="%{case_study_link}">hastudiaethau achos</a> sy'n arddangos rhai o'r ffyrdd y mae ysgolion Sbarcynni wedi arbed ynni a gwella llythrennedd ynni a hinsawdd eu disgyblion.
-        dashboards: Edrychwch ar y dangosfyrddau ar gyfer rhai o’n hysgolion sy’n cymryd rhan i ddeall sut y gallwn eich helpu i reoli eich defnydd o ynni a chynnwys cymuned yr ysgol gyfan mewn lleihau allyriadau carbon.
-        demo: Demo Cynnyrch
-        download_pack_html: Lawrlwythwch <a href="%{download_pack_link}">ragor o wybodaeth am ein gwasanaethau</a> i'w rhannu â chydweithwyr ac edrychwch ar ein <a href="%{prices_link}">prisiau cyfredol</a>.
-        enrol_html: <a href="%{enrol_link}">Cwblhewch ein ffurflen gofrestru</a> heddiw i ddechrau gosod eich cyfrif.
-        example_adult_dashboard: Dangosfwrdd oedolion enghreifftiol
-        example_pupil_dashboard: Dangosfwrdd disgyblion enghreifftiol
-        examples: Dangosfyrddau enghreifftiol
-        final: Edrychwn ymlaen at eich helpu i arbed ynni a brwydro yn erbyn newid hinsawdd.
-        intro: Diolch am eich diddordeb yn Sbarcynni.
-        name: Claudia
-        ready: Barod i gychwyn arni?
-        sign_off: Cofion cynnes
-        title: Prif Swyddog Gweithredol Sbarcynni
-        video_html: Gwyliwch ein <a href="%{video_link}">fideo rhagarweiniol</a> i ddysgu rhagor am yr hyn rydym yn ei gynnig i ysgolion. Neu ymunwch â <a href="%{book_demo_link}">demo byw</a> a sesiwn holi ac ateb wythnosol.
+    final: Edrychwn ymlaen at eich helpu i arbed ynni a brwydro yn erbyn newid hinsawdd.
+    job_title: Prif Swyddog Gweithredol Sbarcynni
+    name: Claudia
+    send_information_school:
+      intro: Diolch am eich diddordeb yn Sbarcynni.
       subject: Rhagor o wybodaeth am Sbarcynni
+    sign_off: Cofion cynnes
   consent_grant_mailer:
     email_consent:
       description: Eich caniatâd i Sbarcynni
@@ -104,22 +80,12 @@ cy:
       subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_name} ar Sbarcynni
   mailer:
     get_in_touch: Cysylltwch
+  onboarding_mailer2025:
+    onboarded_email:
+      subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
+    welcome_email:
+      subject: Croeso i Sbarcynni
   onboarding_mailer:
-    activation_email:
-      explore_activities: Archwilio gweithgareddau
-      get_in_touch_html: <a href="%{contact_url}">Cysylltwch</a> os oes gennych unrhyw gwestiynau pellach
-      header: "Mae %{school_name} bellach yn fyw ar Sbarcynni"
-      join_a_webinar: Ymunwch â gweminar
-      need_some_help: Angen help?
-      paragraph_1_html: Gallwch bellach ddefnyddio Sbarcynni i ddechrau cofnodi eich gweithgareddau arbed ynni. Archwiliwch ein <strong><a href="%{activity_categories_url}">gweithgareddau ac adnoddau addysgol</a></strong> dan arweiniad disgyblion sydd wedi'u cynllunio i addysgu'ch disgyblion am ynni tra'n arbed arian i'w hysgol.
-      paragraph_2_html: Mae gennym hefyd amrywiaeth o <strong><a href="%{intervention_type_groups_url}">gamau arbed ynni</a></strong> y gallwch chi, aelodau eraill o staff a gwirfoddolwyr eu cymryd i ddechrau gwella eich defnydd o ynni.
-      paragraph_3_html: Edrychwch ar eich <a href="%{school_url}">dangosfwrdd ysgol</a> am awgrymiadau ar sut i ddechrau arni.
-      paragraph_4: Byddwn mewn cysylltiad yn fuan i gadarnhau pan fyddwn wedi gorffen cael mynediad at eich data ynni.
-      paragraph_5_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="%{user_guide_videos_url}">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="%{training_url}">hyfforddi gweminar byw</a>.
-      paragraph_6: Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
-      subject: "Mae %{school} yn fyw ar Sbarcynni"
-      thanks_for_joining: Diolch am ymuno!
-      the_energy_sparks_team: Tîm Sbarcynni
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni
       subject: "Mae %{school} (%{school_group}) wedi cwblhau'r broses ymuno"

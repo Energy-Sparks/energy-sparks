@@ -47,7 +47,7 @@ module ApplicationHelper
   def date_range_from_reading_gaps(readings_chunks)
     readings_chunks.map do |chunk|
       "#{chunk.size} days (#{short_dates(chunk.first.reading_date)} to #{short_dates(chunk.last.reading_date)})"
-    end.join('<br/>').html_safe
+    end.join('<br>').html_safe
   end
 
   def active(bool = true)
@@ -169,7 +169,9 @@ module ApplicationHelper
   end
 
   def alert_type_icon(alert_type, size = nil)
-    alert_type.fuel_type.nil? ? "calendar-alt #{size}" : "#{fuel_type_icon(alert_type.fuel_type)} #{size}"
+    icon = alert_type.fuel_type.nil? ? 'calendar-alt' : fuel_type_icon(alert_type.fuel_type)
+    icon += " #{size}" if size
+    icon
   end
 
   def alert_icon(alert, size = nil)
@@ -373,14 +375,6 @@ module ApplicationHelper
     }
   end
 
-  def utm_params_for_redirect
-    {
-      utm_source: params[:utm_source],
-      utm_medium: params[:utm_medium],
-      utm_campaign: params[:utm_campaign]
-    }
-  end
-
   def add_or_remove(list, item)
     arr = list ? list.split(',').map(&:strip) : []
     arr.include?(item) ? arr.delete(item) : arr.append(item)
@@ -443,10 +437,18 @@ module ApplicationHelper
   end
 
   def dashboard_message_icon(messageable)
+    who = messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+
     if messageable.dashboard_message
       title = 'Dashboard message is shown for '
-      title += messageable.is_a?(SchoolGroup) ? 'schools in this group' : 'school'
+      title += who
       tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+        fa_icon(:info)
+      end
+    else
+      title = 'Dashboard message is not set for '
+      title += who
+      tag.span class: 'badge badge-grey-light', title: title.to_s do
         fa_icon(:info)
       end
     end
@@ -458,11 +460,6 @@ module ApplicationHelper
 
   def text_with_icon(text, icon, **kwargs)
     (icon ? "#{fa_icon(icon, **kwargs)} #{text}" : text).html_safe
-  end
-
-  def component(name, *args, **kwargs, &block)
-    component = name.to_s.sub(%r{(/|$)}, '_component\1').camelize.constantize
-    render(component.new(*args, **kwargs), &block)
   end
 
   def school_name_group(school)
@@ -538,5 +535,32 @@ module ApplicationHelper
   def label_with_wbr(label)
     return '' unless label.present?
     label.gsub(%r{/}, '/<wbr>').html_safe
+  end
+
+  def recording_path(recording)
+    if recording.is_a?(Activity)
+      school_activity_path(recording.school, recording)
+    elsif recording.is_a?(Observation) && recording.observation_type == 'intervention'
+      school_intervention_path(recording.school, recording)
+    else
+      raise StandardError, 'Unsupported recording type'
+    end
+  end
+
+  def home_class
+    if controller_name == 'home' && %w[index show].include?(action_name)
+      'home'
+    else
+      'home-page'
+    end
+  end
+
+  def admin_user_label(school_group)
+    name = school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name
+    "Admin • #{name}"
+  end
+
+  def schools_count
+    number_with_delimiter(School.active.visible.count)
   end
 end

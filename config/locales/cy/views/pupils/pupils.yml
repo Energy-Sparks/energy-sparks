@@ -1,13 +1,30 @@
 cy:
   pupils:
     analysis:
+      compare_different_days: Yr ynni a ddefnyddir mewn dau ddiwrnod gwahanol
+      compare_different_weeks: Yr ynni a ddefnyddir mewn dwy wythnos wahanol
+      compare_electricity_across_schools: Defnydd ynni fy ysgol gydag ysgolion eraill
+      compare_meters: Yr ynni a ddefnyddir gan wahanol fesuryddion
+      explore_all: Archwiliwch yr holl ddata %{fuel_type}
       explore_data: Archwilio data
-      explore_energy_data_html: Archwiliwch y data <strong>%{fuel_type}</strong> ar gyfer eich ysgol
+      explore_energy_data: Archwiliwch y data ynni ar gyfer eich ysgol
+      explore_energy_data_html: Archwiliwch y data %{fuel_type} ar gyfer eich ysgol
+      how_changed_long_term: Sut mae defnydd ynni wedi newid yn y tymor hir?
+      how_much: Faint oedd yr ynni yn ei gostio?
+      how_much_baseload: Faint o ynni oedd yn cael ei ddefnyddio gan oleuadau ac offer yn rhedeg drwy'r amser
+      how_much_co2: Faint o garbon deuocsid a gynhyrchwyd?
+      how_much_last_week: Faint o ynni a ddefnyddiwyd yn ystod y 7 diwrnod diwethaf?
+      how_much_last_year: Faint o ynni a ddefnyddiwyd y llynedd?
+      how_much_solar: Faint o ynni solar a gynhyrchwyd?
+      i_would_like_to_compare: Hoffwn gymharu…
+      i_would_like_to_know: Hoffwn i wybod…
+      i_would_like_to_see: Hoffwn i weld…
       live_energy_data: Data ynni byw
+      when: Pryd y defnyddiwyd yr ynni?
       without_storage_heaters: heb stôr-wresogyddion
     default_equivalences:
       equivalence_1:
-        equivalence: Dyna'r ynni a gynhyrchir gan dyrbin gwynt ar y tir yn y DU mewn 3 wythnos
+        equivalence: Dyna ddigon o ynni i ferwi 8,800 o degellau.
         measure_html: Yr wythnos diwethaf defnyddiodd yr ysgol gyffredin 1,300 kWh o <strong>drydan</strong>
       equivalence_2:
         equivalence: Dyna'r ynni a gynhyrchir gan dyrbin gwynt ar y tir yn y DU mewn 3 wythnos

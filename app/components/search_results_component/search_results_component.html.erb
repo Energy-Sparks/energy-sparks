@@ -1,6 +1,6 @@
-<div id="<%= id %>" class="row search-results-component">
+<%= tag.div id: id, class: class_names(classes, 'row') do %>
   <div class="col-12 col-md-2">
-    <h3>
+    <h3 class="scrollable-title" id="<%= anchor %>">
       <%= title %>
     </h3>
     <p>
@@ -8,12 +8,12 @@
     </p>
   </div>
   <div class="col-12 col-md-10">
-    <% results.each do |result| %>
-      <ul class="list-unstyled">
-        <li>
+    <ul class="list-unstyled">
+    <% results.each_with_index do |result, index| %>
+        <li class="<%= class_names('mb-4', { 'mt-4': index.positive? }) %>">
           <%= result %>
         </li>
-      </ul>
     <% end %>
+      </ul>
   </div>
-</div>
+<% end %>

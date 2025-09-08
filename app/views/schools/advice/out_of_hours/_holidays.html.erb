@@ -4,8 +4,8 @@
           t("advice_pages.#{fuel_type}_out_of_hours.analysis.holiday_usage.title") %>
 
 <% alert_classes.each do |alert_class| %>
-  <%= component 'alerts', school: school, dashboard_alerts: dashboard_alerts,
-                          alert_types: alert_types_for_class(alert_class), show_links: false %>
+  <%= render AlertsComponent.new(school: school, dashboard_alerts: dashboard_alerts,
+                                 alert_types: alert_types_for_class(alert_class), show_links: false) %>
 <% end %>
 
 <% if analysis_dates.months_of_data >= 14 %>
@@ -28,13 +28,13 @@
 <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.alert_group_by_week_gas_14_months.subtitle_html") %>
 <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.management_dashboard_group_by_week_gas.title") %>
 
-<%= component 'chart', chart_type: chart_type, school: school, chart_config: chart_config do |c| %>
+<%= render ChartComponent.new(chart_type: chart_type, school: school, chart_config: chart_config) do |c| %>
   <% c.with_title do %>
     <%= advice_t(chart_title) %>
   <% end %>
   <% c.with_subtitle do %>
     <%= advice_t("#{fuel_type}_out_of_hours.analysis.holiday_usage.#{full_chart}.subtitle_html",
-                 start_date: analysis_dates.last_full_week_start_date.to_fs(:es_short),
+                 start_date: analysis_dates.last_full_week_start_date_14_months_ago.to_fs(:es_short),
                  end_date: analysis_dates.last_full_week_end_date.to_fs(:es_short)) %>
   <% end %>
   <% c.with_header do %>
@@ -48,7 +48,7 @@
 <%# i18n-tasks-use t("advice_pages.gas_out_of_hours.analysis.holiday_usage.table_intro") %>
 <p><%= advice_t("#{fuel_type}_out_of_hours.analysis.holiday_usage.table_intro") %></p>
 
-<%= component 'holiday_usage_table', holiday_usage: holiday_usage, analysis_dates: analysis_dates %>
+<%= render HolidayUsageTableComponent.new(holiday_usage: holiday_usage, analysis_dates: analysis_dates) %>
 
 <% if fuel_type == :gas %>
   <p><%= advice_t('gas_out_of_hours.analysis.holiday_usage.table_alert_note') %></p>

@@ -41,10 +41,12 @@ en:
     how_have_we_analysed_your_data:
       calculations_based_on_fuel_type: Calculations based on %{fuel_type} consumed between %{start_date} and %{end_date}
       cost_calculations: Cost calculations
-      cost_calculations_introduction_html: |-
-        <p>Consumption costs are estimated based on historic tariff information</p>
-        <p>Future savings are estimates based on your school's latest tariff information</p>
-        <p>Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs</p>
+      cost_calculations_introduction:
+      - Consumption costs are calculated based on the unit prices of energy and do not take into account standing charges or other fees.
+      - Tariffs may be based on MAT or Local Authority averages, or an Energy Sparks default, if your school has not provided their actual tariffs.
+      - Consumption costs are estimated based on historic tariff information.
+      - Future savings are estimates based on your school's latest tariff information.
+      - Potential cost savings quoted in school comparisons, e.g. for comparable "well managed" and "exemplar" schools are also based on your school's current tariffs.
       energy_data: Energy data
       link_title: How did we calculate these figures?
       page_title: How have we analysed your data?
@@ -76,7 +78,6 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
-      name: Advice
       overview: Overview
       pages:
         baseload: Baseload

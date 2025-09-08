@@ -10,11 +10,7 @@ div.application.container {
 }
 
 .navigation-margin {
-  margin-top: 108px;
-}
-
-section.home.alerts .alert {
-  margin-bottom: 0px;
+  margin-top: 114px;
 }
 
 address {
@@ -22,8 +18,13 @@ address {
   font-size: initial;
 }
 
-p {
+p, q, .trix-content div {
   @include font(f6);
+}
+
+q {
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .small {
@@ -38,12 +39,25 @@ p {
   white-space: nowrap;
 }
 
-.bg-light-blue {
-  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
+$rounded-xl: 12px;
+
+.rounded-xl {
+  border-radius: $rounded-xl;
 }
 
-section.padded-section {
-  padding: 100px 0;
+.rounded-top-xl {
+  border-top-left-radius: $rounded-xl;
+  border-top-right-radius: $rounded-xl;
+}
+
+.rounded-bottom-xl {
+  border-bottom-left-radius: $rounded-xl;
+  border-bottom-right-radius: $rounded-xl;
+}
+
+.fa-li.fa-check {
+  color: $positive-dark;
+  padding-bottom: 100px;
 }
 
 div.padded-row {
@@ -55,49 +69,32 @@ div.callout-text {
   padding-right: 30px;
 }
 
-@media (max-width: 767px) {
-  section {
-    padding: 75px 0;
-  }
-  section.first {
-    padding-top: 75px;
-  }
-}
-
-div.bio {
-  border: none;
-}
-
-div.hide {
+div.hide, .hidden {
   display: none;
 }
 
-.hidden {
-  display: none;
+table th {
+  &.actions {
+    width: 20%;
+  }
+
+  &.description {
+    width: 50%;
+  }
 }
 
-table th.actions {
-  width: 20%;
-}
+.table td {
+  &.fit {
+    white-space: nowrap;
+    width: 1px;
+  }
 
-table th.description {
-  width: 50%;
-}
-
-th.fixed-width-150 {
-  min-width: 150px;
-}
-
-.table td.fit {
-  white-space: nowrap;
-  width: 1px;
-}
-
-.table td.overflow {
-  white-space: nowrap;
-  text-overflow:ellipsis;
-  overflow: hidden;
-  max-width:1px;
+  &.overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 1px;
+  }
 }
 
 div.meter-attributes {
@@ -118,28 +115,14 @@ input:invalid {
   color: $danger;
 }
 
-.funnel-image {
-  border-radius: 0.5rem 0.5rem;
-}
-
-.nav-anchor a {
-  position: absolute;
-  left: 0px;
-  top: -60px;
-}
-
 .nav-anchor {
   position: relative;
-}
 
-.static-images {
-  height: 300px;
-  width: 400px;
-}
-
-.static-images.small {
-  height: 200px;
-  width: 300px;
+  a {
+    position: absolute;
+    left: 0px;
+    top: -60px;
+  }
 }
 
 .accordion-block {
@@ -180,29 +163,26 @@ input, progress {
   white-space: pre-line;
 }
 
-.main-breadcrumbs .breadcrumb-item+.breadcrumb-item::before {
-  content: quote(">");
-}
-
 .main-breadcrumbs {
   background-color: transparent;
   padding: 0;
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: quote(">");
+  }
 }
 
 .header-dark {
   background-color: $header-dark;
 }
 
-.text-white {
+.bg-light-blue {
+  background-image: linear-gradient(to right, $blue-light 0%, $blue-pale 100%);
+}
+
+.badge-grey-light {
+  background-color: $grey-light;
   color: $white;
-}
-
-.text-grey-light {
-  color: $grey-light;
-}
-
-.text-dark-blue {
-  color: $blue-very-dark;
 }
 
 .card .card-footer.plain {
@@ -210,62 +190,16 @@ input, progress {
   background-color: white;
 }
 
-// polarity styles
-
-@each $polarity, $tones in $colours-polarity {
-  // e.g. .bg-positive, .bg-neutral, .bg-negative
-  .bg-#{$polarity} {
-    background-image: linear-gradient(to right, map-get($tones, 'dark') 0%, map-get($tones, 'light') 100%);
-  }
-
-  // e.g. .bg-positive-dark, .bg-neutral-dark, .bg-negative-dark
-  .bg-#{$polarity}-dark {
-    background-color: map-get($tones, 'dark');
-  }
-
-  // e.g. .bg-positive-light, .bg-neutral-light, .bg-negative-light
-  .bg-#{$polarity}-light {
-    background-color: map-get($tones, 'light');
-  }
+.carousel-indicators li {
+  background: $grey-dark;
+  border:2px solid $grey-dark;
+  border-radius: 6px;
 }
 
-@each $polarity, $tones in $colours-polarity {
-  // e.g. .text-positive, .text-neutral, .text-negative
-  .text-#{$polarity} {
-    color: map-get($tones, 'dark')
-  }
+.sortable-hide {
+  opacity:0;
 }
 
-// fuel colour styles
-@each $fuel, $tones in $colours-fuel {
-  // e.g. .bg-electric-light, .bg-gas-light, .bg-storage-light, .bg-solar-light
-  .bg-#{$fuel}-light {
-    background-color: map-get($tones, 'light'); // was medium
-  }
-
-  // e.g. .bg-electric-dark, .bg-gas-dark, .bg-storage-dark, .bg-solar-dark
-  .bg-#{$fuel}-dark {
-    background-color: map-get($tones, 'dark');
-  }
-
-  // e.g. .text-electric, .text-gas, .text-storage, .text-solar
-  .text-#{$fuel} {
-    color: map-get($tones, 'dark');
-  }
-}
-
-// comparison styles - unused?
-@each $tag, $colour in $colours-comparison {
-  // e.g. .bg-exemplar_school, .bg-benchmark_school, .bg-other_school
-  .bg-#{$tag} {
-    background-color: $colour !important;
-  }
-
-  // e.g. .text-exemplar_school, .text-benchmark_school, .text-other_school
-  .text-#{$tag} {
-    text-decoration: underline;
-    text-decoration-color: $colour;
-    text-decoration-thickness: 3px;
-    font-weight: bolder;
-  }
+.border-blue-dark {
+  border-color: $blue-dark !important;
 }

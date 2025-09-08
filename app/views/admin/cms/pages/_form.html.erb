@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col">
+    <% url = if page.new_record?
+               admin_cms_pages_path
+             else
+               admin_cms_page_path(page)
+             end %>
+    <%= simple_form_for(page, as: :page, url: url) do |f| %>
+      <%= render 'shared/errors', subject: page, subject_name: 'page' %>
+      <div class="form-group">
+        <label for='category_id'>Category</label>
+        <%= f.select :category_id,
+                     options_for_select(
+                       Cms::Category.by_title.map { |c| [c.title, c.id] },
+                       page.category_id || params[:category_id]
+                     ),
+                     { include_blank: 'Choose category' },
+                     { class: 'form-control' } %>
+      </div>
+
+      <div class="form-group">
+        <label for='audience'>Audience</label>
+          <%= f.select :audience,
+                       options_for_select(
+                         Cms::Page.audiences.transform_keys { |v| t("page.audience.#{v}") },
+                         page.audience
+                       ),
+                       { include_blank: 'Choose audience' },
+                       { class: 'form-control' } %>
+      </div>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+        <%= f.input t_field(:title, locale), as: :string %>
+      <% end %>
+
+      <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+        <%= f.input t_field(:description, locale), as: :string %>
+      <% end %>
+
+      <% unless page.new_record? %>
+        <%= render 'page_sections_form', page: @page, f: f %>
+      <% end %>
+
+      <div class="form-group mt-4">
+        <%= f.submit 'Save', class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', admin_cms_pages_path, class: 'btn' %>
+      </div>
+    <% end %>
+  </div>
+</div>

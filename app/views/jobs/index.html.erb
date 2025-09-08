@@ -22,7 +22,7 @@
           <td><%= nice_dates(job.closing_date) %></td>
           <td>
             <% if job.file.attached? %>
-              <%= link_to t('jobs.more_information'), controller: :jobs, action: :download, serve: :inline, id: job.id %>
+              <%= link_to t('jobs.more_information'), job_download_path(id: job.id, serve: :inline) %>
             <% else %>
               -
             <% end %>
@@ -33,7 +33,7 @@
   </table>
 
   <script type="application/ld+json">
-    <%= @jobs.map { |job| job.to_job_posting.to_json }.join(",").html_safe %>
+    <%= @jobs.map { |job| job.to_job_posting.to_json }.join(',').html_safe %>
   </script>
 <% else %>
   <p><%= t('jobs.none_available') %>.</p>

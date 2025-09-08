@@ -1,17 +1,20 @@
-<%= render 'schools/advice/section_title', section_id: 'comparison', section_title: t('advice_pages.baseload.comparison.title') %>
+<%= render 'schools/advice/section_title', section_id: 'comparison',
+                                           section_title: t('advice_pages.baseload.comparison.title') %>
 
 <p>
-  <%= t('advice_pages.baseload.comparison.how_do_you_compare', school_type: t('common.school_types.' + school.school_type)) %>
+  <%= t('advice_pages.baseload.comparison.how_do_you_compare',
+        school_type: t("common.school_types.#{school.school_type}")) %>
 </p>
 
 <div class="col">
-  <%= component 'school_comparison', id: 'comparison-baseload', comparison: @benchmarked_baseload do |c| %>
+  <%= render SchoolComparisonComponent.new(id: 'comparison-baseload', comparison: benchmarked_baseload) do |c| %>
     <% c.with_footer { advice_t('baseload.comparison.callout_footer') } %>
   <% end %>
 </div>
 
 <% if school.school_group.present? %>
   <p>
-    <%= t('advice_pages.baseload.comparison.more_detail_html', link: compare_for_school_group_path(:baseload_per_pupil, school)) %>
+    <%= t('advice_pages.baseload.comparison.more_detail_html',
+          link: compare_for_school_group_path(:baseload_per_pupil, school)) %>
   </p>
 <% end %>

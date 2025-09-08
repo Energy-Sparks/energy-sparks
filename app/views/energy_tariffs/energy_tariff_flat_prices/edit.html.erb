@@ -1,7 +1,9 @@
-<%= component 'energy_tariff_form_title',
-  energy_tariff: @energy_tariff do |c| %>
+<%= render EnergyTariffFormTitleComponent.new(
+      energy_tariff: @energy_tariff
+    ) do |c| %>
   <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariff_flat_prices.edit.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
+    <h1><%= t('schools.user_tariff_flat_prices.edit.title',
+              fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
   <% end %>
 <% end %>
 
@@ -12,13 +14,13 @@
       <p>
         <%= t("schools.user_tariff_flat_prices.edit.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
       </p>
-      <br/>
+      <br>
 
-      <% url = energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff_price.id } ) %>
+      <% url = energy_tariffs_path(@energy_tariff, [:energy_tariff_flat_price], { id: @energy_tariff_price.id }) %>
       <%= simple_form_for @energy_tariff_price, url: url, method: :put do |f| %>
         <%= render 'form', energy_tariff: @energy_tariff, energy_tariff_price: @energy_tariff_price, f: f %>
 
-        <br/>
+        <br>
         <%= f.submit t('common.labels.continue'), class: 'btn btn-primary' %>
       <% end %>
     </div>

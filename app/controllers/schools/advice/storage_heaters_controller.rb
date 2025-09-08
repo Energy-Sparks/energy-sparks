@@ -8,7 +8,6 @@ module Schools
       before_action :set_annual_usage_breakdown, only: %i[insights analysis]
       before_action :set_usage_categories, only: %i[insights analysis]
       before_action :set_heating_thermostatic_analysis, only: %i[insights analysis]
-      before_action :set_analysis_dates, only: %i[insights analysis]
 
       def insights; end
 

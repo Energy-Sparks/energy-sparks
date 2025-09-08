@@ -14,7 +14,7 @@ class ScoredSchoolsList
   end
 
   def position(school)
-    schools_with_positions.select {|_position, schools| schools.include?(school)}.first.first
+    schools_with_positions.select {|_position, schools| schools.include?(school)}&.first&.first
   end
 
   def top(number)

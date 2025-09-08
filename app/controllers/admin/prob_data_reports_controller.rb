@@ -1,20 +1,37 @@
 module Admin
-  class ProbDataReportsController < AdminController
-    def index
-      @prob_data = find_prob_data
-    end
-
+  class ProbDataReportsController < Admin::Reports::BaseMeterReportsController
     private
 
-    def find_prob_data
-      AmrValidatedReading.joins(:meter)
-                         .joins('INNER JOIN schools on meters.school_id = schools.id')
-                         .joins('LEFT JOIN school_groups on schools.school_group_id = school_groups.id')
-                         .where(status: 'PROB')
-                         .group('school_groups.name', 'schools.name', 'schools.slug', 'meters.meter_type', 'meters.name', :mpan_mprn, 'meters.id')
-                         .order('count(mpan_mprn) DESC')
-                         .count
-                         .map { |row| row.to_a.flatten }
+    def columns
+      super + [
+        Column.new(:meter_type,
+                   ->(meter) { meter.meter_type.to_s },
+                   ->(meter) { render_to_string(IconComponent.new(fuel_type: meter.meter_type), layout: false) }),
+        Column.new(:count,
+                   ->(meter) { meter.count })
+      ]
+    end
+
+    def results
+      results = Meter.active
+           .joins(:school)
+           .joins(:amr_validated_readings)
+           .where(amr_validated_readings: { status: 'PROB' })
+           .includes(:school, { school: :school_group })
+           .group('school_groups.id', 'schools.id', 'meters.id')
+           .select('school_groups.*, meters.*, count(amr_validated_readings.id) as count')
+
+      results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) }) if params[:school_group].present?
+      results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:user]) } }) if params[:user].present?
+      results.order('count DESC')
+    end
+
+    def description
+      'Lists all of the meters in the system that have one or more "PROB" data readings'
+    end
+
+    def title
+      'PROB data report'
     end
   end
 end

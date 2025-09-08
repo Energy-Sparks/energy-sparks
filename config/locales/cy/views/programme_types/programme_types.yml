@@ -1,28 +1,54 @@
 cy:
   programme_types:
     cards:
-      bonus_points_html: Bydd cwblhau'r rhaglen hon y flwyddyn academaidd hon yn sgorio %{bonus_score} o bwyntiau bonws
+      bonus_points_html: Bydd cwblhau'r rhaglen hon yn rhoi %{bonus_score} o bwyntiau bonws i chi
       continue: Parhau
       view: Gweld
       you_have_already_completed_this_programme: Rydych chi eisoes wedi cwblhau'r rhaglen hon
       you_have_already_started_this_programme: Rydych chi eisoes wedi dechrau'r rhaglen hon
     completed:
+      repeat: Ailadrodd
       you_completed_this_programme_on: Gwnaethoch chi gwblhau'r rhaglen hon ar %{date}
     index:
       introduction_1: Rhaglenni byr o weithgareddau cysylltiedig y gall disgyblion weithio drwyddynt gam wrth gam i gael mwy o effaith
       introduction_2: Fel defnyddiwr Sbarcynni gallwch chi gofrestru ar unrhyw un o'n rhaglenni a chofnodi gweithgareddau i olrhain eich cynnydd a sgorio pwyntiau ar gyfer eich ysgol.
-      page_title: Rhaglenni
       title: Ein Rhaglenni Arbed Ynni
+    intention:
+      adults: Mae'r rhaglen hon wedi'i bwriadu ar gyfer oedolion
+      all: Mae'r rhaglen hon wedi'i bwriadu ar gyfer yr ysgol gyfan
+      pupils: Mae'r rhaglen hon wedi'i bwriadu ar gyfer disgyblion
+    prompt:
+      completed_message_html:
+        one: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> pwynt bonws?
+        two: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> bwynt bonws?
+        many: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> o bwyntiau bonws?
+        other: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> o bwyntiau bonws?
+      message_html:
+        one: Rydych wedi cwblhau gweithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
+        two: Rydych wedi cwblhau %{count} weithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
+        many: Rydych wedi cwblhau %{count} gweithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
+        other: Rydych wedi cwblhau %{count} gweithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
     prompt_login:
       are_you_an_energy_sparks_user_html: Ydych chi'n ddefnyddiwr Sbarcynni?<br>Mewngofnodwch a chofrestrwch eich ysgol ar y rhaglen hon, neu cofnodwch eich cynnydd diweddar
       sign_in_now: Mewngofnodi nawr
+    prompt_todo:
+      completed_message_html:
+        one: Rydych wedi cwblhau'r holl dasgau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> pwynt bonws?
+        two: Rydych wedi cwblhau'r holl dasgau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> bwynt bonws?
+        many: Rydych wedi cwblhau'r holl dasgau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> o bwyntiau bonws?
+        other: Rydych wedi cwblhau'r holl dasgau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> o bwyntiau bonws?
+      message_html:
+        one: Rydych wedi cwblhau tasg sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
+        two: Rydych wedi cwblhau %{count} dasg sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
+        many: Rydych wedi cwblhau %{count} o dasgauo sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
+        other: Rydych wedi cwblhau %{count} o dasgau sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
     show:
       activities: Gweithgareddau
       completed_on: Cwblhawyd ar
       current_progress: Cynnydd Presennol
       download: Lawrlwytho
       overview: Trosolwg
-      points: Pwyntiau
       view_all_programmes: Gweld pob rhaglen
     started:
+      restart: Ailddechrau
       you_started_this_programme_on: Gwnaethoch chi ddechrau'r rhaglen hon ar %{date}

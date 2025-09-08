@@ -1,0 +1,36 @@
+.table {
+  &.table-lined {
+    thead {
+      th {
+        @extend h3;
+        border: 0;
+      }
+
+      th.title {
+        @extend h2;
+      }
+
+      td {
+        padding: 0;
+        border: 0;
+      }
+    }
+
+    tbody {
+      th {
+        @extend h4;
+        border: 0;
+        padding-bottom: 24px;
+      }
+
+      tr:not(:first-child) th {
+        padding-top: 32px;
+      }
+
+      td {
+        border-top: 0;
+        border-bottom: 1px solid $grey-light;
+      }
+    }
+  }
+}

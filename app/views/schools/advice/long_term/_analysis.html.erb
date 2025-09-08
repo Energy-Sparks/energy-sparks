@@ -27,7 +27,8 @@
              vs_exemplar: vs_exemplar,
              estimated_savings_vs_exemplar: estimated_savings_vs_exemplar,
              estimated_savings_vs_benchmark: estimated_savings_vs_benchmark %>
-  <%= render "schools/advice/#{fuel_type}_long_term/long_term_trend",
+  <%= render 'schools/advice/long_term/long_term_trend',
              meter_selection: @meter_selection,
-             analysis_dates: analysis_dates %>
+             analysis_dates: analysis_dates,
+             fuel_type: fuel_type %>
 <% end %>

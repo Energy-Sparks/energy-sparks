@@ -14,8 +14,14 @@ module Programmes
       elsif already_enrolled?
         return
       end
+
       programme = @school.programmes.create(programme_type: @programme_type, started_on: Time.zone.today)
-      recognise_existing_progress(programme)
+
+      if Flipper.enabled?(:todos)
+        programme.complete_todos_this_academic_year!
+      else
+        recognise_existing_progress(programme)
+      end
       programme
     end
 

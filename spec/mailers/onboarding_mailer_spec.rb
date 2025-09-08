@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe OnboardingMailer do
+  include ActiveJob::TestHelper
+
   let(:school)            { create(:school, name: 'Test School', school_group: create(:school_group)) }
   let(:preferred_locale)  { :cy }
   let(:user)              { create(:onboarding_user, school: school, preferred_locale: preferred_locale) }
@@ -208,32 +210,6 @@ RSpec.describe OnboardingMailer do
     end
   end
 
-  describe '#activation_email' do
-    before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.activation_email.deliver_now } }
-
-    context 'preferred locale is cy' do
-      let(:preferred_locale) { :cy }
-
-      it 'sends the activation email in cy' do
-        expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject', locale: :cy).gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.activation_email', locale: :cy).except(:subject, :set_your_first_targets).each_value do |text|
-          expect(body).to include(replace_variables(text, locale: :cy))
-        end
-      end
-    end
-
-    context 'preferred locale is en' do
-      let(:preferred_locale) { :en }
-
-      it 'sends the activation email in en' do
-        expect(email.subject).to eq(I18n.t('onboarding_mailer.activation_email.subject').gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.activation_email', locale: :en).except(:subject, :set_your_first_targets).each_value do |text|
-          expect(body).to include(replace_variables(text, locale: :en))
-        end
-      end
-    end
-  end
-
   describe '#onboarded_email' do
     before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.onboarded_email.deliver_now } }
 
@@ -253,7 +229,7 @@ RSpec.describe OnboardingMailer do
 
       it 'sends the onboarded email in en' do
         expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarded_email.subject').gsub('%{school}', school.name))
-        I18n.t('onboarding_mailer.onboarded_email', locale: :en).except(:subject).each_value do |text|
+        I18n.t('onboarding_mailer.onboarded_email.', locale: :en).except(:subject).each_value do |text|
           expect(body).to include(replace_variables(text, locale: :en))
         end
       end
@@ -287,7 +263,10 @@ RSpec.describe OnboardingMailer do
   end
 
   describe '#welcome_email' do
-    before { OnboardingMailer.with_user_locales(users: [user], school: school) { |mailer| mailer.welcome_email.deliver_now } }
+    before do
+      user.after_confirmation
+      perform_enqueued_jobs
+    end
 
     context 'preferred locale is cy' do
       let(:preferred_locale) { :cy }

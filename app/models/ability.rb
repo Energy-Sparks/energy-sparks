@@ -102,6 +102,10 @@ class Ability
 
     can :read, SchoolGroup
 
+    # Anyone can view published content
+    can :show, Cms::Category, published: true
+    can :show, Cms::Page, published: true
+
     # Allow anyone to compare schools in public school group. The actual schools that are shown
     # are filtered based on whether user can :show the school
     can :compare, SchoolGroup, public: true
@@ -121,6 +125,10 @@ class Ability
     if user.guest?
       cannot :manage, Location
       can :read, Location
+    end
+
+    unless user.pupil? || user.guest? || user.admin?
+      can :manage, User, id: user.id
     end
 
     if user.admin? || user.analytics?
@@ -193,9 +201,10 @@ class Ability
       # type of user
       can %i[
         show show_pupils_dash update manage_school_times manage_users
-        show_management_dash read start_programme read_restricted_analysis read_restricted_advice
+        show_management_dash read start_programme read_restricted_analysis read_restricted_advice manage_settings
       ], School, school_scope
 
+      can :manage, Contact, user_id: user.id
       can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey],
           related_school_scope
       can :manage, TransportSurvey::Response, transport_survey: related_school_scope
@@ -222,7 +231,7 @@ class Ability
 
       can %i[show read index], Audit, related_school_scope
       can :download_school_data, School, school_scope
-    elsif user.staff? || user.volunteer? || user.pupil?
+    elsif user.staff? || user.pupil?
       # abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
       can %i[show show_pupils_dash show_management_dash], School, school_scope
@@ -249,20 +258,20 @@ class Ability
         can %i[start read update create], TransportSurvey, related_school_scope
         can %i[read create], TransportSurvey::Response, transport_survey: related_school_scope
       end
-      # pupils and volunteers can only read real cost data if their school is set to share data publicly
-      if user.volunteer? || user.pupil?
+      # pupils can only read real cost data if their school is set to share data publicly
+      if user.pupil?
         can %i[read_restricted_analysis read_restricted_advice], School,
             { id: user.school_id, visible: true, data_sharing: :public }
       else
         # but staff can read it regardless
         can %i[read_restricted_analysis read_restricted_advice], School, { id: user.school_id, visible: true }
       end
-      if user.staff? || user.volunteer?
+      if user.staff?
         can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
         can :start_programme, School, id: user.school_id, visible: true
         can :crud, Programme, school: { id: user.school_id, visible: true }
         can :enable_alerts, User, id: user.id
-        can %i[create update destroy], Contact, user_id: user.id
+        can :manage, Contact, user_id: user.id
         can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
         can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
       end

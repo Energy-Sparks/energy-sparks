@@ -1,5 +1,6 @@
 <h1><%= icon_and_display_name(@meter) %> meter report</h1>
-<p><%= link_to 'School group meter report', admin_school_group_meter_report_path(@meter.school.school_group), class: 'btn btn-success' %></p>
+<p><%= link_to 'School group meter report', admin_school_group_meter_report_path(@meter.school.school_group),
+               class: 'btn btn-success' %></p>
 
 <p>
   This report provides a calendar view of the validated meter readings for this <strong><%= @meter.school.name %></strong> meter. It includes all data, starting from the
@@ -18,7 +19,10 @@
       <p>There are several large gaps in the readings for this meter. In the last two years this includes:</p>
       <ul>
         <% @gappy_validated_readings.each do |gap| %>
-          <li><%= gap.size %> days between <%= short_dates(gap.first.reading_date) %> and <%= short_dates(gap.last.reading_date) %></li>
+          <li>
+            <%= gap.size %> days between
+            <%= short_dates(gap.first.reading_date) %> and <%= short_dates(gap.last.reading_date) %>
+          </li>
         <% end %>
       </ul>
     </div>
@@ -48,8 +52,19 @@
     <div class="legend-scale vertical col-md-4">
       <ul class='legend-labels'>
         <% group.each do |type, colour| %>
-          <li><span style='background:<%= colour %>;'></span><div class="description" style="font-size: 17px;"><small><%= "#{@amr_types[type][:name]}" + (type == 'MISSING' ? "" : "(#{type})") %></small></div></li>
+          <li>
+            <span style='background:<%= colour %>;'></span>
+            <div class="description" style="font-size: 17px;">
+              <small><%= (@amr_types[type][:name]).to_s + (type == 'MISSING' ? '' : "(#{type})") %></small>
+            </div>
+          </li>
         <% end %>
+        <li>
+          <span style='background:<%= Colours.grey_dark %>;'></span>
+          <div class="description" style="font-size: 17px;">
+            <small>Other corrections and substitutions</small>
+          </div>
+        </li>
       </ul>
     </div>
   <% end %>

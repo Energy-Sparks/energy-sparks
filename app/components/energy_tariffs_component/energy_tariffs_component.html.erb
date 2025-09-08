@@ -7,16 +7,17 @@
           <div class="col">
             <h4>
               <span class="<%= fuel_type_class(meter_type) %>">
-                <%= component 'icon', fuel_type: meter_type %>
+                <%= render IconComponent.new(fuel_type: meter_type) %>
               </span>
               <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
             </h4>
             <% if @tariff_holder.any_tariffs_of_type?(meter_type, @source, only_enabled: @default_tariffs) %>
-              <%= component 'energy_tariff_table',
-                            id: table_id(meter_type),
-                            tariff_holder: @tariff_holder,
-                            tariffs: sorted_tariffs(meter_type),
-                            show_actions: @show_actions %>
+              <%= render EnergyTariffTableComponent.new(
+                    id: table_id(meter_type),
+                    tariff_holder: @tariff_holder,
+                    tariffs: sorted_tariffs(meter_type),
+                    show_actions: @show_actions
+                  ) %>
             <% else %>
               <p>
                 <% if @source == :dcc %>
@@ -26,11 +27,12 @@
                   <% if tariffs.empty? %>
                     <%= t('schools.user_tariffs.index.no_defaults', meter_type: meter_type) %>
                   <% else %>
-                    <%= component 'energy_tariff_table',
-                                  id: table_id(meter_type),
-                                  tariff_holder: SiteSettings.current,
-                                  tariffs: tariffs,
-                                  show_actions: false %>
+                    <%= render EnergyTariffTableComponent.new(
+                          id: table_id(meter_type),
+                          tariff_holder: SiteSettings.current,
+                          tariffs: tariffs,
+                          show_actions: false
+                        ) %>
                   <% end %>
                 <% else %>
                   <%= t("schools.user_tariffs.index.#{meter_type}.there_are_no_#{meter_type}_tariffs_set_up_yet") %>.

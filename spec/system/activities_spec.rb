@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'viewing and recording activities' do
   let!(:activity_category) { create(:activity_category) }
-  let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
+  let!(:audit) {}
 
   let!(:subject)  { Subject.create(name: 'Science and Technology') }
   let!(:ks1)      { KeyStage.create(name: 'KS1') }
@@ -114,6 +114,25 @@ describe 'viewing and recording activities' do
         refresh
       end
 
+      context 'when updating the activity' do
+        let(:updated_date) { Date.new(2025, 1, 1) }
+
+        before do
+          visit school_activity_path(school, activity)
+          click_on 'Edit'
+          fill_in :activity_happened_on, with: updated_date.strftime('%d/%m/%Y')
+          click_on 'Update activity'
+        end
+
+        it 'shows the updates' do
+          expect(page).to have_content(activity_type.name)
+          expect(page).to have_content(updated_date.strftime('%A, %d %B %Y'))
+          activity.reload
+          expect(activity.happened_on).to eq(updated_date)
+          expect(activity.observations.first.at).to eq(updated_date)
+        end
+      end
+
       context 'when school is data enabled' do
         it 'sees previous records' do
           expect(page).to have_content('Activity previously completed')
@@ -158,112 +177,237 @@ describe 'viewing and recording activities' do
 
       before do
         visit activity_type_path(activity_type)
-        click_on 'Record this activity'
       end
 
-      it 'shows score and threshold' do
-        expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
-      end
-
-      context 'with non-custom activity' do
-        before do
-          fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
-          click_on 'Save activity'
-        end
-
-        it_behaves_like 'a task completed page', points: 25, task_type: :activity
-        it_behaves_like 'a task completed page with programme complete message'
-
-        context 'when viewing the activity' do
-          before do
-            click_on 'View your activity'
-          end
-
-          it 'shows activity page' do
-            expect(page).to have_content(activity_type_name)
-            expect(page).to have_content(today.strftime('%A, %d %B %Y'))
-          end
-        end
-      end
-
-      context 'with custom activity' do
-        let(:custom_title) { 'Custom title' }
-
-        let(:other_activity_type_name) { 'Exciting activity (please specify)' }
-        let(:activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
+      context without_feature: :todos do
+        let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
 
         before do
-          fill_in :activity_title, with: custom_title
-          fill_in_trix with: activity_description
-          fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
-
-          click_on 'Save activity'
-        end
-
-        it_behaves_like 'a task completed page', points: 25, task_type: :activity
-        it_behaves_like 'a task completed page with programme complete message'
-
-        context 'when viewing the activity' do
-          before do
-            click_on 'View your activity'
-          end
-
-          it 'shows description' do
-            expect(page).to have_content(activity_description)
-          end
-
-          it 'shows title' do
-            expect(page).to have_content(custom_title)
-          end
-        end
-      end
-
-      context 'on the podium' do
-        let!(:other_school) { create(:school, :with_points, score_points: 40, scoreboard:) }
-        let!(:time) { today }
-
-        before do
-          visit activity_type_path(activity_type)
           click_on 'Record this activity'
-          fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
-          click_on 'Save activity'
         end
 
-        context '0 points' do
-          let(:time) { today - 2.years }
+        it 'shows score and threshold' do
+          expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
+        end
 
-          it 'shows the activity completed page' do
-            expect(page).to have_content("Congratulations! We've recorded your activity")
+        it_behaves_like 'a form with a customised trix component', controls: :simple do
+          let(:button_size) { :large }
+        end
+
+        context 'with non-custom activity' do
+          before do
+            fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+            click_on 'Save activity'
+          end
+
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity
+
+          context 'when viewing the activity' do
+            before do
+              click_on 'View your activity'
+            end
+
+            it 'shows activity page' do
+              expect(page).to have_content(activity_type_name)
+              expect(page).to have_content(today.strftime('%A, %d %B %Y'))
+            end
           end
         end
 
-        context 'in first place' do
-          let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
+        context 'with custom activity' do
+          let(:custom_title) { 'Custom title' }
 
-          it 'shows the activity completed page' do
-            expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
-            expect(page).to have_content('You are in 1st place')
+          let(:other_activity_type_name) { 'Exciting activity (please specify)' }
+          let(:activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
+
+          before do
+            fill_in :activity_title, with: custom_title
+            fill_in_trix with: activity_description
+            fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+
+            click_on 'Save activity'
+          end
+
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity
+
+          context 'when viewing the activity' do
+            before do
+              click_on 'View your activity'
+            end
+
+            it 'shows description' do
+              expect(page).to have_content(activity_description)
+            end
+
+            it 'shows title' do
+              expect(page).to have_content(custom_title)
+            end
           end
         end
 
-        context 'in second place' do
-          let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
+        context 'with previous recordings' do
+          before do
+            create_list(:activity, 10, activity_type:, school:)
+            refresh
+          end
 
-          it 'shows the activity completed page' do
-            expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
-            expect(page).to have_content('You are in 2nd place')
+          it 'shows message about exceeded threshold' do
+            expect(page).to have_content('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
+          end
+        end
+
+        context 'on the podium' do
+          let!(:other_school) { create(:school, :with_points, score_points: 40, scoreboard:) }
+          let!(:time) { today }
+
+          before do
+            visit activity_type_path(activity_type)
+            click_on 'Record this activity'
+            fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
+            click_on 'Save activity'
+          end
+
+          context '0 points' do
+            let(:time) { today - 2.years }
+
+            it 'shows the activity completed page' do
+              expect(page).to have_content("Congratulations! We've recorded your activity")
+            end
+          end
+
+          context 'in first place' do
+            let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
+
+            it 'shows the activity completed page' do
+              expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+              expect(page).to have_content('You are in 1st place')
+            end
+          end
+
+          context 'in second place' do
+            let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
+
+            it 'shows the activity completed page' do
+              expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+              expect(page).to have_content('You are in 2nd place')
+            end
           end
         end
       end
 
-      context 'with previous recordings' do
+      context with_feature: :todos do
+        let(:audit) { create(:audit, :with_todos, school:) }
+
         before do
-          create_list(:activity, 10, activity_type:, school:)
-          refresh
+          click_on 'Record this activity'
         end
 
-        it 'shows message about exceeded threshold' do
-          expect(page).to have_content('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
+        it 'shows score and threshold' do
+          expect(page).to have_content('Completing this activity up to 10 times this academic year will earn you 25 points')
+        end
+
+        context 'with non-custom activity' do
+          before do
+            fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+            click_on 'Save activity'
+          end
+
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
+
+          context 'when viewing the activity' do
+            before do
+              click_on 'View your activity'
+            end
+
+            it 'shows activity page' do
+              expect(page).to have_content(activity_type_name)
+              expect(page).to have_content(today.strftime('%A, %d %B %Y'))
+            end
+          end
+        end
+
+        context 'with custom activity' do
+          let(:custom_title) { 'Custom title' }
+
+          let(:other_activity_type_name) { 'Exciting activity (please specify)' }
+          let(:activity_type) { create(:activity_type, name: other_activity_type_name, description: nil, custom: true) }
+
+          before do
+            fill_in :activity_title, with: custom_title
+            fill_in_trix with: activity_description
+            fill_in :activity_happened_on, with: today.strftime('%d/%m/%Y')
+
+            click_on 'Save activity'
+          end
+
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
+
+          context 'when viewing the activity' do
+            before do
+              click_on 'View your activity'
+            end
+
+            it 'shows description' do
+              expect(page).to have_content(activity_description)
+            end
+
+            it 'shows title' do
+              expect(page).to have_content(custom_title)
+            end
+          end
+        end
+
+        context 'with previous recordings' do
+          before do
+            create_list(:activity, 10, activity_type:, school:)
+            refresh
+          end
+
+          it 'shows message about exceeded threshold' do
+            expect(page).to have_content('You have already completed this activity 10 times this academic year. You will not score additional points for recording it')
+          end
+        end
+
+        context 'on the podium' do
+          let!(:other_school) { create(:school, :with_points, score_points: 40, scoreboard:) }
+          let!(:time) { today }
+
+          before do
+            visit activity_type_path(activity_type)
+            click_on 'Record this activity'
+            fill_in :activity_happened_on, with: time.strftime('%d/%m/%Y')
+            click_on 'Save activity'
+          end
+
+          context '0 points' do
+            let(:time) { today - 2.years }
+
+            it 'shows the activity completed page' do
+              expect(page).to have_content("Congratulations! We've recorded your activity")
+            end
+          end
+
+          context 'in first place' do
+            let(:school) { create(:school, :with_points, score_points: 20, scoreboard:) }
+
+            it 'shows the activity completed page' do
+              expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+              expect(page).to have_content('You are in 1st place')
+            end
+          end
+
+          context 'in second place' do
+            let(:school) { create(:school, :with_points, score_points: 5, scoreboard:) }
+
+            it 'shows the activity completed page' do
+              expect(page).to have_content("Congratulations! You've just scored #{activity_type.score} points")
+              expect(page).to have_content('You are in 2nd place')
+            end
+          end
         end
       end
     end
@@ -299,7 +443,7 @@ describe 'viewing and recording activities' do
       end
     end
 
-    context 'when recording an activity' do
+    context 'when recording an activity', toggle_feature: :todos do
       it 'associates activity with correct school from group' do
         select other_school.name, from: :school_id
         click_on 'Record this activity'
@@ -327,12 +471,12 @@ describe 'viewing and recording activities' do
     let!(:school_1)   { create(:school) }
     let!(:school_2)   { create(:school) }
 
-    before do
-      sign_in(admin)
-      visit activity_type_path(activity_type)
-    end
+    context 'viewing an activity type', toggle_feature: :todos do
+      before do
+        sign_in(admin)
+        visit activity_type_path(activity_type)
+      end
 
-    context 'viewing an activity type' do
       it 'sees prompt to record it' do
         expect(page).to have_content("Complete this activity on behalf of a school to score #{activity_type.score} points!")
         expect(page).to have_button('Record this activity')
@@ -355,12 +499,12 @@ describe 'viewing and recording activities' do
   context 'as a pupil' do
     let(:pupil) { create(:pupil, school:) }
 
-    before do
-      sign_in(pupil)
-      visit activity_type_path(activity_type)
-    end
+    context 'viewing an activity type', toggle_feature: :todos do
+      before do
+        sign_in(pupil)
+        visit activity_type_path(activity_type)
+      end
 
-    context 'viewing an activity type' do
       context 'when school is data enabled' do
         it 'sees school specific content' do
           expect(page).to have_content(activity_type.school_specific_description.to_plain_text)

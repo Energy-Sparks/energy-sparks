@@ -1,5 +1,3 @@
-<h1><%= school.name %> Configuration</h1>
-
 <p>
   This form provides information that is used internally by Energy Sparks to support data analysis and
   reporting for the school. With the exception of the country field, these settings are not available to users.
@@ -9,7 +7,7 @@
 
   <h3>Basic Configuration</h3>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :school_group_id, 'School group' %>
       <%= f.select :school_group_id,
                    options_from_collection_for_select(
@@ -23,7 +21,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :template_calendar_id, 'Template calendar' %>
       <%= f.select :template_calendar_id,
                    options_from_collection_for_select(
@@ -34,16 +32,16 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id,
                    options_from_collection_for_select(@scoreboards, 'id', 'name', @school&.scoreboard&.id),
-                   {},
+                   { include_blank: true },
                    { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :funder_id, 'Funder' %>
       <%= f.select :funder_id,
                    options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
@@ -53,7 +51,7 @@
   </div>
 
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :data_sharing, 'Data Sharing' %>
       <%= f.select :data_sharing,
                    options_for_select(School.data_sharings.map { |k, _v| [k.titleize, k] }, school.data_sharing),
@@ -66,7 +64,7 @@
   <p>Select the right data sources to support analysis of school data.</p>
 
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :solar_pv_tuos_area_id, 'The University of Sheffield Solar Data Feed Area' %>
       <%= f.select :solar_pv_tuos_area_id,
                    options_from_collection_for_select(
@@ -75,12 +73,12 @@
                      'title',
                      @school&.solar_pv_tuos_area&.id
                    ),
-                   {},
+                   { include_blank: true },
                    { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :weather_station_id, 'Weather Station' %>
       <%= f.select :weather_station_id,
                    options_from_collection_for_select(
@@ -91,7 +89,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :dark_sky_area_id, 'Dark Sky Area' %>
       <%= f.select :dark_sky_area_id,
                    options_from_collection_for_select(
@@ -107,7 +105,7 @@
   <p>These areas are used for reporting and allocations schools to funders.</p>
 
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :local_authority_area_id, 'Local Authority Area' %>
       <%= f.select :local_authority_area_id,
                    options_for_select(
@@ -119,7 +117,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :region, 'Region' %>
       <%= f.select :region,
                    options_for_select(School.regions.map { |key, _value| [key.humanize, key] }, f.object.region),
@@ -130,7 +128,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :country %>
       <%= f.select :country,
                    options_for_select(

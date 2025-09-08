@@ -70,3 +70,8 @@
 //= require panel_switcher_component
 //= require carousels
 //= require school_search
+//= require sortable.min
+//= require sort_list
+//= require delete_association
+//= require section_nav
+//= require match_row_height

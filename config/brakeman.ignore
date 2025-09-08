@@ -1,0 +1,544 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "0234b6b76cac20daf936d359e3839e8b5e34cb7cac101235ecb8696d085e1a72",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/onboarding/users_controller.rb",
+      "line": 68,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Onboarding::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dangerous Eval",
+      "warning_code": 13,
+      "fingerprint": "0f25778721b063301de6007cd5970a21a8c4088a1116de52eec5fa6a125091b9",
+      "check_name": "Evaluation",
+      "message": "Dynamic code evaluation",
+      "file": "app/models/management_dashboard_table.rb",
+      "line": 41,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_eval/",
+      "code": "eval(alert.template_data[\"summary_data\"])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ManagementDashboardTable",
+        "method": "data"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        913,
+        95
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "2a0eb755ecc6c2ae98f486a5f6bb5032443a2512e2a6713da0e1e0dc9a5d86ce",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/admin/newsletters/index.html.erb",
+      "line": 20,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to((Unresolved Model).new.url, (Unresolved Model).new.url)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "Admin::NewslettersController",
+          "method": "index",
+          "line": 8,
+          "file": "app/controllers/admin/newsletters_controller.rb",
+          "rendered": {
+            "name": "admin/newsletters/index",
+            "file": "app/views/admin/newsletters/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "admin/newsletters/index"
+      },
+      "user_input": "(Unresolved Model).new.url",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "2e1954d6865dbd3a28c9b27bf760ebc1f800e138e4b5ba7b93ae9c4590e6a4ea",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/data_sources_controller.rb",
+      "line": 24,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => \"Data source was successfully updated.\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::DataSourcesController",
+        "method": "update"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "36e0fbf4927660db93a8c25a75a26c216cb325ddf8d5b2387a678d5e37a0a3cc",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/controllers/admin/alert_types/ratings/preview_controller.rb",
+      "line": 13,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => template_path(params[:template]), { :layout => nil })",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::AlertTypes::Ratings::PreviewController",
+        "method": "create"
+      },
+      "user_input": "params[:template]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "468b1f5d7e0c483cafe243903549520ad177011e2655a1039b8e6c0c0405d1a7",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/procurement_routes_controller.rb",
+      "line": 7,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => \"Procurement route was successfully created.\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::ProcurementRoutesController",
+        "method": "create"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "4933407d9c06e0623f89d7b3a28741f6b0b984362a6d9ea451b3a0b5f15c7c6f",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/schools/users_controller.rb",
+      "line": 98,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Schools::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4b062b368e006e532a1db9fb27c99fb3670a9c34f1b7223f8ca992410d908163",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/database/vacuum_service.rb",
+      "line": 13,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute((\"VACUUM ANALYSE #{table}\" or \"ANALYSE #{table}\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Database::VacuumService",
+        "method": "perform"
+      },
+      "user_input": "table",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": "table names only come from code so isn't really an issue"
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "53ca41f97ce098f0458d8efc29553838cf2a49de9f8dc7317a735d2923aaba32",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/data_sources_controller.rb",
+      "line": 16,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => \"Data source was successfully created.\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::DataSourcesController",
+        "method": "create"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "5b405296a6a090d6597918a05c3df4daca6efc2c4b78a5bb427ec089b238e6ed",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/procurement_routes_controller.rb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => \"Procurement route was successfully updated.\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::ProcurementRoutesController",
+        "method": "update"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "6875b4a807a2d988126d5685fd4a7e65a0fefaf99fa6e709c3661cf855c491f3",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/dashboard_messages_controller.rb",
+      "line": 23,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to((params[:redirect_back] or request.referer), :notice => (\"#{@messageable.model_name.human} dashboard message removed\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::DashboardMessagesController",
+        "method": "destroy"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "6e7e23ef41df61bd70dd594fd315b2bcbb65531d2c477d89f83993a477767472",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/issues_controller.rb",
+      "line": 41,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully created\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::IssuesController",
+        "method": "create"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "72f136fe8dd07e8b2c352becf102c591c7202541e5f418ba73fa6f159435918d",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/admin/users_controller.rb",
+      "line": 101,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :cluster_school_ids => ([]))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "73d5c0af49f75a3f7d6de36415bcc548673829385ee90056da14aebb4fc3b02d",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/admin/activity_type_previews/show.html.erb",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "TemplateInterpolation.new(ActivityType.new(:school_specific_description => school_specific_description(params)), :render_with => SchoolTemplate.new((School.find(params[\"school_slug\"]) or School.process_data.order(:name).first))).interpolate(:school_specific_description).school_specific_description.body.to_html",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "Admin::ActivityTypePreviewsController",
+          "method": "create",
+          "line": 12,
+          "file": "app/controllers/admin/activity_type_previews_controller.rb",
+          "rendered": {
+            "name": "admin/activity_type_previews/show",
+            "file": "app/views/admin/activity_type_previews/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "admin/activity_type_previews/show"
+      },
+      "user_input": "ActivityType.new(:school_specific_description => school_specific_description(params))",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "84e539f57439626893ab67bbb77050b64a2e1128edc4deee013ca8ad7ccdc44d",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/issues_controller.rb",
+      "line": 49,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully updated\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::IssuesController",
+        "method": "update"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "a119d5c3ea5061c3b0ad346db8c65a5c371dda2bd02c9630f19e279ceb8b063a",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/admin/team_members_controller.rb",
+      "line": 44,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:team_member).permit(:title, :description, :position, :image, :role, :profile)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::TeamMembersController",
+        "method": "team_member_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dangerous Send",
+      "warning_code": 23,
+      "fingerprint": "b03a13ebf0446ed56f8ed332f2b10d44873fb2bd5c49e9db479e0d67633ec7fd",
+      "check_name": "Send",
+      "message": "User controlled method execution",
+      "file": "app/views/admin/alert_types/ratings/preview/alert.html.erb",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
+      "code": "@content.send(params[:field])",
+      "render_path": null,
+      "location": {
+        "type": "template",
+        "template": "admin/alert_types/ratings/preview/alert"
+      },
+      "user_input": "params[:field]",
+      "confidence": "High",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "cf374106a18b43d13ea563c4d7cd6b3d82d6f515ebb00b1f88bb623236553383",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "analytics/test_support/file_writer.rb",
+      "line": 46,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(File.open(filename))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "FileWriter",
+        "method": "load_marshal_file"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "d1ad8d6151f9b10bd4088bb3a67cb2477cadd4db822e7bd0e22c695c71d6e175",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/admin/dashboard_messages_controller.rb",
+      "line": 14,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(params[:redirect_back], :notice => (\"#{@messageable.model_name.human} dashboard message saved\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::DashboardMessagesController",
+        "method": "update"
+      },
+      "user_input": "params[:redirect_back]",
+      "confidence": "High",
+      "cwe_id": [
+        601
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "d254097bc77d17497dcdf7949ef0120acd632de593dad5afd6068641648dc69b",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/jobs/index.html.erb",
+      "line": 36,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "Job.current_jobs.by_created_date.map do\n job.to_job_posting.to_json\n end.join(\",\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "JobsController",
+          "method": "index",
+          "line": 7,
+          "file": "app/controllers/jobs_controller.rb",
+          "rendered": {
+            "name": "jobs/index",
+            "file": "app/views/jobs/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "jobs/index"
+      },
+      "user_input": "Job.current_jobs.by_created_date",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "d7753f56ab36be144b4f9977dc49faef920e4268d13c7a623b1b173dcbccd470",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "analytics/lib/dashboard/utilities/half_hourly_loader.rb",
+      "line": 29,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(File.open(marshal_filename(csv_file)))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "HalfHourlyLoader",
+        "method": "load_marshal_copy"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "e6e8650219ff5834b805228ae5d5f4620c6dcaaf0fd80f14f6343d55a656c93d",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "analytics/test_support/school_factory.rb",
+      "line": 123,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(File.open(build_filename(school_filename, file_type, \".marshal\")))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "SchoolFactory",
+        "method": "load_meter_collections"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.0.0"
+}

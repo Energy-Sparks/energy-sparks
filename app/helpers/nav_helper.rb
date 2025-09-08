@@ -2,7 +2,7 @@ module NavHelper
   def navigation_image_link
     title = on_test? ? "Analytics version: #{Dashboard::VERSION}" : ''
     link_to '/home-page', class: 'navbar-brand', title: title do
-      image = I18n.locale == 'cy' ? 'navigation-brand-transparent-cy.png' : 'navigation-brand-transparent-en.png'
+      image = I18n.locale == :cy ? 'navigation-brand-transparent-cy.png' : 'navigation-brand-transparent-en.png'
       image_tag(image)
     end
   end
@@ -72,10 +72,6 @@ module NavHelper
 
   def show_sub_nav?(school, hide_subnav)
     school.present? && school.id && hide_subnav.nil?
-  end
-
-  def show_partner_footer?(school)
-    school.present? && school.id && school.all_partners.any?
   end
 
   def nav_link(link_text, link_path)

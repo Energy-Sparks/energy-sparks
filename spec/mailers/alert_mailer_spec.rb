@@ -20,9 +20,16 @@ RSpec.describe AlertMailer do
         expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
       end
 
+      it 'sends an email with a mailgun deliverytime option' do
+        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
+        expect(ActionMailer::Base.deliveries.count).to be 1
+        expect(DateTime.rfc2822(email.mailgun_options[:deliverytime]).in_time_zone).to \
+          be_within(1.minute).of(15.minutes.from_now)
+      end
+
       it 'specifies a subject' do
         AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
-        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject')
+        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name)
       end
 
       it 'send to right to address' do
@@ -34,7 +41,7 @@ RSpec.describe AlertMailer do
         [:en, :cy].each do |locale|
           it "uses #{locale}" do
             AlertMailer.with(email_address: email_address, school: school, events: [], locale: locale).alert_email.deliver_now
-            expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: locale)
+            expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale: locale)
           end
         end
       end
@@ -55,13 +62,12 @@ RSpec.describe AlertMailer do
       it 'sends an email with mailgun tag in header' do
         AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
         expect(ActionMailer::Base.deliveries.count).to be 1
-        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :en)
         expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
       end
 
       it 'specifies a subject' do
         AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
-        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject')
+        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name)
       end
 
       it 'send to right addresses' do
@@ -73,7 +79,7 @@ RSpec.describe AlertMailer do
         [:en, :cy].each do |locale|
           it "uses #{locale}" do
             AlertMailer.with(users: users, school: school, events: [], locale: locale).alert_email.deliver_now
-            expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: locale)
+            expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale: locale)
           end
         end
       end
@@ -95,7 +101,7 @@ RSpec.describe AlertMailer do
 
     it 'uses locale from contact' do
       AlertMailer.with_contact_locale(contact: contact, events: []) { |mailer| mailer.alert_email.deliver_now }
-      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject', locale: :cy)
+      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale: :cy)
     end
   end
 end

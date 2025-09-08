@@ -15,13 +15,21 @@
 <% else %>
   <div class="row justify-content-md-center">
     <div class="col col-md-10">
-      <%= component 'timeline',
-                    observations: @observations,
-                    school: @school,
-                    user: current_user,
-                    observation_style: :default,
-                    show_header: false,
-                    show_actions: true %>
+      <%= render TimelineComponent.new(
+            observations: @observations,
+            user: current_user,
+            observation_style: :default,
+            show_header: false,
+            table_opts: { show_actions: true, show_date: true, observation_style: :full }
+          ) do |timeline| %>
+            <% timeline.with_link do %>
+              <p>
+                <%= link_to school_timeline_path(@school), class: 'btn btn-default' do %>
+                  <%= t('activities.show.all_activities') %>
+                <% end %>
+              </p>
+            <% end %>
+      <% end %>
     </div>
   </div>
 <% end %>

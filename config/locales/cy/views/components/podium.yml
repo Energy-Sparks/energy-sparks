@@ -1,8 +1,7 @@
 cy:
   components:
     podium:
-      complete_an_activity_html: <a href="%{recommendations_path}">Cwblhewch weithgaredd</a> i sgorio pwyntiau ar Sbarcynni
       full_position_html: Rydych mewn safle<strong>%{position_ordinal}</strong> ar y bwrdd sgorio <a href='%{scoreboard_path}'>%{scoreboard}</a> ac mewn safle <strong>%{national_position_ordinal}</strong> <a href='%{national_scoreboard_path}'>yn genedlaethol</a>
       no_points_this_year: Nid yw eich ysgol wedi sgorio unrhyw bwyntiau eto y flwyddyn ysgol hon
-      points: pwyntiau
-      points_needed_to_overtake: Dim ond %{points} o bwyntiau sydd angen i chi eu sgorio i gael mwy nag yr ysgol nesaf!
+      points_needed_to_overtake: Mae angen i chi sgorio mwy na %{points} o bwyntiau i fynd heibio'r ysgol nesaf!
+      scoreboard_position_html: Rydych mewn safle <strong>%{position_ordinal}</strong> ar y sgorfwrdd <a href='%{scoreboard_path}'>%{scoreboard}</a>

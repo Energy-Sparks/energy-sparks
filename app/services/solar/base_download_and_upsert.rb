@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Solar
   class BaseDownloadAndUpsert
     def initialize(start_date:, end_date:, installation:)
@@ -8,18 +10,19 @@ module Solar
 
     def perform
       download_and_upsert
-    rescue => e
-      Rollbar.error(e, job: job, school: school.name, start_date: start_date, end_date: end_date, installation_id: @installation.id)
-      import_log.update!(error_messages: "Error downloading data from #{start_date} to #{end_date} for #{school.name} : #{e.class}  #{e.message}")
-      Rails.logger.error "Exception: downloading solar data from #{start_date} to #{end_date} : #{e.class} #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
+    rescue StandardError => e
+      EnergySparks::Log.exception(e, job: job, school: school&.name, start_date:, end_date:,
+                                     installation_id: @installation.id)
+      import_log.update!(error_messages: "Exception: downloading solar data from #{start_date} to #{end_date} : " \
+                                         "#{e.class} #{e.message}")
     end
 
     def import_log
       @import_log ||= AmrDataFeedImportLog.create(
         amr_data_feed_config: @installation.amr_data_feed_config,
         file_name: "#{job.to_s.humanize} import #{DateTime.now.utc}",
-        import_time: DateTime.now.utc)
+        import_time: DateTime.now.utc
+      )
     end
 
     protected
@@ -35,7 +38,7 @@ module Solar
     end
 
     def school
-      @installation.school
+      @installation.try(:school)
     end
 
     def latest_reading
@@ -43,18 +46,17 @@ module Solar
     end
 
     def start_date
-      default_start_date = Date.yesterday - 5
       if @requested_start_date
         @requested_start_date
       elsif latest_reading.nil?
         nil
       else
-        latest_reading < default_start_date ? latest_reading : default_start_date
+        [latest_reading, Date.yesterday - 5].min
       end
     end
 
     def end_date
-      @requested_end_date.present? ? @requested_end_date : Date.yesterday
+      @requested_end_date.presence || Date.yesterday
     end
   end
 end

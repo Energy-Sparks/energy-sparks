@@ -1,0 +1,9 @@
+<%= simple_form_for([:admin, @resource]) do |f| %>
+  <%= f.input :year %>
+  <%= f.input :electricity_co2e %>
+  <%= f.input :electricity_co2e_co2 %>
+  <%= f.input :transmission_distribution_co2e %>
+  <%= f.input :natural_gas_co2e %>
+  <%= f.input :natural_gas_co2e_co2 %>
+  <%= f.submit class: 'btn btn-primary' %>
+<% end %>

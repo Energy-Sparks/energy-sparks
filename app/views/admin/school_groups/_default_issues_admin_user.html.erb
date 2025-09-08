@@ -1,7 +1,7 @@
 <% if school_group.default_issues_admin_user_id %>
-  <span class="badge border badge-pill border-secondary font-weight-normal">
-    <%= link_to "Default Issues Admin • " + (school_group.default_issues_admin_user == current_user ? "You" : school_group.default_issues_admin_user.display_name),
-      polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
-      class: 'text-decoration-none' %>
+  <span>
+    <%= link_to admin_user_label(school_group),
+                polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
+                class: 'btn btn-sm text-decoration-none' %>
   </span>
 <% end %>

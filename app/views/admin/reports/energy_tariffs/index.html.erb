@@ -22,10 +22,16 @@ The following table summarises the energy tariffs currently configured in the sy
     </tr>
   </thead>
   <tbody>
-    <% SchoolGroup.all.order(:name).each do |school_group| %>
+    <% SchoolGroup.with_visible_schools.order(:name).each do |school_group| %>
       <tr>
         <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
-        <td><%= @count_by_school_group[school_group.slug].present? ? link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) : '-' %></td>
+        <td>
+          <% if @count_by_school_group[school_group.slug].present? %>
+            <%= link_to(@count_by_school_group[school_group.slug], school_group_energy_tariffs_path(school_group)) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
         <td>
           <% count = EnergyTariff.count_schools_with_tariff_by_group(school_group) %>
           <% if count > 0 %>

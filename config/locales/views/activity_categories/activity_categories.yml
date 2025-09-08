@@ -1,7 +1,7 @@
 ---
 en:
   activity_categories:
-    introduction_1_html: Energy Sparks provides extensive support to <a href='%{for_teachers_path}'>teachers</a> and <a href='%{for_pupils_path}'>pupils</a> when learning about energy and climate change within the context of your own school.
+    introduction_1_html: Energy Sparks provides extensive support to teachers and pupils when learning about energy and climate change within the context of your own school.
     introduction_2_html:
       one: Use the links below to explore <strong>%{count}</strong> freely available activity.
       other: Use the links below to explore <strong>%{count}</strong> freely available activities.
@@ -9,7 +9,8 @@ en:
     item_2: Energy-related lesson plans and downloadable resources.
     item_3: Support for pupils in designing and carrying out experiments to monitor energy related data and behaviour patterns at school.
     our_programmes:
-      introduction: Short programmes of related activities that pupils can work through step-by-step to achieve greater impact.
+      introduction: Short programmes of related tasks that can be worked through step-by-step to achieve greater impact
+      introduction_activities: Short programmes of related activities that pupils can work through step-by-step to achieve greater impact.
       title: Our Programmes
     page_title: Activities
     pupil:

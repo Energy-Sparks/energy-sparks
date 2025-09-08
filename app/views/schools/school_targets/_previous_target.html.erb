@@ -1,8 +1,9 @@
 <% if previous_target %>
-  <%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+  <%= render NoticeComponent.new(status: :neutral, classes: 'mb-4') do %>
     <div class="flex-wrap">
       <div class="col-md-2">
-        <%= link_to t('schools.school_targets.show.view_results'), school_school_target_path(@school, previous_target), class: "btn btn-default" %>
+        <%= link_to t('schools.school_targets.show.view_results'), school_school_target_path(@school, previous_target),
+                    class: 'btn btn-default' %>
       </div>
       <div class="col">
         <span class="align-middle">

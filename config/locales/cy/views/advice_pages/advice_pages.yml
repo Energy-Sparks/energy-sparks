@@ -6,6 +6,14 @@ cy:
         benchmarking: Cymhariaeth ag ysgolion eraill
         change: Newidiadau diweddar yn eich defnydd o ynni
         priority: Rhybuddion blaenoriaeth
+    analysis:
+      additional_analysis:
+        summary: Mae’r adran hon yn darparu rhai dolenni i rannau eraill o’n dadansoddiad sy’n cynnwys cymariaethau defnydd rhwng mesuryddion
+        title: Dadansoddiad ychwanegol
+      long_term_trends:
+        title: Tueddiadau hirdymor
+      recent_trend:
+        title: Tueddiad diweddar
     benchmarks:
       benchmark_school: Dan reolaeth dda
       exemplar_school: Enghraifft
@@ -14,10 +22,10 @@ cy:
     breadcrumbs:
       root: Cyngor
     charts:
-      the_whole_school: yr ysgol gyfan
-      whole_school: Ysgol gyfan
       controls:
         select_meter: Dewiswch fesurydd
+      the_whole_school: yr ysgol gyfan
+      whole_school: Ysgol gyfan
     error:
       data_warning: Nid ydym wedi derbyn data ar gyfer eich defnydd o%{fuel_type} ers dros dri deg diwrnod. O ganlyniad bydd eich dadansoddiad wedi dyddio ac efallai na fydd yn adlewyrchu newidiadau diweddar yn eich ysgol.
       message: Bu gwall wrth geisio greu eich dadansoddiad. Mae'r tîm Sbarcynni wedi cael gwybod am y broblem.
@@ -25,16 +33,19 @@ cy:
     fuel_type:
       electricity: trydan
       gas: nwy
+      multiple: lluosog
       other: arall
       solar_pv: solar ffotofoltaig
       storage_heater: stôr-wresogydd
     how_have_we_analysed_your_data:
       calculations_based_on_fuel_type: Cyfrifiadau yn seiliedig ar %{fuel_type} a ddefnyddiwyd rhwng %{start_date} a %{end_date}
       cost_calculations: Cyfrifiadau cost
-      cost_calculations_introduction_html: |-
-        <p>Amcangyfrifir costau defnydd ar sail gwybodaeth tariff hanesyddol</p>
-        <p>Mae arbedion yn y dyfodol yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol</p>
-        <p>Mae arbedion cost posibl a ddyfinnir mewn cymariaethau ysgol, e.e. ar gyfer ysgolion tebyg sydd wedi'u "rheoli'n dda" ac "enghreifftiol" hefyd yn seiliedig ar dariffau cyfredol eich ysgol</p>
+      cost_calculations_introduction:
+        - Cyfrifir costau defnydd yn seiliedig ar brisiau uned ynni ac nid ydynt yn ystyried taliadau sefydlog na ffioedd eraill.
+        - Gall tariffau fod yn seiliedig ar gyfartaleddau MAT neu Awdurdod Lleol, neu osodiad diofyn Sbarcynni, os nad yw eich ysgol wedi darparu eu tariffau gwirioneddol.
+        - Amcangyfrifir costau defnydd yn seiliedig ar wybodaeth tariff hanesyddol.
+        - Amcangyfrifon yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol yw arbedion yn y dyfodol.
+        - Mae arbedion cost posib a ddyfynnir mewn cymariaethau ysgolion, e.e. ar gyfer ysgolion cymharol "a reolir yn dda" ac "enghreifftiol", hefyd yn seiliedig ar dariffau cyfredol eich ysgol.
       energy_data: Data ynni
       link_title: Sut wnaethom ni gyfrifo'r ffigurau hyn?
       page_title: Sut rydym wedi dadansoddi eich data?
@@ -66,16 +77,18 @@ cy:
         title: Beth ddylech chi wneud nesaf?
     loading_data: Wrthi'n llwytho data...
     nav:
-      name: Cyngor
+      overview: Trosolwg
       pages:
         baseload: Llwyth sylfaenol
         electricity_costs: Tariffau a chostau
         electricity_intraday: O fewn un diwrnod
         electricity_long_term: Newidiadau hirdymor
+        electricity_meter_breakdown: Cymariaethau mesurydd
         electricity_out_of_hours: Tu allan i oriau ysgol
         electricity_recent_changes: Newidiadau diweddar
         gas_costs: Tariffau a chostau
         gas_long_term: Newidiadau hirdymor
+        gas_meter_breakdown: Cymariaethau mesurydd
         gas_out_of_hours: Tu allan i oriau ysgol
         gas_recent_changes: Newidiadau diweddar
         heating_control: Rheoli gwresogi
@@ -83,7 +96,6 @@ cy:
         solar_pv: Solar ffotofoltaig
         storage_heaters: Stôr-wresogyddion
         thermostatic_control: Rheolaeth thermostatig
-        total_energy_use: Crynodeb defnydd ynni
       sections:
         electricity: Trydan
         gas: Nwy
@@ -93,6 +105,9 @@ cy:
       message: Nid oes gennym ddata %{fuel_type} ar gyfer eich ysgol ar hyn o bryd, felly ni allwn redeg y dadansoddiad hwn
       title: Methu â rhedeg dadansoddiad y gofynnwyd amdano
     no_recent_data: dim data diweddar
+    no_usage:
+      message: Mae ein data yn dangos ers %{date} nad yw eich ysgol wedi defnyddio unrhyw %{fuel_type} y tu allan i oriau. Ar hyn o bryd ni allwn ddarparu dadansoddiad pellach.
+      title: Dim defnydd i adrodd amdano
     not_enough_data:
       available_from: Gan gymryd ein bod yn parhau i dderbyn data yn rheolaidd, disgwyliwn i'r dadansoddiad hwn fod ar gael ar ôl %{available_from}.
       learn_more_html: Yn y cyfamser gallwch <a href="%{learn_more_link}">ddysgu rhagor</a> am y pwnc hwn.

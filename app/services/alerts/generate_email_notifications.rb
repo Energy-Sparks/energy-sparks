@@ -4,20 +4,8 @@ module Alerts
       @subscription_generation_run = subscription_generation_run
     end
 
-    def perform
-      events = @subscription_generation_run.alert_subscription_events.where(status: :pending, communication_type: :email).by_priority
-      events.group_by(&:contact).each do |contact, contact_events|
-        email = Email.create!(contact: contact)
-        target_prompt = include_target_prompt_in_email?(contact.school)
-        AlertMailer.with_contact_locale(contact: contact, events: contact_events, target_prompt: target_prompt) { |mailer| mailer.alert_email.deliver_now }
-        contact_events.each {|event| event.update!(status: :sent, email: email) }
-        email.update(sent_at: Time.now.utc)
-      end
-    end
-
-    # Will be renamed to perform once the :batch_send_weekly_alerts is finished
     # Can later be refactored to store single email and events rather than per contact
-    def batch_send
+    def perform
       events = @subscription_generation_run.alert_subscription_events.where(status: :pending, communication_type: :email).by_priority
       return unless events.any? # may not have any pending
 

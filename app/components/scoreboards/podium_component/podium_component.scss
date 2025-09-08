@@ -1,0 +1,19 @@
+.scoreboards-podium-component {
+  .bar {
+    width: 95%;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-bottom: 3px;
+    margin-left: auto;
+
+    .bar-body {
+      background-color: $yellow-light;
+    }
+
+    &.bar-current {
+      .bar-body {
+        background-color: $yellow-medium;
+      }
+    }
+  }
+}

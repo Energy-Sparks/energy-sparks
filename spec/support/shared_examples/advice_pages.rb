@@ -10,7 +10,7 @@ RSpec.shared_examples 'an advice page' do
 
   it 'shows the page nav' do
     within '.advice-page-nav' do
-      expect(page).to have_content('Advice')
+      expect(page).to have_content(I18n.t('advice_pages.nav.overview'))
       expect(page).to have_content(I18n.t("advice_pages.nav.pages.#{key}"))
     end
   end

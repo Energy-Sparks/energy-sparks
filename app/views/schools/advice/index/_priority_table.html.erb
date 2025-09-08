@@ -15,18 +15,18 @@
   <tbody id="priority">
     <% management_priorities.each do |priority| %>
       <tr>
-        <td data-order="<%= priority.alert.alert_type.fuel_type %>">
-          <span class="<%= fuel_type_class(priority.alert.alert_type.fuel_type) %>">
+        <td data-order="<%= priority.alert_type.fuel_type %>">
+          <span class="<%= fuel_type_class(priority.alert_type.fuel_type) %>">
             <%= fa_icon alert_icon(priority.alert, 'fa-2x') %>
           </span>
         </td>
         <td>
-          <% if priority.alert.advice_page.present? %>
+          <% if priority.advice_page.present? %>
             <%= link_to priority.management_priorities_title,
                         advice_page_path(school,
-                                         priority.alert.advice_page,
-                                         priority.alert.alert_type.advice_page_tab_for_link_to,
-                                         anchor: priority.alert.alert_type.link_to_section) %>
+                                         priority.advice_page,
+                                         priority.alert_type.advice_page_tab_for_link_to,
+                                         anchor: priority.alert_type.link_to_section) %>
           <% else %>
             <%= priority.management_priorities_title %>
           <% end %>

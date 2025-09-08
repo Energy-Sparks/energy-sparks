@@ -10,11 +10,7 @@ namespace :school do
         begin
           DailyRegenerationJob.perform_later(school: school)
         rescue StandardError => e
-          puts "Exception: running validation for #{school.name}: #{e.class} #{e.message}"
-          puts e.backtrace.join("\n")
-          Rails.logger.error "Exception: running validation for #{school.name}: #{e.class} #{e.message}"
-          Rails.logger.error e.backtrace.join("\n")
-          Rollbar.error(e, job: :daily_regeneration, school_id: school.id, school: school.name)
+          EnergySparks::Log.exception(e, job: :daily_regeneration, school_id: school.id, school: school.name)
         end
       end
     end

@@ -1,9 +1,10 @@
-<%= component 'energy_tariffs',
-  tariff_holder: tariff_holder,
-  tariff_types: list_of_tariff_types(show_all: false),
-  source: :dcc,
-  show_add_button: false,
-  show_actions: true do |c| %>
+<%= render EnergyTariffsComponent.new(
+      tariff_holder: tariff_holder,
+      tariff_types: list_of_tariff_types(show_all: false),
+      source: :dcc,
+      show_add_button: false,
+      show_actions: true
+    ) do |c| %>
   <% c.with_header do %>
     <%= t('schools.user_tariffs.smart_meter_tariffs.introduction_html', advice_pages: school_advice_path(tariff_holder)) %>
   <% end %>

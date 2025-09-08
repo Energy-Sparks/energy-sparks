@@ -2,33 +2,63 @@
 
 <h1 class="text-center">
   <%= t('tasks.completed.congratulations') %>
-  <%= points.to_i > 0 ? t("tasks.completed.points", points: points) : t("tasks.completed.#{task_type}.no_points") %>
+  <%= if recording.points.to_i.positive?
+        t('tasks.completed.points',
+          points: recording.points)
+      else
+        t("tasks.completed.#{task_type}.no_points")
+      end %>
 </h1>
 
-<% if local_assigns[:activity] %>
-  <% activity.programmes.completed.recently_ended.each do |programme| %>
-    <%= component 'info_bar',
-      status: :neutral,
-      title: t("schools.prompts.completed_programme.message_html", title: programme.title, count: programme.points_for_completion),
-      icon: image_tag(programme.programme_type.t_attached_or_default(:image, placeholder: "placeholder300x200.png"), class: "img-fluid"),
-      icon_cols: 2,
-      buttons: { t("common.labels.view") => programme_type_path(programme.programme_type) }
-    %>
+<% if Flipper.enabled?(:todos) %>
+  <% recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
+    <%= render InfoBarComponent.new(
+          status: :neutral,
+          title: t('schools.prompts.completed_programme.message_html',
+                   title: programme.title,
+                   count: programme.points_for_completion),
+          icon: image_tag(programme.programme_type.t_attached_or_default(
+                            :image, placeholder: 'placeholder300x200.png'
+                          ),
+                          class: 'img-fluid'),
+          icon_cols: 2,
+          buttons: { t('common.labels.view') => programme_type_path(programme.programme_type) }
+        ) %>
+  <% end %>
+<% else %>
+  <% if recording.is_a? Activity %>
+    <% recording.programmes.completed.recently_ended.each do |programme| %>
+      <%= render InfoBarComponent.new(
+            status: :neutral,
+            title: t('schools.prompts.completed_programme.message_html',
+                     title: programme.title,
+                     count: programme.points_for_completion),
+            icon: image_tag(programme.programme_type.t_attached_or_default(
+                              :image, placeholder: 'placeholder300x200.png'
+                            ),
+                            class: 'img-fluid'),
+            icon_cols: 2,
+            buttons: { t('common.labels.view') => programme_type_path(programme.programme_type) }
+          ) %>
+    <% end %>
   <% end %>
 <% end %>
 
-<%= component 'scoreboard_summary', podium: current_school_podium , title: '' %>
+<%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, title: '') %>
 
 <h3><%= t('tasks.completed.what_next') %></h3>
 
-<%= component 'info_bar',
-    status: :positive,
-    icon: fa_icon('share fa-3x'),
-    style: :compact,
-    title: t('tasks.completed.share'),
-    buttons: { t("tasks.completed.#{task_type}.view_link") => task_path } %>
+<%= render InfoBarComponent.new(
+      status: :positive,
+      icon: fa_icon('share fa-3x'),
+      style: :compact,
+      title: t('tasks.completed.share'),
+      buttons: { t("tasks.completed.#{task_type}.view_link") => recording_path(recording) }
+    ) %>
 
-<%= render 'schools/prompt_to_complete_programme', programmes: school.programmes.started.order(started_on: :desc), style: :compact %>
+<%= render 'schools/prompt_to_complete_programme',
+           programmes: school.programmes.active.started.order(started_on: :desc),
+           style: :compact %>
 <%= render 'schools/prompt_join_programme', school: school, style: :compact %>
 <%= render 'schools/prompt_audit', audit: Audits::AuditService.new(school).last_audit, style: :compact %>
 <%= render 'schools/prompt_recommended', scope: recommendations_scope_for(task_type), icon: true, style: :compact %>

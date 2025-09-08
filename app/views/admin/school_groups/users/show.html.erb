@@ -23,100 +23,13 @@
     </div>
   </div>
 
-  <table class="table table-sm table-sorted">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Confirmed?</th>
-        <th>Last signed in</th>
-        <th>Language</th>
-        <th>Locked?</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @group_admins.each do |user| %>
-        <tr class="<%= 'table-danger' if user.access_locked? %>">
-          <td><%= user.name %></td>
-          <td><%= user.pupil? ? 'N/A' : user.email %></td>
-          <td><%= y_n(user.confirmed?) %></td>
-          <td data-order="<%= user.last_sign_in_at&.iso8601 %>"><%= display_last_signed_in_as(user) %></td>
-          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
-          <td><%= y_n(user.access_locked?) %></td>
-          <td>
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
-              <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' },
-                                                           class: 'btn btn-danger btn-sm' %>
-            </div>
-            <%= unless user.confirmed?
-                  button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm'
-                end %>
+  <%= render Admin::UserListComponent.new(id: 'unattached-users',
+                                          users: @group_admins,
+                                          show_organisation: false) %>
 
-            <% if user.access_locked? %>
-              <%= link_to 'Unlock', unlock_admin_school_group_users_path(user_id: user.id),
-                          class: 'btn btn-warning btn-sm' %>
-            <% else %>
-              <%= link_to 'Lock', lock_admin_school_group_users_path(user_id: user.id), class: 'btn btn-warning btn-sm' %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 <% end %>
 
 <h2>School Users</h2>
 
-<table class="table table-sm table-sorted">
-  <thead>
-    <tr>
-      <th>School</th>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Staff Role</th>
-      <th>Confirmed?</th>
-      <th>Last signed in</th>
-      <th>Alerts</th>
-      <th>Language</th>
-      <th>Locked?</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @school_group.schools.by_name.each do |school| %>
-      <% @school_users[school].each do |user| %>
-      <tr class="<%= 'table-danger' if user.access_locked? %>">
-          <td><%= link_to school.name, school_path(school) %></td>
-          <td><%= user.name %></td>
-          <td><%= user.pupil? ? 'N/A' : user.email %></td>
-          <td><%= user.role.titleize %></td>
-          <td><%= user.staff_role&.title %></td>
-          <td><%= y_n(user.confirmed?) %></td>
-          <td data-order="<%= user.last_sign_in_at&.iso8601 %>"><%= display_last_signed_in_as(user) %></td>
-          <td><%= y_n(user.contact_for_school) %></td>
-          <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
-          <td><%= y_n(user.access_locked?) %></td>
-          <td>
-            <div class="btn-group">
-              <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
-              <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' },
-                                                           class: 'btn btn-danger btn-sm' %>
-            </div>
-            <%= unless user.confirmed?
-                  button_to 'Resend confirmation', admin_user_confirmation_path(user), class: 'btn btn-warning btn-sm'
-                end %>
-            <% if user.access_locked? %>
-              <%= link_to 'Unlock', unlock_admin_school_group_users_path(user_id: user.id),
-                          class: 'btn btn-warning btn-sm' %>
-            <% else %>
-              <%= link_to 'Lock', lock_admin_school_group_users_path(user_id: user.id), class: 'btn btn-warning btn-sm' %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
+<%= render Admin::UserListComponent.new(id: 'all-school-users',
+                                        schools: @school_group.schools.by_name) %>

@@ -19,7 +19,7 @@ cy:
         school_day_heating:
           title: Defnydd nwy ar gyfer gwresogi yn ystod y dydd
         seasonal_control:
-          estimated_savings_html: Gallai eich ysgol leihau ei defnydd o nwy gan %{estimated_savings_kwh} kWH trwy ddiffodd ei boeler mewn tywydd cynnes. Er enghraifft, yn gynharach yn y gwanwyn ac yn hwyrach yn yr hydref, Byddai hyn arbed %{estimated_savings_gbp} a %{estimated_savings_co2} kg CO2 yn flynyddol.
+          estimated_savings_html: Gallai eich ysgol leihau ei defnydd o nwy gan %{estimated_savings_kwh} kWH trwy ddiffodd ei boeler mewn tywydd cynnes. Er enghraifft, yn gynharach yn y gwanwyn ac yn hwyrach yn yr hydref. Byddai hyn yn arbed %{estimated_savings_gbp} a %{estimated_savings_co2} kg CO2 yn flynyddol.
           heating_on_in_warm_weather_days: Blwyddyn diwethaf roedd gwres eich ysgol ymlaen am %{days} o ddiwrnodau yn ystod tywydd cynnes. Mae hyn yn %{adjective}.
           percent_html: Mae hyn yn cynrychioli %{percent} o'ch defnydd gwres blynyddol
           title: Rheolaeth dymhorol
@@ -40,6 +40,7 @@ cy:
           header: Gallwch ddrilio'r diwrnodau unigol i lawr trwy glicio ar y bariau ar y siart.
           subtitle_html: Mae'r graff hwn yn dangos pryd roedd y gwres a'r dŵr poeth ymlaen rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>, gan gynnwys pryd y gadawyd y gwres ymlaen mewn tywydd cynnes.
           title: Siart rheolaeth dymhorol
+      holiday_notice: Rhowch gynnig ar ddiffodd eich gwres a dŵr poeth yn ystod cyfnodau gwyliau. Os yw safle’r ysgol yn cael ei ddefnyddio gan y gymuned yn ystod y gwyliau, yna addaswch eich amseriadau i gyd-fynd â’r dyddiau a’r amseroedd hynny pan fydd angen gwresogi’r ysgol.
       insights:
         comparison:
           callout_footer: dyddiau
@@ -55,6 +56,16 @@ cy:
         view_our_analysis_html: <a href="%{href}">Gweler ein dadansoddiad</a>
         warm_weather:
           title: Gadael y gwres ymlaen yn ystod tywydd cynnes
+      not_enough_data:
+        p1: 'Pan fydd gennym ddata ychwanegol ar gyfer eich ysgol byddwn yn gallu darparu dadansoddiad manwl i chi a fydd yn cynnwys:'
+        p1_li1: argymhellion ar sut i addasu eich amseriadau gwresogi
+        p1_li2: yr amrywiad tymhorol yn eich defnydd o nwy ar gyfer gwresogi a dŵr poeth
+        p1_li3: rhybuddion a mewnwelediadau ychwanegol, gan gynnwys pan fydd eich gwres yn dod ymlaen mewn tywydd cynhesach
+        p2: 'Yn y cyfamser gallwch ddefnyddio gweddill ein dadansoddiad i’ch helpu i fonitro’r nwy a ddefnyddir ar gyfer gwresogi a dŵr poeth:'
+        p2_li1_html: mae ein <a href="%{gas_recent_changes_analysis_school_advice_path}#compare-recent-days">tudalen newidiadau diweddar</a> yn cynnwys siart sy'n dangos pryd rydych chi'n defnyddio nwy yn ystod y dydd, i helpu i nodi pryd mae'ch gwres yn dod ymlaen
+        p2_li2_html: mae'r <a href="%{gas_recent_changes_analysis_school_advice_path}#impact-of-temperature">dudalen newidiadau diweddar</a> yn dangos effaith tymheredd ar y defnydd o nwy, i'ch helpu i nodi a yw'r amseroedd gwresogi yn gywir
+        p2_li3_html: mae ein <a href="gas_out_of_hours_analysis_school_advice_path#usage_by_day_of_weekout">dadansoddiad y tu allan i oriau ysgol</a> yn dangos pryd rydych chi'n defnyddio nwy yn ystod yr wythnos ysgol, penwythnos a gyda'r nos i'ch helpu i addasu eich amserau gwresogi
+        title: Mae gennym ddata nwy cyfyngedig ar gyfer eich ysgol
       page_title: Dadansoddiad rheolaeth gwres
       tables:
         columns:

@@ -1,50 +1,76 @@
 <%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
 
 <% content_for :dashboard_header do %>
-  <%= component 'dashboard_header', school: @school, audience: @audience %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(
+               title: t('common.labels.welcome'),
+               subtitle: t('schools.show.dashboard_subtitle_html')
+             )) do |c| %>
+    <% c.with_callout(title: @school.name, classes: 'bg-white') do |callout| %>
+      <% callout.with_row do %>
+        <%= @school.address %> <%= @school.postcode %>
+      <% end %>
+      <% callout.with_row do %>
+        <span class="badge badge-secondary">
+          <%= t("common.school_types.#{@school.school_type}") %>
+        </span>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div class="container">
   <div class="row mt-4">
     <div class="col">
-      <%= component 'energy_summary_table',
-                    id: 'explore-energy-data',
-                    school: @school,
-                    user: current_user %>
+      <%= render EnergySummaryTableComponent.new(
+            id: 'explore-energy-data',
+            school: @school,
+            user: current_user
+          ) %>
     </div>
   </div>
   <div class="row mt-4 mb-4">
     <div class="col">
-      <%= component 'dashboard_learn_more', school: @school, user: current_user %>
+      <%= render DashboardLearnMoreComponent.new(school: @school, user: current_user) %>
     </div>
   </div>
   <div class="row mt-4">
     <div class="col">
-      <%= component 'dashboard_insights',
-                    id: 'alerts-and-reminders',
-                    audience: @audience,
-                    school: @school,
-                    user: current_user,
-                    progress_summary: @progress_summary %>
+      <%= render DashboardInsightsComponent.new(
+            id: 'alerts-and-reminders',
+            audience: @audience,
+            school: @school,
+            user: current_user,
+            progress_summary: @progress_summary
+          ) %>
     </div>
   </div>
 </div>
 
 <div class="container-fluid bg-light pb-3">
   <div class="container">
-    <%= component 'scoreboard_summary',
-                  id: 'scoreboard-summary',
-                  podium: current_school_podium,
-                  user: current_user,
-                  audience: @audience,
-                  classes: 'mt-4 pt-4' %>
+    <%= render Scoreboards::SchoolSummaryComponent.new(
+          id: 'scoreboard-summary',
+          podium: current_school_podium,
+          user: current_user,
+          audience: @audience,
+          classes: 'mt-4 pt-4'
+        ) %>
 
-    <%= component 'timeline',
-                  school: @school,
-                  observations: @observations,
-                  user: current_user,
-                  classes: 'mt-4' %>
+    <%= render TimelineComponent.new(
+          observations: @observations,
+          user: current_user,
+          classes: 'mt-4',
+          table_opts: { show_date: true }
+        ) do |timeline| %>
+          <% timeline.with_link do %>
+            <p>
+              <%= link_to school_timeline_path(@school), class: 'btn btn-default' do %>
+                <%= t('activities.show.all_activities') %>
+              <% end %>
+            </p>
+          <% end %>
+    <% end %>
 
-    <%= component 'dashboard_login', school: @school, user: current_user %>
+    <%= render DashboardLoginComponent.new(school: @school, user: current_user) %>
   </div>
 </div>

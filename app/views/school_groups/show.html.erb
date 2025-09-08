@@ -1,154 +1,80 @@
-<%= render 'enhanced_header' %>
+<% if Flipper.enabled?(:group_dashboards_2025, current_user) %>
+  <%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
 
-<div class="row mt-4">
-  <div class="col-md-12">
-    <p>
-      <%= t("school_groups.show.recent_usage_intro.#{@school_group.group_type}") %>
-    </p>
-  </div>
-</div>
-
-<div class="row mt-4">
-  <div class="col-md-12">
-    <div class="d-flex justify-content-between">
-      <%= form_with url: school_group_path(@school_group), method: :get do |f| %>
-        <div>
-          <label class="mr-2"><%= t('school_groups.show.change_units') %>:</label>
-          <% %w[change usage cost co2].each do |metric| %>
-            <div class="form-check form-check-inline">
-              <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input',
-                                                  checked: radio_button_checked_for(metric) %>
-              <%= f.label :metric, t("school_groups.show.metric.#{metric}"), value: metric, class: 'form-check-label' %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-      <div>
-        <%= link_to t('school_groups.download_as_csv'), school_group_path(@school_group, format: :csv),
-                    class: 'btn btn-sm btn-default' %>
-      </div>
-    </div>
-
-    <table width="100%" class="mt-3 table advice-table table-sorted">
-      <thead>
-        <tr>
-          <th></th>
-          <% if can?(:update_settings, @school_group) %>
-            <th></th>
-          <% end %>
-          <% if @fuel_types.include?(:electricity) %>
-            <th colspan="2" class="text-center">
-              <%= fa_icon fuel_type_icon(:electricity) %> <%= t('common.electricity') %>
-            </th>
-          <% end %>
-          <% if @fuel_types.include?(:gas) %>
-            <th colspan="2" class="text-center">
-              <%= fa_icon fuel_type_icon(:gas) %> <%= t('common.gas') %>
-            </th>
-          <% end %>
-          <% if @fuel_types.include?(:storage_heaters) %>
-            <th colspan="2" class="text-center">
-              <%= fa_icon fuel_type_icon(:storage_heaters) %> <%= t('common.storage_heaters') %>
-            </th>
-          <% end %>
-        </tr>
-        <tr>
-          <th colspan="1"><%= t('common.school') %></th>
-          <% if can?(:update_settings, @school_group) %>
-            <th><%= t('school_groups.clusters.labels.cluster') %></th>
-          <% end %>
-          <% if @fuel_types.include?(:electricity) %>
-            <th class="text-right"><%= t('common.labels.last_week') %></th>
-            <th class="text-right"><%= t('common.labels.last_year') %></th>
-          <% end %>
-          <% if @fuel_types.include?(:gas) %>
-            <th class="text-right"><%= t('common.labels.last_week') %></th>
-            <th class="text-right"><%= t('common.labels.last_year') %></th>
-          <% end %>
-          <% if @fuel_types.include?(:storage_heaters) %>
-            <th class="text-right"><%= t('common.labels.last_week') %></th>
-            <th class="text-right"><%= t('common.labels.last_year') %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <% @schools.order(:name).each do |school| %>
-          <tr>
-            <td>
-              <%= link_to school.name, school_path(school) %>
-            </td>
-            <% if can?(:update_settings, @school_group) %>
-              <td>
-                <%= school.school_group_cluster_name %>
-              </td>
-            <% end %>
-            <% if school.data_enabled %>
-              <% recent_usage = school&.recent_usage %>
-              <% if @fuel_types.include?(:electricity) %>
-                <% if recent_usage&.electricity&.week&.has_data %>
-                  <td class="text-right <%= recent_usage&.electricity&.week&.message_class %>"
-                      data-order="<%= value_for(recent_usage&.electricity&.week, formatted: false) %>">
-                    <%= up_downify(value_for(recent_usage&.electricity&.week, formatted: true)) %>
-                  </td>
-                <% else %>
-                  <td class="text-right" data-order="0">-</td>
-                <% end %>
-
-                <% if recent_usage&.electricity&.year&.has_data %>
-                  <td class="text-right <%= recent_usage&.electricity&.year&.message_class %>"
-                      data-order="<%= value_for(recent_usage&.electricity&.year, formatted: false) %>">
-                    <%= up_downify(value_for(recent_usage&.electricity&.year, formatted: true)) %>
-                  </td>
-                <% else %>
-                  <td class="text-right" data-order="0">-</td>
-                <% end %>
-              <% end %>
-
-              <% if @fuel_types.include?(:gas) %>
-                <% if recent_usage&.gas&.week&.has_data %>
-                  <td class="text-right <%= recent_usage&.gas&.week&.message_class %>"
-                      data-order="<%= value_for(recent_usage&.gas&.week, formatted: false) %>">
-                    <%= up_downify(value_for(recent_usage&.gas&.week, formatted: true)) %>
-                  </td>
-                <% else %>
-                  <td class="text-right" data-order="0">-</td>
-                <% end %>
-                <% if recent_usage&.gas&.year&.has_data %>
-                  <td class="text-right <%= recent_usage&.gas&.year&.message_class %>"
-                      data-order="<%= value_for(recent_usage&.gas&.year, formatted: false) %>">
-                    <%= up_downify(value_for(recent_usage&.gas&.year, formatted: true)) %>
-                  </td>
-                <% else %>
-                  <td class="text-right" data-order="'0'">-</td>
-                <% end %>
-              <% end %>
-
-              <% if @fuel_types.include?(:storage_heaters) %>
-                <% if recent_usage&.storage_heaters&.week&.has_data %>
-                  <td class="text-right <%= recent_usage&.storage_heaters&.week&.message_class %>"
-                      data-order="<%= value_for(recent_usage&.storage_heaters&.week, formatted: false) %>">
-                    <%= up_downify(value_for(recent_usage&.storage_heaters&.week, formatted: true)) %>
-                  </td>
-                <% else %>
-                  <td class="text-right" data-order="'0'">-</td>
-                <% end %>
-                <% if recent_usage&.storage_heaters&.year&.has_data %>
-                  <td class="text-right <%= recent_usage&.storage_heaters&.year&.message_class %>"
-                      data-order="<%= value_for(recent_usage&.storage_heaters&.year, formatted: false) %>">
-                    <%= up_downify(value_for(recent_usage&.storage_heaters&.year, formatted: true)) %>
-                  </td>
-                <% else %>
-                  <td class="text-right" data-order="'0'">-</td>
-                <% end %>
-              <% end %>
-            <% else %>
-              <% (@fuel_types.reject { |f| f == :solar_pv }.length * 2).times do %>
-                <td class="text-right" data-order="'0'">-</td>
-              <% end %>
-            <% end %>
-          </tr>
+  <% content_for :dashboard_header do %>
+    <%= render(Layout::Cards::PageHeaderComponent.new(
+                 title: t('common.labels.welcome'),
+                 subtitle: t('school_groups.show.intro_html')
+               )) do |c| %>
+      <% c.with_callout(title: @school_group.name, classes: 'bg-white') do |callout| %>
+        <% callout.with_row do %>
+          <%= t('school_count', count: @schools.count) %>
+          <br>
+          <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
         <% end %>
-      </tbody>
-    </table>
+        <% callout.with_row do %>
+          <span class="badge badge-secondary">
+            <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
+          </span>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <div class="container">
+    <%= render Charts::GroupDashboardChartsComponent.new(
+          id: 'explore-energy-data',
+          school_group: @school_group
+        ) do |c| %>
+      <% c.with_title do %>
+        <h2>
+          <%= t('school_groups.show.energy_use.title') %>
+        </h2>
+      <% end %>
+    <% end %>
+
+    <%= render Dashboards::GroupSavingsPromptComponent.new(
+          school_group: @school_group,
+          schools: @schools
+        ) %>
+
+    <%= render Dashboards::GroupInsightsComponent.new(
+          id: 'alerts-and-reminders',
+          classes: 'mt-4',
+          school_group: @school_group,
+          user: current_user
+        ) %>
   </div>
-</div>
+
+  <div class="container-fluid bg-light pb-3">
+    <div class="container">
+      <%= render Scoreboards::GroupSummaryComponent.new(
+            id: 'scoreboard-summary',
+            classes: 'mt-4 pt-4',
+            school_group: @school_group,
+            limit: 10,
+            user: current_user
+          ) %>
+    </div>
+  </div>
+<% else %>
+  <%= render 'enhanced_header' %>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <p>
+        <%= t("school_groups.show.recent_usage_intro.#{@school_group.group_type}") %>
+      </p>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <%= render 'school_groups/advice/summary_table',
+                 school_group: @school_group,
+                 schools: @schools,
+                 fuel_types: @fuel_types,
+                 path: school_group_path(@school_group) %>
+    </div>
+  </div>
+<% end %>

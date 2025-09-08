@@ -5,7 +5,8 @@ require 'rails_helper'
 RSpec.describe Schools::Advice::HeatingControlService, type: :service do
   let(:school) { create(:school) }
   let(:meter_collection) { build(:meter_collection) }
-  let(:service) { described_class.new(school, meter_collection) }
+  let(:aggregate_school_service) { instance_double(AggregateSchoolService, meter_collection: meter_collection)}
+  let(:service) { described_class.new(school, aggregate_school_service) }
 
   describe '#meters' do
     context 'when there are gas and electricity meters' do

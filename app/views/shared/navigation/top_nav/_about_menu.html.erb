@@ -1,19 +1,23 @@
 <li class="nav-item dropdown" id="about-menu">
-  <a class="nav-link dropdown-toggle" href="#" id="aboutDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('about_menu.about_us') %></a>
+  <a class="nav-link dropdown-toggle"
+     href="#"
+     id="aboutDropDown"
+     data-toggle="dropdown"
+     aria-haspopup="true"
+     aria-expanded="false">
+     <%= t('about_menu.about_us') %>
+  </a>
   <div id="about-us" class="dropdown-menu" aria-labelledby="aboutDropDown">
     <%= link_to t('about_menu.contact'), contact_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.team'), team_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.blog'), 'http://blog.energysparks.uk',
                 target: '_blank', class: 'dropdown-item', rel: 'noopener' %>
     <%= link_to t('about_menu.funders'), funders_path, class: 'dropdown-item' %>
+    <%= link_to t('support_us.title'), support_us_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.jobs'), jobs_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.terms_and_conditions'), terms_and_conditions_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.privacy_policy'), privacy_and_cookie_policy_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.child_safeguarding'), child_safeguarding_policy_path, class: 'dropdown-item' %>
     <%= link_to t('about_menu.school_statistics'), school_statistics_path, class: 'dropdown-item' %>
-    <% unless Flipper.enabled?(:footer, current_user, current_user&.school_group) %>
-      <%= link_to t('about_menu.datasets'), attribution_path, class: 'dropdown-item' %>
-      <%= link_to t('about_menu.open_data'), datasets_path, class: 'dropdown-item' %>
-    <% end %>
   </div>
 </li>

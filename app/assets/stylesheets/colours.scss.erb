@@ -16,7 +16,7 @@
 
 // Create SASS maps for each of these keys found in Colours::PALETTE hash
 // These will be named: $colours-fuel etc
-<%= Colours.sass_maps :fuel, :polarity, :comparison, :charts %>
+<%= Colours.sass_maps :palette, :fuel, :polarity, :comparison, :charts %>
 
 // Get a colour from a generated map
 // not used yet so need to check if working :-)
@@ -27,4 +27,3 @@
     @return map-get($map, $name);
   }
 }
-

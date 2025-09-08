@@ -35,6 +35,7 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+    help: Help
   contact_explainer:
     alerts_message: Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
     list_html: |-
@@ -61,9 +62,7 @@ en:
   footer:
     cc_licence_notice_html: Content on this website is published under <a href="https://creativecommons.org/licenses/by/4.0/">a Creative Commons Attribution 4.0 Licence</a>
     child_safeguarding_policy: Child safeguarding policy
-    follow_energy_sparks: Follow Energy Sparks
     legal_terms: Legal Terms
-    more_information: More information
     newsletter_signup: Newsletter Signup
     other_links: Other Links
     quick_links: Quick Links
@@ -80,6 +79,7 @@ en:
     reports: Reports
   manage_school_menu:
     batch_reports: Batch reports
+    digital_signage: Digital signage
     edit_school_details: Edit school details
     edit_school_times: Edit school times
     expert_analysis: Expert analysis
@@ -119,6 +119,7 @@ en:
     storage_heater_usage: Storage heater usage
   nav:
     enrol: Enrol
+    my_account: My account
     my_schools: My schools
     points: "%{count} points"
     sign_in: Sign In
@@ -132,12 +133,9 @@ en:
     case_studies: Case studies
     educational_workshops: Education workshops
     energy_audits: Energy audits
-    for_local_authorities: For Local Authorities
-    for_multi_academy_trusts: For Multi-Academy Trusts
-    for_schools: For Schools
+    energy_management_tool: Energy management tool
     newsletters: Newsletters
     our_services: Our services
-    pricing: Pricing
     training: Training
     videos: Videos
   partners:

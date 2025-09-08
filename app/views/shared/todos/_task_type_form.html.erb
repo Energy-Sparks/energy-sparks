@@ -1,0 +1,51 @@
+<h2><%= title %></h2>
+<p class="small">
+  <%= description %>.
+</p>
+
+<p class="small">
+  <%= custom %>.
+</p>
+
+<p class="small">
+  Drag and drop items to reorder lists. Then save to apply the changes.
+</p>
+
+<div class="row p-2">
+  <div class="col-md-5">
+    <label for="<%= type %>"><%= label %></label>
+  </div>
+  <% if assignable.is_a?(Audit) %>
+    <div class="col-md-5">
+      <label for="notes"><%= t('schools.audits.form.notes') %></label>
+    </div>
+  <% end %>
+  <div class="col-md-2">
+  </div>
+</div>
+
+<div id="<%= type.dasherize %>-todos" class='admin-todos sort-list'>
+  <%= f.simple_fields_for "#{type}_todos" do |todo| %>
+    <%= render 'shared/todos/fields',
+               f: todo,
+               assignable: assignable,
+               tasks: tasks,
+               task_type: type.camelcase %>
+  <% end %>
+  <div class="links">
+    <%= link_to_add_association add_label,
+                                f,
+                                "#{type}_todos",
+                                class: 'btn',
+                                partial: 'shared/todos/fields',
+                                render_options: {
+                                  locals: {
+                                    assignable: assignable,
+                                    tasks: tasks,
+                                    task_type: type.camelcase
+                                  }
+                                } %>
+  </div>
+</div>
+<br>
+<br>

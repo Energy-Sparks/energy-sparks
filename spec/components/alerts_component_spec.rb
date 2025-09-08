@@ -15,8 +15,12 @@ RSpec.describe AlertsComponent, type: :component, include_url_helpers: true do
     double(management_dashboard_title: 'adult alert text',
     pupil_dashboard_title: 'pupil alert text',
     colour: :positive,
-    alert: alert)
+    alert: alert,
+    alert_type: alert_type,
+    advice_page: advice_page,
+    find_out_more: true)
   end
+
   let(:dashboard_alerts) { [alert_content] }
   let(:all_params) do
     {

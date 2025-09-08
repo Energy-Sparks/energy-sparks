@@ -1,7 +1,7 @@
-<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <% c.with_link do
        link_to t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_link'),
-               learn_more_school_advice_gas_out_of_hours_path(@school)
+               learn_more_school_advice_gas_out_of_hours_path(school)
      end %>
   <%= t('advice_pages.gas_out_of_hours.insights.what_is_out_of_hours_usage_html') %>
 <% end %>

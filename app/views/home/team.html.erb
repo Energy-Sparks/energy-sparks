@@ -1,25 +1,26 @@
-<% content_for :page_title, t('team.background.title') %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('team.background.title') %>
 
-<div class="application container">
+  <div class="application container">
 
-  <h1 id="background"><%= t('team.background.title') %></h1>
-  <p><%= t('team.background.content') %>.</p>
+    <h1 id="background"><%= t('team.background.title') %></h1>
+    <p><%= t('team.background.content') %>.</p>
 
-  <h1 id="team"><%= t('team.our_team.title') %></h1>
-  <h2><%= t('team.our_team.staff') %></h2>
+    <h1 id="team"><%= t('team.our_team.title') %></h1>
+    <h2><%= t('team.our_team.staff') %></h2>
 
-  <% @staff.each do |team_member| %>
-    <%= render 'team_member', team_member: team_member %>
-  <% end %>
+    <% @staff.each do |team_member| %>
+      <%= render 'team_member', team_member: team_member %>
+    <% end %>
 
-  <h2><%= t('team.our_team.consultants') %></h2>
-  <% @consultants.each do |team_member| %>
-    <%= render 'team_member', team_member: team_member %>
-  <% end %>
+    <h2><%= t('team.our_team.consultants') %></h2>
+    <% @consultants.each do |team_member| %>
+      <%= render 'team_member', team_member: team_member %>
+    <% end %>
 
-  <h2><%= t('team.our_team.trustees') %></h2>
-  <% @trustees.each do |team_member| %>
-    <%= render 'team_member', team_member: team_member %>
-  <% end %>
-
-</div>
+    <h2><%= t('team.our_team.trustees') %></h2>
+    <% @trustees.each do |team_member| %>
+      <%= render 'team_member', team_member: team_member %>
+    <% end %>
+  </div>
+<% end %>

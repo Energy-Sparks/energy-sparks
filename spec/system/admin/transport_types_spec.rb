@@ -185,7 +185,7 @@ describe 'admin transport type', type: :system, include_application_helper: true
       end
 
       it 'shows prefilled form elements' do
-        within('form') do
+        within('form#edit_transport_type') do
           attributes.slice(*text_fields).each do |key, value|
             expect(page).to have_field(key, with: value)
           end
@@ -241,9 +241,7 @@ describe 'admin transport type', type: :system, include_application_helper: true
           end
 
           it 'renders edit page' do
-            within('h1') do
-              expect(page).to have_content 'Edit Transport type'
-            end
+            expect(page).to have_content 'Edit Transport type'
           end
 
           it 'has error message on field' do
@@ -259,7 +257,7 @@ describe 'admin transport type', type: :system, include_application_helper: true
       end
 
       it 'shows a blank form' do
-        within('form') do
+        within('form#new_transport_type') do
           [:transport_type_name_en, 'Image', 'Note'].each do |field_name|
             expect(find_field(field_name).text).to be_blank
           end
@@ -318,9 +316,7 @@ describe 'admin transport type', type: :system, include_application_helper: true
           end
 
           it 'renders new page' do
-            within('h1') do
-              expect(page).to have_content 'New Transport type'
-            end
+            expect(page).to have_content 'New Transport type'
           end
 
           it 'has error message on field' do

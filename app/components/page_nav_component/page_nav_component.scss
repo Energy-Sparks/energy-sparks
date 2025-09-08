@@ -4,6 +4,8 @@
   }
 
   a.nav-link {
+    display: flex;
+    align-items: center;
     font-family: $header-font-family;
     color: $blue-very-dark;
     font-weight: $font-weight-semibold;
@@ -15,6 +17,14 @@
     &.current {
       font-weight: bold;
     }
+  }
+
+  a.nav-link i.fuel {
+    margin-right: 0.5em;
+  }
+
+  a.nav-link .nav-toggle-icons {
+    margin-left: auto; //pushes to the right by using up all remaining space as margin
   }
 
   li.section {
@@ -47,6 +57,33 @@
       i.fuel {  // icon colour for fuel icon
         color: map-get($tones, "dark");
       }
+    }
+  }
+
+  a.nav-link.generic-item {
+    font-family: $default-font-family;
+    color: $blue-dark; // switch to $body-color when we've switch that over
+    font-weight: $default-font-weight;
+
+    &:hover, &.current {
+      border-radius: 5px;
+      background-color: $teal-light;
+    }
+
+    &.current {
+      font-weight: bold !important;
+    }
+  }
+
+  a.generic-section {
+    font-weight: $font-weight-semibold;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    i.fuel {
+      color: $teal-dark;
     }
   }
 }

@@ -3,7 +3,7 @@
 
 <p><%= t('advice_pages.gas_long_term.analysis.meter_breakdown.summary') %></p>
 
-<%= component 'chart', chart_type: :group_by_week_gas_meter_breakdown_one_year, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :group_by_week_gas_meter_breakdown_one_year, school: school) do |c| %>
   <% c.with_title { t('advice_pages.gas_long_term.charts.group_by_week_gas_meter_breakdown_one_year.title') } %>
   <% c.with_subtitle { t('advice_pages.gas_long_term.charts.group_by_week_gas_meter_breakdown_one_year.subtitle') } %>
   <% c.with_header do %>

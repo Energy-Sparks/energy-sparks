@@ -1,5 +1,5 @@
 <%= simple_form_for :activity_type, url: for_school_activity_type_path(activity_type), method: :get do |f| %>
-  <%= component 'notice', status: :neutral, classes: 'mb-4' do %>
+  <%= render NoticeComponent.new(status: :neutral, classes: 'mb-4') do %>
     <div class="row" role="alert">
       <div class="col-lg-1 d-none d-lg-block">
         <i class="fas fa-tasks fa-3x"></i>
@@ -7,12 +7,18 @@
       <div class="col-lg-8 col-sm-12 align-self-center">
         <%= t('activity_types.show.complete_this_activity_for_group_html', count: activity_type.score) %>
         <div class="pt-2 w-75">
-          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name), include_blank: t('activity_types.show.select_school'), class: 'form-control select2 must-select disable-tooltip' %>
+          <%= select_tag :school_id, options_from_collection_for_select(schools, :id, :name),
+                         include_blank: t('activity_types.show.select_school'),
+                         class: 'form-control select2 must-select disable-tooltip' %>
         </div>
       </div>
       <div class="col-lg-3 col-sm-12">
         <div class="d-none d-sm-block d-md-block d-lg-none pt-2"></div>
-        <%= f.submit t('activity_types.show.record_this_activity'), class: 'btn float-lg-right', 'data-toggle': 'tooltip', 'data-placement': 'bottom', title: t('activity_types.show.select_school') %>
+        <%= f.submit t('activity_types.show.record_this_activity'),
+                     class: 'btn float-lg-right',
+                     'data-toggle': 'tooltip',
+                     'data-placement': 'bottom',
+                     title: t('activity_types.show.select_school') %>
       </div>
     </div>
   <% end %>

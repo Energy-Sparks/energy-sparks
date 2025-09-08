@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'school groups', :school_groups, type: :system do
-  let!(:school_group) { create(:school_group, public: public, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
+  let!(:school_group) { create(:school_group, public: public, default_issues_admin_user: nil, default_template_calendar: create(:template_calendar, :with_previous_and_next_academic_years)) }
   let(:public) { true }
 
   let!(:user)                  { create(:user) }
@@ -242,7 +242,9 @@ describe 'school groups', :school_groups, type: :system do
       end
 
       describe 'showing priority actions' do
-        include_context 'school group priority actions'
+        include_context 'school group priority actions' do
+          let(:school_with_saving) { school_1 }
+        end
 
         before do
           visit priority_actions_school_group_path(school_group)
@@ -337,18 +339,6 @@ describe 'school groups', :school_groups, type: :system do
           expect(page).to have_link('18')
           expect(page).to have_content('0')
         end
-
-        context 'when school group does not have a calendar' do
-          let(:school_group) { create(:school_group, default_template_calendar: nil) }
-
-          it 'redirects to school group home' do
-            expect(page).to have_current_path(school_group_path(school_group))
-          end
-
-          it 'does not display Current Scores tab' do
-            expect(page).not_to have_link('Current Scores')
-          end
-        end
       end
 
       describe 'showing map' do
@@ -427,7 +417,9 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'schools are filtered by permissions', school_admin: true
     end
 
-    it_behaves_like 'school group tabs not showing the cluster column'
+    it_behaves_like 'school group tabs not showing the cluster column' do
+      let(:school_with_saving) { school_1 }
+    end
   end
 
   context 'when logged in as a non school admin' do
@@ -454,12 +446,14 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'visiting chart updates redirects to group map page'
     end
 
-    it_behaves_like 'school group tabs not showing the cluster column'
+    it_behaves_like 'school group tabs not showing the cluster column' do
+      let(:school_with_saving) { school_1 }
+    end
   end
 
   context 'when logged in as the group admin' do
     let!(:user)           { create(:group_admin, school_group: school_group) }
-    let!(:school_group2)  { create(:school_group) }
+    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
@@ -497,12 +491,14 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'schools are filtered by permissions', admin: true
     end
 
-    it_behaves_like 'school group tabs showing the cluster column'
+    it_behaves_like 'school group tabs showing the cluster column' do
+      let(:school_with_saving) { school_1 }
+    end
   end
 
   context 'when logged in as an admin' do
     let!(:user)           { create(:admin) }
-    let!(:school_group2)  { create(:school_group) }
+    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
@@ -540,7 +536,9 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'schools are filtered by permissions', admin: true
     end
 
-    it_behaves_like 'school group tabs showing the cluster column'
+    it_behaves_like 'school group tabs showing the cluster column' do
+      let(:school_with_saving) { school_1 }
+    end
 
     context 'when there are archived schools' do
       before do
@@ -555,7 +553,7 @@ describe 'school groups', :school_groups, type: :system do
   end
 
   context 'when logged in as a group admin for a different group' do
-    let!(:user) { create(:group_admin, school_group: create(:school_group)) }
+    let!(:user) { create(:group_admin, school_group: create(:school_group, default_issues_admin_user: nil)) }
 
     before do
       sign_in(user)
@@ -580,6 +578,8 @@ describe 'school groups', :school_groups, type: :system do
       it_behaves_like 'visiting chart updates redirects to group map page'
     end
 
-    it_behaves_like 'school group tabs not showing the cluster column'
+    it_behaves_like 'school group tabs not showing the cluster column' do
+      let(:school_with_saving) { school_1 }
+    end
   end
 end

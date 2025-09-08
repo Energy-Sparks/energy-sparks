@@ -1,0 +1,6 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'Categories', admin_cms_categories_path %>
+  <% header_nav.with_button 'Pages', admin_cms_pages_path %>
+  <% header_nav.with_button 'Sections', admin_cms_sections_path %>
+<% end %>

@@ -1,14 +1,27 @@
-<%= render 'schools/advice/section_title', section_id: 'cost-breakdown-by-charge', section_title: advice_t('electricity_costs.analysis.cost_breakdown_by_charge.title', period: format_unit(annual_costs.days/365.0, :years)) %>
+<%= render 'schools/advice/section_title',
+           section_id: 'cost-breakdown-by-charge',
+           section_title: advice_t('electricity_costs.analysis.cost_breakdown_by_charge.title',
+                                   period: format_unit(annual_costs.days / 365.0, :years)) %>
 
 <% if local_assigns[:show_school_total] == true %>
   <p>
-    <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.whole_school', cost: format_unit(annual_costs.£, :£), period: format_unit(annual_costs.days/365.0, :years)) %>
+    <%= advice_t('electricity_costs.analysis.cost_breakdown_by_meter.whole_school',
+                 cost: format_unit(annual_costs.£, :£),
+                 period: format_unit(annual_costs.days / 365.0, :years)) %>
   </p>
 <% end %>
 
-<%= component 'chart', chart_type: one_year_breakdown_chart, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: one_year_breakdown_chart, school: school) do |c| %>
   <% c.with_title { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.title") } %>
-  <% c.with_subtitle { advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html", end_date: analysis_dates.end_date.to_fs(:es_short)) } %>
+  <% c.with_subtitle do
+       advice_t("electricity_costs.charts.#{one_year_breakdown_chart_key}.subtitle_html",
+                end_date: analysis_dates.end_date.to_fs(:es_short))
+     end %>
 <% end %>
 
-<%= component 'meter_costs_table', monthly_costs: monthly_costs, change_in_costs: change_in_costs, school: @school, fuel_type: @advice_page.fuel_type %>
+<%= render MeterCostsTableComponent.new(
+      monthly_costs: monthly_costs,
+      change_in_costs: change_in_costs,
+      school: @school,
+      fuel_type: @advice_page.fuel_type
+    ) %>

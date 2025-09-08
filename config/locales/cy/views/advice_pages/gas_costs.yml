@@ -2,8 +2,6 @@ cy:
   advice_pages:
     gas_costs:
       analysis:
-        comparison:
-          title: Cymhariaeth cost ar gyfer y 2 flynedd ddiwethaf
         cost_breakdown_by_charge:
           title: Dadansoddiad cost yn ôl tâl am y %{period} diwethaf
         cost_breakdown_by_meter:
@@ -35,9 +33,9 @@ cy:
           subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span> ar gyfer yr ysgol gyfan
           title: Cydrannau cost nwy ar gyfer yr ychydig wythnosau diwethaf
         cost_comparison_last_2_years_accounting:
-          meter_title: Cymhariaeth costau nwy am y 2 flynedd ddiwethaf ar gyfer %{meter}
-          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y 12 mis yn diweddu ar %{end_date} a'r 12 mis blaenorol
-          title: Cymhariaeth costau nwy am y 2 flynedd ddiwethaf
+          meter_title: Cymhariaeth costau nwy am y 2 flynedd academaidd ddiwethaf ar gyfer %{meter}
+          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y flwyddyn academaidd hyd at <span class='end-date'>%{end_date}</span> â'r flwyddyn academaidd blaenorol
+          title: Cymhariaeth cost nwy ar gyfer y 2 flynedd academaidd ddiwethaf
       insights:
         current_costs:
           title: Eich costau presennol

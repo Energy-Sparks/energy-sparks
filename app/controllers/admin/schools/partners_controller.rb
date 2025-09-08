@@ -9,6 +9,7 @@ module Admin
           positions[school_partner.partner_id] = school_partner.position
           positions
         end
+        render layout: Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
       end
 
       def update

@@ -48,19 +48,38 @@ cy:
   dashboards:
     adult_dashboard: Dangosfwrdd oedolion
     pupil_dashboard: Dangosfwrdd disgyblion
+  errors:
+    '404':
+      description: Mae'n ddrwg gennym, nid yw'r dudalen rydych yn chwilio amdani yn bodoli
+      title: Tudalen heb ei chanfod
+    '422':
+      description: Efallai eich bod wedi ceisio newid rhywbeth nad oedd gennych fynediad ato
+      title: Cafodd y newid roeddech ei eisiau ei wrthod
+    '500':
+      description: Mae tîm Sbarcynni wedi cael gwybod
+      title: Mae'n ddrwg gennym, aeth rhywbeth o'i le
+    resolution_html: Ewch i'n <a href='/'>tudalen hafan</a>
   footer:
     cc_licence_notice_html: Cyhoeddir cynnwys ar y wefan hon o dan <a href="https://creativecommons.org/licenses/by/4.0/">Drwydded Creative Commons Attribution 4.0</a>
     child_safeguarding_policy: Polisi diogelu plant
-    follow_energy_sparks: Dilyn Sbarcynni
-    more_information: Rhagor o wybodaeth
+    legal_terms: Termau Cyfreithiol
+    newsletter_signup: Cofrestru am y Cylchlythyr
+    other_links: Dolenni Eraill
+    quick_links: Dolenni Cyflym
     registered_charity_notice: Mae Sbarcynni yn elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273
+    services: Gwasanaethau
     terms_and_conditions: Telerau ac amodau
+  maintenance:
+    progress: Mae ein tîm yn gweithio ar ddiweddaru'r wefan ar hyn o bryd a disgwyliwn i'r gwasanaeth fod ar gael eto ymhen ychydig oriau
+    title: Mae Sbarcynni i lawr ar gyfer gwaith cynnal a chadw ar hyn o bryd
+    unavailable: Mae'n ddrwg gennym ond nid yw Sbarcynni ar gael ar hyn o bryd tra byddwn yn gwneud gwaith cynnal a chadw hanfodol
   manage_menu:
     admin: Gweinyddwr
     manage: Rheoli
     reports: Adroddiadau
   manage_school_menu:
     batch_reports: Adroddiadau swp
+    digital_signage: Arwyddion digidol
     edit_school_details: Golygu manylion yr ysgol
     edit_school_times: Golygu amseroedd ysgol
     expert_analysis: Dadansoddiad arbenigol
@@ -80,6 +99,9 @@ cy:
     school_calendar: Calendr ysgol
     school_configuration: Ffurfweddiad ysgol
     your_school_estate: Stad eich ysgol
+  my_school_group_menu:
+    group_dashboard: Dangosfwrdd grŵp
+    my_school_group: Fy ngrŵp ysgol
   my_school_menu:
     download_our_data: Lawrlwytho ein data
     electricity_and_solar_usage: Defnydd trydan a solar
@@ -90,12 +112,16 @@ cy:
     my_alerts: Fy rhybuddion
     my_school: Fy ysgol
     my_school_group: Fy ngrŵp ysgol
+    recommended_activities: Gweithgareddau a argymhellir
     review_targets: Adolygu targedau
     school_programmes: Rhaglenni ysgol
     scoreboard: Bwrdd sgorio
     storage_heater_usage: Defnydd stôr-wresogyddion
   nav:
     enrol: Cofrestru
+    my_account: Fy nghyfrif
+    my_schools: Fy ysgolion
+    points: "%{count} o bwyntiau"
     sign_in: Mewngofnodi
     sign_out: Allgofnodi
   our_schools_menu:
@@ -105,14 +131,10 @@ cy:
     view_schools: Gweld ysgolion
   our_services_menu:
     case_studies: Astudiaethau achos
-    educational_workshops: Gweithdai addysgol
+    educational_workshops: Gweithdai addysg
     energy_audits: Archwiliadau ynni
-    for_local_authorities: Ar gyfer Awdurdodau Lleol
-    for_multi_academy_trusts: Ar gyfer Ymddiriedolaethau Aml-Academi
-    for_schools: Ar gyfer Ysgolion
     newsletters: Cylchlythyrau
     our_services: Ein gwasanaethau
-    pricing: Prisio
     training: Hyfforddiant
     videos: Fideos
   partners:

@@ -12,8 +12,7 @@
 
 <div class="row">
   <div class="col-sm-6">
-    <p><%= t('activity_categories.introduction_1_html', for_teachers_path: for_teachers_path,
-                                                        for_pupils_path: for_pupils_path) %></p>
+    <p><%= t('activity_categories.introduction_1_html') %></p>
     <p><%= t('activity_categories.introduction_2_html', count: @activity_count) %></p>
   </div>
   <div class="col-sm-6">
@@ -40,21 +39,7 @@
     <%= render 'pupil_categories', activity_categories: @pupil_categories.first(4) %>
   <% end %>
 
-  <% if !@programme_types.blank? %>
-    <div class="row mt-3 bg-light">
-      <div class="col">
-        <div class="d-flex justify-content-between align-items-center">
-          <h4><%= t('activity_categories.our_programmes.title') %></h4>
-          <div>
-            <%= link_to t('activity_categories.view_all_programmes'), programme_types_path,
-                        class: 'btn btn-default' %>
-          </div>
-        </div>
-        <p><%= t('activity_categories.our_programmes.introduction') %></p>
-      </div>
-    </div>
-    <%= render 'programme_types', programme_types: @programme_types.first(4) %>
-  <% end %>
+  <%= render 'shared/tasks/programme_types', programme_types: @programme_types %>
 
   <% @activity_categories.each do |activity_category| %>
     <div class="row mt-3">

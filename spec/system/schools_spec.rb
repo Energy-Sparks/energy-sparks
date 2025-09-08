@@ -88,6 +88,7 @@ RSpec.describe 'Schools page' do
     it { expect(page).to have_css('div.school-search-component') }
     it { expect(page).to have_link(I18n.t('schools.index.case_studies'), href: case_studies_path) }
     it { expect(page).to have_content('We have 2 schools') }
+    it { expect(page).to have_content(I18n.t('components.school_search.schools.total', count: 2)) }
   end
 
   context 'with the schools tab' do
@@ -126,6 +127,10 @@ RSpec.describe 'Schools page' do
         before do
           sign_in(create(:admin))
           visit schools_path
+        end
+
+        it 'updates label for school count' do
+          expect(page).to have_content(I18n.t('components.school_search.schools.total_for_admins', count: 3))
         end
 
         it 'shows visible schools' do

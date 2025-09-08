@@ -31,5 +31,5 @@
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
            data_target: 'how-have-we-analysed-your-data-footnotes',
            additional_notice_text: t('advice_pages.baseload.current_baseload.calculation_dates',
-                                     start_date: short_dates(@analysis_dates.start_date),
+                                     start_date: short_dates(@analysis_dates.one_year_before_end),
                                      end_date: short_dates(@analysis_dates.end_date)) %>

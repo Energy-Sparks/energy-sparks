@@ -1,0 +1,55 @@
+<%= render 'admin/cms/title_and_navigation', title: 'Categories' %>
+
+<div class="row">
+  <div class="col">
+    <p><%= link_to 'New Category', new_admin_cms_category_path, class: 'btn' %></p>
+  </div>
+</div>
+
+<div class="row">
+ <div class="col">
+   <table class="table table-sorted">
+     <thead>
+       <tr>
+         <th data-orderable="false">Icon</th>
+         <th>Title</th>
+         <th>Published?</th>
+         <th data-orderable="false">Published Pages</th>
+         <th>Updated By</th>
+         <th>Updated At</th>
+         <th data-orderable="false">Actions</th>
+       </tr>
+     </thead>
+     <tbody>
+       <% @categories.each do |category| %>
+        <tr>
+          <th><%= render IconComponent.new(name: category.icon) if category.icon %></th>
+          <td><%= link_to category.title, edit_admin_cms_category_path(category) %></td>
+          <td><%= checkmark category.published? %></td>
+          <td><%= category.pages.published.count %> / <%= category.pages.count %></td>
+          <td><%= category&.updated_by&.name %></td>
+          <td><%= nice_date_times(category.updated_at) if category.updated_at %></td>
+          <td>
+            <%= link_to 'Edit', edit_admin_cms_category_path(category), class: 'btn btn-sm' %>
+            <%= link_to 'New Page', new_admin_cms_page_path(category_id: category.id), class: 'btn btn-sm' %>
+            <%= link_to 'View', category_path(category), class: 'btn btn-sm' %>
+            <% if category.published? %>
+            <%= link_to 'Hide',
+                        hide_admin_cms_category_path(category),
+                        method: :put,
+                        class: 'btn btn-sm',
+                        data: { confirm: 'Note this will remove the content from view, are you sure?' } %>
+            <% elsif category.publishable? %>
+            <%= link_to 'Publish',
+                        publish_admin_cms_category_path(category),
+                        method: :put,
+                        class: 'btn btn-sm',
+                        data: { confirm: 'Note this will make the content public, are you sure?' } %>
+            <% end %>
+          </td>
+        </tr>
+       <% end %>
+     </tbody>
+   </table>
+ </div>
+</div>

@@ -2,7 +2,7 @@
 en:
   programme_types:
     cards:
-      bonus_points_html: Completing this programme this academic year will score you %{bonus_score} bonus points
+      bonus_points_html: Completing this programme will score you %{bonus_score} bonus points
       continue: Continue
       view: View
       you_have_already_completed_this_programme: You have already completed this programme
@@ -13,8 +13,11 @@ en:
     index:
       introduction_1: Short programmes of related activities that pupils can work through step-by-step to achieve greater impact
       introduction_2: As an Energy Sparks user you can enrol in any of our programmes and record activities to track your progress and score points for your school
-      page_title: Programmes
       title: Our Energy Saving Programmes
+    intention:
+      adults: This programme is intended for adults
+      all: This programme is intended for the whole school
+      pupils: This programme is intended for pupils
     prompt:
       completed_message_html:
         one: You've completed all the activities in this programme. Mark it done to score <strong>%{count}</strong> bonus point?
@@ -27,13 +30,21 @@ en:
     prompt_login:
       are_you_an_energy_sparks_user_html: Are you an Energy Sparks user?<br>Sign in and enrol your school in this programme, or record your recent progress
       sign_in_now: Sign in now
+    prompt_todo:
+      completed_message_html:
+        one: You've completed all tasks in this programme. Mark it done to score <strong>%{count}</strong> bonus point?
+        other: You've completed all tasks in this programme. Mark it done to score <strong>%{count}</strong> bonus points?
+        zero: You've completed all tasks in this programme. Mark it as complete?
+      message_html:
+        one: You've recently completed a task that is part of this programme. Do you want to enrol in the programme?
+        other: You've recently completed %{count} tasks that are part of this programme. Do you want to enrol in the programme?
+        zero: You can enrol your school in this programme
     show:
       activities: Activities
       completed_on: Completed on
       current_progress: Current Progress
       download: Download
       overview: Overview
-      points: Points
       view_all_programmes: View all programmes
     started:
       restart: Restart

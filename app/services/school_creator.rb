@@ -40,7 +40,6 @@ class SchoolCreator
   end
 
   def make_visible!
-    raise Error.new('School cannot be made visible as we dont have a record of consent') unless @school.consent_grants.any?
     @school.update!(visible: true)
     if onboarding_service.should_complete_onboarding?(@school)
       users = @school.users.reject(&:pupil?)
@@ -52,6 +51,7 @@ class SchoolCreator
 
   def make_data_enabled!
     raise Error.new('School must be visible before enabling data') unless @school.visible
+    raise Error.new('School cannot be made data visible as we dont have a record of consent') unless @school.consent_grants.any?
     @school.update!(data_enabled: true)
     @school.update!(activation_date: Time.zone.today) unless @school.activation_date.present?
     onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
@@ -93,7 +93,7 @@ private
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )
-    Solar::SolarAreaLookupService.new(@school, onboarding).assign
+    Solar::SolarAreaLookupService.new(@school).assign
   end
 
   def create_default_contact(onboarding)

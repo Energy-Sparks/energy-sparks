@@ -57,6 +57,10 @@ module Schools
 
       protected
 
+      def aggregate_school_service
+        ::AggregateSchoolService.new(@school, @aggregate_school)
+      end
+
       def school_has_fuel_type?
         @advice_page.school_has_fuel_type?(@school)
       end

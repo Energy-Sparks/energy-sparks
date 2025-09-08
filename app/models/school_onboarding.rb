@@ -10,6 +10,7 @@
 #  dark_sky_area_id         :bigint(8)
 #  data_sharing             :enum             default("public"), not null
 #  default_chart_preference :integer          default("default"), not null
+#  full_school              :boolean          default(TRUE)
 #  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
 #  notes                    :text
@@ -18,23 +19,22 @@
 #  school_name              :string           not null
 #  school_will_be_public    :boolean          default(TRUE)
 #  scoreboard_id            :bigint(8)
-#  solar_pv_tuos_area_id    :bigint(8)
 #  template_calendar_id     :bigint(8)
 #  updated_at               :datetime         not null
+#  urn                      :integer
 #  uuid                     :string           not null
 #  weather_station_id       :bigint(8)
 #
 # Indexes
 #
-#  index_school_onboardings_on_created_by_id          (created_by_id)
-#  index_school_onboardings_on_created_user_id        (created_user_id)
-#  index_school_onboardings_on_funder_id              (funder_id)
-#  index_school_onboardings_on_school_group_id        (school_group_id)
-#  index_school_onboardings_on_school_id              (school_id)
-#  index_school_onboardings_on_scoreboard_id          (scoreboard_id)
-#  index_school_onboardings_on_solar_pv_tuos_area_id  (solar_pv_tuos_area_id)
-#  index_school_onboardings_on_template_calendar_id   (template_calendar_id)
-#  index_school_onboardings_on_uuid                   (uuid) UNIQUE
+#  index_school_onboardings_on_created_by_id         (created_by_id)
+#  index_school_onboardings_on_created_user_id       (created_user_id)
+#  index_school_onboardings_on_funder_id             (funder_id)
+#  index_school_onboardings_on_school_group_id       (school_group_id)
+#  index_school_onboardings_on_school_id             (school_id)
+#  index_school_onboardings_on_scoreboard_id         (scoreboard_id)
+#  index_school_onboardings_on_template_calendar_id  (template_calendar_id)
+#  index_school_onboardings_on_uuid                  (uuid) UNIQUE
 #
 # Foreign Keys
 #
@@ -43,19 +43,17 @@
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
-#  fk_rails_...  (solar_pv_tuos_area_id => areas.id) ON DELETE => restrict
 #  fk_rails_...  (template_calendar_id => calendars.id) ON DELETE => nullify
 #
 
 class SchoolOnboarding < ApplicationRecord
-  include EnumDataSharing
+  include Enums::DataSharing
 
   validates :school_name, :contact_email, presence: true
 
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
-  belongs_to :solar_pv_tuos_area, optional: true
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
   belongs_to :scoreboard, optional: true
@@ -76,12 +74,20 @@ class SchoolOnboarding < ApplicationRecord
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, School.countries
 
+  before_save :update_country_from_urn
+
+  def update_country_from_urn
+    est = Lists::Establishment.current_establishment_from_urn(@urn)
+    unless est.nil?
+      est.gor_code == 'W' ? :wales : :england
+    end
+  end
+
   def populate_default_values(user)
     assign_attributes({
                         uuid: SecureRandom.uuid,
                         created_by: user,
                         template_calendar: school_group&.default_template_calendar,
-                        solar_pv_tuos_area: school_group&.default_solar_pv_tuos_area,
                         dark_sky_area: school_group&.default_dark_sky_area,
                         weather_station: school_group&.default_weather_station,
                         scoreboard: school_group&.default_scoreboard,

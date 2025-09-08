@@ -17,12 +17,12 @@
 #  default_procurement_route_gas_id         :bigint(8)
 #  default_procurement_route_solar_pv_id    :bigint(8)
 #  default_scoreboard_id                    :bigint(8)
-#  default_solar_pv_tuos_area_id            :bigint(8)
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
+#  mailchimp_fields_changed_at              :datetime
 #  name                                     :string           not null
 #  public                                   :boolean          default(TRUE)
 #  slug                                     :string           not null
@@ -30,16 +30,14 @@
 #
 # Indexes
 #
-#  index_school_groups_on_default_issues_admin_user_id   (default_issues_admin_user_id)
-#  index_school_groups_on_default_scoreboard_id          (default_scoreboard_id)
-#  index_school_groups_on_default_solar_pv_tuos_area_id  (default_solar_pv_tuos_area_id)
-#  index_school_groups_on_default_template_calendar_id   (default_template_calendar_id)
+#  index_school_groups_on_default_issues_admin_user_id  (default_issues_admin_user_id)
+#  index_school_groups_on_default_scoreboard_id         (default_scoreboard_id)
+#  index_school_groups_on_default_template_calendar_id  (default_template_calendar_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_issues_admin_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (default_scoreboard_id => scoreboards.id)
-#  fk_rails_...  (default_solar_pv_tuos_area_id => areas.id)
 #  fk_rails_...  (default_template_calendar_id => calendars.id) ON DELETE => nullify
 #
 
@@ -48,6 +46,9 @@ class SchoolGroup < ApplicationRecord
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
   include Scorable
+  include MailchimpUpdateable
+
+  watch_mailchimp_fields :name
 
   friendly_id :name, use: %i[finders slugged history]
 
@@ -64,9 +65,9 @@ class SchoolGroup < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :schools, source: :issues
+  has_many :observations, through: :schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
-  belongs_to :default_solar_pv_tuos_area, class_name: 'SolarPvTuosArea', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :default_weather_station, class_name: 'WeatherStation',
                                        optional: true
@@ -160,6 +161,10 @@ class SchoolGroup < ApplicationRecord
     end
   end
 
+  def displayable_partners
+    partners
+  end
+
   def page_anchor
     name.parameterize
   end
@@ -184,7 +189,36 @@ class SchoolGroup < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
+  # For those groups without a scoreboard OR a default calendar (around 3-4)
+  # default to using the academic year defined for the national scoreboard
+  def this_academic_year(today: Time.zone.today)
+    return super(today:) unless scorable_calendar.nil?
+    NationalScoreboard.new.this_academic_year(today:)
+  end
+
+  # For those groups without a scoreboard OR a default calendar (around 3-4)
+  # default to using the academic year defined for the national scoreboard
+  def previous_academic_year(today: Time.zone.today)
+    return super(today:) unless scorable_calendar.nil?
+    NationalScoreboard.new.previous_academic_year(today:)
+  end
+
+  # Groups may have their calendars and scoreboards set up in different ways
+  # depending on whether they are regionally located and centrally managed
+  #
+  # By default use the calendar for the scoreboard, this will be either the
+  # English or Scottish calendar by default. Otherwise use the default
+  # template calendar
   def scorable_calendar
+    return default_scoreboard.academic_year_calendar unless default_scoreboard.nil?
     default_template_calendar
+  end
+
+  def grouped_schools_by_name(scope: nil)
+    selected_schools = scope ? schools.merge(scope) : schools
+    selected_schools.group_by do |school|
+      first_char = school.name[0]
+      /[A-Za-z]/.match?(first_char) ? first_char.upcase : '#'
+    end.sort.to_h
   end
 end

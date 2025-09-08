@@ -66,7 +66,7 @@ describe 'configurable_period' do
     end
   end
 
-  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration - shouldn't leak because of self?
+  self::COL_GROUPS = [ # rubocop:disable RSpec/LeakyConstantDeclaration -- shouldn't leak because of self?
     '',
     I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
     I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),

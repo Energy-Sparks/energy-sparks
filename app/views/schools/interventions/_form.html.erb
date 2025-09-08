@@ -36,7 +36,7 @@
   <% end %>
 
   <div class="mt-4">
-    <%= f.rich_text_area :description, wrapper_html: { class: '' } %>
+    <%= render(Forms::TrixComponent.new(form: f, field: :description, button_size: :large, controls: :simple)) %>
   </div>
 </fieldset>
 
@@ -47,4 +47,5 @@
 <fieldset>
   <%= f.hidden_field :intervention_type_id, value: intervention_type.id, required: true %>
 </fieldset>
-<%= f.submit observation.persisted? ? t('interventions.form.update_action') : t('interventions.form.record_action'), class: 'btn btn-primary' %>
+<%= f.submit observation.persisted? ? t('interventions.form.update_action') : t('interventions.form.record_action'),
+             class: 'btn btn-primary' %>

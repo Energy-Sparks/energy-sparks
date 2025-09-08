@@ -38,11 +38,12 @@
     <div class="col-md-12">
       <div class="container">
         <% if @school_group.try(:dashboard_message) %>
-          <%= component 'info_bar',
-                        status: :neutral,
-                        title: @school_group.dashboard_message.message,
-                        icon: fa_icon('info-circle fa-3x'),
-                        buttons: {} %>
+          <%= render InfoBarComponent.new(
+                status: :neutral,
+                title: @school_group.dashboard_message.message,
+                icon: fa_icon('info-circle fa-3x'),
+                buttons: {}
+              ) %>
         <% end %>
       </div>
     </div>
@@ -71,14 +72,12 @@
             <%= t('school_groups.titles.priority_actions') %>
           </a>
         </li>
-        <% if @school_group.scorable? %>
-          <li class="nav-item">
-            <a class="nav-link<%= ' active' if current_page?({ action: 'current_scores' }) %>"
-              href="<%= current_scores_school_group_path(@school_group) %>">
-              <%= t('school_groups.titles.current_scores') %>
-            </a>
-          </li>
-        <% end %>
+        <li class="nav-item">
+          <a class="nav-link<%= ' active' if current_page?({ action: 'current_scores' }) %>"
+            href="<%= current_scores_school_group_path(@school_group) %>">
+            <%= t('school_groups.titles.current_scores') %>
+          </a>
+        </li>
       </ul>
     <% end %>
   </div>

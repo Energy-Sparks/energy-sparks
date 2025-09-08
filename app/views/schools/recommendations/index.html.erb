@@ -2,52 +2,60 @@
 
 <p><%= t('schools.recommendations.intro') %></p>
 
-<%= render 'schools/prompt_to_complete_programme', programmes: @school.programmes.started.order(started_on: :desc),
-                                                   style: :compact %>
+<%= render 'schools/prompt_to_complete_programme',
+           programmes: @school.programmes.active.started.order(started_on: :desc),
+           style: :compact %>
 <%= render 'schools/prompt_join_programme', school: @school, style: :compact %>
 <%= render 'schools/prompt_audit', audit: Audits::AuditService.new(@school).last_audit, style: :compact %>
 
 <% display_options = { classes: 'pb-4', limit: 5, limit_lg: 3 } %>
 <% display_limit = display_options[:limit] %>
 
-<%= component 'panel_switcher',
-              selected: @scope,
-              title: t('schools.recommendations.energy_usage.title'),
-              description: t('schools.recommendations.energy_usage.description'),
-              id: 'energy-usage' do |switcher| %>
+<%= render PanelSwitcherComponent.new(
+      selected: @scope,
+      title: t('schools.recommendations.energy_usage.title'),
+      description: t('schools.recommendations.energy_usage.description'),
+      id: 'energy-usage'
+    ) do |switcher| %>
   <% switcher.with_panel(label: t('common.labels.pupil_activities'), name: 'pupil') do |panel| %>
-    <%= component 'recommendations',
-                  recommendations: Recommendations::Activities.new(@school).based_on_energy_use(display_limit),
-                  **display_options %>
+    <%= render RecommendationsComponent.new(
+          recommendations: Recommendations::Activities.new(@school).based_on_energy_use(display_limit),
+          **display_options
+        ) %>
   <% end %>
   <% switcher.with_panel(label: t('common.labels.adult_actions'), name: 'adult') do |panel| %>
-    <%= component 'recommendations',
-                  recommendations: Recommendations::Actions.new(@school).based_on_energy_use(display_limit),
-                  **display_options %>
+    <%= render RecommendationsComponent.new(
+          recommendations: Recommendations::Actions.new(@school).based_on_energy_use(display_limit),
+          **display_options
+        ) %>
   <% end %>
 <% end %>
 
-<%= component 'panel_switcher',
-              selected: @scope,
-              title: t('schools.recommendations.recent_activity.title'),
-              description: t('schools.recommendations.recent_activity.description'),
-              id: 'recent-activity' do |switcher| %>
+<%= render PanelSwitcherComponent.new(
+      selected: @scope,
+      title: t('schools.recommendations.recent_activity.title'),
+      description: t('schools.recommendations.recent_activity.description'),
+      id: 'recent-activity'
+    ) do |switcher| %>
   <% switcher.with_panel(label: t('common.labels.pupil_activities'), name: 'pupil') do |panel| %>
-    <%= component 'recommendations',
-                  recommendations: Recommendations::Activities.new(@school).based_on_recent_activity(display_limit),
-                  **display_options %>
+    <%= render RecommendationsComponent.new(
+          recommendations: Recommendations::Activities.new(@school).based_on_recent_activity(display_limit),
+          **display_options
+        ) %>
   <% end %>
   <% switcher.with_panel(label: t('common.labels.adult_actions'), name: 'adult') do |panel| %>
-    <%= component 'recommendations',
-                  recommendations: Recommendations::Actions.new(@school).based_on_recent_activity(display_limit),
-                  **display_options %>
+    <%= render RecommendationsComponent.new(
+          recommendations: Recommendations::Actions.new(@school).based_on_recent_activity(display_limit),
+          **display_options
+        ) %>
   <% end %>
 <% end %>
 
-<%= component 'recommendations',
-              title: t('schools.recommendations.more_ideas.title'),
-              description: t('schools.recommendations.more_ideas.description'),
-              id: 'more-ideas', **display_options do |c| %>
+<%= render RecommendationsComponent.new(
+      title: t('schools.recommendations.more_ideas.title'),
+      description: t('schools.recommendations.more_ideas.description'),
+      id: 'more-ideas', **display_options
+    ) do |c| %>
   <% c.with_item(name: t('schools.recommendations.more_ideas.programme'), href: programme_types_path,
                  image: 'recommendations/get-energised.png') %>
   <% c.with_item(name: t('schools.recommendations.more_ideas.activities', count: ActivityType.count),

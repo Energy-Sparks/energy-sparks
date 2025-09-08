@@ -1,10 +1,15 @@
-.btn {
-  background-color: $white;
+.btn-default {
   @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+
+  &.transparent {
+    background-color: transparent;
+    @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-light);
+  }
 }
 
-.btn-default { // also default button design
-  @extend .btn;
+.btn {
+  background-color: $white;
+  @extend .btn-default;
 }
 
 @each $color, $value in $theme-colors {
@@ -12,8 +17,13 @@
     .btn-#{$color} {
       @include button-variant($value, $value);
     }
+  }
 
-    .btn-outline-#{$color} {
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+
+    &.transparent {
+      background-color: transparent;
       @include button-outline-variant($value);
     }
   }
@@ -69,10 +79,6 @@ a.badge {
   border-radius: 30px;
 }
 
-.btn-fixed-width-100 {
-  width: 100px;
-}
-
 .card-deck.activities {
   a,
   a:hover,
@@ -97,27 +103,5 @@ section.highlight {
   a.active {
     color: $blue-very-dark;
     outline: none;
-  }
-}
-
-// Extra small devices (portrait phones, less than 576px)
-@media (max-width: 575.98px) {
-  .btn,
-  .btn:hover,
-  .btn:focus,
-  .btn:active,
-  .btn.active {
-    @include font(f9);
-  }
-}
-
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .btn,
-  .btn:hover,
-  .btn:focus,
-  .btn:active,
-  .btn.active {
-    @include font(f9);
   }
 }

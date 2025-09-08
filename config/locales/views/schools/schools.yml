@@ -96,7 +96,9 @@ en:
       new:
         title: New Audit
       show:
+        completed_message: Congratulations, you completed all recommended actions and activities on %{date}!
         completed_on: Completed on
+        completed_points: Completing all of these tasks will award you
         completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
         points:
@@ -163,7 +165,7 @@ en:
         download_the_data_for_each_active_meter: Download the data for each active meter
         download_the_data_for_each_inactive_meter: Download the data for each inactive meter
         downloads_for: Downloads for %{school_name}
-        email_contact_message_html: Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information
+        email_contact_message_html: Please contact <a href="mailto:support@energysparks.uk">support@energysparks.uk</a> for further information
         meters: Meters
         solar_pv_data: Solar PV Data
         solar_pv_data_csv_for_your_area: Solar PV data CSV for your area, %{solar_pv_tuos_area_title}
@@ -247,12 +249,12 @@ en:
       edit:
         edit_meter: Edit meter
       form:
-        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy integration
+        admin_only_features_for_n3rgy_integration: Admin only features for n3rgy and Perse integration
         create_meter: Create Meter
         data_source: Data source
         dcc_smart_meter: DCC Smart Meter
         editing_disabled_for_pseudo_meters: Editing disabled for pseudo meters
-        leave_this_blank_message: Leave this blank for new meters and system will check it is registered with n3rgy
+        leave_this_blank_message: Leave this as "No" for new meters and system will check it is registered with n3rgy
         meter_point_number: Meter Point Number
         meter_system: Meter system
         name: Name
@@ -266,6 +268,7 @@ en:
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
         admin_meter_status: Meter status
+        completed_meter_reviews: Completed DCC meter reviews
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Source
         first: From
@@ -273,9 +276,10 @@ en:
         inactive_meters: Inactive meters
         large_gaps: Gaps
         latest: To
-        manage_solar_api_feeds: Manage Solar API feeds
+        manage_solar_api_feeds: Solar Feeds
+        manual_reads: Manual reads?
         meter: Meter
-        meter_reviews: Completed DCC meter reviews
+        meter_reviews: Meter Reviews
         meter_system: Meter system
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
@@ -290,7 +294,6 @@ en:
         validate_meter_readings: Validate meter readings
         validated: Validated
         validated_readings: Validated Readings
-        view_target_data: View target data
         zero_days: Zero days
       inventory:
         meter_title: 'Meter: %{meter_mpan_mprn}'
@@ -300,8 +303,10 @@ en:
         no_meter_issues: No issues or notes for meter
         title: Meter Issues & Notes - %{name}
       show:
+        admin_details: Admin details
         available_cache_range: Available date range
         basic_information: Basic information
+        data_feed_config_report: Data feed config report
         data_source: Data source
         dcc_consented: DCC Consented
         dcc_information: DCC (SMETS2) information
@@ -309,6 +314,7 @@ en:
         download_readings: Readings
         grant_consent: Grant consent
         inventory: Inventory
+        loading_report: Loading report
         meter: Meter
         n3rgy_api_status: n3rgy API Status
         n3rgy_consent_confirmed: n3rgy Confirm Consented
@@ -330,6 +336,18 @@ en:
       audit:
         message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
         message_older_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your energy audit
+        progress:
+          message_html:
+            one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
+            other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
+            zero: You haven't yet completed any of the tasks recommended in your recent energy audit
+          message_older_html:
+            one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your energy audit
+            other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your energy audit
+            zero: You haven't yet completed any of the tasks recommended in your energy audit
+          summary_final_html: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
+          summary_html: Complete the others to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
+          summary_none_html: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
         summary_html:
           one: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{count}</strong> bonus point for completing all audit tasks
           other: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{count}</strong> bonus points for completing all audit tasks
@@ -354,7 +372,32 @@ en:
         message: Make a plan for reducing energy use to save money and reduce emissions by focusing on these key areas
       programme:
         choose_a_new_programme_message: It's time to choose a new programme of activities. What challenge will you take on next?
+        join:
+          completed_message_html:
+            one: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus point?
+            other: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus points?
+            zero: You've completed all the tasks in the <strong>%{title}</strong> programme. Mark it as complete?
+          message_html:
+            one: You've recently completed a task that is part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
+            other: You've recently completed %{count} tasks that are part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
         message_html: You have completed <strong>%{programme_activities_count}/%{activity_types_count}</strong> of the activities in the <strong>%{programme_type_title}</strong> programme
+        progress:
+          message_html:
+            one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks in the <strong>%{title}</strong> programme
+            other: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks in the <strong>%{title}</strong> programme
+            zero: You haven't yet completed any of the tasks in the <strong>%{title}</strong> programme
+          summary_final_html:
+            one: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
+            other: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            zero: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points
+          summary_html:
+            one: Complete the final <strong>%{uncompleted_count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
+            other: Complete the final <strong>%{uncompleted_count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            zero: Complete the final <strong>%{uncompleted_count}</strong> tasks now to score <strong>%{uncompleted_scores}</strong> points
+          summary_none_html:
+            one: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus point for completing the programme
+            other: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing the programme
+            zero: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points
         start_a_new_programme: Start a new programme
         summary_bonus_html:
           one: Complete the final activity now to score <strong>%{activity_types_uncompleted_scores}</strong> points and <strong>%{programme_points_for_completion}</strong> bonus points for completing the programme
@@ -391,6 +434,8 @@ en:
         description: These suggestions are based on your most recently recorded activity
         title: Based on your recent activity
       title: Recommended activities and actions
+    review:
+      title: School setup review
     school_details:
       activation_date_hint: This is the date when the school becomes active on Energy Sparks
       address: Address
@@ -451,14 +496,18 @@ en:
         page_title: Results of reducing your energy usage
         your_school_set_a_target_to_reduce_html: Your school set a target to reduce its energy usage between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>. This page summarises your results
       first:
+        advice: Focus on building momentum and making some early savings.
         careful_planning: Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommended set of steps to help you achieve your targets by
         its_time: It's time to set your first target to reduce your energy consumption
         page_title: Set your first energy saving target
         providing_more_insight: providing more insight through our detailed analysis of your energy usage
         providing_reports: providing reports to monitor your progress
+        recommend: Based on our work with schools across the UK, we recommend setting the following targets for your school this year.
         set_your_first_energy_saving_target: Set your first energy saving target
         suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
         suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
+        tip_html: "<strong>Tip</strong>: don't try to be too ambitious"
+        your_first: Your first target
       form:
         reducing_electricity_usage_by: Reducing electricity usage by
         reducing_gas_usage_by: Reducing gas usage by
@@ -582,6 +631,28 @@ en:
           other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
+    settings:
+      manage_link: Manage
+      metering:
+        manage_meters: View and manage your school electricity and gas meters
+        manage_tariffs: Manage current and historical energy tariffs for your school
+        school_downloads: Download copies of your meter data
+      settings:
+        add_community_use: Add community use times
+        digital_signage: Display your analysis on public signage around the schools
+        edit_school_details: School address, pupil numbers, floor area and other settings
+        edit_school_times: Manage school opening hours and community use times
+        history: Manage the activities and actions previously recorded by your school
+        school_calendar: Manage your school calendar, including term times and inset days
+        temperatures: View and manage classroom temperatures recorded by pupils
+        transport_surveys: View and manage the results of surveys carried out by pupils
+        your_school_estate: Add details about your school buildings and heating sources
+      users:
+        add_alert_contacts: Add alert subscribers
+        add_pupil_login: Missing pupil login
+        add_users: Add school users
+        manage_users: Manage school users and pupil logins
+      view_link: View
     show:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
@@ -589,6 +660,7 @@ en:
       coming_soon: Energy data coming soon
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.
       create_pupil_account: Create a pupil account
+      dashboard_subtitle_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activity on your scoreboard</a>
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
       energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.
@@ -620,7 +692,7 @@ en:
       edit:
         community_use:
           add_time: Add time
-          breakfast_and_after_school_clubs: Some schools also choose to use this section to record breakfast and after school clubs
+          breakfast_and_after_school_clubs: You can also use this section to record the times when you have before and after school clubs running that only use a small proportion of your school estate.
           closing_time: Closing Time
           day: Day
           opening_time: Opening Time
@@ -634,8 +706,8 @@ en:
         save_school_times: Save school times
         title: School opening hours
       message_1: Enter the times when the pupils are arriving and leaving the school. This should be when the school is fully operational with the majority of pupils in school.
-      message_1_community_use: Breakfast clubs, after school clubs and any private lettings should be included in the Community Use times below.
-      message_2: While many schools will have a certain number of staff in the school outside of these times, keeping this definition consistent across all schools improves the support you receive from Energy Sparks.
+      message_1_community_use: Before and after school clubs can be included if the majority of the school is in use by pupils. External lettings or times when you have only a small proportion of your school estate in use by pupils should be listed under community use times below.
+      message_2: Many schools will have cleaning or other premises staff in the school outside of the times when they are open to pupils. Do not include these periods in your main school opening hours as we recommend that you should keep energy use to a minimum during these times.
       message_3: Times should be entered in 24 hour format.
       opening_time: Opening Time
       school_time_fields:
@@ -647,14 +719,8 @@ en:
         energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
         energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
         subscribe_to_school_alerts: Subscribe to school alerts
-      auto_subscribe_newsletter:
-        newsletters_main_communication_channel: Newsletters are our main communication channel for
-        newsletters_main_communication_channel_list_item_1: highlighting new resources
-        newsletters_main_communication_channel_list_item_2: sharing featured activities
-        newsletters_main_communication_channel_list_item_3: celebrating best practice and success stories at participating schools
-        newsletters_main_communication_channel_list_item_4: promoting supporting services such as workshops, training and audits
-        subscribe_to_newsletters: Subscribe to newsletters
-        we_strongly_recommend_you_sign_up: We strongly recommend you sign up to get the most from Energy Sparks (we'll never share your email address with anyone else)
+      create:
+        as_a_group_admin: As a group admin for %{school_group}, this user is already able to administer this school
       edit:
         title: Edit %{user_role} account
         update_account: Update account
@@ -667,11 +733,9 @@ en:
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
       index:
         account_confirmed: Account confirmed?
-        add_existing_user_as_admin: Add an existing Energy Sparks user as a school admin
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
-        lock: Lock
         make_school_admin: Make school admin
         name: Name
         new_pupil_account: New pupil account
@@ -695,36 +759,37 @@ en:
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
-        title: New %{user_role} account
+        title: Add %{user_role} account
     your_school_estates:
       edit:
-        alternative_heating_sources:
+        description: Energy Sparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        heating_sources:
           air_source_heat_pump:
-            label: Our school has an air source heat pump
-            percentage: What percentage of the school is using the air source heat pump for heating?
+            percentage: What percentage of the school floor area is using the air source heat pump for heating?
           biomass:
-            label: Our school has a biomass boiler
-            percentage: What percentage of the school is using a biomass boiler for heating?
+            percentage: What percentage of the school floor area is using a biomass boiler for heating?
+          chp:
+            percentage: What percentage of the school floor area is using a combined heat and power (CHP) system for heating?
           description_1: Tell us about any alternative sources of heating that you use in your school
           description_2: At the moment we only analyse your gas data. But by letting us know about other sources, we can qualify any potential cost savings or recommendations
           district_heating:
-            label: Our school has district heating
-            percentage: What percentage of the school is using district heating for heating?
+            percentage: What percentage of the school floor area is using district heating for heating?
+          electric:
+            percentage: What percentage of the school floor area is using electric for heating?
+          gas:
+            percentage: What percentage of the school floor area is using gas for heating?
           ground_source_heat_pump:
-            label: Our school has a ground source heat pump
-            percentage: What percentage of the school is using the ground source heat pump for heating?
+            percentage: What percentage of the school floor area is using the ground source heat pump for heating?
           header: Alternative heating sources
           lpg:
-            label: Our school is using LPG for heating
-            percentage: What percentage of the school using LPG for heating?
+            percentage: What percentage of the school floor area using LPG for heating?
           notes: Is there anything else we should know?
           oil:
-            label: Our school uses oil for heating
-            percentage: What percentage of the school is heated by oil heating?
+            percentage: What percentage of the school floor area is heated by oil heating?
+          underfloor:
+            percentage: What percentage of the school floor area is using underfloor heating?
           water_source_heat_pump:
-            label: Our school has a water source heat pump
-            percentage: What percentage of the school is using the water source heat pump for heating?
-        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+            percentage: What percentage of the school floor area is using the water source heat pump for heating?
         school_was_successfully_updated: School was successfully updated
         solar_panels: Solar panels
         solar_panels_label: Our school has solar PV panels

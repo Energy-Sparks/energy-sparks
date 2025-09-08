@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Admin::UsersController, type: :controller do
   let(:valid_attributes) do
     {
+      name: 'User',
       email: 'school@test.com',
       password: 'testpassword',
       role: :staff,

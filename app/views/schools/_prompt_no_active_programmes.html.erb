@@ -1,9 +1,9 @@
 <% if school && school.programmes.active.started.none? %>
-  <%= component 'info_bar',
-    status: :neutral,
-    style: local_assigns[:style],
-    title: t("schools.prompts.no_active_programmes.message"),
-    icon: fa_icon('tasks fa-3x'),
-    buttons: current_page?(programme_types_path) ? {} : { t("schools.prompts.no_active_programmes.choose_programme") => programme_types_path }
-  %>
+  <%= render InfoBarComponent.new(
+        status: :neutral,
+        style: local_assigns[:style],
+        title: t('schools.prompts.no_active_programmes.message'),
+        icon: fa_icon('tasks fa-3x'),
+        buttons: current_page?(programme_types_path) ? {} : { t('schools.prompts.no_active_programmes.choose_programme') => programme_types_path }
+      ) %>
 <% end %>

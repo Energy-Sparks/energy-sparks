@@ -1,7 +1,7 @@
 <%= render 'schools/advice/section_title', section_id: 'comparison',
                                            section_title: t('advice_pages.gas_long_term.analysis.comparison.title') %>
 
-<%= component 'chart', chart_type: :benchmark_gas_only_one_year_kwh, school: school do |c| %>
+<%= render ChartComponent.new(chart_type: :benchmark_gas_only_one_year_kwh, school: school) do |c| %>
   <% c.with_title { t('advice_pages.gas_long_term.charts.benchmark.title') } %>
   <% c.with_subtitle do
        t('advice_pages.gas_long_term.charts.benchmark.subtitle',

@@ -87,4 +87,13 @@ RSpec.describe 'bill_requests', type: :system do
       end
     end
   end
+
+  context 'when clear the bill request' do
+    it 'provides navigation' do
+      school.update!(bill_requested: true)
+      visit admin_meter_reviews_path
+      click_on 'Clear bill request'
+      expect(school.reload.bill_requested).to be false
+    end
+  end
 end

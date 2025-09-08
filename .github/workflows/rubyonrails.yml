@@ -6,6 +6,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+permissions:
+  contents: read
 jobs:
   rspec:
     runs-on: ubuntu-latest
@@ -23,7 +25,7 @@ jobs:
       matrix:
         # limited to 20
         # https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits
-        ci_node_total: [19] # leave 1 spare for overcommit
+        ci_node_total: [19]
         ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
     env:
       RAILS_ENV: test
@@ -40,6 +42,12 @@ jobs:
       # https://docs.knapsackpro.com/ruby/knapsack
       # run this locally to update timing file - KNAPSACK_GENERATE_REPORT=true bundle exec rspec
       - run: bundle exec rake knapsack:rspec
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: capybara-screenshots
+          path: tmp/capybara/
+          if-no-files-found: ignore
   overcommit:
     runs-on: ubuntu-latest
     steps:
@@ -56,5 +64,15 @@ jobs:
           # ForbiddenBranches fails when triggered by master push
           # ErbLint has too many failures right now
           SKIP: ForbiddenBranches,ErbLint
-      - run: bundle exec brakeman . --no-progress --no-exit-on-warn -o /dev/stdout -o tmp/brakeman.txt
-      - run: "grep 'Security Warnings: 19' tmp/brakeman.txt"
+      - run: bundle exec brakeman
+  analytics_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/setup
+      with:
+        ruby-only: true
+    - name: Run standard test
+      run: bundle exec ruby analytics/script/standard/standard_test_github_actions.rb

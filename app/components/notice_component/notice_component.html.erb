@@ -1,8 +1,8 @@
-<div class="notice-component<%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <%= content %>
   <% if link %>
     <div class="text-right">
       <%= link %>
     </div>
   <% end %>
-</div>
+<% end %>

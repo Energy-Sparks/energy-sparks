@@ -1,48 +1,38 @@
-<div <%= "id=#{id}" if id %> class="timeline-component<%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <div class="row">
     <div class="col">
-      <%= component 'titled_section' do |section| %>
+      <%= render TitledSectionComponent.new do |section| %>
         <% if show_header %>
           <% section.with_title do %>
-            <h2 id="timeline"><%= t('timeline.whats_been_going_on') %></h2>
+            <h2 id="timeline">
+            <% if title? %>
+              <%= title %>
+            <% else %>
+              <%= t('timeline.whats_been_going_on') %>
+            <% end %>
+            </h2>
           <% end %>
           <% section.with_intro do %>
-            <p>
-              <%= t('schools.dashboards.timeline.intro') %>
-            </p>
+            <% if description? %>
+              <%= description %>
+            <% else %>
+              <p>
+                <%= t('schools.dashboards.timeline.intro') %>
+              </p>
+            <% end %>
           <% end %>
-          <% section.with_link do %>
-            <p>
-              <%= link_to school_timeline_path(school), class: 'btn btn-default' do %>
-                <%= t('activities.show.all_activities') %>
-              <% end %>
-            </p>
+          <% if link? %>
+            <% section.with_link do %>
+              <%= link %>
+            <% end %>
           <% end %>
         <% end %>
         <% section.with_body do %>
           <div class="bg-white rounded p-4">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th><%= t('common.labels.date') %></th>
-                  <th><%= t('programme_types.show.points') %></th>
-                  <th><%= t('common.labels.activity') %></th>
-                </tr>
-              </thead>
-              <tbody>
-                <% observations.each do |observation| %>
-                  <tr>
-                    <td><%= observation.at.to_fs(:es_short) %></td>
-                    <td><%= observation.points || '-' %></td>
-                    <td><%= component 'observation', observation: observation, show_actions: show_actions,
-                                                     style: observation_style %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+            <%= render(Scoreboards::ActivityTableComponent.new(observations: observations, **formatting_args)) %>
           </div>
         <% end %>
       <% end %>
     </div>
   </div>
-</div>
+<% end %>

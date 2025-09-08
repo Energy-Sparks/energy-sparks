@@ -9,9 +9,8 @@
     </td>
     <td class="value align-middle">
       <%= f.input :value, pattern: '[0-9.]+', label: false,
-        input_html: { value: value_allowing_for_errors(energy_tariff_price), step: 0.01 },
-        error: energy_tariff_price.errors.any? ? energy_tariff_price.errors.full_messages.first : nil,
-        required: false %>
+                          input_html: { value: value_allowing_for_errors(energy_tariff_price), step: 0.01 },
+                          required: false %>
     </td>
     <td class="units align-middle">
       <%= t('schools.user_tariff_charges.per') %>

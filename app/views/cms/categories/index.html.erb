@@ -1,0 +1,28 @@
+<%= content_for :page_title, t('categories.index.title') %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: t('categories.index.title'),
+        subtitle: t('categories.index.subtitle')
+      ) %>
+<% end %>
+
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <div class="container">
+    <%= render 'cms/search' %>
+
+    <%= render Layout::GridComponent.new(id: 'categories',
+                                         cols: 3,
+                                         classes: 'mb-4',
+                                         cell_classes: 'mb-4',
+                                         component_classes: 'theme theme-dark') do |grid| %>
+      <% @categories.each do |category| %>
+        <% grid.with_stats_card do |card| %>
+          <%= card.with_icon name: category.icon, style: :circle, classes: 'text-teal-dark' %>
+          <%= card.with_header title: category.title, url: category_path(category) %>
+          <%= card.with_subtext { category.description } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

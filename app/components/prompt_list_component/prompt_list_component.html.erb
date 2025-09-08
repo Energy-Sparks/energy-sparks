@@ -1,4 +1,4 @@
-<div id="<%= id %>" class="prompt-list-component <%= classes %>">
+<%= tag.div id: id, class: classes do %>
   <% if title? || link? %>
     <div class="row">
       <div class="col d-flex flex-wrap justify-content-between align-items-center">
@@ -16,4 +16,4 @@
   <% prompts.each do |prompt| %>
     <%= prompt %>
   <% end %>
-</div>
+<% end %>

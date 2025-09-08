@@ -1,5 +1,0 @@
-<div <%= "id=#{id}" if id %> class="compact-timeline-component<%= classes %>">
-  <% observations.each do |observation| %>
-    <%= component 'observation', observation: observation, style: :compact %>
-  <% end %>
-</div>

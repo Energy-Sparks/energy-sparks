@@ -2,9 +2,7 @@
 en:
   components:
     podium:
-      complete_an_activity_html: <a href="%{recommendations_path}">Complete an activity</a> to score points on Energy Sparks
       full_position_html: You are in <strong>%{position_ordinal} place</strong> on the <a href='%{scoreboard_path}'>%{scoreboard} scoreboard</a> and <strong>%{national_position_ordinal} place</strong> <a href='%{national_scoreboard_path}'>nationally</a>
       no_points_this_year: Your school hasn't scored any points yet this school year
-      points: points
       points_needed_to_overtake: You need to score more than %{points} points to overtake the next school!
       scoreboard_position_html: You are in <strong>%{position_ordinal} place</strong> on the <a href='%{scoreboard_path}'>%{scoreboard} scoreboard</a>

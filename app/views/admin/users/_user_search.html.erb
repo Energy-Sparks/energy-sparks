@@ -13,55 +13,9 @@
         <p>First 50 users with email matching search...</p>
       </div>
     </div>
-    <table class="table table-sm table-sorted">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>School or group</th>
-          <th>Role</th>
-          <th>Confirmed</th>
-          <th>Last signed in</th>
-          <th>Language</th>
-          <th>Locked?</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @search_users.each do |user| %>
-          <tr class="<%= 'table-danger' if user.access_locked? %>">
-            <td><%= user.name %></td>
-            <td><%= user.pupil? ? 'N/A' : user.email %></td>
-            <td>
-              <% if user.group_admin? %>
-                <%= link_to user.school_group.name, admin_school_group_path(user.school_group) %>
-              <% elsif user.school.present? %>
-                <%= link_to user.school.name, school_users_path(user.school) %>
-              <% end %>
-            </td>
-            <td><%= user.role.titleize %></td>
-            <td><%= y_n(user.confirmed?) %></td>
-            <td><%= y_n(user.access_locked?) %></td>
-            <td data-order="<%= user.last_sign_in_at&.iso8601 %>"><%= display_last_signed_in_as(user) %></td>
-            <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
-            <td>
-              <div class="btn-group">
-                <%= link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-primary btn-sm' %>
-                <%= link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' },
-                                                             class: 'btn btn-danger btn-sm' %>
-                <%= unless user.confirmed?
-                      button_to 'Resend confirmation', admin_user_confirmation_path(user),
-                                class: 'btn btn-warning btn-sm'
-                    end %>
-                <%= if user.access_locked?
-                      link_to 'Unlock', admin_user_unlock_path(user_id: user.id), class: 'btn btn-warning btn-sm'
-                    end %>
-              </div>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%= render Admin::UserListComponent.new(id: 'found-users',
+                                            users: @search_users,
+                                            show_organisation: true) %>
   <% elsif params[:search].present? %>
   <div class="row mt-4">
     <div class="col">

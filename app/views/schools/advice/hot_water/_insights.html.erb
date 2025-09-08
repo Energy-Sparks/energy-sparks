@@ -1,28 +1,32 @@
-<%= component 'prompt', status: :none, icon: :lightbulb do |c| %>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.hot_water.insights.summary_notice_html') %>
 <% end %>
 <%= render 'schools/advice/section_title', section_id: 'your_hot_water_use', section_title: 'Your hot water use' %>
 
-<%= component 'alerts', school: @school, dashboard_alerts: @dashboard_alerts, alert_types: alert_types_for_class(AlertHotWaterInsulationAdvice), show_links: false %>
+<%= render AlertsComponent.new(school: @school, dashboard_alerts: @dashboard_alerts,
+                               alert_types: alert_types_for_class(AlertHotWaterInsulationAdvice), show_links: false) %>
 
 <p><%= t('advice_pages.hot_water.insights.circulatory_gas_based_hot_water') %></p>
-<p><%= t('advice_pages.hot_water.insights.we_estimate_your_hot_water_efficiency_to_be_html', efficiency_percent: format_unit(@gas_hot_water.investment_choices.existing_gas.efficiency, :percent)) %></p>
+<p><%= t('advice_pages.hot_water.insights.we_estimate_your_hot_water_efficiency_to_be_html',
+         efficiency_percent: format_unit(@gas_hot_water.investment_choices.existing_gas.efficiency, :percent)) %></p>
 
 <% if @gas_hot_water.investment_choices.gas_better_control.saving_£_percent < 0.02 %>
   <%= t('advice_pages.hot_water.insights.improving_the_way_html_under_2pc_html') %>
 <% elsif @gas_hot_water.investment_choices.gas_better_control.saving_£_percent < 0.10 %>
   <%= t('advice_pages.hot_water.insights.improving_the_way_html_under_10pc_html',
-        gas_better_control_saving_gbp_percent: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_£_percent, :percent)
-       )
-  %>
+        gas_better_control_saving_gbp_percent: format_unit(
+          @gas_hot_water.investment_choices.gas_better_control.saving_£_percent, :percent
+        )) %>
 <% else %>
   <%= t('advice_pages.hot_water.insights.improving_the_way_html_over_10pc_html',
         gas_better_control_saving_gbp: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_£, :£),
-        gas_better_control_saving_gbp_percent: format_unit(@gas_hot_water.investment_choices.gas_better_control.saving_£_percent, :percent)
-       )
-  %>
+        gas_better_control_saving_gbp_percent: format_unit(
+          @gas_hot_water.investment_choices.gas_better_control.saving_£_percent, :percent
+        )) %>
 <% end %>
 
 <%= render 'insights_table' %>
-<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare', section_title: t('advice_pages.hot_water.insights.how_do_you_compare') %>
-<%= t('advice_pages.hot_water.insights.for_more_detail_html', link: compare_for_school_group_path(:hot_water_efficiency, @school)) %>
+<%= render 'schools/advice/section_title', section_id: 'how_do_you_compare',
+                                           section_title: t('advice_pages.hot_water.insights.how_do_you_compare') %>
+<%= t('advice_pages.hot_water.insights.for_more_detail_html',
+      link: compare_for_school_group_path(:hot_water_efficiency, @school)) %>

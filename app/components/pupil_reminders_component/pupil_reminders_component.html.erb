@@ -1,4 +1,4 @@
-<%= component 'prompt_list', id: id, classes: classes do |list| %>
+<%= render PromptListComponent.new id: id, classes: classes do |list| %>
   <% if title? %>
     <% list.with_title do %>
       <%= title %>
@@ -12,7 +12,7 @@
       <% add_prompt(id: :enter_temperatures,
                     list: list,
                     status: :neutral,
-                    icon: 'temperature-high',
+                    icon: 'temperature-half',
                     link: 'pupils.schools.show.enter_temperatures',
                     path: new_school_temperature_observation_path(school, introduction: true)) do %>
           <p>
@@ -24,7 +24,7 @@
       <% add_prompt(id: :update_temperatures,
                     list: list,
                     status: :neutral,
-                    icon: 'temperature-high',
+                    icon: 'temperature-half',
                     link: 'pupils.schools.show.previous_temperatures',
                     path: school_temperature_observations_path(school)) do %>
           <p>
@@ -56,7 +56,11 @@
                     link: 'common.labels.view_now',
                     path: programme_type_path(programme.programme_type)) do %>
         <p>
-          <%= Programmes::Progress.new(programme).notification %>
+          <% if Flipper.enabled?(:todos, user) %>
+            <%= Completables::Progress.new(programme).notification %>
+          <% else %>
+            <%= Programmes::Progress.new(programme).notification %>
+          <% end %>
         </p>
       <% end %>
     <% end %>

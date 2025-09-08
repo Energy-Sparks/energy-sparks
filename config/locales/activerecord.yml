@@ -8,6 +8,8 @@ en:
         name: Name
         school_specific_description: School specific description
         summary: Summary
+      activity_type_todos:
+        task: Activity
       consent_grant:
         job_title: Job title
         name: Name
@@ -17,16 +19,11 @@ en:
         download_links: Download links
         name: Title
         summary: Summary
+      intervention_type_todos:
+        task: Action
       school:
         activation_date: Activation date
         address: Address
-        alternative_heating_air_source_heat_pump: Our school has an air source heat pump
-        alternative_heating_biomass: Our school has a biomass boiler
-        alternative_heating_district_heating: Our school has district heating
-        alternative_heating_ground_source_heat_pump: Our school has a ground source heat pump
-        alternative_heating_lpg: Our school is using LPG for heating
-        alternative_heating_oil: Our school uses oil for heating
-        alternative_heating_water_source_heat_pump: Our school has a water source heat pump
         cooks_dinners_for_other_schools: The kitchen cooks dinners for other schools
         cooks_dinners_for_other_schools_count: How many schools does your school cook dinners for?
         cooks_dinners_onsite: Dinners are cooked on site
@@ -35,6 +32,17 @@ en:
         floor_area: Floor area in square metres
         funding_status: Funding status
         has_swimming_pool: Our school has its own swimming pool
+        heating_air_source_heat_pump: Our school has an air source heat pump
+        heating_biomass: Our school has a biomass boiler
+        heating_chp: Our school has a combined heat and power (CHP) system
+        heating_district_heating: Our school has district heating
+        heating_electric: Our school has electric heating
+        heating_gas: Our school uses gas for heating
+        heating_ground_source_heat_pump: Our school has a ground source heat pump
+        heating_lpg: Our school is using LPG for heating
+        heating_oil: Our school uses oil for heating
+        heating_underfloor: Our school has underfloor heating
+        heating_water_source_heat_pump: Our school has a water source heat pump
         indicated_has_solar_panels: Our school has solar PV panels
         indicated_has_storage_heaters: Our school has night storage heaters
         latitude: Latitude
@@ -47,6 +55,15 @@ en:
         serves_dinners: Our school serves school dinners on site
         urn: Unique Reference Number
         website: Website
+      secr_co2_equivalence:
+        electricity_co2e: Electricity kg CO₂e
+        electricity_co2e_co2: Electricity kg CO₂e of CO₂
+        natural_gas_co2e: Natural gas kg CO₂e
+        natural_gas_co2e_co2: Natural gas kg CO₂e of CO₂
+        transmission_distribution_co2e: Transmission & distribution kg CO₂e
+      solis_cloud_installation:
+        api_id: API ID
+        api_secret: API secret
       transport_survey/response:
         id: Id
         journey_minutes: Journey minutes
@@ -82,7 +99,14 @@ en:
         restrict_dependent_destroy:
           has_many: Cannot delete record because dependent %{record} exist
           has_one: Cannot delete record because a dependent %{record} exists
+      models:
+        energy_tariff_price:
+          attributes:
+            value:
+              less_than: Must be less than £1.00. It is likely you have entered your rate in pence. Please convert your rate to pounds before entering it into Energy Sparks.
     models:
+      secr_co2_equivalence: SECR CO₂ equivalence
+      solis_cloud_installation: SolisCloud API feed
       transport_survey:
         one: Transport survey
         other: Transport surveys

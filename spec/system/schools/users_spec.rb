@@ -3,13 +3,14 @@
 require 'rails_helper'
 
 describe 'School admin user management' do
+  include ActiveJob::TestHelper
+
   let(:school) { create(:school) }
   let(:school_admin) { create(:school_admin, school:) }
 
   describe 'as school admin' do
     before do
       sign_in(school_admin)
-      visit school_users_path(school)
     end
 
     it 'is present on the school menu' do
@@ -19,8 +20,10 @@ describe 'School admin user management' do
     end
 
     describe 'for pupils' do
+      before { visit school_users_path(school) }
+
       it 'can create pupils' do
-        click_on 'Manage users'
+        visit school_users_path(school)
         click_on 'New pupil account'
 
         fill_in 'Name', with: 'The Pupils'
@@ -36,7 +39,7 @@ describe 'School admin user management' do
 
       it 'can edit and delete pupils' do
         pupil = create(:pupil, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.pupils' do
           click_on 'Edit'
         end
@@ -60,11 +63,17 @@ describe 'School admin user management' do
 
       context 'when creating staff' do
         before do
-          click_on 'Manage users'
+          visit school_users_path(school)
           click_on 'New staff account'
           fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
           select 'Teacher or teaching assistant', from: 'Role'
+        end
+
+        it 'requires a name' do
+          fill_in 'Name', with: ''
+          click_on 'Create account'
+          expect(page).to have_text("Name *\ncan't be blank")
         end
 
         it 'can create staff' do
@@ -74,6 +83,7 @@ describe 'School admin user management' do
           expect(staff.email).to eq('mrsjones@test.com')
           expect(staff.staff_role).to eq(teacher_role)
           expect(staff.confirmed?).to be false
+          expect(staff.created_by).to eq(school_admin)
 
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to eq('Please confirm your account on Energy Sparks')
@@ -83,7 +93,7 @@ describe 'School admin user management' do
 
       it 'can edit and delete staff' do
         staff = create(:staff, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           click_on 'Edit'
         end
@@ -105,7 +115,7 @@ describe 'School admin user management' do
       it 'can edit alert contact' do
         staff = create(:staff, school:)
         create(:contact, name: staff.name, user: staff, email_address: staff.email, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           click_on 'Edit'
         end
@@ -123,7 +133,7 @@ describe 'School admin user management' do
 
       it 'cannot edit alert contact if user is not yet confirmed' do
         create(:staff, school:, confirmed_at: nil)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           click_on 'Edit'
         end
@@ -134,7 +144,7 @@ describe 'School admin user management' do
       it 'can update contact email address if contact has user association' do
         staff = create(:staff, school:)
         contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           click_on 'Edit'
         end
@@ -150,21 +160,20 @@ describe 'School admin user management' do
       it 'can update contact when contact exists for that email without user association' do
         staff = create(:staff, school:)
         contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           click_on 'Edit'
         end
 
         expect { click_on 'Update account' }.not_to(change(Contact, :count))
 
-        contact.reload
-        expect(contact.user).to eq(staff)
+        expect(contact.reload.user).to eq(staff)
       end
 
       it 'can remove contact when contact exists for that email without user association' do
         staff = create(:staff, school:)
         contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           click_on 'Edit'
         end
@@ -177,7 +186,7 @@ describe 'School admin user management' do
       it 'can promote staff user to school admin' do
         staff = create(:staff, school:)
         create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
-        click_on 'Manage users'
+        visit school_users_path(school)
         within '.staff' do
           expect(page).to have_content(staff.name)
           click_on 'Make school admin'
@@ -192,40 +201,64 @@ describe 'School admin user management' do
       end
 
       it 'no lock if not an admin' do
-        click_on 'Manage users'
+        visit school_users_path(school)
         expect(page).to have_no_selector(:link_or_button, 'Lock')
       end
 
       context 'when displaying users' do
+        let!(:staff) { create(:staff, school:, preferred_locale: :cy) }
+
+        before do
+          visit school_users_path(school)
+        end
+
         it 'shows preferred language' do
-          create(:staff, school:, preferred_locale: :cy)
-          click_on 'Manage users'
           within '.staff' do
             expect(page).to have_content('Welsh')
+          end
+        end
+
+        it 'does not have link to profile' do
+          within('.staff') do
+            expect(page).not_to have_link(staff.name, href: user_path(staff))
           end
         end
       end
     end
 
     describe 'managing school admins' do
+      it 'only shows the email input' do
+        visit school_users_path(school)
+        click_on 'New school admin account'
+        expect(first('form').text).to eq('Email *')
+      end
+
+      it 'validates the email' do
+        visit school_users_path(school)
+        click_on 'New school admin account'
+        fill_in 'Email', with: 'invalid email'
+        click_on 'Continue'
+        expect(first('form').text).to eq("Email *\nis invalid")
+      end
+
       context 'when adding a user' do
         before do
-          click_on 'Manage users'
+          visit school_users_path(school)
           click_on 'New school admin account'
-          fill_in 'Name', with: 'Mrs Jones'
           fill_in 'Email', with: 'mrsjones@test.com'
+          click_on 'Continue'
+          fill_in 'Name', with: 'Mrs Jones'
           select 'Business manager', from: 'Role'
+          click_on 'Create account'
         end
 
         it 'can create a school admin' do
-          click_on 'Create account'
           school_admin = school.users.school_admin.last
           expect(school_admin.email).to eq('mrsjones@test.com')
           expect(school_admin.confirmed?).to be false
         end
 
         it 'emails new user to confirm account' do
-          click_on 'Create account'
           email = ActionMailer::Base.deliveries.last
           expect(email.subject).to eq('Please confirm your account on Energy Sparks')
           expect(email.encoded).to match(school.name)
@@ -237,7 +270,7 @@ describe 'School admin user management' do
         let!(:contact) { create(:contact_with_name_email, user: new_admin, school:) }
 
         before do
-          click_on 'Manage users'
+          visit school_users_path(school)
         end
 
         it 'can edit fields' do
@@ -306,46 +339,48 @@ describe 'School admin user management' do
         end
       end
 
-      context 'when adding an existing user' do
-        let!(:other_school_admin) { create(:school_admin, name: 'Other admin') }
-        let!(:contact) { create(:contact_with_name_email, user: other_school_admin, school: other_school_admin.school) }
+      context 'when adding an existing user as an admin' do
+        let!(:other_school_admin) { create(:school_admin, :subscribed_to_alerts, name: 'Other admin') }
 
         before do
-          click_on 'Manage users'
-        end
-
-        it 'has option to add another school admin' do
-          expect(page).to have_content('Add an existing Energy Sparks user as a school admin')
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          expect(page).to have_content('Add an existing user as a school admin')
-        end
-
-        it 'warns if user not found' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          click_on 'Add user'
-          expect(page).to have_content('We were unable to find a user with this email address')
+          visit school_users_path(school)
+          click_on 'New school admin account'
         end
 
         it 'adds the user' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
+          Flipper.enable(:onboarding_mailer_2025)
           fill_in 'Email', with: other_school_admin.email
-          click_on 'Add user'
+          click_on 'Continue'
+          expect(page).to have_content('Added user as a school admin')
           expect(page).to have_content(other_school_admin.name)
           other_school_admin.reload
           expect(other_school_admin.cluster_schools_for_switching).to eq([school])
+          perform_enqueued_jobs
+          expect(ActionMailer::Base.deliveries.last.subject).to \
+            eq("Welcome to the #{school.name} Energy Sparks account")
         end
 
-        it 'adds the user as an alert contact, by default' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          fill_in 'Email', with: other_school_admin.email
-          expect { click_on 'Add user' }.to change(Contact, :count).by(1)
+        context 'when the other user is staff' do
+          let!(:other_school_admin) { create(:staff, name: 'Other admin') }
+
+          it 'adds the user' do
+            fill_in 'Email', with: other_school_admin.email
+            click_on 'Continue'
+            other_school_admin.reload
+            expect(other_school_admin.cluster_schools_for_switching).to eq([school])
+            expect(other_school_admin.role).to eq 'school_admin'
+          end
         end
 
-        it 'doesnt add alert contact if requested' do
-          click_on 'Add an existing Energy Sparks user as a school admin'
-          fill_in 'Email', with: other_school_admin.email
-          uncheck 'Subscribe to school alerts'
-          expect { click_on 'Add user' }.not_to(change(Contact, :count))
+        context 'with a group admin' do
+          let!(:other_school_admin) { create(:group_admin, name: 'Group admin') }
+
+          it 'notifies about a group admin' do
+            fill_in 'Email', with: other_school_admin.email
+            click_on 'Continue'
+            expect(page).to have_content("As a group admin for #{other_school_admin.school_group.name}, this user is" \
+                                         ' already able to administer this school')
+          end
         end
       end
 
@@ -354,7 +389,7 @@ describe 'School admin user management' do
         let!(:contact) { create(:contact_with_name_email, user: other_school_admin, school: other_school_admin.school) }
 
         before do
-          click_on 'Manage users'
+          visit school_users_path(school)
         end
 
         it 'can edit fields' do
@@ -399,7 +434,7 @@ describe 'School admin user management' do
       context 'when displaying users' do
         it 'shows preferred language' do
           create(:school_admin, school:, preferred_locale: :cy)
-          click_on 'Manage users'
+          visit school_users_path(school)
           within '.school_admin' do
             expect(page).to have_content('Welsh')
           end
@@ -422,6 +457,12 @@ describe 'School admin user management' do
       click_on('Manage users')
     end
 
+    it 'can view profile' do
+      within('.staff') do
+        expect(page).to have_link(staff.name, href: user_path(staff))
+      end
+    end
+
     it 'send confirmation email' do
       expect(staff.confirmed?).to be false
       click_on('Resend confirmation')
@@ -434,9 +475,9 @@ describe 'School admin user management' do
       expect(page).to have_content('School admin accounts')
     end
 
-    it 'can lock users' do
-      within('.staff') { click_on 'Lock' }
-      expect(staff.reload.locked_at).not_to be_nil
+    it 'can disable users' do
+      within('.staff') { click_on 'Disable' }
+      expect(staff.reload.active).to be(false)
     end
 
     it 'can unlock users' do
@@ -446,9 +487,9 @@ describe 'School admin user management' do
       expect(staff.reload.locked_at).to be_nil
     end
 
-    it 'can lock pupils' do
-      within('.pupils') { click_on 'Lock' }
-      expect(pupil.reload.locked_at).not_to be_nil
+    it 'can disable pupils' do
+      within('.pupils') { click_on 'Disable' }
+      expect(pupil.reload.active).to be(false)
     end
 
     it 'can unlock pupils' do

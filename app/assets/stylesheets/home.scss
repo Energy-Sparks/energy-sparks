@@ -1,288 +1,292 @@
-header {
-  background-size: contain;
-  background-position: center;
-}
+// outer div has the .home class when we're on the new home page, otherwise it's .home-page for the old css (still used by some marketing pages)
 
-header .container {
-  padding-top: 50px;
-  padding-bottom: 50px;
-}
-
-header img {
-  display: block;
-  margin: 0 auto 0px;
-}
-
-.masthead {
-  background-image: image-url('background-image.jpg');
-  padding: 0 10px 0 0;
-  color: $white;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 650px;
-}
-
-.rounded-25 {
-  border-radius: 25px;
-}
-
-.carousel-item {
-  h1 {
-    @include font(f2);
-  }
-}
-
-// Extra small devices (portrait phones, less than 576px)
-@media (max-width: 575.98px) {
-  .masthead-content {
-    background-color: $blue-very-dark;
+.home-page {
+  section.alerts .alert {
+    margin-bottom: 0px;
   }
 
-  .home-page .carousel-item {
-    h2 {
-      @include font(f5);
-    }
-
-    i {
-      @include font(f2);
-    }
-
-    .col-1 {
-      line-height: 80px;
-      margin-right: 20px;
-    }
-  }
-
-  blockquote {
-    @include font(f8);
-  }
-
-  .quote-by {
-    @include font(f8);
-  }
-}
-
-.cta .btn {
-  font-family: $header-font-family;
-  @include font(f5);
-}
-
-// Small devices (landscape phones, 576px and up)
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .masthead-content {
-    background-color: $blue-very-dark;
-  }
-
-  .home-page .carousel-item {
-    h2 {
-      @include font(f5);
-    }
-
-    i {
-      @include font(f1);
-    }
-
-    .col-1 {
-      line-height: 80px;
-      margin-right: 20px;
-    }
-  }
-}
-
-// Medium devices (tablets, 768px and up) // max-width: 991.98px
-@media (min-width: 768px) and (max-width: 1199.98px) {
-  .masthead .btn {
-    @include font(f4);
-    padding: 10px;
-  }
-
-  .cta .btn {
-    @include font(f4);
-    padding: 10px;
-  }
-
-  .home-page .carousel-item {
-    h2 {
-      @include font(f3);
-    }
-
-    i {
-      @include font(f1);
-    }
-
-    .col-1 {
-      line-height: 100px;
-    }
+  header {
+    background-size: contain;
+    background-position: center;
   }
 
   header .container {
     padding-top: 50px;
     padding-bottom: 50px;
   }
-}
 
-// Large devices (desktops, 992px and up)
-// @media (min-width: 992px) and (max-width: 1199.98px) { ... }
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1140px) {
-  .masthead .btn {
-    @include font(f4);
-    padding: 20px;
+  header img {
+    display: block;
+    margin: 0 auto 0px;
   }
 
-  .cta .btn {
-    @include font(f4);
-    padding: 20px;
+  .masthead {
+    background-image: image-url('background-image.jpg');
+    padding: 0 10px 0 0;
+    color: $white;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 650px;
   }
 
-  .home-page .carousel-item {
-    h2 {
-      @include font(f1);
-    }
-
-    i {
-      font-size: $f-xl;
-    }
-
-    .col-1 {
-      line-height: 140px;
-    }
-  }
-}
-
-.carousel-indicators li {
-  background: $grey-dark;
-  border:2px solid $grey-dark;
-  border-radius: 6px;
-}
-
-.home-block {
-  margin-top: 53px;
-  padding-bottom: 30px;
-}
-
-.funnels {
-  background-image: linear-gradient($grey-pale, $white);
-
-  .card-footer {
-    padding: 0.75rem 1.25rem;
-    background-color: $white;
-    border-top: 0;
+  .rounded-25 {
+    border-radius: 25px;
   }
 
-  .card {
-    border: 2px solid $grey-medium;
-    border-radius: 0.7rem 0.7rem 0.3rem 0.3rem;
-  }
-
-  .card-image {
-    overflow: hidden;
-    height: 200px;
-  }
-
-  .card-body {
-    padding-top: 0px;
-    margin-top: 0px;
-  }
-
-  img {
-    background-size: contain;
-    mask-image: linear-gradient(to bottom, rgba($black,1), rgba($black,1), rgba($black,1), rgba($black,0), rgba($black,0));
-  }
-}
-
- .quotes:before, .quotes:after {
-  display: inline-block;
-  vertical-align: top;
-  height: 30px;
-  line-height: 28px;
-  font-size: $f1;
-}
-
-.quotes:before {
-  content: '\201C';
-  margin-right: 4px;
-  margin-left: -8px;
-}
-
-.quotes:after {
-  content: '\201D';
-  margin-left: 4px;
-  margin-right: -8px;
-}
-
-.quote-by {
-  display: block;
-  padding-right: 10px;
-  text-align: right;
-
-  .very-small {
-    margin: 0px;
-  }
-}
-
-.fa-li.fa-check {
-  color: $positive-dark;
-  padding-bottom: 100px;
-}
-
-.info-page > .row {
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-bottom: 0px;
-}
-
-.mailchimp  {
-  @media (min-width: 992px) and (max-width: 1599.98px) {
-    .card-deck {
-      img {
-        height: 100px;
-      }
-    }
-  }
-  @media (max-width: 991.98px) {
-    .card-deck {
-      width: 332px;
-      img {
-        height: 200px;
-        width: 300px;
-      }
-    }
-  }
-  @media (max-width: 767.98px) {
-    .card-deck {
-      width: 182px;
-      img {
-        height: 100px;
-        width: 150px;
-      }
-    }
-  }
-  // Small devices (landscape phones, 576px and up)
-  @media (min-width: 576px) and (max-width: 767.98px) {
-    .card-deck {
-      width: 257px;
-      img {
-        height: 150px;
-        width: 225px;
-      }
+  .carousel-item {
+    h1 {
+      @include font(f2);
     }
   }
 
   // Extra small devices (portrait phones, less than 576px)
   @media (max-width: 575.98px) {
-    .card-deck {
-      width: 152px;
-      img {
-        height: 100px;
-        width: 150px;
+    .masthead-content {
+      background-color: $blue-very-dark;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f5);
+      }
+
+      i {
+        @include font(f2);
+      }
+
+      .col-1 {
+        line-height: 80px;
+        margin-right: 20px;
+      }
+    }
+
+    blockquote {
+      @include font(f8);
+    }
+
+    .quote-by {
+      @include font(f8);
+    }
+  }
+
+  .cta .btn {
+    font-family: $header-font-family;
+    @include font(f5);
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .masthead-content {
+      background-color: $blue-very-dark;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f5);
+      }
+
+      i {
+        @include font(f1);
+      }
+
+      .col-1 {
+        line-height: 80px;
+        margin-right: 20px;
       }
     }
   }
+
+  // Medium devices (tablets, 768px and up) // max-width: 991.98px
+  @media (min-width: 768px) and (max-width: 1199.98px) {
+    .masthead .btn {
+      @include font(f4);
+      padding: 10px;
+    }
+
+    .cta .btn {
+      @include font(f4);
+      padding: 10px;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f3);
+      }
+
+      i {
+        @include font(f1);
+      }
+
+      .col-1 {
+        line-height: 100px;
+      }
+    }
+
+    header .container {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+  }
+
+  // Large devices (desktops, 992px and up)
+  // @media (min-width: 992px) and (max-width: 1199.98px) { ... }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media (min-width: 1140px) {
+    .masthead .btn {
+      @include font(f4);
+      padding: 20px;
+    }
+
+    .cta .btn {
+      @include font(f4);
+      padding: 20px;
+    }
+
+    .carousel-item {
+      h2 {
+        @include font(f1);
+      }
+
+      i {
+        font-size: $f-xl;
+      }
+
+      .col-1 {
+        line-height: 140px;
+      }
+    }
+  }
+
+  .home-block {
+    margin-top: 53px;
+    padding-bottom: 30px;
+  }
+
+  .funnels {
+    background-image: linear-gradient($grey-pale, $white);
+
+    .card-footer {
+      padding: 0.75rem 1.25rem;
+      background-color: $white;
+      border-top: 0;
+    }
+
+    .card {
+      border: 2px solid $grey-medium;
+      border-radius: 0.7rem 0.7rem 0.3rem 0.3rem;
+    }
+
+    .card-image {
+      overflow: hidden;
+      height: 200px;
+    }
+
+    .card-body {
+      padding-top: 0px;
+      margin-top: 0px;
+    }
+
+    img {
+      background-size: contain;
+      mask-image: linear-gradient(to bottom, rgba($black,1), rgba($black,1), rgba($black,1), rgba($black,0), rgba($black,0));
+    }
+  }
+
+  .funnel-image {
+    border-radius: 0.5rem 0.5rem;
+  }
+
+  .quotes:before, .quotes:after {
+    display: inline-block;
+    vertical-align: top;
+    height: 30px;
+    line-height: 28px;
+    font-size: $f1;
+  }
+
+  .quotes:before {
+    content: '\201C';
+    margin-right: 4px;
+    margin-left: -8px;
+  }
+
+  .quotes:after {
+    content: '\201D';
+    margin-left: 4px;
+    margin-right: -8px;
+  }
+
+  .quote-by {
+    display: block;
+    padding-right: 10px;
+    text-align: right;
+
+    .very-small {
+      margin: 0px;
+    }
+  }
+
+  .mailchimp  {
+    @media (min-width: 992px) and (max-width: 1599.98px) {
+      .card-deck {
+        img {
+          height: 100px;
+        }
+      }
+    }
+    @media (max-width: 991.98px) {
+      .card-deck {
+        width: 332px;
+        img {
+          height: 200px;
+          width: 300px;
+        }
+      }
+    }
+    @media (max-width: 767.98px) {
+      .card-deck {
+        width: 182px;
+        img {
+          height: 100px;
+          width: 150px;
+        }
+      }
+    }
+    // Small devices (landscape phones, 576px and up)
+    @media (min-width: 576px) and (max-width: 767.98px) {
+      .card-deck {
+        width: 257px;
+        img {
+          height: 150px;
+          width: 225px;
+        }
+      }
+    }
+
+    // Extra small devices (portrait phones, less than 576px)
+    @media (max-width: 575.98px) {
+      .card-deck {
+        width: 152px;
+        img {
+          height: 100px;
+          width: 150px;
+        }
+      }
+    }
+  }
+
+  .card-2px-border {
+    border: 2px solid rgba($black, 0.125);
+  }
 }
 
-.card-2px-border {
-  border: 2px solid rgba($black, 0.125);
+// outer div has this class when we're on the home page
+
+.home {
+  section.alerts .alert {
+    margin-bottom: 0px;
+  }
 }
+

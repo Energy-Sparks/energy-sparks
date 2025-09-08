@@ -1,0 +1,5 @@
+<h1>New <%= controller.class::MODEL.model_name.human %></h1>
+<%= render 'form' %>
+<div class="other-actions">
+  <%= link_to 'Back', "/#{controller.controller_path}", class: 'btn' %>
+</div>

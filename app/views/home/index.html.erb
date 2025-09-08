@@ -1,42 +1,195 @@
-<% content_for :page_title, 'Home' %>
-
-<!-- Header -->
-<header>
-  <div class="row masthead">
-    <div class="col-7">
-    </div>
-    <div class="col-5 masthead-content">
-      <div class="row pt-5">
-        <div class="col">
-          <h2 class='text-white'><%= t('home.title') %></h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col pr-5">
-          <h4 class='text-white'><%= t('home.sub_title') %></h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-8 offset-md-3 pt-5">
-          <%= link_to t('home.enrol_your_school'), find_out_more_campaigns_path, class: 'btn btn-success' %>
-        </div>
-      </div>
-    </div>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <% content_for :page_title, t('common.labels.home') %>
+  <div class="container-fluid adult mb-4 py-5">
+    <%= render Layout::GridComponent.new(cols: 2, classes: 'container', feature: true, id: 'hero') do |grid| %>
+      <%= grid.with_image src: 'on-screen.jpg' %>
+      <% grid.with_feature_card size: :xl, cell_classes: 'my-auto' do |feature| %>
+        <%= feature.with_header title: t('home.feature.header') %>
+        <%= feature.with_description { t('home.feature.description_html') } %>
+        <%= feature.with_button t('home.buttons.our_tool'), product_path, style: :primary %>
+        <%= feature.with_button t('home.buttons.watch_a_demo'),
+                                watch_demo_campaigns_path,
+                                style: :secondary %>
+      <% end %>
+    <% end %>
   </div>
-</header>
 
-<%= render 'carousel' %>
+  <div class="container">
+    <%= render Layout::Cards::SectionHeaderComponent.new(
+          id: 'stats-header'
+        ) do |section_header| %>
+      <%= section_header.with_header title: t('home.stats.header') %>
+      <%= section_header.with_description { t('home.stats.description') } %>
+    <% end %>
 
-<%= render 'funnels' %>
+    <%= render Layout::GridComponent.new(id: 'stats',
+                                         cols: 4, classes: 'mb-4',
+                                         cell_classes: 'mb-4',
+                                         component_classes: 'theme theme-dark') do |grid| %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'bolt', style: :circle, classes: 'text-electric' %>
+        <%= card.with_header title: t('home.stats.card_1.header') %>
+        <%= card.with_figure t('home.stats.card_1.figure') %>
+        <%= card.with_subtext { t('home.stats.card_1.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'school', style: :circle, classes: 'text-info' %>
+        <%= card.with_header title: t('home.stats.card_2.header') %>
+        <%= card.with_figure t('home.stats.card_2.figure') %>
+        <%= card.with_subtext { t('home.stats.card_2.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'hotel', style: :circle, classes: 'text-success' %>
+        <%= card.with_header title: t('home.stats.card_3.header') %>
+        <%= card.with_figure t('home.stats.card_3.figure') %>
+        <%= card.with_subtext { t('home.stats.card_3.subtext') } %>
+      <% end %>
+      <% grid.with_stats_card do |card| %>
+        <%= card.with_icon name: 'book-open-reader', style: :circle, classes: 'text-yellow-light' %>
+        <%= card.with_header title: t('home.stats.card_4.header') %>
+        <%= card.with_figure ActivityType.active_and_not_custom.count.to_s %>
+        <%= card.with_subtext { t('home.stats.card_4.subtext') } %>
+      <% end %>
+    <% end %>
 
-<%= render 'testimonial',
-           quote: t('home.quote.text_html'),
-           by: 'Jennie Nixon',
-           title: t('home.quote.job_title'),
-           location: 'Whiteways Primary School, Sheffield' %>
+    <%= render Layout::CarouselComponent.new(id: 'testimonials',
+                                             show_markers: false,
+                                             theme: :accent,
+                                             classes: 'rounded-xl p-4 mb-4',
+                                             show_arrows: :side) do |carousel| %>
+      <% Testimonial.all.active.default.shuffle.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+      <% end %>
+    <% end %>
 
-<%= render 'videos' %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(
+          id: 'features-header'
+        ) do |section_header| %>
+      <%= section_header.with_header title: t('home.features.header') %>
+      <%= section_header.with_description { t('home.features.description') } %>
+    <% end %>
 
-<%= render 'case_studies', case_studies: @case_studies, all_case_studies_count: @all_case_studies_count %>
+    <%= render Layout::GridComponent.new(
+          id: 'features',
+          cols: 3,
+          cell_classes: 'mb-4',
+          component_classes: 'rounded-xl'
+        ) do |grid| %>
+      <% I18n.t('home.features.cards').each do |card| %>
+        <% grid.with_statement_card(theme: :dark) do |statement| %>
+          <%= statement.with_badge(card[:badge]) %>
+          <%= statement.with_statement { card[:statement] } %>
+        <% end %>
+      <% end %>
+    <% end %>
 
-<%= render 'mailchimp' %>
+    <div class='pb-4 mb-4 text-center' id='buttons'>
+      <%= render Elements::ButtonComponent.new(
+            t('home.buttons.our_tool'),
+            product_path, style: :primary, classes: 'mb-4 mr-2'
+          ) %>
+      <%= render Elements::ButtonComponent.new(
+            t('home.buttons.watch_a_demo'),
+            watch_demo_campaigns_path, style: :secondary, classes: 'mb-4'
+          ) %>
+    </div>
+
+    <%= render Layout::GridComponent.new(
+          id: 'general',
+          cols: 2,
+          theme: :light,
+          classes: 'rounded-xl p-4 my-4',
+          cell_classes: 'my-auto'
+        ) do |grid| %>
+      <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
+        <%= feature.with_header(title: t('home.general.title')) %>
+        <%= feature.with_description { t('home.general.description_html', count: schools_count) } %>
+        <%= feature.with_button(t('home.buttons.find_out_more'), product_path, style: :primary) %>
+      <% end %>
+      <%= grid.with_image(src: 'pupils-jumping.jpg') %>
+    <% end %>
+
+    <%= render Layout::Cards::SectionHeaderComponent.new(
+          id: 'organisations-header',
+          classes: 'pt-3'
+        ) do |section_header| %>
+      <%= section_header.with_header title: t('home.organisations.header') %>
+      <%= section_header.with_description { t('home.organisations.description') } %>
+    <% end %>
+
+    <%= render Layout::GridComponent.new(
+          id: 'organisations',
+          cols: 3,
+          classes: 'mb-5',
+          cell_classes: 'mb-4',
+          component_classes: 'h-100'
+        ) do |grid| %>
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'for-schools.jpg', rounded: :top) %>
+        <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.school.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.school.description') } %>
+          <%= feature.with_link(href: product_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'for-multi-academies.jpg', rounded: :top) %>
+        <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.multi_academy.title')) %>
+          <%= feature.with_description { t('home.organisations.cards.multi_academy.description') } %>
+          <%= feature.with_link(href: product_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+
+      <%= grid.with_card do |card| %>
+        <%= card.with_image(src: 'for-local-authorities.jpg', rounded: :top) %>
+        <%= card.with_feature_card(theme: :dark, size: :sm, classes: 'rounded-bottom-xl') do |feature| %>
+          <%= feature.with_header(title: t('home.organisations.cards.local_authority.title')) %>
+          <%= feature.with_description(classes: '') { t('home.organisations.cards.local_authority.description') } %>
+          <%= feature.with_link(href: product_path) { t('common.labels.learn_more') } %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <% if @blog.items.count >= 3 %>
+    <div class="theme theme-dark pt-4">
+      <%= render Layout::Cards::SectionHeaderComponent.new(
+            id: 'blog-header', classes: 'm-4'
+          ) do |section_header| %>
+        <%= section_header.with_header title: t('home.blog.header') %>
+        <%= section_header.with_description { t('home.blog.description') } %>
+        <%= section_header.with_button t('home.buttons.newsletter_signup'),
+                                       new_mailchimp_signup_path, style: :success %>
+        <%= section_header.with_button t('home.buttons.view_blog'),
+                                       'http://blog.energysparks.uk', style: :secondary %>
+      <% end %>
+
+      <%= render Layout::GridComponent.new(
+            id: 'blog',
+            cols: 3,
+            classes: 'container pb-4',
+            cell_classes: 'mb-4',
+            component_classes: 'h-100'
+          ) do |grid| %>
+
+        <% @blog.items.first(3).each do |item| %>
+          <%= grid.with_card do |card| %>
+            <%= card.with_image(src: item[:image] || 'on-screen.jpg', rounded: :top) %>
+            <%= card.with_feature_card(theme: :light, size: :sm, classes: 'p-4 rounded-bottom-xl') do |feature| %>
+              <%= feature.with_header(title: item[:title]) %>
+              <%= feature.with_author(href: item[:author_link]) { item[:author] } %>
+              <%= feature.with_date(item[:date]) %>
+              <% item[:categories].first(1).each do |category| %>
+                <%= feature.with_tag(category) %>
+              <% end %>
+              <%= feature.with_description { item[:description] } %>
+              <%= feature.with_link(href: item[:link]) { t('common.labels.read_more') } %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

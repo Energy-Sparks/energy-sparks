@@ -4,9 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <%= stylesheet_link_tag 'application_mailer', media: 'all' %>
     <style>
-      .dark { background-color: <%= Colours.dark %>; }
+      .bg-esdark { background-color: <%= Colours.dark %>; }
       .bg-header-dark { background-color: <%= Colours.header_dark %>; }
-      .yellow-medium { color: <%= Colours.yellow_medium %>; }
+      .body { color: <%= Colours.blue_dark %>; }
+      a { color: <%= Colours.blue_dark %>; text-decoration: underline; }
     </style>
   </head>
   <body class="bg-light">
@@ -15,7 +16,7 @@
         <div class="col-lg-1"></div>
         <div class="col-lg-10">
           <div class="row mt-2">
-            <div class="col-12 dark">
+            <div class="col-12 bg-esdark">
               <%= link_to root_url do %>
                 <%= image_tag "navigation-brand-transparent-#{I18n.locale}.png", class: 'py-4 ax-center h-10' %>
               <% end %>
@@ -23,22 +24,22 @@
           </div>
           <div class="row">
              <div class="col-12 bg-header-dark">
-               <h4 class="ax-center text-white mt-2 mb-2"><strong><%= @title %></strong></h4>
+               <h4 class="ax-center text-white my-2"><%= @title %></h4>
             </div>
           </div>
           <div class="row mt-4 mb-4">
             <div class="col-12">
-                  <%= yield %>
+              <%= yield %>
             </div>
           </div>
           <div class="row">
-            <div class="col-12 dark">
+            <div class="col-12 bg-esdark">
                <div class="ax-center mt-2 text-white fw-700"><%= t(:get_in_touch, scope: [:mailer]) %></div>
-               <div class="ax-center mt-0"><a href="mailto:hello@energysparks.uk" class="text-sm text-white">hello@energysparks.uk</a></div>
+               <div class="ax-center mt-0"><a href="mailto:support@energysparks.uk" class="text-sm text-white">support@energysparks.uk</a></div>
             </div>
           </div>
           <div class="row">
-            <div class="col-12 dark">
+            <div class="col-12 bg-esdark">
               <div class="stack-row ax-center my-2">
                 <a href="https://www.linkedin.com/company/energy-sparks/"><%= image_tag 'email/fa-linkedin.png' %></a>
                 <a href="https://x.com/EnergySparks"><%= image_tag 'email/fa-x-twitter.png' %></a>

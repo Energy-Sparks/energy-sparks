@@ -66,8 +66,10 @@ cy:
           gas_cost_ct: Cost nwy (tariff presennol)
           gas_cost_ht: Cost nwy (tariff hanesyddol)
           gas_kwh_per_floor_area: Nwy kWh fesul arwynebedd llawr fesul gwyliau
+          heating_gas: Nwy Gwresogi
           holiday: Gwyliau
           holiday_usage_to_date: Defnydd gwyliau hyd yma
+          hot_water_gas: Nwy Dŵr Poeth
           kwh_consumption_since_target_set: Defnydd kWh ers gosod y targed
           last_year: Y llynedd
           last_year_carbon_emissions_tonnes_co2: Allyriadau carbon y llynedd (tunelli CO2)
@@ -86,7 +88,7 @@ cy:
           last_year_gas_kwh_pupil: Nwy y llynedd kWh/disgybl
           last_year_gas_£: Y llynedd Nwy £
           last_year_heating_costs_per_floor_area: Costau gwresogi y llynedd  fesul arwynebedd llawr
-          last_year_out_of_hours_co2: " Co2 y tu allan i oriau y llynedd"
+          last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
           last_year_out_of_hours_cost: Cost y tu allan i oriau y llynedd
           last_year_out_of_hours_cost_ct: Cost y tu allan i oriau y llynedd ar y tariff cyfredol
           last_year_out_of_hours_kwh: Kwh y tu allan i oriau y llynedd
@@ -105,6 +107,7 @@ cy:
           percent_above_or_below_target_since_target_set: Canran uwchlaw neu islaw'r targed ers gosod y targed
           percent_increase_on_winter_baseload_over_summer: Cynnydd canrannol ar lwyth sylfaenol y gaeaf dros yr haf
           percentage_of_annual_heating_consumed_in_warm_weather: Canran y gwres blynyddol a ddefnyddir mewn tywydd cynnes
+          percentage_of_gas_use_for_hot_water: Canran y defnydd o nwy ar gyfer dŵr poeth
           potential_saving: Arbediad posib (ar y tariff diweddaraf)
           previous_holiday: Gwyliau blaenorol
           previous_year: Gwyliau blaenorol

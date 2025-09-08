@@ -5,9 +5,7 @@ class HomeController < ApplicationController
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
-  before_action :set_newsletters, only: [:index, :show]
-  before_action :set_case_studies, only: [:index, :show]
-  before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
+  before_action :set_blog_service, only: [:index, :show]
 
   def index
   end
@@ -16,25 +14,13 @@ class HomeController < ApplicationController
     render :index
   end
 
-  def for_schools
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
-  def for_local_authorities
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
-  def for_multi_academy_trusts
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
   def energy_audits
   end
 
   def education_workshops
   end
 
-  def pricing
+  def product
   end
 
   def contact
@@ -44,11 +30,11 @@ class HomeController < ApplicationController
   end
 
   def enrol_our_multi_academy_trust
-    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6'
+    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6', allow_other_host: true
   end
 
   def enrol_our_local_authority
-    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8'
+    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8', allow_other_host: true
   end
 
   def cookies
@@ -75,7 +61,12 @@ class HomeController < ApplicationController
   end
 
   def training
-    @events = Events::ListEvents.new.perform
+    list_events = Events::ListEvents.new
+    @events = list_events.events
+
+    unless Flipper.enabled?(:training_page, current_user)
+      @show_images = list_events.events_without_images.none? || (params[:show_images] && current_user&.admin?)
+    end
   end
 
   def user_guide_videos
@@ -110,22 +101,8 @@ class HomeController < ApplicationController
     ]
   end
 
-  def set_newsletters
-    @newsletters = Newsletter.order(published_on: :desc).limit(3)
-  end
-
-  def set_case_studies
-    @all_case_studies_count = CaseStudy.count
-    @case_studies = CaseStudy.order(position: :asc).limit(3)
-  end
-
-  def set_marketing_case_studies
-    @marketing_studies = {
-      costs: CaseStudy.find(15),
-      tool: CaseStudy.find(12),
-      pupils: CaseStudy.find(13),
-      emissions: CaseStudy.find(9)
-    }
+  def set_blog_service
+    @blog = BlogService.new
   end
 
   def redirect_if_logged_in

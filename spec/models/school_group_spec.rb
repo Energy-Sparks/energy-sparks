@@ -238,4 +238,16 @@ describe SchoolGroup, :school_groups, type: :model do
 
     it_behaves_like 'a scorable'
   end
+
+  describe 'MailchimpUpdateable' do
+    subject { create(:school_group) }
+
+    it_behaves_like 'a MailchimpUpdateable' do
+      let(:mailchimp_field_changes) do
+        {
+          name: 'New name',
+        }
+      end
+    end
+  end
 end

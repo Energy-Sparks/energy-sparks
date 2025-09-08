@@ -8,6 +8,11 @@ class DailyRegenerationOnFinishJob < ApplicationJob
   end
 
   def perform(*)
-    Comparison::View.descendants.each(&:refresh)
+    views = Comparison::View.descendants + [Report::BaseloadAnomaly, Report::GasAnomaly]
+    views.each do |view_class|
+      view_class.refresh
+    rescue StandardError => e
+      EnergySparks::Log.exception(e, job: :daily_regeneration_on_finish, view_class: view_class.name)
+    end
   end
 end

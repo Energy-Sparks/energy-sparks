@@ -5,7 +5,13 @@ require 'rails_helper'
 RSpec.describe 'gas long term advice page', :aggregate_failures do
   let(:reading_start_date) { 1.year.ago }
   let(:school) do
-    school = create(:school, :with_school_group, :with_fuel_configuration, number_of_pupils: 1)
+    school = create(:school,
+                    :with_school_group,
+                    :with_fuel_configuration,
+                    :with_meter_dates,
+                    fuel_type: :gas,
+                    reading_start_date: reading_start_date,
+                    number_of_pupils: 1)
     create(:energy_tariff, :with_flat_price, tariff_holder: school, meter_type: :gas, start_date: nil, end_date: nil)
     create(:gas_meter_with_validated_reading_dates,
            school:, start_date: reading_start_date, end_date: Time.zone.today, reading: 10)
@@ -87,7 +93,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
                                                                 'Cost (£)' => '£17,000',
                                                                 'Change since previous year' => '-'
                                                               })
-          expect(page).to have_content("Exemplar\n<110,000 kWh")
+          expect(page).to have_content("Exemplar\n<100,000 kWh")
           expect(page).to have_content("Well managed\n<130,000 kWh")
         end
 
@@ -143,7 +149,7 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
-          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_acyear_0_1')
           # not enough data for these
           expect(page).to have_no_css('#chart_wrapper_gas_longterm_trend')
         end
@@ -167,8 +173,8 @@ RSpec.describe 'gas long term advice page', :aggregate_failures do
         it 'includes expected charts' do
           expect(page).to have_css('#chart_wrapper_group_by_week_gas')
           expect(page).to have_css('#chart_wrapper_group_by_week_gas_unlimited')
-          expect(page).to have_css('#chart_wrapper_gas_by_month_year_0_1')
-          expect(page).to have_css('#chart_wrapper_gas_longterm_trend')
+          expect(page).to have_css('#chart_wrapper_gas_by_month_acyear_0_1')
+          expect(page).to have_css('#chart_wrapper_gas_longterm_trend_academic_year')
         end
       end
     end

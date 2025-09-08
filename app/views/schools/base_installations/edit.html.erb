@@ -1,0 +1,7 @@
+<h1>Update <%= controller.class::NAME %> <%= @installation.display_name %></h1>
+
+<%= render 'form', school: @school, installation: @installation %>
+
+<div class="other-actions">
+  <%= link_to 'Cancel', school_solar_feeds_configuration_index_path(@school), class: 'btn' %>
+</div>

@@ -25,11 +25,13 @@
     </div>
   </div>
 
-  <%= component 'school_search',
-                schools: @schools,
-                letter: params[:letter],
-                keyword: params[:keyword],
-                tab: params[:scope] %>
+  <%= render SchoolSearchComponent.new(
+        schools: @schools,
+        letter: params[:letter],
+        keyword: params[:keyword],
+        tab: params[:scope],
+        schools_total_key: "components.school_search.schools.total#{'_for_admins' if current_user&.admin?}"
+      ) %>
 
 <% else %>
   <div class="row">

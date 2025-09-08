@@ -1,252 +1,268 @@
 require 'rails_helper'
 
-describe AmrReadingData do
+describe AmrReadingData, :aggregate_failures do
+  subject(:amr_reading_data) do
+    described_class.new(amr_data_feed_config: amr_data_feed_config, reading_data: reading_data)
+  end
+
+  let(:amr_data_feed_config) { create(:amr_data_feed_config, date_format: date_format) }
+
   let(:date_format) { '%Y-%m-%d' }
+  let(:reading_data) { [] }
 
-  describe 'handles when reading date is a date' do
-    let(:amr_reading) do
-      AmrReadingData.new(reading_data: [
-                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
-                         ],
-                                            date_format: date_format)
-    end
-
-    it 'knows when it is valid' do
-      expect(amr_reading.valid?).to be true
-      expect(amr_reading.valid_reading_count).to be 2
-      expect(amr_reading.warnings?).to be false
-      expect(amr_reading.warnings.count).to be 0
+  shared_examples 'it is valid' do
+    let(:valid_readings) { 2 }
+    it 'validates correctly' do
+      expect(amr_reading_data.valid?).to be true
+      expect(amr_reading_data.valid_reading_count).to be valid_readings
+      expect(amr_reading_data.warnings?).to be false
+      expect(amr_reading_data.warnings).to eq([])
     end
   end
 
-  describe 'handles when reading date is actually a string' do
-    let(:amr_reading) do
-      AmrReadingData.new(reading_data: [
-                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-01', readings: Array.new(48, '0.0')  },
-                           { :mpan_mprn => '1234050000000', :reading_date => '2019-01-02', readings: Array.new(48, '0.0')  },
-                         ],
-                                            date_format: date_format)
-    end
-
-    it 'knows when it is valid' do
-      expect(amr_reading.valid?).to be true
-      expect(amr_reading.valid_reading_count).to be 2
-      expect(amr_reading.warnings?).to be false
-      expect(amr_reading.warnings.count).to be 0
+  shared_examples 'it is not valid' do
+    let(:valid_readings) { 0 }
+    let(:warnings) { 2 }
+    it 'validates correctly' do
+      expect(amr_reading_data.valid?).to be false
+      expect(amr_reading_data.valid_reading_count).to eq valid_readings
+      expect(amr_reading_data.warnings?).to be true
+      expect(amr_reading_data.warnings.count).to eq warnings
     end
   end
 
-  describe 'handles when each row is invalid' do
-    let(:amr_reading) do
-      AmrReadingData.new(reading_data: [
-                           { :mpan_mprn => nil, :reading_date => '2019-01-01', readings: Array.new(48, '0.0') },
-                           { :mpan_mprn => nil, :reading_date => '2019-01-02', readings: Array.new(48, '0.0') },
-                         ],
-                                            date_format: date_format)
-    end
+  shared_examples 'it has a warning' do
+    let(:valid_readings) { 1 }
+    let(:warnings) { 1 }
+    let(:warning_type) { :missing_readings }
 
-    it 'whole file is invalid' do
-      expect(amr_reading.valid?).to be false
-      expect(amr_reading.valid_reading_count).to be 0
-      expect(amr_reading.warnings?).to be true
-      expect(amr_reading.warnings.count).to be 2
+    it 'validates correctly' do
+      expect(amr_reading_data.valid?).to be true
+      expect(amr_reading_data.valid_reading_count).to eq valid_readings
+      expect(amr_reading_data.warnings?).to be true
+      expect(amr_reading_data.warnings.count).to eq warnings
+      expect(amr_reading_data.warnings.first[:warnings]).to include(warning_type)
     end
   end
 
-  describe 'handles when reading date is a string' do
-    let(:date_format) { '%Y-%m-%d' }
-    let(:amr_reading_data) do
+  def create_one_invalid_reading(mpan_mprn: '1234050000001', reading_date: '2022-01-01', readings: Array.new(48, '0.0'))
+    [
+      { mpan_mprn:, reading_date:, readings: }, # invalid
       {
-                              reading_data: [
-                                { :mpan_mprn => '1234050000000', :reading_date => '2022-01-01', readings: Array.new(48, '0.0')  },
-                                { :mpan_mprn => '1234050000000', :reading_date => '2022-01-02', readings: Array.new(48, '0.0')  },
-                              ],
-                              date_format: date_format
-                            }
+        mpan_mprn: '1234050000000',
+        reading_date: '2022-01-01',
+        readings: Array.new(48, '0.0')
+      }
+    ]
+  end
+
+  describe 'with valid data' do
+    describe 'when reading date is a Date' do
+      let(:reading_data) do
+        mpan_mprn = '1234050000000'
+        readings = Array.new(48, '0.0')
+        [
+          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-01') },
+          { mpan_mprn:, readings:, reading_date: Date.parse('2019-01-02') }
+        ]
+      end
+
+      it_behaves_like 'it is valid'
     end
 
-    it 'knows when it is valid, even if the dates are not in the correct format' do
-      amr_reading = AmrReadingData.new(**amr_reading_data)
-      expect(amr_reading.valid?).to be true
-      expect(amr_reading.valid_reading_count).to be 2
-      expect(amr_reading.warnings?).to be false
+    describe 'when reading date is a String' do
+      let(:reading_data) do
+        mpan_mprn = '1234050000000'
+        readings = Array.new(48, '0.0')
+        [
+          { mpan_mprn:, readings:, reading_date: '2019-01-01' },
+          { mpan_mprn:, readings:, reading_date: '2019-01-02' }
+        ]
+      end
+
+      it_behaves_like 'it is valid'
     end
 
-    describe 'raises warnings for rows' do
-      it 'with missing mpan_mprn' do
-        amr_reading_data[:reading_data].first.delete(:mpan_mprn)
+    describe 'when data formats dont match, but can be parsed' do
+      let(:date_format) { '%y-%m-%d' }
 
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:missing_mpan_mprn)
+      let(:reading_data) do
+        mpan_mprn = '1234050000000'
+        readings = Array.new(48, '0.0')
+        [
+          { mpan_mprn:, readings:, reading_date: '2022-01-01' },
+          { mpan_mprn:, readings:, reading_date: '2022-01-02' }
+        ]
       end
 
-      it 'with invalid non-numeric mpan_mprn' do
-        amr_reading_data[:reading_data].first[:mpan_mprn] = '1.23405E+12'
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+      it_behaves_like 'it is valid'
+    end
+  end
 
-        amr_reading_data[:reading_data].first[:mpan_mprn] = '+1234050000000'
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+  describe 'when every row is invalid' do
+    let(:reading_data) do
+      mpan_mprn = nil
+      readings = Array.new(48, '0.0')
+      [
+        { mpan_mprn:, readings:, reading_date: '2019-01-01' },
+        { mpan_mprn:, readings:, reading_date: '2019-01-02' }
+      ]
+    end
 
-        amr_reading_data[:reading_data].first[:mpan_mprn] = '1234.50000000'
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+    it_behaves_like 'it is not valid'
+  end
 
-        amr_reading_data[:reading_data].first[:mpan_mprn] = 1234.50000000
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_non_numeric_mpan_mprn)
+  describe 'when there are invalid rows' do
+    context 'with missing mpan_mprn' do
+      let(:reading_data) do
+        create_one_invalid_reading(mpan_mprn: nil)
       end
 
-      it 'with missing reading date' do
-        amr_reading_data[:reading_data].second.delete(:reading_date)
-        amr_reading = AmrReadingData.new(**amr_reading_data)
+      it_behaves_like 'it has a warning' do
+        let(:warning_type) { :missing_mpan_mprn }
+      end
+    end
 
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:missing_reading_date)
+    context 'when mpan_mprns are invalid' do
+      let(:reading_data) do
+        create_one_invalid_reading(mpan_mprn: invalid_mpan_mprn)
       end
 
-      it 'with reading date in the future' do
-        amr_reading = AmrReadingData.new(**amr_reading_data.merge(today: Date.new(2018, 1, 1)))
+      ['1.23405E+12', '+1234050000000', '1234.50000000', 1234.50000000].each do |mpan|
+        context "with #{mpan}" do
+          let(:invalid_mpan_mprn) { mpan }
 
-        expect(amr_reading.valid?).to be false
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 0
-        expect(amr_reading.warnings.count).to be 2
-        expect(amr_reading.warnings.first[:warnings]).to include(:future_reading_date)
+          it_behaves_like 'it has a warning' do
+            let(:warning_type) { :invalid_non_numeric_mpan_mprn }
+          end
+        end
+      end
+    end
+
+    context 'with duplicate rows' do
+      let(:reading_data) do
+        mpan_mprn = '1234050000000'
+        readings = Array.new(48, '0.0')
+        [
+          { mpan_mprn:, readings:, reading_date: '2019-01-01' },
+          { mpan_mprn:, readings:, reading_date: '2019-01-01' }
+        ]
       end
 
-      it 'with missing readings' do
-        amr_reading_data[:reading_data].first[:readings].shift
-        amr_reading = AmrReadingData.new(**amr_reading_data)
+      it_behaves_like 'it has a warning' do
+        let(:warnings) { 1 }
+        let(:warning_type) { :duplicate_reading }
+      end
+    end
 
-
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
+    context 'with missing reading date' do
+      let(:reading_data) do
+        create_one_invalid_reading(reading_date: nil)
       end
 
-      it 'with missing readings but with tolerance for 1 missing' do
-        amr_reading_data[:reading_data].first[:readings].shift
-        amr_reading_data[:missing_reading_threshold] = 1
-        amr_reading = AmrReadingData.new(**amr_reading_data)
+      it_behaves_like 'it has a warning' do
+        let(:warning_type) { :missing_reading_date }
+      end
+    end
 
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be false
+    context 'with reading date in the future' do
+      let(:reading_data) do
+        create_one_invalid_reading(reading_date: Time.zone.today + 1)
       end
 
-      it 'with missing readings (as nil)' do
-        readings = amr_reading_data[:reading_data].first[:readings]
-        readings[readings.size - 1] = nil
+      it_behaves_like 'it has a warning' do
+        let(:warning_type) { :future_reading_date }
+      end
+    end
 
-        amr_reading_data[:reading_data].first[:readings] = readings
-
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
+    context 'with unparseable date' do
+      let(:reading_data) do
+        create_one_invalid_reading(reading_date: 'AAAAA')
       end
 
-      it 'with missing readings (as "")' do
-        readings = amr_reading_data[:reading_data].first[:readings]
-        readings[readings.size - 1] = ''
+      it_behaves_like 'it has a warning' do
+        let(:warning_type) { :invalid_reading_date }
+      end
+    end
 
-        amr_reading_data[:reading_data].first[:readings] = readings
-
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
+    context 'with missing readings' do
+      let(:reading_data) do
+        create_one_invalid_reading(readings: missing_readings)
       end
 
-      it 'with missing readings (as "-")' do
-        readings = amr_reading_data[:reading_data].first[:readings]
-        readings[readings.size - 1] = '-'
+      let(:missing_readings) { Array.new(47, 0.0) }
 
-        amr_reading_data[:reading_data].first[:readings] = readings
-
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:missing_readings)
+      it_behaves_like 'it has a warning' do
+        let(:warning_type) { :missing_readings }
       end
 
-      it 'when dates are not quite the right format' do
-        bad_date = 'AAAAAA'
-        amr_reading_data[:reading_data].first[:reading_date] = bad_date
+      context 'when format is row per reading and missing threshold is higher' do
+        let(:amr_data_feed_config) do
+          create(:amr_data_feed_config,
+                 row_per_reading: true,
+                 date_format: date_format,
+                 missing_readings_limit: 1)
+        end
 
-        amr_reading = AmrReadingData.new(**amr_reading_data)
-
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:invalid_reading_date)
+        it_behaves_like 'it is valid'
       end
 
-      it 'with reading date in a format that does not match the configuration format' do
-        ClimateControl.modify FEATURE_FLAG_INCONSISTENT_READING_DATE_FORMAT_WARNING: 'true' do
-          amr_reading_data[:reading_data].first[:reading_date] = '31-01-2022'
-          amr_reading_data[:reading_data].second[:reading_date] = '31-01-2022'
-          # There should be a warning here where Date.strptime('31-01-2022', '%d-%m-%y')
-          # converts to the date 'Wed, 31 Jan 2020' (2020 instead of 2022)
-          amr_reading_data[:date_format] = '%d-%m-%y'
-          amr_reading = AmrReadingData.new(**amr_reading_data)
+      context 'when format is row per reading and merged is allowed' do
+        let(:amr_data_feed_config) do
+          create(:amr_data_feed_config,
+                 row_per_reading: true,
+                 date_format: date_format,
+                 allow_merging: true)
+        end
 
-          expect(amr_reading.valid?).to be false
-          expect(amr_reading.warnings?).to be true
-          expect(amr_reading.valid_reading_count).to be 0
-          expect(amr_reading.warnings.count).to be 2
-          expect(amr_reading.warnings.first[:warnings]).to include(:inconsistent_reading_date_format)
+        it_behaves_like 'it is valid'
+      end
+
+      context 'with missing as nil' do
+        let(:missing_readings) { Array.new(47, 0.0) << nil }
+
+        it_behaves_like 'it has a warning' do
+          let(:warning_type) { :missing_readings }
         end
       end
 
-      it 'when there are duplicate rows' do
-        amr_reading_data[:reading_data].first[:reading_date] = amr_reading_data[:reading_data].last[:reading_date]
+      context 'with missing as empty string' do
+        let(:missing_readings) { Array.new(47, 0.0) << '' }
 
-        amr_reading = AmrReadingData.new(**amr_reading_data)
+        it_behaves_like 'it has a warning' do
+          let(:warning_type) { :missing_readings }
+        end
+      end
 
-        expect(amr_reading.valid?).to be true
-        expect(amr_reading.warnings?).to be true
-        expect(amr_reading.valid_reading_count).to be 1
-        expect(amr_reading.warnings.count).to be 1
-        expect(amr_reading.warnings.first[:warnings]).to include(:duplicate_reading)
+      context 'with missing as dashes' do
+        let(:missing_readings) { Array.new(47, 0.0) << '-' }
+
+        it_behaves_like 'it has a warning' do
+          let(:warning_type) { :missing_readings }
+        end
+      end
+    end
+
+    context 'with strict date handling' do
+      around do |example|
+        ClimateControl.modify FEATURE_FLAG_INCONSISTENT_READING_DATE_FORMAT_WARNING: 'true' do
+          example.run
+        end
+      end
+
+      let(:date_format) { '%d-%m-%y' }
+
+      let(:reading_data) do
+        readings = Array.new(48, '0.0')
+        [
+          { mpan_mprn: '1234050000000', readings:, reading_date: '31-01-22' },
+          { mpan_mprn: '1234050000001', readings:, reading_date: '31-01-2022' }
+        ]
+      end
+
+      it_behaves_like 'it has a warning' do
+        let(:warnings) { 1 }
+        let(:warning_type) { :inconsistent_reading_date_format }
       end
     end
   end
