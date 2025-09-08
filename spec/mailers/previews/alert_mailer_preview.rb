@@ -8,7 +8,7 @@ class AlertMailerPreview < ActionMailer::Preview
   end
 
   def self.alert_email_with_target_params
-    { school: SchoolTarget.currently_active.where.not(electricity_monthly_consumption: nil).sample.school.id }
+    { school: SchoolTarget.currently_active.where.not(electricity_monthly_consumption: nil).sample&.school&.id }
   end
 
   def alert_email_with_target
