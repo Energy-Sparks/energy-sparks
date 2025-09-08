@@ -62,7 +62,7 @@ module AnalyseHeatingAndHotWater
       {
         annual_kwh:   total_kwh,
         annual_£:     total_kwh * gas_price_£_per_kwh,
-        annual_co2:   total_kwh * EnergyEquivalences.co2_kg_kwh(:gas),
+        annual_co2:   total_kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH,
         capex:        0.0,
         efficiency:   efficiency(total_kwh)
       }
@@ -73,7 +73,7 @@ module AnalyseHeatingAndHotWater
       {
         annual_kwh:    total_kwh,
         annual_£:      total_kwh * gas_price_£_per_kwh,
-        annual_co2:    total_kwh * EnergyEquivalences.co2_kg_kwh(:gas),
+        annual_co2:    total_kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH,
         capex:         0.0,
         efficiency:    efficiency(total_kwh)
       }

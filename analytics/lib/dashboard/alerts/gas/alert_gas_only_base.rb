@@ -63,7 +63,7 @@ class AlertGasOnlyBase < AlertAnalysisBase
   end
 
   protected def gas_co2(kwh)
-    kwh * EnergyEquivalences.co2_kg_kwh(:gas)
+    kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH
   end
 
   def pipework_insulation_cost

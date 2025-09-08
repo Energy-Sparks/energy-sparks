@@ -74,7 +74,7 @@ class AlertOutOfHoursGasUsage < AlertOutOfHoursBaseUsage
   end
 
   def co2_intensity_per_kwh
-    EnergyEquivalences.co2_kg_kwh(:gas)
+    EnergyEquivalences::UK_GAS_CO2_KG_KWH
   end
 end
 

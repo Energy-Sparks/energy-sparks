@@ -39,13 +39,11 @@ class EnergyEquivalences
     ratio
   end
 
-  def self.convert(value, from_unit, from_type, to_unit, to_type, via_unit)
+  def self.convert(value, from_unit, from_type, to_unit, to_type, via_unit, grid_intensity)
     # ap( ENERGY_EQUIVALENCES2)
     check_got_co2_kwh_or_£(via_unit)
-    from_unit_conversion, from_conversion_description, from_type_description =
-      equivalence_conversion_rate_and_description(from_type, via_unit)
-    to_unit_conversion, to_conversion_description, to_type_description =
-      equivalence_conversion_rate_and_description(to_type, via_unit)
+    from_unit_conversion, from_conversion_description, from_type_description = equivalence_conversion_rate_and_description(from_type, via_unit, grid_intensity)
+    to_unit_conversion, to_conversion_description, to_type_description = equivalence_conversion_rate_and_description(to_type, via_unit, grid_intensity)
 
     equivalent = value * from_unit_conversion / to_unit_conversion
 
@@ -74,16 +72,16 @@ class EnergyEquivalences
     description % FormatEnergyUnit.format(unit, value)
   end
 
-  def self.random_equivalence_type_and_via_type
+  def self.random_equivalence_type_and_via_type(grid_intensity)
     random_type = equivalence_types(false)[rand(equivalence_types(false).length)]
-    equivalence = equivalence_configuration(random_type)
+    equivalence = equivalence_configuration(random_type, grid_intensity)
     random_via_type = equivalence[:conversions].keys[rand(equivalence[:conversions].length)]
     [random_type, random_via_type]
   end
 
-  def self.equivalence_conversion_rate_and_description(type, via_unit)
+  def self.equivalence_conversion_rate_and_description(type, via_unit, grid_intensity)
     type = :electricity if type == :storage_heaters || type == :solar_pv
-    type_data = equivalence_configuration(type)
+    type_data = equivalence_configuration(type, grid_intensity)
     type_description = type_data[:description]
     rate = type_data[:conversions][via_unit][:rate]
     description = type_data[:conversions][via_unit][:description]

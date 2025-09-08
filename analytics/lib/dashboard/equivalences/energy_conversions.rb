@@ -61,7 +61,7 @@ class EnergyConversions
     if %i[electricity storage_heaters].include?(meter_type)
       CalculateAggregateValues.new(@meter_collection).uk_electricity_grid_carbon_intensity_for_period_kg_per_kwh(time_scale)
     else
-      EnergyEquivalences.co2_kg_kwh(:electricity) # default for cashing purposes if not electricity
+      EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH # default for cashing purposes if not electricity
     end
   end
 
@@ -71,8 +71,7 @@ class EnergyConversions
 
   private def calculation_description(kwh, fuel_type, equiv_type, kwh_co2_or_£, grid_intensity)
     fuel_type = :electricity if fuel_type == :allelectricity_unmodified
-    _val, _equ, calc, in_text, out_text = \
-      EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, kwh_co2_or_£)
+    _val, _equ, calc, in_text, out_text = EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, kwh_co2_or_£, grid_intensity)
     in_text + out_text + calc
   end
 
@@ -151,10 +150,10 @@ class EnergyConversions
   end
 
   # converts energy_equivalence_conversions ENERGY_EQUIVALENCES to form flattened choice of conversions for the from end
-  def self.generate_conversion_list
+  def self.generate_conversion_list(grid_intensity = EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH)
     conversions = {}
     EnergyEquivalences.equivalence_types.each do |conversion_key|
-      conversion_data = EnergyEquivalences.equivalence_configuration(conversion_key)
+      conversion_data = EnergyEquivalences.equivalence_configuration(conversion_key, grid_intensity)
       next unless conversion_data.key?(:convert_to)
       conversion_data[:conversions].each do |via, via_data|
         next unless via_data.key?(:front_end_description)
@@ -210,8 +209,10 @@ end
 
 class EnergyConversionsOutOfHours < EnergyConversions
   def self.random_out_of_hours_to_exemplar_percent_improvement(school, fuel_type, exemplar_percent)
-    equivalence = new(school)
-    equivalence.front_end_convert(generate_conversion_list.keys.sample, { year: 0}, fuel_type, exemplar_percent)
+    equivalence = EnergyConversionsOutOfHours.new(school)
+    equivalences = generate_conversion_list
+    random_index = Random.rand(generate_conversion_list.length)
+    equivalence.front_end_convert(EnergyConversionsOutOfHours.generate_conversion_list.keys[random_index], { year: 0}, fuel_type, exemplar_percent)
   end
 
   def front_end_convert(convert_to, time_period, meter_type, exemplar_percent)

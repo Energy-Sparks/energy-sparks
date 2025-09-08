@@ -105,10 +105,9 @@ class DashboardChartAdviceBase
     "#{equivalence_text} <button class=\"btn btn-secondary\" data-toggle=\"popover\" data-container=\"body\" data-placement=\"top\" data-title=\"How we calculate this\" data-content=\"#{calculation_text}\"> See how we calculate this</button>"
   end
 
-  def random_equivalence_text(kwh, fuel_type)
-    equiv_type, conversion_type = EnergyEquivalences.random_equivalence_type_and_via_type
-    _val, equivalence, calc, in_text, out_text =
-      EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, conversion_type)
+  def random_equivalence_text(kwh, fuel_type, uk_grid_carbon_intensity = EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH)
+    equiv_type, conversion_type = EnergyEquivalences.random_equivalence_type_and_via_type(uk_grid_carbon_intensity)
+    _val, equivalence, calc, in_text, out_text = EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, conversion_type, EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH)
     equivalence_tool_tip_html(equivalence, in_text + out_text + calc)
   end
 
