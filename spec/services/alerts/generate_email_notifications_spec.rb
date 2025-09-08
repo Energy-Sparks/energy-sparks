@@ -79,7 +79,7 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
     it 'include unsubscription section' do
       expect(email_body).to include('Why am I receiving these emails?')
       expect(matcher).to have_link('updating your profile')
-      expect(matcher).not_to have_content(school_admin.email)
+      expect(matcher).to have_no_content(school_admin.email)
     end
 
     it 'includes links to dashboard and analysis pages' do
@@ -230,6 +230,35 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
     it 'links to a find out more if there is one associated with the content' do
       email = ActionMailer::Base.deliveries.last
       expect(email.html_part.decoded).to include('Find out more')
+    end
+  end
+
+  context 'with target_advice_pages2025' do
+    def email_text
+      matcher.text.delete("\u00A0").each_line.map(&:strip).reject(&:empty?).join("\n")
+    end
+
+    before { Flipper.enable(:target_advice_pages2025) }
+
+    it 'shows failing targets' do
+      create(:school_target, :with_monthly_consumption, school:)
+      shared_before
+      expect(email_text).to \
+        include("Priority alerts\nUnfortunately you are not meeting your target to reduce your electricity usage")
+    end
+
+    it 'shows achieving targets' do
+      create(:school_target, :with_monthly_consumption, school:, current_consumption: 1000)
+      shared_before
+      expect(email_text).to \
+        include("Priority alerts\n" \
+                'Well done, you are making progress towards achieving your target to reduce your electricity usage!')
+    end
+
+    it 'does not show an expired target' do
+      create(:school_target, :with_monthly_consumption, school:, start_date: 1.year.ago)
+      shared_before
+      expect(email_text).to include("Latest updates\nLong term trends and advice\n")
     end
   end
 end
