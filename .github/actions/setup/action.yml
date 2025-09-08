@@ -10,7 +10,7 @@ runs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: "3.3"
+        ruby-version: "3.4"
     - if: ${{ inputs.ruby-only == 'false' }}
       run: bundle exec rails db:schema:load
       shell: bash
