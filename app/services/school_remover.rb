@@ -32,6 +32,7 @@ class SchoolRemover
         delete_school_issues
       end
     end
+    SchoolArchivedMailer.archived(@school)
   end
 
   def reenable_school!

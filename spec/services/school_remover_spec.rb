@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
+  include ActiveJob::TestHelper
+  include EmailHelpers
+
   let(:school)                   { create(:school, visible: false, number_of_pupils: 12) }
   let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
@@ -88,6 +91,10 @@ describe SchoolRemover, :schools, type: :service do
   describe '#remove_school!' do
     context 'when archive flag is set to false (pure delete)' do
       context 'when school is not visible' do
+        around do |example|
+          ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }
+        end
+
         before do
           service.remove_school!
         end
@@ -109,9 +116,22 @@ describe SchoolRemover, :schools, type: :service do
           expect(gas_meter.issues.count).to eq 0
           expect(school.issues.count).to eq 0
         end
+
+        it 'sends archive email' do
+          perform_enqueued_jobs
+          email = ActionMailer::Base.deliveries.last
+          expect(email.subject).to eq('Energy Sparks archived')
+          expect(email.to).to contain_exactly(school_admin.email, school_admin_user.email, staff_user.email)
+          expect(email_html_text(email)).to include(<<~EMAIL)
+            School archived
+            #{school.name}'s Energy Sparks account has been archived. You will no longer be able to access the energy data insights or previously recorded activities for your school.
+            Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
+            We would love to support your school again in future. You can view our current services and prices here or request to re-enrol your school by emailing hello@energysparks.uk.
+          EMAIL
+        end
       end
 
-      context 'when school is visiable' do
+      context 'when school is visible' do
         before do
           school.update(visible: true)
         end
