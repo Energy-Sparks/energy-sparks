@@ -69,7 +69,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           let(:categories) { [:car] }
           let(:journey_minutes) { 5 }
 
-          it { expect(page).to have_content("That's the same as charging 112 smart phones 📱!") }
+          it { expect(page).to have_content("That's the same as charging 310 smart phones 📱!") }
           it { expect(page).to have_content("That's the same as 1 veggie dinner 🥗!") }
           it { expect(page).to have_content("That's the same as 56 hours of TV 📺!") }
           it { expect(page).to have_content("That's the same as playing 11 hours of computer games 🎮!") }
@@ -112,7 +112,7 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           let(:journey_minutes) { 5 }
 
           it { expect(page).to have_content('1 tree would absorb this amount of CO2 in 1 day 🌳!') }
-          it { expect(page).to have_content("That's the same as charging 558 smart phones 📱!") }
+          it { expect(page).to have_content("That's the same as charging 1550 smart phones 📱!") }
           it { expect(page).to have_content("That's the same as 2 meat dinners 🍲!") }
           it { expect(page).to have_content("That's the same as 5 veggie dinners 🥗!") }
           it { expect(page).to have_content("That's the same as 279 hours of TV 📺!") }

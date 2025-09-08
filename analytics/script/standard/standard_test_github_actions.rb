@@ -16,9 +16,9 @@
 #
 
 require 'require_all'
-require_relative '../../../config/environment'
-require_relative '../../lib/dashboard'
+require_relative '../../lib/dashboard.rb'
 require_all './analytics/test_support/'
+require_relative '../../../config/environment'
 
 schools = [
   { name: 'acme-academy*', example_of: 'Github actions test data' }
@@ -29,6 +29,14 @@ overrides = {
 }
 
 run_date = Date.new(2022, 2, 1)
+
+benchmark_params = {
+  benchmarks: {
+    calculate_and_save_variables: true,
+    asof_date: run_date,
+    run_content: { asof_date: run_date }
+  }
+}
 
 scripts = [
     { type: RunAdultDashboard },
