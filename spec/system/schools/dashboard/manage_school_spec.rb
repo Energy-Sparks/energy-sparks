@@ -65,14 +65,12 @@ RSpec.describe 'manage school', type: :system do
         expect(page).to have_link('Review school setup')
         expect(page).to have_link('School configuration')
         expect(page).to have_link('Meter attributes')
-        expect(page).to have_link('Manage CADs')
         expect(page).to have_link('Manage school group')
         expect(page).to have_link('Manage issues')
-        expect(page).to have_link('Manage partners')
         expect(page).to have_link('Batch reports')
-        expect(page).to have_link('Review targets')
         expect(page).to have_link('Expert analysis')
         expect(page).to have_link('Remove school')
+        expect(page).to have_link(I18n.t('components.manage_school_navigation.settings'))
       end
     end
   end
@@ -84,14 +82,12 @@ RSpec.describe 'manage school', type: :system do
         expect(page).not_to have_link('Review school setup')
         expect(page).not_to have_link('School configuration')
         expect(page).not_to have_link('Meter attributes')
-        expect(page).not_to have_link('Manage CADs')
         expect(page).not_to have_link('Manage school group')
         expect(page).not_to have_link('Manage issues')
-        expect(page).not_to have_link('Manage partners')
         expect(page).not_to have_link('Batch reports')
-        expect(page).not_to have_link('Review targets')
         expect(page).not_to have_link('Expert analysis')
         expect(page).not_to have_link('Remove school')
+        expect(page).to have_link(I18n.t('components.manage_school_navigation.settings'))
       end
     end
   end
@@ -132,7 +128,7 @@ RSpec.describe 'manage school', type: :system do
       expect(page).to have_link('Email and SMS reports')
     end
 
-    context 'with status toggles' do
+    context 'with status toggles', with_feature: :new_manage_school_pages do
       it 'links to the configuration page for data access settings' do
         visit school_path(school)
         click_on('Public')
@@ -148,8 +144,7 @@ RSpec.describe 'manage school', type: :system do
         expect(school.data_sharing_within_group?).to be true
       end
 
-      it 'allows toggling visibility if consent granted' do
-        create :consent_grant, school: school
+      it 'allows toggling visibility' do
         visit school_path(school)
         click_on('Visible')
         school.reload
@@ -157,18 +152,6 @@ RSpec.describe 'manage school', type: :system do
         click_on('Visible')
         school.reload
         expect(school).to be_visible
-      end
-
-      it 'disallows toggling visibility if no consent' do
-        expect(school.consent_up_to_date?).to be false
-        visit school_path(school)
-        click_on('Visible')
-        school.reload
-        expect(school).not_to be_visible
-        click_on('Visible')
-        expect(page).to have_content('School cannot be made visible as we dont have a record of consent')
-        school.reload
-        expect(school).not_to be_visible
       end
 
       it 'allows toggling of data processing' do
@@ -196,6 +179,7 @@ RSpec.describe 'manage school', type: :system do
       end
 
       it 'allows toggling of data enabled via the review page' do
+        create(:consent_grant, school: school)
         visit school_path(school)
         click_on('Data visible')
         school.reload

@@ -378,13 +378,13 @@ describe School do
     end
 
     it 'finds all partners' do
-      expect(school.all_partners).to match([])
+      expect(school.displayable_partners).to match([])
       school.partners << partner
-      expect(school.all_partners).to match([partner])
+      expect(school.displayable_partners).to match([partner])
       school.school_group.partners << other_partner
-      expect(school.all_partners).to match([partner, other_partner])
+      expect(school.displayable_partners).to match([partner, other_partner])
       school.partners.destroy_all
-      expect(school.all_partners).to match([other_partner])
+      expect(school.displayable_partners).to match([other_partner])
     end
   end
 
@@ -1312,6 +1312,69 @@ describe School do
         let(:ok) { 250 }
         let(:high) { 501 }
       end
+    end
+  end
+
+  describe '.from_onboarding' do
+    context 'with matched outdated establishment' do
+      let(:sch) do
+        create(:closed_establishment, id: 1)
+        create(:establishment, id: 2)
+        create(:establishment_link, establishment_id: 1, linked_establishment_id: 2)
+        onb = create(:school_onboarding, urn: 1, school_name: 'onboarding name')
+        School.from_onboarding(onb)
+      end
+
+      it 'uses new establishment instead' do
+        expect(sch.establishment_id).to eq(2)
+      end
+
+      it 'uses new establishment\'s urn instead' do
+        expect(sch.urn).to eq(2)
+      end
+    end
+
+    context 'with matched current establishment' do
+      let(:sch) do
+        create(:local_authority_area, code: 'a')
+        create(:establishment, district_administrative_code: 'a', id: 1, establishment_name: 'establishment name', phase_of_education_code: 2, gor_code: 'A')
+        onb = create(:school_onboarding, urn: 1, school_name: 'onboarding name')
+        School.from_onboarding(onb)
+      end
+
+      it 'gets name from establishment instead of onboarding' do
+        expect(sch.name).to eq('establishment name')
+      end
+
+      it 'finds local authority area from establishment' do
+        expect(sch.local_authority_area).not_to be_nil
+      end
+
+      it 'gets school type from establishment' do
+        expect(sch.school_type).to eq('primary')
+      end
+
+      it 'gets region from establishment' do
+        expect(sch.region).to eq('north_east')
+      end
+    end
+
+    context 'with no matched establishment' do
+      let(:sch) do
+        create(:local_authority_area, code: 'a')
+        onb = create(:school_onboarding, school_name: 'onboarding name')
+        School.from_onboarding(onb)
+      end
+
+      it 'defaults to name from onboarding' do
+        expect(sch.name).to eq('onboarding name')
+      end
+    end
+  end
+
+  describe '.concatenate_address' do
+    it 'skips empty elements' do
+      expect(School.concatenate_address(['', 'a', '', 'b', ''])).to eq('a, b')
     end
   end
 end

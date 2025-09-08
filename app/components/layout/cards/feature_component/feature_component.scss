@@ -1,13 +1,16 @@
 .layout-cards-feature-component {
-
-  h2, h4 {
-    padding-top: 0;
+  .badge {
+    font-size: $f9;
+    padding: 6px 14px;
   }
 
-  &.main {
-    @include responsive-typography;
-    p {
-      font-family: $header-font-family;
-    }
+  h1, h2, h3, h4, h5, h6 {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .trix-content {
+    margin: 0;
+    padding: 0;
   }
 }

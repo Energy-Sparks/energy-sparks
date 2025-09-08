@@ -1,86 +1,54 @@
-<% if Flipper.enabled?(:new_dashboards_2024, current_user) %>
-  <%= render PageNavComponent.new(name: t('advice_pages.nav.overview'),
-                                  icon: nil, href: school_advice_path(@school),
-                                  options: { user: current_user, match_controller: true }) do |c| %>
-    <% c.with_section toggler: false, visible: @alert_count&.positive?,
-                      options: { match_controller: false } do |s| %>
-      <% s.with_item(name: "#{t('advice_pages.index.alerts.title')} (#{@alert_count})",
-                     href: alerts_school_advice_path(@school), classes: 'section-link') %>
-    <% end %>
-    <% c.with_section toggler: false,
-                      visible: @priority_count&.positive?,
-                      options: { match_controller: false }  do |s| %>
-      <% s.with_item(name: "#{t('advice_pages.index.priorities.title')} (#{@priority_count})",
-                     href: priorities_school_advice_path(@school),
-                     classes: 'section-link') %>
-    <% end %>
+<%= render PageNavComponent.new(name: t('advice_pages.nav.overview'),
+                                icon: nil, href: school_advice_path(school),
+                                options: { match_controller: true }) do |c| %>
+  <% c.with_section toggler: false, visible: school.latest_adult_dashboard_alert_count&.positive?,
+                    options: { match_controller: false } do |s| %>
+    <% s.with_item(name: t('advice_pages.index.alerts.title'),
+                   note: "(#{school.latest_adult_dashboard_alert_count})",
+                   href: alerts_school_advice_path(school), classes: 'section-link') %>
+  <% end %>
+  <% c.with_section toggler: false,
+                    visible: school.latest_management_priority_count&.positive?,
+                    options: { match_controller: false }  do |s| %>
+    <% s.with_item(name: t('advice_pages.index.priorities.title'),
+                   note: "(#{school.latest_management_priority_count})",
+                   href: priorities_school_advice_path(school),
+                   classes: 'section-link') %>
+  <% end %>
 
-    <% c.with_section toggler: false,
-                      visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget),
-                      options: { match_controller: true } do |s| %>
-      <% s.with_item(name: t('manage_school_menu.review_targets'),
-                     href: school_school_targets_path(school), classes: 'section-link') %>
-    <% end %>
+  <% c.with_section toggler: false,
+                    visible: Targets::SchoolTargetService.targets_enabled?(school) && can?(:manage, SchoolTarget),
+                    options: { match_controller: true } do |s| %>
+    <% s.with_item(name: t('manage_school_menu.review_targets'),
+                   href: school_school_targets_path(school), classes: 'section-link') %>
+  <% end %>
 
-    <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
-                      icon: fuel_type_icon(:electricity), classes: 'electric-section',
-                      visible: @school.has_electricity?) do |s| %>
-      <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, @school, :electricity)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'small electric-item') %>
-      <% end %>
-    <% end %>
-    <% c.with_section(name: t('advice_pages.nav.sections.gas'),
-                      icon: fuel_type_icon(:gas), classes: 'gas-section',
-                      visible: @school.has_gas?) do |s| %>
-      <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, @school, :gas)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'small gas-item') %>
-      <% end %>
-    <% end %>
-    <% c.with_section(name: t('advice_pages.nav.sections.storage_heater'),
-                      icon: fuel_type_icon(:storage_heater),
-                      classes: 'storage-section', visible: @school.has_storage_heaters?) do |s| %>
-      <% sort_by_label(advice_pages.where(fuel_type: :storage_heater)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'small storage-item') %>
-      <% end %>
-    <% end %>
-    <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'),
-                      icon: fuel_type_icon(:solar_pv), classes: 'solar-section',
-                      visible: @school.has_electricity?) do |s| %>
-      <% sort_by_label(advice_pages.where(fuel_type: :solar_pv)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap), classes: 'small solar-item') %>
-      <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
+                    icon: fuel_type_icon(:electricity), classes: 'electric-section',
+                    visible: school.has_electricity?) do |s| %>
+    <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, :electricity)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(school, ap), classes: 'small electric-item') %>
     <% end %>
   <% end %>
-<% else %>
-  <%= render PageNavComponent.new(name: t('advice_pages.nav.name'), icon: 'home', href: school_advice_path(@school),
-                                  options: { match_controller: true }) do |c| %>
-    <% c.with_section(name: t('advice_pages.nav.sections.electricity'), icon: 'bolt', classes: 'electric-section',
-                      visible: @school.has_electricity?) do |s| %>
-      <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, @school, :electricity)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap),
-                       classes: 'border-bottom small electric-item') %>
-      <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.gas'),
+                    icon: fuel_type_icon(:gas), classes: 'gas-section',
+                    visible: school.has_gas?) do |s| %>
+    <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, :gas)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(school, ap), classes: 'small gas-item') %>
     <% end %>
-    <% c.with_section(name: t('advice_pages.nav.sections.gas'), icon: 'fire', classes: 'gas-section',
-                      visible: @school.has_gas?) do |s| %>
-      <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, @school, :gas)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap),
-                       classes: 'border-bottom small gas-item') %>
-      <% end %>
+  <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.storage_heater'),
+                    icon: fuel_type_icon(:storage_heater),
+                    classes: 'storage-section', visible: school.has_storage_heaters?) do |s| %>
+    <% sort_by_label(advice_pages.where(fuel_type: :storage_heater)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(school, ap), classes: 'small storage-item') %>
     <% end %>
-    <% c.with_section(name: t('advice_pages.nav.sections.storage_heater'), icon: 'window-maximize',
-                      classes: 'storage-section', visible: @school.has_storage_heaters?) do |s| %>
-      <% sort_by_label(advice_pages.where(fuel_type: :storage_heater)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap),
-                       classes: 'border-bottom small storage-item') %>
-      <% end %>
-    <% end %>
-    <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'), icon: 'sun', classes: 'solar-section',
-                      visible: @school.has_electricity?) do |s| %>
-      <% sort_by_label(advice_pages.where(fuel_type: :solar_pv)).each do |ap| %>
-        <% s.with_item(name: translated_label(ap), href: advice_page_path(@school, ap),
-                       classes: 'border-bottom small solar-item') %>
-      <% end %>
+  <% end %>
+  <% c.with_section(name: t('advice_pages.nav.sections.solar_pv'),
+                    icon: fuel_type_icon(:solar_pv), classes: 'solar-section',
+                    visible: school.has_electricity?) do |s| %>
+    <% sort_by_label(advice_pages.where(fuel_type: :solar_pv)).each do |ap| %>
+      <% s.with_item(name: translated_label(ap), href: advice_page_path(school, ap), classes: 'small solar-item') %>
     <% end %>
   <% end %>
 <% end %>

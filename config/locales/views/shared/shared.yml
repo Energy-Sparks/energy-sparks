@@ -35,6 +35,7 @@ en:
   common_nav_bar_menus:
     actions: Actions
     activities: Activities
+    help: Help
   contact_explainer:
     alerts_message: Short term consumption change alerts are sent weekly. Alerts telling you about your long term energy use are sent termly.
     list_html: |-
@@ -132,12 +133,9 @@ en:
     case_studies: Case studies
     educational_workshops: Education workshops
     energy_audits: Energy audits
-    for_local_authorities: For Local Authorities
-    for_multi_academy_trusts: For Multi-Academy Trusts
-    for_schools: For Schools
+    energy_management_tool: Energy management tool
     newsletters: Newsletters
     our_services: Our services
-    pricing: Pricing
     training: Training
     videos: Videos
   partners:

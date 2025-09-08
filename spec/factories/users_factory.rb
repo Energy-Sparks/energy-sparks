@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :user do
     sequence(:email) { |n| "user_#{n}@test.com" }
     sequence(:password) { |n| "secure password phrase #{n}" }
+    sequence(:name) { |n| "user #{n}" }
     confirmed_at { Time.zone.now }
 
     factory :school_admin do

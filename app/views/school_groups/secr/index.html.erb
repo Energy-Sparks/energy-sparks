@@ -1,0 +1,58 @@
+<%= content_for :page_title, t('school_groups.secr.title') %>
+<h1><%= t('school_groups.secr.title') %></h1>
+<%= render TabsComponent.new do |component| %>
+  <% component.with_tab(name: :usage, label: t('school_groups.secr.tabs.usage')) do %>
+    <%= t('school_groups.secr.usage.purpose_of_this_tool_html') %>
+    <%= t('school_groups.secr.usage.what_is_included_html') %>
+    <%= t('school_groups.secr.usage.how_to_identify_gaps_html') %>
+    <%= t('school_groups.secr.usage.how_to_improve_html') %>
+  <% end %>
+  <% component.with_tab(name: :data, label: t('school_groups.secr.tabs.data')) do %>
+    <% kwargs = %i[last current]
+                .zip(@last_two_academic_year_periods)
+                .map { |type, period| { "#{type}_start_date": period[0], "#{type}_end_date": period[1] } }
+                .reduce(&:merge) %>
+    <p><%= t('school_groups.secr.data.introduction', **kwargs.transform_values { |date| date.to_fs(:es_short) }) %></p>
+    <% meters = @school_group.meters.active.where('schools.active')
+       schools = @school_group.schools.active
+       number_of_pupils = schools.sum(:number_of_pupils)
+       periods = @last_two_academic_year_periods %>
+    <%= render 'table', meters:,
+                        period: periods[1],
+                        title: t('school_groups.secr.data.current_table_title', start_date: periods[1][0],
+                                                                                end_date: periods[1][1]),
+                        number_of_pupils: %>
+    <%= render 'table', meters:,
+                        period: periods[0],
+                        title: t('school_groups.secr.data.previous_table_title', start_date: periods[0][0],
+                                                                                 end_date: periods[0][1]),
+                        number_of_pupils: %>
+    <%= schools = schools.pluck(:id)
+        t('school_groups.secr.data.supporting_notes_html',
+          active_schools: schools.length,
+          gas_meters: meters.gas.count,
+          electricity_meters: meters.electricity.count,
+          metered_solar_schools: (MeterAttribute.metered_solar.pluck(:school_id) & schools).length,
+          estimated_solar_schools: (MeterAttribute.solar_pv.pluck(:school_id) & schools).length,
+          number_of_pupils:) %>
+    <%= t('school_groups.secr.data.carbon_emission_factors_html') %>
+    <h2><%= t('school_groups.secr.data.downloads.title') %></h2>
+    <p><%= t('school_groups.secr.data.downloads.introduction') %></p>
+    <ul>
+      <% types = %w[electricity gas self export]
+         years = @last_two_academic_year_periods.map { | date| "#{date[0].year}/#{(date[0].year + 1).to_s.last(2)}" }
+         years.each_with_index do |year, i|
+           types.each do |type| %>
+          <% csv = "#{type}#{i.zero? ? '_previous' : ''}" %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.electricity') %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.gas') %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.self') %>
+          <%# i18n-tasks-use t('school_groups.secr.data.downloads.export') %>
+          <li><%= link_to t("school_groups.secr.data.downloads.#{type}", year:),
+                          school_group_secr_index_path(@school_group, format: :csv, csv:) %></li>
+        <% end %>
+      <% end %>
+    </ul>
+    <%= t('school_groups.secr.data.data_quality_html') %>
+  <% end %>
+<% end %>

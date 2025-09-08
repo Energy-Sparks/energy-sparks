@@ -4,6 +4,7 @@ module Admin
 
     def removal
       @school_remover = SchoolRemover.new(@school)
+      render layout: Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
     end
 
     def deactivate_users

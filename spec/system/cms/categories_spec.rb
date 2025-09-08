@@ -86,6 +86,23 @@ describe 'view categories' do
           let(:current_category) { category }
         end
 
+        it 'has category admin buttons' do
+          within("#category-#{category.id}-admin-buttons") do
+            expect(page).to have_content('Published')
+            expect(page).to have_link(href: edit_admin_cms_category_path(category))
+            expect(page).to have_link(href: new_admin_cms_page_path(category_id: category.id))
+          end
+        end
+
+        it 'has page admin buttons' do
+          cms_page = category.pages.first
+          within("#page-#{cms_page.id}-admin-buttons") do
+            expect(page).to have_content('Published')
+            expect(page).to have_link(href: edit_admin_cms_page_path(cms_page))
+            expect(page).to have_link(href: new_admin_cms_section_path(page_id: cms_page.id))
+          end
+        end
+
         context 'when there are unpublished pages' do
           let!(:category) { create(:category, :with_pages, pages_published: false, published: true) }
 
@@ -110,6 +127,14 @@ describe 'view categories' do
 
         it_behaves_like 'a page with a support page nav' do
           let(:current_category) { category }
+        end
+
+        it 'does not show admin buttons' do
+          expect(page).not_to have_link(href: edit_admin_cms_category_path(category))
+          expect(page).not_to have_link(href: new_admin_cms_page_path(category_id: category.id))
+          cms_page = category.pages.first
+          expect(page).not_to have_link(href: edit_admin_cms_page_path(cms_page))
+          expect(page).not_to have_link(href: new_admin_cms_section_path(page_id: cms_page.id))
         end
 
         context 'when there are unpublished pages' do

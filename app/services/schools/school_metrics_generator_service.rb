@@ -36,6 +36,8 @@ module Schools
       # Generate advice page benchmarks
       Schools::AdvicePageBenchmarks::GenerateBenchmarks.new(school: @school, aggregate_school: @meter_collection).generate!
       @logger.info 'Generated advice page benchmarks'
+
+      MeterMonthlySummary.create_or_update_from_school(@school, @meter_collection)
     rescue => e
       @logger.error "There was an error for #{@school.name} - #{e.message}"
       Rollbar.error(e, job: :school_metric_generator, school_id: @school.id, school: @school.name)

@@ -2,7 +2,6 @@ module Schools
   class AdviceController < ApplicationController
     include NonPublicSchools
     include DashboardAlerts
-    include DashboardPriorities
     include SchoolInactive
     include SchoolAggregation
 
@@ -16,36 +15,23 @@ module Schools
     before_action :school_inactive
     before_action :load_advice_pages
     before_action :set_tab_name
-    before_action :set_counts
     before_action :set_breadcrumbs
     before_action :check_aggregated_school_in_cache, only: [:show]
 
     def show
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        @overview_data = Schools::ManagementTableService.new(@school).management_data
-        render :new_show, layout: 'dashboards'
-      else
-        @advice_page_benchmarks = @school.advice_page_school_benchmarks
-        render :show
-      end
+      @overview_data = Schools::ManagementTableService.new(@school).management_data
+      @aggregate_school_service = aggregate_school_service
+      render :show, layout: 'dashboards'
     end
 
     def priorities
-      @management_priorities = sort_priorities
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        render :priorities, layout: 'dashboards'
-      else
-        render :priorities
-      end
+      @management_priorities = Schools::Priorities.by_average_one_year_saving(latest_management_priorities)
+      render :priorities, layout: 'dashboards'
     end
 
     def alerts
       @dashboard_alerts = setup_alerts(latest_dashboard_alerts, :management_dashboard_title, limit: nil)
-      if Flipper.enabled?(:new_dashboards_2024, current_user)
-        render :alerts, layout: 'dashboards'
-      else
-        render :alerts
-      end
+      render :alerts, layout: 'dashboards'
     end
 
     private
@@ -80,27 +66,12 @@ module Schools
       redirect_to pupils_school_path(@school) if not_signed_in? && !@school.data_enabled
     end
 
-    def set_counts
-      @priority_count = latest_management_priorities.count
-      @alert_count = latest_dashboard_alerts.count
-    end
-
     def latest_dashboard_alerts
       @latest_dashboard_alerts ||= @school.latest_dashboard_alerts.management_dashboard
     end
 
     def latest_management_priorities
       @latest_management_priorities ||= @school.latest_management_priorities
-    end
-
-    def sort_priorities
-      setup_priorities(latest_management_priorities, limit: nil).sort do |a, b|
-        money_to_i(b.template_variables[:average_one_year_saving_gbp]) <=> money_to_i(a.template_variables[:average_one_year_saving_gbp])
-      end
-    end
-
-    def money_to_i(val)
-      val.gsub(/\D/, '').to_i
     end
   end
 end

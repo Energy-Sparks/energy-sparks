@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples_for 'a listed meter' do |admin: true|
+RSpec.shared_examples_for 'a listed meter' do |admin: true, staff: false|
   it 'displays list heading' do
     if meter.active
       expect(page).to have_content('Active meters')
@@ -11,13 +11,19 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true|
     end
   end
 
-  it 'displays meter' do
+  it 'displays meter data' do
     expect(page).to have_content(meter.mpan_mprn)
     expect(page).to have_content(meter.name)
     expect(page).to have_content(short_dates(meter.first_validated_reading))
     expect(page).to have_content(short_dates(meter.last_validated_reading))
     expect(page).to have_content(meter.zero_reading_days.count)
     expect(page).to have_content(meter.gappy_validated_readings.count)
+  end
+
+  it 'displays meter links' do
+    if !staff && meter.active && meter.amr_validated_readings.any?
+      expect(page).to have_link(href: school_meter_path(meter.school, meter, format: 'csv'))
+    end
     if admin
       expect(page).to have_link('Issues')
       expect(page).to have_link(meter.data_source.name)
@@ -48,7 +54,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   include ActiveJob::TestHelper
 
   let(:school_name)     { 'Oldfield Park Infants' }
-  let!(:school)         { create_active_school(name: school_name) }
+  let!(:school)         { create_active_school(name: school_name, school_group: create(:school_group)) }
   let!(:admin)          { create(:admin) }
   let!(:teacher)        { create(:staff) }
   let!(:school_admin)   { create(:school_admin, school_id: school.id) }
@@ -161,6 +167,36 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
     end
   end
 
+  context 'when a group admin' do
+    before do
+      sign_in(create(:group_admin, school_group: school.school_group))
+      visit root_path
+    end
+
+    context 'Manage meters page' do
+      before { visit school_meters_path(school) }
+
+      it_behaves_like 'admin dashboard messages', permitted: false
+
+      context 'Add meter form' do
+        it 'does not display admin only fields' do
+          expect(page).to have_no_content('Data source')
+        end
+      end
+
+      context 'listing meters' do
+        let!(:setup_data) { meter }
+
+        it_behaves_like 'a listed meter', admin: false do
+          let(:meter) { active_meter }
+        end
+        it_behaves_like 'a listed meter', admin: false do
+          let(:meter) { inactive_meter }
+        end
+      end
+    end
+  end
+
   context 'as teacher' do
     before do
       sign_in(teacher)
@@ -185,10 +221,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
     context 'listing meters' do
       let(:setup_data) { meter }
 
-      it_behaves_like 'a listed meter', admin: false do
+      it_behaves_like 'a listed meter', admin: false, staff: true do
         let(:meter) { active_meter }
       end
-      it_behaves_like 'a listed meter', admin: false do
+      it_behaves_like 'a listed meter', admin: false, staff: true do
         let(:meter) { inactive_meter }
       end
     end
@@ -460,30 +496,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         click_on 'Deactivate'
         click_on 'Delete'
         expect(school.meters.count).to eq(0)
-      end
-    end
-
-    context 'when checking target data' do
-      context 'and there is enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
-      end
-
-      context 'and there is not enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
       end
     end
   end

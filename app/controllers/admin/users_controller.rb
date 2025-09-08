@@ -34,7 +34,19 @@ module Admin
     end
 
     def update
-      if @user.update(user_params)
+      school_ids = -> { (@user.cluster_school_ids + [@user.school_id]).compact.uniq }
+      before_school_ids = school_ids.call
+      @user.assign_attributes(user_params)
+      if @user.save(context: :form_update)
+        if OnboardingMailer2025.enabled?
+          (school_ids.call - before_school_ids).each do |school_id|
+            school = School.find(school_id)
+            next unless school.data_visible?
+
+            OnboardingMailer2025.with(user: @user, school:, locale: @user.preferred_locale)
+                                .welcome_existing.deliver_later
+          end
+        end
         redirect_to admin_users_path, notice: 'User was successfully updated.'
       else
         set_schools_options
@@ -75,7 +87,8 @@ module Admin
       user = User.find(params['user_id'])
       contact = Mailchimp::AudienceManager.new.get_list_member(user.email)
       if contact
-        redirect_to "https://#{ENV.fetch('MAILCHIMP_SERVER')}.admin.mailchimp.com/audience/contact-profile?contact_id=#{contact.contact_id}"
+        redirect_to "https://#{ENV.fetch('MAILCHIMP_SERVER')}.admin.mailchimp.com/" \
+                    "audience/contact-profile?contact_id=#{contact.contact_id}", allow_other_host: true
       else
         redirect_back fallback_location: admin_users_path, notice: 'Cannot find user in Mailchimp'
       end

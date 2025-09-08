@@ -25,7 +25,7 @@ jobs:
       matrix:
         # limited to 20
         # https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits
-        ci_node_total: [19] # leave 1 spare for overcommit
+        ci_node_total: [19]
         ci_node_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
     env:
       RAILS_ENV: test
@@ -65,3 +65,14 @@ jobs:
           # ErbLint has too many failures right now
           SKIP: ForbiddenBranches,ErbLint
       - run: bundle exec brakeman
+  analytics_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/setup
+      with:
+        ruby-only: true
+    - name: Run standard test
+      run: bundle exec ruby analytics/script/standard/standard_test_github_actions.rb

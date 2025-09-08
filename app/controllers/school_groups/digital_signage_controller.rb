@@ -1,8 +1,7 @@
 module SchoolGroups
-  class DigitalSignageController < ApplicationController
-    load_and_authorize_resource :school_group
-
+  class DigitalSignageController < BaseController
     def index
+      build_breadcrumbs([name: I18n.t('manage_school_menu.digital_signage')])
     end
 
     def charts

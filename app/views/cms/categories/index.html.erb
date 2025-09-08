@@ -7,17 +7,22 @@
       ) %>
 <% end %>
 
-<div class="container">
-  <%= render 'cms/search' %>
+<% cache_unless current_user&.admin?, I18n.locale, expires_in: 1.hour do %>
+  <div class="container">
+    <%= render 'cms/search' %>
 
-  <%= render Layout::GridComponent.new(cols: 3, classes: 'pb-4 mt-4 mb-4',
-                                       cell_classes: 'mb-4') do |grid| %>
-    <% @categories.each do |category| %>
-      <% grid.with_stats_card do |card| %>
-        <%= card.with_icon name: category.icon, style: :circle, classes: 'text-teal-dark' %>
-        <%= card.with_header title: category.title, url: category_path(category) %>
-        <%= card.with_subtext { category.description } %>
+    <%= render Layout::GridComponent.new(id: 'categories',
+                                         cols: 3,
+                                         classes: 'mb-4',
+                                         cell_classes: 'mb-4',
+                                         component_classes: 'theme theme-dark') do |grid| %>
+      <% @categories.each do |category| %>
+        <% grid.with_stats_card do |card| %>
+          <%= card.with_icon name: category.icon, style: :circle, classes: 'text-teal-dark' %>
+          <%= card.with_header title: category.title, url: category_path(category) %>
+          <%= card.with_subtext { category.description } %>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
-</div>
+  </div>
+<% end %>

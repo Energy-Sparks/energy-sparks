@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Jobs', type: :system do
+RSpec.describe 'jobs', :include_application_helper do
   context 'when a job exists' do
     let!(:job)         { create(:job, closing_date: Time.zone.today, title: 'Closes today') }
     let!(:old_job)     { create(:job, closing_date: '2010-01-01', title: 'Old job')}
@@ -29,7 +29,7 @@ describe 'Jobs', type: :system do
     end
 
     it 'shows expected download links' do
-      expect(page.has_link?('More information', href: "/jobs/#{job.id}/inline")).to be true
+      expect(page).to have_link('More information', href: job_download_path(job, serve: :inline))
     end
 
     it 'serves the file' do
@@ -40,7 +40,7 @@ describe 'Jobs', type: :system do
 
   context 'when job is not found' do
     before do
-      visit serve_resource_path(id: 'unknown', serve: :inline)
+      visit job_download_path(id: 'unknown', serve: :inline)
     end
 
     it_behaves_like 'a 404 error page'

@@ -165,7 +165,7 @@ en:
         download_the_data_for_each_active_meter: Download the data for each active meter
         download_the_data_for_each_inactive_meter: Download the data for each inactive meter
         downloads_for: Downloads for %{school_name}
-        email_contact_message_html: Please contact <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a> for further information
+        email_contact_message_html: Please contact <a href="mailto:support@energysparks.uk">support@energysparks.uk</a> for further information
         meters: Meters
         solar_pv_data: Solar PV Data
         solar_pv_data_csv_for_your_area: Solar PV data CSV for your area, %{solar_pv_tuos_area_title}
@@ -268,6 +268,7 @@ en:
         active_pseudo_meters: Active pseudo meters
         add_meter: Add meter
         admin_meter_status: Meter status
+        completed_meter_reviews: Completed DCC meter reviews
         data_processing_turned_on_message: Data processing must be turned on for this school before meter readings can be validated
         data_source: Source
         first: From
@@ -275,10 +276,10 @@ en:
         inactive_meters: Inactive meters
         large_gaps: Gaps
         latest: To
-        manage_solar_api_feeds: Manage Solar API feeds
+        manage_solar_api_feeds: Solar Feeds
         manual_reads: Manual reads?
         meter: Meter
-        meter_reviews: Completed DCC meter reviews
+        meter_reviews: Meter Reviews
         meter_system: Meter system
         mpan_warning_message: There are electricity meters with MPANs that don't appear to have the correct check digit
         name: Name
@@ -293,7 +294,6 @@ en:
         validate_meter_readings: Validate meter readings
         validated: Validated
         validated_readings: Validated Readings
-        view_target_data: View target data
         zero_days: Zero days
       inventory:
         meter_title: 'Meter: %{meter_mpan_mprn}'
@@ -496,14 +496,18 @@ en:
         page_title: Results of reducing your energy usage
         your_school_set_a_target_to_reduce_html: Your school set a target to reduce its energy usage between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>. This page summarises your results
       first:
+        advice: Focus on building momentum and making some early savings.
         careful_planning: Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommended set of steps to help you achieve your targets by
         its_time: It's time to set your first target to reduce your energy consumption
         page_title: Set your first energy saving target
         providing_more_insight: providing more insight through our detailed analysis of your energy usage
         providing_reports: providing reports to monitor your progress
+        recommend: Based on our work with schools across the UK, we recommend setting the following targets for your school this year.
         set_your_first_energy_saving_target: Set your first energy saving target
         suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
         suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
+        tip_html: "<strong>Tip</strong>: don't try to be too ambitious"
+        your_first: Your first target
       form:
         reducing_electricity_usage_by: Reducing electricity usage by
         reducing_gas_usage_by: Reducing gas usage by
@@ -627,6 +631,28 @@ en:
           other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
+    settings:
+      manage_link: Manage
+      metering:
+        manage_meters: View and manage your school electricity and gas meters
+        manage_tariffs: Manage current and historical energy tariffs for your school
+        school_downloads: Download copies of your meter data
+      settings:
+        add_community_use: Add community use times
+        digital_signage: Display your analysis on public signage around the schools
+        edit_school_details: School address, pupil numbers, floor area and other settings
+        edit_school_times: Manage school opening hours and community use times
+        history: Manage the activities and actions previously recorded by your school
+        school_calendar: Manage your school calendar, including term times and inset days
+        temperatures: View and manage classroom temperatures recorded by pupils
+        transport_surveys: View and manage the results of surveys carried out by pupils
+        your_school_estate: Add details about your school buildings and heating sources
+      users:
+        add_alert_contacts: Add alert subscribers
+        add_pupil_login: Missing pupil login
+        add_users: Add school users
+        manage_users: Manage school users and pupil logins
+      view_link: View
     show:
       add_alert_contacts: Add alert contacts
       add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
@@ -634,6 +660,7 @@ en:
       coming_soon: Energy data coming soon
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.
       create_pupil_account: Create a pupil account
+      dashboard_subtitle_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activity on your scoreboard</a>
       dashboard_title: Adult dashboard for %{school_name}
       download_data: Download your data
       energy_bill_required: We need you to provide a recent energy bill for your school to confirm your meter numbers. This will help ensure that we can collect, process and display your school data.
@@ -692,6 +719,8 @@ en:
         energy_sparks_alerts_list_item_2: highlight long term problems with your energy consumption with focused recommendations to save energy
         energy_sparks_alerts_list_item_3: let you know if you are doing well compared to other schools and your past performance
         subscribe_to_school_alerts: Subscribe to school alerts
+      create:
+        as_a_group_admin: As a group admin for %{school_group}, this user is already able to administer this school
       edit:
         title: Edit %{user_role} account
         update_account: Update account
@@ -704,7 +733,6 @@ en:
         what_is_their_primary_role: What is their primary role in relation to Energy Sparks?
       index:
         account_confirmed: Account confirmed?
-        add_existing_user_as_admin: Add an existing Energy Sparks user as a school admin
         could_not_decrypt: "(could not decrypt)"
         email: Email
         introduction: School admin accounts have access to all Energy Sparks functionality and can manage other users and update school details
@@ -731,10 +759,10 @@ en:
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
-        title: New %{user_role} account
+        title: Add %{user_role} account
     your_school_estates:
       edit:
-        description: EnergySparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
+        description: Energy Sparks uses a variety of data about your school to tailor our analysis and advice. By telling us a bit more about your school estate we can improve the support we offer you
         heating_sources:
           air_source_heat_pump:
             percentage: What percentage of the school floor area is using the air source heat pump for heating?

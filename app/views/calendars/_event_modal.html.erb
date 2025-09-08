@@ -2,7 +2,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><span class="event-action"></span><%= t('calendars.event_modal.calendar_event') %></h5>
+        <h5 class="modal-title">
+          <span id='event-model-new-title'><%= t('calendars.event_modal.new_calendar_event') %></span>
+          <span id='event-model-edit-title' style='display: none'><%= t('calendars.event_modal.edit_calendar_event') %></span>
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -38,6 +41,7 @@
       </div>
       <div class="modal-footer">
         <%= f.submit t('calendars.event_modal.save_changes'), class: 'btn btn-primary' %>
+        <button type="button" class="btn" id="edit_button"><%= t('calendars.event_modal.edit_existing') %></button>
         <button type="button" class="btn" data-dismiss="modal" id="delete_button">
           <%= t('common.labels.delete') %>
         </button>

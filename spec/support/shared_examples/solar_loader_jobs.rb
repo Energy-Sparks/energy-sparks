@@ -2,7 +2,7 @@
 
 RSpec.shared_examples 'a successful solar loader job' do |solar_feed_type:|
   let(:expected_subject) do
-    "[energy-sparks-unknown] #{solar_feed_type} Import for #{installation.school.name} Completed"
+    "[energy-sparks-unknown] #{solar_feed_type} Import for #{installation_for} completed"
   end
 
   it 'sends email with the expected subject' do
@@ -23,7 +23,7 @@ end
 
 RSpec.shared_examples 'a solar loader job with loader errors' do |solar_feed_type:|
   let(:expected_subject) do
-    "[energy-sparks-unknown] #{solar_feed_type} Import for #{installation.school.name} Completed"
+    "[energy-sparks-unknown] #{solar_feed_type} Import for #{installation_for} completed"
   end
 
   it 'sends email with the expected subject' do
@@ -43,7 +43,7 @@ RSpec.shared_examples 'a solar loader job with loader errors' do |solar_feed_typ
 end
 
 RSpec.shared_examples 'a solar loader job that had an exception' do |solar_feed_type:|
-  let(:expected_subject) { "[energy-sparks-unknown] #{solar_feed_type} Import for #{installation.school.name} Failed" }
+  let(:expected_subject) { "[energy-sparks-unknown] #{solar_feed_type} Import for #{installation_for} failed" }
 
   it 'sends email with the expected subject' do
     expect(email_subject).to eq expected_subject

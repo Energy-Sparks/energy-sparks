@@ -17,8 +17,10 @@ class ApplicationComponent < ViewComponent::Base
   # end
 
   def initialize(*_args, id: nil, classes: '', **_kwargs)
+    super()
     @id = id
     @classes = class_names(classes)
+
     add_classes(self.class.name.underscore.dasherize.parameterize)
   end
 

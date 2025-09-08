@@ -1,20 +1,20 @@
-<% content_for :page_title do %>Equivalence for <%= @school.name %><% end %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Equivalence" do %>
 <div class="row padded-row">
   <div class="col-md-12">
-    <h1 property="name">Equivalence for <%= link_to @school.name, @school %></h1>
-  </div>
-
-  <div class="col-md-12">
-    <p><%= link_to "View all", school_equivalence_reports_path(@school) %></p>
+    <p><%= link_to 'View all', school_equivalence_reports_path(@school) %></p>
     <div class="card mb-3">
       <div class="card-header">
-        <h4>Equivalence: <%= @equivalence.equivalence_type.meter_type.humanize %> - <%= @equivalence.equivalence_type.time_period.humanize %></h4>
+        <h4>Equivalence:
+          <%= @equivalence.equivalence_type.meter_type.humanize %> -
+          <%= @equivalence.equivalence_type.time_period.humanize %>
+        </h4>
       </div>
       <div class="card-body">
         <h5>Equivalence variables (English)</h5>
-        <%= sanitize ap(@equivalence.data, index: false, plain: true)%>
+        <%= sanitize ap(@equivalence.data, index: false, plain: true) %>
         <h5>Equivalence variables (Welsh)</h5>
-        <%= sanitize ap(@equivalence.data_cy, index: false, plain: true)%>
+        <%= sanitize ap(@equivalence.data_cy, index: false, plain: true) %>
       </div>
       <div class="card-footer text-muted">
         <p class="card-text"><b>Relevant</b>: <%= @equivalence.relevant %></p>
@@ -23,3 +23,4 @@
     </div>
   </div>
 </div>
+<% end %>

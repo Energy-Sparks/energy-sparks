@@ -10,6 +10,12 @@ describe 'view pages and sections' do
       let(:model) { cms_page }
     end
 
+    it 'has an audience section' do
+      within('div.cms-audience-component') do
+        expect(page).to have_content(I18n.t('components.cms.audience.title'))
+      end
+    end
+
     it 'displays the expected sections', if: sections do
       visible_sections.each do |cms_section|
         expect(page).to have_css("section.cms-page-section##{cms_section.slug}")
@@ -52,6 +58,22 @@ describe 'view pages and sections' do
 
         it_behaves_like 'a cms page'
 
+        it 'has page admin buttons' do
+          within("#page-#{cms_page.id}-admin-buttons") do
+            expect(page).to have_content('Published')
+            expect(page).to have_link(href: edit_admin_cms_page_path(cms_page))
+            expect(page).to have_link(href: new_admin_cms_section_path(page_id: cms_page.id))
+          end
+        end
+
+        it 'has section admin buttons' do
+          section = cms_page.sections.first
+          within("#section-#{section.id}-admin-buttons") do
+            expect(page).to have_content('Published')
+            expect(page).to have_link(href: edit_admin_cms_section_path(section))
+          end
+        end
+
         context 'when there are unpublished sections' do
           let!(:cms_page) { create(:page, :with_sections, published: true, sections_published: false) }
 
@@ -65,6 +87,12 @@ describe 'view pages and sections' do
         end
 
         it_behaves_like 'a cms page'
+
+        it 'does not have admin buttons' do
+          expect(page).not_to have_link(href: edit_admin_cms_page_path(cms_page))
+          expect(page).not_to have_link(href: new_admin_cms_section_path(page_id: cms_page.id))
+          expect(page).not_to have_link(href: edit_admin_cms_section_path(cms_page.sections.first))
+        end
 
         context 'when there are unpublished sections' do
           let!(:cms_page) { create(:page, :with_sections, published: true, sections_published: false) }

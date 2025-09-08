@@ -1,10 +1,9 @@
 module SchoolGroups
-  class ClustersController < ApplicationController
-    load_and_authorize_resource :school_group
+  class ClustersController < BaseController
     before_action :redirect_unless_authorised
     load_and_authorize_resource :cluster, class: 'SchoolGroupCluster', through: :school_group
 
-    before_action :set_breadcrumbs
+    before_action :breadcrumbs
 
     def index
     end
@@ -60,12 +59,8 @@ module SchoolGroups
         .with_defaults(school_ids: [])
     end
 
-    def set_breadcrumbs
-      @breadcrumbs = [
-        { name: I18n.t('common.schools'), href: schools_path },
-        { name: @school_group.name, href: school_group_path(@school_group) },
-        { name: t('school_groups.clusters.index.title').capitalize, href: school_group_clusters_path(@school_group) },
-      ]
+    def breadcrumbs
+      build_breadcrumbs([name: t('school_groups.clusters.index.title').capitalize, href: school_group_clusters_path(@school_group)])
       @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name } if @cluster
     end
   end

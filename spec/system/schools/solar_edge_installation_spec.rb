@@ -23,7 +23,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
     context 'when adding a new installation' do
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'has no installation by default' do
@@ -32,14 +32,14 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
       it 'allows an installation to be added' do
         click_on 'New Solar Edge API feed'
-        expect(page).to have_content('Add a new SolarEdge Site')
+        expect(page).to have_content('Add a new SolarEdge API feed')
 
         fill_in(:solar_edge_installation_mpan, with: mpan)
         fill_in(:solar_edge_installation_site_id, with: site_id)
         fill_in(:solar_edge_installation_api_key, with: api_key)
 
         expect { click_on 'Submit'}.to change(SolarEdgeInstallation, :count).by(1)
-        expect(page).to have_content('SolarEdge installation was successfully created')
+        expect(page).to have_content('SolarEdge API feed was successfully created')
 
         expect(page).to have_content(mpan)
         expect(page).to have_content(site_id)
@@ -57,7 +57,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
       let(:new_api_key)   { '99999' }
 
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'displays the feed config' do
@@ -67,7 +67,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
 
       it 'allows editing' do
         click_on 'Edit'
-        expect(page).to have_content('Update SolarEdge Site')
+        expect(page).to have_content('Update SolarEdge API feed')
 
         expect(find('#solar_edge_installation_mpan').disabled?).to be true
         expect(find('#solar_edge_installation_site_id').disabled?).to be true
@@ -146,7 +146,7 @@ RSpec.describe 'Solar edge installation management', :solar_edge_installations, 
       let!(:installation) { create(:solar_edge_installation_with_meters_and_validated_readings, school: school) }
 
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'removes meters and readings on deletion' do

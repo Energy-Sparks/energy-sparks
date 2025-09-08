@@ -21,10 +21,19 @@
       <%= render 'cms/nav', categories: @categories, current_category: @category, classes: '' %>
     </div>
 
-    <div id="page-body" class="col-md-8 col-lg-8 col-xl-9">
-      <% @category.pages.by_title.each do |page| %>
-        <%= render Cms::PageSummaryComponent.new(id: page.slug, page: page, current_user: current_user) %>
-      <% end %>
-    </div>
+    <% cache_unless current_user&.admin?, [@category, I18n.locale], expires_in: 1.hour do %>
+      <div id="page-body" class="col-md-8 col-lg-8 col-xl-9">
+        <div class="row">
+          <div class="col-md-12">
+            <% @category.pages.by_title.each do |page| %>
+              <%= render Cms::PageSummaryComponent.new(id: page.slug, page: page, current_user: current_user,
+                                                       classes: 'mb-4') %>
+            <% end %>
+          </div>
+        </div>
+
+        <%= render 'cms/admin_buttons', content: @category, current_user: @current_user %>
+      </div>
+    <% end %>
   </div>
 </div>

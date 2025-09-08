@@ -1,12 +1,6 @@
-<% content_for :page_title, title %>
-
-<div class="row">
-  <div class="col d-flex flex-wrap align-items-center justify-content-between">
-    <h1><%= title %></h1>
-    <div class="cms-navigation">
-      <%= link_to 'Categories', admin_cms_categories_path, class: 'btn' %>
-      <%= link_to 'Pages', admin_cms_pages_path, class: 'btn' %>
-      <%= link_to 'Sections', admin_cms_sections_path, class: 'btn' %>
-    </div>
-  </div>
-</div>
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'Categories', admin_cms_categories_path %>
+  <% header_nav.with_button 'Pages', admin_cms_pages_path %>
+  <% header_nav.with_button 'Sections', admin_cms_sections_path %>
+<% end %>

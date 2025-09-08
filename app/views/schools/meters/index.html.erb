@@ -32,12 +32,17 @@
 
     <% if can? :manage, MeterReview %>
       <% if @school.meters.reviewed_dcc_meter.any? %>
-        <%= link_to t('schools.meters.index.meter_reviews'), admin_school_meter_reviews_path(@school), class: 'btn' %>
+        <%= link_to t('schools.meters.index.completed_meter_reviews'),
+                    admin_school_meter_reviews_path(@school), class: 'btn' %>
       <% end %>
       <% if @pending_reviews %>
         <%= link_to t('schools.meters.index.review_meters'), new_admin_school_meter_review_path(@school), class: 'btn' %>
       <% end %>
     <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-secondary mb-2">
+    <%= link_to t('schools.meters.index.school_downloads'), school_downloads_path(@school), class: 'btn' %>
   </div>
 <% end %>
 
@@ -126,7 +131,6 @@
       <%= render 'inactive_meters', inactive_meters: @inactive_pseudo_meters %>
     </tbody>
   <% end %>
-
 </table>
 </div>
 

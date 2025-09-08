@@ -105,4 +105,12 @@ Rails.application.configure do
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true
   config.active_job.queue_adapter = :good_job
+
+  # Allow translations to be shown locally at cy.energysparks.development
+  config.hosts += [
+    "energysparks.development",
+    "cy.energysparks.development"
+  ]
+  # Alternative would be to set the tld_length to 0 to allow cy.localhost to work
+  # config.action_dispatch.tld_length = 0
 end

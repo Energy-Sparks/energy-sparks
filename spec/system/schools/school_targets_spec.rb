@@ -37,15 +37,6 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
     sign_in(user) if user.present?
   end
 
-  it 'has a link to review targets from my school menu' do
-    unless user.admin?
-      visit school_path(test_school)
-      within '#my-school-menu' do
-        expect(page).to have_link('Review targets', href: school_school_targets_path(test_school))
-      end
-    end
-  end
-
   context 'when school has no target' do
     let(:last_year) { Time.zone.today.last_year }
 
@@ -571,39 +562,6 @@ end
 RSpec.describe 'school targets', type: :system do
   let!(:school) { create(:school) }
 
-  context 'with feature active' do
-    before do
-      Flipper.enable(:new_dashboards_2024)
-    end
-
-    context 'as a school admin' do
-      let!(:user) { create(:school_admin, school: school) }
-
-      include_examples 'managing targets' do
-        let(:test_school) { school }
-      end
-
-      context 'with targets disabled for school' do
-        before do
-          school.update!(enable_targets_feature: false)
-        end
-
-        it 'doesnt have a link to review targets' do
-          visit school_path(school)
-          expect(Targets::SchoolTargetService.targets_enabled?(school)).to be false
-          within '#my-school-menu' do
-            expect(page).not_to have_link('Review targets', href: school_school_targets_path(school))
-          end
-        end
-
-        it 'redirects from target page' do
-          visit school_school_targets_path(school)
-          expect(page).to have_current_path(school_path(school))
-        end
-      end
-    end
-  end
-
   context 'as a school admin' do
     let!(:user) { create(:school_admin, school: school) }
 
@@ -666,11 +624,6 @@ RSpec.describe 'school targets', type: :system do
 
     include_examples 'managing targets' do
       let(:test_school) { school }
-    end
-
-    it 'lets me view target data' do
-      visit school_meters_path(school)
-      expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
     end
 
     context 'when viewing a target' do

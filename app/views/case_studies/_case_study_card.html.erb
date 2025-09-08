@@ -6,8 +6,11 @@
     </div>
   </div>
   <div class="card-footer case-studies-download-links" data-event-value="<%= case_study.id %>">
-    <% download_locale = (I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present?) ? :cy : :en %>
-    <%= link_to url_for( controller: :case_studies, action: :download, serve: :download, id: case_study.id, :locale => download_locale ), class: 'btn' do %>
+    <% download_locale = I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present? ? :cy : :en %>
+    <%= link_to case_study_download_path(case_study,
+                                         locale: download_locale),
+                download: true,
+                class: 'btn' do %>
       <%= t('case_studies.download') %>
       <i class="fas fa-file-download"></i>
     <% end %>

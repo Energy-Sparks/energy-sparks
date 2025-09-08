@@ -28,18 +28,6 @@ RSpec.shared_examples 'admin school group onboardings' do
           it { expect(onboarding.school).not_to be_visible }
           it { expect(onboarding).to be_incomplete }
 
-          context 'without consents' do
-            before do
-              @back = current_path
-              click_button 'Make selected visible'
-            end
-
-            it { expect(page).to have_current_path(@back) }
-            it { expect(page).to have_content('School cannot be made visible as we dont have a record of consent') }
-            it { expect(page).to have_no_content('schools made visible') }
-            it { expect(onboarding.reload.school).not_to be_visible }
-          end
-
           context 'with consent' do
             before do
               Wisper.clear

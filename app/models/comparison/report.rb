@@ -28,7 +28,7 @@ class Comparison::Report < ApplicationRecord
 
   extend Mobility
   include TransifexSerialisable
-  include EnumReportingPeriod
+  include Enums::ReportingPeriod
   extend FriendlyId
 
   translates :title, type: :string, fallbacks: { cy: :en }

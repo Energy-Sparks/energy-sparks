@@ -17,7 +17,6 @@ module Schools
       before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
       before_action :load_recommendations, only: [:insights]
       before_action :set_page_title, only: [:insights, :analysis, :learn_more]
-      before_action :set_counts, only: [:insights, :analysis, :learn_more]
       before_action :check_has_fuel_type, only: [:insights, :analysis]
       before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
       before_action :set_analysis_dates, only: %i[insights analysis]
@@ -81,11 +80,6 @@ module Schools
           { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) },
           { name: @advice_page_title, href: advice_page_path(@school, @advice_page) },
         ]
-      end
-
-      def set_counts
-        @priority_count = @school.latest_management_priorities.count
-        @alert_count = @school.latest_dashboard_alerts.management_dashboard.count
       end
 
       def if_exists(key)
@@ -161,7 +155,7 @@ module Schools
       end
 
       def set_analysis_dates
-        @analysis_dates = Schools::AnalysisDates.new(@school, @advice_page.fuel_type&.to_sym)
+        @analysis_dates = Schools::AnalysisDates.new(@school, advice_page_fuel_type)
       end
     end
   end

@@ -14,7 +14,7 @@ module Admin
       def create
         @section = ::Cms::Section.build(section_params.merge(created_by: current_user))
         if @section.save
-          redirect_to admin_cms_sections_path, notice: 'Section has been created'
+          redirect_to page_path, notice: 'Section has been created'
         else
           render :new
         end
@@ -25,7 +25,7 @@ module Admin
 
       def update
         if @section.update(section_params.merge(updated_by: current_user))
-          redirect_to admin_cms_sections_path, notice: 'Section has been updated'
+          redirect_to page_path, notice: 'Section has been updated'
         else
           render :edit
         end
@@ -33,15 +33,19 @@ module Admin
 
       def publish
         @section.update!(published: true, updated_by: current_user)
-        redirect_back fallback_location: admin_cms_sections_path, notice: 'Content published'
+        redirect_back fallback_location: page_path, notice: 'Content published'
       end
 
       def hide
         @section.update!(published: false, updated_by: current_user)
-        redirect_back fallback_location: admin_cms_sections_path, notice: 'Content hidden'
+        redirect_back fallback_location: page_path, notice: 'Content hidden'
       end
 
       private
+
+      def page_path
+        category_page_path(@section.page.category, @section.page)
+      end
 
       def section_params
         translated_params = t_params(::Cms::Section.mobility_attributes)

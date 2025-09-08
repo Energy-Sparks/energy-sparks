@@ -4,6 +4,7 @@ describe 'manage categories' do
   let(:user) { create(:admin) }
 
   before do
+    Flipper.enable :support_pages
     sign_in(user)
     visit admin_path
   end

@@ -40,9 +40,4 @@ module Scorable
       order(Arel.sql('sum_points DESC NULLS LAST, MAX(observations.at) DESC, schools.name ASC')).
       group('schools.id')
   end
-
-  # Scorable needs a calendar
-  def scorable?
-    scorable_calendar.present?
-  end
 end

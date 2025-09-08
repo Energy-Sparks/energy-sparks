@@ -5,9 +5,10 @@ class ComparisonOverviewComponent < ApplicationComponent
 
   attr_reader :school
 
-  def initialize(school:, **_kwargs)
+  def initialize(school:, aggregate_school_service:, **_kwargs)
     super
     @school = school
+    @aggregate_school_service = aggregate_school_service
   end
 
   def can_benchmark_electricity?
@@ -54,6 +55,6 @@ class ComparisonOverviewComponent < ApplicationComponent
   end
 
   def usage_service(fuel_type)
-    Schools::Advice::LongTermUsageService.new(@school, AggregateSchoolService.new(@school), fuel_type)
+    Schools::Advice::LongTermUsageService.new(@school, @aggregate_school_service, fuel_type)
   end
 end

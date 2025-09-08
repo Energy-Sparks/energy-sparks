@@ -3,11 +3,6 @@ require 'rails_helper'
 RSpec.describe 'videos', type: :system do
   let!(:video) { create(:video, youtube_id: 'PqoKZjwgmoY', title: 'Test video', description: 'video description') }
 
-  it 'shows a default video on the home page' do
-    visit root_path
-    expect(page.has_css?('#featured-videos/div.card-deck')).to be true
-  end
-
   it 'displays user video page' do
     visit user_guide_videos_path
     expect(page.has_content?('User guide videos')).to be true

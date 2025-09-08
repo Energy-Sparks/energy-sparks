@@ -21,20 +21,20 @@ RSpec.shared_examples 'a private school group dashboard' do
     expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
     visit current_scores_school_group_path(school_group)
     expect(page).to have_current_path "/school_groups/#{school_group.slug}/map", ignore_query: true
-    expect(page).not_to have_content('View group')
+    expect(page).to have_no_content('View group')
   end
 end
 
 RSpec.shared_examples 'school group no dashboard notification' do
   it 'does not show a school group dashboard notification' do
     visit map_school_group_path(school_group)
-    expect(page).not_to have_content('A school group notice message')
+    expect(page).to have_no_content('A school group notice message')
     visit comparisons_school_group_path(school_group)
-    expect(page).not_to have_content('A school group notice message')
+    expect(page).to have_no_content('A school group notice message')
     visit priority_actions_school_group_path(school_group)
-    expect(page).not_to have_content('A school group notice message')
+    expect(page).to have_no_content('A school group notice message')
     visit current_scores_school_group_path(school_group)
-    expect(page).not_to have_content('A school group notice message')
+    expect(page).to have_no_content('A school group notice message')
   end
 end
 
@@ -58,7 +58,7 @@ RSpec.shared_examples 'school dashboard navigation' do
     expect(page).to have_content('Priority Actions')
     expect(page).to have_content('Current Scores')
     expect(page).to have_content('View map')
-    expect(page).not_to have_content('View group')
+    expect(page).to have_no_content('View group')
     expect(page).to have_content('Scoreboard')
   end
 
@@ -72,14 +72,14 @@ RSpec.shared_examples 'school dashboard navigation' do
 end
 
 RSpec.shared_examples 'visiting chart updates redirects to group map page' do
-  it 'redirects to ' do
+  it 'redirects to' do
     visit school_group_chart_updates_path(school_group)
     expect(page).to have_current_path(map_school_group_path(school_group), ignore_query: true)
   end
 end
 
 RSpec.shared_examples 'visiting chart updates redirects to group page' do
-  it 'redirects to ' do
+  it 'redirects to' do
     visit school_group_chart_updates_path(school_group)
     expect(page).to have_current_path(school_group_path(school_group), ignore_query: true)
   end
@@ -100,7 +100,8 @@ end
 RSpec.shared_examples 'allows access to chart updates page and editing of default chart preferences' do
   it 'shows a form to select default chart units' do
     visit school_group_chart_updates_path(school_group)
-    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name, 'Chart settings'])
+    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name,
+                                                                         'Chart settings'])
     expect(page).to have_selector(id: 'manage-school-group')
     expect(school_group.default_chart_preference).to eq('default')
     expect(school_group2.default_chart_preference).to eq('default')
@@ -132,7 +133,7 @@ RSpec.shared_examples 'a page without a manage school group menu' do
     visit path
   end
 
-  it { expect(page).not_to have_selector(id: 'manage-school-group') }
+  it { expect(page).to have_no_selector(id: 'manage-school-group') }
 end
 
 RSpec.shared_examples 'a page with a manage school group menu including admin links' do
@@ -141,7 +142,10 @@ RSpec.shared_examples 'a page with a manage school group menu including admin li
   end
 
   it 'shows standard items and admin links' do
-    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin'])
+    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
+      ['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'SECR report', 'School engagement',
+       'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin']
+    )
   end
 end
 
@@ -151,13 +155,15 @@ RSpec.shared_examples 'a page with a manage school group menu not including admi
   end
 
   it 'shows standard items but not admin links' do
-    expect(find('#dropdown-manage-school-group').all('a').collect(&:text)).to eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage'])
+    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to \
+      eq(['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'School engagement'])
   end
 end
 
 RSpec.shared_examples 'shows the we are working with message' do
   it 'shows the we are working with message' do
-    { general: 'group', local_authority: 'local authority', multi_academy_trust: 'multi-academy trust' }.each do |group_type, label|
+    { general: 'group', local_authority: 'local authority',
+      multi_academy_trust: 'multi-academy trust' }.each do |group_type, label|
       allow_any_instance_of(SchoolGroup).to receive_messages(
         {
           group_type: group_type,
@@ -193,8 +199,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 0,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -206,8 +212,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 1,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -219,8 +225,8 @@ RSpec.shared_examples 'shows the we are working with message' do
           group_type: group_type,
           visible_schools_count: 3,
           partners: [
-            OpenStruct.new(name: 'Partner 1', url: 'http://example.com'),
-            OpenStruct.new(name: 'Partner 2', url: 'http://example.com')
+            create(:partner, name: 'Partner 1', url: 'http://example.com'),
+            create(:partner, name: 'Partner 2', url: 'http://example.com')
           ]
         }
       )
@@ -241,8 +247,8 @@ end
 
 RSpec.shared_examples 'a page not showing the cluster column' do
   it "doesn't show the cluster column" do
-    expect(page).not_to have_content('Cluster')
-    expect(page).not_to have_content('Not set')
+    expect(page).to have_no_content('Cluster')
+    expect(page).to have_no_content('Not set')
   end
 end
 
@@ -250,7 +256,7 @@ RSpec.shared_examples 'a page showing the cluster column' do
   it { expect(page).to have_content('Cluster') }
 
   context 'school does not have a cluster' do
-    let(:cluster) { }
+    let(:cluster) {}
 
     it { expect(page).to have_content('Not set') }
   end
@@ -262,14 +268,13 @@ RSpec.shared_examples 'a page showing the cluster column' do
   end
 end
 
-
 RSpec.shared_examples 'a page not showing the cluster column in the download' do
   context 'Clicking the Download as CSV link' do
     before do
       all(:link, 'Download as CSV').last.click
     end
 
-    it { expect(page.source).not_to have_content ',Cluster,' }
+    it { expect(page.source).to have_no_content ',Cluster,' }
   end
 end
 
@@ -388,7 +393,7 @@ end
 
 RSpec.shared_examples 'schools are filtered by permissions' do |admin: false, school_admin: false|
   let(:data_sharing) { :within_group }
-  let!(:filtered_school) { create(:school, school_group: school_group, data_sharing: data_sharing)}
+  let!(:filtered_school) { create(:school, school_group: school_group, data_sharing: data_sharing) }
 
   before do
     visit school_group_path(school_group)
@@ -396,7 +401,7 @@ RSpec.shared_examples 'schools are filtered by permissions' do |admin: false, sc
 
   context 'with data sharing set to within_group' do
     it 'does not show the school', unless: admin || school_admin do
-      expect(page).not_to have_content(filtered_school.name)
+      expect(page).to have_no_content(filtered_school.name)
     end
 
     it 'shows all the schools', if: admin || school_admin do
@@ -408,7 +413,7 @@ RSpec.shared_examples 'schools are filtered by permissions' do |admin: false, sc
     let(:data_sharing) { :private }
 
     it 'does not show the school', unless: admin do
-      expect(page).not_to have_content(filtered_school.name)
+      expect(page).to have_no_content(filtered_school.name)
     end
 
     it 'shows all the schools', if: admin do

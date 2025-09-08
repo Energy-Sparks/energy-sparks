@@ -35,6 +35,10 @@ class ManagementPriority < ApplicationRecord
   validates :priority, numericality: true
 
   scope :by_priority, -> { order(priority: :desc) }
+  # priorities that don't involve capital investment
+  scope :without_investment, -> do
+    joins(:alert, alert: :alert_type).where.not(alert_type: { class_name: ['AlertSolarPVBenefitEstimator', 'AlertHotWaterInsulationAdvice'] })
+  end
 
   # Returns an Array of OpenStruct
   def self.for_schools(schools)

@@ -1,61 +1,11 @@
 cy:
   campaigns:
-    book_demo:
-      intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni.
-      title: Archebwch eich demo o Sbarcynni
-    book_demo_final:
+    group_demo:
       intro: Diolch i chi am lenwi'r ffurflen ymholiad, dewiswch ddyddiad ac amser i gadarnhau eich demo Sbarcynni.
       title: Dewiswch y dyddiad a'r amser ar gyfer eich demo
-    find_out_more:
-      benefits:
-        costs: Arbedwch hyd at 40% oddi ar filiau ynni ysgol
-        emissions: Torri olion traed carbon ysgolion
-        pupils: Rhoi'r wybodaeth a'r sgiliau i ddisgyblion leihau gwastraff ynni yn yr ysgol
-      book_demo: Archebwch demo
-      costs:
-        bullets: |-
-          <ul>
-            <li>Arbedwch £3,000 y flwyddyn ar gyfer yr ysgol gynradd gyfartalog</li>
-            <li>Arbedwch £12,000 y flwyddyn ar gyfer yr ysgol uwchradd gyfartalog</li>
-          </ul>
-        case_study: Torrodd Academi Northampton ei defnydd o nwy gan 40%
-        quote_html: |-
-          Ni all unrhyw un gymryd camau tuag at sero net heb ddata ac mae Sbarcynni yn darparu'r data.<br><br>
-          Mae hefyd yn darparu hyn mewn ffordd hygyrch i ddisgyblion sy’n galluogi cynaliadwyedd i gael ei integreiddio i’r cwricwlwm.
-          Y siawns orau o frwydro yn erbyn yr argyfwng hinsawdd yw trwy rymuso'r genhedlaeth nesaf a dyna mae Sbarcynni yn ei wneud.
-        quote_source: Heart Education Trust
-        sub_title: 'Mae ein hofferyn rheoli ynni yn dadansoddi eich defnydd o nwy a thrydan ac yn darparu argymhellion hawdd eu gweithredu i:'
-        title: Arbed arian
-      emissions:
-        case_study: Mae Ysgol Uwchradd Mallaig wedi torri biliau gwres gan 38%
-        sub_title_1: Defnyddio argymhellion i helpu i ddatblygu cynllun gweithredu hinsawdd i leihau allyriadau carbon
-        sub_title_2: Gosod targedau i leihau'r defnydd o ynni
-        title: Torri Allyriadau Carbon
-      final_prompt:
-        booking: Archebwch eich sesiwn demo rhad ac am ddim heddiw neu gofynnwch am ragor o wybodaeth
-        question: Barod i dorri costau ynni a sbarduno ymrwymiad disgyblion i gynaliadwyedd?
-      find_out_more: Dysgu rhagor
-      learn_why:
-        title: Dysgwch pam fod dros %{school_count} o ysgolion a %{mat_count} ymddiriedolaeth yn defnyddio Sbarcynni
-      pupils:
-        case_study: 'Ysgol Gyntaf Damers: Pencampwyr y Bwrdd Sgorio Cenedlaethol'
-        quote: Mae Sbarcynni yn rhannu data go iawn gyda disgyblion yn seiliedig ar eu gweithredoedd. Mae mor werthfawr ar gyfer eu dysgu ac yn dangos yn glir sut y gallwn ni i gyd gael mwy o effaith ar ein byd.
-        quote_source: Ysgol Gynradd Prendergast, Sir Benfro
-        sub_title_1: Cyrchu dros %{activities_count} o adnoddau addysg y gellir eu lawrlwytho i ddatblygu dealltwriaeth disgyblion o ddefnydd ynni a'i effaith
-        sub_title_2: Cofnodi gweithgareddau i gymryd rhan yn ein cystadlaethau ac ennill gwobrau
-        title: Grymuso Disgyblion
-      sub_title: Mae Sbarcynni yn elusen sy'n cynnig offeryn rheoli ynni a rhaglen addysg unigryw sy'n benodol i ysgolion
-      testimonial:
-        quote: Rwy'n meddwl bod Sbarcynni yn anhygoel. Mae'n gwneud synnwyr llwyr o'r data darlleniadau mesuryddion bob hanner awr llethol, sy'n golygu dim byd ar fil ynni...Mewn ychydig wythnosau yn unig rydym wedi gwneud newidiadau sylweddol a fydd yn eu tro yn lleihau ein hallyriadau carbon ac yn helpu i arbed costau i’r ysgol...
-        quote_job: Rheolwr Busnes
-        quote_organisation: Ysgol Gynradd Sunnyfield, Doncaster
-        quote_source: Emma Oxtoby
-      title: Ydych chi'n barod i dorri costau ynni ac ôl troed carbon eich ysgol?
-      tool:
-        case_study: Datgelodd Academi Harris Sutton £20k mewn arbedion posib
-        sub_title_1: Derbyn dadansoddiad o ddefnydd nwy a thrydan eich ysgol, awgrymiadau gweithredu, a blaenoriaethau arbed ynni trwy ddangosfyrddau disgyblion a staff ac e-byst rhybuddio wythnosol
-        sub_title_2: Meincnodi defnydd ynni ysgolion yn erbyn ysgolion tebyg eraill ledled y wlad neu yn eich Ymddiriedolaeth gan ddefnyddio ein dangosfyrddau
-        title: Cymerwch reolaeth
+    watch_demo:
+      intro: Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni.
+      title: Archebwch eich demo o Sbarcynni
     form:
       fields:
         consent: Cytunaf i dderbyn diweddariadau achlysurol am gynnyrch a gwasanaethau a gynigir gan Sbarcynni
@@ -74,91 +24,8 @@ cy:
         primary: Ysgol gynradd (gwladol)
         secondary: Ysgol uwchradd (gwladol)
         special: Ysgol arbennig (gwladol)
-    more_info_final:
-      case_studies_html: |-
-        Yn y cyfamser, beth am archwilio ein <a href="%{case_study_link}">hastudiaethau achos</a> sy'n arddangos rhai o'r ffyrdd y
-        mae ysgolion Sbarcynni wedi arbed ynni a gwella llythrennedd ynni a hinsawdd eu disgyblion.
-      final: Edrychwn ymlaen at eich helpu i arbed ynni a brwydro yn erbyn newid hinsawdd.
-      intro: Diolch am lenwi ein ffurflen ymholiad. Byddwn mewn cysylltiad â gwybodaeth bellach.
-      title: Diolch!
-      video_html: Neu gwyliwch ein <a href="%{video_link}">fideo rhagarweiniol</a> i ddysgu rhagor am yr hyn rydym yn ei gynnig i ysgolion.
     more_information:
       intro: |-
         Rhowch eich manylion cyswllt a rhywfaint o wybodaeth am eich sefydliad i ni fel y gallwn roi
         rhagor o wybodaeth i chi am ein gwasanaethau.
       title: Gofynnwch am ragor o wybodaeth am Sbarcynni
-  marketing:
-    book_a_demo: Archebwch demo
-    pricing:
-      features:
-        detail_html: |-
-          <p>
-          Mae pob ysgol yn cael teclyn rheoli ynni sydd ar gael yn gyhoeddus. Mae'r cyfrif safonol i'w weld yn gyhoeddus er mwyn sicrhau'r ymgysylltiad mwyaf posib ar draws cymuned yr ysgol gyfan.
-          </p>
-          <p>
-          Mae'r offeryn rheoli ynni yn cynnwys:
-          </p>
-          <ul>
-            <li>dangosfyrddau ar wahân i oedolion a disgyblion, wedi'u teilwra ar gyfer pob cynulleidfa</li>
-            <li>dadansoddiad ynni sy'n benodol i'r ysgol ac argymhellion wedi'u blaenoriaethu</li>
-            <li>siartiau defnydd ynni rhyngweithiol</li>
-            <li>rhybuddion defnydd ynni wythnosol drwy e-bost</li>
-            <li>y gallu i osod targedau arbed ynni ac olrhain cynnydd</li>
-            <li>meincnodi defnydd ynni yn erbyn ysgolion tebyg</li>
-            <li>cyfrifon defnyddwyr diderfyn</li>
-            <li>hyfforddiant gweminar</li>
-            <li>cymorth e-bost gydag addysg rheoli ynni ac cynaliadwyedd</li>
-            <li>mynediad at >%{activities_count} o weithgareddau disgyblion gyda chynlluniau gwersi, gweithdai ac adnoddau ychwanegol y gellir eu lawrlwytho</li>
-            <li>arweiniad ar >%{actions_count} o weithredoedd effeithlonrwydd ynni isel a di-gost a arweinir gan oedolion</li>
-            <li>data solar integredig (os yw'n berthnasol)</li>
-            <li>cefnogaeth gydag uwchraddio mesuryddion i fesuryddion bob hanner awr (os oes angen)</li>
-          </ul>
-        title: Nodweddion safonol
-      free_places:
-        detail_html: |-
-          <p>
-            Mae cyllid gan ymddiriedolaethau a sefydliadau elusennol, cwmnïau ynni cymunedol a phartneriaid corfforaethol yn caniatáu i Sbarcynni ddarparu ei wasanaethau am ddim, neu ar gyfradd â chymhorthdal, i nifer cyfyngedig o ysgolion mewn rhai rhanbarthau yn y DU.
-          </p>
-          <p>
-            Mae Sbarcynni yn chwilio am arianwyr newydd i'n galluogi i gynnal ac ymestyn ein cynnig am ddim i fwy o ysgolion gwladol.
-          </p>
-          <p>
-            Byddwn yn rhoi gwybod i chi os ydych yn gymwys am le wedi’i ariannu pan fyddwch yn cofrestru eich ysgol, Ymddiriedolaeth neu Awdurdod Lleol.
-          </p>
-        title: Lleoedd am ddim
-      groups:
-        price: "£545 + TAW"
-        title: Ymddiriedolaeth Aml-Academi a chlystyrau Awdurdodau Lleol
-      independent_schools:
-        price: "£595 + TAW"
-        title: Ysgolion annibynnol
-      note: fesul ysgol fesul blwyddyn
-      optional:
-        in_person_audits:
-          price_html: |-
-            <ul>
-              <li>Ysgolion cynradd: £950 + TAW</li>
-              <li>Ysgolion uwchradd un safle: £1,650 + TAW</li>
-              <li>Ysgolion uwchradd aml-safle neu annibynnol: £2,250 + TAW</li>
-            </ul>
-          title: Archwiliadau ynni ar y safle
-        metering:
-          price: "£25 + TAW fesul mesurydd"
-          title: Dadansoddiad o ddata o fwy na 5 mesurydd
-        private_tool:
-          price: "£95 + TAW fesul ysgol fesul blwyddyn"
-          title: Offeryn rheoli ynni preifat, sy'n hygyrch i staff yn unig
-        title: Gwasanaethau dewisol ychwanegol
-        virtual_audits:
-          price_html: "£350 + TAW"
-          title: Archwiliadau ynni rhithwir a mentora rheoli ynni
-        workshops:
-          price: "£250-£500, yn dibynnu ar leoliad"
-          title: Gweithdai addysgol yn yr ysgol
-      state_schools:
-        note: fesul ysgol fesul blwyddyn, <250 disgyblion
-        note_large: fesul ysgol fesul blwyddyn, >250 disgyblion
-        price: "£545 + TAW"
-        price_large: "£595 + VAT"
-        title: Ysgolion gwladol unigol
-      title: Prisio

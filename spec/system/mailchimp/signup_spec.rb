@@ -98,7 +98,7 @@ describe 'Mailchimp Sign-up' do
 
       context 'when user has no name' do
         include_context 'with a signed-in user' do
-          let(:user) { create(:school_admin, name: nil) }
+          let(:user) { build(:school_admin, name: nil).tap { |u| u.save(validate: false) } }
         end
 
         it 'shows disabled email and editable name fields' do
@@ -186,7 +186,7 @@ describe 'Mailchimp Sign-up' do
 
       context 'when user has no name' do
         include_context 'with a signed-in user' do
-          let(:user) { create(:school_admin, name: nil) }
+          let(:user) { build(:school_admin, name: nil).tap { |u| u.save(validate: false) } }
         end
 
         it 'shows disabled email and editable name fields' do

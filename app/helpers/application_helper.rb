@@ -375,14 +375,6 @@ module ApplicationHelper
     }
   end
 
-  def utm_params_for_redirect
-    {
-      utm_source: params[:utm_source],
-      utm_medium: params[:utm_medium],
-      utm_campaign: params[:utm_campaign]
-    }
-  end
-
   def add_or_remove(list, item)
     arr = list ? list.split(',').map(&:strip) : []
     arr.include?(item) ? arr.delete(item) : arr.append(item)
@@ -556,11 +548,19 @@ module ApplicationHelper
   end
 
   def home_class
-    if Flipper.enabled?(:new_home_page, current_user) &&
-       controller_name == 'home' && %w[index show].include?(action_name)
+    if controller_name == 'home' && %w[index show].include?(action_name)
       'home'
     else
       'home-page'
     end
+  end
+
+  def admin_user_label(school_group)
+    name = school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name
+    "Admin • #{name}"
+  end
+
+  def schools_count
+    number_with_delimiter(School.active.visible.count)
   end
 end

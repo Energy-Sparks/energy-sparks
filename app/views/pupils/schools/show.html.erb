@@ -1,7 +1,21 @@
 <%= content_for :page_title, t('pupils.schools.show.title', school_name: @school.name) %>
 
 <% content_for :dashboard_header do %>
-  <%= render DashboardHeaderComponent.new(school: @school, audience: @audience) %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(
+               title: t('common.labels.welcome'),
+               subtitle: t('schools.show.dashboard_subtitle_html')
+             )) do |c| %>
+    <% c.with_callout(title: @school.name, classes: 'bg-grey-pale') do |callout| %>
+      <% callout.with_row do %>
+        <%= @school.address %> <%= @school.postcode %>
+      <% end %>
+      <% callout.with_row do %>
+        <span class="badge badge-secondary">
+          <%= t("common.school_types.#{@school.school_type}") %>
+        </span>
+      <% end %>
+    <% end %>
+  <% end %>
 <% end %>
 
 <div class="container">
@@ -37,7 +51,7 @@
 
 <div class="container-fluid bg-light pb-3">
   <div class="container">
-    <%= render ScoreboardSummaryComponent.new(
+    <%= render Scoreboards::SchoolSummaryComponent.new(
           id: 'scoreboard-summary',
           podium: current_school_podium,
           user: current_user,
@@ -46,11 +60,19 @@
         ) %>
 
     <%= render TimelineComponent.new(
-          school: @school,
           observations: @observations,
           user: current_user,
-          classes: 'mt-4'
-        ) %>
+          classes: 'mt-4',
+          table_opts: { show_date: true }
+        ) do |timeline| %>
+          <% timeline.with_link do %>
+            <p>
+              <%= link_to school_timeline_path(@school), class: 'btn btn-default' do %>
+                <%= t('activities.show.all_activities') %>
+              <% end %>
+            </p>
+          <% end %>
+    <% end %>
 
     <%= render DashboardLoginComponent.new(school: @school, user: current_user) %>
 

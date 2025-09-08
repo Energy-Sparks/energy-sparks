@@ -18,6 +18,7 @@ Disallow: /schools/*/advice
 Disallow: /schools/*/advice/*
 Disallow: /schools/*/school_targets
 Disallow: /pupils/schools/*/analysis
+Disallow: /pupils/schools/*/digital-signage
 Disallow: /benchmark
 Disallow: /all_benchmarks
 Disallow: /users/sign_in
@@ -74,4 +75,19 @@ User-agent: ImagesiftBot
 Disallow: /
 
 User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Scrapy
+Disallow: /
+
+User-agent: ZoominfoBot
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot
+Disallow: /
+
+User-agent: Thinkbot
 Disallow: /

@@ -1,3 +1,4 @@
+<% cache [@school.latest_content, I18n.locale], expires_in: 4.hours do %>
   <p><%= t('advice_pages.baseload.analysis.summary') %></p>
 
   <p><%= t('advice_pages.baseload.analysis.sections') %></p>
@@ -98,7 +99,7 @@
     <%= render 'meter_breakdown_table',
                school: @school,
                baseload_meter_breakdown: @service.baseload_meter_breakdown,
-               baseload_meter_breakdown_total: @service.baseload_meter_breakdown_total %>
+               baseload_meter_breakdown_total: @service.meter_breakdown_table_total %>
 
   <% end %>
 
@@ -160,3 +161,4 @@
     <% end %>
 
   <% end %>
+<% end %>

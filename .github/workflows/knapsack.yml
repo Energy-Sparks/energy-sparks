@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: bundle exec rspec
+      - run: bundle exec rspec --profile 10
         env:
           KNAPSACK_GENERATE_REPORT: true
       - uses: actions/upload-artifact@v4

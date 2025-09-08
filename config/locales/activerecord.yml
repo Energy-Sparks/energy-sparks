@@ -55,6 +55,15 @@ en:
         serves_dinners: Our school serves school dinners on site
         urn: Unique Reference Number
         website: Website
+      secr_co2_equivalence:
+        electricity_co2e: Electricity kg CO₂e
+        electricity_co2e_co2: Electricity kg CO₂e of CO₂
+        natural_gas_co2e: Natural gas kg CO₂e
+        natural_gas_co2e_co2: Natural gas kg CO₂e of CO₂
+        transmission_distribution_co2e: Transmission & distribution kg CO₂e
+      solis_cloud_installation:
+        api_id: API ID
+        api_secret: API secret
       transport_survey/response:
         id: Id
         journey_minutes: Journey minutes
@@ -96,6 +105,8 @@ en:
             value:
               less_than: Must be less than £1.00. It is likely you have entered your rate in pence. Please convert your rate to pounds before entering it into Energy Sparks.
     models:
+      secr_co2_equivalence: SECR CO₂ equivalence
+      solis_cloud_installation: SolisCloud API feed
       transport_survey:
         one: Transport survey
         other: Transport surveys

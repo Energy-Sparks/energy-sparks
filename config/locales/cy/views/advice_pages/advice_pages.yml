@@ -41,9 +41,11 @@ cy:
       calculations_based_on_fuel_type: Cyfrifiadau yn seiliedig ar %{fuel_type} a ddefnyddiwyd rhwng %{start_date} a %{end_date}
       cost_calculations: Cyfrifiadau cost
       cost_calculations_introduction:
-      - Amcangyfrifir costau defnydd ar sail gwybodaeth tariff hanesyddol
-      - Mae arbedion yn y dyfodol yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol
-      - Mae arbedion cost posibl a ddyfinnir mewn cymariaethau ysgol, e.e. ar gyfer ysgolion tebyg sydd wedi'u "rheoli'n dda" ac "enghreifftiol" hefyd yn seiliedig ar dariffau cyfredol eich ysgol
+        - Cyfrifir costau defnydd yn seiliedig ar brisiau uned ynni ac nid ydynt yn ystyried taliadau sefydlog na ffioedd eraill.
+        - Gall tariffau fod yn seiliedig ar gyfartaleddau MAT neu Awdurdod Lleol, neu osodiad diofyn Sbarcynni, os nad yw eich ysgol wedi darparu eu tariffau gwirioneddol.
+        - Amcangyfrifir costau defnydd yn seiliedig ar wybodaeth tariff hanesyddol.
+        - Amcangyfrifon yn seiliedig ar wybodaeth tariff ddiweddaraf eich ysgol yw arbedion yn y dyfodol.
+        - Mae arbedion cost posib a ddyfynnir mewn cymariaethau ysgolion, e.e. ar gyfer ysgolion cymharol "a reolir yn dda" ac "enghreifftiol", hefyd yn seiliedig ar dariffau cyfredol eich ysgol.
       energy_data: Data ynni
       link_title: Sut wnaethom ni gyfrifo'r ffigurau hyn?
       page_title: Sut rydym wedi dadansoddi eich data?
@@ -75,7 +77,6 @@ cy:
         title: Beth ddylech chi wneud nesaf?
     loading_data: Wrthi'n llwytho data...
     nav:
-      name: Cyngor
       overview: Trosolwg
       pages:
         baseload: Llwyth sylfaenol

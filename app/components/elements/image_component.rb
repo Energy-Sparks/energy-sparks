@@ -1,26 +1,23 @@
 module Elements
   class ImageComponent < ApplicationComponent
-    def initialize(src:, fit: true, collapse: false, stretch: false, width: nil, height: nil, **_kwargs)
+    def initialize(src:, fit: true, collapse: false, width: nil, height: nil, rounded: :all, frame: false, **_kwargs)
       super
       @src = src
       @fit = fit
       @collapse = collapse
-      @stretch = stretch
       @width = width
       @height = height
+      @rounded = rounded
+      @frame = frame
       validate
       setup_classes
     end
 
     def setup_classes
-      if @stretch
-        add_classes('stretch')
-        add_classes('left') if @stretch == :left
-        add_classes('right') if @stretch == :right
-      elsif @fit
-        add_classes('fit')
-      end
-      add_classes('d-none d-md-block') if @collapse
+      add_classes('fit') if @fit && !@frame
+      add_classes('w-100') if @frame
+      add_classes(self.class.rounded[@rounded]) if @rounded
+      add_classes('d-none d-lg-block') if @collapse
     end
 
     def style
@@ -31,19 +28,30 @@ module Elements
     end
 
     def call
-      image_tag(@src, id: @id, class: classes, style: style)
+      img = image_tag(@src, id: @id, class: classes, style: style)
+      if @frame
+        classes = 'bg-white h-100 w-100 d-flex align-items-center justify-content-center'
+        classes = class_names(classes, self.class.rounded[@rounded]) if @rounded
+        tag.div(class: classes) { img }
+      else
+        img
+      end
     end
 
     def validate
-      raise ArgumentError.new(self.class.stretch_error) if @stretch && !self.class.stretch.include?(@stretch.to_sym)
+      raise ArgumentError.new(self.class.rounded_error) if @rounded && !self.class.rounded.key?(@rounded.to_sym)
     end
 
-    def self.stretch
-      [:left, :right]
+    def self.rounded
+      {
+        top: 'rounded-top-xl',
+        bottom: 'rounded-bottom-xl',
+        all: 'rounded-xl'
+      }
     end
 
-    def self.stretch_error
-      'Stretch must be: ' + self.stretch.to_sentence(two_words_connector: ' or ')
+    def self.rounded_error
+      'Rounded must be: ' + self.rounded.keys.to_sentence(two_words_connector: ' or ')
     end
   end
 end

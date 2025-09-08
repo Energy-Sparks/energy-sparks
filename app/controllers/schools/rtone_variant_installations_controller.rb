@@ -5,7 +5,7 @@ module Schools
     before_action :load_non_gas_meters
 
     ID_PREFIX = 'rtone-variant'
-    NAME = 'Rtone Variant'
+    NAME = 'Rtone Variant API feed'
     JOB_CLASS = Solar::RtoneVariantLoaderJob
 
     def new

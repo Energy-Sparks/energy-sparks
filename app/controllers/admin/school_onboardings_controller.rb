@@ -69,7 +69,9 @@ module Admin
         :notes,
         :school_group_id,
         :school_name,
-        :school_will_be_public
+        :school_will_be_public,
+        :urn,
+        :full_school
       )
     end
   end

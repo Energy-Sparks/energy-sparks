@@ -26,9 +26,13 @@ class Testimonial < ApplicationRecord
   translates :quote, type: :string, fallbacks: { cy: :en }
   translates :role, type: :string, fallbacks: { cy: :en }
 
-  enum :category, { default: 0 } # need more here
+  enum :category, { default: 0, audit: 1, groups: 2 } # need more here
 
   validates :image, :title_en, :name, :quote_en, :organisation, :category, presence: true
+
+  validates :image,
+              content_type: ['image/png', 'image/jpeg'],
+              dimension: { width: { min: 640, max: 1400 } } # betwen half and full container width size to be conservative
 
   scope :active, -> { where(active: true) }
   scope :tx_resources, -> { active.order(:id) }

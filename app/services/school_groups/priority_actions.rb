@@ -5,6 +5,10 @@ module SchoolGroups
       @ratings_for_reporting = {}
     end
 
+    def priority_action_count
+      priority_actions.keys.count
+    end
+
     # returns a hash of alert_type_rating to a list of ManagementPriority
     # there will be at most one ManagementPriority for a given alert type rating for a school
     def priority_actions
@@ -23,7 +27,15 @@ module SchoolGroups
       end
     end
 
+    def total_savings_by_average_one_year_saving
+      sort_total_savings(total_savings)
+    end
+
     private
+
+    def sort_total_savings(total_savings)
+      total_savings.sort_by { |_, v| v.average_one_year_saving_gbp }.reverse
+    end
 
     def sum_average_one_year_saving_gbp(priorities)
       priorities.reduce(0) {|sum, saving| sum + saving.average_one_year_saving_gbp }

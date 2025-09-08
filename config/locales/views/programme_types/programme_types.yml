@@ -13,7 +13,6 @@ en:
     index:
       introduction_1: Short programmes of related activities that pupils can work through step-by-step to achieve greater impact
       introduction_2: As an Energy Sparks user you can enrol in any of our programmes and record activities to track your progress and score points for your school
-      page_title: Programmes
       title: Our Energy Saving Programmes
     intention:
       adults: This programme is intended for adults
@@ -46,7 +45,6 @@ en:
       current_progress: Current Progress
       download: Download
       overview: Overview
-      points: Points
       view_all_programmes: View all programmes
     started:
       restart: Restart

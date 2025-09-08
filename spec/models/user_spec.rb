@@ -15,10 +15,10 @@ describe User do
     user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
 
-    user = create(:user, name: nil)
+    user = build(:user, name: nil).tap { |u| u.save!(validate: false) }
     expect(user.display_name).to eql user.email
 
-    user = create(:user, name: '')
+    user = build(:user, name: '').tap { |u| u.save!(validate: false) }
     expect(user.display_name).to eql user.email
   end
 
@@ -29,6 +29,32 @@ describe User do
     school = create(:school, name: 'Big School')
     user = create(:user, school:)
     expect(user.school_name).to eq('Big School')
+  end
+
+  describe 'when role is changed' do
+    describe 'when group admin becomes school admin' do
+      let!(:user) { create(:group_admin) }
+
+      before do
+        user.update!(role: :school_admin, school: create(:school), staff_role: create(:staff_role, :management))
+      end
+
+      it 'updates the role' do
+        expect(user.school_group).to be_nil
+      end
+    end
+
+    describe 'when school admin becomes group admin' do
+      let!(:user) { create(:school_admin, :with_cluster_schools) }
+
+      before do
+        user.update!(role: :group_admin, school_group: create(:school_group))
+      end
+
+      it 'removes the schools' do
+        expect(user.cluster_schools).to be_empty
+      end
+    end
   end
 
   describe '#default_school_group' do
@@ -242,7 +268,7 @@ describe User do
     it 'sends welcome email after confirmation for school roles' do
       expect(user.confirmed?).to be(false)
       expect(user.confirm).to be(true)
-
+      perform_enqueued_jobs
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Welcome to Energy Sparks')
     end
@@ -251,7 +277,7 @@ describe User do
       other_user = create(:user, role: :guest, confirmed_at: nil)
       expect(other_user.confirmed?).to be(false)
       expect(other_user.confirm).to be(true)
-
+      perform_enqueued_jobs
       email = ActionMailer::Base.deliveries.last
       expect(email.subject).to eq('Please confirm your account on Energy Sparks')
     end

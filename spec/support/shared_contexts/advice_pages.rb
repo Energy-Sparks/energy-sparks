@@ -94,7 +94,7 @@ RSpec.shared_context 'gas advice page' do
 end
 
 RSpec.shared_context 'solar advice page' do
-  let(:fuel_type) { :electricity }
+  let(:fuel_type) { :solar_pv }
   include_context 'advice page base'
   let!(:advice_page) { create(:advice_page, key: key, restricted: false, fuel_type: fuel_type, learn_more: learn_more_content) }
 

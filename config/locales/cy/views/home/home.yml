@@ -6,36 +6,9 @@ cy:
   home:
     buttons:
       find_out_more: Dysgu rhagor
-      book_a_demo: Archebwch demo
-    carousel:
-      message_1: Helpwch eich ysgol i arbed ynni, arian ac atal newid hinsawdd.
-      message_2: Dangoswch i'ch ysgol faint a phryd rydych yn defnyddio ynni.
-      message_3: Cael cyngor arbed ynni wedi'i deilwra ar gyfer eich ysgol chi yn unig.
-      message_4: Cael rhybuddion awtomataidd i roi gwybod i chi pan fydd eich defnydd o ynni yn newid.
-      message_5: Archwiliwch weithgareddau tîm eco a dosbarth ar gyfer disgyblion.
-      message_6: Rhannu syniadau arbed ynni a chystadlu yn erbyn ysgolion eraill.
-    funnels:
-      local_authority:
-        button: Sbarcynni ar gyfer Awdurdodau Lleol
-        text: Dysgu rhagor am sut y gall Sbarcynni weithio gydag Awdurdodau Lleol i gefnogi ysgolion yn eu hardal.
-        title: Ar gyfer Awdurdodau Lleol
-      multi_academy:
-        button: Sbarcynni ar gyfer Ymddiriedolaethau Aml-Academi
-        text: Dysgu am sut mae Sbarcynni yn cefnogi Ymddiriedolaethau Aml-Academi.
-        title: Ar gyfer Ymddiriedolaethau Aml-Academi
-      school:
-        button: Sbarcynni ar gyfer Ysgolion
-        text: Dysgu rhagor am sut y gall Energy Sparks gefnogi eich ysgol.
-        title: Ar gyfer ysgolion
-    quote:
-      job_title: Pennaeth yr Ysgol
-      text_html: Mae ymgysylltu ag Sbarcynni wedi bod yn brofiad gwerth chweil. Nid yn unig y mae'r ysgol wedi arbed arian, mae'r plant wedi dod yn fwy ymwybodol o'r ffyrdd y gallant helpu i leihau defnydd ynni&hellip;
-    sub_title: Offeryn rheoli ynni a rhaglen addysg unigryw i ysgolion
-    title: Rydym yn helpu ysgolion i ddod yn fwy ynni-effeithlon a brwydro yn erbyn newid hinsawdd.
   mailchimp:
     example: 'ee: hello@example.com'
     latest_news_title: Cael y newyddion diweddaraf gan Sbarcynni yn eich mewnflwch
-    more_newsletters: Rhagor o gylchlythyrau
     never_share_your_email_promise: Ni fyddwn byth yn rhannu eich e-bost ag unrhyw un arall
     signup_now: Cofrestrwch nawr
     title_html: Cadw yn gyfoes&hellip;

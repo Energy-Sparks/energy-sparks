@@ -1,0 +1,7 @@
+---
+en:
+  analytics:
+    academic_year: Academic Year %{period_start_date}/%{period_end_date}
+    from_and_to: "%{from_date} to %{to_date}"
+    holiday_year: "%{holiday} %{year}"
+    no_dates: No Dates

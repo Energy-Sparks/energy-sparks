@@ -1,23 +1,33 @@
 <%= tag.div id: id, class: class_names(classes, { unpublished: !@page.published }) do %>
-  <h3>
-    <%= link_to @page.title, category_page_path(@page.category, @page) %>
-    <% if admin? && !@page.published %>
-      <span class="badge badge-warning">Unpublished</span>
-    <% end %>
-  </h3>
-  <p>
-    <%= @page.description %>
-  </p>
-  <ul>
-    <% sections.each do |section| %>
-      <li>
-        <%= link_to section.title,
-                    category_page_path(@page.category, @page, anchor: section.slug),
-                    class: class_names('section-link', { published: section.published }) %>
-        <% if admin? && !section.published %>
-          <span class="badge badge-warning">Unpublished</span>
+  <div class="row">
+    <div class="col-md-12">
+      <h3>
+        <%= link_to @page.title, category_page_path(@page.category, @page) %>
+      </h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+        <%= @page.description %>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <ul>
+        <% sections.each do |section| %>
+          <li>
+            <%= link_to section.title,
+                        category_page_path(@page.category, @page, anchor: section.slug),
+                        class: class_names('section-link', { published: section.published }) %>
+            <% if admin? && !section.published %>
+              <span class="badge badge-warning">Unpublished</span>
+            <% end %>
+          </li>
         <% end %>
-      </li>
-    <% end %>
-  </ul>
+      </ul>
+    </div>
+  </div>
+  <%= render 'cms/admin_buttons', content: @page, current_user: @current_user %>
 <% end %>

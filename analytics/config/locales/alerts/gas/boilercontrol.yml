@@ -1,0 +1,21 @@
+---
+en:
+  analytics:
+    alert_heating_coming_on_too_early:
+      timescale: 7 days
+    alert_heating_hot_water_on_during_holiday_base:
+      heating_not_on: Well done your heating has not been on this holiday
+      summary: |
+        Your %{heating_type} has been left on over the %{holiday_name} holiday. Up
+        until %{date} this has cost %{cost}. With a projected cost of %{project_cost} by the end of the holiday.
+      timescale: this holiday
+    alert_heating_sensitivity_advice:
+      timescale: year
+    alert_optimum_start_analysis:
+      timescale: last year
+    alert_seasonal_heating_school_days:
+      timescale: 1 year
+    alert_thermostatic_control:
+      timescale: 1 year
+    alert_turn_heating_off:
+      timescale: next week

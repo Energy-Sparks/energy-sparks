@@ -1,0 +1,7 @@
+---
+en:
+  analytics:
+    alert_hot_water_efficiency:
+      timescale: year
+    alert_hot_water_insulation_advice:
+      timescale: last year

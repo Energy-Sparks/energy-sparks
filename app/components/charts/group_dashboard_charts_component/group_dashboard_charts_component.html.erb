@@ -1,0 +1,42 @@
+<%= render TitledSectionComponent.new(id: id, classes: classes) do |section| %>
+  <% if title? %>
+    <% section.with_title do %>
+      <%= title %>
+    <% end %>
+  <% end %>
+  <% if intro? %>
+    <% section.with_intro do %>
+      <%= intro %>
+    <% end %>
+  <% end %>
+  <% section.with_body do %>
+    <ul class="nav nav-tabs locales" id="management-energy-overview" role="tablist">
+      <% reports.each_with_index do |report, index| %>
+        <li class="nav-item">
+          <a class="nav-link <%= 'active' if index.zero? %>"
+             id="<%= report.key %>-tab"
+             data-toggle="tab"
+             href="#<%= report.key %>"
+             role="tab"
+             aria-controls="<%= report.key %>-overview"
+             aria-selected="true">
+              <%= report.title %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content" id="management-energy-overview-tabs">
+      <% reports.each_with_index do |report, index| %>
+        <div class="tab-pane fade show <%= 'active' if index.zero? %>"
+             id="<%= report.key %>"
+             role="tabpanel"
+             aria-labelledby="<%= report.key %>-tab">
+
+             <%= render Charts::GroupComparisonChartComponent.new(school_group: school_group,
+                                                                  report: report,
+                                                                  tabbed: true) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
