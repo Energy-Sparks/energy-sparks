@@ -665,7 +665,7 @@ GEM
       netrc (~> 0.8)
     reverse_markdown (3.0.0)
       nokogiri
-    rexml (3.4.2)
+    rexml (3.4.3)
     rgeo (3.0.1)
     rgeo-geojson (2.2.0)
       multi_json (~> 1.15)
