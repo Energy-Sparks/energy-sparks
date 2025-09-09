@@ -377,7 +377,7 @@ GEM
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
-    hashdiff (1.2.0)
+    hashdiff (1.2.1)
     highline (3.1.2)
       reline
     htmlbeautifier (1.4.3)
