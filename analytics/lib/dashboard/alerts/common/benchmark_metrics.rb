@@ -206,9 +206,7 @@ module BenchmarkMetrics
 
   # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
   def self.exemplar_peak_kw(pupils, school_type)
-    school_type = school_type.to_sym if school_type.instance_of? String
-    check_school_type(school_type)
-    case school_type
+    case school_type&.to_sym
     when :primary, :infant, :junior
       0.077 * pupils
     when :secondary, :middle, :mixed_primary_and_secondary
@@ -222,9 +220,7 @@ module BenchmarkMetrics
 
   # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
   def self.benchmark_peak_kw(pupils, school_type)
-    school_type = school_type.to_sym if school_type.instance_of? String
-    check_school_type(school_type)
-    case school_type
+    case school_type&.to_sym
     when :primary, :infant, :junior
       0.087 * pupils
     when :secondary, :middle, :mixed_primary_and_secondary
