@@ -104,6 +104,14 @@ class Observation < ApplicationRecord
     where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
   }
 
+  scope :with_academic_year, -> {
+    joins('JOIN academic_years ON observations.at BETWEEN academic_years.start_date AND academic_years.end_date')
+  }
+
+  scope :counts_by_academic_year, -> {
+    with_academic_year.group('academic_years.id').count
+  }
+
   has_rich_text :description
 
   before_validation :set_defaults, if: -> { observable_id }, on: :create

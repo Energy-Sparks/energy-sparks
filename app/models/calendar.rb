@@ -43,6 +43,10 @@ class Calendar < ApplicationRecord
     academic_years.for_date(date).first || (based_on && based_on.academic_year_for(date))
   end
 
+  def current_academic_year
+    academic_year_for(Time.zone.today)
+  end
+
   def terms_and_holidays
     calendar_events.joins(:calendar_event_type).where('calendar_event_types.holiday IS TRUE OR calendar_event_types.term_time IS TRUE')
   end

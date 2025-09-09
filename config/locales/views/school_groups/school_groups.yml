@@ -380,6 +380,8 @@ en:
       school_engagement: School engagement
       secr_report: SECR report
       set_message: Set message
+    timeline:
+      intro: A list of all pupil and adult-lead activities recorded by schools in this group
     titles:
       advice: Advice
       comparisons: Comparisons

@@ -1,0 +1,46 @@
+<%= content_for :hero do %>
+  <% if @timelineable.is_a?(School) %>
+    <h1><%= t('schools.timeline.title') %></h1>
+    <p><%= t('schools.timeline.intro') %></p>
+  <% else %>
+    <h1><%= t('components.scoreboards.group_summary.timeline.title') %></h1>
+    <p><%= t('school_groups.timeline.intro') %></p>
+  <% end %>
+<% end %>
+<div class="container">
+  <div class="row mt-2">
+    <div class="col-md-3 col-lg-3 col-xl-2">
+      <%= render PageNavComponent.new name: 'Dashboard',
+                                      icon: 'house', href: polymorphic_path(@timelineable),
+                                      options: { user: current_user, match_controller: true } do |c| %>
+
+        <% c.with_section name: 'School years',
+                          expanded: true,
+                          options: { match_controller: false } do |s| %>
+          <% @active_academic_years.each do |academic_year, count| %>
+            <% s.with_item(name: academic_year.title,
+                           note: "(#{count})",
+                           href: polymorphic_path([@timelineable, :timeline], academic_year: academic_year),
+                           classes: 'small generic-item') %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-9 col-lg-9 col-xl-10 py-2 px-4">
+      <h2>Activity in school year: <%= @academic_year.title %></h2>
+
+      <% if @observations.empty? %>
+        <%= render PromptComponent.new(icon: 'circle-info', status: :none) do |p| %>
+              <%= t('schools.timeline.no_events') %>
+        <% end %>
+      <% else %>
+        <%= render Scoreboards::ActivityTableComponent.new(observations: @observations,
+                                                           show_positions: false,
+                                                           observation_style: :full,
+                                                           show_school: !@timelinable.is_a?(School),
+                                                           show_date: true,
+                                                           show_actions: true) %>
+      <% end %>
+    </div>
+  </div>
+</div>

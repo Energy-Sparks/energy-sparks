@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: 'home#index'
 
-  get "/robots.txt" => "robots_txts#show", as: :robots
+  get '/robots.txt' => 'robots_txts#show', as: :robots
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   get 'case-studies', to: 'case_studies#index', as: :case_studies
@@ -42,8 +42,8 @@ Rails.application.routes.draw do
   get 'product', to: 'home#product'
 
   get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
-  get 'data_feeds/solar_pv_tuos_readings/:area_id',  to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
-  get 'data_feeds/carbon_intensity_readings',  to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
+  get 'data_feeds/solar_pv_tuos_readings/:area_id', to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
+  get 'data_feeds/carbon_intensity_readings', to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
   get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
@@ -168,7 +168,6 @@ Rails.application.routes.draw do
 
   get 'sign_in_and_redirect', to: 'sign_in_and_redirect#redirect'
 
-
   resources :help, controller: 'help_pages', only: [:show]
 
   resources :mailchimp_signups, only: [:new, :create] do
@@ -204,6 +203,10 @@ Rails.application.routes.draw do
         end
       end
     end
+  end
+
+  concern :timelineable do
+    resource :timeline, only: [:show], controller: 'timeline'
   end
 
   scope '/admin/settings', as: :admin_settings do
@@ -256,6 +259,7 @@ Rails.application.routes.draw do
 
   resources :school_groups, only: [:show] do
     concerns :tariff_holder
+    concerns :timelineable
 
     scope module: :school_groups do
       resources :chart_updates, only: [:index] do
@@ -356,9 +360,9 @@ Rails.application.routes.draw do
     end
 
     concerns :tariff_holder
+    concerns :timelineable
 
     scope module: :schools do
-
       resource :advice, controller: 'advice', only: [:show] do
         [:baseload,
          :electricity_costs,
@@ -377,7 +381,6 @@ Rails.application.routes.draw do
          :hot_water,
          :solar_pv,
          :storage_heaters].each do |page|
-
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
           [:insights, :analysis, :learn_more].each do |action|
@@ -504,7 +507,7 @@ Rails.application.routes.draw do
       resources :content_reports, only: [:index, :show]
       resources :equivalence_reports, only: [:index, :show]
       get :chart, to: 'charts#show'
-      get :annotations, to: 'annotations#show', defaults: {format: :json}
+      get :annotations, to: 'annotations#show', defaults: { format: :json }
 
       get :review, to: 'review#show'
       get :timeline, to: 'timeline#show'
@@ -752,9 +755,9 @@ Rails.application.routes.draw do
       resources :alert_subscribers, only: :index
       resources :amr_data_feed_import_logs, only: [:index]
       resources :amr_reading_warnings, only: [:index]
-      get "amr_data_feed_import_logs/errors" => "amr_data_feed_import_logs#errors"
-      get "amr_data_feed_import_logs/warnings" => "amr_data_feed_import_logs#warnings"
-      get "amr_data_feed_import_logs/successes" => "amr_data_feed_import_logs#successes"
+      get 'amr_data_feed_import_logs/errors' => 'amr_data_feed_import_logs#errors'
+      get 'amr_data_feed_import_logs/warnings' => 'amr_data_feed_import_logs#warnings'
+      get 'amr_data_feed_import_logs/successes' => 'amr_data_feed_import_logs#successes'
 
       get 'amr_validated_readings', to: 'amr_validated_readings#index', as: :amr_validated_readings
       get 'amr_validated_readings/:meter_id', to: 'amr_validated_readings#show', as: :amr_validated_reading
@@ -772,7 +775,7 @@ Rails.application.routes.draw do
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
       resources :engaged_groups, only: [:index]
-      match 'engaged_schools', to: "engaged_schools#index", via: [:get, :post]
+      match 'engaged_schools', to: 'engaged_schools#index', via: [:get, :post]
 
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -860,9 +863,9 @@ Rails.application.routes.draw do
 
     resources :local_distribution_zones, except: [:destroy]
     resources :secr_co2_equivalences, except: [:destroy, :show]
-  end # Admin name space
+  end
 
-  get 'admin/mailer_previews/*path' => "rails/mailers#preview", as: :admin_mailer_preview
+  get 'admin/mailer_previews/*path' => 'rails/mailers#preview', as: :admin_mailer_preview
 
   namespace :pupils do
     resource :session, only: [:create]
@@ -904,13 +907,13 @@ Rails.application.routes.draw do
     for-schools for-local-authorities for-multi-academy-trusts
     for-teachers for-pupils for-management
     enrol find-out-more pricing
-     ].each do |path|
-      get path, to: redirect(path: '/product')
+  ].each do |path|
+    get path, to: redirect(path: '/product')
   end
   get '/campaigns/find-out-more', to: redirect(path: '/product')
   get '/campaigns/book-demo', to: redirect(path: '/watch-demo')
 
-  match "/:code", to: "errors#show", via: :all, constraints: {
-    code: /#{ErrorsController::CODES.join("|")}/
+  match '/:code', to: 'errors#show', via: :all, constraints: {
+    code: /#{ErrorsController::CODES.join('|')}/
   }
 end
