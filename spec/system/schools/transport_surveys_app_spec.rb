@@ -95,7 +95,7 @@ describe 'TransportSurveys - App', type: :system do
                       click_button('Confirm')
                     end
 
-                    let(:carbon) { ((((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km)).round(3) }
+                    let(:carbon) { (((transport_type.speed_km_per_hour * time) / 60) * transport_type.kg_co2e_per_km).round(3) }
 
                     it 'displays carbon summary' do
                       expect(page).to have_content("For your #{time} minute journey to school by #{transport_type.image} #{transport_type.name}")
