@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3596,30 +3596,25 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_index "comparison_electricity_peak_kw_per_pupils", ["school_id"], name: "index_comparison_electricity_peak_kw_per_pupils_on_school_id", unique: true
 
   create_view "comparison_electricity_targets", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityTargetAnnual'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+      WITH totals AS (
+           SELECT school_targets.school_id,
+              (- school_targets.electricity) AS current_target,
+              max(school_targets.start_date) AS tracking_start_date,
+              sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
+             FROM school_targets,
+              LATERAL jsonb_array_elements(school_targets.electricity_monthly_consumption) consumption(value)
+            WHERE (school_targets.start_date < now())
+            GROUP BY school_targets.school_id, school_targets.electricity
+          )
+   SELECT school_id,
+      current_target,
+      tracking_start_date,
+      current_year_kwh,
+      current_year_target_kwh,
+      ((current_year_kwh - current_year_target_kwh) / current_year_target_kwh) AS current_year_percent_of_target_relative
+     FROM totals;
   SQL
-  add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
-
   create_view "comparison_gas_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -3648,27 +3643,24 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_index "comparison_gas_consumption_during_holidays", ["school_id"], name: "index_comparison_gas_consumption_during_holidays_on_school_id", unique: true
 
   create_view "comparison_gas_targets", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+      WITH totals AS (
+           SELECT school_targets.school_id,
+              (- school_targets.gas) AS current_target,
+              max(school_targets.start_date) AS tracking_start_date,
+              sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
+             FROM school_targets,
+              LATERAL jsonb_array_elements(school_targets.gas_monthly_consumption) consumption(value)
+            WHERE (school_targets.start_date < now())
+            GROUP BY school_targets.school_id, school_targets.gas
+          )
+   SELECT school_id,
+      current_target,
+      tracking_start_date,
+      current_year_kwh,
+      current_year_target_kwh,
+      ((current_year_kwh - current_year_target_kwh) / current_year_target_kwh) AS current_year_percent_of_target_relative
+     FROM totals;
   SQL
   add_index "comparison_gas_targets", ["school_id"], name: "index_comparison_gas_targets_on_school_id", unique: true
 
