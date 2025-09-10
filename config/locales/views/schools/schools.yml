@@ -684,6 +684,8 @@ en:
       upload_energy_bill: Upload a bill
       view_more_alerts: View more alerts
     timeline:
+      activity_current_year: Activity in current school year
+      activity_in_year: 'Activity in school year: %{school_year}'
       intro: A list of all adult and pupil-led activities at this school
       no_events: No events to show
       title: What's been going on?

@@ -30,7 +30,13 @@
       <% end %>
     </div>
     <div class="col-md-9 col-lg-9 col-xl-10 py-2 px-4">
-      <h2>Activity in school year: <%= @academic_year.title %></h2>
+      <h2>
+        <% if @academic_year == @current_academic_year %>
+          <%= t('schools.timeline.activity_current_year') %>
+        <% else %>
+          <%= t('schools.timeline.activity_in_year', school_year: @academic_year.title) %>
+        <% end %>
+      </h2>
 
       <% unless @observations.any? %>
         <%= render PromptComponent.new(icon: 'circle-info', status: :none) do |p| %>

@@ -65,7 +65,8 @@ module Series
       when :£current;        :current_economic_cost
       when :accounting_cost; :accounting_cost
       when :co2;             :co2
-      else;                  :kwh end
+      else;                  :kwh
+      end
     end
 
     def trendlines
@@ -248,7 +249,8 @@ module Series
       when :£current, :current_economic_cost; meter.amr_data.current_tariff_rate_£_per_kwh
       when :accounting_cost;                  raise EnergySparksUnexpectedStateException, 'scaling factor requested for accounting tariff'
       when :co2;                              EnergyEquivalences.co2_kg_kwh(:gas)
-      else;                                   1.0 end
+      else;                                   1.0
+      end
     end
 
     def adjustment_temperatures(dates)
