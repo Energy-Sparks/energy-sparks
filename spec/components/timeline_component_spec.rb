@@ -13,6 +13,7 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
       classes: classes,
       id: id,
       show_header: true,
+      padding: true,
       table_opts: { show_actions: true, show_date: true },
       user: user
     }
@@ -36,9 +37,8 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
 
   it { expect(html).to have_content(I18n.t('timeline.whats_been_going_on'))}
   it { expect(html).to have_content(I18n.t('schools.dashboards.timeline.intro'))}
-  it { expect(html).to have_link(I18n.t('activities.show.all_activities')), href: school_timeline_path(observation.school)}
-
+  it { expect(html).to have_link(I18n.t('activities.show.all_activities'), href: school_timeline_path(observation.school))}
+  it { expect(html).to have_css('.p-4') }
   it { expect(html).to have_selector(:table_row, [observation.at.to_fs(:es_short), observation.points, observation.activity.display_name])}
-
   it { expect(html).to have_link(observation.activity.display_name, href: school_activity_path(observation.school, observation.activity)) }
 end

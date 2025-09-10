@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TimelineComponent < ApplicationComponent
-  attr_reader :observations, :user, :show_header, :formatting_args
+  attr_reader :observations, :user, :show_header, :padding, :formatting_args
 
   renders_one :link
   renders_one :title
@@ -9,6 +9,7 @@ class TimelineComponent < ApplicationComponent
 
   def initialize(observations:,
                  show_header: true,
+                 padding: true,
                  user: nil,
                  table_opts: {},
                  **kwargs)
@@ -16,6 +17,7 @@ class TimelineComponent < ApplicationComponent
     @observations = observations
     @user = user
     @show_header = show_header
+    @padding = padding
     @formatting_args = default_table_options.merge(table_opts)
   end
 
