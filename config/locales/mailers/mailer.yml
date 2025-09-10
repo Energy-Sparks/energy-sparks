@@ -250,6 +250,7 @@ en:
   school_archived_mailer:
     archived:
       has_been_archived: "%{school}'s Energy Sparks account has been archived. You will no longer be able to access the energy data insights or previously recorded activities for your school."
+      newsletters: If you are subscribed to our newsletters, you will continue to receive these, but you can choose to opt-out using the unsubscribe link at the bottom of every newsletter.
       subject: Energy Sparks archived
       title: School archived
       we_would_love_html: We would love to support your school again in future. You can view our current services and prices <a href="/product">here</a> or request to re-enrol your school by emailing <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
