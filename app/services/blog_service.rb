@@ -59,7 +59,11 @@ class BlogService
   end
 
   def extract_items(body)
-    feed = RSS::Parser.parse(body, false)
+    feed = begin
+      RSS::Parser.parse(body, false)
+    rescue RSS::NotWellFormedError
+      nil
+    end
     items = []
     if feed&.items
       items = feed.items.collect do |item|
