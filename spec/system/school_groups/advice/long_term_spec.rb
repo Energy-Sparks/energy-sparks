@@ -42,6 +42,18 @@ RSpec.shared_examples_for 'a group long term advice page' do
     report_class.refresh
   end
 
+  context 'when following nav link' do
+    it 'redirects correctly' do
+      visit school_group_advice_path(school_group)
+      within('#group-advice-page-nav') do
+        within("##{advice_page.fuel_type}") do
+          click_on(I18n.t("advice_pages.nav.pages.#{advice_page.key}"))
+        end
+      end
+      expect(page).to have_current_path(polymorphic_path([:insights, school_group, :advice, advice_page.key.to_sym]))
+    end
+  end
+
   context 'when on the insights page' do
     it_behaves_like 'an access controlled group advice page' do
       let(:path) { insights_path }

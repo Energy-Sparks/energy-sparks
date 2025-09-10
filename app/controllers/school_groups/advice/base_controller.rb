@@ -13,7 +13,7 @@ module SchoolGroups
       before_action :breadcrumbs
       before_action :set_advice_page, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis]
-      before_action :set_titles
+      before_action :set_titles, only: [:insights, :analysis]
 
       layout 'dashboards'
 
