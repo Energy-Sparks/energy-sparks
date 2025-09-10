@@ -30,6 +30,20 @@ FactoryBot.define do
       calendar_type { :national }
     end
 
+    trait :based_on_regional do
+      transient do
+        regional_title { 'regional calendar' }
+      end
+
+      after(:create) do |calendar, evaluator|
+        regional_calendar = create(:regional_calendar,
+                                   :with_academic_years,
+                                   title: evaluator.regional_title)
+
+        calendar.update!(based_on: regional_calendar)
+      end
+    end
+
     trait :with_academic_years do
       transient do
         academic_year_count { 1 }

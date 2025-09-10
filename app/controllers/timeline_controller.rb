@@ -4,28 +4,26 @@ class TimelineController < ApplicationController
   load_and_authorize_resource :school
   load_and_authorize_resource :school_group
 
-  before_action :set_timelineable
   skip_before_action :authenticate_user!
+
+  before_action :timelineable
   before_action :set_breadcrumbs
 
   def show
     authorize! :index, Observation
+    @academic_years = @observations = []
 
-    first_observation = @timelineable.observations.visible.order('at ASC').first
-    @observations = [] and return unless first_observation
+    return unless first_observation
 
-    years = calendar.academic_years.for_date_onwards(first_observation.at).ordered(:desc)
-    counts = @timelineable.observations.with_academic_year.counts_by_academic_year
-
-    @active_academic_years = years.map { |year| [year, counts[year.id] || 0] }
-
-    @observations = @timelineable.observations.visible.in_academic_year(academic_year).by_date
+    @academic_years = available_years.map { |year| [year, observation_counts[year.id] || 0] }
+    @academic_year = params[:academic_year] ? AcademicYear.find(params[:academic_year]) : available_years.first
+    @observations = timelineable.observations.visible.in_academic_year(@academic_year).by_date || []
   end
 
   private
 
-  def set_timelineable
-    @timelineable = @school || @school_group
+  def timelineable
+    @timelineable ||= @school || @school_group
   end
 
   def set_breadcrumbs
@@ -41,11 +39,15 @@ class TimelineController < ApplicationController
     @calendar ||= @timelineable.is_a?(School) ? @timelineable.national_calendar : @timelineable.scorable_calendar
   end
 
-  def academic_year
-    @academic_year ||= if params[:academic_year]
-                         AcademicYear.find(params[:academic_year])
-                       else
-                         calendar.current_academic_year
-                       end
+  def first_observation
+    timelineable.observations.visible.order('at ASC').first
+  end
+
+  def available_years
+    @available_years ||= calendar.academic_years.for_date_onwards(first_observation.at).ordered(:desc)
+  end
+
+  def observation_counts
+    @observation_counts ||= timelineable.observations.with_academic_year.counts_by_academic_year
   end
 end

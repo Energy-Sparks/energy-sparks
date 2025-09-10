@@ -7,6 +7,7 @@
     <p><%= t('school_groups.timeline.intro') %></p>
   <% end %>
 <% end %>
+
 <div class="container">
   <div class="row mt-2">
     <div class="col-md-3 col-lg-3 col-xl-2">
@@ -17,10 +18,12 @@
         <% c.with_section name: 'School years',
                           expanded: true,
                           options: { match_controller: false } do |s| %>
-          <% @active_academic_years.each do |academic_year, count| %>
+          <% @academic_years.each do |academic_year, count| %>
+           <%= academic_year == @academic_year %>
             <% s.with_item(name: academic_year.title,
                            note: "(#{count})",
                            href: polymorphic_path([@timelineable, :timeline], academic_year: academic_year),
+                           selected: academic_year == @academic_year,
                            classes: 'small generic-item') %>
           <% end %>
         <% end %>
@@ -29,7 +32,7 @@
     <div class="col-md-9 col-lg-9 col-xl-10 py-2 px-4">
       <h2>Activity in school year: <%= @academic_year.title %></h2>
 
-      <% if @observations.empty? %>
+      <% unless @observations.any? %>
         <%= render PromptComponent.new(icon: 'circle-info', status: :none) do |p| %>
               <%= t('schools.timeline.no_events') %>
         <% end %>
@@ -37,7 +40,7 @@
         <%= render Scoreboards::ActivityTableComponent.new(observations: @observations,
                                                            show_positions: false,
                                                            observation_style: :full,
-                                                           show_school: !@timelinable.is_a?(School),
+                                                           show_school: !@timelineable.is_a?(School),
                                                            show_date: true,
                                                            show_actions: true) %>
       <% end %>
