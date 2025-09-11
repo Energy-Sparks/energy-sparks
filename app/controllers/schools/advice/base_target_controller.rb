@@ -39,10 +39,6 @@ module Schools
         :"#{@fuel_type}_target"
       end
 
-      def set_page_subtitle
-        super(section: 'target')
-      end
-
       def percent_change(current_consumption, target_consumption)
         (current_consumption - target_consumption) / target_consumption.to_f
       end
