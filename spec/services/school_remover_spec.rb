@@ -178,7 +178,7 @@ describe SchoolRemover, :schools, type: :service do
 
             Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
 
-            We would love to support your school again in future. You can view our current services and prices [here](http://localhost//product) or request to re-enrol your school by emailing [hello@energysparks.uk](mailto:hello@energysparks.uk).
+            We would love to support your school again in future. You can view our current services and prices [here](http://localhost/product) or request to re-enrol your school by emailing [hello@energysparks.uk](mailto:hello@energysparks.uk).
 
             If you are subscribed to our newsletters, you will continue to receive these, but you can choose to opt-out using the unsubscribe link at the bottom of every newsletter.
           EMAIL
