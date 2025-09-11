@@ -2,6 +2,7 @@
 <%= simple_form_for @user, url: school_users_path(@school) do |f| %>
   <%= f.hidden_field :role %>
   <% if @user.role == 'school_admin' && !@new_school_admin && !params.key?(:new_user_form) %>
+    <p><%= t('schools.users.new.introduction_admin') %></p>
     <%= f.input :email %>
     <%= f.submit t('common.labels.continue'), class: 'btn btn-rounded' %>
   <% else %>
