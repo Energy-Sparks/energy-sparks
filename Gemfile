@@ -118,6 +118,7 @@ gem 'premailer-rails'
 
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-active_support_cache_store'
 gem 'flipper-ui', '~> 1.3'
 
 gem 'net-sftp'

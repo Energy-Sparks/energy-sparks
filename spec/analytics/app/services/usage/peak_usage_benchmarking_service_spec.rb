@@ -21,6 +21,7 @@ describe Usage::PeakUsageBenchmarkingService, :aggregate_failures, type: :servic
 
   describe '#estimated_savings' do
     it 'returns estimated savings when compared against an benchmark school' do
+      allow(BenchmarkMetrics).to receive(:benchmark_peak_kw).and_return(89.0)
       savings = service.estimated_savings(versus: :benchmark_school)
       expect(savings.kwh).to be_within(0.01).of(96_360)
       expect(savings.£).to be_within(0.01).of(9_636)
@@ -29,6 +30,7 @@ describe Usage::PeakUsageBenchmarkingService, :aggregate_failures, type: :servic
     end
 
     it 'returns estimated savings when compared against an examplar school' do
+      allow(BenchmarkMetrics).to receive(:exemplar_peak_kw).and_return(78.0)
       savings = service.estimated_savings(versus: :exemplar_school)
       expect(savings.kwh).to be_within(0.01).of(192_720)
       expect(savings.£).to be_within(0.01).of(19_272)
@@ -39,10 +41,12 @@ describe Usage::PeakUsageBenchmarkingService, :aggregate_failures, type: :servic
 
   describe '#average_peak_usage_kw' do
     it 'returns average peak usage kw when compared against an examplar school' do
+      allow(BenchmarkMetrics).to receive(:exemplar_peak_kw).and_return(78.0)
       expect(service.average_peak_usage_kw(compare: :exemplar_school)).to be_within(0.01).of(78)
     end
 
     it 'returns average peak usage kw when compared against a benchmark school' do
+      allow(BenchmarkMetrics).to receive(:benchmark_peak_kw).and_return(89.0)
       expect(service.average_peak_usage_kw(compare: :benchmark_school)).to be_within(0.01).of(89)
     end
   end
