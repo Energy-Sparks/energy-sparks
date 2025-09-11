@@ -20,18 +20,20 @@ module Schools
 
       def set_target
         @target = @school.most_recent_target
-        redirect_to school_school_targets_path(@school) if @target.nil?
+        redirect_to school_school_targets_path(@school) and return if @target.nil?
+
+        render 'no_target' if @target.target(@fuel_type).nil?
       end
 
       def set_consumption
-        @consumption = ActiveSupport::OrderedOptions.new
-        @consumption.data = @target.monthly_consumption(@fuel_type)
-        render 'new_target' and return if @consumption.data.nil?
+        @consumption = @target.monthly_consumption_status(@fuel_type)
+        render 'new_target' and return if @consumption.consumption.nil?
 
-        non_missing = @consumption.data.reject { |month| month[:missing] }
-        @consumption.last_month = non_missing.last
-        @consumption.current = non_missing.sum { |month| month[:current_consumption] }
-        @consumption.target = non_missing.sum { |month| month[:target_consumption] }
+        if @consumption.non_missing.last.nil? && @consumption.consumption.pluck(:target_consumption).include?(nil)
+          render 'limited_data' and return
+        end
+
+        @consumption.last_month = @consumption.non_missing.last
       end
 
       def advice_page_key
@@ -63,6 +65,8 @@ module Schools
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end
       helper_method :formatted_target_change
+
+      # def revise_tar
     end
   end
 end

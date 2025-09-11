@@ -112,11 +112,18 @@ class SchoolTarget < ApplicationRecord
   MONTHLY_CONSUMPTION_FIELDS =
     %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
 
-  def monthly_consumption(fuel_type, missing: true)
-    consumption = self["#{fuel_type}_monthly_consumption"]
-                  &.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
-    consumption&.reject! { |month| month[:missing] } unless missing
-    consumption
+  def monthly_consumption(fuel_type)
+    self["#{fuel_type}_monthly_consumption"]&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+  end
+
+  def monthly_consumption_status(fuel_type)
+    consumption = monthly_consumption(fuel_type)
+    non_missing = consumption&.reject { |month| month[:missing] }
+    current_consumption = non_missing&.sum { |month| month[:current_consumption] }
+    target_consumption = non_missing&.sum { |month| month[:target_consumption] }
+    meeting_target = current_consumption && current_consumption <= target_consumption
+    ActiveSupport::OrderedOptions.new.merge(consumption:, non_missing:, current_consumption:, target_consumption:,
+                                            meeting_target:)
   end
 
   def target(fuel_type)

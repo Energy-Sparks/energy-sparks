@@ -1,0 +1,10 @@
+<% if can?(:manage, @target) %>
+  <p>
+    <% if @target.expired? %>
+      <%= t('advice_pages.target.expired.complete_set_new_html', path: new_school_school_target_path(@school, @target)) %>
+    <% else %>
+      <%= t('advice_pages.target.revise_html',
+            path: edit_school_school_target_path(@target.school, @target)) %>
+    <% end %>
+  </p>
+<% end %>
