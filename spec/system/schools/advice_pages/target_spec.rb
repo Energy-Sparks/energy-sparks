@@ -23,6 +23,7 @@ RSpec.shared_examples 'target advice page' do
   before do
     Flipper.enable(:target_advice_pages2025)
     sign_in(create(:school_admin, school:))
+    # staff?
   end
 
   it_behaves_like 'it responds to HEAD requests'
@@ -49,27 +50,30 @@ RSpec.shared_examples 'target advice page' do
   end
 
   def content(name)
-    find("##{fuel_type}_target-#{name}")
+    find("##{fuel_type}_target-#{name}").text.gsub(/^How have we analysed your data?.*/m, '')
   end
 
   context 'with the Insights tab' do
     target_shared_examples('Insights')
 
-    it 'has relevant content' do
+    it 'has relevant content' do # rubocop:todo RSpec/ExampleLength
       create_target
       visit_path('Insights')
-      expect(content('insights')).to have_content <<~CONTENT
+      expect(content('insights')).to eq(<<~CONTENT)
+        You have reached your target date and is it complete. You can set a new target now.
         What is your target?
-        Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target
-        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025
-        You can revise your target.
+        Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.
+        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025.
         Learn more
-        Target has expired, set a new one here.
         Your current progress
         Back to top
         Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
         Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
         01 Jan 2024 - 31 Dec 2024 12,120 12,000 +1&percnt;
+        How did we calculate these figures?
+        View your detailed progress report or compare progress with other schools in your group.
+        What should you do next?
+        Back to top
       CONTENT
     end
 
@@ -93,14 +97,12 @@ RSpec.shared_examples 'target advice page' do
     it 'missing previous years data' do
       create_target(target_consumption: nil, missing: true)
       visit_path('Insights')
-      expect(content('insights')).to have_content(<<~CONTENT)
-        Learn more
-        Target has expired but we are still waiting for data for it.
-        Your current progress
-        Back to top
-        Data from the previous year is missing so we can't calculate your target consumption. See here for more information about your usage.
-        Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
-        01 Jan 2024 - 12,120 Previous year missing data
+      expect(content('insights')).to eq(<<~CONTENT.chomp)
+        Limited historical data
+        We have limited historical data for your school so are unable to calculate a progress report to help you track progress towards completing your target.
+        If we are able to access historical data for your school then a report will automatically become available.
+        In the meantime you can monitor your usage using the charts on the long term electricity usage advice page
+        In the meantime you can learn more about this topic.
       CONTENT
     end
 
@@ -111,6 +113,12 @@ RSpec.shared_examples 'target advice page' do
         Learn more
         Your current progress
       CONTENT
+    end
+
+    it 'target not set' do
+      create_target(start_date: 6.months, gas: nil, electricity: nil, storage_heaters: nil)
+      visit_path('Insights')
+      expect(content('insights')).to eq(0)
     end
   end
 
