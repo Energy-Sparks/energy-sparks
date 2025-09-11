@@ -169,13 +169,17 @@ describe SchoolRemover, :schools, type: :service do
         it 'sends an archived email' do
           perform_enqueued_jobs
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Energy Sparks archived')
+          expect(email.subject).to eq("#{school.name} has been archived on Energy Sparks")
           expect(email.to).to contain_exactly(school_admin.email, school_admin_user.email, staff_user.email)
-          expect(email_html_text(email)).to include(<<~EMAIL)
-            School archived
-            #{school.name}'s Energy Sparks account has been archived. You will no longer be able to access the energy data insights or previously recorded activities for your school.
+          expect(bootstrap_email_body_to_markdown(email)).to eq(<<~EMAIL.chomp)
+            # School archived
+
+            #{school.name} has been archived on Energy Sparks. You will no longer be able to access the energy data insights or previously recorded activities for your school.
+
             Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
-            We would love to support your school again in future. You can view our current services and prices here or request to re-enrol your school by emailing hello@energysparks.uk.
+
+            We would love to support your school again in future. You can view our current services and prices [here](http://localhost//product) or request to re-enrol your school by emailing [hello@energysparks.uk](mailto:hello@energysparks.uk).
+
             If you are subscribed to our newsletters, you will continue to receive these, but you can choose to opt-out using the unsubscribe link at the bottom of every newsletter.
           EMAIL
         end

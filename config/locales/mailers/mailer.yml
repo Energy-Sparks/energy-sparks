@@ -249,11 +249,11 @@ en:
       we_estimated_that_html: We estimate that your highest priority energy saving opportunity is to %{opportunity}. Doing this could save you as much as %{gbp_saving} and %{co2_saving}kg CO₂ per year.
   school_archived_mailer:
     archived:
-      has_been_archived: "%{school}'s Energy Sparks account has been archived. You will no longer be able to access the energy data insights or previously recorded activities for your school."
+      has_been_archived: "%{school_name} has been archived on Energy Sparks. You will no longer be able to access the energy data insights or previously recorded activities for your school."
       newsletters: If you are subscribed to our newsletters, you will continue to receive these, but you can choose to opt-out using the unsubscribe link at the bottom of every newsletter.
-      subject: Energy Sparks archived
+      subject: "%{school_name} has been archived on Energy Sparks"
       title: School archived
-      we_would_love_html: We would love to support your school again in future. You can view our current services and prices <a href="/product">here</a> or request to re-enrol your school by emailing <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
+      we_would_love_html: We would love to support your school again in future. You can view our current services and prices <a href="%{root_url}/product">here</a> or request to re-enrol your school by emailing <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
       your_account: Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
   target_mailer:
     admin_target_report:

@@ -13,7 +13,8 @@ class SchoolArchivedMailer < LocaleMailer
   end
 
   def archived
-    @school = params[:school]
-    make_bootstrap_mail(to: params[:users].map(&:email), school: @school)
+    @school_name = params[:school].name
+    make_bootstrap_mail(to: params[:users].map(&:email),
+                        subject: default_i18n_subject(school_name: @school_name, locale: locale_param))
   end
 end
