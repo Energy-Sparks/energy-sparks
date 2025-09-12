@@ -1,10 +1,11 @@
-<%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page,
-                                         tab: @tab, data_warning: nil do %>
-    <h2>
-      <%= render PageNavComponent::CollapseButton.new(display: 'inline') %>
-      <%= t('advice_pages.target.limited_data.title') %>
-    </h2>
-    <p><%= t('advice_pages.target.limited_data.text_html',
-             fuel_type: @fuel_type, path: polymorphic_path([@school, :advice, @fuel_type, :long_term])) %></p>
-    <p><%= t('advice_pages.not_enough_data.learn_more_html', learn_more_link: 'learn_more') %></p>
+<%= render 'limited_advice_page', title: t('advice_pages.target.limited_data.title') do %>
+  <%= t('advice_pages.target.limited_data.text_html') %>
+  <p>
+    <% if @fuel_type != :storage_heater %>
+      <%= t('advice_pages.target.limited_data.meantime_html',
+            fuel_type: t_fuel_type, path: polymorphic_path([@school, :advice, @fuel_type, :long_term])) %>
+    <% else %>
+      <%= t('advice_pages.not_enough_data.learn_more_html', learn_more_link: 'learn_more') %>
+    <% end %>
+  </p>
 <% end %>

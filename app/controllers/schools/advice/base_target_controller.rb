@@ -20,9 +20,9 @@ module Schools
 
       def set_target
         @target = @school.most_recent_target
-        redirect_to school_school_targets_path(@school) and return if @target.nil?
+        redirect_to school_school_targets_path(@school) and return if @target.nil? && can?(:manage, SchoolTarget)
 
-        render 'no_target' if @target.target(@fuel_type).nil?
+        render 'no_target' if @target&.target(@fuel_type).nil?
       end
 
       def set_consumption
@@ -66,7 +66,10 @@ module Schools
       end
       helper_method :formatted_target_change
 
-      # def revise_tar
+      def t_fuel_type
+        t("advice_pages.fuel_type.#{@fuel_type}")
+      end
+      helper_method :t_fuel_type
     end
   end
 end

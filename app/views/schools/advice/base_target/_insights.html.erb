@@ -2,7 +2,7 @@
 <h2><%= t('advice_pages.target.insights.title') %></h2>
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
-        fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+        fuel_type: t_fuel_type,
         percent: formatted_target,
         target_date: formatted_target_date) %>
   <% if !@target.expired? && can?(:manage, @target) %>

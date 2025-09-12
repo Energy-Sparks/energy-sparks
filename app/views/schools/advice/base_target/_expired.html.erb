@@ -6,7 +6,7 @@
         <%= t('advice_pages.target.expired.waiting_set_new_html', path: new_school_school_target_path(@school)) %>
       <% end %>
     <% else %>
-      <%= t('advice_pages.target.expired.complete', path: new_school_school_target_path(@school)) %>
+      <%= t('advice_pages.target.expired.complete') %>
       <% if can?(:manage, @target) %>
         <%= t('advice_pages.target.expired.complete_set_new_html', path: new_school_school_target_path(@school)) %>
       <% end %>

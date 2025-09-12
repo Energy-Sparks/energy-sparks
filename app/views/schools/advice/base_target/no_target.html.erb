@@ -1,10 +1,20 @@
-<%= render 'schools/advice/advice_page', school: @school, advice_pages: @advice_pages, advice_page: @advice_page,
-                                         tab: @tab, data_warning: nil do %>
-    <h2>
-      <%= render PageNavComponent::CollapseButton.new(display: 'inline') %>
-      <%= t('advice_pages.target.no_target.title') %>
-    </h2>
-    <p><%= t('advice_pages.target.no_target.text', fuel_type: @fuel_type) %></p>
-    <%= render 'can_revise' %>
-    <p><%= t('advice_pages.not_enough_data.learn_more_html', learn_more_link: 'learn_more') %></p>
+<%= render 'limited_advice_page', title: t('advice_pages.target.no_target.title') do %>
+  <p><%= t('advice_pages.target.no_target.text', fuel_type: t_fuel_type) %></p>
+  <p>
+    <% path = if @target.nil? || @target.expired?
+                new_school_school_target_path(@school)
+              else
+                edit_school_school_target_path(@school, @target)
+              end %>
+    <% if can?(:manage, @target) %>
+      <% if @target.expired? %>
+        <%= t('advice_pages.target.expired.complete_set_new_html', path:) %>
+      <% else %>
+        <%= t('advice_pages.target.insights.what_is_your_target.revise_html', path:) %>
+      <% end %>
+    <% else %>
+      <%= t('advice_pages.target.no_target.login_html', path: sign_in_and_redirect_path(url: path)) %>
+    <% end %>
+  </p>
+  <p><%= t('advice_pages.not_enough_data.learn_more_html', learn_more_link: 'learn_more') %></p>
 <% end %>
