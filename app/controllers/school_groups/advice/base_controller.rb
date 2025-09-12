@@ -9,11 +9,11 @@ module SchoolGroups
       before_action :load_schools
       before_action :redirect_unless_authorised
       before_action :set_counts
-      before_action :set_titles
       before_action :set_fuel_types
       before_action :breadcrumbs
       before_action :set_advice_page, only: [:insights, :analysis]
       before_action :set_tab_name, only: [:insights, :analysis]
+      before_action :set_titles, only: [:insights, :analysis]
 
       layout 'dashboards'
 
@@ -27,7 +27,6 @@ module SchoolGroups
 
       def set_titles
         @page_title = t('page_title', scope: "school_groups.advice_pages.#{advice_page_key}", default: nil)
-        @page_subtitle = t('page_subtitle', scope: "school_groups.advice_pages.#{advice_page_key}", default: nil)
       end
 
       def set_fuel_types

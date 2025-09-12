@@ -8,14 +8,6 @@ module AdvicePageHelper
     end
   end
 
-  def group_advice_page_path(school_group, advice_page_key = nil, tab = :insights, params: {}, anchor: nil)
-    if advice_page_key.present?
-      polymorphic_path([tab, school_group, :advice, advice_page_key], params: params, anchor: anchor)
-    else
-      school_group_advice_path(school_group)
-    end
-  end
-
   def sort_by_label(advice_pages)
     advice_pages.sort_by { |ap| translated_label(ap) }
   end
