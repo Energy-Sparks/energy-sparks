@@ -48,9 +48,9 @@ class DashboardInsightsComponent < ApplicationComponent
 
   def any_targets?
     if Flipper.enabled?(:target_advice_pages2025, user)
-      [@target.electricity_monthly_consumption,
-       @target.gas_monthly_consumption,
-       @target.storage_heater_monthly_consumption].any?
+      [@target&.electricity_monthly_consumption,
+       @target&.gas_monthly_consumption,
+       @target&.storage_heater_monthly_consumption].any?
     else
       any_passing_targets? || any_failing_targets?
     end

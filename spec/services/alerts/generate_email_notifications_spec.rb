@@ -240,6 +240,8 @@ describe Alerts::GenerateEmailNotifications, :include_application_helper do
 
     before { Flipper.enable(:target_advice_pages2025) }
 
+    let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates) }
+
     it 'shows failing targets' do
       create(:school_target, :with_monthly_consumption, school:)
       shared_before
