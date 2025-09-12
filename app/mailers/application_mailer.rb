@@ -18,4 +18,8 @@ class ApplicationMailer < ActionMailer::Base
   def env
     ENV['ENVIRONMENT_IDENTIFIER'] || 'unknown'
   end
+
+  def prevent_delivery_from_test
+    mail.perform_deliveries = false unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
+  end
 end

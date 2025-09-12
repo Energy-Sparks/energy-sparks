@@ -20,12 +20,18 @@ module Schools
 
       def set_target
         @target = @school.most_recent_target
-        redirect_to school_school_targets_path(@school) if @target.nil?
+        redirect_to school_school_targets_path(@school) and return if @target.nil? && can?(:manage, SchoolTarget)
+
+        render 'no_target' if @target&.target(@fuel_type).nil?
       end
 
       def set_consumption
         @consumption = @target.monthly_consumption_status(@fuel_type)
         render 'new_target' and return if @consumption.consumption.nil?
+
+        if @consumption.non_missing.last.nil? && @consumption.consumption.pluck(:target_consumption).include?(nil)
+          render 'limited_data' and return
+        end
 
         @consumption.last_month = @consumption.non_missing.last
       end
@@ -33,10 +39,6 @@ module Schools
       def advice_page_key
         @fuel_type = self.class.name.split('::').last.underscore.split('_')[..-3].join('_').to_sym
         :"#{@fuel_type}_target"
-      end
-
-      def set_page_subtitle
-        super(section: 'target')
       end
 
       def percent_change(current_consumption, target_consumption)
@@ -63,6 +65,11 @@ module Schools
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end
       helper_method :formatted_target_change
+
+      def t_fuel_type
+        t("advice_pages.fuel_type.#{@fuel_type}")
+      end
+      helper_method :t_fuel_type
     end
   end
 end

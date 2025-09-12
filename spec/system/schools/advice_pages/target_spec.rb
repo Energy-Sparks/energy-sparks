@@ -6,7 +6,7 @@ def target_shared_examples(tab)
   context 'with shared examples' do
     before do
       create(:school_target, :with_monthly_consumption, school:, fuel_type:)
-      visit_path(tab)
+      visit_tab(tab)
     end
 
     it_behaves_like 'an advice page tab', tab: do
@@ -22,19 +22,19 @@ RSpec.shared_examples 'target advice page' do
 
   before do
     Flipper.enable(:target_advice_pages2025)
-    sign_in(create(:school_admin, school:))
   end
 
   it_behaves_like 'it responds to HEAD requests'
 
-  def visit_path(tab = nil)
+  def visit_tab(tab = nil, sign_in: true)
+    sign_in(create(:school_admin, school:)) if sign_in
     visit polymorphic_path([school, :"advice_#{fuel_type}_target"])
     click_on tab unless tab.nil?
   end
 
   context 'with no target' do
     it 'redirects to the new target page' do
-      visit_path
+      visit_tab
       expect(page).to have_current_path("/schools/#{school.slug}/school_targets/new")
     end
   end
@@ -49,33 +49,60 @@ RSpec.shared_examples 'target advice page' do
   end
 
   def content(name)
-    find("##{fuel_type}_target-#{name}")
+    find("##{fuel_type}_target-#{name}").text.gsub(/^How have we analysed your data?.*/m, '')
+  end
+
+  def limited_data_content
+    meantime = if fuel_type == :storage_heater
+                 'In the meantime you can learn more about this topic.'
+               else
+                 'In the meantime you can monitor your usage using the charts on the ' \
+                 "long term #{fuel_type} usage advice page"
+               end
+    <<~CONTENT.chomp
+      Limited historical data
+      We have limited historical data for your school so are unable to calculate a progress report to help you track progress towards completing your target.
+      If we are able to access historical data for your school then a report will automatically become available.
+      #{meantime}
+    CONTENT
   end
 
   context 'with the Insights tab' do
     target_shared_examples('Insights')
 
-    it 'has relevant content' do
-      create_target
-      visit_path('Insights')
-      expect(content('insights')).to have_content <<~CONTENT
+    def insight_content
+      view_detailed = if fuel_type == :storage_heater
+                        'View your detailed progress report.'
+                      else
+                        'View your detailed progress report or compare progress with other schools in your group.'
+                      end
+      <<~CONTENT
+        You have reached your target date and is it complete. You can set a new target now.
         What is your target?
-        Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target
-        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025
-        You can revise your target.
+        Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.
+        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025.
         Learn more
-        Target has expired, set a new one here.
         Your current progress
         Back to top
         Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
         Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
         01 Jan 2024 - 31 Dec 2024 12,120 12,000 +1&percnt;
+        How did we calculate these figures?
+        #{view_detailed}
+        What should you do next?
+        Back to top
       CONTENT
+    end
+
+    it 'has relevant content' do
+      create_target
+      visit_tab('Insights')
+      expect(content('insights')).to eq(insight_content)
     end
 
     it 'new target with no consumption' do
       create(:school_target, school:)
-      visit_path('Insights')
+      visit_tab('Insights')
       expect(content('insights')).to have_content(<<~CONTENT.chomp)
         Waiting to process data for your new target
         Data for your new target should be available tomorrow.
@@ -85,32 +112,47 @@ RSpec.shared_examples 'target advice page' do
 
     it 'target in future' do
       create_target(start_date: 1.day.from_now)
-      visit_path('Insights')
+      visit_tab('Insights')
       expect(content('insights')).to \
         have_content('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
       create_target(target_consumption: nil, missing: true)
-      visit_path('Insights')
-      expect(content('insights')).to have_content(<<~CONTENT)
-        Learn more
-        Target has expired but we are still waiting for data for it.
-        Your current progress
-        Back to top
-        Data from the previous year is missing so we can't calculate your target consumption. See here for more information about your usage.
-        Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
-        01 Jan 2024 - 12,120 Previous year missing data
-      CONTENT
+      visit_tab('Insights')
+      expect(content('insights')).to eq(limited_data_content)
     end
 
     it 'non expired target' do
       create_target(start_date: 6.months.ago)
-      visit_path('Insights')
+      visit_tab('Insights')
       expect(content('insights')).to have_content(<<~CONTENT)
         Learn more
         Your current progress
       CONTENT
+    end
+
+    context 'with target not set' do
+      before { create(:school_target, school:, fuel_type => nil) }
+
+      def not_set_content(revise_text)
+        <<~CONTENT.chomp
+          No target set
+          Your school has not set a target for #{fuel_string} use so we can't generate a progress report.
+          #{revise_text}
+          In the meantime you can learn more about this topic.
+        CONTENT
+      end
+
+      it 'signed in' do
+        visit_tab('Insights')
+        expect(content('insights')).to eq(not_set_content('You can revise your target.'))
+      end
+
+      it 'guest' do
+        visit_tab('Insights', sign_in: false)
+        expect(content('insights')).to eq(not_set_content('You need to login to set a target.'))
+      end
     end
   end
 
@@ -120,6 +162,7 @@ RSpec.shared_examples 'target advice page' do
     def expected_content(extra_contents = '', year = 2024)
       <<~CONTENT
         Progress report
+        The following sections provide more detailed analysis of your school's #{fuel_string} target throughout the target period.
         Monthly progress Cumulative progress#{extra_contents}
         Unfortunately you are not meeting your target to reduce your #{fuel_string} usage
         Monthly progress
@@ -161,8 +204,9 @@ RSpec.shared_examples 'target advice page' do
 
     it 'has relevant content' do
       create_target
-      visit_path('Analysis')
-      expect(content('analysis')).to have_content(expected_content)
+      visit_tab('Analysis')
+      expect(content('analysis')).to eq(
+        "You have reached your target date and is it complete. You can set a new target now.\n#{expected_content}")
     end
 
     it 'shows correct content with previous targets' do
@@ -171,11 +215,11 @@ RSpec.shared_examples 'target advice page' do
       create_target(start_date: Date.new(2025, 1, 1))
       create_target(start_date: Date.new(2024, 1, 1),
                     "#{fuel_type}_progress": { 'usage' => 11_000, 'target' => 10_000 }, target: 5)
-      visit_path('Analysis')
-      expect(content('analysis')).to have_content(expected_content(' Historical progress', 2026) + <<~CONTENT)
+      visit_tab('Analysis')
+      expect(content('analysis')).to eq(expected_content(' Historical progress', 2026) + <<~CONTENT)
         Historical progress
         Back to top
-        The following table shows your previous progress towards reducing your #{fuel_type} usage
+        The following table shows your previous progress towards reducing your #{fuel_string} usage
         Target date Previous year (kWh) Target year (kWh) % change Target \
         January 2026 12,120 12,000 +1&percnt; 4&percnt; \
         January 2025 11,000 10,000 +10&percnt; 5&percnt;
@@ -184,8 +228,8 @@ RSpec.shared_examples 'target advice page' do
 
     it 'new target with no consumption' do
       create(:school_target, school:)
-      visit_path('Analysis')
-      expect(content('analysis')).to have_content(<<~CONTENT.chomp)
+      visit_tab('Analysis')
+      expect(content('analysis')).to eq(<<~CONTENT.chomp)
         Waiting to process data for your new target
         Data for your new target should be available tomorrow.
         In the meantime you can learn more about this topic.
@@ -194,24 +238,15 @@ RSpec.shared_examples 'target advice page' do
 
     it 'target in future' do
       create_target(start_date: 1.day.from_now)
-      visit_path('Analysis')
+      visit_tab('Analysis')
       expect(content('analysis')).to \
         have_content('Target date is in the future so no consumption has yet been recorded.')
     end
 
     it 'missing previous years data' do
       create_target(target_consumption: nil, previous_consumption: nil, missing: true)
-      visit_path('Analysis')
-      expect(content('analysis')).to have_content(<<~CONTENT)
-        Progress report
-        Monthly progress Cumulative progress
-        Data from the previous year is missing so we can't calculate your target consumption. See here for more information about your usage.
-      CONTENT
-      expect(content('analysis')).to have_content(<<~CONTENT.chomp)
-        Month Last year (kWh) Target (kWh) This year (kWh) % change On target? \
-        January 2024 1,010 \
-        February 2024 1,010
-      CONTENT
+      visit_tab('Analysis')
+      expect(content('analysis')).to eq(limited_data_content)
     end
   end
 end
@@ -223,15 +258,15 @@ RSpec.describe 'target advice pages' do
     end
   end
 
-  # context 'with gas' do
-  #   it_behaves_like 'target advice page' do
-  #     let(:fuel_type) { :gas }
-  #   end
-  # end
+  context 'with gas' do
+    it_behaves_like 'target advice page' do
+      let(:fuel_type) { :gas }
+    end
+  end
 
-  # context 'with storage heater' do
-  #   it_behaves_like 'target advice page' do
-  #     let(:fuel_type) { :storage_heater }
-  #   end
-  # end
+  context 'with storage heater' do
+    it_behaves_like 'target advice page' do
+      let(:fuel_type) { :storage_heater }
+    end
+  end
 end

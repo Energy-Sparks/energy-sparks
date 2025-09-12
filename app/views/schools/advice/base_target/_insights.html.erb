@@ -1,24 +1,17 @@
+<%= render 'expired' %>
+<h2><%= t('advice_pages.target.insights.title') %></h2>
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
   <%= t('advice_pages.target.insights.what_is_your_target.text_html',
-        fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+        fuel_type: t_fuel_type,
         percent: formatted_target,
         target_date: formatted_target_date) %>
-  <% if can?(:manage, @target) %>
+  <% if !@target.expired? && can?(:manage, @target) %>
     <p><%= t('advice_pages.target.insights.what_is_your_target.revise_html',
              path: edit_school_school_target_path(@target.school, @target)) %></p>
   <% end %>
   <% c.with_link do
        link_to t('common.labels.learn_more'), polymorphic_path([@fuel_type, :target_learn_more, @school, :advice])
      end %>
-<% end %>
-<% if @target.target_date < Date.current %>
-  <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do |c| %>
-    <% if @consumption.consumption.any? { |month| month[:missing] }
-         t('advice_pages.target.insights.expired_target_waiting')
-       else
-         t('advice_pages.target.insights.expired_target_html', path: new_school_school_target_path(@school))
-       end %>
-  <% end %>
 <% end %>
 <%= render 'schools/advice/section_title',
            section_id: 'progress',

@@ -72,8 +72,8 @@ module Schools
         @advice_page_title = t("advice_pages.#{@advice_page.key}.page_title")
       end
 
-      def set_page_subtitle(section: nil)
-        @advice_page_subtitle = if_exists("#{action_name}.title", section:)
+      def set_page_subtitle
+        @advice_page_subtitle = if_exists("#{action_name}.title")
       end
 
       def set_breadcrumbs
@@ -83,11 +83,8 @@ module Schools
         ]
       end
 
-      def if_exists(key, section: nil)
-        full_key = "advice_pages.#{section || @advice_page.key}.#{key}"
-        return unless I18n.exists?(full_key, I18n.locale)
-
-        t(full_key)
+      def if_exists(key)
+        t("advice_pages.#{@advice_page.key}.#{key}", default: nil)
       end
 
       def set_data_warning
