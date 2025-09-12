@@ -3,7 +3,6 @@ module SchoolGroups
     class BaseOutOfHoursController < BaseController
       include ComparisonTableGenerator
 
-      load_resource :school_group
       before_action :run_report
 
       def insights
