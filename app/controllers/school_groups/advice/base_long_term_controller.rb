@@ -2,8 +2,6 @@ module SchoolGroups
   module Advice
     class BaseLongTermController < BaseController
       include ComparisonTableGenerator
-      include SchoolGroupAccessControl
-      include SchoolGroupBreadcrumbs
 
       load_resource :school_group
       before_action :run_report
@@ -61,10 +59,6 @@ module SchoolGroups
 
       def index_params
         { benchmark: report_key, school_group_ids: [@school_group.id] }
-      end
-
-      def load_data
-        report_class.for_schools(@schools).with_data.by_percentage_change(:previous_year_electricity_kwh, :current_year_electricity_kwh)
       end
     end
   end

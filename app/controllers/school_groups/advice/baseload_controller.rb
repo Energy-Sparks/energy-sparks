@@ -2,8 +2,6 @@ module SchoolGroups
   module Advice
     class BaseloadController < BaseController
       include ComparisonTableGenerator
-      include SchoolGroupAccessControl
-      include SchoolGroupBreadcrumbs
 
       load_resource :school_group
       before_action :run_report
