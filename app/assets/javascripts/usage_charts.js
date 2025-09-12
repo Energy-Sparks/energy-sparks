@@ -25,6 +25,14 @@ $(document).ready(function() {
     const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
     if (chartSelector && chartSelector.value) {
       chartConfig.type = chartSelector.value;
+      const chartTitle = chartDiv.querySelector(".chart-title");
+      if (chartTitle) {
+        const selectedOption = chartSelector.options[chartSelector.selectedIndex];
+        const title = selectedOption.getAttribute("data-title");
+        if (title) {
+          chartTitle.innerHTML = title;
+        }
+      }
     }
 
     const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");

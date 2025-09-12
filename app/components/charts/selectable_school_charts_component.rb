@@ -26,6 +26,10 @@ module Charts
       helpers.create_chart_config(default_school, default_chart)
     end
 
+    def default_chart_title
+      @charts[@fuel_types.first][default_chart][:label] # FIXME
+    end
+
     def default_chart
       @charts[@fuel_types.first].keys.first
     end
