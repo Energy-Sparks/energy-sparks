@@ -5,10 +5,11 @@ $(document).ready(function() {
   //they should have already made any changes to the form we're using, so this just updates
   //the explanation and then triggers the data load
   function updateChart(chartDiv) {
-    var chartContainer = $(chartDiv).find('.usage-chart').first();
+    const chartContainer = $(chartDiv).find('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
-    var meter = $(chartDiv).find("select[name='meter']").val();
+    const meterSelect = chartDiv.querySelector("select[name='meter']");
+    const meter = meterSelect ? meterSelect.value : null;
     if (meter) {
       if (meter == 'all') {
         chartConfig.mpan_mprn = undefined;
@@ -21,21 +22,22 @@ $(document).ready(function() {
       }
     }
 
-    const chart_type = $(chartDiv).find("select[name='chart_selection_chart_type']").val();
-    if (chart_type) {
-      chartConfig.type = chart_type;
+    const chartSelector = chartDiv.querySelector("select[name='chart_selection_chart_type']");
+    if (chartSelector && chartSelector.value) {
+      chartConfig.type = chartSelector.value;
     }
 
-    const school_id = $(chartDiv).find("select[name='chart_selection_school_id']").val();
-    if (school_id) {
-      chartConfig.jsonUrl = `/schools/${school_id}/chart.json`;
+    const schoolSelector = chartDiv.querySelector("select[name='chart_selection_school_id']");
+    if (schoolSelector && schoolSelector.value) {
+      chartConfig.jsonUrl = `/schools/${schoolSelector.value}/chart.json`;
     }
 
     updateMeterSpecificChartState(chartDiv, chartConfig);
 
-    var seriesBreakdown = $(chartDiv).find("input[name='series_breakdown']").val();
-    if (seriesBreakdown) {
-      chartConfig.series_breakdown = seriesBreakdown;
+    const seriesBreakdown = chartDiv.querySelector("input[name='series_breakdown']");
+//    var seriesBreakdown = $(chartDiv).find("input[name='series_breakdown']").val();
+    if (seriesBreakdown && seriesBreakdown.value) {
+      chartConfig.series_breakdown = seriesBreakdown.value;
     }
 
     chartConfig.date_ranges = getDateRanges(chartDiv);
@@ -117,7 +119,7 @@ $(document).ready(function() {
         $(inputId).val(datePickerValue);
       }
       logEvent('datetimepicker', '');
-      updateChart($(this).closest('.charts'));
+      updateChart(this.closest('.charts'));
     });
   }
 
@@ -128,17 +130,18 @@ $(document).ready(function() {
     ];
 
     selectors.forEach(selector => {
-      const chartSelector = chartDiv.find(selector).first();
-      if (chartSelector.length === 0) return;
+      const chartSelector = chartDiv.querySelector(selector);
+      if (chartSelector === null || chartSelector.length === 0) return;
 
-      const chartOptions = chartSelector.find("option");
+      const chartOptions = chartSelector.querySelectorAll("option");
       let firstOption = null;
 
-      chartOptions.each(function(index, option) {
-        const optionFuelType = $(option).data('fuel-type') || "";
+      chartOptions.forEach(option => {
+        const optionFuelType = option.getAttribute("data-fuel-type") || "";
+
         if (optionFuelType.includes(fuel_type)) {
           if (firstOption === null) {
-            firstOption = $(option).val();
+            firstOption = option.value;
           }
           option.disabled = false;
           option.hidden = false;
@@ -148,8 +151,8 @@ $(document).ready(function() {
         }
       });
 
-      chartSelector.val(firstOption);
-      chartSelector.select2({ theme: 'bootstrap' });
+      chartSelector.value = firstOption;
+      $(chartSelector).select2({ theme: 'bootstrap' }); //requires jquery
     });
   }
 
@@ -189,7 +192,7 @@ $(document).ready(function() {
     var chartConfig = chartContainer.data('chart-config');
     setupAxisControls(chartContainer[0], chartConfig);
     setupAnalysisControls(chartContainer[0], chartConfig);
-    setSelectorState('electricity', $(chartDiv)); // FIXME select first option in fuel type options
+    setSelectorState('electricity', chartDiv); // FIXME select first option in fuel type options
     updateChart(chartDiv);
   }
 
@@ -202,17 +205,18 @@ $(document).ready(function() {
 
   $(document).on('change', "select[name='meter']", function() {
     logEvent('meter', '');
-    updateChart($(this).closest('.charts'));
+    const chartDiv = this.closest('.charts');
+    updateChart(chartDiv);
   });
 
   $(document).on('change', "select[name='chart_selection_school_id'], select[name='chart_selection_chart_type']", function() {
-    const chartDiv = $(this).closest('.charts');
+    const chartDiv = this.closest('.charts');
     updateChart(chartDiv);
   });
 
   $(document).on('change', "input[name='chart_selection_fuel_type']", function() {
-    const fuel_type = $(this).data('fuel-type');
-    const chartDiv = $(this).closest('.charts');
+    const fuel_type = this.getAttribute("data-fuel-type");
+    const chartDiv = this.closest('.charts');
     setSelectorState(fuel_type, chartDiv);
     updateChart(chartDiv);
   });
