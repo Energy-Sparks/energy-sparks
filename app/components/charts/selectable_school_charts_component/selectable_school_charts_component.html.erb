@@ -5,6 +5,7 @@
                                   axis_controls: true,
                                   analysis_controls: true,
                                   html_class: 'usage-chart',
+                                  show_how_have_we_analysed_your_data: false,
                                   school: default_school do |c| %>
       <% c.with_header do %>
         <%= form_tag '', method: 'GET', id: 'chart-filter', class: 'form' do |f| %>
