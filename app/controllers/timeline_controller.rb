@@ -6,7 +6,7 @@ class TimelineController < ApplicationController
   load_and_authorize_resource :school
   load_and_authorize_resource :school_group
 
-  before_action :redirect_unless_permitted, only: [:show], if: -> { @school.present? } do
+  before_action only: [:show], if: -> { @school.present? } do
     redirect_unless_permitted(:show)
   end
   before_action :redirect_unless_authorised, only: [:show], if: -> { @school_group.present? }
