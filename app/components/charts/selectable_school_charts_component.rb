@@ -13,6 +13,11 @@ module Charts
       @schools = schools
       @charts = charts
       @fuel_types = fuel_types
+      add_classes('row')
+    end
+
+    def render?
+      @fuel_types.any? && @schools.any? && @charts.any?
     end
 
     private

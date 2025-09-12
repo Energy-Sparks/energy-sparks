@@ -1,4 +1,4 @@
-<div class="row">
+<%= tag.div id: id, class: classes do %>
   <div class="col">
     <div class="charts">
     <%= render ChartComponent.new chart_type: :management_dashboard_group_by_week_electricity,
@@ -78,4 +78,4 @@
     <% end %>
     </div>
   </div>
-</div>
+<% end %>
