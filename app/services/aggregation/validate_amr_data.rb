@@ -39,6 +39,8 @@ module Aggregation
       logger.debug "Meter data from #{@meter.amr_data.start_date} to #{@meter.amr_data.end_date}"
       logger.debug "DCC Meter #{@meter.dcc_meter}"
 
+      binding.irb if @meter.meter_type == :gas
+
       if debug_analysis
         assess_null_data # does nothing, count not used?
         Rails.logger.debug { "Before validation #{missing_data} missing items of data" }
