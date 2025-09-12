@@ -14,7 +14,7 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
   let(:schools) do
     [
       create(:school, :with_fuel_configuration, name: 'All Fuel School'),
-      create(:school, :with_fuel_configuration, has_gas: false, has_solar_pv: false, has_storage_heaters: false, name: 'Electricity Only School')
+      create(:school, :with_fuel_configuration, has_electricity: false, has_solar_pv: false, has_storage_heaters: false, name: 'Limited Fuel School')
     ]
   end
 
@@ -51,5 +51,52 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
   it_behaves_like 'an application component' do
     let(:expected_classes) { 'extra-classes' }
     let(:expected_id) { 'my-component' }
+  end
+
+  it { expect(html).to have_css('div.usage-chart') }
+
+  context 'when rendering the fuel types' do
+    it 'creates options for all the fuel types' do
+      fuel_types.each do |fuel_type|
+        expect(html).to have_css("#chart-selection-fuel-type-#{fuel_type}[data-fuel-type='#{fuel_type}']")
+      end
+    end
+
+    it 'adds labels for all the fuel types' do
+      fuel_types.each do |fuel_type|
+        expect(html).to have_content(I18n.t("common.#{fuel_type}"))
+      end
+    end
+
+    context 'when there are limited types' do
+      let(:fuel_types) { [:electricity] }
+
+      it { expect(html).not_to have_css('#chart-selection-fuel-type-gas')}
+      it { expect(html).not_to have_content(I18n.t('common.gas'))}
+    end
+  end
+
+  context 'when rendering the chart types' do
+    it 'has visible electricity options by default' do
+      expect(html).to have_css("option[value='baseload'][data-fuel-type='electricity']")
+    end
+
+    it 'adds hidden options for other charts' do
+      expect(html).to have_css("option[value='management_dashboard_group_by_week_gas'][data-fuel-type='gas']", visible: :hidden)
+    end
+
+    it 'uses the chart titles' do
+      expect(html).to have_select('chart-selection-chart-type', with_options: ['Baseload', 'Group by week gas', 'Solar generation and use by month'])
+    end
+  end
+
+  context 'when rendering the school options' do
+    it 'has all schools with electricity visible by default' do
+      expect(html).to have_css("option[value='#{schools.first.slug}'][data-fuel-type='electricity gas solar_pv storage_heaters']")
+    end
+
+    it 'has gas only schools hidden' do
+      expect(html).to have_css("option[value='#{schools.last.slug}'][data-fuel-type='gas']", visible: :hidden)
+    end
   end
 end
