@@ -7,6 +7,7 @@ describe BenchmarkMetrics do
   describe '.benchmark_annual_electricity_usage_kwh' do
     let(:pupils) { 10 }
     let(:annual_usage_kwh) do
+      stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219)
       BenchmarkMetrics.benchmark_annual_electricity_usage_kwh(school_type, pupils)
     end
 
@@ -30,6 +31,7 @@ describe BenchmarkMetrics do
       let(:school_type) { :special }
 
       it 'returns the expected value' do
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 868)
         expect(annual_usage_kwh).to eq pupils * 868
       end
     end
@@ -46,6 +48,7 @@ describe BenchmarkMetrics do
   describe '.exemplar_annual_electricity_usage_kwh' do
     let(:pupils) { 10 }
     let(:annual_usage_kwh) do
+      stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196)
       BenchmarkMetrics.exemplar_annual_electricity_usage_kwh(school_type, pupils)
     end
 
@@ -69,6 +72,7 @@ describe BenchmarkMetrics do
       let(:school_type) { :special }
 
       it 'returns the expected value' do
+        stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL', 663)
         expect(annual_usage_kwh).to eq pupils * 663
       end
     end
@@ -107,6 +111,7 @@ describe BenchmarkMetrics do
 
       it 'returns the benchmark value' do
         # BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL * the flat rate above
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219)
         expect(energy_usage_£_per_pupil).to be_within(0.1).of(219.0 * 0.1)
       end
 
@@ -115,6 +120,7 @@ describe BenchmarkMetrics do
 
         it 'returns the exemplar benchmark value' do
           # EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL * the flat rate above
+          stub_const('BenchmarkMetrics::EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL', 196)
           expect(energy_usage_£_per_pupil).to be_within(0.1).of(196.0 * 0.1)
         end
       end
@@ -131,6 +137,7 @@ describe BenchmarkMetrics do
 
       it 'returns the benchmark value' do
         # BENCHMARK_GAS_USAGE_PER_PUPIL / degree_day_adjustment * the flat rate above
+        stub_const('BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_PUPIL', 430)
         expect(energy_usage_£_per_pupil).to be_within(0.1).of(430 * 0.1)
       end
 
@@ -140,6 +147,7 @@ describe BenchmarkMetrics do
         it 'returns the exemplar benchmark value' do
           # TODO: not sure this is the right variable it should be using
           # EXEMPLAR_GAS_USAGE_PER_M2  / degree_day_adjustment * the flat rate above
+          stub_const('BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2', 55)
           expect(energy_usage_£_per_pupil).to be_within(0.1).of(55.0 * 0.1)
         end
       end
@@ -157,6 +165,7 @@ describe BenchmarkMetrics do
 
       it 'returns the benchmark value' do
         # BENCHMARK_GAS_USAGE_PER_PUPIL / degree_day_adjustment * the flat rate above
+        stub_const('BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_PUPIL', 430)
         expect(energy_usage_£_per_pupil).to be_within(0.1).of(430.0 * 0.1)
       end
 
@@ -166,6 +175,7 @@ describe BenchmarkMetrics do
         it 'returns the exemplar benchmark value' do
           # TODO: not sure this is the right variable it should be using
           # EXEMPLAR_GAS_USAGE_PER_M2  / degree_day_adjustment * the flat rate above
+          stub_const('BenchmarkMetrics::EXEMPLAR_GAS_USAGE_PER_M2', 55)
           expect(energy_usage_£_per_pupil).to be_within(0.1).of(55.0 * 0.1)
         end
       end
@@ -176,6 +186,8 @@ describe BenchmarkMetrics do
         allow(BenchmarkMetrics).to receive(:normalise_degree_days).and_return(degree_day_adjustment)
         allow(meter_collection).to receive(:storage_heater_meter).and_return(meter)
         allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(meter)
+        stub_const('BenchmarkMetrics::BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL', 219)
+        stub_const('BenchmarkMetrics::BENCHMARK_GAS_USAGE_PER_PUPIL', 430)
       end
 
       let(:degree_day_adjustment) { 1.0 }

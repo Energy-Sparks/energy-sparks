@@ -18,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    <% %i[other_school benchmark_school exemplar_school].each do |category| %>
+    <% SchoolGroupComparisonComponent::CATEGORIES.reverse.each do |category| %>
       <% categorised_savings[category]&.each do |school, alert| %>
         <tr>
           <td>

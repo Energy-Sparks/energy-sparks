@@ -30,11 +30,11 @@ class HomeController < ApplicationController
   end
 
   def enrol_our_multi_academy_trust
-    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6'
+    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6', allow_other_host: true
   end
 
   def enrol_our_local_authority
-    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8'
+    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8', allow_other_host: true
   end
 
   def cookies
