@@ -1,0 +1,56 @@
+<p><%= t('school_groups.advice_pages.long_term.analysis.summary', fuel_type: @advice_page.fuel_type) %></p>
+
+<ul>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.long_term.analysis.potential_savings.title',
+                  fuel_type: @advice_page.fuel_type),
+                '#potential-savings') %>
+  </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.long_term.analysis.comparisons.title',
+                  fuel_type: @advice_page.fuel_type),
+                '#comparison') %>
+  </li>
+</ul>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'potential-savings',
+           section_title: t('school_groups.advice_pages.long_term.analysis.potential_savings.title',
+                            fuel_type: @advice_page.fuel_type) %>
+
+<%= t('school_groups.advice_pages.long_term.analysis.potential_savings.table.header_html',
+      fuel_type: @advice_page.fuel_type) %>
+
+<%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
+                                                        categorised_savings: @categorised_savings,
+                                                        advice_page: @advice_page %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t('school_groups.advice_pages.long_term.analysis.comparisons.title',
+                            fuel_type: @advice_page.fuel_type) %>
+
+<%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
+                                                     report: @report) do |c| %>
+  <% c.with_title do %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.title', fuel_type: @advice_page.fuel_type) %>
+  <% end %>
+  <% c.with_subtitle do %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.subtitle', fuel_type: @advice_page.fuel_type) %>
+  <% end %>
+  <% c.with_header do %>
+    <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.header', fuel_type: @advice_page.fuel_type) %>
+  <% end %>
+<% end %>
+
+<%= t('school_groups.advice_pages.long_term.analysis.comparisons.table.header_html',
+      fuel_type: @advice_page.fuel_type) %>
+
+<%= render 'comparison_table',
+           results: @results,
+           report: @report,
+           advice_page: @advice_page,
+           index_params: index_params,
+           headers: @report_headers,
+           colgroups: @report_colgroups,
+           advice_page_tab: @advice_page_tab %>
