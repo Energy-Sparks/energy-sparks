@@ -29,9 +29,7 @@ module Schools
         @consumption = @target.monthly_consumption_status(@fuel_type)
         render 'new_target' and return if @consumption.consumption.nil?
 
-        if @consumption.non_missing.last.nil? && @consumption.consumption.pluck(:target_consumption).include?(nil)
-          render 'limited_data' and return
-        end
+        render 'limited_data' and return if @consumption.non_missing.empty?
 
         @consumption.last_month = @consumption.non_missing.last
       end
@@ -61,6 +59,8 @@ module Schools
       helper_method :formatted_target_date
 
       def formatted_target_change(current_consumption, target_consumption)
+        return if current_consumption.nil? || target_consumption.nil?
+
         change = percent_change(current_consumption, target_consumption)
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end

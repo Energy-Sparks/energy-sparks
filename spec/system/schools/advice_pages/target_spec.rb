@@ -249,6 +249,22 @@ RSpec.shared_examples 'target advice page' do
       expect(content('analysis')).to eq(limited_data_content)
     end
   end
+
+  context 'with out recent data' do
+    let(:school) do
+      create(:school, :with_fuel_configuration, :with_meter_dates, reading_end_date: 30.days.ago, fuel_type:)
+    end
+
+    it 'has relevant content' do
+      create_target
+      visit_tab('Insights')
+      expect(content('insights')).to include(<<~CONTENT) # no progress message displayed
+        Your current progress
+        Back to top
+        Period Cumulative consumption (kWh) Target consumption (kWh) % Change 01 Jan 2024 - 31 Dec 2024
+      CONTENT
+    end
+  end
 end
 
 RSpec.describe 'target advice pages' do
