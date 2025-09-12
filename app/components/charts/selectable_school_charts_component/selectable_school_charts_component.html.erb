@@ -64,10 +64,16 @@
             <div class="form-group col-md-12">
               <%= label_tag :chart_selection_school_id,
                             t('components.selectable_school_charts_component.chart_selection_school_id') %>
-              <%= select_tag :chart_selection_school_id,
-                             options_from_collection_for_select(@schools, :slug, :name, @schools.first.slug),
-                             include_blank: false,
-                             class: 'form-control select2' %>
+
+              <select id="chart_selection_school_id" name="chart_selection_school_id" class='form-control select2'>
+                <% @schools.each do |school| %>
+                  <option value="<%= school.slug %>"
+                          data-fuel-type="<%= school.configuration.fuel_configuration.fuel_type_tokens %>"
+                          <%= 'disabled hidden' unless school.has_electricity? %>>
+                          <%= school.name %>
+                  </option>
+                <% end %>
+              </select>
             </div>
           </div>
 

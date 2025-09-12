@@ -122,26 +122,35 @@ $(document).ready(function() {
   }
 
   function setSelectorState(fuel_type, chartDiv) {
-    const chartSelector = chartDiv.find("select[name='chart_selection_chart_type']").first();
-    const chartOptions = chartSelector.find("option");
+    const selectors = [
+      "select[name='chart_selection_chart_type']",
+      "select[name='chart_selection_school_id']"
+    ];
 
-    var firstOption = null;
-    $(chartOptions).each(function(index, option) {
-      option_fuel_type = $(option).data('fuel-type');
-      if (option_fuel_type == fuel_type) {
-        if (firstOption == null) {
-          firstOption = $(option).val();
+    selectors.forEach(selector => {
+      const chartSelector = chartDiv.find(selector).first();
+      if (chartSelector.length === 0) return;
+
+      const chartOptions = chartSelector.find("option");
+      let firstOption = null;
+
+      chartOptions.each(function(index, option) {
+        const optionFuelType = $(option).data('fuel-type') || "";
+        if (optionFuelType.includes(fuel_type)) {
+          if (firstOption === null) {
+            firstOption = $(option).val();
+          }
+          option.disabled = false;
+          option.hidden = false;
+        } else {
+          option.disabled = true;
+          option.hidden = true;
         }
-        option.disabled = false;
-        option.hidden = false;
-      } else {
-        option.disabled = true;
-        option.hidden = true;
-      }
-    });
+      });
 
-    chartSelector.val(firstOption);
-    chartSelector.select2({theme: 'bootstrap'});
+      chartSelector.val(firstOption);
+      chartSelector.select2({ theme: 'bootstrap' });
+    });
   }
 
   function initChart(chartDiv) {
