@@ -35,5 +35,12 @@
         <%= t('components.scoreboards.group_summary.timeline.description') %>
       </p>
     <% end %>
+    <% timeline.with_link do %>
+      <p>
+        <%= link_to school_group_timeline_path(school_group), class: 'btn btn-default' do %>
+          <%= t('activities.show.all_activities') %>
+        <% end %>
+      </p>
+    <% end %>
   <% end %>
 <% end %>
