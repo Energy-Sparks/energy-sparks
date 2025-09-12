@@ -1,10 +1,6 @@
 module SchoolGroups
   module Advice
-    class BaseOutOfHoursController < BaseController
-      include ComparisonTableGenerator
-
-      before_action :run_report
-
+    class BaseOutOfHoursController < BaseAdviceWithComparisonController
       def insights
         @comparison = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools_for_advice_page(@advice_page)
         @insight_table_headers = insight_table_headers
@@ -19,11 +15,6 @@ module SchoolGroups
 
       private
 
-      def run_report
-        @report = Comparison::Report.find_by!(key: report_key)
-        @results = load_data
-      end
-
       def insight_table_headers
         [
           I18n.t('analytics.benchmarking.configuration.column_headings.school'),
@@ -33,10 +24,6 @@ module SchoolGroups
           I18n.t('analytics.benchmarking.configuration.column_headings.weekend'),
           I18n.t('analytics.benchmarking.configuration.column_headings.community'),
         ]
-      end
-
-      def index_params
-        { benchmark: report_key, school_group_ids: [@school_group.id] }
       end
 
       def load_data

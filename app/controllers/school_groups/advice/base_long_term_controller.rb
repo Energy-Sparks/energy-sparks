@@ -1,10 +1,6 @@
 module SchoolGroups
   module Advice
-    class BaseLongTermController < BaseController
-      include ComparisonTableGenerator
-
-      before_action :run_report
-
+    class BaseLongTermController < BaseAdviceWithComparisonController
       def insights
         @comparison = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools_for_advice_page(@advice_page)
         @insight_table_headers = headers(groups: insight_header_groups)
@@ -23,11 +19,6 @@ module SchoolGroups
 
       def set_titles
         @page_title = t('page_title', scope: 'school_groups.advice_pages.long_term', fuel_type: @advice_page.fuel_type, default: nil)
-      end
-
-      def run_report
-        @report = Comparison::Report.find_by!(key: report_key)
-        @results = load_data
       end
 
       def header_groups
@@ -56,8 +47,8 @@ module SchoolGroups
         ]
       end
 
-      def index_params
-        { benchmark: report_key, school_group_ids: [@school_group.id] }
+      def load_data
+        report_class.for_schools(@schools).with_data.by_percentage_change(:previous_year_electricity_kwh, :current_year_electricity_kwh)
       end
     end
   end
