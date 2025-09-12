@@ -1786,6 +1786,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.jsonb "electricity_report", default: {}
     t.jsonb "gas_report", default: {}
     t.jsonb "storage_heaters_report", default: {}
+    t.jsonb "electricity_monthly_consumption"
+    t.jsonb "gas_monthly_consumption"
+    t.jsonb "storage_heaters_monthly_consumption"
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 

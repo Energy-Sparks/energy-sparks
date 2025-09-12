@@ -4,23 +4,26 @@
 #
 # Table name: school_targets
 #
-#  created_at               :datetime         not null
-#  electricity              :float
-#  electricity_progress     :json
-#  electricity_report       :jsonb
-#  gas                      :float
-#  gas_progress             :json
-#  gas_report               :jsonb
-#  id                       :bigint(8)        not null, primary key
-#  report_last_generated    :datetime
-#  revised_fuel_types       :string           default([]), not null, is an Array
-#  school_id                :bigint(8)        not null
-#  start_date               :date
-#  storage_heaters          :float
-#  storage_heaters_progress :json
-#  storage_heaters_report   :jsonb
-#  target_date              :date
-#  updated_at               :datetime         not null
+#  created_at                          :datetime         not null
+#  electricity                         :float
+#  electricity_monthly_consumption     :jsonb
+#  electricity_progress                :json
+#  electricity_report                  :jsonb
+#  gas                                 :float
+#  gas_monthly_consumption             :jsonb
+#  gas_progress                        :json
+#  gas_report                          :jsonb
+#  id                                  :bigint(8)        not null, primary key
+#  report_last_generated               :datetime
+#  revised_fuel_types                  :string           default([]), not null, is an Array
+#  school_id                           :bigint(8)        not null
+#  start_date                          :date
+#  storage_heaters                     :float
+#  storage_heaters_monthly_consumption :jsonb
+#  storage_heaters_progress            :json
+#  storage_heaters_report              :jsonb
+#  target_date                         :date
+#  updated_at                          :datetime         not null
 #
 # Indexes
 #
@@ -100,6 +103,14 @@ class SchoolTarget < ApplicationRecord
     return nil unless report&.any?
 
     TargetsProgress.new(**reformat_saved_report(report))
+  end
+
+  MONTHLY_CONSUMPTION_FIELDS =
+    %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
+
+  def monthly_consumption(fuel_type)
+    consumption = self["#{fuel_type}_monthly_consumption"]
+    consumption&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
   end
 
   private
