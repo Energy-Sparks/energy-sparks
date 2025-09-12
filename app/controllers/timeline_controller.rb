@@ -1,8 +1,15 @@
 class TimelineController < ApplicationController
   include SchoolGroupBreadcrumbs
+  include SchoolGroupAccessControl
+  include NonPublicSchools
 
   load_and_authorize_resource :school
   load_and_authorize_resource :school_group
+
+  before_action :redirect_unless_permitted, only: [:show], if: -> { @school.present? } do
+    redirect_unless_permitted(:show)
+  end
+  before_action :redirect_unless_authorised, only: [:show], if: -> { @school_group.present? }
 
   skip_before_action :authenticate_user!
 
@@ -10,7 +17,6 @@ class TimelineController < ApplicationController
   before_action :set_breadcrumbs
 
   def show
-    authorize! :index, Observation
     @academic_years = @observations = []
 
     return unless first_observation

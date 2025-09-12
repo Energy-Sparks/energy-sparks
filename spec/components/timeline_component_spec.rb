@@ -14,12 +14,9 @@ RSpec.describe TimelineComponent, type: :component, include_url_helpers: true do
       id: id,
       show_header: true,
       padding: true,
-      table_opts: { show_actions: true, show_date: true },
-      user: user
+      table_opts: { show_actions: true, show_date: true }
     }
   end
-
-  let(:user) { create(:admin) }
 
   subject(:html) do
     render_inline(TimelineComponent.new(**params)) do |c|

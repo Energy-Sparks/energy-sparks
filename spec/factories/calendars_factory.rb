@@ -30,15 +30,24 @@ FactoryBot.define do
       calendar_type { :national }
     end
 
-    trait :based_on_regional do
+    # For creating a school calendar with associated regional and national calendars with academic years
+    trait :for_school do
+      calendar_type { :school }
+
       transient do
-        regional_title { 'regional calendar' }
+        academic_year_count { 0 }
+        previous_academic_year_count { 0 }
       end
 
       after(:create) do |calendar, evaluator|
-        regional_calendar = create(:regional_calendar,
-                                   :with_academic_years,
-                                   title: evaluator.regional_title)
+        # Create the national calendar first, with years
+        national_calendar = create(:calendar,
+          :with_academic_years,
+          calendar_type: :national,
+          previous_academic_year_count: evaluator.previous_academic_year_count,
+          academic_year_count: evaluator.academic_year_count
+        )
+        regional_calendar = create(:calendar, calendar_type: :regional, based_on: national_calendar)
 
         calendar.update!(based_on: regional_calendar)
       end
@@ -46,12 +55,29 @@ FactoryBot.define do
 
     trait :with_academic_years do
       transient do
-        academic_year_count { 1 }
+        academic_year_count { 1 } # creates these in same academic year
+        previous_academic_year_count { 0 } # how many years before current to generate
       end
 
       after(:create) do |calendar, evaluator|
-        evaluator.academic_year_count.times do |_i|
-          create(:academic_year, calendar: calendar)
+        if evaluator.previous_academic_year_count
+          today = Time.zone.today
+          base_year = today.year - (today.month < 9 ? 1 : 0)
+          start_year = base_year - evaluator.previous_academic_year_count
+          end_year   = base_year
+
+          (start_year..end_year).each do |year|
+            create(
+              :academic_year,
+              calendar: calendar,
+              start_date: Date.new(year, 9, 1),
+              end_date: Date.new(year + 1, 8, 31)
+            )
+          end
+        elsif evaluator.academic_year_count
+          evaluator.academic_year_count.times do
+            create(:academic_year, calendar: calendar)
+          end
         end
       end
     end
