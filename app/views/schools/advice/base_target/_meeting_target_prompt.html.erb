@@ -1,12 +1,14 @@
 <% unless @consumption.current_consumption.nil? || @consumption.target_consumption.nil? %>
   <% text, status = if @target.start_date > Date.current
                       [t('advice_pages.target.future_target_date'), :positive]
-                    else
+                    elsif !@consumption.meeting_target.nil?
                       [t("schools.show.#{@consumption.meeting_target ? :making_progress : :not_meeting_target}",
                          fuels: t_fuel_type),
                        @consumption.meeting_target ? :positive : :negative]
                     end %>
-  <%= render PromptComponent.new(status:, icon: :circle_exclamation) do |c| %>
-    <% text %>
+  <% if text %>
+    <%= render PromptComponent.new(status:, icon: :circle_exclamation) do |c| %>
+      <% text %>
+    <% end %>
   <% end %>
 <% end %>

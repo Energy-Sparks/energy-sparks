@@ -29,9 +29,7 @@ module Schools
         @consumption = @target.monthly_consumption_status(@fuel_type)
         render 'new_target' and return if @consumption.consumption.nil?
 
-        if @consumption.non_missing.last.nil? && @consumption.consumption.pluck(:target_consumption).include?(nil)
-          render 'limited_data' and return
-        end
+        render 'limited_data' and return if @consumption.non_missing.empty?
 
         @consumption.last_month = @consumption.non_missing.last
       end
