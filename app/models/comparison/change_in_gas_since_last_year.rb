@@ -19,4 +19,31 @@
 #  index_comparison_change_in_gas_since_last_years_on_school_id  (school_id) UNIQUE
 #
 class Comparison::ChangeInGasSinceLastYear < Comparison::View
+  def self.default_header_groups
+    [
+      { label: '',
+        headers: [I18n.t('analytics.benchmarking.configuration.column_headings.school')] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.kwh'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year_temperature_adjusted'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year')
+        ] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.co2_kg'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+        ] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.gbp'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.previous_year'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.last_year'),
+        ] },
+      { label: I18n.t('analytics.benchmarking.configuration.column_groups.percent_changed'),
+        headers: [
+          I18n.t('analytics.benchmarking.configuration.column_headings.unadjusted_kwh'),
+          I18n.t('analytics.benchmarking.configuration.column_headings.temperature_adjusted_kwh'),
+        ] }
+    ]
+  end
 end

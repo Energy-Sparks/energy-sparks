@@ -2,33 +2,12 @@
 
 module Comparisons
   class ChangeInElectricitySinceLastYearController < BaseController
+    include ComparisonsHelper
+
     private
 
     def header_groups
-      [
-        { label: '',
-          headers: [t('analytics.benchmarking.configuration.column_headings.school')] },
-        { label: t('analytics.benchmarking.configuration.column_groups.kwh'),
-          headers: [
-            t('analytics.benchmarking.configuration.column_headings.previous_year'),
-            t('analytics.benchmarking.configuration.column_headings.last_year'),
-            t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ] },
-        { label: t('analytics.benchmarking.configuration.column_groups.co2_kg'),
-          headers: [
-            t('analytics.benchmarking.configuration.column_headings.previous_year'),
-            t('analytics.benchmarking.configuration.column_headings.last_year'),
-            t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ] },
-        { label: t('analytics.benchmarking.configuration.column_groups.gbp'),
-          headers: [
-            t('analytics.benchmarking.configuration.column_headings.previous_year'),
-            t('analytics.benchmarking.configuration.column_headings.last_year'),
-            t('analytics.benchmarking.configuration.column_headings.change_pct')
-          ] },
-        { label: t('analytics.benchmarking.configuration.column_groups.solar_self_consumption'),
-          headers: [t('analytics.benchmarking.configuration.column_headings.estimated')] }
-      ]
+      Comparison::ChangeInElectricitySinceLastYear.default_header_groups
     end
 
     def advice_page_key
@@ -41,6 +20,14 @@ module Comparisons
 
     def load_data
       Comparison::ChangeInElectricitySinceLastYear.for_schools(@schools).with_data.by_percentage_change(:previous_year_electricity_kwh, :current_year_electricity_kwh)
+    end
+
+    # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.change_in_kwh_pct')
+    def create_charts(results)
+      calculation = lambda do |result|
+        percent_change(result.previous_year_electricity_kwh, result.current_year_electricity_kwh) * 100.0
+      end
+      [create_calculated_chart(results, calculation, 'change_in_kwh_pct', 'percent')]
     end
   end
 end
