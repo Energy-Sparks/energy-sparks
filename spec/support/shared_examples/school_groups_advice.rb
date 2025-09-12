@@ -62,7 +62,6 @@ RSpec.shared_examples 'a school group advice page' do |index: true|
                                                                          breadcrumb])
   end
 
-
   it 'has the expected navigation' do
     expect(page).to have_css('#group-advice-page-nav')
     within('#group-advice-page-nav') do

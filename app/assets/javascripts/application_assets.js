@@ -57,7 +57,6 @@
 //= require depends_on
 
 //= require table_sorting
-//= require mailchimp
 //= require map
 //= require live_data
 //= require gtag

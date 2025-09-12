@@ -1,13 +1,14 @@
 <%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
-  <%= t('advice_pages.baseload.what_is_baseload_html') %>
+  <%= t('school_groups.advice_pages.heating_control.insights.what_is_heating_control_html') %>
 <% end %>
 
-<%= render 'schools/advice/section_title', section_id: 'comparison',
-                                           section_title: t('advice_pages.baseload.comparison.title') %>
+<%= render 'schools/advice/section_title',
+           section_id: 'comparison',
+           section_title: t("advice_pages.#{@advice_page_key}.insights.comparison.title") %>
 
 <%= render SchoolGroupComparisonComponent.new(
-      id: 'group-comparison-baseload',
-      comparison: @baseload_comparison,
+      id: "group-comparison-#{@advice_page_key}",
+      comparison: @comparison,
       advice_page_key: @advice_page_key,
       include_cluster: can?(:update_settings, @school_group),
       show_modal: true
@@ -18,15 +19,15 @@
 <% end %>
 <p class="pb-5">
   <%= link_to t('school_groups.comparisons.view_detailed_comparison'),
-              analysis_school_group_advice_baseload_path(@school_group, anchor: 'potential-savings') %>
+              advice_page_path(@school_group, @advice_page, :analysis, anchor: 'potential-savings') %>
 </p>
 
 <%= render 'schools/advice/section_title',
            section_id: 'current',
-           section_title: t('school_groups.advice_pages.baseload.insights.current_baseload.title') %>
+           section_title: t('school_groups.advice_pages.heating_control.insights.current_use.title') %>
 
-<%= t('school_groups.advice_pages.baseload.insights.current_baseload.summary_html',
-      link: analysis_school_group_advice_baseload_path(@school_group, anchor: 'comparison')) %>
+<%= t('school_groups.advice_pages.heating_control.insights.current_use.summary_html',
+      link: advice_page_path(@school_group, @advice_page, :analysis, anchor: 'comparison')) %>
 
 <%= render ComparisonTableComponent.new(
       report: @report, advice_page: @advice_page, table_name: :table, index_params: index_params,
@@ -35,8 +36,7 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
-      <%= r.with_var val: result.one_year_baseload_per_pupil_kw * 1000.0, unit: :kw %>
-      <%= r.with_var val: result.average_baseload_last_year_kw, unit: :kw %>
+      <% r.with_var val: result.percent_of_annual_heating, unit: :percent %>
     <% end %>
   <% end %>
 <% end %>

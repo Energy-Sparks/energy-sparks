@@ -97,18 +97,36 @@ module Comparisons
 
       chart_data.transform_keys! { |key| I18n.t("#{column_heading_keys}.#{metric_to_translation_key[key.to_sym]}") }
 
-      { id: :comparison,
-        x_axis: schools,
-        x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
-        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}") }
+      chart_hash(schools, chart_data, y_axis_label, y_axis_keys:)
     end
 
     def create_single_number_chart(results, name, multiplier, series_name, y_axis_label, **kwargs)
       [create_chart(results, { name => series_name }, multiplier, y_axis_label, **kwargs)]
     end
 
+    def create_calculated_chart(results, lambda, series_name, y_axis_label, column_heading_keys: 'analytics.benchmarking.configuration.column_headings', y_axis_keys: 'chart_configuration.y_axis_label_name')
+      chart_data = {}
+      schools = []
+
+      results.each do |result|
+        schools << result.school.name
+        value = lambda.call(result)
+        next if value.nil? || (value.respond_to?(:nan?) && (value.nan? || value.infinite?))
+        (chart_data[I18n.t("#{column_heading_keys}.#{series_name}")] ||= []) << value
+      end
+
+      chart_hash(schools, chart_data, y_axis_label, y_axis_keys:)
+    end
+
     def create_multi_chart(results, names, multiplier, y_axis_label, **kwargs)
       [create_chart(results, names, multiplier, y_axis_label, **kwargs)]
+    end
+
+    def chart_hash(schools, chart_data, y_axis_label, y_axis_keys: 'chart_configuration.y_axis_label_name')
+      { id: :comparison,
+        x_axis: schools,
+        x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
+        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}") }
     end
 
     def create_chart_json

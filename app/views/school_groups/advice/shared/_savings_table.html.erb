@@ -18,42 +18,44 @@
     </tr>
   </thead>
   <tbody>
-    <% alerts.each do |school, alert| %>
-      <tr>
-        <td>
-          <%= link_to school.name, school_path(school) %>
-        </td>
-        <% if can?(:update_settings, school_group) %>
+    <% SchoolGroupComparisonComponent::CATEGORIES.reverse.each do |category| %>
+      <% categorised_savings[category]&.each do |school, alert| %>
+        <tr>
+          <td>
+            <%= link_to school.name, school_path(school) %>
+          </td>
+          <% if can?(:update_settings, school_group) %>
+            <td class="text-right">
+              <%= school.school_group_cluster_name %>
+            </td>
+          <% end %>
           <td class="text-right">
-            <%= school.school_group_cluster_name %>
+            <span class="<%= class_names('badge', "bg-#{category}") %>">
+              <%= t(category, scope: 'advice_pages.benchmarks', default: '-') %>
+            </span>
           </td>
-        <% end %>
-        <td class="text-right">
-          <span class="<%= class_names('badge', "bg-#{benchmarks[school.id]}") %>">
-            <%= t(benchmarks[school.id], scope: 'advice_pages.benchmarks', default: '-') %>
-          </span>
-        </td>
-        <% if alert.variables['one_year_saving_kwh']&.positive? %>
-          <td class="text-right" data-order="<%= alert.variables['one_year_saving_kwh'] %>">
-            <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh, true, :benchmark) %>
-          </td>
-          <td class="text-right" data-order="<%= alert.variables['average_one_year_saving_gbp'] %>">
-            <%= format_unit(alert.variables['average_one_year_saving_gbp'], :£, true, :benchmark) %>
-          </td>
-          <td class="text-right" data-order="<%= alert.variables['one_year_saving_co2'] %>">
-            <%= format_unit(alert.variables['one_year_saving_co2'], :co2, true, :benchmark) %>
-          </td>
-        <% else %>
-          <td class="text-right" data-order="0">-</td>
-          <td class="text-right" data-order="0">-</td>
-          <td class="text-right" data-order="0">-</td>
-        <% end %>
-        <td class="text-right">
-          <%= link_to t('school_groups.priority_actions.view_analysis'),
-                      advice_page_path(school, advice_page) %>
+          <% if category != :exemplar_school && alert.variables['one_year_saving_kwh']&.positive? %>
+            <td class="text-right" data-order="<%= alert.variables['one_year_saving_kwh'] %>">
+              <%= format_unit(alert.variables['one_year_saving_kwh'], :kwh, true, :benchmark) %>
+            </td>
+            <td class="text-right" data-order="<%= alert.variables['average_one_year_saving_gbp'] %>">
+              <%= format_unit(alert.variables['average_one_year_saving_gbp'], :£, true, :benchmark) %>
+            </td>
+            <td class="text-right" data-order="<%= alert.variables['one_year_saving_co2'] %>">
+              <%= format_unit(alert.variables['one_year_saving_co2'], :co2, true, :benchmark) %>
+            </td>
+          <% else %>
+            <td class="text-right" data-order="0">-</td>
+            <td class="text-right" data-order="0">-</td>
+            <td class="text-right" data-order="0">-</td>
+          <% end %>
+          <td class="text-right">
+            <%= link_to t('school_groups.priority_actions.view_analysis'),
+                        advice_page_path(school, advice_page) %>
 
-        </td>
-      </tr>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
