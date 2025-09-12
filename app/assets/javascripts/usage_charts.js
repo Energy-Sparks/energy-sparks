@@ -127,7 +127,7 @@ $(document).ready(function() {
 
     var firstOption = null;
     $(chartOptions).each(function(index, option) {
-      option_fuel_type = $(option).data('fuel_type');
+      option_fuel_type = $(option).data('fuel-type');
       if (option_fuel_type == fuel_type) {
         if (firstOption == null) {
           firstOption = $(option).val();
@@ -202,7 +202,7 @@ $(document).ready(function() {
   });
 
   $(document).on('change', "input[name='chart_selection_fuel_type']", function() {
-    const fuel_type = $(this).data('fuel_type');
+    const fuel_type = $(this).data('fuel-type');
     const chartDiv = $(this).closest('.charts');
     setSelectorState(fuel_type, chartDiv);
     updateChart(chartDiv);

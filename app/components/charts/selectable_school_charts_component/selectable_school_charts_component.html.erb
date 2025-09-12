@@ -26,7 +26,7 @@
                   <input type="radio"
                          name="chart_selection_fuel_type"
                          id="chart_selection_fuel_type-<%= fuel_type %>"
-                         data-fuel_type="<%= fuel_type %>"
+                         data-fuel-type="<%= fuel_type %>"
                          class="custom-control-input"
                          <%= 'checked' if index.zero? %>>
                   <label class="custom-control-label"
@@ -50,7 +50,7 @@
                   <% next unless @fuel_types.include?(fuel_type) %>
                   <% chart_config.each do |chart_type, config| %>
                     <option value="<%= chart_type %>"
-                            data-fuel_type="<%= fuel_type %>"
+                            data-fuel-type="<%= fuel_type %>"
                             <%= 'disabled hidden' unless fuel_type == :electricity %>>
                             <%= config[:label] %>
                     </option>

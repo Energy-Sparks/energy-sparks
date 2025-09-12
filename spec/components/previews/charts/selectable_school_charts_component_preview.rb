@@ -1,7 +1,10 @@
 module Charts
   class SelectableSchoolChartsComponentPreview < ViewComponent::Preview
-    def example
-      schools = School.data_enabled.by_name
+    # @param fuel_type select { choices: [all, electricity, gas, solar_pv] }
+    # @param slug select :group_options
+    def example(slug: nil, fuel_type: :all)
+      fuel_types = fuel_type == :all ? [:electricity, :gas, :solar_pv] : [fuel_type]
+      schools = slug ? SchoolGroup.find(slug).schools.data_enabled.by_name : School.data_enabled.by_name
 
       safe_charts = {
         electricity: {
@@ -48,10 +51,14 @@ module Charts
         }
       }
 
-      fuel_types = [:electricity, :gas, :solar_pv]
-
       component = Charts::SelectableSchoolChartsComponent.new(schools:, fuel_types:, charts: safe_charts)
       render(component)
+    end
+
+    def group_options
+      {
+        choices: SchoolGroup.with_active_schools.by_name.map { |g| [g.name, g.slug] }
+      }
     end
   end
 end
