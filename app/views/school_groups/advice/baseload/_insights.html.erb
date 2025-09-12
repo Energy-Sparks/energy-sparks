@@ -29,7 +29,7 @@
       link: analysis_school_group_advice_baseload_path(@school_group, anchor: 'comparison')) %>
 
 <%= render ComparisonTableComponent.new(
-      report: @baseload_per_pupil_report, advice_page: @advice_page, table_name: :table, index_params: index_params,
+      report: @report, advice_page: @advice_page, table_name: :table, index_params: index_params,
       headers: @insight_table_headers, colgroups: [], advice_page_tab: @advice_page_tab
     ) do |c| %>
   <% @results.each do |result| %>
