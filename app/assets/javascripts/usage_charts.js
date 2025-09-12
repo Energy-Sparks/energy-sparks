@@ -35,7 +35,6 @@ $(document).ready(function() {
     updateMeterSpecificChartState(chartDiv, chartConfig);
 
     const seriesBreakdown = chartDiv.querySelector("input[name='series_breakdown']");
-//    var seriesBreakdown = $(chartDiv).find("input[name='series_breakdown']").val();
     if (seriesBreakdown && seriesBreakdown.value) {
       chartConfig.series_breakdown = seriesBreakdown.value;
     }
@@ -123,6 +122,9 @@ $(document).ready(function() {
     });
   }
 
+  // Updates school and chart type selections to disable and hide their options if their
+  // data-fuel-type attribute doesn't match the provided fuel type. Allows filtering based on
+  // fuel type on the client side, rather than requiring a reload to refresh list of charts and schools
   function setSelectorState(fuel_type, chartDiv) {
     const selectors = [
       "select[name='chart_selection_chart_type']",
@@ -192,7 +194,11 @@ $(document).ready(function() {
     var chartConfig = chartContainer.data('chart-config');
     setupAxisControls(chartContainer[0], chartConfig);
     setupAnalysisControls(chartContainer[0], chartConfig);
-    setSelectorState('electricity', chartDiv); // FIXME select first option in fuel type options
+
+    const selectedFuelType = document.querySelector("input[name='chart_selection_fuel_type']:checked");
+    if (selectedFuelType) {
+      setSelectorState(selectedFuelType.getAttribute('data-fuel-type'), chartDiv);
+    }
     updateChart(chartDiv);
   }
 
