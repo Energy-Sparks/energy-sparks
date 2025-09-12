@@ -59,6 +59,8 @@ module Schools
       helper_method :formatted_target_date
 
       def formatted_target_change(current_consumption, target_consumption)
+        return if current_consumption.nil? || target_consumption.nil?
+
         change = percent_change(current_consumption, target_consumption)
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end
