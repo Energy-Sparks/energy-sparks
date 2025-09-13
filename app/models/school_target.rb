@@ -58,6 +58,8 @@ class SchoolTarget < ApplicationRecord
   alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
   alias_attribute :storage_heater_progress, :storage_heaters_progress
 
+  FUEL_TYPES = %i[electricity gas storage_heater].freeze
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
