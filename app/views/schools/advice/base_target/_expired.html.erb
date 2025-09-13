@@ -1,0 +1,15 @@
+<% if @target.target_date < Date.current %>
+  <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do |c| %>
+    <% if @consumption.consumption.any? { |month| month[:missing] } %>
+      <%= t('advice_pages.target.expired.waiting') %>
+      <% if can?(:manage, @target) %>
+        <%= t('advice_pages.target.expired.waiting_set_new_html', path: new_school_school_target_path(@school)) %>
+      <% end %>
+    <% else %>
+      <%= t('advice_pages.target.expired.complete') %>
+      <% if can?(:manage, @target) %>
+        <%= t('advice_pages.target.expired.complete_set_new_html', path: new_school_school_target_path(@school)) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
