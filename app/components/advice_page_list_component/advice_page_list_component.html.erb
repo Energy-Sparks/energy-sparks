@@ -12,7 +12,8 @@
           <h4>
             <%= t("advice_pages.nav.sections.#{fuel_type}") %>
           </h4>
-          <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)).each do |advice_page| %>
+          <% sort_by_label(advice_pages_for_school_and_fuel(advice_pages, school, fuel_type, current_user)).each do
+               |advice_page| %>
             <%= render PromptComponent.new(
                   icon: fuel_type_icon(fuel_type),
                   style: :compact,

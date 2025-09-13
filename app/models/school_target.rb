@@ -54,6 +54,10 @@ class SchoolTarget < ApplicationRecord
   after_update :ensure_observation_date_is_correct
   after_save :add_observation
 
+  alias_attribute :storage_heater, :storage_heaters
+  alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
+
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
   end
@@ -109,8 +113,19 @@ class SchoolTarget < ApplicationRecord
     %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
 
   def monthly_consumption(fuel_type)
-    consumption = self["#{fuel_type}_monthly_consumption"]
-    consumption&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+    self["#{fuel_type}_monthly_consumption"]&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+  end
+
+  def monthly_consumption_status(fuel_type)
+    consumption = monthly_consumption(fuel_type)
+    non_missing = consumption&.reject { |month| month[:missing] }
+    current_consumption, target_consumption, meeting_target = monthly_consumption_meeting_target(fuel_type, non_missing)
+    ActiveSupport::OrderedOptions.new.merge(consumption:, non_missing:, current_consumption:, target_consumption:,
+                                            meeting_target:)
+  end
+
+  def target(fuel_type)
+    self[fuel_type]
   end
 
   private
@@ -153,5 +168,13 @@ class SchoolTarget < ApplicationRecord
 
   def ensure_observation_date_is_correct
     observations.school_target.update_all(at: start_date)
+  end
+
+  def monthly_consumption_meeting_target(fuel_type, non_missing)
+    return if non_missing.blank? || !Schools::AnalysisDates.new(school, fuel_type).recent_data
+
+    current_consumption = non_missing&.sum { |month| month[:current_consumption] }
+    target_consumption = non_missing&.sum { |month| month[:target_consumption] }
+    [current_consumption, target_consumption, current_consumption <= target_consumption]
   end
 end
