@@ -287,7 +287,8 @@ Rails.application.routes.draw do
          :electricity_out_of_hours,
          :gas_out_of_hours,
          :electricity_long_term,
-         :gas_long_term].each do |page|
+         :gas_long_term,
+         :heating_control].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
           [:insights, :analysis].each do |action|
