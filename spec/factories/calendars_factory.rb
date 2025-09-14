@@ -60,7 +60,7 @@ FactoryBot.define do
       end
 
       after(:create) do |calendar, evaluator|
-        if evaluator.previous_academic_year_count
+        if evaluator.previous_academic_year_count > 0
           today = Time.zone.today
           base_year = today.year - (today.month < 9 ? 1 : 0)
           start_year = base_year - evaluator.previous_academic_year_count
