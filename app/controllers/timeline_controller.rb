@@ -15,6 +15,7 @@ class TimelineController < ApplicationController
   before_action :redirect_unless_authorised, only: [:show], if: -> { @school_group.present? }
 
   before_action :timelineable
+  before_action :set_i18n_scope
   before_action :set_breadcrumbs
 
   def show
@@ -25,13 +26,17 @@ class TimelineController < ApplicationController
     @academic_year = params[:academic_year] ? AcademicYear.find(params[:academic_year]) : available_years.first
     @current_academic_year = calendar.current_academic_year
     @observations = timelineable.observations.visible.in_academic_year(@academic_year).by_date || []
-    @pagy, @observations = pagy(@observations)
+    @pagy, @observations = pagy(@observations, limit: 50)
   end
 
   private
 
   def timelineable
     @timelineable ||= @school || @school_group
+  end
+
+  def set_i18n_scope
+    @i18n_scope = timelineable.is_a?(School) ? :schools : :school_groups
   end
 
   def set_breadcrumbs
