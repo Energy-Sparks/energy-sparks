@@ -17,7 +17,7 @@
 
 <%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
                                                         alerts: @baseload_alerts,
-                                                        benchmarks: @baseload_benchmarks,
+                                                        categorised_savings: @categorised_savings,
                                                         advice_page: @advice_page %>
 
 <%= render 'schools/advice/section_title',
@@ -25,7 +25,7 @@
            section_title: t('school_groups.advice_pages.baseload.analysis.comparisons.title') %>
 
 <%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
-                                                     report: @baseload_per_pupil_report) do |c| %>
+                                                     report: @report) do |c| %>
   <% c.with_title { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.title') } %>
   <% c.with_subtitle { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.subtitle') } %>
   <% c.with_header { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.header') } %>
@@ -35,7 +35,7 @@
 
 <%= render 'comparisons/baseload_per_pupil/table',
            results: @results,
-           report: @baseload_per_pupil_report,
+           report: @report,
            advice_page: @advice_page,
            table_name: :table,
            index_params: index_params,

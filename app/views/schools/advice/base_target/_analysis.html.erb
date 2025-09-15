@@ -1,3 +1,6 @@
+<%= render 'expired' %>
+<h2><%= t('advice_pages.target.analysis.title') %></h2>
+<p><%= t('advice_pages.target.analysis.sections', fuel_type: t_fuel_type) %></p>
 <ul>
   <li><%= link_to(t('advice_pages.target.analysis.monthly_progress.title'), '#monthly-progress') %></li>
   <li><%= link_to(t('advice_pages.target.analysis.cumulative_progress.title'), '#cumulative-progress') %></li>
@@ -5,22 +8,19 @@
     <li><%= link_to(t('advice_pages.target.analysis.historical_progress.title'), '#historical-progress') %></li>
   <% end %>
 </ul>
-
 <%= render 'meeting_target_prompt' %>
-
 <%= render 'schools/advice/section_title',
            section_id: 'monthly-progress',
            section_title: t('advice_pages.target.analysis.monthly_progress.title') %>
 <p><%= t('advice_pages.target.analysis.monthly_progress.text_html',
-         fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+         fuel_type: t_fuel_type,
          percent: formatted_target) %></p>
 <%= render 'monthly_table', consumption: @consumption.consumption %>
-
 <%= render 'schools/advice/section_title',
            section_id: 'cumulative-progress',
            section_title: t('advice_pages.target.analysis.cumulative_progress.title') %>
 <p><%= t('advice_pages.target.analysis.cumulative_progress.text_html',
-         fuel_type: t("advice_pages.fuel_type.#{@advice_page.fuel_type}"),
+         fuel_type: t_fuel_type,
          percent: formatted_target,
          target_date: formatted_target_date) %></p>
 <%= consumption = @consumption.consumption.map(&:dup)
@@ -35,12 +35,11 @@
       end
     end
     render 'monthly_table', consumption: %>
-
 <% if @historical_targets.any? %>
   <%= render 'schools/advice/section_title',
              section_id: 'historical-progress',
              section_title: t('advice_pages.target.analysis.historical_progress.title') %>
-  <%= t('advice_pages.target.analysis.historical_progress.intro', fuel_type: @fuel_type) %>
+  <%= t('advice_pages.target.analysis.historical_progress.intro', fuel_type: t_fuel_type) %>
   <table class="mt-2 table table-sm advice-table">
     <thead>
       <th><%= t('advice_pages.target.analysis.historical_progress.target_date') %></th>

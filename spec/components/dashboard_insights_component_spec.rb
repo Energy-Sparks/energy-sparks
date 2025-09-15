@@ -154,6 +154,8 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   end
 
   context 'with a target monthly summary' do
+    let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates) }
+
     before do
       Flipper.enable(:target_advice_pages2025)
     end
@@ -170,13 +172,17 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/electricity_target")
     end
 
-    it 'displays a positive gas prompt' do
-      create(:school_target, :with_monthly_consumption, school:, fuel_type: :gas, current_consumption: 1000)
-      expect(div_text).to eq(
-        "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n\n" \
-        'Review progress'
-      )
-      expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
+    context 'with gas' do
+      let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates, fuel_type: :gas) }
+
+      it 'displays a positive gas prompt' do
+        create(:school_target, :with_monthly_consumption, school:, fuel_type: :gas, current_consumption: 1000)
+        expect(div_text).to eq(
+          "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n\n" \
+          'Review progress'
+        )
+        expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
+      end
     end
   end
 end

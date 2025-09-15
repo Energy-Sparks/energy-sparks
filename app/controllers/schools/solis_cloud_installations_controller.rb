@@ -22,12 +22,12 @@ module Schools
         begin
           @installation.update_inverter_detail_list
         rescue StandardError
-          notice = "#{self.class::MODEL.model_name.human} was created but did not verify"
+          notice = "#{self.class::MODEL.model_name.human} was created but did not verify. " \
+                   'Check API details and try updating the inverter list again'
         else
-          notice = "#{self.class::MODEL.model_name.human} was successfully created.  Edit to assign inverters."
+          notice = "#{self.class::MODEL.model_name.human} was successfully created."
         end
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice:
-
+        redirect_to edit_school_solis_cloud_installation_path(@school, @installation), notice:
       else
         render :new
       end

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe OnboardingMailer2025 do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let(:school) { create_school }
   let(:preferred_locale) { :en }
@@ -27,16 +28,6 @@ RSpec.describe OnboardingMailer2025 do
     ActionMailer::Base.deliveries.last
   end
 
-  def email_html_content
-    Nokogiri::HTML(email.html_part.decoded).css('.row:nth-of-type(3)')
-  end
-
-  def email_html_body_as_markdown
-    ReverseMarkdown.convert(email_html_content)
-                   .gsub("\n\n| &nbsp; |\n\n", "\n\n").gsub("| \n", '').gsub(' |', '')
-                   .split("\n").map(&:strip).join("\n")
-  end
-
   def read_md(name)
     File.read(File.join(__dir__, "#{name}.md")).gsub('[CALENDAR_ID]', school.calendar_id.to_s)
   end
@@ -50,13 +41,13 @@ RSpec.describe OnboardingMailer2025 do
     it 'sends the onboarded email in en' do
       setup_and_send(:en)
       expect(email.subject).to eq("#{school.name} is now live on Energy Sparks")
-      expect(email_html_body_as_markdown).to eq(read_md('onboarded_email'))
+      expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('onboarded_email'))
     end
 
     it 'sends the onboarded email in cy' do
       setup_and_send(:cy)
       expect(email.subject).to eq('Mae Test School bellach yn fyw ar Sbarcynni')
-      expect(email_html_body_as_markdown).to eq(read_md('onboarded_email_cy'))
+      expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('onboarded_email_cy'))
     end
   end
 
@@ -73,7 +64,7 @@ RSpec.describe OnboardingMailer2025 do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(email_html_body_as_markdown).to eq(read_md('welcome_email_school_admin_not_data_enabled'))
+        expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_school_admin_not_data_enabled'))
       end
     end
 
@@ -82,7 +73,7 @@ RSpec.describe OnboardingMailer2025 do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(email_html_body_as_markdown).to eq(read_md('welcome_email_staff_not_data_enabled'))
+        expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_staff_not_data_enabled'))
       end
     end
 
@@ -92,7 +83,7 @@ RSpec.describe OnboardingMailer2025 do
 
       it 'sends the welcome email in en' do
         expect(email.subject).to eq('Welcome to Energy Sparks')
-        expect(email_html_body_as_markdown).to eq(read_md('welcome_email_data_enabled'))
+        expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_email_data_enabled'))
       end
     end
   end
@@ -114,7 +105,7 @@ RSpec.describe OnboardingMailer2025 do
 
     it 'sends the expected email' do
       expect(email.subject).to eq('Welcome to the Test School Energy Sparks account')
-      expect(email_html_body_as_markdown).to eq(read_md('welcome_existing'))
+      expect(bootstrap_email_body_to_markdown(email)).to eq(read_md('welcome_existing'))
     end
   end
 
@@ -130,19 +121,19 @@ RSpec.describe OnboardingMailer2025 do
     it 'sends the staff email' do
       setup_and_send(:staff, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(email_html_body_as_markdown.chomp).to eq(read_md('data_enabled_email').chomp)
+      expect(bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('data_enabled_email').chomp)
     end
 
     it 'sends the admin email' do
       setup_and_send(:school_admin, :en)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(email_html_body_as_markdown.chomp).to eq(read_md('data_enabled_email_admin').chomp)
+      expect(bootstrap_email_body_to_markdown(email).chomp).to eq(read_md('data_enabled_email_admin').chomp)
     end
 
     it 'sends the staff email in welsh' do
       setup_and_send(:staff, :cy)
       expect(email.subject).to eq('Energy data is now available on Energy Sparks for Test School')
-      expect(email_html_content.css('a').map { |a| URI(a['href']).host }.uniq).to \
+      expect(bootstrap_email_body(email).css('a').map { |a| URI(a['href']).host }.uniq).to \
         contain_exactly('cy.localhost', 'www.youtube.com')
     end
   end
