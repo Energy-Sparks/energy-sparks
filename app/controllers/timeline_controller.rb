@@ -2,6 +2,7 @@ class TimelineController < ApplicationController
   include SchoolGroupBreadcrumbs
   include SchoolGroupAccessControl
   include NonPublicSchools
+  include Pagy::Backend
 
   load_resource :school
   load_resource :school_group
@@ -18,13 +19,13 @@ class TimelineController < ApplicationController
 
   def show
     @academic_years = @observations = []
-
     return unless first_observation
 
     @academic_years = available_years.map { |year| [year, observation_counts[year.id] || 0] }
     @academic_year = params[:academic_year] ? AcademicYear.find(params[:academic_year]) : available_years.first
     @current_academic_year = calendar.current_academic_year
     @observations = timelineable.observations.visible.in_academic_year(@academic_year).by_date || []
+    @pagy, @observations = pagy(@observations)
   end
 
   private

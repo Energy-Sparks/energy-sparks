@@ -43,12 +43,21 @@
               <%= t('schools.timeline.no_events') %>
         <% end %>
       <% else %>
+        <% if @timelineable.is_a?(SchoolGroup) %>
+          <p class='text-muted'><%== pagy_info(@pagy) %></p>
+        <% end %>
+
         <%= render Scoreboards::ActivityTableComponent.new(observations: @observations,
                                                            show_positions: false,
                                                            observation_style: :full,
                                                            show_school: !@timelineable.is_a?(School),
                                                            show_date: true,
                                                            show_actions: true) %>
+        <% if @timelineable.is_a?(SchoolGroup) %>
+          <div class="row justify-content-md-center">
+            <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } if @pagy.pages > 1 %>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
