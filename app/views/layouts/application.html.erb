@@ -5,12 +5,12 @@
   </head>
   <body vocab="http://schema.org/">
     <%= render 'shared/navigation' %>
-    <% if content_for?(:hero) %>
+    <% if content_for?(:header) %>
       <div class="container-fluid <%= @audience || :adult %> pb-2">
         <div class="container navigation-margin">
           <%= render 'shared/breadcrumbs' %>
           <%= render 'shared/alerts' if flash.any? %>
-          <%= yield :hero %>
+          <%= yield :header %>
         </div>
       </div>
       <div class="application container">
