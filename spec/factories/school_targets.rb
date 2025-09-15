@@ -53,8 +53,11 @@ FactoryBot.define do
         target[attribute] = evaluator.target
         target["#{attribute}_monthly_consumption"] = (0..11).map do |i|
           month = target.start_date.month - 1 + i
-          [target.start_date.year + (month / 12), (month % 12) + 1, evaluator.current_consumption,
-           evaluator.previous_consumption, evaluator.target_consumption, evaluator.missing]
+          [target.start_date.year + (month / 12), (month % 12) + 1,
+           evaluator.current_consumption,
+           evaluator.previous_consumption,
+           evaluator.target_consumption,
+           evaluator.missing.respond_to?(:[]) ? evaluator.missing[i] : evaluator.missing]
         end
       end
     end
