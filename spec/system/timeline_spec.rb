@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 describe 'timelines', type: :system do
+  # rubocop:disable RSpec/MultipleMemoizedHelpers
+
+  let(:user) { nil }
+  let(:schools) { [] }
+
   let!(:observations_by_year) do # create observations for this year, last year and 3 years ago, for each school
     [0, 1, 3].collect do |i|
       schools.collect do |school|
@@ -87,25 +92,83 @@ describe 'timelines', type: :system do
   end
 
   describe 'school timeline' do
+    let(:data_sharing) { }
     let(:calendar) { create(:calendar, :for_school, previous_academic_year_count: 3) }
-    let!(:schools) { [create(:school, calendar:, school_group: create(:school_group))] }
+    let(:school) { create(:school, calendar:, data_sharing:, school_group: create(:school_group), visible: true)}
+    let!(:schools) { [school] }
 
     before do
+      sign_in(user) if user
       visit school_timeline_path(schools.first)
     end
 
-    it_behaves_like 'a timeline', show_school: false
+    context 'when school is public' do
+      let(:data_sharing) { :public }
+
+      context 'when not logged in' do
+        let(:user) { nil }
+
+        it_behaves_like 'a timeline', show_school: false
+      end
+    end
+
+    context 'when data_sharing is private' do
+      let(:data_sharing) { :private }
+
+      context 'when not logged in' do
+        let(:user) { nil }
+
+        it { expect(page).to have_content('has no public data') }
+      end
+
+      context 'when user is school admin to a school in same group' do
+        let(:user) { create(:school_admin, school: create(:school, school_group: school.school_group)) }
+
+        it { expect(page).to have_content('has no public data') }
+      end
+    end
+
+    context 'when data_sharing is within_group' do
+      let(:data_sharing) { :within_group }
+
+      context 'when not logged in' do
+        let(:user) { nil }
+
+        it { expect(page).to have_content('has no public data') }
+      end
+
+      context 'when user is school admin to a school in same group' do
+        let(:user) { create(:school_admin, school: create(:school, school_group: school.school_group)) }
+
+        it_behaves_like 'a timeline', show_school: false
+      end
+    end
   end
 
   describe 'school group timeline' do
+    let(:public) { true }
     let(:calendar) { create(:calendar, :with_academic_years, previous_academic_year_count: 3) }
-    let(:school_group) { create(:school_group, default_template_calendar: calendar) }
-    let!(:schools) { create_list(:school, 2, school_group:) }
+    let(:school_group) { create(:school_group, default_template_calendar: calendar, public:) }
 
     before do
+      sign_in(user) if user
       visit school_group_timeline_path(school_group)
     end
 
-    it_behaves_like 'a timeline', show_school: true
+    context 'when not logged in' do
+      context 'when school group is public' do
+        let!(:schools) { create_list(:school, 2, school_group:) }
+        let(:public) { true }
+
+        it_behaves_like 'a timeline', show_school: true
+      end
+
+      context 'when school group is private' do
+        let(:public) { false }
+
+        it_behaves_like 'shows the we are working with message'
+      end
+    end
   end
+  # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

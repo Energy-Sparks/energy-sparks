@@ -1,7 +1,6 @@
 class TimelineComponentPreview < ViewComponent::Preview
   # @param show_header toggle
   # @param padding toggle
-  # @param show_header toggle
   # @param show_actions toggle
   # @param show_date toggle
   # @param show_school toggle

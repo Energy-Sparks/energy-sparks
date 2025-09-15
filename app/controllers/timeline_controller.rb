@@ -3,15 +3,15 @@ class TimelineController < ApplicationController
   include SchoolGroupAccessControl
   include NonPublicSchools
 
-  load_and_authorize_resource :school
-  load_and_authorize_resource :school_group
+  load_resource :school
+  load_resource :school_group
+
+  skip_before_action :authenticate_user!
 
   before_action only: [:show], if: -> { @school.present? } do
     redirect_unless_permitted(:show)
   end
   before_action :redirect_unless_authorised, only: [:show], if: -> { @school_group.present? }
-
-  skip_before_action :authenticate_user!
 
   before_action :timelineable
   before_action :set_breadcrumbs
