@@ -8,6 +8,27 @@ $(document).ready(function() {
     const chartContainer = $(chartDiv).find('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
+    // For SelectableSchoolChartsComponent
+    updateSchoolSelection(chartDiv, chartConfig)
+    updateChartTitleAndFootnoteFromSelections(chartDiv, chartConfig);
+
+    // For Meter Specific Charts
+    updateMeterSpecificChartState(chartDiv, chartConfig);
+
+    // For pupil and recent usage analysis charts that use
+    // shared/usage_controls
+    updateMeterSelection(chartDiv, chartConfig);
+    chartConfig.date_ranges = getDateRanges(chartDiv);
+
+    const seriesBreakdown = chartDiv.querySelector("input[name='series_breakdown']");
+    if (seriesBreakdown && seriesBreakdown.value) {
+      chartConfig.series_breakdown = seriesBreakdown.value;
+    }
+
+    processAnalysisChart(chartContainer[0], chartConfig);
+  }
+
+  function updateMeterSelection(chartDiv, chartConfig) {
     const meterSelect = chartDiv.querySelector("select[name='meter']");
     const meter = meterSelect ? meterSelect.value : null;
     if (meter) {
@@ -21,12 +42,23 @@ $(document).ready(function() {
         chartConfig.sub_meter = definitions[1];
       }
     }
+  }
 
+  // SelectableSchoolChartsComponent
+  // Set alternate URL for loading chart json based on selected school
+  function updateSchoolSelection(chartDiv, chartConfig) {
     const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
     if (schoolSelector && schoolSelector.value) {
       chartConfig.jsonUrl = `/schools/${schoolSelector.value}/chart.json`;
     }
+  }
 
+  // SelectableSchoolChartsComponent
+  // Update chart title, subtitle and footer link based on combination of
+  // selected chart and school.
+  //
+  // Relies on both select boxes having option elements containing certain data attributes.
+  function updateChartTitleAndFootnoteFromSelections(chartDiv, chartConfig) {
     const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
     if (chartSelector && chartSelector.value) {
       chartConfig.type = chartSelector.value;
@@ -38,6 +70,7 @@ $(document).ready(function() {
           chartTitle.textContent = title;
         }
       }
+      const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
       const chartSubTitle = chartDiv.querySelector('.chart-subtitle');
       if (chartSubTitle && schoolSelector) {
         const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
@@ -57,18 +90,9 @@ $(document).ready(function() {
         footerLink.href = `/schools/${slug}/advice/${advice_page}`;
       }
     }
-
-    updateMeterSpecificChartState(chartDiv, chartConfig);
-
-    const seriesBreakdown = chartDiv.querySelector("input[name='series_breakdown']");
-    if (seriesBreakdown && seriesBreakdown.value) {
-      chartConfig.series_breakdown = seriesBreakdown.value;
-    }
-
-    chartConfig.date_ranges = getDateRanges(chartDiv);
-    processAnalysisChart(chartContainer[0], chartConfig);
   }
 
+  // MeterSelectionChartComponent
   //used for the per-meter chart switching behaviour on the advice pages
   function updateMeterSpecificChartState(chartDiv, chartConfig) {
     var descriptions = $(chartDiv).find("input[name='descriptions']").data('descriptions');
@@ -80,6 +104,8 @@ $(document).ready(function() {
     }
   }
 
+  // For pupil and recent usage analysis charts that use
+  // shared/usage_controls
   function getDateRanges(chartDiv){
     var dateRanges = [];
 
