@@ -22,22 +22,39 @@ $(document).ready(function() {
       }
     }
 
+    const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
+    if (schoolSelector && schoolSelector.value) {
+      chartConfig.jsonUrl = `/schools/${schoolSelector.value}/chart.json`;
+    }
+
     const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
     if (chartSelector && chartSelector.value) {
       chartConfig.type = chartSelector.value;
-      const chartTitle = chartDiv.querySelector(".chart-title");
+      const selectedChart = chartSelector.options[chartSelector.selectedIndex];
+      const chartTitle = chartDiv.querySelector('.chart-title');
       if (chartTitle) {
-        const selectedOption = chartSelector.options[chartSelector.selectedIndex];
-        const title = selectedOption.getAttribute("data-title");
+        const title = selectedChart.getAttribute('data-title')
         if (title) {
           chartTitle.innerHTML = title;
         }
       }
-    }
-
-    const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
-    if (schoolSelector && schoolSelector.value) {
-      chartConfig.jsonUrl = `/schools/${schoolSelector.value}/chart.json`;
+      const chartSubTitle = chartDiv.querySelector('.chart-subtitle');
+      if (chartSubTitle && schoolSelector) {
+        const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
+        const subtitle = selectedChart.getAttribute('data-subtitle');
+        if (subtitle) {
+          const template = Handlebars.compile(subtitle);
+          chartSubTitle.innerHTML = template({ ...selectedSchool.dataset });
+        } else {
+          chartSubTitle.innerHTML = '';
+        }
+      }
+      const footerLink = chartDiv.querySelector('.chart-selection-dynamic-footer a')
+      if (footerLink && schoolSelector) {
+        const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
+        const link = `/schools/${selectedSchool.value}/advice/${selectedChart.getAttribute('data-advice-page')}`;
+        footerLink.href = link;
+      }
     }
 
     updateMeterSpecificChartState(chartDiv, chartConfig);

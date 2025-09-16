@@ -41,7 +41,9 @@
                 <% chart_config.each do |chart_type, config| %>
                   <option value="<%= chart_type %>"
                           data-fuel-type="<%= fuel_type %>"
-                          data-title="<%= config[:label] %>"
+                          data-title="<%= config[:title] || config[:label] %>"
+                          data-subtitle="<%= config[:subtitle] || '' %>"
+                          data-advice-page="<%= config[:advice_page] %>"
                           <%= 'disabled hidden' unless fuel_type == @fuel_types.first %>>
                           <%= config[:label] %>
                   </option>
@@ -60,6 +62,7 @@
               <% @schools.each do |school| %>
                 <option value="<%= school.slug %>"
                         data-fuel-type="<%= fuel_types_for_school(school) %>"
+                        data-name="<%= school.name %>"
                         <%= 'disabled hidden' unless school.has_electricity? %>>
                         <%= school.name %>
                 </option>
@@ -76,6 +79,14 @@
                                     show_how_have_we_analysed_your_data: false,
                                     school: default_school do |c| %>
         <% c.with_title { default_chart_title } %>
+        <% c.with_subtitle { default_chart_subtitle } %>
+        <% c.with_footer do %>
+          <div class="chart-selection-dynamic-footer">
+            <a href="<%= default_link %>">
+              <%= t('components.selectable_school_charts_component.chart_selection_dynamic_footer.link') %>
+            </a>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>

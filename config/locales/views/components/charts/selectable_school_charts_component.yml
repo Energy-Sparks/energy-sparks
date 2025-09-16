@@ -3,5 +3,7 @@ en:
   components:
     selectable_school_charts_component:
       chart_selection_chart_type: Choose chart
+      chart_selection_dynamic_footer:
+        link: View analysis
       chart_selection_fuel_type: Change fuel type
       chart_selection_school_id: Choose school

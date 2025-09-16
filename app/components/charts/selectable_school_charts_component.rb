@@ -27,7 +27,18 @@ module Charts
     end
 
     def default_chart_title
-      @charts[@fuel_types.first][default_chart][:label] # FIXME
+      chart = @charts[@fuel_types.first][default_chart]
+      chart[:title] || chart[:label]
+    end
+
+    def default_chart_subtitle
+      chart = @charts[@fuel_types.first][default_chart]
+      chart[:subtitle].gsub('{{name}}', default_school.name) || ''
+    end
+
+    def default_link
+      chart = @charts[@fuel_types.first][default_chart]
+      polymorphic_path([default_school, :advice, chart[:advice_page]])
     end
 
     def default_chart

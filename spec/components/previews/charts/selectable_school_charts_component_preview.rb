@@ -9,10 +9,16 @@ module Charts
       safe_charts = {
         electricity: {
           baseload: {
-            label: 'Baseload'
+            label: 'Historical Baseload',
+            title: 'Historical electricity baseload',
+            subtitle: 'This chart shows the electricity baseload for {{name}} using all available data.',
+            advice_page: :baseload
           },
           baseload_lastyear: {
-            label: 'Baseload last year'
+            label: 'Baseload for last year',
+            title: 'Electricity baseload for the last 12 months',
+            subtitle: 'This chart shows the electricity baseload for {{name}} using the most recent year of data.',
+            advice_page: :baseload
           },
           baseload_versus_benchmarks: {
             label: 'Baseload vs benchmarks'
@@ -54,6 +60,8 @@ module Charts
       component = Charts::SelectableSchoolChartsComponent.new(schools:, fuel_types:, charts: safe_charts)
       render(component)
     end
+
+    private
 
     def group_options
       {
