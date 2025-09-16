@@ -33,7 +33,7 @@ module Charts
 
     def default_chart_subtitle
       chart = @charts[@fuel_types.first][default_chart]
-      chart[:subtitle].gsub('{{name}}', default_school.name) || ''
+      chart[:subtitle]&.gsub('{{name}}', default_school.name) || ''
     end
 
     def default_link

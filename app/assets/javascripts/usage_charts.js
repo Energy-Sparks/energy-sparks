@@ -35,7 +35,7 @@ $(document).ready(function() {
       if (chartTitle) {
         const title = selectedChart.getAttribute('data-title')
         if (title) {
-          chartTitle.innerHTML = title;
+          chartTitle.textContent = title;
         }
       }
       const chartSubTitle = chartDiv.querySelector('.chart-subtitle');
