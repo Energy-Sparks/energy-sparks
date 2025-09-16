@@ -53,10 +53,10 @@ FactoryBot.define do
         target["#{evaluator.fuel_type}_monthly_consumption"] = (0..11).map do |i|
           month = target.start_date.month - 1 + i
           [target.start_date.year + (month / 12), (month % 12) + 1,
-           evaluator.current_consumption,
-           evaluator.previous_consumption,
-           evaluator.target_consumption,
-           evaluator.missing.respond_to?(:[]) ? evaluator.missing[i] : evaluator.missing]
+           *%i[current_consumption previous_consumption target_consumption missing].freeze.map do |name|
+             value = evaluator.public_send(name)
+             value.is_a?(Enumerable) ? value[i] : value
+           end]
         end
       end
     end

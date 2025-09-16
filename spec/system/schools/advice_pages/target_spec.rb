@@ -125,7 +125,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(target_consumption: nil, missing: true)
+      create_target(previous_consumption: nil, target_consumption: nil, missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
@@ -169,7 +169,7 @@ RSpec.shared_examples 'target advice page' do
                            table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 +1&percnt;'))
     end
 
-    context 'with out recent data' do
+    context 'without recent data' do
       let(:school) do
         create(:school, :with_fuel_configuration, :with_meter_dates, reading_end_date: 30.days.ago, fuel_type:)
       end
@@ -181,7 +181,6 @@ RSpec.shared_examples 'target advice page' do
           eq(insight_content(expired_text: "We have not received data for your #{fuel_string} usage for over thirty " \
                                            'days. As a result your analysis will be out of date and may not reflect ' \
                                            "recent changes in your school.\n",
-                             table_text: '01 Jan 2024 - 31 Dec 2024',
                              meeting_prompt: false))
       end
     end
@@ -202,35 +201,35 @@ RSpec.shared_examples 'target advice page' do
         Back to top
         This table summarises your progress to reduce your #{fuel_string} use by 4&percnt; on a month by month basis. Each entry in the table shows the target and actual consumption for every month in the target period. This table can be helpful in identifying which months have you have made the most savings or where your energy use has exceeded the target.
         Month Last year (kWh) Target (kWh) This year (kWh) % change On target? \
-        January #{year} 1,020 1,000 1,010 +1&percnt; \
-        February #{year} 1,020 1,000 1,010 +1&percnt; \
-        March #{year} 1,020 1,000 1,010 +1&percnt; \
-        April #{year} 1,020 1,000 1,010 +1&percnt; \
-        May #{year} 1,020 1,000 1,010 +1&percnt; \
-        June #{year} 1,020 1,000 1,010 +1&percnt; \
-        July #{year} 1,020 1,000 1,010 +1&percnt; \
-        August #{year} 1,020 1,000 1,010 +1&percnt; \
-        September #{year} 1,020 1,000 1,010 +1&percnt; \
-        October #{year} 1,020 1,000 1,010 +1&percnt; \
-        November #{year} 1,020 1,000 1,010 +1&percnt; \
-        December #{year} 1,020 1,000 1,010 +1&percnt;
+        January #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        February #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        March #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        April #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        May #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        June #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        July #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        August #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        September #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        October #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        November #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        December #{year} 1,020 1,000 1,010 -0.98&percnt;
         Partial months are shown in red. How did we calculate these figures?
         Cumulative progress
         Back to top
         This table summarises your overall progress towards reducing your #{fuel_string} use by 4&percnt;. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by January #{year + 1}.
         Month Last year (kWh) Target (kWh) This year (kWh) % change On target? \
-        January #{year} 1,020 1,000 1,010 +1&percnt; \
-        February #{year} 2,040 2,000 2,020 +1&percnt; \
-        March #{year} 3,060 3,000 3,030 +1&percnt; \
-        April #{year} 4,080 4,000 4,040 +1&percnt; \
-        May #{year} 5,100 5,000 5,050 +1&percnt; \
-        June #{year} 6,120 6,000 6,060 +1&percnt; \
-        July #{year} 7,140 7,000 7,070 +1&percnt; \
-        August #{year} 8,160 8,000 8,080 +1&percnt; \
-        September #{year} 9,180 9,000 9,090 +1&percnt; \
-        October #{year} 10,200 10,000 10,100 +1&percnt; \
-        November #{year} 11,220 11,000 11,110 +1&percnt; \
-        December #{year} 12,240 12,000 12,120 +1&percnt;
+        January #{year} 1,020 1,000 1,010 -0.98&percnt; \
+        February #{year} 2,040 2,000 2,020 -0.98&percnt; \
+        March #{year} 3,060 3,000 3,030 -0.98&percnt; \
+        April #{year} 4,080 4,000 4,040 -0.98&percnt; \
+        May #{year} 5,100 5,000 5,050 -0.98&percnt; \
+        June #{year} 6,120 6,000 6,060 -0.98&percnt; \
+        July #{year} 7,140 7,000 7,070 -0.98&percnt; \
+        August #{year} 8,160 8,000 8,080 -0.98&percnt; \
+        September #{year} 9,180 9,000 9,090 -0.98&percnt; \
+        October #{year} 10,200 10,000 10,100 -0.98&percnt; \
+        November #{year} 11,220 11,000 11,110 -0.98&percnt; \
+        December #{year} 12,240 12,000 12,120 -0.98&percnt;
         Partial months are shown in red. How did we calculate these figures?
       CONTENT
     end
@@ -283,8 +282,14 @@ RSpec.shared_examples 'target advice page' do
       expect(content(tab)).to eq(limited_data_content)
     end
 
+    it 'missing any previous years data' do
+      create_target(previous_consumption: [nil, *[1020] * 11], missing: [true, *[false] * 11])
+      visit_tab(tab)
+      expect(content(tab)).to eq(limited_data_content)
+    end
+
     it 'target not yet complete' do
-      create_target(missing: ([false] * 11) + [true])
+      create_target(missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to start_with(waiting_for_data_text)
     end
