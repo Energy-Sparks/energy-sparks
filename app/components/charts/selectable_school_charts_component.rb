@@ -1,10 +1,4 @@
 module Charts
-  # A list of schools that can be seen by user
-  # A list of possible charts
-  #
-  # Filtering if fuel_type doesn't apply?, e.g. no storage heater charts
-  # Grouping based on categories of school, e.g. High baseload
-  # How to supply title/subtitle translation keys and parameters
   class SelectableSchoolChartsComponent < ApplicationComponent
     attr_reader :schools, :charts
 
@@ -23,30 +17,39 @@ module Charts
     private
 
     def default_configuration
-      helpers.create_chart_config(default_school, default_chart)
+      helpers.create_chart_config(default_school, default_chart_type)
     end
 
     def default_chart_title
-      chart = @charts[@fuel_types.first][default_chart]
-      chart[:title] || chart[:label]
+      default_chart[:title] || default_chart[:label]
     end
 
     def default_chart_subtitle
-      chart = @charts[@fuel_types.first][default_chart]
-      chart[:subtitle]&.gsub('{{name}}', default_school.name) || ''
+      default_chart[:subtitle]&.gsub('{{name}}', default_school.name) || ''
     end
 
     def default_link
-      chart = @charts[@fuel_types.first][default_chart]
-      polymorphic_path([default_school, :advice, chart[:advice_page]])
+      polymorphic_path([default_school, :advice, default_chart[:advice_page]])
     end
 
     def default_chart
-      @charts[@fuel_types.first].keys.first
+      @charts[default_fuel_type][default_chart_type]
+    end
+
+    def default_chart_type
+      @charts[default_fuel_type].keys.first
+    end
+
+    def default_fuel_type
+      @fuel_types.first
     end
 
     def default_school
       @schools.first
+    end
+
+    def enable_school?(school)
+      school.configuration.fuel_configuration.fuel_types.include?(default_fuel_type)
     end
 
     def fuel_types_for_school(school)

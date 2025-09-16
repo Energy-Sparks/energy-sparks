@@ -63,7 +63,7 @@
                 <option value="<%= school.slug %>"
                         data-fuel-type="<%= fuel_types_for_school(school) %>"
                         data-name="<%= school.name %>"
-                        <%= 'disabled hidden' unless school.has_electricity? %>>
+                        <%= 'disabled hidden' unless enable_school?(school) %>>
                         <%= school.name %>
                 </option>
               <% end %>
@@ -72,7 +72,7 @@
         </div>
 
       <% end %>
-      <%= render ChartComponent.new chart_type: default_chart,
+      <%= render ChartComponent.new chart_type: default_chart_type,
                                     axis_controls: true,
                                     analysis_controls: true,
                                     html_class: 'usage-chart',

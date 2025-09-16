@@ -22,7 +22,10 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
     {
       electricity: {
         baseload: {
-          label: 'Baseload'
+          label: 'Baseload',
+          title: 'Historical baseload',
+          subtitle: 'This chart shows the electricity baseload for {{name}} using all available data.',
+          advice_page: :baseload
         },
       },
       gas: {
@@ -48,12 +51,29 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
     }
   end
 
+  before do
+    create(:advice_page, key: :baseload)
+  end
+
   it_behaves_like 'an application component' do
     let(:expected_classes) { 'extra-classes' }
     let(:expected_id) { 'my-component' }
   end
 
   it { expect(html).to have_css('div.usage-chart') }
+
+  it 'sets the default title' do
+    expect(html).to have_content(charts[:electricity][:baseload][:title])
+  end
+
+  it 'sets the default subtitle' do
+    expect(html).to have_content("This chart shows the electricity baseload for #{schools.first.name} using all available data.")
+  end
+
+  it 'sets the default footer link' do
+    expect(html).to have_link(I18n.t('components.selectable_school_charts_component.chart_selection_dynamic_footer.link'),
+                              href: school_advice_baseload_path(schools.first))
+  end
 
   context 'when rendering the fuel types' do
     it 'creates options for all the fuel types' do
@@ -85,7 +105,7 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
       expect(html).to have_css("option[value='management_dashboard_group_by_week_gas'][data-fuel-type='gas']", visible: :hidden)
     end
 
-    it 'uses the chart titles' do
+    it 'uses the chart labels' do
       expect(html).to have_select('chart-selection-chart-type', with_options: ['Baseload', 'Group by week gas', 'Solar generation and use by month'])
     end
   end
