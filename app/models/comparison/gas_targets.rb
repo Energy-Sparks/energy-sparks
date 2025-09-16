@@ -6,7 +6,8 @@
 #  current_year_kwh                        :float
 #  current_year_percent_of_target_relative :float
 #  current_year_target_kwh                 :float
-#  school_id                               :bigint(8)
+#  id                                      :bigint(8)
+#  school_id                               :bigint(8)        primary key
 #  tracking_start_date                     :date
 #
 # Indexes

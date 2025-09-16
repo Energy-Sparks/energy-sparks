@@ -3596,25 +3596,34 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
   add_index "comparison_electricity_peak_kw_per_pupils", ["school_id"], name: "index_comparison_electricity_peak_kw_per_pupils_on_school_id", unique: true
 
   create_view "comparison_electricity_targets", materialized: true, sql_definition: <<-SQL
-      WITH totals AS (
-           SELECT school_targets.school_id,
-              (- school_targets.electricity) AS current_target,
-              max(school_targets.start_date) AS tracking_start_date,
+      WITH current_targets AS (
+           SELECT school_targets_1.school_id,
+              max(school_targets_1.start_date) AS max
+             FROM school_targets school_targets_1
+            WHERE (school_targets_1.start_date < now())
+            GROUP BY school_targets_1.school_id
+          ), totals AS (
+           SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
-             FROM school_targets,
-              LATERAL jsonb_array_elements(school_targets.electricity_monthly_consumption) consumption(value)
-            WHERE (school_targets.start_date < now())
-            GROUP BY school_targets.school_id, school_targets.electricity
+             FROM school_targets school_targets_1,
+              LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
+            WHERE (((consumption.value ->> 5))::boolean = false)
+            GROUP BY school_targets_1.id
           )
-   SELECT school_id,
-      current_target,
-      tracking_start_date,
-      current_year_kwh,
-      current_year_target_kwh,
-      ((current_year_kwh - current_year_target_kwh) / current_year_target_kwh) AS current_year_percent_of_target_relative
-     FROM totals;
+   SELECT school_targets.school_id,
+      (- school_targets.electricity) AS current_target,
+      school_targets.start_date AS tracking_start_date,
+      totals.id,
+      totals.current_year_kwh,
+      totals.current_year_target_kwh,
+      ((totals.current_year_kwh - totals.current_year_target_kwh) / totals.current_year_target_kwh) AS current_year_percent_of_target_relative
+     FROM ((school_targets
+       JOIN totals ON ((totals.id = school_targets.id)))
+       JOIN current_targets ON (((current_targets.school_id = school_targets.school_id) AND (current_targets.max = school_targets.start_date))));
   SQL
+  add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
+
   create_view "comparison_gas_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
       SELECT latest_runs.id,
       data.alert_generation_run_id,
@@ -3643,24 +3652,31 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
   add_index "comparison_gas_consumption_during_holidays", ["school_id"], name: "index_comparison_gas_consumption_during_holidays_on_school_id", unique: true
 
   create_view "comparison_gas_targets", materialized: true, sql_definition: <<-SQL
-      WITH totals AS (
-           SELECT school_targets.school_id,
-              (- school_targets.gas) AS current_target,
-              max(school_targets.start_date) AS tracking_start_date,
+      WITH current_targets AS (
+           SELECT school_targets_1.school_id,
+              max(school_targets_1.start_date) AS max
+             FROM school_targets school_targets_1
+            WHERE (school_targets_1.start_date < now())
+            GROUP BY school_targets_1.school_id
+          ), totals AS (
+           SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
-             FROM school_targets,
-              LATERAL jsonb_array_elements(school_targets.gas_monthly_consumption) consumption(value)
-            WHERE (school_targets.start_date < now())
-            GROUP BY school_targets.school_id, school_targets.gas
+             FROM school_targets school_targets_1,
+              LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
+            WHERE (((consumption.value ->> 5))::boolean = false)
+            GROUP BY school_targets_1.id
           )
-   SELECT school_id,
-      current_target,
-      tracking_start_date,
-      current_year_kwh,
-      current_year_target_kwh,
-      ((current_year_kwh - current_year_target_kwh) / current_year_target_kwh) AS current_year_percent_of_target_relative
-     FROM totals;
+   SELECT school_targets.school_id,
+      (- school_targets.gas) AS current_target,
+      school_targets.start_date AS tracking_start_date,
+      totals.id,
+      totals.current_year_kwh,
+      totals.current_year_target_kwh,
+      ((totals.current_year_kwh - totals.current_year_target_kwh) / totals.current_year_target_kwh) AS current_year_percent_of_target_relative
+     FROM ((school_targets
+       JOIN totals ON ((totals.id = school_targets.id)))
+       JOIN current_targets ON (((current_targets.school_id = school_targets.school_id) AND (current_targets.max = school_targets.start_date))));
   SQL
   add_index "comparison_gas_targets", ["school_id"], name: "index_comparison_gas_targets_on_school_id", unique: true
 
