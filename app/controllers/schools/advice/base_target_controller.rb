@@ -30,7 +30,7 @@ module Schools
         render 'new_target' and return if @consumption.consumption.nil?
 
         if @consumption.consumption.any? { |month| month[:previous_consumption].nil? } ||
-           @consumption.non_missing.empty?
+           @consumption.non_missing.blank?
           render 'limited_data' and return
         end
 

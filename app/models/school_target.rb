@@ -119,7 +119,9 @@ class SchoolTarget < ApplicationRecord
   def monthly_consumption_status(fuel_type)
     consumption = monthly_consumption(fuel_type)
     non_missing = consumption&.reject { |month| month[:missing] }
-    current_consumption, target_consumption, meeting_target = monthly_consumption_meeting_target(fuel_type, non_missing)
+    current_consumption = non_missing&.sum { |month| month[:current_consumption] }
+    target_consumption = non_missing&.sum { |month| month[:target_consumption] }
+    meeting_target = monthly_consumption_meeting_target(fuel_type, consumption, current_consumption, target_consumption)
     ActiveSupport::OrderedOptions.new.merge(consumption:, non_missing:, current_consumption:, target_consumption:,
                                             meeting_target:)
   end
@@ -170,11 +172,13 @@ class SchoolTarget < ApplicationRecord
     observations.school_target.update_all(at: start_date)
   end
 
-  def monthly_consumption_meeting_target(fuel_type, non_missing)
-    return if non_missing.blank? || !Schools::AnalysisDates.new(school, fuel_type).recent_data
+  def monthly_consumption_meeting_target(fuel_type, consumption, current_consumption, target_consumption)
+    if consumption&.any? { |month| month[:previous_consumption].nil? } ||
+       !Schools::AnalysisDates.new(school, fuel_type).recent_data ||
+       [current_consumption, target_consumption].any?(&:nil?)
+      return
+    end
 
-    current_consumption = non_missing&.sum { |month| month[:current_consumption] }
-    target_consumption = non_missing&.sum { |month| month[:target_consumption] }
-    [current_consumption, target_consumption, current_consumption <= target_consumption]
+    current_consumption <= target_consumption
   end
 end

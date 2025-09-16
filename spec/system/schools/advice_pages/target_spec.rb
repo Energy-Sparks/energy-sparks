@@ -125,7 +125,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(target_consumption: nil, missing: true)
+      create_target(previous_consumption: nil, target_consumption: nil, missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
@@ -169,7 +169,7 @@ RSpec.shared_examples 'target advice page' do
                            table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 +1&percnt;'))
     end
 
-    context 'with out recent data' do
+    context 'without recent data' do
       let(:school) do
         create(:school, :with_fuel_configuration, :with_meter_dates, reading_end_date: 30.days.ago, fuel_type:)
       end
@@ -181,7 +181,6 @@ RSpec.shared_examples 'target advice page' do
           eq(insight_content(expired_text: "We have not received data for your #{fuel_string} usage for over thirty " \
                                            'days. As a result your analysis will be out of date and may not reflect ' \
                                            "recent changes in your school.\n",
-                             table_text: '01 Jan 2024 - 31 Dec 2024',
                              meeting_prompt: false))
       end
     end

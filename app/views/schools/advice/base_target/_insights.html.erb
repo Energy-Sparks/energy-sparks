@@ -28,7 +28,7 @@
     <tr>
       <% if @consumption.last_month.nil? %>
         <td><%= "#{@target.start_date.to_fs(:es_short)} -" %></td>
-        <td><%= format_unit(@consumption.consumption.pluck(:current_consumption).compact.sum, :kw) %></td>
+        <td><%= format_unit(@consumption.consumption.pluck(:current_consumption).compact.sum, :kwh) %></td>
         <td><%= target_consumption = @consumption.consumption.pluck(:target_consumption)
                 if target_consumption.include?(nil)
                   t('advice_pages.target.insights.your_current_progress.target_missing')
