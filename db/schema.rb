@@ -3597,11 +3597,31 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
 
   create_view "comparison_electricity_targets", materialized: true, sql_definition: <<-SQL
       WITH current_targets AS (
-           SELECT school_targets_1.school_id,
-              max(school_targets_1.start_date) AS max
-             FROM school_targets school_targets_1
-            WHERE (school_targets_1.start_date < now())
-            GROUP BY school_targets_1.school_id
+           SELECT ranked.id
+             FROM ( SELECT school_targets_1.id,
+                      school_targets_1.school_id,
+                      school_targets_1.target_date,
+                      school_targets_1.start_date,
+                      school_targets_1.electricity,
+                      school_targets_1.gas,
+                      school_targets_1.storage_heaters,
+                      school_targets_1.created_at,
+                      school_targets_1.updated_at,
+                      school_targets_1.revised_fuel_types,
+                      school_targets_1.report_last_generated,
+                      school_targets_1.electricity_progress,
+                      school_targets_1.gas_progress,
+                      school_targets_1.storage_heaters_progress,
+                      school_targets_1.electricity_report,
+                      school_targets_1.gas_report,
+                      school_targets_1.storage_heaters_report,
+                      school_targets_1.electricity_monthly_consumption,
+                      school_targets_1.gas_monthly_consumption,
+                      school_targets_1.storage_heaters_monthly_consumption,
+                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                     FROM school_targets school_targets_1
+                    WHERE (school_targets_1.start_date < now())) ranked
+            WHERE (ranked.rank = 1)
           ), totals AS (
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
@@ -3620,7 +3640,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       ((totals.current_year_kwh - totals.current_year_target_kwh) / totals.current_year_target_kwh) AS current_year_percent_of_target_relative
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
-       JOIN current_targets ON (((current_targets.school_id = school_targets.school_id) AND (current_targets.max = school_targets.start_date))));
+       JOIN current_targets ON ((current_targets.id = school_targets.id)));
   SQL
   add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
 
@@ -3653,11 +3673,31 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
 
   create_view "comparison_gas_targets", materialized: true, sql_definition: <<-SQL
       WITH current_targets AS (
-           SELECT school_targets_1.school_id,
-              max(school_targets_1.start_date) AS max
-             FROM school_targets school_targets_1
-            WHERE (school_targets_1.start_date < now())
-            GROUP BY school_targets_1.school_id
+           SELECT ranked.id
+             FROM ( SELECT school_targets_1.id,
+                      school_targets_1.school_id,
+                      school_targets_1.target_date,
+                      school_targets_1.start_date,
+                      school_targets_1.electricity,
+                      school_targets_1.gas,
+                      school_targets_1.storage_heaters,
+                      school_targets_1.created_at,
+                      school_targets_1.updated_at,
+                      school_targets_1.revised_fuel_types,
+                      school_targets_1.report_last_generated,
+                      school_targets_1.electricity_progress,
+                      school_targets_1.gas_progress,
+                      school_targets_1.storage_heaters_progress,
+                      school_targets_1.electricity_report,
+                      school_targets_1.gas_report,
+                      school_targets_1.storage_heaters_report,
+                      school_targets_1.electricity_monthly_consumption,
+                      school_targets_1.gas_monthly_consumption,
+                      school_targets_1.storage_heaters_monthly_consumption,
+                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                     FROM school_targets school_targets_1
+                    WHERE (school_targets_1.start_date < now())) ranked
+            WHERE (ranked.rank = 1)
           ), totals AS (
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
@@ -3676,7 +3716,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       ((totals.current_year_kwh - totals.current_year_target_kwh) / totals.current_year_target_kwh) AS current_year_percent_of_target_relative
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
-       JOIN current_targets ON (((current_targets.school_id = school_targets.school_id) AND (current_targets.max = school_targets.start_date))));
+       JOIN current_targets ON ((current_targets.id = school_targets.id)));
   SQL
   add_index "comparison_gas_targets", ["school_id"], name: "index_comparison_gas_targets_on_school_id", unique: true
 
