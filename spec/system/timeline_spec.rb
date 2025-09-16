@@ -147,7 +147,7 @@ describe 'timelines', type: :system do
 
   describe 'school group timeline' do
     let(:public) { true }
-    let(:calendar) { create(:calendar, :with_academic_years, previous_academic_year_count: 3) }
+    let(:calendar) { create(:national_calendar, :with_academic_years, previous_academic_year_count: 3) }
     let(:school_group) { create(:school_group, default_template_calendar: calendar, public:) }
 
     before do

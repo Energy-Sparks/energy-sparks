@@ -383,7 +383,6 @@ en:
     timeline:
       activity_in_current_year: A list of all adult and pupil-led activities at this school group recorded in the current school year
       activity_in_year: A list of all adult and pupil-led activities at this school group recorded in the %{school_year} school year
-      intro: A list of all pupil and adult-lead activities recorded by schools in this group
     titles:
       advice: Advice
       comparisons: Comparisons
