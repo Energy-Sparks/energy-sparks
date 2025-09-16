@@ -52,8 +52,9 @@ $(document).ready(function() {
       const footerLink = chartDiv.querySelector('.chart-selection-dynamic-footer a')
       if (footerLink && schoolSelector) {
         const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
-        const link = `/schools/${selectedSchool.value}/advice/${selectedChart.getAttribute('data-advice-page')}`;
-        footerLink.href = link;
+        const slug = encodeURIComponent(selectedSchool.value);
+        const advice_page = selectedChart.getAttribute('data-advice-page');
+        footerLink.href = `/schools/${slug}/advice/${advice_page}`;
       }
     }
 
