@@ -23,8 +23,10 @@ module AdvicePageHelper
     I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html)
-    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and not -4.7e-15)
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html, numeric_level: nil)
+    user_numeric_comprehension_level = numeric_level unless numeric_level.nil?
+    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and
+    # not -4.7e-15)
     begin
       value = 0.0 if value&.between?(-0.001, 0.001)
     rescue ArgumentError
