@@ -21,11 +21,11 @@
 <% else %>
   <td>
     <%= render IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
-    <% if target %>
-      <%= message %><%= ": #{link_to(target, show_path)}".html_safe if linkable? %>
-    <% else %>
-      <%= link_to message, show_path if linkable? %>
-    <% end %>
+    <%= I18n.t(:description_html, scope: i18n_scope,
+                                  target: target,
+                                  message: message,
+                                  count: observation.points || 0,
+                                  compact_path: compact_path).html_safe %>
   </td>
   <% if show_buttons? %>
     <td class="text-right">

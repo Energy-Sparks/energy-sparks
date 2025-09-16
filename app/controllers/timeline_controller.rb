@@ -49,7 +49,7 @@ class TimelineController < ApplicationController
   end
 
   def calendar
-    @calendar ||= @timelineable.is_a?(School) ? @timelineable.national_calendar : @timelineable.scorable_calendar
+    @calendar ||= @timelineable.national_calendar
   end
 
   def first_observation
