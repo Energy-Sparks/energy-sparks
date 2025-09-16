@@ -13,16 +13,16 @@
     <% consumption.each do |month| %>
       <tr>
         <td><%= target_strftime(Date.new(month[:year], month[:month])) %></td>
-        <td><%= format_unit(month[:previous_consumption], :kw) %></td>
-        <td><%= format_unit(month[:target_consumption], :kw) %></td>
+        <td><%= format_unit(month[:previous_consumption], :kwh, numeric_level: :target) %></td>
+        <td><%= format_unit(month[:target_consumption], :kwh, numeric_level: :target) %></td>
         <%= tag.td(class: month[:missing] ? 'old-data' : nil) do %>
           <% unless month[:current_consumption].nil? && month[:missing] %>
-            <%= format_unit(month[:current_consumption], :kw) %>
+            <%= format_unit(month[:current_consumption], :kwh, numeric_level: :target) %>
           <% end %>
         <% end %>
         <td>
           <% unless month[:missing] %>
-            <%= formatted_target_change(month[:current_consumption], month[:target_consumption]) %>
+            <%= formatted_target_change(month[:current_consumption], month[:previous_consumption]) %>
           <% end %>
         </td>
         <td>

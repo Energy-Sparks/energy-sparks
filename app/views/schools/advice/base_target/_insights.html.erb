@@ -33,14 +33,14 @@
                 if target_consumption.include?(nil)
                   t('advice_pages.target.insights.your_current_progress.target_missing')
                 else
-                  format_unit(target_consumption.sum, :kw)
+                  format_unit(target_consumption.sum, :kwh)
                 end %></td>
         <td></td>
       <% else %>
         <td><%= format_date_range([@target.start_date, Date.new(@consumption.last_month[:year],
                                                                 @consumption.last_month[:month]).end_of_month]) %></td>
-        <td><%= format_unit(@consumption.current_consumption, :kw) %></td>
-        <td><%= format_unit(@consumption.target_consumption, :kw) %></td>
+        <td><%= format_unit(@consumption.current_consumption, :kwh) %></td>
+        <td><%= format_unit(@consumption.target_consumption, :kwh) %></td>
         <td td class="text-right"><%= formatted_target_change(@consumption.current_consumption,
                                                               @consumption.target_consumption) %></td>
       <% end %>
