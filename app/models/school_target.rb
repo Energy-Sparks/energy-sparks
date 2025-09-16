@@ -173,8 +173,10 @@ class SchoolTarget < ApplicationRecord
   end
 
   def monthly_consumption_meeting_target(fuel_type, consumption, current_consumption, target_consumption)
+    analysis_dates = Schools::AnalysisDates.new(school, fuel_type)
     if consumption&.any? { |month| month[:previous_consumption].nil? } ||
-       !Schools::AnalysisDates.new(school, fuel_type).recent_data ||
+       analysis_dates.analysis_date.nil? ||
+       !analysis_dates.recent_data ||
        [current_consumption, target_consumption].any?(&:nil?)
       return
     end
