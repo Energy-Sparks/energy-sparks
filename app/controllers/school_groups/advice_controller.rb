@@ -51,7 +51,7 @@ module SchoolGroups
 
     def charts
       build_breadcrumbs([name: I18n.t('school_groups.titles.charts')])
-      @charts = SchoolGroups::Charts::SAFE_CHARTS
+      @charts = SchoolGroups::Charts.new.safe_charts
     end
 
     private
