@@ -39,8 +39,8 @@
       <% else %>
         <td><%= format_date_range([@target.start_date, Date.new(@consumption.last_month[:year],
                                                                 @consumption.last_month[:month]).end_of_month]) %></td>
-        <td><%= format_unit(@consumption.current_consumption, :kwh) %></td>
-        <td><%= format_unit(@consumption.target_consumption, :kwh) %></td>
+        <td><%= format_unit(@consumption.current_consumption, :kwh, numeric_level: :target) %></td>
+        <td><%= format_unit(@consumption.target_consumption, :kwh, numeric_level: :target) %></td>
         <td td class="text-right"><%= formatted_target_change(@consumption.current_consumption,
                                                               @consumption.target_consumption) %></td>
       <% end %>
