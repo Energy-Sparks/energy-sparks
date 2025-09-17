@@ -10,7 +10,7 @@
   </div>
 <% else %>
   <div class="row justify-content-between">
-    <div class="col-8">
+    <div class="col">
       <h3><%= t('schools.school_targets.target_timeline.how_did_you_try_to_achieve_your_target') %></h3>
       <p>
         <%= t('schools.school_targets.target_timeline.a_reminder_of_the_energy_saving',
@@ -18,19 +18,20 @@
       </p>
     </div>
   </div>
-  <div class="row justify-content-md-center">
-    <div class="col col-md-10">
+  <div class="row">
+    <div class="col">
       <%= render TimelineComponent.new(observations: observations,
+                                       padding: false,
                                        table_opts: { show_date: true },
                                        user: current_user) do |timeline| %>
-             <% timeline.with_link do %>
-               <p>
-                 <%= link_to school_timeline_path(@school_target.school), class: 'btn btn-default' do %>
-                   <%= t('activities.show.all_activities') %>
-                 <% end %>
-               </p>
-             <% end %>
-       <% end %>
+        <% timeline.with_link do %>
+          <p>
+            <%= link_to school_timeline_path(@school_target.school), class: 'btn btn-default' do %>
+              <%= t('activities.show.all_activities') %>
+            <% end %>
+          </p>
+        <% end %>
+      <% end %>
     </div>
   </div>
 <% end %>

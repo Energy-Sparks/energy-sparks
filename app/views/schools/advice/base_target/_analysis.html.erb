@@ -50,16 +50,19 @@
     </thead>
     <tbody>
       <% @historical_targets.each do |target, consumption|
-           current, target_consumption = if target.target_date < Date.new(2025, 9, 1)
-             target["#{@fuel_type}_progress"]&.values_at('usage', 'target')
-           else
-             [consumption.pluck(:current_consumption).compact.sum, consumption.pluck(:target_consumption).compact.sum]
-           end %>
+           current_consumption, target_consumption, comparison_consumption =
+             if target.target_date < Date.new(2025, 9, 1)
+               target["#{@fuel_type}_progress"]&.values_at('usage', 'target', 'target')
+             else
+               [consumption.pluck(:current_consumption).compact.sum,
+                consumption.pluck(:target_consumption).compact.sum,
+                consumption.pluck(:previous_consumption).compact.sum]
+             end %>
         <tr>
           <td><%= formatted_target_date(target) %></td>
-          <td><%= format_unit(current, :kw) %></td>
-          <td><%= format_unit(target_consumption, :kw) %></td>
-          <td><%= formatted_target_change(current, target_consumption) unless current.nil? %></td>
+          <td><%= format_unit(current_consumption, :kwh, numeric_level: :target) %></td>
+          <td><%= format_unit(target_consumption, :kwh, numeric_level: :target) %></td>
+          <td><%= formatted_target_change(current_consumption, comparison_consumption) unless current_consumption.nil? %></td>
           <td><%= formatted_target(target) %></td>
         </tr>
       <% end %>

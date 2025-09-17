@@ -211,6 +211,10 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :timelineable do
+    resource :timeline, only: [:show], controller: 'timeline'
+  end
+
   scope '/admin/settings', as: :admin_settings do
     concerns :tariff_holder
   end
@@ -261,6 +265,7 @@ Rails.application.routes.draw do
 
   resources :school_groups, only: [:show] do
     concerns :tariff_holder
+    concerns :timelineable
 
     scope module: :school_groups do
       resources :chart_updates, only: [:index] do
@@ -283,15 +288,15 @@ Rails.application.routes.draw do
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
       resource :advice, controller: 'advice', only: [:show] do
-        [:baseload,
-         :electricity_out_of_hours,
-         :gas_out_of_hours,
-         :electricity_long_term,
-         :gas_long_term,
-         :heating_control].each do |page|
+        %i[baseload
+           electricity_out_of_hours
+           gas_out_of_hours
+           electricity_long_term
+           gas_long_term
+           heating_control].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
-          [:insights, :analysis].each do |action|
+          %i[insights analysis].each do |action|
             match "#{page}/#{action}", controller: "advice/#{page}", action: 'handle_head', via: :head
           end
 
@@ -357,13 +362,14 @@ Rails.application.routes.draw do
       get :settings
     end
 
-    resources :activities do
+    resources :activities, except: [:index] do
       member do
         get :completed
       end
     end
 
     concerns :tariff_holder
+    concerns :timelineable
 
     scope module: :schools do
       resource :advice, controller: 'advice', only: [:show] do
@@ -501,7 +507,7 @@ Rails.application.routes.draw do
 
       resources :alerts, only: [:show]
 
-      resources :interventions do
+      resources :interventions, except: [:index] do
         member do
           get :completed
         end
@@ -907,6 +913,10 @@ Rails.application.routes.draw do
   # Old benchmark URLs
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
+
+  # Old activity and intervention index pages
+  get '/schools/:name/activities', to: redirect('/schools/%{name}/timeline')
+  get '/schools/:name/interventions', to: redirect('/schools/%{name}/timeline')
 
   # Old marketing URLs
   %w[

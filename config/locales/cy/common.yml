@@ -1,11 +1,6 @@
 cy:
   co2: CO2
   common:
-    action:
-      one: '%{count} weithred'
-      two: '%{count} weithred'
-      many: '%{count} o weithredoedd'
-      other: '%{count} o weithredoedd'
     application: Sbarcynni
     author_html: gan %{author}
     back_to_top: Yn ôl i'r brig

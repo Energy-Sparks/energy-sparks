@@ -125,6 +125,13 @@ RSpec.describe PageNavComponent, type: :component do
         it { expect(list_item).to have_css('.current') }
       end
 
+      context 'with selected set to true for the item' do
+        let(:item_params) { all_item_params.update(href: '/schools/new', selected: true)}
+
+        it { expect(list_item).to have_css('.current') }
+      end
+
+
       context 'with match_controller page nav option set to true' do
         let(:header_params) { all_header_params.update(options: { match_controller: true }) }
         let(:item_params) { all_item_params.update(href: '/schools/new')}

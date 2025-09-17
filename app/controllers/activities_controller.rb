@@ -6,11 +6,7 @@ class ActivitiesController < ApplicationController
   load_resource :school
   load_and_authorize_resource through: :school
 
-  skip_before_action :authenticate_user!, only: %i[index show]
-
-  def index
-    @activities = @activities.order(happened_on: :desc)
-  end
+  skip_before_action :authenticate_user!, only: %i[show]
 
   def show
     interpolator = TemplateInterpolation.new(@activity.activity_type, render_with: SchoolTemplate.new(@school))

@@ -1,0 +1,58 @@
+<%= content_for :header do %>
+  <h1><%= t('schools.timeline.title') %></h1>
+  <p>
+    <% if @academic_year == @current_academic_year %>
+      <%= t('timeline.activity_in_current_year', scope: @i18n_scope) %>
+    <% else %>
+      <%= t('timeline.activity_in_year', scope: @i18n_scope, school_year: @academic_year.title) %>
+    <% end %>
+  </p>
+<% end %>
+<div class="container">
+  <div class="row mt-2">
+    <div class="col-md-3 col-lg-3 col-xl-2">
+      <%= render PageNavComponent.new name: 'Dashboard',
+                                      icon: 'house', href: polymorphic_path(@timelineable),
+                                      options: { user: current_user, match_controller: true } do |c| %>
+
+        <% c.with_section name: 'School years',
+                          expanded: true,
+                          options: { match_controller: false } do |s| %>
+          <% @academic_years.each do |academic_year, count| %>
+            <% s.with_item(name: academic_year.title,
+                           note: "(#{count})",
+                           href: polymorphic_path([@timelineable, :timeline], academic_year: academic_year),
+                           selected: academic_year == @academic_year,
+                           classes: 'small generic-item') %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-md-9 col-lg-9 col-xl-10 py-2 px-4">
+      <% if @observations.any? %>
+        <h4>
+        <%= t('schools.timeline.summary', from: @pagy.from, to: @pagy.to,
+                                          count: @pagy.count,
+                                          start_date: @academic_year.start_date.to_fs(:es_long),
+                                          end_date: @end_date.to_fs(:es_long)) %>
+        </h4>
+        <div class="row justify-content-md-center">
+          <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } if @pagy.pages > 1 %>
+        </div>
+        <%= render Scoreboards::ActivityTableComponent.new(observations: @observations,
+                                                           show_positions: false,
+                                                           observation_style: :full,
+                                                           show_school: !@timelineable.is_a?(School),
+                                                           show_date: true,
+                                                           show_actions: true) %>
+        <div class="row justify-content-md-center">
+          <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } if @pagy.pages > 1 %>
+        </div>
+      <% else %>
+        <%= render PromptComponent.new(icon: 'circle-info', status: :none) do |p| %>
+              <%= t('schools.timeline.no_events') %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

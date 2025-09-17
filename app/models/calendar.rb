@@ -17,6 +17,8 @@
 #
 #  fk_rails_...  (based_on_id => calendars.id) ON DELETE => restrict
 #
+# NB: A school calendar is always based on a regional calendar which is in turn based on a national calendar
+# Currently academic years are only attached to national calendars
 
 class Calendar < ApplicationRecord
   has_many    :calendar_events
@@ -41,6 +43,14 @@ class Calendar < ApplicationRecord
 
   def academic_year_for(date)
     academic_years.for_date(date).first || (based_on && based_on.academic_year_for(date))
+  end
+
+  def current_academic_year
+    academic_year_for(Time.zone.today)
+  end
+
+  def national_calendar
+    national? ? self : based_on&.national_calendar
   end
 
   def terms_and_holidays

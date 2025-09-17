@@ -214,6 +214,10 @@ class SchoolGroup < ApplicationRecord
     default_template_calendar
   end
 
+  def national_calendar
+    scorable_calendar&.national_calendar
+  end
+
   def grouped_schools_by_name(scope: nil)
     selected_schools = scope ? schools.merge(scope) : schools
     selected_schools.group_by do |school|

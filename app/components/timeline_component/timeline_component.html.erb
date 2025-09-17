@@ -28,7 +28,7 @@
           <% end %>
         <% end %>
         <% section.with_body do %>
-          <div class="bg-white rounded p-4">
+          <div class="bg-white rounded<%= ' p-4' if padding %>">
             <%= render(Scoreboards::ActivityTableComponent.new(observations: observations, **formatting_args)) %>
           </div>
         <% end %>

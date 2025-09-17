@@ -2,9 +2,6 @@
 en:
   co2: CO2
   common:
-    action:
-      one: "%{count} action"
-      other: "%{count} actions"
     application: Energy Sparks
     author_html: by %{author}
     back_to_top: Back to top

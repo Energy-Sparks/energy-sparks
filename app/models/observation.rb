@@ -90,7 +90,7 @@ class Observation < ApplicationRecord
   scope :visible, -> { where(visible: true) }
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
-  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
+  scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
@@ -102,6 +102,14 @@ class Observation < ApplicationRecord
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
   scope :engagement, lambda {
     where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
+  }
+
+  scope :with_academic_year, -> {
+    joins('JOIN academic_years ON observations.at BETWEEN academic_years.start_date AND academic_years.end_date')
+  }
+
+  scope :counts_by_academic_year, -> {
+    with_academic_year.group('academic_years.id').count
   }
 
   has_rich_text :description

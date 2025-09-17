@@ -22,9 +22,6 @@ en:
       when_did_you_complete_this_action: When did you complete this action?
       you_can_add_formatting_label: You can add formatting, links and attach images using the toolbar below. Hover over each icon to learn what it does
       you_can_record_label: You can record both recent and older actions to build up a complete record of all of the energy saving activities you've carried out as a school
-    index:
-      record_action: Record an energy saving action
-      title: Your energy saving actions
     new:
       page_title: Record energy saving action
       title: Record an energy saving action for your school

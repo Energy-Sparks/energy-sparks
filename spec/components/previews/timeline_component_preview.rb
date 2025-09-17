@@ -1,5 +1,11 @@
 class TimelineComponentPreview < ViewComponent::Preview
-  def with_observations
+  # @param show_header toggle
+  # @param padding toggle
+  # @param show_actions toggle
+  # @param show_date toggle
+  # @param show_school toggle
+  # @param observation_style select { choices: [compact, description, full] }
+  def default(show_header: true, padding: true, show_actions: true, show_date: true, show_school: true, observation_style: :full)
     audit = Audit.last
 
     observations = [
@@ -13,6 +19,6 @@ class TimelineComponentPreview < ViewComponent::Preview
       Observation.find_by(observation_type: :school_target),
     ].compact.sort_by(&:at).reverse
 
-    render(TimelineComponent.new(observations: observations, show_actions: true, user: User.admin.first))
+    render(TimelineComponent.new(observations: observations, show_header:, padding:, table_opts: { show_actions:, show_date:, show_school:, observation_style: }))
   end
 end

@@ -121,7 +121,6 @@ class School < ApplicationRecord
   include MailchimpUpdateable
   include Enums::DataSharing
   include Enums::SchoolType
-
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
@@ -452,7 +451,7 @@ class School < ApplicationRecord
   end
 
   def national_calendar
-    calendar.based_on.based_on
+    calendar.national_calendar
   end
 
   def area_name

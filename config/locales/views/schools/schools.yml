@@ -686,7 +686,10 @@ en:
       upload_energy_bill: Upload a bill
       view_more_alerts: View more alerts
     timeline:
+      activity_in_current_year: A list of all adult and pupil-led activities at this school recorded in the current school year
+      activity_in_year: A list of all adult and pupil-led activities at this school recorded in the %{school_year} school year
       no_events: No events to show
+      summary: Showing %{from} - %{to} of %{count} activities recorded between %{start_date} and %{end_date}
       title: What's been going on?
     times:
       closing_time: Closing Time
