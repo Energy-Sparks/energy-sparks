@@ -9,7 +9,7 @@
           <th><%= t('common.labels.date') %></th>
         <% end %>
         <% if show_school? %>
-          <th><%= t('common.school') %></th>
+          <th class='w-25'><%= t('common.school') %></th>
         <% end %>
         <th><%= t('common.labels.points') %></th>
         <th><%= t('common.labels.activity') %></th>
@@ -24,7 +24,7 @@
             </td>
           <% end %>
           <% if show_date? %>
-            <td>
+            <td class='text-nowrap'>
               <%= observation.at.to_fs(:es_short) %>
             </td>
           <% end %>
@@ -36,11 +36,16 @@
           <td>
             <%= observation.points || '-' %>
           </td>
-          <td>
+          <% if observation_style == :full %>
             <%= render ObservationComponent.new(observation: observation,
                                                 show_actions: show_actions?,
                                                 style: observation_style) %>
-          </td>
+          <% else %>
+            <td>
+              <%= render ObservationComponent.new(observation: observation,
+                                                  style: observation_style) %>
+            </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
