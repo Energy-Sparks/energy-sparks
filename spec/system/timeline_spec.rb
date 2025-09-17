@@ -15,6 +15,12 @@ describe 'timelines', type: :system do
   end
 
   shared_examples 'a timeline' do |show_school: false|
+    let(:academic_year) { calendar.national_calendar.current_academic_year }
+
+    it 'shows summary' do
+      expect(page).to have_content("Showing 1 - #{schools.count} of #{schools.count} activities recorded between #{academic_year.start_date.to_fs(:es_long)} and #{Time.zone.today.to_fs(:es_long)}")
+    end
+
     it 'shows recent observations in table' do
       within('.table') do
         observations_by_year.first.each do |observation|
@@ -65,8 +71,14 @@ describe 'timelines', type: :system do
     end
 
     context 'when clicking on a previous year' do
+      let(:previous_academic_year) { calendar.national_calendar.academic_years.ordered[-2] }
+
       before do
-        click_on("#{1.year.ago.year} - #{Time.zone.today.year}")
+        click_on("#{previous_academic_year.start_date.year} - #{previous_academic_year.end_date.year}")
+      end
+
+      it 'shows summary' do
+        expect(page).to have_content("Showing 1 - #{schools.count} of #{schools.count} activities recorded between #{previous_academic_year.start_date.to_fs(:es_long)} and #{previous_academic_year.end_date.to_fs(:es_long)}")
       end
 
       it 'shows observations from that year' do
