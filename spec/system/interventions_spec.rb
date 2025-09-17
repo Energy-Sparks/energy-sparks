@@ -6,7 +6,7 @@ describe 'viewing and recording action' do
   before do
     SiteSettings.create!(audit_activities_bonus_points: 50)
     SiteSettings.current.update(photo_bonus_points:)
-    create(:national_calendar, title: 'England and Wales')
+    create(:national_calendar, :with_academic_years, title: 'England and Wales')
   end
 
   let(:title)       { 'Changed boiler' }
@@ -405,12 +405,15 @@ describe 'viewing and recording action' do
           click_on 'Edit'
         end
 
+        new_date = Time.zone.today - 1.day
+
         fill_in_trix with: 'We changed to a more efficient boiler'
-        fill_in 'observation_at', with: '20/06/2019', visible: false
+        fill_in 'observation_at', with: new_date.strftime('%d/%m/%Y'), visible: false
+
         click_on 'Update action'
 
         observation.reload
-        expect(observation.at.to_date).to eq(Date.new(2019, 6, 20))
+        expect(observation.at.to_date).to eq(new_date)
         expect(observation.updated_by).to eq(school_admin)
 
         click_on 'Changed boiler'

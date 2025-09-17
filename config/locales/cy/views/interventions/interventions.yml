@@ -25,9 +25,6 @@ cy:
       when_did_you_complete_this_action: Pryd wnaethoch chi gwblhau'r weithred hon?
       you_can_add_formatting_label: Gallwch ychwanegu fformatio, dolenni ac atodi lluniau gan ddefnyddio'r bar offer isod. Gallwch hofran dros bob eicon i ddysgu beth mae'n ei wneud
       you_can_record_label: Gallwch gofnodi gweithrediadau diweddar a hŷn i greu cofnod cyflawn o'r holl weithgareddau arbed ynni rydych wedi'u cyflawni fel ysgol
-    index:
-      record_action: Cofnodi gweithred arbed ynni
-      title: Eich gweithredoedd arbed ynni
     new:
       page_title: Cofnodi gweithred arbed ynni
       title: Cofnodi gweithred arbed ynni ar gyfer eich ysgol

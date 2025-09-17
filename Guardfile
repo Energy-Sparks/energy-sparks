@@ -32,9 +32,7 @@ guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
 
   # RSpec files
   rspec = dsl.rspec
-  watch(rspec.spec_helper)  { rspec.spec_dir }
-  # Removed below as was running all test suite every time a shared example file changed
-  # watch(rspec.spec_support) { rspec.spec_dir }
+  # watch(rspec.spec_support) { rspec.spec_dir } # don't run all specs on support file change
   watch(rspec.spec_files)
 
   # Ruby files
@@ -54,7 +52,8 @@ guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
   end
 
   # Rails config changes
-  watch(rails.spec_helper)     { rspec.spec_dir }
+  # watch(rails.spec_helper)     { rspec.spec_dir } # don't run all specs on helper change
+  watch(rails.routes) { rspec.spec.call("system/routing") }
   watch(rails.routes)          { "#{rspec.spec_dir}/system" }
   watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
 
