@@ -170,6 +170,7 @@ ignore_unused:
   - 'schools.prompts.programme.progress.*'
   - 'schools.prompts.audit.progress.*'
   - 'components.dashboards.group_alerts.school_descriptions.*'
+  - 'school_groups.advice.chart_types.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'
