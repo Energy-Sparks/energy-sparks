@@ -23,8 +23,10 @@ module AdvicePageHelper
     I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html)
-    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and not -4.7e-15)
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html, numeric_level: nil)
+    user_numeric_comprehension_level = numeric_level unless numeric_level.nil?
+    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and
+    # not -4.7e-15)
     begin
       value = 0.0 if value&.between?(-0.001, 0.001)
     rescue ArgumentError
@@ -108,12 +110,12 @@ module AdvicePageHelper
     end
   end
 
-  def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)
-    if school.multiple_meters?(fuel_type)
-      advice_pages.where(fuel_type: fuel_type)
-    else
-      advice_pages.where(fuel_type: fuel_type, multiple_meters: false)
+  def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type, current_user)
+    advice_pages = advice_pages.where(fuel_type:)
+    unless Flipper.enabled?(:target_advice_pages2025, current_user)
+      advice_pages = advice_pages.where.not(key: %i[electricity_target gas_target storage_heater_target])
     end
+    school.multiple_meters?(fuel_type) ? advice_pages : advice_pages.where(multiple_meters: false)
   end
 
   def display_advice_page?(school, fuel_type)

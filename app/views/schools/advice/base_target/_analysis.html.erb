@@ -1,0 +1,71 @@
+<%= render 'expired' %>
+<h2><%= t('advice_pages.target.analysis.title') %></h2>
+<p><%= t('advice_pages.target.analysis.sections', fuel_type: t_fuel_type) %></p>
+<ul>
+  <li><%= link_to(t('advice_pages.target.analysis.monthly_progress.title'), '#monthly-progress') %></li>
+  <li><%= link_to(t('advice_pages.target.analysis.cumulative_progress.title'), '#cumulative-progress') %></li>
+  <% if @historical_targets.any? %>
+    <li><%= link_to(t('advice_pages.target.analysis.historical_progress.title'), '#historical-progress') %></li>
+  <% end %>
+</ul>
+<%= render 'meeting_target_prompt' %>
+<%= render 'schools/advice/section_title',
+           section_id: 'monthly-progress',
+           section_title: t('advice_pages.target.analysis.monthly_progress.title') %>
+<p><%= t('advice_pages.target.analysis.monthly_progress.text_html',
+         fuel_type: t_fuel_type,
+         percent: formatted_target) %></p>
+<%= render 'monthly_table', consumption: @consumption.consumption %>
+<%= render 'schools/advice/section_title',
+           section_id: 'cumulative-progress',
+           section_title: t('advice_pages.target.analysis.cumulative_progress.title') %>
+<p><%= t('advice_pages.target.analysis.cumulative_progress.text_html',
+         fuel_type: t_fuel_type,
+         percent: formatted_target,
+         target_date: formatted_target_date) %></p>
+<%= consumption = @consumption.consumption.map(&:dup)
+    consumption.each_with_index do |month, i|
+      next if i.zero?
+
+      %i[previous target current].each do |field|
+        unless month[:"#{field}_consumption"].nil? || month[:"#{field}_consumption"].zero?
+          previous = consumption[i - 1][:"#{field}_consumption"] || 0
+          month[:"#{field}_consumption"] = previous + month[:"#{field}_consumption"]
+        end
+      end
+    end
+    render 'monthly_table', consumption: %>
+<% if @historical_targets.any? %>
+  <%= render 'schools/advice/section_title',
+             section_id: 'historical-progress',
+             section_title: t('advice_pages.target.analysis.historical_progress.title') %>
+  <%= t('advice_pages.target.analysis.historical_progress.intro', fuel_type: t_fuel_type) %>
+  <table class="mt-2 table table-sm advice-table">
+    <thead>
+      <th><%= t('advice_pages.target.analysis.historical_progress.target_date') %></th>
+      <th><%= t('advice_pages.target.analysis.historical_progress.previous_year') %></th>
+      <th><%= t('advice_pages.target.analysis.historical_progress.target_year') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.percentage_change') %></th>
+      <th><%= t('advice_pages.target.analysis.historical_progress.target') %></th>
+    </thead>
+    <tbody>
+      <% @historical_targets.each do |target, consumption|
+           current_consumption, target_consumption, comparison_consumption =
+             if target.target_date < Date.new(2025, 9, 1)
+               target["#{@fuel_type}_progress"]&.values_at('usage', 'target', 'target')
+             else
+               [consumption.pluck(:current_consumption).compact.sum,
+                consumption.pluck(:target_consumption).compact.sum,
+                consumption.pluck(:previous_consumption).compact.sum]
+             end %>
+        <tr>
+          <td><%= formatted_target_date(target) %></td>
+          <td><%= format_unit(current_consumption, :kwh, numeric_level: :target) %></td>
+          <td><%= format_unit(target_consumption, :kwh, numeric_level: :target) %></td>
+          <td><%= formatted_target_change(current_consumption, comparison_consumption) unless current_consumption.nil? %></td>
+          <td><%= formatted_target(target) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

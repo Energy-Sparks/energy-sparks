@@ -1,0 +1,59 @@
+---
+en:
+  advice_pages:
+    target:
+      analysis:
+        cumulative_progress:
+          text_html: This table summarises your overall progress towards reducing your %{fuel_type} use by %{percent}. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by %{target_date}.
+          title: Cumulative progress
+        historical_progress:
+          intro: The following table shows your previous progress towards reducing your %{fuel_type} usage
+          previous_year: Previous year (kWh)
+          target: Target
+          target_date: Target date
+          target_year: Target year (kWh)
+          title: Historical progress
+        monthly_progress:
+          last_year: Last year (kWh)
+          on_target: On target?
+          partial: Partial months are shown in red.
+          percentage_change: "% change"
+          target: Target (kWh)
+          text_html: This table summarises your progress to reduce your %{fuel_type} use by %{percent} on a month by month basis. Each entry in the table shows the target and actual consumption for every month in the target period. This table can be helpful in identifying which months have you have made the most savings or where your energy use has exceeded the target.
+          this_year: This year (kWh)
+          title: Monthly progress
+        sections: The following sections provide more detailed analysis of your school's %{fuel_type} target throughout the target period.
+        title: Progress report
+      expired:
+        complete: You have reached your target date and is it complete.
+        complete_set_new_html: You can set a <a href="%{path}">new target now</a>.
+        waiting: You have reached your target date but we are still waiting for more data to complete your final progress report.
+        waiting_set_new_html: You can set a <a href="%{path}">new target now</a> or wait for your progress report to be complete.
+      future_target_date: Target date is in the future so no consumption has yet been recorded.
+      insights:
+        title: What is your target?
+        what_is_your_target:
+          revise_html: You can <a href="%{path}">revise your target</a>.
+          text_html: |-
+            <p>Setting a target to reduce your %{fuel_type} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.</p>
+            <p>Your school has set a target to reduce its %{fuel_type} by %{percent} before %{target_date}.</p>
+        your_current_progress:
+          cumulative_consumption: Cumulative consumption (kWh)
+          target_consumption: Target consumption (kWh)
+          text_html: <p>View <a href="%{analysis_path}">your detailed progress report</a> or <a href="%{comparison_path}">compare progress with other schools in your group</a>.</p>
+          text_no_comparison_html: <p>View <a href="%{analysis_path}">your detailed progress report</a>.<p>
+          title: Your current progress
+      limited_data:
+        meantime_html: <p>In the meantime you can monitor your usage using the charts on the <a href="%{path}">long term %{fuel_type} usage advice page</a></p>
+        text_html: |-
+          <p>We have limited historical data for your school so are unable to calculate a progress report to help you track progress towards completing your target.</p>
+          <p>If we are able to access historical data for your school then a report will automatically become available.</p>
+        title: Limited historical data
+      missing_previous_year_html: Data from the previous year is missing so we can't calculate your target consumption.  See <a href="%{path}">here</a> for more information about your usage.
+      new_target:
+        text: Data for your new target should be available tomorrow.
+        title: Waiting to process data for your new target
+      no_target:
+        login_html: You need to <a href="%{path}">login</a> to set a target.
+        text: Your school has not set a target for %{fuel_type} use so we can't generate a progress report.
+        title: No target set
