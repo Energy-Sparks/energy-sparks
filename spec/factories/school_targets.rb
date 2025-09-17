@@ -49,9 +49,8 @@ FactoryBot.define do
       end
 
       after(:build) do |target, evaluator|
-        attribute = evaluator.fuel_type == :storage_heater ? :"#{evaluator.fuel_type}s" : evaluator.fuel_type
-        target[attribute] = evaluator.target
-        target["#{attribute}_monthly_consumption"] = (0..11).map do |i|
+        target[evaluator.fuel_type] = evaluator.target
+        target["#{evaluator.fuel_type}_monthly_consumption"] = (0..11).map do |i|
           month = target.start_date.month - 1 + i
           [target.start_date.year + (month / 12), (month % 12) + 1,
            *%i[current_consumption previous_consumption target_consumption missing].freeze.map do |name|

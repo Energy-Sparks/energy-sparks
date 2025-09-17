@@ -1,0 +1,10 @@
+<%= tag.div class: ['row', 'rounded-lg', status_for_alert_colour(status)] do %>
+  <div class="col-lg-1 py-3">
+    <%= image_tag "email/fa-#{icon}.png", class: 'px-4' %>
+  </div>
+  <div class="col-lg-11 py-4 text-sm lh-base">
+    <%= yield %>
+    <%= link_to(link_text, link_url, class: 'text my-4') if link_url %>
+  </div>
+<% end %>
+<div class="s-2"></div>
