@@ -43,10 +43,14 @@ Rails.application.routes.draw do
   get 'education-workshops', to: 'home#education_workshops'
   get 'product', to: 'home#product'
 
-  get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show', as: :data_feeds_dark_sky_temperature_readings
-  get 'data_feeds/solar_pv_tuos_readings/:area_id', to: 'data_feeds/solar_pv_tuos_readings#show', as: :data_feeds_solar_pv_tuos_readings
-  get 'data_feeds/carbon_intensity_readings', to: 'data_feeds/carbon_intensity_readings#show', as: :data_feeds_carbon_intensity_readings
-  get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show', as: :data_feeds_weather_observations
+  get 'data_feeds/dark_sky_temperature_readings/:area_id', to: 'data_feeds/dark_sky_temperature_readings#show',
+                                                           as: :data_feeds_dark_sky_temperature_readings
+  get 'data_feeds/solar_pv_tuos_readings/:area_id', to: 'data_feeds/solar_pv_tuos_readings#show',
+                                                    as: :data_feeds_solar_pv_tuos_readings
+  get 'data_feeds/carbon_intensity_readings', to: 'data_feeds/carbon_intensity_readings#show',
+                                              as: :data_feeds_carbon_intensity_readings
+  get 'data_feeds/weather_observations/:weather_station_id', to: 'data_feeds/weather_observations#show',
+                                                             as: :data_feeds_weather_observations
   get 'data_feeds/:id/:feed_type', to: 'data_feeds#show', as: :data_feed
 
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
@@ -284,15 +288,15 @@ Rails.application.routes.draw do
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
       resource :advice, controller: 'advice', only: [:show] do
-        [:baseload,
-         :electricity_out_of_hours,
-         :gas_out_of_hours,
-         :electricity_long_term,
-         :gas_long_term,
-         :heating_control].each do |page|
+        %i[baseload
+           electricity_out_of_hours
+           gas_out_of_hours
+           electricity_long_term
+           gas_long_term
+           heating_control].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
-          [:insights, :analysis].each do |action|
+          %i[insights analysis].each do |action|
             match "#{page}/#{action}", controller: "advice/#{page}", action: 'handle_head', via: :head
           end
 
@@ -369,23 +373,23 @@ Rails.application.routes.draw do
 
     scope module: :schools do
       resource :advice, controller: 'advice', only: [:show] do
-        [:baseload,
-         :electricity_costs,
-         :electricity_long_term,
-         :electricity_intraday,
-         :electricity_meter_breakdown,
-         :electricity_out_of_hours,
-         :electricity_recent_changes,
-         :heating_control,
-         :thermostatic_control,
-         :gas_costs,
-         :gas_long_term,
-         :gas_meter_breakdown,
-         :gas_out_of_hours,
-         :gas_recent_changes,
-         :hot_water,
-         :solar_pv,
-         :storage_heaters].each do |page|
+        %i[baseload
+           electricity_costs
+           electricity_long_term
+           electricity_intraday
+           electricity_meter_breakdown
+           electricity_out_of_hours
+           electricity_recent_changes
+           heating_control
+           thermostatic_control
+           gas_costs
+           gas_long_term
+           gas_meter_breakdown
+           gas_out_of_hours
+           gas_recent_changes
+           hot_water
+           solar_pv
+           storage_heaters].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
           %i[insights analysis learn_more].each do |action|
@@ -779,7 +783,7 @@ Rails.application.routes.draw do
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
       resources :engaged_groups, only: [:index]
-      match 'engaged_schools', to: 'engaged_schools#index', via: [:get, :post]
+      match 'engaged_schools', to: 'engaged_schools#index', via: %i[get post]
 
       resource :funder_allocations, only: [:show] do
         post :deliver
@@ -866,7 +870,7 @@ Rails.application.routes.draw do
     end
 
     resources :local_distribution_zones, except: [:destroy]
-    resources :secr_co2_equivalences, except: [:destroy, :show]
+    resources :secr_co2_equivalences, except: %i[destroy show]
   end
 
   get 'admin/mailer_previews/*path' => 'rails/mailers#preview', as: :admin_mailer_preview
