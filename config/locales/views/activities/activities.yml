@@ -6,10 +6,6 @@ en:
       delete: Delete
       edit: Edit
       home: Home
-      title: Actions
-    activity_title: Activity title
-    choose_next_activity: Choose Next Activity
-    completed_on: Completed on
     edit:
       page_title: Update activity
       update_your_activity: Update your activity
@@ -36,13 +32,9 @@ en:
       the_activity_you_completed: The activity you completed
       update_activity: Update activity
       when_did_you_complete_this_activity: When did you complete this activity?
-    home: Home
-    introduction: A list of the recent energy saving activities recorded by
     new:
       page_title: Record activity
       record_a_new_activity: Record a new energy saving activity for your school
-    no_activities_completed: No activities completed
-    page_title: All Activities
     show:
       activity_description: Activity description
       all_activities: All activities
@@ -51,6 +43,3 @@ en:
       no_entry: You haven't entered what you did for this activity, please edit the activitiy and tell us what you did
       page_title: Activity
       score_awarded_for_this_activity: Score awarded for this activity
-    sign_in_html: "<a href='%{new_user_session_path}'>Sign in</a> to record a new energy saving activity that has taken place in your school"
-    title: Energy saving activities
-    type: Type
