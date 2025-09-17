@@ -380,6 +380,7 @@ Rails.application.routes.draw do
            electricity_meter_breakdown
            electricity_out_of_hours
            electricity_recent_changes
+           electricity_target
            heating_control
            thermostatic_control
            gas_costs
@@ -387,9 +388,11 @@ Rails.application.routes.draw do
            gas_meter_breakdown
            gas_out_of_hours
            gas_recent_changes
+           gas_target
            hot_water
            solar_pv
-           storage_heaters].each do |page|
+           storage_heaters
+           storage_heater_target].each do |page|
           # Override Rails default behaviour of mapping HEAD request to a GET and send to a
           # generic action method that returns OK with no content.
           %i[insights analysis learn_more].each do |action|
