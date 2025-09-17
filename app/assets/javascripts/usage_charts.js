@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     // For SelectableSchoolChartsComponent
     updateSchoolSelection(chartDiv, chartConfig)
-    updateChartTitleAndFootnoteFromSelections(chartDiv, chartConfig);
+    updateChartStateFromSelections(chartDiv, chartConfig);
 
     // For Meter Specific Charts
     updateMeterSpecificChartState(chartDiv, chartConfig);
@@ -58,10 +58,19 @@ $(document).ready(function() {
   // selected chart and school.
   //
   // Relies on both select boxes having option elements containing certain data attributes.
-  function updateChartTitleAndFootnoteFromSelections(chartDiv, chartConfig) {
+  function updateChartStateFromSelections(chartDiv, chartConfig) {
+    console.log(chartConfig.transformations);
     const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
     if (chartSelector && chartSelector.value) {
       chartConfig.type = chartSelector.value;
+      chartConfig.transformations = [];
+      // hide axis controls as currently displayed state might not be suitable for
+      // the chart now selected
+      const axisControls = chartDiv.querySelector('.axis-controls')
+      if (axisControls) {
+        axisControls.style.display = 'none';
+      }
+
       const selectedChart = chartSelector.options[chartSelector.selectedIndex];
       const chartTitle = chartDiv.querySelector('.chart-title');
       if (chartTitle) {
