@@ -1,0 +1,8 @@
+---
+en:
+  school_groups:
+    advice:
+      chart_types:
+        electricity:
+          baseload:
+            title: Baseload

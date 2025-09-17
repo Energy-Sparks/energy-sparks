@@ -9,7 +9,7 @@
         <div class="form-row">
           <div class="form-group col-md-12">
             <span class="text-align-center mr-1">
-              <%= t('components.selectable_school_charts_component.chart_selection_fuel_type') %>
+              <strong><%= t('components.selectable_school_charts_component.chart_selection_fuel_type') %></strong>
             </span>
             <% @fuel_types.each_with_index do |fuel_type, index| %>
               <div class="custom-control custom-radio custom-control-inline">
@@ -31,9 +31,9 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-12">
-            <%= label_tag 'chart-selection-chart-type',
-                          t('components.selectable_school_charts_component.chart_selection_chart_type') %>
+          <div class="form-group col-md-6">
+            <strong><%= label_tag 'chart-selection-chart-type',
+                                  t('components.selectable_school_charts_component.chart_selection_chart_type') %></strong>
 
             <select id="chart-selection-chart-type" name="chart-selection-chart-type" class='form-control select2'>
               <% @charts.each do |fuel_type, chart_config| %>
@@ -51,13 +51,9 @@
               <% end %>
             </select>
           </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-md-12">
-            <%= label_tag 'chart-selection-school-id',
-                          t('components.selectable_school_charts_component.chart_selection_school_id') %>
-
+          <div class="form-group col-md-6">
+            <strong><%= label_tag 'chart-selection-school-id',
+                                  t('components.selectable_school_charts_component.chart_selection_school_id') %></strong>
             <select id="chart-selection-school-id" name="chart-selection-school-id" class='form-control select2'>
               <% @schools.each do |school| %>
                 <option value="<%= school.slug %>"
@@ -70,7 +66,6 @@
             </select>
           </div>
         </div>
-
       <% end %>
       <%= render ChartComponent.new chart_type: default_chart_type,
                                     axis_controls: true,
@@ -80,12 +75,10 @@
                                     school: default_school do |c| %>
         <% c.with_title { default_chart_title } %>
         <% c.with_subtitle { default_chart_subtitle } %>
-        <% c.with_footer do %>
-          <div class="chart-selection-dynamic-footer">
-            <a href="<%= default_link %>">
-              <%= t('components.selectable_school_charts_component.chart_selection_dynamic_footer.link') %>
-            </a>
-          </div>
+        <% c.with_header do %>
+          <a class="chart-selection-analysis-link" href="<%= default_link %>">
+            <%= t('components.selectable_school_charts_component.chart_selection_dynamic_footer.link') %>
+          </a>
         <% end %>
       <% end %>
     </div>

@@ -299,6 +299,7 @@ Rails.application.routes.draw do
           get :priorities
           get :alerts
           get :scores
+          get :charts
         end
       end
     end

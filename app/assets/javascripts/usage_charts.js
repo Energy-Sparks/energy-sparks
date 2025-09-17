@@ -82,7 +82,7 @@ $(document).ready(function() {
           chartSubTitle.innerHTML = '';
         }
       }
-      const footerLink = chartDiv.querySelector('.chart-selection-dynamic-footer a')
+      const footerLink = chartDiv.querySelector('.chart-selection-analysis-link')
       if (footerLink && schoolSelector) {
         const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
         const slug = encodeURIComponent(selectedSchool.value);
