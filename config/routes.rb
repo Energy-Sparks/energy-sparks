@@ -902,7 +902,7 @@ Rails.application.routes.draw do
   get '/benchmarks', to: redirect('/compare')
   get '/benchmark', to: redirect(BenchmarkRedirector.new)
 
-  # Old activity and intervention pages
+  # Old activity and intervention index pages
   get '/schools/:name/activities', to: redirect('/schools/%{name}/timeline')
   get '/schools/:name/interventions', to: redirect('/schools/%{name}/timeline')
 

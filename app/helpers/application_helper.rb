@@ -13,8 +13,8 @@ module ApplicationHelper
     datetime.strftime('%H:%M')
   end
 
-  def nice_dates(date, format = :es_full)
-    date ? date.to_fs(format) : ''
+  def nice_dates(date)
+    date ? date.to_fs(:es_full) : ''
   end
 
   def short_dates(date)
