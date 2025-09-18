@@ -1014,7 +1014,7 @@ DEPENDENCIES
   wisper-rspec
 
 RUBY VERSION
-   ruby 3.2.4p170
+   ruby 3.4.5p51
 
 BUNDLED WITH
    2.7.0
