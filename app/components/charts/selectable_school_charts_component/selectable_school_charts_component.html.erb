@@ -18,7 +18,7 @@
                        id="chart-selection-fuel-type-<%= fuel_type %>"
                        data-fuel-type="<%= fuel_type %>"
                        class="custom-control-input"
-                       <%= 'checked' if index.zero? %>>
+                       <%= 'checked' if fuel_type == default_fuel_type %>>
                 <label class="custom-control-label"
                        for="chart-selection-fuel-type-<%= fuel_type %>"
                        data-toggle="tooltip"
@@ -44,9 +44,8 @@
                           data-title="<%= config[:title] || config[:label] %>"
                           data-subtitle="<%= config[:subtitle] || '' %>"
                           data-advice-page="<%= config[:advice_page] %>"
-                          <%= 'disabled hidden' unless fuel_type == @fuel_types.first %>>
-                          <%= config[:label] %>
-                  </option>
+                          <%= 'selected' if chart_type == default_chart_type %>
+                          <%= 'disabled hidden' unless fuel_type == default_fuel_type %>><%= config[:label] %></option>
                 <% end %>
               <% end %>
             </select>
@@ -59,9 +58,8 @@
                 <option value="<%= school.slug %>"
                         data-fuel-type="<%= fuel_types_for_school(school) %>"
                         data-name="<%= school.name %>"
-                        <%= 'disabled hidden' unless enable_school?(school) %>>
-                        <%= school.name %>
-                </option>
+                        <%= 'selected' if school == default_school %>
+                        <%= 'disabled hidden' unless enable_school?(school) %>><%= school.name %></option>
               <% end %>
             </select>
           </div>

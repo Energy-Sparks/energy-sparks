@@ -2,11 +2,14 @@ module Charts
   class SelectableSchoolChartsComponent < ApplicationComponent
     attr_reader :schools, :charts
 
-    def initialize(schools:, charts:, fuel_types:, **_kwargs)
+    def initialize(schools:, charts:, fuel_types:,
+                   defaults: { school: nil, chart_type: nil, fuel_type: nil },
+                   **_kwargs)
       super
       @schools = schools
       @charts = charts
       @fuel_types = fuel_types
+      @defaults = defaults
       add_classes('row')
     end
 
@@ -37,15 +40,15 @@ module Charts
     end
 
     def default_chart_type
-      @charts[default_fuel_type].keys.first
+      @charts[default_fuel_type].key?(@defaults[:chart_type]) ? @defaults[:chart_type] : @charts[default_fuel_type].keys.first
     end
 
     def default_fuel_type
-      @fuel_types.first
+      @fuel_types.include?(@defaults[:fuel_type]) ? @defaults[:fuel_type] : @fuel_types.first
     end
 
     def default_school
-      @schools.first
+      @schools.include?(@defaults[:school]) ? @defaults[:school] : @schools.first
     end
 
     def enable_school?(school)

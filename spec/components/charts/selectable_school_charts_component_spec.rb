@@ -27,6 +27,10 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
           subtitle: 'This chart shows the electricity baseload for {{name}} using all available data.',
           advice_page: :baseload
         },
+        electricity_by_day_of_week_tolerant: {
+          label: 'Electricity by day of week',
+          advice_page: :electricity_out_of_hours
+        }
       },
       gas: {
         management_dashboard_group_by_week_gas: {
@@ -75,6 +79,14 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
                               href: school_advice_baseload_path(schools.first))
   end
 
+  it 'selected the default chart' do
+    expect(html).to have_select('chart-selection-chart-type', selected: 'Baseload')
+  end
+
+  it 'selected the default school' do
+    expect(html).to have_select('chart-selection-school-id', selected: schools.first.name)
+  end
+
   context 'when rendering the fuel types' do
     it 'creates options for all the fuel types' do
       fuel_types.each do |fuel_type|
@@ -98,7 +110,7 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
 
   context 'when rendering the chart types' do
     it 'has visible electricity options by default' do
-      expect(html).to have_css("option[value='baseload'][data-fuel-type='electricity']")
+      expect(html).to have_css("option[value='electricity_by_day_of_week_tolerant'][data-fuel-type='electricity']")
     end
 
     it 'adds hidden options for other charts' do
@@ -117,6 +129,29 @@ RSpec.describe Charts::SelectableSchoolChartsComponent, :include_url_helpers, ty
 
     it 'has gas only schools hidden' do
       expect(html).to have_css("option[value='#{schools.last.slug}'][data-fuel-type='gas']", visible: :hidden)
+    end
+  end
+
+  context 'with overridden defaults' do
+    let(:params) do
+      {
+        fuel_types:,
+        schools:,
+        charts:,
+        defaults: {
+          school: schools.last,
+          chart_type: :management_dashboard_group_by_week_gas,
+          fuel_type: :gas
+        }
+      }
+    end
+
+    it 'selected the default chart' do
+      expect(html).to have_select('chart-selection-chart-type', selected: 'Group by week gas')
+    end
+
+    it 'selected the right school' do
+      expect(html).to have_select('chart-selection-school-id', selected: schools.last.name)
     end
   end
 end

@@ -17,7 +17,12 @@
       <p>
       <%= render Charts::SelectableSchoolChartsComponent.new(schools: @schools,
                                                              fuel_types: @fuel_types,
-                                                             charts: @charts) %>
+                                                             charts: @charts,
+                                                             defaults: {
+                                                               fuel_type: @default_fuel_type,
+                                                               chart_type: @default_chart_type,
+                                                               school: @default_school
+                                                             }) %>
     </div>
   </div>
 </div>

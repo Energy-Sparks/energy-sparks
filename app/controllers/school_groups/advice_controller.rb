@@ -52,6 +52,9 @@ module SchoolGroups
     def charts
       build_breadcrumbs([name: I18n.t('school_groups.titles.charts')])
       @charts = SchoolGroups::Charts.new.safe_charts
+      @default_school = params[:school].present? ? School.find_by(slug: params[:school]) : nil
+      @default_chart_type = params[:chart_type]&.to_sym
+      @default_fuel_type = params[:fuel_type]&.to_sym
     end
 
     private

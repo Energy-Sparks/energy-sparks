@@ -11,6 +11,7 @@ $(document).ready(function() {
     // For SelectableSchoolChartsComponent
     updateSchoolSelection(chartDiv, chartConfig)
     updateChartStateFromSelections(chartDiv, chartConfig);
+    replaceBrowserHistory(chartDiv);
 
     // For Meter Specific Charts
     updateMeterSpecificChartState(chartDiv, chartConfig);
@@ -45,9 +46,25 @@ $(document).ready(function() {
   }
 
   // SelectableSchoolChartsComponent
+  // use replaceState to update url parameters to allow sharing of direct link to component state
+  function replaceBrowserHistory(chartDiv) {
+    const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
+    const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
+    const selectedFuelType = document.querySelector("input[name='chart-selection-fuel-type']:checked");
+    if (schoolSelector && chartSelector && selectedFuelType) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('chart_type', chartSelector.value);
+      url.searchParams.set('school', schoolSelector.value);
+      url.searchParams.set('fuel_type', selectedFuelType.getAttribute('data-fuel-type'));
+      history.replaceState(null, '', url.toString());
+    }
+  }
+
+  // SelectableSchoolChartsComponent
   // Set alternate URL for loading chart json based on selected school
   function updateSchoolSelection(chartDiv, chartConfig) {
     const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
+    const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
     if (schoolSelector && schoolSelector.value) {
       chartConfig.jsonUrl = `/schools/${schoolSelector.value}/chart.json`;
     }
@@ -59,7 +76,6 @@ $(document).ready(function() {
   //
   // Relies on both select boxes having option elements containing certain data attributes.
   function updateChartStateFromSelections(chartDiv, chartConfig) {
-    console.log(chartConfig.transformations);
     const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
     if (chartSelector && chartSelector.value) {
       chartConfig.type = chartSelector.value;
