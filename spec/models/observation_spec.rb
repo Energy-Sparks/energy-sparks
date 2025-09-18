@@ -6,6 +6,24 @@ describe Observation do
 
   before { SiteSettings.current.update(photo_bonus_points: 0) }
 
+  describe '.in_academic_year and .counts_by_academic_year' do
+    let(:academic_year) { create(:academic_year, start_date: 2.days.ago, end_date: 2.days.from_now) }
+
+    context 'when observations are on last day of academic year' do
+      let!(:observations) { create_list(:observation, 2, :activity, school:, at: academic_year.end_date + 3.hours) }
+
+      it { expect(school.observations.in_academic_year(academic_year)).to match_array(observations) }
+      it { expect(school.observations.counts_by_academic_year[academic_year.id]).to be(2) }
+    end
+
+    context 'when observations are after last day of academic year' do
+      let!(:observations) { create_list(:observation, 2, :activity, school:, at: academic_year.end_date + 25.hours) }
+
+      it { expect(school.observations.in_academic_year(academic_year)).not_to match_array(observations) }
+      it { expect(school.observations.counts_by_academic_year[academic_year.id]).to be_nil }
+    end
+  end
+
   describe '#pupil_count' do
     it 'is valid when present for interventions only' do
       expect(build(:observation, observation_type: :temperature, pupil_count: 12)).to be_invalid

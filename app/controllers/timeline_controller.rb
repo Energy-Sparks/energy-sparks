@@ -25,8 +25,8 @@ class TimelineController < ApplicationController
     @academic_years = available_years.map { |year| [year, observation_counts[year.id] || 0] }
     @academic_year = params[:academic_year] ? AcademicYear.find(params[:academic_year]) : available_years.first
     @current_academic_year = calendar.current_academic_year
-    @end_date = @academic_year == @current_academic_year ? Time.zone.today : @academic_year.end_date
-    @observations = timelineable.observations.visible.between(@academic_year.start_date, @end_date.end_of_day).by_date || []
+    @observations = timelineable.observations.visible.in_academic_year(@academic_year).by_date || []
+    @end_date = @academic_year == @current_academic_year ? @observations.first&.at : @academic_year.end_date
     @pagy, @observations = pagy(@observations, limit: 50)
   end
 
@@ -62,6 +62,6 @@ class TimelineController < ApplicationController
   end
 
   def observation_counts
-    @observation_counts ||= timelineable.observations.with_academic_year.counts_by_academic_year
+    @observation_counts ||= timelineable.observations.visible.counts_by_academic_year
   end
 end

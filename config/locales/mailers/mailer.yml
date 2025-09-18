@@ -256,8 +256,6 @@ en:
       we_would_love_html: We would love to support your school again in future. You can view our current services and prices <a href="%{url}">here</a> or request to re-enrol your school by emailing <a href="mailto:hello@energysparks.uk">hello@energysparks.uk</a>.
       your_account: Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
   target_mailer:
-    admin_target_report:
-      subject: Target Progress and Data Report
     first_target:
       subject: Set your first energy saving target
       title: Set your first energy saving target

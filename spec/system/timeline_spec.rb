@@ -5,6 +5,7 @@ describe 'timelines', type: :system do
 
   let(:user) { nil }
   let(:schools) { [] }
+  let(:school) { schools.first }
 
   let!(:observations_by_year) do # create observations for this year, last year and 3 years ago, for each school
     [0, 1, 3].collect do |i|
@@ -12,6 +13,10 @@ describe 'timelines', type: :system do
         create(:observation, :activity, school:, at: i.years.ago)
       end
     end
+  end
+
+  let!(:observation_invisible) do # create invisible observations for current year
+    create(:observation, :activity, school:, at: Time.current, visible: false)
   end
 
   shared_examples 'a timeline' do |show_school: false|
@@ -54,6 +59,10 @@ describe 'timelines', type: :system do
       observations_by_year.last.each do |observation|
         expect(page).not_to have_content(observation.activity.display_name)
       end
+    end
+
+    it 'does not show invisible observations' do
+      expect(page).not_to have_content(observation_invisible.activity.display_name)
     end
 
     it 'shows links to previous years, including missing ones' do
@@ -111,7 +120,7 @@ describe 'timelines', type: :system do
 
     before do
       sign_in(user) if user
-      visit school_timeline_path(schools.first)
+      visit school_timeline_path(school)
     end
 
     context 'when school is public' do
@@ -161,6 +170,7 @@ describe 'timelines', type: :system do
     let(:public) { true }
     let(:calendar) { create(:national_calendar, :with_academic_years, previous_academic_year_count: 3) }
     let(:school_group) { create(:school_group, default_template_calendar: calendar, public:) }
+    let!(:schools) { create_list(:school, 2, school_group:) }
 
     before do
       sign_in(user) if user
@@ -169,7 +179,6 @@ describe 'timelines', type: :system do
 
     context 'when not logged in' do
       context 'when school group is public' do
-        let!(:schools) { create_list(:school, 2, school_group:) }
         let(:public) { true }
 
         it_behaves_like 'a timeline', show_school: true

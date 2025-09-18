@@ -17,8 +17,6 @@
 #
 #  fk_rails_...  (based_on_id => calendars.id) ON DELETE => restrict
 #
-# NB: A school calendar is always based on a regional calendar which is in turn based on a national calendar
-# Currently academic years are only attached to national calendars
 
 class Calendar < ApplicationRecord
   has_many    :calendar_events
@@ -33,9 +31,12 @@ class Calendar < ApplicationRecord
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :outside_term_time, to: :calendar_events
 
+  # NB: A school calendar is always based on a regional calendar which is in turn based on a national calendar
+  # Currently academic years are only attached to national calendars
   enum :calendar_type, { national: 0, regional: 1, school: 2 }
 
   scope :template, -> { regional }
+
 
   def valid_calendar_event_types
     national? ? CalendarEventType.bank_holiday : CalendarEventType.all
