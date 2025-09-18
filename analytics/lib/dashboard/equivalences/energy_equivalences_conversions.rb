@@ -19,14 +19,12 @@ class EnergyEquivalences
   J_TO_KWH = 1000.0 * 60 * 60
 
   #
-  # updated with July 2024 figures - see the Analytics Benchmarking Values spreadsheet
+  # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
   #
-  UK_ELECTRIC_GRID_CO2_KG_KWH = 0.20493 # see SecrCo2Equivalence.electricity_co2e_co2
   UK_ELECTRIC_GRID_£_KWH = BenchmarkMetrics.pricing.electricity_price
-  UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2236
+  UK_DOMESTIC_ELECTRICITY_£_KWH = 0.2573
 
-  UK_DOMESTIC_GAS_£_KWH = 0.0548
-  UK_GAS_CO2_KG_KWH = 0.18253 # see SecrCo2Equivalence.natural_gas_co2e_co2
+  UK_DOMESTIC_GAS_£_KWH = 0.0633
   UK_GAS_£_KWH = BenchmarkMetrics.pricing.gas_price
   GAS_BOILER_EFFICIENCY = 0.7
 
@@ -36,10 +34,10 @@ class EnergyEquivalences
   ICE_LITRES_PER_100KM = 7.1
   LITRE_PETROL_KWH = 9.6
   LITRE_PETROL_CO2_KG = 2.07047
-  LITRE_PETROL_£ = 1.4569
+  LITRE_PETROL_£ = 1.3415
   ICE_KWH_KM = 0.7767
   ICE_CO2_KM = 0.16984
-  ICE_£_KM = 0.1134
+  ICE_£_KM = 0.1071
 
   BEV_KWH_PER_KM = 0.188
   BEV_£_PER_KM = BEV_KWH_PER_KM * UK_DOMESTIC_ELECTRICITY_£_KWH
@@ -49,12 +47,10 @@ class EnergyEquivalences
   SHOWER_KWH_GROSS = (SHOWER_LITRES * SHOWER_TEMPERATURE_RAISE * WATER_ENERGY_LITRE_PER_K_J / J_TO_KWH).round(3)
   SHOWER_KWH_NET = (SHOWER_KWH_GROSS / GAS_BOILER_EFFICIENCY).round(3)
   SHOWER_£ = SHOWER_KWH_NET * UK_DOMESTIC_GAS_£_KWH
-  SHOWER_CO2_KG = SHOWER_KWH_NET * UK_GAS_CO2_KG_KWH
   WATER_COST_PER_LITRE = 4.0 / 1000.0
 
   HOMES_ELECTRICITY_KWH_YEAR = 2_700
   HOMES_GAS_KWH_YEAR = 11_500
-  HOMES_GAS_CO2_YEAR = HOMES_GAS_KWH_YEAR * UK_GAS_CO2_KG_KWH
   HOMES_KWH_YEAR = HOMES_ELECTRICITY_KWH_YEAR + HOMES_GAS_KWH_YEAR
   HOMES_ELECTRICITY_£_YEAR = HOMES_ELECTRICITY_KWH_YEAR * UK_DOMESTIC_ELECTRICITY_£_KWH
   HOMES_GAS_£_YEAR = HOMES_GAS_KWH_YEAR * UK_DOMESTIC_GAS_£_KWH
@@ -65,7 +61,7 @@ class EnergyEquivalences
   KETTLE_KWH = KETTLE_LITRES * KETTLE_LITRE_BY_85C_KWH
   KETTLE_£ = KETTLE_KWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
-  SMARTPHONE_CHARGE_kWH = 3.6 * 2.0 / 1000.0 # 3.6V * 2.0 Ah / 1000
+  SMARTPHONE_CHARGE_kWH = 20.0 / 1000
   SMARTPHONE_CHARGE_£ = SMARTPHONE_CHARGE_kWH * UK_DOMESTIC_ELECTRICITY_£_KWH
 
   ONE_HOUR = 1.0
@@ -103,7 +99,20 @@ class EnergyEquivalences
   SOLAR_PANEL_YIELD_PER_KWH_PER_KWP_PER_YEAR = 0.7571428571
   SOLAR_PANEL_KWH_PER_YEAR = SOLAR_PANEL_KWP * SOLAR_PANEL_YIELD_PER_KWH_PER_KWP_PER_YEAR
 
-  def self.all_equivalences(uk_electric_grid_co2_kg_kwh = UK_ELECTRIC_GRID_CO2_KG_KWH)
+  def self.co2_kg_kwh(fuel_type)
+    (@@co2_kg_kwh ||= set_co2_kg_kwh).fetch(fuel_type)
+  end
+
+  private_class_method def self.set_co2_kg_kwh
+    if Rails.env.test? || ENV['CI'] == 'true'
+      { electricity: 0.20493, gas: 0.18253 }
+    else
+      equivalence = SecrCo2Equivalence.find_by!(year: 2025)
+      { electricity: equivalence.electricity_co2e_co2, gas: equivalence.natural_gas_co2e_co2 }
+    end
+  end
+
+  def self.all_equivalences(uk_electric_grid_co2_kg_kwh = nil)
     # cache to save 2ms calculation time, maintain max 100 entries to limit memory footprint
     @@cached_equivalences = {} unless defined? @@cached_equivalences
     @@cached_equivalences.delete(@@cached_equivalences.keys[0]) if @@cached_equivalences.length > 100
@@ -111,25 +120,21 @@ class EnergyEquivalences
   end
 
   def self.equivalence_types(include_basic_types = true)
-    list = include_basic_types ? all_equivalences(UK_ELECTRIC_GRID_CO2_KG_KWH) : all_equivalences(UK_ELECTRIC_GRID_CO2_KG_KWH).reject {|k, _v| [:electricity, :gas].include? k }
+    list = all_equivalences
+    list = list.reject {|k, _v| [:electricity, :gas].include? k } unless include_basic_types
     list.keys
   end
 
-  def self.equivalence_configuration(type, grid_intensity)
-    all_equivalences(grid_intensity)[type]
+  def self.equivalence_configuration(type)
+    all_equivalences[type]
   end
 
   def self.equivalence_conversion_configuration(type, kwh_co2_or_£, grid_intensity)
     all_equivalences(grid_intensity)[type][:conversions][kwh_co2_or_£]
   end
 
-  def self.equivalence_choice_by_via_type(kwh_co2_or_£, grid_intensity)
-    choices = all_equivalences(grid_intensity).select { |_equivalence, conversions| conversions[:conversions].key?(kwh_co2_or_£) }
-    choices.keys
-  end
-
   def self.equivalence_choice_by_via_type(kwh_co2_or_£)
-    choices = all_equivalences(UK_ELECTRIC_GRID_CO2_KG_KWH).select { |_equivalence, conversions| conversions[:conversions].key?(kwh_co2_or_£) }
+    choices = all_equivalences.select { |_equivalence, conversions| conversions[:conversions].key?(kwh_co2_or_£) }
     choices.keys
   end
 
@@ -172,12 +177,14 @@ class EnergyEquivalences
             "(In reality if you include the costs of maintenance, servicing, depreciation "\
             "it can cost about £0.30/km to travel by car). "
 
+    uk_electric_grid_co2_kg_kwh ||= co2_kg_kwh(:electricity)
     bev_co2_per_km = BEV_KWH_PER_KM * uk_electric_grid_co2_kg_kwh
     bev_efficiency_description = "An electric car uses #{X.format(:kwh, BEV_KWH_PER_KM)} of electricity to travel 1 km. "
     bev_co2_description = "An electric car emits #{X.format(:co2, bev_co2_per_km)} of electricity to travel 1 km (emissons from the National Grid). "
 
     homes_electricity_co2_year = HOMES_ELECTRICITY_KWH_YEAR * uk_electric_grid_co2_kg_kwh
-    homes_co2_year = homes_electricity_co2_year + HOMES_GAS_CO2_YEAR
+    homes_gas_co2_year = HOMES_GAS_KWH_YEAR * co2_kg_kwh(:gas)
+    homes_co2_year = homes_electricity_co2_year + homes_gas_co2_year
 
     kettle_co2_kg = KETTLE_KWH * uk_electric_grid_co2_kg_kwh
 
@@ -186,6 +193,8 @@ class EnergyEquivalences
     tv_hour_co2_kg = TV_POWER_KW * ONE_HOUR * uk_electric_grid_co2_kg_kwh
 
     computer_console_co2_kg = COMPUTER_CONSOLE_POWER_KW * ONE_HOUR * uk_electric_grid_co2_kg_kwh
+
+    shower_co2_kg = SHOWER_KWH_NET * co2_kg_kwh(:gas)
 
     {
       electricity: {
@@ -214,8 +223,8 @@ class EnergyEquivalences
             description:  ''
           },
           co2:  {
-            rate:         UK_GAS_CO2_KG_KWH,
-            description:  "The carbon intensity of gas is #{UK_GAS_CO2_KG_KWH}kg/kWh. ",
+            rate:         co2_kg_kwh(:gas),
+            description:  "The carbon intensity of gas is #{co2_kg_kwh(:gas)}kg/kWh. ",
           },
           £:  {
             rate:         UK_GAS_£_KWH,
@@ -287,9 +296,9 @@ class EnergyEquivalences
             description:  "An average uk home uses #{X.format(:kwh, HOMES_ELECTRICITY_KWH_YEAR)} of electricity "\
                           "and #{X.format(:kwh, HOMES_GAS_KWH_YEAR)} of gas per year. "\
                           "The carbon intensity of 1 kWh of electricity = #{X.format(:co2, uk_electric_grid_co2_kg_kwh)}/kWh and "\
-                          "gas #{X.format(:co2, UK_GAS_CO2_KG_KWH)}/kWh. "\
+                          "gas #{X.format(:co2, co2_kg_kwh(:gas))}/kWh. "\
                           "Therefore 1 home emits #{X.format(:kwh, HOMES_ELECTRICITY_KWH_YEAR)} &times; #{X.format(:co2, uk_electric_grid_co2_kg_kwh)} + "\
-                          "#{X.format(:kwh, HOMES_GAS_KWH_YEAR)} &times; #{X.format(:co2, UK_GAS_CO2_KG_KWH)} = "\
+                          "#{X.format(:kwh, HOMES_GAS_KWH_YEAR)} &times; #{X.format(:co2, co2_kg_kwh(:gas))} = "\
                           "#{X.format(:co2, homes_co2_year)} per year. ",
             front_end_description:  'The consumption of N average homes (conversion via co2)',
             adult_dashboard_wording: 'the CO2 emitted by %s homes'
@@ -353,11 +362,11 @@ class EnergyEquivalences
             adult_dashboard_wording: 'the gas consumption of %s homes'
           },
           co2:  {
-            rate:         HOMES_GAS_CO2_YEAR,
+            rate:         homes_gas_co2_year,
             description:  "A average uk home uses #{X.format(:kwh, HOMES_GAS_KWH_YEAR)} of gas. "\
-                          "The carbon intensity of 1 kWh of gas = #{X.format(:co2, UK_GAS_CO2_KG_KWH)}/kWh. "\
-                          "Therefore 1 home emits #{X.format(:kwh, HOMES_GAS_KWH_YEAR)} &times; #{X.format(:co2, UK_GAS_CO2_KG_KWH)} = "\
-                          "#{X.format(:co2, HOMES_GAS_CO2_YEAR)} per year. ",
+                          "The carbon intensity of 1 kWh of gas = #{X.format(:co2, co2_kg_kwh(:gas))}/kWh. "\
+                          "Therefore 1 home emits #{X.format(:kwh, HOMES_GAS_KWH_YEAR)} &times; #{X.format(:co2, co2_kg_kwh(:gas))} = "\
+                          "#{X.format(:co2, homes_gas_co2_year)} per year. ",
             front_end_description:  'The consumption of N average homes gas (conversion via co2)',
             adult_dashboard_wording: 'the CO2 emitted from gas used to heat %s homes'
           },
@@ -385,10 +394,10 @@ class EnergyEquivalences
             adult_dashboard_wording:  'the energy used taking %s showers'
           },
           co2:  {
-            rate:                   SHOWER_CO2_KG,
+            rate:                   shower_co2_kg,
             description:            shower_description_to_kwh +
-                                    "Burning 1 kwh of gas (normal source of heat for showers) emits #{X.format(:kg, UK_GAS_CO2_KG_KWH)} CO2. "\
-                                    "Therefore 1 shower uses #{X.format(:kg, SHOWER_CO2_KG)} CO2. ",
+                                    "Burning 1 kwh of gas (normal source of heat for showers) emits #{X.format(:kg, co2_kg_kwh(:gas))} CO2. "\
+                                    "Therefore 1 shower uses #{X.format(:kg, shower_co2_kg)} CO2. ",
             front_end_description:  'Number of showers (conversion via co2)',
             adult_dashboard_wording: 'the CO2 emitted taking %s showers'
           },

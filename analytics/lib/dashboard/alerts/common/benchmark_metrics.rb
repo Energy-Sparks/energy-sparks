@@ -10,20 +10,20 @@ module BenchmarkMetrics
   GAS_PRICE = 0.03
 
   #
-  # updated with July 2024 figures - see the Analytics Benchmarking Values spreadsheet
+  # updated with July 2025 figures - see the Analytics Benchmarking Values spreadsheet
   #
   # Annual alectricity Usage per pupil benchmark figures
-  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL = 219.0
-  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 868.0
+  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL = 221.0
+  BENCHMARK_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 942.0
   EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL = 196.0
-  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 663.0
+  EXEMPLAR_ELECTRICITY_USAGE_PER_PUPIL_SPECIAL_SCHOOL = 727.0
   # Secondary electricity usage typically higher due extra hours and server ICT
   RATIO_PRIMARY_TO_SECONDARY_ELECTRICITY_USAGE = 1.7
 
   BENCHMARK_ELECTRICITY_USAGE_PER_M2 = 50_000.0 / 1_200.0
-  BENCHMARK_GAS_USAGE_PER_PUPIL = 430.0
-  BENCHMARK_GAS_USAGE_PER_M2 = 64.0
-  EXEMPLAR_GAS_USAGE_PER_M2 = 55.0
+  BENCHMARK_GAS_USAGE_PER_PUPIL = 419.0
+  BENCHMARK_GAS_USAGE_PER_M2 = 62.0
+  EXEMPLAR_GAS_USAGE_PER_M2 = 51.0
   LONG_TERM_ELECTRICITY_CO2_KG_PER_KWH = 0.15
   ANNUAL_AVERAGE_DEGREE_DAYS = 2000.0
   AVERAGE_GAS_PROPORTION_OF_HEATING = 0.6
@@ -33,9 +33,9 @@ module BenchmarkMetrics
   # Out of hours metrics recalculated in Feb 2023, see trello
   # https://trello.com/c/FdBEY5Qz/2903-revise-approach-for-calculating-out-of-hours-usage-benchmark
   EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.5
-  BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.6
+  BENCHMARK_OUT_OF_HOURS_USE_PERCENT_ELECTRICITY = 0.55
 
-  EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_GAS = 0.5
+  EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_GAS = 0.55
   BENCHMARK_OUT_OF_HOURS_USE_PERCENT_GAS = 0.6
 
   EXEMPLAR_OUT_OF_HOURS_USE_PERCENT_STORAGE_HEATER = 0.2
@@ -204,35 +204,29 @@ module BenchmarkMetrics
     [servers, power]
   end
 
-  # Numbers based on analysis of school data, Feb 2023
-  # https://trello.com/c/OjDRQM2k/2902-revise-approach-for-calculating-peak-kw-benchmark
+  # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
   def self.exemplar_peak_kw(pupils, school_type)
-    school_type = school_type.to_sym if school_type.instance_of? String
-    check_school_type(school_type)
-    case school_type
+    case school_type&.to_sym
     when :primary, :infant, :junior
-      0.078 * pupils
+      0.077 * pupils
     when :secondary, :middle, :mixed_primary_and_secondary
-      0.112 * pupils
+      0.105 * pupils
     when :special
-      0.251 * pupils
+      0.242 * pupils
     else
       raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in baseload floor area request"
     end
   end
 
-  # Numbers based on analysis of school data, Feb 2023
-  # https://trello.com/c/OjDRQM2k/2902-revise-approach-for-calculating-peak-kw-benchmark
+  # Based on W/pupil figures in Peak_Benchmarks_2025.xlsx
   def self.benchmark_peak_kw(pupils, school_type)
-    school_type = school_type.to_sym if school_type.instance_of? String
-    check_school_type(school_type)
-    case school_type
+    case school_type&.to_sym
     when :primary, :infant, :junior
-      0.089 * pupils
+      0.087 * pupils
     when :secondary, :middle, :mixed_primary_and_secondary
-      0.125 * pupils
+      0.116 * pupils
     when :special
-      0.314 * pupils
+      0.290 * pupils
     else
       raise EnergySparksUnexpectedStateException, "Unknown type of school #{school_type} in baseload floor area request"
     end

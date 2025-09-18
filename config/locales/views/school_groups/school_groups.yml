@@ -383,6 +383,9 @@ en:
       school_engagement: School engagement
       secr_report: SECR report
       set_message: Set message
+    timeline:
+      activity_in_current_year: A list of all adult and pupil-led activities at this school group recorded in the current school year
+      activity_in_year: A list of all adult and pupil-led activities at this school group recorded in the %{school_year} school year
     titles:
       advice: Advice
       charts: Energy use charts

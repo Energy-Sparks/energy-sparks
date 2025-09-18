@@ -65,7 +65,8 @@ module Series
       when :£current;        :current_economic_cost
       when :accounting_cost; :accounting_cost
       when :co2;             :co2
-      else;                  :kwh end
+      else;                  :kwh
+      end
     end
 
     def trendlines
@@ -247,8 +248,9 @@ module Series
       when :£, :economic_cost;                meter.amr_data.current_tariff_rate_£_per_kwh
       when :£current, :current_economic_cost; meter.amr_data.current_tariff_rate_£_per_kwh
       when :accounting_cost;                  raise EnergySparksUnexpectedStateException, 'scaling factor requested for accounting tariff'
-      when :co2;                              EnergyEquivalences::UK_GAS_CO2_KG_KWH
-      else;                                   1.0 end
+      when :co2;                              EnergyEquivalences.co2_kg_kwh(:gas)
+      else;                                   1.0
+      end
     end
 
     def adjustment_temperatures(dates)
@@ -522,8 +524,8 @@ module Series
     GASCARBON_I18N_KEY = 'gascarbon'
 
     def series_names;                     [single_name]; end
-    def day_breakdown(_d1, _d2);          { single_name => EnergyEquivalences::UK_GAS_CO2_KG_KWH }; end
-    def half_hour_breakdown(_date, _hhi); { single_name => EnergyEquivalences::UK_GAS_CO2_KG_KWH }; end
+    def day_breakdown(_d1, _d2);          { single_name => EnergyEquivalences.co2_kg_kwh(:gas) }; end
+    def half_hour_breakdown(_date, _hhi); { single_name => EnergyEquivalences.co2_kg_kwh(:gas) }; end
     private
     def single_name; GASCARBON end
   end

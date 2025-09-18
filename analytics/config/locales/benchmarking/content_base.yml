@@ -46,6 +46,7 @@ en:
           baseload_percent: Baseload as a percent of total usage
           change_in_baseload_last_week_v_year_kw: Change in baseload last week v. year (kW)
           change_in_baseload_last_week_v_year_pct: Change in baseload last week v. year (%)
+          change_in_kwh_pct: Change in usage (kWh) versus previous year (%)
           change_kwh: Change kWh
           change_pct: Change %
           change_£current: Change £ (latest tariff)

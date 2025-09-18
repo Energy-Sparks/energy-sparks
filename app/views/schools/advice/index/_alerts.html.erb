@@ -1,5 +1,6 @@
 <% unless dashboard_alerts.empty? %>
-  <% dashboard_alert_groups(dashboard_alerts).each do |alert_group, _alerts| %>
+  <% dashboard_alert_groups(dashboard_alerts).each do |alert_group, alerts|
+       next if alerts.empty? %>
     <h3><%= t("advice_pages.alerts.groups.#{alert_group}") %></h3>
     <%= render AlertsComponent.new(school: school,
                                    dashboard_alerts: dashboard_alerts,

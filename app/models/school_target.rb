@@ -4,23 +4,26 @@
 #
 # Table name: school_targets
 #
-#  created_at               :datetime         not null
-#  electricity              :float
-#  electricity_progress     :json
-#  electricity_report       :jsonb
-#  gas                      :float
-#  gas_progress             :json
-#  gas_report               :jsonb
-#  id                       :bigint(8)        not null, primary key
-#  report_last_generated    :datetime
-#  revised_fuel_types       :string           default([]), not null, is an Array
-#  school_id                :bigint(8)        not null
-#  start_date               :date
-#  storage_heaters          :float
-#  storage_heaters_progress :json
-#  storage_heaters_report   :jsonb
-#  target_date              :date
-#  updated_at               :datetime         not null
+#  created_at                          :datetime         not null
+#  electricity                         :float
+#  electricity_monthly_consumption     :jsonb
+#  electricity_progress                :json
+#  electricity_report                  :jsonb
+#  gas                                 :float
+#  gas_monthly_consumption             :jsonb
+#  gas_progress                        :json
+#  gas_report                          :jsonb
+#  id                                  :bigint(8)        not null, primary key
+#  report_last_generated               :datetime
+#  revised_fuel_types                  :string           default([]), not null, is an Array
+#  school_id                           :bigint(8)        not null
+#  start_date                          :date
+#  storage_heaters                     :float
+#  storage_heaters_monthly_consumption :jsonb
+#  storage_heaters_progress            :json
+#  storage_heaters_report              :jsonb
+#  target_date                         :date
+#  updated_at                          :datetime         not null
 #
 # Indexes
 #
@@ -50,6 +53,12 @@ class SchoolTarget < ApplicationRecord
   before_save :adjust_target_date
   after_update :ensure_observation_date_is_correct
   after_save :add_observation
+
+  alias_attribute :storage_heater, :storage_heaters
+  alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
+
+  FUEL_TYPES = %i[electricity gas storage_heater].freeze
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
@@ -102,6 +111,27 @@ class SchoolTarget < ApplicationRecord
     TargetsProgress.new(**reformat_saved_report(report))
   end
 
+  MONTHLY_CONSUMPTION_FIELDS =
+    %i[year month current_consumption previous_consumption target_consumption missing].each_with_index.to_h
+
+  def monthly_consumption(fuel_type)
+    self["#{fuel_type}_monthly_consumption"]&.map { |month| MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h }
+  end
+
+  def monthly_consumption_status(fuel_type)
+    consumption = monthly_consumption(fuel_type)
+    non_missing = consumption&.reject { |month| month[:missing] }
+    current_consumption = non_missing&.sum { |month| month[:current_consumption] }
+    target_consumption = non_missing&.sum { |month| month[:target_consumption] }
+    meeting_target = monthly_consumption_meeting_target(fuel_type, consumption, current_consumption, target_consumption)
+    ActiveSupport::OrderedOptions.new.merge(consumption:, non_missing:, current_consumption:, target_consumption:,
+                                            meeting_target:)
+  end
+
+  def target(fuel_type)
+    self[fuel_type]
+  end
+
   private
 
   # ensure TargetsProgress is round-tripped properly
@@ -142,5 +172,17 @@ class SchoolTarget < ApplicationRecord
 
   def ensure_observation_date_is_correct
     observations.school_target.update_all(at: start_date)
+  end
+
+  def monthly_consumption_meeting_target(fuel_type, consumption, current_consumption, target_consumption)
+    analysis_dates = Schools::AnalysisDates.new(school, fuel_type)
+    if consumption&.any? { |month| month[:previous_consumption].nil? } ||
+       analysis_dates.analysis_date.nil? ||
+       !analysis_dates.recent_data ||
+       [current_consumption, target_consumption].any?(&:nil?)
+      return
+    end
+
+    current_consumption <= target_consumption
   end
 end

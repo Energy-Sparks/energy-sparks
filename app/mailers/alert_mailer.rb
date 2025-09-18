@@ -6,6 +6,7 @@ class AlertMailer < LocaleMailer
   helper :application
   helper :schools
   helper AdvicePageHelper
+  helper TargetsHelper
 
   after_action :prevent_delivery_from_test
 
@@ -51,9 +52,5 @@ class AlertMailer < LocaleMailer
 
   def deliverytime
     (Time.zone.now + 15.minutes).rfc822
-  end
-
-  def prevent_delivery_from_test
-    mail.perform_deliveries = false unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
   end
 end
