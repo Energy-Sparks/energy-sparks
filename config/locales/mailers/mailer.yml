@@ -270,8 +270,9 @@ en:
       subject: Reminder to set your first energy saving target
       title: Set your first energy saving target
     review_target:
+      its_time_2025_html: It's time to review your progress for <a href="%{gas_url}">gas</a> and <a href="%{electricity_url}">electricity</a> and set a new target for the year ahead.
       its_time_html: It's time to <a href='%{school_target_url}'>review your progress</a> and set a new target for the year ahead
       set_a_new_target: Set a new target
       subject: Review your progress and set a new saving target
       title: Set your next energy saving target
-      your_school_set_a_target_to_reduce_its_energy_usage_by: Your school set a target to reduce its energy usage by %{target_date}
+      your_school_set_a_target_to_reduce_its_energy_usage_by: Your school set a target to reduce its energy usage by %{target_date}.

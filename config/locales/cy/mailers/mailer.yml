@@ -181,4 +181,4 @@ cy:
       set_a_new_target: Gosod targed newydd
       subject: Adolygwch eich cynnydd a gosodwch darged arbed newydd
       title: Gosodwch eich targed arbed ynni nesaf
-      your_school_set_a_target_to_reduce_its_energy_usage_by: Gosododd eich ysgol darged i leihau ei ddefnydd ynni erbyn %{target_date}
+      your_school_set_a_target_to_reduce_its_energy_usage_by: Gosododd eich ysgol darged i leihau ei ddefnydd ynni erbyn %{target_date}.
