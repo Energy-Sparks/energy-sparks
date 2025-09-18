@@ -18,10 +18,4 @@ class TargetMailer < LocaleMailer
     @to = user_emails(params[:users])
     make_bootstrap_mail(to: @to)
   end
-
-  private
-
-  def timestamp
-    Time.zone.today.strftime('%Y-%m-%d')
-  end
 end
