@@ -110,7 +110,7 @@ class Observation < ApplicationRecord
   }
 
   scope :counts_by_academic_year, -> {
-    group('academic_years.id').count
+    with_academic_year.group('academic_years.id').count
   }
 
   has_rich_text :description
