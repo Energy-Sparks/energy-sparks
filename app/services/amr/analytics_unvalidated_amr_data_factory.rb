@@ -28,9 +28,9 @@ module Amr
     end
 
     def build_meter_data(active_record_meter)
-      readings = AmrDataFeedReading.order(created_at: :asc)
-                                   .where(meter_id: active_record_meter.id)
+      readings = AmrDataFeedReading.where(meter_id: active_record_meter.id)
                                    .pluck(:amr_data_feed_config_id, :reading_date, :created_at, :readings)
+                                   .sort_by { |reading| reading[2] }
                                    .map do |reading|
         reading_if_valid(active_record_meter.mpan_mprn, reading)
       end
