@@ -3625,6 +3625,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
           ), totals AS (
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
+              sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
@@ -3636,8 +3637,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       school_targets.start_date AS tracking_start_date,
       totals.id,
       totals.current_year_kwh,
+      totals.previous_year_kwh,
       totals.current_year_target_kwh,
-      ((totals.current_year_kwh - totals.current_year_target_kwh) / totals.current_year_target_kwh) AS current_year_percent_of_target_relative
+      ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
        JOIN current_targets ON ((current_targets.id = school_targets.id)));
@@ -3701,6 +3703,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
           ), totals AS (
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
+              sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
@@ -3712,8 +3715,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       school_targets.start_date AS tracking_start_date,
       totals.id,
       totals.current_year_kwh,
+      totals.previous_year_kwh,
       totals.current_year_target_kwh,
-      ((totals.current_year_kwh - totals.current_year_target_kwh) / totals.current_year_target_kwh) AS current_year_percent_of_target_relative
+      ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
        JOIN current_targets ON ((current_targets.id = school_targets.id)));
