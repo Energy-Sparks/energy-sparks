@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_17_131601) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -471,7 +471,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_17_131601) do
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
     t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
-    t.index ["meter_id", "created_at"], name: "index_amr_data_feed_readings_on_meter_id_and_created_at"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
     t.unique_constraint ["mpan_mprn", "reading_date"], name: "unique_meter_readings"
