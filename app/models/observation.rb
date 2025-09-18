@@ -89,7 +89,7 @@ class Observation < ApplicationRecord
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
-  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
+  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
@@ -103,11 +103,10 @@ class Observation < ApplicationRecord
   }
 
   scope :with_academic_year, -> {
-    joins('JOIN academic_years ON observations.at BETWEEN academic_years.start_date AND academic_years.end_date')
-  }
-
-  scope :with_end_date, ->(end_date = Time.current.end_of_day) {
-    where('observations.at <= LEAST(academic_years.end_date, ?)', end_date)
+    # Academic year start/end are dates, not datetimes.
+    # In a comparison, a DATE is treated as the start of that day (midnight).
+    # Without adding INTERVAL '1 day', any observations later on the end date day would be missed.
+    joins('JOIN academic_years ON observations.at >= academic_years.start_date AND observations.at < academic_years.end_date + INTERVAL \'1 day\'')
   }
 
   scope :counts_by_academic_year, -> {
