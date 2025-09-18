@@ -20,12 +20,12 @@ describe '*_targets' do
   end
   let(:expected_table) do
     [headers,
-     [expected_school.name, '-5&percnt;', '+4.78&percnt;', '12,000', '12,600', 'Friday 1 Mar 2024'],
+     [expected_school.name, '-5&percnt;', '+2.73&percnt;', '12,000', '12,600', 'Friday 1 Mar 2024'],
      ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
   end
   let(:expected_csv) do
     [headers,
-     [expected_school.name, '-5', '4.78', '12,000', '12,600', '2024-03-01']]
+     [expected_school.name, '-5', '2.73', '12,000', '12,600', '2024-03-01']]
   end
   let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
 
