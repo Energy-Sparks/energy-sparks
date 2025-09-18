@@ -62,6 +62,6 @@ class TimelineController < ApplicationController
   end
 
   def observation_counts
-    @observation_counts ||= timelineable.observations.with_academic_year.counts_by_academic_year
+    @observation_counts ||= timelineable.observations.visible.with_academic_year.with_end_date.counts_by_academic_year
   end
 end

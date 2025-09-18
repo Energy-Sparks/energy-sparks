@@ -50,11 +50,9 @@
 class Observation < ApplicationRecord
   include Description
   include Todos::Recording
-
   belongs_to :school
-
-  has_many   :temperature_recordings
-  has_many   :locations, through: :temperature_recordings
+  has_many :temperature_recordings
+  has_many :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
   belongs_to :intervention_type, optional: true
@@ -108,8 +106,12 @@ class Observation < ApplicationRecord
     joins('JOIN academic_years ON observations.at BETWEEN academic_years.start_date AND academic_years.end_date')
   }
 
+  scope :with_end_date, ->(end_date = Time.current.end_of_day) {
+    where('observations.at <= LEAST(academic_years.end_date, ?)', end_date)
+  }
+
   scope :counts_by_academic_year, -> {
-    with_academic_year.group('academic_years.id').count
+    group('academic_years.id').count
   }
 
   has_rich_text :description
