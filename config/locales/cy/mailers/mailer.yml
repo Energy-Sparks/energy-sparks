@@ -20,7 +20,7 @@ cy:
       view_your_school_dashboard: Gweld dangosfwrdd eich ysgol
       why_am_i_receiving_these_emails: Pam ydw i'n derbyn yr e-byst hyn?
       you_have_been_signed_up: Rydych wedi cofrestru i dderbyn rhybuddion ynni ar gyfer eich ysgol
-      your_school_has_current_target_html: Mae eich ysgol wedi gosod targed i leihau ei defnydd o ynni erbyn%{target_date}. <strong><a href='%{school_targets_url}'>Bydd adroddiad cynnydd eich ysgol</a></strong>  yn eich helpu i fonitro cynnydd ac awgrymu ffyrdd o weithredu
+      your_school_has_current_target_html: Mae eich ysgol wedi gosod targed i leihau ei defnydd o ynni erbyn%{target_date}. <strong><a href='%{school_targets_url}'>Bydd adroddiad cynnydd eich ysgol</a></strong>  yn eich helpu i fonitro cynnydd ac awgrymu ffyrdd o weithredu.
       your_school_has_target_html: Gwnaeth eich ysgol osod targed i leihau ei defnydd o ynni erbyn %{target_date}. Mae'n bryd <a href='%{school_targets_url}'>adolygu eich cynnydd</a> a gosod targed newydd ar gyfer y flwyddyn i ddod
   bill_request_mailer:
     request_bill:
@@ -163,8 +163,6 @@ cy:
       title: Diolch am gadarnhau eich cyfrif defnyddiwr Sbarcynni.
       view_your_school: Gweld eich ysgol
   target_mailer:
-    admin_target_report:
-      subject: Cynnydd Targed ac Adroddiad Data
     first_target:
       subject: Gosodwch eich targed arbed ynni cyntaf
       title: Gosodwch eich targed arbed ynni cyntaf

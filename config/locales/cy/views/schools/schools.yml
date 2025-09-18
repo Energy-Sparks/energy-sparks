@@ -548,7 +548,8 @@ cy:
         page_title: Diweddaru'ch targed arbed ynni
         review_and_set_your_next_energy_saving_target: Adolygu a gosod eich targed arbed ynni nesaf
         review_your_dashboard: Adolygu'ch dangosfwrdd
-        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd '
+        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd.'
+        target_date_reached_advice_page: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i adolygu eich cynnydd a gosod targed newydd.'
         tip: Awgrym
         your_new_target: Eich targed newydd
       progress:

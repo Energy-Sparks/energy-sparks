@@ -31,9 +31,12 @@ class Calendar < ApplicationRecord
 
   delegate :terms, :holidays, :bank_holidays, :inset_days, :outside_term_time, to: :calendar_events
 
+  # NB: A school calendar is always based on a regional calendar which is in turn based on a national calendar
+  # Currently academic years are only attached to national calendars
   enum :calendar_type, { national: 0, regional: 1, school: 2 }
 
   scope :template, -> { regional }
+
 
   def valid_calendar_event_types
     national? ? CalendarEventType.bank_holiday : CalendarEventType.all
@@ -41,6 +44,14 @@ class Calendar < ApplicationRecord
 
   def academic_year_for(date)
     academic_years.for_date(date).first || (based_on && based_on.academic_year_for(date))
+  end
+
+  def current_academic_year
+    academic_year_for(Time.zone.today)
+  end
+
+  def national_calendar
+    national? ? self : based_on&.national_calendar
   end
 
   def terms_and_holidays

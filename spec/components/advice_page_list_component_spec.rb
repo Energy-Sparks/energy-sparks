@@ -15,7 +15,8 @@ RSpec.describe AdvicePageListComponent, :include_application_helper, :include_ur
     {
       school: school,
       id: id,
-      classes: classes
+      classes: classes,
+      current_user: nil
     }
   end
 

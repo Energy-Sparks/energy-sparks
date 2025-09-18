@@ -75,11 +75,12 @@ class PageNavComponent < ViewComponent::Base
   class ItemComponent < ViewComponent::Base
     attr_reader :name, :href, :match_controller, :classes
 
-    def initialize(name:, href:, note: nil, classes: nil, match_controller: false)
+    def initialize(name:, href:, note: nil, match_controller: false, selected: false, classes: nil)
       @name = name
       @note = note
       @href = href
       @match_controller = match_controller
+      @selected = selected
       @classes = classes
     end
 
@@ -94,7 +95,7 @@ class PageNavComponent < ViewComponent::Base
     def call
       args = { class: 'nav-link item' }
       args[:class] += " #{classes}" if classes
-      args[:class] += ' current' if current_item?(href)
+      args[:class] += ' current' if current_item?(href) || @selected
       note = @note.nil? ? '' : content_tag(:span, @note, class: 'nav-toggle-icons')
       link_to(content_tag(:span, name, class: 'nav-text') + note, href, args)
     end

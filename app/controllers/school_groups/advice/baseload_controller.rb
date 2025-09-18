@@ -1,31 +1,22 @@
 module SchoolGroups
   module Advice
-    class BaseloadController < BaseController
-      include ComparisonTableGenerator
-      include SchoolGroupAccessControl
-      include SchoolGroupBreadcrumbs
-
-      load_resource :school_group
-      before_action :run_report
-
+    class BaseloadController < BaseAdviceWithComparisonController
       def insights
         @baseload_comparison = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools_for_advice_page(@advice_page)
         @insight_table_headers = insight_table_headers
       end
 
       def analysis
-        @baseload_benchmarks = SchoolGroups::CategoriseSchools.new(schools: @schools).school_categories(@advice_page)
         alert_type = AlertType.find_by_class_name('AlertElectricityBaseloadVersusBenchmark')
-        @baseload_alerts = SchoolGroups::Alerts.new(@schools).alerts(alert_type) if alert_type
-
+        @baseload_alerts = alert_type ? SchoolGroups::Alerts.new(@schools).alerts(alert_type) : []
+        @categorised_savings = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_savings(@advice_page, @baseload_alerts)
         @baseload_per_pupil_headers = Comparison::BaseloadPerPupil.report_headers
       end
 
       private
 
-      def run_report
-        @baseload_per_pupil_report = Comparison::Report.find_by!(key: :baseload_per_pupil)
-        @results = load_data
+      def report_key
+        :baseload_per_pupil
       end
 
       def insight_table_headers
@@ -38,10 +29,6 @@ module SchoolGroups
 
       def advice_page_key
         :baseload
-      end
-
-      def index_params
-        { benchmark: :baseload_per_pupil, school_group_ids: [@school_group.id] }
       end
 
       def load_data
