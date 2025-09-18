@@ -24,4 +24,9 @@ module TargetsHelper
     return fuel_type.to_s.humanize(capitalize: false) if include_storage_heaters
     fuel_type == :storage_heaters ? 'electricity' : fuel_type.to_s.humanize(capitalize: false)
   end
+
+  def meeting_target_text(meeting_target, fuel_type)
+    t("schools.show.#{meeting_target ? :making_progress : :not_meeting_target}",
+      fuels: t("advice_pages.fuel_type.#{fuel_type}"))
+  end
 end

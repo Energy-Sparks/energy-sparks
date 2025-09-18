@@ -6,6 +6,7 @@ class AlertMailer < LocaleMailer
   helper :application
   helper :schools
   helper AdvicePageHelper
+  helper TargetsHelper
 
   after_action :prevent_delivery_from_test
 
