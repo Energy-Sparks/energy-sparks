@@ -5,7 +5,6 @@ module SchoolGroups
 
     def show
       build_breadcrumbs([name: I18n.t('advice_pages.breadcrumbs.root')])
-      @fuel_types = @school_group.fuel_types
 
       respond_to do |format|
         format.html {}
@@ -48,6 +47,14 @@ module SchoolGroups
                     filename: csv_filename_for(params[:previous_year].present? ? 'previous_scores' : 'current_scores')
         end
       end
+    end
+
+    def charts
+      build_breadcrumbs([name: I18n.t('school_groups.titles.charts')])
+      @charts = SchoolGroups::Charts.new.safe_charts
+      @default_school = params[:school].present? ? School.find_by(slug: params[:school]) : nil
+      @default_chart_type = params[:chart_type]&.to_sym
+      @default_fuel_type = params[:fuel_type]&.to_sym
     end
 
     private

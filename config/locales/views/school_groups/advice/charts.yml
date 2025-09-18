@@ -1,0 +1,64 @@
+---
+en:
+  school_groups:
+    advice:
+      chart_types:
+        electricity:
+          baseload:
+            label: Long term baseload
+            subtitle: This chart shows the long term trend in baseload for {{name}} using all available data
+          baseload_lastyear:
+            label: Baseload
+            subtitle: This chart shows the electricity baseload for {{name}} using the most recent year of data
+            title: Electricity baseload for the last 12 months
+          baseload_versus_benchmarks:
+            label: Long term baseload with comparison
+            subtitle: This chart shows the long term trend in baseload for {{name}}, and includes a comparison with 'benchmark' and 'exemplar' schools
+            title: Long term baseload comparison with benchmark and exemplar schools
+          daytype_breakdown_electricity_tolerant:
+            label: Out of hours electricity use
+            subtitle: This chart shows a breakdown of the electricity consumption for {{name}} over the last 12 months
+            title: Electricity usage breakdown
+          electricity_by_day_of_week_tolerant:
+            label: Out of hours electricity use by day of week
+            subtitle: This chart shows the total amount of electricity used by {{name}} over the last 12 months, broken down by day of the week and time of use
+            title: Electricity use by day of the week
+          group_by_week_electricity_meter_breakdown_one_year:
+            label: Electricity use by meter
+            subtitle: This chart gives the weekly breakdown of electricity consumption by meter for {{name}}
+            title: Electricity consumption by meter
+          management_dashboard_group_by_week_electricity:
+            label: Electricity use by week
+            subtitle: This chart gives the breakdown of electricity consumption between school day open and closed, holidays and weekends for each week for {{name}}
+            title: Electricity consumption by week
+        gas:
+          daytype_breakdown_gas_tolerant:
+            label: Out of hours gas use
+            subtitle: This chart shows a breakdown of the gas consumption for {{name}} over the last 12 months
+            title: Gas usage breakdown
+          gas_by_day_of_week_tolerant:
+            label: Out of hours gas use by day of week
+            subtitle: This chart shows the total amount of gas used by {{name}} over the last 12 months, broken down by day of the week and time of use
+            title: Gas use by day of the week
+          group_by_week_gas_meter_breakdown_one_year:
+            label: Gas use by meter
+            subtitle: This chart gives the weekly breakdown of gas consumption by meter for {{name}}
+            title: Gas consumption by meter
+          management_dashboard_group_by_week_gas:
+            label: Gas use by week
+            subtitle: This chart gives the breakdown of Gas consumption between school day open and closed, holidays and weekends for each week for {{name}}
+            title: Gas consumption by week
+        solar_pv:
+          management_dashboard_group_by_month_solar_pv:
+            label: Solar generation and use by month
+            subtitle: The chart below shows the electricity consumption, solar energy generation and exported solar energy for {{name}} over the last 12 months. It includes an indication of how bright the sun was during each month
+            title: Electricity consumption and solar PV for the last 12 months
+        storage_heaters:
+          storage_heater_by_day_of_week_tolerant:
+            label: Out of hours storage heater electricity use by day of week
+            subtitle: This chart shows the total amount of electricity used by storage heaters in {{name}} over the last 12 months, broken down into days of the week
+            title: Storage heater electricity consumption by day of the week
+          storage_heater_group_by_week:
+            label: Storage heater electricity use by week
+            subtitle: The chart below shows the storage heater electricity consumption broken down on a weekly basis between for {{name}}
+            title: Storage heater electricity consumption for the last year

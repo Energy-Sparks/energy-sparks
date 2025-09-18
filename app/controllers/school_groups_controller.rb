@@ -85,6 +85,9 @@ class SchoolGroupsController < ApplicationController
     end
   end
 
+  def charts
+  end
+
   private
 
   def csv_filename_for(action)
