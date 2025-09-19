@@ -50,11 +50,9 @@
 class Observation < ApplicationRecord
   include Description
   include Todos::Recording
-
   belongs_to :school
-
-  has_many   :temperature_recordings
-  has_many   :locations, through: :temperature_recordings
+  has_many :temperature_recordings
+  has_many :locations, through: :temperature_recordings
 
   belongs_to :programme, optional: true # to be removed when column is removed
   belongs_to :intervention_type, optional: true
@@ -90,8 +88,8 @@ class Observation < ApplicationRecord
   scope :visible, -> { where(visible: true) }
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
-  scope :between, ->(first_date, last_date) { where('at BETWEEN ? AND ?', first_date, last_date) }
-  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
+  scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
+  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
@@ -102,6 +100,17 @@ class Observation < ApplicationRecord
   scope :for_visible_schools, -> { joins(:school).merge(School.visible) }
   scope :engagement, lambda {
     where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
+  }
+
+  scope :with_academic_year, -> {
+    # Academic year start/end are dates, not datetimes.
+    # In a comparison, a DATE is treated as the start of that day (midnight).
+    # Without adding INTERVAL '1 day', any observations later on the end date day would be missed.
+    joins('JOIN academic_years ON observations.at >= academic_years.start_date AND observations.at < academic_years.end_date + INTERVAL \'1 day\'')
+  }
+
+  scope :counts_by_academic_year, -> {
+    with_academic_year.group('academic_years.id').count
   }
 
   has_rich_text :description
