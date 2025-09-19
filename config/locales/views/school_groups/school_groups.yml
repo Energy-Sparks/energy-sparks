@@ -5,6 +5,10 @@ en:
       alerts:
         subtitle_html: A summary of energy use alerts currently being shown to schools in this group
         title: Recent alerts
+      comparison_reports:
+        introduction: Select one of the following reports to compare energy use across schools in this group
+        page_heading: Choose a report
+        title: "%{name} school comparisons"
       priorities:
         title: Energy saving opportunities
       scores:
@@ -391,4 +395,5 @@ en:
       previous_scores: Previous Scores
       priority_actions: Priority Actions
       recent_usage: Recent Usage
+      reports: Reports
       show: Group Dashboard

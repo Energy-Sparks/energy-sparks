@@ -50,6 +50,9 @@ module SchoolGroups
       end
     end
 
+    def comparison_reports
+    end
+
     private
 
     def breadcrumbs; end
