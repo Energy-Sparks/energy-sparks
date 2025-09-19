@@ -4,6 +4,8 @@ module Comparisons
   class BaseController < ApplicationController
     include UserTypeSpecific
     include ComparisonTableGenerator
+    include SchoolGroupBreadcrumbs
+
     skip_before_action :authenticate_user!
 
     before_action :filter
@@ -16,7 +18,24 @@ module Comparisons
 
     protect_from_forgery except: :unlisted
 
+    layout :switch_layout
+
     def index
+      # FIXME extract this so it can be shared with advice base controller
+      @school_group_layout = params[:group_dashboard] == 'true'
+      if @school_group_layout
+        @school_group = SchoolGroup.find(params[:school_group_ids].reject(&:blank?).first)
+        @fuel_types = @school_group.fuel_types
+        @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
+        @priority_action_count = SchoolGroups::PriorityActions.new(@schools).priority_action_count
+        @alert_count = SchoolGroups::Alerts.new(@schools).summarise.count
+        build_breadcrumbs([
+                            { name: I18n.t('advice_pages.breadcrumbs.root'), href: school_group_advice_path(@school_group) },
+                            { name: I18n.t('school_groups.titles.comparisons'), href: comparison_reports_school_group_advice_path(@school_group) },
+                            { name: @report.title }
+                          ])
+      end
+
       respond_to do |format|
         format.html do
           @charts = create_charts(@results)
@@ -155,6 +174,10 @@ module Comparisons
       filter = SchoolFilter.new(**school_params).filter
       filter = filter.accessible_by(current_ability, :show) unless include_invisible
       filter.pluck(:id)
+    end
+
+    def switch_layout
+      params[:group_dashboard] == 'true' ? 'dashboards' : 'application'
     end
   end
 end

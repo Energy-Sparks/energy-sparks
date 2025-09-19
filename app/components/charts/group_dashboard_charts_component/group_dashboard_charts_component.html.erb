@@ -34,7 +34,16 @@
 
              <%= render Charts::GroupComparisonChartComponent.new(school_group: school_group,
                                                                   report: report,
-                                                                  tabbed: true) %>
+                                                                  tabbed: true) do |chart| %>
+               <% chart.with_footer do %>
+                <div class="text-right">
+                  <%= link_to t('school_groups.priority_actions.view_analysis'),
+                              compare_path(group_dashboard: true,
+                                           benchmark: report,
+                                           school_group_ids: [@school_group.id]) %>
+                </div>
+               <% end %>
+             <% end %>
         </div>
       <% end %>
     </div>

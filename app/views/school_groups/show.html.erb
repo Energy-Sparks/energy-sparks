@@ -24,7 +24,8 @@
   <div class="container">
     <%= render Charts::GroupDashboardChartsComponent.new(
           id: 'explore-energy-data',
-          school_group: @school_group
+          school_group: @school_group,
+          classes: 'pb-2'
         ) do |c| %>
       <% c.with_title do %>
         <h2>
