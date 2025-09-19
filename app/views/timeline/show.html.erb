@@ -49,7 +49,8 @@
                                                            observation_style: :full,
                                                            show_school: !@timelineable.is_a?(School),
                                                            show_date: true,
-                                                           show_actions: true) %>
+                                                           show_actions: true,
+                                                           classes: 'table-responsive') %>
         <div class="row justify-content-md-center">
           <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } if @pagy.pages > 1 %>
         </div>
