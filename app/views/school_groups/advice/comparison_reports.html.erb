@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <%= render Layout::GridComponent.new(id: 'reports',
+      <%= render Layout::GridComponent.new(id: 'report-grid',
                                            cols: 2,
                                            cell_classes: 'mb-4',
                                            component_classes: %w[h-100]) do |grid| %>
@@ -36,9 +36,6 @@
                  electricity: { report: :annual_electricity_costs_per_pupil, label: 'Electricity (per pupil)' },
                  gas: { report: :annual_heating_costs_per_floor_area, label: 'Gas (per floor area)' }
                } %>
-            <% list.with_link 'Annual saving through 1C reduction in thermostat temperature',
-                              report: :thermostat_sensitivity,
-                              fuel_type: :gas %>
             <% list.with_fuel_types 'Progress against target', reports: {
                  electricity: :electricity_targets,
                  gas: :gas_targets
@@ -78,12 +75,11 @@
         <% end %>
         <% grid.with_block cell_classes: 'pb-2', classes: %w[p-4 bg-light rounded] do %>
           <h4>Baseload and peak energy use</h4>
-
           <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
                                                                      fuel_types: @fuel_types) do |list| %>
-            <% list.with_link 'Baseload per pupil',
-                              report: :baseload_per_pupil,
-                              fuel_type: :electricity %>
+            <% list.with_advice_page 'Baseload per pupil',
+                                     advice_page: :baseload,
+                                     fuel_type: :electricity %>
             <% list.with_link 'Recent change in baseload',
                               report: :recent_change_in_baseload,
                               fuel_type: :electricity %>
@@ -100,12 +96,15 @@
           <h4>Heating and hot water control</h4>
           <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
                                                                      fuel_types: @fuel_types) do |list| %>
+            <% list.with_link 'Annual saving through 1C reduction in thermostat temperature',
+                              report: :thermostat_sensitivity,
+                              fuel_type: :gas %>
             <% list.with_link 'Heating start time',
                               report: :heating_coming_on_too_early,
                               fuel_type: :gas %>
-            <% list.with_link 'Heating used in warm weather',
-                              report: :heating_in_warm_weather,
-                              fuel_type: :gas %>
+            <% list.with_advice_page 'Heating used in warm weather',
+                                     advice_page: :heating_control,
+                                     fuel_type: :gas %>
             <% list.with_link 'Quality of thermostatic control',
                               report: :thermostatic_control,
                               fuel_type: :gas %>
