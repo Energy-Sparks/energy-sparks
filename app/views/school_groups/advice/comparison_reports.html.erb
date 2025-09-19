@@ -34,7 +34,7 @@
                } %>
             <% list.with_fuel_types 'Annual savings potential', reports: {
                  electricity: { report: :annual_electricity_costs_per_pupil, label: 'Electricity (per pupil)' },
-                 gas: { report: :annual_gas_costs_per_floor_area, label: 'Gas (per floor area)' }
+                 gas: { report: :annual_heating_costs_per_floor_area, label: 'Gas (per floor area)' }
                } %>
             <% list.with_link 'Annual saving through 1C reduction in thermostat temperature',
                               report: :thermostat_sensitivity,
@@ -91,7 +91,7 @@
                               report: :electricity_peak_kw_per_pupil,
                               fuel_type: :electricity %>
             <% list.with_named 'Baseload variation', fuel_type: :electricity, reports: {
-                 season_baseload_variation: 'seasonal',
+                 seasonal_baseload_variation: 'seasonal',
                  weekday_baseload_variation: 'weekday'
                } %>
           <% end %>
