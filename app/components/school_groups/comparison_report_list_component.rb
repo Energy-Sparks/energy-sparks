@@ -53,7 +53,7 @@ module SchoolGroups
       end
 
       def report_path(report = @report)
-        helpers.compare_path(benchmark: report, school_group_ids: [@school_group.id])
+        helpers.compare_path(group_dashboard: true, benchmark: report, school_group_ids: [@school_group.id])
       end
     end
 

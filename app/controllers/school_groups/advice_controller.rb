@@ -51,6 +51,7 @@ module SchoolGroups
     end
 
     def comparison_reports
+      build_breadcrumbs([name: I18n.t('school_groups.titles.comparisons')])
     end
 
     private
