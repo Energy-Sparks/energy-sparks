@@ -18,13 +18,9 @@ module Dashboards
       schools.any?
     end
 
-    def i18n_scope
-      'components.dashboards.group_learn_more'
-    end
-
     def title
       if data_enabled?
-        I18n.t('title', scope: i18n_scope)
+        I18n.t('components.dashboards.group_learn_more.title')
       else
         I18n.t('schools.show.coming_soon')
       end
@@ -32,9 +28,9 @@ module Dashboards
 
     def intro
       if data_enabled?
-        I18n.t('intro', scope: i18n_scope)
+        I18n.t('components.dashboards.group_learn_more.intro')
       else
-        I18n.t('intro_no_data', scope: i18n_scope)
+        I18n.t('components.dashboards.group_learn_more.intro_no_data')
       end
     end
   end
