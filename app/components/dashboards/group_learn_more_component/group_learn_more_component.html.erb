@@ -1,0 +1,33 @@
+<%= tag.div id: id, class: class_names(classes, 'mt-1 mb-5') do %>
+  <div class="row">
+    <div class="col-12">
+      <h2>
+        <%= title %>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <p>
+        <%= intro %>
+      </p>
+    </div>
+  </div>
+  <% if data_enabled? %>
+    <div class="row">
+      <div class="col-6">
+        <%= link_to t('common.explore_energy_data'),
+                    school_group_advice_path(school_group),
+                    class: 'btn btn-primary mr-2' %>
+      </div>
+      <div class="col-6 d-flex align-items-center justify-content-end">
+        <%= form_with url: schools_path, method: :get, local: true,
+                      class: 'd-flex align-items-center justify-content-end w-100' do |form| %>
+          <%= form.select :school, options_for_select(schools.pluck(:name, :slug)),
+                          { prompt: t('activity_types.show.select_school') }, class: 'form-control select2' %>
+          <%= form.submit t('common.labels.view'), class: 'btn btn-secondary ml-2' %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

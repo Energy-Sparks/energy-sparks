@@ -33,6 +33,11 @@
       <% end %>
     <% end %>
 
+    <%= render Dashboards::GroupLearnMoreComponent.new(
+          school_group: @school_group,
+          user: current_user
+        ) %>
+
     <%= render Dashboards::GroupSavingsPromptComponent.new(
           school_group: @school_group,
           schools: @schools
