@@ -11,7 +11,7 @@ module Dashboards
     end
 
     def schools
-      schools = @school_group.schools.order(name: :asc)
+      schools = @school_group.schools.by_name
       (user&.admin? && schools.process_data) || schools.data_enabled
     end
 
