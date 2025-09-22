@@ -3,6 +3,10 @@ en:
   components:
     dashboards:
       group_learn_more:
-        intro: Click through to view an overview of your group’s energy data along with detailed analysis on baseload, long term trends and out of hours use
+        advice:
+          intro: Click through to view an overview of your group’s energy data along with detailed analysis on baseload, long term trends and out of hours use
+          title: Learn more about energy use
         intro_no_data: We are still setting up data for the schools in this group. Once that data is available we will be able to provide analysis of the energy data across all schools in this group
-        title: Learn more about energy use
+        schools:
+          intro: Select a school to explore it's latest energy data, energy use alerts and scoreboard activity
+          title: Schools in this group
