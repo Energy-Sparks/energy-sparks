@@ -1,15 +1,8 @@
-<%= tag.div id: id, class: class_names(classes, 'mt-1 mb-4') do %>
+<%= tag.div id: id, class: class_names(classes, 'mt-1') do %>
   <% if data_enabled? %>
     <%= render Layout::GridComponent.new(cols: 2,
                                          component_classes: 'h-100 p-4 rounded-lg bg-blue-pale',
                                          cell_classes: 'mb-4') do |grid| %>
-      <% grid.with_feature_card(classes: '') do |feature| %>
-        <%= feature.with_header title: t('components.dashboards.group_learn_more.advice.title') %>
-        <%= feature.with_description { t('components.dashboards.group_learn_more.advice.intro') } %>
-        <%= feature.with_button t('common.explore_energy_data'),
-                                school_group_advice_path(school_group),
-                                style: :primary, classes: 'ml-auto' %>
-      <% end %>
       <% grid.with_feature_card(classes: '') do |feature| %>
         <%= feature.with_header title: t('components.dashboards.group_learn_more.schools.title') %>
         <%= feature.with_description { t('components.dashboards.group_learn_more.schools.intro') } %>
@@ -21,6 +14,13 @@
               <%= form.submit t('common.labels.view'), class: 'btn btn-primary ml-2' %>
           <% end %>
         <% end %>
+      <% end %>
+      <% grid.with_feature_card(classes: '') do |feature| %>
+        <%= feature.with_header title: t('components.dashboards.group_learn_more.advice.title') %>
+        <%= feature.with_description { t('components.dashboards.group_learn_more.advice.intro') } %>
+        <%= feature.with_button t('common.explore_energy_data'),
+                                school_group_advice_path(school_group),
+                                style: :primary, classes: 'ml-auto' %>
       <% end %>
     <% end %>
   <% else %>
