@@ -3,7 +3,7 @@
     <%= render Layout::GridComponent.new(cols: 2,
                                          component_classes: 'h-100 p-4 rounded-lg bg-blue-pale',
                                          cell_classes: 'mb-4') do |grid| %>
-      <% grid.with_feature_card(classes: '') do |feature| %>
+      <% grid.with_feature_card(theme: :pale) do |feature| %>
         <%= feature.with_header title: t('components.dashboards.group_learn_more.schools.title') %>
         <%= feature.with_description { t('components.dashboards.group_learn_more.schools.intro') } %>
         <%= feature.with_block(classes: 'mb-1') do %>
@@ -15,7 +15,7 @@
           <% end %>
         <% end %>
       <% end %>
-      <% grid.with_feature_card(classes: '') do |feature| %>
+      <% grid.with_feature_card(theme: :pale) do |feature| %>
         <%= feature.with_header title: t('components.dashboards.group_learn_more.advice.title') %>
         <%= feature.with_description { t('components.dashboards.group_learn_more.advice.intro') } %>
         <%= feature.with_button t('common.explore_energy_data'),
