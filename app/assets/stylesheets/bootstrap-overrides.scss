@@ -56,6 +56,7 @@ $spacers: (
   6: ($spacer * 4) // extra
 );
 
-$border-radius-sm: .2rem; // bootstrap default 0.2rem // UNUSED
-$border-radius: .25rem; // bootstrap default 0.25rem
-$border-radius-lg: .5rem; // bootstrap default 0.3rem
+$border-radius-sm: .2rem; // 3.2px bootstrap default 0.2rem / 3.2 px - UNUSED
+$border-radius: .25rem; // 4px - Bootstrap default 0.25rem / 4px
+$border-radius-lg: .5rem; // 8px - Bootstrap default is 0.3rem / 4.8px
+// $border-radius-xl defined in base.scss as 0.75rem / 12px (as not bootstrap default)
