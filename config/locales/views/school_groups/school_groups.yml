@@ -5,6 +5,9 @@ en:
       alerts:
         subtitle_html: A summary of energy use alerts currently being shown to schools in this group
         title: Recent alerts
+      charts:
+        introduction: This page provides quick access to a range of energy use charts for schools in this group. A wider set of charts is available on the advice pages for each school.
+        title: School energy use charts
       comparison_reports:
         introduction: Select one of the following reports to compare energy use across schools in this group
         links:
@@ -425,6 +428,7 @@ en:
       activity_in_year: A list of all adult and pupil-led activities at this school group recorded in the %{school_year} school year
     titles:
       advice: Advice
+      charts: Energy use charts
       comparisons: Comparisons
       current_scores: Current Scores
       map: Map

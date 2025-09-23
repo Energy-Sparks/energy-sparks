@@ -313,6 +313,7 @@ Rails.application.routes.draw do
           get :comparison_reports
           get :priorities
           get :scores
+          get :charts
         end
       end
     end

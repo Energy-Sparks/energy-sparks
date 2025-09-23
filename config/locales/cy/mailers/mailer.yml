@@ -163,8 +163,6 @@ cy:
       title: Diolch am gadarnhau eich cyfrif defnyddiwr Sbarcynni.
       view_your_school: Gweld eich ysgol
   target_mailer:
-    admin_target_report:
-      subject: Cynnydd Targed ac Adroddiad Data
     first_target:
       subject: Gosodwch eich targed arbed ynni cyntaf
       title: Gosodwch eich targed arbed ynni cyntaf

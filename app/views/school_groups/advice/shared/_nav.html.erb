@@ -27,9 +27,13 @@
                    classes: 'section-link') %>
   <% end %>
   <% c.with_section(name: t('school_groups.titles.reports'),
-                    icon: 'magnifying-glass-chart') do |s| %>
+                    icon: 'magnifying-glass-chart',
+                    options: { match_controller: false }) do |s| %>
     <% s.with_item(name: t('school_groups.titles.comparisons'),
                    href: comparison_reports_school_group_advice_path(school_group),
+                   classes: 'small') %>
+    <% s.with_item(name: t('school_groups.titles.charts'),
+                   href: charts_school_group_advice_path(school_group),
                    classes: 'small') %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
