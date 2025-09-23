@@ -50,7 +50,6 @@ button.btn-close { @extend button.close !optional; }
 
 // badge styles
 // Not maps as such but allow us to use the new class names
-
 .badge:not(.badge-warning):not(.badge-light) {
   color: #fff;
 }
