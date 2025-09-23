@@ -9,14 +9,6 @@ module SchoolGroups
         end,
         as: :link
       },
-      advice_page: {
-        renders: ->(*args, **kwargs, &block) do
-          SchoolGroups::ComparisonReportListComponent::AdvicePageItem.new(*args,
-                                                       **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
-                                                       &block)
-        end,
-        as: :advice_page
-      },
       named_sublist: {
         renders: ->(*args, **kwargs, &block) do
           SchoolGroups::ComparisonReportListComponent::NamedSubList.new(*args,
@@ -73,21 +65,6 @@ module SchoolGroups
 
       def call
         content_tag(:li, link_to(@link_text, report_path))
-      end
-    end
-
-    class AdvicePageItem < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, advice_page:, fuel_type: nil)
-        super
-        @advice_page = advice_page
-      end
-
-      def call
-        content_tag(:li, link_to(@link_text,
-                                 helpers.advice_page_path(@school_group,
-                                                          AdvicePage.find_by_key(@advice_page),
-                                                          :analysis,
-                                                          anchor: 'comparison')))
       end
     end
 

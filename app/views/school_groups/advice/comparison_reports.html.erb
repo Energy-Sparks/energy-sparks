@@ -79,9 +79,9 @@
           <h4><%= t('school_groups.advice.comparison_reports.lists.baseload') %></h4>
           <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
                                                                      fuel_types: @fuel_types) do |list| %>
-            <% list.with_advice_page t('school_groups.advice.comparison_reports.links.baseload_per_pupil'),
-                                     advice_page: :baseload,
-                                     fuel_type: :electricity %>
+            <% list.with_link t('school_groups.advice.comparison_reports.links.baseload_per_pupil'),
+                              report: :baseload_per_pupil,
+                              fuel_type: :electricity %>
             <% list.with_link t('school_groups.advice.comparison_reports.links.recent_baseload'),
                               report: :recent_change_in_baseload,
                               fuel_type: :electricity %>
@@ -108,9 +108,9 @@
             <% list.with_link t('school_groups.advice.comparison_reports.links.heating_times'),
                               report: :heating_coming_on_too_early,
                               fuel_type: :gas %>
-            <% list.with_advice_page t('school_groups.advice.comparison_reports.links.warm_weather'),
-                                     advice_page: :heating_control,
-                                     fuel_type: :gas %>
+            <% list.with_link t('school_groups.advice.comparison_reports.links.warm_weather'),
+                              report: :heating_in_warm_weather,
+                              fuel_type: :gas %>
             <% list.with_link t('school_groups.advice.comparison_reports.links.thermostatic_control'),
                               report: :thermostatic_control,
                               fuel_type: :gas %>
