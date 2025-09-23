@@ -39,24 +39,20 @@ q {
   white-space: nowrap;
 }
 
-.rounded-lg {
-  border-radius: 8px !important;
-}
-
-$rounded-xl: 12px;
+$border-radius-xl: .75rem; // extra one
 
 .rounded-xl {
-  border-radius: $rounded-xl;
+  border-radius: $border-radius-xl;
 }
 
 .rounded-top-xl {
-  border-top-left-radius: $rounded-xl;
-  border-top-right-radius: $rounded-xl;
+  border-top-left-radius: $border-radius-xl;
+  border-top-right-radius: $border-radius-xl;
 }
 
 .rounded-bottom-xl {
-  border-bottom-left-radius: $rounded-xl;
-  border-bottom-right-radius: $rounded-xl;
+  border-bottom-left-radius: $border-radius-xl;
+  border-bottom-right-radius: $border-radius-xl;
 }
 
 .fa-li.fa-check {

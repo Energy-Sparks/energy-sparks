@@ -55,3 +55,7 @@ $spacers: (
   5: ($spacer * 3),
   6: ($spacer * 4) // extra
 );
+
+$border-radius-sm: .2rem; // bootstrap default 0.2rem // UNUSED
+$border-radius: .25rem; // bootstrap default 0.25rem
+$border-radius-lg: .5rem; // bootstrap default 0.3rem
