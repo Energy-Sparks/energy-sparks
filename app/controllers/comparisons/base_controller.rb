@@ -22,7 +22,7 @@ module Comparisons
 
     def index
       # FIXME extract this so it can be shared with advice base controller
-      @school_group_layout = params[:group_dashboard] == 'true'
+      @school_group_layout = params[:group] == 'true'
       if @school_group_layout
         @school_group = SchoolGroup.find(params[:school_group_ids].reject(&:blank?).first)
         @fuel_types = @school_group.fuel_types

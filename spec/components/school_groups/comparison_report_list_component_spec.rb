@@ -13,6 +13,10 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
   let(:fuel_types) { [:electricity] }
   let!(:school_group) { create(:school_group) }
 
+  def expected_compare_path(school_group, benchmark)
+    compare_path(group: true, benchmark: benchmark, school_group_ids: [school_group.id])
+  end
+
   context 'with a simple list' do
     let(:fuel_type) { nil }
 
@@ -24,7 +28,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
     it 'links to report' do
       expect(html).to have_link('Link',
-                                href: compare_path(benchmark: :annual_energy_use, school_group_ids: [school_group.id]))
+                                href: expected_compare_path(school_group, :annual_energy_use))
     end
 
     context 'with available fuel type' do
@@ -32,7 +36,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
       it 'links to report' do
         expect(html).to have_link('Link',
-                                  href: compare_path(benchmark: :annual_energy_use, school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :annual_energy_use))
       end
     end
 
@@ -41,7 +45,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
       it 'does not link to report' do
         expect(html).not_to have_link('Link',
-                                  href: compare_path(benchmark: :annual_energy_use, school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :annual_energy_use))
       end
     end
   end
@@ -63,7 +67,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
     it 'links to report' do
       expect(html).to have_link('Seasonal variation',
-                                href: compare_path(benchmark: :season_baseload_variation, school_group_ids: [school_group.id]))
+                                href: expected_compare_path(school_group, :season_baseload_variation))
     end
 
     context 'with available fuel type' do
@@ -71,7 +75,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
       it 'links to report' do
         expect(html).to have_link('Seasonal variation',
-                                  href: compare_path(benchmark: :season_baseload_variation, school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :season_baseload_variation))
       end
     end
 
@@ -84,7 +88,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
       it 'does not link to report' do
         expect(html).not_to have_link('Seasonal variation',
-                                  href: compare_path(benchmark: :season_baseload_variation, school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :season_baseload_variation))
       end
     end
   end
@@ -105,14 +109,12 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
     it 'links to electricity report' do
       expect(html).to have_link(I18n.t('common.electricity'),
-                                href: compare_path(benchmark: :change_in_electricity_since_last_year,
-                                                   school_group_ids: [school_group.id]))
+                                href: expected_compare_path(school_group, :change_in_electricity_since_last_year))
     end
 
     it 'does not link to gas report' do
       expect(html).not_to have_link(I18n.t('common.gas'),
-                                  href: compare_path(benchmark: :change_in_gas_since_last_year,
-                                                     school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :change_in_gas_since_last_year))
     end
 
     context 'with no fuel types' do
@@ -128,12 +130,12 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
 
       it 'links to electricity report' do
         expect(html).to have_link(I18n.t('common.electricity'),
-                                  href: compare_path(benchmark: :change_in_electricity_since_last_year, school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :change_in_electricity_since_last_year))
       end
 
       it 'links to gas report' do
         expect(html).to have_link(I18n.t('common.gas'),
-                                  href: compare_path(benchmark: :change_in_gas_since_last_year, school_group_ids: [school_group.id]))
+                                  href: expected_compare_path(school_group, :change_in_gas_since_last_year))
       end
     end
   end
