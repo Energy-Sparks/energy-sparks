@@ -48,8 +48,14 @@ module SchoolGroups
         @fuel_type = fuel_type
       end
 
+      # Only render if the item has no fuel type, or the expected fuel type is in the
+      # list provided.
       def render?
         @fuel_type.nil? || @fuel_types.include?(@fuel_type)
+      end
+
+      def report_exists?(report = @report)
+        Comparison::Report.exists?(key: report, public: true)
       end
 
       def report_path(report = @report)
@@ -63,6 +69,11 @@ module SchoolGroups
         @report = report
       end
 
+      # Only render if fuel type matches and the report is public
+      def render?
+        super && report_exists?
+      end
+
       def call
         content_tag(:li, link_to(@link_text, report_path))
       end
@@ -74,6 +85,11 @@ module SchoolGroups
       def initialize(link_text, fuel_types:, school_group:, reports:, fuel_type: nil)
         super
         @reports = reports
+      end
+
+      # Only render if fuel type matches and any of the reports are public
+      def render?
+        super && report_exists?(@reports.keys)
       end
 
       def call
@@ -92,14 +108,27 @@ module SchoolGroups
 
     # Reports are keyed on fuel type, links use fuel type as link text,
     # e.g. { electricity: :annual_electricity_use }
+    #
+    # OR, to allow overriding of labels:
+    # e.g. { electricity: { report: :annual_electricity_use, label: 'Some label'} }
     class FuelSubList < BaseItem
       def initialize(link_text, fuel_types:, school_group:, reports:)
         super
         @reports = reports
       end
 
+      # Only render if fuel type matches and any of the reports are public
+      # Has to check for both variations of the configuration
       def render?
-        (@fuel_types & @reports.keys).any?
+        return false unless (@fuel_types & @reports.keys).any?
+        (@fuel_types & @reports.keys).filter_map do |fuel_type|
+          config = @reports[fuel_type]
+          if config.is_a?(Hash)
+            report_exists?(config[:report])
+          else
+            report_exists?(config)
+          end
+        end.any?
       end
 
       def call
@@ -107,11 +136,11 @@ module SchoolGroups
           content_tag(:span, @link_text) +
             content_tag(:ul) do
               content_tag(:li) do
-                (@fuel_types & @reports.keys).map do |fuel_type|
+                (@fuel_types & @reports.keys).filter_map do |fuel_type|
                   config = @reports[fuel_type]
                   if config.is_a?(Hash)
                     link_to(config[:label], report_path(config[:report]))
-                  else
+                  elsif report_exists?(config)
                     link_to(t("common.#{fuel_type}"), report_path(config))
                   end
                 end.join(', ').html_safe
