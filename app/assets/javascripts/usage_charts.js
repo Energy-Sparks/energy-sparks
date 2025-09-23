@@ -5,11 +5,33 @@ $(document).ready(function() {
   //they should have already made any changes to the form we're using, so this just updates
   //the explanation and then triggers the data load
   function updateChart(chartDiv) {
-
-    var chartContainer = $(chartDiv).find('.usage-chart').first();
+    const chartContainer = $(chartDiv).find('.usage-chart').first();
     var chartConfig = chartContainer.data('chart-config');
 
-    var meter = $(chartDiv).find("select[name='meter']").val();
+    // For SelectableSchoolChartsComponent
+    updateSchoolSelection(chartDiv, chartConfig)
+    updateChartStateFromSelections(chartDiv, chartConfig);
+    replaceBrowserHistory(chartDiv);
+
+    // For Meter Specific Charts
+    updateMeterSpecificChartState(chartDiv, chartConfig);
+
+    // For pupil and recent usage analysis charts that use
+    // shared/usage_controls
+    updateMeterSelection(chartDiv, chartConfig);
+    chartConfig.date_ranges = getDateRanges(chartDiv);
+
+    const seriesBreakdown = chartDiv.querySelector("input[name='series_breakdown']");
+    if (seriesBreakdown && seriesBreakdown.value) {
+      chartConfig.series_breakdown = seriesBreakdown.value;
+    }
+
+    processAnalysisChart(chartContainer[0], chartConfig);
+  }
+
+  function updateMeterSelection(chartDiv, chartConfig) {
+    const meterSelect = chartDiv.querySelector("select[name='meter']");
+    const meter = meterSelect ? meterSelect.value : null;
     if (meter) {
       if (meter == 'all') {
         chartConfig.mpan_mprn = undefined;
@@ -21,18 +43,81 @@ $(document).ready(function() {
         chartConfig.sub_meter = definitions[1];
       }
     }
-
-    updateMeterSpecificChartState(chartDiv, chartConfig);
-
-    var seriesBreakdown = $(chartDiv).find("input[name='series_breakdown']").val();
-    if (seriesBreakdown) {
-      chartConfig.series_breakdown = seriesBreakdown;
-    }
-
-    chartConfig.date_ranges = getDateRanges(chartDiv);
-    processAnalysisChart(chartContainer[0], chartConfig);
   }
 
+  // SelectableSchoolChartsComponent
+  // use replaceState to update url parameters to allow sharing of direct link to component state
+  function replaceBrowserHistory(chartDiv) {
+    const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
+    const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
+    const selectedFuelType = document.querySelector("input[name='chart-selection-fuel-type']:checked");
+    if (schoolSelector && chartSelector && selectedFuelType) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('chart_type', chartSelector.value);
+      url.searchParams.set('school', schoolSelector.value);
+      url.searchParams.set('fuel_type', selectedFuelType.getAttribute('data-fuel-type'));
+      history.replaceState(null, '', url.toString());
+    }
+  }
+
+  // SelectableSchoolChartsComponent
+  // Set alternate URL for loading chart json based on selected school
+  function updateSchoolSelection(chartDiv, chartConfig) {
+    const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
+    const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
+    if (schoolSelector && schoolSelector.value) {
+      chartConfig.jsonUrl = `/schools/${schoolSelector.value}/chart.json`;
+    }
+  }
+
+  // SelectableSchoolChartsComponent
+  // Update chart title, subtitle and footer link based on combination of
+  // selected chart and school.
+  //
+  // Relies on both select boxes having option elements containing certain data attributes.
+  function updateChartStateFromSelections(chartDiv, chartConfig) {
+    const chartSelector = chartDiv.querySelector("select[name='chart-selection-chart-type']");
+    if (chartSelector && chartSelector.value) {
+      chartConfig.type = chartSelector.value;
+      chartConfig.transformations = [];
+      // hide axis controls as currently displayed state might not be suitable for
+      // the chart now selected
+      const axisControls = chartDiv.querySelector('.axis-controls')
+      if (axisControls) {
+        axisControls.style.display = 'none';
+      }
+
+      const selectedChart = chartSelector.options[chartSelector.selectedIndex];
+      const chartTitle = chartDiv.querySelector('.chart-title');
+      if (chartTitle) {
+        const title = selectedChart.getAttribute('data-title')
+        if (title) {
+          chartTitle.textContent = title;
+        }
+      }
+      const schoolSelector = chartDiv.querySelector("select[name='chart-selection-school-id']");
+      const chartSubTitle = chartDiv.querySelector('.chart-subtitle');
+      if (chartSubTitle && schoolSelector) {
+        const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
+        const subtitle = selectedChart.getAttribute('data-subtitle');
+        if (subtitle) {
+          const template = Handlebars.compile(subtitle);
+          chartSubTitle.innerHTML = template({ ...selectedSchool.dataset });
+        } else {
+          chartSubTitle.innerHTML = '';
+        }
+      }
+      const footerLink = chartDiv.querySelector('.chart-selection-analysis-link')
+      if (footerLink && schoolSelector) {
+        const selectedSchool = schoolSelector.options[schoolSelector.selectedIndex];
+        const slug = encodeURIComponent(selectedSchool.value);
+        const advice_page = encodeURIComponent(selectedChart.getAttribute('data-advice-page'));
+        footerLink.href = `/schools/${slug}/advice/${advice_page}`;
+      }
+    }
+  }
+
+  // MeterSelectionChartComponent
   //used for the per-meter chart switching behaviour on the advice pages
   function updateMeterSpecificChartState(chartDiv, chartConfig) {
     var descriptions = $(chartDiv).find("input[name='descriptions']").data('descriptions');
@@ -44,6 +129,8 @@ $(document).ready(function() {
     }
   }
 
+  // For pupil and recent usage analysis charts that use
+  // shared/usage_controls
   function getDateRanges(chartDiv){
     var dateRanges = [];
 
@@ -108,7 +195,43 @@ $(document).ready(function() {
         $(inputId).val(datePickerValue);
       }
       logEvent('datetimepicker', '');
-      updateChart($(this).closest('.charts'));
+      updateChart(this.closest('.charts'));
+    });
+  }
+
+  // Updates school and chart type selections to disable and hide their options if their
+  // data-fuel-type attribute doesn't match the provided fuel type. Allows filtering based on
+  // fuel type on the client side, rather than requiring a reload to refresh list of charts and schools
+  function setSelectorState(fuel_type, chartDiv) {
+    const selectors = [
+      "select[name='chart-selection-chart-type']",
+      "select[name='chart-selection-school-id']"
+    ];
+
+    selectors.forEach(selector => {
+      const chartSelector = chartDiv.querySelector(selector);
+      if (chartSelector === null || chartSelector.length === 0) return;
+
+      const chartOptions = chartSelector.querySelectorAll("option");
+      let firstOption = null;
+
+      chartOptions.forEach(option => {
+        const optionFuelType = option.getAttribute("data-fuel-type") || "";
+
+        if (optionFuelType.includes(fuel_type)) {
+          if (firstOption === null) {
+            firstOption = option.value;
+          }
+          option.disabled = false;
+          option.hidden = false;
+        } else {
+          option.disabled = true;
+          option.hidden = true;
+        }
+      });
+
+      chartSelector.value = firstOption;
+      $(chartSelector).select2({ theme: 'bootstrap' }); //requires jquery
     });
   }
 
@@ -149,6 +272,10 @@ $(document).ready(function() {
     setupAxisControls(chartContainer[0], chartConfig);
     setupAnalysisControls(chartContainer[0], chartConfig);
 
+    const selectedFuelType = document.querySelector("input[name='chart-selection-fuel_type']:checked");
+    if (selectedFuelType) {
+      setSelectorState(selectedFuelType.getAttribute('data-fuel-type'), chartDiv);
+    }
     updateChart(chartDiv);
   }
 
@@ -161,7 +288,20 @@ $(document).ready(function() {
 
   $(document).on('change', "select[name='meter']", function() {
     logEvent('meter', '');
-    updateChart($(this).closest('.charts'));
+    const chartDiv = this.closest('.charts');
+    updateChart(chartDiv);
+  });
+
+  $(document).on('change', "select[name='chart-selection-school-id'], select[name='chart-selection-chart-type']", function() {
+    const chartDiv = this.closest('.charts');
+    updateChart(chartDiv);
+  });
+
+  $(document).on('change', "input[name='chart-selection-fuel-type']", function() {
+    const fuel_type = this.getAttribute("data-fuel-type");
+    const chartDiv = this.closest('.charts');
+    setSelectorState(fuel_type, chartDiv);
+    updateChart(chartDiv);
   });
 
 });

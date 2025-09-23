@@ -2,6 +2,8 @@
 
 $(document).ready(function() {
 
+  $.fn.select2.defaults.set("sorter", function(datas) { return datas.filter((data) => !data.element.hidden); });
+
   $('select.form-control.select2').select2({theme: 'bootstrap'});
 
   // Switch on select2 after cocoon insert. Needed for todos
