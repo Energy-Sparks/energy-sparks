@@ -27,7 +27,7 @@ module Schools
         gas: has_gas,
         solar_pv: has_solar_pv,
         storage_heaters: has_storage_heaters
-      }.each(&:last).keys
+      }.select { |_, v| v }.keys
     end
 
     def fuel_type_tokens
