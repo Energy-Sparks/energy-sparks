@@ -29,6 +29,10 @@
     <%= if can? :show, school
           link_to t('manage_school_menu.digital_signage'), school_digital_signage_path(school), class: 'dropdown-item'
         end %>
+    <%= if Flipper.enabled?(:manual_readings, current_user)
+          link_to t('manage_school_menu.manage_manual_readings'), school_manual_readings_path(school),
+                  class: 'dropdown-item'
+        end %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
     <% end %>

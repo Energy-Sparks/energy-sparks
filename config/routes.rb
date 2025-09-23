@@ -553,6 +553,7 @@ Rails.application.routes.draw do
       resources :batch_runs, only: %i[index create show]
 
       resource :consents, only: %i[show create]
+      resource :manual_readings
     end
   end
 

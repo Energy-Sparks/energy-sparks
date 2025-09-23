@@ -80,9 +80,7 @@ module Targets
     def calculate_monthly_consumption_between_target_dates(fuel_type, target)
       start_date = target.start_date.beginning_of_month
       end_date = target.target_date.beginning_of_month.prev_day
-      (start_date..end_date).filter_map do |date|
-        next unless date.day == 1
-
+      DateService.start_of_months(start_date, end_date).map do |date|
         previous_consumption, previous_missing = calculate_month_consumption(date - 1.year, fuel_type)
         if previous_missing
           previous_consumption = nil

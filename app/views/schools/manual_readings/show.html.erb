@@ -1,0 +1,40 @@
+<h1><%= t('manage_school_menu.manage_manual_readings') %></h1>
+<% if @months.values.flatten.empty? %>
+  <p><%= t('schools.manual_readings.enough_data') %></p>
+<% else %>
+  <p><%= t('schools.manual_readings.intro') %></p>
+  <% if @current_target %>
+    <p><%= t('schools.manual_readings.completed', start_date: @current_target.start_date) %></p>
+  <% end %>
+  <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
+    <table>
+      <thead>
+        <tr>
+          <th><%= t('common.labels.date') %></th>
+          <% @months.each do |fuel_type, months| %>
+            <th><%= t("common.#{fuel_type}") unless months.empty? %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <%= f.simple_fields_for :manual_readings, @readings do |reading_form| %>
+          <tr>
+            <td>
+              <% if reading_form.object.month %>
+                <%= reading_form.hidden_field :month %>
+                <%= I18n.l(reading_form.object.month, format: '%B %Y') %>
+              <% else %>
+                <%= reading_form.input :month, label: false, discard_day: true %>
+              <% end %>
+            </td>
+            <td><%= if @months[:electricity]&.include?(reading_form.object.month)
+                      reading_form.input :electricity, label: false
+                    end %></td>
+            <td><%= reading_form.input :gas, label: false if @months[:gas]&.include?(reading_form.object.month) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= f.submit t('common.labels.save') %>
+  <% end %>
+<% end %>
