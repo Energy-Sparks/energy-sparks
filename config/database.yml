@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV['RDS_POOL'] || 32 %>
+  pool: <%= ENV['DB_POOL'] || 32 %>
 
 development:
   <<: *default
@@ -33,8 +33,8 @@ production:
     password: <%= ENV['RDS_PASSWORD'] %>
     host: <%= ENV['RDS_HOSTNAME'] %>
     port: <%= ENV['RDS_PORT'] %>
-    idle_timeout: <%= ENV['RDS_IDLE_TIMEOUT'] || 300 %>
-    reaping_frequency: <%= ENV['RDS_REAPER_FREQUENCY'] || 60 %>
+    idle_timeout: <%= ENV['DB_IDLE_TIMEOUT'] || 300 %>
+    reaping_frequency: <%= ENV['DB_REAPER_FREQUENCY'] || 60 %>
 
 cucumber:
   <<: *test
