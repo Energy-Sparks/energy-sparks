@@ -7,10 +7,15 @@
       <%= t('timeline.activity_in_year', scope: @i18n_scope, school_year: @academic_year.title) %>
     <% end %>
   </p>
+  <div class="row d-md-none">
+    <div class="col-12 d-md-none">
+      <%= render PageNavComponent::CollapseButton.new %>
+    </div>
+  </div>
 <% end %>
 <div class="container">
   <div class="row mt-2">
-    <div class="col-md-3 col-lg-3 col-xl-2">
+    <div class="col-md-4 col-lg-3 col-xl-2 px-0">
       <%= render PageNavComponent.new name: 'Dashboard',
                                       icon: 'house', href: polymorphic_path(@timelineable),
                                       options: { user: current_user, match_controller: true } do |c| %>
@@ -28,13 +33,13 @@
         <% end %>
       <% end %>
     </div>
-    <div class="col-md-9 col-lg-9 col-xl-10 py-2 px-4">
+    <div class="col-md-8 col-lg-9 col-xl-10 ps-md-5">
       <% if @observations.any? %>
         <h4>
-        <%= t('schools.timeline.summary', from: @pagy.from, to: @pagy.to,
-                                          count: @pagy.count,
-                                          start_date: @academic_year.start_date.to_fs(:es_long),
-                                          end_date: @end_date.to_fs(:es_long)) %>
+          <%= t('schools.timeline.summary', from: @pagy.from, to: @pagy.to,
+                                            count: @pagy.count,
+                                            start_date: @academic_year.start_date.to_fs(:es_long),
+                                            end_date: @end_date.to_date.to_fs(:es_long)) %>
         </h4>
         <div class="row justify-content-md-center">
           <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } if @pagy.pages > 1 %>
@@ -44,7 +49,8 @@
                                                            observation_style: :full,
                                                            show_school: !@timelineable.is_a?(School),
                                                            show_date: true,
-                                                           show_actions: true) %>
+                                                           show_actions: true,
+                                                           classes: 'table-responsive') %>
         <div class="row justify-content-md-center">
           <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } if @pagy.pages > 1 %>
         </div>
