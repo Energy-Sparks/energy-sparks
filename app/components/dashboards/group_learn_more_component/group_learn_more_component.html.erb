@@ -1,7 +1,7 @@
 <%= tag.div id: id, class: class_names(classes, 'mt-1') do %>
   <% if data_enabled? %>
     <%= render Layout::GridComponent.new(cols: 2,
-                                         component_classes: 'h-100 p-4 rounded-lg bg-blue-pale',
+                                         component_classes: 'h-100 p-4 rounded-lg',
                                          cell_classes: 'mb-4') do |grid| %>
       <% grid.with_feature_card(theme: :pale) do |feature| %>
         <%= feature.with_header title: t('components.dashboards.group_learn_more.schools.title') %>

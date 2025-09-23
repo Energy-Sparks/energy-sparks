@@ -8,6 +8,7 @@ module Dashboards
       super
       @school_group = school_group
       @user = user
+      add_classes('data-disabled p-4 rounded-lg') unless data_enabled?
     end
 
     def schools

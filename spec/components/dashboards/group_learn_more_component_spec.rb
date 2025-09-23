@@ -21,6 +21,7 @@ RSpec.describe Dashboards::GroupLearnMoreComponent, :include_application_helper,
   end
 
   shared_examples 'a group with data available' do
+    it { expect(html).not_to have_css('.data-disabled')}
     it { expect(html).not_to have_content(I18n.t('schools.show.coming_soon')) }
     it { expect(html).not_to have_content(I18n.t('intro_no_data', scope: i18n_scope)) }
 
@@ -41,6 +42,7 @@ RSpec.describe Dashboards::GroupLearnMoreComponent, :include_application_helper,
   end
 
   shared_examples 'a group without data available' do
+    it { expect(html).to have_css('.data-disabled')}
     it { expect(html).to have_content(I18n.t('schools.show.coming_soon')) }
     it { expect(html).to have_content(I18n.t('intro_no_data', scope: i18n_scope)) }
   end
