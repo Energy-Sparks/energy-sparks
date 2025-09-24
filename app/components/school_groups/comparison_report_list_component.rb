@@ -92,17 +92,21 @@ module SchoolGroups
         super && report_exists?(@reports.keys)
       end
 
-      def call
-        content_tag(:li) do
-          content_tag(:span, @link_text) +
-            content_tag(:ul) do
-              content_tag(:li) do
-                @reports.map do |report, name|
-                  link_to(name, report_path(report))
-                end.join(', ').html_safe
-              end
-            end
-        end
+      erb_template <<-ERB
+        <li>
+          <span><%= @link_text %></span>
+          <ul>
+            <li>
+              <%= comma_separated_links %>
+            </li>
+          </ul>
+        </li>
+      ERB
+
+      def comma_separated_links
+        @reports.map do |report, name|
+          link_to(name, report_path(report))
+        end.join(', ').html_safe
       end
     end
 
@@ -131,22 +135,26 @@ module SchoolGroups
         end.any?
       end
 
-      def call
-        content_tag(:li) do
-          content_tag(:span, @link_text) +
-            content_tag(:ul) do
-              content_tag(:li) do
-                (@fuel_types & @reports.keys).filter_map do |fuel_type|
-                  config = @reports[fuel_type]
-                  if config.is_a?(Hash)
-                    link_to(config[:label], report_path(config[:report]))
-                  elsif report_exists?(config)
-                    link_to(t("common.#{fuel_type}"), report_path(config))
-                  end
-                end.join(', ').html_safe
-              end
-            end
-        end
+      erb_template <<-ERB
+        <li>
+          <span><%= @link_text %></span>
+          <ul>
+            <li>
+              <%= comma_separated_links %>
+            </li>
+          </ul>
+        </li>
+      ERB
+
+      def comma_separated_links
+        (@fuel_types & @reports.keys).filter_map do |fuel_type|
+          config = @reports[fuel_type]
+          if config.is_a?(Hash)
+            link_to(config[:label], report_path(config[:report]))
+          elsif report_exists?(config)
+            link_to(t("common.#{fuel_type}"), report_path(config))
+          end
+        end.join(', ').html_safe
       end
     end
   end
