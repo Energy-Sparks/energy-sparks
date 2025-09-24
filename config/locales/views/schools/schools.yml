@@ -240,6 +240,10 @@ en:
       timeout_modal:
         still_watching_your_live_data_usage: Still watching your live data usage?
         temporarily_paused_message_html: You've been viewing your live data for %{timeout_interval} minutes. We've temporarily paused updates. Click Restart to continue viewing
+    manual_readings:
+      completed: This table needs to be completed to calculate your target starting %{start_date}.
+      enough_data: We have enough data from your meters so you don't need to enter any readings manually.
+      intro: This table allows you to provide total kWh values for the whole school using data from your monthly bill or sourced from your energy supplier portal.
     meters:
       creatable_meter_types:
         electricity: Electricity
