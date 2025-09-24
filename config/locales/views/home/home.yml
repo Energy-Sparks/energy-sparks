@@ -1,14 +1,12 @@
 ---
 en:
   case_studies:
-    download: Download
     feature:
       description_html: |-
         Read our case studies for examples of how schools and Multi-Academy Trusts have used Energy Sparks to achieve amazing energy and carbon savings.
         <br><br>
         From tackling out-of-hours energy use to spotting problems with boilers and freezers to building a community effort around climate action - prepare to be inspired.
       title: Get inspired with our case studies
-    more_case_studies: More case studies
     title: Case Studies
   home:
     blog:

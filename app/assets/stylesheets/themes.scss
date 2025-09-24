@@ -29,7 +29,7 @@
     }
   }
 
-  &.theme-light, &.theme-accent {
+  &.theme-light, &.theme-accent, &.theme-pale {
     h1, h2, h3, h4, h5, h6, .text-main {
       color: $blue-very-dark;
     }
@@ -67,5 +67,9 @@
     .btn-secondary {
       @include button-outline-variant($blue-very-dark, $blue-very-dark, $yellow-light);
     }
+  }
+
+  &.theme-pale {
+    background-color: $blue-pale;
   }
 }

@@ -17,8 +17,9 @@
     </div>
   <% end %>
   <%= description if description %>
+  <%= block if block %>
   <% if buttons.any? %>
-    <div>
+    <div class='d-flex'>
       <% buttons.each do |button| %>
         <%= button %>
       <% end %>

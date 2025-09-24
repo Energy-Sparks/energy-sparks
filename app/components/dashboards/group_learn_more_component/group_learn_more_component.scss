@@ -1,0 +1,9 @@
+.dashboards-group-learn-more-component {
+  h2 {
+    padding-top: 0px;
+  }
+
+  &.data-disabled {
+    background: $light;
+  }
+}

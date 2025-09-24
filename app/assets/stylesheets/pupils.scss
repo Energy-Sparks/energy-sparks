@@ -4,14 +4,8 @@
   font-size: 200%;
 }
 
-.activity-suggestion {
-  border: 2px solid $grey-medium;
-  padding: 30px;
-  border-radius: 10px;
-}
-
 div.public-display-logo {
-  border-radius: 8px;
+  border-radius: $border-radius-lg;
   background-color: #192a52;
   height: 60px;
   margin-right: 16px;

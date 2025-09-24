@@ -26,6 +26,9 @@ module Layout
       renders_many :links, ->(*args, **kwargs) do
         Elements::TagComponent.new(:a, *args, **merge_classes('mb-1 mt-auto', kwargs))
       end
+      renders_one :block, ->(**kwargs) do
+        Elements::TagComponent.new(:div, **merge_classes('mt-auto', kwargs))
+      end
 
       def initialize(size: :md, **_kwargs)
         super
