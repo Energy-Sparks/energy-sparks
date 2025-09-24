@@ -11,7 +11,7 @@ module Dashboards
 
     def group_options
       {
-        choices: SchoolGroup.with_active_schools.by_name.map { |g| [g.name, g.slug] }
+        choices: SchoolGroup.all.by_name.map { |g| [g.name, g.slug] }
       }
     end
   end
