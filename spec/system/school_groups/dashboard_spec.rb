@@ -44,10 +44,6 @@ describe 'School group dashboard page', :school_groups do
       end
     end
 
-    it 'shows priorities prompt' do
-      expect(page).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_potential_savings'),
-                                href: priorities_school_group_advice_path(school_group))
-    end
 
     context 'with learn more / select school section' do
       it 'shows select school section' do
@@ -58,6 +54,11 @@ describe 'School group dashboard page', :school_groups do
         expect(page).to have_content I18n.t('components.dashboards.group_learn_more.advice.title')
         expect(page).to have_link(href: school_group_advice_path(school_group))
       end
+    end
+
+    it 'shows savings prompt' do
+      expect(page).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_potential_savings'),
+                                href: priorities_school_group_advice_path(school_group))
     end
 
     it 'shows insights section' do
