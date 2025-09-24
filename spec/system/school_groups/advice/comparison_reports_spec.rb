@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'School group charts page' do
   let!(:school_group) { create(:school_group, public: true) }
+  let!(:report) { create(:report, key: :seasonal_baseload_variation) }
 
   # has all fuel types and actual data for electricity
   let!(:school) do
@@ -40,8 +41,6 @@ describe 'School group charts page' do
     it { expect(page).to have_content(I18n.t('school_groups.advice.comparison_reports.lists.solar')) }
 
     context 'when clicking through to a comparison' do
-      let!(:report) { create(:report, key: :seasonal_baseload_variation) }
-
       let!(:alerts) do
         alert_run = create(:alert_generation_run, school: school)
         create(:alert, school: school, alert_generation_run: alert_run,
@@ -56,7 +55,7 @@ describe 'School group charts page' do
                        alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
                        variables: { electricity_economic_tariff_changed_this_year: true })
 
-        click_on('seasonal')
+        click_on('Seasonal')
       end
 
       include_context 'with comparison report footnotes' do

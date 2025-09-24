@@ -31,14 +31,14 @@ en:
           recent_baseload: Recent change in baseload
           same_holiday: Change in use between this holiday and the same holiday last year
           savings_potential: Annual savings potential
-          seasonal: seasonal
+          seasonal: Seasonal
           solar_benefit: Benefit of solar installation
           solar_change: Annual change in solar PV production and resulting CO2 savings
           solar_generation: Solar generation summary
           thermostatic_control: Quality of thermostatic control
           upcoming_holiday: Cost of energy used in upcoming holiday last year
           warm_weather: Heating used in warm weather
-          weekday: weekday
+          weekday: Weekday
         lists:
           baseload: Baseload and peak energy use
           heating: Heating and hot water control
