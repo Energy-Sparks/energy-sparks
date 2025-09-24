@@ -11,17 +11,12 @@ module Schools
 
     def show
       @current_target = @school.current_target
-      target = @current_target || target_service.build_target
-      @months = %i[electricity gas].select { |fuel_type| @school.configuration.fuel_type?(fuel_type) }
-                                   .to_h do |fuel_type|
-        start_date = target.start_date.prev_year.beginning_of_month
-        end_date = @school.configuration.meter_start_date(fuel_type)
-        [fuel_type, DateService.start_of_months(start_date, end_date).to_a]
-      end
+      @months = manual_months
       existing_months = @school.manual_readings.pluck(:month)
       @months.values.flatten.uniq.each do |month|
         @school.manual_readings.build(month:) unless existing_months.include?(month)
       end
+
       @readings = @school.manual_readings.sort_by(&:month)
     end
 
@@ -35,6 +30,16 @@ module Schools
     end
 
     private
+
+    def manual_months
+      target = @current_target || target_service.build_target
+      %i[electricity gas].select { |fuel_type| @school.configuration.fuel_type?(fuel_type) }
+                         .to_h do |fuel_type|
+        start_date = target.start_date.prev_year.beginning_of_month
+        end_date = @school.configuration.meter_start_date(fuel_type) || Date.current
+        [fuel_type, DateService.start_of_months(start_date, end_date).to_a]
+      end
+    end
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_manual_readings') }]

@@ -1,10 +1,12 @@
 <h1><%= t('manage_school_menu.manage_manual_readings') %></h1>
-<% if @months.values.flatten.empty? %>
+<% if @current_target.nil? %>
+  <p><%= t('schools.manual_readings.set_target_html', path: new_school_school_target_path(@school)) %></p>
+<% elsif @months.values.flatten.empty? %>
   <p><%= t('schools.manual_readings.enough_data') %></p>
 <% else %>
   <p><%= t('schools.manual_readings.intro') %></p>
   <% if @current_target %>
-    <p><%= t('schools.manual_readings.completed', start_date: @current_target.start_date) %></p>
+    <p><%= t('schools.manual_readings.completed', start_date: @current_target.start_date.to_fs(:es_long)) %></p>
   <% end %>
   <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
     <table>

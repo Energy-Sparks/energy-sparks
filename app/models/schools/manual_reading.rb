@@ -7,11 +7,15 @@ module Schools
     end
 
     belongs_to :school
-    validates :month, presence: true, format: { with: ->(record) { record.month&.day == 1 },
-                                                message: 'must be the first day of the month' }
+    validates :month, presence: true
     validates :electricity, presence: true, unless: :gas?
     validates :gas, presence: true, unless: :electricity?
     validates :electricity, numericality: { greater_than_or_equal_to: 0 }, if: :electricity?
     validates :gas, numericality: { greater_than_or_equal_to: 0 }, if: :gas?
+    validate :start_of_month
+
+    def start_of_month
+      errors.add(:month, 'must be the first day of the month') unless month&.day == 1
+    end
   end
 end
