@@ -75,14 +75,14 @@ class PageNavComponent < ApplicationComponent
   class ItemComponent < ViewComponent::Base
     attr_reader :name, :href, :match_controller, :classes
 
-    def initialize(name:, href:, note: nil, match_controller: false, selected: false, classes: nil, **kwargs)
+    def initialize(name:, href:, note: nil, match_controller: false, selected: false, visible: true, classes: nil)
       @name = name
       @note = note
       @href = href
       @match_controller = match_controller
       @selected = selected
+      @visible = visible
       @classes = classes
-      @if = kwargs.fetch(:if) { true }
     end
 
     def current_controller?(href)
@@ -98,11 +98,13 @@ class PageNavComponent < ApplicationComponent
       kwargs[:class] += " #{classes}" if classes
       kwargs[:class] += ' current' if current_item?(href) || @selected
       note = @note.nil? ? '' : content_tag(:span, @note, class: 'nav-toggle-icons')
-      link_to(content_tag(:span, name, class: 'nav-text') + note, href, kwargs)
+      tag.li(class: 'nav-item') do
+        link_to(content_tag(:span, name, class: 'nav-text') + note, href, kwargs)
+      end
     end
 
     def render?
-      name && @if
+      name && @visible
     end
   end
 

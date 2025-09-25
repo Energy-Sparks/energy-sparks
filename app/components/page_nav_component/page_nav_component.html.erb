@@ -8,9 +8,7 @@
           <div class="<%= class_names('collapse', { show: section.expanded? }) %>" id="<%= section.id %>" aria-expanded="false">
             <ul class="flex-column pl-0">
               <% section.items.each do |item| %>
-                <li class="nav-item">
-                  <%= item %>
-                </li>
+                <%= item %>
               <% end %>
             </ul>
           </div>

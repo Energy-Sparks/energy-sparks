@@ -131,14 +131,14 @@ RSpec.describe PageNavComponent, type: :component do
         it { expect(list_item).to have_css('.current') }
       end
 
-      context 'with if set to false for the item' do
-        let(:item_params) { all_item_params.update(href: '/schools/new', if: false)}
+      context 'with visible set to false for the item' do
+        let(:item_params) { all_item_params.update(href: '/schools/new', visible: false)}
 
         it { expect(list_item).not_to have_link('Item Name') }
       end
 
-      context 'with if set to true for the item' do
-        let(:item_params) { all_item_params.update(href: '/schools/new', if: true)}
+      context 'with visible set to true for the item' do
+        let(:item_params) { all_item_params.update(href: '/schools/new', visible: true)}
 
         it { expect(list_item).to have_link('Item Name') }
       end
