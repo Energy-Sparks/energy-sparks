@@ -93,6 +93,10 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
     end
 
+    it 'does not include group headings' do
+      expect(html).not_to have_css('#benchmarking-alerts')
+    end
+
     it_behaves_like 'it links to advice pages'
 
     context 'when showing groups' do
