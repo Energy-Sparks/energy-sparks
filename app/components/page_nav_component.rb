@@ -1,33 +1,33 @@
 # frozen_string_literal: true
 
-class PageNavComponent < ViewComponent::Base
-  renders_many :sections, ->(**args) do
-    args[:options] ||= {}
-    args[:options] = options.merge(args[:options])
-    SectionComponent.new(**args)
+class PageNavComponent < ApplicationComponent
+  renders_many :sections, ->(**kwargs) do
+    kwargs[:options] ||= {}
+    kwargs[:options] = options.merge(kwargs[:options])
+    SectionComponent.new(**kwargs)
   end
 
   attr_reader :name, :icon, :classes, :href, :options
 
   def initialize(name: 'Menu', icon: 'home', href:, classes: nil, options: {})
+    super(classes: classes)
     @name = name
     @icon = icon
-    @classes = classes
     @href = href
     @options = options
   end
 
   def header
-    args = { class: 'nav-link header' }
-    args[:class] += " #{classes}" if classes
+    kwargs = { class: 'nav-link header' }
+    kwargs[:class] += " #{classes}" if classes
     text = icon.nil? ? name : helpers.text_with_icon(name, icon)
-    link_to(text, href, args)
+    link_to(text, href, kwargs)
   end
 
   class SectionComponent < ViewComponent::Base
-    renders_many :items, ->(**args) do
-      args[:match_controller] ||= options[:match_controller]
-      PageNavComponent::ItemComponent.new(**args)
+    renders_many :items, ->(**kwargs) do
+      kwargs[:match_controller] ||= options[:match_controller]
+      PageNavComponent::ItemComponent.new(**kwargs)
     end
 
     attr_reader :name, :icon, :visible, :classes, :options
@@ -75,13 +75,14 @@ class PageNavComponent < ViewComponent::Base
   class ItemComponent < ViewComponent::Base
     attr_reader :name, :href, :match_controller, :classes
 
-    def initialize(name:, href:, note: nil, match_controller: false, selected: false, classes: nil)
+    def initialize(name:, href:, note: nil, match_controller: false, selected: false, classes: nil, **kwargs)
       @name = name
       @note = note
       @href = href
       @match_controller = match_controller
       @selected = selected
       @classes = classes
+      @if = kwargs.fetch(:if) { true }
     end
 
     def current_controller?(href)
@@ -93,15 +94,15 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: 'nav-link item' }
-      args[:class] += " #{classes}" if classes
-      args[:class] += ' current' if current_item?(href) || @selected
+      kwargs = { class: 'nav-link item' }
+      kwargs[:class] += " #{classes}" if classes
+      kwargs[:class] += ' current' if current_item?(href) || @selected
       note = @note.nil? ? '' : content_tag(:span, @note, class: 'nav-toggle-icons')
-      link_to(content_tag(:span, name, class: 'nav-text') + note, href, args)
+      link_to(content_tag(:span, name, class: 'nav-text') + note, href, kwargs)
     end
 
     def render?
-      name
+      name && @if
     end
   end
 
@@ -122,8 +123,8 @@ class PageNavComponent < ViewComponent::Base
     end
 
     def call
-      args = { class: "nav-link d-md-none d-#{display}", 'data-toggle': 'collapse', 'data-target': "##{id}" }
-      link_to(icon, '', args)
+      kwargs = { class: "nav-link d-md-none d-#{display}", 'data-toggle': 'collapse', 'data-target': "##{id}" }
+      link_to(icon, '', kwargs)
     end
   end
 end
