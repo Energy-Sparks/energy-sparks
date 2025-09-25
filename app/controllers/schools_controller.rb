@@ -7,6 +7,9 @@ class SchoolsController < ApplicationController
 
   load_and_authorize_resource except: %i[show index]
   load_resource only: [:show]
+  before_action only: [:index] do
+    redirect_to_school
+  end
 
   skip_before_action :authenticate_user!, only: %i[index show]
   before_action :set_key_stages, only: %i[create edit update]
@@ -119,6 +122,12 @@ class SchoolsController < ApplicationController
   end
 
   private
+
+  def redirect_to_school
+    if params[:school].present?
+      redirect_to school_path(params[:school]) and return
+    end
+  end
 
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
