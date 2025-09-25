@@ -65,15 +65,10 @@ class ManagementSummaryTable < ContentBase
   private
 
   def calculate
-    @summary_data = extract_front_end_data(calculation_data)
+    @summary_data = extract_front_end_data(calculate_data)
     @calculation_worked = true
   end
 
-  def calculation_data
-    @calculation_data ||= calculate_data
-  end
-
-  # FIXME add calendar month, remove last_4_weeks
   def calculation_configuration
     {
       year: {
@@ -82,11 +77,11 @@ class ManagementSummaryTable < ContentBase
         versus_exemplar: true,
         recent_limit: 2 * 365
       },
-      last_4_weeks: {
-        period0: { schoolweek: -3..0 },
-        period1: { schoolweek: -7..-4 },
+      last_month: {
+        period0: { month: -1 }, # last calendar month
+        period1: { month: -13 }, # same month last year
         versus_exemplar: false,
-        recent_limit: 2 * 7
+        recent_limit: 5 * 7 # over a month
       },
       workweek: {
         period0: { workweek: 0 },
@@ -210,6 +205,7 @@ class ManagementSummaryTable < ContentBase
     end
   end
 
+  # This is what creates the hash structure for the variable
   # explicitly extract data rather than convert
   def extract_front_end_data(calc)
     front_end = {}
@@ -221,7 +217,7 @@ class ManagementSummaryTable < ContentBase
       front_end[fuel_type][:end_date]   = fuel_type_data[:end_date].iso8601
 
       fuel_type_data.each do |period, period_data|
-        next if %i[last_4_weeks start_date end_date].include?(period)
+        next if %i[start_date end_date].include?(period)
 
         front_end[fuel_type][period] = {}
 
@@ -247,6 +243,10 @@ class ManagementSummaryTable < ContentBase
       d = fuel_type_data[:start_date] + ((7 - fuel_type_data[:start_date].wday) % 7) + 7
       dd = [d, @asof_date].max
       dd.iso8601
+    elsif period == :last_month
+      d = fuel_type_data[:start_date] + 35 # FIXME
+      dd = [d, @asof_date].max
+      dd.iso8601
     elsif period == :year
       d = fuel_type_data[:start_date] + 365
       dd = [d, @asof_date].max
@@ -268,25 +268,5 @@ class ManagementSummaryTable < ContentBase
 
   def percent_change(percent)
     percent.nil? || !percent.is_a?(Float) ? NOTAVAILABLE : percent
-  end
-
-  # ====================== Legacy Summary Table Interface calculations to Nov 2021 ==========================
-  def data_by_fuel_type
-    @school.fuel_types(false).map do |fuel_type|
-      values_for_fuel_type(fuel_type, calculation_data)
-    end
-  end
-
-  def values_for_fuel_type(fuel_type, calculations)
-    calc = calculations[fuel_type]
-    {
-      fuel_type:          { data: fuel_type.to_s.humanize.capitalize,   units: :fuel_type },
-      this_year_kwh:      { data: calc[:year][:kwh],               units: KWH_NOT_ENOUGH_IN_COL_FORMAT },
-      this_year_co2:      { data: calc[:year][:co2],               units: :co2 },
-      this_year_£:        { data: calc[:year][:£],                 units: :£ },
-      change_years:       { data: calc[:year][:percent_change],    units: :comparison_percent },
-      change_4_weeks:     { data: calc[:last_4_weeks][:percent_change], units: :comparison_percent },
-      exemplar_benefit:   { data: calc[:year][:savings_£],         units: :£ }
-    }
   end
 end
