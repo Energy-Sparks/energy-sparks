@@ -104,7 +104,7 @@ describe Charts::ComparisonChartData do
       end
 
       it 'adds the min and max data keys' do
-        expect(chart_hash.slice(:x_min_value, :x_max_value)).to eq({ x_min_value: 0, x_max_value: 100.0 })
+        expect(chart_hash).to include(x_min_value: 0, x_max_value: 100.0)
       end
     end
   end
@@ -126,6 +126,21 @@ describe Charts::ComparisonChartData do
 
     it 'produces the expected x_data' do
       expect(chart_hash[:x_data][expected_series_name]).to eq([100.0, 100.0])
+    end
+
+    context 'when school has NaN or infinite value' do
+      let(:results) do
+        [
+          create_result(schools.first, { one_year_electricity_per_pupil_kwh: Float::INFINITY }),
+          create_result(schools.last, { one_year_electricity_per_pupil_kwh: Float::NAN })
+        ]
+      end
+
+      it_behaves_like 'a chart hash'
+
+      it 'produces the expected x_data' do
+        expect(chart_hash[:x_data][expected_series_name]).to eq([nil, nil])
+      end
     end
 
     context 'when a school has missing data' do

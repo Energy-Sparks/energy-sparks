@@ -13,10 +13,10 @@ module Charts
     end
 
     def create_chart(metric_to_translation_key, multiplier, y_axis_label)
-      schools, chart_data = schools_and_chart_data do |chart_data, result|
+      chart_data = {}
+      @results.each do |result|
         result.slice(*metric_to_translation_key.keys).each do |metric, value|
           value = value_or_nil(value)
-
           # for a percentage metric we'd multiply * 100.0
           # for converting from kW to W 1000.0
           value *= multiplier unless value.nil? || multiplier.nil?
@@ -25,28 +25,18 @@ module Charts
       end
 
       chart_data.transform_keys! { |key| column_heading(metric_to_translation_key[key.to_sym]) }
-
-      chart_hash(schools, chart_data, y_axis_label)
+      chart_hash(school_names, chart_data, y_axis_label)
     end
 
     def create_calculated_chart(lambda, series_name, y_axis_label)
-      schools, chart_data = schools_and_chart_data do |chart_data, result|
-        value = lambda.call(result)
-        (chart_data[column_heading(series_name)] ||= []) << value_or_nil(value)
-      end
-      chart_hash(schools, chart_data, y_axis_label)
+      values = @results.map { |result| value_or_nil(lambda.call(result)) }
+      chart_hash(school_names, { column_heading(series_name) => values }, y_axis_label)
     end
 
     private
 
-    def schools_and_chart_data
-      schools = []
-      chart_data = {}
-      @results.each do |result|
-        schools << result.school.name
-        yield(chart_data, result)
-      end
-      return schools, chart_data
+    def school_names
+      @results.map { |result| result.school.name }
     end
 
     def chart_hash(schools, chart_data, y_axis_label)
