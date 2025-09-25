@@ -100,6 +100,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
     it_behaves_like 'it links to advice pages'
 
     context 'when showing groups' do
+      let(:fragment) { html.css('#benchmarking-alerts') }
       let(:params) do
         {
           id: 'custom-id',
@@ -112,11 +113,8 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       it_behaves_like 'it links to advice pages'
 
       it 'shows the group headings' do
-        expect(html).to have_css('#benchmarking-alerts')
-        within('#benchmarking-alerts') do
-          expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
-          expect(html).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
-        end
+        expect(fragment).to have_content(content_version.group_dashboard_title.to_plain_text)
+        expect(fragment).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
       end
     end
 
