@@ -27,7 +27,9 @@ module Comparisons
       calculation = lambda do |result|
         percent_change(result.previous_year_electricity_kwh, result.current_year_electricity_kwh) * 100.0
       end
-      [create_calculated_chart(results, calculation, 'change_in_kwh_pct', 'percent')]
+      [
+        Charts::ComparisonChartData.new(results).create_calculated_chart(calculation, 'change_in_kwh_pct', 'percent')
+      ]
     end
   end
 end
