@@ -112,7 +112,7 @@ describe ManagementSummaryTable do
 
         # FIXME defaults to analysis date?
         it 'indicates when annual data is available' do
-          expect(electricity_data[:year][:available_from]).to eq(Date.new(2023, 11, 30).iso8601)
+          expect(electricity_data[:year][:available_from]).to eq((start_date + 1.year).iso8601)
         end
 
         it 'indicates that other data is not recent' do
@@ -125,7 +125,6 @@ describe ManagementSummaryTable do
       context 'when there is less than a year of data' do
         let(:start_date) { today - 60.days }
 
-        # FIXME defaults to analysis date?
         it 'indicates when annual data is available' do
           expect(electricity_data[:year][:available_from]).to eq((start_date + 365.days).iso8601)
         end
@@ -152,7 +151,8 @@ describe ManagementSummaryTable do
         end
 
         it 'indicates when monthly data is available' do
-          expect(electricity_data[:last_month][:available_from]).to eq((start_date + 60.days).iso8601)
+          # start date will be 2023-11-09 we can report on previous month from around 1st December
+          expect(electricity_data[:last_month][:available_from]).to eq(Date.new(2023, 12, 1).iso8601)
         end
 
         it 'calculates work week' do

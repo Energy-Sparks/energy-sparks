@@ -241,16 +241,13 @@ class ManagementSummaryTable < ContentBase
   def date_available_from(period, fuel_type_data)
     if period == :workweek
       d = fuel_type_data[:start_date] + ((7 - fuel_type_data[:start_date].wday) % 7) + 7
-      dd = [d, @asof_date].max
-      dd.iso8601
+      d.iso8601
     elsif period == :last_month
-      d = fuel_type_data[:start_date] + 35 # FIXME
-      dd = [d, @asof_date].max
-      dd.iso8601
+      d = fuel_type_data[:start_date].end_of_month + 1.day
+      d.iso8601
     elsif period == :year
       d = fuel_type_data[:start_date] + 365
-      dd = [d, @asof_date].max
-      dd.iso8601
+      d.iso8601
     else
       'Date available from: internal error'
     end
