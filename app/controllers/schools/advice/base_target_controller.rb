@@ -42,6 +42,10 @@ module Schools
         :"#{@fuel_type}_target"
       end
 
+      def percent_change(current_consumption, previous_consumption)
+        (current_consumption - previous_consumption) / previous_consumption.to_f
+      end
+
       def formatted_target(target = nil)
         format_unit((target || @target).target(@fuel_type), { units: :percent, options: { scale: false } })
       end
@@ -56,10 +60,6 @@ module Schools
         target_strftime((target || @target).target_date)
       end
       helper_method :formatted_target_date
-
-      def percent_change(current_consumption, previous_consumption)
-        (current_consumption - previous_consumption) / previous_consumption.to_f
-      end
 
       def formatted_target_change(current_consumption, previous_consumption)
         return if current_consumption.nil? || previous_consumption.nil?

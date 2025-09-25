@@ -89,7 +89,7 @@ RSpec.shared_examples 'target advice page' do
         Back to top
         #{"Unfortunately you are not meeting your target to reduce your #{fuel_string} usage\n" if meeting_prompt
         }Period Cumulative consumption (kWh) Target consumption (kWh) % Change \
-        #{table_text || '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -0.98&percnt;'}
+        #{table_text || '01 Jan 2024 - 31 Dec 2024 12,120 12,000 +1&percnt;'}
         How did we calculate these figures?
         #{if fuel_type == :storage_heater
             'View your detailed progress report.'
@@ -166,7 +166,7 @@ RSpec.shared_examples 'target advice page' do
       expect(content(tab)).to \
         eq(insight_content(expired_text: waiting_for_data_text,
                            expired: false,
-                           table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 -0.98&percnt;'))
+                           table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 +1&percnt;'))
     end
 
     context 'without recent data' do
@@ -254,7 +254,7 @@ RSpec.shared_examples 'target advice page' do
         Back to top
         The following table shows your previous progress towards reducing your #{fuel_string} usage
         Target date Previous year (kWh) Target year (kWh) % change Target \
-        January 2026 12,120 12,000 -0.98&percnt; 4&percnt; \
+        January 2026 12,120 12,000 +1&percnt; 4&percnt; \
         January 2025 11,000 10,000 +10&percnt; 5&percnt;
       CONTENT
     end
