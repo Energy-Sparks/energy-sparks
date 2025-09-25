@@ -81,10 +81,10 @@ module Targets
       start_date = target.start_date.beginning_of_month
       end_date = target.target_date.beginning_of_month.prev_day
       DateService.start_of_months(start_date, end_date).map do |date|
-        previous_consumption, previous_missing = calculate_month_consumption(date - 1.year, fuel_type)
-        if previous_missing
-          previous_consumption = nil
-        else
+        previous_month = date - 1.year
+        previous_consumption, previous_missing = calculate_month_consumption(previous_month, fuel_type)
+        previous_consumption = @school.manual_readings.find_by(month: previous_month)&.[](fuel_type) if previous_missing
+        unless previous_consumption.nil?
           target_consumption = apply_target_reduction(fuel_type, previous_consumption, target)
         end
         current_consumption, current_missing = calculate_month_consumption(date, fuel_type)

@@ -60,6 +60,7 @@ RSpec.shared_examples 'target advice page' do
       #{if fuel_type == :storage_heater
           'In the meantime you can learn more about this topic.'
         else
+          "Alternatively you can manually add monthly readings from your bill or supplier portal.\n" \
           'In the meantime you can monitor your usage using the charts on the ' \
             "long term #{fuel_type} usage advice page"
         end}

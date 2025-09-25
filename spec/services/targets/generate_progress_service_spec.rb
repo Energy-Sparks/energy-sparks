@@ -329,6 +329,14 @@ describe Targets::GenerateProgressService do
         run(Date.new(2025, 3, 15), 2.years)
         expect(target.reload.electricity_monthly_consumption.last).to eq([2025, 4, nil, 1440, 1396.8, true])
       end
+
+      it 'uses manual readings' do
+        school.manual_readings.create!(month: Date.new(2023, 5), electricity: 1000)
+        school.manual_readings.create!(month: Date.new(2023, 6), electricity: 1010)
+        run(Date.new(2025, 3, 15), 21.months)
+        expect(target.reload.electricity_monthly_consumption[0..1]).to eq([[2024, 5, 1488, 1000, 970.0, true],
+                                                                           [2024, 6, 1440, 1010, 979.7, true]])
+      end
     end
   end
 end
