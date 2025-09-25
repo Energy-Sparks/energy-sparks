@@ -4,7 +4,7 @@ module Dashboards
 
     attr_reader :school_group, :priority_action, :savings, :metric
 
-    def initialize(school_group:, schools:, metric: [:kwh, :co2, :gbp].sample, **_kwargs)
+    def initialize(school_group:, schools:, metric: :gbp, **_kwargs)
       super
       @school_group = school_group
       @schools = schools

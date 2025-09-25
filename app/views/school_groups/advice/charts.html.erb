@@ -1,0 +1,28 @@
+<% content_for :page_title, t('school_groups.advice.charts.title', name: @school_group.name) %>
+
+<% content_for :dashboard_header do %>
+  <%= render Layout::Cards::PageHeaderComponent.new(
+        title: t('school_groups.advice.charts.title', name: @school_group.name)
+      ) %>
+<% end %>
+
+<div class="container">
+  <div class="row mt-2">
+    <div id='group-advice-page-nav' class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
+      <%= render 'school_groups/advice/shared/nav', school_group: @school_group %>
+    </div>
+    <div id='group-advice-page-content' class="col-md-9 col-lg-9 col-xl-10">
+      <p>
+        <%= t('school_groups.advice.charts.introduction') %>.
+      <p>
+      <%= render Charts::SelectableSchoolChartsComponent.new(schools: @schools,
+                                                             fuel_types: @fuel_types,
+                                                             charts: @charts,
+                                                             defaults: {
+                                                               fuel_type: @default_fuel_type,
+                                                               chart_type: @default_chart_type,
+                                                               school: @default_school
+                                                             }) %>
+    </div>
+  </div>
+</div>

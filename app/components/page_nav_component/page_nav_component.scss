@@ -42,7 +42,7 @@
       font-weight: $default-font-weight;
 
       &:hover, &.current {
-        border-radius: 5px;
+        border-radius: $border-radius;
         background-color: map-get($tones, "light");
       }
 
@@ -70,7 +70,7 @@
     font-weight: $default-font-weight;
 
     &:hover, &.current {
-      border-radius: 5px;
+      border-radius: $border-radius;
       background-color: $teal-light;
     }
 

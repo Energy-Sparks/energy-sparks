@@ -20,5 +20,18 @@ module Schools
     def no_meters_with_validated_readings
       !has_electricity && !has_gas
     end
+
+    def fuel_types
+      {
+        electricity: has_electricity,
+        gas: has_gas,
+        solar_pv: has_solar_pv,
+        storage_heaters: has_storage_heaters
+      }.select { |_, v| v }.keys
+    end
+
+    def fuel_type_tokens
+      fuel_types.map(&:to_s).join(' ')
+    end
   end
 end

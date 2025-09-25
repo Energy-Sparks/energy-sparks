@@ -1,5 +1,6 @@
 .prompt-component {
-  border-radius: 8px;
+  border-radius: $border-radius-lg;
+
   &.none {
     background-color: $grey-pale !important;
   }

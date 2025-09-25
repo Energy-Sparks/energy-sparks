@@ -30,6 +30,7 @@ describe 'School group dashboard page', :school_groups do
       within('div.layout-cards-page-header-component') do
         expect(page).to have_content(I18n.t('common.labels.welcome'))
       end
+
       within('div.layout-cards-page-header-component-callout-component') do
         expect(page).to have_content(I18n.t('school_count', count: school_group.schools.count))
         expect(page).to have_content(I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type'))
@@ -43,8 +44,20 @@ describe 'School group dashboard page', :school_groups do
       end
     end
 
-    it 'shows priorities prompt' do
-      expect(page).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_savings'),
+
+    context 'with learn more / select school section' do
+      it 'shows select school section' do
+        expect(page).to have_content I18n.t('components.dashboards.group_learn_more.schools.title')
+      end
+
+      it 'shows learn more section' do
+        expect(page).to have_content I18n.t('components.dashboards.group_learn_more.advice.title')
+        expect(page).to have_link(href: school_group_advice_path(school_group))
+      end
+    end
+
+    it 'shows savings prompt' do
+      expect(page).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_potential_savings'),
                                 href: priorities_school_group_advice_path(school_group))
     end
 
@@ -52,8 +65,6 @@ describe 'School group dashboard page', :school_groups do
       expect(page).to have_link(I18n.t('schools.show.view_more_alerts'),
                                 href: alerts_school_group_advice_path(school_group))
     end
-
-    it 'shows learn more/quick links'
 
     it 'displays the scoreboard summary' do
       expect(page).to have_content(I18n.t('components.scoreboards.group_summary.timeline.title'))
