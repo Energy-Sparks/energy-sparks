@@ -27,10 +27,6 @@ class ManagementDashboardTable < ApplicationRecord
   belongs_to :alert
   belongs_to :content_version, class_name: 'AlertTypeRatingContentVersion', foreign_key: :alert_type_rating_content_version_id
 
-  def table
-    alert.table_data['summary_table']
-  end
-
   def data
     # analytics currently returns a hash serialised as string,
     # would be preferable to return e.g. json

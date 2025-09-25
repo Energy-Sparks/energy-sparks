@@ -14,7 +14,7 @@ class ManagementSummaryTable < ContentBase
     DECREASED_MESSAGE
   ]
   attr_reader :scalar
-  attr_reader :summary_table, :summary_data
+  attr_reader :summary_data
   attr_reader :calculation_worked
 
   def initialize(school)
@@ -31,46 +31,11 @@ class ManagementSummaryTable < ContentBase
     5.0
   end
 
-  def self.header_html
-    [
-      '',
-      'Annual Use (kWh)',
-      'Annual CO2 (kg)',
-      'Annual Cost',
-      'Change from last year',
-      'Change in last 4 school weeks',
-      'Potential savings'
-    ]
-  end
-
-  def self.header_text
-    text_header = header_html.map { |col_header| col_header.gsub('&pound;', '£') }
-    text_header.map { |col_header| col_header.gsub('&percnt;', '%') }
-  end
-
   def self.template_variables
     { 'Head teacher\'s energy summary' => TEMPLATE_VARIABLES}
   end
 
-  KWH_NOT_ENOUGH_IN_COL_FORMAT = { units: :kwh, substitute_nil: NOT_ENOUGH_DATA_MESSAGE }
-
-  COLUMN_TYPES = [
-    :fuel_type,
-    KWH_NOT_ENOUGH_IN_COL_FORMAT,
-    :co2,
-    :£,
-    :comparison_percent, # or text saying 'No recent data'
-    :comparison_percent, # or text saying 'No recent data'
-    :£
-  ] # needs to be kept in sync with instance table
-
   TEMPLATE_VARIABLES = {
-    summary_table: {
-      description: 'Summary of annual per fuel consumption, annual change, 4 week change, saving to exemplar',
-      units:          :table,
-      header:         header_text,
-      column_types:   COLUMN_TYPES
-    },
     summary_data: {
       description: 'Summary of annual per fuel consumption, annual change, 1 week change, saving to exemplar',
       units: :hash,
@@ -97,33 +62,18 @@ class ManagementSummaryTable < ContentBase
     :relevant
   end
 
-  def html
-    HtmlTableFormatting.new(self.class.header_html, format_rows(data_by_fuel_type)).html
-  end
-
-  def multirow_html
-    format_to_html(summary_data)
-  end
-
-  def meter_range_html
-    format_meter_range_html(calculation_data)
-  end
-
   private
 
   def calculate
-    @summary_table = format_rows(data_by_fuel_type, :raw)
+    @summary_data = extract_front_end_data(calculation_data)
     @calculation_worked = true
-  end
-
-  def summary_data
-    @summary_data ||= extract_front_end_data(calculation_data)
   end
 
   def calculation_data
     @calculation_data ||= calculate_data
   end
 
+  # FIXME add calendar month, remove last_4_weeks
   def calculation_configuration
     {
       year: {
@@ -177,94 +127,10 @@ class ManagementSummaryTable < ContentBase
     res
   end
 
+  # Overrides base class
   protected def format(unit, value, format, in_table, level)
     return value if NON_NUMERIC_DATA.include?(value)  # bypass front end auto cell table formatting
     FormatUnit.format(unit, value, format, true, in_table, level)
-  end
-
-  def format_rows(rows, medium = :html)
-    rows.map do |row|
-      row.map do |_field_name, field|
-        format_field(field[:data], field[:units], medium)
-      end
-    end
-  end
-
-  def format_field(data, units, medium = :html)
-    if !data.nil? && (data == NO_RECENT_DATA_MESSAGE || data == INCREASED_MESSAGE || data == DECREASED_MESSAGE)
-      data
-    elsif data.nil?
-      NOT_ENOUGH_DATA_MESSAGE
-    else
-      FormatEnergyUnit.format(units, data, medium, false, true) rescue 'error'
-    end
-  end
-
-  def format_to_html(summary_data)
-    header = ['', '', 'Use (kWh)','CO2 (kg)', 'Cost', 'Potential savings', '% Change', '']
-
-    rows = []
-
-    summary_data.each do |fuel_type, period_data|
-      rows.push([fuel_type.to_s.humanize.capitalize, 'Last week', period_data_html(period_data[:workweek])].flatten)
-      rows.push(['', 'Annual', period_data_html(period_data[:year])].flatten)
-    end
-
-    HtmlTableFormatting.new(header, rows).html
-  end
-
-  def period_data_html(data)
-    if data.key?(:available_from)
-      [
-        data[:available_from],
-        NOTAVAILABLE,
-        NOTAVAILABLE,
-        NOTAVAILABLE,
-        NOTAVAILABLE,
-        data[:recent]
-      ]
-    else
-      [
-        format_field(data[:kwh], :kwh),
-        format_field(data[:co2], :co2),
-        format_field(data[:£],   :£),
-        format_savings(data[:savings_£]),
-        format_percent(data[:percent_change]),
-        data[:recent]
-      ]
-    end
-  end
-
-  def format_percent(percent_change)
-    if percent_change.nil?
-      'none'
-    elsif percent_change == NOTAVAILABLE
-      NOTAVAILABLE
-    else
-      format_field(percent_change,  :comparison_percent)
-    end
-  end
-
-  def format_savings(savings)
-    if savings == NOTAVAILABLE
-      NOTAVAILABLE
-    elsif savings.nil? || savings == 'none' || savings <= 0.0
-      'none'
-    else
-      format_field(savings,  :£)
-    end
-  end
-
-  def format_meter_range_html(calculation_data)
-    text = calculation_data.map do |fuel_type, period_data|
-      "#{fuel_type.to_s.humanize.capitalize} data range: #{formatted_date_range(period_data)}"
-    end.join(' ')
-
-    "<p style=\"text-align: right;\"><small>#{text}. <b><u>More information</u></b></small></p>"
-  end
-
-  def formatted_date_range(period_data)
-    "#{format_past_date(period_data[:start_date])} to #{format_past_date(period_data[:end_date])}"
   end
 
   def difference_to_exemplar_£(actual_£, fuel_type)
@@ -351,8 +217,8 @@ class ManagementSummaryTable < ContentBase
     calc.each do |fuel_type, fuel_type_data|
       front_end[fuel_type] = {}
 
-      front_end[fuel_type][:start_date] = rails_date(fuel_type_data[:start_date])
-      front_end[fuel_type][:end_date]   = rails_date(fuel_type_data[:end_date])
+      front_end[fuel_type][:start_date] = fuel_type_data[:start_date].iso8601
+      front_end[fuel_type][:end_date]   = fuel_type_data[:end_date].iso8601
 
       fuel_type_data.each do |period, period_data|
         next if %i[last_4_weeks start_date end_date].include?(period)
@@ -376,32 +242,18 @@ class ManagementSummaryTable < ContentBase
     front_end
   end
 
-  def rails_date(date)
-    date.iso8601
-  end
-
   def date_available_from(period, fuel_type_data)
     if period == :workweek
       d = fuel_type_data[:start_date] + ((7 - fuel_type_data[:start_date].wday) % 7) + 7
       dd = [d, @asof_date].max
-      # "Data available from #{dd.strftime('%a %d %b %Y')}"
-      rails_date(dd)
+      dd.iso8601
     elsif period == :year
       d = fuel_type_data[:start_date] + 365
       dd = [d, @asof_date].max
-      # "Data available from #{format_future_date(dd)}"
-      rails_date(dd)
+      dd.iso8601
     else
       'Date available from: internal error'
     end
-  end
-
-  def format_future_date(d)
-    d - @asof_date < 30 ? d.strftime('%a %d %b %Y') : d.strftime('%b %Y')
-  end
-
-  def format_past_date(d)
-    @asof_date - d > 30 ? d.strftime('%b %Y') : d.strftime('%a %d %b %Y')
   end
 
   def positive_saving(val)
@@ -438,7 +290,3 @@ class ManagementSummaryTable < ContentBase
     }
   end
 end
-
-# old name for backwards compatibility with front end
-# class HeadTeachersSchoolSummaryTable < ManagementSummaryTable
-# end
