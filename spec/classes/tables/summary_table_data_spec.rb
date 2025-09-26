@@ -12,16 +12,16 @@ describe Tables::SummaryTableData do
   #       :year => {
   #         :kwh => 108_827.5394000001,
   #         :co2 => 21_333.057423499995,
-  #         :£ => 16_324.130910000014,
-  #         :savings_£ => 967.8809100000144,
+  #         :gbp => 16_324.130910000014,
+  #         :savings_gbp => 967.8809100000144,
   #         :percent_change => 0.11050720181070751
   #       },
   #       :workweek => {
   #         :recent => "",
   #         :kwh => 1205.2192,
   #         :co2 => 150.84771050000003,
-  #         :£ => 180.78288,
-  #         :savings_£ => "-",
+  #         :gbp => 180.78288,
+  #         :savings_gbp => "-",
   #         :percent_change => "-"
   #       }
   #     },
@@ -35,8 +35,8 @@ describe Tables::SummaryTableData do
   #         :recent => "No recent data",
   #         :kwh => 4930.7751,
   #         :co2 => 1035.462771,
-  #         :£ => 147.923253,
-  #         :savings_£ => "-",
+  #         :gbp => 147.923253,
+  #         :savings_gbp => "-",
   #         :percent_change => "-"
   #       }
   #     }
@@ -55,8 +55,8 @@ describe Tables::SummaryTableData do
   #         :recent => false,
   #         :kwh => 4930.7751,
   #         :co2 => 1035.462771,
-  #         :£ => 147.923253,
-  #         :savings_£ => "-",
+  #         :gbp => 147.923253,
+  #         :savings_gbp => "-",
   #         :percent_change => "-"
   #       }
   #     }
@@ -158,7 +158,7 @@ describe Tables::SummaryTableData do
 
   describe 'when 1 fuel type' do
     let(:template_data) do
-      { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 }, workweek: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
+      { electricity: { year: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 }, workweek: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 } } }
     end
 
     it 'gives 2 entries' do
@@ -198,7 +198,7 @@ describe Tables::SummaryTableData do
 
   describe 'annual usage, co2, costs, savings' do
     let(:template_data) do
-      { electricity: { year: { kwh: 12.3, co2: 45.611, £: 6.6611, savings_£: 7.77 } } }
+      { electricity: { year: { kwh: 12.3, co2: 45.611, gbp: 6.6611, savings_gbp: 7.77 } } }
     end
 
     it 'shows usage' do
@@ -219,7 +219,7 @@ describe Tables::SummaryTableData do
 
     context 'when one value is missing' do
       let(:template_data) do
-        { electricity: { year: { kwh: 12.3, co2: nil, £: 6.6611, savings_£: 7.77 } } }
+        { electricity: { year: { kwh: 12.3, co2: nil, gbp: 6.6611, savings_gbp: 7.77 } } }
       end
 
       it 'returns empty string' do

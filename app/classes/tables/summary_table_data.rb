@@ -54,7 +54,7 @@ module Tables
     private
 
     def fuel_types
-      @template_data.blank? ? [] : @template_data.keys
+      @template_data.blank? ? [] : @template_data.keys.sort
     end
 
     def summary_data_for(fuel_type, period)
@@ -66,10 +66,10 @@ module Tables
         usage_text: format_number(fetch(fuel_type, period, :kwh), Float, :text),
         co2: format_number(fetch(fuel_type, period, :co2), :kg),
         co2_text: format_number(fetch(fuel_type, period, :co2), Float, :text),
-        cost: format_number(fetch(fuel_type, period, :£), :£),
-        cost_text: format_number(fetch(fuel_type, period, :£), Float, :text),
-        savings: format_number(fetch(fuel_type, period, :savings_£), :£),
-        savings_text: format_number(fetch(fuel_type, period, :savings_£), Float, :text),
+        cost: format_number(fetch(fuel_type, period, :gbp), :£),
+        cost_text: format_number(fetch(fuel_type, period, :gbp), Float, :text),
+        savings: format_number(fetch(fuel_type, period, :savings_gbp), :£),
+        savings_text: format_number(fetch(fuel_type, period, :savings_gbp), Float, :text),
         change: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         change_text: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         message: data_validity_message(fuel_type, period),
@@ -79,7 +79,7 @@ module Tables
     end
 
     def has_data?(fuel_type, period)
-      !no_recent_data?(fuel_type, period) && [:kwh, :co2, :£].any? { |item| fetch(fuel_type, period, item).present? }
+      !no_recent_data?(fuel_type, period) && [:kwh, :co2, :gbp].any? { |item| fetch(fuel_type, period, item).present? }
     end
 
     def no_recent_data?(fuel_type, period)
