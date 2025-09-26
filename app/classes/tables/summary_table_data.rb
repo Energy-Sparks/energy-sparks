@@ -4,20 +4,26 @@ module Tables
       @template_data = template_data
     end
 
+    # Used on group dashboard component
     def by_fuel_type_table
       fuel_type_table = {}
       fuel_types.map do |fuel_type|
         fuel_type_table[fuel_type] = OpenStruct.new(
           week: summary_data_for(fuel_type, :workweek),
+          month: summary_data_for(fuel_type, :last_month),
           year: summary_data_for(fuel_type, :year)
         )
       end
       OpenStruct.new(fuel_type_table)
     end
 
+    # Used on school dashboard component
     def by_fuel_type
       fuel_types.map do |fuel_type|
-        [summary_data_for(fuel_type, :workweek), summary_data_for(fuel_type, :year)]
+        [
+          summary_data_for(fuel_type, :workweek),
+          summary_data_for(fuel_type, :year)
+        ]
       end.flatten
     end
 
@@ -41,6 +47,10 @@ module Tables
 
     def end_date(fuel_type)
       format_date(fetch(fuel_type, :end_date))
+    end
+
+    def last_month(fuel_type)
+      summary_data_for(fuel_type, :last_month)
     end
 
     def work_week(fuel_type)
@@ -121,7 +131,14 @@ module Tables
     end
 
     def format_period(period)
-      period == :workweek ? I18n.t('classes.tables.summary_table_data.last_week') : I18n.t('classes.tables.summary_table_data.last_year')
+      case period
+      when :workweek
+        I18n.t('classes.tables.summary_table_data.last_week')
+      when :last_month
+        I18n.t('classes.tables.summary_table_data.last_month')
+      else
+        I18n.t('classes.tables.summary_table_data.last_year')
+      end
     end
 
     def format_date(value)

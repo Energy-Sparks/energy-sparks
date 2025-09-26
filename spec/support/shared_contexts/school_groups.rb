@@ -36,9 +36,9 @@ RSpec.shared_context 'school group recent usage' do
     )
     allow_any_instance_of(School).to receive(:recent_usage) do
       OpenStruct.new(
-        electricity: OpenStruct.new(week: electricity_changes, year: electricity_changes),
-        gas: OpenStruct.new(week: gas_changes, year: gas_changes),
-        storage_heaters: OpenStruct.new(week: storage_heater_changes, year: storage_heater_changes)
+        electricity: OpenStruct.new(week: electricity_changes, month: electricity_changes, year: electricity_changes),
+        gas: OpenStruct.new(week: gas_changes, month: electricity_changes, year: gas_changes),
+        storage_heaters: OpenStruct.new(week: storage_heater_changes, month: electricity_changes, year: storage_heater_changes)
       )
     end
   end

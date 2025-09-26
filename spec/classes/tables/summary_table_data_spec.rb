@@ -16,6 +16,14 @@ describe Tables::SummaryTableData do
   #         :savings_gbp => 967.8809100000144,
   #         :percent_change => 0.11050720181070751
   #       },
+  #       :last_month => {
+  #         :recent => "",
+  #         :kwh => 1205.2192,
+  #         :co2 => 150.84771050000003,
+  #         :gbp => 180.78288,
+  #         :savings_gbp => "-",
+  #         :percent_change => "-"
+  #       }
   #       :workweek => {
   #         :recent => "",
   #         :kwh => 1205.2192,
@@ -112,12 +120,13 @@ describe Tables::SummaryTableData do
 
   describe 'when period has data' do
     let(:template_data) do
-      { electricity: { year: { kwh: '123' }, workweek: { co2: '456' } } }
+      { electricity: { year: { kwh: '123' }, workweek: { co2: '456' }, last_month: { co2: '456' } } }
     end
 
     it 'shows status' do
-      expect(subject.by_fuel_type.first.has_data).to be_truthy
-      expect(subject.by_fuel_type.second.has_data).to be_truthy
+      subject.by_fuel_type.each do |fuel_type|
+        expect(fuel_type.has_data).to be_truthy
+      end
     end
   end
 

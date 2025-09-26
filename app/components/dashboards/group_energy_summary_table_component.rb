@@ -1,6 +1,6 @@
 module Dashboards
   class GroupEnergySummaryTableComponent < ApplicationComponent
-    PERIODS = %w[week year].freeze
+    PERIODS = %w[week month year].freeze
     attr_reader :school_group, :schools, :fuel_type, :periods, :metric
 
     def initialize(school_group:, schools:, fuel_type:, metric: :change, periods: PERIODS, show_clusters: false, **kwargs)

@@ -15,12 +15,12 @@ describe 'School group advice index page' do
       let(:table_id) { '#school-group-recent-usage-electricity' }
       let(:expected_header) do
         [
-          ['School', 'Last week', 'Last year']
+          ['School', 'Last week', 'Last month', 'Last year']
         ]
       end
       let(:expected_rows) do
         [
-          [school.name, '-16%', '-16%']
+          [school.name, '-16%', '-16%', '-16%']
         ]
       end
     end
@@ -34,12 +34,12 @@ describe 'School group advice index page' do
         let(:table_id) { '#school-group-recent-usage-electricity' }
         let(:expected_header) do
           [
-            ['School', 'Last week', 'Last year']
+            ['School', 'Last week', 'Last month', 'Last year']
           ]
         end
         let(:expected_rows) do
           [
-            [school.name, '910', '910']
+            [school.name, '910', '910', '910']
           ]
         end
       end
