@@ -1,8 +1,5 @@
 <%= tag.div id: id, class: classes do %>
-  <%= render 'school_groups/advice/metric_selection', school_group: @school_group,
-                                                      path: school_group_advice_path(@school_group) %>
-
-  <ul class="nav nav-tabs locales" id="group-energy-overview" role="tablist">
+  <ul class="nav nav-tabs url-aware locales" id="group-energy-overview" role="tablist">
     <% fuel_types.each_with_index do |fuel_type, index| %>
       <li class="nav-item">
         <a class="nav-link <%= 'active' if index.zero? %>"
@@ -11,7 +8,7 @@
            role="tab"
            aria-controls="<%= fuel_type %>-overview"
            aria-selected="true">
-           <%= t(fuel_type, scope: 'common') %>
+           <%= render IconComponent.new(fuel_type: fuel_type) %> <%= t(fuel_type, scope: 'common') %>
         </a>
       </li>
     <% end %>
@@ -22,6 +19,11 @@
            id="<%= fuel_type %>-overview"
            role="tabpanel"
            aria-labelledby="<%= fuel_type %>-tab">
+
+           <%= render 'school_groups/advice/metric_selection', school_group: @school_group,
+                                                               path: school_group_advice_path(@school_group),
+                                                               container_classes: 'mt-4' %>
+
            <%= render Dashboards::GroupEnergySummaryTableComponent.new(
                  school_group: school_group,
                  schools: schools,

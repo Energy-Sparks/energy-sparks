@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between">
+<div class="<%= class_names('d-flex justify-content-between', local_assigns[:container_classes]) %>">
   <%= form_with url: path, method: :get do |f| %>
     <div>
       <label class="mr-2"><%= t('school_groups.show.change_units') %>:</label>

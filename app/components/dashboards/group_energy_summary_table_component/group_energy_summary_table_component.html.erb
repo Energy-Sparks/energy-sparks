@@ -13,17 +13,17 @@
       </tr>
     </thead>
     <tbody>
-      <% schools.order(:name).each do |school| %>
-        <tr>
-          <td>
-            <%= link_to school.name, school_path(school) %>
-          </td>
-          <% if show_clusters? %>
+      <% schools.data_enabled.order(:name).each do |school| %>
+        <% if school.configuration.fuel_configuration.fuel_types.include?(fuel_type) %>
+          <tr>
             <td>
-              <%= school.school_group_cluster_name %>
+              <%= link_to school.name, school_path(school) %>
             </td>
-          <% end %>
-          <% if school.data_enabled %>
+            <% if show_clusters? %>
+              <td>
+                <%= school.school_group_cluster_name %>
+              </td>
+            <% end %>
             <% recent_usage = school.recent_usage %>
             <% periods.each do |period| %>
               <% period_data = recent_usage.dig(fuel_type, period) %>
@@ -36,12 +36,8 @@
                 <td class="text-right" data-order="0">-</td>
               <% end %>
             <% end %>
-          <% else %>
-            <% periods.length.times do %>
-              <td class="text-right" data-order="'0'">-</td>
-            <% end %>
-          <% end %>
-        </tr>
+          </tr>
+        <% end %>
       <% end %>
     </tbody>
   </table>
