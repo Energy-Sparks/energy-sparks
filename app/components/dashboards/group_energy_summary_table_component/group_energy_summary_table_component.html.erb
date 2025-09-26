@@ -1,0 +1,48 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="school-group-recent-usage"
+         width="100%"
+         class="mt-3 table table-sm advice-table table-sorted">
+    <thead>
+      <tr>
+        <th colspan="1"><%= t('common.school') %></th>
+        <% if show_clusters? %>
+          <th><%= t('school_groups.clusters.labels.cluster') %></th>
+        <% end %>
+        <th class="text-right"><%= t('common.labels.last_week') %></th>
+        <th class="text-right"><%= t('common.labels.last_year') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% schools.order(:name).each do |school| %>
+        <tr>
+          <td>
+            <%= link_to school.name, school_path(school) %>
+          </td>
+          <% if show_clusters? %>
+            <td>
+              <%= school.school_group_cluster_name %>
+            </td>
+          <% end %>
+          <% if school.data_enabled %>
+            <% recent_usage = school.recent_usage %>
+            <% periods.each do |period| %>
+              <% period_data = recent_usage.dig(fuel_type, period) %>
+              <% if period_data&.has_data %>
+                <td class="<%= class_names('text-right', period_data&.message_class) %>"
+                    data-order="<%= value_for(period_data, formatted: false) %>">
+                  <%= up_downify(value_for(period_data, formatted: true)) %>
+                </td>
+              <% else %>
+                <td class="text-right" data-order="0">-</td>
+              <% end %>
+            <% end %>
+          <% else %>
+            <% periods.length.times do %>
+              <td class="text-right" data-order="'0'">-</td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

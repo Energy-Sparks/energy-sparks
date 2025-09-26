@@ -18,11 +18,13 @@
       <h2>
         <%= t('school_groups.advice.show.recent_energy_use.title') %>
       </h2>
-      <%= render 'school_groups/advice/summary_table',
-                 school_group: @school_group,
-                 schools: @schools,
-                 fuel_types: @fuel_types,
-                 path: school_group_advice_path(@school_group) %>
+      <%= render Dashboards::GroupEnergySummaryComponent.new(
+            school_group: @school_group,
+            schools: @schools,
+            fuel_types: @fuel_types,
+            metric: params[:metric],
+            show_clusters: can?(:update_settings, @school_group)
+          ) %>
     </div>
   </div>
 </div>
