@@ -69,6 +69,12 @@ class ManagementSummaryTable < ContentBase
     @calculation_worked = true
   end
 
+  # Month produces a list of calendar months
+  # But we might only have partial data for that month
+  # So if we only want to show full months, e.g. if school has
+  # 6 weeks of data spanning Sept and Oct, then we need to
+  # check against the minimum date and then not calculate
+
   def calculation_configuration
     {
       year: {
@@ -205,8 +211,13 @@ class ManagementSummaryTable < ContentBase
     end
   end
 
-  # This is what creates the hash structure for the variable
-  # explicitly extract data rather than convert
+  # Reworks the calculation to:
+  #
+  # convert start/end dates to is08601
+  # check for missing data and add :available_from
+  # add :recent flag
+  # add saving, which might be "n/a"
+  # add percent change, but including "n/a" and "none"
   def extract_front_end_data(calc)
     front_end = {}
 
@@ -240,14 +251,15 @@ class ManagementSummaryTable < ContentBase
 
   def date_available_from(period, fuel_type_data)
     if period == :workweek
-      d = fuel_type_data[:start_date] + ((7 - fuel_type_data[:start_date].wday) % 7) + 7
-      d.iso8601
+      date = fuel_type_data[:start_date] + ((7 - fuel_type_data[:start_date].wday) % 7) + 7
+      date.iso8601
     elsif period == :last_month
-      d = fuel_type_data[:start_date].end_of_month + 1.day
-      d.iso8601
+      # Start date might be partial data for previous month
+      # So next full month available end of this month
+      month_end = [fuel_type_data[:start_date].end_of_month, fuel_type_data[:end_date].end_of_month].max
+      (month_end + 1.day).iso8601
     elsif period == :year
-      d = fuel_type_data[:start_date] + 365
-      d.iso8601
+      (fuel_type_data[:start_date] + 365.days).iso8601
     else
       'Date available from: internal error'
     end

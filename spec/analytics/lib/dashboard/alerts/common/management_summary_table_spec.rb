@@ -8,7 +8,7 @@ describe ManagementSummaryTable do
     described_class.new(meter_collection)
   end
 
-  let(:start_date) { Date.new(2022, 11, 1) }
+  let(:start_date) { Date.new(2022, 11, 11) }
   let(:today) { Date.new(2023, 11, 30) }
 
   before { travel_to(today) }
@@ -144,7 +144,30 @@ describe ManagementSummaryTable do
       end
 
       context 'when there is less than a month of data' do
+        # today is 2023-11-30
+        # this is 2023-11-09
         let(:start_date) { today - 21.days }
+
+        it 'indicates when annual data is available' do
+          expect(electricity_data[:year][:available_from]).to eq((start_date + 365.days).iso8601)
+        end
+
+        it 'indicates when monthly data is available' do
+          # start date will be 2023-11-09 we can report on previous month from around 1st December
+          expect(electricity_data[:last_month][:available_from]).to eq(Date.new(2023, 12, 1).iso8601)
+        end
+
+        it 'calculates work week' do
+          expect(electricity_data.dig(:workweek, :kwh)).to eq(7 * 48.0)
+          expect(electricity_data.dig(:workweek, :£)).to be_within(0.0001).of(7 * 48.0 * 0.1)
+          expect(electricity_data.dig(:workweek, :percent_change)).to eq(0.0)
+        end
+      end
+
+      context 'when there is less than two full months of data' do
+        # this is 2023-10-16
+        # available from should be 2023-12-1 as we would then have all of November.
+        let(:start_date) { today - 45.days }
 
         it 'indicates when annual data is available' do
           expect(electricity_data[:year][:available_from]).to eq((start_date + 365.days).iso8601)
