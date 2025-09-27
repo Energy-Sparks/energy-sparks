@@ -22,6 +22,7 @@
 
            <%= render 'school_groups/advice/metric_selection', school_group: @school_group,
                                                                path: school_group_advice_path(@school_group),
+                                                               selected_metric: metric,
                                                                container_classes: 'mt-4' %>
 
            <%= render Dashboards::GroupEnergySummaryTableComponent.new(

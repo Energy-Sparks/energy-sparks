@@ -1,11 +1,11 @@
-<div class="<%= class_names('d-flex justify-content-between', local_assigns[:container_classes]) %>">
+<div id="metric-selection" class="<%= class_names('d-flex justify-content-between', local_assigns[:container_classes]) %>">
   <%= form_with url: path, method: :get do |f| %>
     <div>
       <label class="mr-2"><%= t('school_groups.show.change_units') %>:</label>
-      <% %w[change usage cost co2].each do |metric| %>
+      <% %i[change usage cost co2].each do |metric| %>
         <div class="form-check form-check-inline">
           <%= f.radio_button :metric, metric, onclick: 'this.form.submit();', class: 'form-check-input',
-                                              checked: radio_button_checked_for(metric) %>
+                                              checked: radio_button_checked_for(selected_metric, metric) %>
           <%= f.label :metric, t("school_groups.show.metric.#{metric}"), value: metric, class: 'form-check-label' %>
         </div>
       <% end %>

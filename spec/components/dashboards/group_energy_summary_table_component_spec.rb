@@ -11,10 +11,13 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
     end
   end
 
+  let(:school_group_cluster) { create(:school_group_cluster, school_group: school_group) }
+
   let!(:school) do
     create(:school,
            :with_basic_configuration_single_meter_and_tariffs,
-           school_group: school_group)
+           school_group: school_group,
+           school_group_cluster: school_group_cluster)
   end
 
   before do
@@ -38,6 +41,12 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   context 'with default options' do
+    it { expect(html).to have_css('div.dashboards-group-energy-summary-table-component') }
+
+    it 'does not show cluster' do
+      expect(html).not_to have_content(school_group_cluster.name)
+    end
+
     it 'has the expected header' do
       expect(html).to have_css('table thead tr th', text: I18n.t(:last_week, scope: 'common.labels'))
       expect(html).to have_css('table thead tr th', text: I18n.t(:last_month, scope: 'common.labels'))
@@ -49,6 +58,39 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
       expect(html).to have_css('table tbody tr td', text: '168') # 0.5 kWh, 48 HH periods, 7 days
       expect(html).to have_css('table tbody tr td', text: '744')
       expect(html).to have_css('table tbody tr td', text: '8,740')
+    end
+  end
+
+  context 'when showing clusters' do
+    let(:html) do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: school_group.schools,
+                      fuel_type: :electricity,
+                      metric: :usage,
+                      show_clusters: true
+      ))
+    end
+
+    it 'shows the cluster' do
+      expect(html).to have_content(school_group_cluster.name)
+    end
+  end
+
+  context 'with limited periods' do
+    let(:html) do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: school_group.schools,
+                      fuel_type: :electricity,
+                      periods: [:year]
+      ))
+    end
+
+    it 'has the expected header' do
+      expect(html).not_to have_css('table thead tr th', text: I18n.t(:last_week, scope: 'common.labels'))
+      expect(html).not_to have_css('table thead tr th', text: I18n.t(:last_month, scope: 'common.labels'))
+      expect(html).to have_css('table thead tr th', text: I18n.t(:last_year, scope: 'common.labels'))
     end
   end
 
@@ -81,5 +123,18 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
     it 'does not include school' do
       expect(html).not_to have_content(other_school.name)
     end
+  end
+
+  context 'when there are no schools' do
+    let(:html) do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: [],
+                      fuel_type: :electricity,
+                      metric: :usage
+      ))
+    end
+
+    it { expect(html).not_to have_css('div.dashboards-group-energy-summary-table-component') }
   end
 end

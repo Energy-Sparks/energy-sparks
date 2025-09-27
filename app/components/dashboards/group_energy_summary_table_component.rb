@@ -10,16 +10,26 @@ module Dashboards
       @fuel_type = fuel_type
       @metric = metric
       @show_clusters = show_clusters
-      @periods = periods
+      @periods = periods.map(&:to_sym)
     end
 
     def show_clusters?
       @show_clusters
     end
 
-    # FIXME anything else?
     def render?
       @schools.any? && @periods.any?
+    end
+
+    def period_label(period)
+      case period
+      when :week
+        I18n.t('common.labels.last_week')
+      when :month
+        I18n.t('common.labels.last_month')
+      when :year
+        I18n.t('common.labels.last_year')
+      end
     end
 
     private
