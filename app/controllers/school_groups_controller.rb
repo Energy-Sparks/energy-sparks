@@ -19,7 +19,17 @@ class SchoolGroupsController < ApplicationController
 
   def show
     if Flipper.enabled?(:group_dashboards_2025, current_user)
-      render :show, layout: 'dashboards'
+      respond_to do |format|
+        format.html do
+          render :show, layout: 'dashboards'
+        end
+        format.csv do
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                              schools: @schools,
+                                                              include_cluster: include_cluster).export,
+                    filename: csv_filename_for('recent_usage')
+        end
+      end
     else
       respond_to do |format|
         format.html {}

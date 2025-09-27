@@ -4,20 +4,26 @@ module Tables
       @template_data = template_data
     end
 
+    # Used on group dashboard component
     def by_fuel_type_table
       fuel_type_table = {}
       fuel_types.map do |fuel_type|
         fuel_type_table[fuel_type] = OpenStruct.new(
           week: summary_data_for(fuel_type, :workweek),
+          month: summary_data_for(fuel_type, :last_month),
           year: summary_data_for(fuel_type, :year)
         )
       end
       OpenStruct.new(fuel_type_table)
     end
 
+    # Used on school dashboard component
     def by_fuel_type
       fuel_types.map do |fuel_type|
-        [summary_data_for(fuel_type, :workweek), summary_data_for(fuel_type, :year)]
+        [
+          summary_data_for(fuel_type, :workweek),
+          summary_data_for(fuel_type, :year)
+        ]
       end.flatten
     end
 
@@ -43,6 +49,10 @@ module Tables
       format_date(fetch(fuel_type, :end_date))
     end
 
+    def last_month(fuel_type)
+      summary_data_for(fuel_type, :last_month)
+    end
+
     def work_week(fuel_type)
       summary_data_for(fuel_type, :workweek)
     end
@@ -54,7 +64,7 @@ module Tables
     private
 
     def fuel_types
-      @template_data.blank? ? [] : @template_data.keys
+      @template_data.blank? ? [] : @template_data.keys.sort
     end
 
     def summary_data_for(fuel_type, period)
@@ -66,10 +76,10 @@ module Tables
         usage_text: format_number(fetch(fuel_type, period, :kwh), Float, :text),
         co2: format_number(fetch(fuel_type, period, :co2), :kg),
         co2_text: format_number(fetch(fuel_type, period, :co2), Float, :text),
-        cost: format_number(fetch(fuel_type, period, :£), :£),
-        cost_text: format_number(fetch(fuel_type, period, :£), Float, :text),
-        savings: format_number(fetch(fuel_type, period, :savings_£), :£),
-        savings_text: format_number(fetch(fuel_type, period, :savings_£), Float, :text),
+        cost: format_number(fetch(fuel_type, period, :gbp), :£),
+        cost_text: format_number(fetch(fuel_type, period, :gbp), Float, :text),
+        savings: format_number(fetch(fuel_type, period, :savings_gbp), :£),
+        savings_text: format_number(fetch(fuel_type, period, :savings_gbp), Float, :text),
         change: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         change_text: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         message: data_validity_message(fuel_type, period),
@@ -79,7 +89,7 @@ module Tables
     end
 
     def has_data?(fuel_type, period)
-      !no_recent_data?(fuel_type, period) && [:kwh, :co2, :£].any? { |item| fetch(fuel_type, period, item).present? }
+      !no_recent_data?(fuel_type, period) && [:kwh, :co2, :gbp].any? { |item| fetch(fuel_type, period, item).present? }
     end
 
     def no_recent_data?(fuel_type, period)
@@ -121,7 +131,14 @@ module Tables
     end
 
     def format_period(period)
-      period == :workweek ? I18n.t('classes.tables.summary_table_data.last_week') : I18n.t('classes.tables.summary_table_data.last_year')
+      case period
+      when :workweek
+        I18n.t('classes.tables.summary_table_data.last_week')
+      when :last_month
+        I18n.t('classes.tables.summary_table_data.last_month')
+      else
+        I18n.t('classes.tables.summary_table_data.last_year')
+      end
     end
 
     def format_date(value)

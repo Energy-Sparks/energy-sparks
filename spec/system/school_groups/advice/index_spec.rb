@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe 'School group advice index page' do
-  let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
-  let(:school) { school_group.schools.first }
+  let!(:school_group) { create(:school_group, public: true) }
+  let!(:school) { create(:school, :with_fuel_configuration, school_group: school_group) }
 
   include_context 'school group recent usage'
 
@@ -12,16 +12,15 @@ describe 'School group advice index page' do
     end
 
     it_behaves_like 'it contains the expected data table', aligned: true do
-      let(:table_id) { '#school-group-recent-usage' }
+      let(:table_id) { '#school-group-recent-usage-electricity' }
       let(:expected_header) do
         [
-          ['', 'Electricity', 'Gas', 'Storage heaters'],
-          ['School', 'Last week', 'Last year', 'Last week', 'Last year', 'Last week', 'Last year']
+          ['School', 'Last week', 'Last month', 'Last year']
         ]
       end
       let(:expected_rows) do
         [
-          [school.name, '-16%', '-16%', '-5%', '-5%', '-12%', '-12%']
+          [school.name, '-16%', '-16%', '-16%']
         ]
       end
     end
@@ -32,16 +31,15 @@ describe 'School group advice index page' do
       end
 
       it_behaves_like 'it contains the expected data table', aligned: true do
-        let(:table_id) { '#school-group-recent-usage' }
+        let(:table_id) { '#school-group-recent-usage-electricity' }
         let(:expected_header) do
           [
-            ['', 'Electricity', 'Gas', 'Storage heaters'],
-            ['School', 'Last week', 'Last year', 'Last week', 'Last year', 'Last week', 'Last year']
+            ['School', 'Last week', 'Last month', 'Last year']
           ]
         end
         let(:expected_rows) do
           [
-            [school.name, '910', '910', '500', '500', '312', '312']
+            [school.name, '910', '910', '910']
           ]
         end
       end

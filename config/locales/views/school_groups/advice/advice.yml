@@ -1,0 +1,20 @@
+---
+en:
+  school_groups:
+    advice_pages:
+      how_have_we_analysed_your_data:
+        school_characteristics_html: |-
+          <p>
+            Our analysis takes into a range of characteristics for each school, including its floor area, location, pupil numbers and type.
+          </p>
+        summary_table_notes_html: |-
+          <p>
+          This table summarises recent use based on the latest available data at each school.
+          </p>
+          <p>"<strong>Last week</strong>" reports on the latest full week of data. Change in
+          use is measured against the previous week.</p>
+          <p>"<strong>Last month</strong>" reports on the last full calendar month of data. Change in
+          use is measured against the same month last year.</p>
+          <p>"<strong>Last year</strong>" reports on the last 12 months of data (365 days) for the school. Change in
+          use is measured against previous 12 months period. This is a rolling 12 month period rather than calendar or
+          academic years.</p>

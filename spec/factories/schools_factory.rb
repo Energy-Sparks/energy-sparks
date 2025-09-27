@@ -33,10 +33,12 @@ FactoryBot.define do
     trait :with_school_group do
       transient do
         default_issues_admin_user { create(:admin) }
+        school_group { nil }
       end
 
       after(:create) do |school, evaluator|
-        school.update(school_group: create(:school_group, default_issues_admin_user: evaluator.default_issues_admin_user))
+        group = evaluator.school_group || create(:school_group, default_issues_admin_user: evaluator.default_issues_admin_user)
+        school.update(school_group: group)
       end
     end
 

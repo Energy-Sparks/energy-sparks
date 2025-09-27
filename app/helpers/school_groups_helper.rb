@@ -7,10 +7,10 @@ module SchoolGroupsHelper
     list_of_savings.sort {|a, b| a.school.name <=> b.school.name }
   end
 
-  def radio_button_checked_for(metric)
-    return true if params['metric'] == metric
-    return true if params['metric'].blank? && metric == 'change'
-    return true if %w[usage co2 cost change].exclude?(params['metric']) && metric == 'change'
+  def radio_button_checked_for(selected_metric, metric)
+    return true if selected_metric == metric
+    return true if selected_metric.blank? && metric == :change
+    return true if %i[usage co2 cost change].exclude?(selected_metric) && metric == :change
 
     false
   end
