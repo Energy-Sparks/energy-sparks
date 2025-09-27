@@ -3,7 +3,7 @@
 module SchoolGroups
   class SecrController < BaseController
     def index
-      raise CanCan::AccessDenied unless current_user.admin? || current_user.group_admin?
+      raise CanCan::AccessDenied unless can?(:update_settings, @school_group)
 
       build_breadcrumbs([name: I18n.t('school_groups.sub_nav.secr_report')])
       @last_two_academic_year_periods = Periods::FixedAcademicYear.enumerator(

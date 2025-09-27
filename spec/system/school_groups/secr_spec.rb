@@ -33,7 +33,16 @@ describe 'School group SECR' do
       it { expect(page).to have_content('You need to sign in or sign up before continuing') }
     end
 
-    context 'when signed in' do
+    context 'when signed in as a different group admin' do
+      before do
+        sign_in(create(:group_admin, school_group: create(:school_group)))
+        visit school_group_secr_index_path(school_group)
+      end
+
+      it { expect(page).to have_content('You are not authorized to access this page.') }
+    end
+
+    context 'when signed in as a group admin in the same group' do
       before do
         sign_in(create(:group_admin, school_group: school_group))
         visit school_group_secr_index_path(school_group)
