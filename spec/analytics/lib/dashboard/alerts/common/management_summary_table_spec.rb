@@ -110,7 +110,6 @@ describe ManagementSummaryTable do
                 start_date: start_date, end_date: Date.new(2023, 6, 1))
         end
 
-        # FIXME defaults to analysis date?
         it 'indicates when annual data is available' do
           expect(electricity_data[:year][:available_from]).to eq((start_date + 1.year).iso8601)
         end

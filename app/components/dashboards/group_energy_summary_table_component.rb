@@ -3,6 +3,8 @@ module Dashboards
     PERIODS = %w[week month year].freeze
     attr_reader :school_group, :schools, :fuel_type, :periods, :metric
 
+    renders_one :modal_link
+
     def initialize(school_group:, schools:, fuel_type:, metric: :change, periods: PERIODS, show_clusters: false, **kwargs)
       super
       @school_group = school_group

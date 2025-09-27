@@ -1,7 +1,12 @@
 <%= tag.div id: id, class: classes do %>
+  <% if modal_link? %>
+    <div class="mt-3 text-right">
+      <%= modal_link %>
+    </div>
+  <% end %>
   <table id="<%= "school-group-recent-usage-#{fuel_type}" %>"
          width="100%"
-         class="mt-3 table table-sm advice-table table-sorted">
+         class="table table-sm advice-table table-sorted">
     <thead>
       <tr>
         <th colspan="1"><%= t('common.school') %></th>
@@ -9,7 +14,9 @@
           <th><%= t('school_groups.clusters.labels.cluster') %></th>
         <% end %>
         <% periods.each do |period| %>
-          <th class="text-right"><%= period_label(period) %></th>
+          <th class="text-right">
+            <%= period_label(period) %>
+          </th>
         <% end %>
       </tr>
     </thead>
@@ -42,4 +49,10 @@
       <% end %>
     </tbody>
   </table>
+
+  <% if modal_link? && schools.length > 20 %>
+    <div class="text-right">
+      <%= modal_link %>
+    </div>
+  <% end %>
 <% end %>

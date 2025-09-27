@@ -24,7 +24,28 @@
             fuel_types: @fuel_types,
             metric: params[:metric],
             show_clusters: can?(:update_settings, @school_group)
-          ) %>
+          ) do |summary| %>
+          <% summary.with_modal_link do %>
+            <%= render FootnoteModalComponent::Link.new(modal_id: 'analysis-footnotes') do %>
+              <%= t('advice_pages.how_have_we_analysed_your_data.link_title') %>
+              <%= fa_icon('question-circle', class: 'text-primary') %>
+            <% end %>
+          <% end %>
+          <% summary.with_footer do %>
+            <%= render(FootnoteModalComponent.new(
+                         title: t('advice_pages.how_have_we_analysed_your_data.page_title'),
+                         modal_id: 'analysis-footnotes'
+                       )) do |component| %>
+              <% component.with_body_content do %>
+                <%= t('school_groups.advice_pages.how_have_we_analysed_your_data.summary_table_notes_html') %>
+                <%= render 'school_groups/advice/shared/how_have_we_analysed_your_data',
+                           school_group: @school_group,
+                           schools: @schools,
+                           fuel_types: @fuel_types %>
+              <% end %>
+            <% end %>
+          <% end %>
+      <% end %>
     </div>
   </div>
 </div>

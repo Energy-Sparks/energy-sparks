@@ -1,5 +1,8 @@
 module Dashboards
   class GroupEnergySummaryComponent < ApplicationComponent
+    renders_one :footer
+    renders_one :modal_link
+
     attr_reader :school_group, :schools, :fuel_types, :metric
 
     def initialize(school_group:, schools:, fuel_types:, metric: :change, show_clusters: false, **kwargs)
