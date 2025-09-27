@@ -26,6 +26,12 @@
                 fuel_type: alert_content.alert_type.fuel_type,
                 status: status_for_alert_colour(alert_content.colour)
               ) do |prompt| %>
+              <% if advice_link?(alert_content.alert_type) %>
+                <% prompt.with_link do %>
+                  <%= link_to t('schools.show.find_out_more'),
+                              helpers.advice_page_path(school_group, alert_content.advice_page, :analysis) %>
+                <% end %>
+              <% end %>
               <%= alert_content.group_dashboard_title %>
           <% end %>
         <% end %>
@@ -38,6 +44,12 @@
             fuel_type: alert_content.alert_type.fuel_type,
             status: status_for_alert_colour(alert_content.colour)
           ) do |prompt| %>
+          <% if advice_link?(alert_content.alert_type) %>
+            <% prompt.with_link do %>
+              <%= link_to t('schools.show.find_out_more'),
+                          helpers.advice_page_path(school_group, alert_content.advice_page, :analysis) %>
+            <% end %>
+          <% end %>
           <%= alert_content.group_dashboard_title %>
       <% end %>
     <% end %>
