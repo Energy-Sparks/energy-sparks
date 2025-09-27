@@ -33,7 +33,7 @@ module SchoolGroups
     end
 
     erb_template <<-ERB
-      <ul>
+      <ul class="comparison-report-list">
         <% items.each do |item| %>
           <%= item %>
         <% end %>
@@ -75,7 +75,7 @@ module SchoolGroups
       end
 
       def call
-        content_tag(:li, link_to(@link_text, report_path))
+        content_tag(:li, link_to(@link_text, report_path), class: 'single-item')
       end
     end
 
