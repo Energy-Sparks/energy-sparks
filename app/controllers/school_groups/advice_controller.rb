@@ -49,6 +49,10 @@ module SchoolGroups
       end
     end
 
+    def comparison_reports
+      build_breadcrumbs([name: I18n.t('school_groups.titles.comparisons')])
+    end
+
     def charts
       build_breadcrumbs([name: I18n.t('school_groups.titles.charts')])
       @charts = SchoolGroups::Charts.new.safe_charts

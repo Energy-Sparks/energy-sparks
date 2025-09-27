@@ -8,6 +8,9 @@
   <li>
     <%= link_to(t('school_groups.advice_pages.heating_control.analysis.comparisons.title'), '#comparison') %>
   </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.analysis.other_reports.title'), '#other-reports') %>
+  </li>
 </ul>
 
 <%= render 'schools/advice/section_title',
@@ -48,3 +51,30 @@
            colgroups: [],
            advice_page_tab: @advice_page_tab,
            table_number: 0 %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'other-reports',
+           section_title: t('school_groups.advice_pages.analysis.other_reports.title') %>
+
+<p>
+  <%= t('school_groups.advice_pages.analysis.other_reports.introduction') %>
+</p>
+
+<%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                           fuel_types: @fuel_types) do |list| %>
+ <% list.with_link t('school_groups.advice.comparison_reports.links.change_thermostat'),
+                   report: :thermostat_sensitivity,
+                   fuel_type: :gas %>
+ <% list.with_link t('school_groups.advice.comparison_reports.links.heating_times'),
+                   report: :heating_coming_on_too_early,
+                   fuel_type: :gas %>
+ <% list.with_link t('school_groups.advice.comparison_reports.links.thermostatic_control'),
+                   report: :thermostatic_control,
+                   fuel_type: :gas %>
+ <% list.with_link t('school_groups.advice.comparison_reports.links.heating_hot_water'),
+                   report: :heating_vs_hot_water,
+                   fuel_type: :gas %>
+ <% list.with_link t('school_groups.advice.comparison_reports.links.hot_water_efficiency'),
+                   report: :hot_water_efficiency,
+                   fuel_type: :gas %>
+<% end %>

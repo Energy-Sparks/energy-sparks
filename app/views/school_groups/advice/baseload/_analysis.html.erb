@@ -7,6 +7,9 @@
   <li>
     <%= link_to(t('school_groups.advice_pages.baseload.analysis.comparisons.title'), '#comparison') %>
   </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.analysis.other_reports.title'), '#other-reports') %>
+  </li>
 </ul>
 
 <%= render 'schools/advice/section_title',
@@ -43,3 +46,29 @@
            colgroups: [],
            advice_page_tab: @advice_page_tab,
            table_number: 0 %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'other-reports',
+           section_title: t('school_groups.advice_pages.analysis.other_reports.title') %>
+
+<p>
+  <%= t('school_groups.advice_pages.analysis.other_reports.introduction') %>
+</p>
+
+<%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                           fuel_types: @fuel_types) do |list| %>
+  <% list.with_link t('school_groups.advice.comparison_reports.links.recent_baseload'),
+                    report: :recent_change_in_baseload,
+                    fuel_type: :electricity %>
+  <% list.with_link t('school_groups.advice.comparison_reports.links.peak_use'),
+                    report: :electricity_peak_kw_per_pupil,
+                    fuel_type: :electricity %>
+  <% list.with_named t('school_groups.advice.comparison_reports.links.baseload_variation'),
+                     fuel_type: :electricity,
+                     reports: {
+                       seasonal_baseload_variation:
+                        t('school_groups.advice.comparison_reports.links.seasonal'),
+                       weekday_baseload_variation:
+                        t('school_groups.advice.comparison_reports.links.weekday')
+                     } %>
+<% end %>
