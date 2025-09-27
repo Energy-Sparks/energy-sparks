@@ -32,7 +32,7 @@
 <%= render ComparisonTableComponent.new(
       advice_page: @advice_page, advice_page_tab: @advice_page_tab,
       colgroups: [], headers: @insight_table_headers, index_params: index_params,
-      report: @report, table_name: :table, table_classes: 'table-sm'
+      report: @report, table_name: :table
     ) do |c| %>
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
