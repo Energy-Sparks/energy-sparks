@@ -11,6 +11,9 @@
                   fuel_type: @advice_page.fuel_type),
                 '#comparison') %>
   </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.analysis.other_reports.title'), '#other-reports') %>
+  </li>
 </ul>
 
 <%= render 'schools/advice/section_title',
@@ -54,3 +57,25 @@
            headers: @report_headers,
            colgroups: @report_colgroups,
            advice_page_tab: @advice_page_tab %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'other-reports',
+           section_title: t('school_groups.advice_pages.analysis.other_reports.title') %>
+
+<p>
+<%= t('school_groups.advice_pages.analysis.other_reports.introduction') %>
+</p>
+
+<%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                           fuel_types: @fuel_types) do |list| %>
+  <% list.with_fuel_types t('school_groups.advice.comparison_reports.links.savings_potential'), reports: {
+       electricity: { report: :annual_electricity_costs_per_pupil,
+                      label: t('school_groups.advice.comparison_reports.links.electricity_per_pupil') },
+       gas: { report: :annual_heating_costs_per_floor_area,
+              label: t('school_groups.advice.comparison_reports.links.gas_per_floor_area') }
+     } %>
+  <% list.with_fuel_types t('school_groups.advice.comparison_reports.links.progress'), reports: {
+       electricity: :electricity_targets,
+       gas: :gas_targets
+     } %>
+<% end %>
