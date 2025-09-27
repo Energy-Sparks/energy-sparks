@@ -9,7 +9,7 @@ module Dashboards
     renders_one :link
     renders_many :prompts, PromptComponent
 
-    def initialize(school_group:, limit: 3, grouped: false, **_kwargs)
+    def initialize(school_group:, limit: 2, grouped: false, **_kwargs)
       super
       @school_group = school_group
       @schools = @school_group.schools.active
