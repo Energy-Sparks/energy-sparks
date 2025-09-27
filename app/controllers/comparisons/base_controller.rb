@@ -17,11 +17,11 @@ module Comparisons
     before_action :set_results, only: [:index]
     before_action :set_unlisted_schools_count, only: [:index]
     before_action :set_headers, only: [:index]
-    before_action :set_school_group_vars, only: [:index]
+    before_action :set_school_group, only: [:index]
+    before_action :redirect_unless_authorised, only: [:index]
+    before_action :set_advice_vars_and_breadcrumbs, only: [:index]
 
     protect_from_forgery except: :unlisted
-
-    layout :switch_layout
 
     def index
       respond_to do |format|
@@ -164,16 +164,19 @@ module Comparisons
       filter.pluck(:id)
     end
 
-    def switch_layout
-      params[:group] == 'true' ? 'dashboards' : 'application'
+    def set_school_group
+      @school_group_layout = params[:group] == 'true'
+      @school_group = SchoolGroup.find(params[:school_group_ids].reject(&:blank?).first) if @school_group_layout
     end
 
-    def set_school_group_vars
-      @school_group_layout = params[:group] == 'true'
+    def redirect_unless_authorised
       return unless @school_group_layout
-      @school_group = SchoolGroup.find(params[:school_group_ids].reject(&:blank?).first)
+      super
+    end
+
+    def set_advice_vars_and_breadcrumbs
+      return unless @school_group_layout
       set_all_group_advice_vars
-      redirect_unless_authorised and return
       build_breadcrumbs([
                           { name: I18n.t('advice_pages.breadcrumbs.root'), href: school_group_advice_path(@school_group) },
                           { name: I18n.t('school_groups.titles.comparisons'), href: comparison_reports_school_group_advice_path(@school_group) },
