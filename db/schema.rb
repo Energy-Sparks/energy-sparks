@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1902,6 +1902,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.index ["urn"], name: "index_schools_on_urn", unique: true
   end
 
+  create_table "schools_manual_readings", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "month", null: false
+    t.integer "electricity"
+    t.integer "gas"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id", "month"], name: "index_schools_manual_readings_on_school_id_and_month", unique: true
+    t.index ["school_id"], name: "index_schools_manual_readings_on_school_id"
+  end
+
   create_table "scoreboards", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -2399,6 +2410,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
+  add_foreign_key "schools_manual_readings", "schools", on_delete: :cascade
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
