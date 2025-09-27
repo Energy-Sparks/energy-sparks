@@ -30,8 +30,9 @@
       link: advice_page_path(@school_group, @advice_page, :analysis, anchor: 'comparison')) %>
 
 <%= render ComparisonTableComponent.new(
-      report: @report, advice_page: @advice_page, table_name: :table, index_params: index_params,
-      headers: @insight_table_headers, colgroups: [], advice_page_tab: @advice_page_tab
+      advice_page: @advice_page, advice_page_tab: @advice_page_tab,
+      colgroups: [], headers: @insight_table_headers, index_params: index_params,
+      report: @report, table_name: :table, table_classes: 'table-sm'
     ) do |c| %>
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
