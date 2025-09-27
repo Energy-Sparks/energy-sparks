@@ -27,19 +27,6 @@
       </p>
     <% end %>
 
-    <%# i18n-tasks-use t('components.dashboards.group_reminders.engagement.link') %>
-    <% add_prompt(id: :engagement,
-                  check: prompt_for_engagement?,
-                  list: list,
-                  status: :negative,
-                  icon: 'info-circle',
-                  link: 'components.dashboards.group_reminders.engagement.link',
-                  path: school_group_school_engagement_index_path(school_group)) do %>
-      <p>
-        <%= t('components.dashboards.group_reminders.engagement.note') %>
-      </p>
-    <% end %>
-
     <%# i18n-tasks-use t('components.dashboards.group_reminders.review_tariffs.link') %>
     <% add_prompt(id: :review_tariffs,
                   check: prompt_for_tariff_review?,
@@ -50,16 +37,6 @@
                   path: school_group_energy_tariffs_path(school_group)) do %>
       <p>
         <%= t('components.dashboards.group_reminders.review_tariffs.note') %>
-      </p>
-    <% end %>
-
-    <% add_prompt(id: :onboarding,
-                  check: prompt_for_onboarding?,
-                  list: list,
-                  status: :neutral,
-                  icon: 'address-card') do %>
-      <p>
-        <%= t('components.dashboards.group_reminders.onboarding.note') %>
       </p>
     <% end %>
 
