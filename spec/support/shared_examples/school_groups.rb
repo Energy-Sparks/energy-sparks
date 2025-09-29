@@ -421,3 +421,13 @@ RSpec.shared_examples 'schools are filtered by permissions' do |admin: false, sc
     end
   end
 end
+
+RSpec.shared_examples 'a group advice page secr nav link' do |display: true|
+  it "#{display ? 'shows' : "doesn't show"} secr nav link" do
+    if display
+      expect(page).to have_link('SECR report', href: school_group_secr_index_path(school_group))
+    else
+      expect(page).to have_no_link('SECR report', href: school_group_secr_index_path(school_group))
+    end
+  end
+end
