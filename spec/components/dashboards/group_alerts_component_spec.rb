@@ -32,6 +32,34 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
   end
 
 
+  shared_examples 'it links to advice pages' do
+    context 'when the alert has an advice page' do
+      context 'when there is no group advice page' do
+        it 'does not link' do
+          expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+        end
+      end
+
+      context 'when there is non-matching advice page' do
+        let(:alert_type) { create(:alert_type, group: :benchmarking, advice_page: create(:advice_page)) }
+
+        it 'does not link' do
+          expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+        end
+      end
+
+      context 'when there is a group advice page' do
+        let(:advice_page) { create(:advice_page, key: :baseload) }
+        let(:alert_type) { create(:alert_type, group: :benchmarking, advice_page:) }
+
+        it 'includes a link' do
+          expect(html).to have_link(I18n.t('schools.show.find_out_more'),
+                                    href: polymorphic_path([:analysis, school_group, :advice, advice_page.key.to_sym]))
+        end
+      end
+    end
+  end
+
   context 'when there are alerts to display' do
     before do
       school_group.schools.each do |school|
@@ -65,20 +93,28 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
     end
 
+    it 'does not include group headings' do
+      expect(html).not_to have_css('#benchmarking-alerts')
+    end
+
+    it_behaves_like 'it links to advice pages'
+
     context 'when showing groups' do
+      let(:fragment) { html.css('#benchmarking-alerts') }
       let(:params) do
         {
           id: 'custom-id',
           classes: 'extra-classes',
-          school_group: school_group
+          school_group: school_group,
+          grouped: true
         }
       end
 
+      it_behaves_like 'it links to advice pages'
+
       it 'shows the group headings' do
-        within('#benchmarking-alerts') do
-          expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
-          expect(html).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
-        end
+        expect(fragment).to have_content(content_version.group_dashboard_title.to_plain_text)
+        expect(fragment).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
       end
     end
 
