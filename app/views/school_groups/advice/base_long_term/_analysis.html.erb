@@ -36,7 +36,8 @@
                             fuel_type: @advice_page.fuel_type) %>
 
 <%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
-                                                     report: @report) do |c| %>
+                                                     report: @report,
+                                                     classes: 'mb-4') do |c| %>
   <% c.with_title do %>
     <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.title', fuel_type: @advice_page.fuel_type) %>
   <% end %>
@@ -45,6 +46,9 @@
   <% end %>
   <% c.with_header do %>
     <%= t('school_groups.advice_pages.long_term.analysis.comparisons.chart.header', fuel_type: @advice_page.fuel_type) %>
+  <% end %>
+  <% c.with_footer do %>
+    <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
   <% end %>
 <% end %>
 
