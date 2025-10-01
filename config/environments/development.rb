@@ -67,6 +67,9 @@ Rails.application.configure do
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
+  # Annotate rendered view with file names.
+  config.action_view.annotate_rendered_view_with_filenames = true
+
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
@@ -87,10 +90,10 @@ Rails.application.configure do
   # Use mailcatcher locally - https://github.com/sj26/mailcatcher
   # NOTE not using default port!
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = { address: '127.0.0.1', port:ENV.fetch('LOCAL_SMTP_PORT') { 1025 } }
+  config.action_mailer.smtp_settings = { address: '127.0.0.1', port: ENV.fetch('LOCAL_SMTP_PORT') { 1025 } }
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
-  config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
+  config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST') { "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
   config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
@@ -102,9 +105,6 @@ Rails.application.configure do
   # View components - Always place view in a sidecar directory when using the generator
   config.view_component.generate.sidecar = true
   config.active_job.queue_adapter = :good_job
-
-  # Annotate rendered view with file names.
-  config.action_view.annotate_rendered_view_with_filenames = ENV.fetch('ANNOTATE_RENDERED_VIEWS', false)
 
   # Allow translations to be shown locally at cy.energysparks.development
   config.hosts += [
