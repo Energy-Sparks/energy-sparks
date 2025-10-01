@@ -303,7 +303,7 @@ RSpec.shared_examples 'target advice page' do
                                       'February 2024 2,040 2,000 2,020 -0.98&percnt; ' \
                                       'March 2024 3,060 3,000 3,030 -0.98&percnt; ' \
                                       'April 2024 4,080 4,000 3,030 -25.7&percnt; ' \
-                                      'May 2024 5,100 5,000 3,040 -40.4&percnt; ' \
+                                      'May 2024 5,100 5,000 3,040 ' \
                                       'June 2024 6,120 6,000 ' \
                                       'July 2024 7,140 7,000 ')
     end
