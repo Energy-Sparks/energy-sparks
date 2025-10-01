@@ -396,16 +396,16 @@ class EnergyEquivalences
           co2:  {
             rate:                   shower_co2_kg,
             description:            shower_description_to_kwh +
-                                    "Burning 1 kwh of gas (normal source of heat for showers) emits #{X.format(:kg, co2_kg_kwh(:gas))} CO2. "\
-                                    "Therefore 1 shower uses #{X.format(:kg, shower_co2_kg)} CO2. ",
+              "Burning 1 kwh of gas (normal source of heat for showers) emits #{X.format(:kg, co2_kg_kwh(:gas))} CO2. "\
+              "Therefore 1 shower uses #{X.format(:kg, shower_co2_kg)} CO2. ",
             front_end_description:  'Number of showers (conversion via co2)',
             adult_dashboard_wording: 'the CO2 emitted taking %s showers'
           },
           £:  {
             rate:         SHOWER_£,
             description:  shower_description_to_kwh +
-                          "1 kwh of gas costs #{X.format(:£, UK_GAS_£_KWH)}. "\
-                          "Therefore 1 shower costs #{X.format(:kwh, SHOWER_KWH_NET)} &times; #{X.format(:£, UK_GAS_£_KWH)} = #{X.format(:£, SHOWER_£)} of gas. ",
+              "1 kwh of gas costs #{X.format(:£, UK_GAS_£_KWH)}. "\
+              "Therefore 1 shower costs #{X.format(:kwh, SHOWER_KWH_NET)} &times; #{X.format(:£, UK_GAS_£_KWH)} = #{X.format(:£, SHOWER_£)} of gas. ",
             front_end_description:  'Number of showers (conversion via £)',
             adult_dashboard_wording: 'the cost of taking %s showers'
           }
@@ -424,16 +424,16 @@ class EnergyEquivalences
           co2:  {
             rate:         kettle_co2_kg,
             description:  one_kettle_description_to_kwh +
-                          "And, heating 1 kettle emits #{X.format(:kwh, KETTLE_KWH)} &times; #{X.format(:co2, uk_electric_grid_co2_kg_kwh)}"\
-                          " = #{X.format(:co2, kettle_co2_kg)}. ",
+              "And, heating 1 kettle emits #{X.format(:kwh, KETTLE_KWH)} &times; #{X.format(:co2, uk_electric_grid_co2_kg_kwh)}"\
+              " = #{X.format(:co2, kettle_co2_kg)}. ",
             front_end_description:  'Number of kettles boiled (conversion via co2)',
             adult_dashboard_wording:  'the CO2 emitted boiling %s kettles'
           },
           £:  {
             rate:         KETTLE_£,
             description:  one_kettle_description_to_kwh +
-                          "Thus it costs #{X.format(:£, UK_ELECTRIC_GRID_£_KWH)} &times; #{X.format(:kwh, KETTLE_KWH)} = "\
-                          "#{X.format(:£, KETTLE_£)} to boil a kettle. ",
+              "Thus it costs #{X.format(:£, UK_ELECTRIC_GRID_£_KWH)} &times; #{X.format(:kwh, KETTLE_KWH)} = "\
+              "#{X.format(:£, KETTLE_£)} to boil a kettle. ",
             front_end_description:  'Number of kettles boiled (conversion via £)',
             adult_dashboard_wording:  'the cost of boiling %s kettles'
           }
