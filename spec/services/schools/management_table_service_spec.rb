@@ -14,9 +14,9 @@ describe Schools::ManagementTableService do
     context 'and there is analytics data' do
       let!(:content_generation_run) { create(:content_generation_run, school: school)}
 
-      let(:template_data) { { 'summary_data' => "{ gas: { start_date: '2020-01-01', end_date: '2020-02-01' } }" } }
+      let(:variables) { { 'summary_data' => { gas: { start_date: '2020-01-01', end_date: '2020-02-01' } } } }
 
-      let!(:alert) { create(:alert, template_data: template_data) }
+      let!(:alert) { create(:alert, variables: variables) }
       let!(:management_dashboard_table) { create(:management_dashboard_table, content_generation_run: content_generation_run, alert: alert) }
 
       it 'returns the alert content' do
