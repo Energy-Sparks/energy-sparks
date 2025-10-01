@@ -9,7 +9,8 @@ class SchoolGroupsController < ApplicationController
 
   load_resource
 
-  before_action :find_schools_and_partners
+  before_action :find_partners
+  before_action :find_schools, except: [:map]
   before_action :redirect_unless_authorised, except: [:map]
   before_action :breadcrumbs
   before_action :find_school_group_fuel_types
@@ -136,15 +137,14 @@ class SchoolGroupsController < ApplicationController
     build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
   end
 
-  def find_schools_and_partners
-    @schools = if action_name == :map
-                 # Display all active schools on the map view
-                 @school_group.schools.active.by_name
-               else
-                 # Rely on CanCan to filter the list of schools to those that can be shown to the current user
-                 @school_group.schools.active.accessible_by(current_ability, :show).by_name
-               end
+  def find_partners
     @partners = @school_group.partners
+  end
+
+  def find_schools
+    # Rely on CanCan to filter the list of schools to those that can be shown to the current user
+    @schools = @school_group.schools.active.accessible_by(current_ability, :show).by_name
+    # @schools = current_user&.admin? ? @schools.process_data : @schools.data_enabled
   end
 
   def include_cluster
