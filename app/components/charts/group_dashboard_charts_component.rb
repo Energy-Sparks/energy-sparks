@@ -14,7 +14,7 @@ module Charts
     end
 
     def render?
-      reports&.any? && school_group.visible_schools_count.positive?
+      reports&.any? && school_group.schools.data_visible.count > 1
     end
   end
 end
