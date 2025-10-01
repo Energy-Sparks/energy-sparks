@@ -24,7 +24,8 @@
   <div class="container">
     <%= render Charts::GroupDashboardChartsComponent.new(
           id: 'explore-energy-data',
-          school_group: @school_group
+          school_group: @school_group,
+          classes: 'pb-2'
         ) do |c| %>
       <% c.with_title do %>
         <h2>
@@ -40,7 +41,8 @@
 
     <%= render Dashboards::GroupSavingsPromptComponent.new(
           school_group: @school_group,
-          schools: @schools
+          schools: @schools,
+          classes: 'mb-4'
         ) %>
 
     <%= render Dashboards::GroupInsightsComponent.new(

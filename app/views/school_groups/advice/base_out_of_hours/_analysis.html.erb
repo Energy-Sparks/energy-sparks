@@ -8,6 +8,9 @@
   <li>
     <%= link_to(t("school_groups.advice_pages.#{@advice_page_key}.analysis.comparisons.title"), '#comparison') %>
   </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.analysis.other_reports.title'), '#other-reports') %>
+  </li>
 </ul>
 
 <%= render 'schools/advice/section_title',
@@ -43,3 +46,35 @@
            colgroups: [],
            advice_page_tab: @advice_page_tab,
            table_number: 0 %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'other-reports',
+           section_title: t('school_groups.advice_pages.analysis.other_reports.title') %>
+
+<p>
+ <%= t('school_groups.advice_pages.analysis.other_reports.introduction') %>
+</p>
+
+<%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                           fuel_types: @fuel_types) do |list| %>
+  <% list.with_fuel_types t('school_groups.advice.comparison_reports.links.annual_change'), reports: {
+       electricity: :change_in_electricity_since_last_year,
+       gas: :change_in_gas_since_last_year,
+       storage_heaters: :change_in_storage_heaters_since_last_year
+     } %>
+  <% list.with_fuel_types t('school_groups.advice.comparison_reports.links.last_two_holidays'), reports: {
+       electricity: :change_in_electricity_holiday_consumption_previous_holiday,
+       gas: :change_in_gas_holiday_consumption_previous_holiday
+     } %>
+  <% list.with_fuel_types t('school_groups.advice.comparison_reports.links.same_holiday'), reports: {
+       electricity: :change_in_electricity_holiday_consumption_previous_years_holiday,
+       gas: :change_in_gas_holiday_consumption_previous_years_holiday
+     } %>
+  <% list.with_fuel_types t('school_groups.advice.comparison_reports.links.current_holiday'), reports: {
+       electricity: :electricity_consumption_during_holiday,
+       gas: :gas_consumption_during_holiday,
+       storage_heaters: :storage_heater_consumption_during_holiday
+     } %>
+  <% list.with_link t('school_groups.advice.comparison_reports.links.upcoming_holiday'),
+                    report: :holiday_usage_last_year %>
+<% end %>
