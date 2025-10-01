@@ -6,6 +6,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   let!(:school_group) { create(:school_group) }
 
   around do |example|
+    travel_to Date.new(2025, 9, 26)
     ClimateControl.modify AWESOMEPRINT: 'off' do
       example.run
     end

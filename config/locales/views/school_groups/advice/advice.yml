@@ -5,11 +5,11 @@ en:
       how_have_we_analysed_your_data:
         school_characteristics_html: |-
           <p>
-            Our analysis takes into a range of characteristics for each school, including its floor area, location, pupil numbers and type.
+            Our analysis takes into account a range of characteristics for each school, including its floor area, location, pupil numbers and type.
           </p>
         summary_table_notes_html: |-
           <p>
-          This table summarises recent use based on the latest available data at each school.
+          This table summarises recent use based on the latest available data for each school.
           </p>
           <p>"<strong>Last week</strong>" reports on the latest full week of data. Change in
           use is measured against the previous week.</p>

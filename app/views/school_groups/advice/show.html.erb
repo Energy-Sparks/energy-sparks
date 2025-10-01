@@ -23,6 +23,7 @@
             schools: @schools,
             fuel_types: @fuel_types,
             metric: params[:metric],
+            classes: 'mt-2',
             show_clusters: can?(:update_settings, @school_group)
           ) do |summary| %>
           <% summary.with_modal_link do %>

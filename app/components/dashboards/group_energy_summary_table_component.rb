@@ -42,7 +42,6 @@ module Dashboards
       when :usage then formatted ? recent_usage.usage : recent_usage.usage_text
       when :co2 then formatted ? recent_usage.co2 : recent_usage.co2_text
       when :cost then formatted ? recent_usage.cost : recent_usage.cost_text
-      when :change then formatted ? recent_usage.change : recent_usage.change_text.gsub(/[^-.0-9]/, '')
       else
         formatted ? recent_usage.change : recent_usage.change_text.gsub(/[^-.0-9]/, '')
       end

@@ -4,12 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Dashboards::GroupEnergySummaryComponent, :include_application_helper, :include_url_helpers, type: :component do
   let!(:school_group) { create(:school_group) }
-  let!(:school) do
-    create(:school,
-                         :with_fuel_configuration,
-                         school_group: school_group)
-  end
-
+  let!(:school) { create(:school, :with_fuel_configuration, school_group: school_group) }
   let(:html) do
     render_inline(described_class.new(
                     school_group: school_group,
