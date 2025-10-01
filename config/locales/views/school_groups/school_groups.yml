@@ -380,7 +380,7 @@ en:
       change_units: Change units
       energy_use:
         title: Energy use
-      intro_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activities at these schools</a>.
+      intro_html: Explore the latest energy data, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activities at these schools</a>.
       metric:
         change: "% Change"
         co2: CO2 (kg)
