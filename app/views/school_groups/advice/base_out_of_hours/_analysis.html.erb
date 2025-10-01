@@ -17,11 +17,13 @@
            section_id: 'potential-savings',
            section_title: t("school_groups.advice_pages.#{@advice_page_key}.analysis.potential_savings.title") %>
 
-<%= t("school_groups.advice_pages.#{@advice_page_key}.analysis.potential_savings.table.header_html") %>
+<%= t("school_groups.advice_pages.#{@advice_page_key}.analysis.potential_savings.table.header_html",
+      modal_id: SchoolGroups::AdviceController::MODAL_ID) %>
 
 <%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
                                                         categorised_savings: @categorised_savings,
-                                                        advice_page: @advice_page %>
+                                                        advice_page: @advice_page,
+                                                        schools: @schools %>
 
 <%= render 'schools/advice/section_title',
            section_id: 'comparison',

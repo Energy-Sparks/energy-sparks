@@ -32,11 +32,7 @@ en:
                 <p>
                 The following table summarises how we have benchmarked each school in your group according to the quality of their heating control. Good control means that heating is not running during periods of warmer weather.
                 <p>
-                "Exemplar" schools are in the top 17.5% on Energy Sparks. "Well managed" schools are in the top
-                30% of schools.
-                </p>
-                <p>
-                The savings for each school are based on improving the control over their heating to match those of an Exemplar school with similar characteristics.
+                The savings for each school are based on improving the control over their heating to match those of <a data-toggle="modal" data-target="#%{modal_id}" data-remote="false" href="#">an Exemplar school with similar characteristics</a>.
                 </p>
             title: Potential savings
           summary: This page provides an overview of the quality of the heating control across the schools in your group.

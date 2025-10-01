@@ -1,0 +1,6 @@
+<div class="text-right">
+  <%= render FootnoteModalComponent::Link.new(modal_id: SchoolGroups::AdviceController::MODAL_ID) do %>
+    <%= t('advice_pages.how_have_we_analysed_your_data.link_title') %>
+    <%= fa_icon('question-circle', class: 'text-primary') %>
+  <% end %>
+</div>

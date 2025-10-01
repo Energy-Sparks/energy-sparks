@@ -1,3 +1,4 @@
+<%= render 'school_groups/advice/shared/how_have_we_analysed_your_data_link' %>
 <table id="<%= advice_page.key %>-savings"
        class="table table-sm table-sorted table-borderless advice-table advice-priority-table">
   <thead>
@@ -60,3 +61,6 @@
     <% end %>
   </tbody>
 </table>
+<% if schools.length > 20 %>
+  <%= render 'school_groups/advice/shared/how_have_we_analysed_your_data_link' %>
+<% end %>
