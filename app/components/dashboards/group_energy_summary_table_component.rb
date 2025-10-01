@@ -24,14 +24,7 @@ module Dashboards
     end
 
     def period_label(period)
-      case period
-      when :week
-        I18n.t('common.labels.last_week')
-      when :month
-        I18n.t('common.labels.last_month')
-      when :year
-        I18n.t('common.labels.last_year')
-      end
+      I18n.t("common.labels.last_#{period}")
     end
 
     private
