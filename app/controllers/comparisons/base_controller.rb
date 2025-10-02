@@ -140,7 +140,9 @@ module Comparisons
 
     def set_advice_vars_and_breadcrumbs
       return unless @school_group_layout
-      set_all_group_advice_vars
+      load_schools
+      set_fuel_types
+      set_counts
       build_breadcrumbs([
                           { name: I18n.t('advice_pages.breadcrumbs.root'), href: school_group_advice_path(@school_group) },
                           { name: I18n.t('school_groups.titles.comparisons'), href: comparison_reports_school_group_advice_path(@school_group) },
