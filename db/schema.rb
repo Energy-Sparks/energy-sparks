@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_01_134714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3638,10 +3638,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
               sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
-              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh,
+              bool_or(((consumption.value ->> 6))::boolean) AS manual_readings
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
-            WHERE (((consumption.value ->> 5))::boolean = false)
+            WHERE ((NOT ((consumption.value ->> 5))::boolean) OR ((consumption.value ->> 6))::boolean)
             GROUP BY school_targets_1.id
           )
    SELECT school_targets.school_id,
@@ -3651,6 +3652,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
       totals.current_year_kwh,
       totals.previous_year_kwh,
       totals.current_year_target_kwh,
+      totals.manual_readings,
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
@@ -3716,10 +3718,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
               sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
-              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh,
+              bool_or(((consumption.value ->> 6))::boolean) AS manual_readings
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
-            WHERE (((consumption.value ->> 5))::boolean = false)
+            WHERE ((NOT ((consumption.value ->> 5))::boolean) OR ((consumption.value ->> 6))::boolean)
             GROUP BY school_targets_1.id
           )
    SELECT school_targets.school_id,
@@ -3729,6 +3732,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
       totals.current_year_kwh,
       totals.previous_year_kwh,
       totals.current_year_target_kwh,
+      totals.manual_readings,
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))

@@ -15,6 +15,7 @@ en:
           title: Historical progress
         monthly_progress:
           last_year: Last year (kWh)
+          manual_readings: manual readings used
           on_target: On target?
           partial: Partial months are shown in red.
           percentage_change: "% change"
