@@ -18,7 +18,7 @@
       </h2>
       <%= render 'school_groups/advice/shared/message', school_group: @school_group %>
 
-      <% cache [@school_group.most_recent_content_generation_run, I18n.locale], expires_in: 4.hours do %>
+      <% cache [@school_group.most_recent_content_generation_run, params[:metric], I18n.locale], expires_in: 4.hours do %>
         <%= render Dashboards::GroupEnergySummaryComponent.new(
               school_group: @school_group,
               schools: @schools,
