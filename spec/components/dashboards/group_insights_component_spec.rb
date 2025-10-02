@@ -8,7 +8,6 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
   let(:school_group) { create(:school_group, :with_active_schools) }
   before do
     # Make sure there are no reminders by default
-    create(:activity, school: school_group.schools.first) # engaged school
     create(:school_group_cluster, schools: school_group.schools, school_group:) # cluster exists
   end
 
