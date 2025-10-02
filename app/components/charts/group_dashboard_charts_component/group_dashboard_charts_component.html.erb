@@ -36,9 +36,12 @@
                                                                   report: report,
                                                                   tabbed: true) do |chart| %>
                <% chart.with_footer do %>
-                <div class="text-right">
-                  <%= link_to t('school_groups.priority_actions.view_analysis'),
-                              compare_path(group_dashboard: true,
+                <div class="table-caption">
+                  <% if extra_note? %>
+                    <%= extra_note %>
+                  <% end %>
+                  <%= link_to t('school_groups.comparisons.view_detailed_comparison'),
+                              compare_path(group: true,
                                            benchmark: report,
                                            school_group_ids: [@school_group.id]) %>
                 </div>

@@ -24,19 +24,22 @@
   <div class="container">
     <%= render Charts::GroupDashboardChartsComponent.new(
           id: 'explore-energy-data',
-          school_group: @school_group,
-          classes: 'pb-2'
+          school_group: @school_group
         ) do |c| %>
       <% c.with_title do %>
         <h2>
           <%= t('school_groups.show.energy_use.title') %>
         </h2>
       <% end %>
+      <% c.with_extra_note do %>
+        <%= t('school_groups.show.chart_note') %>
+      <% end %>
     <% end %>
 
     <%= render Dashboards::GroupLearnMoreComponent.new(
           school_group: @school_group,
-          user: current_user
+          schools: @schools,
+          classes: 'mt-4'
         ) %>
 
     <%= render Dashboards::GroupSavingsPromptComponent.new(

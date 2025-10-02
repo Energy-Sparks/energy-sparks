@@ -18,34 +18,27 @@
       </h2>
       <%= render 'school_groups/advice/shared/message', school_group: @school_group %>
 
-      <%= render Dashboards::GroupEnergySummaryComponent.new(
-            school_group: @school_group,
-            schools: @schools,
-            fuel_types: @fuel_types,
-            metric: params[:metric],
-            classes: 'mt-2',
-            show_clusters: can?(:update_settings, @school_group)
-          ) do |summary| %>
-          <% summary.with_modal_link do %>
-            <%= render FootnoteModalComponent::Link.new(modal_id: 'analysis-footnotes') do %>
-              <%= t('advice_pages.how_have_we_analysed_your_data.link_title') %>
-              <%= fa_icon('question-circle', class: 'text-primary') %>
+      <% cache [@school_group.most_recent_content_generation_run, I18n.locale], expires_in: 4.hours do %>
+        <%= render Dashboards::GroupEnergySummaryComponent.new(
+              school_group: @school_group,
+              schools: @schools,
+              fuel_types: @fuel_types,
+              metric: params[:metric],
+              classes: 'mt-2',
+              show_clusters: can?(:update_settings, @school_group)
+            ) do |summary| %>
+            <% summary.with_modal_link do %>
+              <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
             <% end %>
-          <% end %>
-          <% summary.with_footer do %>
-            <%= render(FootnoteModalComponent.new(
-                         title: t('advice_pages.how_have_we_analysed_your_data.page_title'),
-                         modal_id: 'analysis-footnotes'
-                       )) do |component| %>
-              <% component.with_body_content do %>
-                <%= t('school_groups.advice_pages.how_have_we_analysed_your_data.summary_table_notes_html') %>
-                <%= render 'school_groups/advice/shared/how_have_we_analysed_your_data',
-                           school_group: @school_group,
-                           schools: @schools,
-                           fuel_types: @fuel_types %>
-              <% end %>
+            <% summary.with_footer do %>
+              <%= render 'school_groups/advice/shared/analysis_footnotes',
+                         school_group: @school_group,
+                         schools: @schools,
+                         fuel_types: @fuel_types,
+                         extra_notes:
+                          t('school_groups.advice_pages.how_have_we_analysed_your_data.summary_table_notes_html') %>
             <% end %>
-          <% end %>
+        <% end %>
       <% end %>
     </div>
   </div>

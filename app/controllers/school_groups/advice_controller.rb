@@ -1,5 +1,7 @@
 module SchoolGroups
   class AdviceController < SchoolGroups::Advice::BaseController
+    MODAL_ID = 'analysis-footnotes'.freeze
+
     include Scoring
     include Promptable
 
