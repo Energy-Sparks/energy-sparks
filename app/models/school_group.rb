@@ -107,6 +107,7 @@ class SchoolGroup < ApplicationRecord
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
 
+
   def visible_schools_count
     schools.visible.count
   end
@@ -129,6 +130,15 @@ class SchoolGroup < ApplicationRecord
     SchoolGroup.connection.select_all(sanitized_query).rows.flatten.map do |fuel_type|
       fuel_type.gsub('has_', '').to_sym
     end
+  end
+
+  def most_recent_content_generation_run
+    ContentGenerationRun
+      .joins(:school)
+      .where(schools: { school_group_id: id })
+      .order(created_at: :desc)
+      .limit(1)
+      .first
   end
 
   def has_visible_schools?
