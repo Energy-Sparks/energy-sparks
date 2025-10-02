@@ -118,6 +118,8 @@ en:
     scoreboard: Scoreboard
     storage_heater_usage: Storage heater usage
   nav:
+    back_to_dashboard: Back to dashboard
+    back_to_group_dashboard: Back to group dashboard
     enrol: Enrol
     my_account: My account
     my_schools: My schools
