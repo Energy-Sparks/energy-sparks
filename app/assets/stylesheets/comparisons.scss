@@ -6,3 +6,20 @@ thead.sticky-heading {
   position: sticky;
   top: 0;
 }
+
+div#report-grid ul.comparison-report-list {
+  padding-inline-start: 0px;
+  list-style: none;
+
+  li.single-item {
+    font-weight: bold;
+  }
+
+  li {
+    margin-top: 0.5rem;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}

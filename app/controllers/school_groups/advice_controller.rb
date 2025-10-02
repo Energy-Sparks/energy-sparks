@@ -1,5 +1,7 @@
 module SchoolGroups
   class AdviceController < SchoolGroups::Advice::BaseController
+    MODAL_ID = 'analysis-footnotes'.freeze
+
     include Scoring
     include Promptable
 
@@ -47,6 +49,10 @@ module SchoolGroups
                     filename: csv_filename_for(params[:previous_year].present? ? 'previous_scores' : 'current_scores')
         end
       end
+    end
+
+    def comparison_reports
+      build_breadcrumbs([name: I18n.t('school_groups.titles.comparisons')])
     end
 
     def charts

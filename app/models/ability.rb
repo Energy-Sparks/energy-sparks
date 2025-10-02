@@ -77,6 +77,7 @@
 # But also used to control access to school group page with data.
 # :update_settings - can use manage settings (chart prefs, clusters) for school group. But also used to gate
 # access to viewing clusters on school group dashboard. Also used to decide whether to show sub navbar on some pages
+# Used to control access to SECR report page too
 #
 # METERS
 #

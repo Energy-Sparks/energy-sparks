@@ -8,6 +8,46 @@ en:
       charts:
         introduction: This page provides quick access to a range of energy use charts for schools in this group. A wider set of charts is available on the advice pages for each school.
         title: School energy use charts
+      comparison_reports:
+        introduction: Select one of the following reports to compare energy use across schools in this group
+        links:
+          annual: Annual use
+          annual_change: Annual change
+          annual_energy: Annual energy use
+          baseload_per_pupil: Baseload per pupil
+          baseload_variation: Baseload variation
+          change_thermostat: Annual saving through 1C reduction in thermostat temperature
+          current_holiday: Use during current holiday
+          electricity_per_pupil: Electricity (per pupil)
+          gas_per_floor_area: Gas (per floor area)
+          heating_hot_water: Heating vs hot water usage
+          heating_times: Heating start time
+          hot_water_efficiency: Hot water efficiency
+          last_two_holidays: Change in use between last two holidays
+          peak_use: Peak school day electricity use
+          per_floor_area: per_floor_area
+          per_pupil: per pupil
+          progress: Progress against target
+          recent_baseload: Recent change in baseload
+          same_holiday: Change in use between this holiday and the same holiday last year
+          savings_potential: Annual savings potential
+          seasonal: Seasonal
+          solar_benefit: Benefit of solar installation
+          solar_change: Annual change in solar PV production and resulting CO2 savings
+          solar_generation: Solar generation summary
+          thermostatic_control: Quality of thermostatic control
+          upcoming_holiday: Cost of energy used in upcoming holiday last year
+          warm_weather: Heating used in warm weather
+          weekday: Weekday
+        lists:
+          baseload: Baseload and peak energy use
+          heating: Heating and hot water control
+          long_term: Long term energy use
+          out_of_hours: Out of hours energy use
+          solar: Solar
+          total: Total energy use
+        page_heading: Choose a report
+        title: "%{name} school comparisons"
       priorities:
         title: Energy saving opportunities
       scores:
@@ -396,4 +436,5 @@ en:
       priority_actions: Priority Actions
       recent_usage: Recent Usage
       reports: Reports
+      secr: SECR report
       show: Group Dashboard

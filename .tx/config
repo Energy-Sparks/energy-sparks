@@ -316,6 +316,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-electricity_target-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/electricity_target.yml
+source_file  = config/locales/views/advice_pages/electricity_target.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_costs-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/gas_costs.yml
 source_file  = config/locales/views/advice_pages/gas_costs.yml
@@ -351,6 +358,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-gas_target-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/gas_target.yml
+source_file  = config/locales/views/advice_pages/gas_target.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-heating_control-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/heating_control.yml
 source_file  = config/locales/views/advice_pages/heating_control.yml
@@ -379,9 +393,23 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-storage_heater_target-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/storage_heater_target.yml
+source_file  = config/locales/views/advice_pages/storage_heater_target.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-advice_pages-storage_heaters-yml]
 file_filter  = config/locales/<lang>/views/advice_pages/storage_heaters.yml
 source_file  = config/locales/views/advice_pages/storage_heaters.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-advice_pages-target-yml]
+file_filter  = config/locales/<lang>/views/advice_pages/target.yml
+source_file  = config/locales/views/advice_pages/target.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -435,6 +463,20 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-components-charts-selectable_school_charts_component-yml]
+file_filter  = config/locales/<lang>/views/components/charts/selectable_school_charts_component.yml
+source_file  = config/locales/views/components/charts/selectable_school_charts_component.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-cms-audience-yml]
+file_filter  = config/locales/<lang>/views/components/cms/audience.yml
+source_file  = config/locales/views/components/cms/audience.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-components-cms-search_results-yml]
 file_filter  = config/locales/<lang>/views/components/cms/search_results.yml
 source_file  = config/locales/views/components/cms/search_results.yml
@@ -452,6 +494,34 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-components-dashboard_insights-yml]
 file_filter  = config/locales/<lang>/views/components/dashboard_insights.yml
 source_file  = config/locales/views/components/dashboard_insights.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-dashboards-group_alerts-yml]
+file_filter  = config/locales/<lang>/views/components/dashboards/group_alerts.yml
+source_file  = config/locales/views/components/dashboards/group_alerts.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-dashboards-group_learn_more-yml]
+file_filter  = config/locales/<lang>/views/components/dashboards/group_learn_more.yml
+source_file  = config/locales/views/components/dashboards/group_learn_more.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-dashboards-group_reminders-yml]
+file_filter  = config/locales/<lang>/views/components/dashboards/group_reminders.yml
+source_file  = config/locales/views/components/dashboards/group_reminders.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-dashboards-group_savings_prompt-yml]
+file_filter  = config/locales/<lang>/views/components/dashboards/group_savings_prompt.yml
+source_file  = config/locales/views/components/dashboards/group_savings_prompt.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -501,6 +571,13 @@ minimum_perc = 100
 [o:energy-sparks:p:energy-sparks:r:views-components-scoreboard_summary-yml]
 file_filter  = config/locales/<lang>/views/components/scoreboard_summary.yml
 source_file  = config/locales/views/components/scoreboard_summary.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-components-scoreboards-group_summary-yml]
+file_filter  = config/locales/<lang>/views/components/scoreboards/group_summary.yml
+source_file  = config/locales/views/components/scoreboards/group_summary.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
@@ -722,6 +799,55 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-advice_pages-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/advice_pages.yml
+source_file  = config/locales/views/school_groups/advice/advice_pages.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-baseload-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/baseload.yml
+source_file  = config/locales/views/school_groups/advice/baseload.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-charts-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/charts.yml
+source_file  = config/locales/views/school_groups/advice/charts.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-electricity_out_of_hours-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/electricity_out_of_hours.yml
+source_file  = config/locales/views/school_groups/advice/electricity_out_of_hours.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-gas_out_of_hours-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/gas_out_of_hours.yml
+source_file  = config/locales/views/school_groups/advice/gas_out_of_hours.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-heating_control-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/heating_control.yml
+source_file  = config/locales/views/school_groups/advice/heating_control.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-long_term-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/long_term.yml
+source_file  = config/locales/views/school_groups/advice/long_term.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-school_groups-school_groups-yml]
 file_filter  = config/locales/<lang>/views/school_groups/school_groups.yml
 source_file  = config/locales/views/school_groups/school_groups.yml
@@ -791,3 +917,4 @@ source_file  = config/locales/views/users/users.yml
 source_lang  = en
 type         = YML
 minimum_perc = 100
+
