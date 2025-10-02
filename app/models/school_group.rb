@@ -131,6 +131,15 @@ class SchoolGroup < ApplicationRecord
     end
   end
 
+  def most_recent_content_generation_run
+    ContentGenerationRun
+      .joins(:school)
+      .where(schools: { school_group_id: id })
+      .order(created_at: :desc)
+      .limit(1)
+      .first
+  end
+
   def has_visible_schools?
     schools.visible.any?
   end

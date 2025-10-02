@@ -24,6 +24,17 @@ module Dashboards
       can_manage_group? && [3, 9].include?(Time.zone.today.month)
     end
 
+    def prompt_for_dashboard_message?
+      @school_group.dashboard_message&.message
+    end
+
+    def render?
+      prompt_for_training? ||
+        prompt_for_clusters? ||
+        prompt_for_tariff_review? ||
+        prompt_for_dashboard_message?
+    end
+
     private
 
     def engaged_school_count

@@ -7,7 +7,7 @@
     <% end %>
 
     <% add_prompt(id: 'school-group_dashboard_message',
-                  check: school_group.dashboard_message,
+                  check: prompt_for_dashboard_message?,
                   list: list,
                   status: :negative,
                   icon: 'info-circle') do %>
