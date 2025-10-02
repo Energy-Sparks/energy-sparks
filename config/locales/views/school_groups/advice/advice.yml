@@ -18,3 +18,5 @@ en:
           <p>"<strong>Last year</strong>" reports on the last 12 months of data (365 days) for the school. Change in
           use is measured against previous 12 months period. This is a rolling 12 month period rather than calendar or
           academic years.</p>
+          <p>A dash ("-") indicates that we do not have enough recent data to report on that period.</p>
+          <p>"n/a" indicates that we don't have enough historical data in order to do a comparison.</p>
