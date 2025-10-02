@@ -47,6 +47,7 @@ en:
     title: 'Energy Sparks alerts:'
   dashboards:
     adult_dashboard: Adult dashboard
+    group_dashboard: Group dashboard
     pupil_dashboard: Pupil dashboard
   errors:
     '404':

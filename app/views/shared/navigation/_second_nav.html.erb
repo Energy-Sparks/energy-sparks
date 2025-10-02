@@ -7,7 +7,7 @@
           <!-- Context: any page scoped to school -->
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
-      <% elsif current_school_group %>
+      <% elsif request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
         <li class="nav-item">
           <!-- School group name, with link to dashboard -->
           <!-- Context: any page scoped to school group -->
