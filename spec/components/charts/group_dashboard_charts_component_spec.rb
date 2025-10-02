@@ -81,8 +81,8 @@ RSpec.describe Charts::GroupDashboardChartsComponent, :include_url_helpers, type
       end
     end
 
-    it 'includes view analysis link' do
-      expect(html).to have_link(I18n.t('school_groups.priority_actions.view_analysis'),
+    it 'includes view detailed comparison' do
+      expect(html).to have_link(I18n.t('school_groups.comparisons.view_detailed_comparison'),
                                 href: compare_path(group: true,
                                              benchmark: comparisons.first,
                                              school_group_ids: [school_group.id]))

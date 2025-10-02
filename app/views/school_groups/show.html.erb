@@ -31,6 +31,9 @@
           <%= t('school_groups.show.energy_use.title') %>
         </h2>
       <% end %>
+      <% c.with_extra_note do %>
+        <%= t('school_groups.show.chart_note') %>
+      <% end %>
     <% end %>
 
     <%= render Dashboards::GroupLearnMoreComponent.new(

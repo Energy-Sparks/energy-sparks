@@ -4,6 +4,7 @@ module Charts
 
     renders_one :title
     renders_one :intro
+    renders_one :extra_note
 
     def initialize(school_group:,
                    comparisons: [:annual_energy_use, :annual_energy_costs_per_pupil, :annual_energy_costs_per_floor_area],
