@@ -78,6 +78,11 @@
             <%= t('components.selectable_school_charts_component.chart_selection_dynamic_footer.link') %>
           </a>
         <% end %>
+        <% if chart_footer? %>
+          <% c.with_footer do %>
+            <%= chart_footer %>
+          <% end %>
+        <% end %>
       <% end %>
     </div>
   </div>

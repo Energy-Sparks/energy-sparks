@@ -24,15 +24,6 @@ module Dashboards
       can_manage_group? && [3, 9].include?(Time.zone.today.month)
     end
 
-    # This will need review from the team
-    def prompt_for_engagement?
-      can_manage_group? && @active_schools.positive? && low_engagement?
-    end
-
-    def prompt_for_onboarding?
-      @school_group.school_onboardings.incomplete.count.positive?
-    end
-
     def prompt_for_dashboard_message?
       @school_group.dashboard_message&.message
     end
@@ -41,16 +32,10 @@ module Dashboards
       prompt_for_training? ||
         prompt_for_clusters? ||
         prompt_for_tariff_review? ||
-        prompt_for_engagement? ||
-        prompt_for_onboarding? ||
         prompt_for_dashboard_message?
     end
 
     private
-
-    def low_engagement?
-      (engaged_school_count.to_f / @active_schools) < 0.5
-    end
 
     def engaged_school_count
       @engaged_school_count ||= School.engaged(AcademicYear.current.start_date..).where(school_group: school_group).count

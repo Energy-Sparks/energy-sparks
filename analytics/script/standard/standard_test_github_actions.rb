@@ -33,7 +33,6 @@ run_date = Date.new(2022, 2, 1)
 scripts = [
     { type: RunAdultDashboard },
     { type: RunAlerts,                parameters: { alerts:   { control: { asof_date: run_date } } } },
-    { type: RunManagementSummaryTable },
     { type: RunEquivalences }
 ]
 

@@ -1,0 +1,48 @@
+<%= tag.div id: id, class: classes do %>
+  <ul class="nav nav-tabs url-aware locales" id="group-energy-overview" role="tablist">
+    <% fuel_types.each_with_index do |fuel_type, index| %>
+      <li class="nav-item">
+        <a class="nav-link <%= 'active' if index.zero? %>"
+           id="<%= fuel_type %>-tab" data-toggle="tab"
+           href="#<%= fuel_type %>-overview"
+           role="tab"
+           aria-controls="<%= fuel_type %>-overview"
+           aria-selected="true">
+           <%= render IconComponent.new(fuel_type: fuel_type) %> <%= t(fuel_type, scope: 'common') %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+  <div class="tab-content" id="group-energy-overview-tabs">
+    <% fuel_types.each_with_index do |fuel_type, index| %>
+      <div class="tab-pane fade show <%= 'active' if index.zero? %>"
+           id="<%= fuel_type %>-overview"
+           role="tabpanel"
+           aria-labelledby="<%= fuel_type %>-tab">
+
+           <%= render 'school_groups/advice/metric_selection', school_group: school_group,
+                                                               path: school_group_advice_path(school_group),
+                                                               selected_metric: metric,
+                                                               container_classes: 'mt-4' %>
+
+           <%= render Dashboards::GroupEnergySummaryTableComponent.new(
+                 school_group: school_group,
+                 schools: schools,
+                 fuel_type: fuel_type,
+                 metric: metric&.to_sym,
+                 show_clusters: show_clusters?,
+                 path: school_group_advice_path(school_group)
+               ) do |table| %>
+                <% if modal_link? %>
+                  <% table.with_modal_link do %>
+                    <%= modal_link %>
+                  <% end %>
+                <% end %>
+          <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<% if footer? %>
+  <%= footer %>
+<% end %>

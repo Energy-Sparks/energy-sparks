@@ -118,7 +118,7 @@ class AlertMeterASCLimit < AlertElectricityOnlyBase
       mpan: mpan,
       asc_limit: FormatEnergyUnit.format(:kw, asc_info[:asc_limit_kw]),
       peak_kw: FormatEnergyUnit.format(:kw, asc_info[:peak_kw])) + " " +
-    text_for_opportunity_or_risk(asc_info)
+      text_for_opportunity_or_risk(asc_info)
   end
 
   private def text_for_opportunity_or_risk(asc_info)

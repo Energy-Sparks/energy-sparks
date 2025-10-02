@@ -2,6 +2,8 @@ module Charts
   class SelectableSchoolChartsComponent < ApplicationComponent
     attr_reader :schools, :charts
 
+    renders_one :chart_footer
+
     def initialize(schools:, charts:, fuel_types:,
                    defaults: { school: nil, chart_type: nil, fuel_type: nil },
                    **_kwargs)
