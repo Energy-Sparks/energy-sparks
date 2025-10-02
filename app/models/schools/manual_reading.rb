@@ -1,5 +1,26 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: schools_manual_readings
+#
+#  created_at  :datetime         not null
+#  electricity :integer
+#  gas         :integer
+#  id          :bigint(8)        not null, primary key
+#  month       :date             not null
+#  school_id   :bigint(8)        not null
+#  updated_at  :datetime         not null
+#
+# Indexes
+#
+#  index_schools_manual_readings_on_school_id            (school_id)
+#  index_schools_manual_readings_on_school_id_and_month  (school_id,month) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (school_id => schools.id)
+#
 module Schools
   class ManualReading < ApplicationRecord
     def self.table_name_prefix
