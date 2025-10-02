@@ -102,7 +102,7 @@ describe 'School group baseload page' do
           let(:table_id) { '#baseload-savings' }
           let(:expected_header) do
             [
-              ['', 'Savings', ''],
+              ['', 'Potential savings', ''],
               ['School', 'Category', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)', '']
             ]
           end

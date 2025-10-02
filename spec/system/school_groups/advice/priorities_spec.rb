@@ -27,7 +27,7 @@ describe 'School group priorities page' do
       let(:table_id) { '#school-group-priorities' }
       let(:expected_header) do
         [
-          ['', 'Savings'],
+          ['', 'Potential savings'],
           ['Fuel', '', 'Schools', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)']
         ]
       end
@@ -76,7 +76,7 @@ describe 'School group priorities page' do
         let(:table_id) { "#school-priorities-#{priority_alert_type_rating.id}" }
         let(:expected_header) do
           [
-            ['', 'Savings', ''],
+            ['', 'Potential savings', ''],
             ['School', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)', '']
           ]
         end
@@ -117,7 +117,7 @@ describe 'School group priorities page' do
         let(:table_id) { "#school-priorities-#{priority_alert_type_rating.id}" }
         let(:expected_header) do
           [
-            ['', 'Savings', ''],
+            ['', 'Potential savings', ''],
             ['School', 'Cluster', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)', '']
           ]
         end
