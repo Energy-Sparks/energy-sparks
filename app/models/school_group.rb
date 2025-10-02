@@ -107,7 +107,6 @@ class SchoolGroup < ApplicationRecord
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
 
-
   def visible_schools_count
     schools.visible.count
   end
