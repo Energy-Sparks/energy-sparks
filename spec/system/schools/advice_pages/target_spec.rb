@@ -161,12 +161,23 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'target not yet complete' do
-      create_target(missing: ([false] * 11) + [true])
+      create_target(missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to \
         eq(insight_content(expired_text: waiting_for_data_text,
                            expired: false,
                            table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 -0.98&percnt;'))
+    end
+
+    it 'has complete previous but no complete current consumption' do
+      target = create_target(missing: true)
+      travel_to(target.start_date)
+      visit_tab(tab)
+      expect(content(tab)).to \
+        eq(insight_content(table_text: '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -',
+                           expired: false,
+                           meeting_prompt: false,
+                           can_revise: true))
     end
 
     context 'without recent data' do
@@ -181,7 +192,8 @@ RSpec.shared_examples 'target advice page' do
           eq(insight_content(expired_text: "We have not received data for your #{fuel_string} usage for over thirty " \
                                            'days. As a result your analysis will be out of date and may not reflect ' \
                                            "recent changes in your school.\n",
-                             meeting_prompt: false))
+                             meeting_prompt: false,
+                             table_text: '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -'))
       end
     end
   end

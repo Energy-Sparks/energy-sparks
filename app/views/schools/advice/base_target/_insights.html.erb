@@ -26,22 +26,20 @@
   </thead>
   <tbody>
     <tr>
-      <% if @consumption.last_month.nil? %>
-        <td><%= "#{@target.start_date.to_fs(:es_short)} -" %></td>
-        <td><%= format_unit(@consumption.consumption.pluck(:current_consumption).compact.sum, :kwh,
-                            numeric_level: :target) %></td>
-        <td><%= format_unit(target_consumption.sum, :kwh, numeric_level: :target) %></td>
-        <td></td>
-      <% else %>
-        <td><%= format_date_range([@target.start_date, Date.new(@consumption.last_month[:year],
-                                                                @consumption.last_month[:month]).end_of_month]) %></td>
-        <td><%= format_unit(@consumption.current_consumption, :kwh, numeric_level: :target) %></td>
-        <td><%= format_unit(@consumption.target_consumption, :kwh, numeric_level: :target) %></td>
-        <td td class="text-right">
-          <%= formatted_target_change(@consumption.current_consumption,
-                                      @consumption.non_missing.pluck(:previous_consumption).sum) %>
-        </td>
-      <% end %>
+      <% last_month = @consumption.non_missing.last
+         if last_month.nil?
+           last_month = @consumption.consumption.last
+           current = @consumption.consumption.pluck(:current_consumption).compact.sum
+           target = @consumption.consumption.pluck(:target_consumption).compact.sum
+         end %>
+      <td><%= format_date_range([@target.start_date, Date.new(last_month[:year], last_month[:month]).end_of_month]) %>
+      </td>
+      <td><%= format_unit(current || @consumption.current_consumption, :kwh, numeric_level: :target) %></td>
+      <td><%= format_unit(target || @consumption.target_consumption, :kwh, numeric_level: :target) %></td>
+      <td td class="text-right">
+        <%= formatted_target_change(@consumption.current_consumption,
+                                    @consumption.non_missing.pluck(:previous_consumption).sum) %>
+      </td>
     </tr>
   </tbody>
 </table>
