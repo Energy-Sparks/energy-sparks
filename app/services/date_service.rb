@@ -12,4 +12,14 @@ module DateService
       date
     end
   end
+
+  def self.start_of_months(start_date, end_date)
+    Enumerator.new do |y|
+      date = start_date
+      while date < end_date
+        y << date.beginning_of_month
+        date = date.next_month
+      end
+    end
+  end
 end
