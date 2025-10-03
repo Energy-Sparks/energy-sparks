@@ -50,4 +50,8 @@ module SchoolGroupsHelper
   def can_cache_group_advice?(schools)
     schools.all?(&:data_sharing_public?)
   end
+
+  def group_advice_cache_key(school_group, additional = nil)
+    [school_group.most_recent_content_generation_run, *additional, I18n.locale]
+  end
 end

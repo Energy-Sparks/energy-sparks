@@ -7,7 +7,7 @@
   </h2>
 
   <% cache_if can_cache_group_advice?(@schools),
-              [@school_group.most_recent_content_generation_run, I18n.locale],
+              group_advice_cache_key(@school_group),
               expires_in: 4.hours do %>
     <%= render 'school_groups/advice/priority_table',
                school_group: @school_group,

@@ -8,7 +8,7 @@
   <%= render 'school_groups/advice/shared/message', school_group: @school_group %>
 
   <% cache_if can_cache_group_advice?(@schools),
-              [@school_group.most_recent_content_generation_run, params[:metric] || :change, I18n.locale],
+              group_advice_cache_key(@school_group, [params[:metric] || :change]),
               expires_in: 4.hours do %>
     <%= render Dashboards::GroupEnergySummaryComponent.new(
           school_group: @school_group,
