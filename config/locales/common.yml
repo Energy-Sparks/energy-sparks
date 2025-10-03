@@ -11,6 +11,7 @@ en:
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
+    explore_energy_data: Explore energy data
     exported_solar_pv: Exported Solar PV
     gas: Gas
     labels:
@@ -42,6 +43,7 @@ en:
       finished: Finished
       home: Home
       inactive: Inactive
+      last_month: Last month
       last_updated: Last updated
       last_week: Last week
       last_year: Last year

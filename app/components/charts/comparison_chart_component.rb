@@ -8,11 +8,13 @@ module Charts
     renders_one :subtitle
     renders_one :introduction
 
-    def initialize(x_axis:, x_data:, y_axis_label:, **_kwargs)
+    def initialize(x_axis:, x_data:, y_axis_label:, x_min_value: nil, x_max_value: nil, **_kwargs)
       super
       @x_axis = x_axis
       @x_data = x_data
       @y_axis_label = y_axis_label
+      @x_min_value = x_min_value
+      @x_max_value = x_max_value
     end
 
     def height
@@ -44,6 +46,8 @@ module Charts
         x_axis: @x_axis,
         x_data: @x_data,
         y_axis_label: @y_axis_label,
+        x_min_value: @x_min_value,
+        x_max_value: @x_max_value,
         chart1_type: :bar,
         chart1_subtype: :stacked
       }

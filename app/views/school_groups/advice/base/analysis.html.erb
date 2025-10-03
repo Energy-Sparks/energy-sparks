@@ -16,8 +16,17 @@
                  tab: @tab %>
 
       <div class="mt-4" id="<%= @advice_page_key %>-<%= @tab %>">
-        <%= render 'analysis', school_group: @school_group %>
+        <% cache [@school_group.most_recent_content_generation_run,
+                  @advice_page.key,
+                  I18n.locale], expires_in: 4.hours do %>
+          <%= render 'analysis', school_group: @school_group %>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
+
+<%= render 'school_groups/advice/shared/analysis_footnotes',
+           school_group: @school_group,
+           schools: @schools,
+           fuel_types: @fuel_types %>

@@ -1,37 +1,28 @@
 <% content_for :page_title, @report.title %>
 <% content_for :container_classes, 'comparisons' %>
 
-<h1><%= @report.title %></h1>
+<% if @school_group_layout %>
+  <% content_for :header do %>
+    <%= render Layout::Cards::PageHeaderComponent.new(
+          title: @report.title
+        ) %>
+  <% end %>
 
-<%= render 'compare/summary' %>
-<%= render 'introduction' %>
-
-<ul class="nav nav-tabs locales url-aware" id="compare-results-tabs" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="tables-tab" data-toggle="tab" href="#tables"
-        role="tab" aria-controls="tables-content"><%= t('compare.show.tables') %></a>
-    </li>
-    <% if @charts.any? %>
-      <li class="nav-item">
-        <a class="nav-link" id="charts-tab" data-toggle="tab" href="#charts"
-          role="tab" aria-controls="charts-content"><%= t('compare.show.charts') %></a>
-      </li>
-    <% end %>
-</ul>
-
-<div class="tab-content" id="compare-results-content">
-  <div class="tab-pane fade show active" id="tables" role="tabpanel" aria-labelledby="tables-tab">
-    <div class="row">
-      <div class="col-sm-12">
-        <%= render 'tables', results: @results, advice_page: @advice_page, report: @report,
-                             headers: @headers, colgroups: @colgroups, advice_page_tab: @advice_page_tab %>
-        <%= render 'unlisted_schools', unlisted_schools_count: @unlisted_schools_count %>
+  <div class="row mt-2">
+    <div id='group-advice-page-nav' class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
+      <%= render 'school_groups/advice/shared/nav', school_group: @school_group %>
+    </div>
+    <div id='group-advice-page-content' class="col-md-9 col-lg-9 col-xl-10">
+      <div class="mt-2">
+        <% cache [@school_group.most_recent_content_generation_run, @report, I18n.locale], expires_in: 4.hours do %>
+          <%= render 'report' %>
+        <% end %>
       </div>
     </div>
   </div>
-  <% if @charts.any? %>
-    <div class="tab-pane fade show" id="charts" role="tabpanel" aria-labelledby="charts-tab">
-      <%= render 'charts', chart: @chart %>
-    </div>
-  <% end %>
-</div>
+<% else %>
+  <h1><%= @report.title %></h1>
+
+  <%= render 'compare/summary' %>
+  <%= render 'report' %>
+<% end %>

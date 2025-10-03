@@ -1,7 +1,5 @@
 cy:
   case_studies:
-    download: Lawrlwytho
-    more_case_studies: Rhagor o astudiaethau achos
     title: Astudiaethau Achos
   home:
     buttons:

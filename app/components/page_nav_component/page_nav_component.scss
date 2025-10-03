@@ -19,7 +19,13 @@
     }
 
     &.current {
-      font-weight: bold;
+      font-weight: bold !important;
+    }
+
+    &:not(.section-link) {
+      &:hover, &.current {
+        border-radius: $border-radius;
+      }
     }
   }
 
@@ -42,26 +48,21 @@
       font-weight: $default-font-weight;
 
       &:hover, &.current {
-        border-radius: 5px;
         background-color: map-get($tones, "light");
-      }
-
-      &.current {
-        font-weight: bold !important;
       }
     }
 
     a.#{$fuel}-section {
       font-weight: $font-weight-semibold;
 
-      &:hover {
-        background-color: transparent;
-      }
-
       i.fuel {  // icon colour for fuel icon
         color: map-get($tones, "dark");
       }
     }
+  }
+
+  a.nav-link.toggler {
+    background-color: transparent;
   }
 
   a.nav-link.generic-item {
@@ -70,21 +71,12 @@
     font-weight: $default-font-weight;
 
     &:hover, &.current {
-      border-radius: 5px;
       background-color: $teal-light;
-    }
-
-    &.current {
-      font-weight: bold !important;
     }
   }
 
   a.generic-section {
     font-weight: $font-weight-semibold;
-
-    &:hover {
-      background-color: transparent;
-    }
 
     i.fuel {
       color: $teal-dark;

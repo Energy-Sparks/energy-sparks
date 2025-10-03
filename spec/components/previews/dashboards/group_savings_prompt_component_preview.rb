@@ -2,7 +2,7 @@ module Dashboards
   class GroupSavingsPromptComponentPreview < ViewComponent::Preview
     # @param slug select :group_options
     # @param metric select { choices: [kwh, gbp, co2] }
-    def example(slug: nil, metric: :kwh)
+    def example(slug: nil, metric: :gbp)
       school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
       render(Dashboards::GroupSavingsPromptComponent.new(school_group: school_group, schools: school_group.schools.active, metric: metric))
     end

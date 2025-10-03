@@ -161,12 +161,23 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'target not yet complete' do
-      create_target(missing: ([false] * 11) + [true])
+      create_target(missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to \
         eq(insight_content(expired_text: waiting_for_data_text,
                            expired: false,
                            table_text: '01 Jan 2024 - 30 Nov 2024 11,110 11,000 -0.98&percnt;'))
+    end
+
+    it 'has complete previous but no complete current consumption' do
+      target = create_target(missing: true)
+      travel_to(target.start_date)
+      visit_tab(tab)
+      expect(content(tab)).to \
+        eq(insight_content(table_text: '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -',
+                           expired: false,
+                           meeting_prompt: false,
+                           can_revise: true))
     end
 
     context 'without recent data' do
@@ -181,7 +192,8 @@ RSpec.shared_examples 'target advice page' do
           eq(insight_content(expired_text: "We have not received data for your #{fuel_string} usage for over thirty " \
                                            'days. As a result your analysis will be out of date and may not reflect ' \
                                            "recent changes in your school.\n",
-                             meeting_prompt: false))
+                             meeting_prompt: false,
+                             table_text: '01 Jan 2024 - 31 Dec 2024 12,120 12,000 -'))
       end
     end
   end
@@ -292,6 +304,20 @@ RSpec.shared_examples 'target advice page' do
       create_target(missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to start_with(waiting_for_data_text)
+    end
+
+    it 'has correct cumulative with zero in a month' do
+      create_target(current_consumption: [*[1010] * 3, 0, 10, *[nil] * 7],
+                    missing: [*[false] * 4, *[true] * 8])
+      visit_tab(tab)
+      expect(content(tab)).to include('Month Last year (kWh) Target (kWh) This year (kWh) % change On target? ' \
+                                      'January 2024 1,020 1,000 1,010 -0.98&percnt; ' \
+                                      'February 2024 2,040 2,000 2,020 -0.98&percnt; ' \
+                                      'March 2024 3,060 3,000 3,030 -0.98&percnt; ' \
+                                      'April 2024 4,080 4,000 3,030 -25.7&percnt; ' \
+                                      'May 2024 5,100 5,000 3,040 ' \
+                                      'June 2024 6,120 6,000 ' \
+                                      'July 2024 7,140 7,000 ')
     end
   end
 end

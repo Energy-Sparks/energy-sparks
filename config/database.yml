@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: 32
+  pool: <%= ENV['DB_POOL'] || 32 %>
 
 development:
   <<: *default
@@ -17,15 +17,12 @@ test: &test
   username: <%= ENV['DEV_DB_USERNAME'] %>
   password: <%= ENV['DEV_DB_PASSWORD'] %>
 
-
 staging:
   <<: *default
   database: <%= ENV['STAGING_DB_NAME'] %>
   host: <%= ENV['STAGING_DB_HOST'] %>
   username: <%= ENV['STAGING_DB_USER'] %>
   password: <%= ENV['STAGING_DB_PASSWORD'] %>
-
-
 
 production:
     <<: *default
@@ -36,6 +33,8 @@ production:
     password: <%= ENV['RDS_PASSWORD'] %>
     host: <%= ENV['RDS_HOSTNAME'] %>
     port: <%= ENV['RDS_PORT'] %>
+    idle_timeout: <%= ENV['DB_IDLE_TIMEOUT'] || 300 %>
+    reaping_frequency: <%= ENV['DB_REAPER_FREQUENCY'] || 60 %>
 
 cucumber:
   <<: *test

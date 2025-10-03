@@ -309,9 +309,11 @@ Rails.application.routes.draw do
         end
 
         collection do
-          get :priorities
           get :alerts
+          get :comparison_reports
+          get :priorities
           get :scores
+          get :charts
         end
       end
     end

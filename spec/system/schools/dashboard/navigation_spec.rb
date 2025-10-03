@@ -20,13 +20,13 @@ RSpec.shared_examples 'navigation' do
     end
 
     it 'does not show data-enabled links' do
-      expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+      expect(html).not_to have_link(I18n.t('common.explore_energy_data'),
                                     href: school_advice_path(school))
     end
   end
 
   it 'has links to analysis' do
-    expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+    expect(html).to have_link(I18n.t('common.explore_energy_data'),
                               href: school_advice_path(school))
   end
 

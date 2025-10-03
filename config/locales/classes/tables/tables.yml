@@ -4,6 +4,7 @@ en:
     tables:
       summary_table_data:
         data_available_from: Data available from %{date}
+        last_month: Last month
         last_week: Last week
         last_year: Last year
         no_recent_data: no recent data

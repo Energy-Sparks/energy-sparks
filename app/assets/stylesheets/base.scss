@@ -39,20 +39,18 @@ q {
   white-space: nowrap;
 }
 
-$rounded-xl: 12px;
-
 .rounded-xl {
-  border-radius: $rounded-xl;
+  border-radius: $border-radius-xl;
 }
 
 .rounded-top-xl {
-  border-top-left-radius: $rounded-xl;
-  border-top-right-radius: $rounded-xl;
+  border-top-left-radius: $border-radius-xl;
+  border-top-right-radius: $border-radius-xl;
 }
 
 .rounded-bottom-xl {
-  border-bottom-left-radius: $rounded-xl;
-  border-bottom-right-radius: $rounded-xl;
+  border-bottom-left-radius: $border-radius-xl;
+  border-bottom-right-radius: $border-radius-xl;
 }
 
 .fa-li.fa-check {
@@ -193,7 +191,7 @@ input, progress {
 .carousel-indicators li {
   background: $grey-dark;
   border:2px solid $grey-dark;
-  border-radius: 6px;
+  border-radius: $border-radius-lg;
 }
 
 .sortable-hide {
