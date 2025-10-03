@@ -8,11 +8,12 @@ module Schools
     before_action :set_breadcrumbs
 
     def show
-      @meter_start_dates = %i[electricity gas].index_with do |fuel_type|
+      @meter_start_dates = %i[electricity gas].select { |fuel_type| @school.configuration.fuel_type?(fuel_type) }
+                                              .index_with do |fuel_type|
         @school.configuration.meter_start_date(fuel_type)
       end
-      end_date = @meter_start_dates.values.max
-      return if end_date < 1.year.ago
+      end_date = @meter_start_dates.values.compact.max || Date.current
+      return if end_date < 1.year.ago || @meter_start_dates.empty?
 
       start_date = @school.current_target&.start_date&.prev_year || (end_date - 13.months)
       existing_months = @school.manual_readings.pluck(:month)

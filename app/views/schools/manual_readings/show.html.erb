@@ -28,7 +28,7 @@
             <%= if show_fuel_input(fuel_type, reading_form.object.month)
                   reading_form.input fuel_type, label: false
                 else
-                  t('schools.manual_readings.not_required')
+                  '-'
                 end %></td>
           </div>
         <% end %>
@@ -36,5 +36,6 @@
       </div>
     <% end %>
     <div class="mb-4"><%= f.submit t('common.labels.save'), class: 'btn btn-primary' %></div>
+    <p><%= t('schools.manual_readings.not_required') %></p>
   <% end %>
 <% end %>

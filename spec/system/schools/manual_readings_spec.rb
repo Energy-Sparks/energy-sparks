@@ -38,11 +38,25 @@ RSpec.describe 'manual readings' do
     school.configuration.update!(aggregate_meter_dates: { gas: { start_date: },
                                                           electricity: { start_date: start_date.advance(months: -1) } })
     visit school_manual_readings_path(school)
-    expect(all('td:first-child').map(&:text)).to eq(['August 2024', 'September 2024'])
+    expect(page).to have_content(
+      ['Date', 'Electricity', 'Gas', 'August 2024', 'Remove', 'September 2024', '-', 'Remove'].join("\n")
+    )
     all('input[type="number"]').each { |input| input.fill_in with: '5' }
     click_on 'Save'
     expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
       eq([[Date.new(2024, 8, 1), 5, 5],
           [Date.new(2024, 9, 1), nil, 5]])
+  end
+
+  it 'shows the correct fuels' do
+    fuel_configuration = school.configuration.fuel_configuration
+    fuel_configuration.instance_variable_set(:@has_gas, false)
+    school.configuration.update!(fuel_configuration:)
+    visit school_manual_readings_path(school)
+    expect(page).to have_content("Date\nElectricity\nJuly 2023\n")
+  end
+
+  it 'is missing some current year consumption' do
+    1/0
   end
 end
