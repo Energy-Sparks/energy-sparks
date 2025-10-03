@@ -43,4 +43,11 @@ module SchoolGroupsHelper
   def secr_format_number(number)
     number_with_delimiter(number.round(2))
   end
+
+  # Cache (and use cached) pages if the list of schools for the current user
+  # all have public sharing. If not, then their list is bespoke to them so
+  # dont cache the content.
+  def can_cache_group_advice?(schools)
+    schools.all?(&:data_sharing_public?)
+  end
 end

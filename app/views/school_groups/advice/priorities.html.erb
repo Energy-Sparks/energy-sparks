@@ -18,7 +18,9 @@
         <%= t('advice_pages.index.priorities.table_title') %>
       </h2>
 
-      <% cache [@school_group.most_recent_content_generation_run, I18n.locale], expires_in: 4.hours do %>
+      <% cache_if can_cache_group_advice?(@schools),
+                  [@school_group.most_recent_content_generation_run, I18n.locale],
+                  expires_in: 4.hours do %>
         <%= render 'school_groups/advice/priority_table',
                    school_group: @school_group,
                    path: [:priorities, @school_group, :advice],

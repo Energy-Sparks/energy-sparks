@@ -16,9 +16,9 @@
                  tab: @tab %>
 
       <div class="mt-4" id="<%= @advice_page_key %>-<%= @tab %>">
-        <% cache [@school_group.most_recent_content_generation_run,
-                  @advice_page.key,
-                  I18n.locale], expires_in: 4.hours do %>
+        <% cache_if can_cache_group_advice?(@schools),
+                    [@school_group.most_recent_content_generation_run, @advice_page.key, I18n.locale],
+                    expires_in: 4.hours do %>
           <%= render 'insights', school_group: @school_group %>
         <% end %>
       </div>
