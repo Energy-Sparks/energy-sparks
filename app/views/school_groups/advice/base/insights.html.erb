@@ -17,7 +17,7 @@
 
       <div class="mt-4" id="<%= @advice_page_key %>-<%= @tab %>">
         <% cache [@school_group.most_recent_content_generation_run,
-                  @advice_page.fuel_type,
+                  @advice_page.key,
                   I18n.locale], expires_in: 4.hours do %>
           <%= render 'insights', school_group: @school_group %>
         <% end %>
