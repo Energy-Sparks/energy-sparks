@@ -57,7 +57,9 @@ module Schools
       end
 
       def formatted_target_change(current_consumption, previous_consumption)
-        return '-' if current_consumption.nil? || previous_consumption.nil? || previous_consumption.zero?
+        if @data_warning || current_consumption.nil? || previous_consumption.nil? || previous_consumption.zero?
+          return '-'
+        end
 
         change = percent_change(current_consumption, previous_consumption)
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
