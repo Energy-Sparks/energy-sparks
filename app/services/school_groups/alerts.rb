@@ -7,7 +7,7 @@ module SchoolGroups
     # Summarise alerts being shown across schools in the group, exclude any that aren't
     # curerntly relevant for the group dashboard
     def summarise
-      summarised_alerts.reject do |alert|
+      @summarise ||= summarised_alerts.reject do |alert|
         content = alert.alert_type_rating.current_content
 
         !content.meets_timings?(scope: :group_dashboard_alert, today: Time.zone.today) ||

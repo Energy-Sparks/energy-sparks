@@ -6,7 +6,7 @@ module SchoolGroups
     end
 
     def priority_action_count
-      priority_actions.keys.count
+      @priority_action_count ||= priority_actions.keys.count
     end
 
     # returns a hash of alert_type_rating to a list of ManagementPriority
