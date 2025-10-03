@@ -6,7 +6,7 @@ module SchoolGroupAdvice
   end
 
   def set_counts
-    @priority_action_count = SchoolGroups::PriorityActions.new(@schools).priority_action_count
-    @alert_count = SchoolGroups::Alerts.new(@schools).summarise.count
+    @priority_actions_service = SchoolGroups::PriorityActions.new(@schools)
+    @alerts_service = SchoolGroups::Alerts.new(@schools)
   end
 end
