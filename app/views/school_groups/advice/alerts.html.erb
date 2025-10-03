@@ -1,20 +1,6 @@
-<% content_for :page_title, "#{t('school_groups.advice.alerts.title')} | #{@school_group.name}" %>
-
-<% content_for :dashboard_header do %>
-  <%= render Layout::Cards::PageHeaderComponent.new(
-        title: t('school_groups.advice.alerts.title'),
-        subtitle: t('school_groups.advice.alerts.subtitle_html')
-      ) %>
+<%= render 'school_groups/advice/shared/advice_page',
+           page_title: t('school_groups.advice.alerts.title'),
+           page_subtitle: t('school_groups.advice.alerts.subtitle_html'),
+           school_group: @school_group do %>
+  <%= render Dashboards::GroupAlertsComponent.new(school_group: @school_group, grouped: true) %>
 <% end %>
-
-<div class="container">
-  <div class="row mt-2">
-    <div id='group-advice-page-nav' class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
-      <%= render 'school_groups/advice/shared/nav', school_group: @school_group %>
-    </div>
-    <div id='group-advice-page-content' class="col-md-9 col-lg-9 col-xl-10">
-      <%= render Dashboards::GroupAlertsComponent.new(school_group: @school_group,
-                                                      grouped: true) %>
-    </div>
-  </div>
-</div>
