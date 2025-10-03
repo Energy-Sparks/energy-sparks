@@ -103,11 +103,11 @@ module SchoolGroups
     # ManagementPriority record. These are all the ratings that school might be graded
     # against
     def alert_type_ratings
-      @alert_type_ratings = AlertTypeRating.management_priorities_title
+      @alert_type_ratings ||= AlertTypeRating.management_priorities_title
     end
 
     def priorities
-      @priorities = ManagementPriority.for_schools(@schools)
+      @priorities ||= ManagementPriority.for_schools(@schools)
     end
   end
 end
