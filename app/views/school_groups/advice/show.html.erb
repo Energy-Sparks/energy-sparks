@@ -9,7 +9,7 @@
 
   <% cache_if can_cache_group_advice?(@schools),
               group_advice_cache_key(@school_group, [params[:metric] || :change]),
-              expires_in: 4.hours do %>
+              expires_in: SchoolGroups::AdviceController::CACHE_TIME do %>
     <%= render Dashboards::GroupEnergySummaryComponent.new(
           school_group: @school_group,
           schools: @schools,
