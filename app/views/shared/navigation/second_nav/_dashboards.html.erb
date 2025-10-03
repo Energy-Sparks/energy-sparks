@@ -1,3 +1,9 @@
+<% if request.path.starts_with?('/school_groups') && can?(:compare, current_school_group) %>
+  <li class="nav-item nowrap">
+    <%= link_to t('dashboards.group_dashboard'),
+                school_group_path(current_school_group), class: 'nav-link dash' %>
+  </li>
+<% end %>
 <% if current_school %>
   <% if can?(:show_pupils_dash, current_school) &&
         !current_page?(pupils_school_path(current_school)) %>
