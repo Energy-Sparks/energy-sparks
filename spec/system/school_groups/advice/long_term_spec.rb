@@ -107,7 +107,7 @@ RSpec.shared_examples_for 'a group long term advice page' do
           let(:table_id) { "##{advice_page.key}-savings" }
           let(:expected_header) do
             [
-              ['', 'Savings', ''],
+              ['', 'Potential savings', ''],
               ['School', 'Category', 'Energy (kWh)', 'Cost (£)', 'CO2 (kg)', '']
             ]
           end

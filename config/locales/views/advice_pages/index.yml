@@ -13,7 +13,7 @@ en:
             description: Description
             fuel_type: Fuel
             kwh_saving: Energy (kWh)
-            savings: Savings
+            savings: Potential savings
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
         table_title: Prioritised opportunities
         title: Energy saving opportunities

@@ -289,7 +289,7 @@ describe 'school groups', :school_groups, type: :system do
           end
 
           it 'has a list of schools' do
-            expect(page).to have_content('Savings')
+            expect(page).to have_content('Potential savings')
             expect(page).to have_content('This action has been identified as a priority for the following schools')
             expect(page).to have_content(school_1.name)
           end
