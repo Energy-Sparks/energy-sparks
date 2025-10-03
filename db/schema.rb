@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_01_134714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1905,8 +1905,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_101114) do
   create_table "schools_manual_readings", force: :cascade do |t|
     t.bigint "school_id", null: false
     t.date "month", null: false
-    t.integer "electricity"
-    t.integer "gas"
+    t.float "electricity"
+    t.float "gas"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id", "month"], name: "index_schools_manual_readings_on_school_id_and_month", unique: true

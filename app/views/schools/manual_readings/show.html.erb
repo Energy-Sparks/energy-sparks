@@ -1,42 +1,40 @@
 <h1><%= t('manage_school_menu.manage_manual_readings') %></h1>
-<% if @current_target.nil? %>
-  <p><%= t('schools.manual_readings.set_target_html', path: new_school_school_target_path(@school)) %></p>
-<% elsif @months.values.flatten.empty? %>
+<% if @school.manual_readings.empty? %>
   <p><%= t('schools.manual_readings.enough_data') %></p>
 <% else %>
-  <p><%= t('schools.manual_readings.intro') %></p>
+  <%= t('schools.manual_readings.intro_html') %>
   <% if @current_target %>
     <p><%= t('schools.manual_readings.completed', start_date: @current_target.start_date.to_fs(:es_long)) %></p>
   <% end %>
   <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
-    <table>
-      <thead>
-        <tr>
-          <th><%= t('common.labels.date') %></th>
-          <% @months.each do |fuel_type, months| %>
-            <th><%= t("common.#{fuel_type}") unless months.empty? %></th>
+    <div class="row mb-2">
+      <div class="col-md-2"><strong><%= t('common.labels.date') %></strong></div>
+      <% @meter_start_dates.each do |fuel_type, months| %>
+        <div class="col-md-2"><strong><%= t("common.#{fuel_type}") %></strong></div>
+      <% end %>
+    </div>
+    <%= f.simple_fields_for :manual_readings, @readings do |reading_form| %>
+      <div class="row">
+        <div class="col-md-2">
+          <% if reading_form.object.month %>
+            <%= reading_form.hidden_field :month %>
+            <%= I18n.l(reading_form.object.month, format: '%B %Y') %>
+          <% else %>
+            <%= reading_form.input :month, label: false, discard_day: true, end_year: Date.current.year %>
           <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <%= f.simple_fields_for :manual_readings, @readings do |reading_form| %>
-          <tr>
-            <td>
-              <% if reading_form.object.month %>
-                <%= reading_form.hidden_field :month %>
-                <%= I18n.l(reading_form.object.month, format: '%B %Y') %>
-              <% else %>
-                <%= reading_form.input :month, label: false, discard_day: true %>
-              <% end %>
-            </td>
-            <td><%= if @months[:electricity]&.include?(reading_form.object.month)
-                      reading_form.input :electricity, label: false
-                    end %></td>
-            <td><%= reading_form.input :gas, label: false if @months[:gas]&.include?(reading_form.object.month) %></td>
-          </tr>
+        </div>
+        <% @meter_start_dates.each do |fuel_type, months| %>
+          <div class="col-md-2">
+            <%= if show_fuel_input(fuel_type, reading_form.object.month)
+                  reading_form.input fuel_type, label: false
+                else
+                  t('schools.manual_readings.not_required')
+                end %></td>
+          </div>
         <% end %>
-      </tbody>
-    </table>
-    <%= f.submit t('common.labels.save') %>
+        <div class="col-md-1"><%= reading_form.input :_destroy, as: :boolean, label: t('common.labels.remove') %></div>
+      </div>
+    <% end %>
+    <div class="mb-4"><%= f.submit t('common.labels.save'), class: 'btn btn-primary' %></div>
   <% end %>
 <% end %>

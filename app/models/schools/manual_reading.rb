@@ -5,8 +5,8 @@
 # Table name: schools_manual_readings
 #
 #  created_at  :datetime         not null
-#  electricity :integer
-#  gas         :integer
+#  electricity :float
+#  gas         :float
 #  id          :bigint(8)        not null, primary key
 #  month       :date             not null
 #  school_id   :bigint(8)        not null
@@ -19,7 +19,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (school_id => schools.id)
+#  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 module Schools
   class ManualReading < ApplicationRecord
