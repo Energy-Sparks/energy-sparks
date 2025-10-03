@@ -119,10 +119,12 @@ class Alert < ApplicationRecord
   end
 
   def self.summarised_alerts(schools:)
+    list_of_ids = schools.map(&:id).join(',')
     query = <<-SQL.squish
       WITH latest_runs AS (
         SELECT DISTINCT ON (school_id) id
         FROM alert_generation_runs
+        WHERE school_id IN (#{list_of_ids})
         ORDER BY school_id, created_at DESC
       )
       SELECT
@@ -146,7 +148,7 @@ class Alert < ApplicationRecord
           one_year_saving_kwh FLOAT,
           time_of_year_relevance FLOAT
         )
-      WHERE schools.id IN (#{schools.map(&:id).join(',')})
+      WHERE schools.id IN (#{list_of_ids})
       AND
        average_one_year_saving_gbp IS NOT NULL
       AND
