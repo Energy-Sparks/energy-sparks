@@ -1,7 +1,7 @@
 module SchoolGroups
   class PriorityActions
     def initialize(schools)
-      @schools = schools
+      @schools = schools.data_visible
       @ratings_for_reporting = {}
     end
 
