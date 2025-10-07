@@ -130,7 +130,7 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
     let(:html) do
       render_inline(described_class.new(
                       school_group: school_group,
-                      schools: [],
+                      schools: school_group.schools,
                       fuel_type: :electricity,
                       metric: :usage
       ))
