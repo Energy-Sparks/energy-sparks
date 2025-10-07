@@ -30,13 +30,11 @@ module Dashboards
     private
 
     def start_date(recent_usage, fuel_type)
-      return nil unless recent_usage
-      recent_usage.dig(fuel_type, periods.first).start_date
+      recent_usage&.dig(fuel_type, periods.first)&.start_date
     end
 
     def end_date(recent_usage, fuel_type)
-      return nil unless recent_usage
-      recent_usage.dig(fuel_type, periods.first).end_date
+      recent_usage&.dig(fuel_type, periods.first)&.end_date
     end
 
     def format_date(value)
