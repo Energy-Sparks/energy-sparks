@@ -16,6 +16,7 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
       id: 'custom-id',
       classes: 'extra-classes',
       school_group: school_group,
+      schools: school_group.schools,
       user: create(:admin)
     }
   end

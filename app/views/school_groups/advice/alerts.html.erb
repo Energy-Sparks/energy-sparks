@@ -2,5 +2,7 @@
            page_title: t('school_groups.advice.alerts.title'),
            page_subtitle: t('school_groups.advice.alerts.subtitle_html'),
            school_group: @school_group do %>
-  <%= render Dashboards::GroupAlertsComponent.new(school_group: @school_group, grouped: true) %>
+  <%= render Dashboards::GroupAlertsComponent.new(school_group: @school_group,
+                                                  schools: @schools,
+                                                  grouped: true) %>
 <% end %>
