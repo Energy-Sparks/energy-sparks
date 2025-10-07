@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'School group dashboard page', :school_groups do
   let!(:school_group) { create(:school_group, :with_default_scoreboard, :with_partners, :with_active_schools, count: 2, public: true) }
+  let!(:school) { create(:school, :with_fuel_configuration, school_group: school_group) }
+
+  include_context 'school group recent usage'
 
   before do
     Flipper.enable(:group_dashboards_2025)
@@ -21,7 +24,6 @@ describe 'School group dashboard page', :school_groups do
     end
 
     before do
-      create(:report, key: :annual_energy_use)
       create :school, :with_points, score_points: 50, school_group: school_group
       visit school_group_path(school_group)
     end
@@ -38,12 +40,41 @@ describe 'School group dashboard page', :school_groups do
       end
     end
 
-    it 'displays the charts' do
-      within('div.charts-group-dashboard-charts-component') do
-        expect(page).to have_content(I18n.t('school_groups.show.energy_use.title'))
+    it_behaves_like 'it contains the expected data table', aligned: true do
+      let(:table_id) { '#school-group-recent-usage-electricity' }
+      let(:expected_header) do
+        [
+          ['School', 'Last week', 'Last month', 'Last year']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [school.name, '-16%', '-16%', '-16%']
+        ]
       end
     end
 
+    it_behaves_like 'schools are filtered by permissions'
+
+    context 'when toggling to kWh', :js do
+      before do
+        choose(option: 'usage')
+      end
+
+      it_behaves_like 'it contains the expected data table', aligned: true do
+        let(:table_id) { '#school-group-recent-usage-electricity' }
+        let(:expected_header) do
+          [
+            ['School', 'Last week', 'Last month', 'Last year']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [school.name, '910', '910', '910']
+          ]
+        end
+      end
+    end
 
     context 'with learn more / select school section' do
       it 'shows select school section' do
@@ -74,6 +105,15 @@ describe 'School group dashboard page', :school_groups do
       within('#partner-footer') do
         expect(page).to have_link(href: school_group.partners.first.url)
       end
+    end
+
+    context 'when logged in as group admin for a different group' do
+      before do
+        sign_in(create(:group_admin, school_group: create(:school_group)))
+        visit school_group_advice_path(school_group)
+      end
+
+      it_behaves_like 'schools are filtered by permissions', admin: false
     end
   end
 end
