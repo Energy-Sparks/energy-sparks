@@ -2,9 +2,10 @@ module Dashboards
   class GroupInsightsComponent < ApplicationComponent
     attr_reader :school_group, :user
 
-    def initialize(school_group:, user:, **kwargs)
+    def initialize(school_group:, schools:, user:, **kwargs)
       super
       @school_group = school_group
+      @schools = schools
       @user = user
     end
 
@@ -21,7 +22,7 @@ module Dashboards
     end
 
     def alerts_component
-      @alerts_component ||= Dashboards::GroupAlertsComponent.new(school_group: school_group, id: 'group-alerts')
+      @alerts_component ||= Dashboards::GroupAlertsComponent.new(school_group: school_group, schools: @schools, id: 'group-alerts')
     end
 
     def render?

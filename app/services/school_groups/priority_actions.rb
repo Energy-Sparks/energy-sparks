@@ -1,7 +1,7 @@
 module SchoolGroups
   class PriorityActions
     def initialize(schools)
-      @schools = schools
+      @schools = schools.data_visible
       @ratings_for_reporting = {}
     end
 
@@ -103,11 +103,11 @@ module SchoolGroups
     # ManagementPriority record. These are all the ratings that school might be graded
     # against
     def alert_type_ratings
-      @alert_type_ratings = AlertTypeRating.management_priorities_title
+      @alert_type_ratings ||= AlertTypeRating.management_priorities_title
     end
 
     def priorities
-      @priorities = ManagementPriority.for_schools(@schools)
+      @priorities ||= ManagementPriority.for_schools(@schools)
     end
   end
 end
