@@ -56,6 +56,7 @@ module Dashboards
     end
 
     def render?
+      return false unless @schools.any?
       prompts? || summarised_alerts.any?
     end
 

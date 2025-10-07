@@ -12,6 +12,7 @@ module Dashboards
     end
 
     def render?
+      return false unless @schools.any?
       total_savings.any?
     end
 
