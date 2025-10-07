@@ -194,5 +194,15 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
         expect(html).to have_content(' number: 1; schools: 1 school; describe_schools: all schools; 1 kWh, £2, 3 kg CO2')
       end
     end
+
+    context 'when there are no data enabled schools' do
+      subject(:component) { described_class.new(**params) }
+
+      before do
+        school_group.schools.update_all(data_enabled: false)
+      end
+
+      it { expect(component.render?).to be(false) }
+    end
   end
 end

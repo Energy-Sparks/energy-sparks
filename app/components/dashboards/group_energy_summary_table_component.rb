@@ -8,7 +8,7 @@ module Dashboards
     def initialize(school_group:, schools:, fuel_type:, metric: :change, periods: PERIODS, show_clusters: false, **kwargs)
       super
       @school_group = school_group
-      @schools = schools
+      @schools = schools.data_enabled
       @fuel_type = fuel_type
       @metric = metric
       @show_clusters = show_clusters
