@@ -61,6 +61,7 @@ module Dashboards
     end
 
     def summarised_alerts
+      return [] unless @schools.any?
       @summarised_alerts ||= SchoolGroups::Alerts.new(@schools).summarise
     end
 
