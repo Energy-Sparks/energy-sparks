@@ -2,6 +2,16 @@
 
 require 'rails_helper'
 
+RSpec.shared_examples 'a target comparison with zero previous consumption' do
+  before do
+    school = create(:school)
+    create(:school_target, :with_monthly_consumption, school:, fuel_type:, target: 5,
+                                                      start_date: Date.new(2024, 3, 1), previous_consumption: 0)
+  end
+
+  it_behaves_like 'a school comparison report with a table'
+end
+
 describe '*_targets' do
   let!(:expected_school) do
     school = create(:school)
@@ -20,7 +30,7 @@ describe '*_targets' do
   end
   let(:expected_table) do
     [headers,
-     [expected_school.name, '-5&percnt;', '+2.73&percnt;', '12,000', '12,600', 'Friday 1 Mar 2024'],
+     [expected_school.name, '-5&percnt;', '+2.73&percnt;', '12,000', '12,600', '01 Mar 2024'],
      ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
   end
   let(:expected_csv) do
@@ -42,6 +52,7 @@ describe '*_targets' do
     it_behaves_like 'a school comparison report'
     it_behaves_like 'a school comparison report with a table'
     it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a target comparison with zero previous consumption'
   end
 
   describe 'gas_targets' do
@@ -52,5 +63,6 @@ describe '*_targets' do
     it_behaves_like 'a school comparison report'
     it_behaves_like 'a school comparison report with a table'
     it_behaves_like 'a school comparison report with a chart'
+    it_behaves_like 'a target comparison with zero previous consumption'
   end
 end
