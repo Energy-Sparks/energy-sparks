@@ -1,7 +1,7 @@
 module SchoolGroups
   class PriorityActions
     def initialize(schools)
-      @schools = schools.data_visible
+      @schools = schools.data_enabled
       @ratings_for_reporting = {}
     end
 
@@ -12,6 +12,7 @@ module SchoolGroups
     # returns a hash of alert_type_rating to a list of ManagementPriority
     # there will be at most one ManagementPriority for a given alert type rating for a school
     def priority_actions
+      return {} unless @schools.any?
       @priority_actions ||= find_priority_actions
     end
 

@@ -3,14 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Dashboards::GroupLearnMoreComponent, :include_application_helper, :include_url_helpers, type: :component do
-  let(:school_group) { create(:school_group) }
-  let(:schools) { [] }
+  let!(:school_group) { create(:school_group) }
   let(:params) do
     {
       id: 'custom-id',
       classes: 'extra-classes',
       school_group: school_group,
-      schools: schools,
+      schools: school_group.schools,
     }
   end
   let(:i18n_scope) { 'components.dashboards.group_learn_more' }

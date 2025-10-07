@@ -1,7 +1,7 @@
 module SchoolGroups
   class Alerts
     def initialize(schools)
-      @schools = schools
+      @schools = schools.data_enabled
     end
 
     # Summarise alerts being shown across schools in the group, exclude any that aren't
@@ -19,6 +19,7 @@ module SchoolGroups
 
     # Find the most recent alerts for a specific alert type
     def alerts(alert_type)
+      return {} unless @schools.any?
       alerts = Alert.latest_for_alert_type(schools: @schools, alert_type: alert_type).filter_map do |alert|
         [alert.school, alert]
       end
@@ -33,6 +34,7 @@ module SchoolGroups
     # Could refine this, e.g. if there is a small number of outliers, then include that alert as well to promote
     # investigation.
     def summarised_alerts
+      return {} unless @schools.any?
       Alert.summarised_alerts(schools: @schools)
            .group_by(&:alert_type)
            .map { |_, alerts| alerts.max_by(&:number_of_schools) }.to_a
