@@ -49,6 +49,8 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
     end
 
     it 'has the expected header' do
+      expect(html).to have_css('table thead tr th', text: I18n.t(:start_date, scope: 'common.labels'))
+      expect(html).to have_css('table thead tr th', text: I18n.t(:end_date, scope: 'common.labels'))
       expect(html).to have_css('table thead tr th', text: I18n.t(:last_week, scope: 'common.labels'))
       expect(html).to have_css('table thead tr th', text: I18n.t(:last_month, scope: 'common.labels'))
       expect(html).to have_css('table thead tr th', text: I18n.t(:last_year, scope: 'common.labels'))
@@ -56,6 +58,8 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
 
     it 'has the expected cells' do
       expect(html).to have_css('table tbody tr td', text: school.name)
+      expect(html).to have_css('table tbody tr td', text: '26 Sep 2024')
+      expect(html).to have_css('table tbody tr td', text: '26 Sep 2025')
       expect(html).to have_css('table tbody tr td', text: '168') # 0.5 kWh, 48 HH periods, 7 days
       expect(html).to have_css('table tbody tr td', text: '744')
       expect(html).to have_css('table tbody tr td', text: '8,740')
