@@ -17,7 +17,8 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
     {
       id: 'custom-id',
       classes: 'extra-classes',
-      school_group: school_group
+      school_group: school_group,
+      schools: school_group.schools
     }
   end
 
@@ -106,6 +107,7 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
           id: 'custom-id',
           classes: 'extra-classes',
           school_group: school_group,
+          schools: school_group.schools,
           grouped: true
         }
       end
@@ -168,6 +170,28 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
 
       it 'interpolates correctly' do
         expect(html).to have_content(' number: 2; schools: 2 schools; describe_schools: all schools; 2 kWh, £4, 6 kg CO2')
+      end
+    end
+
+    context 'when some schools are not data enabled' do
+      before do
+        school_group.schools.last.update!(data_enabled: false)
+      end
+
+      let(:group_dashboard_title) { 'number: {{number_of_schools}}; schools: {{schools}}; describe_schools: {{describe_schools}}; {{total_one_year_saving_kwh}}, {{total_average_one_year_saving_gbp}}, {{total_one_year_saving_co2}}' }
+
+      let(:content_version) do
+        create(:alert_type_rating_content_version,
+               group_dashboard_title: group_dashboard_title,
+               alert_type_rating: create(:alert_type_rating,
+                                         alert_type: alert_type,
+                                         group_dashboard_alert_active: true,
+                                         rating_from: 6.0,
+                                         rating_to: 10.0))
+      end
+
+      it 'only includes the data enabled schools' do
+        expect(html).to have_content(' number: 1; schools: 1 school; describe_schools: all schools; 1 kWh, £2, 3 kg CO2')
       end
     end
   end
