@@ -7,15 +7,17 @@ module Dashboards
     def initialize(school_group:, schools:, metric: :gbp, **_kwargs)
       super
       @school_group = school_group
-      @schools = schools
+      @schools = schools.data_enabled
       @metric = metric
     end
 
     def render?
+      return false unless @schools.any?
       total_savings.any?
     end
 
     def before_render
+      return unless @schools.any?
       @priority_action_alert_rating, @savings = total_savings.to_a.sample
     end
 
