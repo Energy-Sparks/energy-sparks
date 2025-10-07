@@ -127,6 +127,12 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
   end
 
   context 'when there are no schools' do
+    let!(:school) do
+      create(:school,
+             :with_basic_configuration_single_meter_and_tariffs,
+             school_group: create(:school_group))
+    end
+
     let(:html) do
       render_inline(described_class.new(
                       school_group: school_group,
