@@ -40,7 +40,6 @@ class ManagementPriority < ApplicationRecord
     joins(:alert, alert: :alert_type).where.not(alert_type: { class_name: ['AlertSolarPVBenefitEstimator', 'AlertHotWaterInsulationAdvice'] })
   end
 
-
   # Returns an Array of OpenStruct
   def self.for_schools(schools)
     query = <<-SQL.squish
