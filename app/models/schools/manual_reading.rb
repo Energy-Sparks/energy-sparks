@@ -29,10 +29,10 @@ module Schools
 
     belongs_to :school
     validates :month, presence: true
-    validates :electricity, presence: true, unless: :gas?
-    validates :gas, presence: true, unless: :electricity?
-    validates :electricity, numericality: { greater_than_or_equal_to: 0 }, if: :electricity?
-    validates :gas, numericality: { greater_than_or_equal_to: 0 }, if: :gas?
+    validates :electricity, presence: true, if: -> { gas.nil? }
+    validates :gas, presence: true, if: -> { electricity.nil? }
+    validates :electricity, numericality: { greater_than: 0 }, unless: -> { electricity.nil? }
+    validates :gas, numericality: { greater_than: 0 }, unless: -> { gas.nil? }
     validate :start_of_month
 
     def start_of_month

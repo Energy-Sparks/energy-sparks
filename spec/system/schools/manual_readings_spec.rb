@@ -18,11 +18,6 @@ RSpec.describe 'manual readings' do
     expect(page).to have_current_path("/schools/#{school.slug}/manual_readings")
   end
 
-  it 'links to new target when no target set' do
-    visit school_manual_readings_path(school)
-    expect(page).to have_content('Please set a target so your missing readings can be calcuated.')
-  end
-
   it 'has enough data' do
     target = create(:school_target, school:)
     start_date = target.start_date.prev_year.beginning_of_month
@@ -32,21 +27,35 @@ RSpec.describe 'manual readings' do
       have_content("We have enough data from your meters so you don't need to enter any readings manually.")
   end
 
-  it 'allows creating readings when required' do
+
+  it 'allows creating readings with a target' do
     target = create(:school_target, school:)
-    start_date = target.start_date.advance(months: -10)
+    start_date = target.start_date - 10.months
     school.configuration.update!(aggregate_meter_dates: { gas: { start_date: },
-                                                          electricity: { start_date: start_date.advance(months: -1) } })
+                                                          electricity: { start_date: start_date - 1.month } })
     visit school_manual_readings_path(school)
     expect(page).to have_content(
-      ['Date', 'Electricity', 'Gas', 'August 2024', 'Remove', 'September 2024', '-', 'Remove'].join("\n")
+      ['Date', 'Electricity', 'Gas', 'August 2024', 'September 2024', '-'].join("\n")
     )
-    all('input[type="number"]').each { |input| input.fill_in with: '5' }
+    all('.edit_school input[type="text"]').each { |input| input.fill_in with: '5' }
     click_on 'Save'
     expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
       eq([[Date.new(2024, 8, 1), 5, 5],
           [Date.new(2024, 9, 1), nil, 5]])
   end
+
+  it 'allows creating readings without a target' do
+    school.configuration.update!(aggregate_meter_dates: {})
+    visit school_manual_readings_path(school)
+    expect(page).to have_content(
+      ['Date', 'Electricity', 'Gas', *(0..12).map { |i| (Date.new(2024, 7) + i.months).strftime('%B %Y') }].join("\n")
+    )
+    all('.edit_school input[type="text"]').each { |input| input.fill_in with: '5' }
+    click_on 'Save'
+    expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
+      eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, 5] })
+  end
+
 
   it 'shows the correct fuels' do
     fuel_configuration = school.configuration.fuel_configuration
@@ -56,7 +65,10 @@ RSpec.describe 'manual readings' do
     expect(page).to have_content("Date\nElectricity\nJuly 2023\n")
   end
 
-  it 'is missing some current year consumption' do
-    1/0
+  it 'validates invalid readings' do
+    visit school_manual_readings_path(school)
+    first('.edit_school input[type="text"]').fill_in with: 'a'
+    click_on 'Save'
+    expect(page).to have_content(['July 2023', 'is not a number'].join("\n"))
   end
 end

@@ -26,13 +26,17 @@
         <% @meter_start_dates.each do |fuel_type, months| %>
           <div class="col-md-2">
             <%= if show_fuel_input(fuel_type, reading_form.object.month)
-                  reading_form.input fuel_type, label: false
+                  reading_form.input fuel_type, label: false, as: :string, pattern: '[.0-9]*',
+                                                input_html: { inputmode: 'numeric' }
                 else
                   '-'
                 end %></td>
           </div>
         <% end %>
-        <div class="col-md-1"><%= reading_form.input :_destroy, as: :boolean, label: t('common.labels.remove') %></div>
+        <% if reading_form.object.id %>
+          <div class="col-md-1"><%= reading_form.input :_destroy, as: :boolean, label: t('common.labels.remove') %>
+          </div>
+        <% end %>
       </div>
     <% end %>
     <div class="mb-4"><%= f.submit t('common.labels.save'), class: 'btn btn-primary' %></div>

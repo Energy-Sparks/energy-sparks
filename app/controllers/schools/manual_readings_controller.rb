@@ -12,14 +12,9 @@ module Schools
                                               .index_with do |fuel_type|
         @school.configuration.meter_start_date(fuel_type)
       end
-      end_date = @meter_start_dates.values.compact.max || Date.current
-      return if end_date < 1.year.ago || @meter_start_dates.empty?
+      return if @meter_start_dates.empty?
 
-      start_date = @school.current_target&.start_date&.prev_year || (end_date - 13.months)
-      existing_months = @school.manual_readings.pluck(:month)
-      DateService.start_of_months(start_date, end_date).each do |month|
-        @school.manual_readings.build(month:) unless existing_months.include?(month)
-      end
+      build_manual_readings
       @readings = @school.manual_readings.sort_by(&:month)
     end
 
@@ -28,11 +23,27 @@ module Schools
       if @school.save
         redirect_to school_manual_readings_path(@school), notice: t('common.saved')
       else
+        show
         render :show
       end
     end
 
     private
+
+    def build_manual_readings
+      end_date = @meter_start_dates.values.compact.max || Date.current
+      return if end_date < 1.year.ago
+
+      start_date = @school.current_target&.start_date&.prev_year || (end_date - 13.months)
+      build_missing_readings(start_date, end_date)
+    end
+
+    def build_missing_readings(start_date, end_date)
+      existing_months = @school.manual_readings.map(&:month)
+      DateService.start_of_months(start_date, end_date).each do |month|
+        @school.manual_readings.build(month: month) unless existing_months.include?(month)
+      end
+    end
 
     def set_breadcrumbs
       @breadcrumbs = [{ name: I18n.t('manage_school_menu.manage_manual_readings') }]
@@ -43,7 +54,8 @@ module Schools
     end
 
     def show_fuel_input(fuel_type, month)
-      month && @meter_start_dates[fuel_type] && month < @meter_start_dates[fuel_type]
+      month && @meter_start_dates.key?(fuel_type) &&
+        (@meter_start_dates[fuel_type].nil? || month < @meter_start_dates[fuel_type])
     end
     helper_method :show_fuel_input
   end
