@@ -1,5 +1,8 @@
 module SchoolGroups
   class AdviceController < SchoolGroups::Advice::BaseController
+    MODAL_ID = 'analysis-footnotes'.freeze
+    CACHE_TIME = 4.hours
+
     include Scoring
     include Promptable
 

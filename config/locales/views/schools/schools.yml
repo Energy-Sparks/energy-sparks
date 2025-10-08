@@ -243,8 +243,10 @@ en:
     manual_readings:
       completed: This table needs to be completed to calculate your target starting %{start_date}.
       enough_data: We have enough data from your meters so you don't need to enter any readings manually.
-      intro: This table allows you to provide total kWh values for the whole school using data from your monthly bill or sourced from your energy supplier portal.
-      set_target_html: Please <a href="%{path}">set a target</a> so your missing readings can be calcuated.
+      intro_html: |-
+        <p>We have limited energy data for your school. To allow you to set targets to reduce your energy use you can use this form to provide historical usage data. You will need to check either your monthly bill or your energy supplier portal and then provide the total kWh used for each month.</p>
+        <p>If we are later able to get access to historical half-hourly readings from your energy supplier then we will automatically use these instead.</p>
+      not_required: Entries marked with a "-" already have data.
     meters:
       creatable_meter_types:
         electricity: Electricity
@@ -521,7 +523,7 @@ en:
         set_this_target: Set this target
         start_date: Start date
         update_our_target: Update our target
-        you_are_currently_aiming_to_achieve_your_target_by_html: You are currenly aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
+        you_are_currently_aiming_to_achieve_your_target_by_html: You are currently aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
         where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets

@@ -1,17 +1,18 @@
 module SchoolGroups
   class PriorityActions
     def initialize(schools)
-      @schools = schools
+      @schools = schools.data_enabled
       @ratings_for_reporting = {}
     end
 
     def priority_action_count
-      priority_actions.keys.count
+      @priority_action_count ||= priority_actions.keys.count
     end
 
     # returns a hash of alert_type_rating to a list of ManagementPriority
     # there will be at most one ManagementPriority for a given alert type rating for a school
     def priority_actions
+      return {} unless @schools.any?
       @priority_actions ||= find_priority_actions
     end
 
@@ -103,11 +104,11 @@ module SchoolGroups
     # ManagementPriority record. These are all the ratings that school might be graded
     # against
     def alert_type_ratings
-      @alert_type_ratings = AlertTypeRating.management_priorities_title
+      @alert_type_ratings ||= AlertTypeRating.management_priorities_title
     end
 
     def priorities
-      @priorities = ManagementPriority.for_schools(@schools)
+      @priorities ||= ManagementPriority.for_schools(@schools)
     end
   end
 end

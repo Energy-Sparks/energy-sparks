@@ -7,10 +7,10 @@ module SchoolGroupsHelper
     list_of_savings.sort {|a, b| a.school.name <=> b.school.name }
   end
 
-  def radio_button_checked_for(metric)
-    return true if params['metric'] == metric
-    return true if params['metric'].blank? && metric == 'change'
-    return true if %w[usage co2 cost change].exclude?(params['metric']) && metric == 'change'
+  def radio_button_checked_for(selected_metric, metric)
+    return true if selected_metric == metric
+    return true if selected_metric.blank? && metric == :change
+    return true if %i[usage co2 cost change].exclude?(selected_metric) && metric == :change
 
     false
   end
@@ -42,5 +42,16 @@ module SchoolGroupsHelper
 
   def secr_format_number(number)
     number_with_delimiter(number.round(2))
+  end
+
+  # Cache (and use cached) pages if the list of schools for the current user
+  # all have public sharing. If not, then their list is bespoke to them so
+  # dont cache the content.
+  def can_cache_group_advice?(schools)
+    schools.all?(&:data_sharing_public?)
+  end
+
+  def group_advice_cache_key(school_group, additional = nil)
+    [school_group.most_recent_content_generation_run, *additional, I18n.locale]
   end
 end

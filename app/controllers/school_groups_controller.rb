@@ -9,7 +9,8 @@ class SchoolGroupsController < ApplicationController
 
   load_resource
 
-  before_action :find_schools_and_partners
+  before_action :find_partners
+  before_action :load_schools, except: [:map]
   before_action :redirect_unless_authorised, except: [:map]
   before_action :breadcrumbs
   before_action :find_school_group_fuel_types
@@ -19,7 +20,17 @@ class SchoolGroupsController < ApplicationController
 
   def show
     if Flipper.enabled?(:group_dashboards_2025, current_user)
-      render :show, layout: 'dashboards'
+      respond_to do |format|
+        format.html do
+          render :show, layout: 'dashboards'
+        end
+        format.csv do
+          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                              schools: @schools,
+                                                              include_cluster: include_cluster).export,
+                    filename: csv_filename_for('recent_usage')
+        end
+      end
     else
       respond_to do |format|
         format.html {}
@@ -136,14 +147,7 @@ class SchoolGroupsController < ApplicationController
     build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
   end
 
-  def find_schools_and_partners
-    @schools = if action_name == :map
-                 # Display all active schools on the map view
-                 @school_group.schools.active.by_name
-               else
-                 # Rely on CanCan to filter the list of schools to those that can be shown to the current user
-                 @school_group.schools.active.accessible_by(current_ability, :show).by_name
-               end
+  def find_partners
     @partners = @school_group.partners
   end
 
