@@ -108,10 +108,19 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
       end
     end
 
-    it 'returns the expected values' do
+    it 'returns values for all schools' do
       school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
       school_2_priority = OpenStruct.new(school: school_2, average_one_year_saving_gbp: 2000, one_year_saving_co2: 2200, one_year_saving_kwh: 2222)
       expect(priority_actions[alert_type_rating_high]).to match_array([school_1_priority, school_2_priority])
+    end
+
+    context 'when a school is not data visible' do
+      let(:school_2) { create(:school, school_group: school_group, visible: true, data_enabled: false) }
+
+      it 'returns values for the data enabled school only' do
+        school_1_priority = OpenStruct.new(school: school_1, average_one_year_saving_gbp: 1000, one_year_saving_co2: 1100, one_year_saving_kwh: 1111)
+        expect(priority_actions[alert_type_rating_high]).to match_array([school_1_priority])
+      end
     end
   end
 
@@ -135,6 +144,14 @@ RSpec.describe SchoolGroups::PriorityActions, type: :service do
 
     it 'calculates correct kwh total' do
       expect(total_savings[alert_type_rating_high].one_year_saving_kwh).to eq 3333
+    end
+
+    context 'when a school is not data visible' do
+      let(:school_2) { create(:school, school_group: school_group, visible: true, data_enabled: false) }
+
+      it 'returns values for the data enabled school only' do
+        expect(total_savings[alert_type_rating_high].average_one_year_saving_gbp).to eq 1000
+      end
     end
   end
 end

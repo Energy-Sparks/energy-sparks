@@ -1,27 +1,15 @@
-<% content_for :page_title, "#{@page_title} | #{@school_group.name}" %>
-
-<% content_for :dashboard_header do %>
-  <%= render Layout::Cards::PageHeaderComponent.new(title: @page_title, subtitle: @page_subtitle) %>
-<% end %>
-
-<div class="container">
-  <div class="row mt-2">
-    <div id='group-advice-page-nav' class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
-      <%= render 'school_groups/advice/shared/nav', school_group: @school_group %>
-    </div>
-    <div id='group-advice-page-content' class="col-md-9 col-lg-9 col-xl-10 advice-page-tabs">
-      <%= render 'school_groups/advice/shared/advice_tabs',
-                 school_group: @school_group,
-                 advice_page: @advice_page,
-                 tab: @tab %>
-
-      <div class="mt-4" id="<%= @advice_page_key %>-<%= @tab %>">
-        <% cache [@school_group.most_recent_content_generation_run,
-                  @advice_page.key,
-                  I18n.locale], expires_in: 4.hours do %>
-          <%= render 'insights', school_group: @school_group %>
-        <% end %>
-      </div>
-    </div>
+<%= render 'school_groups/advice/shared/advice_page',
+           page_title: "#{@page_title} | #{@school_group.name}",
+           school_group: @school_group do %>
+  <%= render 'school_groups/advice/shared/advice_tabs',
+             school_group: @school_group,
+             advice_page: @advice_page,
+             tab: @tab %>
+  <div class="mt-4" id="<%= @advice_page_key %>-<%= @tab %>">
+    <% cache_if can_cache_group_advice?(@schools),
+                group_advice_cache_key(@school_group, @advice_page.key),
+                expires_in: SchoolGroups::AdviceController::CACHE_TIME do %>
+      <%= render 'insights', school_group: @school_group %>
+    <% end %>
   </div>
-</div>
+<% end %>

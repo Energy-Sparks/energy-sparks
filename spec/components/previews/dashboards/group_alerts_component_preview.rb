@@ -5,7 +5,9 @@ module Dashboards
     # @param grouped toggle
     def example(slug: nil, limit: 3, grouped: false)
       school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
-      render(Dashboards::GroupAlertsComponent.new(school_group: school_group, limit:, grouped:))
+      render(Dashboards::GroupAlertsComponent.new(school_group: school_group,
+                                                  schools: school_group.schools,
+                                                  limit:, grouped:))
     end
 
     private

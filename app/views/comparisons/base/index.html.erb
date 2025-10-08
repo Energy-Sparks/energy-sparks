@@ -14,7 +14,9 @@
     </div>
     <div id='group-advice-page-content' class="col-md-9 col-lg-9 col-xl-10">
       <div class="mt-2">
-        <% cache [@school_group.most_recent_content_generation_run, @report, I18n.locale], expires_in: 4.hours do %>
+        <% cache_if can_cache_group_advice?(@schools),
+                    group_advice_cache_key(@school_group, @report),
+                    expires_in: SchoolGroups::AdviceController::CACHE_TIME do %>
           <%= render 'report' %>
         <% end %>
       </div>
