@@ -56,7 +56,6 @@ RSpec.describe 'manual readings' do
       eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, 5] })
   end
 
-
   it 'shows the correct fuels' do
     fuel_configuration = school.configuration.fuel_configuration
     fuel_configuration.instance_variable_set(:@has_gas, false)
