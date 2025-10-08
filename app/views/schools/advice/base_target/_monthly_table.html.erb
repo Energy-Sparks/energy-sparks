@@ -22,12 +22,12 @@
           <% end %>
         <% end %>
         <td>
-          <% unless month[:current_consumption].nil? || month[:previous_consumption].nil? %>
+          <% if !month[:missing] || month[:manual] %>
             <%= formatted_target_change(month[:current_consumption], month[:previous_consumption]) %>
           <% end %>
         </td>
         <td>
-          <% unless month[:current_consumption].nil? || month[:target_consumption].nil? %>
+          <% if !month[:missing] || month[:manual] %>
             <%= checkmark(month[:current_consumption] < month[:target_consumption]) %>
           <% end %>
         </td>
