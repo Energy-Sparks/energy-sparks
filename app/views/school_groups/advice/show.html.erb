@@ -19,4 +19,11 @@
     <% end %>
   <% end %>
 
+  <%= render Dashboards::GroupAdvicePageListComponent.new(
+        id: 'detailed-analysis',
+        school_group: @school_group,
+        schools: @schools,
+        fuel_types: @fuel_types,
+        classes: 'mb-4'
+      ) %>
 <% end %>

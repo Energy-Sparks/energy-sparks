@@ -1,0 +1,36 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render TitledSectionComponent.new do |section| %>
+    <% section.with_title do %>
+      <h2 id="<%= id %>" class="scrollable-title"><%= t('school_groups.advice_pages.show.pages') %></h2>
+    <% end %>
+    <% section.with_intro do %>
+      <p><%= t('school_groups.advice_pages.show.pages_intro') %></p>
+    <% end %>
+    <% section.with_body do %>
+      <% fuel_types.each do |fuel_type| %>
+        <% next unless advice_pages[fuel_type]&.any? %>
+        <h4>
+          <%= t("advice_pages.nav.sections.#{fuel_type}") %>
+        </h4>
+        <% advice_pages[fuel_type].each do |advice_page| %>
+          <%= render PromptComponent.new(
+                icon: fuel_type_icon(fuel_type),
+                style: :compact,
+                status: :none,
+                fuel_type: fuel_type
+              ) do |p| %>
+            <% p.with_title do %>
+              <%= translated_label(advice_page) %>
+            <% end %>
+
+            <% p.with_link do %>
+              <%= link_to t('schools.show.find_out_more'),
+                          helpers.advice_page_path(school_group, advice_page, :insights) %>
+            <% end %>
+            <%= t(advice_page.key, scope: 'school_groups.advice_pages.show.page_summary', default: nil) %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
