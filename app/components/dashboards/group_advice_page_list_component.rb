@@ -6,11 +6,16 @@ module Dashboards
     include ApplicationHelper
     include AdvicePageHelper
 
-    def initialize(school_group:, schools:, fuel_types:, **kwargs)
+    def initialize(school_group:, schools:, fuel_types:, show_comparison: true, **kwargs)
       super
       @school_group = school_group
       @schools = schools.data_enabled
       @fuel_types = fuel_types
+      @show_comparison = show_comparison
+    end
+
+    def show_comparison?
+      @show_comparison
     end
 
     def categorise_group(advice_page)
