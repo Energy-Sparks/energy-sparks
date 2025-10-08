@@ -1,4 +1,4 @@
-.advice-page-list-component {
+.advice-page-list-component, .dashboards-group-advice-page-list-component {
   @each $tag, $colour in $colours-comparison {
     .#{$tag} {
       background-color: $colour;

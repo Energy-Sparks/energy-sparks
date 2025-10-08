@@ -23,6 +23,15 @@
               <%= translated_label(advice_page) %>
             <% end %>
 
+            <% category = categorise_group(advice_page) %>
+            <% if category.present? %>
+              <% p.with_pill do %>
+                <span class="badge <%= category %>">
+                  <%= t("advice_pages.benchmarks.#{category}") %>
+                </span>
+              <% end %>
+            <% end %>
+
             <% p.with_link do %>
               <%= link_to t('schools.show.find_out_more'),
                           helpers.advice_page_path(school_group, advice_page, :insights) %>

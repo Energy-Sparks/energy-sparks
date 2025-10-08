@@ -13,12 +13,20 @@ module Dashboards
       @fuel_types = fuel_types
     end
 
+    def categorise_group(advice_page)
+      comparison.categorise_schools_for_advice_page(advice_page).max_by { |_, v| v.size }&.first
+    end
+
     def advice_pages
       @advice_pages ||= AdvicePage.where(key: Dashboards::GroupAlertsComponent::GROUP_ADVICE_PAGES).group_by(&:fuel_type).symbolize_keys
     end
 
     def render?
       @schools.any? && @fuel_types.any?
+    end
+
+    def comparison
+      @comparison ||= SchoolGroups::CategoriseSchools.new(schools: @schools)
     end
   end
 end

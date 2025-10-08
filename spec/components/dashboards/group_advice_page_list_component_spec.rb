@@ -49,4 +49,14 @@ RSpec.describe Dashboards::GroupAdvicePageListComponent, :include_application_he
       end
     end
   end
+
+  context 'when schools have a benchmark' do
+    before do
+      advice_page = create(:advice_page, key: :baseload, fuel_type: :electricity)
+      create(:advice_page_school_benchmark, school: school, advice_page: advice_page, benchmarked_as: :benchmark_school)
+      render_inline(described_class.new(school_group:, schools: school_group.schools, fuel_types:))
+    end
+
+    it { expect(page).to have_content(I18n.t('advice_pages.benchmarks.benchmark_school')) }
+  end
 end
