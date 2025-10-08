@@ -40,17 +40,22 @@ describe 'School group dashboard page', :school_groups do
       end
     end
 
-    it_behaves_like 'it contains the expected data table', aligned: true do
+    it_behaves_like 'it contains the expected data table', aligned: false do
       let(:table_id) { '#school-group-recent-usage-electricity' }
       let(:expected_header) do
-        [
-          ['School', 'Last week', 'Last month', 'Last year']
-        ]
+        [[
+          I18n.t('common.school'),
+          I18n.t(:start_date, scope: 'common.labels'),
+          I18n.t(:end_date, scope: 'common.labels'),
+          I18n.t(:last_week, scope: 'common.labels'),
+          I18n.t(:last_month, scope: 'common.labels'),
+          I18n.t(:last_year, scope: 'common.labels')
+        ]]
       end
       let(:expected_rows) do
-        [
-          [school.name, '-16%', '-16%', '-16%']
-        ]
+        [[
+          school.name, '1 Jan 2024', '31 Dec 2024', '-16%', '-16%', '-16%'
+        ]]
       end
     end
 
@@ -61,17 +66,22 @@ describe 'School group dashboard page', :school_groups do
         choose(option: 'usage')
       end
 
-      it_behaves_like 'it contains the expected data table', aligned: true do
+      it_behaves_like 'it contains the expected data table', aligned: false do
         let(:table_id) { '#school-group-recent-usage-electricity' }
         let(:expected_header) do
-          [
-            ['School', 'Last week', 'Last month', 'Last year']
-          ]
+          [[
+            I18n.t('common.school'),
+            I18n.t(:start_date, scope: 'common.labels'),
+            I18n.t(:end_date, scope: 'common.labels'),
+            I18n.t(:last_week, scope: 'common.labels'),
+            I18n.t(:last_month, scope: 'common.labels'),
+            I18n.t(:last_year, scope: 'common.labels')
+          ]]
         end
         let(:expected_rows) do
-          [
-            [school.name, '910', '910', '910']
-          ]
+          [[
+            school.name, '1 Jan 2024', '31 Dec 2024', '910', '910', '910'
+          ]]
         end
       end
     end
