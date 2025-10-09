@@ -29,6 +29,10 @@ module Dashboards
 
     private
 
+    def table_class
+      @schools.length > 10 ? 'table-paged' : 'table-sorted'
+    end
+
     def start_date(recent_usage, fuel_type)
       recent_usage&.dig(fuel_type, periods.first)&.start_date
     end
