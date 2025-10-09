@@ -6,7 +6,7 @@
   <% end %>
   <table id="<%= "school-group-recent-usage-#{fuel_type}" %>"
          width="100%"
-         class="table table-sm advice-table table-sorted">
+         class="table table-sm advice-table <%= table_class %>">
     <thead>
       <tr>
         <th colspan="1"><%= t('common.school') %></th>
@@ -57,9 +57,4 @@
       <% end %>
     </tbody>
   </table>
-  <% if modal_link? && schools.length > 20 %>
-    <div class="text-right">
-      <%= modal_link %>
-    </div>
-  <% end %>
 <% end %>

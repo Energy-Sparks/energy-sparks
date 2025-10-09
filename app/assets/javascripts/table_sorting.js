@@ -20,4 +20,14 @@ $(document).ready(function() {
     'searching': false, // Switch off search field
     'info': false       // Switch off the summary of rows at the bottom of the page
   });
+
+  $('.table-paged').DataTable({
+    'columnDefs': [{ targets: 'no-sort', orderable: false }],
+    'order': [],        // Default do not sort
+    'paging': true,
+    'searching': true, // Switch off search field
+    'info': true,       // Switch off the summary of rows at the bottom of the page
+    'orderCellsTop': false, // Switch off adding sorting to first header row
+    'autoWidth': false // Switch off auto resizing
+  });
 });
