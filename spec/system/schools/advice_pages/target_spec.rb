@@ -83,7 +83,7 @@ RSpec.shared_examples 'target advice page' do
         #{"You have reached your target date and is it complete. You can set a new target now.\n" if expired
         }What is your target?
         Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.
-        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025.
+        Your school has set a target to reduce its #{fuel_string} use by 4&percnt; before January 2025.
         #{"You can revise your target.\n" if can_revise}Learn more
         Your current progress
         Back to top
