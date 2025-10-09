@@ -14,7 +14,7 @@ class ComparisonTableComponent < ApplicationComponent
   attr_reader :report, :table_name, :index_params, :headers, :colgroups, :table_classes
 
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [],
-                 advice_page_tab: :insights, advice_page_anchor: nil, table_classes: '', **_kwargs)
+                 advice_page_tab: :insights, advice_page_anchor: nil, table_classes: 'table-sorted table-hover', **_kwargs)
     super
     @report = report
     @advice_page = advice_page
