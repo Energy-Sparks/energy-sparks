@@ -2,7 +2,7 @@
 
 module SchoolGroupAdvice
   def set_fuel_types
-    @fuel_types = @school_group.fuel_types
+    @fuel_types = @school_group.fuel_types(@schools)
   end
 
   def set_counts
