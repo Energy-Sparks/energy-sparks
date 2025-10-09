@@ -37,6 +37,7 @@ en:
       download: Download
       edit: Edit
       enable: Enable
+      end_date: End date
       energy_saving_actions: Energy saving actions
       enquire_now: Enquire now
       finish: Finish
@@ -69,6 +70,7 @@ en:
       save: Save
       sign_up: Sign up
       start: Start
+      start_date: Start date
       starting_from: Starting from
       status: Status
       submit: Submit
