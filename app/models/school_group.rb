@@ -111,8 +111,8 @@ class SchoolGroup < ApplicationRecord
     schools.visible.count
   end
 
-  def fuel_types(school_to_check = schools)
-    school_ids = school_to_check.data_visible.pluck(:id)
+  def fuel_types(schools_to_check = schools)
+    school_ids = schools_to_check.data_visible.pluck(:id)
     return [] if school_ids.empty?
 
     query = <<-SQL.squish
