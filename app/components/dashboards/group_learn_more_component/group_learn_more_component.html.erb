@@ -14,7 +14,7 @@
         <% end %>
       <% end %>
     <% end %>
-    <% if data_enabled_schools? %>
+    <% if data_enabled? %>
       <% grid.with_feature_card(theme: :pale) do |feature| %>
         <%= feature.with_header title: t('components.dashboards.group_learn_more.advice.title') %>
         <%= feature.with_description { t('components.dashboards.group_learn_more.advice.intro') } %>

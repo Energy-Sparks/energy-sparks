@@ -10,7 +10,7 @@ module Dashboards
       @schools = schools
     end
 
-    def data_enabled_schools?
+    def data_enabled?
       schools.data_enabled.any?
     end
 
