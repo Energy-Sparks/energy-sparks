@@ -36,7 +36,7 @@ en:
           revise_html: You can <a href="%{path}">revise your target</a>.
           text_html: |-
             <p>Setting a target to reduce your %{fuel_type} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.</p>
-            <p>Your school has set a target to reduce its %{fuel_type} by %{percent} before %{target_date}.</p>
+            <p>Your school has set a target to reduce its %{fuel_type} use by %{percent} before %{target_date}.</p>
         your_current_progress:
           cumulative_consumption: Cumulative consumption (kWh)
           target_consumption: Target consumption (kWh)
