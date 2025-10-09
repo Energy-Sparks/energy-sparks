@@ -20,3 +20,13 @@ en:
           academic years.</p>
           <p>A dash ("-") indicates that we do not have enough recent data to report on that period.</p>
           <p>"n/a" indicates that we don't have enough historical data in order to do a comparison.</p>
+      show:
+        page_summary:
+          baseload: Understand how much energy schools are using to keep appliances running all the time
+          electricity_long_term: See long term trends in electricity use
+          electricity_out_of_hours: How much of electricity are schools using outside of school hours?
+          gas_long_term: See long term trends in your gas use
+          gas_out_of_hours: How much of gas are schools using is outside of school hours?
+          heating_control: Review how well schools are managing their heating
+        pages: Your group's energy use explained
+        pages_intro: These pages provide more insights and analysis into energy use across the schools in this group. Areas that need improvement or where you are doing well have been highlighted.

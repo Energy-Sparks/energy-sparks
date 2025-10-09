@@ -32,38 +32,53 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
     Alerts::GenerateContent.new(school).perform
   end
 
-  let(:html) do
-    render_inline(described_class.new(
-                    school_group: school_group,
-                    schools: school_group.schools,
-                    fuel_type: :electricity,
-                    metric: :usage
-    ))
+  shared_examples 'it does not render' do
+    it { expect(page).not_to have_css('div.dashboards-group-energy-summary-table-component') }
+  end
+
+  shared_examples 'it renders a table with usage figures' do
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#school-group-recent-usage-electricity' }
+      let(:expected_header) do
+        [[
+          I18n.t('common.school'),
+          I18n.t(:start_date, scope: 'common.labels'),
+          I18n.t(:end_date, scope: 'common.labels'),
+          I18n.t(:last_week, scope: 'common.labels'),
+          I18n.t(:last_month, scope: 'common.labels'),
+          I18n.t(:last_year, scope: 'common.labels')
+        ]]
+      end
+      let(:expected_rows) do
+        [[
+          school.name,
+          '26 Sep 2024',
+          '26 Sep 2025',
+          '168',  # 0.5 kWh, 48 HH periods, 7 days
+          '744',
+          '8,740'
+        ]]
+      end
+    end
   end
 
   context 'with default options' do
-    it { expect(html).to have_css('div.dashboards-group-energy-summary-table-component') }
-
-    it 'does not show cluster' do
-      expect(html).not_to have_content(school_group_cluster.name)
+    before do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: school_group.schools,
+                      fuel_type: :electricity,
+                      metric: :usage
+      ))
     end
 
-    it 'has the expected header' do
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_week, scope: 'common.labels'))
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_month, scope: 'common.labels'))
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_year, scope: 'common.labels'))
-    end
+    it { expect(page).to have_css('div.dashboards-group-energy-summary-table-component') }
 
-    it 'has the expected cells' do
-      expect(html).to have_css('table tbody tr td', text: school.name)
-      expect(html).to have_css('table tbody tr td', text: '168') # 0.5 kWh, 48 HH periods, 7 days
-      expect(html).to have_css('table tbody tr td', text: '744')
-      expect(html).to have_css('table tbody tr td', text: '8,740')
-    end
+    it_behaves_like 'it renders a table with usage figures'
   end
 
   context 'when showing clusters' do
-    let(:html) do
+    before do
       render_inline(described_class.new(
                       school_group: school_group,
                       schools: school_group.schools,
@@ -73,30 +88,67 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
       ))
     end
 
-    it 'shows the cluster' do
-      expect(html).to have_content(school_group_cluster.name)
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#school-group-recent-usage-electricity' }
+      let(:expected_header) do
+        [[
+          I18n.t('common.school'),
+          I18n.t('school_groups.clusters.labels.cluster'),
+          I18n.t(:start_date, scope: 'common.labels'),
+          I18n.t(:end_date, scope: 'common.labels'),
+          I18n.t(:last_week, scope: 'common.labels'),
+          I18n.t(:last_month, scope: 'common.labels'),
+          I18n.t(:last_year, scope: 'common.labels')
+        ]]
+      end
+      let(:expected_rows) do
+        [[
+          school.name,
+          school_group_cluster.name,
+          '26 Sep 2024',
+          '26 Sep 2025',
+          '168',  # 0.5 kWh, 48 HH periods, 7 days
+          '744',
+          '8,740'
+        ]]
+      end
     end
   end
 
   context 'with limited periods' do
-    let(:html) do
+    before do
       render_inline(described_class.new(
                       school_group: school_group,
                       schools: school_group.schools,
                       fuel_type: :electricity,
+                      metric: :usage,
                       periods: [:year]
       ))
     end
 
-    it 'has the expected header' do
-      expect(html).not_to have_css('table thead tr th', text: I18n.t(:last_week, scope: 'common.labels'))
-      expect(html).not_to have_css('table thead tr th', text: I18n.t(:last_month, scope: 'common.labels'))
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_year, scope: 'common.labels'))
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#school-group-recent-usage-electricity' }
+      let(:expected_header) do
+        [[
+          I18n.t('common.school'),
+          I18n.t(:start_date, scope: 'common.labels'),
+          I18n.t(:end_date, scope: 'common.labels'),
+          I18n.t(:last_year, scope: 'common.labels')
+        ]]
+      end
+      let(:expected_rows) do
+        [[
+          school.name,
+          '26 Sep 2024',
+          '26 Sep 2025',
+          '8,740'
+        ]]
+      end
     end
   end
 
   context 'with change metric' do
-    let(:html) do
+    before do
       render_inline(described_class.new(
                       school_group: school_group,
                       schools: school_group.schools,
@@ -105,35 +157,34 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
       ))
     end
 
-    it 'has the expected header' do
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_week, scope: 'common.labels'))
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_month, scope: 'common.labels'))
-      expect(html).to have_css('table thead tr th', text: I18n.t(:last_year, scope: 'common.labels'))
-    end
-
-    it 'has the expected cells' do
-      expect(html).to have_css('table tbody tr td', text: school.name)
-      expect(html).to have_css('table tbody tr td', text: '0.0%')
-      expect(html).to have_css('table tbody tr td', text: 'n/a')
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#school-group-recent-usage-electricity' }
+      let(:expected_header) do
+        [[
+          I18n.t('common.school'),
+          I18n.t(:start_date, scope: 'common.labels'),
+          I18n.t(:end_date, scope: 'common.labels'),
+          I18n.t(:last_week, scope: 'common.labels'),
+          I18n.t(:last_month, scope: 'common.labels'),
+          I18n.t(:last_year, scope: 'common.labels')
+        ]]
+      end
+      let(:expected_rows) do
+        [[
+          school.name,
+          '26 Sep 2024',
+          '26 Sep 2025',
+          '0.0%',
+          'n/a',
+          'n/a'
+        ]]
+      end
     end
   end
 
-  context 'when there is a non data enabled school' do
-    let!(:other_school) { create(:school, school_group: school_group) }
-
-    it 'does not include school' do
-      expect(html).not_to have_content(other_school.name)
-    end
-  end
-
-  context 'when there are no schools' do
-    let!(:school) do
-      create(:school,
-             :with_basic_configuration_single_meter_and_tariffs,
-             school_group: create(:school_group))
-    end
-
-    let(:html) do
+  context 'when there is school without data' do
+    before do
+      create(:school, school_group: school_group)
       render_inline(described_class.new(
                       school_group: school_group,
                       schools: school_group.schools,
@@ -142,6 +193,80 @@ RSpec.describe Dashboards::GroupEnergySummaryTableComponent, :include_applicatio
       ))
     end
 
-    it { expect(html).not_to have_css('div.dashboards-group-energy-summary-table-component') }
+    it_behaves_like 'it renders a table with usage figures'
+  end
+
+  context 'when there is a school with a currently failing regeneration' do
+    # school has previously generated, but is now failing so it has a fuel configuration
+    # but no current management dashboard table data
+    let!(:failing_school) { create(:school, :with_fuel_configuration, school_group: school_group)}
+
+    before do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: school_group.schools,
+                      fuel_type: :electricity,
+                      metric: :usage
+      ))
+    end
+
+    it_behaves_like 'it contains the expected data table', aligned: false do
+      let(:table_id) { '#school-group-recent-usage-electricity' }
+      let(:expected_header) do
+        [[
+          I18n.t('common.school'),
+          I18n.t(:start_date, scope: 'common.labels'),
+          I18n.t(:end_date, scope: 'common.labels'),
+          I18n.t(:last_week, scope: 'common.labels'),
+          I18n.t(:last_month, scope: 'common.labels'),
+          I18n.t(:last_year, scope: 'common.labels')
+        ]]
+      end
+      let(:expected_rows) do
+        [
+          [school.name, '26 Sep 2024', '26 Sep 2025', '168', '744', '8,740'],
+          [failing_school.name, '', '', '-', '-', '-']
+        ]
+      end
+    end
+  end
+
+  context 'when there are no data enabled schools in group' do
+    let!(:school) do
+      create(:school,
+             :with_basic_configuration_single_meter_and_tariffs,
+             school_group: school_group,
+             data_enabled: false)
+    end
+
+    before do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: school_group.schools,
+                      fuel_type: :electricity,
+                      metric: :usage
+      ))
+    end
+
+    it_behaves_like 'it does not render'
+  end
+
+  context 'when there are no schools in group' do
+    let!(:school) do
+      create(:school,
+             :with_basic_configuration_single_meter_and_tariffs,
+             school_group: create(:school_group))
+    end
+
+    before do
+      render_inline(described_class.new(
+                      school_group: school_group,
+                      schools: school_group.schools,
+                      fuel_type: :electricity,
+                      metric: :usage
+      ))
+    end
+
+    it_behaves_like 'it does not render'
   end
 end

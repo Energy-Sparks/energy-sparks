@@ -10,7 +10,9 @@ RSpec.shared_context 'school group recent usage' do
       usage_text: '910',
       cost_text: '137',
       co2_text: '8,540',
-      has_data: true
+      has_data: true,
+      start_date: '2024-01-01',
+      end_date: '2024-12-31'
     )
     gas_changes = OpenStruct.new(
       change: '-5%',
@@ -21,7 +23,9 @@ RSpec.shared_context 'school group recent usage' do
       usage_text: '500',
       cost_text: '200',
       co2_text: '4,000',
-      has_data: true
+      has_data: true,
+      start_date: '2024-01-01',
+      end_date: '2024-12-31'
     )
     storage_heater_changes = OpenStruct.new(
       change: '-12%',
@@ -32,13 +36,15 @@ RSpec.shared_context 'school group recent usage' do
       usage_text: '312',
       cost_text: '111',
       co2_text: '1,111',
-      has_data: true
+      has_data: true,
+      start_date: '2024-01-01',
+      end_date: '2024-12-31'
     )
     allow_any_instance_of(School).to receive(:recent_usage) do
       OpenStruct.new(
         electricity: OpenStruct.new(week: electricity_changes, month: electricity_changes, year: electricity_changes),
-        gas: OpenStruct.new(week: gas_changes, month: electricity_changes, year: gas_changes),
-        storage_heaters: OpenStruct.new(week: storage_heater_changes, month: electricity_changes, year: storage_heater_changes)
+        gas: OpenStruct.new(week: gas_changes, month: gas_changes, year: gas_changes),
+        storage_heaters: OpenStruct.new(week: storage_heater_changes, month: storage_heater_changes, year: storage_heater_changes)
       )
     end
   end
