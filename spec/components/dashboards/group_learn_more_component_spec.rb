@@ -22,18 +22,16 @@ RSpec.describe Dashboards::GroupLearnMoreComponent, :include_application_helper,
     it { expect(html).to have_select(:school, options: ['Select a school...'] + schools.sort_by(&:name).pluck(:name)) }
   end
 
-  shared_examples 'a learn more component with a advice box' do
-    context 'with advice box' do
-      it { expect(html).to have_content(I18n.t('advice.title', scope: i18n_scope)) }
-      it { expect(html).to have_content(I18n.t('advice.intro', scope: i18n_scope)) }
-      it { expect(html).to have_link(I18n.t('common.explore_energy_data'), href: school_group_advice_path(school_group)) }
-    end
+  shared_examples 'a learn more component with an advice box' do
+    it { expect(html).to have_content(I18n.t('advice.title', scope: i18n_scope)) }
+    it { expect(html).to have_content(I18n.t('advice.intro', scope: i18n_scope)) }
+    it { expect(html).to have_link(I18n.t('common.explore_energy_data'), href: school_group_advice_path(school_group)) }
+  end
 
-    context 'without data disabled box' do
-      it { expect(html).not_to have_css('.data-disabled')}
-      it { expect(html).not_to have_content(I18n.t('schools.show.coming_soon')) }
-      it { expect(html).not_to have_content(I18n.t('intro_no_data', scope: i18n_scope)) }
-    end
+  shared_examples 'a learn more component without a data disabled box' do
+    it { expect(html).not_to have_css('.data-disabled')}
+    it { expect(html).not_to have_content(I18n.t('schools.show.coming_soon')) }
+    it { expect(html).not_to have_content(I18n.t('intro_no_data', scope: i18n_scope)) }
   end
 
   context 'with data enabled schools and data disabled schools' do
@@ -48,10 +46,11 @@ RSpec.describe Dashboards::GroupLearnMoreComponent, :include_application_helper,
     end
 
     it_behaves_like 'a learn more component with a schools box'
-    it_behaves_like 'a learn more component with a advice box'
+    it_behaves_like 'a learn more component with an advice box'
+    it_behaves_like 'a learn more component without a data disabled box'
   end
 
-  context 'with data enabled schools' do
+  context 'with only data enabled schools' do
     let!(:schools) { create_list(:school, 3, school_group:, data_enabled: true) }
 
     it_behaves_like 'an application component' do
@@ -59,7 +58,8 @@ RSpec.describe Dashboards::GroupLearnMoreComponent, :include_application_helper,
       let(:expected_id) { params[:id] }
     end
     it_behaves_like 'a learn more component with a schools box'
-    it_behaves_like 'a learn more component with a advice box'
+    it_behaves_like 'a learn more component with an advice box'
+    it_behaves_like 'a learn more component without a data disabled box'
   end
 
   context 'with only schools that are not data enabled' do
