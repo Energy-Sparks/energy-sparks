@@ -173,6 +173,7 @@ ignore_unused:
   - 'school_groups.advice.chart_types.*'
   - '{schools,school_groups}.timeline.activity_in_*'
   - 'school_groups.advice.comparison_reports.links.*'
+  - 'school_groups.advice_pages.show.page_summary.*'
 # - '{devise,kaminari,will_paginate}.*'
 # - 'simple_form.{yes,no}'
 # - 'simple_form.{placeholders,hints,labels}.*'

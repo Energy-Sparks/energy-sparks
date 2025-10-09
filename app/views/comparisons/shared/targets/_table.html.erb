@@ -11,7 +11,7 @@
       <%= r.with_var val: row.previous_to_current_year_change, change: true, unit: :relative_percent %>
       <%= r.with_var val: row.current_year_target_kwh, unit: :kwh %>
       <%= r.with_var val: row.current_year_kwh, unit: :kwh %>
-      <%= r.with_var val: row.tracking_start_date, unit: :date %>
+      <%= r.with_var { row.tracking_start_date.to_fs(:es_short) } %>
     <% end %>
   <% end %>
   <% c.with_note do %>

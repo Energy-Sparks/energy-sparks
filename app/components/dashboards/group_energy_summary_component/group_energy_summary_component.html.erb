@@ -21,7 +21,7 @@
            aria-labelledby="<%= fuel_type %>-tab">
 
            <%= render 'school_groups/advice/metric_selection', school_group: school_group,
-                                                               path: school_group_advice_path(school_group),
+                                                               path: school_group_path(school_group),
                                                                selected_metric: metric,
                                                                container_classes: 'mt-4' %>
 
@@ -30,8 +30,7 @@
                  schools: schools,
                  fuel_type: fuel_type,
                  metric: metric&.to_sym,
-                 show_clusters: show_clusters?,
-                 path: school_group_advice_path(school_group)
+                 show_clusters: show_clusters?
                ) do |table| %>
                 <% if modal_link? %>
                   <% table.with_modal_link do %>
