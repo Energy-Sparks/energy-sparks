@@ -54,4 +54,8 @@ module SchoolGroupsHelper
   def group_advice_cache_key(school_group, additional = nil)
     [school_group.most_recent_content_generation_run, *additional, I18n.locale]
   end
+
+  def comparison_table_class(list)
+    list.length > 10 ? 'table-paged' : 'table-sorted'
+  end
 end
