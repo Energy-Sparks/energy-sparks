@@ -31,7 +31,9 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
 
       fuel_type_columns = []
       ['Electricity', 'Gas', 'Storage heaters'].each do |fuel_type|
-        ['Last week', 'Last year'].each do |period|
+        fuel_type_columns << "#{fuel_type} Start date"
+        fuel_type_columns << "#{fuel_type} End date"
+        ['Last week', 'Last month', 'Last year'].each do |period|
           ['% Change', 'Use (kWh)', 'Cost (£)', 'CO2 (kg)'].each do |metric|
             fuel_type_columns << "#{fuel_type} #{metric} #{period}"
           end
@@ -41,20 +43,32 @@ RSpec.describe SchoolGroups::RecentUsageCsvGenerator do
       expect(CSV.parse_line(csv.lines[0])).to eq(expected_headers)
 
       expect(CSV.parse_line(csv.lines[1])).to eq([school_group.schools.first.name, '10', nil,
+                                                  '2024-01-01', '2024-12-31',
                                                   '-16%', '910', '137', '8,540', # e week
+                                                  '-16%', '910', '137', '8,540', # e month
                                                   '-16%', '910', '137', '8,540', # e year
+                                                  '2024-01-01', '2024-12-31',
                                                   '-5%', '500', '200', '4,000', # g week
+                                                  '-5%', '500', '200', '4,000', # g month
                                                   '-5%', '500', '200', '4,000', # g year
+                                                  '2024-01-01', '2024-12-31',
                                                   '-12%', '312', '111', '1,111', # sh week
+                                                  '-12%', '312', '111', '1,111', # sh month
                                                   '-12%', '312', '111', '1,111' # sh year
         ])
 
       expect(CSV.parse_line(csv.lines[2])).to eq([school_group.schools.second.name, '20', '300.0',
+                                                  '2024-01-01', '2024-12-31',
                                                   '-16%', '910', '137', '8,540', # e week
+                                                  '-16%', '910', '137', '8,540', # e month
                                                   '-16%', '910', '137', '8,540', # e year
+                                                  '2024-01-01', '2024-12-31',
                                                   '-5%', '500', '200', '4,000', # g week
+                                                  '-5%', '500', '200', '4,000', # g month
                                                   '-5%', '500', '200', '4,000', # g year
+                                                  '2024-01-01', '2024-12-31',
                                                   '-12%', '312', '111', '1,111', # sh week
+                                                  '-12%', '312', '111', '1,111', # sh month
                                                   '-12%', '312', '111', '1,111' # sh year
           ])
     end

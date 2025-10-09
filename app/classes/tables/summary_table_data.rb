@@ -84,7 +84,9 @@ module Tables
         change_text: format_number(fetch(fuel_type, period, :percent_change), :comparison_percent, :text),
         message: data_validity_message(fuel_type, period),
         message_class: data_validity_class(fuel_type, period),
-        has_data: has_data?(fuel_type, period)
+        has_data: has_data?(fuel_type, period),
+        start_date: fetch(fuel_type, :start_date),
+        end_date: fetch(fuel_type, :end_date)
       )
     end
 
