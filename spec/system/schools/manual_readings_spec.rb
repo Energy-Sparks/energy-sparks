@@ -61,13 +61,13 @@ RSpec.describe 'manual readings' do
     fuel_configuration.instance_variable_set(:@has_gas, false)
     school.configuration.update!(fuel_configuration:)
     visit school_manual_readings_path(school)
-    expect(page).to have_content("Date\nElectricity\nJuly 2023\n")
+    expect(page).to have_content("Date\nElectricity\nJuly 2024\n")
   end
 
   it 'validates invalid readings' do
     visit school_manual_readings_path(school)
     first('.edit_school input[type="text"]').fill_in with: 'a'
     click_on 'Save'
-    expect(page).to have_content(['July 2023', 'is not a number'].join("\n"))
+    expect(page).to have_content(['July 2024', 'is not a number'].join("\n"))
   end
 end

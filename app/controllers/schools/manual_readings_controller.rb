@@ -34,7 +34,7 @@ module Schools
       end_date = @meter_start_dates.values.compact.max || Date.current
       return if end_date < 1.year.ago
 
-      start_date = @school.current_target&.start_date&.prev_year || (end_date - 13.months)
+      start_date = @school.current_target&.start_date&.prev_year || 13.months.ago
       build_missing_readings(start_date, end_date)
     end
 
