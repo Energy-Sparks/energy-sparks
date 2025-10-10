@@ -1,9 +1,7 @@
+# frozen_string_literal: true
+
 module CsvDownloader
-  extend ActiveSupport::Concern
-
-private
-
-  def readings_to_csv(sql_query, csv_header)
+  def self.readings_to_csv(sql_query, csv_header)
     conn = ActiveRecord::Base.connection.raw_connection
 
     StringIO.open do |s|
