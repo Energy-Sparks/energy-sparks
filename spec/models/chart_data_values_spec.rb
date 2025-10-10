@@ -24,7 +24,9 @@ describe ChartDataValues do
   let(:parent_timescale_description) { nil }
   let(:y1_axis_choices) { [] }
 
-  let(:chart_data_values) { ChartDataValues.new(config, chart, transformations: transformations, allowed_operations: allowed_operations, drilldown_available: drilldown_available, parent_timescale_description: parent_timescale_description, y1_axis_choices: y1_axis_choices).process }
+  let(:chart_data_values) do
+    ChartDataValues.new(config, chart, transformations: transformations, allowed_operations: allowed_operations, drilldown_available: drilldown_available, parent_timescale_description: parent_timescale_description, y1_axis_choices: y1_axis_choices).process
+  end
 
   it 'handles labels properly' do
     expect(chart_data_values.series_data.first[:name]).to eq 'Sun 21 Apr 19 - Sat 27 Apr 19'
@@ -45,60 +47,96 @@ describe ChartDataValues do
   end
 
   context 'when setting colours' do
-    context 'for gas dashboard and pupil analysis charts' do
-      let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+    context 'when adding colours to column charts' do
+      subject(:series) { chart_data_values.series_data.first }
 
-      it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_gas_dark
+      context 'for gas dashboard and pupil analysis charts' do
+        let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+
+        it 'sets the right colours' do
+          expect(series[:color]).to eq Colours.chart_gas_dark
+        end
+      end
+
+      context 'for electricity dashboard and pupil analysis charts' do
+        let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
+
+        it 'sets the right colours' do
+          expect(series[:color]).to eq Colours.chart_electric_dark
+        end
+      end
+
+      context 'for electricity line charts' do
+        let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
+        let(:chart_type) { :line }
+
+        it 'sets the right colours' do
+          expect(series[:color]).to eq Colours.chart_electric_dark
+        end
+      end
+
+      context 'for gas line charts' do
+        let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
+        let(:chart_type) { :line }
+
+        it 'sets the right colours' do
+          expect(series[:color]).to eq Colours.chart_gas_dark
+        end
       end
     end
 
-    context 'for electricity dashboard and pupil analysis charts' do
-      let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
-
-      it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_electric_dark
+    context 'when adding colours to other charts' do
+      subject(:colour) do
+        ChartDataValues.new({}, :a).work_out_best_colour(label)
       end
-    end
 
-    context 'for electricity line charts' do
-      let(:chart) { :calendar_picker_electricity_day_example_comparison_chart }
-      let(:chart_type) { :line }
+      context 'when there is a label match' do
+        let(:label) { chart_data_values.colour_lookup.keys.first }
+        let(:expected_colour) { chart_data_values.colour_lookup[label] }
 
-      it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_electric_dark
+        it 'uses the label colour' do
+          expect(colour).to eq(expected_colour)
+        end
       end
-    end
 
-    context 'for gas line charts' do
-      let(:chart) { :calendar_picker_gas_day_example_comparison_chart }
-      let(:chart_type) { :line }
+      context 'when there is a match to a key' do
+        let(:label) { "AB#{chart_data_values.colour_lookup.keys.first}C" }
+        let(:expected_colour) { chart_data_values.colour_lookup[chart_data_values.colour_lookup.keys.first] }
 
-      it 'sets the right colours' do
-        expect(chart_data_values.series_data.first[:color]).to eq Colours.chart_gas_dark
+        it 'uses the label colour' do
+          expect(colour).to eq(expected_colour)
+        end
+
+        context 'when there are multiple series matching a colour' do
+          it 'does not re-use included colours' do
+            cdv = ChartDataValues.new({}, :a)
+            expect(cdv.work_out_best_colour(label)).to eq(expected_colour)
+            expect(cdv.work_out_best_colour(label)).to eq(nil)
+          end
+        end
       end
-    end
 
-    it 'works out the best colour when label matches' do
-      label = chart_data_values.colour_lookup.keys.first
-      colour = chart_data_values.colour_lookup[label]
-      expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to eq(colour)
-    end
+      context 'when fuel type provided' do
+        subject(:colour) do
+          ChartDataValues.new(config, chart, fuel_type: :electricity).work_out_best_colour(label)
+        end
 
-    it 'works out the best colour when label includes one of the keys' do
-      colour_key = chart_data_values.colour_lookup.keys.first
-      label = "AB#{colour_key}C"
-      colour = chart_data_values.colour_lookup[colour_key]
-      expect(ChartDataValues.new({}, :a).work_out_best_colour(label)).to eq(colour)
-    end
+        context 'when there is a label match' do
+          let(:label) { I18n.t('analytics.series_data_manager.series_name.gas') }
 
-    it 'does not re-use included colours' do
-      colour_key = chart_data_values.colour_lookup.keys.first
-      label = "AB#{colour_key}C"
-      colour = chart_data_values.colour_lookup[colour_key]
-      cdv = ChartDataValues.new({}, :a)
-      expect(cdv.work_out_best_colour(label)).to eq(colour)
-      expect(cdv.work_out_best_colour(label)).to eq(nil)
+          it 'uses the label colour' do
+            expect(colour).to eq(Colours.chart_gas)
+          end
+        end
+
+        context 'when there is no other match' do
+          let(:label) { 'Testing' }
+
+          it 'uses the fuel type colour' do
+            expect(colour).to eq(Colours.chart_electric)
+          end
+        end
+      end
     end
   end
 
@@ -163,7 +201,6 @@ describe ChartDataValues do
 
   describe '#colour_lookup' do
     it 'returns a hash with colours assigned to chart series names' do
-      # pry
       expect(chart_data_values.colour_lookup).to eq(
         { 'Degree Days' => Colours.chart_degree_days,
           'Temperature' => Colours.chart_temperature,
