@@ -1,14 +1,20 @@
-<!-- Button trigger modal -->
-<button type="button" class="<%= local_assigns[:class] %>"
-        data-toggle="modal" data-target="#meter_report-<%= school_group.id %>">
-  <%= fa_icon('envelope') %> Meter report
+<% modal_id = "#{id}#{school_group.id}" %>
+<button type="button"
+        class="<%= local_assigns[:class] %>"
+        data-toggle="modal"
+        data-target="#<%= modal_id %>">
+  <%= button %>
 </button>
-
-<div class="modal fade" id="meter_report-<%= school_group.id %>" tabindex="-1" aria-labelledby="meter_report_label" aria-hidden="true">
+<% label_id = "#{id}label" %>
+<div class="modal fade"
+     id="<%= modal_id %>"
+     tabindex="-1"
+     aria-labelledby="<%= label_id %>"
+     aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="meter_report_label">Email school group meter report & csv</h4>
+        <h4 class="modal-title" id="<%= label_id %>"><%= title %></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -23,23 +29,15 @@
           </div>
           <div class="pb-2"><strong>Group: </strong><%= school_group.name %>
           </div>
-          <strong>Include:</strong>
-          <div class="form-check">
-            <%= radio_button_tag :all_meters, '', true, id: "#{school_group.id}-active", class: 'form-check-input' %>
-            <%= label_tag "#{school_group.id}-active", 'Only active meters', class: 'form-check-label' %>
-          </div>
-          <div class="form-check">
-            <%= radio_button_tag :all_meters, 'true', false, id: "#{school_group.id}-all", class: 'form-check-input' %>
-            <%= label_tag "#{school_group.id}-all", 'Active and inactive meters', class: 'form-check-label' %>
-          </div>
+          <%= yield %>
         </div>
         <div class="modal-footer">
           <%= button_tag(
                 type: 'submit',
                 class: 'btn btn-sm',
-                data: { confirm: "Are you sure you want to send the meter report to #{current_user.email}?" }
+                data: { confirm: "Are you sure you want to send the #{name} to #{current_user.email}?" }
               ) do %>
-            <%= fa_icon('envelope') %> Email meter report
+            <%= fa_icon('envelope') %> Email <%= name %>
           <% end %>
           <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>
         </div>
