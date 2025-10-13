@@ -36,7 +36,7 @@ RSpec.shared_examples 'a recordable' do
       end
     end
 
-    context 'with not enough previous recordings this academic year' do
+    context 'with one other recording this academic year' do
       before do
         create_recordings(1, Time.zone.today)
         Tasks::Recorder.new(recording, nil).process
@@ -71,7 +71,7 @@ RSpec.shared_examples 'a recordable' do
       end
     end
 
-    context 'when recording in an earlier academic year' do
+    context 'when recording is in an earlier academic year' do
       let(:recording_date) { Time.zone.today - 1.year }
 
       before { Tasks::Recorder.new(recording, nil).process }
