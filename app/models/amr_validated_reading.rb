@@ -97,6 +97,4 @@ class AmrValidatedReading < ApplicationRecord
   def self.csv_for_school(school)
     CsvDownloader.readings_to_csv(download_query_for_school(school).to_sql, CSV_HEADER_FOR_SCHOOL)
   end
-
-
 end
