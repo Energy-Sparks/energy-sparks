@@ -39,6 +39,9 @@ class Activity < ApplicationRecord
 
   has_many :programme_activities
   has_many :programmes, through: :programme_activities
+
+  # Probably should be a has_one relationship
+  # At last check, activities had one obsevation each (with four having none)
   has_many :observations
 
   validates_presence_of :school, :activity_type, :activity_category, :happened_on
@@ -55,7 +58,7 @@ class Activity < ApplicationRecord
 
   has_rich_text :description
 
-  after_save :update_observation_time
+  after_update :update_observations
 
   self.ignored_columns = %w(deprecated_description)
 
@@ -63,11 +66,25 @@ class Activity < ApplicationRecord
     activity_type.custom ? title : activity_type.name
   end
 
+  # There should only ever be one observation per activity
+  # But we maintain has_many relationship for now
   def points
     observations.sum(:points)
   end
 
-  def update_observation_time
-    observations.update_all(at: happened_on) if happened_on_previously_changed?
+  private
+
+  def description_previously_changed?
+    rich_text_description&.previous_changes&.key?('body')
+  end
+
+  def update_observations
+    if happened_on_previously_changed? ||
+       description_previously_changed?
+      observations.each do |observation|
+        observation.at = happened_on
+        observation.save # forces callbacks to update points
+      end
+    end
   end
 end

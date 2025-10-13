@@ -29,4 +29,73 @@ describe 'Activity' do
       expect(Activity.recorded_in_last_week).to match_array([activity_last_week_1, activity_last_week_2])
     end
   end
+
+  describe 'Callbacks' do
+    shared_examples 'an observation with changes' do
+      it 'updates updated_at timestamp' do
+        expect(observation.updated_at).to be > observation.created_at
+      end
+    end
+
+    shared_examples 'an observation without changes' do
+      it 'does not update updated_at timestamp' do
+        expect(observation.updated_at).to eq(observation.created_at)
+      end
+    end
+
+    let!(:activity) { create(:activity, happened_on: Date.new(2025, 10, 5)).reload } # also creates observation
+    let(:observation) { activity.observations.first.reload }
+
+    context 'when updating happened_on' do
+      before do
+        # step forward in time 1 day to ensure updated_at changes
+        travel 1.day do
+          activity.update(happened_on: Date.new(2025, 10, 7))
+        end
+      end
+
+      it 'updates associated observation at date' do
+        expect(observation.at.to_date).to eq(Date.new(2025, 10, 7))
+      end
+
+      it_behaves_like 'an observation with changes'
+    end
+
+    context 'when updating description with image' do
+      before do
+        # step forward in time 1 day to ensure updated_at changes
+        travel 1.day do
+          activity.update(description: 'New description with <figure')
+        end
+      end
+
+      it_behaves_like 'an observation with changes'
+    end
+
+    context 'when updating description without image' do
+      before do
+        # step forward in time 1 day to ensure updated_at changes
+        travel 1.day do
+          activity.update(description: 'New description without points')
+        end
+      end
+
+      it_behaves_like 'an observation without changes'
+    end
+
+    context 'when updating fields other than happened on or description' do
+      before do
+        # step forward in time 1 day to ensure updated_at changes
+        travel 1.day do
+          activity.update(title: 'New title')
+        end
+      end
+
+      it 'does not update associated observation at date' do
+        expect(observation.at.to_date).to eq(Date.new(2025, 10, 5))
+      end
+
+      it_behaves_like 'an observation without changes'
+    end
+  end
 end

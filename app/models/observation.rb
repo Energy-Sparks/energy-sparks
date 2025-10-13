@@ -138,11 +138,11 @@ class Observation < ApplicationRecord
   private
 
   def add_points_for_activities
-    self.points = activity.activity_type.score_when_recorded_at(school, at)
+    self.points = activity.activity_type.score_when_recorded_at(self)
   end
 
   def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(school, at)
+    self.points = intervention_type.score_when_recorded_at(self)
   end
 
   def add_bonus_points_for_included_images

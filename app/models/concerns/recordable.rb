@@ -13,13 +13,15 @@ module Recordable
   # Centralises the logic around deciding what points to score for an item
   #
   # Including classes should implement: a +score+ method or attribute
-  def score_when_recorded_at(school, date)
-    academic_year = school.academic_year_for(date)
+  def score_when_recorded_at(observation)
+    academic_year = observation.school.academic_year_for(observation.at)
     return nil unless academic_year&.current?
-    return nil if count_existing_for_academic_year(school, academic_year) >= maximum_frequency
+    uncounted = observation.persisted? && observation.points ? 0 : 1
+    return nil if (count_existing_for_academic_year(observation.school, academic_year) + uncounted) > maximum_frequency
     score
   end
 
+  # Used at the frontend to display if maximum recordings to receive points have been made
   def exceeded_maximum_in_year?(school, date = Time.zone.today)
     academic_year = school.academic_year_for(date)
     return false unless academic_year&.current?

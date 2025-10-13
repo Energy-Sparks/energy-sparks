@@ -2,7 +2,7 @@ module DashboardTimeline
   extend ActiveSupport::Concern
 
   def setup_timeline(school_observations)
-    school_observations.visible.order('at DESC').limit(10)
+    school_observations.visible.order('at DESC, created_at DESC').limit(10)
   end
 
   def setup_target_timeline(school_target)
