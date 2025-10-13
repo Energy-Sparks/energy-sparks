@@ -93,8 +93,4 @@ class AmrValidatedReading < ApplicationRecord
               'amr_validated_readings.kwh_data_x48')
       .order('meters.mpan_mprn, amr_validated_readings.reading_date ASC')
   end
-
-  def self.csv_for_school(school)
-    CsvDownloader.readings_to_csv(download_query_for_school(school).to_sql, CSV_HEADER_FOR_SCHOOL)
-  end
 end
