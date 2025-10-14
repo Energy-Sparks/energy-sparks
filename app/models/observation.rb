@@ -86,6 +86,8 @@ class Observation < ApplicationRecord
 
   scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
+  scope :in_reverse, -> { order(at: :desc, created_at: :desc) }
+
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
