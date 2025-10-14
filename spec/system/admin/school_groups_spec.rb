@@ -256,9 +256,7 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
           it { expect(page).to have_current_path(admin_school_group_path(school_group)) }
         end
 
-        context "when clicking 'Meter data report'" do
-          before { click_on 'Meter data report' }
-
+        context "when clicking 'Meter data export'" do
           def zip_to_hash(attachment)
             files = {}
             Zip::InputStream.open(StringIO.new(attachment.body.raw_source)) do |io|
@@ -278,10 +276,11 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
             "#{([reading] * 48).join(',')}\n"
           end
 
-          it 'sends the report' do
+          it 'sends the export' do
             travel_to Date.new(2025, 9, 1)
             meter = create(:electricity_meter_with_validated_reading, school: create(:school, school_group:), reading: 1)
-            click_on 'Email meter data report'
+            click_on 'Meter data export'
+            click_on 'Email meter data export'
             perform_enqueued_jobs
             email = ActionMailer::Base.deliveries.last
             expect(email.subject).to eq("Meter data report for #{school_group.name}")

@@ -10,9 +10,8 @@
   <%= render 'email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
   <%= render 'report_button', school_group: @school_group,
                               class: 'btn btn-sm',
-                              button: 'Meter data report',
-                              title: 'Email school group meter data report',
-                              name: 'meter data report' do %>
+                              name: 'meter data export',
+                              title: 'Email school group meter data export' do %>
     <%= hidden_field_tag :data_report, true, id: nil %>
     <div class="mb-2">This will email you a zip file containing meter reading data for each school in the group.</div>
   <% end %>

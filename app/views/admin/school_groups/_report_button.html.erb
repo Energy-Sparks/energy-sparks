@@ -5,7 +5,7 @@
         class="<%= local_assigns[:class] %>"
         data-toggle="modal"
         data-target="#<%= modal_id %>">
-  <%= button %>
+  <%= local_assigns[:button] || name.capitalize %>
 </button>
 <div class="modal fade"
      id="<%= modal_id %>"

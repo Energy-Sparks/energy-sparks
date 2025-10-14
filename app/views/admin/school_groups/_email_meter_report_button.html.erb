@@ -1,5 +1,5 @@
 <%= render 'admin/school_groups/report_button', school_group:,
-                                                class:,
+                                                class: local_assigns[:class],
                                                 button: "#{fa_icon('envelope')} Meter report".html_safe,
                                                 title: 'Email school group meter report & csv',
                                                 name: 'meter report' do %>
