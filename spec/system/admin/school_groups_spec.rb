@@ -269,6 +269,15 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
             files
           end
 
+          def expected_csv(meter, reading)
+            'School Name,School Id,Mpan Mprn,Meter Type,Reading Date,One Day Total kWh,Status,Substitute Date,' \
+            '00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,' \
+            '08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,' \
+            "16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,00:00\n" \
+            "#{meter.school.name},#{meter.school.id},#{meter.mpan_mprn},Electricity,2025-08-31,139.0,ORIG,," \
+            "#{([reading] * 48).join(',')}\n"
+          end
+
           it 'sends the report' do
             travel_to Date.new(2025, 9, 1)
             meter = create(:electricity_meter_with_validated_reading, school: create(:school, school_group:), reading: 1)
@@ -282,15 +291,8 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
             BODY
             expect(email.attachments.map(&:filename)).to \
               eq(["energy-sparks-#{school_group.slug}-meter-data-2025-09-01T00-00-00Z.zip"])
-            expect(zip_to_hash(email.attachments.first)).to eq(
-              { "energy-sparks-#{meter.school.slug}-2025-09-01T00-00-00Z.csv" =>
-                  'School Name,School Id,Mpan Mprn,Meter Type,Reading Date,One Day Total kWh,Status,Substitute Date,' \
-                  '00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,' \
-                  '08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,' \
-                  "16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,00:00\n" \
-                  "#{meter.school.name},#{meter.school.id},#{meter.mpan_mprn},Electricity,2025-08-31,139.0,ORIG,," \
-                  "#{([1.0] * 48).join(',')}\n" }
-            )
+            expect(zip_to_hash(email.attachments.first)).to \
+              eq({ "energy-sparks-#{meter.school.slug}-2025-09-01T00-00-00Z.csv" => expected_csv(meter, 1.0) })
           end
 
           it { expect(page).to have_current_path(admin_school_group_path(school_group)) }
@@ -656,7 +658,7 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
     end
 
     describe 'Managing partners' do
-      let!(:partners) { Array.new(3) { create(:partner) } }
+      let!(:partners) { create_list(:partner, 3) }
       let!(:school_group) { create(:school_group, name: 'BANES') }
 
       before do
