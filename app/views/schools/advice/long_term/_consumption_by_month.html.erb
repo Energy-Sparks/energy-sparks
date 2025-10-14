@@ -1,0 +1,27 @@
+
+<h4><%= t('advice_pages.electricity_long_term.analysis.recent_trend.consumption_by_month.title',
+          fuel_type: t("common.#{fuel_type}")) %></h4>
+<table class="table table-sm">
+  <thead class="thead-dark">
+    <tr>
+      <th></th>
+      <th class="text-right" colspan="3"><%= t('advice_pages.electricity_long_term.tables.columns.usage_kwh') %></th>
+      <th class="text-right" colspan="3"><%= t('advice_pages.electricity_long_term.tables.columns.usage_gbp') %></th>
+      <th class="text-right" colspan="3"><%= t('advice_pages.electricity_long_term.tables.columns.usage_co2') %></th>
+    </tr>
+      <th class="text-right"><%= t('schools.school_targets.progress.current.month') %></th>
+      <% 3.times do %>
+        <th class="text-right">
+          <%= t('advice_pages.electricity_long_term.analysis.recent_trend.consumption_by_month.previous_year') %></th>
+        <th class="text-right">
+          <%= t('advice_pages.electricity_long_term.analysis.recent_trend.consumption_by_month.this_year') %></th>
+        <th class="text-right">
+          <%= t('advice_pages.electricity_long_term.analysis.recent_trend.consumption_by_month.change') %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>
