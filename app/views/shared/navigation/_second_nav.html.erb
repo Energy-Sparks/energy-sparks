@@ -10,6 +10,7 @@
       <% elsif current_user_school %>
         <li class="nav-item">
           <!-- Back to dashboard link -->
+          <!-- Context: a non-school scoped page -->
           <%= link_to school_path(current_user_school), class: 'nav-link' do %>
             <%= fa_icon('chevron-left') %> <%= t('nav.back_to_dashboard') %>
           <% end %>
