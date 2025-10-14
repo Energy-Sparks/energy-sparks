@@ -7,14 +7,6 @@
           <!-- Context: any page scoped to school -->
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
-      <% elsif request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
-        <li class="nav-item">
-          <!-- School group name, with link to dashboard -->
-          <!-- Context: any page scoped to school group -->
-          <%= link_to current_school_group.name,
-                      school_group_path(current_school_group),
-                      class: 'nav-link font-weight-bold' %>
-        </li>
       <% elsif current_user_school %>
         <li class="nav-item">
           <!-- Back to dashboard link -->
@@ -22,12 +14,13 @@
             <%= fa_icon('chevron-left') %> <%= t('nav.back_to_dashboard') %>
           <% end %>
         </li>
-      <% elsif current_user_school_group %>
+      <% elsif request.path.starts_with?('/school_groups') && can?(:compare, current_school_group) %>
         <li class="nav-item">
-          <!-- Back to group dashboard link -->
-          <%= link_to school_group_path(current_user_school_group), class: 'nav-link' do %>
-            <%= fa_icon('chevron-left') %> <%= t('nav.back_to_group_dashboard') %>
-          <% end %>
+          <!-- School group name, with link to dashboard -->
+          <!-- Context: any page scoped to school group -->
+          <%= link_to current_school_group.name,
+                      school_group_path(current_school_group),
+                      class: 'nav-link font-weight-bold' %>
         </li>
       <% end %>
     </ul>

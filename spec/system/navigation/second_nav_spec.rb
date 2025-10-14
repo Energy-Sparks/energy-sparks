@@ -14,32 +14,104 @@ RSpec.describe 'Navigation -> second nav' do
     sign_in(user) if user
   end
 
-  describe 'Dashboard link' do
-    context 'when on a page with school context' do
-      before { visit school_path(school) }
+  shared_examples 'a back to dashboard link' do |display: true|
+    it 'shows back to dashboard link', if: display do
+      expect(nav).to have_link('Back to dashboard', href: school_path(school))
+    end
 
-      it 'shows school name and dashboard link' do
-        expect(nav).to have_link(school.name, href: school_path(school))
+    it 'does not back to dashboard link', unless: display do
+      expect(nav).not_to have_link('Back to dashboard', href: school_path(school))
+    end
+  end
+
+  shared_examples 'a school name and dashboard link' do |display: true|
+    it 'shows school name and dashboard link', if: display do
+      expect(nav).to have_link(school.name, href: school_path(school))
+    end
+
+    it 'does not school name and dashboard link', unless: display do
+      expect(nav).not_to have_link(school.name, href: school_path(school))
+    end
+  end
+
+  shared_examples 'a group name and group dashboard link' do |display: true|
+    it 'shows school group name and group dashboard link', if: display do
+      expect(nav).to have_link(school_group.name, href: school_group_path(school_group))
+    end
+
+    it 'does not show school group name and group dashboard link', unless: display do
+      expect(nav).not_to have_link(school_group.name, href: school_group_path(school_group))
+    end
+  end
+
+  shared_examples 'second nav without a left link' do
+    it_behaves_like 'a school name and dashboard link', display: false
+    it_behaves_like 'a back to dashboard link', display: false
+    it_behaves_like 'a group name and group dashboard link', display: false
+  end
+
+  describe 'Second nav left link' do
+    context 'when user is not logged in' do
+      context 'when on a page with school context' do
+        before { visit school_path(school) }
+
+        it_behaves_like 'a school name and dashboard link'
+      end
+
+      context 'when on a page with non school or school group context' do
+        before { visit home_page_path }
+
+        it_behaves_like 'second nav without a left link'
+      end
+
+      context 'when on a school group page' do
+        before { visit school_group_path(school_group) }
+
+        it_behaves_like 'a group name and group dashboard link'
       end
     end
 
-    context 'when on a page in a non school context' do
-      before { visit home_page_path }
+    context 'when current user is a school admin' do
+      let(:user) { create(:school_admin, school:) }
 
-      context 'when current user has a school' do
-        let(:user) { create(:user, school:) }
+      context 'when on a page with school context' do
+        before { visit school_path(school) }
 
-        it 'shows back to dashboard link' do
-          expect(nav).to have_link('Back to dashboard', href: school_path(school))
-        end
+        it_behaves_like 'a school name and dashboard link'
       end
 
-      context 'when current user does not have a school' do
-        let(:user) { create(:user, school: nil) }
+      context 'when on a page with non school or school group context' do
+        before { visit home_page_path }
 
-        it 'shows back to dashboard link' do
-          expect(nav).to have_no_link('Back to dashboard')
-        end
+        it_behaves_like 'a back to dashboard link'
+      end
+
+      context 'when on a school group page' do
+        before { visit school_group_path(school_group) }
+
+        it_behaves_like 'a back to dashboard link'
+      end
+    end
+
+    context 'when current user is a school group admin' do
+      let(:user) { create(:group_admin, school_group:) }
+
+      context 'when on a page with school context' do
+        before { visit school_path(school) }
+
+        it_behaves_like 'a school name and dashboard link'
+      end
+
+      context 'when on a school group page' do
+        before { visit school_group_path(school_group) }
+
+        it_behaves_like 'a group name and group dashboard link'
+      end
+
+      context 'when on a page with non school or school group context' do
+        before { visit home_page_path }
+
+        it_behaves_like 'second nav without a left link'
       end
     end
   end
