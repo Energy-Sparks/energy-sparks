@@ -10,10 +10,10 @@ module Dashboards
     renders_one :link
     renders_many :prompts, PromptComponent
 
-    def initialize(school_group:, limit: 2, grouped: false, **_kwargs)
+    def initialize(school_group:, schools:, limit: 2, grouped: false, **_kwargs)
       super
       @school_group = school_group
-      @schools = @school_group.schools.active
+      @schools = schools.data_enabled
       @limit = limit
       @grouped = grouped
     end
@@ -56,10 +56,12 @@ module Dashboards
     end
 
     def render?
+      return false unless @schools.any?
       prompts? || summarised_alerts.any?
     end
 
     def summarised_alerts
+      return [] unless @schools.any?
       @summarised_alerts ||= SchoolGroups::Alerts.new(@schools).summarise
     end
 

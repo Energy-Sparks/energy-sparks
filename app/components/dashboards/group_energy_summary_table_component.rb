@@ -8,7 +8,7 @@ module Dashboards
     def initialize(school_group:, schools:, fuel_type:, metric: :change, periods: PERIODS, show_clusters: false, **kwargs)
       super
       @school_group = school_group
-      @schools = schools
+      @schools = schools.data_enabled
       @fuel_type = fuel_type
       @metric = metric
       @show_clusters = show_clusters
@@ -28,6 +28,26 @@ module Dashboards
     end
 
     private
+
+    def table_class
+      @schools.length > 10 ? 'table-paged' : 'table-sorted'
+    end
+
+    def start_date(recent_usage, fuel_type)
+      recent_usage&.dig(fuel_type, periods.first)&.start_date
+    end
+
+    def end_date(recent_usage, fuel_type)
+      recent_usage&.dig(fuel_type, periods.first)&.end_date
+    end
+
+    def format_date(value)
+      if (date = Date.parse(value))
+        I18n.l(date, format: '%-d %b %Y')
+      end
+    rescue
+      value
+    end
 
     def value_for(recent_usage, formatted: true)
       return nil unless recent_usage

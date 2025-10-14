@@ -51,5 +51,15 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
 
       it { expect(html).to have_content('£2,000') }
     end
+
+    context 'when no data enabled schools' do
+      subject(:component) { described_class.new(**params) }
+
+      before do
+        school_group.schools.update_all(data_enabled: false)
+      end
+
+      it { expect(component.render?).to be false }
+    end
   end
 end
