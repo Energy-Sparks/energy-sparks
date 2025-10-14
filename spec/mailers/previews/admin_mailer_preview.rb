@@ -15,6 +15,6 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def school_group_meter_data_report
-    AdminMailer.with(to: 'test@example.com', school_group: SchoolGroup.find(params[:school_group_id]), path: '/dev/null').school_group_meter_data_report
+    AdminMailer.school_group_meter_data_report(SchoolGroup.find(params[:school_group_id]), 'test@example.com')
   end
 end

@@ -33,13 +33,12 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: subject(title))
   end
 
-  def school_group_meter_data_report
-    @school_group = params[:school_group]
+  def school_group_meter_data_report(school_group, to)
     time = Time.current
     Dir.mktmpdir do |dir|
       files_dir = File.join(dir, 'files')
       Dir.mkdir(files_dir)
-      @school_group.schools.data_visible.find_each do |school|
+      school_group.schools.data_visible.find_each do |school|
         csv = CsvDownloader.readings_to_csv(
           AmrValidatedReading.download_query_for_school(school, extra_selects: ['schools.name', 'schools.id'])
                              .joins(meter: :school).where(meters: { active: true }).to_sql,
@@ -49,12 +48,13 @@ class AdminMailer < ApplicationMailer
       end
       entries = Dir.entries(files_dir) - %w[. ..]
       zip_path = File.join(dir,
-                           EnergySparks::Filenames.name("#{@school_group.slug}-meter-data", time:, extension: :zip))
+                           EnergySparks::Filenames.name("#{school_group.slug}-meter-data", time:, extension: :zip))
       Zip::File.open(zip_path, create: true) do |zipfile|
         entries.each { |entry| zipfile.add(entry, File.join(files_dir, entry)) }
       end
       attachments[File.basename(zip_path)] = File.read(zip_path)
-      mail(to: params[:to], subject: "Meter data report for #{@school_group.name}")
+      @school_group = school_group
+      mail(to:, subject: "Meter data report for #{school_group.name}")
     end
   end
 
