@@ -7,28 +7,12 @@
   <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Chart updates', school_group_chart_updates_path(@school_group), class: 'btn btn-sm' %>
-  <%= render 'email_meter_report_button', school_group: @school_group,
-                                          class: 'btn btn-sm',
-                                          button: "#{fa_icon('envelope')} Meter report".html_safe,
-                                          id: 'meter_report-',
-                                          title: 'Email school group meter report & csv',
-                                          name: 'meter report' do %>
-    <strong>Include:</strong>
-    <div class="form-check">
-        <%= radio_button_tag :all_meters, '', true, id: "#{@school_group.id}-active", class: 'form-check-input' %>
-        <%= label_tag "#{@school_group.id}-active", 'Only active meters', class: 'form-check-label' %>
-    </div>
-    <div class="form-check">
-        <%= radio_button_tag :all_meters, 'true', false, id: "#{@school_group.id}-all", class: 'form-check-input' %>
-        <%= label_tag "#{@school_group.id}-all", 'Active and inactive meters', class: 'form-check-label' %>
-    </div>
-  <% end %>
-  <%= render 'email_meter_report_button', school_group: @school_group,
-                                          class: 'btn btn-sm',
-                                          button: 'Meter data report',
-                                          id: 'meter_data_report-',
-                                          title: 'Email school group meter data report',
-                                          name: 'meter data report' do %>
+  <%= render 'email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
+  <%= render 'report_button', school_group: @school_group,
+                              class: 'btn btn-sm',
+                              button: 'Meter data report',
+                              title: 'Email school group meter data report',
+                              name: 'meter data report' do %>
     <%= hidden_field_tag :data_report, true, id: nil %>
     <div class="mb-2">This will email you a zip file containing meter reading data for each school in the group.</div>
   <% end %>
