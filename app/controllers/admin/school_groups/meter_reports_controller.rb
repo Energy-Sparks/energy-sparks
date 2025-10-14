@@ -16,7 +16,7 @@ module Admin
 
       def deliver
         if params[:data_report] == 'true'
-          AdminMailer.school_group_meter_data_report(@school_group, current_user.email).deliver_later
+          AdminMailer.school_group_meter_data_export(@school_group, current_user.email).deliver_later
         else
           SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group,
                                                   all_meters: params[:all_meters].present?)

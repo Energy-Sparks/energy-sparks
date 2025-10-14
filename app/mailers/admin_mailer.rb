@@ -33,7 +33,7 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: subject(title))
   end
 
-  def school_group_meter_data_report(school_group, to)
+  def school_group_meter_data_export(school_group, to)
     time = Time.current
     Dir.mktmpdir do |dir|
       files_dir = File.join(dir, 'files')
@@ -54,7 +54,7 @@ class AdminMailer < ApplicationMailer
       end
       attachments[File.basename(zip_path)] = File.read(zip_path)
       @school_group = school_group
-      mail(to:, subject: "Meter data report for #{school_group.name}")
+      mail(to:, subject: "Meter data export for #{school_group.name}")
     end
   end
 
