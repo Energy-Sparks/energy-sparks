@@ -283,9 +283,9 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
             click_on 'Email meter data export'
             perform_enqueued_jobs
             email = ActionMailer::Base.deliveries.last
-            expect(email.subject).to eq("Meter data report for #{school_group.name}")
+            expect(email.subject).to eq("Meter data export for #{school_group.name}")
             expect(Capybara.string(email.html_part.decoded).find('body').text.gsub(/^\s+/, '')).to eq <<~BODY
-              #{school_group.name} meter data report
+              #{school_group.name} meter data export
               Zip attached with school meter data.
             BODY
             expect(email.attachments.map(&:filename)).to \
