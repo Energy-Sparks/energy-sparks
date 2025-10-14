@@ -16,7 +16,7 @@ module Recordable
   def score_when_recorded_at(observation)
     academic_year = observation.school.academic_year_for(observation.at)
     return nil unless academic_year&.current?
-    uncounted = observation.persisted? && observation.points ? 0 : 1
+    uncounted = observation.new_record? || observation.points.to_i.zero? ? 1 : 0
     return nil if (count_existing_for_academic_year(observation.school, academic_year) + uncounted) > maximum_frequency
     score
   end
