@@ -192,6 +192,14 @@ RSpec.describe 'Navigation -> second nav' do
       end
     end
 
+    context 'when on school group dashboard' do
+      before { visit school_group_path(school_group) }
+
+      it 'has a link to school group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
+      end
+    end
+
     context 'when on a non dashboard page with school context' do
       before { visit school_advice_path(school) }
 
@@ -201,6 +209,14 @@ RSpec.describe 'Navigation -> second nav' do
 
       it 'has a link to adult dashboard' do
         expect(nav).to have_link('Adult dashboard', href: school_path(school))
+      end
+    end
+
+    context 'when on a non group dashboard page with school group context' do
+      before { visit school_group_advice_path(school_group) }
+
+      it 'has a link to school group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
       end
     end
   end
