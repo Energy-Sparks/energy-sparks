@@ -93,10 +93,11 @@ FactoryBot.define do
     factory :electricity_meter_with_validated_reading do
       transient do
         reading_count { 1 }
+        reading { nil }
       end
 
       after(:create) do |meter, evaluator|
-        create_list(:amr_validated_reading, evaluator.reading_count, meter: meter)
+        create_list(:amr_validated_reading, evaluator.reading_count, meter: meter, reading: evaluator.reading)
       end
     end
 

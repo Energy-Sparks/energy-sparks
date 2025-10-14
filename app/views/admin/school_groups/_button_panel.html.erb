@@ -1,0 +1,26 @@
+<div id="school-group-button-panel" class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
+  <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage users', admin_school_group_users_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage tariffs', school_group_energy_tariffs_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Chart updates', school_group_chart_updates_path(@school_group), class: 'btn btn-sm' %>
+  <%= render 'email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
+  <%= render 'report_button', school_group: @school_group,
+                              class: 'btn btn-sm',
+                              name: 'meter data export',
+                              title: 'Email school group meter data export' do %>
+    <%= hidden_field_tag :data_report, true, id: nil %>
+    <div class="mb-2">This will email you a zip file containing meter reading data for each school in the group.</div>
+  <% end %>
+  <%= link_to "#{fa_icon('file-download')} Issues".html_safe,
+              admin_school_group_issues_path(@school_group, format: :csv),
+              class: 'btn btn-sm', title: 'Download issues csv' %>
+  <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
+    <%= link_to 'Delete', admin_school_group_path(@school_group),
+                method: :delete, data: { confirm: 'Are you sure?' },
+                class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
+  </div>
+</div>
