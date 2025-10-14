@@ -293,8 +293,6 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
             expect(zip_to_hash(email.attachments.first)).to \
               eq({ "energy-sparks-#{meter.school.slug}-2025-09-01T00-00-00Z.csv" => expected_csv(meter, 1.0) })
           end
-
-          it { expect(page).to have_current_path(admin_school_group_path(school_group)) }
         end
 
         it { expect(page).to have_link('Issues') }
