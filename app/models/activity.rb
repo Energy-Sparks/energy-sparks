@@ -78,13 +78,13 @@ class Activity < ApplicationRecord
     rich_text_description&.previous_changes&.key?('body')
   end
 
+  def update_observations?
+    happened_on_previously_changed? || description_previously_changed?
+  end
+
   def update_observations
-    if happened_on_previously_changed? ||
-       description_previously_changed?
-      observations.each do |observation|
-        observation.at = happened_on
-        observation.save # forces callbacks to update points
-      end
+    if update_observations?
+      observations.each { |o| o.update(at: happened_on) } # forces callbacks to update points
     end
   end
 end
