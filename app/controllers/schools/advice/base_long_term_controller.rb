@@ -15,7 +15,10 @@ module Schools
         @estimated_savings_vs_exemplar = usage_service.estimated_savings(versus: :exemplar_school)
         @estimated_savings_vs_benchmark = usage_service.estimated_savings(versus: :benchmark_school)
 
-        @meter_selection = Charts::MeterSelection.new(@school, aggregate_school_service, advice_page_fuel_type, date_window: 363)
+        @meter_selection =
+          Charts::MeterSelection.new(@school, aggregate_school_service, advice_page_fuel_type, date_window: 363)
+        @consumption_by_month =
+          Schools::Advice::ConsumptionByMonthService.consumption_by_month(aggregate_school.aggregate_meter(fuel_type))
       end
 
       private

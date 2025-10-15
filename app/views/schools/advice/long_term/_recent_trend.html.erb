@@ -71,7 +71,7 @@
   <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title') %>
   <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title_two_years') %>
   <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title') %>
-  <% c.with_title { t("#{key_prefix}.title#{key_suffix}", fuel_type: fuel_type) } %>
+  <% c.with_title { t("#{key_prefix}.title#{key_suffix}") } %>
   <% c.with_footer do %>
     <p><%= t("advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_by_month_year.explanation") %></p>
   <% end %>

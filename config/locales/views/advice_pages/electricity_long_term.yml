@@ -14,6 +14,12 @@ en:
               title: Your electricity usage is low.
           table_explanation: The following table outlines the potential benefits of reducing your electricity use to match %{school_type} schools with a similar number of pupils.
           title: Comparison with other schools
+        consumption_by_month:
+          change: "% change"
+          missing: "* - incomplete month"
+          previous_year: Previous Year
+          this_year: This Year
+          title: "%{fuel_type} consumption by month for the last 12 months"
         long_term_trends:
           summary: This section looks at how your electricity consumption changes during the year, and compares consumption for the last 12 months with previous years where we have data.
           title: Long term trends
