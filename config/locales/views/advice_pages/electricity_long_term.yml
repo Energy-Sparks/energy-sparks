@@ -3,6 +3,8 @@ en:
   advice_pages:
     electricity_long_term:
       analysis:
+        academic_year_comparisons:
+          title: Academic year comparisons
         comparison:
           assessment:
             high:
@@ -16,7 +18,7 @@ en:
           title: Comparison with other schools
         consumption_by_month:
           change: "% change"
-          missing: "* - incomplete month"
+          missing: "* incomplete month"
           previous_year: Previous Year
           this_year: This Year
           title: "%{fuel_type} consumption by month for the last 12 months"
