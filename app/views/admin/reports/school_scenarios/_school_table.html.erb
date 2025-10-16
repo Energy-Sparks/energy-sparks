@@ -1,0 +1,16 @@
+<table class="table advice-table table-sm table-sorted">
+  <thead>
+    <th>School</th>
+    <th>School Group</th>
+    <th>Data sharing</th>
+  </thead>
+  <tbody>
+    <% schools_and_dates.each do |school, dates| %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
+        <td><%= school.data_sharing %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

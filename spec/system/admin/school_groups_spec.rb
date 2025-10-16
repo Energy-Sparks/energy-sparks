@@ -1,20 +1,24 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'school groups', :school_groups, type: :system, include_application_helper: true do
-  let!(:admin)                  { create(:admin) }
+RSpec.describe 'school groups', :include_application_helper, :school_groups do
+  include ActiveJob::TestHelper
+
+  let!(:admin) { create(:admin) }
   let(:setup_data) {}
 
   before do
     setup_data
-    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return([:electricity, :gas, :storage_heaters])
+    allow_any_instance_of(SchoolGroup).to receive(:fuel_types).and_return(%i[electricity gas storage_heaters])
   end
 
   def create_data_for_school_groups(school_groups)
     school_groups.each do |school_group|
-      create :school_onboarding, created_by: admin, school_group: school_group
-      create :school, visible: true, data_enabled: true, school_group: school_group
-      create :school, visible: false, school_group: school_group
-      create :school, active: false, school_group: school_group
+      create(:school_onboarding, created_by: admin, school_group: school_group)
+      create(:school, visible: true, data_enabled: true, school_group: school_group)
+      create(:school, visible: false, school_group: school_group)
+      create(:school, active: false, school_group: school_group)
     end
   end
 
@@ -34,19 +38,25 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       context 'with multiple groups' do
-        let(:school_groups) { [create(:school_group, default_issues_admin_user: create(:admin)), create(:school_group)] }
+        let(:school_groups) do
+          [create(:school_group, default_issues_admin_user: create(:admin)), create(:school_group)]
+        end
 
         it 'displays totals for each group' do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row, { 'Name' => school_group.name, 'Group type' => school_group.group_type.humanize, 'Issues admin' => school_group.default_issues_admin_user.try(:display_name) || '', 'Onboarding' => 1, 'Active' => 1, 'Data visible' => 1, 'Invisible' => 1, 'Removed' => 1 })
+              expect(page).to have_selector(:table_row,
+                                            { 'Name' => school_group.name, 'Group type' => school_group.group_type.humanize,
+                                              'Issues admin' => school_group.default_issues_admin_user.try(:display_name) || '', 'Onboarding' => 1, 'Active' => 1, 'Data visible' => 1, 'Invisible' => 1, 'Removed' => 1 })
             end
           end
         end
 
         it 'displays a grand total' do
           within('table') do
-            expect(page).to have_selector(:table_row, { 'Name' => 'All Energy Sparks Schools', 'Group type' => '', 'Issues admin' => '', 'Onboarding' => 2, 'Active' => 2, 'Data visible' => 2, 'Invisible' => 2, 'Removed' => 2 })
+            expect(page).to have_selector(:table_row,
+                                          { 'Name' => 'All Energy Sparks Schools', 'Group type' => '', 'Issues admin' => '', 'Onboarding' => 2, 'Active' => 2,
+                                            'Data visible' => 2, 'Invisible' => 2, 'Removed' => 2 })
           end
         end
 
@@ -130,8 +140,8 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     end
 
     describe 'Viewing school group page' do
-      let!(:issues_admin) { }
-      let!(:school_group) { create :school_group, default_issues_admin_user: issues_admin }
+      let!(:issues_admin) {}
+      let!(:school_group) { create(:school_group, default_issues_admin_user: issues_admin) }
 
       before do
         click_on 'Manage School Groups'
@@ -141,7 +151,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       describe 'Header' do
-        it { expect(page).to have_content("#{school_group.name} School Group")}
+        it { expect(page).to have_content("#{school_group.name} School Group") }
 
         it 'has a button to view all school groups' do
           expect(page).to have_link('All school groups')
@@ -154,7 +164,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
 
         it 'displays pupils in active schools count' do
-          expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.map(&:number_of_pupils).compact.sum}")
+          expect(page).to have_content("Pupils in active schools: #{school_group.schools.visible.filter_map(&:number_of_pupils).sum}")
         end
 
         describe 'with an issues admin' do
@@ -174,7 +184,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
 
           context 'no issues admin user is set' do
-            it { expect(page).not_to have_link(href: issues_link) }
+            it { expect(page).to have_no_link(href: issues_link) }
           end
         end
       end
@@ -244,6 +254,45 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           before { click_on 'Meter report' }
 
           it { expect(page).to have_current_path(admin_school_group_path(school_group)) }
+        end
+
+        context "when clicking 'Meter data export'" do
+          def zip_to_hash(attachment)
+            files = {}
+            Zip::InputStream.open(StringIO.new(attachment.body.raw_source)) do |io|
+              while (entry = io.get_next_entry)
+                files[entry.name] = io.read
+              end
+            end
+            files
+          end
+
+          def expected_csv(meter, reading)
+            'School Name,School Id,Mpan Mprn,Meter Type,Reading Date,One Day Total kWh,Status,Substitute Date,' \
+            '00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,' \
+            '08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,' \
+            "16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,00:00\n" \
+            "#{meter.school.name},#{meter.school.id},#{meter.mpan_mprn},Electricity,2025-08-31,139.0,ORIG,," \
+            "#{([reading] * 48).join(',')}\n"
+          end
+
+          it 'sends the export' do
+            travel_to Date.new(2025, 9, 1)
+            meter = create(:electricity_meter_with_validated_reading, school: create(:school, school_group:), reading: 1)
+            click_on 'Meter data export'
+            click_on 'Email meter data export'
+            perform_enqueued_jobs
+            email = ActionMailer::Base.deliveries.last
+            expect(email.subject).to eq("Meter data export for #{school_group.name}")
+            expect(Capybara.string(email.html_part.decoded).find('body').text.gsub(/^\s+/, '')).to eq <<~BODY
+              #{school_group.name} meter data export
+              Zip attached with school meter data.
+            BODY
+            expect(email.attachments.map(&:filename)).to \
+              eq(["energy-sparks-#{school_group.slug}-meter-data-2025-09-01T00-00-00Z.zip"])
+            expect(zip_to_hash(email.attachments.first)).to \
+              eq({ "energy-sparks-#{meter.school.slug}-2025-09-01T00-00-00Z.csv" => expected_csv(meter, 1.0) })
+          end
         end
 
         it { expect(page).to have_link('Issues') }
@@ -360,7 +409,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "doesn't show school active tab" do
             within '#active' do
-              expect(page).not_to have_link(school.name)
+              expect(page).to have_no_link(school.name)
               expect(page).to have_content("No active schools for #{school_group.name}.")
             end
           end
@@ -389,7 +438,9 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe 'Removed schools tab' do
         context 'when there are inactive schools' do
-          let!(:school) { create(:school, active: false, name: 'A School', school_group: school_group, removal_date: Time.zone.now) }
+          let!(:school) do
+            create(:school, active: false, name: 'A School', school_group: school_group, removal_date: Time.zone.now)
+          end
           let!(:setup_data) { school }
 
           it 'lists school in removed tab' do
@@ -408,7 +459,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
           it "doesn't show school in removed tab" do
             within '#removed' do
-              expect(page).not_to have_link(school.name)
+              expect(page).to have_no_link(school.name)
               expect(page).to have_content("No removed schools for #{school_group.name}.")
             end
           end
@@ -417,7 +468,10 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe 'Group Issues and Notes tab' do
         context 'when there are issues for the school group' do
-          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas, pinned: true) }
+          let!(:issue) do
+            create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas,
+                           pinned: true)
+          end
           let!(:setup_data) { issue }
 
           it 'displays a count of school group issues' do
@@ -438,7 +492,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
 
         context 'when there are no issues' do
-          it { expect(page).to have_content("No school group issues for #{school_group.name}")}
+          it { expect(page).to have_content("No school group issues for #{school_group.name}") }
         end
 
         context 'with buttons' do
@@ -449,8 +503,11 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       describe 'School Issues and Notes tab' do
         context 'when there are issues for schools in the school group' do
-          let!(:school) { create(:school, school_group: school_group)}
-          let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas, pinned: true) }
+          let!(:school) { create(:school, school_group: school_group) }
+          let!(:issue) do
+            create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas,
+                           pinned: true)
+          end
           let!(:setup_data) { issue }
 
           it 'displays a count of school group issues' do
@@ -471,7 +528,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
 
         context 'when there are no issues' do
-          it { expect(page).to have_content("No school issues for #{school_group.name}")}
+          it { expect(page).to have_content("No school issues for #{school_group.name}") }
         end
       end
     end
@@ -494,7 +551,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
       it { expect(school_group.name).to eq('B & NES') }
       it { expect(school_group).not_to be_public }
-      it { expect(school_group.default_issues_admin_user).to eq(admin)}
+      it { expect(school_group.default_issues_admin_user).to eq(admin) }
     end
 
     describe 'Deleting a school group' do
@@ -532,8 +589,10 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
 
     describe 'Downloading issues csv' do
       let!(:school_group) { create(:school_group) }
-      let!(:school) { create(:school, school_group: school_group)}
-      let!(:issue) { create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas) }
+      let!(:school) { create(:school, school_group: school_group) }
+      let!(:issue) do
+        create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas)
+      end
 
       before do
         freeze_time
@@ -555,7 +614,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       end
 
       it 'has expected file name' do
-        expect(response_headers['Content-Disposition']).to include("energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize + '.csv')
+        expect(response_headers['Content-Disposition']).to include("#{"energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize}.csv")
       end
     end
 
@@ -564,12 +623,12 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
       let!(:school_group2) { create(:school_group, name: 'BANES 2', public: true, default_chart_preference: 'default') }
 
       before do
-        create :school, active: false, school_group: school_group, chart_preference: 'default'
-        create :school, active: false, school_group: school_group, chart_preference: 'carbon'
-        create :school, active: false, school_group: school_group, chart_preference: 'usage'
-        create :school, active: false, school_group: school_group2, chart_preference: 'default'
-        create :school, active: false, school_group: school_group2, chart_preference: 'carbon'
-        create :school, active: false, school_group: school_group2, chart_preference: 'usage'
+        create(:school, active: false, school_group: school_group, chart_preference: 'default')
+        create(:school, active: false, school_group: school_group, chart_preference: 'carbon')
+        create(:school, active: false, school_group: school_group, chart_preference: 'usage')
+        create(:school, active: false, school_group: school_group2, chart_preference: 'default')
+        create(:school, active: false, school_group: school_group2, chart_preference: 'carbon')
+        create(:school, active: false, school_group: school_group2, chart_preference: 'usage')
         click_on 'Manage School Groups'
         within 'table' do
           click_on 'Manage', match: :first
@@ -596,7 +655,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
     end
 
     describe 'Managing partners' do
-      let!(:partners) { 3.times.collect { create(:partner) } }
+      let!(:partners) { create_list(:partner, 3) }
       let!(:school_group) { create(:school_group, name: 'BANES') }
 
       before do
@@ -627,7 +686,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
         end
 
         it 'partners are ordered' do
-          expect(school_group.partners).to match_array([partners.last, partners.second])
+          expect(school_group.partners).to contain_exactly(partners.last, partners.second)
           expect(school_group.school_group_partners.first.position).to be 1
           expect(school_group.school_group_partners.last.position).to be 2
         end
@@ -640,7 +699,7 @@ RSpec.describe 'school groups', :school_groups, type: :system, include_applicati
           end
 
           it 'removes partner' do
-            expect(school_group.partners).to match_array([partners.second])
+            expect(school_group.partners).to contain_exactly(partners.second)
           end
         end
       end
