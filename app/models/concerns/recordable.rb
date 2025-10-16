@@ -16,14 +16,13 @@ module Recordable
   #   the allowed frequency limits; otherwise, `nil`.
   #
   def calculate_score(observation)
-    academic_year = observation.school.academic_year_for(observation.at)
-    return nil unless academic_year&.current?
+    return nil unless observation.in_current_academic_year?
 
     # This could be a new (unsaved) or an existing recording with zero points (perhaps had it's date changed into this academic year)
     uncounted = observation.points.to_i.zero? ? 1 : 0
 
     # Count existing records already with points this academic year
-    return nil if (count_existing_for_academic_year(observation.school, academic_year) + uncounted) > maximum_frequency
+    return nil if (count_existing_for_academic_year(observation.school, observation.academic_year) + uncounted) > maximum_frequency
     score
   end
 

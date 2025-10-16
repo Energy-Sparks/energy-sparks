@@ -125,7 +125,7 @@ describe Observation do
         expect(observation.points).to eq(nil)
         observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, description: '<div></div>', points: 0)
         observation.save
-        expect(observation.points).to eq(nil)
+        expect(observation.points).to eq(0)
       end
 
       it 'only adds points automatically if its an intervention' do
@@ -167,7 +167,7 @@ describe Observation do
         expect(observation.points).to eq(nil)
       end
 
-      it 'updates score if date changed' do
+      it 'updates score if date changed to current year' do
         observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago)
         observation.save!
         expect(observation.points).to eq(nil)
@@ -175,6 +175,15 @@ describe Observation do
         observation.update(observation_type: :intervention, at: Time.zone.today)
         observation.reload
         expect(observation.points).to eq(50)
+      end
+
+      it 'does not change score if in previous year' do
+        observation = build(:observation, observation_type: :intervention, intervention_type: intervention_type, at: 3.years.ago, points: 30)
+        observation.save!
+        expect(observation.points).to eq(30)
+        observation.update(observation_type: :intervention, at: 2.years.ago, description: '<figure>')
+        observation.reload
+        expect(observation.points).to eq(30)
       end
     end
 

@@ -137,17 +137,27 @@ class Observation < ApplicationRecord
     at.to_date
   end
 
+  def academic_year
+    school.academic_year_for(at)
+  end
+
+  def in_current_academic_year?
+    academic_year&.current?
+  end
+
   private
 
   def add_points_for_activities
-    self.points = activity.activity_type.calculate_score(self)
+    self.points = activity.activity_type.calculate_score(self) if in_current_academic_year?
   end
 
   def add_points_for_interventions
-    self.points = intervention_type.calculate_score(self)
+    self.points = intervention_type.calculate_score(self) if in_current_academic_year?
   end
 
   def add_bonus_points_for_included_images
+    # Only add bonus points if observation is in current academic year
+    return unless in_current_academic_year?
     # Only add bonus points if the site wide photo bonus points is set to non zero
     return unless SiteSettings.current.photo_bonus_points&.nonzero?
     # Only add bonus points if the current observation score is non zero
