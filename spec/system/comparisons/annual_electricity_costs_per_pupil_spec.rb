@@ -9,9 +9,13 @@ describe 'annual_electricity_costs_per_pupil' do
 
   let(:variables) do
     {
-      one_year_electricity_per_pupil_gbp: 195.43244945007083,
-      last_year_gbp: 234_518.939340085,
-      one_year_saving_versus_exemplar_gbpcurrent: 154_778.21934008508
+      one_year_electricity_per_pupil_gbp: 274.74452694610767,
+      one_year_electricity_per_pupil_kwh: 874.1419161676646,
+      one_year_electricity_per_pupil_co2: 119.51184730538925,
+      last_year_gbp: 45882.33599999998,
+      last_year_kwh: 145981.69999999998,
+      last_year_co2: 19958.478500000005,
+      one_year_saving_versus_exemplar_gbpcurrent: 7724.021623024759
     }
   end
 
@@ -38,28 +42,45 @@ describe 'annual_electricity_costs_per_pupil' do
       let(:expected_report) { report }
       let(:expected_school) { school }
       let(:advice_page_path) { polymorphic_path([:insights, expected_school, :advice, advice_page_key]) }
+      let(:colgroups) do
+        ['', 'Last year', 'Last year per pupil', '']
+      end
       let(:headers) do
         ['School',
-         'Last year electricity £/pupil',
-         'Last year electricity £',
-         'Saving if matched exemplar school (using latest tariff)']
+         'kWh',
+         '£',
+         'CO2',
+         'kWh',
+         '£',
+         'CO2',
+         'Potential savings']
       end
 
       let(:expected_table) do
-        [headers,
+        [colgroups,
+         headers,
          [school.name,
-          '£195',
-          '£235,000',
-          '£155,000'],
+          '146,000',
+          '£45,882',
+          '20,000',
+          '874',
+          '£275',
+          '120',
+          '£7,720'],
          ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
       end
 
       let(:expected_csv) do
-        [headers,
+        [['', 'Last year', '', '', 'Last year per pupil', '', '', ''],
+         headers,
          [school.name,
-          '195',
-          '235,000',
-          '155,000']]
+          '146,000',
+          '45,900',
+          '20,000',
+          '874',
+          '275',
+          '120',
+          '7,720']]
       end
     end
   end
