@@ -86,7 +86,7 @@ class Observation < ApplicationRecord
 
   scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
-  scope :in_reverse, -> { order(at: :desc, created_at: :desc) }
+  scope :most_recent, -> { order(at: :desc, created_at: :desc) }
 
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
@@ -140,11 +140,11 @@ class Observation < ApplicationRecord
   private
 
   def add_points_for_activities
-    self.points = activity.activity_type.score_when_recorded_at(self)
+    self.points = activity.activity_type.calculate_score(self)
   end
 
   def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(self)
+    self.points = intervention_type.calculate_score(self)
   end
 
   def add_bonus_points_for_included_images

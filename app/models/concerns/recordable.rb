@@ -7,16 +7,22 @@ module Recordable
     has_many :audits_todo, through: :todos, source: :assignable, source_type: 'Audit'
   end
 
-  # Return the point score when a given school records this recordable on a given
-  # date
-  #
-  # Centralises the logic around deciding what points to score for an item
-  #
+  # Return the point score for an observation for this recordable
+  # Centralises the logic for determining when an observation is eligible to receive points, based on its timing and frequency
   # Including classes should implement: a +score+ method or attribute
-  def score_when_recorded_at(observation)
+  #
+  # @param observation [Observation] the observation to evaluate, this could be new (unsaved) or existing (saved)
+  # @return [Integer, nil] the score if the observation is valid and within
+  #   the allowed frequency limits; otherwise, `nil`.
+  #
+  def calculate_score(observation)
     academic_year = observation.school.academic_year_for(observation.at)
     return nil unless academic_year&.current?
-    uncounted = observation.new_record? || observation.points.to_i.zero? ? 1 : 0
+
+    # This could be a new (unsaved) or an existing recording with zero points (perhaps had it's date changed into this academic year)
+    uncounted = observation.points.to_i.zero? ? 1 : 0
+
+    # Count existing records already with points this academic year
     return nil if (count_existing_for_academic_year(observation.school, academic_year) + uncounted) > maximum_frequency
     score
   end
@@ -28,8 +34,8 @@ module Recordable
     count_existing_for_academic_year(school, academic_year) >= maximum_frequency
   end
 
-  # Implement in including class. Should return number of existing recordings of this
-  # recordable in the given academic year
+  # Implement in including class. Should return number of existing recordings
+  # with points for this recordable in the given academic year
   def count_existing_for_academic_year(_school, _academic_year)
     nil
   end
