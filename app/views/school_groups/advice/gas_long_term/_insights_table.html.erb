@@ -1,7 +1,7 @@
 <%= render ComparisonTableComponent.new(
       advice_page: advice_page, advice_page_tab: advice_page_tab,
       colgroups: colgroups, headers: headers, index_params: index_params,
-      report: report, table_name: :table
+      report: report, table_name: :table, table_classes: comparison_table_class(results)
     ) do |c| %>
   <% results.each do |result| %>
     <% c.with_row do |r| %>

@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 module Admin
   module SchoolGroups
     class MeterReportsController < AdminController
       include ApplicationHelper
+
       load_and_authorize_resource :school_group
 
       def show
@@ -12,8 +15,14 @@ module Admin
       end
 
       def deliver
-        SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group, all_meters: params[:all_meters].present?)
-        redirect_back fallback_location: admin_school_group_path(@school_group), notice: "Meter report for #{@school_group.name} requested to be sent to #{current_user.email}"
+        if params[:data_report] == 'true'
+          AdminMailer.school_group_meter_data_export(@school_group, current_user.email).deliver_later
+        else
+          SchoolGroupMeterReportJob.perform_later(to: current_user.email, school_group: @school_group,
+                                                  all_meters: params[:all_meters].present?)
+        end
+        redirect_back fallback_location: admin_school_group_path(@school_group),
+                      notice: "Meter report for #{@school_group.name} requested to be sent to #{current_user.email}"
       end
 
       private

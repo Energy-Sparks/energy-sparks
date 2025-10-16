@@ -23,12 +23,14 @@
               <%= translated_label(advice_page) %>
             <% end %>
 
-            <% category = categorise_group(advice_page) %>
-            <% if category.present? %>
-              <% p.with_pill do %>
-                <span class="badge <%= category %>">
-                  <%= t("advice_pages.benchmarks.#{category}") %>
-                </span>
+            <% if show_comparison? %>
+              <% category = categorise_group(advice_page) %>
+              <% if category.present? %>
+                <% p.with_pill do %>
+                  <span class="badge <%= category %>">
+                    <%= t("advice_pages.benchmarks.#{category}") %>
+                  </span>
+                <% end %>
               <% end %>
             <% end %>
 
