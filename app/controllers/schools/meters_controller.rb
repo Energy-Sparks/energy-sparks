@@ -2,8 +2,6 @@
 
 module Schools
   class MetersController < ApplicationController
-    include CsvDownloader
-
     load_and_authorize_resource :school
     load_and_authorize_resource through: :school
 
@@ -18,7 +16,7 @@ module Schools
       respond_to do |format|
         format.html
         format.csv do
-          send_data readings_to_csv(AmrValidatedReading.download_query_for_school(@school), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
+          send_data CsvDownloader.readings_to_csv(AmrValidatedReading.download_query_for_school(@school).to_sql, AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
                     filename: "school-amr-readings-#{@school.name.parameterize}.csv"
         end
       end
@@ -29,7 +27,7 @@ module Schools
       respond_to do |format|
         format.html
         format.csv do
-          send_data readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
+          send_data CsvDownloader.readings_to_csv(AmrValidatedReading.download_query_for_meter(@meter), AmrValidatedReading::CSV_HEADER_FOR_SCHOOL),
                     filename: "#{@meter.mpan_mprn}-readings.csv"
         end
       end

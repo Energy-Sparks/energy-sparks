@@ -80,19 +80,17 @@ class AmrValidatedReading < ApplicationRecord
     QUERY
   end
 
-  def self.download_query_for_school(school)
-    <<~QUERY
-      SELECT m.mpan_mprn,
-             CASE m.meter_type WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Gas' WHEN 2 THEN 'Solar PV' WHEN 3 THEN 'Exported Solar PV' END,
-             amr.reading_date,
-             amr.one_day_kwh,
-             amr.status,
-             amr.substitute_date,
-             amr.kwh_data_x48
-      FROM  amr_validated_readings amr, meters m
-      WHERE amr.meter_id = m.id
-      AND   m.school_id = #{school.id}
-      ORDER BY m.mpan_mprn, amr.reading_date ASC
-    QUERY
+  def self.download_query_for_school(school, extra_selects: [])
+    joins(:meter)
+      .where(meters: { school_id: school.id })
+      .select(*extra_selects,
+              'meters.mpan_mprn',
+              "CASE meters.meter_type WHEN 0 THEN 'Electricity' WHEN 1 THEN 'Gas' WHEN 2 THEN 'Solar PV' WHEN 3 THEN 'Exported Solar PV' END AS meter_type_name",
+              'amr_validated_readings.reading_date',
+              'amr_validated_readings.one_day_kwh',
+              'amr_validated_readings.status',
+              'amr_validated_readings.substitute_date',
+              'amr_validated_readings.kwh_data_x48')
+      .order('meters.mpan_mprn, amr_validated_readings.reading_date ASC')
   end
 end
