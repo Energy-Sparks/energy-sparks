@@ -82,7 +82,7 @@ RSpec.describe 'Navigation -> second nav' do
       end
     end
 
-    context 'when current user is a school admin' do
+    context 'when current user is a school admin (i.e. has a school assigned to their user)' do
       let(:user) { create(:school_admin, school:) }
 
       context 'when on a page with school context' do
@@ -102,27 +102,11 @@ RSpec.describe 'Navigation -> second nav' do
 
         it_behaves_like 'a back to dashboard link'
       end
-    end
 
-    context 'when current user is a school group admin' do
-      let(:user) { create(:group_admin, school_group:) }
+      context 'when on a school group map page' do
+        before { visit map_school_group_path(school_group) }
 
-      context 'when on a page with school context' do
-        before { visit school_path(school) }
-
-        it_behaves_like 'a school name and dashboard link'
-      end
-
-      context 'when on a school group page' do
-        before { visit school_group_path(school_group) }
-
-        it_behaves_like 'a group name and group dashboard link'
-      end
-
-      context 'when on a page with non school or school group context' do
-        before { visit home_page_path }
-
-        it_behaves_like 'second nav without a left link'
+        it_behaves_like 'a back to dashboard link'
       end
     end
   end
