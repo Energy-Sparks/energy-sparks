@@ -136,5 +136,17 @@ describe Schools::PupilNumberUpdater do
         expect(last_attribute.input_data['number_of_pupils']).to eq(pupils.to_s)
       end
     end
+
+    context 'with multiple expired attributes having different floor areas' do
+      before do
+        create_meter_attribute(end_date: '01/01/2022', floor_area: '4000')
+        create_meter_attribute(end_date: '01/01/2023', floor_area: '6000') # most recent
+        service.update(pupils)
+      end
+
+      it 'uses floor area from the most recent expired attribute' do
+        expect(last_attribute.input_data['floor_area']).to eq('6000')
+      end
+    end
   end
 end
