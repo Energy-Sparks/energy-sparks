@@ -3643,7 +3643,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_10_150931) do
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
-       JOIN current_targets ON ((current_targets.id = school_targets.id)));
+       JOIN current_targets ON ((current_targets.id = school_targets.id)))
+    WHERE (totals.previous_year_kwh > (0)::double precision);
   SQL
   add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
 
@@ -3721,7 +3722,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_10_150931) do
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
-       JOIN current_targets ON ((current_targets.id = school_targets.id)));
+       JOIN current_targets ON ((current_targets.id = school_targets.id)))
+    WHERE (totals.previous_year_kwh > (0)::double precision);
   SQL
   add_index "comparison_gas_targets", ["school_id"], name: "index_comparison_gas_targets_on_school_id", unique: true
 
