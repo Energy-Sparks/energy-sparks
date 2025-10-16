@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_10_150931) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_16_151623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -2552,16 +2552,24 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_10_150931) do
       data.alert_generation_run_id,
       data.school_id,
       data.one_year_electricity_per_pupil_gbp,
+      data.one_year_electricity_per_pupil_kwh,
+      data.one_year_electricity_per_pupil_co2,
       data.last_year_gbp,
+      data.last_year_kwh,
+      data.last_year_co2,
       data.one_year_saving_versus_exemplar_gbpcurrent
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.one_year_electricity_per_pupil_gbp,
+              data_1.one_year_electricity_per_pupil_kwh,
+              data_1.one_year_electricity_per_pupil_co2,
               data_1.last_year_gbp,
+              data_1.last_year_kwh,
+              data_1.last_year_co2,
               data_1.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, one_year_electricity_per_pupil_kwh double precision, one_year_electricity_per_pupil_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs

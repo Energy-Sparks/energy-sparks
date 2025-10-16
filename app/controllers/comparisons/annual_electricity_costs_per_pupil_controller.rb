@@ -2,11 +2,24 @@ module Comparisons
   class AnnualElectricityCostsPerPupilController < BaseController
     private
 
+    def colgroups
+      [
+        { label: '' },
+        { label: t('analytics.benchmarking.configuration.column_groups.last_year'), colspan: 3 },
+        { label: t('analytics.benchmarking.configuration.column_groups.last_year_per_pupil'), colspan: 3 },
+        { label: '' }
+      ]
+    end
+
     def headers
       [
         t('analytics.benchmarking.configuration.column_headings.school'),
-        t('analytics.benchmarking.configuration.column_headings.last_year_electricity_£_pupil'),
-        t('analytics.benchmarking.configuration.column_headings.last_year_electricity_£'),
+        t('kwh'),
+        t('£'),
+        t('co2'),
+        t('kwh'),
+        t('£'),
+        t('co2'),
         t('analytics.benchmarking.configuration.column_headings.saving_if_matched_exemplar_school'),
       ]
     end

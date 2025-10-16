@@ -28,6 +28,8 @@ en:
           gas_consumption: Gas consumption
           gbp: "£"
           kwh: kWh
+          last_year: Last year
+          last_year_per_pupil: Last year per pupil
           metering: Metering
           percent_changed: Percent changed
           solar_self_consumption: Solar self consumption
@@ -127,7 +129,7 @@ en:
           saving_co2_kg: Saving CO2 kg
           saving_if_improve_to_exemplar: Saving if improve to exemplar (at latest tariff)
           saving_if_match_exemplar_£: Saving if match exemplar (£ at latest tariff)
-          saving_if_matched_exemplar_school: Saving if matched exemplar school (using latest tariff)
+          saving_if_matched_exemplar_school: Potential savings
           saving_if_same_all_year_around: Saving if same all year around (at latest tariff)
           saving_improving_timing: Saving improving timing
           saving_optimal_panels: Annual saving at latest tariff if optimal panel size installed
