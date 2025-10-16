@@ -19,8 +19,7 @@ module Schools
     end
 
     def update
-      @school.update(resource_params)
-      if @school.save
+      if @school.update(resource_params)
         redirect_to school_manual_readings_path(@school), notice: t('common.saved')
       else
         show
