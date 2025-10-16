@@ -30,7 +30,7 @@ class SchoolMeterAttribute < ApplicationRecord
   include AnalyticsAttribute
   belongs_to :school
 
-  scope :floor_area_pupil_numbers, -> { active.where(attribute_type: 'floor_area_pupil_numbers') }
+  scope :floor_area_pupil_numbers, -> { where(attribute_type: 'floor_area_pupil_numbers') }
 
   def invalidate_school_cache_key
     school.invalidate_cache_key
