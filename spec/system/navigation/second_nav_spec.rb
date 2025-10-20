@@ -7,39 +7,106 @@ RSpec.describe 'Navigation -> second nav' do
   let(:school_group) { create(:school_group) }
   let(:data_enabled) { true }
   let(:school) { create(:school, school_group:, data_enabled: data_enabled) }
-  let(:school_with_points) { create(:school, :with_points, scoreboard: create(:scoreboard)) }
   let(:nav) { page.find(:css, 'nav.navbar-second') }
 
   before do
     sign_in(user) if user
   end
 
-  describe 'Dashboard link' do
-    context 'when on a page with school context' do
-      before { visit school_path(school) }
+  shared_examples 'a back to dashboard link' do |display: true|
+    it 'shows back to dashboard link', if: display do
+      expect(left_link).to have_link('Back to dashboard', href: school_path(school))
+    end
 
-      it 'shows school name and dashboard link' do
-        expect(nav).to have_link(school.name, href: school_path(school))
+    it 'does not back to dashboard link', unless: display do
+      expect(left_link).not_to have_link('Back to dashboard', href: school_path(school))
+    end
+  end
+
+  shared_examples 'a school name and dashboard link' do |display: true|
+    it 'shows school name and dashboard link', if: display do
+      expect(left_link).to have_link(school.name, href: school_path(school))
+    end
+
+    it 'does not school name and dashboard link', unless: display do
+      expect(left_link).not_to have_link(school.name, href: school_path(school))
+    end
+  end
+
+  shared_examples 'a group name and group dashboard link' do |display: true|
+    it 'shows school group name and group dashboard link', if: display do
+      expect(left_link).to have_link(school_group.name, href: school_group_path(school_group))
+    end
+
+    it 'does not show school group name and group dashboard link', unless: display do
+      expect(left_link).not_to have_link(school_group.name, href: school_group_path(school_group))
+    end
+  end
+
+  shared_examples 'second nav without a left link' do
+    it_behaves_like 'a school name and dashboard link', display: false
+    it_behaves_like 'a back to dashboard link', display: false
+    it_behaves_like 'a group name and group dashboard link', display: false
+  end
+
+  describe 'Second nav left link' do
+    let!(:school) { create(:school, school_group:) }
+    let(:left_link) { nav.find(:css, '#left-link') }
+
+    context 'when user is not logged in' do
+      context 'when on a page with school context' do
+        before { visit school_path(school) }
+
+        it_behaves_like 'a school name and dashboard link'
+      end
+
+      context 'when on a page with non school or school group context' do
+        before { visit home_page_path }
+
+        it_behaves_like 'second nav without a left link'
+      end
+
+      context 'when on a school group page' do
+        before { visit school_group_path(school_group) }
+
+        it_behaves_like 'a group name and group dashboard link'
+      end
+
+      context 'when on a school group map page' do
+        before { visit map_school_group_path(school_group) }
+
+        it_behaves_like 'a group name and group dashboard link', display: false
+        it 'displays group name (without link)' do
+          expect(left_link).to have_content(school_group.name)
+        end
       end
     end
 
-    context 'when on a page in a non school context' do
-      before { visit home_page_path }
+    context 'when current user is a school admin (i.e. has a school assigned to their user)' do
+      let(:user) { create(:school_admin, school:) }
 
-      context 'when current user has a school' do
-        let(:user) { create(:user, school:) }
+      context 'when on a page with school context' do
+        before { visit school_path(school) }
 
-        it 'shows back to dashboard link' do
-          expect(nav).to have_link('Back to dashboard', href: school_path(school))
-        end
+        it_behaves_like 'a school name and dashboard link'
       end
 
-      context 'when current user does not have a school' do
-        let(:user) { create(:user, school: nil) }
+      context 'when on a page with non school or school group context' do
+        before { visit home_page_path }
 
-        it 'shows back to dashboard link' do
-          expect(nav).to have_no_link('Back to dashboard')
-        end
+        it_behaves_like 'a back to dashboard link'
+      end
+
+      context 'when on a school group page' do
+        before { visit school_group_path(school_group) }
+
+        it_behaves_like 'a back to dashboard link'
+      end
+
+      context 'when on a school group map page' do
+        before { visit map_school_group_path(school_group) }
+
+        it_behaves_like 'a back to dashboard link'
       end
     end
   end
@@ -47,6 +114,8 @@ RSpec.describe 'Navigation -> second nav' do
   describe 'Mini podium' do
     context 'when on a page with a school context' do
       context 'when school has points' do
+        let!(:school_with_points) { create(:school, :with_points, scoreboard: create(:scoreboard)) }
+
         before { visit school_path(school_with_points) }
 
         it 'shows mini podium with link to scoreboard' do
@@ -120,6 +189,14 @@ RSpec.describe 'Navigation -> second nav' do
       end
     end
 
+    context 'when on school group dashboard' do
+      before { visit school_group_path(school_group) }
+
+      it 'has a link to school group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
+      end
+    end
+
     context 'when on a non dashboard page with school context' do
       before { visit school_advice_path(school) }
 
@@ -129,6 +206,14 @@ RSpec.describe 'Navigation -> second nav' do
 
       it 'has a link to adult dashboard' do
         expect(nav).to have_link('Adult dashboard', href: school_path(school))
+      end
+    end
+
+    context 'when on a non group dashboard page with school group context' do
+      before { visit school_group_advice_path(school_group) }
+
+      it 'has a link to school group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
       end
     end
   end
@@ -254,6 +339,8 @@ RSpec.describe 'Navigation -> second nav' do
       end
 
       context 'when school group has no schools' do
+        let(:school_group) { create(:school_group) }
+
         it { expect(nav).to have_css('#my-school-group-menu') }
         it { expect(nav).to have_no_css('#my-school-group-menu div.dropdown-divider') }
       end

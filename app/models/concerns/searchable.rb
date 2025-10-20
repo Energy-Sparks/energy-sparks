@@ -15,10 +15,14 @@ module Searchable
 
     private
 
+    def sanitize_websearch_query(query)
+      query.gsub(/['?\\:]/, ' ')
+    end
+
     def build_translated_search_sql(query:, locale: :en, show_all: false)
       dictionary = dictionary_for(locale)
       metadata_fields = searchable_metadata_fields.map { |s| "'#{s}'" }.join(', ')
-      search = ActiveRecord::Base.connection.quote(query)
+      search = ActiveRecord::Base.connection.quote(sanitize_websearch_query(query))
       <<-SQL.squish
         INNER JOIN (
           SELECT
