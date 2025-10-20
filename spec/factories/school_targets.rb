@@ -40,6 +40,7 @@ FactoryBot.define do
 
     trait :with_monthly_consumption do
       transient do
+        consumption { nil }
         fuel_type { :electricity }
         target { 4 }
         missing { false }
@@ -49,14 +50,16 @@ FactoryBot.define do
       end
 
       after(:build) do |target, evaluator|
-        target[evaluator.fuel_type] = evaluator.target
-        target["#{evaluator.fuel_type}_monthly_consumption"] = (0..11).map do |i|
-          month = target.start_date.month - 1 + i
-          [target.start_date.year + (month / 12), (month % 12) + 1,
-           *%i[current_consumption previous_consumption target_consumption missing].freeze.map do |name|
-             value = evaluator.public_send(name)
-             value.is_a?(Enumerable) ? value[i] : value
-           end]
+        (evaluator.consumption.nil? ? [evaluator.fuel_type] : evaluator.consumption).each do |fuel_type, consumption|
+          target[fuel_type] = evaluator.target
+          target["#{fuel_type}_monthly_consumption"] = (0..11).map do |i|
+            month = target.start_date + i.months
+            [month.year, month.month,
+             *%i[current_consumption previous_consumption target_consumption missing].freeze.map do |name|
+               value = consumption&.[](name) ? consumption[name] : evaluator.public_send(name)
+               value.is_a?(Enumerable) ? value[i] : value
+             end]
+          end
         end
       end
     end

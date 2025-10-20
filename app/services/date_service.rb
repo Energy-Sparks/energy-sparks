@@ -25,7 +25,7 @@ module DateService
     Enumerator.new do |y|
       next if start_date >= end_date
 
-      date = start_date.beginning_of_month
+      date = start_date.to_date.beginning_of_month
       while date <= end_date
         y << date
         date = date.next_month

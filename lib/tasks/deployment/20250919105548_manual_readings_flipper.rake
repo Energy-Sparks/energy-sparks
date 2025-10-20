@@ -1,7 +1,7 @@
 namespace :after_party do
-  desc 'Deployment task: historical_usage_flipper'
+  desc 'Deployment task: manual_readings_flipper'
   task manual_readings_flipper: :environment do
-    puts "Running deploy task 'historical_usage_flipper'"
+    puts "Running deploy task 'manual_readings_flipper'"
 
     Flipper.enable_group(:manual_readings, :admins)
 
