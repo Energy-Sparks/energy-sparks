@@ -13,12 +13,12 @@ $(document).ready(function() {
     updateChartStateFromSelections(chartDiv, chartConfig);
     replaceBrowserHistory(chartDiv);
 
-    // For Meter Specific Charts
-    updateMeterSpecificChartState(chartDiv, chartConfig);
-
     // For pupil and recent usage analysis charts that use
     // shared/usage_controls
     updateMeterSelection(chartDiv, chartConfig);
+
+    // For Meter Specific Charts
+    updateMeterSpecificChartState(chartDiv, chartConfig);
     chartConfig.date_ranges = getDateRanges(chartDiv);
 
     const seriesBreakdown = chartDiv.querySelector("input[name='series_breakdown']");
