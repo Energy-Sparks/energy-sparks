@@ -63,7 +63,7 @@ describe 'annual_heating_costs_per_floor_area' do
         ['School',
          'Last year heating costs per floor area',
          'Last year cost £',
-         'Saving if matched exemplar school (using latest tariff)',
+         'Potential savings',
          'Last year consumption kWh',
          'Last year carbon emissions (tonnes CO2)']
       end

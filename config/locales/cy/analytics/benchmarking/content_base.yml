@@ -78,7 +78,6 @@ cy:
           last_year_cost_£: Cost y llynedd £
           last_year_electricity_kwh_pupil: Trydan y llynedd kWh/disgybl
           last_year_electricity_£: Trydan y llynedd £
-          last_year_electricity_£_pupil: Trydan y llynedd £/disgybl
           last_year_energy_co2tonnes: CO2 Ynni y llynedd (tunelli)
           last_year_energy_kgco2_pupil: Ynni y llynedd kgCO2/disgybl
           last_year_energy_kwh: Ynni y llynedd kWh
