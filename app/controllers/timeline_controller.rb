@@ -51,7 +51,7 @@ class TimelineController < ApplicationController
   end
 
   def calendar
-    @calendar ||= @timelineable.national_calendar
+    @calendar ||= @timelineable.national_calendar || Calendar.default_national
   end
 
   def observations
