@@ -31,10 +31,6 @@
                                                         !(reading_form.object.id || reading_form.object.errors.any?) %>
           </div>
         <% end %>
-        <% if reading_form.object.id %>
-          <div class="col-md-1"><%= reading_form.input :_destroy, as: :boolean, label: t('common.labels.remove') %>
-          </div>
-        <% end %>
       </div>
     <% end %>
     <div class="mb-4"><%= f.submit t('common.labels.save'), class: 'btn btn-primary' %></div>

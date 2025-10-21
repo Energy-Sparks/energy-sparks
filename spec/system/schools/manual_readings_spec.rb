@@ -113,10 +113,17 @@ RSpec.describe 'manual readings' do
     it 'updates existing' do
       school.manual_readings.create!(month: Date.new(2025, 7), electricity: 1000)
       visit school_manual_readings_path(school)
-      expect(form_input_values.last).to eq(['2025-07-01', '1000.0', '0', '1'])
+      expect(form_input_values.last).to eq(['2025-07-01', '1000.0'])
       complete_form(last: true)
       expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
         eq([[Date.new(2025, 7), 5, nil]])
+    end
+
+    it 'removing a value' do
+      school.manual_readings.create!(month: Date.new(2025, 7), electricity: 1000)
+      visit school_manual_readings_path(school)
+      complete_form(last: true, with: '')
+      expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([])
     end
 
     context 'with data' do

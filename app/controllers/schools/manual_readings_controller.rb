@@ -17,7 +17,11 @@ module Schools
     end
 
     def update
-      if @school.update(resource_params)
+      params_hash = resource_params.to_h
+      params_hash['manual_readings_attributes'].each_value do |parameters|
+        parameters['_destroy'] = '1' if parameters['id'] && parameters['gas'].blank? && parameters['electricity'].blank?
+      end
+      if @school.update(params_hash)
         redirect_to school_manual_readings_path(@school), notice: t('common.saved')
       else
         show
@@ -90,7 +94,7 @@ module Schools
     end
 
     def resource_params
-      params.require(:school).permit(manual_readings_attributes: %i[month electricity gas id _destroy])
+      params.require(:school).permit(manual_readings_attributes: %i[month electricity gas id])
     end
 
     def show_fuel_input(fuel_type, month)
