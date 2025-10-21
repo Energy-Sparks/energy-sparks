@@ -11,7 +11,7 @@ module Schools
     before_action :set_breadcrumbs
 
     def show
-      @missing = build_manual_readings
+      @missing = build_manual_readings_and_missing(@school)
       @fuel_types = @missing.map(&:second).uniq
       @readings = @school.manual_readings.sort_by(&:month)
     end
@@ -27,23 +27,37 @@ module Schools
 
     private
 
-    def build_manual_readings
+    # Creates manual reading objects on the school, either blank for input or with data for display.
+    # @param school to add manual readings to
+    # @return [[month, fuel_type], ...] months and fuel types missing data
+    def build_manual_readings_and_missing(school)
+      missing, to_build = calculate_required_manual_readings
+      existing_months = school.manual_readings.map(&:month)
+      to_build.each do |month, consumption|
+        if existing_months.exclude?(month) && month < Date.current.beginning_of_month && missing.present?
+          school.manual_readings.build(month:, **round_consumption(consumption))
+        end
+      end
+      missing
+    end
+
+    def calculate_required_manual_readings
       fuel_types = %i[electricity gas]
       missing = []
       to_build = {}
       target = @school.most_recent_target
       if target
         fuel_types.each do |fuel_type|
-          (target.monthly_consumption_status(fuel_type)&.consumption || []).each do |consumption|
+          (target.monthly_consumption(fuel_type) || []).each do |consumption|
             month = Date.new(consumption[:year], consumption[:month])
-            (to_build[month] ||= {})[fuel_type] = if consumption[:missing] && !consumption[:previous_consumption].nil?
+            (to_build[month] ||= {})[fuel_type] = if consumption[:current_missing]
                                                     missing << [month, fuel_type]
                                                     nil
                                                   else
                                                     consumption[:current_consumption]
                                                   end
             previous_month = month.prev_year
-            missing << [previous_month, fuel_type] if consumption[:previous_consumption].nil?
+            missing << [previous_month, fuel_type] if consumption[:previous_missing]
             (to_build[previous_month] ||= {})[fuel_type] = consumption[:previous_consumption]
           end
         end
@@ -58,13 +72,11 @@ module Schools
           end
         end
       end
-      existing_months = @school.manual_readings.map(&:month)
-      to_build.each do |month, consumption|
-        if existing_months.exclude?(month) && month < Date.current.beginning_of_month && missing.present?
-          @school.manual_readings.build(month:, **consumption.transform_values { |consumption| consumption&.round(1) })
-        end
-      end
-      missing
+      [missing, to_build]
+    end
+
+    def round_consumption(consumption)
+      consumption.transform_values { |consumption| consumption&.round(1) }
     end
 
     def calculate_month_consumption(month, fuel_type)
