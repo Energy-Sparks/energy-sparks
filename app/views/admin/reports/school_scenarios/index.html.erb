@@ -1,0 +1,67 @@
+<% content_for :page_title, 'School Scenarios' %>
+
+<h1>School Scenarios</h1>
+
+<p>
+  A list of examples of schools with varying data issues or configurations that will help with designing and
+  acceptance testing new and existing features.
+</p>
+
+<p>All listed schools are visible and data enabled.</p>
+
+<ul>
+  <li><a href="#fuel-types">Fuel Types</a></li>
+  <li><a href="#meter-date-ranges">Meter date ranges</a></li>
+</ul>
+
+<h2 id="fuel-types">Fuel Types</h2>
+
+<h3>Electricity only</h3>
+
+<%= render 'school_table',
+           schools_and_dates: with_fuel_types(electricity: true, gas: false).take(@limit) %>
+
+<h3>Gas only</h3>
+
+<%= render 'school_table',
+           schools_and_dates: with_fuel_types(electricity: false, gas: true).take(@limit) %>
+
+<h3>Electricity and gas</h3>
+
+<%= render 'school_table',
+           schools_and_dates: with_fuel_types.take(@limit) %>
+
+<h3>Solar</h3>
+
+<ul>
+  <li><a href="#metered-solar">Metered solar</a></li>
+  <li><a href="#estimated-solar">Estimated solar (Sheffield synthetic data)</a></li>
+</ul>
+
+<h2 id="meter-date-ranges">Meter date ranges</h2>
+
+<% %i[electricity gas].each do |fuel_type| %>
+  <h3><%= fuel_type.to_s.humanize %></h3>
+
+  <h4>Less than 30 days of data</h4>
+
+  <%= render 'school_dates_table',
+             schools_and_dates: with_limited_data(scenario: :less_than_x_days, fuel_type: fuel_type, days_of_data: 30,
+                                                  recent_data: true).to_a.take(@limit) %>
+
+  <h4>Between 1 and 2 years of data</h4>
+
+  <%= render 'school_dates_table',
+             schools_and_dates: with_limited_data(scenario: :between_1_and_2_years,
+                                                  fuel_type: fuel_type).to_a.take(@limit) %>
+
+  <h4>More than 2 years of data</h4>
+
+  <%= render 'school_dates_table',
+             schools_and_dates: with_limited_data(scenario: :more_than_2_years, fuel_type: fuel_type).to_a.take(@limit) %>
+
+  <h4>No recent data</h4>
+
+  <%= render 'school_dates_table',
+             schools_and_dates: with_limited_data(scenario: :not_recent, fuel_type: fuel_type).to_a.take(@limit) %>
+<% end %>
