@@ -4,15 +4,11 @@ module Comparisons
 
     private
 
-    def storage_heaters
-      @storage_heaters = @results.any? { |r| r.storage_heaters_last_year_kwh != nil }
-    end
-
     def table_configuration
       configuration = {
         gas: I18n.t('comparisons.tables.gas_usage')
       }
-      if storage_heaters
+      if @results.any? { |r| r.storage_heaters_last_year_kwh != nil }
         configuration[:storage_heater] = I18n.t('comparisons.tables.storage_heater_usage')
       end
       configuration
