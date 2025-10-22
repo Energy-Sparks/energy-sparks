@@ -9,8 +9,8 @@
   <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
     <div class="row mb-2">
       <div class="col-md-2"><strong><%= t('common.labels.date') %></strong></div>
-      <% @meter_start_dates.each do |fuel_type, months| %>
-        <div class="col-md-2"><strong><%= t("common.#{fuel_type}") %></strong></div>
+      <% @fuel_types.each do |fuel_type| %>
+        <div class="col-md-2"><strong><%= "#{t("common.#{fuel_type}")} (kWh)" %></strong></div>
       <% end %>
     </div>
     <%= f.simple_fields_for :manual_readings, @readings do |reading_form| %>
@@ -23,23 +23,16 @@
             <%= reading_form.input :month, label: false, discard_day: true, end_year: Date.current.year %>
           <% end %>
         </div>
-        <% @meter_start_dates.each do |fuel_type, months| %>
+        <% @fuel_types.each do |fuel_type, months| %>
           <div class="col-md-2">
-            <%= if show_fuel_input(fuel_type, reading_form.object.month)
-                  reading_form.input fuel_type, label: false, as: :string, pattern: '[.0-9]*',
-                                                input_html: { inputmode: 'numeric' }
-                else
-                  '-'
-                end %></td>
-          </div>
-        <% end %>
-        <% if reading_form.object.id %>
-          <div class="col-md-1"><%= reading_form.input :_destroy, as: :boolean, label: t('common.labels.remove') %>
+            <%= reading_form.input fuel_type, label: false, as: :string, pattern: '[.0-9]*',
+                                              input_html: { inputmode: 'numeric' },
+                                              disabled: !@missing.include?([reading_form.object.month, fuel_type]) &&
+                                                        !(reading_form.object.id || reading_form.object.errors.any?) %>
           </div>
         <% end %>
       </div>
     <% end %>
     <div class="mb-4"><%= f.submit t('common.labels.save'), class: 'btn btn-primary' %></div>
-    <p><%= t('schools.manual_readings.not_required') %></p>
   <% end %>
 <% end %>

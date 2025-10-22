@@ -37,6 +37,9 @@ class Calendar < ApplicationRecord
 
   scope :template, -> { regional }
 
+  def self.default_national
+    national.find_by(title: 'England and Wales')
+  end
 
   def valid_calendar_event_types
     national? ? CalendarEventType.bank_holiday : CalendarEventType.all

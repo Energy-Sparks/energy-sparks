@@ -1,6 +1,6 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-second <%= navbar_secondary_class %>">
   <div class="container">
-    <ul class="navbar-nav nowrap">
+    <ul id="left-link" class="navbar-nav nowrap">
       <% if current_school %>
         <li class="nav-item">
           <!-- School name, with link to dashboard -->
@@ -12,8 +12,17 @@
           <!-- Back to dashboard link -->
           <!-- Context: a non-school scoped page -->
           <%= link_to school_path(current_user_school), class: 'nav-link' do %>
-            <%= fa_icon('chevron-left') %> Back to dashboard
+            <%= fa_icon('chevron-left') %> <%= t('nav.back_to_dashboard') %>
           <% end %>
+        </li>
+      <% elsif request.path.starts_with?('/school_groups') %>
+        <li class="nav-item">
+          <!-- School group name, with link to dashboard -->
+          <!-- Context: any page scoped to school group -->
+          <%= link_to_unless current_page?(map_school_group_path(current_school_group)),
+                             current_school_group.name,
+                             school_group_path(current_school_group),
+                             class: 'nav-link font-weight-bold' %>
         </li>
       <% end %>
     </ul>

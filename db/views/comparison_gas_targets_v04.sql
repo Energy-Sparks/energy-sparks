@@ -8,10 +8,9 @@ totals AS (
   SELECT school_targets.id,
          SUM((consumption ->> 2)::float) AS current_year_kwh,
          SUM((consumption ->> 3)::float) AS previous_year_kwh,
-         SUM((consumption ->> 4)::float) AS current_year_target_kwh,
-         BOOL_OR((consumption ->> 6)::boolean) AS manual_readings
+         SUM((consumption ->> 4)::float) AS current_year_target_kwh
   FROM school_targets, jsonb_array_elements(gas_monthly_consumption) consumption
-  WHERE NOT (consumption ->> 5)::boolean OR (consumption ->> 6)::boolean
+  WHERE (consumption ->> 5)::boolean = false AND (consumption ->> 6)::boolean = false
   GROUP BY school_targets.id
 )
 SELECT school_targets.school_id,
@@ -22,3 +21,4 @@ SELECT school_targets.school_id,
 FROM school_targets
 JOIN totals ON totals.id = school_targets.id
 JOIN current_targets ON current_targets.id = school_targets.id
+WHERE totals.previous_year_kwh > 0

@@ -47,6 +47,7 @@ en:
     title: 'Energy Sparks alerts:'
   dashboards:
     adult_dashboard: Adult dashboard
+    group_dashboard: Group dashboard
     pupil_dashboard: Pupil dashboard
   errors:
     '404':
@@ -119,6 +120,7 @@ en:
     scoreboard: Scoreboard
     storage_heater_usage: Storage heater usage
   nav:
+    back_to_dashboard: Back to dashboard
     enrol: Enrol
     my_account: My account
     my_schools: My schools

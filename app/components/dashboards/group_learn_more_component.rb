@@ -7,11 +7,14 @@ module Dashboards
     def initialize(school_group:, schools:, **_kwargs)
       super
       @school_group = school_group
-      @schools = schools.data_enabled
-      add_classes('data-disabled p-4 rounded-lg mb-4') unless data_enabled?
+      @schools = schools
     end
 
     def data_enabled?
+      schools.data_enabled.any?
+    end
+
+    def render?
       schools.any?
     end
   end

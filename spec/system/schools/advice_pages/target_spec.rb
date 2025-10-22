@@ -84,7 +84,7 @@ RSpec.shared_examples 'target advice page' do
         #{"You have reached your target date and is it complete. You can set a new target now.\n" if expired
         }What is your target?
         Setting a target to reduce your #{fuel_string} use gives you a goal to work towards. Following our advice and recommendations can help you achieve your target.
-        Your school has set a target to reduce its #{fuel_string} by 4&percnt; before January 2025.
+        Your school has set a target to reduce its #{fuel_string} use by 4&percnt; before January 2025.
         #{"You can revise your target.\n" if can_revise}Learn more
         Your current progress
         Back to top
@@ -126,7 +126,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(previous_consumption: nil, target_consumption: nil, missing: true)
+      create_target(previous_consumption: nil, target_consumption: nil, previous_missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
@@ -162,7 +162,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'target not yet complete' do
-      create_target(missing: [*[false] * 11, true])
+      create_target(current_missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to \
         eq(insight_content(expired_text: waiting_for_data_text,
@@ -171,7 +171,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'has complete previous but no complete current consumption' do
-      target = create_target(missing: true)
+      target = create_target(current_missing: true)
       travel_to(target.start_date)
       visit_tab(tab)
       expect(content(tab)).to \
@@ -290,26 +290,26 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(target_consumption: nil, previous_consumption: nil, missing: true)
+      create_target(target_consumption: nil, previous_consumption: nil, previous_missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
 
     it 'missing any previous years data' do
-      create_target(previous_consumption: [nil, *[1020] * 11], missing: [true, *[false] * 11])
+      create_target(previous_consumption: [nil, *[1020] * 11], previous_missing: [true, *[false] * 11])
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
 
     it 'target not yet complete' do
-      create_target(missing: [*[false] * 11, true])
+      create_target(current_missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to start_with(waiting_for_data_text)
     end
 
     it 'has correct cumulative with zero in a month' do
       create_target(current_consumption: [*[1010] * 3, 0, 10, *[nil] * 7],
-                    missing: [*[false] * 4, *[true] * 8])
+                    current_missing: [*[false] * 4, *[true] * 8])
       visit_tab(tab)
       expect(content(tab)).to include('Month Last year (kWh) Target (kWh) This year (kWh) % change On target? ' \
                                       'January 2024 1,020 1,000 1,010 -0.98&percnt; ' \
