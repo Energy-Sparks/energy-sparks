@@ -38,8 +38,11 @@ RSpec.describe 'manual readings' do
         :school_target, :with_monthly_consumption,
         start_date:,
         school:,
-        consumption: { electricity: { missing: [true, *[false] * 11], previous_consumption: [nil, *[1021] * 11] },
-                       gas: { missing: [true, true, *[false] * 10], previous_consumption: [nil, *[1022] * 11] } }
+        consumption: { electricity: { previous_missing: [true, *[false] * 11],
+                                      previous_consumption: [nil, *[1021] * 11] },
+                       gas: { current_missing: [false, true, *[false] * 10],
+                              previous_missing: [true, *[false] * 11],
+                              previous_consumption: [nil, *[1022] * 11] } }
       )
     end
 

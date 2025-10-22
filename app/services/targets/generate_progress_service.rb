@@ -61,18 +61,13 @@ module Targets
     end
 
     def consumption_complete?(fuel_type, target)
-      monthly_consumption(target, fuel_type)&.last&.[](SchoolTarget::MONTHLY_CONSUMPTION_FIELDS[:missing]) == false
-    end
-
-    def monthly_consumption(target, fuel_type)
-      target["#{fuel_type}_monthly_consumption"]
+      target.monthly_consumption(fuel_type)&.all? { |month| month[:missing] == false }
     end
 
     def calculate_monthly_consumption(fuel_type, target)
       return nil unless fuel_type_and_target?(fuel_type, target)
 
-      consumption = monthly_consumption(fuel_type, target)
-      return consumption if consumption_complete?(fuel_type, target)
+      return target["#{fuel_type}_monthly_consumption"] if consumption_complete?(fuel_type, target)
 
       calculate_monthly_consumption_between_target_dates(fuel_type, target)
     end
