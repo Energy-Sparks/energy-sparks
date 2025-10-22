@@ -42,7 +42,7 @@ RSpec.shared_examples 'an admin meter import report' do
             'Issues & Notes'],
            [
              meter.school.school_group.name, 'Admin', meter.school.name, meter.mpan_mprn.to_s, meter.name,
-             '', meter.t_meter_system, meter.data_source&.name, '', meter.admin_meter_status&.label, 'N', nice_dates(end_date),
+             '', meter.t_meter_system, meter.data_source&.name, '', meter.admin_meter_status&.label.to_s, 'N', nice_dates(end_date),
              ''
            ]
          ])
@@ -58,6 +58,6 @@ RSpec.shared_examples 'an admin meter import report' do
             ]
     expect(body).to \
       eq("#{header.join(',')}\n" \
-         "#{meter.school.school_group.name},Admin,#{meter.school.name},#{meter.mpan_mprn},#{meter.name},gas,#{meter.t_meter_system},#{meter.data_source&.name},,#{meter.admin_meter_status&.label},N,#{end_date.to_date.iso8601},0,0\n")
+         "#{meter.school.school_group.name},Admin,#{meter.school.name},#{meter.mpan_mprn},#{meter.name},gas,#{meter.t_meter_system},#{meter.data_source&.name},,#{meter.admin_meter_status&.label&.to_s},N,#{end_date.to_date.iso8601},0,0\n")
   end
 end
