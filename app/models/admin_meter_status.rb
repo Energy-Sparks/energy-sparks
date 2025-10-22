@@ -14,6 +14,7 @@ class AdminMeterStatus < ApplicationRecord
   has_many :school_groups_gas, class_name: 'SchoolGroup', foreign_key: 'admin_meter_statuses_gas_id'
   has_many :school_groups_solar_pv, class_name: 'SchoolGroup', foreign_key: 'admin_meter_statuses_solar_pv_id'
 
+  scope :by_label, -> { order(:label) }
   scope :ignore_in_inactive_meter_report, -> { where(ignore_in_inactive_meter_report: true) }
   scope :include_in_inactive_meter_report, -> { where(ignore_in_inactive_meter_report: false) }
 
