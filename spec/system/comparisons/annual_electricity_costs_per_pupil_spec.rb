@@ -25,6 +25,14 @@ describe 'annual_electricity_costs_per_pupil' do
 
   let!(:alerts) do
     create(:alert, school: school, alert_generation_run: alert_run, alert_type: alert_type, variables: variables)
+
+    create(:alert, school: school, alert_generation_run: alert_run,
+                   alert_type: create(:alert_type, class_name: 'AlertAdditionalPrioritisationData'),
+                   variables: { electricity_economic_tariff_changed_this_year: true })
+  end
+
+  include_context 'with comparison report footnotes' do
+    let(:footnotes) { [tariff_changed_last_year] }
   end
 
   before do
@@ -59,7 +67,7 @@ describe 'annual_electricity_costs_per_pupil' do
       let(:expected_table) do
         [colgroups,
          headers,
-         [school.name,
+         ["#{school.name} [5]",
           '146,000',
           '£45,882',
           '20,000',
@@ -67,7 +75,10 @@ describe 'annual_electricity_costs_per_pupil' do
           '£275',
           '120',
           '£7,720'],
-         ["Notes\nIn school comparisons 'last year' is defined as this year to date."]]
+         ["Notes\n" \
+          '[5] The tariff has changed during the last year for this school. Savings are calculated using the latest ' \
+          "tariff but other £ values are calculated using the relevant tariff at the time\nIn school comparisons " \
+          "'last year' is defined as this year to date."]]
       end
 
       let(:expected_csv) do
