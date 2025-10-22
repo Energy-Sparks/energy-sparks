@@ -45,7 +45,7 @@ module Usage
     end
 
     def meter_date_range_checker
-      @meter_date_range_checker ||= ::Util::MeterDateRangeChecker.new(aggregate_meter, Date.today)
+      @meter_date_range_checker ||= ::Util::MeterDateRangeChecker.new(aggregate_meter, Date.current)
     end
   end
 end

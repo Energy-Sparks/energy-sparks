@@ -80,6 +80,7 @@ en:
           more_detail_html: For more detail, <a href="%{link}">compare with other schools in your group</a>
           title: How do you compare?
         current_usage:
+          last_full_month: Last full month
           last_year: Last year
           review_our_analysis: Review our detailed analysis
           title: Your long term electricity use
@@ -88,10 +89,10 @@ en:
       page_title: Long term changes in electricity consumption
       tables:
         columns:
-          annual_change: Change since previous year
           annual_usage_co2: Annual co2 (kg/CO2)
           annual_usage_gbp: Annual cost (£)
           annual_usage_kwh: Annual usage (kWh)
+          change: Change since previous period
           estimated_savings_gbp: Estimated saving (£)
           meter: Meter
           name: Name

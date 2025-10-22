@@ -2,11 +2,10 @@
   <%= render 'schools/advice/long_term/current_usage',
              school: @school,
              analysis_dates: @analysis_dates,
-             annual_usage: @annual_usage,
-             annual_usage_change_since_last_year: @annual_usage_change_since_last_year,
              dashboard_alerts: @dashboard_alerts,
              alert_class: AlertElectricityAnnualVersusBenchmark,
-             fuel_type: :electricity %>
+             fuel_type: :electricity,
+             usage_service: @usage_service %>
   <%= render 'schools/advice/long_term/comparison',
              school: @school,
              benchmarked_usage: @benchmarked_usage,

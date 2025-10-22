@@ -16,7 +16,7 @@ module Usage
     # @param [Date] asof_date the date to use as the basis for calculations
     #
     # @raise [EnergySparksUnexpectedStateException] if the schools doesnt have meters of the specified type
-    def initialize(meter_collection, fuel_type, asof_date = Date.today)
+    def initialize(meter_collection, fuel_type, asof_date = Date.current)
       @meter_collection = meter_collection
       @fuel_type = fuel_type
       @asof_date = asof_date
