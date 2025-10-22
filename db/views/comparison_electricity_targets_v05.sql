@@ -9,7 +9,7 @@ totals AS (
          SUM((consumption ->> 2)::float) AS current_year_kwh,
          SUM((consumption ->> 3)::float) AS previous_year_kwh,
          SUM((consumption ->> 4)::float) AS current_year_target_kwh,
-         BOOL_OR((consumption ->> 6)::boolean) AS manual_readings
+         BOOL_OR((consumption ->> 7)::boolean) AS manual_readings
   FROM school_targets, jsonb_array_elements(electricity_monthly_consumption) consumption
   WHERE (NOT (consumption ->> 5)::boolean AND NOT (consumption ->> 6)::boolean) OR (consumption ->> 7)::boolean
   GROUP BY school_targets.id

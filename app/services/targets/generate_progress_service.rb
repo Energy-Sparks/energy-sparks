@@ -99,8 +99,8 @@ module Targets
       value - reduction
     end
 
-    def calculate_month_consumption(beginning_of_month, fuel_type)
-      kwhs = (beginning_of_month..beginning_of_month.end_of_month).map do |date|
+    def calculate_month_consumption(month, fuel_type)
+      kwhs = month.all_month.map do |date|
         @aggregated_school.aggregate_meter(fuel_type).amr_data[date]&.one_day_kwh
       end
       [kwhs.compact.empty? ? nil : kwhs.compact.sum, kwhs.include?(nil)]

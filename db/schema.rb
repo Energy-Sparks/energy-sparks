@@ -3639,7 +3639,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_105639) do
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
               sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh,
-              bool_or(((consumption.value ->> 6))::boolean) AS manual_readings
+              bool_or(((consumption.value ->> 7))::boolean) AS manual_readings
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
             WHERE (((NOT ((consumption.value ->> 5))::boolean) AND (NOT ((consumption.value ->> 6))::boolean)) OR ((consumption.value ->> 7))::boolean)
@@ -3719,7 +3719,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_105639) do
            SELECT school_targets_1.id,
               sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
               sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
-              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh,
+              bool_or(((consumption.value ->> 7))::boolean) AS manual_readings
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
             WHERE (((NOT ((consumption.value ->> 5))::boolean) AND (NOT ((consumption.value ->> 6))::boolean)) OR ((consumption.value ->> 7))::boolean)
@@ -3732,6 +3733,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_105639) do
       totals.current_year_kwh,
       totals.previous_year_kwh,
       totals.current_year_target_kwh,
+      totals.manual_readings,
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
