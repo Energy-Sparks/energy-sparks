@@ -14,8 +14,7 @@ module Admin
       end
 
       def results
-        results = Meter
-                       .inactive
+        results = Meter.inactive
                        .joins(:school, :amr_data_feed_readings)
                        .where(schools: { active: true })
                        .where(admin_meter_status: AdminMeterStatus.include_in_inactive_meter_report)
