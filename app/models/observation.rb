@@ -121,10 +121,6 @@ class Observation < ApplicationRecord
   before_save :add_points_for_activities, if: :activity?
   before_save :add_points_for_interventions, if: :intervention?
 
-  before_save :add_bonus_points_for_included_images, if: proc { |observation|
-    observation.activity? || observation.intervention?
-  }
-
   def description_includes_images?
     if intervention?
       super
@@ -145,27 +141,41 @@ class Observation < ApplicationRecord
     academic_year&.current?
   end
 
+  def in_a_previous_academic_year?
+    # unlikely but if no academic year, treat as previous
+    return true if academic_year.nil?
+
+    academic_year.previous?
+  end
+
+  def changed_academic_year?
+    return true if at_was.nil? # new record
+
+    academic_year_was = school.academic_year_for(at_was)
+    academic_year = school.academic_year_for(at)
+
+    academic_year_was != academic_year
+  end
+
+  def update_points?
+    return true if at_was.nil? # new record
+
+    academic_year = school.current_academic_year
+    # if no current academic year, always update - check this!
+    return true if academic_year.nil?
+
+    # Update points unless it remains in the same previous academic year
+    !(at_was < academic_year.start_date && at < academic_year.start_date)
+  end
+
   private
 
   def add_points_for_activities
-    self.points = activity.activity_type.calculate_score(self) if in_current_academic_year?
+    self.points = activity.activity_type.calculate_points(self) if update_points?
   end
 
   def add_points_for_interventions
-    self.points = intervention_type.calculate_score(self) if in_current_academic_year?
-  end
-
-  def add_bonus_points_for_included_images
-    # Only add bonus points if observation is in current academic year
-    return unless in_current_academic_year?
-    # Only add bonus points if the site wide photo bonus points is set to non zero
-    return unless SiteSettings.current.photo_bonus_points&.nonzero?
-    # Only add bonus points if the current observation score is non zero
-    return unless points&.nonzero?
-    # Only add bonus points if the description has an image
-    return unless description_includes_images?
-
-    self.points = (points || 0) + SiteSettings.current.photo_bonus_points
+    self.points = intervention_type.calculate_points(self) if update_points?
   end
 
   def reject_temperature_recordings(attributes)

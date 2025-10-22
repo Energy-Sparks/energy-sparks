@@ -221,4 +221,97 @@ describe Observation do
       end
     end
   end
+
+  describe '#update_points?' do
+    let(:calendar) { create(:calendar, :with_previous_and_next_academic_years) }
+    let!(:school) { create(:school, calendar:) }
+    let(:current_academic_year) { calendar.current_academic_year }
+    let(:previous_academic_year) { calendar.current_academic_year.previous_year }
+
+    context 'when creating a new observation' do
+      let!(:observation) { build(:observation, :activity, at: nil, school:) }
+
+      context 'when setting at to previous academic year' do
+        before do
+          observation.at = previous_academic_year.start_date + 1.day
+        end
+
+        it { expect(observation.update_points?).to be(true) }
+      end
+
+      context 'when setting at to current academic year' do
+        before do
+          observation.at = current_academic_year.start_date + 1.day
+        end
+
+        it { expect(observation.update_points?).to be(true) }
+      end
+
+      context 'when setting at to future academic year' do
+        before do
+          observation.at = current_academic_year.start_date + 1.year + 1.day
+        end
+
+        it { expect(observation.update_points?).to be(true) }
+      end
+    end
+
+    context 'when updating an existing observation' do
+      context 'when observation is in previous academic year' do
+        let!(:observation) { create(:observation, :activity, at: previous_academic_year.start_date + 1.day, school:) }
+
+        context 'when changing to be within previous academic year' do
+          before do
+            observation.at = previous_academic_year.start_date + 2.days
+          end
+
+          it { expect(observation.update_points?).to be(false) }
+        end
+
+        context 'when changing to be current academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 1.day
+          end
+
+          it { expect(observation.update_points?).to be(true) }
+        end
+
+        context 'when changing to future academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 1.year + 1.day
+          end
+
+          it { expect(observation.update_points?).to be(true) }
+        end
+      end
+
+      context 'when observation is in current academic year' do
+        let!(:observation) { create(:observation, :activity, at: current_academic_year.start_date + 1.day, school:) }
+
+        context 'when changing to be within current academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 2.days
+          end
+
+          it { expect(observation.update_points?).to be(true) }
+        end
+
+        context 'when changing to previous academic year' do
+          before do
+            observation.at = previous_academic_year.start_date + 1.day
+          end
+
+          it { expect(observation.update_points?).to be(true) }
+        end
+
+        context 'when changing to future academic year' do
+          before do
+            observation.at = current_academic_year.start_date + 1.year + 1.day
+          end
+
+          it { expect(observation.update_points?).to be(true) }
+        end
+      end
+    end
+  end
 end
