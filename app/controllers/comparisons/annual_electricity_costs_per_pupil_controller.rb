@@ -37,7 +37,7 @@ module Comparisons
     end
 
     def create_charts(results)
-      create_single_number_chart(results, :one_year_electricity_per_pupil_kwh, 1000.0, :last_year_electricity_kwh_pupil, :kwh)
+      create_single_number_chart(results, :one_year_electricity_per_pupil_kwh, nil, :last_year_electricity_kwh_pupil, :kwh)
     end
   end
 end

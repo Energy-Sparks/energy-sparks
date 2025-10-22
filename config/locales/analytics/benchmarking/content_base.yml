@@ -29,6 +29,7 @@ en:
           gbp: "£"
           kwh: kWh
           last_year: Last year
+          last_year_per_floor_area: Last year per m²
           last_year_per_pupil: Last year per pupil
           metering: Metering
           percent_changed: Percent changed
@@ -89,6 +90,7 @@ en:
           last_year_energy_kwh_pupil: Last year energy kWh/pupil
           last_year_energy_£_floor_area: Last year energy £/floor area
           last_year_energy_£_pupil: Last year energy £/pupil
+          last_year_gas_kwh_floor_area: Last year gas kWh/m²
           last_year_gas_kwh_pupil: Last year gas kWh/pupil
           last_year_gas_£: Last year Gas £
           last_year_heating_costs_per_floor_area: Last year heating costs per floor area
