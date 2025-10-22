@@ -52,6 +52,7 @@ module Comparisons
       Comparison::AnnualHeatingCostsPerFloorArea.for_schools(@schools).with_data.sort_default
     end
 
+    # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.last_year_gas_kwh_floor_area')
     def create_charts(results)
       create_single_number_chart(results, :one_year_gas_per_floor_area_kwh, nil, :last_year_gas_kwh_floor_area, :kwh)
     end

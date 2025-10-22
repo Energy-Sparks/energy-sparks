@@ -78,10 +78,7 @@ en:
           hot_water_gas: Hot Water Gas
           kwh_consumption_since_target_set: kWh consumption since target set
           last_year: Last year
-          last_year_carbon_emissions_tonnes_co2: Last year carbon emissions (tonnes CO2)
-          last_year_consumption_kwh: Last year consumption kWh
           last_year_cost_of_baseload: Last year cost of baseload
-          last_year_cost_£: Last year cost £
           last_year_electricity_kwh_pupil: Last year electricity kWh/pupil
           last_year_electricity_£: Last year electricity £
           last_year_energy_co2tonnes: Last year Energy CO2(tonnes)
@@ -93,7 +90,6 @@ en:
           last_year_gas_kwh_floor_area: Last year gas kWh/m²
           last_year_gas_kwh_pupil: Last year gas kWh/pupil
           last_year_gas_£: Last year Gas £
-          last_year_heating_costs_per_floor_area: Last year heating costs per floor area
           last_year_out_of_hours_co2: Last year out of hours co2
           last_year_out_of_hours_cost: Last year out of hours cost
           last_year_out_of_hours_cost_ct: Last year out of hours cost at current tariff
