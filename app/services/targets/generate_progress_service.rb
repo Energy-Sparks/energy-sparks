@@ -89,7 +89,7 @@ module Targets
         end
         current_consumption, current_missing = calculate_month_consumption(date, fuel_type)
         month = [date.year, date.month, current_consumption, previous_consumption, target_consumption,
-                 current_missing || previous_missing, current_missing, previous_missing]
+                 current_missing, previous_missing]
         month
       end
     end

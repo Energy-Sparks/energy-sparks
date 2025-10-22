@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_01_134714) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_22_083515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3641,7 +3641,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_01_134714) do
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
-            WHERE (((consumption.value ->> 5))::boolean = false)
+            WHERE ((((consumption.value ->> 5))::boolean = false) AND (((consumption.value ->> 6))::boolean = false))
             GROUP BY school_targets_1.id
           )
    SELECT school_targets.school_id,
@@ -3720,7 +3720,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_01_134714) do
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
-            WHERE (((consumption.value ->> 5))::boolean = false)
+            WHERE ((((consumption.value ->> 5))::boolean = false) AND (((consumption.value ->> 6))::boolean = false))
             GROUP BY school_targets_1.id
           )
    SELECT school_targets.school_id,
