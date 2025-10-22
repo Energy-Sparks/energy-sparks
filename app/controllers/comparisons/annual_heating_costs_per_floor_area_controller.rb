@@ -32,10 +32,10 @@ module Comparisons
         t('analytics.benchmarking.configuration.column_headings.school'),
         t('kwh'),
         t('£'),
-        t('co2'),
+        t('usage_co2'),
         t('kwh'),
         t('£'),
-        t('co2'),
+        t('usage_co2'),
         t('analytics.benchmarking.configuration.column_headings.saving_if_matched_exemplar_school'),
       ]
     end

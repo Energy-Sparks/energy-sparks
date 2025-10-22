@@ -57,10 +57,10 @@ describe 'annual_electricity_costs_per_pupil' do
         ['School',
          'kWh',
          '£',
-         'CO2',
+         'kg/CO2',
          'kWh',
          '£',
-         'CO2',
+         'kg/CO2',
          'Potential savings']
       end
 
