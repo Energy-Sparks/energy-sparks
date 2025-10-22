@@ -378,7 +378,7 @@ en:
           </p>
     show:
       change_units: Change units
-      chart_note: Chart shows all schools with at least a year of data available for any fuel type.
+      chart_note: Chart shows all schools with at least a year of data available.
       energy_use:
         title: Energy use
       intro_html: Explore the latest energy data, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activities at these schools</a>.
