@@ -163,11 +163,7 @@ describe SchoolCreator, :schools, type: :service do
         let(:school) { create(:school, :with_consent, school_group:, data_enabled: false, visible:) }
 
         it 'touches the group' do
-          original_timestamp = school_group.updated_at
-          travel 5.seconds do
-            service.make_data_enabled!
-          end
-          expect(school_group.reload.updated_at).to be > original_timestamp
+          expect { service.make_data_enabled! }.to change {school_group.reload.updated_at }
         end
       end
 
@@ -216,11 +212,7 @@ describe SchoolCreator, :schools, type: :service do
       let(:school) { create(:school, school_group:, visible: false) }
 
       it 'touches the group' do
-        original_timestamp = school_group.updated_at
-        travel 5.seconds do
-          service.make_visible!
-        end
-        expect(school_group.reload.updated_at).to be > original_timestamp
+        expect { service.make_visible! }.to change {school_group.reload.updated_at }
       end
     end
 
