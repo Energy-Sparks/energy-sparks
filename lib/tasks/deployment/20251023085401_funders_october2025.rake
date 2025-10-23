@@ -6,8 +6,8 @@ namespace :after_party do
     file_name = File.join(__dir__, 'funders-october-2025.csv')
     CSV.foreach(file_name, headers: true) do |row|
       _school_group = row[0]
-      school_name = row[1]
-      funder_name = row[2]
+      school_name = row['School name']
+      funder_name = row['Funder name']
 
       school = School.find_by_name(school_name)
       puts "No school called: #{school_name}" unless school
