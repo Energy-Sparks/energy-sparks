@@ -87,7 +87,7 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
           end
 
           it 'shows csv contents' do
-            expect(page.body).to eq SchoolGroups::CsvGenerator.new(SchoolGroup.all.by_name).export_detail
+            expect(page.body).to eq SchoolGroups::CsvGenerator.new(SchoolGroup.main_groups.by_name).export_detail
           end
 
           it 'has csv content type' do

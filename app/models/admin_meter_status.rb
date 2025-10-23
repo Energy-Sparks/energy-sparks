@@ -2,10 +2,11 @@
 #
 # Table name: admin_meter_statuses
 #
-#  created_at :datetime         not null
-#  id         :bigint(8)        not null, primary key
-#  label      :string
-#  updated_at :datetime         not null
+#  created_at                      :datetime         not null
+#  id                              :bigint(8)        not null, primary key
+#  ignore_in_inactive_meter_report :boolean          default(FALSE)
+#  label                           :string
+#  updated_at                      :datetime         not null
 #
 class AdminMeterStatus < ApplicationRecord
   has_many :meters, foreign_key: 'admin_meter_statuses_id'
