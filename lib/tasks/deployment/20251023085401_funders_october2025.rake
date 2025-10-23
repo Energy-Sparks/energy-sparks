@@ -3,7 +3,7 @@ namespace :after_party do
   task funders_october2025: :environment do
     puts "Running deploy task 'funders_october2025'"
 
-    file_name = File.join(__dir__, 'funders-oct-2025.csv')
+    file_name = File.join(__dir__, 'funders-october-2025.csv')
     CSV.foreach(file_name, headers: true) do |row|
       _school_group = row[0]
       school_name = row[1]
