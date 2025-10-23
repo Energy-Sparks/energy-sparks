@@ -72,13 +72,9 @@ cy:
           hot_water_gas: Nwy Dŵr Poeth
           kwh_consumption_since_target_set: Defnydd kWh ers gosod y targed
           last_year: Y llynedd
-          last_year_carbon_emissions_tonnes_co2: Allyriadau carbon y llynedd (tunelli CO2)
-          last_year_consumption_kwh: Defnydd kWh y llynedd
           last_year_cost_of_baseload: Cost llwyth sylfaenol y llynedd
-          last_year_cost_£: Cost y llynedd £
           last_year_electricity_kwh_pupil: Trydan y llynedd kWh/disgybl
           last_year_electricity_£: Trydan y llynedd £
-          last_year_electricity_£_pupil: Trydan y llynedd £/disgybl
           last_year_energy_co2tonnes: CO2 Ynni y llynedd (tunelli)
           last_year_energy_kgco2_pupil: Ynni y llynedd kgCO2/disgybl
           last_year_energy_kwh: Ynni y llynedd kWh
@@ -87,7 +83,6 @@ cy:
           last_year_energy_£_pupil: Y llynedd ynni £/disgybl
           last_year_gas_kwh_pupil: Nwy y llynedd kWh/disgybl
           last_year_gas_£: Y llynedd Nwy £
-          last_year_heating_costs_per_floor_area: Costau gwresogi y llynedd  fesul arwynebedd llawr
           last_year_out_of_hours_co2: ' Co2 y tu allan i oriau y llynedd'
           last_year_out_of_hours_cost: Cost y tu allan i oriau y llynedd
           last_year_out_of_hours_cost_ct: Cost y tu allan i oriau y llynedd ar y tariff cyfredol

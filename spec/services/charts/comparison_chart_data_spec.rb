@@ -26,7 +26,7 @@ describe Charts::ComparisonChartData do
 
   RSpec.shared_examples 'a chart hash' do
     it 'includes the expected keys' do
-      expect(chart_hash.keys).to contain_exactly(:id, :x_axis, :x_data, :y_axis_label)
+      expect(chart_hash.keys).to contain_exactly(:id, :x_axis, :x_data, :y_axis_label, :fuel_type)
     end
 
     it 'includes all schools in x_axis, in order' do

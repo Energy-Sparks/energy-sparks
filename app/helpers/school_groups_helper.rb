@@ -48,6 +48,7 @@ module SchoolGroupsHelper
   # all have public sharing. If not, then their list is bespoke to them so
   # dont cache the content.
   def can_cache_group_advice?(schools)
+    return false unless Rails.env.production?
     schools.all?(&:data_sharing_public?)
   end
 

@@ -7,7 +7,7 @@ module Charts
     renders_one :extra_note
 
     def initialize(school_group:,
-                   comparisons: [:annual_energy_use, :annual_energy_costs_per_pupil, :annual_energy_costs_per_floor_area],
+                   comparisons: [:annual_electricity_costs_per_pupil, :annual_heating_costs_per_floor_area],
                    **_kwargs)
       super
       @school_group = school_group

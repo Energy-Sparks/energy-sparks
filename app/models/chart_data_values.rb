@@ -11,7 +11,7 @@ class ChartDataValues
     I18n.t('analytics.series_data_manager.series_name.benchmark_school'), I18n.t('analytics.series_data_manager.series_name.exemplar_school')
   ].freeze
 
-  def initialize(chart, chart_type, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
+  def initialize(chart, chart_type, fuel_type: nil, transformations: [], allowed_operations: {}, drilldown_available: false, parent_timescale_description: nil, y1_axis_choices: [])
     if chart
       @chart_type         = chart_type
       @chart              = chart
@@ -42,6 +42,7 @@ class ChartDataValues
       @explore_message = I18n.t('chart_data_values.explore_message')
       @pinch_and_zoom_message = I18n.t('chart_data_values.pinch_and_zoom_message')
       @click_and_drag_message = I18n.t('chart_data_values.click_and_drag_message')
+      @fuel_type = fuel_type
     else
       @title = I18n.t('chart_data_values.not_enough_data_message', chart_type: chart_type.to_s.capitalize)
     end
@@ -136,12 +137,23 @@ class ChartDataValues
     from_hash = colour_lookup[data_type]
     return from_hash unless from_hash.nil?
 
-    using_name = colour_lookup.detect do |key, colour|
+    from_name_match = colour_lookup.detect do |key, colour|
       data_type.to_s.downcase.include?(key.downcase) && !@used_name_colours.include?(colour)
     end
-    unless using_name.nil?
-      @used_name_colours << using_name.second
-      using_name.second
+    chosen = unless from_name_match.nil?
+               @used_name_colours << from_name_match.second
+               from_name_match.second
+             end
+    return chosen unless chosen.nil?
+    case @fuel_type&.to_sym
+    when :electricity
+      Colours.chart_electric
+    when :gas
+      Colours.chart_gas
+    when :storage_heaters
+      Colours.chart_storage_heater
+    when :solar_pv
+      Colours.chart_solar_pv
     end
   end
 
@@ -267,7 +279,7 @@ private
     nil
   end
 
-  def format_teachers_label(full_label)
+  def format_column_chart_label(full_label)
     start_date = start_date_from_label(full_label)
     return full_label unless start_date
     end_date = start_date + 6.days
@@ -278,7 +290,7 @@ private
 
   def usage_column
     @series_data = @x_data_hash.each_with_index.map do |(data_type, data), index|
-      colour = teachers_chart_colour(index)
+      colour = column_chart_colour(index)
       # get the start date
       start_date = start_date_from_label(data_type)
 
@@ -289,11 +301,11 @@ private
 
       # add some useful cue to the json to indicate it should use an alternate formatter
       # e.g. pointFormat: :day, :orderedPoint
-      { name: format_teachers_label(data_type), color: colour, type: @chart1_type, data: data, index: index, day_format: start_date.present? }
+      { name: format_column_chart_label(data_type), color: colour, type: @chart1_type, data: data, index: index, day_format: start_date.present? }
     end
   end
 
-  def teachers_chart_colour(index)
+  def column_chart_colour(index)
     if @chart_type.match?(/_gas_/)
       index.zero? ? Colours.chart_gas_dark : Colours.chart_gas_light
     elsif @chart_type.match?(/_storage_/)
