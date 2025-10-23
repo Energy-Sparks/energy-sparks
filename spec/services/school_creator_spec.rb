@@ -158,6 +158,19 @@ describe SchoolCreator, :schools, type: :service do
         expect(school.activation_date).to eq(Time.zone.today)
       end
 
+      context 'with school group' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, :with_consent, school_group:, data_enabled: false, visible:) }
+
+        it 'touches the group' do
+          original_timestamp = school_group.updated_at
+          travel 5.seconds do
+            service.make_data_enabled!
+          end
+          expect(school_group.reload.updated_at).to be > original_timestamp
+        end
+      end
+
       context 'when there is an activation date' do
         let(:school) { create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
 
@@ -195,6 +208,19 @@ describe SchoolCreator, :schools, type: :service do
 
       it 'completes the onboarding process' do
         expect(school.visible).to be(true)
+      end
+    end
+
+    context 'with school group' do
+      let!(:school_group) { create(:school_group) }
+      let(:school) { create(:school, school_group:, visible: false) }
+
+      it 'touches the group' do
+        original_timestamp = school_group.updated_at
+        travel 5.seconds do
+          service.make_visible!
+        end
+        expect(school_group.reload.updated_at).to be > original_timestamp
       end
     end
 
