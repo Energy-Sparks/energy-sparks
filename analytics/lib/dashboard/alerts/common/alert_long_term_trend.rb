@@ -11,6 +11,8 @@ class AlertLongTermTrend < AlertAnalysisBase
   attr_reader :year_change_kwh, :year_change_kwh_temp_adj
   attr_reader :percent_change_kwh, :percent_change_kwh_temp_adj
 
+  attr_reader :abs_difference_kwh, :abs_difference_co2, :abs_difference_£, :abs_difference_£current
+
   def initialize(school, type = :electricitylongtermtrend)
     super(school, type)
     @relevance = aggregate_meter.nil? ? :never_relevant : :relevant
@@ -137,6 +139,21 @@ class AlertLongTermTrend < AlertAnalysisBase
       degreedays_last_year: {
         description: 'Degree days last year  (base 15.5C)',
         units: Float
+      },
+      abs_difference_kwh: {
+        description: 'Difference in kwh between last 2 years - absolute',
+        units: :kwh
+      },
+      abs_difference_£: {
+        description: 'Difference in £ between last 2 years - absolute (using historic tariffs)', units:  :£
+      },
+      abs_difference_£current: {
+        description: 'Difference in £ between last 2 years - absolute (using latest tariffs)',
+        units:  :£current
+      },
+      abs_difference_co2: {
+        description: 'Difference in co2 kg between last 2 years - absolute',
+        units:  :co2
       },
     }
   end
