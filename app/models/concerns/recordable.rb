@@ -8,31 +8,36 @@ module Recordable
   end
 
   # Return the point score for an observation for this recordable
-  # Centralises the logic for determining when an observation is eligible to receive points, based on its timing and frequency
-  # Including classes should implement: a +score+ method or attribute
+  # This method centralises the logic for awarding points based on:
+  # - Whether the observation occurs the current or a future academic year
+  # - Whether it exceeds the maximum allowed frequency
+  # - Whether bonus points (e.g. for images) apply
   #
-  # @param observation [Observation] the observation to evaluate, this could be new (unsaved) or existing (saved)
-  # @return [Integer, nil] the score if the observation is valid and within
-  #   the allowed frequency limits; otherwise, `nil`.
+  # Including classes must define a `score` method or attribute.
+  #
+  # @param observation [Observation] the observation to evaluate (may be new or persisted)
+  # @return [Integer] the total points to award, or `0` if ineligible.
   #
   def calculate_points(observation)
     # no points for previous academic year recordings
-    return 0 if observation.in_a_previous_academic_year?
+    return 0 if observation.in_previous_academic_year?
 
-    # Count towards frequency only if changing academic year or new record
-    uncounted = observation.changed_academic_year? ? 1 : 0
+    # puts "Academic year changed? #{observation.academic_year_changed?}"
 
-    # Count existing records already with points in academic year
-    return 0 if (count_existing_for_academic_year(observation.school, observation.academic_year) + uncounted) > maximum_frequency
+    # add one to existing count if this has zero points or academic year changed (includes being a new recording)
+    not_counted_yet = observation.points.to_i.zero? || observation.academic_year_changed? ? 1 : 0
+    # puts "not counted yet: #{not_counted_yet}"
 
-    bonus_points = SiteSettings.current.photo_bonus_points || 0
+    # puts "return 0 if #{count_existing_for_academic_year(observation.school, observation.academic_year)} + #{not_counted_yet} > #{maximum_frequency}"
+    # Prevent awarding points if frequency limit for the academic year is exceeded
+    return 0 if (count_existing_for_academic_year(observation.school, observation.academic_year) + not_counted_yet) > maximum_frequency
 
-    # Add any bonus points for included images
-    score + bonus_points
+    # Return base points plus bonus points for any images
+    points + observation.available_bonus_points
   end
 
-  def score
-    super || 0
+  def points
+    score || 0
   end
 
   # Used at the frontend to display if maximum recordings to receive points have been made

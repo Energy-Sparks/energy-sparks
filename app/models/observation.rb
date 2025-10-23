@@ -129,30 +129,35 @@ class Observation < ApplicationRecord
     end
   end
 
+  def available_bonus_points
+    description_includes_images? ? SiteSettings.current.photo_bonus_points.to_i : 0
+  end
+
+  delegate :current_academic_year, to: :school
+
   def happened_on
     at.to_date
+  end
+
+  def in_previous_academic_year?
+    # unlikely but if no academic year, treat as previous
+    # return true if academic_year.nil?
+
+    at < current_academic_year.start_date
   end
 
   def academic_year
     school.academic_year_for(at)
   end
 
-  def in_current_academic_year?
-    academic_year&.current?
+  def academic_year_was
+    return nil if at_was.nil? # new record
+
+    school.academic_year_for(at_was)
   end
 
-  def in_a_previous_academic_year?
-    # unlikely but if no academic year, treat as previous
-    return true if academic_year.nil?
-
-    academic_year.previous?
-  end
-
-  def changed_academic_year?
-    return true if at_was.nil? # new record
-
-    academic_year_was = school.academic_year_for(at_was)
-    academic_year = school.academic_year_for(at)
+  def academic_year_changed?
+    return true if at_was.nil? && at # new record
 
     academic_year_was != academic_year
   end
@@ -160,12 +165,11 @@ class Observation < ApplicationRecord
   def update_points?
     return true if at_was.nil? # new record
 
-    academic_year = school.current_academic_year
     # if no current academic year, always update - check this!
-    return true if academic_year.nil?
+    # return true if current_academic_year.nil?
 
     # Update points unless it remains in the same previous academic year
-    !(at_was < academic_year.start_date && at < academic_year.start_date)
+    !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
   end
 
   private
