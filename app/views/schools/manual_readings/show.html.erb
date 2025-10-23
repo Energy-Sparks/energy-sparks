@@ -25,10 +25,10 @@
         </div>
         <% @fuel_types.each do |fuel_type, months| %>
           <div class="col-md-2">
-            <%= reading_form.input fuel_type, label: false, as: :string, pattern: '[.0-9]*',
-                                              input_html: { inputmode: 'numeric' },
-                                              disabled: !@readings[reading_form.object.month][fuel_type][:missing] &&
-                                                        reading_form.object.errors.none? %>
+            <%= disabled = @readings.dig(reading_form.object.month, fuel_type, :disabled) &&
+                           reading_form.object.errors.none?
+                reading_form.input fuel_type, label: false, as: :string, pattern: '[.0-9]*',
+                                              input_html: { inputmode: 'numeric' }, disabled: %>
           </div>
         <% end %>
       </div>

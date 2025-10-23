@@ -11,8 +11,13 @@ RSpec.describe 'manual readings' do
     sign_in(create(:school_admin, school:))
   end
 
+  def form_inputs(values: false)
+    all('form.edit_school .row')[1..]
+      .map { |row| row.all('input', visible: false).map { |input| values ? input.value : input } }
+  end
+
   def form_input_values
-    all('form.edit_school .row').map { |row| row.all('input', visible: false).map(&:value) }[1..]
+    form_inputs(values: true)
   end
 
   def complete_form(single: false, with: '5', last: false)
@@ -141,6 +146,15 @@ RSpec.describe 'manual readings' do
         expect(form_input_values.last).to eq(%w[2025-07-01 744.0 5.0])
         complete_form(last: true, with: '6')
         expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([[Date.new(2025, 7, 1), nil, 6]])
+      end
+
+      it 'displays manual readings over calculated values' do
+        school.manual_readings.create!(month: Date.new(2024, 9), electricity: 1000)
+        visit school_manual_readings_path(school)
+        expect(form_input_values[2]).to eq(['2024-09-01', '1000.0', nil])
+        form_inputs[2][1].fill_in(with: 1001)
+        click_on 'Save'
+        expect(school.manual_readings.reload.pluck(:month, :electricity)).to eq([[Date.new(2024, 9), 1001]])
       end
     end
 

@@ -11,8 +11,9 @@ module Schools
     before_action :set_breadcrumbs
 
     def show
-      @readings, @fuel_types = calculate_required_manual_readings
-      build_manual_readings(@school, @readings)
+      existing_readings = @school.manual_readings.to_a
+      @readings, @fuel_types = calculate_required_manual_readings(existing_readings)
+      build_manual_readings(@school, existing_readings, @readings)
     end
 
     def update
@@ -33,22 +34,21 @@ module Schools
     # Creates manual reading objects on the school, either blank for input or with data for display.
     # @param school to add manual readings to
     # @param readings [Hash] readings to show by month
-    def build_manual_readings(school, readings)
-      return unless readings.values.flat_map(&:values).any? { |h| h[:missing] }
+    def build_manual_readings(school, existing_readings, readings)
+      return unless readings.values.flat_map(&:values).any? { |h| !h[:disabled] }
 
-      existing_months = school.manual_readings.map(&:month)
       readings.each do |month, missing_and_reading|
         consumption = round_consumption(missing_and_reading.transform_values { |hash| hash[:reading] })
-        if existing_months.include?(month)
-          manual_reading = school.manual_readings.find { |reading| reading.month == month }
-          manual_reading.assign_attributes(consumption.compact)
+        existing_reading = existing_readings.find { |reading| reading.month == month }
+        if existing_reading
+          existing_reading.assign_attributes(consumption)
         else
           school.manual_readings.build(month:, **consumption)
         end
       end
     end
 
-    def calculate_required_manual_readings
+    def calculate_required_manual_readings(existing_readings)
       fuel_types = %i[electricity gas]
       readings = {}
       target = @school.most_recent_target
@@ -59,9 +59,10 @@ module Schools
 
           consumption.each do |consumption|
             month = Date.new(consumption[:year], consumption[:month])
-            add_reading(readings, month, fuel_type, consumption[:current_missing], consumption[:current_consumption])
-            add_reading(readings, month.prev_year, fuel_type, consumption[:previous_missing],
-                         consumption[:previous_consumption])
+            add_reading(readings, existing_readings, month, fuel_type,
+                        consumption[:current_missing], consumption[:current_consumption])
+            add_reading(readings, existing_readings, month.prev_year, fuel_type,
+                        consumption[:previous_missing], consumption[:previous_consumption])
           end
         end
       else
@@ -70,17 +71,24 @@ module Schools
         DateService.start_of_months(13.months.ago, Date.current.prev_month).each do |month|
           fuel_types.each do |fuel_type|
             consumption, consumption_missing = calculate_month_consumption(month, fuel_type)
-            add_reading(readings, month, fuel_type, consumption_missing, consumption)
+            add_reading(readings, existing_readings, month, fuel_type, consumption_missing, consumption)
           end
         end
       end
       [readings, fuel_types]
     end
 
-    def add_reading(readings, month, fuel_type, missing, reading)
+    def add_reading(readings, existing_readings, month, fuel_type, missing, reading)
       return if month >= Date.current.beginning_of_month
 
-      (readings[month] ||= {})[fuel_type] = { missing:, reading: missing ? nil : reading }
+      existing_reading = existing_readings.find { |reading| reading.month == month }
+      reading = missing ? nil : reading
+      disabled, reading = if existing_reading&.[](fuel_type).present?
+                            [false, existing_reading[fuel_type]]
+                          else
+                            [!missing, missing ? nil : reading]
+                          end
+      (readings[month] ||= {})[fuel_type] = { disabled:, reading: }
     end
 
     def round_consumption(consumption)
