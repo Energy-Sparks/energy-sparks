@@ -72,6 +72,10 @@ class Activity < ApplicationRecord
     observations.sum(:points)
   end
 
+  def academic_year
+    school.academic_year_for(happened_on)
+  end
+
   private
 
   def description_previously_changed?

@@ -141,7 +141,7 @@ describe Observation do
       context 'when creating a new observation' do
         let!(:observation) { build(:observation, :activity, at: nil, school:) }
 
-        context 'when setting at to previous academic year' do
+        context 'when setting "at" to previous academic year' do
           before do
             observation.at = previous_academic_year.start_date + 1.day
           end
@@ -149,7 +149,7 @@ describe Observation do
           it { expect(observation.update_points?).to be(true) }
         end
 
-        context 'when setting at to current academic year' do
+        context 'when setting "at" to current academic year' do
           before do
             observation.at = current_academic_year.start_date + 1.day
           end
@@ -157,7 +157,7 @@ describe Observation do
           it { expect(observation.update_points?).to be(true) }
         end
 
-        context 'when setting at to future academic year' do
+        context 'when setting "at" to future academic year' do
           before do
             observation.at = current_academic_year.start_date + 1.year + 1.day
           end
