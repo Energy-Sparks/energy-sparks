@@ -16,7 +16,9 @@
     <%= f.label :group_type %>
     <%= f.select :group_type,
                  options_from_collection_for_select(
-                   SchoolGroup.group_types.map { |k, _v| OpenStruct.new(id: k, group_type: k.humanize.capitalize) },
+                   SchoolGroup.main_group_types.map do |k, _v|
+                     OpenStruct.new(id: k, group_type: k.humanize.capitalize)
+                   end,
                    'id', 'group_type', @school_group.group_type
                  ),
                  { include_blank: false }, { class: 'form-control' } %>

@@ -9,7 +9,7 @@ module Admin
       end
 
       def new
-        @school_groups = SchoolGroup.all.order(name: :asc)
+        @school_groups = SchoolGroup.main_groups.order(name: :asc)
         @existing_exclusions = @alert_type.school_alert_type_exclusions.pluck(:school_id, :reason).to_h
       end
 

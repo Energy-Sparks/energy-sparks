@@ -113,11 +113,32 @@ class SchoolGroup < ApplicationRecord
   scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
   scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
 
+  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
+
+  MAIN_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
+  AREA_GROUP_TYPE_KEYS = %w[diocese local_authority_area].freeze
+  PROJECT_GROUP_TYPE_KEYS = %w[project].freeze
+
+  scope :main_groups, -> { where(group_type: MAIN_GROUP_TYPE_KEYS) }
+  scope :area_groups, -> { where(group_type: AREA_GROUP_TYPE_KEYS) }
+  scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }
+
   validates :name, presence: true
 
-  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2 }
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
+
+  def self.main_group_types
+    group_types.slice(*MAIN_GROUP_TYPE_KEYS)
+  end
+
+  def self.area_group_types
+    group_types.slice(*AREA_GROUP_TYPE_KEYS)
+  end
+
+  def self.project_group_types
+    group_types.slice(*PROJECT_GROUP_TYPE_KEYS)
+  end
 
   def visible_schools_count
     schools.visible.count

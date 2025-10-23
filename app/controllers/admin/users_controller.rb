@@ -6,7 +6,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @school_groups = SchoolGroup.all.by_name
+      @school_groups = SchoolGroup.main_groups.by_name
       @search_users = find_users
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
       respond_to do |format|
