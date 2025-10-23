@@ -99,7 +99,7 @@ describe SchoolRemover, :schools, type: :service do
         let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
 
         it 'touches the group' do
-          expect { service.remove_school! }.to change { school_group.reload.updated_at }
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
         end
       end
 
@@ -153,7 +153,7 @@ describe SchoolRemover, :schools, type: :service do
         let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
 
         it 'touches the group' do
-          expect { service.remove_school! }.to change { school_group.reload.updated_at }
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
         end
       end
 
