@@ -778,6 +778,7 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings,
                                     defaults: { format: 'csv' }
 
+      resources :admin_user_meter_report, only: [:index]
       resources :baseload_anomaly, only: [:index]
       resources :blank_readings, only: [:index]
 
@@ -808,6 +809,7 @@ Rails.application.routes.draw do
       resources :missing_alert_contacts, only: [:index]
       resources :perse_meter, only: [:index]
       resources :recent_audits, only: [:index]
+      resources :school_scenarios, only: [:index]
       resources :school_targets, only: :index
       resources :solar_panels, only: [:index]
       get 'tariffs', to: 'tariffs#index', as: :tariffs

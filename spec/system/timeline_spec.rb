@@ -168,7 +168,7 @@ describe 'timelines', type: :system do
 
   describe 'school group timeline' do
     let(:public) { true }
-    let(:calendar) { create(:national_calendar, :with_academic_years, previous_academic_year_count: 3) }
+    let!(:calendar) { create(:national_calendar, :with_academic_years, previous_academic_year_count: 3) }
     let(:school_group) { create(:school_group, default_template_calendar: calendar, public:) }
     let!(:schools) { create_list(:school, 2, school_group:) }
 
@@ -187,9 +187,17 @@ describe 'timelines', type: :system do
       context 'when school group is private' do
         let(:public) { false }
 
-        it_behaves_like 'shows the we are working with message'
+        it_behaves_like 'shows the we are working with message' # this is the map page
       end
     end
+
+    context 'when school group does not have calendars available' do
+      let(:calendar) { create(:national_calendar, :with_academic_years, previous_academic_year_count: 3, title: 'England and Wales') }
+      let(:school_group) { create(:school_group, default_template_calendar: nil, public:) }
+
+      it_behaves_like 'a timeline', show_school: true
+    end
   end
+
   # rubocop:enable RSpec/MultipleMemoizedHelpers
 end

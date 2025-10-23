@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -712,6 +712,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
     t.datetime "updated_at", null: false
     t.bigint "report_group_id"
     t.boolean "disabled", default: false, null: false
+    t.integer "fuel_type"
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
     t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
@@ -2551,21 +2552,37 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       data.alert_generation_run_id,
       data.school_id,
       data.one_year_electricity_per_pupil_gbp,
+      data.one_year_electricity_per_pupil_kwh,
+      data.one_year_electricity_per_pupil_co2,
       data.last_year_gbp,
-      data.one_year_saving_versus_exemplar_gbpcurrent
+      data.last_year_kwh,
+      data.last_year_co2,
+      data.one_year_saving_versus_exemplar_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.one_year_electricity_per_pupil_gbp,
+              data_1.one_year_electricity_per_pupil_kwh,
+              data_1.one_year_electricity_per_pupil_co2,
               data_1.last_year_gbp,
+              data_1.last_year_kwh,
+              data_1.last_year_co2,
               data_1.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, one_year_electricity_per_pupil_kwh double precision, one_year_electricity_per_pupil_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
   add_index "comparison_annual_electricity_costs_per_pupils", ["school_id"], name: "idx_on_school_id_1d369f6529", unique: true
 
@@ -2876,33 +2893,38 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
   create_view "comparison_annual_heating_costs_per_floor_areas", materialized: true, sql_definition: <<-SQL
       WITH gas AS (
            SELECT alerts.alert_generation_run_id,
-              data.one_year_gas_per_floor_area_normalised_gbp,
+              data.one_year_gas_per_floor_area_gbp,
+              data.one_year_gas_per_floor_area_kwh,
+              data.one_year_gas_per_floor_area_co2,
               data.last_year_gbp,
-              data.one_year_saving_versus_exemplar_gbpcurrent,
               data.last_year_kwh,
-              data.last_year_co2
+              data.last_year_co2,
+              data.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_normalised_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision, last_year_kwh double precision, last_year_co2 double precision)
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_gbp double precision, one_year_gas_per_floor_area_kwh double precision, one_year_gas_per_floor_area_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
           ), storage_heaters AS (
            SELECT alerts.alert_generation_run_id,
-              data.one_year_gas_per_floor_area_normalised_gbp,
+              data.one_year_gas_per_floor_area_gbp,
+              data.one_year_gas_per_floor_area_kwh,
+              data.one_year_gas_per_floor_area_co2,
               data.last_year_gbp,
-              data.one_year_saving_versus_exemplar_gbpcurrent,
               data.last_year_kwh,
-              data.last_year_co2
+              data.last_year_co2,
+              data.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_normalised_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision, last_year_kwh double precision, last_year_co2 double precision)
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_gbp double precision, one_year_gas_per_floor_area_kwh double precision, one_year_gas_per_floor_area_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))
           ), additional AS (
            SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.gas_economic_tariff_changed_this_year
+              data.gas_economic_tariff_changed_this_year,
+              data.electricity_economic_tariff_changed_this_year
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean)
+              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean, electricity_economic_tariff_changed_this_year boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
           ), latest_runs AS (
            SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
@@ -2911,13 +2933,22 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
           )
    SELECT latest_runs.id,
       additional.school_id,
-      (COALESCE(gas.one_year_gas_per_floor_area_normalised_gbp, (0)::double precision) + COALESCE(storage_heaters.one_year_gas_per_floor_area_normalised_gbp, (0)::double precision)) AS one_year_gas_per_floor_area_normalised_gbp,
-      (COALESCE(gas.last_year_gbp, (0)::double precision) + COALESCE(storage_heaters.last_year_gbp, (0)::double precision)) AS last_year_gbp,
-      (COALESCE(gas.one_year_saving_versus_exemplar_gbpcurrent, (0)::double precision) + COALESCE(storage_heaters.one_year_saving_versus_exemplar_gbpcurrent, (0)::double precision)) AS one_year_saving_versus_exemplar_gbpcurrent,
-      (COALESCE(gas.last_year_kwh, (0)::double precision) + COALESCE(storage_heaters.last_year_kwh, (0)::double precision)) AS last_year_kwh,
-      (COALESCE(gas.last_year_co2, (0)::double precision) + COALESCE(storage_heaters.last_year_co2, (0)::double precision)) AS last_year_co2,
+      gas.last_year_gbp AS gas_last_year_gbp,
+      gas.last_year_kwh AS gas_last_year_kwh,
       gas.last_year_co2 AS gas_last_year_co2,
-      additional.gas_economic_tariff_changed_this_year
+      gas.one_year_gas_per_floor_area_gbp,
+      gas.one_year_gas_per_floor_area_kwh,
+      gas.one_year_gas_per_floor_area_co2,
+      storage_heaters.last_year_gbp AS storage_heaters_last_year_gbp,
+      storage_heaters.last_year_kwh AS storage_heaters_last_year_kwh,
+      storage_heaters.last_year_co2 AS storage_heaters_last_year_co2,
+      storage_heaters.one_year_gas_per_floor_area_gbp AS one_year_storage_heaters_per_floor_area_gbp,
+      storage_heaters.one_year_gas_per_floor_area_kwh AS one_year_storage_heaters_per_floor_area_kwh,
+      storage_heaters.one_year_gas_per_floor_area_co2 AS one_year_storage_heaters_per_floor_area_co2,
+      gas.one_year_saving_versus_exemplar_gbpcurrent AS one_year_gas_saving_versus_exemplar_gbpcurrent,
+      storage_heaters.one_year_saving_versus_exemplar_gbpcurrent AS one_year_storage_heaters_saving_versus_exemplar_gbpcurrent,
+      additional.gas_economic_tariff_changed_this_year,
+      additional.electricity_economic_tariff_changed_this_year
      FROM (((latest_runs
        JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
@@ -3642,7 +3673,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
-       JOIN current_targets ON ((current_targets.id = school_targets.id)));
+       JOIN current_targets ON ((current_targets.id = school_targets.id)))
+    WHERE (totals.previous_year_kwh > (0)::double precision);
   SQL
   add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
 
@@ -3720,7 +3752,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_10_130135) do
       ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
      FROM ((school_targets
        JOIN totals ON ((totals.id = school_targets.id)))
-       JOIN current_targets ON ((current_targets.id = school_targets.id)));
+       JOIN current_targets ON ((current_targets.id = school_targets.id)))
+    WHERE (totals.previous_year_kwh > (0)::double precision);
   SQL
   add_index "comparison_gas_targets", ["school_id"], name: "index_comparison_gas_targets_on_school_id", unique: true
 

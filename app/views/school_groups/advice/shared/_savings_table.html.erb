@@ -1,6 +1,5 @@
-<%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
 <table id="<%= advice_page.key %>-savings"
-       class="table table-sm table-sorted table-borderless advice-table advice-priority-table">
+       class="table table-sm advice-table advice-priority-table <%= comparison_table_class(schools) %>">
   <thead>
     <tr>
       <th colspan="<%= can?(:update_settings, school_group) ? '3' : '2' %>"></th>
@@ -61,6 +60,4 @@
     <% end %>
   </tbody>
 </table>
-<% if schools.length > 20 %>
-  <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
-<% end %>
+<%= render 'school_groups/advice/shared/analysis_footnotes_link' %>

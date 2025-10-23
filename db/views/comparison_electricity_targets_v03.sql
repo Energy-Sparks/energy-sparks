@@ -21,3 +21,4 @@ SELECT school_targets.school_id,
 FROM school_targets
 JOIN totals ON totals.id = school_targets.id
 JOIN current_targets ON current_targets.id = school_targets.id
+WHERE totals.previous_year_kwh > 0

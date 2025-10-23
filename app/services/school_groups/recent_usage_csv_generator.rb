@@ -30,13 +30,18 @@ module SchoolGroups
     def columns_for_usage(recent_usage)
       columns = []
       fuel_types.each do |fuel_type|
+        columns << recent_usage&.send(fuel_type)&.week&.start_date
+        columns << recent_usage&.send(fuel_type)&.week&.end_date
         # loop first to add all metrics for last week, then last year
         # rubocop:disable Style/CombinableLoops
         METRICS.each do |metric|
-          columns << (recent_usage&.send(fuel_type)&.week&.has_data ? recent_usage&.send(fuel_type)&.week&.send(metric) : '-')
+          columns << (recent_usage&.send(fuel_type)&.week&.has_data ? recent_usage&.send(fuel_type)&.week&.send(metric) : '')
         end
         METRICS.each do |metric|
-          columns << (recent_usage&.send(fuel_type)&.year&.has_data ? recent_usage&.send(fuel_type)&.year&.send(metric) : '-')
+          columns << (recent_usage&.send(fuel_type)&.month&.has_data ? recent_usage&.send(fuel_type)&.month&.send(metric) : '')
+        end
+        METRICS.each do |metric|
+          columns << (recent_usage&.send(fuel_type)&.year&.has_data ? recent_usage&.send(fuel_type)&.year&.send(metric) : '')
         end
         # rubocop:enable Style/CombinableLoops
       end
@@ -60,7 +65,10 @@ module SchoolGroups
 
     def header_columns_for(fuel_type)
       columns = []
-      [:last_week, :last_year].each do |period|
+      [:start_date, :end_date].each do |date|
+        columns << I18n.t("common.#{fuel_type}") + ' ' + I18n.t(date, scope: 'common.labels')
+      end
+      [:last_week, :last_month, :last_year].each do |period|
         METRIC_HEADERS.each do |metric|
           columns << I18n.t("common.#{fuel_type}") + ' ' + I18n.t("school_groups.show.metric.#{metric}") + ' ' + I18n.t("common.labels.#{period}")
         end

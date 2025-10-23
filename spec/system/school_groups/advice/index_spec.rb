@@ -1,51 +1,23 @@
 require 'rails_helper'
 
 describe 'School group advice index page' do
-  let!(:school_group) { create(:school_group, public: true) }
-  let!(:school) { create(:school, :with_fuel_configuration, school_group: school_group) }
+  let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
 
-  include_context 'school group recent usage'
+  before do
+    create(:report, key: :annual_electricity_costs_per_pupil)
+  end
 
   context 'when not logged in' do
     before do
       visit school_group_advice_path(school_group)
     end
 
-    it_behaves_like 'it contains the expected data table', aligned: true do
-      let(:table_id) { '#school-group-recent-usage-electricity' }
-      let(:expected_header) do
-        [
-          ['School', 'Last week', 'Last month', 'Last year']
-        ]
-      end
-      let(:expected_rows) do
-        [
-          [school.name, '-16%', '-16%', '-16%']
-        ]
+    it 'displays the charts' do
+      within('div.charts-group-dashboard-charts-component') do
+        expect(page).to have_content(I18n.t('school_groups.show.energy_use.title'))
       end
     end
 
-    context 'when toggling to kWh', :js do
-      before do
-        choose(option: 'usage')
-      end
-
-      it_behaves_like 'it contains the expected data table', aligned: true do
-        let(:table_id) { '#school-group-recent-usage-electricity' }
-        let(:expected_header) do
-          [
-            ['School', 'Last week', 'Last month', 'Last year']
-          ]
-        end
-        let(:expected_rows) do
-          [
-            [school.name, '910', '910', '910']
-          ]
-        end
-      end
-    end
-
-    it_behaves_like 'schools are filtered by permissions'
     it_behaves_like 'a group advice page secr nav link', display: false
   end
 
@@ -55,7 +27,6 @@ describe 'School group advice index page' do
       visit school_group_advice_path(school_group)
     end
 
-    it_behaves_like 'schools are filtered by permissions', admin: true
     it_behaves_like 'a group advice page secr nav link', display: true
   end
 
@@ -65,7 +36,6 @@ describe 'School group advice index page' do
       visit school_group_advice_path(school_group)
     end
 
-    it_behaves_like 'schools are filtered by permissions', admin: false
     it_behaves_like 'a group advice page secr nav link', display: false
   end
 end
