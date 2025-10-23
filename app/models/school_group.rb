@@ -94,6 +94,18 @@ class SchoolGroup < ApplicationRecord
   has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
 
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
+
+  has_many :school_groupings
+  has_many :assigned_schools, through: :school_groupings, source: :school
+
+  has_many :main_school_groupings, -> { where(role: 'main') }, class_name: 'SchoolGrouping'
+  has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+
+  has_many :main_schools, through: :main_school_groupings, source: :school
+  has_many :area_schools, through: :area_school_groupings, source: :school
+  has_many :project_schools, through: :project_school_groupings, source: :school
+
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
 
