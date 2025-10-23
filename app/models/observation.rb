@@ -141,6 +141,7 @@ class Observation < ApplicationRecord
 
   def in_previous_academic_year?
     # unlikely but if no academic year, treat as previous (0 points)
+    # also prevents errors as a calandar with academic years are required when calculating points
     return true if current_academic_year.nil?
 
     at < current_academic_year.start_date
@@ -163,10 +164,7 @@ class Observation < ApplicationRecord
   end
 
   def update_points?
-    return true if at_was.nil? # new record
-
-    # if no current academic year, don't update points
-    # return false if current_academic_year.nil?
+    return true if new_record?
 
     # Update points unless it remains in a previous academic year
     !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)

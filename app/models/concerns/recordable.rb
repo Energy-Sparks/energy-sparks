@@ -22,13 +22,10 @@ module Recordable
     # no points for previous academic year recordings
     return 0 if observation.in_previous_academic_year?
 
-    # puts "Academic year changed? #{observation.academic_year_changed?}"
-
     # add one to existing count if this has zero points or academic year changed (includes being a new recording)
+    # as it will count once saved
     not_counted_yet = observation.points.to_i.zero? || observation.academic_year_changed? ? 1 : 0
-    # puts "not counted yet: #{not_counted_yet}"
 
-    # puts "return 0 if #{count_existing_for_academic_year(observation.school, observation.academic_year)} + #{not_counted_yet} > #{maximum_frequency}"
     # Prevent awarding points if frequency limit for the academic year is exceeded
     return 0 if (count_existing_for_academic_year(observation.school, observation.academic_year) + not_counted_yet) > maximum_frequency
 
