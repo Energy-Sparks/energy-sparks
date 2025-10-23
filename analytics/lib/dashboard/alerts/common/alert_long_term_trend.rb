@@ -11,7 +11,8 @@ class AlertLongTermTrend < AlertAnalysisBase
   attr_reader :year_change_kwh, :year_change_kwh_temp_adj
   attr_reader :percent_change_kwh, :percent_change_kwh_temp_adj
 
-  attr_reader :abs_difference_kwh, :abs_difference_co2, :abs_difference_£, :abs_difference_£current
+  attr_reader :abs_difference_kwh, :abs_difference_co2, :abs_difference_£
+  attr_reader :abs_difference_kwh_temp_adj, :abs_difference_co2_temp_adj, :abs_difference_£_temp_adj
 
   def initialize(school, type = :electricitylongtermtrend)
     super(school, type)
@@ -144,17 +145,25 @@ class AlertLongTermTrend < AlertAnalysisBase
         description: 'Difference in kwh between last 2 years - absolute',
         units: :kwh
       },
+      abs_difference_kwh_temp_adj: {
+        description: 'Difference in temp adjusted kwh between last 2 years - absolute',
+        units: :kwh
+      },
       abs_difference_£: {
         description: 'Difference in £ between last 2 years - absolute (using historic tariffs)', units:  :£
       },
-      abs_difference_£current: {
-        description: 'Difference in £ between last 2 years - absolute (using latest tariffs)',
-        units:  :£current
+      abs_difference_£_temp_adj: {
+        description: 'Difference in temp adjusted £ between last 2 years - absolute (using historic tariffs)', units:  :£
       },
       abs_difference_co2: {
         description: 'Difference in co2 kg between last 2 years - absolute',
         units:  :co2
       },
+      abs_difference_co2_temp_adj: {
+        description: 'Difference in temp adjusted co2 kg between last 2 years - absolute',
+        units:  :co2
+      },
+
     }
   end
 
@@ -174,6 +183,9 @@ class AlertLongTermTrend < AlertAnalysisBase
     @year_change_£          = @this_year_£ - @last_year_£
     @year_change_£_temp_adj = @this_year_£ - @last_year_£_temp_adj
 
+    @abs_difference_£ = @year_change_£.magnitude
+    @abs_difference_£_temp_adj = @year_change_£_temp_adj.magnitude
+
     @percent_change_£           = @year_change_£ / @last_year_£
     @percent_change_£_temp_adj  = @year_change_£_temp_adj / @last_year_£
 
@@ -184,6 +196,9 @@ class AlertLongTermTrend < AlertAnalysisBase
     @year_change_kwh          = @this_year_kwh - @last_year_kwh
     @year_change_kwh_temp_adj = @this_year_kwh - @last_year_kwh_temp_adj
 
+    @abs_difference_kwh = @year_change_kwh.magnitude
+    @abs_difference_kwh_temp_adj = @year_change_kwh_temp_adj.magnitude
+
     @percent_change_kwh           = @year_change_kwh / @last_year_kwh
     @percent_change_kwh_temp_adj  = @year_change_kwh_temp_adj / @last_year_kwh
 
@@ -193,6 +208,9 @@ class AlertLongTermTrend < AlertAnalysisBase
 
     @year_change_co2          = @this_year_co2 - @last_year_co2
     @year_change_co2_temp_adj = @this_year_co2 - @last_year_co2_temp_adj
+
+    @abs_difference_co2 = @year_change_co2.magnitude
+    @abs_difference_co2_temp_adj = @year_change_co2_temp_adj.magnitude
 
     @percent_change_co2          = @year_change_co2 / @last_year_co2
     @percent_change_co2_temp_adj = @year_change_co2 / @year_change_co2_temp_adj

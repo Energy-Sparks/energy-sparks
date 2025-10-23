@@ -32,25 +32,45 @@ describe AlertElectricityLongTermTrend do
     context 'with increased usage' do
       let(:scale) { 2.0 }
 
-      it 'produces expected change variables' do
+      it 'produces expected kWh change variables' do
         expect(alert.last_year_kwh).to eq(unchanged_annual_use) # values from context
         expect(alert.this_year_kwh).to eq(unchanged_annual_use * scale)
         expect(alert.year_change_kwh).to eq(unchanged_annual_use)
         expect(alert.abs_difference_kwh).to eq(unchanged_annual_use)
+        expect(alert.abs_difference_kwh_temp_adj).to eq(unchanged_annual_use)
         expect(alert.percent_change_kwh).to eq(1.0) # 100 percent increase
       end
+
+      # rubocop:disable Naming/AsciiIdentifiers
+      it 'calculates other change variables' do
+        expect(alert.abs_difference_£).not_to be_nil
+        expect(alert.abs_difference_£_temp_adj).not_to be_nil
+        expect(alert.abs_difference_co2).not_to be_nil
+        expect(alert.abs_difference_co2_temp_adj).not_to be_nil
+      end
+      # rubocop:enable Naming/AsciiIdentifiers
     end
 
     context 'with decreased usage' do
       let(:scale) { 0.5 }
 
-      it 'produces expected change variables' do
+      it 'produces expected kWh change variables' do
         expect(alert.last_year_kwh).to eq(unchanged_annual_use) # values from context
         expect(alert.this_year_kwh).to eq(unchanged_annual_use * scale)
         expect(alert.year_change_kwh).to eq(unchanged_annual_use * scale * -1.0)
         expect(alert.abs_difference_kwh).to eq(unchanged_annual_use * scale)
+        expect(alert.abs_difference_kwh_temp_adj).to eq(unchanged_annual_use * scale)
         expect(alert.percent_change_kwh).to eq(-0.5) # 50 percent decrease
       end
+
+      # rubocop:disable Naming/AsciiIdentifiers
+      it 'calculates other change variables' do
+        expect(alert.abs_difference_£).not_to be_nil
+        expect(alert.abs_difference_£_temp_adj).not_to be_nil
+        expect(alert.abs_difference_co2).not_to be_nil
+        expect(alert.abs_difference_co2_temp_adj).not_to be_nil
+      end
+      # rubocop:enable Naming/AsciiIdentifiers
     end
   end
 end
