@@ -4,7 +4,7 @@ describe 'School group advice index page' do
   let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
 
   before do
-    create(:report, key: :annual_energy_use)
+    create(:report, key: :annual_electricity_costs_per_pupil)
   end
 
   context 'when not logged in' do

@@ -46,6 +46,7 @@ class SchoolCreator
       onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
     self.class.expire_login_cache!
+    @school&.school_group&.touch
     broadcast(:school_made_visible, @school)
   end
 
@@ -55,6 +56,7 @@ class SchoolCreator
     @school.update!(data_enabled: true)
     @school.update!(activation_date: Time.zone.today) unless @school.activation_date.present?
     onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
+    @school&.school_group&.touch
     broadcast(:school_made_data_enabled, @school)
   end
 
