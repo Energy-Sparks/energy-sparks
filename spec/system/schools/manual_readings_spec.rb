@@ -132,7 +132,7 @@ RSpec.describe 'manual readings' do
     context 'with data' do
       let(:school) { create(:school, :with_basic_configuration_single_meter_and_tariffs) }
 
-      it 'already has data' do
+      it 'already has data and updates correctly' do
         visit school_manual_readings_path(school)
         expect(form_input_values).to eq([[],
                                          *month_input_values(2024, 7, 12).zip(
@@ -140,6 +140,11 @@ RSpec.describe 'manual readings' do
                                             '720.0', '744.0', '720.0', '744.0'],
                                            Array.new(13, nil)
                                          )])
+        complete_form(last: true)
+        expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([[Date.new(2025, 7, 1), nil, 5]])
+        expect(form_input_values.last).to eq(%w[2025-07-01 744.0 5.0])
+        complete_form(last: true, with: '6')
+        expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([[Date.new(2025, 7, 1), nil, 6]])
       end
     end
 
