@@ -227,7 +227,7 @@ describe 'viewing and recording action' do
 
           it 'observation has 0 points' do
             observation = school.observations.intervention.first
-            expect(observation.points).to be_nil
+            expect(observation.points).to be_zero
           end
 
           it_behaves_like 'a task completed page', points: 0, task_type: :action
@@ -275,7 +275,7 @@ describe 'viewing and recording action' do
 
           it 'observation has 0 points' do
             observation = school.observations.intervention.first
-            expect(observation.points).to be_nil
+            expect(observation.points).to be_zero
           end
 
           it_behaves_like 'a task completed page', points: 0, task_type: :action, with_todos: true

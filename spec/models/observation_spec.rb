@@ -78,6 +78,14 @@ describe Observation do
 
         it { expect(observation.in_previous_academic_year?).to be(false) }
       end
+
+      context 'when school has no current academic year' do
+        let(:school) { create(:school, calendar: nil) }
+
+        before { observation.at = Time.zone.today }
+
+        it { expect(observation.in_previous_academic_year?).to be(true) }
+      end
     end
 
     describe 'academic year methods' do

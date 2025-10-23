@@ -411,9 +411,7 @@ class School < ApplicationRecord
   end
 
   def academic_year_for(date)
-    return nil unless calendar.present?
-
-    calendar.academic_year_for(date)
+    calendar&.academic_year_for(date)
   end
 
   def activity_types_in_academic_year(date = Time.zone.now)

@@ -121,6 +121,8 @@ class Observation < ApplicationRecord
   before_save :add_points_for_activities, if: :activity?
   before_save :add_points_for_interventions, if: :intervention?
 
+  delegate :current_academic_year, to: :school
+
   def description_includes_images?
     if intervention?
       super
@@ -133,15 +135,13 @@ class Observation < ApplicationRecord
     description_includes_images? ? SiteSettings.current.photo_bonus_points.to_i : 0
   end
 
-  delegate :current_academic_year, to: :school
-
   def happened_on
     at.to_date
   end
 
   def in_previous_academic_year?
-    # unlikely but if no academic year, treat as previous
-    # return true if academic_year.nil?
+    # unlikely but if no academic year, treat as previous (0 points)
+    return true if current_academic_year.nil?
 
     at < current_academic_year.start_date
   end
@@ -165,10 +165,10 @@ class Observation < ApplicationRecord
   def update_points?
     return true if at_was.nil? # new record
 
-    # if no current academic year, always update - check this!
-    # return true if current_academic_year.nil?
+    # if no current academic year, don't update points
+    # return false if current_academic_year.nil?
 
-    # Update points unless it remains in the same previous academic year
+    # Update points unless it remains in a previous academic year
     !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
   end
 
