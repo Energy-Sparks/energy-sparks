@@ -46,6 +46,7 @@ module Admin
         results = results.where(meter_type: params[:meter_type]) if params[:meter_type].present?
         results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:user]) } }) if params[:user].present?
         results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) }) if params[:school_group].present?
+        results = results.where(admin_meter_status: AdminMeterStatus.find(params[:admin_meter_status])) if params[:admin_meter_status].present?
         results
       end
 

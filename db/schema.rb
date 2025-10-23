@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_22_153823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -177,6 +177,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
     t.string "label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "ignore_in_inactive_meter_report", default: false
   end
 
   create_table "advice_page_activity_types", force: :cascade do |t|

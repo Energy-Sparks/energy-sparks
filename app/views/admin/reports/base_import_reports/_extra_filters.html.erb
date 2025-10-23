@@ -5,3 +5,12 @@
                  include_blank: 'Any Meter Type',
                  class: 'form-control-sm' %>
 </span>
+<span class="nowrap ml-4">
+  <%= label_tag :admin_meter_status, nil, class: 'small' %>
+  <%= select_tag :admin_meter_status,
+                 options_from_collection_for_select(
+                   AdminMeterStatus.include_in_inactive_meter_report.by_label, :id, :label, params[:admin_meter_status]
+                 ),
+                 include_blank: 'Any Meter Status',
+                 class: 'form-control-sm' %>
+</span>
