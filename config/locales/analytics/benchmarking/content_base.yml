@@ -28,6 +28,9 @@ en:
           gas_consumption: Gas consumption
           gbp: "£"
           kwh: kWh
+          last_year: Last year
+          last_year_per_floor_area: Last year per m²
+          last_year_per_pupil: Last year per pupil
           metering: Metering
           percent_changed: Percent changed
           solar_self_consumption: Solar self consumption
@@ -75,22 +78,18 @@ en:
           hot_water_gas: Hot Water Gas
           kwh_consumption_since_target_set: kWh consumption since target set
           last_year: Last year
-          last_year_carbon_emissions_tonnes_co2: Last year carbon emissions (tonnes CO2)
-          last_year_consumption_kwh: Last year consumption kWh
           last_year_cost_of_baseload: Last year cost of baseload
-          last_year_cost_£: Last year cost £
           last_year_electricity_kwh_pupil: Last year electricity kWh/pupil
           last_year_electricity_£: Last year electricity £
-          last_year_electricity_£_pupil: Last year electricity £/pupil
           last_year_energy_co2tonnes: Last year Energy CO2(tonnes)
           last_year_energy_kgco2_pupil: Last year energy kgCO2/pupil
           last_year_energy_kwh: Last year Energy kWh
           last_year_energy_kwh_pupil: Last year energy kWh/pupil
           last_year_energy_£_floor_area: Last year energy £/floor area
           last_year_energy_£_pupil: Last year energy £/pupil
+          last_year_gas_kwh_floor_area: Last year gas kWh/m²
           last_year_gas_kwh_pupil: Last year gas kWh/pupil
           last_year_gas_£: Last year Gas £
-          last_year_heating_costs_per_floor_area: Last year heating costs per floor area
           last_year_out_of_hours_co2: Last year out of hours co2
           last_year_out_of_hours_cost: Last year out of hours cost
           last_year_out_of_hours_cost_ct: Last year out of hours cost at current tariff
@@ -127,7 +126,7 @@ en:
           saving_co2_kg: Saving CO2 kg
           saving_if_improve_to_exemplar: Saving if improve to exemplar (at latest tariff)
           saving_if_match_exemplar_£: Saving if match exemplar (£ at latest tariff)
-          saving_if_matched_exemplar_school: Saving if matched exemplar school (using latest tariff)
+          saving_if_matched_exemplar_school: Potential savings
           saving_if_same_all_year_around: Saving if same all year around (at latest tariff)
           saving_improving_timing: Saving improving timing
           saving_optimal_panels: Annual saving at latest tariff if optimal panel size installed

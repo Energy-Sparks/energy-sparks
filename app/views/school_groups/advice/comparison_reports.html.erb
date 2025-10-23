@@ -18,17 +18,17 @@
       <h4><%= t('school_groups.advice.comparison_reports.lists.long_term') %></h4>
       <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
                                                                  fuel_types: @fuel_types) do |list| %>
-        <% list.with_fuel_types t(:annual_change, scope: i18n_scope), reports: {
-             electricity: :change_in_electricity_since_last_year,
-             gas: :change_in_gas_since_last_year,
-             storage_heaters: :change_in_storage_heaters_since_last_year
-           } %>
-        <% list.with_fuel_types t(:savings_potential, scope: i18n_scope), reports: {
+        <% list.with_fuel_types t(:annual, scope: i18n_scope), reports: {
              electricity: { report: :annual_electricity_costs_per_pupil,
                             label: t(:electricity_per_pupil,
                                      scope: i18n_scope) },
              gas: { report: :annual_heating_costs_per_floor_area,
                     label: t(:gas_per_floor_area, scope: i18n_scope) }
+           } %>
+        <% list.with_fuel_types t(:annual_change, scope: i18n_scope), reports: {
+             electricity: :change_in_electricity_since_last_year,
+             gas: :change_in_gas_since_last_year,
+             storage_heaters: :change_in_storage_heaters_since_last_year
            } %>
         <% list.with_fuel_types t(:progress, scope: i18n_scope), reports: {
              electricity: :electricity_targets,
