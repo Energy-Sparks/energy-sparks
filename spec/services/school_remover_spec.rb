@@ -94,6 +94,15 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#remove_school!' do
     context 'when archive flag is set to false (pure delete)' do
+      context 'when a school is removed' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
+
+        it 'touches the group' do
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
+        end
+      end
+
       context 'when school is not visible' do
         before do
           service.remove_school!
@@ -138,6 +147,15 @@ describe SchoolRemover, :schools, type: :service do
 
     context 'when archive flag set true (archive - soft delete)' do
       let(:archive) { true }
+
+      context 'when a school is removed' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
+
+        it 'touches the group' do
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
+        end
+      end
 
       context 'when school is not visible' do
         before do
@@ -185,7 +203,7 @@ describe SchoolRemover, :schools, type: :service do
         end
       end
 
-      context 'when school is visiable' do
+      context 'when school is visible' do
         before do
           school.update(visible: true)
         end
