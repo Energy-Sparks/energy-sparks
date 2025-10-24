@@ -1,18 +1,22 @@
 <%= render ChartComponent.new(chart_type: one_year_breakdown_chart,
-                              analysis_controls: true,
                               school: school,
                               chart_config: create_chart_config(school, one_year_breakdown_chart, mpan_mprn)) do |c| %>
-  <% c.with_title { advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.meter_title", meter: label) } %>
+  <% c.with_title { advice_t("#{fuel_type}_costs.charts.#{one_year_breakdown_chart_key}.meter_title", meter: label) } %>
   <% c.with_subtitle do
-       advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html",
+       advice_t("#{fuel_type}_costs.charts.#{one_year_breakdown_chart_key}.meter_subtitle_html",
                 end_date: analysis_dates.end_date.to_fs(:es_short))
      end %>
 <% end %>
 
-<%= render MeterCostsTableComponent.new(monthly_costs: monthly_costs, change_in_costs: change_in_costs) %>
+<%= render MeterCostsTableComponent.new(monthly_costs: monthly_costs,
+                                        change_in_costs: change_in_costs,
+                                        school: school,
+                                        fuel_type: fuel_type) %>
+
+<%= render 'agreed_capacity_notice' if @agreed_capacity %>
 
 <% if local_assigns[:tariffs] %>
-  <%= render TariffSummaryTable.new(school: school, tariffs: tariffs) %>
+  <%= render 'tariff_summary_table', school: school, tariffs: tariffs %>
   <div class="text-right">
     <%= t('schools.user_tariffs.view_and_manage_tariffs_html', user_tariffs_path: school_energy_tariffs_path(school)) %>
   </div>
@@ -26,10 +30,10 @@
         chart_config: create_chart_config(school, :electricity_cost_comparison_last_2_years_accounting, mpan_mprn)
       ) do |c| %>
     <% c.with_title do
-         advice_t('gas_costs.charts.cost_comparison_last_2_years_accounting.meter_title', meter: label)
+         advice_t("#{fuel_type}_costs.charts.cost_comparison_last_2_years_accounting.meter_title", meter: label)
        end %>
     <% c.with_subtitle do
-         advice_t('gas_costs.charts.cost_comparison_last_2_years_accounting.subtitle_html',
+         advice_t("#{fuel_type}_costs.charts.cost_comparison_last_2_years_accounting.subtitle_html",
                   end_date: analysis_dates.fixed_academic_year_end.to_fs(:es_short))
        end %>
   <% end %>

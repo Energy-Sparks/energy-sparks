@@ -33,8 +33,8 @@ RSpec.shared_context 'electricity advice page' do
   let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
 
-  let(:electricity_aggregate_meter)   { double('electricity-aggregated-meter')}
-  let(:meter_collection)              { double('meter-collection', electricity_meters: [build(:meter, type: :electricity)], solar_pv_panels?: true) }
+  let(:aggregate_meter) { double('electricity-aggregated-meter') }
+  let(:meter_collection) { double('meter-collection', electricity_meters: [build(:meter, type: :electricity)], solar_pv_panels?: true) }
 
   before do
     school.configuration.update!(
@@ -49,11 +49,11 @@ RSpec.shared_context 'electricity advice page' do
     allow(amr_data).to receive(:start_date).and_return(start_date)
     allow(amr_data).to receive(:end_date).and_return(end_date)
     allow(amr_data).to receive(:kwh_date_range).and_return(nil)
-    allow(electricity_aggregate_meter).to receive(:fuel_type).and_return(:electricity)
-    allow(electricity_aggregate_meter).to receive(:amr_data).and_return(amr_data)
-    allow(electricity_aggregate_meter).to receive(:mpan_mprn).and_return(912345)
-    allow(meter_collection).to receive(:aggregate_meter).with(:electricity).and_return(electricity_aggregate_meter)
-    allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(electricity_aggregate_meter)
+    allow(aggregate_meter).to receive(:fuel_type).and_return(:electricity)
+    allow(aggregate_meter).to receive(:amr_data).and_return(amr_data)
+    allow(aggregate_meter).to receive(:mpan_mprn).and_return(912345)
+    allow(meter_collection).to receive(:aggregate_meter).with(:electricity).and_return(aggregate_meter)
+    allow(meter_collection).to receive(:aggregated_electricity_meters).and_return(aggregate_meter)
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
   end
 end
@@ -68,7 +68,7 @@ RSpec.shared_context 'gas advice page' do
   let(:end_date)    { Time.zone.today - 1}
   let(:amr_data)    { double('amr-data') }
 
-  let(:gas_aggregate_meter) { double('gas-aggregated-meter')}
+  let(:aggregate_meter) { double('gas-aggregated-meter')}
   let(:meter_collection) { double('meter-collection', heater_meters: []) }
 
   before do
@@ -84,10 +84,10 @@ RSpec.shared_context 'gas advice page' do
     allow(amr_data).to receive(:start_date).and_return(start_date)
     allow(amr_data).to receive(:end_date).and_return(end_date)
     allow(amr_data).to receive(:kwh_date_range).and_return(nil)
-    allow(gas_aggregate_meter).to receive(:fuel_type).and_return(:gas)
-    allow(gas_aggregate_meter).to receive(:amr_data).and_return(amr_data)
-    allow(meter_collection).to receive(:aggregate_meter).with(:gas).and_return(gas_aggregate_meter)
-    allow(meter_collection).to receive(:aggregated_heat_meters).and_return(gas_aggregate_meter)
+    allow(aggregate_meter).to receive(:fuel_type).and_return(:gas)
+    allow(aggregate_meter).to receive(:amr_data).and_return(amr_data)
+    allow(meter_collection).to receive(:aggregate_meter).with(:gas).and_return(aggregate_meter)
+    allow(meter_collection).to receive(:aggregated_heat_meters).and_return(aggregate_meter)
     allow(meter_collection).to receive(:amr_data).and_return(amr_data)
     allow_any_instance_of(AggregateSchoolService).to receive(:aggregate_school).and_return(meter_collection)
   end
