@@ -29,10 +29,27 @@ module IssuesHelper
 
   def issueable_icon(issueable)
     return '' if issueable.nil?
+
     if issueable.is_a?(Symbol)
       fa_icon(Issue.issueable_images[issueable])
     else
       fa_icon(Issue.issueable_image(issueable))
+    end
+  end
+
+  def review_date_badge(issue, label: true, classes: '')
+    colour = if issue.review_date.nil? || issue.review_date >= 1.week.from_now
+               'bg-white text-dark'
+             elsif issue.review_date > Time.zone.today
+               'bg-warning text-light'
+             else
+               'bg-danger text-light'
+             end
+
+    text = issue.review_date ? nice_dates(issue.review_date) : 'No date set'
+
+    content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes]) do
+      "#{'Review date • ' if label}#{text}".html_safe
     end
   end
 end

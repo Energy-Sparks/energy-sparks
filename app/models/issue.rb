@@ -11,6 +11,7 @@
 #  issueable_type :string
 #  owned_by_id    :bigint(8)
 #  pinned         :boolean          default(FALSE)
+#  review_date    :date
 #  status         :integer          default("open"), not null
 #  title          :string           not null
 #  updated_at     :datetime         not null

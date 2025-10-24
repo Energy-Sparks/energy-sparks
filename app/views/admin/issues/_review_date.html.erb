@@ -1,0 +1,15 @@
+<% colour = if issues.review_date&.>= Date.today %>
+  'bg-red text-light'
+<% elsif issues.review_date&.>= 1.week.ago %>
+  'bg-yellow text-light'
+<% else %>
+  'bg-white text-dark'
+<% end %>
+  <div class="badge badge-pill <%= colour %> font-weight-normal ml-auto pl-2">
+    Review date •
+    <% if issue.review_date %>
+      <%= nice_dates(issue.review_date) %>
+    <% else %>
+      Not set
+    <% end %>
+  </div>
