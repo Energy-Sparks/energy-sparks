@@ -23,18 +23,21 @@ RSpec.describe 'manual readings' do
   def complete_form(single: false, with: '5', last: false)
     inputs = all('form.edit_school input[type="text"]')
     if last
-      inputs.last.fill_in(with:)
+      inputs = [inputs.last]
     elsif single
-      inputs.first.fill_in(with:)
-    else
-      inputs.each { |input| input.fill_in(with:) }
+      inputs = [inputs.first]
     end
+    inputs.each { |input| input.fill_in(with:) }
     click_on 'Save'
   end
 
   def expected_input_values(year, month, months, extra = nil)
     values = (0..months).map { |i| (Date.new(year, month) + i.months).to_s }
     extra.nil? ? values : values.map { |value| [value] + extra }
+  end
+
+  def actual_manual_readings
+    school.manual_readings.order(:month).pluck(:month, :electricity, :gas)
   end
 
   context 'with a target' do
@@ -51,121 +54,174 @@ RSpec.describe 'manual readings' do
       )
     end
 
-    it 'accepts manual readings when missing current and previous months' do
-      create_target(1.year.ago)
-      visit school_manual_readings_path(school)
-      expect(form_input_values).to eq([['2023-08-01', nil, nil],
-                                       *expected_input_values(2023, 9, 10, %w[1021 1022]),
-                                       %w[2024-08-01 1010 1010],
-                                       ['2024-09-01', '1010', nil],
-                                       *expected_input_values(2024, 10, 9, %w[1010 1010])])
-      complete_form
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
-        eq([[Date.new(2023, 8), 5, 5],
-            [Date.new(2024, 9), nil, 5]])
+    context 'with an old target' do
+      before do
+        create_target(1.year.ago)
+        visit school_manual_readings_path(school)
+      end
+
+      it 'has the right form' do
+        expect(form_input_values).to eq([['2023-08-01', nil, nil],
+                                         *expected_input_values(2023, 9, 10, %w[1021 1022]),
+                                         %w[2024-08-01 1010 1010],
+                                         ['2024-09-01', '1010', nil],
+                                         *expected_input_values(2024, 10, 9, %w[1010 1010])])
+      end
+
+      it 'saves readings' do
+        complete_form
+        expect(actual_manual_readings).to eq([[Date.new(2023, 8), 5, 5], [Date.new(2024, 9), nil, 5]])
+      end
     end
 
-    it 'displays only past months with a new target' do
-      create_target(Date.current.beginning_of_month)
-      visit school_manual_readings_path(school)
-      expect(form_input_values).to eq([['2024-08-01', nil, nil],
-                                       *expected_input_values(2024, 9, 10, %w[1021 1022])])
-      complete_form
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to eq([[Date.new(2024, 8), 5, 5]])
+    context 'with a new target' do
+      before do
+        create_target(Date.current.beginning_of_month)
+        visit school_manual_readings_path(school)
+      end
+
+      it 'display only past months' do
+        expect(form_input_values).to eq([['2024-08-01', nil, nil], *expected_input_values(2024, 9, 10, %w[1021 1022])])
+      end
+
+      it 'saves the correct readings' do
+        complete_form
+        expect(actual_manual_readings).to eq([[Date.new(2024, 8), 5, 5]])
+      end
     end
 
-    it 'has enough data - target complete' do
-      create(:school_target, :with_monthly_consumption, school:)
-      visit school_manual_readings_path(school)
-      expect(page).to \
-        have_content("We have enough data from your meters so you don't need to enter any readings manually.")
+    context 'with a complete target' do
+      before do
+        create(:school_target, :with_monthly_consumption, school:)
+        visit school_manual_readings_path(school)
+      end
+
+      it 'shows the enough data message' do
+        expect(page).to \
+          have_content("We have enough data from your meters so you don't need to enter any readings manually.")
+      end
     end
   end
 
   context 'without a target' do
-    it 'has electricity only' do
-      visit school_manual_readings_path(school)
-      expect(form_input_values).to eq(expected_input_values(2024, 7, 12, [nil]))
-      complete_form
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
-        eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, nil] })
+    context 'with electricity only' do
+      before { visit school_manual_readings_path(school) }
+
+      it 'shows only electricity inputs on the form' do
+        expect(form_input_values).to eq(expected_input_values(2024, 7, 12, [nil]))
+      end
+
+      it 'saves the correct readings' do
+        complete_form
+        expect(actual_manual_readings).to eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, nil] })
+      end
+
+      it 'saves a single input' do
+        complete_form(single: true)
+        expect(actual_manual_readings).to eq([[Date.new(2024, 7), 5, nil]])
+      end
     end
 
-    it 'with gas' do
-      school.update!(heating_gas: true)
-      visit school_manual_readings_path(school)
-      expect(form_input_values).to eq(expected_input_values(2024, 7, 12, [nil, nil]))
-      complete_form
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
-        eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, 5] })
+    shared_examples 'and gas enabled' do
+      it 'shows the gas inputs' do
+        expect(form_input_values).to eq(expected_input_values(2024, 7, 12, [nil, nil]))
+      end
+
+      it 'saves the correct readings' do
+        complete_form
+        expect(actual_manual_readings).to eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, 5] })
+      end
     end
 
-    it 'with a gas fuel configuration' do
-      school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_gas: true))
-      visit school_manual_readings_path(school)
-      expect(form_input_values).to eq(expected_input_values(2024, 7, 12, [nil, nil]))
-      complete_form
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
-        eq((0..12).map { |i| [Date.new(2024, 7) + i.months, 5, 5] })
+    context 'with gas heating enabled' do
+      before do
+        school.update!(heating_gas: true)
+        visit school_manual_readings_path(school)
+      end
+
+      include_examples 'and gas enabled'
     end
 
-    it 'accept single input' do
-      visit school_manual_readings_path(school)
-      complete_form(single: true)
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
-        eq([[Date.new(2024, 7), 5, nil]])
+    context 'with a gas fuel configuration' do
+      before do
+        school.configuration.update!(fuel_configuration: Schools::FuelConfiguration.new(has_gas: true))
+        visit school_manual_readings_path(school)
+      end
+
+      include_examples 'and gas enabled'
     end
 
-    it 'updates existing' do
-      school.manual_readings.create!(month: Date.new(2025, 7), electricity: 1000)
-      visit school_manual_readings_path(school)
-      expect(form_input_values.last).to eq(['2025-07-01', '1000.0'])
-      complete_form(last: true)
-      expect(school.manual_readings.order(:month).pluck(:month, :electricity, :gas)).to \
-        eq([[Date.new(2025, 7), 5, nil]])
+    context 'with existing manual readings' do
+      before do
+        school.manual_readings.create!(month: Date.new(2025, 7), electricity: 1000)
+        visit school_manual_readings_path(school)
+      end
+
+      it 'shows the existing reading on the form' do
+        expect(form_input_values.last).to eq(['2025-07-01', '1000.0'])
+      end
+
+      it 'saves the correct readings' do
+        complete_form(last: true)
+        expect(actual_manual_readings).to eq([[Date.new(2025, 7), 5, nil]])
+      end
+
+      it 'removes a cleared reading' do
+        complete_form(last: true, with: '')
+        expect(actual_manual_readings).to eq([])
+      end
     end
 
-    it 'removing a value' do
-      school.manual_readings.create!(month: Date.new(2025, 7), electricity: 1000)
-      visit school_manual_readings_path(school)
-      complete_form(last: true, with: '')
-      expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([])
-    end
-
-    context 'with data' do
+    context 'with meter data' do
       let(:school) { create(:school, :with_basic_configuration_single_meter_and_tariffs) }
 
-      it 'already has data and updates correctly' do
-        visit school_manual_readings_path(school)
+      before { visit school_manual_readings_path(school) }
+
+      it 'shows the existing meter data in the form inputs' do
         expect(form_input_values).to eq(expected_input_values(2024, 7, 12).zip(
                                           [nil, nil] +
                                             %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0 744.0],
-                                          Array.new(13, nil)))
-        complete_form(last: true)
-        expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([[Date.new(2025, 7, 1), nil, 5]])
-        expect(form_input_values.last).to eq(%w[2025-07-01 744.0 5.0])
-        complete_form(last: true, with: '6')
-        expect(school.manual_readings.pluck(:month, :electricity, :gas)).to eq([[Date.new(2025, 7, 1), nil, 6]])
+                                          Array.new(13, nil)
+                                        ))
       end
 
-      it 'displays manual readings over calculated values' do
-        school.manual_readings.create!(month: Date.new(2024, 9), electricity: 1000)
-        visit school_manual_readings_path(school)
-        expect(form_input_values[2]).to eq(['2024-09-01', '1000.0', nil])
-        form_inputs[2][1].fill_in(with: 1001)
-        click_on 'Save'
-        expect(school.manual_readings.reload.pluck(:month, :electricity)).to eq([[Date.new(2024, 9), 1001]])
+      it 'updates correctly' do
+        complete_form(last: true)
+        expect(actual_manual_readings).to eq([[Date.new(2025, 7, 1), nil, 5]])
+        expect(form_input_values.last).to eq(%w[2025-07-01 744.0 5.0])
+        complete_form(last: true, with: '6')
+        expect(actual_manual_readings).to eq([[Date.new(2025, 7, 1), nil, 6]])
       end
     end
 
-    context 'with enough data' do
-      let(:school) do
-        create(:school, :with_basic_configuration_single_meter_and_tariffs, reading_start_date: 14.months.ago.to_date)
+    context 'with meter data and readings' do
+      let(:school) { create(:school, :with_basic_configuration_single_meter_and_tariffs) }
+
+      before do
+        school.manual_readings.create!(month: Date.new(2024, 9), electricity: 1000)
+        visit school_manual_readings_path(school)
       end
 
-      it 'has enough data' do
-        school.update!(configuration: school.configuration.tap { |c| c[:fuel_configuration]['has_gas'] = false })
-        visit school_manual_readings_path(school)
+      it 'displays manual readings over calculated values' do
+        expect(form_input_values[2]).to eq(['2024-09-01', '1000.0', nil])
+      end
+
+      it 'allows changing the manual reading' do
+        form_inputs[2][1].fill_in(with: 1001)
+        click_on 'Save'
+        expect(actual_manual_readings).to eq([[Date.new(2024, 9), 1001, nil]])
+      end
+    end
+
+    context 'with enough meter data' do
+      let(:school) do
+        create(:school, :with_basic_configuration_single_meter_and_tariffs, :with_fuel_configuration,
+               has_gas: false, reading_start_date: 14.months.ago.to_date)
+      end
+
+      before { visit school_manual_readings_path(school) }
+
+      it 'shows the enough data message' do
         expect(page).to \
           have_content("We have enough data from your meters so you don't need to enter any readings manually.")
       end

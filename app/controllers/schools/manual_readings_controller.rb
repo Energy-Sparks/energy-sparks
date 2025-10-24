@@ -82,7 +82,6 @@ module Schools
       return if month >= Date.current.beginning_of_month
 
       existing_reading = existing_readings.find { |reading| reading.month == month }
-      reading = missing ? nil : reading
       disabled, reading = if existing_reading&.[](fuel_type).present?
                             [false, existing_reading[fuel_type]]
                           else
