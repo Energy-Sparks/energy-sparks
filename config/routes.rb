@@ -779,6 +779,7 @@ Rails.application.routes.draw do
       get 'amr_data_feed_readings', to: 'amr_data_feed_readings#index', as: :amr_data_feed_readings,
                                     defaults: { format: 'csv' }
 
+      resources :admin_user_meter_report, only: [:index]
       resources :baseload_anomaly, only: [:index]
       resources :blank_readings, only: [:index]
 

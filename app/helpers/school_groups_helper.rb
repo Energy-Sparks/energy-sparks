@@ -48,11 +48,12 @@ module SchoolGroupsHelper
   # all have public sharing. If not, then their list is bespoke to them so
   # dont cache the content.
   def can_cache_group_advice?(schools)
+    return false unless Rails.env.production?
     schools.all?(&:data_sharing_public?)
   end
 
   def group_advice_cache_key(school_group, additional = nil)
-    [school_group.most_recent_content_generation_run, *additional, I18n.locale]
+    [school_group, school_group.most_recent_content_generation_run, *additional, I18n.locale]
   end
 
   def comparison_table_class(list)
