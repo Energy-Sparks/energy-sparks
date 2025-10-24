@@ -2,7 +2,7 @@
 <div class="row pb-2">
   <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
     <h4>
-      <%= issue_type_icon(issue.issue_type) %> <%= issue.title %>
+      <%= issue_type_icon(issue.issue_type, 1) %> <%= issue.title %>
       <div class="float-right">
         <small>
           <%= render 'admin/issues/owned_by', issue: issue %>

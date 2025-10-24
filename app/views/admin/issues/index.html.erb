@@ -21,11 +21,11 @@
       ),
                method: :get do %>
     <div class='d-flex flex-wrap align-items-center'>
-      <div class="mr-3">
+      <div class="ml-1 mr-2">
         <%= text_field_tag :search, params[:search], autocomplete: 'off',
                                                      placeholder: 'Search issues...' %>
       </div>
-      <div class="mr-3">
+      <div class="mr-2">
         <%= select_tag :user,
                        options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
                        include_blank: 'Any admin user',

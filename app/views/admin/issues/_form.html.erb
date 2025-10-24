@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="admin-issue col-md-12 rounded pb-2 <%= issue.issue_type %>">
 
-  <%= render 'header', title: "#{issue_type_icon(issue.issue_type)} #{title}".html_safe do %>
+  <%= render 'header', title: "#{issue_type_icon(issue.issue_type, 1)} #{title}".html_safe do %>
     <% if issue.issueable %>
       <%= header_nav_link "All #{issue.issueable.model_name.human.downcase} issues & notes",
                           url_for([:admin, issue.issueable, :issues]) %>
