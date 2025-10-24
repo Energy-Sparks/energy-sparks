@@ -2,20 +2,20 @@
                                 classes: classes,
                                 icon: nil, href: settings_school_path(school),
                                 options: { user: current_user, match_controller: true } do |c| %>
-
+  <% classes = 'small' %>
   <% c.with_section name: t('components.manage_school_navigation.settings'),
                     icon: 'gear',
                     expanded: false,
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('manage_school_menu.edit_school_details'),
-                   href: edit_school_path(school), classes: 'small') %>
+                   href: edit_school_path(school), classes:) %>
     <% s.with_item(name: t('manage_school_menu.edit_school_times'),
-                   href: edit_school_times_path(school), classes: 'small') %>
+                   href: edit_school_times_path(school), classes:) %>
     <% s.with_item(name: t('manage_school_menu.your_school_estate'),
-                   href: edit_school_your_school_estate_path(school), classes: 'small') %>
+                   href: edit_school_your_school_estate_path(school), classes:) %>
     <% if school.calendar && can?(:show, school.calendar) %>
       <% s.with_item(name: t('manage_school_menu.school_calendar'),
-                     href: calendar_path(school.calendar), classes: 'small') %>
+                     href: calendar_path(school.calendar), classes:) %>
     <% end %>
   <% end %>
 
@@ -24,10 +24,10 @@
                     expanded: false,
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('manage_school_menu.manage_users'),
-                   href: school_users_path(school), classes: 'small') %>
+                   href: school_users_path(school), classes:) %>
     <% if can? :manage, Contact %>
       <% s.with_item(name: t('manage_school_menu.manage_alert_contacts'),
-                     href: school_contacts_path(school), classes: 'small') %>
+                     href: school_contacts_path(school), classes:) %>
     <% end %>
   <% end %>
 
@@ -37,14 +37,19 @@
                     options: { match_controller: false } do |s| %>
     <% if can? :index, Meter %>
       <% s.with_item(name: t('manage_school_menu.manage_meters'),
-                     href: school_meters_path(school), classes: 'small') %>
+                     href: school_meters_path(school), classes:) %>
     <% end %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('manage_school_menu.manage_tariffs'),
-                     href: school_energy_tariffs_path(school), classes: 'small') %>
+                     href: school_energy_tariffs_path(school), classes:) %>
     <% end %>
     <% s.with_item(name: t('schools.meters.index.school_downloads'),
-                   href: school_downloads_path(school), classes: 'small') %>
+                   href: school_downloads_path(school), classes:) %>
+    <% if Flipper.enabled?(:manual_readings, current_user)
+         s.with_item(name: t('manage_school_menu.manage_manual_readings'),
+                     href: school_manual_readings_path(school),
+                     classes:)
+       end %>
   <% end %>
 
   <% c.with_section name: t('components.manage_school_navigation.content'),
@@ -53,17 +58,17 @@
                     options: { match_controller: false } do |s| %>
     <% if can? :show, school %>
       <% s.with_item(name: t('manage_school_menu.digital_signage'),
-                     href: school_digital_signage_path(school), classes: 'small') %>
+                     href: school_digital_signage_path(school), classes:) %>
     <% end %>
     <% s.with_item(name: t('components.manage_school_navigation.history'),
-                   href: school_timeline_path(school), classes: 'small') %>
+                   href: school_timeline_path(school), classes:) %>
     <% if can? :manage, Observation %>
       <% s.with_item(name: t('components.manage_school_navigation.temperatures'),
-                     href: school_temperature_observations_path(school), classes: 'small') %>
+                     href: school_temperature_observations_path(school), classes:) %>
     <% end %>
     <% if can? :manage, TransportSurvey %>
       <% s.with_item(name: t('components.manage_school_navigation.transport_surveys'),
-                     href: school_transport_surveys_path(school), classes: 'small') %>
+                     href: school_transport_surveys_path(school), classes:) %>
     <% end %>
   <% end %>
 
@@ -75,55 +80,55 @@
 
     <% if can? :configure, school %>
       <% s.with_item(name: t('manage_school_menu.school_configuration'),
-                     href: edit_school_configuration_path(school), classes: 'small') %>
+                     href: edit_school_configuration_path(school), classes:) %>
     <% end %>
     <% if can? :review_setup, school %>
       <% s.with_item(name: 'Review school setup',
-                     href: school_review_path(school), classes: 'small') %>
+                     href: school_review_path(school), classes:) %>
     <% end %>
     <% if can? :manage_solar_feed_configuration, School %>
       <% s.with_item(name: t('schools.meters.index.manage_solar_api_feeds'),
-                     href: school_solar_feeds_configuration_index_path(school), classes: 'small') %>
+                     href: school_solar_feeds_configuration_index_path(school), classes:) %>
     <% end %>
     <% if can? :manage, MeterReview %>
       <% s.with_item(name: t('schools.meters.index.meter_reviews'),
-                     href: admin_school_meter_reviews_path(school), classes: 'small') %>
+                     href: admin_school_meter_reviews_path(school), classes:) %>
     <% end %>
     <% if can? :manage, SchoolMeterAttribute %>
       <% s.with_item(name: t('manage_school_menu.meter_attributes'),
-                     href: admin_school_meter_attributes_path(school), classes: 'small') %>
+                     href: admin_school_meter_attributes_path(school), classes:) %>
     <% end %>
     <% if can?(:expert_analyse, school) && school.has_gas? %>
       <% s.with_item(name: t('manage_school_menu.expert_analysis'),
-                     href: admin_school_analysis_path(school), classes: 'small') %>
+                     href: admin_school_analysis_path(school), classes:) %>
     <% end %>
     <% if can?(:manage_exclusions, school) %>
       <% s.with_item(name: t('components.manage_school_navigation.exclusions'),
-                     href: school_school_alert_type_exclusions_path(school), classes: 'small') %>
+                     href: school_school_alert_type_exclusions_path(school), classes:) %>
     <% end %>
     <% if can? :remove_school, school %>
       <% s.with_item(name: t('manage_school_menu.remove_school'),
-                     href: removal_admin_school_path(school), classes: 'small') %>
+                     href: removal_admin_school_path(school), classes:) %>
     <% end %>
     <% if can? :manage, Audit %>
       <% s.with_item(name: t('manage_school_menu.manage_audits'),
-                     href: school_audits_path(school), classes: 'small') %>
+                     href: school_audits_path(school), classes:) %>
     <% end %>
     <% if can? :manage, SchoolPartner %>
       <% s.with_item(name: t('manage_school_menu.manage_partners'),
-                     href: admin_school_partners_path(school), classes: 'small') %>
+                     href: admin_school_partners_path(school), classes:) %>
     <% end %>
     <% if can? :manage, Cad %>
       <% s.with_item(name: t('manage_school_menu.manage_cads'),
-                     href: school_cads_path(school), classes: 'small') %>
+                     href: school_cads_path(school), classes:) %>
     <% end %>
     <% if can? :manage, Issue %>
       <% s.with_item(name: t('manage_school_menu.manage_issues'),
-                     href: admin_school_issues_path(school), classes: 'small') %>
+                     href: admin_school_issues_path(school), classes:) %>
     <% end %>
     <% if can? :view_content_reports, school %>
       <% s.with_item(name: t('manage_school_menu.batch_reports'),
-                     href: school_reports_path(school), classes: 'small') %>
+                     href: school_reports_path(school), classes:) %>
     <% end %>
   <% end %>
 <% end %>

@@ -61,18 +61,13 @@ module Targets
     end
 
     def consumption_complete?(fuel_type, target)
-      monthly_consumption(target, fuel_type)&.last&.[](SchoolTarget::MONTHLY_CONSUMPTION_FIELDS[:missing]) == false
-    end
-
-    def monthly_consumption(target, fuel_type)
-      target["#{fuel_type}_monthly_consumption"]
+      target.monthly_consumption(fuel_type)&.all? { |month| month[:missing] == false }
     end
 
     def calculate_monthly_consumption(fuel_type, target)
       return nil unless fuel_type_and_target?(fuel_type, target)
 
-      consumption = monthly_consumption(fuel_type, target)
-      return consumption if consumption_complete?(fuel_type, target)
+      return target["#{fuel_type}_monthly_consumption"] if consumption_complete?(fuel_type, target)
 
       calculate_monthly_consumption_between_target_dates(fuel_type, target)
     end
@@ -80,9 +75,7 @@ module Targets
     def calculate_monthly_consumption_between_target_dates(fuel_type, target)
       start_date = target.start_date.beginning_of_month
       end_date = target.target_date.beginning_of_month.prev_day
-      (start_date..end_date).filter_map do |date|
-        next unless date.day == 1
-
+      DateService.start_of_months(start_date, end_date).map do |date|
         previous_consumption, previous_missing = calculate_month_consumption(date - 1.year, fuel_type)
         if previous_missing
           previous_consumption = nil
@@ -91,7 +84,7 @@ module Targets
         end
         current_consumption, current_missing = calculate_month_consumption(date, fuel_type)
         month = [date.year, date.month, current_consumption, previous_consumption, target_consumption,
-                 previous_missing || current_missing]
+                 current_missing, previous_missing]
         month
       end
     end
