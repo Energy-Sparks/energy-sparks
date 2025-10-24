@@ -140,8 +140,8 @@ class Observation < ApplicationRecord
   end
 
   def in_previous_academic_year?
-    # unlikely but if no academic year, treat as previous (0 points)
-    # also prevents errors as a calandar with academic years are required when calculating points
+    # Unlikely but if no current academic year exists, treat as previous (0 points)
+    # also prevents errors as academic years are required when calculating points
     return true if current_academic_year.nil?
 
     at < current_academic_year.start_date

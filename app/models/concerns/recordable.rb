@@ -9,7 +9,7 @@ module Recordable
 
   # Return the point score for an observation for this recordable
   # This method centralises the logic for awarding points based on:
-  # - Whether the observation occurs the current or a future academic year
+  # - Whether the observation occurs in a past, the current or a future academic year
   # - Whether it exceeds the maximum allowed frequency
   # - Whether bonus points (e.g. for images) apply
   #
@@ -22,8 +22,8 @@ module Recordable
     # no points for previous academic year recordings
     return 0 if observation.in_previous_academic_year?
 
-    # add one to existing count if this has zero points or academic year changed (includes being a new recording)
-    # as it will count once saved
+    # add one to existing count if observation has zero points or academic year changed (includes being a new recording)
+    # this is because it will be counted towards the maximum frequency once points are awarded
     not_counted_yet = observation.points.to_i.zero? || observation.academic_year_changed? ? 1 : 0
 
     # Prevent awarding points if frequency limit for the academic year is exceeded
@@ -37,7 +37,7 @@ module Recordable
     score || 0
   end
 
-  # Used at the frontend to display if maximum recordings to receive points have been made
+  # Used at the frontend to display if maximum recordings to receive points have been made this academic year
   def exceeded_maximum_in_year?(school, date = Time.zone.today)
     academic_year = school.academic_year_for(date)
     return false unless academic_year&.current?
