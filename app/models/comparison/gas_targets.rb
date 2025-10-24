@@ -6,6 +6,7 @@
 #  current_year_kwh                :float
 #  current_year_target_kwh         :float
 #  id                              :bigint(8)
+#  manual_readings                 :boolean
 #  previous_to_current_year_change :float
 #  previous_year_kwh               :float
 #  school_id                       :bigint(8)
