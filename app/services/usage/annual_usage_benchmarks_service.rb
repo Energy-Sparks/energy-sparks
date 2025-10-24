@@ -14,7 +14,7 @@ module Usage
     # @param [Date] asof_date the date to use as the basis for calculations
     #
     # @raise [EnergySparksUnexpectedStateException] if the schools doesnt have electricity meters
-    def initialize(meter_collection, fuel_type, asof_date = Date.today)
+    def initialize(meter_collection, fuel_type, asof_date = Date.current)
       validate_meter_collection(meter_collection, fuel_type)
       @meter_collection = meter_collection
       @fuel_type = fuel_type
@@ -55,7 +55,7 @@ module Usage
       benchmarked_by_pupil_kwh = annual_usage_kwh(compare: compare)
 
       # we're estimating future savings, so use £current
-      benchmark_by_pupil_£current = benchmarked_by_pupil_kwh * current_blended_rate_£_per_kwh
+      benchmark_by_pupil_gbp_current = benchmarked_by_pupil_kwh * current_blended_rate_gbp_per_kwh
 
       # NOTE: the current alert doesn't currently calculate co2 estimates, except for
       # savings versus exemplar, but adding this in for completeness. Uses same method as
@@ -65,7 +65,7 @@ module Usage
 
       CombinedUsageMetric.new(
         kwh: benchmarked_by_pupil_kwh,
-        £: benchmark_by_pupil_£current,
+        £: benchmark_by_pupil_gbp_current,
         co2: benchmark_by_pupil_co2
       )
     end
@@ -88,12 +88,12 @@ module Usage
       saving_versus_benchmark_kwh = last_year_kwh - annual_usage_for_comparison.kwh
 
       # Use £current as these are future savings
-      saving_versus_benchmark_£ = saving_versus_benchmark_kwh * current_blended_rate_£_per_kwh
+      saving_versus_benchmark_gbp = saving_versus_benchmark_kwh * current_blended_rate_gbp_per_kwh
       saving_versus_benchmark_co2 = saving_versus_benchmark_kwh * co2_per_kwh
 
       CombinedUsageMetric.new(
         kwh: saving_versus_benchmark_kwh.magnitude,
-        £: saving_versus_benchmark_£.magnitude,
+        £: saving_versus_benchmark_gbp.magnitude,
         co2: saving_versus_benchmark_co2.magnitude,
         percent: percent_change(annual_usage_for_comparison.kwh, last_year_kwh)
       )
@@ -129,8 +129,8 @@ module Usage
     end
 
     # Taken from content_base.rb
-    def current_blended_rate_£_per_kwh
-      aggregate_meter.amr_data.current_tariff_rate_£_per_kwh
+    def current_blended_rate_gbp_per_kwh
+      aggregate_meter.amr_data.current_tariff_rate_£_per_kwh # rubocop:todo Naming/AsciiIdentifiers
     end
 
     # Calculate the co2 per kwh rate for this school, to convert kwh values

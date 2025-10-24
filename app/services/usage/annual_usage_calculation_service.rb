@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/module'
-
 module Usage
   class AnnualUsageCalculationService
     include AnalysableMixin
+
     DAYSINYEAR = 363
 
     # Create a service capable of calculating the annual energy usage for a meter
@@ -16,7 +15,7 @@ module Usage
     # @param [Date] asof_date the date to use as the basis for calculations
     #
     # @raise [EnergySparksUnexpectedStateException] if meter isn't an electricity meter
-    def initialize(analytics_meter, asof_date = Date.today)
+    def initialize(analytics_meter, asof_date = Date.current)
       @meter = analytics_meter
       @asof_date = asof_date
     end
@@ -65,40 +64,61 @@ module Usage
     # If there isn't sufficient data (>2 years) then the method will return nil
     #
     # @return [CombinedUsageMetric] the difference between this year and last year
-    def annual_usage_change_since_last_year
-      return nil unless has_full_previous_years_worth_of_data?
+    def usage_change_since_last_period(period)
+      last_period = case period
+                    when :this_year
+                      :last_year
+                    when :last_month
+                      :previous_month
+                    else
+                      raise 'invalid period'
+                    end
+      return nil unless has_full_previous_period_worth_of_data?(last_period)
 
-      this_year = annual_usage(period: :this_year)
-      last_year = annual_usage(period: :last_year)
-      kwh = this_year.kwh - last_year.kwh
+      this_period = annual_usage(period:)
+      last_period = annual_usage(period: last_period)
+      kwh = this_period.kwh - last_period.kwh
       CombinedUsageMetric.new(
         kwh: kwh,
-        £: this_year.£ - last_year.£,
-        co2: this_year.co2 - last_year.co2,
-        percent: kwh / last_year.kwh
+        £: this_period.£ - last_period.£, # rubocop:todo Naming/AsciiIdentifiers
+        co2: this_period.co2 - last_period.co2,
+        percent: kwh / last_period.kwh
       )
     end
 
-    private
+    def annual_usage_change_since_last_year
+      usage_change_since_last_period(:this_year)
+    end
 
     # :this_year is last 12 months
     # :last_year is previous 12 months
     def dates_for_period(period)
-      start_date = @asof_date - DAYSINYEAR
-      start_date = @meter.amr_data.start_date if start_date < @meter.amr_data.start_date
+      start_date = case period
+                   when :this_year
+                     @asof_date - DAYSINYEAR
+                   when :last_month, :previous_month
+                     @asof_date.prev_month.beginning_of_month
+                   end
+      start_date = @meter.amr_data.start_date if start_date&.<(@meter.amr_data.start_date)
       case period
       when :this_year
         [start_date, @asof_date]
       when :last_year
         prev_date = @asof_date - DAYSINYEAR - 1
         [prev_date - DAYSINYEAR, prev_date]
+      when :last_month
+        [start_date, start_date.end_of_month]
+      when :previous_month
+        [start_date.prev_month, start_date.prev_month.end_of_month]
       else
         raise 'Invalid year'
       end
     end
 
-    def has_full_previous_years_worth_of_data?
-      start_date, _end_date = dates_for_period(:last_year)
+    private
+
+    def has_full_previous_period_worth_of_data?(period)
+      start_date, _end_date = dates_for_period(period)
       @meter.amr_data.start_date <= start_date
     end
 

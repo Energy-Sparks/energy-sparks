@@ -21,7 +21,7 @@ module Usage
     MINIMUM_DAYS_DATA = 7 # minimum data required to run calculations
     YEAR_PERIOD = 52 * 7 - 1
 
-    def initialize(meter_collection:, fuel_type: :electricity, asof_date: Date.today)
+    def initialize(meter_collection:, fuel_type: :electricity, asof_date: Date.current)
       raise 'Invalid fuel type' unless %i[electricity gas storage_heater].include? fuel_type
 
       @meter_collection = meter_collection
@@ -140,7 +140,7 @@ module Usage
 
     # Initialise a hash with the usage categories for this school
     def initial_breakdown
-      Hash[@meter_collection.open_close_times.time_types.map { |type| [type, 0.0] }]
+      @meter_collection.open_close_times.time_types.index_with { |_type| 0.0 }
     end
 
     # Calculate usage for up to a years worth (52 weeks) of data, or whatever is

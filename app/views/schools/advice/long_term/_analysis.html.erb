@@ -4,6 +4,7 @@
 
 <ul>
   <li><%= link_to(t("#{locale_key_prefix}.recent_trend.title"), '#recent-trend') %></li>
+  <li><%= link_to(t("#{locale_key_prefix}.academic_year_comparisons.title"), '#academic-year-comparisons') %></li>
   <% if analysis_dates.one_years_data? %>
     <li><%= link_to(t("#{locale_key_prefix}.comparison.title"), '#comparison') %></li>
     <li><%= link_to(t("#{locale_key_prefix}.long_term_trends.title"), '#long-term-trends') %></li>
@@ -18,6 +19,10 @@
            vs_exemplar: vs_exemplar,
            estimated_savings_vs_exemplar: estimated_savings_vs_exemplar,
            fuel_type: fuel_type %>
+<%= render 'schools/advice/long_term/academic_year_comparisons',
+           meter_selection: @meter_selection,
+           analysis_dates:,
+           fuel_type: %>
 <% if analysis_dates.one_years_data? %>
   <%= render "schools/advice/#{fuel_type}_long_term/analysis_comparison",
              school: school,

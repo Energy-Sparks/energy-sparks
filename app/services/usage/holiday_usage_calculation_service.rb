@@ -2,7 +2,7 @@
 
 module Usage
   class HolidayUsageCalculationService
-    def initialize(analytics_meter, holidays, asof_date = Date.today)
+    def initialize(analytics_meter, holidays, asof_date = Date.current)
       @meter = analytics_meter
       @holidays = holidays
       @asof_date = asof_date
@@ -57,9 +57,9 @@ module Usage
     # @param [Array] school_periods, an array of periods
     # @return [Hash] of school_period => OpenStruct
     def holidays_usage_comparison(school_periods: [])
-      school_periods.map do |school_period|
-        [school_period, holiday_usage_comparison(school_period: school_period)]
-      end.to_h
+      school_periods.index_with do |school_period|
+        holiday_usage_comparison(school_period: school_period)
+      end
     end
 
     # Returns the usage for a full "calendar" of holidays periods

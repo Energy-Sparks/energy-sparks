@@ -9,33 +9,41 @@
   <thead class="thead-dark">
     <tr>
       <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th><%= t('charts.timescale_name.daterange').titleize %></th>
       <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_kwh') %></th>
       <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_co2') %></th>
       <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_gbp') %></th>
-      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.annual_change') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.change') %></th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>
-        <% if analysis_dates.one_years_data? %>
-          <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
-        <% else %>
-          <%= format_date_range([analysis_dates.start_date, analysis_dates.end_date]) %>
-        <% end %>
-      </td>
-      <td class="text-right"><%= format_unit(annual_usage.kwh, :kwh) %></td>
-      <td class="text-right"><%= format_unit(annual_usage.co2, :co2) %></td>
-      <td class="text-right"><%= format_unit(annual_usage.£, :£) %></td>
-      <td class="text-right">
-        <% if annual_usage_change_since_last_year.present? %>
-          <%= up_downify(format_unit(annual_usage_change_since_last_year.percent, :relative_percent, false),
-                         sanitize: false) %>
-        <% else %>
-          -
-        <% end %>
-      </td>
-    </tr>
+    <% %i[this_year last_month].each do |period| %>
+      <tr>
+        <td>
+          <% if period == :this_year %>
+            <% if analysis_dates.one_years_data? %>
+              <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
+            <% else %>
+              <%= format_date_range([analysis_dates.start_date, analysis_dates.end_date]) %>
+            <% end %>
+          <% else %>
+            <%= t('advice_pages.electricity_long_term.insights.current_usage.last_full_month') %>
+          <% end %>
+        </td>
+        <td><%= format_date_range(usage_service.dates_for_period(period)) %></td>
+        <% usage = usage_service.annual_usage(period:) %>
+        <td class="text-right"><%= format_unit(usage.kwh, :kwh) %></td>
+        <td class="text-right"><%= format_unit(usage.co2, :co2) %></td>
+        <td class="text-right"><%= format_unit(usage.£, :£) %></td>
+        <td class="text-right">
+          <% if (change = usage_service.usage_change_since_last_period(period)).present? %>
+            <%= up_downify(format_unit(change.percent, :relative_percent, false), sanitize: false) %>
+          <% else %>
+            -
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
