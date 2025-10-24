@@ -18,6 +18,11 @@ module Admin
       @issues = @issues.for_statuses(params[:statuses])
       @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
       @issues = @issues.search(params[:search]) if params[:search].present?
+      if params[:review_date]
+        @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
+        @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now, 7.days.from_now) if params[:review_date] == 'review_next_week'
+        @issues = @issues.where('review_date <= ?', Time.zone.now) if params[:review_date] == 'review_overdue'
+      end
 
       respond_to do |format|
         format.html do
@@ -87,7 +92,7 @@ module Admin
     end
 
     def issue_params
-      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :pinned,
+      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :review_date, :pinned,
                                     meter_ids: [])
     end
   end

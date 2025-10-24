@@ -35,4 +35,20 @@ module IssuesHelper
       fa_icon(Issue.issueable_image(issueable))
     end
   end
+
+  def review_date_badge(issue, classes: '')
+    colour = if issue.review_date.nil? || issue.review_date >= 1.week.from_now
+               'bg-white text-dark'
+             elsif issue.review_date > Time.zone.today
+               'bg-warning text-light'
+             else
+               'bg-danger text-light'
+             end
+
+    text = issue.review_date ? nice_dates(issue.review_date) : 'No date set'
+
+    content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes]) do
+      "Review date • #{text}".html_safe
+    end
+  end
 end

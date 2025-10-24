@@ -272,7 +272,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         visit admin_issues_url
       end
 
-      it { expect(page).to have_select('User', selected: []) }
+      it { expect(page).to have_select(:user, selected: []) }
       it { expect(page).to have_checked_field('Issue') }
       it { expect(page).to have_checked_field('Note') }
       it { expect(page).to have_checked_field('Open') }
@@ -304,7 +304,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
             click_button 'Filter'
           end
 
-          it 'onlies show issues' do
+          it 'only shows issues' do
             expect(page).not_to have_content note_issue.title
             expect(page).to have_content issue_issue.title
           end
@@ -316,7 +316,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
             click_button 'Filter'
           end
 
-          it 'onlies show notes' do
+          it 'only shows notes' do
             expect(page).to have_content note_issue.title
             expect(page).not_to have_content issue_issue.title
           end
@@ -353,7 +353,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:setup_data) { [user_issue, other_user_issue] }
 
         before do
-          select user.display_name, from: 'User'
+          select user.display_name, from: :user
           click_button 'Filter'
         end
 
@@ -372,7 +372,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:setup_data) { [issue_1, issue_2] }
 
         before do
-          fill_in 'Search', with: 'findme|hiding'
+          fill_in :search, with: 'findme|hiding'
           click_button 'Filter'
         end
 

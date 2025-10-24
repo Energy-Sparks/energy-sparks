@@ -40,13 +40,14 @@
     </div>
     <div class="collapse<%= ' show' if expand %>" id="issue-<%= issue.id %>">
       <div class="bg-white mb-2 p-2"><%= issue.description %></div>
-      <div class="pb-2">
-        <div class="badge badge-pill bg-white text-dark font-weight-normal">
+      <div class="pb-2 d-flex">
+        <div class="badge badge-pill bg-white text-dark font-weight-normal pr-2">
           Created • <%= issue.created_by.display_name %> • <%= nice_date_times_today(issue.created_at) %>
         </div>
         <div class="badge badge-pill bg-white text-dark font-weight-normal">
           Updated • <%= issue.updated_by.display_name %> • <%= nice_date_times_today(issue.updated_at) %>
         </div>
+        <%= review_date_badge(issue, classes: 'ml-auto pl-2') %>
       </div>
     </div>
   </div>

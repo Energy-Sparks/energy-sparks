@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1180,6 +1180,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
     t.boolean "pinned", default: false
     t.string "issueable_type"
     t.bigint "issueable_id"
+    t.date "review_date"
     t.index ["created_by_id"], name: "index_issues_on_created_by_id"
     t.index ["issueable_type", "issueable_id"], name: "index_issues_on_issueable_type_and_issueable_id"
     t.index ["owned_by_id"], name: "index_issues_on_owned_by_id"
@@ -1903,6 +1904,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
     t.index ["urn"], name: "index_schools_on_urn", unique: true
   end
 
+  create_table "schools_manual_readings", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "month", null: false
+    t.float "electricity"
+    t.float "gas"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id", "month"], name: "index_schools_manual_readings_on_school_id_and_month", unique: true
+    t.index ["school_id"], name: "index_schools_manual_readings_on_school_id"
+  end
+
   create_table "scoreboards", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -2400,6 +2412,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
   add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
+  add_foreign_key "schools_manual_readings", "schools", on_delete: :cascade
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
@@ -3660,7 +3673,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
-            WHERE (((consumption.value ->> 5))::boolean = false)
+            WHERE ((((consumption.value ->> 5))::boolean = false) AND (((consumption.value ->> 6))::boolean = false))
             GROUP BY school_targets_1.id
           )
    SELECT school_targets.school_id,
@@ -3739,7 +3752,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_21_140832) do
               sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh
              FROM school_targets school_targets_1,
               LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
-            WHERE (((consumption.value ->> 5))::boolean = false)
+            WHERE ((((consumption.value ->> 5))::boolean = false) AND (((consumption.value ->> 6))::boolean = false))
             GROUP BY school_targets_1.id
           )
    SELECT school_targets.school_id,
