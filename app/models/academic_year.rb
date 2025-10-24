@@ -28,6 +28,14 @@ class AcademicYear < ApplicationRecord
     (start_date <= today) && (end_date >= today)
   end
 
+  def previous?(today = Time.zone.today)
+    end_date < today
+  end
+
+  def future?(today = Time.zone.today)
+    start_date > today
+  end
+
   def previous_year
     AcademicYear.for_date(self.start_date - 1).where(calendar: self.calendar).reject(&:current?).first
   end
