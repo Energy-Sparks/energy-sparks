@@ -66,7 +66,7 @@ describe 'compare pages', :compare, type: :system do
           'Last year cost of baseload' => '£2',
           'Average baseload kW' => '1',
           'Baseload as a percent of total usage' => '400&percnt;',
-          'Saving if matched exemplar school (using latest tariff)' => '£5'
+          'Potential savings' => '£5'
         })
       end
     end

@@ -118,4 +118,5 @@ en:
         one: "%{count} minute"
         other: "%{count} minutes"
   kwh: kWh
+  usage_co2: kg/CO2
   "£": "£"
