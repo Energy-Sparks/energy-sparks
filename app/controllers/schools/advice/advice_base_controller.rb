@@ -97,6 +97,7 @@ module Schools
 
       def load_advice_page
         @advice_page = AdvicePage.find_by!(key: advice_page_key)
+        @fuel_type = advice_page_fuel_type
       end
 
       def check_authorisation
