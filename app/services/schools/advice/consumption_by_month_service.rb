@@ -8,8 +8,8 @@ module Schools
         return if end_date.nil?
 
         DateService.start_of_months(end_date.prev_year.next_month, end_date).to_h do |date|
-          current = calculate_month_consumption(aggregate_meter, date)
-          previous = calculate_month_consumption(aggregate_meter, date.prev_year)
+          current = calculate_month_consumption(aggregate_meter.amr_data, date)
+          previous = calculate_month_consumption(aggregate_meter.amr_data, date.prev_year)
           [date.month, { current:, previous:, change: calculate_change(current, previous) }]
         end
       end
@@ -18,9 +18,9 @@ module Schools
         array.sum unless array.empty?
       end
 
-      private_class_method def self.calculate_month_consumption(aggregate_meter, beginning_of_month)
-        days = (beginning_of_month..beginning_of_month.end_of_month).map do |date|
-          %i[kwh £ co2].freeze.map { |type| aggregate_meter.amr_data.one_day_kwh(date, type) }
+      private_class_method def self.calculate_month_consumption(amr_data, beginning_of_month)
+        days = beginning_of_month.all_month.map do |date|
+          %i[kwh £ co2].freeze.map { |type| amr_data.one_day_kwh(date, type) if amr_data.date_exists?(date)}
         end
         { kwh: sum_or_nil(days.filter_map(&:first)),
           £: sum_or_nil(days.filter_map(&:second)),

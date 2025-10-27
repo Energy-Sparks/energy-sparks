@@ -23,11 +23,7 @@
       <tr>
         <td>
           <% if period == :this_year %>
-            <% if analysis_dates.one_years_data? %>
-              <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
-            <% else %>
-              <%= format_date_range([analysis_dates.start_date, analysis_dates.end_date]) %>
-            <% end %>
+            <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
           <% else %>
             <%= t('advice_pages.electricity_long_term.insights.current_usage.last_full_month') %>
           <% end %>

@@ -4,7 +4,8 @@
 
 <ul>
   <li><%= link_to(t("#{locale_key_prefix}.recent_trend.title"), '#recent-trend') %></li>
-  <li><%= link_to(t("#{locale_key_prefix}.academic_year_comparisons.title"), '#academic-year-comparisons') %></li>
+  <li><%= link_to(t('advice_pages.electricity_long_term.analysis.academic_year_comparisons.title'),
+                  '#academic-year-comparisons') %></li>
   <% if analysis_dates.one_years_data? %>
     <li><%= link_to(t("#{locale_key_prefix}.comparison.title"), '#comparison') %></li>
     <li><%= link_to(t("#{locale_key_prefix}.long_term_trends.title"), '#long-term-trends') %></li>
