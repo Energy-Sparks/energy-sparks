@@ -5,10 +5,12 @@ module Charts
                    column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
                    y_axis_keys: 'chart_configuration.y_axis_label_name',
                    x_min_value: nil,
-                   x_max_value: nil)
+                   x_max_value: nil,
+                   fuel_type: nil)
       @results = results
       @column_heading_keys = column_heading_keys
       @y_axis_keys = y_axis_keys
+      @fuel_type = fuel_type
       @min_max_values = { x_min_value:, x_max_value: }.compact
     end
 
@@ -43,7 +45,8 @@ module Charts
       { id: :comparison,
         x_axis: schools,
         x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
-        y_axis_label: I18n.t("#{@y_axis_keys}.#{y_axis_label}") }.merge(@min_max_values)
+        y_axis_label: I18n.t("#{@y_axis_keys}.#{y_axis_label}"),
+        fuel_type: @fuel_type }.merge(@min_max_values)
     end
 
     def column_heading(series_name)

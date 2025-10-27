@@ -87,8 +87,13 @@ module Comparisons
     def create_chart(results, metric_to_translation_key, multiplier, y_axis_label,
                      column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
                      y_axis_keys: 'chart_configuration.y_axis_label_name', **kwargs)
-      Charts::ComparisonChartData.new(results, column_heading_keys:, y_axis_keys:, x_min_value: kwargs[:x_min_value], x_max_value: kwargs[:x_max_value]).create_chart(
-        metric_to_translation_key, multiplier, y_axis_label
+      Charts::ComparisonChartData.new(results,
+                                      column_heading_keys:,
+                                      y_axis_keys:,
+                                      x_min_value: kwargs[:x_min_value],
+                                      x_max_value: kwargs[:x_max_value],
+                                      fuel_type: @report.fuel_type).create_chart(
+                                        metric_to_translation_key, multiplier, y_axis_label
       )
     end
 
@@ -104,7 +109,7 @@ module Comparisons
       chart_data = create_charts(@results).first
       return {} unless chart_data.is_a?(Hash)
       chart_data = chart_data.except(:id).merge({ chart1_type: :bar, chart1_subtype: :stacked })
-      ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison).process)
+      ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison, fuel_type: @report.fuel_type).process)
     end
 
     def filter

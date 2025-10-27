@@ -31,6 +31,7 @@ class SchoolRemover
       if @school.update!({ active: false, process_data: false }.merge(inactive_dates))
         delete_school_issues
       end
+      @school&.school_group&.touch
     end
     SchoolArchivedMailer.archived(@school) if @archive
   end
