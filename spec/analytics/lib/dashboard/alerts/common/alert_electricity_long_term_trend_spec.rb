@@ -41,14 +41,12 @@ describe AlertElectricityLongTermTrend do
         expect(alert.percent_change_kwh).to eq(1.0) # 100 percent increase
       end
 
-      # rubocop:disable Naming/AsciiIdentifiers
       it 'calculates other change variables' do
-        expect(alert.abs_difference_£).not_to be_nil
-        expect(alert.abs_difference_£_temp_adj).not_to be_nil
+        expect(alert.abs_difference_gbp).not_to be_nil
+        expect(alert.abs_difference_gbp_temp_adj).not_to be_nil
         expect(alert.abs_difference_co2).not_to be_nil
         expect(alert.abs_difference_co2_temp_adj).not_to be_nil
       end
-      # rubocop:enable Naming/AsciiIdentifiers
     end
 
     context 'with decreased usage' do
@@ -63,14 +61,12 @@ describe AlertElectricityLongTermTrend do
         expect(alert.percent_change_kwh).to eq(-0.5) # 50 percent decrease
       end
 
-      # rubocop:disable Naming/AsciiIdentifiers
       it 'calculates other change variables' do
-        expect(alert.abs_difference_£).not_to be_nil
-        expect(alert.abs_difference_£_temp_adj).not_to be_nil
+        expect(alert.abs_difference_gbp).not_to be_nil
+        expect(alert.abs_difference_gbp_temp_adj).not_to be_nil
         expect(alert.abs_difference_co2).not_to be_nil
         expect(alert.abs_difference_co2_temp_adj).not_to be_nil
       end
-      # rubocop:enable Naming/AsciiIdentifiers
     end
   end
 end
