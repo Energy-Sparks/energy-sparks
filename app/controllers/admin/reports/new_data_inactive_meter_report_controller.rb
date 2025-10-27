@@ -19,7 +19,8 @@ module Admin
                        .includes(:school, { school: :school_group })
                        .where(schools: { active: true })
                        .where(admin_meter_status: AdminMeterStatus.include_in_inactive_meter_report)
-                       .where('amr_data_feed_readings.created_at >= ?', Time.zone.today - 30))
+                       .where('amr_data_feed_readings.created_at >= ?', Time.zone.today - 30)
+                       .order('amr_data_feed_readings.created_at DESC'))
       end
 
       def container_class
