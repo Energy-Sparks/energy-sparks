@@ -4,6 +4,8 @@
                           periods_with_missing_tariffs: @periods_with_missing_tariffs %>
 
 <% if @multiple_meters || @analysis_dates.months_of_data > 23 %>
+  <%# i18n-tasks-use t('advice_pages.electricity_costs.analysis.summary') %>
+  <%# i18n-tasks-use t('advice_pages.gas_costs.analysis.summary') %>
   <p><%= advice_t("#{@fuel_type}_costs.analysis.summary") %></p>
 <% end %>
 
@@ -14,7 +16,7 @@
                            period: format_unit(@annual_costs.days / 365.0, :years)),
                   '#cost-breakdown-by-meter') %>
     </li>
-    <li><%= link_to(advice_t("#{@fuel_type}_costs.analysis.meter_breakdown.title"), '#meter-breakdown') %></li>
+    <li><%= link_to(advice_t('electricity_costs.analysis.meter_breakdown.title'), '#meter-breakdown') %></li>
   </ul>
 <% else %>
   <ul>

@@ -1,13 +1,13 @@
 <%= render 'schools/advice/section_title',
            section_id: 'meter-breakdown',
-           section_title: advice_t("#{fuel_type}_costs.analysis.meter_breakdown.title") %>
+           section_title: advice_t('electricity_costs.analysis.meter_breakdown.title') %>
 
 <%= simple_form_for :school,
                     url: polymorphic_path([:meter_costs, school, :advice, fuel_type, :costs], format: :js),
                     method: :get, remote: true do |f| %>
   <div class="form-group">
     <label>
-      <%= advice_t("#{fuel_type}_costs.analysis.meter_breakdown.select") %>
+      <%= advice_t('electricity_costs.analysis.meter_breakdown.select') %>
     </label>
     <%= select_tag :mpan_mprn,
                    options_from_collection_for_select(options_for_meter_select, :mpan_mprn, :display_name, nil),

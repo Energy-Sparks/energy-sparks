@@ -181,7 +181,7 @@ RSpec.describe 'costs advice pages' do
     end
   end
 
-  describe 'electricity costs advice page' do
+  describe 'electricity' do
     let(:key) { 'electricity_costs' }
 
     describe 'tabs' do

@@ -30,6 +30,8 @@
         chart_config: create_chart_config(school, :electricity_cost_comparison_last_2_years_accounting, mpan_mprn)
       ) do |c| %>
     <% c.with_title do
+         # i18n-tasks-use t('advice_pages.electricity_costs.charts.cost_comparison_last_2_years_accounting.meter_title')
+         # i18n-tasks-use t('advice_pages.gas_costs.charts.cost_comparison_last_2_years_accounting.meter_title')
          advice_t("#{fuel_type}_costs.charts.cost_comparison_last_2_years_accounting.meter_title", meter: label)
        end %>
     <% c.with_subtitle do
