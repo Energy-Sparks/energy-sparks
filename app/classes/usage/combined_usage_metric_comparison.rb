@@ -13,7 +13,7 @@ module Usage
     def compare
       CombinedUsageMetric.new(
         kwh: (@combined_usage_metric_previous.kwh || 0) - (@combined_usage_metric_latest.kwh || 0),
-        £: (@combined_usage_metric_previous.£ || 0) - (@combined_usage_metric_latest.£ || 0),
+        £: (@combined_usage_metric_previous.gbp || 0) - (@combined_usage_metric_latest.gbp || 0),
         co2: (@combined_usage_metric_previous.co2 || 0) - (@combined_usage_metric_latest.co2 || 0),
         percent: percent_change(@combined_usage_metric_previous.kwh, @combined_usage_metric_latest.kwh)
       )

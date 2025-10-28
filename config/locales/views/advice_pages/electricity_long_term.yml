@@ -89,6 +89,7 @@ en:
       page_title: Long term changes in electricity consumption
       tables:
         columns:
+          annual_change: Change since previous year
           annual_usage_co2: Annual co2 (kg/CO2)
           annual_usage_gbp: Annual cost (£)
           annual_usage_kwh: Annual usage (kWh)

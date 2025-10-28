@@ -162,10 +162,10 @@ shared_examples 'a long term advice page' do
                                                      "management_dashboard_group_by_week_#{fuel_type}.title"))
           expect_css(limited_data_charts, "#chart_wrapper_management_dashboard_group_by_week_#{fuel_type}")
           expect_css(limited_data_charts, "#chart_wrapper_#{fuel_type}_by_month_year_0_1")
-          expect_css(limited_data_charts, "#chart_wrapper_group_by_week_#{fuel_type}" \
-                                          "#{:_versus_benchmark if fuel_type == :electricity}")
-          expect_css(limited_data_charts, "#chart_wrapper_group_by_week_#{fuel_type}_unlimited")
-          expect_css(limited_data_charts, "#chart_wrapper_#{fuel_type}_by_month_acyear_0_1")
+          expect_css(!limited_data_charts, "#chart_wrapper_group_by_week_#{fuel_type}" \
+                                           "#{:_versus_benchmark if fuel_type == :electricity}")
+          expect_css(!limited_data_charts, "#chart_wrapper_group_by_week_#{fuel_type}_unlimited")
+          expect_css(!limited_data_charts, "#chart_wrapper_#{fuel_type}_by_month_acyear_0_1")
           expect_css(longterm_chart, "#chart_wrapper_#{fuel_type}_longterm_trend_academic_year")
         end
       end
