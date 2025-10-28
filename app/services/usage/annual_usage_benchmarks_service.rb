@@ -65,7 +65,7 @@ module Usage
 
       CombinedUsageMetric.new(
         kwh: benchmarked_by_pupil_kwh,
-        £: benchmark_by_pupil_gbp_current,
+        gbp: benchmark_by_pupil_gbp_current,
         co2: benchmark_by_pupil_co2
       )
     end
@@ -93,7 +93,7 @@ module Usage
 
       CombinedUsageMetric.new(
         kwh: saving_versus_benchmark_kwh.magnitude,
-        £: saving_versus_benchmark_gbp.magnitude,
+        gbp: saving_versus_benchmark_gbp.magnitude,
         co2: saving_versus_benchmark_co2.magnitude,
         percent: percent_change(annual_usage_for_comparison.kwh, last_year_kwh)
       )
@@ -130,7 +130,7 @@ module Usage
 
     # Taken from content_base.rb
     def current_blended_rate_gbp_per_kwh
-      aggregate_meter.amr_data.current_tariff_rate_£_per_kwh # rubocop:todo Naming/AsciiIdentifiers
+      aggregate_meter.amr_data.current_tariff_rate_gbp_per_kwh
     end
 
     # Calculate the co2 per kwh rate for this school, to convert kwh values

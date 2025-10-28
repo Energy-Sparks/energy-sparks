@@ -158,6 +158,7 @@ class AMRData < HalfHourlyData
     # - for electricity with differential tariffs this is a blended rate - beware
     @current_tariff_rate_£_per_kwh ||= calculate_blended_gbp_per_kwh_date_range(up_to_1_year_ago, end_date, :£current) # rubocop:todo Naming/VariableName
   end
+  alias current_tariff_rate_gbp_per_kwh current_tariff_rate_£_per_kwh # rubocop:disable Naming/AsciiIdentifiers
 
   def historic_tariff_rate_£_per_kwh # rubocop:todo Naming/MethodName, Naming/AsciiIdentifiers
     # needs to average rate over up to last year because:

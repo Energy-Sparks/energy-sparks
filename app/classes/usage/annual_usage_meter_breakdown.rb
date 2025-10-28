@@ -26,7 +26,7 @@ module Usage
     def total_usage
       @total_usage ||= CombinedUsageMetric.new(
         kwh: total_kwh,
-        £: total_gbp,
+        gbp: total_gbp,
         co2: total_co2,
         percent: 1.0
       )

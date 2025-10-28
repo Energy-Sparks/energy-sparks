@@ -47,7 +47,7 @@ module Usage
       # using £ not £current as this is historical usage
       CombinedUsageMetric.new(
         kwh: calculate(start_date, end_date, :kwh),
-        £: calculate(start_date, end_date, :£),
+        gbp: calculate(start_date, end_date, :£),
         co2: calculate(start_date, end_date, :co2)
       )
     end
@@ -80,7 +80,7 @@ module Usage
       kwh = this_period.kwh - last_period.kwh
       CombinedUsageMetric.new(
         kwh: kwh,
-        £: this_period.£ - last_period.£, # rubocop:todo Naming/AsciiIdentifiers
+        gbp: this_period.gbp - last_period.gbp,
         co2: this_period.co2 - last_period.co2,
         percent: kwh / last_period.kwh
       )
