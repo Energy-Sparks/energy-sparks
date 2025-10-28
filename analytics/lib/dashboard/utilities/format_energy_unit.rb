@@ -38,6 +38,7 @@ class FormatEnergyUnit
     return value if medium == :raw || no_recent_or_not_enough_data?(value)
     return '' if value.nil? #  && in_table - PH 20Nov2019 experimental change to tidying blank cells on heads summary table
     unit = unit.keys[0] if unit.is_a?(Hash) # if unit = {kwh: :gas} - ignore the :gas for formatting purposes
+    unit = unit.to_s.sub('gbp', '£').to_sym
     return scale_num(value, false, user_numeric_comprehension_level).to_s if unit == Float
 
     #From inspection this only seems to be used via HtmlTableFormatting.format_value

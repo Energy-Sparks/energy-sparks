@@ -170,18 +170,85 @@ shared_examples 'a long term advice page' do
         end
       end
 
+      shared_examples 'it contains the monthly consumption table' do
+        it_behaves_like 'it contains the expected data table', sortable: false do
+          let(:table_id) { 'table.advice-table' }
+          let(:expected_header) do
+            [['', 'Usage (kWh)', 'Cost (£)', 'CO2 (kg/CO2)'],
+             ['Month',
+              'Previous Year', 'This Year', '% change',
+              'Previous Year', 'This Year', '% change',
+              'Previous Year', 'This Year', '% change']]
+          end
+          let(:expected_rows) { expected_consumption_rows }
+        end
+      end
+
       context 'with 90 days of meter data' do
         let(:reading_start_date) { 90.days.ago }
 
         it_behaves_like 'a long term advice page tab', tab: 'Analysis'
         it_behaves_like 'the analysis tab', recent: true, comparison: false, high: false, longterm_chart: false,
                                             limited_data_charts: true
+        it_behaves_like 'it contains the monthly consumption table' do
+          let(:expected_consumption_rows) do
+            rows = [['January', '', '', '', '', '', '', '', '', ''],
+                    ['February', '', '', '', '', '', '', '', '', ''],
+                    ['March', '', '', '', '', '', '', '', '', ''],
+                    ['April', '', '', '', '', '', '', '', '', ''],
+                    ['May', '', '', '', '', '', '', '', '', ''],
+                    ['June', '', '', '', '', '', '', '', '', ''],
+                    ['July', '', '', '', '', '', '', '', '', ''],
+                    ['August', '', '', '', '', '', '', '', '', ''],
+                    ['September', '', '14,000 *', '', '', '£1,400 *', '', '', '2,300 *', ''],
+                    ['October', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['November', '', '14,000', '', '', '£1,400', '', '', '2,300', ''],
+                    ['December', '', '480 *', '', '', '£48 *', '', '', '78 *', '']]
+            if fuel_type == :gas
+              ['2,500 *', '2,700', '2,600', '88 *'].reverse.zip(rows.reverse).each do |co2, row|
+                row[-2] = co2
+              end
+            end
+            rows
+          end
+        end
       end
 
       context 'with more than a years meter data' do
         it_behaves_like 'a long term advice page tab', tab: 'Analysis'
         it_behaves_like 'the analysis tab', recent: true, comparison: true, high: true, longterm_chart: false,
                                             limited_data_charts: false
+        it_behaves_like 'it contains the monthly consumption table' do
+          let(:expected_consumption_rows) do
+            rows = [['January', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['February', '', '14,000', '', '', '£1,400', '', '', '2,300', ''],
+                    ['March', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['April', '', '14,000', '', '', '£1,400', '', '', '2,300', ''],
+                    ['May', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['June', '', '14,000', '', '', '£1,400', '', '', '2,300', ''],
+                    ['July', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['August', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['September', '', '14,000', '', '', '£1,400', '', '', '2,300', ''],
+                    ['October', '', '15,000', '', '', '£1,500', '', '', '2,400', ''],
+                    ['November', '', '14,000', '', '', '£1,400', '', '', '2,300', ''],
+                    ['December', '15,000', '480 *', '', '£1,500', '£48 *', '', '2,400', '78 *', '']]
+            if fuel_type == :gas
+              [['', '2,700'],
+               ['', '2,500'],
+               ['', '2,700'],
+               ['', '2,600'],
+               ['', '2,700'],
+               ['', '2,600'],
+               ['', '2,700'],
+               ['', '2,700'],
+               ['', '2,600'],
+               ['', '2,700'],
+               ['', '2,600'],
+               ['2,700', '88 *']].zip(rows).each { |gas_row, row| row[-3..-2] = gas_row }
+            end
+            rows
+          end
+        end
       end
 
       context 'with more than two years of meter data' do
@@ -190,6 +257,37 @@ shared_examples 'a long term advice page' do
         it_behaves_like 'a long term advice page tab', tab: 'Analysis'
         it_behaves_like 'the analysis tab', recent: true, comparison: true, high: true, longterm_chart: true,
                                             limited_data_charts: false
+        it_behaves_like 'it contains the monthly consumption table' do
+          let(:expected_consumption_rows) do
+            rows = [['January', '15,000', '15,000', '0%', '£1,500', '£1,500', '0%', '2,400', '2,400', '-0.675%'],
+                    ['February', '13,000', '14,000', '+3.45%', '£1,300', '£1,400', '+3.45%', '2,200', '2,300', '+2.8%'],
+                    ['March', '15,000', '15,000', '0%', '£1,500', '£1,500', '0%', '2,400', '2,400', '-0.675%'],
+                    ['April', '14,000', '14,000', '0%', '£1,400', '£1,400', '0%', '2,400', '2,300', '-0.675%'],
+                    ['May', '15,000', '15,000', '0%', '£1,500', '£1,500', '0%', '2,400', '2,400', '-0.675%'],
+                    ['June', '14,000', '14,000', '0%', '£1,400', '£1,400', '0%', '2,400', '2,300', '-0.675%'],
+                    ['July', '15,000', '15,000', '0%', '£1,500', '£1,500', '0%', '2,400', '2,400', '-0.675%'],
+                    ['August', '15,000', '15,000', '0%', '£1,500', '£1,500', '0%', '2,400', '2,400', '-0.675%'],
+                    ['September', '14,000', '14,000', '0%', '£1,400', '£1,400', '0%', '2,400', '2,300', '-0.675%'],
+                    ['October', '15,000', '15,000', '0%', '£1,500', '£1,500', '0%', '2,400', '2,400', '-0.675%'],
+                    ['November', '14,000', '14,000', '0%', '£1,400', '£1,400', '0%', '2,400', '2,300', '-0.675%'],
+                    ['December', '15,000', '480 *', '', '£1,500', '£48 *', '', '2,400', '78 *', '']]
+            if fuel_type == :gas
+              [['2,700', '2,700', '0%'],
+               ['2,500', '2,500', '+3.45%'],
+               ['2,700', '2,700', '0%'],
+               ['2,600', '2,600', '0%'],
+               ['2,700', '2,700', '0%'],
+               ['2,600', '2,600', '0%'],
+               ['2,700', '2,700', '0%'],
+               ['2,700', '2,700', '0%'],
+               ['2,600', '2,600', '0%'],
+               ['2,700', '2,700', '0%'],
+               ['2,600', '2,600', '0%'],
+               ['2,700', '88 *', '']].zip(rows).each { |gas_row, row| row[-gas_row.length..] = gas_row }
+            end
+            rows.map { |row| row.map { |cell| cell.sub('%', '&percnt;') } }
+          end
+        end
       end
     end
 
@@ -202,14 +300,14 @@ shared_examples 'a long term advice page' do
 end
 
 RSpec.describe 'long term advice page', :aggregate_failures do
-  describe 'gas' do
-    let(:fuel_type) { :gas }
+  describe 'electricity' do
+    let(:fuel_type) { :electricity }
 
     it_behaves_like 'a long term advice page'
   end
 
-  describe 'electricity' do
-    let(:fuel_type) { :electricity }
+  describe 'gas' do
+    let(:fuel_type) { :gas }
 
     it_behaves_like 'a long term advice page'
   end

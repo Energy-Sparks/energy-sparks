@@ -20,16 +20,16 @@ module Schools
 
       private_class_method def self.calculate_month_consumption(amr_data, beginning_of_month)
         days = beginning_of_month.all_month.map do |date|
-          %i[kwh £ co2].freeze.map { |type| amr_data.one_day_kwh(date, type) if amr_data.date_exists?(date)}
+          %i[kwh gbp co2].freeze.map { |type| amr_data.one_day_kwh(date, type) if amr_data.date_exists?(date) }
         end
         { kwh: sum_or_nil(days.filter_map(&:first)),
-          £: sum_or_nil(days.filter_map(&:second)),
+          gbp: sum_or_nil(days.filter_map(&:second)),
           co2: sum_or_nil(days.filter_map(&:third)),
           missing: days.map(&:first).include?(nil) }
       end
 
       private_class_method def self.calculate_change(current_hash, previous_hash)
-        %i[kwh £ co2].to_h do |type|
+        %i[kwh gbp co2].to_h do |type|
           current = current_hash[type]
           previous = previous_hash[type]
           [type, unless [current, previous].any?(&:nil?) || current.zero? || current_hash[:missing] || previous_hash[:missing]

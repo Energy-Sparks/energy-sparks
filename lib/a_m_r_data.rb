@@ -116,7 +116,7 @@ class AMRData < HalfHourlyData
 
     kwhs = self[date].kwh_data_x48
     return kwhs if type == :kwh
-    return @economic_tariff.days_cost_data_x48(date) if %i[£ economic_cost].include?(type)
+    return @economic_tariff.days_cost_data_x48(date) if %i[£ economic_cost gbp].include?(type)
     return @current_economic_tariff.days_cost_data_x48(date) if %i[£current current_economic_cost].include?(type)
     return @accounting_tariff.days_cost_data_x48(date) if type == :accounting_cost
 
@@ -193,8 +193,9 @@ class AMRData < HalfHourlyData
   end
 
   def check_type(type)
-    raise UnexpectedDataType, "Unexpected data type #{type}" unless %i[kwh £ economic_cost co2 £current
-                                                                       current_economic_cost accounting_cost].include?(type)
+    unless %i[kwh £ economic_cost co2 £current current_economic_cost accounting_cost gbp].include?(type)
+      raise UnexpectedDataType, "Unexpected data type #{type}"
+    end
   end
 
   def substitution_type(date)
@@ -304,7 +305,7 @@ class AMRData < HalfHourlyData
     return open_close_breakdown.one_day_kwh(date, type, community_use: community_use) unless community_use.nil?
 
     return self[date].one_day_kwh if type == :kwh
-    return @economic_tariff.one_day_total_cost(date) if %i[£ economic_cost].include?(type)
+    return @economic_tariff.one_day_total_cost(date) if %i[£ economic_cost gbp].include?(type)
     return @current_economic_tariff.one_day_total_cost(date) if %i[£current current_economic_cost].include?(type)
     return @accounting_tariff.one_day_total_cost(date) if type == :accounting_cost
 
