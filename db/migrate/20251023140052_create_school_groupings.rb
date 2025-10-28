@@ -10,7 +10,7 @@ class CreateSchoolGroupings < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    # Add partial unique index to enforce one "main" group per school
+    # Add partial unique index to enforce one "organisation" group per school
     add_index :school_groupings, [:school_id, :role],
               unique: true,
               where: "role = 'organisation'",
