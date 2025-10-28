@@ -4,9 +4,9 @@ module Admin
 
     def index
       respond_to do |format|
-        format.html { @school_groups = @school_groups.main_groups.by_name }
+        format.html { @school_groups = @school_groups.organisation_groups.by_name }
         format.csv do
-          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.main_groups.by_name).export_detail,
+          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.organisation_groups.by_name).export_detail,
           filename: ::SchoolGroups::CsvGenerator.filename
         end
       end

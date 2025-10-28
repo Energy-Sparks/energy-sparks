@@ -242,12 +242,12 @@ class School < ApplicationRecord
   has_many :assigned_school_groups, through: :school_groupings, source: :school_group
 
   # filtered relationships
-  has_one :main_school_grouping, -> { where(role: 'main') }, class_name: 'SchoolGrouping'
+  has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
   has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
 
   # school groups via the filtered SchoolGrouping relationships
-  has_one :main_school_group, through: :main_school_grouping, source: :school_group
+  has_one :organisation_school_group, through: :organisation_school_grouping, source: :school_group
   has_many :area_school_groups, through: :area_school_groupings, source: :school_group
   has_many :project_school_groups, through: :project_school_groupings, source: :school_group
 
@@ -350,10 +350,10 @@ class School < ApplicationRecord
 
   before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
 
-  # Sync legacy school_group_id with new "main" grouping
-  after_create :sync_main_grouping_from_legacy
-  after_update :sync_main_grouping_from_legacy, if: :saved_change_to_school_group_id?
-  before_destroy :remove_main_grouping
+  # Sync legacy school_group_id with new "organisation" grouping
+  after_create :sync_organisation_grouping_from_legacy
+  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
+  before_destroy :remove_organisation_grouping
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -982,18 +982,18 @@ class School < ApplicationRecord
     self.local_distribution_zone_id = LocalDistributionZonePostcode.zone_id_for_school(self)
   end
 
-  def sync_main_grouping_from_legacy
+  def sync_organisation_grouping_from_legacy
     return unless school_group_id.present?
 
-    existing = SchoolGrouping.find_by(school_id: id, role: 'main')
+    existing = SchoolGrouping.find_by(school_id: id, role: 'organisation')
     if existing
       existing.update(school_group_id: school_group_id)
     else
-      SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'main')
+      SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
     end
   end
 
-  def remove_main_grouping
-    SchoolGrouping.where(school_id: id, role: 'main').destroy_all
+  def remove_organisation_grouping
+    SchoolGrouping.where(school_id: id, role: 'organisation').destroy_all
   end
 end

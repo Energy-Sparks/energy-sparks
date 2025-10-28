@@ -6,7 +6,7 @@ namespace :after_party do
     School.find_each do |school|
       next unless school.school_group_id.present?
 
-      existing = SchoolGrouping.find_by(school_id: school.id, role: :main)
+      existing = SchoolGrouping.find_by(school_id: school.id, role: :organisation)
 
       if existing
         existing.update(school_group_id: school.school_group_id)
@@ -14,7 +14,7 @@ namespace :after_party do
         SchoolGrouping.create!(
           school_id: school.id,
           school_group_id: school.school_group_id,
-          role: :main
+          role: :organisation
         )
       end
     end

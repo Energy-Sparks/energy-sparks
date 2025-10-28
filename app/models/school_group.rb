@@ -98,11 +98,11 @@ class SchoolGroup < ApplicationRecord
   has_many :school_groupings
   has_many :assigned_schools, through: :school_groupings, source: :school
 
-  has_many :main_school_groupings, -> { where(role: 'main') }, class_name: 'SchoolGrouping'
+  has_many :organisation_school_groupings, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
   has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
 
-  has_many :main_schools, through: :main_school_groupings, source: :school
+  has_many :organisation_schools, through: :organisation_school_groupings, source: :school
   has_many :area_schools, through: :area_school_groupings, source: :school
   has_many :project_schools, through: :project_school_groupings, source: :school
 
@@ -115,11 +115,11 @@ class SchoolGroup < ApplicationRecord
 
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
-  MAIN_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
+  ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
   AREA_GROUP_TYPE_KEYS = %w[diocese local_authority_area].freeze
   PROJECT_GROUP_TYPE_KEYS = %w[project].freeze
 
-  scope :main_groups, -> { where(group_type: MAIN_GROUP_TYPE_KEYS) }
+  scope :organisation_groups, -> { where(group_type: ORGANISATION_GROUP_TYPE_KEYS) }
   scope :area_groups, -> { where(group_type: AREA_GROUP_TYPE_KEYS) }
   scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }
 
@@ -128,8 +128,8 @@ class SchoolGroup < ApplicationRecord
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
 
-  def self.main_group_types
-    group_types.slice(*MAIN_GROUP_TYPE_KEYS)
+  def self.organisation_group_types
+    group_types.slice(*ORGANISATION_GROUP_TYPE_KEYS)
   end
 
   def self.area_group_types

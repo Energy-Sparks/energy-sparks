@@ -11,7 +11,7 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def self.school_group_meter_data_export_params
-    { school_group_id: SchoolGroup.main_groups.sample&.id }
+    { school_group_id: SchoolGroup.organisation_groups.sample&.id }
   end
 
   def school_group_meter_data_export

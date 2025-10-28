@@ -13,11 +13,11 @@ describe SchoolGrouping do
     end
   end
 
-  shared_examples 'valid main role group types' do |group_type|
+  shared_examples 'valid organisation role group types' do |group_type|
     let(:school_group) { create(:school_group, group_type:) }
 
-    it 'is valid on create with role main' do
-      grouping = described_class.new(school:, school_group:, role: 'main')
+    it 'is valid on create with role organisation' do
+      grouping = described_class.new(school:, school_group:, role: 'organisation')
       expect(grouping).to be_valid
     end
 
@@ -30,19 +30,19 @@ describe SchoolGrouping do
             grouping.valid?
           end
 
-          it_behaves_like 'it validates correctly', 'main'
+          it_behaves_like 'it validates correctly', 'organisation'
         end
       end
 
       context 'when updating' do
-        let!(:grouping) { described_class.create(school:, school_group:, role: 'main') }
+        let!(:grouping) { described_class.create(school:, school_group:, role: 'organisation') }
 
         before do
           grouping.update(role:)
           grouping.valid?
         end
 
-        it_behaves_like 'it validates correctly', 'main'
+        it_behaves_like 'it validates correctly', 'organisation'
       end
     end
   end
@@ -55,7 +55,7 @@ describe SchoolGrouping do
       expect(grouping).to be_valid
     end
 
-    ['main', 'project'].each do |role|
+    ['organisation', 'project'].each do |role|
       context "with #{role} role" do
         context 'when creating' do
           let(:grouping) { described_class.create(school:, school_group:, role: role) }
@@ -84,7 +84,7 @@ describe SchoolGrouping do
   describe 'role-group_type compatibility' do
     %w[general local_authority multi_academy_trust].each do |group_type|
       context "when group_type is #{group_type}" do
-        it_behaves_like 'valid main role group types', group_type
+        it_behaves_like 'valid organisation role group types', group_type
       end
     end
 
@@ -95,28 +95,28 @@ describe SchoolGrouping do
     end
   end
 
-  describe 'enforcing one main group per school' do
+  describe 'enforcing one organisation group per school' do
     let(:trust) { create(:school_group, group_type: :multi_academy_trust) }
 
     context 'when creating' do
-      let!(:grouping) { described_class.create(school:, school_group: trust, role: 'main') }
+      let!(:grouping) { described_class.create(school:, school_group: trust, role: 'organisation') }
 
       it { expect(grouping).to be_valid }
     end
 
-    context 'when adding another main group' do
+    context 'when adding another organisation group' do
       let(:general) { create(:school_group, group_type: :general) }
 
-      let!(:grouping) { described_class.create(school:, school_group: trust, role: 'main') }
-      let!(:second_grouping) { described_class.create(school:, school_group: general, role: 'main') }
+      let!(:grouping) { described_class.create(school:, school_group: trust, role: 'organisation') }
+      let!(:second_grouping) { described_class.create(school:, school_group: general, role: 'organisation') }
 
       before do
         second_grouping.valid?
       end
 
-      it 'prevents second main grouping on create' do
+      it 'prevents second organisation grouping on create' do
         expect(second_grouping).to be_invalid
-        expect(second_grouping.errors[:role]).to include('already has a main group assigned')
+        expect(second_grouping.errors[:role]).to include('already has a organisation group assigned')
       end
     end
   end

@@ -59,7 +59,7 @@ describe SchoolGroup, :school_groups, type: :model do
       create(:school, school_group: sg1, active: true)
       school2 = create(:school, school_group: sg2, active: false)
       create(:school, school_group: sg2, active: false)
-      expect(SchoolGroup.main_groups.count).to eq(3)
+      expect(SchoolGroup.organisation_groups.count).to eq(3)
       expect(SchoolGroup.with_active_schools.count).to eq(1)
       school2.update(active: true)
       expect(SchoolGroup.with_active_schools.count).to eq(2)

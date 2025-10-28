@@ -13,7 +13,7 @@
 #
 #  index_school_groupings_on_school_group_id          (school_group_id)
 #  index_school_groupings_on_school_id                (school_id)
-#  index_school_groupings_on_school_id_and_main_role  (school_id,role) UNIQUE WHERE (role = 'main'::school_grouping_role)
+#  index_school_groupings_on_school_id_and_main_role  (school_id,role) UNIQUE WHERE (role = 'organisation'::school_grouping_role)
 #
 # Foreign Keys
 #
@@ -25,7 +25,7 @@ class SchoolGrouping < ApplicationRecord
   belongs_to :school_group
 
   enum :role, {
-    main: 'main',
+    organisation: 'organisation',
     area: 'area',
     project: 'project'
   }, prefix: true
@@ -33,17 +33,17 @@ class SchoolGrouping < ApplicationRecord
   validates :role, presence: true
   validates :role, inclusion: { in: roles.keys }
 
-  validate :only_one_main_group
+  validate :only_one_organisation_group
   validate :role_matches_group_type
 
-  def only_one_main_group
-    return unless role_main?
+  def only_one_organisation_group
+    return unless role_organisation?
 
-    existing = SchoolGrouping.where(school_id: school_id, role: 'main')
+    existing = SchoolGrouping.where(school_id: school_id, role: 'organisation')
     existing = existing.where.not(id: id) if persisted?
 
     if existing.exists?
-      errors.add(:role, 'already has a main group assigned')
+      errors.add(:role, 'already has a organisation group assigned')
     end
   end
 
@@ -52,7 +52,7 @@ class SchoolGrouping < ApplicationRecord
 
     case school_group.group_type
     when 'general', 'local_authority', 'multi_academy_trust'
-      errors.add(:role, 'must be main for this group type') unless role_main?
+      errors.add(:role, 'must be organisation for this group type') unless role_organisation?
     when 'diocese', 'local_authority_area'
       errors.add(:role, 'must be area for this group type') unless role_area?
     else

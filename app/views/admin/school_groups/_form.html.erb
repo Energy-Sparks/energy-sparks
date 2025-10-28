@@ -16,7 +16,7 @@
     <%= f.label :group_type %>
     <%= f.select :group_type,
                  options_from_collection_for_select(
-                   SchoolGroup.main_group_types.map do |k, _v|
+                   SchoolGroup.organisation_group_types.map do |k, _v|
                      OpenStruct.new(id: k, group_type: k.humanize.capitalize)
                    end,
                    'id', 'group_type', @school_group.group_type
