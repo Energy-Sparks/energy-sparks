@@ -1377,4 +1377,69 @@ describe School do
       expect(School.concatenate_address(['', 'a', '', 'b', ''])).to eq('a, b')
     end
   end
+
+  describe 'when synchronising legacy group relationship' do
+    let(:school_group) { create(:school_group, group_type: :multi_academy_trust) }
+    let(:school) { build(:school, school_group: school_group) }
+
+    describe 'after_create :sync_organisation_grouping_from_legacy' do
+      context 'when school_group_id is present' do
+        before { school.save }
+
+        it 'creates an organisation school_grouping' do
+          expect(SchoolGrouping.exists?(school_id: school.id, role: 'organisation')).to be true
+        end
+
+        it 'assigns the correct school_group_id to the grouping' do
+          grouping = SchoolGrouping.find_by(school_id: school.id, role: 'organisation')
+          expect(grouping.school_group).to eq(school_group)
+        end
+      end
+
+      context 'when school_group_id is nil' do
+        let(:school) { build(:school, school_group: nil) }
+
+        before { school.save }
+
+        it 'does not create an organisation school_grouping' do
+          expect(SchoolGrouping.find_by(school_id: school.id, role: 'organisation')).to be_nil
+        end
+      end
+    end
+
+    describe 'after_update :sync_organisation_grouping_from_legacy' do
+      let(:other_group) { create(:school_group, group_type: :multi_academy_trust) }
+
+      before do
+        school.save
+        school.update(school_group: other_group)
+      end
+
+      it 'updates the organisation grouping with the new school_group_id' do
+        grouping = SchoolGrouping.find_by(school_id: school.id, role: 'organisation')
+        expect(grouping.school_group).to eq(other_group)
+      end
+    end
+
+    describe 'creating organisation grouping on update if missing' do
+      let(:school) { create(:school, school_group: nil) }
+
+      before { school.update(school_group: school_group) }
+
+      it 'creates a new organisation grouping' do
+        expect(SchoolGrouping.exists?(school_id: school.id, role: 'organisation')).to be true
+      end
+    end
+
+    describe 'before_destroy :remove_organisation_grouping' do
+      before do
+        school.save
+        school.destroy
+      end
+
+      it 'removes the organisation grouping' do
+        expect(SchoolGrouping.find_by(school_id: school.id, role: 'organisation')).to be_nil
+      end
+    end
+  end
 end
