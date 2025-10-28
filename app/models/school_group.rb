@@ -119,6 +119,8 @@ class SchoolGroup < ApplicationRecord
   AREA_GROUP_TYPE_KEYS = %w[diocese local_authority_area].freeze
   PROJECT_GROUP_TYPE_KEYS = %w[project].freeze
 
+  RESTRICTED_GROUP_TYPES = (AREA_GROUP_TYPE_KEYS + PROJECT_GROUP_TYPE_KEYS).freeze
+
   scope :organisation_groups, -> { where(group_type: ORGANISATION_GROUP_TYPE_KEYS) }
   scope :area_groups, -> { where(group_type: AREA_GROUP_TYPE_KEYS) }
   scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }

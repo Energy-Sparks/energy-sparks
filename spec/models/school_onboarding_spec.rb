@@ -128,4 +128,6 @@ describe SchoolOnboarding, type: :model do
       end
     end
   end
+
+  it_behaves_like 'restricted school group association', :school_onboarding
 end
