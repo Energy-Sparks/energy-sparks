@@ -130,7 +130,8 @@ shared_examples 'a costs advice page' do
   end
 end
 
-shared_examples 'a costs advice page with a meter costs chart endpoint' do
+shared_examples 'a costs advice page with a cost breakdown chart' do
+  let(:fuel_type) { key.to_s.split('_').first.to_sym }
   include_context 'advice page'
 
   let(:school) do
@@ -144,21 +145,18 @@ shared_examples 'a costs advice page with a meter costs chart endpoint' do
     school
   end
 
-  def expect_javascript(mpan_mprn)
-    visit polymorphic_path([:meter_costs, school, :advice, fuel_type, :costs], format: :js, mpan_mprn:)
-    expect(page.status_code).to eq(200)
-    expect(page).to have_content('processAnalysisCharts()')
-  end
-
-  context 'with the aggregate meter' do
-    it 'returns javascript' do
-      expect_javascript(AggregateSchoolService.new(school).aggregate_school.aggregate_meter(fuel_type).mpan_mprn)
+  context 'with the cost breakdown chart', :js do
+    def expect_chart(meter, name)
+      expect(page).to have_content("#{fuel_type.capitalize} cost components for the last year for #{name}")
+      expect(page).to have_css("#chart_electricity_cost_1_year_accounting_breakdown_#{meter.mpan_mprn}")
     end
-  end
 
-  context 'with the real meter' do
-    it 'returns javascript' do
-      expect_javascript(school.meters.first.mpan_mprn)
+    it 'displays and changes the chart' do
+      visit polymorphic_path([:analysis, school, :advice, fuel_type, :costs])
+      expect_chart(AggregateSchoolService.new(school).aggregate_school.aggregate_meter(fuel_type), 'Whole school')
+      meter = school.meters.first
+      select meter.display_name, from: 'mpan_mprn'
+      expect_chart(meter, meter.name)
     end
   end
 end
@@ -167,34 +165,20 @@ RSpec.describe 'costs advice pages' do
   describe 'gas' do
     let(:key) { 'gas_costs' }
 
-    describe 'tabs' do
+    it_behaves_like 'a costs advice page' do
       let(:expected_page_title) { 'Gas cost analysis' }
-
       include_context 'gas advice page'
-      it_behaves_like 'a costs advice page'
     end
-
-    describe 'meter costs chart endpoint' do
-      let(:fuel_type) { :gas }
-
-      it_behaves_like 'a costs advice page with a meter costs chart endpoint'
-    end
+    it_behaves_like 'a costs advice page with a cost breakdown chart'
   end
 
   describe 'electricity' do
     let(:key) { 'electricity_costs' }
 
-    describe 'tabs' do
+    it_behaves_like 'a costs advice page' do
       let(:expected_page_title) { 'Electricity cost analysis' }
-
       include_context 'electricity advice page'
-      it_behaves_like 'a costs advice page'
     end
-
-    describe 'meter costs chart endpoint' do
-      let(:fuel_type) { :electricity }
-
-      it_behaves_like 'a costs advice page with a meter costs chart endpoint'
-    end
+    it_behaves_like 'a costs advice page with a cost breakdown chart'
   end
 end
