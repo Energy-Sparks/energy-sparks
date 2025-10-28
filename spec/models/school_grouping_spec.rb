@@ -84,13 +84,13 @@ describe SchoolGrouping do
   describe 'role-group_type compatibility' do
     %w[general local_authority multi_academy_trust].each do |group_type|
       context "when group_type is #{group_type}" do
-        include_examples 'valid main role group types', group_type
+        it_behaves_like 'valid main role group types', group_type
       end
     end
 
     %w[diocese local_authority_area].each do |group_type|
       context "when group_type is #{group_type}" do
-        include_examples 'valid area role group types', group_type
+        it_behaves_like 'valid area role group types', group_type
       end
     end
   end
