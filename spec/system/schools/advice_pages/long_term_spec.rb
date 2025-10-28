@@ -10,7 +10,7 @@ shared_examples 'a long term advice page' do
                     :with_fuel_configuration,
                     :with_meter_dates,
                     fuel_type:,
-                    reading_start_date: reading_start_date,
+                    reading_start_date:,
                     number_of_pupils: 1)
     create(:energy_tariff, :with_flat_price, tariff_holder: school, meter_type: fuel_type,
                                              start_date: nil, end_date: nil)
