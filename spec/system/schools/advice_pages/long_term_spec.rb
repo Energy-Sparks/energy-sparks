@@ -285,7 +285,7 @@ shared_examples 'a long term advice page' do
                ['2,600', '2,600', '0%'],
                ['2,700', '88 *', '']].zip(rows).each { |gas_row, row| row[-gas_row.length..] = gas_row }
             end
-            rows.map { |row| row.map { |cell| cell.sub('%', '&percnt;') } }
+            rows.map { |row| row.map { |cell| cell.gsub('%', '&percnt;') } }
           end
         end
       end
