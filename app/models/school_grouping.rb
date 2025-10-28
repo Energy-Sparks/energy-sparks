@@ -33,13 +33,30 @@ class SchoolGrouping < ApplicationRecord
   validates :role, presence: true
   validates :role, inclusion: { in: roles.keys }
 
-  validate :only_one_main_group, on: :create
+  validate :only_one_main_group
+  validate :role_matches_group_type
 
   def only_one_main_group
     return unless role_main?
 
-    if SchoolGrouping.exists?(school_id: school_id, role: 'main')
+    existing = SchoolGrouping.where(school_id: school_id, role: 'main')
+    existing = existing.where.not(id: id) if persisted?
+
+    if existing.exists?
       errors.add(:role, 'already has a main group assigned')
+    end
+  end
+
+  def role_matches_group_type
+    return unless school_group
+
+    case school_group.group_type
+    when 'general', 'local_authority', 'multi_academy_trust'
+      errors.add(:role, 'must be main for this group type') unless role_main?
+    when 'diocese', 'local_authority_area'
+      errors.add(:role, 'must be area for this group type') unless role_area?
+    else
+      errors.add(:role, 'must be project for project groups') unless role_project?
     end
   end
 end
