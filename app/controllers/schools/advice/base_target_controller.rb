@@ -33,8 +33,8 @@ module Schools
       end
 
       def advice_page_key
-        @fuel_type = self.class.name.split('::').last.underscore.split('_')[..-3].join('_').to_sym
-        :"#{@fuel_type}_target"
+        fuel_type = self.class.name.split('::').last.underscore.split('_')[..-3].join('_').to_sym
+        :"#{fuel_type}_target"
       end
 
       def formatted_target(target = nil)

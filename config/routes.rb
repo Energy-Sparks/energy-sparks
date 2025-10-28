@@ -808,6 +808,7 @@ Rails.application.routes.draw do
       resources :meter_loading_reports, only: :index
       resources :meter_reports, only: :index
       resources :missing_alert_contacts, only: [:index]
+      resources :new_data_inactive_meter_report, only: [:index]
       resources :perse_meter, only: [:index]
       resources :recent_audits, only: [:index]
       resources :school_scenarios, only: [:index]
