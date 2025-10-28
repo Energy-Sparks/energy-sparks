@@ -20,6 +20,26 @@ FactoryBot.define do
       end
     end
 
+    trait :with_grouping do
+      transient do
+        count { 1 }
+        role { :organisation }
+        schools { nil }
+      end
+
+      after(:build) do |school_group, evaluator|
+        schools = evaluator.schools || create_list(:school, evaluator.count, active: true, public: true)
+        case evaluator.role
+        when :organisation
+          school_group.organisation_schools = schools
+        when :area
+          school_group.area_schools = schools
+        else
+          school_group.project_schools = schools
+        end
+      end
+    end
+
     trait :with_partners do
       transient do
         partner_count { 1 }
