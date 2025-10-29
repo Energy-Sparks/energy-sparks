@@ -78,7 +78,7 @@ module SchoolGroups
     end
 
     def include_cluster
-      can?(:update_settings, @school_group)
+      helpers.include_clusters?(@school_group)
     end
 
     def priority_actions_csv
