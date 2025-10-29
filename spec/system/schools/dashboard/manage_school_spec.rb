@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'manage school', type: :system do
+RSpec.describe 'manage school' do
   let(:school) { create(:school, :with_school_group) }
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true) }
 
   before do
     Flipper.enable(:manual_readings)
@@ -20,7 +22,7 @@ RSpec.describe 'manage school', type: :system do
 
     it 'does not have a manage menu' do
       visit school_path(school)
-      expect(page).not_to have_css('#manage_school')
+      expect(page).to have_no_css('#manage_school')
     end
   end
 
@@ -29,7 +31,7 @@ RSpec.describe 'manage school', type: :system do
 
     it 'does not have my school menu' do
       visit school_path(school, switch: true)
-      expect(page).not_to have_css('#manage_school')
+      expect(page).to have_no_css('#manage_school')
     end
   end
 
@@ -41,7 +43,7 @@ RSpec.describe 'manage school', type: :system do
     end
 
     it 'does not have a manage menu' do
-      expect(page).not_to have_css('#manage_school')
+      expect(page).to have_no_css('#manage_school')
     end
   end
 
@@ -82,14 +84,14 @@ RSpec.describe 'manage school', type: :system do
     it 'does not shows extra manage menu items' do
       expect(page).to have_css('#manage_school')
       within '#manage_school_menu' do
-        expect(page).not_to have_link('Review school setup')
-        expect(page).not_to have_link('School configuration')
-        expect(page).not_to have_link('Meter attributes')
-        expect(page).not_to have_link('Manage school group')
-        expect(page).not_to have_link('Manage issues')
-        expect(page).not_to have_link('Batch reports')
-        expect(page).not_to have_link('Expert analysis')
-        expect(page).not_to have_link('Remove school')
+        expect(page).to have_no_link('Review school setup')
+        expect(page).to have_no_link('School configuration')
+        expect(page).to have_no_link('Meter attributes')
+        expect(page).to have_no_link('Manage school group')
+        expect(page).to have_no_link('Manage issues')
+        expect(page).to have_no_link('Batch reports')
+        expect(page).to have_no_link('Expert analysis')
+        expect(page).to have_no_link('Remove school')
         expect(page).to have_link(I18n.t('components.manage_school_navigation.settings'))
       end
     end
@@ -161,15 +163,15 @@ RSpec.describe 'manage school', type: :system do
         create(:gas_meter, :with_unvalidated_readings, school: school)
         school.update(process_data: false)
         visit school_path(school)
-        expect(page).not_to have_link(href: school_batch_runs_path(school))
+        expect(page).to have_no_link(href: school_batch_runs_path(school))
         click_on('Process data')
         expect(page).to have_content "#{school.name} will now process data"
         expect(page).to have_link(href: school_batch_runs_path(school))
         school.reload
-        expect(school.process_data).to eq(true)
+        expect(school.process_data).to be(true)
         click_on('Process data')
         school.reload
-        expect(school.process_data).to eq(false)
+        expect(school.process_data).to be(false)
       end
 
       it 'disallows toggling of data processing if the school has no meter readings' do
@@ -178,7 +180,7 @@ RSpec.describe 'manage school', type: :system do
         click_on('Process data')
         expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
         school.reload
-        expect(school.process_data).to eq(false)
+        expect(school.process_data).to be(false)
       end
 
       it 'allows toggling of data enabled via the review page' do
