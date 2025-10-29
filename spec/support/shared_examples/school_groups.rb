@@ -50,6 +50,31 @@ RSpec.shared_examples 'a page with a manage school group menu not including admi
   end
 end
 
+RSpec.shared_examples 'a page with a limited manage school group menu' do
+  before do
+    visit path
+  end
+
+  it 'shows standard items and admin links' do
+    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
+      ['School engagement']
+    )
+  end
+end
+
+RSpec.shared_examples 'a page with a limited manage school group menu and admin links' do
+  before do
+    visit path
+  end
+
+  it 'shows standard items and admin links' do
+    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
+      ['School engagement',
+       'Edit group', 'Set message', 'Manage users', 'Manage partners']
+    )
+  end
+end
+
 RSpec.shared_examples 'a group advice page secr nav link' do |display: true|
   it "#{display ? 'shows' : "doesn't show"} secr nav link" do
     if display
