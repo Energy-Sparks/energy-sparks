@@ -6,6 +6,7 @@ RSpec.describe 'manage school', type: :system do
 
   before do
     Flipper.enable(:manual_readings)
+    create(:manual_reading, school:, electricity: 1)
     # Update the configuration rather than creating one, as the school factory builds one
     # and so if we call create(:configuration, school: school) we end up with 2 records for the has_one
     # relationship
@@ -55,7 +56,7 @@ RSpec.describe 'manage school', type: :system do
         expect(page).to have_link('Manage alert contacts')
         expect(page).to have_link('Manage meters')
         expect(page).to have_link('Digital signage')
-        expect(page).to have_link('Manual readings', href: "/schools/#{school.slug}/manual_readings")
+        expect(page).to have_link('Supply historical manual readings', href: "/schools/#{school.slug}/manual_readings")
       end
     end
   end

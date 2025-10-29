@@ -23,7 +23,7 @@ module Schools
         @school.configuration.aggregate_meter_dates.empty? ||
           @fuel_types.all? do |fuel_type|
             dates = @school.configuration.meter_dates(fuel_type)
-            dates.empty? || dates[:start_date] > MONTHS_REQUIRED_WHEN_NO_TARGET.ago || dates[:end_date] < 1.month.ago
+            dates.empty? || dates[:start_date] > MONTHS_REQUIRED_WHEN_NO_TARGET.ago || dates[:end_date] < 2.months.ago
           end
       end
     end
@@ -57,9 +57,9 @@ module Schools
     end
 
     def readings
-      @readings.transform_values do |missing_and_reading|
-        missing_and_reading.transform_values do |hash|
-          hash[:reading]
+      @readings.transform_values do |missing_and_readings|
+        missing_and_readings.transform_values do |missing_and_reading|
+          missing_and_reading[:reading]
         end
       end
     end
@@ -85,7 +85,7 @@ module Schools
     end
 
     def add_reading(month, fuel_type, missing, reading)
-      return if month >= Date.current.beginning_of_month
+      return if month >= Date.current.prev_month.beginning_of_month
 
       existing_reading = @existing_readings.find { |reading| reading.month == month }
       disabled, reading = if existing_reading&.[](fuel_type).present?

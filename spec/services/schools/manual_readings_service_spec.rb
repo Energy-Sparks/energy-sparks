@@ -36,8 +36,22 @@ describe Schools::ManualReadingsService do
       it { is_expected.not_to be_show_on_menu }
     end
 
-    context 'with an incomplete target' do
+    context 'with a previous months incomplete target' do
       let(:school) { create(:school_target, :with_monthly_consumption, previous_missing: true).school }
+
+      it { is_expected.to be_show_on_menu }
+    end
+
+    context 'with a current months incomplete target' do
+      let(:school) { create(:school_target, :with_monthly_consumption, current_missing: true).school }
+
+      it { is_expected.not_to be_show_on_menu }
+    end
+
+    context 'with a current months incomplete target started two month ago' do
+      let(:school) do
+        create(:school_target, :with_monthly_consumption, current_missing: true, start_date: 2.months.ago).school
+      end
 
       it { is_expected.to be_show_on_menu }
     end
