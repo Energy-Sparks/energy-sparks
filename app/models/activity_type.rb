@@ -138,7 +138,8 @@ class ActivityType < ApplicationRecord
   end
 
   def count_existing_for_academic_year(school, academic_year)
-    school.activities.where(activity_type: self).where(happened_on: academic_year.start_date..academic_year.end_date).count
+    school.observations.joins(:activity).where(activities: { activity_type: self })
+      .in_academic_year(academic_year).with_points.distinct.count(:activity_id)
   end
 
   def public_type

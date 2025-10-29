@@ -227,7 +227,7 @@ describe 'viewing and recording action' do
 
           it 'observation has 0 points' do
             observation = school.observations.intervention.first
-            expect(observation.points).to be_nil
+            expect(observation.points).to be_zero
           end
 
           it_behaves_like 'a task completed page', points: 0, task_type: :action
@@ -275,11 +275,29 @@ describe 'viewing and recording action' do
 
           it 'observation has 0 points' do
             observation = school.observations.intervention.first
-            expect(observation.points).to be_nil
+            expect(observation.points).to be_zero
           end
 
           it_behaves_like 'a task completed page', points: 0, task_type: :action, with_todos: true
           it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
+        end
+
+        context 'when time is in a future academic year' do
+          let(:next_academic_year) { school.current_academic_year.next_year }
+          let(:future_date) { next_academic_year.start_date + 1.day }
+
+          before do
+            school.update(calendar: create(:calendar, :with_previous_and_next_academic_years))
+            refresh
+
+            fill_in 'observation_at', with: future_date.strftime('%d/%m/%Y')
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            click_on 'Record action'
+          end
+
+          it_behaves_like 'a task completed page', points: 30, task_type: :action, with_todos: true do
+            let(:future_academic_year) { next_academic_year.title }
+          end
         end
 
         context 'when time is this academic year' do

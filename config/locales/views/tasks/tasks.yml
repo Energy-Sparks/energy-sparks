@@ -15,6 +15,7 @@ en:
         view_link: View your activity
       congratulations: Congratulations!
       points: You've just scored %{points} points
+      points_with_academic_year: You've just scored %{points} points for the %{academic_year} academic year
       share: Share what you’ve done with others in the school community
       what_next: What do you want to do next?
     completed_on: Completed on %{date}

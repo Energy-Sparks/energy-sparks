@@ -80,7 +80,7 @@ describe Tasks::Recorder do
         let(:activity) { build(:activity, activity_type:, happened_on: 3.years.ago) }
 
         it 'no points are scored' do
-          expect(observation.points).to be_nil
+          expect(observation.points).to be_zero
         end
       end
     end
@@ -124,7 +124,7 @@ describe Tasks::Recorder do
         let(:at) { 3.years.ago }
 
         it 'no points are scored' do
-          expect(observation.points).to be_nil
+          expect(observation.points).to be_zero
         end
       end
     end
