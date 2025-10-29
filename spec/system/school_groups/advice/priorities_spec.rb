@@ -5,7 +5,7 @@ describe 'School group priorities page' do
   let!(:school) { create(:school, school_group: school_group, number_of_pupils: 10, floor_area: 200.0) }
 
 
-  it_behaves_like 'an access controlled group advice page' do
+  it_behaves_like 'an access controlled group page' do
     let(:path) { priorities_school_group_advice_path(school_group) }
   end
 

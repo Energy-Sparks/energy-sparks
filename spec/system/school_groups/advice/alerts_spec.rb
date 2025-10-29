@@ -7,7 +7,7 @@ describe 'School group alerts page' do
     let(:schools) { school_group.schools }
   end
 
-  it_behaves_like 'an access controlled group advice page' do
+  it_behaves_like 'an access controlled group page' do
     let(:path) { priorities_school_group_advice_path(school_group) }
   end
 

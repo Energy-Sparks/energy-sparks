@@ -50,37 +50,6 @@ RSpec.shared_examples 'a page with a manage school group menu not including admi
   end
 end
 
-RSpec.shared_examples 'schools are filtered by permissions' do |admin: false, school_admin: false|
-  let(:data_sharing) { :within_group }
-  let!(:filtered_school) { create(:school, school_group: school_group, data_sharing: data_sharing) }
-
-  before do
-    visit school_group_path(school_group)
-  end
-
-  context 'with data sharing set to within_group' do
-    it 'does not show the school', unless: admin || school_admin do
-      expect(page).to have_no_content(filtered_school.name)
-    end
-
-    it 'shows all the schools', if: admin || school_admin do
-      expect(page).to have_content(filtered_school.name)
-    end
-  end
-
-  context 'with data sharing set to private' do
-    let(:data_sharing) { :private }
-
-    it 'does not show the school', unless: admin do
-      expect(page).to have_no_content(filtered_school.name)
-    end
-
-    it 'shows all the schools', if: admin do
-      expect(page).to have_content(filtered_school.name)
-    end
-  end
-end
-
 RSpec.shared_examples 'a group advice page secr nav link' do |display: true|
   it "#{display ? 'shows' : "doesn't show"} secr nav link" do
     if display
