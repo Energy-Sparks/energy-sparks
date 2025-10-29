@@ -17,7 +17,12 @@
       <div class="row pb-2 px-2">
         <div class="standout info col rounded">
           <h4>
-            <span data-toggle="collapse" href="#cluster-<%= cluster.id %>" role="button" aria-expanded="true" aria-controls="cluster-<%= cluster.id %>" class="badge badge-light toggler text-decoration-none">
+            <span data-toggle="collapse"
+                  href="#cluster-<%= cluster.id %>"
+                  role="button"
+                  aria-expanded="true"
+                  aria-controls="cluster-<%= cluster.id %>"
+                  class="badge badge-light toggler text-decoration-none">
               <%= toggler %>
             </span>
             <%= fa_icon 'users' %> <%= t('school_groups.clusters.index.cluster', cluster: cluster.name) %>
@@ -53,7 +58,7 @@
           <%= toggler %>
         </span>
         <%= fa_icon 'users-slash' %> <%= t('school_groups.clusters.index.unassigned_title') %>
-        <%= render 'schools_count', count: @school_group.schools.active.by_name.not_in_cluster.count %>
+        <%= render 'schools_count', count: @school_group.assigned_schools.active.by_name.not_in_cluster.count %>
         <div class="float-right form-inline">
           <small>
             <%= t('school_groups.clusters.index.move_selected') %>
@@ -65,7 +70,7 @@
       </h4>
       <div class="collapse show pb-1" id="cluster-unassigned">
         <%= render 'schools',
-                   schools: @school_group.schools.active.by_name.not_in_cluster,
+                   schools: @school_group.assigned_schools.active.by_name.not_in_cluster,
                    message: t('school_groups.clusters.index.all_schools') %>
       </div>
     </div>
