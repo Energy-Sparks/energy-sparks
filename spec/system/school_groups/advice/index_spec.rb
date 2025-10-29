@@ -59,4 +59,14 @@ describe 'School group advice index page' do
 
     it_behaves_like 'a group advice page secr nav link', display: false
   end
+
+  context 'with a project group' do
+    let!(:school_group) { create(:school_group, :with_grouping, role: :project, group_type: :project, count: 2) }
+
+    before do
+      visit school_group_advice_path(school_group)
+    end
+
+    it_behaves_like 'a group advice page secr nav link', display: false
+  end
 end
