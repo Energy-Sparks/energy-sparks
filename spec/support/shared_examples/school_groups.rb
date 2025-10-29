@@ -1,17 +1,3 @@
-RSpec.shared_examples 'visiting chart updates redirects to group map page' do
-  it 'redirects to' do
-    visit school_group_chart_updates_path(school_group)
-    expect(page).to have_current_path(map_school_group_path(school_group), ignore_query: true)
-  end
-end
-
-RSpec.shared_examples 'visiting chart updates redirects to group page' do
-  it 'redirects to' do
-    visit school_group_chart_updates_path(school_group)
-    expect(page).to have_current_path(school_group_path(school_group), ignore_query: true)
-  end
-end
-
 RSpec.shared_examples 'redirects to school group page' do
   it 'redirects to school group page' do
     expect(page).to have_current_path "/school_groups/#{school_group.slug}"
@@ -21,29 +7,6 @@ end
 RSpec.shared_examples 'redirects to login page' do
   it 'redirects to login page' do
     expect(page).to have_current_path('/users/sign_in', ignore_query: true)
-  end
-end
-
-RSpec.shared_examples 'allows access to chart updates page and editing of default chart preferences' do
-  it 'shows a form to select default chart units' do
-    visit school_group_chart_updates_path(school_group)
-    expect(find('ol.main-breadcrumbs').all('li').collect(&:text)).to eq(['Schools', school_group.name,
-                                                                         'Chart settings'])
-    expect(page).to have_selector(id: 'manage-school-group')
-    expect(school_group.default_chart_preference).to eq('default')
-    expect(school_group2.default_chart_preference).to eq('default')
-    expect(school_group.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
-    expect(school_group2.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
-    expect(page).to have_content("#{school_group.name} chart settings")
-    SchoolGroup.default_chart_preferences.each_key do |preference|
-      expect(page).to have_content(I18n.t("school_groups.chart_updates.index.default_chart_preference.#{preference}"))
-    end
-    choose 'Display chart data in £, where available'
-    click_on 'Update all schools in this group'
-    expect(school_group.reload.default_chart_preference).to eq('cost')
-    expect(school_group2.reload.default_chart_preference).to eq('default')
-    expect(school_group.schools.map(&:chart_preference).sort).to eq(%w[cost cost cost])
-    expect(school_group2.schools.map(&:chart_preference).sort).to eq(%w[carbon default usage])
   end
 end
 

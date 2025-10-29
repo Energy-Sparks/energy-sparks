@@ -19,11 +19,6 @@ describe 'school groups', :school_groups, type: :system do
     context 'with a public school group' do
       let(:public) { true }
 
-      it 'prompts for login when visiting chart updates' do
-        visit school_group_chart_updates_path(school_group)
-        expect(page).to have_current_path('/users/sign_in', ignore_query: true)
-      end
-
       it_behaves_like 'schools are filtered by permissions'
     end
 
@@ -61,14 +56,12 @@ describe 'school groups', :school_groups, type: :system do
     context 'with a public school group' do
       let(:public) { true }
 
-      it_behaves_like 'visiting chart updates redirects to group page'
       it_behaves_like 'schools are filtered by permissions', school_admin: true
     end
 
     context 'with a private school group' do
       let(:public) { false }
 
-      it_behaves_like 'visiting chart updates redirects to group page'
       it_behaves_like 'schools are filtered by permissions', school_admin: true
     end
   end
@@ -81,7 +74,6 @@ describe 'school groups', :school_groups, type: :system do
     context 'with a public school group' do
       let(:public) { true }
 
-      it_behaves_like 'visiting chart updates redirects to group page'
       it_behaves_like 'schools are filtered by permissions'
     end
 
@@ -92,8 +84,6 @@ describe 'school groups', :school_groups, type: :system do
         visit school_group_path(school_group)
         expect(page).to have_current_path("/school_groups/#{school_group.slug}/map", ignore_query: true)
       end
-
-      it_behaves_like 'visiting chart updates redirects to group map page'
     end
   end
 
@@ -103,18 +93,6 @@ describe 'school groups', :school_groups, type: :system do
 
     before do
       sign_in(user)
-      school_group.schools.delete_all
-      create :school, active: true, school_group: school_group, chart_preference: 'default'
-      create :school, active: true, school_group: school_group, chart_preference: 'carbon'
-      create :school, active: true, school_group: school_group, chart_preference: 'usage'
-      school_group.reload
-      create :school, active: true, school_group: school_group2, chart_preference: 'default'
-      create :school, active: true, school_group: school_group2, chart_preference: 'carbon'
-      create :school, active: true, school_group: school_group2, chart_preference: 'usage'
-    end
-
-    context 'group chart settings page' do
-      it_behaves_like 'allows access to chart updates page and editing of default chart preferences'
     end
 
     context 'with a public school group' do
@@ -132,22 +110,9 @@ describe 'school groups', :school_groups, type: :system do
 
   context 'when logged in as an admin' do
     let!(:user)           { create(:admin) }
-    let!(:school_group2)  { create(:school_group, default_issues_admin_user: nil) }
 
     before do
       sign_in(user)
-      school_group.schools.delete_all
-      create :school, active: true, school_group: school_group, chart_preference: 'default'
-      create :school, active: true, school_group: school_group, chart_preference: 'carbon'
-      create :school, active: true, school_group: school_group, chart_preference: 'usage'
-      school_group.reload
-      create :school, active: true, school_group: school_group2, chart_preference: 'default'
-      create :school, active: true, school_group: school_group2, chart_preference: 'carbon'
-      create :school, active: true, school_group: school_group2, chart_preference: 'usage'
-    end
-
-    context 'group chart settings page' do
-      it_behaves_like 'allows access to chart updates page and editing of default chart preferences'
     end
 
     context 'with a public school group' do
@@ -184,7 +149,6 @@ describe 'school groups', :school_groups, type: :system do
     context 'with a public school group' do
       let(:public) { true }
 
-      it_behaves_like 'visiting chart updates redirects to group page'
       it_behaves_like 'schools are filtered by permissions', admin: false
     end
 
@@ -195,8 +159,6 @@ describe 'school groups', :school_groups, type: :system do
         visit school_group_path(school_group)
         expect(page).to have_current_path("/school_groups/#{school_group.slug}/map", ignore_query: true)
       end
-
-      it_behaves_like 'visiting chart updates redirects to group map page'
     end
   end
 end
