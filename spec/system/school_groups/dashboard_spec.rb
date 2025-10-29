@@ -6,10 +6,6 @@ describe 'School group dashboard page', :school_groups do
 
   include_context 'school group recent usage'
 
-  before do
-    Flipper.enable(:group_dashboards_2025)
-  end
-
   it_behaves_like 'an access controlled group advice page' do
     let(:path) { school_group_path(school_group) }
   end

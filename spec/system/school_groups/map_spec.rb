@@ -5,7 +5,6 @@ describe 'School groups map page', :school_groups do
   let!(:school) { create(:school, :with_fuel_configuration, name: 'Xavier School for Gifted Children', school_group: school_group) }
 
   before do
-    Flipper.enable(:group_dashboards_2025)
     visit map_school_group_path(school_group)
   end
 

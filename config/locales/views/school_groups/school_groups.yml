@@ -81,7 +81,7 @@ en:
         local_authority: Local Authority
         local_authority_area: Local Authority Area
         multi_academy_trust: Multi-Academy Trust
-        project: Project Group
+        project: Project
       index:
         all_schools: All schools are in a cluster
         cluster: "%{cluster} cluster"
@@ -125,7 +125,6 @@ en:
         gas_out_of_hours: How does the out of school hours gas use of your schools compare to other schools on Energy Sparks, with a similar floor area?
         heating_control: How does the heating control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
         thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
-      introduction_html: View a comparison of %{fuel_types} usage across a number of key benchmarks. Or <a href="%{link}">explore all school comparison benchmarks for this group</a>.
       modal_subtitle_html: |-
         <p>School are benchmarked as comparable schools based on the key characteristics including
         floor area, location, pupil numbers and type.</p>
@@ -139,7 +138,6 @@ en:
       view_current_scores: View the current scores
     download_as_csv: Download as CSV
     header:
-      view_group: View dashboard
       view_map: View map
     labels:
       floor_area: Floor area (m2)
@@ -390,32 +388,13 @@ en:
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
-      recent_usage_intro:
-        general: A summary of the recent energy usage across schools in this group.
-        local_authority: A summary of the recent energy usage across schools in this local authority.
-        multi_academy_trust: A summary of the recent energy usage across schools in this multi-academy trust.
       we_are_working_with:
-        general:
-          in_partnership_with_html:
-            one: We are working with 1 school in this group in partnership with %{partners}
-            other: We are working with %{count} schools in this group in partnership with %{partners}
-          no_partnership:
-            one: We are working with 1 school in this group
-            other: We are working with %{count} schools in this group
-        local_authority:
-          in_partnership_with_html:
-            one: We are working with 1 school in this local authority in partnership with %{partners}
-            other: We are working with %{count} schools in this local authority in partnership with %{partners}
-          no_partnership:
-            one: We are working with 1 school in this local authority
-            other: We are working with %{count} schools in this local authority
-        multi_academy_trust:
-          in_partnership_with_html:
-            one: We are working with 1 school in this multi-academy trust in partnership with %{partners}
-            other: We are working with %{count} schools in this multi-academy trust in partnership with %{partners}
-          no_partnership:
-            one: We are working with 1 school in this multi-academy trust
-            other: We are working with %{count} schools in this multi-academy trust
+        in_partnership_with_html:
+          one: We are working with 1 school in this %{group_type} in partnership with %{partners}
+          other: We are working with %{count} schools in this %{group_type} in partnership with %{partners}
+        no_partnership:
+          one: We are working with 1 school in this %{group_type}
+          other: We are working with %{count} schools in this %{group_type}
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters

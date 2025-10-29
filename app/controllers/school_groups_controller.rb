@@ -19,27 +19,15 @@ class SchoolGroupsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    if Flipper.enabled?(:group_dashboards_2025, current_user)
-      respond_to do |format|
-        format.html do
-          render :show, layout: 'dashboards'
-        end
-        format.csv do
-          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
-                                                              schools: @schools,
-                                                              include_cluster: include_cluster).export,
-                    filename: csv_filename_for('recent_usage')
-        end
+    respond_to do |format|
+      format.html do
+        render :show, layout: 'dashboards'
       end
-    else
-      respond_to do |format|
-        format.html {}
-        format.csv do
-          send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
-                                                              schools: @schools,
-                                                              include_cluster: include_cluster).export,
-                    filename: csv_filename_for('recent_usage')
-        end
+      format.csv do
+        send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
+                                                            schools: @schools,
+                                                            include_cluster: include_cluster).export,
+                  filename: csv_filename_for('recent_usage')
       end
     end
   end
@@ -49,54 +37,15 @@ class SchoolGroupsController < ApplicationController
   end
 
   def comparisons
-    respond_to do |format|
-      format.html do
-        @categorised_schools = SchoolGroups::CategoriseSchools.new(schools: @schools).categorise_schools
-      end
-      format.csv do
-        head :bad_request and return unless params['advice_page_keys']
-
-        send_data SchoolGroups::ComparisonsCsvGenerator.new(schools: @schools,
-                                                            advice_page_keys: params['advice_page_keys'],
-                                                            include_cluster:).export,
-                  filename: csv_filename_for('comparisons')
-      end
-    end
+    redirect_to comparison_reports_school_group_advice_path(@school_group)
   end
 
   def priority_actions
-    if Flipper.enabled?(:group_dashboards_2025, current_user)
-      redirect_to priorities_school_group_advice_path(@school_group) and return
-    end
-    respond_to do |format|
-      format.html do
-        service = SchoolGroups::PriorityActions.new(@schools)
-        @priority_actions = service.priority_actions
-        @total_savings = sort_total_savings(service.total_savings)
-      end
-      format.csv do
-        send_data priority_actions_csv, filename: csv_filename_for('priority_actions')
-      end
-    end
+    redirect_to priorities_school_group_advice_path(@school_group)
   end
 
   def current_scores
-    if Flipper.enabled?(:group_dashboards_2025, current_user)
-      redirect_to scores_school_group_advice_path(@school_group) and return
-    end
-    setup_scores_and_years(@school_group)
-    respond_to do |format|
-      format.html {}
-      format.csv do
-        send_data SchoolGroups::CurrentScoresCsvGenerator.new(school_group: @school_group,
-                                                              scored_schools: @scored_schools,
-                                                              include_cluster:).export,
-                  filename: csv_filename_for(params[:academic_year].present? ? 'previous_scores' : 'current_scores')
-      end
-    end
-  end
-
-  def charts
+    redirect_to scores_school_group_advice_path(@school_group) and return
   end
 
   private
@@ -107,18 +56,6 @@ class SchoolGroupsController < ApplicationController
     "#{name}.csv"
   end
 
-  def priority_actions_csv
-    if params[:alert_type_rating_ids]
-      SchoolGroups::SchoolsPriorityActionCsvGenerator.new(
-        schools: @schools,
-        alert_type_rating_ids: params[:alert_type_rating_ids].map(&:to_i),
-        include_cluster:
-      ).export
-    else
-      SchoolGroups::PriorityActionsCsvGenerator.new(schools: @schools).export
-    end
-  end
-
   def set_show_school_group_message
     @show_school_group_message = show_school_group_message?
   end
@@ -127,12 +64,6 @@ class SchoolGroupsController < ApplicationController
     return false unless @school_group&.dashboard_message
 
     show_standard_prompts?(@school_group)
-  end
-
-  def sort_total_savings(total_savings)
-    total_savings.sort do |a, b|
-      b[1].average_one_year_saving_gbp <=> a[1].average_one_year_saving_gbp
-    end
   end
 
   def find_school_group_fuel_types
