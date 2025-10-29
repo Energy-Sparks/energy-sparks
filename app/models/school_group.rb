@@ -158,6 +158,10 @@ class SchoolGroup < ApplicationRecord
     group_types.slice(*PROJECT_GROUP_TYPE_KEYS)
   end
 
+  def organisation?
+    ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
+  end
+
   def visible_schools_count
     assigned_schools.visible.count
   end
