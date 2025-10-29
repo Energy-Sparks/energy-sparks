@@ -116,8 +116,16 @@ class SchoolGroup < ApplicationRecord
 
   scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
   scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
-  # FIXME
-  scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
+  scope :with_visible_schools, -> {
+    where(
+      "id IN (
+        SELECT DISTINCT school_groupings.school_group_id
+        FROM school_groupings
+        INNER JOIN schools ON schools.id = school_groupings.school_id
+        WHERE schools.visible = TRUE
+      )"
+    )
+  }
 
   # "general", "local_authority" and "multi_academy_trust" are considered to be "organisation" types. So will
   # be involved in "organisation" type SchoolGroupings.
