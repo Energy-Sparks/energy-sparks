@@ -81,7 +81,7 @@ describe 'School group scores page' do
     end
 
     it_behaves_like 'an access controlled group page' do
-      let(:path) { priorities_school_group_advice_path(school_group) }
+      let(:path) { scores_school_group_advice_path(school_group) }
     end
 
     before do
@@ -186,7 +186,7 @@ describe 'School group scores page' do
     end
 
     it_behaves_like 'an access controlled group page' do
-      let(:path) { priorities_school_group_advice_path(school_group) }
+      let(:path) { scores_school_group_advice_path(school_group) }
     end
 
     before do
