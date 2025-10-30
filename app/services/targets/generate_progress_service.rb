@@ -37,15 +37,17 @@ module Targets
         report_last_generated: Time.zone.now
       )
       @school.school_targets.find_each do |target|
-        next if target_complete?(target)
-
-        target.update!(
-          electricity_monthly_consumption: calculate_monthly_consumption(:electricity, target),
-          gas_monthly_consumption: calculate_monthly_consumption(:gas, target),
-          storage_heaters_monthly_consumption: calculate_monthly_consumption(:storage_heaters, target)
-        )
+        update_monthly_consumption(target) unless target_complete?(target)
       end
       target
+    end
+
+    def update_monthly_consumption(target)
+      target.update!(
+        electricity_monthly_consumption: calculate_monthly_consumption(:electricity, target),
+        gas_monthly_consumption: calculate_monthly_consumption(:gas, target),
+        storage_heaters_monthly_consumption: calculate_monthly_consumption(:storage_heaters, target)
+      )
     end
 
     private
@@ -65,7 +67,7 @@ module Targets
     end
 
     def calculate_monthly_consumption(fuel_type, target)
-      return nil unless fuel_type_and_target?(fuel_type, target)
+      return nil unless fuel_type_and_target?(fuel_type, target) && @aggregated_school.aggregate_meter(fuel_type)
 
       return target["#{fuel_type}_monthly_consumption"] if consumption_complete?(fuel_type, target)
 
@@ -80,6 +82,7 @@ module Targets
         previous_consumption, previous_missing = calculate_month_consumption(previous_month, fuel_type)
         manual = if previous_missing
                    previous_consumption = @school.manual_readings.find_by(month: previous_month)&.[](fuel_type)
+                   previous_missing = !previous_consumption.present?
                    previous_consumption.present?
                  else
                    false

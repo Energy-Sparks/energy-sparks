@@ -336,8 +336,8 @@ describe Targets::GenerateProgressService do
         school.manual_readings.create!(month: Date.new(2023, 6), electricity: 1010)
         run(Date.new(2025, 3, 15), 21.months)
         expect(target.reload.electricity_monthly_consumption[0..1]).to \
-          eq([[2024, 5, 1488, 1000, 970.0, false, true, true],
-              [2024, 6, 1440, 1010, 979.7, false, true, true]])
+          eq([[2024, 5, 1488, 1000, 970.0, false, false, true],
+              [2024, 6, 1440, 1010, 979.7, false, false, true]])
       end
     end
   end
