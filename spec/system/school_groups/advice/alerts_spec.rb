@@ -29,7 +29,7 @@ describe 'School group alerts page' do
     end
 
     it_behaves_like 'an access controlled group page' do
-      let(:path) { priorities_school_group_advice_path(school_group) }
+      let(:path) { alerts_school_group_advice_path(school_group) }
     end
 
     before do
@@ -53,7 +53,7 @@ describe 'School group alerts page' do
     end
 
     it_behaves_like 'an access controlled group page' do
-      let(:path) { priorities_school_group_advice_path(school_group) }
+      let(:path) { alerts_school_group_advice_path(school_group) }
     end
 
     before do
@@ -61,27 +61,5 @@ describe 'School group alerts page' do
     end
 
     it_behaves_like 'a group alerts page'
-
-    context 'when signed in as group admin' do
-      before do
-        sign_in(create(:admin))
-        visit scores_school_group_advice_path(school_group)
-      end
-
-      context 'when the download button is clicked' do
-        before do
-          click_link(I18n.t('school_groups.download_as_csv'))
-        end
-
-        it_behaves_like 'it exports a group CSV correctly' do
-          let(:action_name) { I18n.t('school_groups.titles.current_scores') }
-          let(:expected_csv) do
-            [['Position', 'School', 'Score'],
-             ['1', school.name, '100']
-            ]
-          end
-        end
-      end
-    end
   end
 end

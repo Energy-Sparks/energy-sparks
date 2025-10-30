@@ -194,5 +194,27 @@ describe 'School group scores page' do
     end
 
     it_behaves_like 'a group scores page'
+
+    context 'when signed in as an admin' do
+      before do
+        sign_in(create(:admin))
+        visit scores_school_group_advice_path(school_group)
+      end
+
+      context 'when the download button is clicked' do
+        before do
+          click_link(I18n.t('school_groups.download_as_csv'))
+        end
+
+        it_behaves_like 'it exports a group CSV correctly' do
+          let(:action_name) { I18n.t('school_groups.titles.current_scores') }
+          let(:expected_csv) do
+            [['Position', 'School', 'Score'],
+             ['1', school.name, '100']
+            ]
+          end
+        end
+      end
+    end
   end
 end
