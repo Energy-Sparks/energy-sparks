@@ -35,7 +35,7 @@ describe Usage::PeakUsageBenchmarkingService, :aggregate_failures, type: :servic
       expect(savings.kwh).to be_within(0.01).of(192_720)
       expect(savings.£).to be_within(0.01).of(19_272)
       expect(savings.co2).to be_within(0.01).of(38_544)
-      expect(savings.percent).to eq(nil)
+      expect(savings.percent).to be_nil
     end
   end
 

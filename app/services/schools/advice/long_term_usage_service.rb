@@ -23,6 +23,8 @@ module Schools
 
       delegate :annual_usage, to: :annual_usage_calculator
       delegate :annual_usage_change_since_last_year, to: :annual_usage_calculator
+      delegate :dates_for_period, to: :annual_usage_calculator
+      delegate :usage_change_since_last_period, to: :annual_usage_calculator
 
       def annual_usage_kwh(compare: :benchmark_school)
         annual_usage_benchmark.annual_usage_kwh(compare: compare)

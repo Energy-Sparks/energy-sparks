@@ -3,16 +3,10 @@
 require 'rails_helper'
 
 describe Usage::AnnualUsageMeterBreakdownService, type: :service do
-  let(:asof_date)      { nil }
-  let(:fuel_type)      { :electricity }
-  let(:meter_collection) { @acme_academy }
+  let(:asof_date) { nil }
+  let(:fuel_type) { :electricity }
+  let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy') }
   let(:service) { described_class.new(meter_collection, fuel_type, asof_date) }
-
-  # using before(:all) here to avoid slow loading of YAML and then
-  # running the aggregation code for each test.
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
-  end
 
   describe '#calculate_breakdown' do
     def format_unit(unit, val)

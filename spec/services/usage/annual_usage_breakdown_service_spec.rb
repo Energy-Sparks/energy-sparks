@@ -13,31 +13,35 @@ describe Usage::AnnualUsageBreakdownService, type: :service do
   let(:kwh_data_x48)    { Array.new(48) { 10.0 } }
   let(:amr_start_date)  { Date.new(2021, 12, 31) }
   let(:amr_end_date)    { Date.new(2022, 12, 31) }
-  let(:amr_data) { build(:amr_data, :with_date_range, :with_grid_carbon_intensity, grid_carbon_intensity: grid_carbon_intensity, start_date: amr_start_date, end_date: amr_end_date, kwh_data_x48: kwh_data_x48) }
+  let(:amr_data) do
+    build(:amr_data, :with_date_range, :with_grid_carbon_intensity, grid_carbon_intensity:, kwh_data_x48:,
+                                                                    start_date: amr_start_date, end_date: amr_end_date)
+  end
 
   # Carbon intensity used to calculate co2 emissions
-  let(:grid_carbon_intensity) { build(:grid_carbon_intensity, :with_days, start_date: amr_start_date, end_date: amr_end_date, kwh_data_x48: Array.new(48) { 0.2 }) }
+  let(:grid_carbon_intensity) do
+    build(:grid_carbon_intensity, :with_days, start_date: amr_start_date, end_date: amr_end_date,
+                                              kwh_data_x48: Array.new(48, 0.2))
+  end
 
   let(:holidays)     { build(:holidays, :with_calendar_year, year: 2022) }
 
   let(:school_times) do
-    [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 0), closing_time: TimeOfDay.new(16, 0), calendar_period: :term_times }]
+    [{ day: :monday, usage_type: :school_day, opening_time: TimeOfDay.new(7, 0), closing_time: TimeOfDay.new(16, 0),
+       calendar_period: :term_times }]
   end
 
   let(:open_close_times)      { build(:open_close_times, :from_frontend_times, school_times: school_times) }
 
   let(:open_close_breakdown)  { CommunityUseBreakdown.new(aggregate_meter, open_close_times) }
 
-  let(:aggregate_meter) { build(:meter, :with_flat_rate_tariffs, type: fuel_type, amr_data: amr_data, tariff_start_date: amr_start_date, tariff_end_date: amr_end_date) }
+  let(:aggregate_meter) do
+    build(:meter, :with_flat_rate_tariffs, type: fuel_type, amr_data: amr_data, tariff_start_date: amr_start_date,
+                                           tariff_end_date: amr_end_date)
+  end
 
   let(:meter_collection2) { build(:meter_collection) }
-
-  let(:meter_collection) { @acme_academy }
-
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
-    @beta_academy = load_unvalidated_meter_collection(school: 'beta-academy')
-  end
+  let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy') }
 
   before do
     # set during aggregation
@@ -85,7 +89,7 @@ describe Usage::AnnualUsageBreakdownService, type: :service do
   describe '#data_available_from' do
     context 'with enough data' do
       it 'returns nil' do
-        expect(service.data_available_from).to be(nil)
+        expect(service.data_available_from).to be_nil
       end
     end
 
@@ -171,7 +175,7 @@ describe Usage::AnnualUsageBreakdownService, type: :service do
 
     context 'with storage heater' do
       let(:fuel_type) { :storage_heater }
-      let(:meter_collection) { @beta_academy }
+      let(:meter_collection) { load_unvalidated_meter_collection(school: 'beta-academy') }
 
       it 'returns the holiday usage analysis' do
         expect(day_type_breakdown.holiday.kwh).to be_within(0.01).of(16_929.86)
