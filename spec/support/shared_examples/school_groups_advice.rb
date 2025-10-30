@@ -10,7 +10,7 @@ RSpec.shared_examples 'a school group advice page' do |index: true|
                                                                          breadcrumb])
   end
 
-  it 'has the expected navigation' do
+  it 'has a navbar' do
     expect(page).to have_css('#group-advice-page-nav')
     within('#group-advice-page-nav') do
       expect(page).to have_link(I18n.t('advice_pages.nav.overview'), href: school_group_advice_path(school_group))
