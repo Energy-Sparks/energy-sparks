@@ -1671,7 +1671,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_27_110645) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_group_id"], name: "index_school_groupings_on_school_group_id"
-    t.index ["school_id", "role"], name: "index_school_groupings_on_school_id_and_main_role", unique: true, where: "(role = 'organisation'::school_grouping_role)"
+    t.index ["school_id", "role"], name: "index_school_groupings_on_school_id_and_organisation_role", unique: true, where: "(role = 'organisation'::school_grouping_role)"
     t.index ["school_id"], name: "index_school_groupings_on_school_id"
   end
 

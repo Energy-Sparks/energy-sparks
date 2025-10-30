@@ -1431,7 +1431,7 @@ describe School do
       end
     end
 
-    describe 'before_destroy :remove_organisation_grouping' do
+    describe 'destroys school groupings' do
       before do
         school.save
         school.destroy

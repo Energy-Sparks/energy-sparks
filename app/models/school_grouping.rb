@@ -24,11 +24,7 @@ class SchoolGrouping < ApplicationRecord
   belongs_to :school
   belongs_to :school_group
 
-  enum :role, {
-    organisation: 'organisation',
-    area: 'area',
-    project: 'project'
-  }, prefix: true
+  enum :role, %i[organisation area project].index_with(&:to_s), prefix: true
 
   validates :role, presence: true
   validates :role, inclusion: { in: roles.keys }
@@ -51,9 +47,9 @@ class SchoolGrouping < ApplicationRecord
     return unless school_group
 
     case school_group.group_type
-    when 'general', 'local_authority', 'multi_academy_trust'
+    when *SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS
       errors.add(:role, 'must be organisation for this group type') unless role_organisation?
-    when 'diocese', 'local_authority_area'
+    when *SchoolGroup::AREA_GROUP_TYPE_KEYS
       errors.add(:role, 'must be area for this group type') unless role_area?
     else
       errors.add(:role, 'must be project for project groups') unless role_project?

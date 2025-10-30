@@ -14,6 +14,6 @@ class CreateSchoolGroupings < ActiveRecord::Migration[7.2]
     add_index :school_groupings, [:school_id, :role],
               unique: true,
               where: "role = 'organisation'",
-              name: 'index_school_groupings_on_school_id_and_main_role'
+              name: 'index_school_groupings_on_school_id_and_organisation_role'
   end
 end
