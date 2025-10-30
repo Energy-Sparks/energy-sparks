@@ -59,6 +59,11 @@ RSpec.describe 'manual readings' do
       visit school_manual_readings_path(school)
     end
 
+    it 'shows the correct target text' do
+      expect(page).to have_content('In order to calculate progress towards reducing your energy use by ' \
+                                   '15th August 2025 we need readings going back to August 2023.')
+    end
+
     it 'has the correct inputs' do
       expect(form_input_values).to eq([['2023-08-01', nil, nil],
                                        *expected_input_values(2023, 9, 10, %w[1021 1022]),
