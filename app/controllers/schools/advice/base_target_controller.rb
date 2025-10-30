@@ -33,8 +33,8 @@ module Schools
       end
 
       def advice_page_key
-        @fuel_type = self.class.name.split('::').last.underscore.split('_')[..-3].join('_').to_sym
-        :"#{@fuel_type}_target"
+        fuel_type = self.class.name.split('::').last.underscore.split('_')[..-3].join('_').to_sym
+        :"#{fuel_type}_target"
       end
 
       def formatted_target(target = nil)
@@ -42,13 +42,8 @@ module Schools
       end
       helper_method :formatted_target
 
-      def target_strftime(date)
-        date.strftime('%B %Y')
-      end
-      helper_method :target_strftime
-
       def formatted_target_date(target = nil)
-        target_strftime((target || @target).target_date)
+        (target || @target).target_date.to_fs(:es_month)
       end
       helper_method :formatted_target_date
 
