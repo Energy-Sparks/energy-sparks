@@ -24,6 +24,19 @@ class SchoolGrouping < ApplicationRecord
   belongs_to :school
   belongs_to :school_group
 
+  # Used to organise and validate the relationships between School and SchoolGroup
+  #
+  # There will be at most one "organisation" relationship between a School and a
+  # SchoolGroup. Equivalent to a has_one relationship.
+  #
+  # There may be many "area" and "project" relationships.
+  #
+  # The types of SchoolGroup that can participate in those relationships is also
+  # restricted. "organisation" relationships are limited to "general", "local_authority",
+  # and "multi_academy_trust" group types.
+  #
+  # "project" roles can only refer to "project" SchoolGroups. The remaining
+  # SchoolGroup types are restricted to "area" relationships.
   enum :role, %i[organisation area project].index_with(&:to_s), prefix: true
 
   validates :role, presence: true

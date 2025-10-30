@@ -113,6 +113,16 @@ class SchoolGroup < ApplicationRecord
   scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
   scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
 
+  # "general", "local_authority" and "multi_academy_trust" are considered to be "organisation" types. So will
+  # be involved in "organisation" type SchoolGroupings.
+  #
+  # "diocese" and "local_authority_area" are considered to be "area" types. We need two group types for local authorities
+  # in order to distinguish between the Local Authority as an organisation that maintains schools ("local_authority") and
+  # the Local Authority as an administrative area whose boundary might contain schools that are maintained by other
+  # organisations.
+  #
+  # A "diocese" here refers to an area. If a diocese (as an organisation) maintains schools then this would be represented
+  # in the DfE database and our system as a multi_academy_trust.
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
   ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
