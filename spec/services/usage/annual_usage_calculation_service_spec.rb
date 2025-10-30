@@ -3,15 +3,10 @@
 require 'rails_helper'
 
 describe Usage::AnnualUsageCalculationService, type: :service do
-  let(:asof_date)      { Date.new(2022, 2, 1) }
-  let(:meter)          { @acme_academy.aggregated_electricity_meters }
-  let(:service)        { described_class.new(meter, asof_date) }
-
-  # using before(:all) here to avoid slow loading of YAML and then
-  # running the aggregation code for each test.
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
-  end
+  let(:asof_date) { Date.new(2022, 2, 1) }
+  let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy') }
+  let(:meter) { meter_collection.aggregated_electricity_meters }
+  let(:service) { described_class.new(meter, asof_date) }
 
   describe '#enough_data?' do
     context 'with electricity' do
@@ -23,7 +18,7 @@ describe Usage::AnnualUsageCalculationService, type: :service do
     end
 
     context 'with gas' do
-      let(:meter)          { @acme_academy.aggregated_heat_meters }
+      let(:meter)          { meter_collection.aggregated_heat_meters }
 
       context 'with enough data' do
         it 'returns true' do
@@ -51,7 +46,7 @@ describe Usage::AnnualUsageCalculationService, type: :service do
     end
 
     context 'with gas' do
-      let(:meter) { @acme_academy.aggregated_heat_meters }
+      let(:meter) { meter_collection.aggregated_heat_meters }
 
       it 'calculates the expected values for this year' do
         annual_usage = service.annual_usage
@@ -90,7 +85,7 @@ describe Usage::AnnualUsageCalculationService, type: :service do
     end
 
     context 'with gas' do
-      let(:meter) { @acme_academy.aggregated_heat_meters }
+      let(:meter) { meter_collection.aggregated_heat_meters }
 
       it 'calculates the expected values' do
         usage_change = service.annual_usage_change_since_last_year
