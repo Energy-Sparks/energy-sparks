@@ -1,106 +1,84 @@
-<% if Flipper.enabled?(:group_dashboards_2025, current_user) %>
-  <%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
+<%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
 
-  <% content_for :dashboard_header do %>
-    <%= render(Layout::Cards::PageHeaderComponent.new(
-                 title: t('common.labels.welcome'),
-                 subtitle: t('school_groups.show.intro_html')
-               )) do |c| %>
-      <% c.with_callout(title: @school_group.name, classes: 'bg-white') do |callout| %>
-        <% callout.with_row do %>
-          <%= t('school_count', count: @schools.count) %>
-          <br>
-          <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
-        <% end %>
-        <% callout.with_row do %>
-          <span class="badge badge-secondary">
-            <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
-          </span>
-        <% end %>
+<% content_for :dashboard_header do %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(
+               title: t('common.labels.welcome'),
+               subtitle: t('school_groups.show.intro_html')
+             )) do |c| %>
+    <% c.with_callout(title: @school_group.name, classes: 'bg-white') do |callout| %>
+      <% callout.with_row do %>
+        <%= t('school_count', count: @schools.count) %>
+        <br>
+        <%= link_to t('school_groups.header.view_map'), map_school_group_path(@school_group) %>
+      <% end %>
+      <% callout.with_row do %>
+        <span class="badge badge-secondary">
+          <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
+        </span>
       <% end %>
     <% end %>
   <% end %>
+<% end %>
 
-  <div class="container">
-    <h2>
-      <%= t('school_groups.advice.show.recent_energy_use.title') %>
-    </h2>
+<div class="container">
+  <h2>
+    <%= t('school_groups.advice.show.recent_energy_use.title') %>
+  </h2>
 
-    <% cache_if can_cache_group_advice?(@schools),
-                group_advice_cache_key(@school_group, [params[:metric] || :change]),
-                expires_in: SchoolGroups::AdviceController::CACHE_TIME do %>
-      <%= render Dashboards::GroupEnergySummaryComponent.new(
-            school_group: @school_group,
-            schools: @schools,
-            fuel_types: @fuel_types,
-            metric: params[:metric],
-            classes: 'mt-2',
-            show_clusters: can?(:update_settings, @school_group)
-          ) do |summary| %>
-          <% summary.with_modal_link do %>
-            <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
-          <% end %>
-          <% summary.with_footer do %>
-            <%= render 'school_groups/advice/shared/analysis_footnotes',
-                       school_group: @school_group,
-                       schools: @schools,
-                       fuel_types: @fuel_types,
-                       extra_notes:
-                        t('school_groups.advice_pages.how_have_we_analysed_your_data.summary_table_notes_html') %>
-          <% end %>
-      <% end %>
+  <% cache_if can_cache_group_advice?(@schools),
+              group_advice_cache_key(@school_group, [params[:metric] || :change]),
+              expires_in: SchoolGroups::AdviceController::CACHE_TIME do %>
+    <%= render Dashboards::GroupEnergySummaryComponent.new(
+          school_group: @school_group,
+          schools: @schools,
+          fuel_types: @fuel_types,
+          metric: params[:metric],
+          classes: 'mt-2',
+          show_clusters: include_clusters?(@school_group)
+        ) do |summary| %>
+        <% summary.with_modal_link do %>
+          <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
+        <% end %>
+        <% summary.with_footer do %>
+          <%= render 'school_groups/advice/shared/analysis_footnotes',
+                     school_group: @school_group,
+                     schools: @schools,
+                     fuel_types: @fuel_types,
+                     extra_notes:
+                      t('school_groups.advice_pages.how_have_we_analysed_your_data.summary_table_notes_html') %>
+        <% end %>
     <% end %>
+  <% end %>
 
-    <%= render Dashboards::GroupLearnMoreComponent.new(
-          school_group: @school_group,
-          schools: @schools,
-          classes: 'mt-4'
-        ) %>
+  <%= render Dashboards::GroupLearnMoreComponent.new(
+        school_group: @school_group,
+        schools: @schools,
+        classes: 'mt-4'
+      ) %>
 
-    <%= render Dashboards::GroupSavingsPromptComponent.new(
-          school_group: @school_group,
-          schools: @schools,
-          classes: 'mb-4'
-        ) %>
+  <%= render Dashboards::GroupSavingsPromptComponent.new(
+        school_group: @school_group,
+        schools: @schools,
+        classes: 'mb-4'
+      ) %>
 
-    <%= render Dashboards::GroupInsightsComponent.new(
-          id: 'alerts-and-reminders',
-          classes: '',
+  <%= render Dashboards::GroupInsightsComponent.new(
+        id: 'alerts-and-reminders',
+        classes: '',
+        school_group: @school_group,
+        schools: @schools,
+        user: current_user
+      ) %>
+</div>
+
+<div class="container-fluid bg-light pb-3">
+  <div class="container">
+    <%= render Scoreboards::GroupSummaryComponent.new(
+          id: 'scoreboard-summary',
+          classes: 'mt-4 pt-4',
           school_group: @school_group,
-          schools: @schools,
+          limit: 10,
           user: current_user
         ) %>
   </div>
-
-  <div class="container-fluid bg-light pb-3">
-    <div class="container">
-      <%= render Scoreboards::GroupSummaryComponent.new(
-            id: 'scoreboard-summary',
-            classes: 'mt-4 pt-4',
-            school_group: @school_group,
-            limit: 10,
-            user: current_user
-          ) %>
-    </div>
-  </div>
-<% else %>
-  <%= render 'enhanced_header' %>
-
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <p>
-        <%= t("school_groups.show.recent_usage_intro.#{@school_group.group_type}") %>
-      </p>
-    </div>
-  </div>
-
-  <div class="row mt-4">
-    <div class="col-md-12">
-      <%= render 'school_groups/advice/summary_table',
-                 school_group: @school_group,
-                 schools: @schools,
-                 fuel_types: @fuel_types,
-                 path: school_group_path(@school_group) %>
-    </div>
-  </div>
-<% end %>
+</div>

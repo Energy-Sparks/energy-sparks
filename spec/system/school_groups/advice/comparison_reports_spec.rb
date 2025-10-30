@@ -1,33 +1,7 @@
 require 'rails_helper'
 
-describe 'School group charts page' do
-  let!(:school_group) { create(:school_group, public: true) }
-  let!(:report) { create(:report, key: :seasonal_baseload_variation) }
-
-  # has all fuel types and actual data for electricity
-  let!(:school) do
-    school = create(:school,
-                    :with_fuel_configuration,
-                    :with_meter_dates,
-                    school_group: school_group,
-                    reading_start_date: 1.year.ago,
-                    number_of_pupils: 1)
-    create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
-    create(:electricity_meter_with_validated_reading_dates,
-           school:, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
-    school
-  end
-
-  it_behaves_like 'an access controlled group advice page' do
-    let(:path) { comparison_reports_school_group_advice_path(school_group) }
-  end
-
-  context 'when not signed in' do
-    before do
-      create(:advice_page, key: :baseload)
-      visit comparison_reports_school_group_advice_path(school_group)
-    end
-
+describe 'School group comparison' do
+  shared_examples 'a group comparison report index and page' do
     it_behaves_like 'a school group advice page' do
       let(:breadcrumb) { I18n.t('school_groups.titles.comparisons') }
       let(:title) { I18n.t('school_groups.advice.comparison_reports.title', name: school_group.name) }
@@ -110,5 +84,71 @@ describe 'School group charts page' do
         end
       end
     end
+  end
+
+  let!(:report) { create(:report, key: :seasonal_baseload_variation) }
+
+  context 'with an organisation group' do
+    let!(:school_group) { create(:school_group, public: true) }
+
+    # has all fuel types and actual data for electricity
+    let!(:school) do
+      school = create(:school,
+                      :with_fuel_configuration,
+                      :with_meter_dates,
+                      school_group: school_group,
+                      reading_start_date: 1.year.ago,
+                      number_of_pupils: 1)
+      create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+      create(:electricity_meter_with_validated_reading_dates,
+             school:, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+      school
+    end
+
+    it_behaves_like 'an access controlled group page' do
+      let(:path) { comparison_reports_school_group_advice_path(school_group) }
+    end
+
+    before do
+      create(:advice_page, key: :baseload)
+      visit comparison_reports_school_group_advice_path(school_group)
+    end
+
+    it_behaves_like 'a group comparison report index and page'
+  end
+
+  context 'with a project group' do
+    let!(:school_group) do
+      create(:school_group,
+             :with_grouping,
+             group_type: :project,
+             role: :project,
+             schools: [school])
+    end
+
+    # has all fuel types and actual data for electricity
+    let!(:school) do
+      school = create(:school,
+                      :with_school_group,
+                      :with_fuel_configuration,
+                      :with_meter_dates,
+                      reading_start_date: 1.year.ago,
+                      number_of_pupils: 1)
+      create(:energy_tariff, :with_flat_price, tariff_holder: school, start_date: nil, end_date: nil)
+      create(:electricity_meter_with_validated_reading_dates,
+             school:, start_date: 1.year.ago, end_date: Time.zone.today, reading: 0.5)
+      school
+    end
+
+    it_behaves_like 'an access controlled group page' do
+      let(:path) { comparison_reports_school_group_advice_path(school_group) }
+    end
+
+    before do
+      create(:advice_page, key: :baseload)
+      visit comparison_reports_school_group_advice_path(school_group)
+    end
+
+    it_behaves_like 'a group comparison report index and page'
   end
 end

@@ -8,7 +8,7 @@ class SchoolSearchComponent < ApplicationComponent
   # i18n-tasks-use t("components.school_search.schools.total_for_admins")
   def initialize(tab: DEFAULT_TAB,
                  schools: School.visible,
-                 school_groups: SchoolGroup.with_visible_schools,
+                 school_groups: SchoolGroup.organisation_groups.with_visible_schools,
                  letter: 'A',
                  keyword: nil,
                  schools_total_key: 'components.school_search.schools.total',

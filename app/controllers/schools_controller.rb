@@ -135,7 +135,7 @@ class SchoolsController < ApplicationController
     @scope = if @tab == :schools
                @schools
              else
-               SchoolGroup.with_visible_schools
+               SchoolGroup.organisation_groups.with_visible_schools
              end
   end
 

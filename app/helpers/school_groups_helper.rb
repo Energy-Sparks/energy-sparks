@@ -59,4 +59,8 @@ module SchoolGroupsHelper
   def comparison_table_class(list)
     list.length > 10 ? 'table-paged' : 'table-sorted'
   end
+
+  def include_clusters?(school_group)
+    school_group.organisation? && can?(:update_settings, school_group)
+  end
 end

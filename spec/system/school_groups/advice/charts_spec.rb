@@ -42,7 +42,7 @@ describe 'School group charts page' do
     create(:advice_page, key: :gas_out_of_hours)
   end
 
-  it_behaves_like 'an access controlled group advice page' do
+  it_behaves_like 'an access controlled group page' do
     let(:path) { charts_school_group_advice_path(school_group) }
   end
 

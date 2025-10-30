@@ -1,113 +1,81 @@
-<% if Flipper.enabled?(:group_dashboards_2025, current_user) %>
-  <%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.map')}" %>
+<%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.map')}" %>
 
-  <div class="row">
-    <div class="col-12 col-md-6">
+<div class="row">
+  <div class="col-12 col-md-6">
 
-      <div class="row">
-        <div class="p-4">
-          <h1>
-            <%= @school_group.name %>
-          </h1>
+    <div class="row">
+      <div class="p-4">
+        <h1>
+          <%= @school_group.name %>
+        </h1>
 
-          <p>
-          <% if @school_group.partners.any? %>
-            <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.in_partnership_with_html",
-                  count: @school_group.visible_schools_count,
-                  partners: list_of_partners_as_links(@school_group.partners)) %>.
-          <% else %>
-            <%= t("school_groups.show.we_are_working_with.#{@school_group.group_type}.no_partnership",
-                  count: @school_group.visible_schools_count) %>.
-          <% end %>
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="mt-4 col-12 col-md-6">
-      <div class="school-group-map map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
-    </div>
-  </div>
-
-  <hr>
-
-  <div class="row">
-    <div class="d-none d-md-block col-md-2">&nbsp;</div>
-    <div class="col-12 col-md-10">
-      <nav aria-label="schools-pagination">
-        <ul class="pagination justify-content-start flex-wrap ">
-          <% (('A'..'Z').to_a + ['#']).each do |letter| %>
-            <li class="<%= class_names('page-item mr-1 letter', { 'disabled': !@grouped_schools.key?(letter) }) %>">
-              <a class="page-link" href="#<%= letter %>-schools"><%= letter %></a>
-            </li>
-          <% end %>
-        </ul>
-      </nav>
-    </div>
-  </div>
-
-  <% @grouped_schools.each do |letter, schools| %>
-    <%= render SearchResultsComponent.new(classes: 'mt-4',
-                                          anchor: "#{letter}-schools") do |c| %>
-      <% c.with_title { letter } %>
-      <% schools.each do |school| %>
-        <% c.with_result do %>
-          <%= link_to school.name, school_path(school) %>
-          <br>
-          <% if school.configuration %>
-            <% if school.has_electricity? %>
-              <%= render IconComponent.new(fuel_type: :electricity) %>
-            <% end %>
-            <% if school.has_gas? %>
-              <%= render IconComponent.new(fuel_type: :gas) %>
-            <% end %>
-            <% if school.has_solar_pv? %>
-              <%= render IconComponent.new(fuel_type: :solar_pv) %>
-            <% end %>
-            <% if school.has_storage_heaters? %>
-              <%= render IconComponent.new(fuel_type: :storage_heater) %>
-            <% end %>
-          <% end %>
-          <span class="badge badge-secondary" style="vertical-align: middle;">
-            <%= t("common.school_types.#{school.school_type}") %>
-          </span>
-          <br>
-          <small><%= school.address %> <%= school.postcode %></small>
+        <p>
+        <% if @school_group.partners.any? %>
+          <%= t('school_groups.show.we_are_working_with.in_partnership_with_html',
+                group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type').downcase,
+                count: @school_group.visible_schools_count,
+                partners: list_of_partners_as_links(@school_group.partners)) %>.
+        <% else %>
+          <%= t('school_groups.show.we_are_working_with.no_partnership',
+                group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type').downcase,
+                count: @school_group.visible_schools_count) %>.
         <% end %>
-      <% end %>
-    <% end %>
-  <% end %>
-<% else %>
-  <%= render 'enhanced_header' %>
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="school-group-map map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
+        </p>
+      </div>
     </div>
+
   </div>
 
-  <% @school_group.schools.includes(:configuration).visible.by_name.each do |school| %>
-    <div class='pb-2'>
-      <h4><%= link_to school.name, school_path(school) %></h4>
-      <p>
-        <span class="badge badge-secondary"><%= t("common.school_types.#{school.school_type}") %></span>
+  <div class="mt-4 col-12 col-md-6">
+    <div class="school-group-map map" id="geo-json-map" data-school-group-id="<%= @school_group.id %>"></div>
+  </div>
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="d-none d-md-block col-md-2">&nbsp;</div>
+  <div class="col-12 col-md-10">
+    <nav aria-label="schools-pagination">
+      <ul class="pagination justify-content-start flex-wrap ">
+        <% (('A'..'Z').to_a + ['#']).each do |letter| %>
+          <li class="<%= class_names('page-item mr-1 letter', { 'disabled': !@grouped_schools.key?(letter) }) %>">
+            <a class="page-link" href="#<%= letter %>-schools"><%= letter %></a>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<% @grouped_schools.each do |letter, schools| %>
+  <%= render SearchResultsComponent.new(classes: 'mt-4',
+                                        anchor: "#{letter}-schools") do |c| %>
+    <% c.with_title { letter } %>
+    <% schools.each do |school| %>
+      <% c.with_result do %>
+        <%= link_to school.name, school_path(school) %>
+        <br>
         <% if school.configuration %>
           <% if school.has_electricity? %>
-            <%= fa_icon(fuel_type_icon(:electricity)) %>
+            <%= render IconComponent.new(fuel_type: :electricity) %>
           <% end %>
           <% if school.has_gas? %>
-            <%= fa_icon(fuel_type_icon(:gas)) %>
+            <%= render IconComponent.new(fuel_type: :gas) %>
           <% end %>
           <% if school.has_solar_pv? %>
-            <%= fa_icon(:sun) %>
+            <%= render IconComponent.new(fuel_type: :solar_pv) %>
           <% end %>
           <% if school.has_storage_heaters? %>
-            <%= fab_icon(:intercom) %>
+            <%= render IconComponent.new(fuel_type: :storage_heater) %>
           <% end %>
         <% end %>
-        <%= school.address %> <%= school.postcode %>
-      </p>
-    </div>
+        <span class="badge badge-secondary" style="vertical-align: middle;">
+          <%= t("common.school_types.#{school.school_type}") %>
+        </span>
+        <br>
+        <small><%= school.address %> <%= school.postcode %></small>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>

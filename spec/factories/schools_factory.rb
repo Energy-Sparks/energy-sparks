@@ -46,11 +46,11 @@ FactoryBot.define do
       transient do
         group_type { :multi_academy_trust }
         role { :organisation }
-        school_group { nil }
+        group { nil }
       end
 
       after(:create) do |school, evaluator|
-        group = evaluator.school_group || create(:school_group, group_type: evaluator.group_type)
+        group = evaluator.group || create(:school_group, group_type: evaluator.group_type)
         create(:school_grouping, school:, school_group: group, role: evaluator.role)
       end
     end

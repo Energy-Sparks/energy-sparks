@@ -247,9 +247,9 @@ class School < ApplicationRecord
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
 
   # school groups via the filtered SchoolGrouping relationships
-  has_one :organisation_school_group, through: :organisation_school_grouping, source: :school_group
-  has_many :area_school_groups, through: :area_school_groupings, source: :school_group
-  has_many :project_school_groups, through: :project_school_groupings, source: :school_group
+  has_one :organisation_group, through: :organisation_school_grouping, source: :school_group
+  has_many :area_groups, through: :area_school_groupings, source: :school_group
+  has_many :project_groups, through: :project_school_groupings, source: :school_group
 
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }

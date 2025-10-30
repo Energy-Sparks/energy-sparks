@@ -17,11 +17,11 @@ module Dashboards
     end
 
     def prompt_for_clusters?
-      can_manage_group? && !school_group.clusters.exists?
+      can_manage_group? && school_group.organisation? && !school_group.clusters.exists?
     end
 
     def prompt_for_tariff_review?
-      can_manage_group? && [3, 9].include?(Time.zone.today.month)
+      can_manage_group? && school_group.organisation? && [3, 9].include?(Time.zone.today.month)
     end
 
     def prompt_for_dashboard_message?

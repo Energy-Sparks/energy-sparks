@@ -256,13 +256,13 @@ RSpec.describe 'Navigation -> second nav' do
         it_behaves_like 'a page with a manage school group menu including admin links'
       end
 
-      context 'when user is a school group admin for different school' do
+      context 'when user is a school group admin for different group' do
         let(:user) { create(:group_admin, school_group: create(:school_group)) }
 
         it_behaves_like 'a page without a manage school group menu'
       end
 
-      context 'when user is a school group admin for own school' do
+      context 'when user is a group admin for own group' do
         let(:user) { create(:group_admin, school_group: school_group) }
 
         it_behaves_like 'a page with a manage school group menu'
@@ -286,6 +286,20 @@ RSpec.describe 'Navigation -> second nav' do
         let(:path) { school_group_path(school.school_group) }
 
         it_behaves_like 'a page without a manage school group menu'
+      end
+
+      context 'with a project group' do
+        let(:school) { create(:school, :with_school_grouping, role: :project, group_type: :project) }
+        let(:user) { create(:group_admin, school_group: school.project_groups.first) }
+        let(:path) { school_group_path(school.project_groups.first) }
+
+        it_behaves_like 'a page with a limited manage school group menu'
+
+        context 'with an admin user' do
+          let(:user) { create(:admin) }
+
+          it_behaves_like 'a page with a limited manage school group menu and admin links'
+        end
       end
     end
   end

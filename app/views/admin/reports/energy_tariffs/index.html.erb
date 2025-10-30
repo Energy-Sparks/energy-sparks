@@ -22,7 +22,7 @@ The following table summarises the energy tariffs currently configured in the sy
     </tr>
   </thead>
   <tbody>
-    <% SchoolGroup.with_visible_schools.order(:name).each do |school_group| %>
+    <% SchoolGroup.organisation_groups.with_visible_schools.order(:name).each do |school_group| %>
       <tr>
         <td><%= link_to school_group.name, school_group_energy_tariffs_path(school_group) %></td>
         <td>

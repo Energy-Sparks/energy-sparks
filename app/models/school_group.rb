@@ -52,10 +52,18 @@ class SchoolGroup < ApplicationRecord
 
   friendly_id :name, use: %i[finders slugged history]
 
+  # LEGACY RELATIONSHIP FOR REMOVAL
+  # Use assigned_schools instead to select schools linked to this group.
+  #
+  # Leaving this in place until we've tidied up all scopes and joins across the application
   has_many :schools
-  has_many :meters, through: :schools
+
+  has_many :school_groupings
+  has_many :assigned_schools, through: :school_groupings, source: :school
+
+  has_many :meters, through: :assigned_schools
   has_many :school_onboardings
-  has_many :calendars, through: :schools
+  has_many :calendars, through: :assigned_schools
   has_many :users
 
   has_many :school_group_partners, -> { order(position: :asc) }
@@ -64,8 +72,8 @@ class SchoolGroup < ApplicationRecord
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
-  has_many :school_issues, through: :schools, source: :issues
-  has_many :observations, through: :schools
+  has_many :school_issues, through: :assigned_schools, source: :issues
+  has_many :observations, through: :assigned_schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
@@ -95,9 +103,6 @@ class SchoolGroup < ApplicationRecord
 
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
 
-  has_many :school_groupings
-  has_many :assigned_schools, through: :school_groupings, source: :school
-
   has_many :organisation_school_groupings, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
   has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
@@ -111,7 +116,16 @@ class SchoolGroup < ApplicationRecord
 
   scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
   scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
-  scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
+  scope :with_visible_schools, -> {
+    where(
+      "id IN (
+        SELECT DISTINCT school_groupings.school_group_id
+        FROM school_groupings
+        INNER JOIN schools ON schools.id = school_groupings.school_id
+        WHERE schools.visible = TRUE
+      )"
+    )
+  }
 
   # "general", "local_authority" and "multi_academy_trust" are considered to be "organisation" types. So will
   # be involved in "organisation" type SchoolGroupings.
@@ -152,11 +166,15 @@ class SchoolGroup < ApplicationRecord
     group_types.slice(*PROJECT_GROUP_TYPE_KEYS)
   end
 
-  def visible_schools_count
-    schools.visible.count
+  def organisation?
+    ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
   end
 
-  def fuel_types(schools_to_check = schools)
+  def visible_schools_count
+    assigned_schools.visible.count
+  end
+
+  def fuel_types(schools_to_check = assigned_schools)
     school_ids = schools_to_check.data_visible.pluck(:id)
     return [] if school_ids.empty?
 
@@ -186,19 +204,19 @@ class SchoolGroup < ApplicationRecord
   end
 
   def has_visible_schools?
-    schools.visible.any?
+    assigned_schools.visible.any?
   end
 
   def has_schools_awaiting_activation?
-    schools.awaiting_activation.any?
+    assigned_schools.awaiting_activation.any?
   end
 
   def safe_to_destroy?
-    !(schools.any? || users.any?)
+    !(assigned_schools.any? || users.any?)
   end
 
   def safe_destroy
-    raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
+    raise EnergySparks::SafeDestroyError, 'Group has associated schools' if assigned_schools.any?
     raise EnergySparks::SafeDestroyError, 'Group has associated users' if users.any?
 
     destroy
@@ -273,10 +291,14 @@ class SchoolGroup < ApplicationRecord
   end
 
   def grouped_schools_by_name(scope: nil)
-    selected_schools = scope ? schools.merge(scope) : schools
+    selected_schools = scope ? assigned_schools.merge(scope) : assigned_schools
     selected_schools.group_by do |school|
       first_char = school.name[0]
       /[A-Za-z]/.match?(first_char) ? first_char.upcase : '#'
     end.sort.to_h
+  end
+
+  def scorable_schools
+    assigned_schools
   end
 end

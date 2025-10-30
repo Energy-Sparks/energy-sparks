@@ -8,8 +8,8 @@ module SchoolGroups
     def bulk_update_charts
       redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
 
-      if @school_group.schools.update_all(chart_preference: default_chart_preference) && @school_group.update!(default_chart_preference: default_chart_preference)
-        count = @school_group.schools.count
+      if @school_group.assigned_schools.update_all(chart_preference: default_chart_preference) && @school_group.update!(default_chart_preference: default_chart_preference)
+        count = @school_group.assigned_schools.count
         notice = t('school_groups.chart_updates.bulk_update_charts.notice', school_group_name: @school_group.name, count: count)
         redirect_to(school_group_chart_updates_path(@school_group), notice: notice) and return
       else

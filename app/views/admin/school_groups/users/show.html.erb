@@ -32,4 +32,4 @@
 <h2>School Users</h2>
 
 <%= render Admin::UserListComponent.new(id: 'all-school-users',
-                                        schools: @school_group.schools.by_name) %>
+                                        schools: @school_group.assigned_schools.by_name) %>
