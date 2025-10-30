@@ -238,6 +238,19 @@ class School < ApplicationRecord
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
 
+  has_many :school_groupings, dependent: :destroy
+  has_many :assigned_school_groups, through: :school_groupings, source: :school_group
+
+  # filtered relationships
+  has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+
+  # school groups via the filtered SchoolGrouping relationships
+  has_one :organisation_school_group, through: :organisation_school_grouping, source: :school_group
+  has_many :area_school_groups, through: :area_school_groupings, source: :school_group
+  has_many :project_school_groups, through: :project_school_groupings, source: :school_group
+
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }
   enum :funding_status, { state_school: 0, private_school: 1 }
@@ -336,6 +349,10 @@ class School < ApplicationRecord
   before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
+
+  # Sync legacy school_group_id with new "organisation" grouping
+  after_create :sync_organisation_grouping_from_legacy
+  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -962,5 +979,16 @@ class School < ApplicationRecord
 
   def update_local_distribution_zone
     self.local_distribution_zone_id = LocalDistributionZonePostcode.zone_id_for_school(self)
+  end
+
+  def sync_organisation_grouping_from_legacy
+    return unless school_group_id.present?
+
+    existing = SchoolGrouping.find_by(school_id: id, role: 'organisation')
+    if existing
+      existing.update(school_group_id: school_group_id)
+    else
+      SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
+    end
   end
 end

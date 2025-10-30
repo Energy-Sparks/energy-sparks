@@ -7,7 +7,7 @@ namespace :targets do
     else
       CSV.open("/tmp/test-targets-report.csv", "w") do |csv|
         csv << ["Group", "School", "Fuel Type", "Enough data", "Recent data", "Success", "Progress", "Error"]
-        SchoolGroup.all.each do |school_group|
+        SchoolGroup.organisation_groups.each do |school_group|
           service = Targets::SchoolGroupTargetsTestingService.new(school_group)
           test_result = service.report
           test_result.each do |school, report|
