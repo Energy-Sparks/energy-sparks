@@ -1,0 +1,42 @@
+<h1><%= t('manage_school_menu.manage_manual_readings') %></h1>
+<% if @school.manual_readings.empty? %>
+  <p><%= t('schools.manual_readings.enough_data') %></p>
+<% else %>
+  <%= t('schools.manual_readings.intro_html') %>
+  <p><% if @readings.target %>
+       <%= t('schools.manual_readings.with_target',
+             target_date: @readings.target.target_date.to_fs(:es_long),
+             start_date_month: @readings.target.start_date.prev_year.to_fs(:es_month)) %>
+     <% else %>
+       <%= t('schools.manual_readings.without_target') %>
+     <% end %></p>
+  <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
+    <div class="row mb-2">
+      <div class="col-md-2"><strong><%= t('common.labels.date') %></strong></div>
+      <% @readings.fuel_types.each do |fuel_type| %>
+        <div class="col-md-2"><strong><%= "#{t("common.#{fuel_type}")} (kWh)" %></strong></div>
+      <% end %>
+    </div>
+    <%= f.simple_fields_for :manual_readings, @school.manual_readings.sort_by(&:month) do |reading_form| %>
+      <div class="row">
+        <div class="col-md-2">
+          <% if reading_form.object.month %>
+            <%= reading_form.hidden_field :month %>
+            <%= I18n.l(reading_form.object.month, format: '%B %Y') %>
+          <% else %>
+            <%= reading_form.input :month, label: false, discard_day: true, end_year: Date.current.year %>
+          <% end %>
+        </div>
+        <% @readings.fuel_types.each do |fuel_type, months| %>
+          <div class="col-md-2">
+            <%= disabled = @readings.disabled?(reading_form.object.month, fuel_type) &&
+                           reading_form.object.errors.none?
+                reading_form.input fuel_type, label: false, as: :string, pattern: '[.0-9]*',
+                                              input_html: { inputmode: 'numeric' }, disabled: %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="mb-4"><%= f.submit t('common.labels.save'), class: 'btn btn-primary' %></div>
+  <% end %>
+<% end %>

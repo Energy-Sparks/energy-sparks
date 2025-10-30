@@ -29,7 +29,7 @@ module Schools
         @consumption = @target.monthly_consumption_status(@fuel_type)
         render 'new_target' and return if @consumption.consumption.nil?
 
-        render 'limited_data' and return if @consumption.consumption.any? { |month| month[:previous_consumption].nil? }
+        render 'limited_data' and return if @consumption.consumption.any? { |month| month[:previous_missing] }
       end
 
       def advice_page_key
@@ -42,13 +42,8 @@ module Schools
       end
       helper_method :formatted_target
 
-      def target_strftime(date)
-        date.strftime('%B %Y')
-      end
-      helper_method :target_strftime
-
       def formatted_target_date(target = nil)
-        target_strftime((target || @target).target_date)
+        (target || @target).target_date.to_fs(:es_month)
       end
       helper_method :formatted_target_date
 
