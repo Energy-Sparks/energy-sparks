@@ -5,6 +5,7 @@
   <% results.each do |row| %>
     <% c.with_row do |r| %>
       <% r.with_school school: row.school %>
+      <% r.with_reference key: 'manual_readings', if: row.manual_readings %>
       <%= r.with_var val: row.current_target, change: true,
                      unit: { units: :relative_percent, options: { scale: false } } %>
       <%= r.with_var val: row.previous_to_current_year_change, change: true, unit: :relative_percent %>

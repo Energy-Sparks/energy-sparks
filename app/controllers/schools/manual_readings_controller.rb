@@ -23,6 +23,10 @@ module Schools
         parameters['_destroy'] = '1' if parameters['id'] && parameters['gas'].blank? && parameters['electricity'].blank?
       end
       if @school.update(params_hash)
+        readings = Schools::ManualReadingsService.new(@school)
+        if readings.target?
+          Targets::GenerateProgressService.new(@school, aggregate_school).update_monthly_consumption(readings.target)
+        end
         redirect_to school_manual_readings_path(@school), notice: t('common.saved')
       else
         show

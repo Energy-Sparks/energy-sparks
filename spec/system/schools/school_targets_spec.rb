@@ -63,7 +63,6 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
         click_on 'Set this target'
 
         expect(page).to have_content('Target successfully created')
-        expect(page).to have_content('We are calculating your progress')
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
         expect(school.current_target.gas).to be 15.0
@@ -75,7 +74,6 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
         fill_in 'Reducing storage heater usage by', with: ''
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
-        expect(page).to have_content('We are calculating your progress')
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
         expect(school.current_target.gas).to be 10.0
@@ -83,11 +81,12 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
       end
 
       it 'allows start date to be specified' do
-        fill_in 'Start date', with: last_year.strftime('%d/%m/%Y')
+        start_date = 1.month.ago.to_date
+        fill_in 'Start date', with: start_date.strftime('%d/%m/%Y')
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
-        expect(school.most_recent_target.start_date).to eql last_year
-        expect(school.most_recent_target.target_date).to eql last_year.next_year
+        expect(school.most_recent_target.start_date).to eql start_date
+        expect(school.most_recent_target.target_date).to eql start_date.next_year
       end
 
       it 'adds observation for target' do
@@ -104,6 +103,10 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
       end
 
       before do
+        service_double = instance_double(AggregateSchoolService)
+        allow(AggregateSchoolService).to receive(:new).with(school).and_return(service_double)
+        allow(service_double).to receive(:aggregate_school)
+          .and_return(build(:meter_collection, :with_aggregate_meter, kwh_data_x48: [1] * 48))
         visit school_school_targets_path(school)
       end
 
@@ -114,11 +117,11 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
         fill_in 'Reducing electricity usage by', with: 15
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
-        expect(page).to have_content('We are calculating your progress')
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
         expect(school.current_target.gas).to be nil
         expect(school.current_target.storage_heaters).to be nil
+        expect(school.current_target.electricity_monthly_consumption).not_to be_nil
       end
     end
   end
@@ -523,7 +526,6 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
         expect(school.current_target.gas).to eql target.gas
         expect(school.current_target.storage_heaters).to eql target.storage_heaters
         expect(page).to have_content('Target successfully created')
-        expect(page).to have_content('We are calculating your progress')
       end
 
       it 'redirects from the index to the new target when set' do
@@ -535,7 +537,7 @@ RSpec.shared_examples 'managing targets', include_application_helper: true do
 
       it 'allows me to still view the old target' do
         click_on 'Set this target'
-        expect(page).to have_content('We are calculating your progress')
+        expect(page).to have_content('Target successfully created')
         visit school_school_target_path(test_school, target)
         expect(page).not_to have_content("It's now time to review your progress")
       end

@@ -79,18 +79,29 @@ RSpec.describe 'manual readings' do
   end
 
   context 'with a new target' do
+    let(:school) do
+      create(:school, :with_basic_configuration_single_meter_and_tariffs, has_gas: false,
+                                                                          has_storage_heaters: false)
+    end
+
     before do
-      create_target(Date.current.beginning_of_month)
+      target = create(:school_target, school:, start_date: Date.current)
+      aggregate_school = AggregateSchoolService.new(school).aggregate_school
+      Targets::GenerateProgressService.new(school, aggregate_school).update_monthly_consumption(target)
       visit school_manual_readings_path(school)
     end
 
     it 'display only past months' do
-      expect(form_input_values).to eq([['2024-08-01', nil, nil], *expected_input_values(2024, 9, 9, %w[1021 1022])])
+      expect(form_input_values).to eq([['2024-08-01', nil],
+                                       *expected_input_values(2024, 9, 9).zip(
+                                         %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0]
+                                       )])
     end
 
     it 'saves the correct readings' do
       complete_form
-      expect(actual_manual_readings).to eq([[Date.new(2024, 8), 5, 5]])
+      expect(actual_manual_readings).to eq([[Date.new(2024, 8), 5, nil]])
+      expect(school.most_recent_target.monthly_consumption(:electricity)[0][:previous_consumption]).to eq(5)
     end
   end
 
