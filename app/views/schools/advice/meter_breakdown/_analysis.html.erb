@@ -89,7 +89,7 @@
 
 <ul>
   <li>
-    <%= link_to t("advice_pages.#{advice_page.fuel_type}_costs.analysis.meter_breakdown.title"),
+    <%= link_to t('advice_pages.electricity_costs.analysis.meter_breakdown.title'),
                 advice_page_path(school,
                                  AdvicePage.find_by(key: "#{advice_page.fuel_type}_costs"),
                                  :analysis,

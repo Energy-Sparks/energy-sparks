@@ -7,7 +7,7 @@ module Schools
 
       before_action :set_tariff_coverage, only: %i[insights analysis]
       before_action :set_next_steps, only: [:insights]
-      before_action :set_one_year_breakdown_chart, only: %i[analysis meter_costs]
+      before_action :set_one_year_breakdown_chart, only: %i[analysis]
       before_action :set_meters, only: [:analysis]
 
       def insights
@@ -48,8 +48,9 @@ module Schools
             @agreed_capacity = Costs::AgreedSupplyCapacityService.new(analytics_meter).summarise
           end
         end
-        @fuel_type = advice_page_fuel_type
+        load_advice_page
         set_analysis_dates
+        set_one_year_breakdown_chart
         respond_to(&:js)
       end
 
