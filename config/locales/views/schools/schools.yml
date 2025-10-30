@@ -246,7 +246,7 @@ en:
         <p>We have limited energy data for your school. To allow you to set targets to reduce your energy use you can use this form to provide historical usage data. You will need to check either your monthly bill or your energy supplier portal and then provide the total kWh used for each month.</p>
         <p>If we are later able to get access to historical half-hourly readings from your energy supplier then we will automatically use these instead.</p>
         <p>Fields shown in grey indicate months for which we already have automatically supplied meter readings for the school. These cannot be manually updated and are shown for reference.</p>
-      with_target: In order to calculate progress towards reducing your energy use by %{start_date} we need readings going back to %{start_date_month}.
+      with_target: In order to calculate progress towards reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
       without_target: To show historical progress towards reducing your energy use, we need at least 13 months of historical readings.
     meters:
       creatable_meter_types:

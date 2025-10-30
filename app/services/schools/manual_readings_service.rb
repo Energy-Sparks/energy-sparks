@@ -5,6 +5,8 @@ module Schools
     # use 13 months for comparisons
     MONTHS_REQUIRED_WHEN_NO_TARGET = 13.months
 
+    attr_reader :target
+
     def initialize(school, existing_readings = [])
       @school = school
       @existing_readings = existing_readings
