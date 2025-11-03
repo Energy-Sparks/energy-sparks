@@ -51,6 +51,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
                 assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
+                expect(find_field('Review date').value).to be_blank
                 expect(page).to have_unchecked_field('Pinned')
                 if issueable.is_a? School
                   expect(page).to have_unchecked_field(electricity_meter.mpan_mprn.to_s)
@@ -91,6 +92,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select 'Gas', from: 'Fuel type'
                   check gas_meter.mpan_mprn.to_s if issueable.is_a? School
                   select 'Other Issues Admin', from: 'Assigned to'
+                  fill_in 'Review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   check 'Pinned'
                   click_button 'Save'
                 end
@@ -103,6 +105,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
+                  expect(page).to have_content "Review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).not_to have_content electricity_meter.mpan_mprn
@@ -117,7 +120,12 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         context 'and editing an issue' do
           Issue.issue_types.each_key do |issue_type|
             context "of type #{issue_type}" do
-              let!(:issue) { create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, pinned: true) }
+              let(:date) { Time.zone.today }
+
+              let!(:issue) do
+                create(:issue, issueable: issueable, issue_type: issue_type,
+                fuel_type: :electricity, created_by: user, owned_by: school_group_issues_admin, review_date: date, pinned: true)
+              end
 
               before do
                 issue.meters << electricity_meter if issueable.is_a? School
@@ -131,6 +139,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Status', selected: issue.status.capitalize) if issue_type == 'issue'
                 expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
                 expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
+                expect(page).to have_field('Review date', with: date.strftime('%d/%m/%Y'))
                 expect(page).to have_checked_field('Pinned')
                 if issueable.is_a? School
                   expect(page).to have_checked_field(electricity_meter.mpan_mprn.to_s)
@@ -150,6 +159,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select 'Closed', from: 'Status' if issue_type == 'issue'
                   select new_issue_type, from: 'Issue type'
                   select 'Other Issues Admin', from: 'Assigned to'
+                  fill_in 'Review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   uncheck 'Pinned'
                   if issueable.is_a? School
                     uncheck electricity_meter.mpan_mprn.to_s
@@ -167,6 +177,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
+                  expect(page).to have_content "Review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).not_to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_content gas_meter.mpan_mprn
