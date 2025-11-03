@@ -94,6 +94,18 @@ class SchoolGroup < ApplicationRecord
   has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
 
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
+
+  has_many :school_groupings
+  has_many :assigned_schools, through: :school_groupings, source: :school
+
+  has_many :organisation_school_groupings, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+
+  has_many :organisation_schools, through: :organisation_school_groupings, source: :school
+  has_many :area_schools, through: :area_school_groupings, source: :school
+  has_many :project_schools, through: :project_school_groupings, source: :school
+
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
 
@@ -101,11 +113,44 @@ class SchoolGroup < ApplicationRecord
   scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
   scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
 
+  # "general", "local_authority" and "multi_academy_trust" are considered to be "organisation" types. So will
+  # be involved in "organisation" type SchoolGroupings.
+  #
+  # "diocese" and "local_authority_area" are considered to be "area" types. We need two group types for local authorities
+  # in order to distinguish between the Local Authority as an organisation that maintains schools ("local_authority") and
+  # the Local Authority as an administrative area whose boundary might contain schools that are maintained by other
+  # organisations.
+  #
+  # A "diocese" here refers to an area. If a diocese (as an organisation) maintains schools then this would be represented
+  # in the DfE database and our system as a multi_academy_trust.
+  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
+
+  ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
+  AREA_GROUP_TYPE_KEYS = %w[diocese local_authority_area].freeze
+  PROJECT_GROUP_TYPE_KEYS = %w[project].freeze
+
+  RESTRICTED_GROUP_TYPES = (AREA_GROUP_TYPE_KEYS + PROJECT_GROUP_TYPE_KEYS).freeze
+
+  scope :organisation_groups, -> { where(group_type: ORGANISATION_GROUP_TYPE_KEYS) }
+  scope :area_groups, -> { where(group_type: AREA_GROUP_TYPE_KEYS) }
+  scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }
+
   validates :name, presence: true
 
-  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2 }
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
+
+  def self.organisation_group_types
+    group_types.slice(*ORGANISATION_GROUP_TYPE_KEYS)
+  end
+
+  def self.area_group_types
+    group_types.slice(*AREA_GROUP_TYPE_KEYS)
+  end
+
+  def self.project_group_types
+    group_types.slice(*PROJECT_GROUP_TYPE_KEYS)
+  end
 
   def visible_schools_count
     schools.visible.count
