@@ -229,7 +229,7 @@ RSpec.describe 'manual readings' do
   context 'with enough meter data' do
     let(:school) do
       create(:school, :with_basic_configuration_single_meter_and_tariffs, :with_fuel_configuration,
-              has_gas: false, reading_start_date: 14.months.ago.to_date)
+             has_gas: false, reading_start_date: 14.months.ago.to_date)
     end
 
     before { visit school_manual_readings_path(school) }
