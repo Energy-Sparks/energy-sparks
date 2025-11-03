@@ -42,6 +42,46 @@ FactoryBot.define do
       end
     end
 
+    trait :with_school_grouping do
+      transient do
+        group_type { :multi_academy_trust }
+        role { :organisation }
+        school_group { nil }
+      end
+
+      after(:create) do |school, evaluator|
+        group = evaluator.school_group || create(:school_group, group_type: evaluator.group_type)
+        create(:school_grouping, school:, school_group: group, role: evaluator.role)
+      end
+    end
+
+    trait :with_trust do
+      with_school_grouping
+
+      transient do
+        group_type { :multi_academy_trust }
+        role { :organisation }
+      end
+    end
+
+    trait :with_diocese do
+      with_school_grouping
+
+      transient do
+        group_type { :diocese }
+        role { :area }
+      end
+    end
+
+    trait :with_project do
+      with_school_grouping
+
+      transient do
+        group_type { :project }
+        role { :project }
+      end
+    end
+
     trait :with_scoreboard do
       after(:create) do |school, _evaluator|
         school.update(scoreboard: create(:scoreboard))

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_27_110645) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
   create_enum "meter_monthly_summary_type", ["consumption", "generation", "self_consume", "export"]
   create_enum "meter_perse_api", ["half_hourly"]
+  create_enum "school_grouping_role", ["organisation", "area", "project"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -177,6 +178,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
     t.string "label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "ignore_in_inactive_meter_report", default: false
   end
 
   create_table "advice_page_activity_types", force: :cascade do |t|
@@ -470,6 +472,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
     t.text "reading_time"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
+    t.index ["created_at", "meter_id"], name: "index_amr_data_feed_readings_on_created_at_and_meter_id"
     t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -1662,6 +1665,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
     t.index ["school_group_id"], name: "index_school_group_partners_on_school_group_id"
   end
 
+  create_table "school_groupings", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "school_group_id", null: false
+    t.enum "role", null: false, enum_type: "school_grouping_role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_group_id"], name: "index_school_groupings_on_school_group_id"
+    t.index ["school_id", "role"], name: "index_school_groupings_on_school_id_and_organisation_role", unique: true, where: "(role = 'organisation'::school_grouping_role)"
+    t.index ["school_id"], name: "index_school_groupings_on_school_id"
+  end
+
   create_table "school_groups", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -2378,6 +2392,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_24_123741) do
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
+  add_foreign_key "school_groupings", "school_groups"
+  add_foreign_key "school_groupings", "schools"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
   add_foreign_key "school_groups", "users", column: "default_issues_admin_user_id", on_delete: :nullify
