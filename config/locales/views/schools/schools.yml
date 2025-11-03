@@ -537,7 +537,6 @@ en:
         page_title: Update your energy saving target
         review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
         review_your_dashboard: Review your dashboard
-        successfully_created: Target successfully created
         target_date_reached_advice_page: The target date for your previous target has been reached. Its time to review your progress and set a new target.
         target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target.
         tip: Tip
@@ -613,6 +612,8 @@ en:
       show:
         final_results: See the final results of your goal to reduce your target by %{target_date}
         view_results: View results
+      successfully_created: Target successfully created
+      successfully_updated: Target successfully updated
       target_table:
         current_progress: Current progress
         final_result: Final result
