@@ -23,9 +23,10 @@ module Schools
         !all_required_readings_disabled?
       else
         @school.configuration.aggregate_meter_dates.empty? ||
-          @fuel_types.all? do |fuel_type|
-            dates = @school.configuration.meter_dates(fuel_type)
-            dates.empty? || dates[:start_date] > MONTHS_REQUIRED_WHEN_NO_TARGET.ago || dates[:end_date] < 2.months.ago
+          @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
+                     .reject(&:empty?)
+                     .any? do |dates|
+            dates[:start_date] > MONTHS_REQUIRED_WHEN_NO_TARGET.ago || dates[:end_date] < 2.months.ago
           end
       end
     end
