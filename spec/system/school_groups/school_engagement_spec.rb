@@ -14,6 +14,7 @@ describe 'School group engagement' do
 
   context 'when signed in' do
     before do
+      travel_to(Date.new(2025, 11))
       sign_in(create(:admin))
       create(:school, data_enabled: false, school_group: school.school_group)
       create(:user, school:, last_sign_in_at: Date.new(2025, 5, 1))
