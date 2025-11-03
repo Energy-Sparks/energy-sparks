@@ -16,7 +16,7 @@
     <% issues.by_priority_order.each do |issue| %>
       <tr class="bg-light admin-issue">
         <td class="fit issue-type <%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type, 1) %></td>
-        <td width="100%" class="overflow">
+        <td width="100%" class="overflow" data-order="<%= issue.issueable&.name %>">
           <%= render 'admin/issues/pinned', issue: issue %>
           <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br>
           <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>

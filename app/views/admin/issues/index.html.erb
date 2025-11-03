@@ -15,23 +15,23 @@
     <div class="ml-auto"><%= render 'new_issues_links', issueable: @issueable %></div>
   </div>
 <% end %>
-<div class="bg-light py-2 px-2 my-2 border rounded">
+<div class="bg-light ps-2 pt-2 border rounded">
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       ),
                method: :get do %>
     <div class='d-flex flex-wrap align-items-center'>
-      <div class="ml-1 mr-2">
+      <div class="pe-2 pb-2">
         <%= text_field_tag :search, params[:search], autocomplete: 'off',
                                                      placeholder: 'Search issues...' %>
       </div>
-      <div class="mr-2">
+      <div class="pe-2 pb-2">
         <%= select_tag :user,
                        options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
                        include_blank: 'Any admin user',
                        class: 'form-control' %>
       </div>
-      <div class="mr-3">
+      <div class="pe-3 pb-2">
         <%= select_tag :review_date,
                        options_for_select([['Review date not set', :review_unset],
                                            ['Review date in next week', :review_next_week],
@@ -40,7 +40,8 @@
                        include_blank: 'Any review date',
                        class: 'form-control' %>
       </div>
-      <div class="nowrap mr-3 ensure-one-checked">
+      <div>
+      <span class="nowrap pe-3 pb-2 ensure-one-checked">
         <%= label_tag :issue_type, nil, class: 'small' %>
         <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
           <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
@@ -49,8 +50,8 @@
                         data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
                         title: 'Select at least one' %>
         <% end %>
-      </div>
-      <div class="nowrap mr-3 ensure-one-checked">
+      </span>
+      <span class="nowrap pe-2 pb-2 ensure-one-checked">
         <%= label_tag :status, nil, class: 'small' %>
         <% Issue.statuses.keys.each do |status, status_id| %>
           <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
@@ -60,8 +61,9 @@
                         data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
                         title: 'Select at least one' %>
         <% end %>
+      </span>
       </div>
-      <div class="ml-auto">
+      <div class="ms-xxl-auto pe-2 pb-2">
         <%= submit_tag 'Filter', class: 'btn btn-sm' %>
       </div>
     </div>
