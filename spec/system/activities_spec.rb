@@ -329,6 +329,22 @@ describe 'viewing and recording activities' do
           end
         end
 
+        context 'with a recording date in a future academic year' do
+          let(:next_academic_year) { school.current_academic_year.next_year }
+          let(:future_date) { next_academic_year.start_date + 1.day }
+
+          before do
+            school.update(calendar: create(:calendar, :with_previous_and_next_academic_years))
+            refresh
+            fill_in :activity_happened_on, with: future_date.strftime('%d/%m/%Y')
+            click_on 'Save activity'
+          end
+
+          it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true do
+            let(:future_academic_year) { next_academic_year.title }
+          end
+        end
+
         context 'with custom activity' do
           let(:custom_title) { 'Custom title' }
 

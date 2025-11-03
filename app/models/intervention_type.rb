@@ -88,7 +88,7 @@ class InterventionType < ApplicationRecord
   end
 
   def count_existing_for_academic_year(school, academic_year)
-    school.observations.where(intervention_type: self).where(at: academic_year.start_date..academic_year.end_date).count
+    school.observations.where(intervention_type: self).in_academic_year(academic_year).with_points.count
   end
 
   def public_type
