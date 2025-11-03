@@ -15,7 +15,7 @@
     <div class="ml-auto"><%= render 'new_issues_links', issueable: @issueable %></div>
   </div>
 <% end %>
-<div class="bg-light ps-2 pt-2 border rounded">
+<div class="bg-light ps-2 pt-2 my-2 border rounded">
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       ),

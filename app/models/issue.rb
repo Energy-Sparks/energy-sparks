@@ -61,11 +61,12 @@ class Issue < ApplicationRecord
   }
 
   scope :by_pinned, -> { order(pinned: :desc) }
+  scope :by_review_date, -> { order(review_date: :asc) }
   scope :by_status, -> { order(status: :asc) }
   scope :by_updated_at, -> { order(updated_at: :desc) }
   scope :by_created_at, -> { order(created_at: :desc) }
 
-  scope :by_priority_order, -> { by_pinned.by_status.by_updated_at }
+  scope :by_priority_order, -> { by_review_date.by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
   enum :issue_type, { issue: 0, note: 1 }

@@ -23,7 +23,11 @@ module ApplicationHelper
   end
 
   def nice_date_times_today(datetime)
-    datetime.today? ? nice_times_only(datetime) : short_dates(datetime)
+    datetime.today? ? "#{nice_times_only(datetime)} today" : short_dates(datetime)
+  end
+
+  def nice_dates_today(datetime)
+    datetime.today? ? 'Today' : short_dates(datetime)
   end
 
   def human_counts(collection)

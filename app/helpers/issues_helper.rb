@@ -46,7 +46,7 @@ module IssuesHelper
                'bg-danger text-light'
              end
 
-    text = issue.review_date ? nice_dates(issue.review_date) : 'No date set'
+    text = issue.review_date ? nice_dates_today(issue.review_date) : 'No date set'
 
     content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes]) do
       "#{'Review date • ' if label}#{text}".html_safe

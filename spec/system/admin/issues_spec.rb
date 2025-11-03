@@ -366,9 +366,67 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
       end
 
+      context 'and filtering by review date' do
+        let!(:issue_overdue) { create(:issue, review_date: 2.days.ago) }
+        let!(:issue_next_week) { create(:issue, review_date: 5.days.from_now) }
+        let!(:issue_week_after_next) { create(:issue, review_date: 10.days.from_now) }
+        let!(:issue_no_review_date) { create(:issue, review_date: nil) }
+        let(:issues) { [issue_overdue, issue_next_week, issue_week_after_next, issue_no_review_date]}
+        let(:setup_data) { issues }
+
+        context 'when selecting any review date' do
+          before do
+            select 'Any review date', from: :review_date
+            click_button 'Filter'
+          end
+
+          it 'shows all issues' do
+            issues.each do |issue|
+              expect(page).to have_content issue.title
+            end
+          end
+        end
+
+        context 'when selecting review date not set' do
+          before do
+            select 'Review date not set', from: :review_date
+            click_button 'Filter'
+          end
+
+          it_behaves_like 'a displayed list issue' do
+            let(:issue) { issue_no_review_date }
+            let(:all_issues) { issues }
+          end
+        end
+
+        context 'when selecting review date in next week' do
+          before do
+            select 'Review date in next week', from: :review_date
+            click_button 'Filter'
+          end
+
+          it_behaves_like 'a displayed list issue' do
+            let(:issue) { issue_next_week }
+            let(:all_issues) { issues }
+          end
+        end
+
+        context 'when selecting review date overdue' do
+          before do
+            select 'Review date overdue', from: :review_date
+            click_button 'Filter'
+          end
+
+          it_behaves_like 'a displayed list issue' do
+            let(:issue) { issue_overdue }
+            let(:all_issues) { issues }
+          end
+        end
+      end
+
       context 'and searching issues' do
-        let!(:issue_1) { create(:issue, title: 'Issue 1 findme here', description: 'description') }
-        let!(:issue_2) { create(:issue, title: 'Issue 2 title', description: 'I\'m hiding here') }
+        let(:issue_1) { create(:issue, title: 'Issue 1 findme here', description: 'description') }
+        let(:issue_2) { create(:issue, title: 'Issue 2 title', description: 'I\'m hiding here') }
         let(:setup_data) { [issue_1, issue_2] }
 
         before do

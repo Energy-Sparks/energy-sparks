@@ -27,4 +27,10 @@ RSpec.shared_examples_for 'a displayed list issue' do
     expect(page).to have_link('View', href: polymorphic_path([:admin, issue.issueable, issue]))
     expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
   end
+
+  it "doesn't show other issues", if: defined? all_issues do
+    all_issues - [issue].each do |issue|
+      expect(page).not_to have_content issue.title
+    end
+  end
 end
