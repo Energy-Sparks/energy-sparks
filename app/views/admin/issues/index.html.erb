@@ -20,7 +20,7 @@
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       ),
                method: :get do %>
-    <div class='d-flex flex-wrap align-items-center'>
+    <div class='d-flex flex-wrap align-items-center justify-content-lg-between'>
       <div class="pe-2 pb-2">
         <%= text_field_tag :search, params[:search], autocomplete: 'off',
                                                      placeholder: 'Search issues...' %>
@@ -31,7 +31,7 @@
                        include_blank: 'Any admin user',
                        class: 'form-control' %>
       </div>
-      <div class="pe-3 pb-2">
+      <div class="pe-2 pb-2">
         <%= select_tag :review_date,
                        options_for_select([['Review date not set', :review_unset],
                                            ['Review date in next week', :review_next_week],
@@ -40,28 +40,28 @@
                        include_blank: 'Any review date',
                        class: 'form-control' %>
       </div>
-      <div>
-      <span class="nowrap pe-3 pb-2 ensure-one-checked">
-        <%= label_tag :issue_type, nil, class: 'small' %>
-        <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
-          <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
-                            id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
-          <%= label_tag issue_type, issue_type.capitalize,
-                        data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
-                        title: 'Select at least one' %>
-        <% end %>
-      </span>
-      <span class="nowrap pe-2 pb-2 ensure-one-checked">
-        <%= label_tag :status, nil, class: 'small' %>
-        <% Issue.statuses.keys.each do |status, status_id| %>
-          <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
-                            id: status,
-                            class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
-          <%= label_tag status, status.capitalize,
-                        data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
-                        title: 'Select at least one' %>
-        <% end %>
-      </span>
+      <div class="pb-1">
+        <span class="nowrap pe-2 ensure-one-checked">
+          <%= label_tag :issue_type, nil, class: 'small' %>
+          <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
+            <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
+                              id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
+            <%= label_tag issue_type, issue_type.capitalize,
+                          data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
+                          title: 'Select at least one' %>
+          <% end %>
+        </span>
+        <span class="nowrap pe-2 ensure-one-checked">
+          <%= label_tag :status, nil, class: 'small' %>
+          <% Issue.statuses.keys.each do |status, status_id| %>
+            <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
+                              id: status,
+                              class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
+            <%= label_tag status, status.capitalize,
+                          data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
+                          title: 'Select at least one' %>
+          <% end %>
+        </span>
       </div>
       <div class="ms-xxl-auto pe-2 pb-2">
         <%= submit_tag 'Filter', class: 'btn btn-sm' %>
