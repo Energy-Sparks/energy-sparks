@@ -92,6 +92,7 @@ en:
     points_html: "%{count} points"
     privacy_policy: privacy policy
     programmes: Programmes
+    saved: Saved
     school: School
     school_types:
       infant: Infant

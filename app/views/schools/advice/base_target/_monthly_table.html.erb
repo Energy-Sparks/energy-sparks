@@ -12,7 +12,8 @@
   <tbody>
     <% consumption.each do |month| %>
       <tr>
-        <td><%= target_strftime(Date.new(month[:year], month[:month])) %></td>
+        <% manual_reading = '[m]' if month[:manual] %>
+        <td><%= Date.new(month[:year], month[:month]).to_fs(:es_month) %><%= manual_reading %></td>
         <td><%= format_unit(month[:previous_consumption], :kwh, numeric_level: :target) %></td>
         <td><%= format_unit(month[:target_consumption], :kwh, numeric_level: :target) %></td>
         <%= tag.td(class: month[:missing] ? 'old-data' : nil) do %>
@@ -21,12 +22,12 @@
           <% end %>
         <% end %>
         <td>
-          <% unless month[:missing] %>
+          <% if !month[:missing] || month[:manual] %>
             <%= formatted_target_change(month[:current_consumption], month[:previous_consumption]) %>
           <% end %>
         </td>
         <td>
-          <% unless month[:missing] %>
+          <% if !month[:missing] || month[:manual] %>
             <%= checkmark(month[:current_consumption] < month[:target_consumption]) %>
           <% end %>
         </td>
@@ -35,4 +36,5 @@
   </tbody>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
-           additional_notice_text: t('advice_pages.target.analysis.monthly_progress.partial') %>
+           additional_notice_text: "#{t('advice_pages.target.analysis.monthly_progress.partial')}<br>" \
+                                   "[m] - #{t('advice_pages.target.analysis.monthly_progress.manual_readings')}<br>" %>

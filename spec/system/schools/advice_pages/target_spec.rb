@@ -60,6 +60,7 @@ RSpec.shared_examples 'target advice page' do
       #{if fuel_type == :storage_heater
           'In the meantime you can learn more about this topic.'
         else
+          "Alternatively you can manually add monthly readings from your bill or supplier portal.\n" \
           'In the meantime you can monitor your usage using the charts on the ' \
             "long term #{fuel_type} usage advice page"
         end}
@@ -125,7 +126,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(previous_consumption: nil, target_consumption: nil, missing: true)
+      create_target(previous_consumption: nil, target_consumption: nil, previous_missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
@@ -161,7 +162,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'target not yet complete' do
-      create_target(missing: [*[false] * 11, true])
+      create_target(current_missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to \
         eq(insight_content(expired_text: waiting_for_data_text,
@@ -170,7 +171,7 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'has complete previous but no complete current consumption' do
-      target = create_target(missing: true)
+      target = create_target(current_missing: true)
       travel_to(target.start_date)
       visit_tab(tab)
       expect(content(tab)).to \
@@ -225,7 +226,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 1,020 1,000 1,010 -0.98&percnt; \
         November #{year} 1,020 1,000 1,010 -0.98&percnt; \
         December #{year} 1,020 1,000 1,010 -0.98&percnt;
-        Partial months are shown in red. How did we calculate these figures?
+        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
         Cumulative progress
         Back to top
         This table summarises your overall progress towards reducing your #{fuel_string} use by 4&percnt;. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by January #{year + 1}.
@@ -242,7 +243,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 10,200 10,000 10,100 -0.98&percnt; \
         November #{year} 11,220 11,000 11,110 -0.98&percnt; \
         December #{year} 12,240 12,000 12,120 -0.98&percnt;
-        Partial months are shown in red. How did we calculate these figures?
+        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
       CONTENT
     end
 
@@ -289,26 +290,26 @@ RSpec.shared_examples 'target advice page' do
     end
 
     it 'missing previous years data' do
-      create_target(target_consumption: nil, previous_consumption: nil, missing: true)
+      create_target(target_consumption: nil, previous_consumption: nil, previous_missing: true)
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
 
     it 'missing any previous years data' do
-      create_target(previous_consumption: [nil, *[1020] * 11], missing: [true, *[false] * 11])
+      create_target(previous_consumption: [nil, *[1020] * 11], previous_missing: [true, *[false] * 11])
       visit_tab(tab)
       expect(content(tab)).to eq(limited_data_content)
     end
 
     it 'target not yet complete' do
-      create_target(missing: [*[false] * 11, true])
+      create_target(current_missing: [*[false] * 11, true])
       visit_tab(tab)
       expect(content(tab)).to start_with(waiting_for_data_text)
     end
 
     it 'has correct cumulative with zero in a month' do
       create_target(current_consumption: [*[1010] * 3, 0, 10, *[nil] * 7],
-                    missing: [*[false] * 4, *[true] * 8])
+                    current_missing: [*[false] * 4, *[true] * 8])
       visit_tab(tab)
       expect(content(tab)).to include('Month Last year (kWh) Target (kWh) This year (kWh) % change On target? ' \
                                       'January 2024 1,020 1,000 1,010 -0.98&percnt; ' \
