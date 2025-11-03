@@ -67,7 +67,7 @@ describe Schools::ManualReadingsService do
         school.configuration.update!(aggregate_meter_dates: { electricity: { start_date: 13.months.ago.to_date.iso8601,
                                                                              end_date: Date.current.iso8601 },
                                                               gas: { start_date: 1.month.ago.to_date.iso8601,
-                                                                    end_date: Date.current.iso8601 } })
+                                                                     end_date: Date.current.iso8601 } })
       end
 
       it { is_expected.to be_show_on_menu }
