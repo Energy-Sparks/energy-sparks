@@ -86,10 +86,12 @@ class Observation < ApplicationRecord
 
   scope :with_points, -> { where('points IS NOT NULL AND points > 0') }
   scope :visible, -> { where(visible: true) }
+  scope :most_recent, -> { order(at: :desc, created_at: :desc) }
+
   scope :by_date, ->(order = :desc) { order(at: order) }
   scope :for_school, ->(school) { where(school: school) }
   scope :between, ->(first_date, last_date) { where(at: first_date..last_date) }
-  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date.end_of_day) }
+  scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date&.end_of_day) }
   scope :in_academic_year_for, lambda { |school, date|
     (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
   }
@@ -119,9 +121,7 @@ class Observation < ApplicationRecord
   before_save :add_points_for_activities, if: :activity?
   before_save :add_points_for_interventions, if: :intervention?
 
-  before_save :add_bonus_points_for_included_images, if: proc { |observation|
-    observation.activity? || observation.intervention?
-  }
+  delegate :current_academic_year, to: :school
 
   def description_includes_images?
     if intervention?
@@ -131,29 +131,53 @@ class Observation < ApplicationRecord
     end
   end
 
+  def available_bonus_points
+    description_includes_images? ? SiteSettings.current.photo_bonus_points.to_i : 0
+  end
+
   def happened_on
     at.to_date
+  end
+
+  def in_previous_academic_year?
+    # Unlikely but if no current academic year exists, treat as previous (0 points)
+    # also prevents errors as academic years are required when calculating points
+    return true if current_academic_year.nil?
+
+    at < current_academic_year.start_date
+  end
+
+  def academic_year
+    school.academic_year_for(at)
+  end
+
+  def academic_year_was
+    return nil if at_was.nil? # new record
+
+    school.academic_year_for(at_was)
+  end
+
+  def academic_year_changed?
+    return true if at_was.nil? && at # new record
+
+    academic_year_was != academic_year
+  end
+
+  def update_points?
+    return true if new_record?
+
+    # Update points unless it remains in a previous academic year
+    !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
   end
 
   private
 
   def add_points_for_activities
-    self.points = activity.activity_type.score_when_recorded_at(school, at)
+    self.points = activity.activity_type.calculate_points(self) if update_points?
   end
 
   def add_points_for_interventions
-    self.points = intervention_type.score_when_recorded_at(school, at)
-  end
-
-  def add_bonus_points_for_included_images
-    # Only add bonus points if the site wide photo bonus points is set to non zero
-    return unless SiteSettings.current.photo_bonus_points&.nonzero?
-    # Only add bonus points if the current observation score is non zero
-    return unless points&.nonzero?
-    # Only add bonus points if the description has an image
-    return unless description_includes_images?
-
-    self.points = (points || 0) + SiteSettings.current.photo_bonus_points
+    self.points = intervention_type.calculate_points(self) if update_points?
   end
 
   def reject_temperature_recordings(attributes)

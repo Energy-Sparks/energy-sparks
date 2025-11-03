@@ -34,7 +34,7 @@ describe ActivityCreator do
     activity = build(:activity, activity_type:, happened_on: 3.years.ago)
     described_class.new(activity, user).process
     observation = Observation.find_by!(activity_id: activity.id)
-    expect(observation.points).to be_nil
+    expect(observation.points).to be_zero
   end
 
   context 'with a programme' do
