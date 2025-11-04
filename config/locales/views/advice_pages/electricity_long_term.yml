@@ -86,6 +86,7 @@ en:
           title: Your long term electricity use
         next_steps: To fully determine the causes of the changes in your electricity consumption you should review how consumption has changed month by month and look in more detail at how your baseload and peak electricity consumption have changed.
         title: What do we mean by long term electricity use?
+      manual_readings_prompt_html: We don't have enough data at show a complete year.  You can enter <a href="%{path}">readings manually</a> to complete the year.
       page_title: Long term changes in electricity consumption
       tables:
         columns:
