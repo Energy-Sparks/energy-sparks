@@ -172,6 +172,15 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/electricity_target")
     end
 
+    it 'works with old target data' do
+      electricity_monthly_consumption = (0..12).map do |i|
+        month = Date.new(2024, 9) + i.months
+        [month.year, month.month, 100, nil, nil, true]
+      end
+      create(:school_target, school:, electricity_monthly_consumption:)
+      expect(div_text).to eq('')
+    end
+
     context 'with gas' do
       let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates, fuel_type: :gas) }
 

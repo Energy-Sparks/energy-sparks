@@ -232,6 +232,7 @@ class Ability
 
       can %i[show read index], Audit, related_school_scope
       can :download_school_data, School, school_scope
+      can :manage, Schools::ManualReading, related_school_scope
     elsif user.staff? || user.pupil?
       # abilities that give you access to dashboards for own school
       school_scope = { id: user.school_id, visible: true }
