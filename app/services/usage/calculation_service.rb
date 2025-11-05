@@ -69,7 +69,7 @@ module Usage
                     when :this_year
                       :last_year
                     when :last_month
-                      :previous_month
+                      :last_month_previous_year
                     else
                       raise 'invalid period'
                     end
@@ -77,6 +77,8 @@ module Usage
 
       this_period = usage(period:)
       last_period = usage(period: last_period)
+      return nil if last_period.kwh.zero?
+
       kwh = this_period.kwh - last_period.kwh
       CombinedUsageMetric.new(
         kwh: kwh,

@@ -21,7 +21,7 @@ module Schools
         usage_calculator.data_available_from
       end
 
-      delegate :annual_usage, to: :usage_calculator
+      delegate :usage, to: :usage_calculator
       delegate :annual_usage_change_since_last_year, to: :usage_calculator
       delegate :dates_for_period, to: :usage_calculator
       delegate :usage_change_since_last_period, to: :usage_calculator
@@ -43,7 +43,7 @@ module Schools
       end
 
       def benchmark_usage
-        annual_usage_kwh = annual_usage.kwh
+        annual_usage_kwh = usage.kwh
         annual_usage_kwh_benchmark = annual_usage_kwh(compare: :benchmark_school)
         annual_usage_kwh_exemplar = annual_usage_kwh(compare: :exemplar_school)
 

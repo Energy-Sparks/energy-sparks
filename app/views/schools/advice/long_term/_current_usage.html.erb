@@ -33,13 +33,7 @@
         <td class="text-right"><%= format_unit(usage.kwh, :kwh) %></td>
         <td class="text-right"><%= format_unit(usage.co2, :co2) %></td>
         <td class="text-right"><%= format_unit(usage.£, :£) %></td>
-        <td class="text-right">
-          <% if (change = usage_service.usage_change_since_last_period(period)).present? %>
-            <%= up_downify(format_unit(change.percent, :relative_percent, false), sanitize: false) %>
-          <% else %>
-            -
-          <% end %>
-        </td>
+        <td class="text-right"><%= format_percent(usage_service.usage_change_since_last_period(period)&.percent) %></td>
       </tr>
     <% end %>
   </tbody>

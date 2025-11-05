@@ -35,6 +35,14 @@ module AdvicePageHelper
     FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
   end
 
+  def format_percent(percent)
+    if percent.present?
+      up_downify(format_unit(percent, :relative_percent, false), sanitize: false)
+    else
+      '-'
+    end
+  end
+
   def advice_baseload_high?(estimated_savings_vs_benchmark)
     estimated_savings_vs_benchmark > 0.0
   end
