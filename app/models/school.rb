@@ -121,7 +121,9 @@ class School < ApplicationRecord
   include MailchimpUpdateable
   include Enums::DataSharing
   include Enums::SchoolType
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
+
+  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+                         :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
 
@@ -209,6 +211,13 @@ class School < ApplicationRecord
   has_many :school_batch_runs
 
   has_many :advice_page_school_benchmarks
+
+  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
+  accepts_nested_attributes_for :manual_readings,
+                                reject_if: proc { |attributes|
+                                  attributes[:gas].blank? && attributes[:electricity].blank?
+                                },
+                                allow_destroy: true
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
@@ -465,9 +474,7 @@ class School < ApplicationRecord
     programme_types.each_with_object(Hash.new(0)) { |r, hash| hash[r] += r.recording_count }.max_by { |_, value| value }
   end
 
-  def national_calendar
-    calendar.national_calendar
-  end
+  delegate :national_calendar, to: :calendar
 
   def area_name
     school_group.name if school_group
@@ -855,7 +862,7 @@ class School < ApplicationRecord
       per_pupil = 5
     end
 
-    twice_recommended_size = 2 * (base_area + per_pupil * number_of_pupils)
+    twice_recommended_size = 2 * (base_area + (per_pupil * number_of_pupils))
     floor_area.between?(minimum, twice_recommended_size)
   end
 
@@ -877,18 +884,21 @@ class School < ApplicationRecord
 
   def needs_solar_configuration?
     return false unless indicated_has_solar_panels?
-    return !has_solar_configuration?
+
+    !has_solar_configuration?
   end
 
   def needs_storage_heater_configuration?
     return false unless indicated_has_storage_heaters?
-    return !has_storage_heater_configuration?
+
+    !has_storage_heater_configuration?
   end
 
   # Estimated ranges based on what seems sensible for different school types looking
   # across the registered schools
   def pupil_numbers_ok?
     return true unless number_of_pupils
+
     case school_type
     when 'infant', 'primary'
       number_of_pupils.between?(10, 800)
@@ -909,40 +919,40 @@ class School < ApplicationRecord
     est = Lists::Establishment.current_establishment_from_urn(onboarding.urn)
 
     sch = new({
-      data_enabled:       false,
-      name:               onboarding.school_name,
-      establishment:      est,
-      urn:                onboarding.urn,
-      full_school:        onboarding.full_school
-    })
+                data_enabled: false,
+                name: onboarding.school_name,
+                establishment: est,
+                urn: onboarding.urn,
+                full_school: onboarding.full_school
+              })
 
     return sch if sch.establishment.nil?
 
     sch.assign_attributes({
-      urn:                            sch.establishment_id,
-      name:                           est.establishment_name,
-      address:                        address_from_establishment(est),
-      postcode:                       est.postcode,
-      website:                        est.school_website,
-      school_type:                    school_type_from_phase_of_education_code(est.phase_of_education_code),
-      number_of_pupils:               est.number_of_pupils,
-      percentage_free_school_meals:   est.percentage_fsm,
-      region:                         GOR_CODE_TO_REGION[est.gor_code],
-      country:                        est.gor_code == 'W' ? :wales : :england,
-      local_authority_area:           LocalAuthorityArea.find_by(code: est.district_administrative_code)
-    })
+                            urn: sch.establishment_id,
+                            name: est.establishment_name,
+                            address: address_from_establishment(est),
+                            postcode: est.postcode,
+                            website: est.school_website,
+                            school_type: school_type_from_phase_of_education_code(est.phase_of_education_code),
+                            number_of_pupils: est.number_of_pupils,
+                            percentage_free_school_meals: est.percentage_fsm,
+                            region: GOR_CODE_TO_REGION[est.gor_code],
+                            country: est.gor_code == 'W' ? :wales : :england,
+                            local_authority_area: LocalAuthorityArea.find_by(code: est.district_administrative_code)
+                          })
 
-    return sch
+    sch
   end
 
   # Any combinations of these five columns might be empty
   # Formatting is the same as on the GIAS website, except for postcode after county name
   def self.address_from_establishment(est)
-    return concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
+    concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
   end
 
   def self.concatenate_address(elements)
-    return elements.filter(&:present?).join(', ')
+    elements.filter(&:present?).join(', ')
   end
 
   #
@@ -951,20 +961,19 @@ class School < ApplicationRecord
   def self.school_type_from_phase_of_education_code(poe_code)
     case poe_code
     when 2 # "Primary"
-      return school_types[:primary]
+      school_types[:primary]
     when 3 # "Middle deemed primary"
-      return school_types[:middle]
+      school_types[:middle]
     when 4 # "Secondary"
-      return school_types[:secondary]
+      school_types[:secondary]
     when 5 # "Middle deemed secondary"
-      return school_types[:middle]
-    else # 0 - "Not applicable"
-      # TODO
-      # 1 - "Nursery"
-      # 6 - "16 plus"
-      # 7 - "All-through"
-      return nil
+      school_types[:middle]
     end
+    # otherwise - 0 - "Not applicable"
+    # TODO
+    # 1 - "Nursery"
+    # 6 - "16 plus"
+    # 7 - "All-through"
   end
 
   private
