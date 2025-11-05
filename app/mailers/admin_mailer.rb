@@ -110,7 +110,7 @@ class AdminMailer < ApplicationMailer
           issue&.school_group&.name,
           issue.title,
           issue.fuel_type&.humanize,
-          issue.review_date.strftime('%d/%m/%Y'),
+          issue.review_date&.strftime('%d/%m/%Y'),
           issue.created_by.display_name,
           issue.created_at.strftime('%d/%m/%Y'),
           issue.updated_by.display_name,
