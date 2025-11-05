@@ -6,7 +6,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
   let(:tab) { SchoolSearchComponent::DEFAULT_TAB }
   let(:letter) { 'A' }
   let(:schools) { School.active }
-  let(:school_groups) { SchoolGroup.all }
+  let(:school_groups) { SchoolGroup.organisation_groups }
   let(:keyword) { nil }
   let(:id) { 'my-id' }
   let(:classes) { 'custom-class' }

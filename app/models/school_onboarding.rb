@@ -48,6 +48,7 @@
 
 class SchoolOnboarding < ApplicationRecord
   include Enums::DataSharing
+  include RestrictsSchoolGroupTypes
 
   validates :school_name, :contact_email, presence: true
 

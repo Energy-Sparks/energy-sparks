@@ -15,7 +15,7 @@ namespace :targets do
               "Annual estimate needed?",
               "Annual estimate set?",
               "Can calculate synthetic data?"]
-      SchoolGroup.all.each do |school_group|
+      SchoolGroup.organisation_groups.each do |school_group|
         service = Targets::SchoolGroupTargetDataReportingService.new(school_group)
         data = service.report
         data.each do |school, school_result|

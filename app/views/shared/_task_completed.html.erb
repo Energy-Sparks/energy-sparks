@@ -2,12 +2,17 @@
 
 <h1 class="text-center">
   <%= t('tasks.completed.congratulations') %>
-  <%= if recording.points.to_i.positive?
-        t('tasks.completed.points',
-          points: recording.points)
-      else
-        t("tasks.completed.#{task_type}.no_points")
-      end %>
+  <% if recording.points.to_i.positive? %>
+    <% if recording.academic_year.future? %>
+      <%= t('tasks.completed.points_with_academic_year',
+            points: recording.points,
+            academic_year: recording.academic_year.title) %>
+      <% else %>
+        <%= t('tasks.completed.points', points: recording.points) %>
+      <% end %>
+  <% else %>
+    <%= t("tasks.completed.#{task_type}.no_points") %>
+  <% end %>
 </h1>
 
 <% if Flipper.enabled?(:todos) %>
