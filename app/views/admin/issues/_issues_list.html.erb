@@ -18,7 +18,9 @@
         <td class="fit issue-type <%= issue.issue_type %>"><%= issue_type_icon(issue.issue_type, 1) %></td>
         <td width="100%" class="overflow" data-order="<%= issue.issueable&.name %>">
           <%= render 'admin/issues/pinned', issue: issue %>
-          <span title="<%= issue.title %>" data-toggle="tooltip"><%= issue.title %></span><br>
+          <span title="<%= issue.title %>" data-toggle="tooltip">
+            <%= link_to issue.title, polymorphic_path([:admin, issue.issueable, issue]) %>
+          </span><br>
           <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
           <%= render 'admin/issues/meters', issue: issue %>
         </td>
@@ -36,7 +38,6 @@
           <%= review_date_badge(issue, label: false, classes: 'ml-auto pl-2') %>
         </td>
         <td class="fit nowrap text-right">
-          <%= link_to 'View', polymorphic_path([:admin, issue.issueable, issue]), class: 'btn btn-primary btn-sm' %>
           <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm edit' %>
         </td>
       </tr>

@@ -18,16 +18,14 @@ module ApplicationHelper
     date ? date.to_fs(:es_full) : ''
   end
 
-  def short_dates(date)
+  def short_dates(date, humanise: false)
+    return '' unless date
+    return t('application_helper.short_dates.today') if humanise && date.today?
     date ? date.to_fs(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
     datetime.today? ? "#{nice_times_only(datetime)} today" : short_dates(datetime)
-  end
-
-  def nice_dates_today(datetime)
-    datetime.today? ? 'Today' : short_dates(datetime)
   end
 
   def human_counts(collection)

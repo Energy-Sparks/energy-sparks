@@ -9,6 +9,7 @@
       <th>Group</th>
       <th>Title</th>
       <th>Fuel</th>
+      <th>Review</th>
       <th>Created By</th>
       <th>Created</th>
       <th>Updated By</th>
@@ -33,12 +34,21 @@
         <td>
           <%= render 'admin/issues/fuel_type', issue: issue, email: true %>
         </td>
+        <td><%= review_date_badge(issue, label: false, humanise: false) %></td>
         <td><%= issue.created_by.display_name %></td>
-        <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.created_at) %></div></td>
-        <td><%= issue.updated_by.display_name %></td>
-        <td><div class="badge bg-white rounded-full text-dark font-weight-normal nowrap"><%= nice_date_times(issue.updated_at) %></div></td>
         <td>
-          <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: "btn btn-sm" %>
+          <div class="badge bg-white rounded-full text-dark font-weight-normal nowrap">
+          <%= nice_date_times(issue.created_at) %>
+          </div>
+        </td>
+        <td><%= issue.updated_by.display_name %></td>
+        <td>
+          <div class="badge bg-white rounded-full text-dark font-weight-normal nowrap">
+            <%= nice_date_times(issue.updated_at) %>
+          </div>
+        </td>
+        <td>
+          <%= link_to 'View', polymorphic_url([:admin, issue.issueable, issue]), class: 'btn btn-sm' %>
         </td>
         <td>
           <%= link_to 'Edit', edit_polymorphic_url([:admin, @issueable, issue]), class: 'btn btn-sm' %>

@@ -37,16 +37,16 @@ module IssuesHelper
     end
   end
 
-  def review_date_badge(issue, label: true, classes: '')
+  def review_date_badge(issue, label: true, humanise: true, classes: '')
     colour = if issue.review_date.nil? || issue.review_date >= 1.week.from_now
                'bg-white text-dark'
              elsif issue.review_date > Time.zone.today
-               'bg-warning text-light'
+               'bg-warning text-white'
              else
-               'bg-danger text-light'
+               'bg-danger text-white'
              end
 
-    text = issue.review_date ? nice_dates_today(issue.review_date) : 'No date set'
+    text = issue.review_date ? short_dates(issue.review_date, humanise:) : 'No date set'
 
     content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes]) do
       "#{'Review • ' if label}#{text}".html_safe
