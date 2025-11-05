@@ -29,7 +29,7 @@
           <% end %>
         </td>
         <td><%= format_date_range(usage_service.dates_for_period(period)) %></td>
-        <% usage = usage_service.annual_usage(period:) %>
+        <% usage = usage_service.usage(period:) %>
         <td class="text-right"><%= format_unit(usage.kwh, :kwh) %></td>
         <td class="text-right"><%= format_unit(usage.co2, :co2) %></td>
         <td class="text-right"><%= format_unit(usage.£, :£) %></td>
