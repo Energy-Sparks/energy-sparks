@@ -24,7 +24,7 @@ RSpec.shared_examples_for 'a displayed list issue' do
       expect(page).to have_link meter.mpan_mprn, href: school_meter_path(meter.school, meter)
     end
     expect(page).to have_content nice_date_times_today(issue.updated_at)
-    expect(page).to have_link('View', href: polymorphic_path([:admin, issue.issueable, issue]))
+    expect(page).to have_link(issue.title, href: polymorphic_path([:admin, issue.issueable, issue]))
     expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
   end
 
