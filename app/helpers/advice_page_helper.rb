@@ -32,7 +32,11 @@ module AdvicePageHelper
     rescue ArgumentError
       # use original value, probably NaN
     end
-    FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+    if value.nil?
+      '-'
+    else
+      FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+    end
   end
 
   def format_percent(percent)
