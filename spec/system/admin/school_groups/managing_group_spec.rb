@@ -103,7 +103,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
       it 'lists issue in issues tab' do
         within '#school-issues' do
-          expect(page).to have_link(issue.title, href: polymorphic_path([:admin, school_group, issue]))
+          expect(page).to have_link(issue.title, href: polymorphic_path([:admin, school, issue]))
           expect(page).to have_content issue.issueable.name
           expect(page).to have_content issue.fuel_type.capitalize
           expect(page).to have_content nice_date_times_today(issue.updated_at)
@@ -131,50 +131,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it { expect(page).to have_link('Edit', href: edit_admin_school_group_path(school_group)) }
     it { expect(page).to have_link('Manage partners', href: admin_school_group_partners_path(school_group)) }
     it { expect(page).to have_link('Delete', href: admin_school_group_path(school_group)) }
-
-    context "when clicking 'Meter data export'" do
-      def zip_to_hash(attachment)
-        files = {}
-        Zip::InputStream.open(StringIO.new(attachment.body.raw_source)) do |io|
-          while (entry = io.get_next_entry)
-            files[entry.name] = io.read
-          end
-        end
-        files
-      end
-
-      def expected_csv(meter, reading)
-        'School Name,School Id,Mpan Mprn,Meter Type,Reading Date,One Day Total kWh,Status,Substitute Date,' \
-        '00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,' \
-        '08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,' \
-        "16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,00:00\n" \
-        "#{meter.school.name},#{meter.school.id},#{meter.mpan_mprn},Electricity,#{Date.yesterday.iso8601},139.0," \
-        "ORIG,,#{([reading] * 48).join(',')}\n"
-      end
-
-      let(:meter) { create(:electricity_meter, school: create(:school, school_group:)) }
-      let(:email) { ActionMailer::Base.deliveries.last }
-
-      before do
-        travel_to Date.new(2025, 9, 1)
-        create(:amr_validated_reading, meter: meter, reading_date: Date.yesterday, reading: 1.0)
-        click_on 'Meter data export'
-        click_on 'Email meter data export'
-        perform_enqueued_jobs
-      end
-
-      it 'sends the export' do
-        expect(email.subject).to eq("Meter data export for #{school_group.name}")
-        expect(Capybara.string(email.html_part.decoded).find('body').text.gsub(/^\s+/, '')).to eq <<~BODY
-          #{school_group.name} meter data export
-          Zip attached with school meter data.
-        BODY
-        expect(email.attachments.map(&:filename)).to \
-          eq(["energy-sparks-#{school_group.slug}-meter-data-2025-09-01T00-00-00Z.zip"])
-        expect(zip_to_hash(email.attachments.first)).to \
-          eq({ "energy-sparks-#{meter.school.slug}-2025-09-01T00-00-00Z.csv" => expected_csv(meter, 1.0) })
-      end
-    end
 
     context "when clicking 'Download issues' button" do
       before { click_link 'Issues' }
@@ -328,6 +284,52 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
   end
 
+  shared_examples 'a meter data export can be requested' do
+    context "when clicking 'Meter data export'" do
+      def zip_to_hash(attachment)
+        files = {}
+        Zip::InputStream.open(StringIO.new(attachment.body.raw_source)) do |io|
+          while (entry = io.get_next_entry)
+            files[entry.name] = io.read
+          end
+        end
+        files
+      end
+
+      def expected_csv(meter, reading)
+        'School Name,School Id,Mpan Mprn,Meter Type,Reading Date,One Day Total kWh,Status,Substitute Date,' \
+        '00:30,01:00,01:30,02:00,02:30,03:00,03:30,04:00,04:30,05:00,05:30,06:00,06:30,07:00,07:30,08:00,' \
+        '08:30,09:00,09:30,10:00,10:30,11:00,11:30,12:00,12:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,' \
+        "16:30,17:00,17:30,18:00,18:30,19:00,19:30,20:00,20:30,21:00,21:30,22:00,22:30,23:00,23:30,00:00\n" \
+        "#{meter.school.name},#{meter.school.id},#{meter.mpan_mprn},Electricity,#{Date.yesterday.iso8601},139.0," \
+        "ORIG,,#{([reading] * 48).join(',')}\n"
+      end
+
+      let(:meter) { create(:electricity_meter, school:) }
+      let(:email) { ActionMailer::Base.deliveries.last }
+
+      before do
+        travel_to Date.new(2025, 9, 1)
+        create(:amr_validated_reading, meter: meter, reading_date: Date.yesterday, reading: 1.0)
+        click_on 'Meter data export'
+        click_on 'Email meter data export'
+        perform_enqueued_jobs
+      end
+
+      it 'sends the export' do
+        expect(email.subject).to eq("Meter data export for #{school_group.name}")
+        expect(Capybara.string(email.html_part.decoded).find('body').text.gsub(/^\s+/, '')).to eq <<~BODY
+          #{school_group.name} meter data export
+          Zip attached with school meter data.
+        BODY
+        expect(email.attachments.map(&:filename)).to \
+          eq(["energy-sparks-#{school_group.slug}-meter-data-2025-09-01T00-00-00Z.zip"])
+        expect(zip_to_hash(email.attachments.first)).to \
+          eq({ "energy-sparks-#{meter.school.slug}-2025-09-01T00-00-00Z.csv" => expected_csv(meter, 1.0) })
+      end
+    end
+  end
+
   describe 'with a project group' do
     let!(:school_group) { create(:school_group, group_type: :project) }
 
@@ -459,6 +461,10 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
           end
         end
       end
+    end
+
+    it_behaves_like 'a meter data export can be requested' do
+      let(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
     end
   end
 
@@ -661,6 +667,10 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
           end
         end
       end
+    end
+
+    it_behaves_like 'a meter data export can be requested' do
+      let(:school) { create(:school, school_group: school_group) }
     end
   end
 end
