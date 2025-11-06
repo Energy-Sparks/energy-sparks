@@ -11,9 +11,9 @@
 #
 # Indexes
 #
-#  index_school_groupings_on_school_group_id          (school_group_id)
-#  index_school_groupings_on_school_id                (school_id)
-#  index_school_groupings_on_school_id_and_main_role  (school_id,role) UNIQUE WHERE (role = 'organisation'::school_grouping_role)
+#  index_school_groupings_on_school_group_id                  (school_group_id)
+#  index_school_groupings_on_school_id                        (school_id)
+#  index_school_groupings_on_school_id_and_organisation_role  (school_id,role) UNIQUE WHERE (role = 'organisation'::school_grouping_role)
 #
 # Foreign Keys
 #

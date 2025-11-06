@@ -13,6 +13,7 @@ module Admin
     end
 
     def new
+      @project_group = true if params[:project_group].present?
     end
 
     def edit
@@ -23,6 +24,7 @@ module Admin
       if @school_group.save
         redirect_to admin_school_groups_path, notice: 'School group was successfully created.'
       else
+        @project_group = @school_group.project?
         render :new
       end
     end

@@ -46,8 +46,8 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
           within('table') do
             school_groups.each do |school_group|
               expect(page).to have_selector(:table_row,
-                                            { 'Name' => school_group.name, 'Group type' => school_group.group_type.humanize,
-                                              'Issues admin' => school_group.default_issues_admin_user.try(:display_name) || '', 'Onboarding' => 1, 'Active' => 1, 'Data visible' => 1, 'Invisible' => 1, 'Removed' => 1 })
+                                            { 'Name' => school_group.name, 'Type' => school_group.group_type.humanize,
+                                              'Admin' => school_group.default_issues_admin_user.try(:display_name) || '', 'Onboarding' => 1, 'Active' => 1, 'Data visible' => 1, 'Invisible' => 1, 'Removed' => 1 })
             end
           end
         end
@@ -55,7 +55,7 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
         it 'displays a grand total' do
           within('table') do
             expect(page).to have_selector(:table_row,
-                                          { 'Name' => 'All Energy Sparks Schools', 'Group type' => '', 'Issues admin' => '', 'Onboarding' => 2, 'Active' => 2,
+                                          { 'Name' => 'All Energy Sparks Schools', 'Type' => '', 'Admin' => '', 'Onboarding' => 2, 'Active' => 2,
                                             'Data visible' => 2, 'Invisible' => 2, 'Removed' => 2 })
           end
         end
@@ -77,13 +77,13 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
         end
 
         it 'displays a link to export detail' do
-          expect(page).to have_link('Export detail')
+          expect(page).to have_link('Download as CSV')
         end
 
         context 'and exporting detail' do
           before do
             freeze_time
-            click_link('Export detail')
+            click_link('Download as CSV')
           end
 
           it 'shows csv contents' do
@@ -107,35 +107,78 @@ RSpec.describe 'school groups', :include_application_helper, :school_groups do
 
       before do
         click_on 'Manage School Groups'
-        click_on 'New school group'
       end
 
-      context 'when required data has not been entered' do
+      context 'when creating a organisation group' do
         before do
-          click_on 'Create School group'
+          click_on 'New school group'
         end
 
-        it { expect(page).to have_content("Name can't be blank") }
+        it { expect(page).to have_content('New School group')}
+        it { expect(page).to have_css('#group-defaults')}
+
+        context 'when required data has not been entered' do
+          before do
+            click_on 'Create School group'
+          end
+
+          it { expect(page).to have_content('New School group')}
+          it { expect(page).to have_content("Name can't be blank") }
+        end
+
+        context 'when all data has been entered' do
+          before do
+            fill_in 'Name', with: 'BANES'
+            fill_in 'Description', with: 'Bath & North East Somerset'
+            select 'BANES and Frome', from: 'Default scoreboard'
+            select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
+            select 'Admin', from: 'Default issues admin user'
+            select 'Wales', from: 'Default country'
+            choose 'Display chart data in kwh, where available'
+            click_on 'Create School group'
+          end
+
+          it 'is created' do
+            expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
+          end
+
+          it { expect(SchoolGroup.where(name: 'BANES').first.organisation?).to be(true) }
+          it { expect(SchoolGroup.where(name: 'BANES').first.default_issues_admin_user).to eq(admin) }
+          it { expect(SchoolGroup.where(name: 'BANES').first.default_country).to eq('wales') }
+        end
       end
 
-      context 'when all data has been entered' do
+      context 'when creating a project group' do
         before do
-          fill_in 'Name', with: 'BANES'
-          fill_in 'Description', with: 'Bath & North East Somerset'
-          select 'BANES and Frome', from: 'Default scoreboard'
-          select 'BANES dark sky weather', from: 'Default Dark Sky Weather Data Feed Area'
-          select 'Admin', from: 'Default issues admin user'
-          select 'Wales', from: 'Default country'
-          choose 'Display chart data in kwh, where available'
-          click_on 'Create School group'
+          click_on 'New project group'
         end
 
-        it 'is created' do
-          expect(SchoolGroup.where(name: 'BANES').count).to eq(1)
+        it { expect(page).to have_content('New Project group')}
+        it { expect(page).not_to have_css('#group-defaults')}
+
+        context 'when required data has not been entered' do
+          before do
+            click_on 'Create School group'
+          end
+
+          it { expect(page).to have_content('New Project group')}
+          it { expect(page).to have_content("Name can't be blank") }
         end
 
-        it { expect(SchoolGroup.where(name: 'BANES').first.default_issues_admin_user).to eq(admin) }
-        it { expect(SchoolGroup.where(name: 'BANES').first.default_country).to eq('wales') }
+        context 'when all data has been entered' do
+          before do
+            fill_in 'Name', with: 'Project'
+            fill_in 'Description', with: 'Project description'
+            click_on 'Create School group'
+          end
+
+          it 'is created' do
+            expect(SchoolGroup.where(name: 'Project').count).to eq(1)
+          end
+
+          it { expect(SchoolGroup.where(name: 'Project').first.project?).to be(true) }
+          it { expect(SchoolGroup.where(name: 'Project').first.default_issues_admin_user).to be_nil }
+        end
       end
     end
 
