@@ -124,7 +124,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
   end
 
-
   shared_examples 'a basic button panel' do
     before do
       visit admin_school_group_path(school_group)
@@ -228,6 +227,109 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
   end
 
+  shared_examples 'an Active schools tab' do
+    let!(:issues) do
+      [create(:issue, issue_type: :note, school:), create(:issue, issue_type: :issue, school:)]
+    end
+    let!(:school) {}
+
+    before do
+      visit admin_school_group_path(school_group)
+    end
+
+    it 'lists school in active tab' do
+      within '#active' do
+        expect(page).to have_link(school.name, href: school_path(school))
+      end
+    end
+
+    it 'has action buttons' do
+      within '#active' do
+        expect(page).to have_link('Issues')
+        expect(page).to have_link('Edit')
+        expect(page).to have_link('Users')
+        expect(page).to have_link('Meters')
+      end
+    end
+
+    it 'has status pill buttons' do
+      within '#active' do
+        expect(page).to have_link('Visible')
+        expect(page).to have_link('Public')
+        expect(page).to have_link('Process data')
+        expect(page).to have_link('Data visible')
+        expect(page).to have_css('a i.fa-arrows-rotate')
+      end
+    end
+
+    context "when clicking 'Issues'" do
+      before do
+        within '#active' do
+          click_link 'Issues'
+        end
+      end
+
+      it { expect(page).to have_current_path(admin_school_issues_path(school)) }
+    end
+
+    context "when clicking 'Edit'" do
+      before do
+        within '#active' do
+          click_link 'Edit'
+        end
+      end
+
+      it { expect(page).to have_current_path(edit_school_path(school)) }
+    end
+
+    context "when clicking 'Users'" do
+      before do
+        within '#active' do
+          click_link 'User'
+        end
+      end
+
+      it { expect(page).to have_current_path(school_users_path(school)) }
+    end
+
+    context "when clicking 'Meters'" do
+      before do
+        within '#active' do
+          click_link 'Meters'
+        end
+      end
+
+      it { expect(page).to have_current_path(school_meters_path(school)) }
+    end
+  end
+
+  shared_examples 'a downloadable csv of issues is available' do
+    let!(:issue) do
+      create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas)
+    end
+
+    before do
+      school
+      freeze_time
+      visit admin_school_group_path(school_group)
+      within '#school-group-button-panel' do
+        click_on 'Issues'
+      end
+    end
+
+    it 'shows csv contents' do
+      expect(page.body).to eq school_group.all_issues.by_updated_at.to_csv
+    end
+
+    it 'has csv content type' do
+      expect(response_headers['Content-Type']).to eq 'text/csv'
+    end
+
+    it 'has expected file name' do
+      expect(response_headers['Content-Disposition']).to include("#{"energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize}.csv")
+    end
+  end
+
   describe 'with a project group' do
     let!(:school_group) { create(:school_group, group_type: :project) }
 
@@ -272,6 +374,9 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it_behaves_like 'a school Issues and Notes tab' do
       let!(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
     end
+    it_behaves_like 'a downloadable csv of issues is available' do
+      let!(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
+    end
 
     it_behaves_like 'a deletable group' do
       let(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
@@ -290,39 +395,108 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       it { expect(school_group.name).to eq('New name') }
       it { expect(school_group).not_to be_public }
     end
+
+    describe 'Active schools tab' do
+      context 'when there are active schools' do
+        it_behaves_like 'an Active schools tab' do
+          let(:school) { create(:school, :with_project, :with_school_group, active: true, group: school_group) }
+        end
+      end
+
+      context 'when there are active non visible schools' do
+        it_behaves_like 'an Active schools tab' do
+          let(:school) { create(:school, :with_project, :with_school_group, active: true, visible: false, group: school_group) }
+        end
+      end
+
+      context 'when there are inactive schools only' do
+        let(:school) { create(:school, :with_project, :with_school_group, active: false, group: school_group) }
+
+        before do
+          visit admin_school_group_path(school_group)
+        end
+
+        it "doesn't show school active tab" do
+          within '#active' do
+            expect(page).to have_no_link(school.name)
+            expect(page).to have_content("No active schools for #{school_group.name}.")
+          end
+        end
+      end
+    end
+
+    describe 'Removed schools tab' do
+      context 'when there are inactive schools' do
+        let!(:school) do
+          create(:school, :with_project, :with_school_group, active: false, removal_date: Time.zone.now, group: school_group)
+        end
+
+        before do
+          visit admin_school_group_path(school_group)
+        end
+
+        it 'lists school in removed tab' do
+          within '#removed' do
+            expect(page).to have_link(school.name, href: school_path(school))
+            expect(page).to have_content(nice_dates(school.removal_date))
+            expect(page).to have_link('Meters')
+            expect(page).to have_link('Issues')
+          end
+        end
+      end
+
+      context 'when there are only active schools' do
+        let!(:school) do
+          create(:school, :with_project, :with_school_group, active: true, group: school_group)
+        end
+
+        before do
+          visit admin_school_group_path(school_group)
+        end
+
+        it "doesn't show school in removed tab" do
+          within '#removed' do
+            expect(page).to have_no_link(school.name)
+            expect(page).to have_content("No removed schools for #{school_group.name}.")
+          end
+        end
+      end
+    end
   end
 
   describe 'with an organisation group' do
     let!(:school_group) { create(:school_group, group_type: :multi_academy_trust) }
 
-    describe 'Header' do
+    before do
+      visit admin_school_group_path(school_group)
+    end
+
+    it_behaves_like 'a group admin page header'
+
+    describe 'with an issues admin' do
+      let!(:school_group) { create(:school_group, group_type: :multi_academy_trust, default_issues_admin_user: issues_admin) }
+      let(:issues_link) { polymorphic_path([:admin, Issue], user: issues_admin) }
+
       before do
         visit admin_school_group_path(school_group)
       end
 
-      it_behaves_like 'a group admin page header'
+      context 'when it is the same as the logged in user' do
+        let!(:issues_admin) { admin }
 
-      describe 'with an issues admin' do
-        let!(:school_group) { create(:school_group, group_type: :multi_academy_trust, default_issues_admin_user: issues_admin) }
-        let(:issues_link) { polymorphic_path([:admin, Issue], user: issues_admin) }
+        it { expect(page).to have_link('Admin • You', href: issues_link) }
+      end
 
-        context 'when it is the same as the logged in user' do
-          let!(:issues_admin) { admin }
+      context 'when it is a different user' do
+        let!(:issues_admin) { create(:admin) }
 
-          it { expect(page).to have_link('Admin • You', href: issues_link) }
-        end
+        it { expect(page).to have_link("Admin • #{issues_admin.display_name}", href: issues_link) }
+      end
 
-        context 'when it is a different user' do
-          let!(:issues_admin) { create(:admin) }
+      context 'when no issues admin user is set' do
+        let!(:issues_admin) { nil }
 
-          it { expect(page).to have_link("Admin • #{issues_admin.display_name}", href: issues_link) }
-        end
-
-        context 'when no issues admin user is set' do
-          let!(:issues_admin) { nil }
-
-          it { expect(page).to have_no_link(href: issues_link) }
-        end
+        it { expect(page).to have_no_link(href: issues_link) }
       end
     end
 
@@ -373,6 +547,13 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it_behaves_like 'a school Issues and Notes tab' do
       let!(:school) { create(:school, school_group: school_group) }
     end
+    it_behaves_like 'a downloadable csv of issues is available' do
+      let(:school) { create(:school, school_group: school_group) }
+    end
+
+    it_behaves_like 'a deletable group' do
+      let(:school) { create(:school, school_group: school_group) }
+    end
 
     describe 'Editing the group' do
       let!(:school_group) { create(:school_group, name: 'BANES', public: true, default_issues_admin_user: nil) }
@@ -392,95 +573,15 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       it { expect(school_group.default_issues_admin_user).to eq(admin) }
     end
 
-    it_behaves_like 'a deletable group' do
-      let(:school) { create(:school, school_group: school_group) }
-    end
-
     describe 'Active schools tab' do
-      shared_examples 'active schools tab' do
-        let!(:issues) do
-          [create(:issue, issue_type: :note, school:), create(:issue, issue_type: :issue, school:)]
-        end
-        let!(:school) {}
-
-        before do
-          visit admin_school_group_path(school_group)
-        end
-
-        it 'lists school in active tab' do
-          within '#active' do
-            expect(page).to have_link(school.name, href: school_path(school))
-          end
-        end
-
-        it 'has action buttons' do
-          within '#active' do
-            expect(page).to have_link('Issues')
-            expect(page).to have_link('Edit')
-            expect(page).to have_link('Users')
-            expect(page).to have_link('Meters')
-          end
-        end
-
-        it 'has status pill buttons' do
-          within '#active' do
-            expect(page).to have_link('Visible')
-            expect(page).to have_link('Public')
-            expect(page).to have_link('Process data')
-            expect(page).to have_link('Data visible')
-            expect(page).to have_css('a i.fa-arrows-rotate')
-          end
-        end
-
-        context "when clicking 'Issues'" do
-          before do
-            within '#active' do
-              click_link 'Issues'
-            end
-          end
-
-          it { expect(page).to have_current_path(admin_school_issues_path(school)) }
-        end
-
-        context "when clicking 'Edit'" do
-          before do
-            within '#active' do
-              click_link 'Edit'
-            end
-          end
-
-          it { expect(page).to have_current_path(edit_school_path(school)) }
-        end
-
-        context "when clicking 'Users'" do
-          before do
-            within '#active' do
-              click_link 'User'
-            end
-          end
-
-          it { expect(page).to have_current_path(school_users_path(school)) }
-        end
-
-        context "when clicking 'Meters'" do
-          before do
-            within '#active' do
-              click_link 'Meters'
-            end
-          end
-
-          it { expect(page).to have_current_path(school_meters_path(school)) }
-        end
-      end
-
       context 'when there are active schools' do
-        include_examples 'active schools tab' do
+        it_behaves_like 'an Active schools tab' do
           let(:school) { create(:school, active: true, name: 'A School', school_group:) }
         end
       end
 
       context 'when there are active non visible schools' do
-        include_examples 'active schools tab' do
+        it_behaves_like 'an Active schools tab' do
           let(:school) { create(:school, active: true, visible: false, name: 'A School', school_group:) }
         end
       end
@@ -561,34 +662,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
             expect(page).to have_content("No removed schools for #{school_group.name}.")
           end
         end
-      end
-    end
-
-    describe 'Downloading issues csv' do
-      let!(:school_group) { create(:school_group) }
-      let!(:school) { create(:school, school_group: school_group) }
-      let!(:issue) do
-        create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas)
-      end
-
-      before do
-        freeze_time
-        visit admin_school_group_path(school_group)
-        within '#school-group-button-panel' do
-          click_on 'Issues'
-        end
-      end
-
-      it 'shows csv contents' do
-        expect(page.body).to eq school_group.all_issues.by_updated_at.to_csv
-      end
-
-      it 'has csv content type' do
-        expect(response_headers['Content-Type']).to eq 'text/csv'
-      end
-
-      it 'has expected file name' do
-        expect(response_headers['Content-Disposition']).to include("#{"energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize}.csv")
       end
     end
   end
