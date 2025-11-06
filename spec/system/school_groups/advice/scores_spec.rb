@@ -65,7 +65,7 @@ describe 'School group scores page' do
   end
 
   # Avoids problem with showing national placing. National Scoreboard only runs from
-  # 1st Sept to 31st Jul.
+  # 1st Sept to 30th June.
   around do |example|
     travel_to Date.new(2025, 4, 1) do
       example.run
