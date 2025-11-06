@@ -1,11 +1,11 @@
   <%= render 'insights_intro', school: @school %>
-  <%= render 'schools/advice/long_term/current_usage',
+  <%= render 'current_usage',
              school: @school,
              analysis_dates: @analysis_dates,
              dashboard_alerts: @dashboard_alerts,
              fuel_type: @fuel_type,
              usage_service: @usage_service %>
-  <%= render 'schools/advice/long_term/comparison',
+  <%= render 'comparison',
              school: @school,
              benchmarked_usage: @benchmarked_usage,
              analysis_dates: @analysis_dates,
