@@ -6,3 +6,5 @@ en:
       once: once
       several_times: several times
       twice: twice
+    short_dates:
+      today: Today

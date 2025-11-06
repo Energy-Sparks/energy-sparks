@@ -135,10 +135,10 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
     let(:admin) { create(:admin) }
     let(:note) { create(:issue, issue_type: :note) }
-    let(:new_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago) }
+    let(:new_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago, review_date: 1.week.from_now) }
     let(:school_group) { create(:school_group) }
     let(:school) { create(:school, school_group: school_group) }
-    let(:issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 2.weeks.ago, issueable: school) }
+    let(:issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 2.weeks.ago, review_date: 1.day.ago, issueable: school) }
     let(:closed_issue) { create(:issue, issue_type: :issue, status: :closed, owned_by: admin) }
     let(:someone_elses_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: nil) }
     let!(:issues) { [] }
@@ -155,15 +155,15 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it { expect(email.subject).to eql "[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}" }
 
       it 'displays issue' do
-        expect(body).to have_content(issue.title)
+        expect(body).to have_link(issue.title, href: admin_school_issue_url(issue.issueable, issue))
         expect(body).to have_content(school_group.name)
         expect(body).to have_content(issue.fuel_type.capitalize)
         expect(body).to have_content(issue.issueable.name)
+        expect(body).to have_content(short_dates(issue.review_date))
         expect(body).to have_content(issue.created_by.display_name)
-        expect(body).to have_content(nice_date_times(issue.created_at))
+        expect(body).to have_content(short_dates(issue.created_at))
         expect(body).to have_content(issue.updated_by.display_name)
-        expect(body).to have_content(nice_date_times(issue.updated_at))
-        expect(body).to have_link('View', href: admin_school_issue_url(issue.issueable, issue))
+        expect(body).to have_content(short_dates(issue.updated_at))
         expect(body).to have_link('Edit', href: edit_admin_issue_url(issue))
       end
 
@@ -197,7 +197,30 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it { expect(email.attachments.count).to eq(1) }
       it { expect(attachment.content_type).to include('text/csv') }
       it { expect(attachment.filename).to eq('issues_report.csv') }
-      it { expect(attachment.body.raw_source).to eq("Issue type,Issue for,\"\",Group,Title,Fuel,Created By,Created,Updated By,Updated,View,Edit\r\nissue,#{new_issue.issueable.name},New this week!,#{new_issue.school_group},#{new_issue.title},Gas,#{new_issue.created_by.display_name},#{new_issue.created_at.strftime('%d/%m/%Y')},#{new_issue.updated_by.display_name},#{new_issue.updated_at.strftime('%d/%m/%Y')},http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id},http://localhost/admin/issues/#{new_issue.id}/edit\r\n") }
+
+
+      describe 'CSV attachment content' do
+        let(:csv_lines) { attachment.body.raw_source.split("\r\n") }
+        let(:headers)   { csv_lines.first }
+        let(:body)      { csv_lines.second }
+
+        it 'includes the correct headers' do
+          expect(headers).to eq(
+            'Issue type,Issue for,New,Group,Title,Fuel,Review date,Created by,Created,Updated by,Updated,View,Edit'
+          )
+        end
+
+        it 'includes the correct issue data row' do
+          expect(body).to eq(
+            "issue,#{new_issue.issueable.name},New this week!,#{new_issue.school_group}," \
+            "#{new_issue.title},Gas,#{new_issue.review_date.strftime('%d/%m/%Y')}," \
+            "#{new_issue.created_by.display_name},#{new_issue.created_at.strftime('%d/%m/%Y')}," \
+            "#{new_issue.updated_by.display_name},#{new_issue.updated_at.strftime('%d/%m/%Y')}," \
+            "http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id}," \
+            "http://localhost/admin/issues/#{new_issue.id}/edit"
+          )
+        end
+      end
     end
   end
 end
