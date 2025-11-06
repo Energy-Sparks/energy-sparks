@@ -82,7 +82,7 @@ module SchoolGroups
     end
 
     def schools
-      @school_group.schools.active.data_enabled.where(data_sharing: :public).order(:name)
+      @school_group.assigned_schools.active.data_enabled.where(data_sharing: :public).order(:name)
     end
   end
 end

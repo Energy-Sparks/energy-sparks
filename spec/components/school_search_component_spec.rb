@@ -82,7 +82,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
     end
 
     context 'with visible schools' do
-      let(:school_groups) { SchoolGroup.with_visible_schools }
+      let(:school_groups) { SchoolGroup.organisation_groups.with_visible_schools }
 
       it { expect(component.school_groups_count).to eq(6) }
     end

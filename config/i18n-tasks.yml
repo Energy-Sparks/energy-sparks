@@ -147,7 +147,6 @@ ignore_unused:
   - 'advice_pages.electricity_costs.charts.cost_1_year_accounting_breakdown*'
   - 'advice_pages.gas_costs.charts.cost_1_year_accounting_breakdown*'
   - 'advice_pages.tables.tooltips.bill_components.*'
-  - 'school_groups.show.we_are_working_with.*'
   - 'school_groups.priority_actions.alert_types.*_html'
   - 'schools.user_tariffs.index.exported_solar_pv.*'
   - 'schools.user_tariffs.index.solar_pv.*'

@@ -16,7 +16,7 @@ module Admin
     end
 
     def edit
-      @schools = @school_group.schools.by_name
+      @schools = @school_group.assigned_schools.by_name
     end
 
     def create

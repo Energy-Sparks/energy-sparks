@@ -90,7 +90,9 @@ describe 'school group clusters', :school_group_clusters, type: :system do
 
         before do
           visit school_group_url(school_group)
-          click_on 'Manage clusters'
+          within('#manage-school-group-menu') do
+            click_on 'Manage clusters'
+          end
         end
 
         it_behaves_like 'school group clusters index page'
