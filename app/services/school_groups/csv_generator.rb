@@ -14,8 +14,9 @@ module SchoolGroups
       end
     end
 
-    def initialize(school_groups)
+    def initialize(school_groups, include_total: true)
       @school_groups = school_groups
+      @include_total = include_total
     end
 
     def export_detail
@@ -23,11 +24,14 @@ module SchoolGroups
         csv << self.class.csv_headers
         @school_groups.each do |g|
           School.school_types.each_key do |school_type|
-            csv << [g.name, g.group_type.humanize, school_type.humanize, g.school_onboardings.for_school_type(school_type).incomplete.count] + g.schools.where(school_type: school_type).status_counts.slice(*self.class.count_fields).values
+            csv << [g.name, g.group_type.humanize, school_type.humanize, g.school_onboardings.for_school_type(school_type).incomplete.count] + g.assigned_schools.where(school_type: school_type).status_counts.slice(*self.class.count_fields).values
           end
-          csv << [g.name, g.group_type.humanize, 'All school types', g.school_onboardings.incomplete.count] + g.schools.status_counts.slice(*self.class.count_fields).values
+          csv << [g.name, g.group_type.humanize, 'All school types', g.school_onboardings.incomplete.count] + g.assigned_schools.status_counts.slice(*self.class.count_fields).values
         end
-        csv << ['All Energy Sparks schools', 'All school types', SchoolOnboarding.incomplete.count] + School.all.status_counts.slice(*self.class.count_fields).values
+        if @include_total
+          csv << ['All Energy Sparks schools', 'All', 'All school types', SchoolOnboarding.incomplete.count] +
+                 School.all.status_counts.slice(*self.class.count_fields).values
+        end
       end
     end
   end
