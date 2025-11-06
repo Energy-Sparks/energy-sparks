@@ -7,7 +7,7 @@
     <span class="badge badge-pill badge-primary"><%= @school_group.group_type.humanize %></span>
   </div>
   <div>
-    <%= header_nav_link @school_group.organisation? ? 'All school groups' : 'All groups',
+    <%= header_nav_link 'All school groups',
                         admin_school_groups_path(project_group: @school_group.project?) %>
   </div>
 </div>
