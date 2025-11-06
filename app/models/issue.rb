@@ -48,7 +48,7 @@ class Issue < ApplicationRecord
 
   scope :for_school_group, lambda { |school_group|
     where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
-      where(issues: { issueable_type: 'School', issueable_id: school_group.schools })
+      where(issues: { issueable_type: 'School', issueable_id: school_group.assigned_schools })
     )
   }
 

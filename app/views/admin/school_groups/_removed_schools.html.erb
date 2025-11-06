@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <% school_group.schools.inactive.by_name.each do |school| %>
+    <% school_group.assigned_schools.inactive.by_name.each do |school| %>
       <tr class="bg-light">
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= school.funder&.name || school&.school_group&.funder&.name %></td>
