@@ -58,11 +58,10 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
       it 'lists issue in issues tab' do
         within '#school-group-issues' do
-          expect(page).to have_content issue.title
+          expect(page).to have_link(issue.title, href: polymorphic_path([:admin, school_group, issue]))
           expect(page).to have_content issue.issueable.name
           expect(page).to have_content issue.fuel_type.capitalize
           expect(page).to have_content nice_date_times_today(issue.updated_at)
-          expect(page).to have_link('View', href: polymorphic_path([:admin, school_group, issue]))
           expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue]))
           expect(page).to have_css("i[class*='fa-thumbtack']")
         end
@@ -104,11 +103,10 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
       it 'lists issue in issues tab' do
         within '#school-issues' do
-          expect(page).to have_content issue.title
+          expect(page).to have_link(issue.title, href: polymorphic_path([:admin, school_group, issue]))
           expect(page).to have_content issue.issueable.name
           expect(page).to have_content issue.fuel_type.capitalize
           expect(page).to have_content nice_date_times_today(issue.updated_at)
-          expect(page).to have_link('View', href: polymorphic_path([:admin, school, issue]))
           expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue]))
           expect(page).to have_css("i[class*='fa-thumbtack']")
         end
