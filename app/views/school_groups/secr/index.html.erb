@@ -14,7 +14,7 @@
                 .reduce(&:merge) %>
     <p><%= t('school_groups.secr.data.introduction', **kwargs.transform_values { |date| date.to_fs(:es_short) }) %></p>
     <% meters = @school_group.meters.active.where('schools.active')
-       schools = @school_group.schools.active
+       schools = @school_group.assigned_schools.active
        number_of_pupils = schools.sum(:number_of_pupils)
        periods = @last_two_academic_year_periods %>
     <%= render 'table', meters:,

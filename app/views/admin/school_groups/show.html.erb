@@ -11,7 +11,7 @@
   <div class="col-lg-6">
     Pupils in active schools:
     <span class="badge badge-success">
-      <%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %>
+      <%= number_with_delimiter @school_group.assigned_schools.visible.map(&:number_of_pupils).compact.sum %>
     </span>
   </div>
   <div class="col-lg-6 text-right">
@@ -24,15 +24,15 @@
       <div class="card">
         <div class="card-body">
           <div>
-            Active <span class="float-right badge badge-success"><%= @school_group.schools.visible.count %></span>
+            Active <span class="float-right badge badge-success"><%= @school_group.assigned_schools.visible.count %></span>
           </div>
           <div>
             Active (with data visible)
-            <span class="float-right badge badge-success"><%= @school_group.schools.visible.data_enabled.count %></span>
+            <span class="float-right badge badge-success"><%= @school_group.assigned_schools.visible.data_enabled.count %></span>
           </div>
           <div>
             Invisible
-            <span class="float-right badge badge-info"><%= @school_group.schools.not_visible.count %></span>
+            <span class="float-right badge badge-info"><%= @school_group.assigned_schools.not_visible.count %></span>
           </div>
           <div>
             Onboarding
@@ -41,7 +41,7 @@
             </span>
           </div>
           <div>
-            Removed <span class="float-right badge badge-secondary"><%= @school_group.schools.inactive.count %></span>
+            Removed <span class="float-right badge badge-secondary"><%= @school_group.assigned_schools.inactive.count %></span>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
             <div>
               <%= school_type.humanize %>
               <span class="float-right badge badge-success">
-                <%= @school_group.schools.visible.where(school_type: school_type).count %>
+                <%= @school_group.assigned_schools.visible.where(school_type: school_type).count %>
               </span>
             </div>
           <% end %>
@@ -67,7 +67,7 @@
 
 <%= render TabsComponent.new do |component| %>
   <% component.with_tab(name: :active, label: 'Active') do %>
-    <% if @school_group.schools.active.any? %>
+    <% if @school_group.assigned_schools.active.any? %>
       <%= render 'active_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No active schools for <%= @school_group.name %>.</div>
@@ -81,7 +81,7 @@
     <% end %>
   <% end %>
   <% component.with_tab(name: :removed, label: 'Removed') do %>
-    <% if @school_group.schools.inactive.any? %>
+    <% if @school_group.assigned_schools.inactive.any? %>
       <%= render 'removed_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
@@ -93,7 +93,7 @@
   <% component.with_tab(name: :'school-group-issues',
                         label: issues_label.call(:Group, @school_group.issues.status_open.count)) do %>
     <% if @school_group.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.issues, issueable_type: 'Group' %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues.by_priority_order, issueable_type: 'Group' %>
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
@@ -102,7 +102,9 @@
   <% component.with_tab(name: :'school-issues',
                         label: issues_label.call(:School, @school_group.school_issues.status_open.count)) do %>
     <% if @school_group.school_issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues, issueable_type: 'School' %>
+      <%= render 'admin/issues/issues_list',
+                 issues: @school_group.school_issues.by_priority_order,
+                 issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>

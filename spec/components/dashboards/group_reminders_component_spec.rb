@@ -83,6 +83,12 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
       it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.clusters.note')) }
     end
 
+    context 'with a project group' do
+      let(:school_group) { create(:school_group, group_type: :project) }
+
+      it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.clusters.note')) }
+    end
+
     context 'with clusters' do
       before do
         create(:school_group_cluster, school_group: school_group)
@@ -112,6 +118,12 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
         let(:user) { create(:group_admin, school_group: school_group) }
 
         it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.review_tariffs.note')) }
+      end
+
+      context 'with a project group' do
+        let(:school_group) { create(:school_group, group_type: :project) }
+
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.review_tariffs.note')) }
       end
     end
 
