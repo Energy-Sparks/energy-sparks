@@ -93,7 +93,7 @@
   <% component.with_tab(name: :'school-group-issues',
                         label: issues_label.call(:Group, @school_group.issues.status_open.count)) do %>
     <% if @school_group.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.issues, issueable_type: 'Group' %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues.by_priority_order, issueable_type: 'Group' %>
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
@@ -102,7 +102,9 @@
   <% component.with_tab(name: :'school-issues',
                         label: issues_label.call(:School, @school_group.school_issues.status_open.count)) do %>
     <% if @school_group.school_issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues, issueable_type: 'School' %>
+      <%= render 'admin/issues/issues_list',
+                 issues: @school_group.school_issues.by_priority_order,
+                 issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>
