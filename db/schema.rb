@@ -1183,6 +1183,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_27_110645) do
     t.boolean "pinned", default: false
     t.string "issueable_type"
     t.bigint "issueable_id"
+    t.date "review_date"
     t.index ["created_by_id"], name: "index_issues_on_created_by_id"
     t.index ["issueable_type", "issueable_id"], name: "index_issues_on_issueable_type_and_issueable_id"
     t.index ["owned_by_id"], name: "index_issues_on_owned_by_id"
