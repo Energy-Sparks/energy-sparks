@@ -1,4 +1,7 @@
 <p><%= t("advice_pages.#{@fuel_type}_long_term.analysis.summary") %></p>
+<% if @fuel_type == :gas %>
+  <p><%= t('advice_pages.gas_long_term.analysis.degree_days') %></p>
+<% end %>
 <% locale_key_prefix = "advice_pages.#{@fuel_type}_long_term.analysis" %>
 <%# i18n-tasks-use t('advice_pages.gas_long_term.analysis.sections')
     i18n-tasks-use t('advice_pages.electricity_long_term.analysis.sections') %>
