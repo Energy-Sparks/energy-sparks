@@ -9,7 +9,7 @@
   <div class="form-row">
     <%= f.fields_for :organisation_school_grouping do |grouping_fields| %>
       <div class="form-group col-md-12">
-        <%= grouping_fields.label :school_group_id, 'Organisation group' %>
+        <%= grouping_fields.label :school_group_id, 'School group' %>
         <%= grouping_fields.collection_select :school_group_id,
                                               SchoolGroup.order(:name),
                                               :id,
