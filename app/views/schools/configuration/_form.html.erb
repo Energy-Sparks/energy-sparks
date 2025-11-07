@@ -11,13 +11,24 @@
       <div class="form-group col-md-12">
         <%= grouping_fields.label :school_group_id, 'School group' %>
         <%= grouping_fields.collection_select :school_group_id,
-                                              SchoolGroup.order(:name),
+                                              SchoolGroup.organisation_groups.order(:name),
                                               :id,
                                               :name,
                                               { selected: @school.organisation_group&.id },
                                               { class: 'form-control' } %>
       </div>
     <% end %>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-12" id="project-groups">
+      <%= f.label :project_group_ids, 'Project Groups' %>
+      <%= f.collection_select :project_group_ids,
+                              SchoolGroup.project_groups.order(:name),
+                              :id,
+                              :name,
+                              { selected: @school.project_group_ids },
+                              { multiple: true, class: 'form-control select2' } %>
+    </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-12">

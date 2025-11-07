@@ -12,7 +12,6 @@ module Schools
       if (grouping_attrs = params[:school][:organisation_school_grouping_attributes])
         @school.school_group_id = grouping_attrs[:school_group_id]
       end
-
       @school.update!(school_params)
       redirect_to school_path(@school)
     end
@@ -36,7 +35,8 @@ module Schools
         :local_authority_area_id,
         :country,
         :data_sharing,
-        organisation_school_grouping_attributes: [:school_group_id]
+        organisation_school_grouping_attributes: [:school_group_id],
+        project_group_ids: []
       )
     end
 
