@@ -4,22 +4,6 @@ module Schools
 
     layout 'dashboards'
 
-    def new
-      if @school.school_group
-        @school.template_calendar = @school.school_group.default_template_calendar
-        @school.solar_pv_tuos_area = @school.school_group.default_solar_pv_tuos_area
-        @school.dark_sky_area = @school.school_group.default_dark_sky_area
-        @school.weather_station = @school.school_group.default_weather_station
-        @school.scoreboard = @school.school_group.default_scoreboard
-      end
-    end
-
-    def create
-      @school.update!(school_params)
-      SchoolCreator.new(@school).process_new_configuration!
-      redirect_to school_meters_path(@school)
-    end
-
     def edit
     end
 
