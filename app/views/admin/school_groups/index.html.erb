@@ -4,14 +4,15 @@
   <div class="col-12 d-flex justify-content-between">
     <div>
       <% if @project_groups %>
-        <%= link_to 'New project group', new_admin_school_group_path(project_group: @project_groups),
+        <%= link_to 'New project group', new_admin_school_group_path(group_type: :project),
                     class: 'btn btn-sm btn-primary' %>
       <% else %>
         <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
       <% end %>
     </div>
     <div>
-      <%= link_to 'Download as CSV', admin_school_groups_path(project_group: @project_groups, format: :csv),
+      <%= link_to 'Download as CSV',
+                  admin_school_groups_path(format: :csv, group_type: @project_groups ? :project : nil),
                   class: 'btn btn-sm' %>
     </div>
   </div>

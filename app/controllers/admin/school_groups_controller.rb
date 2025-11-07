@@ -73,7 +73,7 @@ module Admin
     end
 
     def project_group?
-      ActiveModel::Type::Boolean.new.cast(params[:project_group]) == true
+      params[:group_type] == 'project'
     end
   end
 end

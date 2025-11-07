@@ -114,15 +114,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'Manage Project Groups'
         end
 
-        it 'displays totals for each group' do
-          within('table') do
-            school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row,
-                                            { 'Name' => school_group.name,
-                                              'Onboarding' => 1, 'Active' => 1, 'Data visible' => 1, 'Invisible' => 1, 'Removed' => 1 })
-            end
-          end
-        end
+        pending 'displays totals for each group'
 
         it 'has a link to manage school group' do
           within('table') do

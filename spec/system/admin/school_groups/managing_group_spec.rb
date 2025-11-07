@@ -20,7 +20,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     context "when clicking on 'All school groups'" do
       before { click_link 'All school groups' }
 
-      it { expect(page).to have_current_path(admin_school_groups_path(project_group: school_group.project?)) }
+      it { expect(page).to have_current_path(admin_school_groups_path(group_type: school_group.group_type)) }
     end
 
     it 'displays pupils in active schools count' do
