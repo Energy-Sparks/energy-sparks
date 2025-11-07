@@ -1,10 +1,14 @@
 <div class="d-flex justify-content-between align-items-center">
   <div class='align-middle pb-3'>
-    <h1 class='pb-0'><%= @school_group.name %> School Group</h1>
+    <h1 class='pb-0'>
+      <%= @school_group.name %>
+      <%= t(@school_group.group_type, scope: 'school_groups.clusters.group_type') %>
+    </h1>
     <span class="badge badge-pill badge-primary"><%= @school_group.group_type.humanize %></span>
   </div>
   <div>
-    <%= header_nav_link 'All school groups', admin_school_groups_url %>
+    <%= header_nav_link 'All school groups',
+                        admin_school_groups_path(group_type: @school_group.group_type) %>
   </div>
 </div>
 <div class="row pb-2">
