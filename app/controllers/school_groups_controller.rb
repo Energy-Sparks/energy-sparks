@@ -48,6 +48,11 @@ class SchoolGroupsController < ApplicationController
     redirect_to scores_school_group_advice_path(@school_group) and return
   end
 
+  def settings
+    authorize! :manage_settings, @school_group
+    render :settings, layout: 'sidebar'
+  end
+
   private
 
   def csv_filename_for(action)

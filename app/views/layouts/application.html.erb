@@ -1,37 +1,15 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-  <head>
-    <%= render 'shared/head' %>
-  </head>
-  <body vocab="http://schema.org/">
-    <%= render 'shared/navigation' %>
-    <% if content_for?(:header) %>
-      <div class="container-fluid <%= @audience || :adult %> pb-2">
-        <div class="container navigation-margin">
-          <%= render 'shared/breadcrumbs' %>
-          <%= render 'shared/alerts' if flash.any? %>
-          <%= yield :header %>
-        </div>
+<%= content_for(:page) do %>
+  <% if content_for?(:header) %>
+    <div class="container-fluid <%= @audience || :adult %> pb-2">
+      <div class="container navigation-margin">
+        <%= render 'shared/page/top' %>
+        <%= yield :header %>
       </div>
-      <div class="application container">
-        <%= yield %>
-      </div>
-    <% else %>
-      <div class="application container navigation-margin">
-        <%= render 'shared/breadcrumbs' %>
-        <%= render 'shared/alerts' if flash.any? %>
-        <%= yield %>
-      </div>
-    <% end %>
-    <% if show_partner_footer? %>
-      <div class="container-fluid bg-light">
-        <div class="container">
-          <%= render 'shared/partners', partnered: partnered %>
-        </div>
-      </div>
-    <% end %>
-    <%= render 'shared/cookie_banner' %>
-    <%= render 'shared/footer' %>
-  </body>
-  <%= render 'layouts/set_mobility_locale' %>
-</html>
+    </div>
+  <% end %>
+  <div class="application container<%= ' navigation-margin' unless content_for?(:header) %>">
+    <%= render 'shared/page/top' unless content_for?(:header) %>
+    <%= content_for?(:application) ? yield(:application) : yield %>
+  </div>
+<% end %>
+<%= render template: 'layouts/page' %>

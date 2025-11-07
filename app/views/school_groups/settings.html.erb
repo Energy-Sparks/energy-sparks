@@ -1,0 +1,27 @@
+<%= content_for :header do %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(title: t('manage_school_menu.manage_school'))) %>
+  <% if current_user.admin? %>
+    <div class='row mb-2'>
+      <div class="col d-flex justify-content-end align-items-baseline">
+          <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school_group %>
+          <%= if @school_group.issues.status_open.any?
+                link_to "View school issues (#{@school_group.issues.status_open.count})",
+                        admin_school_group_issues_path(school_group_id: @school_group.slug),
+                        class: 'btn btn-sm btn-secondary'
+              end %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<%= content_for :sidebar do %>
+Hello
+<% end %>
+
+<% if can? :manage, DashboardMessage %>
+  <%= render 'admin/shared/dashboard_message', messageable: @school_group %>
+<% elsif @school_group.dashboard_message %>
+  <%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
+    <%= @school_group.dashboard_message.message %>
+  <% end %>
+<% end %>
