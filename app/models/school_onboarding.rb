@@ -73,7 +73,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :complete, lambda {
     joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
   }
-  scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
+  scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.onboardings_for_group.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
 
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }

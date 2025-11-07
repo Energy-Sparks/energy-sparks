@@ -34,11 +34,11 @@ module Admin
         CSV.generate do |csv|
           csv << ['School name', 'State', 'Contact email', 'Notes', 'Last event', 'Last event date', 'Public', 'Visible', 'Active']
 
-          school_group.school_onboardings.by_name.incomplete.each do |school_onboarding|
+          school_group.onboardings_for_group.by_name.incomplete.each do |school_onboarding|
             csv << produce_csv_row_automatic(school_onboarding, 'In progress')
           end
 
-          school_group.school_onboardings.by_name.complete.each do |school_onboarding|
+          school_group.onboardings_for_group.by_name.complete.each do |school_onboarding|
             csv << produce_csv_row_automatic(school_onboarding, 'Complete')
           end
 
@@ -92,7 +92,7 @@ module Admin
       end
 
       def onboardings
-        @onboardings ||= @school_group.school_onboardings.find(params.dig(:school_group, :school_onboarding_ids) || [])
+        @onboardings ||= @school_group.onboardings_for_group.find(params.dig(:school_group, :school_onboarding_ids) || [])
       end
 
       def redirect_location

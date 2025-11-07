@@ -63,6 +63,8 @@ class SchoolGroup < ApplicationRecord
 
   has_many :meters, through: :assigned_schools
   has_many :school_onboardings
+  has_many :project_onboardings, class_name: 'SchoolOnboarding', foreign_key: :project_group_id
+
   has_many :calendars, through: :assigned_schools
   has_many :users
 
@@ -300,5 +302,9 @@ class SchoolGroup < ApplicationRecord
 
   def scorable_schools
     assigned_schools
+  end
+
+  def onboardings_for_group
+    project? ? project_onboardings : school_onboardings
   end
 end
