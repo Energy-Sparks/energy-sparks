@@ -24,7 +24,7 @@ module Admin
 
     def create
       if @school_group.save
-        redirect_to admin_school_groups_path(project_group: @school_group.project?), notice: 'School group was successfully created.'
+        redirect_to admin_school_groups_path(group_type: @school_group.group_type), notice: 'School group was successfully created.'
       else
         @project_group = @school_group.project?
         render :new
