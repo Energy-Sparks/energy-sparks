@@ -32,10 +32,10 @@
       <%= f.select :scoreboard_id,
                    options_from_collection_for_select(Scoreboard.order(:name),
                                                       :id,
-                                                      :name
+                                                      :name,
                                                       @school_onboarding.scoreboard&.id),
-                  {},
-                  { class: 'form-control' } %>
+                   {},
+                   { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
