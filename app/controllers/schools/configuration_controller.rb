@@ -5,9 +5,14 @@ module Schools
     layout 'dashboards'
 
     def edit
+      @school.build_organisation_school_grouping unless @school.organisation_school_grouping
     end
 
     def update
+      if (grouping_attrs = params[:school][:organisation_school_grouping_attributes])
+        @school.school_group_id = grouping_attrs[:school_group_id]
+      end
+
       @school.update!(school_params)
       redirect_to school_path(@school)
     end
@@ -25,13 +30,13 @@ module Schools
         :solar_pv_tuos_area_id,
         :dark_sky_area_id,
         :scoreboard_id,
-        :school_group_id,
         :weather_station_id,
         :funder_id,
         :region,
         :local_authority_area_id,
         :country,
-        :data_sharing
+        :data_sharing,
+        organisation_school_grouping_attributes: [:school_group_id]
       )
     end
 

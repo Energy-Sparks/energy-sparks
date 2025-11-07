@@ -7,18 +7,17 @@
 
   <h3>Basic Configuration</h3>
   <div class="form-row">
-    <div class="form-group col-md-12">
-      <%= f.label :school_group_id, 'School group' %>
-      <%= f.select :school_group_id,
-                   options_from_collection_for_select(
-                     SchoolGroup.order(:name),
-                     'id',
-                     'name',
-                     @school&.school_group&.id
-                   ),
-                   {},
-                   { class: 'form-control' } %>
-    </div>
+    <%= f.fields_for :organisation_school_grouping do |grouping_fields| %>
+      <div class="form-group col-md-12">
+        <%= grouping_fields.label :school_group_id, 'Organisation group' %>
+        <%= grouping_fields.collection_select :school_group_id,
+                                              SchoolGroup.order(:name),
+                                              :id,
+                                              :name,
+                                              { selected: @school.organisation_group&.id },
+                                              { class: 'form-control' } %>
+      </div>
+    <% end %>
   </div>
   <div class="form-row">
     <div class="form-group col-md-12">
