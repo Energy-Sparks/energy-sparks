@@ -26,7 +26,7 @@ class TimelineController < ApplicationController
     @academic_years = available_years.map { |year| [year, observation_counts[year.id] || 0] }
     @academic_year = params[:academic_year] ? AcademicYear.find(params[:academic_year]) : available_years.first
     @current_academic_year = calendar.current_academic_year
-    @observations = observations.in_academic_year(@academic_year).by_date || []
+    @observations = observations.in_academic_year(@academic_year).most_recent || []
     @end_date = @academic_year == @current_academic_year ? @observations.first&.at : @academic_year.end_date
     @pagy, @observations = pagy(@observations, limit: 50)
   end

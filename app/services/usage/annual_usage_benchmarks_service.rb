@@ -81,7 +81,7 @@ module Usage
     # @return [CombinedUsageMetric] the estimated savings
     def estimated_savings(versus: :benchmark_school)
       # calculate kwh used last year for the school
-      last_year_kwh = annual_usage_calculator.annual_usage(period: :this_year).kwh
+      last_year_kwh = usage_calculator.usage(period: :this_year).kwh
 
       # calculate usage for this type of benchmark school
       annual_usage_for_comparison = annual_usage(compare: versus)
@@ -147,8 +147,8 @@ module Usage
       @meter_collection.aggregate_meter(@fuel_type)
     end
 
-    def annual_usage_calculator
-      @annual_usage_calculator ||= AnnualUsageCalculationService.new(aggregate_meter, @asof_date)
+    def usage_calculator
+      @usage_calculator ||= CalculationService.new(aggregate_meter, @asof_date)
     end
 
     def school_size_calculator

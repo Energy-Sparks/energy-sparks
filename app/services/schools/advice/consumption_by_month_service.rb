@@ -32,8 +32,9 @@ module Schools
         %i[kwh gbp co2].to_h do |type|
           current = current_hash[type]
           previous = previous_hash[type]
-          [type, unless [current, previous].any?(&:nil?) || current.zero? || current_hash[:missing] || previous_hash[:missing]
-                   (current - previous) / current
+          [type, unless [current, previous].any?(&:nil?) ||
+                        previous.zero? || current_hash[:missing] || previous_hash[:missing]
+                   (current - previous) / previous
                  end]
         end
       end

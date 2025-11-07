@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Usage
-  class AnnualUsageCalculationService
+  class CalculationService
     include AnalysableMixin
 
     DAYSINYEAR = 363
 
-    # Create a service capable of calculating the annual energy usage for a meter
+    # Create a service capable of calculating the energy usage for a meter
     #
     # To calculate usage for a whole school provide the aggregate electricity
     # meter as the parameter.
@@ -34,7 +34,7 @@ module Usage
       meter_data_checker.date_when_enough_data_available(365)
     end
 
-    # Calculate the annual usage over a twelve month period
+    # Calculate the usage over a specifiied period
     #
     # The period is specified using the +period+ parameter
     #
@@ -42,7 +42,7 @@ module Usage
     #
     # @param period either :this_year or :last_year
     # @return [CombinedUsageMetric] the calculated usage for the specified period
-    def annual_usage(period: :this_year)
+    def usage(period: :this_year)
       start_date, end_date = dates_for_period(period)
       # using £ not £current as this is historical usage
       CombinedUsageMetric.new(
@@ -52,7 +52,7 @@ module Usage
       )
     end
 
-    # Calculates the annual usage for this year and last year and
+    # Calculates the usage for this year or month and last year or month and
     # returns a CombinedUsageMetric with the changes.
     #
     # Values are not temperature adjusted
@@ -69,14 +69,16 @@ module Usage
                     when :this_year
                       :last_year
                     when :last_month
-                      :previous_month
+                      :last_month_previous_year
                     else
                       raise 'invalid period'
                     end
       return nil unless has_full_previous_period_worth_of_data?(last_period)
 
-      this_period = annual_usage(period:)
-      last_period = annual_usage(period: last_period)
+      this_period = usage(period:)
+      last_period = usage(period: last_period)
+      return nil if last_period.kwh.zero?
+
       kwh = this_period.kwh - last_period.kwh
       CombinedUsageMetric.new(
         kwh: kwh,
@@ -96,20 +98,19 @@ module Usage
       start_date = case period
                    when :this_year
                      @asof_date - DAYSINYEAR
-                   when :last_month, :previous_month
+                   when :last_month, :last_month_previous_year
                      @asof_date.prev_month.beginning_of_month
                    end
       start_date = @meter.amr_data.start_date if start_date&.<(@meter.amr_data.start_date)
+      start_date = start_date.prev_year if period == :last_month_previous_year
       case period
       when :this_year
         [start_date, @asof_date]
       when :last_year
         prev_date = @asof_date - DAYSINYEAR - 1
         [prev_date - DAYSINYEAR, prev_date]
-      when :last_month
+      when :last_month, :last_month_previous_year
         [start_date, start_date.end_of_month]
-      when :previous_month
-        [start_date.prev_month, start_date.prev_month.end_of_month]
       else
         raise 'Invalid year'
       end

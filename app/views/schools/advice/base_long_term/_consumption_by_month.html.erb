@@ -27,14 +27,11 @@
         <% %i[kwh gbp co2].each do |type| %>
           <% %i[previous current].each do |period| %>
             <td class="text-right">
-              <%= format_unit(consumption[period][type], type) %>
+              <%= format_unit(consumption[period][type], type, dash_if_nil: true) %>
               <%= '*' if consumption[period][type].present? && consumption[period][:missing] %>
             </td>
           <% end %>
-          <td class="text-right">
-            <%= up_downify(format_unit(consumption[:change][type], :relative_percent, true, :target),
-                           sanitize: false) %>
-          </td>
+          <td class="text-right"><%= format_percent(consumption[:change][type]) %></td>
         <% end %>
       </tr>
     <% end %>

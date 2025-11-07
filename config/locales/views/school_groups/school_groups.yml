@@ -76,9 +76,12 @@ en:
       edit:
         title: Edit cluster
       group_type:
+        diocese: Diocese
         general: School Group
         local_authority: Local Authority
+        local_authority_area: Local Authority Area
         multi_academy_trust: Multi-Academy Trust
+        project: Project Group
       index:
         all_schools: All schools are in a cluster
         cluster: "%{cluster} cluster"
