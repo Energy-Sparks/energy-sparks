@@ -34,16 +34,18 @@
                                                       :id,
                                                       :name
                                                       @school_onboarding.scoreboard&.id),
-                                                      {},
-                                                      { class: 'form-control' } %>
+                  {},
+                  { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :country, 'Country' %>
-      <%= f.select :country, options_for_select(School.countries.map { |key, _value|
-            [key.titleize, key]
-          }, @school_onboarding.country), { include_blank: false }, { class: 'form-control' } %>
+      <%= f.select :country,
+                   options_for_select(School.countries.map { |key, _value| [key.titleize, key] },
+                                      @school_onboarding.country),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
     </div>
   </div>
 
