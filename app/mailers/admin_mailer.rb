@@ -38,7 +38,7 @@ class AdminMailer < ApplicationMailer
     Dir.mktmpdir do |dir|
       files_dir = File.join(dir, 'files')
       Dir.mkdir(files_dir)
-      school_group.schools.data_visible.find_each do |school|
+      school_group.assigned_schools.data_visible.find_each do |school|
         csv = CsvDownloader.readings_to_csv(
           AmrValidatedReading.download_query_for_school(school, extra_selects: ['schools.name', 'schools.id'])
                              .joins(meter: :school).where(meters: { active: true }).to_sql,
