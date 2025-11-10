@@ -1,5 +1,5 @@
 <table class="table">
-  <% school_group.schools.active.by_name.each do |school| %>
+  <% school_group.assigned_schools.active.by_name.each do |school| %>
     <tr class="bg-light">
       <td><%= link_to school.name, school_path(school) %> <%= link_to(dashboard_message_icon(school),
                                                                       edit_admin_school_dashboard_message_path(school)) %></td>

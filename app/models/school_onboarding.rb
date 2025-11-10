@@ -50,7 +50,8 @@ class SchoolOnboarding < ApplicationRecord
   include Enums::DataSharing
   include RestrictsSchoolGroupTypes
 
-  validates :school_name, :contact_email, presence: true
+  validates :school_name, presence: true
+  validates :contact_email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
