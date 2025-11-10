@@ -1,3 +1,4 @@
+<%# Basic page layout with navigation, partners (if present), cookie banner & footer %>
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head>
@@ -5,7 +6,9 @@
   </head>
   <body vocab="http://schema.org/">
     <%= render 'shared/page/navigation' %>
-    <%= content_for?(:page) ? yield(:page) : yield %>
+    <div class="navigation-margin">
+      <%= content_for?(:page) ? yield(:page) : yield %>
+    </div>
     <% if show_partner_footer? %>
       <div class="container-fluid bg-light">
         <div class="container">

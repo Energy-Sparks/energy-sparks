@@ -1,7 +1,11 @@
+<%# Please use the new application layout in favour of this where possible. %>
+<%# Note: this is not a drop-in replacement. application.html.erb renders its own %>
+<%# main container, whereas this layout does not. %>
+<%# It also uses 'header' instead of 'dashboard_header' for the header region. %>
 <%= content_for(:page) do %>
   <div class="container-fluid <%= @audience || :adult %> pb-2">
-    <div class="container navigation-margin">
-      <%= render 'shared/page/top' %>
+    <div class="container">
+      <%= render 'shared/page/breadcrumbs_and_alerts' %>
       <%= yield :dashboard_header if content_for?(:dashboard_header) %>
     </div>
   </div>

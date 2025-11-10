@@ -1,14 +1,15 @@
+<%# application (default) layout %>
 <%= content_for(:page) do %>
   <% if content_for?(:header) %>
     <div class="container-fluid <%= @audience || :adult %> pb-2">
-      <div class="container navigation-margin">
-        <%= render 'shared/page/top' %>
+      <div class="container">
+        <%= render 'shared/page/breadcrumbs_and_flash' %>
         <%= yield :header %>
       </div>
     </div>
   <% end %>
-  <div class="application container<%= ' navigation-margin' unless content_for?(:header) %>">
-    <%= render 'shared/page/top' unless content_for?(:header) %>
+  <div class="application container">
+    <%= render 'shared/page/breadcrumbs_and_flash' unless content_for?(:header) %>
     <%= content_for?(:application) ? yield(:application) : yield %>
   </div>
 <% end %>

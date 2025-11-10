@@ -546,11 +546,8 @@ module ApplicationHelper
   end
 
   def home_class
-    if controller_name == 'home' && %w[index show].include?(action_name)
-      'home'
-    else
-      'home-page'
-    end
+    return '' unless controller_name == 'home'
+    %w[index show].include?(action_name) ? ' home' : ' home-page'
   end
 
   def admin_user_label(school_group)

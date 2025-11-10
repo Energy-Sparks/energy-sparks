@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="<%= I18n.locale %>">
   <head>
-    <%= render 'shared/head' %>
+    <%= render 'shared/page/head' %>
   </head>
   <body>
     <div class='fixed-top'>
       <nav class='navbar navbar-top'>
         <div class="container">
           <%= navigation_image_link %>
-          <%= render 'shared/navigation/top_nav/on_test' %>
+          <%= render 'shared/page/navigation/top_nav/on_test' %>
 
           <div class='<%= order_expand_class %>'>
-            <%= render 'shared/navigation/top_nav/locale_switcher' %>
+            <%= render 'shared/page/navigation/top_nav/locale_switcher' %>
           </div>
         </div>
       </nav>
@@ -25,11 +25,11 @@
       </div>
     </div>
     <footer>
-      <%= render 'shared/footer/second' %>
+      <%= render 'shared/page/footer/second' %>
     </footer>
 
     <%= if Rails.env.production? && @analytics_code.present?
-          render 'shared/google_analytics', analytics_code: @analytics_code
+          render 'shared/page/google_analytics', analytics_code: @analytics_code
         end %>
   </body>
 </html>
