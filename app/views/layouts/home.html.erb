@@ -1,5 +1,5 @@
 <%= content_for(:page) do %>
-  <%# don't render application container as you do for the other pages %>
+  <%# don't render container as you do for most other pages %>
   <div class="<%= home_class %>">
     <%= render 'shared/page/flash' %>
     <%= yield %>

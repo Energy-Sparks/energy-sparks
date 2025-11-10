@@ -1,7 +1,5 @@
 <% if flash.any? %>
-  <section class="alerts">
-    <% flash.each do |name, msg| %>
-      <%= content_tag(:div, msg, class: 'alert alert-info') %>
-    <% end %>
-  </section>
+  <% flash.each do |name, msg| %>
+    <%= content_tag(:div, msg, class: 'alert alert-info') %>
+  <% end %>
 <% end %>
