@@ -5,7 +5,7 @@
 <%= content_for(:page) do %>
   <div class="container-fluid <%= @audience || :adult %> pb-2">
     <div class="container">
-      <%= render 'shared/page/breadcrumbs_and_alerts' %>
+      <%= render 'shared/page/breadcrumbs_and_flash' %>
       <%= yield :dashboard_header if content_for?(:dashboard_header) %>
     </div>
   </div>
