@@ -129,6 +129,22 @@ RSpec.shared_examples 'admin school group onboardings' do
           expect(page).to have_link('Issues', href: admin_school_issues_path(setup_data.school))
         end
       end
+
+      describe 'when trying to complete onboarding' do
+        let(:onboarding) { setup_data }
+
+        before do
+          check "school_group_school_onboarding_ids_#{setup_data.id}"
+        end
+
+        describe 'it does not make visible' do
+          before do
+            click_button 'Make selected visible'
+          end
+
+          it { expect(setup_data).to be_incomplete }
+        end
+      end
     end
 
     context 'when without an associated school' do
