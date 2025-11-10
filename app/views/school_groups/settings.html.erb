@@ -15,7 +15,7 @@
 <% end %>
 
 <%= content_for :sidebar do %>
-Hello
+  <%= render ManageSchoolNavigationComponent.new school: School.first, current_user: current_user %>
 <% end %>
 
 <% if can? :manage, DashboardMessage %>
