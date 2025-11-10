@@ -18,7 +18,7 @@ module Admin
 
       def make_visible
         for_selected 'made visible' do |onboarding|
-          SchoolCreator.new(onboarding.school).make_visible! if onboarding.school && onboarding.school.consent_grants.any?
+          SchoolCreator.new(onboarding.school).make_visible! if onboarding&.school&.consent_grants&.any?
         end
       rescue SchoolCreator::Error => e
         redirect_to redirect_location, notice: e.message
