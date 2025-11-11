@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <% @school_group.schools.active.order(:name).each do |school| %>
+        <% @school_group.assigned_schools.active.order(:name).each do |school| %>
           <tr>
             <td><%= link_to school.name, school_path(school) %></td>
             <td><%= school.all_adult_school_users.pluck(:last_sign_in_at).compact.max %></td>

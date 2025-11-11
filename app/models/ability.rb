@@ -280,6 +280,7 @@ class Ability
 
     can %i[show read index], Audit, related_school_scope
     can :download_school_data, School, school_scope
+    can :manage, Schools::ManualReading, related_school_scope
   end
 
   def group_admin_permissions(user)
