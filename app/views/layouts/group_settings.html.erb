@@ -1,0 +1,9 @@
+<%= content_for :header do %>
+  <%= render(Layout::Cards::PageHeaderComponent.new(title: t('manage_school_menu.manage_school'))) %>
+<% end %>
+
+<%= content_for :nav do %>
+  <%= render ManageSchoolNavigationComponent.new school: School.first, current_user: current_user %>
+<% end %>
+
+<%= render template: 'layouts/page_with_nav' %>

@@ -50,7 +50,7 @@ class SchoolGroupsController < ApplicationController
 
   def settings
     authorize! :manage_settings, @school_group
-    render :settings, layout: 'sidebar'
+    render :settings, layout: 'page_nav'
   end
 
   private

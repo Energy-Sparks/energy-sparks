@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :include_url_helpers, type: :component do
+RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end

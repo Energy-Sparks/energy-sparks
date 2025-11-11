@@ -1,4 +1,7 @@
-<%# application (default) layout %>
+<%# Application (default) layout %>
+<%# Sub-templates can be made from this (for an example see page_nav.html.erb) %>
+<%# Please no further sub layers after this though to keep things simple %>
+
 <%= content_for(:page) do %>
   <% if content_for?(:header) %>
     <div class="container-fluid <%= @audience || :adult %> pb-2">

@@ -1,0 +1,14 @@
+<% content_for :page_title, "#{page_title} | #{school_group.name}" %>
+
+<% if Flipper.enabled?(:group_settings, current_user) %>
+  <% content_for :header do %>
+    <%= render(Layout::Cards::PageHeaderComponent.new(title: page_title)) %>
+  <% end %>
+
+  <% content_for :nav do %>
+    <%= render Navigation::ManageGroupComponent.new(school_group: school_group, current_user: current_user) %>
+  <% end %>
+  <%= yield %>
+<% else %>
+  <%= yield %>
+<% end %>
