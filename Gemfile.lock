@@ -290,8 +290,8 @@ GEM
       logger
     faraday-follow_redirects (0.4.0)
       faraday (>= 1, < 3)
-    faraday-net_http (3.4.1)
-      net-http (>= 0.5.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     faraday-retry (2.3.2)
       faraday (~> 2.0)
     fasterer (0.11.0)
@@ -426,7 +426,7 @@ GEM
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
-    json (2.15.2)
+    json (2.16.0)
     jwt (3.1.2)
       base64
     knapsack (4.0.0)
@@ -851,7 +851,7 @@ GEM
     tilt (2.6.0)
     timeout (0.4.3)
     tsort (0.2.0)
-    twilio-ruby (7.8.5)
+    twilio-ruby (7.8.6)
       faraday (>= 0.9, < 3.0)
       jwt (>= 1.5, < 4.0)
       nokogiri (>= 1.6, < 2.0)
