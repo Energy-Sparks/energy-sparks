@@ -75,8 +75,8 @@ shared_examples 'a long term advice page' do
             [['Period', 'Date Range', 'Usage (kWh)', 'CO2 (kg/CO2)', 'Cost (£)', 'Change since previous period']]
           end
           let(:expected_rows) do
-            [['Last year', '02 Sep 2024 - 01 Dec 2024', '44,000', fuel_type == :gas ? '8,000' : '7,100', '£4,400', '-'],
-             ['Last full month', '01 Nov 2024 - 30 Nov 2024', '14,000', fuel_type == :gas ? '2,600' : '2,300', '£1,400',
+            [['Last year', '02 Sep 2024 - 01 Dec 2024', '43,700', fuel_type == :gas ? '7,970' : '7,120', '£4,370', '-'],
+             ['Last full month', '01 Nov 2024 - 30 Nov 2024', '14,400', fuel_type == :gas ? '2,630' : '2,350', '£1,440',
               '-']]
           end
         end
@@ -109,9 +109,9 @@ shared_examples 'a long term advice page' do
             [['Period', 'Date Range', 'Usage (kWh)', 'CO2 (kg/CO2)', 'Cost (£)', 'Change since previous period']]
           end
           let(:expected_rows) do
-            [['Last year', '04 Dec 2023 - 01 Dec 2024', '170,000', fuel_type == :gas ? '32,000' : '28,000', '£17,000',
+            [['Last year', '04 Dec 2023 - 01 Dec 2024', '175,000', fuel_type == :gas ? '31,900' : '28,500', '£17,500',
               '-'],
-             ['Last full month', '01 Nov 2024 - 30 Nov 2024', '14,000', fuel_type == :gas ? '2,600' : '2,300', '£1,400',
+             ['Last full month', '01 Nov 2024 - 30 Nov 2024', '14,400', fuel_type == :gas ? '2,630' : '2,350', '£1,440',
               '-']]
           end
         end
