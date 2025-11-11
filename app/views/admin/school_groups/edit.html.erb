@@ -1,13 +1,8 @@
-<h1>Edit School group</h1>
+<h1>Edit <%= @school_group.project? ? 'Project' : 'School' %> group</h1>
 
 <div class="row">
   <div class="col-sm-8">
-    <%= render 'form', school_group: @school_group %>
-
-    <div class="other-actions">
-      <%= link_to 'Back', admin_school_groups_path, class: 'btn btn-secondary' %>
-    </div>
-
+    <%= render 'form', school_group: @school_group, project_group: @school_group.project? %>
   </div>
 
   <div class="col-sm-4">

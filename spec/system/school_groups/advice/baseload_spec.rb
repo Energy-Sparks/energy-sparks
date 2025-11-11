@@ -46,7 +46,7 @@ describe 'School group baseload page' do
   end
 
   context 'when on the insights page' do
-    it_behaves_like 'an access controlled group advice page' do
+    it_behaves_like 'an access controlled group page' do
       let(:path) { insights_school_group_advice_baseload_path(school_group) }
     end
 
@@ -81,7 +81,7 @@ describe 'School group baseload page' do
   end
 
   context 'when on the analysis page' do
-    it_behaves_like 'an access controlled group advice page' do
+    it_behaves_like 'an access controlled group page' do
       let(:path) { analysis_school_group_advice_baseload_path(school_group) }
     end
 

@@ -1,63 +1,96 @@
-<h1>Manage School Groups</h1>
-<%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-primary' %>
-<%= link_to 'Export detail', admin_school_groups_path(format: :csv), class: 'btn' %>
-<p></p>
-<% if @school_groups.any? %>
-  <table class="table table-condensed table-sorted">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th title="Group type" class="nowrap">Group type</th>
-        <th title="Issues admin" class="d-none d-md-table-cell nowrap">Issues admin</th>
-        <th title="Schools onboarding">Onboarding</th>
-        <th title="Schools active (without data visible)">Active</th>
-        <th title="Schools active (with data visible)" class='nowrap'>Data visible</th>
-        <th title="Schools invisible">Invisible</th>
-        <th title="Schools removed">Removed</th>
-        <th class="no-sort"></th>
-      </tr>
-    </thead>
+<h1>Manage <%= @project_groups ? 'Project' : 'School' %> Groups</h1>
 
-    <tbody>
-      <% @school_groups.each do |school_group| %>
-        <tr>
-          <td><%= school_group.name %>
-            <%= link_to(dashboard_message_icon(school_group),
-                        edit_admin_school_group_dashboard_message_path(school_group)) %>
-          </td>
-          <td>
-            <span class="badge badge-pill badge-primary"><%= school_group.group_type.humanize %></span>
-          </td>
-          <td class="d-none d-sm-table-cell">
-            <% if school_group.default_issues_admin_user %>
-              <span class="badge border badge-pill border-secondary font-weight-normal">
-                <%= link_to (school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name),
-                            polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
-                            class: 'text-decoration-none' %>
-              </span>
-            <% end %>
-          </td>
-          <td><%= school_group.school_onboardings.incomplete.count %></td>
-          <td><%= school_group.schools.visible.count %></td>
-          <td><%= school_group.schools.visible.data_enabled.count %></td>
-          <td><%= school_group.schools.not_visible.count %></td>
-          <td><%= school_group.schools.inactive.count %></td>
-          <td><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm', id: school_group.slug %></td>
-        </tr>
+<div class="row">
+  <div class="col-12 d-flex justify-content-between">
+    <div>
+      <% if @project_groups %>
+        <%= link_to 'New project group', new_admin_school_group_path(group_type: :project),
+                    class: 'btn btn-sm btn-primary' %>
+      <% else %>
+        <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
       <% end %>
-      <tr class="font-weight-bold">
-        <td>All Energy Sparks Schools</td>
-        <td></td>
-        <td></td>
-        <td><%= SchoolOnboarding.incomplete.count %></td>
-        <td><%= School.visible.count %></td>
-        <td><%= School.visible.data_enabled.count %></td>
-        <td><%= School.not_visible.count %></td>
-        <td><%= School.inactive.count %></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-<% else %>
-  <h2>There are no School groups</h2>
-<% end %>
+    </div>
+    <div>
+      <%= link_to 'Download as CSV',
+                  admin_school_groups_path(format: :csv, group_type: @project_groups ? :project : nil),
+                  class: 'btn btn-sm' %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <% if @school_groups.any? %>
+      <table class="table table-sm table-sorted">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <% unless @project_groups %>
+              <th title="Group type" class="nowrap">Type</th>
+              <th title="Issues admin" class="d-none d-md-table-cell nowrap">Admin</th>
+            <% end %>
+            <th class="text-right" title="Schools onboarding">Onboarding</th>
+            <th class="text-right" title="Schools active (without data visible)">Active</th>
+            <th class="text-right" title="Schools active (with data visible)" class='nowrap'>Data visible</th>
+            <th class="text-right" title="Schools invisible">Invisible</th>
+            <th class="text-right" title="Schools removed">Removed</th>
+            <th class="text-right no-sort"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @school_groups.each do |school_group| %>
+            <tr>
+              <td><%= school_group.name %>
+                <%= link_to(dashboard_message_icon(school_group),
+                            edit_admin_school_group_dashboard_message_path(school_group)) %>
+              </td>
+              <% unless @project_groups %>
+                <td>
+                  <span class="badge badge-pill badge-secondary"><%= school_group.group_type.humanize %></span>
+                </td>
+                <td class="d-none d-sm-table-cell">
+                  <% if school_group.default_issues_admin_user %>
+                    <span class="badge border badge-pill border-secondary font-weight-normal">
+                      <%= link_to (if school_group.default_issues_admin_user == current_user
+                                     'You'
+                                   else
+                                     school_group.default_issues_admin_user.display_name
+                                   end),
+                                  polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
+                                  class: 'text-decoration-none' %>
+                    </span>
+                  <% end %>
+                </td>
+              <% end %>
+              <td class="text-right"><%= school_group.school_onboardings.incomplete.count %></td>
+              <td class="text-right"><%= school_group.schools.visible.count %></td>
+              <td class="text-right"><%= school_group.schools.visible.data_enabled.count %></td>
+              <td class="text-right"><%= school_group.schools.not_visible.count %></td>
+              <td class="text-right"><%= school_group.schools.inactive.count %></td>
+              <td class="text-right"><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm',
+                                                                                                  id: school_group.slug %></td>
+            </tr>
+          <% end %>
+        </tbody>
+        <% unless @project_groups %>
+          <tfooter>
+            <tr class="font-weight-bold">
+              <td>All Energy Sparks Schools</td>
+              <td></td>
+              <td></td>
+              <td class="text-right"><%= SchoolOnboarding.incomplete.count %></td>
+              <td class="text-right"><%= School.visible.count %></td>
+              <td class="text-right"><%= School.visible.data_enabled.count %></td>
+              <td class="text-right"><%= School.not_visible.count %></td>
+              <td class="text-right"><%= School.inactive.count %></td>
+              <td class="text-right"></td>
+            </tr>
+          </tfooter>
+        <% end %>
+      </table>
+    <% else %>
+      <h2>There are no School groups</h2>
+    <% end %>
+  </div>
+</div>

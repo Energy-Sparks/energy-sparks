@@ -2,7 +2,6 @@ module Admin
   class UserListComponent < ApplicationComponent
     def initialize(id: nil, classes: '', users: nil, schools: nil, show_organisation: true)
       super(id: id, classes: classes)
-      raise 'Must specify either users or schools' unless users&.any? || schools&.any?
       @users = users
       @schools = schools
       @show_organisation = show_organisation

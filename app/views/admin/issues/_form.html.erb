@@ -1,7 +1,7 @@
 <div class="row p-2">
   <div class="admin-issue col-md-12 rounded pb-2 <%= issue.issue_type %>">
 
-  <%= render 'header', title: "#{issue_type_icon(issue.issue_type)} #{title}".html_safe do %>
+  <%= render 'header', title: "#{issue_type_icon(issue.issue_type, 1)} #{title}".html_safe do %>
     <% if issue.issueable %>
       <%= header_nav_link "All #{issue.issueable.model_name.human.downcase} issues & notes",
                           url_for([:admin, issue.issueable, :issues]) %>
@@ -40,13 +40,20 @@
     <% else %>
       <%= f.hidden_field :issue_type %>
     <% end %>
-    <%= f.input :owned_by_id, collection: User.admins_by_name, label: 'Assigned to', label_method: :display_name,
-                              include_blank: 'Unassigned',
-                              selected: if f.object.new_record? && params.dig(:issue, :owned_by_id).nil?
-                                          issue.issueable.try(:default_issues_admin_user).try(:id)
-                                        else
-                                          f.object.owned_by_id
-                                        end %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :owned_by_id, collection: User.admins_by_name, label: 'Assigned to', label_method: :display_name,
+                                  include_blank: 'Unassigned',
+                                  selected: if f.object.new_record? && params.dig(:issue, :owned_by_id).nil?
+                                              issue.issueable.try(:default_issues_admin_user).try(:id)
+                                            else
+                                              f.object.owned_by_id
+                                            end %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :review_date, label: 'Review date', as: :tempus_dominus_date %>
+      </div>
+    </div>
     <%= f.input :pinned, as: :boolean, label: 'Pinned' %>
     <%= f.submit 'Save', class: 'btn btn-primary' %>
   <% end %>

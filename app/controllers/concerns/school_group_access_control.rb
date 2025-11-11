@@ -4,7 +4,7 @@ module SchoolGroupAccessControl
   # Rely on CanCan to filter the list of schools to those that can be shown to the current user
 
   def load_schools
-    @schools = @school_group.schools.includes(:configuration).active.accessible_by(current_ability, :show).by_name
+    @schools = @school_group.assigned_schools.includes(:configuration).active.accessible_by(current_ability, :show).by_name
   end
 
   def redirect_unless_authorised

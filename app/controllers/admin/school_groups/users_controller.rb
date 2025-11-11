@@ -26,7 +26,7 @@ module Admin
 
       def school_users
         users = {}
-        @school_group.schools.each do |school|
+        @school_group.assigned_schools.each do |school|
           users[school] = (school.users + school.cluster_users).uniq.sort_by(&:email)
         end
         users
