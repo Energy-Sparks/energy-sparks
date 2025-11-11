@@ -123,18 +123,17 @@ RSpec.shared_examples 'admin school group onboardings' do
   context 'when linking to issues' do
     context 'when there is an associated school' do
       let(:setup_data) { create(:school_onboarding, :with_school, school_group:) }
+      let(:onboarding) { setup_data }
 
       it 'has a school issues link' do
         within 'table' do
-          expect(page).to have_link('Issues', href: admin_school_issues_path(setup_data.school))
+          expect(page).to have_link('Issues', href: admin_school_issues_path(onboarding.school))
         end
       end
 
       describe 'when trying to complete onboarding' do
-        let(:onboarding) { setup_data }
-
         before do
-          check "school_group_school_onboarding_ids_#{setup_data.id}"
+          check "school_group_school_onboarding_ids_#{onboarding.id}"
         end
 
         describe 'it does not make visible' do
@@ -142,25 +141,24 @@ RSpec.shared_examples 'admin school group onboardings' do
             click_button 'Make selected visible'
           end
 
-          it { expect(setup_data).to be_incomplete }
+          it { expect(onboarding).to be_incomplete }
         end
       end
     end
 
     context 'when without an associated school' do
       let(:setup_data) { create(:school_onboarding, school_group:) }
+      let(:onboarding) { setup_data }
 
       it 'has a onboarding issues link' do
         within 'table' do
-          expect(page).to have_link('Issues', href: admin_school_onboarding_issues_path(setup_data))
+          expect(page).to have_link('Issues', href: admin_school_onboarding_issues_path(onboarding))
         end
       end
 
       describe 'when trying to complete onboarding' do
-        let(:onboarding) { setup_data }
-
         before do
-          check "school_group_school_onboarding_ids_#{setup_data.id}"
+          check "school_group_school_onboarding_ids_#{onboarding.id}"
         end
 
         describe 'it does not make visible' do
@@ -168,8 +166,8 @@ RSpec.shared_examples 'admin school group onboardings' do
             click_button 'Make selected visible'
           end
 
-          it { expect(setup_data.school).to be_nil }
-          it { expect(setup_data).to be_incomplete }
+          it { expect(onboarding.school).to be_nil }
+          it { expect(onboarding).to be_incomplete }
         end
       end
     end
