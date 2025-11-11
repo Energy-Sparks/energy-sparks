@@ -96,7 +96,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     alias_action :create, :read, :update, :destroy, to: :crud
 
-    common_permissions(user)
+    common_permissions
 
     if user.guest?
       guest_permissions(user)
@@ -110,47 +110,46 @@ class Ability
       staff_permissions(user)
     elsif user.school_admin?
       school_admin_permissions(user)
+    elsif user.group_manager?
+      group_manager_permissions(user)
     elsif user.group_admin?
       group_admin_permissions(user)
     end
   end
 
-  def common_permissions(user)
-    # All users can do these things
-    can :read, Activity, school: { visible: true }
+  # All users can do these things, even if not logged in
+  def common_permissions
     can %i[read recommended], [ActivityCategory, InterventionTypeGroup]
     can %i[read search for_school], [ActivityType, InterventionType]
-
-    can :read, SchoolGroup
+    can :read, ProgrammeType
 
     # Anyone can view published content
     can :show, Cms::Category, published: true
     can :show, Cms::Page, published: true
 
-    # Allow anyone to compare schools in public school group. The actual schools that are shown
-    # are filtered based on whether user can :show the school
-    can :compare, SchoolGroup, public: true
-
-    can %i[index read_dashboard_menu], School
-
+    can :index, School
     # Anyone can view any visible school whose data sharing is set to public
     can %i[show show_pupils_dash], School, visible: true, data_sharing: :public
 
-    can :live_data, Cad, visible: true, public: true
     can :read, Scoreboard, public: true
+    # FIXME only need show as there's no :index?
+    can :read, SchoolGroup
 
-    can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, ProgrammeType, SchoolTarget]
+    # Allow anyone to compare schools in public school group. The actual schools that are shown
+    # are filtered using based on whether user can :show the school
+    can :compare, SchoolGroup, public: true
 
-    can :manage, Location, school_id: user.school_id
-  end
-
-  def guest_permissions(user)
-    return unless user.guest?
-
-    cannot :manage, Location
+    # FIXME: do we need both index and show here, or just show?
+    can :read, Activity, school: { visible: true }
+    can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, SchoolTarget]
     can :read, Location
 
-    # Users who are not yet signed in, or registered can begin onboarding
+    can :live_data, Cad, visible: true, public: true
+  end
+
+  # Users who are not yet signed in, or registered can begin onboarding
+  def guest_permissions(user)
+    return unless user.guest?
     can :manage, SchoolOnboarding, created_user_id: nil
   end
 
@@ -163,14 +162,20 @@ class Ability
     end
   end
 
-  def super_user_permissions(user)
-    return unless user.admin? || user.analytics?
-    can :manage, :all
-    cannot :read, :my_school_menu
+  # These are permissions granted to all logged in users, except pupils
+  def registered_user_permissions(user)
+    return if user.pupil?
+
+    can :manage, User, id: user.id
+    can :enable_alerts, User, id: user.id
+    can :manage, Contact, user_id: user.id
   end
 
+  # These are permissions for school users (staff and pupils)
   def school_user_common_permissions(user, school_scope)
     return unless user.pupil? || user.staff?
+
+    can :manage, Location, school_id: user.school_id
 
     can %i[show show_pupils_dash show_management_dash], School, school_scope
     # Extend default permission to see visible schools with public data to also add permission to
@@ -190,45 +195,7 @@ class Ability
     can :start_programme, School, school_scope
   end
 
-  def pupil_permissions(user)
-    return unless user.pupil?
-
-    school_scope = { id: user.school_id, visible: true }
-    school_user_common_permissions(user, school_scope)
-
-    can :show_management_dash, School, school_scope
-    # Note: prior to refactoring these to TransportSurvey permissions were using related_school_scope which
-    # was note defined in the original context, so have changed to match scope in staff, i.e. same school only
-    can %i[start read update create], TransportSurvey, school: { id: user.school_id, visible: true }
-    can %i[read create], TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
-    # pupils can only read real cost data if their school is set to share data publicly
-    can %i[read_restricted_analysis read_restricted_advice], School,
-      { id: user.school_id, visible: true, data_sharing: :public }
-  end
-
-  def staff_permissions(user)
-    return unless user.staff?
-
-    can :manage, User, id: user.id
-
-    school_scope = { id: user.school_id, visible: true }
-    school_user_common_permissions(user, school_scope)
-
-    can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
-
-    # These two programme related abilities are unused? In the current user interface pupils can start
-    # and restart programmes.
-    can :start_programme, School, id: user.school_id, visible: true
-    can :crud, Programme, school: { id: user.school_id, visible: true }
-
-    can :enable_alerts, User, id: user.id
-    can :manage, Contact, user_id: user.id
-    can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
-    can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
-    # but staff can read real cost data regardless of data sharing
-    can %i[read_restricted_analysis read_restricted_advice], School, { id: user.school_id, visible: true }
-  end
-
+  # These are permissions for roles with ability to manage schools (school_admin, group_admin)
   def common_school_admin_permissions(user, school_scope, related_school_scope)
     return unless user.school_admin? || user.group_admin?
 
@@ -253,7 +220,6 @@ class Ability
       show_management_dash read start_programme read_restricted_analysis read_restricted_advice manage_settings
     ], School, school_scope
 
-    can :manage, Contact, user_id: user.id
     can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey],
         related_school_scope
     can :manage, TransportSurvey::Response, transport_survey: related_school_scope
@@ -283,42 +249,51 @@ class Ability
     can :manage, Schools::ManualReading, related_school_scope
   end
 
-  def group_admin_permissions(user)
-    return unless user.group_admin?
-    can :manage, User, id: user.id
+  def common_group_user_permissions(user)
+    can %i[show compare show_management_dash], SchoolGroup, id: user.school_group_id
+  end
 
-    # Group users are associated with a school group. This scope is used when checking abilities
-    # for objects that are associated with same SchoolGroup
-    school_scope = { school_group_id: user.school_group_id, visible: true }
-    # This scope is used when checking for abilities on objects that are associated with a school.
-    # We check to ensure that the school is in the same group as the user
-    related_school_scope = { school: { school_group_id: user.school_group_id } }
+  def pupil_permissions(user)
+    return unless user.pupil?
 
-    common_school_admin_permissions(user, school_scope, related_school_scope)
+    school_scope = { id: user.school_id, visible: true }
+    school_user_common_permissions(user, school_scope)
 
-    can %i[show compare show_management_dash update_settings], SchoolGroup, id: user.school_group_id
-    can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
-    can :manage, EnergyTariff, tariff_holder: user.school_group
-    can :manage, EnergyTariff, related_school_scope
+    can :show_management_dash, School, school_scope
+    # Note: prior to refactoring these to TransportSurvey permissions were using related_school_scope which
+    # was note defined in the original context, so have changed to match scope in staff, i.e. same school only
+    can %i[start read update create], TransportSurvey, school: { id: user.school_id, visible: true }
+    can %i[read create], TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
+    # pupils can only read real cost data if their school is set to share data publicly
+    can %i[read_restricted_analysis read_restricted_advice], School,
+      { id: user.school_id, visible: true, data_sharing: :public }
+  end
 
-    # Calendars and CalendarEvents aren't associated with schools or groups, so check whether the
-    # calender is associated with the group
-    can [:show, :update], Calendar do |calendar|
-      user.school_group.calendars.include?(calendar)
-    end
-    can :manage, CalendarEvent do |calendar_event|
-      user.school_group.calendars.include?(calendar_event.calendar)
-    end
-    # A group admin can manage onboarding for any school in their group
-    # The onboarding must be associated with the group
-    can :manage, SchoolOnboarding do |onboarding|
-      onboarding.school_group.present? && user.school_group == onboarding.school_group
-    end
+  def staff_permissions(user)
+    return unless user.staff?
+
+    registered_user_permissions(user)
+
+    school_scope = { id: user.school_id, visible: true }
+    school_user_common_permissions(user, school_scope)
+
+    can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
+
+    # These two programme related abilities are unused? In the current user interface pupils can start
+    # and restart programmes.
+    can :start_programme, School, id: user.school_id, visible: true
+    can :crud, Programme, school: { id: user.school_id, visible: true }
+
+    can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
+    can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
+    # but staff can read real cost data regardless of data sharing
+    can %i[read_restricted_analysis read_restricted_advice], School, { id: user.school_id, visible: true }
   end
 
   def school_admin_permissions(user)
     return unless user.school_admin?
-    can :manage, User, id: user.id
+
+    registered_user_permissions(user)
 
     # School admin users are associated with a school. This scope is used when checking abilities
     # on that school
@@ -344,5 +319,56 @@ class Ability
     can :read, :my_school_menu
     can :switch, School
     can :manage, EnergyTariff, tariff_holder: user.school
+  end
+
+  def group_manager_permissions(user)
+    return unless user.group_manager?
+
+    registered_user_permissions(user)
+
+    # FIXME visibility of schools?
+    common_group_user_permissions(user)
+  end
+
+  def group_admin_permissions(user)
+    return unless user.group_admin?
+
+    registered_user_permissions(user)
+    common_group_user_permissions(user)
+
+    # Group users are associated with a school group. This scope is used when checking abilities
+    # for objects that are associated with same SchoolGroup
+    school_scope = { school_group_id: user.school_group_id, visible: true }
+    # This scope is used when checking for abilities on objects that are associated with a school.
+    # We check to ensure that the school is in the same group as the user
+    related_school_scope = { school: { school_group_id: user.school_group_id } }
+
+    common_school_admin_permissions(user, school_scope, related_school_scope)
+
+    can :update_settings, SchoolGroup, id: user.school_group_id
+
+    can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
+    can :manage, EnergyTariff, tariff_holder: user.school_group
+    can :manage, EnergyTariff, related_school_scope
+
+    # Calendars and CalendarEvents aren't associated with schools or groups, so check whether the
+    # calender is associated with the group
+    can [:show, :update], Calendar do |calendar|
+      user.school_group.calendars.include?(calendar)
+    end
+    can :manage, CalendarEvent do |calendar_event|
+      user.school_group.calendars.include?(calendar_event.calendar)
+    end
+    # A group admin can manage onboarding for any school in their group
+    # The onboarding must be associated with the group
+    can :manage, SchoolOnboarding do |onboarding|
+      onboarding.school_group.present? && user.school_group == onboarding.school_group
+    end
+  end
+
+  def super_user_permissions(user)
+    return unless user.admin? || user.analytics?
+    can :manage, :all
+    cannot :read, :my_school_menu
   end
 end

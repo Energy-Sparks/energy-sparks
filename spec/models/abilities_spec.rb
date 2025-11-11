@@ -2,6 +2,54 @@ require 'rails_helper'
 require 'cancan/matchers'
 
 describe Ability do
+  shared_examples 'a user with permissions common to all' do
+    context 'with activities and actions content' do
+      [ActivityCategory, InterventionTypeGroup].each do |model|
+        [:index, :show, :recommended].freeze.each do |permission|
+          it { is_expected.to be_able_to(permission, model.new) }
+        end
+      end
+
+      [ActivityType, InterventionType].each do |model|
+        [:index, :show, :search, :for_school].freeze.each do |permission|
+          it { is_expected.to be_able_to(permission, model.new) }
+        end
+      end
+
+      [:index, :show].freeze.each do |permission|
+        it { is_expected.to be_able_to(permission, create(:programme_type)) }
+      end
+    end
+
+    context 'with support page content' do
+      it { is_expected.to be_able_to(:show, create(:category, published: true))}
+      it { is_expected.to be_able_to(:show, create(:page, published: true))}
+    end
+
+    context 'with Schools' do
+      it { is_expected.to be_able_to(:index, School) }
+
+      [:show, :show_pupils_dash].freeze.each do |permission|
+        it { is_expected.to be_able_to(permission, create(:school, visible: true, data_sharing: :public)) }
+      end
+    end
+
+    context 'with Scoreboards' do
+      it { is_expected.to be_able_to(:index, Scoreboard) }
+      it { is_expected.to be_able_to(:show, create(:scoreboard, public: true)) }
+    end
+
+    context 'with School Groups' do
+      [:show, :compare].freeze.each do |permission|
+        it { is_expected.to be_able_to(permission, create(:school_group, public: true)) }
+      end
+    end
+  end
+
+  shared_examples 'a guest user' do
+    it { is_expected.to be_able_to(:manage, create(:school_onboarding)) }
+  end
+
   shared_examples 'a user who cannot manage site wide content' do
     %w(ActivityType ActivityCategory SchoolTarget).each do |thing|
       it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }
@@ -93,16 +141,11 @@ describe Ability do
     it { is_expected.not_to be_able_to(:update_settings, school_group)}
   end
 
-  shared_examples 'they have group admin rights' do
+  shared_examples 'they have group manager rights' do
     it { is_expected.to be_able_to(:compare, school_group) }
     it { is_expected.to be_able_to(:show_management_dash, school_group)}
-    it { is_expected.to be_able_to(:update_settings, school_group)}
 
     it_behaves_like 'they can access the school dashboard and data' do
-      let(:school) { create(:school, school_group: school_group) }
-    end
-
-    it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
       let(:school) { create(:school, school_group: school_group) }
     end
 
@@ -122,6 +165,22 @@ describe Ability do
 
       it { is_expected.not_to be_able_to(:compare, other_school_group) }
       it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+    end
+  end
+
+  shared_examples 'they have group admin rights' do
+    it { is_expected.to be_able_to(:update_settings, school_group)}
+
+    it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
+      let(:school) { create(:school, school_group: school_group) }
+    end
+  end
+
+  shared_examples 'they do not have group admin rights' do
+    it { is_expected.not_to be_able_to(:update_settings, school_group)}
+
+    it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
+      let(:school) { create(:school, school_group: school_group) }
     end
   end
 
@@ -185,27 +244,12 @@ describe Ability do
     context 'with a guest user' do
       let(:user) { create(:user, role: :guest) }
 
-      it { is_expected.to be_able_to(:index, School) }
-
-      # Can browse and view categories
-      [ActivityCategory, InterventionTypeGroup].each do |model|
-        [:index, :show, :recommended].freeze.each do |permission|
-          it { is_expected.to be_able_to(permission, model.new) }
-        end
-      end
-
-      [ActivityType, InterventionType].each do |model|
-        [:index, :show, :search, :for_school].freeze.each do |permission|
-          it { is_expected.to be_able_to(permission, model.new) }
-        end
-      end
+      it_behaves_like 'a user with permissions common to all'
+      it_behaves_like 'a guest user'
 
       context 'with school groups' do
-        it { is_expected.to be_able_to(:show, create(:school_group))}
         it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
         it { is_expected.not_to be_able_to(:update_settings, create(:school_group))}
-
-        it { is_expected.to be_able_to(:compare, create(:school_group))}
         it { is_expected.not_to be_able_to(:compare, create(:school_group, public: false))}
       end
 
@@ -248,6 +292,8 @@ describe Ability do
     context 'when user is an admin' do
       let(:user) { create(:admin) }
 
+      it_behaves_like 'a user with permissions common to all'
+
       %w(Activity ActivityType ActivityCategory Calendar CalendarEvent School User SchoolTarget).each do |thing|
         it { is_expected.to be_able_to(:manage, thing.constantize.new) }
       end
@@ -282,6 +328,7 @@ describe Ability do
       context 'when user is a school admin' do
         let(:user) { create(:school_admin, school: school) }
 
+        it_behaves_like 'a user with permissions common to all'
         it_behaves_like 'a user who cannot manage site wide content'
 
         context 'when school is visible' do
@@ -315,6 +362,7 @@ describe Ability do
       context 'when user is a staff user' do
         let(:user) { create(:staff, school: school) }
 
+        it_behaves_like 'a user with permissions common to all'
         it_behaves_like 'a user who cannot manage site wide content'
 
         context 'when school is visible' do
@@ -348,6 +396,8 @@ describe Ability do
 
       context 'with user is a pupil' do
         let(:user) { create(:pupil, school: school) }
+
+        it_behaves_like 'a user with permissions common to all'
 
         it_behaves_like 'a user who cannot manage site wide content'
 
@@ -407,18 +457,22 @@ describe Ability do
       let(:school_group)        { create(:school_group, public: is_public) }
       let(:is_public) { true }
 
+      it_behaves_like 'a user with permissions common to all'
+
       it_behaves_like 'their access to other school dashboards is limited by data sharing settings', group_admin: true do
         let(:user_group) { school_group }
       end
 
       context 'with a public group' do
         it_behaves_like 'they have group admin rights'
+        it_behaves_like 'they have group manager rights'
       end
 
       context 'with a private group' do
         let(:is_public) { false }
 
         it_behaves_like 'they have group admin rights'
+        it_behaves_like 'they have group manager rights'
       end
 
       context 'when completing onboarding' do
