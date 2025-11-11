@@ -502,8 +502,7 @@ Rails.application.routes.draw do
 
       resource :meter_readings_validation, only: [:create]
 
-      resource :configuration, controller: :configuration
-      resource :school_group, controller: :school_group
+      resource :configuration, controller: :configuration, only: [:edit, :update]
       resource :times, only: %i[edit update]
       resource :your_school_estate, only: %i[edit update]
 
