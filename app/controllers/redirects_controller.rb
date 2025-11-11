@@ -7,7 +7,7 @@ class RedirectsController < ApplicationController
   def school_page_redirect
     new_session and return if current_user.nil?
 
-    if current_user.group_admin? || (current_user.school_admin? && current_user.has_other_schools?)
+    if current_user.group_user? || (current_user.school_admin? && current_user.has_other_schools?)
       choose_school
     elsif current_user.admin?
       redirect_to school_redirect_path(School.data_enabled.sample, params[:path]),
@@ -26,7 +26,7 @@ class RedirectsController < ApplicationController
 
   def choose_school
     @path = params[:path]
-    @schools = current_user.group_admin? ? current_user.school_group.schools : current_user.cluster_schools
+    @schools = current_user.group_user? ? current_user.school_group.schools : current_user.cluster_schools
     @schools = @schools.visible.by_name
     render :choose_school
   end

@@ -21,7 +21,7 @@
         <tr class="<%= row_class(user) %>">
           <% if show_organisation? %>
             <td>
-                <% if user.group_admin? %>
+                <% if user.group_user? %>
                   <%= link_to user.school_group.name, admin_school_group_path(user.school_group) %>
                 <% elsif user.school.present? %>
                   <%= link_to user.school.name, school_users_path(user.school) %>

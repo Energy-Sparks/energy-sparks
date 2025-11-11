@@ -64,6 +64,12 @@ FactoryBot.define do
       school_group
     end
 
+    factory :group_manager do
+      name { 'Group manager'}
+      role { :group_manager }
+      school_group
+    end
+
     trait :has_school_assigned do
       school
     end
