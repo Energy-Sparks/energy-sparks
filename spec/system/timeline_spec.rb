@@ -187,7 +187,9 @@ describe 'timelines', type: :system do
       context 'when school group is private' do
         let(:public) { false }
 
-        it_behaves_like 'shows the we are working with message' # this is the map page
+        it_behaves_like 'an access controlled group page' do
+          let(:path) { school_group_path(school_group) }
+        end
       end
     end
 

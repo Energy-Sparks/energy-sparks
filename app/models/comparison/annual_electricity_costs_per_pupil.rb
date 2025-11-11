@@ -19,6 +19,6 @@
 #  idx_on_school_id_1d369f6529  (school_id) UNIQUE
 #
 class Comparison::AnnualElectricityCostsPerPupil < Comparison::View
-  scope :with_data, -> { where.not(one_year_electricity_per_pupil_gbp: nil) }
-  scope :sort_default, -> { order(one_year_electricity_per_pupil_gbp: :desc) }
+  scope :with_data, -> { where.not(one_year_electricity_per_pupil_kwh: nil) }
+  scope :sort_default, -> { order(one_year_electricity_per_pupil_kwh: :desc) }
 end

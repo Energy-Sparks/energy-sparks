@@ -1,6 +1,12 @@
 require 'rails_helper'
 
 describe SchoolOnboarding, type: :model do
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:contact_email) }
+    it { is_expected.to allow_value('test@example.com').for(:contact_email) }
+    it { is_expected.not_to allow_value('\xE2\x80\x8Btest@example.com').for(:contact_email) }
+  end
+
   context 'knows when it has only done an email send and or reminder email' do
     it 'with an email sent' do
       onboarding = create :school_onboarding, :with_events, event_names: [:email_sent]
