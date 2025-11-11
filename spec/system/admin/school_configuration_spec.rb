@@ -100,4 +100,52 @@ RSpec.describe 'editing school configuration', type: :system do
       expect(school.country).to eq('wales')
     end
   end
+
+  context 'when editing project groups' do
+    let!(:project_groups) { create_list(:school_group, 2, group_type: :project) }
+
+    before do
+      click_on('School configuration')
+    end
+
+    it 'displays the groups' do
+      expect(page).to have_select('school_project_group_ids', options: project_groups.sort_by(&:name).map(&:name))
+    end
+
+    context 'when adding groups' do
+      before do
+        select(project_groups.first.name, from: 'school_project_group_ids')
+        click_on 'Update configuration'
+      end
+
+      it 'has updated the association' do
+        school.reload
+        expect(school.project_groups).to eq([project_groups.first])
+      end
+    end
+
+    context 'when there are existing editing groups' do
+      before do
+        school.project_groups = project_groups
+        school.save
+        refresh
+      end
+
+      it 'has the groups selected' do
+        expect(page).to have_select('school_project_group_ids', selected: project_groups.sort_by(&:name).map(&:name))
+      end
+
+      context 'when updating the groups' do
+        before do
+          unselect(project_groups.first.name, from: 'school_project_group_ids')
+          click_on 'Update configuration'
+        end
+
+        it 'has updated the association' do
+          school.reload
+          expect(school.project_groups).to eq([project_groups.last])
+        end
+      end
+    end
+  end
 end

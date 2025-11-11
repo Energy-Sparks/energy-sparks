@@ -68,6 +68,7 @@ module Admin
         :funder_id,
         :notes,
         :school_group_id,
+        :project_group_id,
         :school_name,
         :school_will_be_public,
         :urn,
