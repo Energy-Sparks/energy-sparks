@@ -2,6 +2,7 @@
       show_sub_nav?(@tariff_holder, @hide_subnav) ||
       request.path.starts_with?('/school_groups') ||
       request.path.starts_with?('/admin') ||
+      request.path.starts_with?('/support') ||
       request.path.starts_with?('/comparisons') %>
   <div class="page-breadcrumb">
     <%= render BreadcrumbsComponent.new do |c| %>

@@ -7,6 +7,8 @@ class SchoolGroupsController < ApplicationController
   include Scoring
   include SchoolGroupBreadcrumbs
 
+  layout 'page_nav', only: %i[settings]
+
   load_resource
 
   before_action :find_partners
@@ -50,7 +52,6 @@ class SchoolGroupsController < ApplicationController
 
   def settings
     authorize! :manage_settings, @school_group
-    render :settings, layout: 'page_nav'
   end
 
   private

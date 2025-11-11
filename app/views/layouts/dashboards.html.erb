@@ -1,7 +1,6 @@
-<%# Please use the new application layout in favour of this where possible. %>
-<%# Note: this is not a drop-in replacement. application.html.erb renders its own %>
-<%# main container, whereas this layout does not. %>
-<%# It also uses 'header' instead of 'dashboard_header' for the header region. %>
+<%# For dashboard layouts - does not render a container in the central portion of the page %>
+<%# Views using this layout usually contain a mix of container-fluid and container blocks %>
+<%# Please use the new application layout in favour of this where a container for the main content is required. %>
 <%= content_for(:page) do %>
   <div class="container-fluid <%= @audience || :adult %> pb-2">
     <div class="container">
