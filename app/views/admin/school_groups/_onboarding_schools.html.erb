@@ -13,7 +13,9 @@
     <tbody>
       <% school_group.onboardings_for_group.by_name.incomplete.each do |onboarding| %>
         <tr class="bg-light">
-          <td><%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %></td>
+          <td>
+            <%= f.check_box :school_onboarding_ids, { multiple: true, checked: false }, onboarding.id, nil %>
+          </td>
           <td><%= link_to onboarding.school_name, onboarding_path(onboarding) %></td>
           <td><%= onboarding&.school&.funder&.name || onboarding&.funder&.name %></td>
           <td class="wrap">
