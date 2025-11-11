@@ -126,7 +126,7 @@ module Schools
     end
 
     def school_target_params
-      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+      params.require(:school_target).permit(:electricity, :gas, :storage_heater, :start_date, :target_date, :school_id)
     end
   end
 end

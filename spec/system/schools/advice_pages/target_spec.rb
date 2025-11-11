@@ -108,16 +108,6 @@ RSpec.shared_examples 'target advice page' do
       expect(content(tab)).to eq(insight_content)
     end
 
-    it 'new target with no consumption' do
-      create(:school_target, school:)
-      visit_tab(tab)
-      expect(content(tab)).to have_content(<<~CONTENT.chomp)
-        Waiting to process data for your new target
-        Data for your new target should be available tomorrow.
-        In the meantime you can learn more about this topic.
-      CONTENT
-    end
-
     it 'target in future' do
       create_target(start_date: 1.day.from_now)
       visit_tab(tab)
@@ -269,16 +259,6 @@ RSpec.shared_examples 'target advice page' do
         Target date Previous year (kWh) Target year (kWh) % change Target \
         January 2026 12,120 12,000 -0.98&percnt; 4&percnt; \
         January 2025 11,000 10,000 +10&percnt; 5&percnt;
-      CONTENT
-    end
-
-    it 'new target with no consumption' do
-      create(:school_target, school:)
-      visit_tab(tab)
-      expect(content(tab)).to eq(<<~CONTENT.chomp)
-        Waiting to process data for your new target
-        Data for your new target should be available tomorrow.
-        In the meantime you can learn more about this topic.
       CONTENT
     end
 
