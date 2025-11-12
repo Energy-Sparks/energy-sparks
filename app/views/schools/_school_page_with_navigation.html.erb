@@ -1,14 +1,21 @@
 <% content_for :page_title, "#{page_title} | #{school.name}" %>
 
 <% if Flipper.enabled?(:new_manage_school_pages, current_user) %>
-  <% content_for :header do %>
-    <%= render Layout::Cards::PageHeaderComponent.new(title: page_title) %>
+  <% content_for :dashboard_header do %>
+    <%= render(Layout::Cards::PageHeaderComponent.new(title: page_title)) %>
   <% end %>
 
-  <% content_for :nav do %>
-    <%= render Navigation::ManageSchoolComponent.new(school: school, current_user: current_user) %>
-  <% end %>
-  <%= yield %>
+  <div class="container">
+    <div class="row mt-2">
+      <div id="page-navigation" class="col-md-3 col-lg-3 col-xl-2">
+        <%= render Navigation::ManageSchoolComponent.new school: school, current_user: current_user %>
+      </div>
+
+      <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
 <% else %>
   <%= yield %>
 <% end %>
