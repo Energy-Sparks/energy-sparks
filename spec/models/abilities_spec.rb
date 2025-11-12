@@ -52,27 +52,11 @@ describe Ability do
     end
   end
 
-  shared_examples 'they cannot access the school dashboard and data' do
-    it { is_expected.not_to be_able_to(:show, school) }
-    it { is_expected.not_to be_able_to(:show_pupils_dash, school)}
-    it { is_expected.not_to be_able_to(:download_school_data, school) }
-    it { is_expected.not_to be_able_to(:show_management_dash, school) }
-    it { is_expected.not_to be_able_to(:read_restricted_analysis, school) }
-  end
-
   shared_examples 'they can access the school dashboard and data' do
     it { is_expected.to be_able_to(:show, school) }
     it { is_expected.to be_able_to(:show_pupils_dash, school)}
     it { is_expected.to be_able_to(:download_school_data, school) }
     it { is_expected.to be_able_to(:show_management_dash, school) }
-  end
-
-  shared_examples 'they can record activities for their school' do
-    it { is_expected.to be_able_to(:manage, Activity.new(school: school)) }
-  end
-
-  shared_examples 'they can set targets their school' do
-    it { is_expected.to be_able_to(:manage, create(:school_target, school: school)) }
   end
 
   shared_examples 'a user who can manage users for their school' do
@@ -123,12 +107,6 @@ describe Ability do
     it 'cannot manage site wide tariffs', unless: site_tariffs do
       expect(subject).not_to be_able_to(:manage, SiteSettings.current.energy_tariffs.build)
     end
-  end
-
-  shared_examples 'they can view their school group but not manage it' do
-    it { is_expected.to be_able_to(:compare, school_group) }
-    it { is_expected.to be_able_to(:show_management_dash, school_group)}
-    it { is_expected.not_to be_able_to(:update_settings, school_group)}
   end
 
   shared_examples 'their access to other school dashboards is limited by data sharing settings' do |group_admin: false|
@@ -277,7 +255,17 @@ describe Ability do
         it_behaves_like 'a user without super user permissions'
 
         it_behaves_like 'they cannot manage other schools, groups and users'
-        it_behaves_like 'they can view their school group but not manage it'
+
+        context 'with their school group' do
+          it 'they can view the group' do
+            expect(ability).to be_able_to(:compare, school_group)
+            expect(ability).to be_able_to(:show_management_dash, school_group)
+          end
+
+          it 'they cannot manage the group' do
+            expect(ability).not_to be_able_to(:update_settings, school_group)
+          end
+        end
 
         it_behaves_like 'their access to other school dashboards is limited by data sharing settings' do
           let(:user_group) { school_group }
@@ -288,11 +276,18 @@ describe Ability do
             school.visible = false
           end
 
-          it_behaves_like 'they cannot access the school dashboard and data'
+          it { is_expected.not_to be_able_to(:show, school) }
+          it { is_expected.not_to be_able_to(:show_pupils_dash, school)}
+          it { is_expected.not_to be_able_to(:download_school_data, school) }
+          it { is_expected.not_to be_able_to(:show_management_dash, school) }
+          it { is_expected.not_to be_able_to(:read_restricted_analysis, school) }
         end
 
         it_behaves_like 'they can access the school dashboard and data'
-        it_behaves_like 'they can record activities for their school'
+
+        it 'allows activities to be recorded and managed' do
+          expect(ability).to be_able_to(:manage, Activity.new(school: school))
+        end
 
         it 'allows access to restricted advice' do
           expect(ability).to be_able_to(:read_restricted_analysis, school)
@@ -305,7 +300,10 @@ describe Ability do
 
         it_behaves_like 'a user with common school user permissions'
 
-        it_behaves_like 'they can set targets their school'
+        it 'allows them to create targets' do
+          expect(ability).to be_able_to(:manage, create(:school_target, school: school))
+        end
+
         it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true
       end
 
@@ -314,7 +312,10 @@ describe Ability do
 
         it_behaves_like 'a user with common school user permissions'
 
-        it_behaves_like 'they can set targets their school'
+        it 'allows them to create targets' do
+          expect(ability).to be_able_to(:manage, create(:school_target, school: school))
+        end
+
         it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
       end
 
@@ -323,7 +324,9 @@ describe Ability do
 
         it_behaves_like 'a user with common school user permissions'
 
-        it { is_expected.not_to be_able_to(:manage, create(:school_target, school: school)) }
+        it 'does not allow them to create targets' do
+          expect(ability).not_to be_able_to(:manage, create(:school_target, school: school))
+        end
 
         it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
 
@@ -333,15 +336,6 @@ describe Ability do
           it 'restricts access to some analysis' do
             expect(ability).not_to be_able_to(:read_restricted_analysis, school)
             expect(ability).not_to be_able_to(:read_restricted_advice, school)
-          end
-        end
-
-        context 'when school has public data' do
-          let(:school) { create(:school, school_group: school_group, data_sharing: :public) }
-
-          it 'restricts access to some analysis' do
-            expect(ability).to be_able_to(:read_restricted_analysis, school)
-            expect(ability).to be_able_to(:read_restricted_advice, school)
           end
         end
       end
