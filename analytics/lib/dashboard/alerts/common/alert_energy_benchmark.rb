@@ -318,7 +318,7 @@ class AlertEnergyAnnualVersusBenchmark < AlertAnalysisBase
 
   def summary
     if @last_year_£
-      I18n.t("analytics.common.pa", cost: FormatEnergyUnit.format(:£, @last_year_£, :text))
+      I18n.t("analytics.common.pa", cost: FormatUnit.format(:£, @last_year_£, :text))
     else
       ""
     end

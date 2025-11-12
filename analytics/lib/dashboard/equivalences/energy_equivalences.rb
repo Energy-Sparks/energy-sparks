@@ -64,14 +64,14 @@ class EnergyEquivalences
 
   def self.calculation_description(from_value, from_unit, from_unit_conversion, to_unit_conversion, to_value, to_unit, via_unit)
     "Therefore " +
-    "#{FormatEnergyUnit.format(from_unit, from_value)} " +
-    (from_unit_conversion == 1.0 ? '' : " &times; #{FormatEnergyUnit.format(via_unit, from_unit_conversion)}/#{from_unit}") +
-    " &divide; #{FormatEnergyUnit.format(via_unit, to_unit_conversion)}/#{to_unit.to_s.humanize} "\
-    "= #{FormatEnergyUnit.format(to_unit, to_value)} "\
+    "#{FormatUnit.format(from_unit, from_value)} " +
+    (from_unit_conversion == 1.0 ? '' : " &times; #{FormatUnit.format(via_unit, from_unit_conversion)}/#{from_unit}") +
+    " &divide; #{FormatUnit.format(via_unit, to_unit_conversion)}/#{to_unit.to_s.humanize} "\
+    "= #{FormatUnit.format(to_unit, to_value)} "\
   end
 
   def self.description(value, unit, description)
-    description % FormatEnergyUnit.format(unit, value)
+    description % FormatUnit.format(unit, value)
   end
 
   def self.random_equivalence_type_and_via_type

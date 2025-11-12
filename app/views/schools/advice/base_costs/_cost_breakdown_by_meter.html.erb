@@ -1,0 +1,49 @@
+<%= render 'schools/advice/section_title',
+           section_id: 'cost-breakdown-by-meter',
+           section_title: advice_t("#{fuel_type}_costs.analysis.cost_breakdown_by_meter.title",
+                                   period: format_unit(annual_costs.days / 365.0, :years)) %>
+
+<p>
+  <%= advice_t("#{fuel_type}_costs.analysis.cost_breakdown_by_meter.intro",
+               period: format_unit(annual_costs.days / 365.0, :years),
+               start_date: short_dates(@costs_service_analysis_date_range.first),
+               end_date: short_dates(@costs_service_analysis_date_range.last)) %>
+</p>
+
+<table class="table table-sm advice-table table-with-totals-footer table-sorted">
+  <thead>
+    <th class="text-left"><%= advice_t("#{fuel_type}_costs.tables.columns.meter") %></th>
+    <th class="text-left"><%= advice_t("#{fuel_type}_costs.tables.columns.name") %></th>
+    <th class="text-right"><%= advice_t("#{fuel_type}_costs.tables.columns.cost") %></th>
+  </thead>
+  <tbody>
+    <% annual_costs_breakdown_by_meter.sort_by(&:name_or_mpan_mprn).each do |meter, cost| %>
+      <tr>
+        <td class="text-left">
+          <%= meter.mpan_mprn %>
+          <% if cost.days < 365 %> * <% end %>
+        </td>
+        <td class="text-left"><%= meter.name %></td>
+        <td class="text-right" data-order="<%= cost.£ %>">
+          <%= FormatUnit.format_pounds(:£, cost.£, :text, :approx_accountant, true) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td class="text-left"><%= advice_t("#{fuel_type}_costs.tables.labels.total") %></td>
+      <td></td>
+      <td class="text-right"><%= FormatUnit.format_pounds(:£, annual_costs.£, :text, :approx_accountant, true) %></td>
+    </tr>
+  </tfoot>
+</table>
+<% partial_meter_data = annual_costs_breakdown_by_meter.select { |_meter, costs| costs.days < 365 } %>
+<% if partial_meter_data.present? %>
+  <div class="text-right advice-table-caption">
+    <sup>*</sup> <%= t('advice_pages.tables.notice.partial_year') %>:
+    <% partial_meter_data.map do |meter,costs| %>
+        <%= meter.name_or_mpan_mprn %> (<%= short_dates(costs.start_date) %> - <%= short_dates(costs.end_date) %>)
+    <% end.to_sentence %>
+  </div>
+<% end %>
