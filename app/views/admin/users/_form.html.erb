@@ -1,7 +1,7 @@
 <%= simple_form_for([:admin, user], html: { class: 'admin-user-form' }) do |f| %>
   <%= f.input :name, required: true %>
   <%= f.input :email %>
-  <%= f.input :role, collection: User.roles.except(:guest).keys, label_method: :titleize %>
+  <%= f.input :role, collection: User.roles.except(:guest, :group_manager).keys, label_method: :titleize %>
   <%= f.input :school_id, collection: @schools, hint: 'For staff and school admins' %>
   <%= f.input :school_group_id, collection: @school_groups, hint: 'For group admins' %>
   <%= f.association :cluster_schools, collection: @schools, hint: 'For school admins' %>

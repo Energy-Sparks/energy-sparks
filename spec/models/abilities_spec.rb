@@ -109,7 +109,7 @@ describe Ability do
     end
   end
 
-  shared_examples 'their access to other school dashboards is limited by data sharing settings' do |group_admin: false|
+  shared_examples 'their access to school dashboards is limited by data sharing settings' do |group_admin: false, group_manager: false|
     let(:data_sharing) { :public }
     let(:other_school_in_group) { create(:school, school_group: user_group, data_sharing: data_sharing) }
     let(:school_in_different_group) { create(:school, :with_school_group, data_sharing: data_sharing) }
@@ -129,9 +129,16 @@ describe Ability do
     context 'when data sharing is within_group' do
       let(:data_sharing) { :within_group }
 
-      context 'with school in their group' do
+      context 'with school in their group', unless: group_manager do
         it { is_expected.to be_able_to(:show, other_school_in_group) }
         it { is_expected.to be_able_to(:show_pupils_dash, other_school_in_group) }
+      end
+
+      # Group managers (which are used for project/area groupings) cannot see
+      # these schools.
+      context 'with school in their group', if: group_manager do
+        it { is_expected.not_to be_able_to(:show, other_school_in_group) }
+        it { is_expected.not_to be_able_to(:show_pupils_dash, other_school_in_group) }
       end
 
       context 'with school in different group' do
@@ -267,7 +274,7 @@ describe Ability do
           end
         end
 
-        it_behaves_like 'their access to other school dashboards is limited by data sharing settings' do
+        it_behaves_like 'their access to school dashboards is limited by data sharing settings' do
           let(:user_group) { school_group }
         end
 
@@ -341,14 +348,15 @@ describe Ability do
       end
     end
 
-    context 'when a group admin' do
-      shared_examples 'they have group admin rights' do
+    context 'with group users' do
+      let(:school_group) { create(:school_group, public: is_public) }
+      let(:is_public) { true }
+
+      shared_examples 'a user with common group permissions' do
+        it_behaves_like 'a user with permissions common to all'
+
         it { is_expected.to be_able_to(:compare, school_group) }
         it { is_expected.to be_able_to(:show_management_dash, school_group)}
-
-        it_behaves_like 'they can access the school dashboard and data' do
-          let(:school) { create(:school, school_group: school_group) }
-        end
 
         context 'with schools outside group' do
           it { is_expected.not_to be_able_to(:download_school_data, create(:school)) }
@@ -367,113 +375,125 @@ describe Ability do
           it { is_expected.not_to be_able_to(:compare, other_school_group) }
           it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
         end
-
-        it { is_expected.to be_able_to(:update_settings, school_group)}
-
-        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
-          let(:school) { create(:school, school_group: school_group) }
-        end
       end
 
-      let(:user)                { create(:user, role: :group_admin, school_group: school_group)}
-      let(:school_group)        { create(:school_group, public: is_public) }
-      let(:is_public) { true }
+      context 'when user is a group admin' do
+        let(:user) { create(:user, role: :group_admin, school_group: school_group)}
 
-      it_behaves_like 'a user with permissions common to all'
+        it_behaves_like 'a user with common group permissions'
 
-      it_behaves_like 'their access to other school dashboards is limited by data sharing settings', group_admin: true do
-        let(:user_group) { school_group }
-      end
+        shared_examples 'they have group admin rights' do
+          context 'with schools in the group' do
+            let(:school) { create(:school, school_group: school_group) }
 
-      context 'with a public group' do
-        it_behaves_like 'they have group admin rights'
-      end
+            it_behaves_like 'they can access the school dashboard and data'
 
-      context 'with a private group' do
-        let(:is_public) { false }
+            it 'allows activities to be recorded and managed' do
+              expect(ability).to be_able_to(:manage, Activity.new(school: school))
+            end
 
-        it_behaves_like 'they have group admin rights'
-      end
-
-      context 'when completing onboarding' do
-        context 'with an onboarding that has not started' do
-          context 'when it is their group' do
-            let(:school_onboarding) { create(:school_onboarding, school_group: school_group)}
-
-            it { is_expected.to be_able_to(:manage, school_onboarding)}
+            it 'allows access to restricted advice' do
+              expect(ability).to be_able_to(:read_restricted_analysis, school)
+              expect(ability).to be_able_to(:read_restricted_advice, school)
+            end
           end
 
-          context 'when it is not their group' do
-            it { is_expected.not_to be_able_to(:manage, create(:school_onboarding, school_group: create(:school_group)))}
+          it { is_expected.to be_able_to(:update_settings, school_group)}
+
+          it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
+            let(:school) { create(:school, school_group: school_group) }
           end
         end
 
-        context 'with an onboarding that has started' do
-          let(:school_onboarding) { create(:school_onboarding, school_group: school_group, school: create(:school, school_group: school_group))}
+        it_behaves_like 'their access to school dashboards is limited by data sharing settings', group_admin: true do
+          let(:user_group) { school_group }
+        end
 
-          context 'with a school in their group' do
-            it { is_expected.to be_able_to(:manage, school_onboarding)}
+        context 'with a public group' do
+          it_behaves_like 'they have group admin rights'
+        end
+
+        context 'with a private group' do
+          let(:is_public) { false }
+
+          it_behaves_like 'they have group admin rights'
+        end
+
+        context 'when completing onboarding' do
+          context 'with an onboarding that has not started' do
+            context 'when it is their group' do
+              let(:school_onboarding) { create(:school_onboarding, school_group: school_group)}
+
+              it { is_expected.to be_able_to(:manage, school_onboarding)}
+            end
+
+            context 'when it is not their group' do
+              it { is_expected.not_to be_able_to(:manage, create(:school_onboarding, school_group: create(:school_group)))}
+            end
           end
 
-          context 'with a school in another group' do
-            let(:other_group) { create(:school_group) }
-            let(:school_onboarding) { create(:school_onboarding, school_group: other_group, school: create(:school, school_group: other_group)) }
+          context 'with an onboarding that has started' do
+            let(:school_onboarding) { create(:school_onboarding, school_group: school_group, school: create(:school, school_group: school_group))}
 
-            it { is_expected.not_to be_able_to(:manage, school_onboarding) }
+            context 'with a school in their group' do
+              it { is_expected.to be_able_to(:manage, school_onboarding)}
+            end
+
+            context 'with a school in another group' do
+              let(:other_group) { create(:school_group) }
+              let(:school_onboarding) { create(:school_onboarding, school_group: other_group, school: create(:school, school_group: other_group)) }
+
+              it { is_expected.not_to be_able_to(:manage, school_onboarding) }
+            end
           end
         end
       end
-    end
 
-    context 'when a group manager' do
-      shared_examples 'they have group manager rights' do
-        it { is_expected.to be_able_to(:compare, school_group) }
-        it { is_expected.to be_able_to(:show_management_dash, school_group)}
+      context 'when users is a group manager' do
+        let(:user) { create(:user, role: :group_manager, school_group: school_group)}
 
-        it_behaves_like 'they can access the school dashboard and data' do
-          let(:school) { create(:school, school_group: school_group) }
+        it_behaves_like 'a user with common group permissions'
+
+        shared_examples 'they have group manager rights' do
+          context 'with schools in the group' do
+            let(:school) { create(:school, school_group: school_group) }
+
+            it 'does not allow activities to be recorded and managed' do
+              expect(ability).not_to be_able_to(:manage, Activity.new(school: school))
+            end
+
+            it 'does not allow access to restricted advice' do
+              expect(ability).not_to be_able_to(:read_restricted_analysis, school)
+              expect(ability).not_to be_able_to(:read_restricted_advice, school)
+            end
+
+            it { is_expected.to be_able_to(:show, school) }
+            it { is_expected.to be_able_to(:show_pupils_dash, school)}
+
+            it { is_expected.not_to be_able_to(:download_school_data, school) }
+            it { is_expected.not_to be_able_to(:show_management_dash, school) }
+          end
+
+          it { is_expected.not_to be_able_to(:update_settings, school_group)}
+
+          it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
+            let(:school) { create(:school, school_group: school_group) }
+          end
         end
 
-        context 'with other public groups' do
-          let(:other_school_group) { create(:school_group) }
-
-          it { is_expected.to be_able_to(:compare, other_school_group) }
-          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        it_behaves_like 'their access to school dashboards is limited by data sharing settings', group_manager: true do
+          let(:user_group) { school_group }
         end
 
-        context 'with other private groups' do
-          let(:other_school_group) { create(:school_group, public: false) }
-
-          it { is_expected.not_to be_able_to(:compare, other_school_group) }
-          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        context 'with a public group' do
+          it_behaves_like 'they have group manager rights'
         end
 
-        it { is_expected.not_to be_able_to(:update_settings, school_group)}
+        context 'with a private group' do
+          let(:is_public) { false }
 
-        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
-          let(:school) { create(:school, school_group: school_group) }
+          it_behaves_like 'they have group manager rights'
         end
-      end
-
-      let(:user)                { create(:user, role: :group_manager, school_group: school_group)}
-      let(:school_group)        { create(:school_group, public: is_public) }
-      let(:is_public) { true }
-
-      it_behaves_like 'a user with permissions common to all'
-
-      # FIXME needs refining for this role, to exclude within_group
-      it_behaves_like 'their access to other school dashboards is limited by data sharing settings', group_admin: false do
-        let(:user_group) { school_group }
-      end
-
-      context 'with a public group' do
-        it_behaves_like 'they have group manager rights'
-      end
-
-      context 'with a private group' do
-        let(:is_public) { false }
-
-        it_behaves_like 'they have group manager rights'
       end
     end
   end

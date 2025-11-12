@@ -132,7 +132,7 @@ class Ability
     can %i[show show_pupils_dash], School, visible: true, data_sharing: :public
 
     can :read, Scoreboard, public: true
-    # FIXME only need show as there's no :index?
+    # TODO only need show as there's no :index?
     can :read, SchoolGroup
 
     # Allow anyone to compare schools in public school group. The actual schools that are shown
@@ -239,7 +239,6 @@ class Ability
 
     can :manage, User, related_school_scope
     can(:manage, User) { |other_user| other_user.cluster_schools.include?(user.school) }
-
     cannot :delete, User do |other_user|
       user.id == other_user.id
     end
@@ -321,12 +320,17 @@ class Ability
     can :manage, EnergyTariff, tariff_holder: user.school
   end
 
+  # More limited group user role. Intended for project and area groupings in which
+  # the login should allow access to manage some aspects of the group, access reports,
+  # but not allow access to non-public data. This is because these logins are outside
+  # of the main organisation for the school, so "within_group" sharing does not apply
+  #
+  # If this role were to be used for organisation groups, then would need some
+  # additional grants, e.g. ability to see data for schools with "within group" sharing.
   def group_manager_permissions(user)
     return unless user.group_manager?
 
     registered_user_permissions(user)
-
-    # FIXME visibility of schools?
     common_group_user_permissions(user)
   end
 
