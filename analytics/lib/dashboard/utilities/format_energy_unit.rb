@@ -38,7 +38,6 @@ class FormatEnergyUnit
     return value if medium == :raw || no_recent_or_not_enough_data?(value)
     return '' if value.nil? #  && in_table - PH 20Nov2019 experimental change to tidying blank cells on heads summary table
     unit = unit.keys[0] if unit.is_a?(Hash) # if unit = {kwh: :gas} - ignore the :gas for formatting purposes
-    unit = unit.to_s.sub('gbp', '£').to_sym if unit.is_a?(Symbol)
     return scale_num(value, false, user_numeric_comprehension_level).to_s if unit == Float
 
     #From inspection this only seems to be used via HtmlTableFormatting.format_value
@@ -46,6 +45,8 @@ class FormatEnergyUnit
     #This line of code means that any unknown units in the table will be converted to a string
     #all others will be formatted to the specified precision
     return value.to_s if convert_missing_types_to_strings && !known_unit?(unit)
+
+    unit = unit.to_s.sub('gbp', '£').to_sym if unit.is_a?(Symbol)
     check_units(unit)
 
     if %i[£ £_0dp £_per_kwh £_per_kva £current £_per_kw].include?(unit)
