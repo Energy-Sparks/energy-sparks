@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe FormatEnergyUnit, :aggregate_failures do
+describe FormatUnit, :aggregate_failures do
   let!(:value) { 113.66216439927433 }
 
   context 'with ks2 formatting' do
