@@ -7,7 +7,7 @@ class SchoolGroupsController < ApplicationController
   include Scoring
   include SchoolGroupBreadcrumbs
 
-  layout 'page_nav', only: %i[settings]
+  layout 'group_settings', only: %i[settings]
 
   load_resource
 
@@ -51,7 +51,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def settings
-    authorize! :manage_settings, @school_group
+    redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings)
+    # Taking this out for now
+    # authorize! :manage_settings, @school_group
   end
 
   private

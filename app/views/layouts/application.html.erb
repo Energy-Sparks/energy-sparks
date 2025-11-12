@@ -1,5 +1,5 @@
 <%# Application (default) layout %>
-<%# Sub-templates can be made from this (for an example see page_nav.html.erb) %>
+<%# Sub-templates can be made from this (for an example see group_settings.html.erb) %>
 <%# Please no further sub layers after this though to keep things simple %>
 <%= content_for(:page) do %>
   <% if content_for?(:header) %>
@@ -10,9 +10,20 @@
       </div>
     </div>
   <% end %>
-  <div class="application container">
+  <div class="application <%= container_class %>">
     <%= render 'shared/page/breadcrumbs_and_flash' unless content_for?(:header) %>
-    <%= content_for?(:application) ? yield(:application) : yield %>
+    <% if content_for?(:page_nav) %>
+      <div class="row mt-2">
+        <div id="page-navigation" class="col-md-3 col-lg-3 col-xl-2">
+          <%= yield :page_nav %>
+        </div>
+        <div id="page-body" class="col-md-9 col-lg-9 col-xl-10">
+          <%= yield %>
+        </div>
+      </div>
+    <% else %>
+      <%= content_for?(:application) ? yield(:application) : yield %>
+    <% end %>
   </div>
 <% end %>
 <%= render template: 'layouts/page' %>

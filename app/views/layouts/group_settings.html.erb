@@ -1,0 +1,16 @@
+<% content_for :page_title, "#{t('school_groups.sub_nav.manage_group')} | #{@school_group.name}" %>
+<% content_for(:application) do %>
+  <% if Flipper.enabled?(:group_settings, current_user) %>
+    <% content_for :header do %>
+      <%= render(Layout::Cards::PageHeaderComponent.new(title: t('school_groups.sub_nav.manage_group'))) %>
+    <% end %>
+
+    <% content_for :page_nav do %>
+      <%= render Navigation::ManageGroupComponent.new(school_group: @school_group, current_user: current_user) %>
+    <% end %>
+    <%= yield %>
+  <% else %>
+    <%= yield %>
+  <% end %>
+<% end %>
+<%= render template: 'layouts/application' %>

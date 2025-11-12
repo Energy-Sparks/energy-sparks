@@ -558,4 +558,12 @@ module ApplicationHelper
   def schools_count
     number_with_delimiter(School.active.visible.count)
   end
+
+  # 'wide': container-fluid
+  # 'normal': or not specified: container
+  # 'none' or anything else: no container class
+  def container_class
+    return 'container' if !content_for?(:container_size) || content_for(:container_size) == 'normal'
+    content_for(:container_size) == 'wide' ? 'container-fluid' : ''
+  end
 end
