@@ -377,6 +377,14 @@ en:
           format compatible with SECR reporting. However you will need to check that it is complete and add any other
           required data.
           </p>
+    settings:
+      charts: Set your default display units for energy charts - choose between kg CO₂, kWh, £, or the system default
+      clusters: Group similar schools within your organisation into clusters to simplify comparisons
+      digital_signage: Display your analysis on public signage around schools
+      engagement: This report summarises how your schools are engaging with Energy Sparks features. Higher engagement typically leads to greater energy savings.
+      history: Manage the activities and actions previously recorded by your schools
+      secr: Use this tool to prepare SECR reports for your Multi-Academy Trust by reviewing your energy consumption and emissions data
+      tariffs: Manage current and historical energy tariffs for your group and schools
     show:
       change_units: Change units
       chart_note: Chart shows all schools with at least a year of data available.
