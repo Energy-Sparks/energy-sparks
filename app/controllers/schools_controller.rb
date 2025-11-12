@@ -5,8 +5,7 @@ class SchoolsController < ApplicationController
   include DashboardTimeline
   include SchoolProgress
 
-  layout 'dashboards', only: %i[show]
-  layout 'page_nav', only: %i[settings]
+  layout 'dashboards', only: %i[show settings]
 
   load_and_authorize_resource except: %i[show index]
   load_resource only: [:show]
