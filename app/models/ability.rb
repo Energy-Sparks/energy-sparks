@@ -139,7 +139,7 @@ class Ability
     # are filtered using based on whether user can :show the school
     can :compare, SchoolGroup, public: true
 
-    # FIXME: do we need both index and show here, or just show?
+    # TODO: do we need both index and show here, or just show?
     can :read, Activity, school: { visible: true }
     can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, SchoolTarget]
     can :read, Location
@@ -250,6 +250,9 @@ class Ability
 
   def common_group_user_permissions(user)
     can %i[show compare show_management_dash], SchoolGroup, id: user.school_group_id
+
+    can :view_settings, SchoolGroup, id: user.school_group_id
+    can :read, :my_school_group_menu
   end
 
   def pupil_permissions(user)
