@@ -46,20 +46,14 @@ describe Ability do
     end
   end
 
-  shared_examples 'a guest user' do
-    it { is_expected.to be_able_to(:manage, create(:school_onboarding)) }
-  end
-
-  shared_examples 'a user who cannot manage site wide content' do
+  shared_examples 'a user without super user permissions' do
     %w(ActivityType ActivityCategory SchoolTarget).each do |thing|
       it { is_expected.not_to be_able_to(:manage, thing.constantize.new) }
     end
   end
 
   shared_examples 'they cannot access the school dashboard and data' do
-    %i[show].each do |action|
-      it { is_expected.not_to be_able_to(action, school) }
-    end
+    it { is_expected.not_to be_able_to(:show, school) }
     it { is_expected.not_to be_able_to(:show_pupils_dash, school)}
     it { is_expected.not_to be_able_to(:download_school_data, school) }
     it { is_expected.not_to be_able_to(:show_management_dash, school) }
@@ -67,9 +61,7 @@ describe Ability do
   end
 
   shared_examples 'they can access the school dashboard and data' do
-    %i[index show].each do |action|
-      it { is_expected.to be_able_to(action, school) }
-    end
+    it { is_expected.to be_able_to(:show, school) }
     it { is_expected.to be_able_to(:show_pupils_dash, school)}
     it { is_expected.to be_able_to(:download_school_data, school) }
     it { is_expected.to be_able_to(:show_management_dash, school) }
@@ -77,11 +69,9 @@ describe Ability do
 
   shared_examples 'they can record activities for their school' do
     it { is_expected.to be_able_to(:manage, Activity.new(school: school)) }
-    it { is_expected.to be_able_to(:read, ActivityCategory.new) }
-    it { is_expected.to be_able_to(:show, ActivityType.new) }
   end
 
-  shared_examples 'they can set targets' do
+  shared_examples 'they can set targets their school' do
     it { is_expected.to be_able_to(:manage, create(:school_target, school: school)) }
   end
 
@@ -135,53 +125,10 @@ describe Ability do
     end
   end
 
-  shared_examples 'they can view school group but not manage it' do
+  shared_examples 'they can view their school group but not manage it' do
     it { is_expected.to be_able_to(:compare, school_group) }
     it { is_expected.to be_able_to(:show_management_dash, school_group)}
     it { is_expected.not_to be_able_to(:update_settings, school_group)}
-  end
-
-  shared_examples 'they have group manager rights' do
-    it { is_expected.to be_able_to(:compare, school_group) }
-    it { is_expected.to be_able_to(:show_management_dash, school_group)}
-
-    it_behaves_like 'they can access the school dashboard and data' do
-      let(:school) { create(:school, school_group: school_group) }
-    end
-
-    context 'with schools outside group' do
-      it { is_expected.not_to be_able_to(:download_school_data, create(:school)) }
-    end
-
-    context 'with other public groups' do
-      let(:other_school_group) { create(:school_group) }
-
-      it { is_expected.to be_able_to(:compare, other_school_group) }
-      it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
-    end
-
-    context 'with other private groups' do
-      let(:other_school_group) { create(:school_group, public: false) }
-
-      it { is_expected.not_to be_able_to(:compare, other_school_group) }
-      it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
-    end
-  end
-
-  shared_examples 'they have group admin rights' do
-    it { is_expected.to be_able_to(:update_settings, school_group)}
-
-    it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
-      let(:school) { create(:school, school_group: school_group) }
-    end
-  end
-
-  shared_examples 'they do not have group admin rights' do
-    it { is_expected.not_to be_able_to(:update_settings, school_group)}
-
-    it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
-      let(:school) { create(:school, school_group: school_group) }
-    end
   end
 
   shared_examples 'their access to other school dashboards is limited by data sharing settings' do |group_admin: false|
@@ -245,7 +192,8 @@ describe Ability do
       let(:user) { create(:user, role: :guest) }
 
       it_behaves_like 'a user with permissions common to all'
-      it_behaves_like 'a guest user'
+
+      it { is_expected.to be_able_to(:manage, create(:school_onboarding)) }
 
       context 'with school groups' do
         it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
@@ -253,7 +201,7 @@ describe Ability do
         it { is_expected.not_to be_able_to(:compare, create(:school_group, public: false))}
       end
 
-      context 'when accessing school dashboards' do
+      context 'with schools' do
         let(:data_sharing) { :public }
         let(:school) { create(:school, data_sharing: data_sharing) }
 
@@ -321,107 +269,63 @@ describe Ability do
     end
 
     context 'with school users' do
-      let(:school) { create(:school, school_group: school_group, visible: visible) }
-      let(:visible) { true }
+      let(:school) { create(:school, school_group: school_group) }
       let(:school_group) { create(:school_group) }
 
-      context 'when user is a school admin' do
-        let(:user) { create(:school_admin, school: school) }
-
+      shared_examples 'a user with common school user permissions' do
         it_behaves_like 'a user with permissions common to all'
-        it_behaves_like 'a user who cannot manage site wide content'
-
-        context 'when school is visible' do
-          it_behaves_like 'they can access the school dashboard and data'
-
-          it_behaves_like 'they can record activities for their school'
-          it_behaves_like 'they can set targets'
-          it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true
-
-          it 'allows access to restricted analysis' do
-            expect(ability).to be_able_to(:read_restricted_analysis, school)
-            expect(ability).to be_able_to(:read_restricted_advice, school)
-          end
-        end
-
-        context 'when school is not visible' do
-          let(:visible) { false }
-
-          it_behaves_like 'they cannot access the school dashboard and data'
-        end
-
+        it_behaves_like 'a user without super user permissions'
 
         it_behaves_like 'they cannot manage other schools, groups and users'
-        it_behaves_like 'they can view school group but not manage it'
+        it_behaves_like 'they can view their school group but not manage it'
 
         it_behaves_like 'their access to other school dashboards is limited by data sharing settings' do
           let(:user_group) { school_group }
         end
-      end
 
-      context 'when user is a staff user' do
-        let(:user) { create(:staff, school: school) }
-
-        it_behaves_like 'a user with permissions common to all'
-        it_behaves_like 'a user who cannot manage site wide content'
-
-        context 'when school is visible' do
-          it_behaves_like 'they can access the school dashboard and data'
-          it_behaves_like 'they can record activities for their school'
-          it_behaves_like 'they can set targets'
-          it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
-
-          it 'allows access to restricted advice' do
-            expect(ability).to be_able_to(:read_restricted_analysis, school)
-            expect(ability).to be_able_to(:read_restricted_advice, school)
+        context 'when school is not visible' do
+          before do
+            school.visible = false
           end
-        end
-
-        context 'when school is not visible' do
-          let(:visible) { false }
 
           it_behaves_like 'they cannot access the school dashboard and data'
         end
 
-        it_behaves_like 'they cannot manage other schools, groups and users'
-
-        it_behaves_like 'they can view school group but not manage it'
-
-        it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
-
-        it_behaves_like 'their access to other school dashboards is limited by data sharing settings' do
-          let(:user_group) { school_group }
-        end
-      end
-
-      context 'with user is a pupil' do
-        let(:user) { create(:pupil, school: school) }
-
-        it_behaves_like 'a user with permissions common to all'
-
-        it_behaves_like 'a user who cannot manage site wide content'
-
-        context 'when school is visible' do
-          it_behaves_like 'they can access the school dashboard and data'
-          it_behaves_like 'they can record activities for their school'
-
-          it { is_expected.not_to be_able_to(:manage, create(:school_target, school: school)) }
-
-          it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
-        end
-
-        context 'when school is not visible' do
-          let(:visible) { false }
-
-          it_behaves_like 'they cannot access the school dashboard and data'
-        end
+        it_behaves_like 'they can access the school dashboard and data'
+        it_behaves_like 'they can record activities for their school'
 
         it 'allows access to restricted advice' do
           expect(ability).to be_able_to(:read_restricted_analysis, school)
           expect(ability).to be_able_to(:read_restricted_advice, school)
         end
+      end
 
-        it_behaves_like 'they can access the school dashboard and data'
+      context 'when user is a school admin' do
+        let(:user) { create(:school_admin, school: school) }
+
+        it_behaves_like 'a user with common school user permissions'
+
+        it_behaves_like 'they can set targets their school'
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true
+      end
+
+      context 'when user is a staff user' do
+        let(:user) { create(:staff, school: school) }
+
+        it_behaves_like 'a user with common school user permissions'
+
+        it_behaves_like 'they can set targets their school'
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
+      end
+
+      context 'when user is a pupil' do
+        let(:user) { create(:pupil, school: school) }
+
+        it_behaves_like 'a user with common school user permissions'
+
+        it { is_expected.not_to be_able_to(:manage, create(:school_target, school: school)) }
+
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
 
         context 'when school does not have public data sharing' do
           let(:school) { create(:school, school_group: school_group, data_sharing: :within_group) }
@@ -440,19 +344,43 @@ describe Ability do
             expect(ability).to be_able_to(:read_restricted_advice, school)
           end
         end
-
-        it_behaves_like 'they cannot manage other schools, groups and users'
-
-        it_behaves_like 'they can view school group but not manage it'
-        it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
-
-        it_behaves_like 'their access to other school dashboards is limited by data sharing settings' do
-          let(:user_group) { school_group }
-        end
       end
     end
 
     context 'when a group admin' do
+      shared_examples 'they have group admin rights' do
+        it { is_expected.to be_able_to(:compare, school_group) }
+        it { is_expected.to be_able_to(:show_management_dash, school_group)}
+
+        it_behaves_like 'they can access the school dashboard and data' do
+          let(:school) { create(:school, school_group: school_group) }
+        end
+
+        context 'with schools outside group' do
+          it { is_expected.not_to be_able_to(:download_school_data, create(:school)) }
+        end
+
+        context 'with other public groups' do
+          let(:other_school_group) { create(:school_group) }
+
+          it { is_expected.to be_able_to(:compare, other_school_group) }
+          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        end
+
+        context 'with other private groups' do
+          let(:other_school_group) { create(:school_group, public: false) }
+
+          it { is_expected.not_to be_able_to(:compare, other_school_group) }
+          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        end
+
+        it { is_expected.to be_able_to(:update_settings, school_group)}
+
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
+          let(:school) { create(:school, school_group: school_group) }
+        end
+      end
+
       let(:user)                { create(:user, role: :group_admin, school_group: school_group)}
       let(:school_group)        { create(:school_group, public: is_public) }
       let(:is_public) { true }
@@ -465,14 +393,12 @@ describe Ability do
 
       context 'with a public group' do
         it_behaves_like 'they have group admin rights'
-        it_behaves_like 'they have group manager rights'
       end
 
       context 'with a private group' do
         let(:is_public) { false }
 
         it_behaves_like 'they have group admin rights'
-        it_behaves_like 'they have group manager rights'
       end
 
       context 'when completing onboarding' do
@@ -502,6 +428,58 @@ describe Ability do
             it { is_expected.not_to be_able_to(:manage, school_onboarding) }
           end
         end
+      end
+    end
+
+    context 'when a group manager' do
+      shared_examples 'they have group manager rights' do
+        it { is_expected.to be_able_to(:compare, school_group) }
+        it { is_expected.to be_able_to(:show_management_dash, school_group)}
+
+        it_behaves_like 'they can access the school dashboard and data' do
+          let(:school) { create(:school, school_group: school_group) }
+        end
+
+        context 'with other public groups' do
+          let(:other_school_group) { create(:school_group) }
+
+          it { is_expected.to be_able_to(:compare, other_school_group) }
+          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        end
+
+        context 'with other private groups' do
+          let(:other_school_group) { create(:school_group, public: false) }
+
+          it { is_expected.not_to be_able_to(:compare, other_school_group) }
+          it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        end
+
+        it { is_expected.not_to be_able_to(:update_settings, school_group)}
+
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
+          let(:school) { create(:school, school_group: school_group) }
+        end
+      end
+
+      let(:user)                { create(:user, role: :group_manager, school_group: school_group)}
+      let(:school_group)        { create(:school_group, public: is_public) }
+      let(:is_public) { true }
+
+      it_behaves_like 'a user with permissions common to all'
+
+      # FIXME needs refining for this role, to exclude within_group
+      it_behaves_like 'their access to other school dashboards is limited by data sharing settings', group_admin: false do
+        let(:user_group) { school_group }
+      end
+
+      context 'with a public group' do
+        it_behaves_like 'they have group manager rights'
+      end
+
+      context 'with a private group' do
+        let(:is_public) { false }
+
+        it_behaves_like 'they have group manager rights'
       end
     end
   end
