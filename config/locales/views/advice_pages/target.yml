@@ -52,9 +52,6 @@ en:
           <p>If we are able to access historical data for your school then a report will automatically become available.</p>
         title: Limited historical data
       missing_previous_year_html: Data from the previous year is missing so we can't calculate your target consumption.  See <a href="%{path}">here</a> for more information about your usage.
-      new_target:
-        text: Data for your new target should be available tomorrow.
-        title: Waiting to process data for your new target
       no_target:
         login_html: You need to <a href="%{path}">login</a> to set a target.
         text: Your school has not set a target for %{fuel_type} use so we can't generate a progress report.

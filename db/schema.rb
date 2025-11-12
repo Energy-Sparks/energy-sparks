@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_27_110645) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_07_140759) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1757,9 +1757,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_27_110645) do
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.integer "urn"
     t.boolean "full_school", default: true
+    t.bigint "project_group_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
+    t.index ["project_group_id"], name: "index_school_onboardings_on_project_group_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
     t.index ["scoreboard_id"], name: "index_school_onboardings_on_scoreboard_id"
@@ -2416,6 +2418,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_27_110645) do
   add_foreign_key "school_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
   add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
+  add_foreign_key "school_onboardings", "school_groups", column: "project_group_id"
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "scoreboards", on_delete: :nullify

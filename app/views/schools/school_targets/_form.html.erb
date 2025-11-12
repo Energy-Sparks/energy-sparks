@@ -6,49 +6,22 @@
 
   <%= render 'shared/errors', subject: school_target, subject_name: t('schools.school_targets.form.school_target') %>
 
-  <% if target_service.enough_data_for_electricity? %>
-    <div class="input-group col-12">
-      <div class="col-sm-6">
-        <%= f.label :electricity, t('schools.school_targets.form.reducing_electricity_usage_by'), class: 'form-label' %>
+  <% %i[electricity gas storage_heater].each do |fuel_type| %>
+    <% if target_service.public_send(:"enough_data_for_#{fuel_type}?") %>
+      <div class="input-group col-12">
+        <div class="col-sm-6">
+          <%= f.label fuel_type, t("schools.school_targets.form.reducing_#{fuel_type}_usage_by"), class: 'form-label' %>
+        </div>
+        <div class="col-sm-2">
+          <%= f.text_field fuel_type, class: 'form-control', value: school_target.public_send(fuel_type) || 0.0,
+                                      pattern: '[0-9.]+' %>
+        </div>
+        <div class="input-group-append"><span class="input-group-text"> % </span></div>
+        <div class="col-sm-3">
+          <a href="<%= polymorphic_path([@school, :advice, fuel_type, :target]) %>" class="btn btn-sm">View progress</a>
+        </div>
       </div>
-      <div class="col-sm-2">
-        <%= f.text_field :electricity, class: 'form-control',
-                                       value: school_target.electricity || 0.0, pattern: '[0-9.]+' %>
-      </div>
-      <div class="input-group-append">
-        <span class="input-group-text"> % </span>
-      </div>
-    </div>
-  <% end %>
-
-  <% if target_service.enough_data_for_gas? %>
-    <div class="input-group col-12">
-      <div class="col-sm-6">
-        <%= f.label :gas, t('schools.school_targets.form.reducing_gas_usage_by'), class: 'form-label' %>
-      </div>
-      <div class="col-sm-2">
-        <%= f.text_field :gas, class: 'form-control', value: school_target.gas || 0.0, pattern: '[0-9.]+' %>
-      </div>
-      <div class="input-group-append">
-        <span class="input-group-text"> % </span>
-      </div>
-    </div>
-  <% end %>
-
-  <% if target_service.enough_data_for_storage_heater? %>
-    <div class="input-group col-12">
-      <div class="col-sm-6">
-        <%= f.label :storage_heaters, t('schools.school_targets.form.reducing_storage_heater_usage_by'),
-                    class: 'form-label' %>
-      </div>
-      <div class="col-sm-2">
-        <%= f.text_field :storage_heaters, class: 'form-control',
-                                           value: school_target.storage_heaters || 0.0, pattern: '[0-9.]+' %>
-      </div>
-      <div class="input-group-append">
-        <span class="input-group-text"> % </span>
-      </div>
-    </div>
+    <% end %>
   <% end %>
 
   <div class="mt-4">

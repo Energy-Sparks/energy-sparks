@@ -20,7 +20,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
 
   def create_data_for_project_groups(school_group, project_groups)
     project_groups.each do |project_group|
-      create(:school_onboarding, created_by: admin, school_group: school_group)
+      create(:school_onboarding, created_by: admin, school_group: school_group, project_group:)
       create(:school, :with_project, visible: true, data_enabled: true, school_group: school_group, group: project_group)
       create(:school, :with_project, visible: false, school_group: school_group, group: project_group)
       create(:school, :with_project, active: false, school_group: school_group, group: project_group)
@@ -51,7 +51,12 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
             school_groups.each do |school_group|
               expect(page).to have_selector(:table_row,
                                             { 'Name' => school_group.name, 'Type' => school_group.group_type.humanize,
-                                              'Admin' => school_group.default_issues_admin_user.try(:display_name) || '', 'Onboarding' => 1, 'Active' => 1, 'Data visible' => 1, 'Invisible' => 1, 'Removed' => 1 })
+                                              'Admin' => school_group.default_issues_admin_user.try(:display_name) || '',
+                                              'Onboarding' => 1,
+                                              'Active' => 1,
+                                              'Data visible' => 1,
+                                              'Invisible' => 1,
+                                              'Removed' => 1 })
             end
           end
         end
@@ -59,8 +64,14 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
         it 'displays a grand total' do
           within('table') do
             expect(page).to have_selector(:table_row,
-                                          { 'Name' => 'All Energy Sparks Schools', 'Type' => '', 'Admin' => '', 'Onboarding' => 2, 'Active' => 2,
-                                            'Data visible' => 2, 'Invisible' => 2, 'Removed' => 2 })
+                                          { 'Name' => 'All Energy Sparks Schools',
+                                            'Type' => '',
+                                            'Admin' => '',
+                                            'Onboarding' => 2,
+                                            'Active' => 2,
+                                            'Data visible' => 2,
+                                            'Invisible' => 2,
+                                            'Removed' => 2 })
           end
         end
 
@@ -114,7 +125,19 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'Manage Project Groups'
         end
 
-        pending 'displays totals for each group'
+        it 'displays totals for each group' do
+          within('table') do
+            school_groups.each do |school_group|
+              expect(page).to have_selector(:table_row,
+                                            { 'Name' => school_group.name,
+                                              'Onboarding' => 1,
+                                              'Active' => 1,
+                                              'Data visible' => 1,
+                                              'Invisible' => 1,
+                                              'Removed' => 1 })
+            end
+          end
+        end
 
         it 'has a link to manage school group' do
           within('table') do
