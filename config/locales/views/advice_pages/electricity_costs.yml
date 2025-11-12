@@ -24,8 +24,6 @@ en:
         cost_breakdown_by_charge:
           title: Cost breakdown by charge for the last %{period}
         cost_breakdown_by_meter:
-          intro: The following table summarises the total cost associated with each meter for the last %{period} between %{start_date} and %{end_date}
-          title: Total cost for the last %{period}
           whole_school: We estimate your total electricity cost over the last %{period} to be %{cost}.
         meter_breakdown:
           select: Select an option to view costs for the whole school or a specific meter
@@ -67,10 +65,3 @@ en:
         link: Learn more
         next_steps_html: To get a better estimate of your costs, <a href="%{link}">update your tariff information</a>
       page_title: Electricity cost analysis
-      tables:
-        columns:
-          cost: Cost (£)
-          meter: Meter
-          name: Name
-        labels:
-          total: Total

@@ -1,10 +1,10 @@
 <%= render 'schools/advice/section_title',
            section_id: 'cost-breakdown-by-meter',
-           section_title: advice_t("#{fuel_type}_costs.analysis.cost_breakdown_by_meter.title",
+           section_title: advice_t('gas_costs.analysis.cost_breakdown_by_meter.title',
                                    period: format_unit(annual_costs.days / 365.0, :years)) %>
 
 <p>
-  <%= advice_t("#{fuel_type}_costs.analysis.cost_breakdown_by_meter.intro",
+  <%= advice_t('gas_costs.analysis.cost_breakdown_by_meter.intro',
                period: format_unit(annual_costs.days / 365.0, :years),
                start_date: short_dates(@costs_service_analysis_date_range.first),
                end_date: short_dates(@costs_service_analysis_date_range.last)) %>
@@ -12,12 +12,12 @@
 
 <table class="table table-sm advice-table table-with-totals-footer table-sorted">
   <thead>
-    <th class="text-left"><%= advice_t("#{fuel_type}_costs.tables.columns.meter") %></th>
-    <th class="text-left"><%= advice_t("#{fuel_type}_costs.tables.columns.name") %></th>
-    <th class="text-right"><%= advice_t("#{fuel_type}_costs.tables.columns.cost") %></th>
+    <th class="text-left"><%= advice_t('gas_costs.tables.columns.meter') %></th>
+    <th class="text-left"><%= advice_t('gas_costs.tables.columns.name') %></th>
+    <th class="text-right"><%= advice_t('gas_costs.tables.columns.cost') %></th>
   </thead>
   <tbody>
-    <% annual_costs_breakdown_by_meter.sort_by(&:name_or_mpan_mprn).each do |meter, cost| %>
+    <% annual_costs_breakdown_by_meter.sort_by { |meter, _costs| meter.name_or_mpan_mprn }.each do |meter, cost| %>
       <tr>
         <td class="text-left">
           <%= meter.mpan_mprn %>
@@ -32,7 +32,7 @@
   </tbody>
   <tfoot>
     <tr>
-      <td class="text-left"><%= advice_t("#{fuel_type}_costs.tables.labels.total") %></td>
+      <td class="text-left"><%= advice_t('gas_costs.tables.labels.total') %></td>
       <td></td>
       <td class="text-right"><%= FormatUnit.format_pounds(:£, annual_costs.£, :text, :approx_accountant, true) %></td>
     </tr>
