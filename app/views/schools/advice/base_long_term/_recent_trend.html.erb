@@ -51,28 +51,4 @@
   <% end %>
 <% end %>
 
-<%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.subtitle_two_years_html') %>
-<%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.subtitle_html') %>
-<%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.subtitle_two_years_html') %>
-<%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.subtitle_html') %>
-<% key_prefix = "advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_by_month_year"
-   key_suffix = ''
-   chart_type = :year
-   if analysis_dates.one_years_data?
-     key_suffix = '_two_years'
-     chart_type = :acyear
-   end %>
-<%= render MeterSelectionChartComponent.new(
-      chart_type: :"#{fuel_type}_by_month_#{chart_type}_0_1",
-      meter_selection:,
-      chart_subtitle_key: "#{key_prefix}.subtitle#{key_suffix}_html"
-    ) do |c| %>
-  <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title_two_years') %>
-  <%# i18n-tasks-use t('advice_pages.electricity_long_term.charts.electricity_by_month_year.title') %>
-  <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title_two_years') %>
-  <%# i18n-tasks-use t('advice_pages.gas_long_term.charts.gas_by_month_year.title') %>
-  <% c.with_title { t("#{key_prefix}.title#{key_suffix}", fuel_type: fuel_type) } %>
-  <% c.with_footer do %>
-    <p><%= t("advice_pages.#{fuel_type}_long_term.charts.#{fuel_type}_by_month_year.explanation") %></p>
-  <% end %>
-<% end %>
+<%= render 'consumption_by_month', fuel_type: %>

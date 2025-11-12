@@ -4,16 +4,10 @@ require 'rails_helper'
 
 describe Usage::HolidayUsageCalculationService, type: :service do
   let(:fuel_type)        { :electricity }
-  let(:meter_collection) { @acme_academy }
+  let(:meter_collection) { load_unvalidated_meter_collection(school: 'acme-academy') }
   let(:meter)            { meter_collection.aggregated_electricity_meters }
-  let(:asof_date)        { Date.today }
+  let(:asof_date)        { Time.zone.today }
   let(:service)          { described_class.new(meter, meter_collection.holidays, asof_date) }
-
-  # using before(:all) here to avoid slow loading of YAML and then
-  # running the aggregation code for each test.
-  before(:all) do
-    @acme_academy = load_unvalidated_meter_collection(school: 'acme-academy')
-  end
 
   context 'with electricity meters' do
     describe '#holiday_usage' do
@@ -69,7 +63,7 @@ describe Usage::HolidayUsageCalculationService, type: :service do
         let(:end_date)      { Date.new(2024, 1, 0o2) }
 
         it 'returns nil' do
-          expect(usage).to eq nil
+          expect(usage).to be_nil
         end
       end
 
@@ -129,17 +123,17 @@ describe Usage::HolidayUsageCalculationService, type: :service do
 
     describe '#holidays_usage_comparison' do
       let(:academic_year) { nil }
-      let(:school_period1) do
+      let(:xmas) do
         Holiday.new(:xmas, 'Xmas 2021/2022', Date.new(2021, 12, 18), Date.new(2022, 0o1, 3), academic_year)
       end
-      let(:school_period2) do
+      let(:autumn_half_term) do
         Holiday.new(:autumn_half_term, 'Autum half term', Date.new(2021, 10, 23), Date.new(2021, 10, 31), academic_year)
       end
-      let(:comparison) { service.holidays_usage_comparison(school_periods: [school_period1, school_period2]) }
+      let(:comparison) { service.holidays_usage_comparison(school_periods: [xmas, autumn_half_term]) }
 
       it 'calculates all comparisons' do
-        expect(comparison[school_period1]).not_to be_nil
-        expect(comparison[school_period2]).not_to be_nil
+        expect(comparison[xmas]).not_to be_nil
+        expect(comparison[autumn_half_term]).not_to be_nil
       end
     end
 

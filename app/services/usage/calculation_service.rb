@@ -1,13 +1,12 @@
 # frozen_string_literal: true
 
-require 'active_support/core_ext/module'
-
 module Usage
-  class AnnualUsageCalculationService
+  class CalculationService
     include AnalysableMixin
+
     DAYSINYEAR = 363
 
-    # Create a service capable of calculating the annual energy usage for a meter
+    # Create a service capable of calculating the energy usage for a meter
     #
     # To calculate usage for a whole school provide the aggregate electricity
     # meter as the parameter.
@@ -16,7 +15,7 @@ module Usage
     # @param [Date] asof_date the date to use as the basis for calculations
     #
     # @raise [EnergySparksUnexpectedStateException] if meter isn't an electricity meter
-    def initialize(analytics_meter, asof_date = Date.today)
+    def initialize(analytics_meter, asof_date = Date.current)
       @meter = analytics_meter
       @asof_date = asof_date
     end
@@ -35,7 +34,7 @@ module Usage
       meter_data_checker.date_when_enough_data_available(365)
     end
 
-    # Calculate the annual usage over a twelve month period
+    # Calculate the usage over a specifiied period
     #
     # The period is specified using the +period+ parameter
     #
@@ -43,17 +42,17 @@ module Usage
     #
     # @param period either :this_year or :last_year
     # @return [CombinedUsageMetric] the calculated usage for the specified period
-    def annual_usage(period: :this_year)
+    def usage(period: :this_year)
       start_date, end_date = dates_for_period(period)
       # using £ not £current as this is historical usage
       CombinedUsageMetric.new(
         kwh: calculate(start_date, end_date, :kwh),
-        £: calculate(start_date, end_date, :£),
+        gbp: calculate(start_date, end_date, :£),
         co2: calculate(start_date, end_date, :co2)
       )
     end
 
-    # Calculates the annual usage for this year and last year and
+    # Calculates the usage for this year or month and last year or month and
     # returns a CombinedUsageMetric with the changes.
     #
     # Values are not temperature adjusted
@@ -65,40 +64,62 @@ module Usage
     # If there isn't sufficient data (>2 years) then the method will return nil
     #
     # @return [CombinedUsageMetric] the difference between this year and last year
-    def annual_usage_change_since_last_year
-      return nil unless has_full_previous_years_worth_of_data?
+    def usage_change_since_last_period(period)
+      last_period = case period
+                    when :this_year
+                      :last_year
+                    when :last_month
+                      :last_month_previous_year
+                    else
+                      raise 'invalid period'
+                    end
+      return nil unless has_full_previous_period_worth_of_data?(last_period)
 
-      this_year = annual_usage(period: :this_year)
-      last_year = annual_usage(period: :last_year)
-      kwh = this_year.kwh - last_year.kwh
+      this_period = usage(period:)
+      last_period = usage(period: last_period)
+      return nil if last_period.kwh.zero?
+
+      kwh = this_period.kwh - last_period.kwh
       CombinedUsageMetric.new(
         kwh: kwh,
-        £: this_year.£ - last_year.£,
-        co2: this_year.co2 - last_year.co2,
-        percent: kwh / last_year.kwh
+        gbp: this_period.gbp - last_period.gbp,
+        co2: this_period.co2 - last_period.co2,
+        percent: kwh / last_period.kwh
       )
     end
 
-    private
+    def annual_usage_change_since_last_year
+      usage_change_since_last_period(:this_year)
+    end
 
     # :this_year is last 12 months
     # :last_year is previous 12 months
     def dates_for_period(period)
-      start_date = @asof_date - DAYSINYEAR
-      start_date = @meter.amr_data.start_date if start_date < @meter.amr_data.start_date
+      start_date = case period
+                   when :this_year
+                     @asof_date - DAYSINYEAR
+                   when :last_month, :last_month_previous_year
+                     @asof_date.prev_month.beginning_of_month
+                   end
+      start_date = @meter.amr_data.start_date if start_date&.<(@meter.amr_data.start_date)
+      start_date = start_date.prev_year if period == :last_month_previous_year
       case period
       when :this_year
         [start_date, @asof_date]
       when :last_year
         prev_date = @asof_date - DAYSINYEAR - 1
         [prev_date - DAYSINYEAR, prev_date]
+      when :last_month, :last_month_previous_year
+        [start_date, start_date.end_of_month]
       else
         raise 'Invalid year'
       end
     end
 
-    def has_full_previous_years_worth_of_data?
-      start_date, _end_date = dates_for_period(:last_year)
+    private
+
+    def has_full_previous_period_worth_of_data?(period)
+      start_date, _end_date = dates_for_period(period)
       @meter.amr_data.start_date <= start_date
     end
 

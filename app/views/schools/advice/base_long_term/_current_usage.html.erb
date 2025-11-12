@@ -1,0 +1,44 @@
+<%= render 'schools/advice/section_title',
+           section_id: 'current',
+           section_title: t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title") %>
+
+<%= render AlertsComponent.new(school: school, dashboard_alerts: dashboard_alerts,
+                               alert_types: alert_types_for_class({ electricity: AlertElectricityAnnualVersusBenchmark,
+                                                                    gas: AlertGasAnnualVersusBenchmark }[fuel_type]),
+                               show_links: false) %>
+
+<table class="table table-sm advice-table">
+  <thead class="thead-dark">
+    <tr>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th><%= t('charts.timescale_name.daterange').titleize %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_kwh') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_co2') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.change') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% %i[this_year last_month].each do |period| %>
+      <tr>
+        <td>
+          <% if period == :this_year %>
+            <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
+          <% else %>
+            <%= t('advice_pages.electricity_long_term.insights.current_usage.last_full_month') %>
+          <% end %>
+        </td>
+        <td><%= format_date_range(usage_service.dates_for_period(period)) %></td>
+        <% usage = usage_service.usage(period:) %>
+        <td class="text-right"><%= format_unit(usage.kwh, :kwh, numeric_level: :target) %></td>
+        <td class="text-right"><%= format_unit(usage.co2, :co2, numeric_level: :target) %></td>
+        <td class="text-right"><%= format_unit(usage.£, :£, numeric_level: :target) %></td>
+        <td class="text-right"><%= format_percent(usage_service.usage_change_since_last_period(period)&.percent) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           data_target: 'how-have-we-analysed-your-data-footnotes' %>
+<p><a href="<%= polymorphic_path([:analysis_school_advice, fuel_type, :long_term]) %>">
+<%= t('advice_pages.electricity_long_term.insights.current_usage.review_our_analysis') %></a></p>
