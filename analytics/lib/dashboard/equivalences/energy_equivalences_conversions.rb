@@ -1,4 +1,5 @@
-require_relative '../utilities/format_energy_unit.rb'
+# frozen_string_literal: true
+
 class EnergyEquivalences
   def self.format_unit(value, unit)
     case unit
