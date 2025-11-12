@@ -75,9 +75,10 @@
 #
 # :compare - can compare schools in this group. Used to add/remove links to compare functionality
 # But also used to control access to school group page with data.
+# :view_settings - see manage group menu
+# :read, :my_school_group_menu - see my school group menu
 # :update_settings - can use manage settings (chart prefs, clusters) for school group. But also used to gate
-# access to viewing clusters on school group dashboard. Also used to decide whether to show sub navbar on some pages
-# Used to control access to SECR report page too
+# access to viewing clusters on school group dashboard. Used to control access to SECR report page too
 #
 # METERS
 #
