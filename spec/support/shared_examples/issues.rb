@@ -17,14 +17,19 @@ end
 
 RSpec.shared_examples_for 'a displayed list issue' do
   it 'displays issue' do
-    expect(page).to have_content issue.title
+    expect(page).to have_link(issue.title, href: polymorphic_path([:admin, issue.issueable, issue]))
     expect(page).to have_content issue.issueable.name
     expect(page).to have_content issue.fuel_type.capitalize
     issue.meters.each do |meter|
       expect(page).to have_link meter.mpan_mprn, href: school_meter_path(meter.school, meter)
     end
     expect(page).to have_content nice_date_times_today(issue.updated_at)
-    expect(page).to have_link('View', href: polymorphic_path([:admin, issue.issueable, issue]))
     expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
+  end
+
+  it "doesn't show other issues", if: defined? all_issues do
+    all_issues - [issue].each do |issue|
+      expect(page).not_to have_content issue.title
+    end
   end
 end

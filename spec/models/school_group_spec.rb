@@ -142,10 +142,10 @@ describe SchoolGroup, :school_groups, type: :model do
 
   describe 'issues csv' do
     def issue_csv_line(issue)
-      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
+      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.review_date, issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
     end
 
-    let(:header) { 'For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Meter status,Data sources,Owned by,Created by,Created at,Updated by,Updated at' }
+    let(:header) { 'For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Meter status,Data sources,Owned by,Review date,Created by,Created at,Updated by,Updated at' }
     let(:user) { create(:admin) }
     let(:data_source) { create(:data_source) }
 
@@ -166,8 +166,9 @@ describe SchoolGroup, :school_groups, type: :model do
 
       let!(:school_for_bug) { School.find_by(id: school_group.id) || create(:school, id: school_group.id) }
       let!(:school_issue_with_issueable_id_same_as_school_group_id) { create(:issue, updated_by: user, issueable_type: 'School', issueable_id: school_group.id) }
+      let!(:review_date_issue) { create(:issue, issueable: school_group, review_date: 3.days.ago, fuel_type: :electricity) }
 
-      it { expect(csv.lines.count).to eq(8) }
+      it { expect(csv.lines.count).to eq(9) }
       it { expect(csv.lines.first.chomp).to eq(header) }
 
       it { expect(csv).to include(issue_csv_line(school_in_school_group_issue)) }
@@ -177,6 +178,7 @@ describe SchoolGroup, :school_groups, type: :model do
       it { expect(csv).to include(issue_csv_line(school_issue_with_data_sources)) }
       it { expect(csv).to include(issue_csv_line(closed_school_group_issue)) }
       it { expect(csv).to include(issue_csv_line(school_group_note)) }
+      it { expect(csv).to include(issue_csv_line(review_date_issue)) }
 
       it { expect(csv).not_to include(issue_csv_line(school_in_different_school_group_issue)) }
       it { expect(csv).not_to include(issue_csv_line(different_school_group_issue)) }

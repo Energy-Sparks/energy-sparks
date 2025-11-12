@@ -38,7 +38,7 @@ class AdminMailer < ApplicationMailer
     Dir.mktmpdir do |dir|
       files_dir = File.join(dir, 'files')
       Dir.mkdir(files_dir)
-      school_group.schools.data_visible.find_each do |school|
+      school_group.assigned_schools.data_visible.find_each do |school|
         csv = CsvDownloader.readings_to_csv(
           AmrValidatedReading.download_query_for_school(school, extra_selects: ['schools.name', 'schools.id'])
                              .joins(meter: :school).where(meters: { active: true }).to_sql,
@@ -60,7 +60,7 @@ class AdminMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes(%i[created_by updated_by issueable])
+    @issues = Issue.for_owned_by(@user).status_open.issue.by_review_date.by_updated_at.includes(%i[created_by updated_by issueable])
     title = "Issue report for #{@user.display_name}"
 
     return unless @issues.any?
@@ -100,7 +100,7 @@ class AdminMailer < ApplicationMailer
 
   def build_issues_csv_for(issues)
     CSV.generate(headers: true) do |csv|
-      csv << ['Issue type', 'Issue for', '', 'Group', 'Title', 'Fuel', 'Created By', 'Created', 'Updated By',
+      csv << ['Issue type', 'Issue for', 'New', 'Group', 'Title', 'Fuel', 'Review date', 'Created by', 'Created', 'Updated by',
               'Updated', 'View', 'Edit']
       issues.each do |issue|
         csv << [
@@ -110,6 +110,7 @@ class AdminMailer < ApplicationMailer
           issue&.school_group&.name,
           issue.title,
           issue.fuel_type&.humanize,
+          issue.review_date&.strftime('%d/%m/%Y'),
           issue.created_by.display_name,
           issue.created_at.strftime('%d/%m/%Y'),
           issue.updated_by.display_name,

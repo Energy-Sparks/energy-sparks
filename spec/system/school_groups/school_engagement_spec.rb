@@ -42,7 +42,7 @@ describe 'School group engagement' do
       expect(body).to \
         eq('School,School type,Activities,Actions,Programmes,Energy saving target,Completed transport survey,' \
            "Recorded temperatures,Received an audit,Active users,Last visit\n" \
-           "#{school.name},Primary,0,0,0,No,No,No,No,1,01/05/2025\n")
+           "#{school.name},Primary,0,0,0,No,No,No,No,1,2025-05-01\n")
     end
   end
 end

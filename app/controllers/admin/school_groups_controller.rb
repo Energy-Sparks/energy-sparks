@@ -3,26 +3,30 @@ module Admin
     load_and_authorize_resource
 
     def index
+      @project_groups = project_group?
+      @school_groups = @project_groups ? @school_groups.project_groups : @school_groups.organisation_groups
       respond_to do |format|
-        format.html { @school_groups = @school_groups.organisation_groups.by_name }
+        format.html { @school_groups = @school_groups.by_name }
         format.csv do
-          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.organisation_groups.by_name).export_detail,
+          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name, include_total: !@project_groups).export_detail,
           filename: ::SchoolGroups::CsvGenerator.filename
         end
       end
     end
 
     def new
+      @project_group = project_group?
     end
 
     def edit
-      @schools = @school_group.schools.by_name
+      @schools = @school_group.assigned_schools.by_name
     end
 
     def create
       if @school_group.save
-        redirect_to admin_school_groups_path, notice: 'School group was successfully created.'
+        redirect_to admin_school_groups_path(group_type: @school_group.group_type), notice: 'School group was successfully created.'
       else
+        @project_group = @school_group.project?
         render :new
       end
     end
@@ -66,6 +70,10 @@ module Admin
         :default_procurement_route_gas_id,
         :default_procurement_route_solar_pv_id,
       )
+    end
+
+    def project_group?
+      params[:group_type] == 'project'
     end
   end
 end
