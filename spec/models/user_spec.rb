@@ -32,27 +32,29 @@ describe User do
   end
 
   describe 'when role is changed' do
-    describe 'when group admin becomes school admin' do
-      let!(:user) { create(:group_admin) }
+    [:group_admin, :group_manager].each do |role|
+      describe "when #{role} becomes school admin" do
+        let!(:user) { create(role) }
 
-      before do
-        user.update!(role: :school_admin, school: create(:school), staff_role: create(:staff_role, :management))
+        before do
+          user.update!(role: :school_admin, school: create(:school), staff_role: create(:staff_role, :management))
+        end
+
+        it 'updates the role' do
+          expect(user.school_group).to be_nil
+        end
       end
 
-      it 'updates the role' do
-        expect(user.school_group).to be_nil
-      end
-    end
+      describe "when school admin becomes #{role}" do
+        let!(:user) { create(:school_admin, :with_cluster_schools) }
 
-    describe 'when school admin becomes group admin' do
-      let!(:user) { create(:school_admin, :with_cluster_schools) }
+        before do
+          user.update!(role: role, school_group: create(:school_group))
+        end
 
-      before do
-        user.update!(role: :group_admin, school_group: create(:school_group))
-      end
-
-      it 'removes the schools' do
-        expect(user.cluster_schools).to be_empty
+        it 'removes the schools' do
+          expect(user.cluster_schools).to be_empty
+        end
       end
     end
   end
@@ -60,10 +62,12 @@ describe User do
   describe '#default_school_group' do
     subject(:default_school_group) { user.default_school_group }
 
-    context 'when user is a group admin with a school group (required)' do
-      let(:user) { create(:group_admin) }
+    [:group_admin, :group_manager].each do |role|
+      context "when user is a #{role} with a school group (required)" do
+        let(:user) { create(role) }
 
-      it { expect(default_school_group).to eq(user.school_group) }
+        it { expect(default_school_group).to eq(user.school_group) }
+      end
     end
 
     context 'when user is staff with a school' do
@@ -93,10 +97,12 @@ describe User do
   describe '#default_school_group_name' do
     subject(:default_school_group_name) { user.default_school_group_name }
 
-    context 'when user is a group admin with a school group (required)' do
-      let(:user) { create(:group_admin) }
+    [:group_admin, :group_manager].each do |role|
+      context "when user is a #{role} with a school group (required)" do
+        let(:user) { create(role) }
 
-      it { expect(default_school_group_name).to eq(user.school_group.name) }
+        it { expect(default_school_group_name).to eq(user.school_group.name) }
+      end
     end
 
     context 'when user is staff with a school' do
@@ -181,23 +187,25 @@ describe User do
       end
     end
 
-    context 'for group admin' do
-      let(:school_group)    { create(:school_group) }
-      let(:user)            { create(:user, role: :group_admin, school_group:) }
+    [:group_admin, :group_manager].each do |role|
+      context "for #{role}" do
+        let(:school_group)    { create(:school_group) }
+        let(:user)            { create(:user, role: role, school_group:) }
 
-      context 'without schools in group' do
-        it 'returns empty' do
-          expect(user.schools).to eq([])
+        context 'without schools in group' do
+          it 'returns empty' do
+            expect(user.schools).to eq([])
+          end
         end
-      end
 
-      context 'with schools in group' do
-        let(:school_1)        { create(:school, school_group:) }
-        let(:school_2)        { create(:school, school_group:) }
-        let(:school_3)        { create(:school) }
+        context 'with schools in group' do
+          let(:school_1)        { create(:school, school_group:) }
+          let(:school_2)        { create(:school, school_group:) }
+          let(:school_3)        { create(:school) }
 
-        it 'returns schools from group' do
-          expect(user.schools).to contain_exactly(school_1, school_2)
+          it 'returns schools from group' do
+            expect(user.schools).to contain_exactly(school_1, school_2)
+          end
         end
       end
     end
@@ -325,23 +333,25 @@ describe User do
       end
     end
 
-    context 'when exporting group admins' do
-      let!(:user) { create(:group_admin, school_group:) }
+    [:group_admin, :group_manager].each do |role|
+      context "when exporting #{role}" do
+        let!(:user) { create(role, school_group:) }
 
-      it 'includes the expected data' do
-        expect(parsed[1]).to eq([school_group.name,
-                                 '',
-                                 '',
-                                 '',
-                                 '',
-                                 '',
-                                 '',
-                                 user.name,
-                                 user.email,
-                                 'Group Admin',
-                                 '',
-                                 'Yes',
-                                 'No'])
+        it 'includes the expected data' do
+          expect(parsed[1]).to eq([school_group.name,
+                                   '',
+                                   '',
+                                   '',
+                                   '',
+                                   '',
+                                   '',
+                                   user.name,
+                                   user.email,
+                                   I18n.t(user.role, scope: :role),
+                                   '',
+                                   'Yes',
+                                   'No'])
+        end
       end
     end
 
@@ -488,16 +498,18 @@ describe User do
           end
         end
 
-        context 'with group admin' do
-          let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
+        [:group_admin, :group_manager].each do |role|
+          context "with #{role}" do
+            let!(:user) { create(role, mailchimp_status: :subscribed) }
 
-          it 'submits a job' do
-            expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
-              email_address: user.email,
-              name: user.name,
-              school: user.school_group.name
-            )
-            user.destroy!
+            it 'submits a job' do
+              expect(Mailchimp::UserDeletionJob).to receive(:perform_later).with(
+                email_address: user.email,
+                name: user.name,
+                school: user.school_group.name
+              )
+              user.destroy!
+            end
           end
         end
       end
@@ -646,36 +658,38 @@ describe User do
       end
     end
 
-    context 'with group admin' do
-      let!(:user) { create(:group_admin) }
+    [:group_admin, :group_manager].each do |role|
+      context "with #{role}" do
+        let!(:user) { create(role) }
 
-      context 'when user has not been synchronised' do
-        let!(:user) { create(:group_admin, mailchimp_status: :subscribed) }
-
-        it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
-      end
-
-      context 'when updates are pending' do
-        let!(:user) do
-          user = create(:group_admin, mailchimp_status: :subscribed)
-          user.update!(mailchimp_updated_at: 1.day.ago) # ensure timestamp is later
-          user
-        end
-
-        context 'when user has been updated' do
-          before do
-            user.update!(name: 'New name')
-          end
+        context 'when user has not been synchronised' do
+          let!(:user) { create(role, mailchimp_status: :subscribed) }
 
           it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
         end
 
-        context 'when school_group has been updated' do
-          before do
-            user.school_group.update!(name: 'New group name')
+        context 'when updates are pending' do
+          let!(:user) do
+            user = create(role, mailchimp_status: :subscribed)
+            user.update!(mailchimp_updated_at: 1.day.ago) # ensure timestamp is later
+            user
           end
 
-          it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
+          context 'when user has been updated' do
+            before do
+              user.update!(name: 'New name')
+            end
+
+            it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
+          end
+
+          context 'when school_group has been updated' do
+            before do
+              user.school_group.update!(name: 'New group name')
+            end
+
+            it { expect(described_class.mailchimp_update_required).to contain_exactly(user) }
+          end
         end
       end
     end
