@@ -2,19 +2,26 @@
 
 require 'rails_helper'
 
-RSpec.describe 'school group', :include_application_helper, :school_groups do
+RSpec.describe 'school group settings', :include_application_helper, :school_groups do
+  let!(:setup_data) {} # hook for dashboard messages - goes before page is loaded
   let!(:school_group) { create(:school_group, :with_grouping) }
-  let!(:admin) { create(:admin) }
+  let!(:user) { create(:admin) }
 
   before do
     Flipper.enable :group_settings
     Flipper.enable :school_group_secr_report
 
-    sign_in(admin)
+    sign_in(user)
     visit settings_school_group_path(school_group)
   end
 
-  context 'with settings section' do
+  describe 'Dashboard message panel' do
+    it_behaves_like 'admin dashboard messages' do
+      let(:messageable) { school_group }
+    end
+  end
+
+  describe 'Settings section' do
     it 'has the title' do
       within('#settings-section') do
         expect(page).to have_content(I18n.t('common.settings'))
@@ -52,7 +59,7 @@ RSpec.describe 'school group', :include_application_helper, :school_groups do
     end
   end
 
-  context 'with schools section' do
+  describe 'Schools section' do
     it 'has the title' do
       within('#schools-section') do
         expect(page).to have_content(I18n.t('common.schools'))
