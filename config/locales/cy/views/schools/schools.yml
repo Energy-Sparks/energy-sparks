@@ -155,7 +155,6 @@ cy:
         intro: Rhestr o weithgareddau diweddar dan arweiniad oedolion a disgyblion yn yr ysgol hon
     downloads:
       index:
-        aggregated_meter_collection: Casgliad mesuryddion cyfun
         back_to_school_dashboard: Yn ôl i'r dangosfwrdd ysgol
         carbon_intensity_data: Data dwyster carbon
         carbon_intensity_data_csv: Data dwyster carbon CSV
@@ -174,7 +173,6 @@ cy:
         title: "Lawrlwythiadau %{school_name}"
         unvalidated_meter_data: Data mesurydd sydd heb eu dilysu
         unvalidated_meter_data_as_csv: Data mesurydd sydd heb eu dilysu fel CSV
-        validated_meter_data: Data mesurydd sydd wedi'u dilysu
         we_use_sheffield_solar_pv_api_message_html: Rydym yn defnyddio <a href="https://www.solar.sheffield.ac.uk/pvlive/">API Solar Ffotofoltaig Prifysgol Sheffield</a> ar gyfer data cynhyrchu solar ffotofoltaig, gallwch lawrlwytho'r data sydd gennym ar gyfer eich ysgol yma
     estimated_annual_consumptions:
       breadcrumb: Amcangyfrif o ddefnydd blynyddol
