@@ -147,6 +147,7 @@ describe 'School group dashboard page', :school_groups do
 
     it_behaves_like 'an access controlled group page' do
       let(:path) { school_group_path(school_group) }
+      let(:group_role) { :group_manager }
     end
 
     it_behaves_like 'a group page with schools filtered by permissions' do

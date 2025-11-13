@@ -292,12 +292,6 @@ RSpec.describe 'Navigation -> second nav' do
         let(:school) { create(:school, :with_school_grouping, role: :project, group_type: :project) }
         let(:path) { school_group_path(school.project_groups.first) }
 
-        context 'with a group admin' do
-          let(:user) { create(:group_admin, school_group: school.project_groups.first) }
-
-          it_behaves_like 'a page with a limited manage school group menu'
-        end
-
         context 'with a group manager' do
           let(:user) { create(:group_manager, school_group: school.project_groups.first) }
 
@@ -354,30 +348,56 @@ RSpec.describe 'Navigation -> second nav' do
       it { expect(nav).to have_no_css('#my-school-group-menu') }
     end
 
-    [:group_admin, :group_manager].each do |role|
-      context "when user is a #{role} for school group" do
-        let(:user) { create(role, school_group:) }
+    context 'when user is a group_admin for school group' do
+      let(:user) { create(:group_admin, school_group:) }
 
-        it 'links to group dashboard' do
-          expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
+      it 'links to group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
+      end
+
+      context 'when school group has no schools' do
+        let(:school_group) { create(:school_group) }
+
+        it { expect(nav).to have_css('#my-school-group-menu') }
+        it { expect(nav).to have_no_css('#my-school-group-menu div.dropdown-divider') }
+      end
+
+      context 'when school group has schools' do
+        let(:school_group) { create(:school_group, :with_active_schools) }
+
+        it { expect(nav).to have_css('#my-school-group-menu') }
+        it { expect(nav).to have_css('#my-school-group-menu div.dropdown-divider') }
+
+        it 'links to schools' do
+          expect(nav).to have_link(school_group.assigned_schools.first.name)
         end
+      end
+    end
 
-        context 'when school group has no schools' do
-          let(:school_group) { create(:school_group) }
+    context 'when user is a group_manager for project group' do
+      let(:user) { create(:group_manager) }
+      let(:school_group) { user.default_school_group }
 
-          it { expect(nav).to have_css('#my-school-group-menu') }
-          it { expect(nav).to have_no_css('#my-school-group-menu div.dropdown-divider') }
-        end
+      it 'links to group dashboard' do
+        expect(nav).to have_link('Group dashboard', href: school_group_path(school_group))
+      end
 
-        context 'when school group has schools' do
-          let(:school_group) { create(:school_group, :with_active_schools) }
+      context 'when school group has no schools' do
+        let(:school_group) { create(:school_group) }
 
-          it { expect(nav).to have_css('#my-school-group-menu') }
-          it { expect(nav).to have_css('#my-school-group-menu div.dropdown-divider') }
+        it { expect(nav).to have_css('#my-school-group-menu') }
+        it { expect(nav).to have_no_css('#my-school-group-menu div.dropdown-divider') }
+      end
 
-          it 'links to schools' do
-            expect(nav).to have_link(school_group.schools.first.name)
-          end
+      context 'when school group has schools' do
+        let(:school_group) { create(:school_group, :project_group, :with_active_schools) }
+        let(:user) { create(:group_manager, school_group:) }
+
+        it { expect(nav).to have_css('#my-school-group-menu') }
+        it { expect(nav).to have_css('#my-school-group-menu div.dropdown-divider') }
+
+        it 'links to schools' do
+          expect(nav).to have_link(school_group.assigned_schools.first.name)
         end
       end
     end

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'School group advice index page' do
   shared_examples 'a group advice index page' do
+    let(:group_role) { :group_admin }
     context 'with a dashboard message' do
       let!(:message) { create(:dashboard_message, messageable: school_group) }
 
@@ -13,9 +14,9 @@ describe 'School group advice index page' do
         it { expect(page).to have_no_content(message.message) }
       end
 
-      context 'when signed in as group admin' do
+      context 'when signed in as a group user' do
         before do
-          sign_in(create(:group_admin, school_group:))
+          sign_in(create(group_role, school_group:))
           visit school_group_advice_path(school_group)
         end
 
@@ -51,7 +52,9 @@ describe 'School group advice index page' do
       visit school_group_advice_path(school_group)
     end
 
-    it_behaves_like 'a group advice index page'
+    it_behaves_like 'a group advice index page' do
+      let(:group_role) { :group_manager }
+    end
   end
 
   context 'when displaying the navbar' do

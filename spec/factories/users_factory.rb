@@ -67,7 +67,7 @@ FactoryBot.define do
     factory :group_manager do
       name { 'Group manager'}
       role { :group_manager }
-      school_group
+      school_group { association :school_group, :project_group }
     end
 
     trait :has_school_assigned do

@@ -1,5 +1,6 @@
 RSpec.shared_examples 'an access controlled group page' do
   let(:expected_redirect) { "/school_groups/#{school_group.slug}/map" }
+  let(:group_role) { :group_admin }
 
   context 'when the group is private' do
     before do
@@ -25,7 +26,7 @@ RSpec.shared_examples 'an access controlled group page' do
     end
 
     context 'when logged in as the group admin' do
-      let(:user) { create(:group_admin, school_group: school_group) }
+      let(:user) { create(group_role, school_group: school_group) }
 
       it 'has not redirected' do
         expect(page).to have_current_path(path, ignore_query: true)
@@ -73,7 +74,7 @@ RSpec.shared_examples 'an access controlled group page' do
     end
 
     context 'when logged in' do
-      let(:user) { create(:group_admin, school_group: school_group) }
+      let(:user) { create(group_role, school_group: school_group) }
 
       it 'has redirected' do
         expect(page).to have_current_path(expected_redirect, ignore_query: true)
@@ -106,7 +107,13 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
   end
 
   context 'when signed in as the group admin' do
-    let(:user) { create(:group_admin, school_group:) }
+    let(:user) do
+      if school_group.organisation?
+        create(:group_admin, school_group:)
+      else
+        create(:group_manager, school_group:)
+      end
+    end
 
     it 'filters correctly' do
       if school_group.organisation?

@@ -6,21 +6,19 @@
   <%= link_to 'Clear', admin_users_path, class: 'btn btn-secondary' %>
 <% end %>
 
-<div id='search_results'>
-  <% if @search_users.any? %>
-    <div class="row mt-4">
-      <div class="col">
-        <p>First 50 users with email matching search...</p>
-      </div>
+<% if @search_users.any? %>
+  <div id='search_results' class="row mt-4">
+    <div class="col">
+      <p>First 50 users with email matching search...</p>
     </div>
-    <%= render Admin::UserListComponent.new(id: 'found-users',
-                                            users: @search_users,
-                                            show_organisation: true) %>
-  <% elsif params[:search].present? %>
-  <div class="row mt-4">
+  </div>
+  <%= render Admin::UserListComponent.new(id: 'found-users',
+                                          users: @search_users,
+                                          show_organisation: true) %>
+<% elsif params[:search].present? %>
+  <div id='search_results' class="row mt-4">
     <div class="col">
       <p>No users found</p>
     </div>
   </div>
-  <% end %>
-</div>
+<% end %>

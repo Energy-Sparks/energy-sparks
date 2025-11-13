@@ -450,6 +450,7 @@ describe Ability do
       end
 
       context 'when users is a group manager' do
+        let(:school_group) { create(:school_group, group_type: :project, public: is_public) }
         let(:user) { create(:user, role: :group_manager, school_group: school_group)}
 
         it_behaves_like 'a user with common group permissions'

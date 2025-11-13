@@ -73,6 +73,15 @@ FactoryBot.define do
       end
     end
 
+    trait :with_local_authority_area do
+      with_school_grouping
+
+      transient do
+        group_type { :local_authority_area }
+        role { :area }
+      end
+    end
+
     trait :with_project do
       with_school_grouping
 
