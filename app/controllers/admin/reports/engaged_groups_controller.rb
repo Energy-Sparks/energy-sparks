@@ -6,8 +6,8 @@ module Admin
       def index
         @engaged_groups =
           SchoolGroup
+          .organisation_groups
           .by_name
-          .where(group_type: %w[multi_academy_trust local_authority general])
           .joins("LEFT JOIN (
                     #{SchoolGrouping.joins(:school)
                       .merge(School.active)
