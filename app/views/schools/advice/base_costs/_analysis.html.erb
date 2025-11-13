@@ -12,7 +12,7 @@
 <% if @multiple_meters %>
   <ul>
     <li>
-      <%= link_to(advice_t("#{@fuel_type}_costs.analysis.cost_breakdown_by_meter.title",
+      <%= link_to(advice_t('gas_costs.analysis.cost_breakdown_by_meter.title',
                            period: format_unit(@annual_costs.days / 365.0, :years)),
                   '#cost-breakdown-by-meter') %>
     </li>
