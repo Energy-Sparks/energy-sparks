@@ -6,7 +6,7 @@ module SchoolGroups
     include ApplicationHelper
 
     def self.show?(user)
-      user.admin? || user.group_admin?
+      user.admin? || user.group_user? # FIXME permission?
     end
 
     def index

@@ -142,31 +142,33 @@ describe Mailchimp::Contact do
       end
     end
 
-    context 'with a group admin' do
-      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
+    [:group_admin, :group_manager].each do |role|
+      context "with a #{role}" do
+        let!(:user) { create(role, school_group: create(:school_group, :with_default_scoreboard)) }
 
-      it_behaves_like 'it correctly creates a contact', group_admin: true
+        it_behaves_like 'it correctly creates a contact', group_admin: true
 
-      it_behaves_like 'it adds the interests'
+        it_behaves_like 'it adds the interests'
 
-      context 'when subscribed to alerts' do
-        let!(:user) do
-          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools)
-          user = create(:group_admin, school_group: school_group)
-          user.contacts << create(:contact_with_name_email_phone, school: school_group.schools.first)
-          user
+        context 'when subscribed to alerts' do
+          let!(:user) do
+            school_group = create(:school_group, :with_default_scoreboard, :with_active_schools)
+            user = create(role, school_group: school_group)
+            user.contacts << create(:contact_with_name_email_phone, school: school_group.schools.first)
+            user
+          end
+
+          it 'uses correct status' do
+            expect(contact.alert_subscriber).to eq 'Yes'
+          end
         end
 
-        it 'uses correct status' do
-          expect(contact.alert_subscriber).to eq 'Yes'
-        end
-      end
+        context 'when account is disabled' do
+          let!(:user) { create(role, school_group: create(:school_group, :with_default_scoreboard), active: false) }
 
-      context 'when account is disabled' do
-        let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard), active: false) }
-
-        it 'switches user to Organic' do
-          expect(contact.contact_source).to eq 'Organic'
+          it 'switches user to Organic' do
+            expect(contact.contact_source).to eq 'Organic'
+          end
         end
       end
     end
@@ -380,17 +382,19 @@ describe Mailchimp::Contact do
       end
     end
 
-    context 'with group admin' do
-      it_behaves_like 'interests have been selected' do
-        let(:user) { create(:group_admin)}
-        let(:selected) do
-          [
-            described_class::GETTING_THE_MOST,
-            described_class::ENGAGING_PUPILS,
-            described_class::LEADERSHIP,
-            described_class::TRAINING,
-            described_class::TAILORED_ADVICE
-          ]
+    [:group_admin, :group_manager].each do |role|
+      context "with #{role}" do
+        it_behaves_like 'interests have been selected' do
+          let(:user) { create(role)}
+          let(:selected) do
+            [
+              described_class::GETTING_THE_MOST,
+              described_class::ENGAGING_PUPILS,
+              described_class::LEADERSHIP,
+              described_class::TRAINING,
+              described_class::TAILORED_ADVICE
+            ]
+          end
         end
       end
     end

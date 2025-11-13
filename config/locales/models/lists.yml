@@ -41,6 +41,7 @@ en:
     admin: Admin
     analytics: Analytics
     group_admin: Group admin
+    group_manager: Group manager
     guest: Guest
     pupil: Pupil
     school_admin: School admin
