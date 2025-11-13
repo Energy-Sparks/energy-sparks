@@ -260,7 +260,7 @@ class Ability
     return unless user.pupil?
 
     school_scope = { id: user.school_id, visible: true }
-    school_user_common_permissions(user, school_scope)
+    school_user_common_permissions(user)
 
     can :show_management_dash, School, school_scope
     # Note: prior to refactoring these to TransportSurvey permissions were using related_school_scope which
