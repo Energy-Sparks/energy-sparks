@@ -107,7 +107,13 @@ RSpec.shared_examples 'a group page with schools filtered by permissions' do
   end
 
   context 'when signed in as the group admin' do
-    let(:user) { create(:group_admin, school_group:) }
+    let(:user) do
+      if school_group.organisation?
+        create(:group_admin, school_group:)
+      else
+        create(:group_manager, school_group:)
+      end
+    end
 
     it 'filters correctly' do
       if school_group.organisation?
