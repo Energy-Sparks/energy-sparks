@@ -72,7 +72,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const picker = document.getElementById("admin-user-picker");
   if (picker) {
     picker.addEventListener("change", () => {
-      window.location.href = picker.value;
+      const val = picker.value;
+      if (val && val.match(/^[/#]/)) {
+        window.location.href = val;
+      }
     });
   }
 });
