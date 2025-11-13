@@ -78,7 +78,7 @@ class HomeController < ApplicationController
   end
 
   def school_statistics_key_data
-    @school_groups = SchoolGroup.with_active_schools.is_public.order(:name)
+    @school_groups = SchoolGroup.organisation_groups.with_active_schools.is_public.order(:name)
   end
 
   def team
