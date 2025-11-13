@@ -4,8 +4,8 @@ module Users
     load_and_authorize_resource through: :user
 
     def index
-      @schools = if @user.group_admin?
-                   @user.school_group.schools.visible.by_name
+      @schools = if @user.group_user?
+                   @user.school_group.assigned_schools.visible.by_name
                  elsif @user.has_other_schools?
                    @user.cluster_schools.visible.by_name
                  else

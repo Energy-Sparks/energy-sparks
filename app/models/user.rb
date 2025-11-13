@@ -95,7 +95,7 @@ class User < ApplicationRecord
 
   # volunteer has been removed, this was 8
   enum :role, { guest: 0, staff: 1, admin: 2, school_admin: 3, school_onboarding: 4, pupil: 5,
-                group_admin: 6, analytics: 7 }
+                group_admin: 6, analytics: 7, group_manager: 8 }
 
   enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
 
@@ -140,12 +140,16 @@ class User < ApplicationRecord
 
   validates :school_id, presence: true, if: :pupil?
 
-  validates :school_group_id, presence: true, if: :group_admin?
+  validates :school_group_id, presence: true, if: :group_user?
 
   validates :name, presence: true, on: :create
   validates :name, presence: true, on: :form_update
 
   validate :preferred_locale_presence_in_available_locales
+
+  def group_user?
+    group_admin? || group_manager?
+  end
 
   # Hook into devise so we can use our own status flag to permanently disable an account
   def active_for_authentication?
@@ -165,7 +169,7 @@ class User < ApplicationRecord
   end
 
   def default_scoreboard
-    if group_admin? && school_group.default_scoreboard
+    if group_user? && school_group.default_scoreboard
       school_group.default_scoreboard
     elsif school
       school.scoreboard
@@ -219,7 +223,7 @@ class User < ApplicationRecord
 
   def schools
     return School.visible.by_name if admin?
-    return school_group.schools.visible.by_name if school_group
+    return school_group.assigned_schools.visible.by_name if school_group
 
     [school].compact
   end
@@ -229,7 +233,7 @@ class User < ApplicationRecord
   end
 
   def default_school_group
-    if group_admin? && school_group
+    if group_user? && school_group
       school_group
     else
       school&.school_group
@@ -329,7 +333,7 @@ class User < ApplicationRecord
           user.school&.region&.to_s&.titleize || '',
           user.name,
           user.email,
-          user.role.titleize,
+          I18n.t(user.role, scope: :role),
           user.staff_role&.title || '',
           user.confirmed? ? 'Yes' : 'No',
           user.access_locked? ? 'Yes' : 'No'
@@ -384,13 +388,15 @@ class User < ApplicationRecord
   private
 
   def enforce_role_associations
-    # when becoming a group admin remove individual school associations
+    # when becoming a group admin/manager remove individual school associations
     cluster_schools.destroy_all if role_changed?(from: 'school_admin', to: 'group_admin')
+    cluster_schools.destroy_all if role_changed?(from: 'school_admin', to: 'group_manager')
 
     # when becoming a school admin remove link to school group
-    return unless role_changed?(from: 'group_admin', to: 'school_admin')
-
-    self.school_group = nil
+    if role_changed?(from: 'group_admin', to: 'school_admin') ||
+       role_changed?(from: 'group_manager', to: 'school_admin')
+      self.school_group = nil
+    end
   end
 
   def reset_mailchimp_contact

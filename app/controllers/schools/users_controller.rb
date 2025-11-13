@@ -101,7 +101,7 @@ module Schools
       redirect = false
       if @user.errors.where(:email).filter { |error| error.type != :taken }.empty? && !params.key?(:new_user_form)
         existing_user = User.find_by(email: @user.email)
-        if existing_user&.role == 'group_admin'
+        if existing_user&.group_user?
           redirect = true
           notice = I18n.t('schools.users.create.as_a_group_admin', school_group: existing_user.school_group.name)
         elsif existing_user.present?
