@@ -252,8 +252,11 @@ class School < ApplicationRecord
 
   # filtered relationships
   has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :organisation_school_grouping, update_only: true
+
   has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :project_school_groupings, allow_destroy: true
 
   # school groups via the filtered SchoolGrouping relationships
   has_one :organisation_group, through: :organisation_school_grouping, source: :school_group

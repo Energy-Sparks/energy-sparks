@@ -14,6 +14,7 @@
 #  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
 #  notes                    :text
+#  project_group_id         :bigint(8)
 #  school_group_id          :bigint(8)
 #  school_id                :bigint(8)
 #  school_name              :string           not null
@@ -30,6 +31,7 @@
 #  index_school_onboardings_on_created_by_id         (created_by_id)
 #  index_school_onboardings_on_created_user_id       (created_user_id)
 #  index_school_onboardings_on_funder_id             (funder_id)
+#  index_school_onboardings_on_project_group_id      (project_group_id)
 #  index_school_onboardings_on_school_group_id       (school_group_id)
 #  index_school_onboardings_on_school_id             (school_id)
 #  index_school_onboardings_on_scoreboard_id         (scoreboard_id)
@@ -40,6 +42,7 @@
 #
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
+#  fk_rails_...  (project_group_id => school_groups.id)
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (scoreboard_id => scoreboards.id) ON DELETE => nullify
@@ -55,6 +58,7 @@ class SchoolOnboarding < ApplicationRecord
 
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
+  belongs_to :project_group, -> { where(group_type: :project) }, class_name: 'SchoolGroup', optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
@@ -70,7 +74,7 @@ class SchoolOnboarding < ApplicationRecord
   scope :complete, lambda {
     joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
   }
-  scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.school_onboardings.complete : complete) }
+  scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.onboardings_for_group.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
 
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }

@@ -15,6 +15,7 @@ en:
           title: Historical progress
         monthly_progress:
           last_year: Last year (kWh)
+          manual_readings: manual readings used
           on_target: On target?
           partial: Partial months are shown in red.
           percentage_change: "% change"
@@ -44,15 +45,13 @@ en:
           text_no_comparison_html: <p>View <a href="%{analysis_path}">your detailed progress report</a>.<p>
           title: Your current progress
       limited_data:
+        manual_reading_html: Alternatively you can <a href="%{path}">manually add</a> monthly readings from your bill or supplier portal.
         meantime_html: <p>In the meantime you can monitor your usage using the charts on the <a href="%{path}">long term %{fuel_type} usage advice page</a></p>
         text_html: |-
           <p>We have limited historical data for your school so are unable to calculate a progress report to help you track progress towards completing your target.</p>
           <p>If we are able to access historical data for your school then a report will automatically become available.</p>
         title: Limited historical data
       missing_previous_year_html: Data from the previous year is missing so we can't calculate your target consumption.  See <a href="%{path}">here</a> for more information about your usage.
-      new_target:
-        text: Data for your new target should be available tomorrow.
-        title: Waiting to process data for your new target
       no_target:
         login_html: You need to <a href="%{path}">login</a> to set a target.
         text: Your school has not set a target for %{fuel_type} use so we can't generate a progress report.

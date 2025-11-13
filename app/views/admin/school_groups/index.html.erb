@@ -63,11 +63,11 @@
                   <% end %>
                 </td>
               <% end %>
-              <td class="text-right"><%= school_group.school_onboardings.incomplete.count %></td>
-              <td class="text-right"><%= school_group.schools.visible.count %></td>
-              <td class="text-right"><%= school_group.schools.visible.data_enabled.count %></td>
-              <td class="text-right"><%= school_group.schools.not_visible.count %></td>
-              <td class="text-right"><%= school_group.schools.inactive.count %></td>
+              <td class="text-right"><%= school_group.onboardings_for_group.incomplete.count %></td>
+              <td class="text-right"><%= school_group.assigned_schools.visible.count %></td>
+              <td class="text-right"><%= school_group.assigned_schools.visible.data_enabled.count %></td>
+              <td class="text-right"><%= school_group.assigned_schools.not_visible.count %></td>
+              <td class="text-right"><%= school_group.assigned_schools.inactive.count %></td>
               <td class="text-right"><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm',
                                                                                                   id: school_group.slug %></td>
             </tr>

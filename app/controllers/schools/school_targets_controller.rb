@@ -74,12 +74,9 @@ module Schools
     def create
       authorize! :create, @school_target
       if @school_target.save
-        notice = t('schools.school_targets.new.successfully_created')
-        if Flipper.enabled?(:target_advice_pages2025, current_user)
-          redirect_to edit_school_school_target_path(@school, @school_target), notice:
-        else
-          redirect_to school_school_target_path(@school, @school_target), notice:
-        end
+        update_monthly_consumption
+        redirect_to edit_school_school_target_path(@school, @school_target),
+                    notice: t('schools.school_targets.successfully_created')
       elsif @school.has_target?
         render :new
       else
@@ -90,8 +87,10 @@ module Schools
     def update
       authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
+        update_monthly_consumption
         AggregateSchoolService.new(@school).invalidate_cache
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
+        redirect_to edit_school_school_target_path(@school, @school_target),
+                    notice: t('schools.school_targets.successfully_updated')
       else
         target_service
         render :edit, layout: 'dashboards'
@@ -122,8 +121,12 @@ module Schools
       @advice_pages = AdvicePage.all
     end
 
+    def update_monthly_consumption
+      Targets::GenerateProgressService.new(@school, aggregate_school).update_monthly_consumption(@school_target)
+    end
+
     def school_target_params
-      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+      params.require(:school_target).permit(:electricity, :gas, :storage_heater, :start_date, :target_date, :school_id)
     end
   end
 end

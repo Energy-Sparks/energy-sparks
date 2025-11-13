@@ -1,5 +1,5 @@
 <div id="my-schools-summary">
-  <% if user.school.present? || user.group_admin? %>
+  <% if user.school.present? || user.group_user? %>
     <div class="row mt-4">
       <div class="col">
         <h2><%= t('nav.my_schools') %></h2>
@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <% if user.group_admin? %>
+        <% if user.group_user? %>
           <p>
             <%= t('users.show.school_summary.group_admin_html',
                   role: t("role.#{user.role}"),

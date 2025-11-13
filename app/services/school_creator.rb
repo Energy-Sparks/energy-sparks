@@ -83,7 +83,7 @@ class SchoolCreator
 private
 
   def add_school(user, school)
-    return if user.group_admin? || user.admin?
+    return if user.group_user? || user.admin?
 
     user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
@@ -95,11 +95,12 @@ private
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )
+    @school.project_groups << onboarding.project_group if onboarding.project_group
     Solar::SolarAreaLookupService.new(@school).assign
   end
 
   def create_default_contact(onboarding)
-    return if onboarding.created_user.group_admin?
+    return if onboarding.created_user.group_user?
     onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,

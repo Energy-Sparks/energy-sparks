@@ -10,7 +10,7 @@
       <%= simple_form_for(@user, html: { class: 'admin-user-form' }) do |f| %>
         <%= f.input :name, required: true, label: t('schools.users.form.name') %>
         <%= f.input :email, required: true, label: t('schools.users.form.email') %>
-        <% unless @user.admin? || @user.group_admin? %>
+        <% unless @user.admin? || @user.group_user? %>
           <%= f.input :staff_role_id,
                       label: t('schools.users.form.role'),
                       required: true,

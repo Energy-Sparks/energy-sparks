@@ -67,12 +67,12 @@ module Schools
       end
     end
 
-    private
-
     def target?
       @target = @school.most_recent_target
       @target.present?
     end
+
+    private
 
     def calculate_required_when_target
       @fuel_types.each do |fuel_type|

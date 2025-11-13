@@ -20,10 +20,11 @@ module AdvicePageHelper
   # our naming convention and page keys. Will only work on advice pages
   # content, e.g advice_pages.*
   def advice_t(key, **vars)
-    I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
+    I18n.t(key, **vars, scope: [:advice_pages]).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html, numeric_level: nil)
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html,
+                  numeric_level: nil, dash_if_nil: false)
     user_numeric_comprehension_level = numeric_level unless numeric_level.nil?
     # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and
     # not -4.7e-15)
@@ -32,7 +33,19 @@ module AdvicePageHelper
     rescue ArgumentError
       # use original value, probably NaN
     end
-    FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+    if dash_if_nil && value.nil?
+      '-'
+    else
+      FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+    end
+  end
+
+  def format_percent(percent)
+    if percent.present?
+      up_downify(format_unit(percent, :relative_percent, false), sanitize: false)
+    else
+      '-'
+    end
   end
 
   def advice_baseload_high?(estimated_savings_vs_benchmark)
@@ -57,6 +70,7 @@ module AdvicePageHelper
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
+
     (current - base) / base
   end
 
@@ -69,15 +83,16 @@ module AdvicePageHelper
   end
 
   def meters_by_estimated_saving(meters)
-    meters.sort_by {|_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
+    meters.sort_by { |_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
   end
 
   def meters_by_percentage_baseload(meters)
-    meters.sort_by {|_, v| -v.percentage_baseload }
+    meters.sort_by { |_, v| -v.percentage_baseload }
   end
 
   def heating_time_class(heating_start_time, recommended_time)
     return '' if heating_start_time.nil?
+
     if heating_start_time >= recommended_time
       'text-positive'
     else
@@ -87,6 +102,7 @@ module AdvicePageHelper
 
   def heating_time_assessment(heating_start_time, recommended_time)
     return I18n.t('analytics.modelling.heating.no_heating') if heating_start_time.nil?
+
     if heating_start_time >= recommended_time
       I18n.t('analytics.modelling.heating.on_time')
     else
@@ -103,7 +119,7 @@ module AdvicePageHelper
   end
 
   def warm_weather_on_days_status(rating)
-    if [:excellent, :good].include?(rating)
+    if %i[excellent good].include?(rating)
       :positive
     else
       :negative
@@ -125,7 +141,7 @@ module AdvicePageHelper
   def school_has_fuel_type?(school, fuel_type)
     fuel_type = 'storage_heaters' if fuel_type == 'storage_heater'
     fuel_type = 'electricity' if fuel_type == 'solar_pv'
-    school.send("has_#{fuel_type}?".to_sym)
+    school.send(:"has_#{fuel_type}?")
   end
 
   def can_benchmark?(advice_page:)
@@ -134,6 +150,7 @@ module AdvicePageHelper
 
   def tariff_source(tariff_summary)
     return t('advice_pages.tables.labels.default') unless tariff_summary.real
+
     if tariff_summary.name.include?('DCC SMETS2')
       t('advice_pages.tables.labels.smart_meter')
     else
@@ -163,7 +180,10 @@ module AdvicePageHelper
   end
 
   def icon_tooltip(text = '')
-    tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text }, class: 'text-muted') if text.present?
+    return unless text.present?
+
+    tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text },
+                                     class: 'text-muted')
   end
 
   def formatted_unit_to_num(value)
