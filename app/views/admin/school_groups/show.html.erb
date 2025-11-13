@@ -41,7 +41,7 @@
           <div>
             Onboarding
             <span class="float-right badge badge-warning">
-              <%= @school_group.school_onboardings.incomplete.count %>
+              <%= @school_group.onboardings_for_group.incomplete.count %>
             </span>
           </div>
           <div>
@@ -78,7 +78,7 @@
     <% end %>
   <% end %>
   <% component.with_tab(name: :onboarding, label: 'Onboarding') do %>
-    <% if @school_group.school_onboardings.incomplete.any? %>
+    <% if @school_group.onboardings_for_group.incomplete.any? %>
       <%= render 'onboarding_schools', school_group: @school_group, anchor: 'onboarding' %>
     <% else %>
       <div class="bg-light p-2">No schools currently onboarding for <%= @school_group.name %>.</div>

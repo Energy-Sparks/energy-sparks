@@ -95,6 +95,7 @@ private
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )
+    @school.project_groups << onboarding.project_group if onboarding.project_group
     Solar::SolarAreaLookupService.new(@school).assign
   end
 

@@ -1,39 +1,66 @@
-<h1>Configuration: <%= @school_onboarding.school_name %> </h1>
+<h1>School onboarding configuration: <%= @school_onboarding.school_name %> </h1>
 
 <%= form_for(@school_onboarding, url: admin_school_onboarding_configuration_path) do |f| %>
   <h2>Calendar, weather feeds, scoreboards and other default settings</h2>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :template_calendar_id, 'Template calendar' %>
-      <%= f.select :template_calendar_id, options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title', (@school_onboarding.template_calendar.id if @school_onboarding.template_calendar)),{},{class: 'form-control'}%>
+      <%= f.select :template_calendar_id,
+                   options_from_collection_for_select(Calendar.regional.order(:title),
+                                                      :id,
+                                                      :title,
+                                                      @school_onboarding.template_calendar&.id),
+                   {},
+                   { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :weather_station_id, 'Weather Station' %>
-      <%= f.select :weather_station_id, options_from_collection_for_select(WeatherStation.by_title, 'id', 'title', @school_onboarding.weather_station_id), {}, { class: 'form-control' } %>
+      <%= f.select :weather_station_id,
+                   options_from_collection_for_select(WeatherStation.by_title,
+                                                      :id,
+                                                      :title,
+                                                      @school_onboarding.weather_station_id),
+                   {},
+                   { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
-      <%= f.select :scoreboard_id, options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name', (@school_onboarding.scoreboard.id if @school_onboarding.scoreboard)),{}, { class: 'form-control' }%>
+      <%= f.select :scoreboard_id,
+                   options_from_collection_for_select(Scoreboard.order(:name),
+                                                      :id,
+                                                      :name,
+                                                      @school_onboarding.scoreboard&.id),
+                   {},
+                   { class: 'form-control' } %>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <%= f.label :country, 'Country' %>
-      <%= f.select :country, options_for_select(School.countries.map {|key, value| [key.titleize, key]}, @school_onboarding.country), {include_blank: false}, { class: 'form-control' } %>
+      <%= f.select :country,
+                   options_for_select(School.countries.map { |key, _value| [key.titleize, key] },
+                                      @school_onboarding.country),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
     </div>
   </div>
 
   <div class="form-group">
-    <label><%= t("school_groups.chart_updates.index.default_chart_preference.form_group") %></label>
-    <p class="small"><%= t("school_groups.chart_updates.index.default_chart_preference.explanation") %></p>
+    <label><%= t('school_groups.chart_updates.index.default_chart_preference.form_group') %></label>
+    <p class="small"><%= t('school_groups.chart_updates.index.default_chart_preference.explanation') %></p>
     <% SchoolOnboarding.default_chart_preferences.keys.each do |preference| %>
       <div class="form-check">
-        <%= f.radio_button :default_chart_preference, preference, checked: @school_onboarding.default_chart_preference == preference, class: "form-check-input" %>
-        <%= f.label "default_chart_preference_#{preference.to_sym}", t("school_groups.chart_updates.index.default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+        <%= f.radio_button :default_chart_preference, preference,
+                           checked: @school_onboarding.default_chart_preference == preference,
+                           class: 'form-check-input' %>
+        <%= f.label "default_chart_preference_#{preference.to_sym}",
+                    t("school_groups.chart_updates.index.default_chart_preference.#{preference}",
+                      default: preference.humanize),
+                    class: 'form-check-label' %>
       </div>
     <% end %>
   </div>
