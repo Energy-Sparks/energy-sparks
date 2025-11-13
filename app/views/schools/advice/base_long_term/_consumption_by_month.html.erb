@@ -23,12 +23,19 @@
   <tbody>
     <% @consumption_by_month&.each do |month, consumption| %>
       <tr>
-        <td><%= t_month(month) %></td>
+        <td><%= t_month(month.month) %></td>
         <% %i[kwh gbp co2].each do |type| %>
           <% %i[previous current].each do |period| %>
             <td class="text-right">
               <%= format_unit(consumption[period][type], type, dash_if_nil: true, numeric_level: :target) %>
-              <%= '*' if consumption[period][type].present? && consumption[period][:missing] %>
+              <% if consumption[period][type].present? %>
+                <% if consumption[period][:missing] %>
+                  <sup>i</sup>
+                <% end %>
+                <% if consumption[period][:manual] %>
+                  <sup>m</sup>
+                <% end %>
+              <% end %>
             </td>
           <% end %>
           <td class="text-right"><%= format_percent(consumption[:change][type]) %></td>
@@ -39,4 +46,5 @@
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
            additional_notice_text:
-              "#{t('advice_pages.electricity_long_term.analysis.consumption_by_month.missing')}<br>" %>
+              "#{t('advice_pages.electricity_long_term.analysis.consumption_by_month.missing_html')}<br>" \
+              "#{t('advice_pages.electricity_long_term.analysis.consumption_by_month.manual_html')}<br>" %>
