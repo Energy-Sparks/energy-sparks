@@ -3,6 +3,7 @@ module Schools
     class BaseLongTermController < AdviceBaseController
       def insights
         @benchmarked_usage = usage_service.benchmark_usage
+        set_consumption_by_month
       end
 
       def analysis
@@ -14,8 +15,7 @@ module Schools
 
         @meter_selection =
           Charts::MeterSelection.new(@school, aggregate_school_service, advice_page_fuel_type, date_window: 363)
-        @consumption_by_month =
-          Schools::Advice::ConsumptionByMonthService.consumption_by_month(aggregate_school.aggregate_meter(fuel_type))
+        set_consumption_by_month
       end
 
       private
@@ -30,6 +30,11 @@ module Schools
 
       def usage_service
         @usage_service ||= Schools::Advice::LongTermUsageService.new(@school, aggregate_school_service, fuel_type)
+      end
+
+      def set_consumption_by_month
+        @consumption_by_month = Schools::Advice::ConsumptionByMonthService
+                                .consumption_by_month(aggregate_school.aggregate_meter(fuel_type), @school)
       end
     end
   end

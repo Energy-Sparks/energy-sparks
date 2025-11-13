@@ -18,7 +18,8 @@ en:
           title: Comparison with other schools
         consumption_by_month:
           change: "% change"
-          missing: "* incomplete month"
+          manual_html: "<sup>m</sup> - using manual reading"
+          missing_html: "<sup>i</sup> - readings incomplete"
           previous_year: Previous Year
           this_year: This Year
           title: "%{fuel_type} consumption by month for the last 12 months"

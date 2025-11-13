@@ -118,12 +118,6 @@ class SchoolTarget < ApplicationRecord
   def monthly_consumption(fuel_type)
     self["#{fuel_type}_monthly_consumption"]&.map do |month|
       consumption = MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h
-      if month.length == 6 # remove this code after regeneration
-        consumption[:previous_missing] = consumption[:current_missing] && consumption[:previous_consumption].nil?
-        consumption[:current_missing] = consumption[:current_missing] &&
-                                        (!consumption[:previous_consumption].nil? ||
-                                         consumption[:current_consumption].nil?)
-      end
       consumption[:missing] = consumption[:current_missing] || consumption[:previous_missing]
       consumption
     end
