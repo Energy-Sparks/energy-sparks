@@ -4,60 +4,44 @@
                                 options: { user: current_user, match_controller: true } do |c| %>
   <% classes = 'small' %>
 
-  <%# c.with_section name: 'Schools',
-                    icon: 'school',
-                    options: { match_controller: false } do |s| %>
-# end %>
-
-  <% c.with_section name: t('components.manage_school_navigation.settings'),
+  <% c.with_section name: t('common.settings'),
                     icon: 'gear',
-                    expanded: false,
+                    expanded: true,
                     visible: school_group.organisation?,
                     options: { match_controller: false } do |s| %>
-    <% s.with_item(name: t('school_groups.sub_nav.chart_settings'),
+    <% s.with_item(name: t('common.charts'),
                    href: school_group_chart_updates_path(school_group), classes:) %>
-
-    <% s.with_item(name: t('school_groups.sub_nav.clusters'),
+    <% s.with_item(name: t('common.clusters'),
                    href: school_group_clusters_path(school_group), classes:) %>
-  <% end %>
-
-  <% c.with_section name: t('components.manage_school_navigation.metering'),
-                    icon: 'gauge',
-                    expanded: false,
-                    options: { match_controller: false } do |s| %>
     <% if can? :manage, EnergyTariff %>
-      <% s.with_item(name: t('manage_school_menu.manage_tariffs'),
+      <% s.with_item(name: t('common.tariffs'),
                      href: school_group_energy_tariffs_path(@school_group), classes:) %>
     <% end %>
   <% end %>
 
-  <% c.with_section name: 'Reports',
-                    icon: 'table',
-                    expanded: false,
+  <% c.with_section name: t('common.schools'),
+                    icon: 'school',
+                    expanded: true,
                     options: { match_controller: false } do |s| %>
-    <% if Flipper.enabled?(:school_group_secr_report,  current_user) && school_group.organisation? %>
-      <% s.with_item(name: t('school_groups.sub_nav.secr_report'),
-                     href: school_group_secr_index_path(school_group), classes:) %>
-
-    <% end %>
-    <% if SchoolGroups::SchoolEngagementController.show?(current_user) %>
-      <% s.with_item(name: t('school_groups.sub_nav.school_engagement'),
-                     href: school_group_school_engagement_index_path(school_group), classes:) %>
-    <% end %>
-  <% end %>
-
-  <% c.with_section name: t('components.manage_school_navigation.content'),
-                    icon: 'folder',
-                    expanded: false,
-                    options: { match_controller: false } do |s| %>
+    <%# s.with_item(name: t('common.status'),
+                   href: '/', classes:) %>
     <% if school_group.organisation? %>
+      <% if Flipper.enabled?(:school_group_secr_report,  current_user) %>
+        <% s.with_item(name: t('school_groups.sub_nav.secr_report'),
+                       href: school_group_secr_index_path(school_group), classes:) %>
+      <% end %>
       <% s.with_item(name: t('manage_school_menu.digital_signage'),
                      href: school_group_digital_signage_index_path(school_group), classes:) %>
     <% end %>
-    <% s.with_item(name: t('components.manage_school_navigation.history'),
+    <% if SchoolGroups::SchoolEngagementController.show?(current_user) %>
+      <% s.with_item(name: t('common.engagement'),
+                     href: school_group_school_engagement_index_path(school_group), classes:) %>
+    <% end %>
+    <% s.with_item(name: t('common.timeline'),
                    href: school_group_timeline_path(school_group), classes:) %>
   <% end %>
-  <% c.with_section name: t('components.manage_school_navigation.admin'),
+
+  <% c.with_section name: t('common.admin'),
                     icon: 'lock',
                     expanded: true,
                     visible: current_user.admin?,
@@ -74,6 +58,8 @@
     <% if school_group.organisation? %>
       <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
                      href: admin_school_group_path(school_group), classes:) %>
+      <% s.with_item(name: 'Issues',
+                     href: admin_school_group_issues_path(school_group), classes:) %>
     <% end %>
   <% end %>
 <% end %>

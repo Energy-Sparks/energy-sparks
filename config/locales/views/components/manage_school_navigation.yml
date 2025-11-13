@@ -2,7 +2,6 @@
 en:
   components:
     manage_school_navigation:
-      admin: Admin
       content: Content
       exclusions: Alert exclusions
       history: History
