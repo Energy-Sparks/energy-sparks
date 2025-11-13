@@ -244,7 +244,7 @@ class SchoolGroup < ApplicationRecord
   end
 
   def self.with_active_schools
-    joins(:schools).where('schools.active = true').distinct
+    joins(:school_groupings, { school_groupings: :school }).where('schools.active = true').distinct
   end
 
   def all_issues
