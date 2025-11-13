@@ -173,7 +173,7 @@ class Ability
   end
 
   # These are permissions for school users (staff and pupils)
-  def school_user_common_permissions(user, school_scope)
+  def school_user_common_permissions(user, school_scope = { id: user.school_id, visible: true })
     return unless user.pupil? || user.staff?
 
     can :manage, Location, school_id: user.school_id
@@ -265,8 +265,8 @@ class Ability
     can :show_management_dash, School, school_scope
     # Note: prior to refactoring these to TransportSurvey permissions were using related_school_scope which
     # was note defined in the original context, so have changed to match scope in staff, i.e. same school only
-    can %i[start read update create], TransportSurvey, school: { id: user.school_id, visible: true }
-    can %i[read create], TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
+    can %i[start read update create], TransportSurvey, school: school_scope
+    can %i[read create], TransportSurvey::Response, transport_survey: { school: school_scope }
     # pupils can only read real cost data if their school is set to share data publicly
     can %i[read_restricted_analysis read_restricted_advice], School,
       { id: user.school_id, visible: true, data_sharing: :public }
@@ -278,19 +278,19 @@ class Ability
     registered_user_permissions(user)
 
     school_scope = { id: user.school_id, visible: true }
-    school_user_common_permissions(user, school_scope)
+    school_user_common_permissions(user)
 
-    can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: { id: user.school_id, visible: true }
+    can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: school_scope
 
     # These two programme related abilities are unused? In the current user interface pupils can start
     # and restart programmes.
-    can :start_programme, School, id: user.school_id, visible: true
-    can :crud, Programme, school: { id: user.school_id, visible: true }
+    can :start_programme, School, school_scope
+    can :crud, Programme, school: school_scope
 
-    can :manage, TransportSurvey, school: { id: user.school_id, visible: true }
-    can :manage, TransportSurvey::Response, transport_survey: { school: { id: user.school_id, visible: true } }
+    can :manage, TransportSurvey, school: school_scope
+    can :manage, TransportSurvey::Response, transport_survey: { school: school_scope }
     # but staff can read real cost data regardless of data sharing
-    can %i[read_restricted_analysis read_restricted_advice], School, { id: user.school_id, visible: true }
+    can %i[read_restricted_analysis read_restricted_advice], School, school_scope
   end
 
   def school_admin_permissions(user)
