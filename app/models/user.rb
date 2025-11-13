@@ -141,6 +141,7 @@ class User < ApplicationRecord
   validates :school_id, presence: true, if: :pupil?
 
   validates :school_group_id, presence: true, if: :group_user?
+  validate :validate_group_association
 
   validates :name, presence: true, on: :create
   validates :name, presence: true, on: :form_update
@@ -416,5 +417,20 @@ class User < ApplicationRecord
       user: self,
       original_email: email_previously_was
     )
+  end
+
+  def validate_group_association
+    return unless school_group.present?
+
+    case role
+    when 'group_manager'
+      unless SchoolGroup::RESTRICTED_GROUP_TYPES.include?(school_group.group_type)
+        errors.add(:school_group, 'must be a project, area, or local_authority_area for group managers')
+      end
+    when 'group_admin'
+      unless SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS.include?(school_group.group_type)
+        errors.add(:school_group, 'must be an organisational group type for group admins')
+      end
+    end
   end
 end

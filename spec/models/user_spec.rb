@@ -9,6 +9,7 @@ describe User do
     it { is_expected.to validate_presence_of(:email) }
     it { is_expected.to allow_value('test@example.com').for(:email) }
     it { is_expected.not_to allow_value('\xE2\x80\x8Btest@example.com').for(:email) }
+    it { is_expected.to allow_value(create(:school_group)).for(:school_group) }
   end
 
   it 'generates display name' do
@@ -740,6 +741,41 @@ describe User do
           user.reload
           expect(user.mailchimp_updated_at).not_to be_nil
         end
+      end
+    end
+  end
+
+  describe 'group association validation' do
+    let!(:project_group) { create(:school_group, group_type: :project) }
+    let!(:area_group)    { create(:school_group, group_type: :local_authority_area) }
+    let!(:org_group)     { create(:school_group, group_type: :multi_academy_trust) }
+
+    context 'when role is group_manager' do
+      it 'is valid with a project group' do
+        user = create(:user, role: :group_manager, school_group: project_group)
+        expect(user).to be_valid
+      end
+
+      it 'is valid with an area group' do
+        user = create(:user, role: :group_manager, school_group: area_group)
+        expect(user).to be_valid
+      end
+
+      it 'is invalid with an organisational group' do
+        user = build(:user, role: :group_manager, school_group: org_group)
+        expect(user).not_to be_valid
+      end
+    end
+
+    context 'when role is group_admin' do
+      it 'is valid with an organisational group' do
+        user = create(:user, role: :group_admin, school_group: org_group)
+        expect(user).to be_valid
+      end
+
+      it 'is invalid with a project group' do
+        user = build(:user, role: :group_admin, school_group: project_group)
+        expect(user).not_to be_valid
       end
     end
   end
