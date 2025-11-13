@@ -94,7 +94,7 @@ class HtmlTableFormatting
 
   private def format_value(val, column_number)
     table_format = @use_table_formats.nil? ? true : @use_table_formats[column_number]
-    @row_units.nil? ? val : FormatEnergyUnit.format(@row_units[column_number], val, :html, true, table_format, @precision)
+    @row_units.nil? ? val : FormatUnit.format(@row_units[column_number], val, :html, true, table_format, @precision)
   end
 
   private def column_td(column, right_justified_columns)

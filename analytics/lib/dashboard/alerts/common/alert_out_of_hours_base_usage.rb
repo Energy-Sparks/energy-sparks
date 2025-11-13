@@ -207,8 +207,8 @@ class AlertOutOfHoursBaseUsage < AlertAnalysisBase
 
   def summary
     I18n.t("#{i18n_prefix}.summary",
-      cost: FormatEnergyUnit.format(:£, @out_of_hours_£, :text),
-      percent: FormatEnergyUnit.format(:percent, @out_of_hours_percent, :text))
+      cost: FormatUnit.format(:£, @out_of_hours_£, :text),
+      percent: FormatUnit.format(:percent, @out_of_hours_percent, :text))
   end
 
   def community_name

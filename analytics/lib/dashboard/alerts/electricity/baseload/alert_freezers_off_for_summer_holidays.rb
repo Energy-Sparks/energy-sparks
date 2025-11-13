@@ -118,7 +118,7 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
 
   def summary
     if @annualised_reduction_£ > 0
-      I18n.t("#{i18n_prefix}.summary.high", saving: FormatEnergyUnit.format(:£, @annualised_reduction_£, :text))
+      I18n.t("#{i18n_prefix}.summary.high", saving: FormatUnit.format(:£, @annualised_reduction_£, :text))
     else
       I18n.t("#{i18n_prefix}.summary.ok")
     end
@@ -171,7 +171,7 @@ class AlertSummerHolidayRefrigerationAnalysis < AlertElectricityOnlyBase
 
   def format_for_table(value, unit, medium)
     return value if medium == :raw || unit == String
-    FormatEnergyUnit.format(unit, value, medium, false, true)
+    FormatUnit.format(unit, value, medium, false, true)
   end
 
   def summer_holiday_data

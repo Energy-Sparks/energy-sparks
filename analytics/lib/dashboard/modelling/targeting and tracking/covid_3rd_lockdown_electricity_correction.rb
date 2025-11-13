@@ -56,8 +56,8 @@ class Covid3rdLockdownElectricityCorrection < MissingEnergyFittingBase
 
   def adjustment_description
     msg = 'Correcting for 3rd lockdown (Jan-Mar 2021) electricity kWh school day reduction. '
-    msg += "Reduction v. Jan-Mar 2020 #{FormatEnergyUnit.format(:percent, lockdown_versus_previous_year_percent_change, :text)}. "
-    msg += "Reduction v. Oct-Dec 2020 #{FormatEnergyUnit.format(:percent, lockdown_versus_mirror_percent_change, :text)}. "
+    msg += "Reduction v. Jan-Mar 2020 #{FormatUnit.format(:percent, lockdown_versus_previous_year_percent_change, :text)}. "
+    msg += "Reduction v. Oct-Dec 2020 #{FormatUnit.format(:percent, lockdown_versus_mirror_percent_change, :text)}. "
     msg += "Will apply a correction if change > #{MAX_CHANGE_BEFORE_MIRRORING * 100.0}%. "
 
     rule_description = {

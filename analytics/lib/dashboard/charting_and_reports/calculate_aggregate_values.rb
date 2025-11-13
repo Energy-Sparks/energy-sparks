@@ -102,7 +102,7 @@ class CalculateAggregateValues
     total = data.values.sum if percent
     data.transform_values! { |v| v / total } if percent
     format_unit_type = percent ? :percent : data_type
-    data.transform_values! { |v| FormatEnergyUnit.format(format_unit_type, v) } if format_data
+    data.transform_values! { |v| FormatUnit.format(format_unit_type, v) } if format_data
     data
   end
 

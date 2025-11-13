@@ -60,7 +60,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def current_system_efficiency_percent_html
-    FormatEnergyUnit.format(:percent, current_system_efficiency_percent, :html)
+    FormatUnit.format(:percent, current_system_efficiency_percent, :html)
   end
 
   def current_system_annual_consumption_kwh
@@ -68,7 +68,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def current_system_annual_consumption_kwh_html
-    FormatEnergyUnit.format(:kwh, current_system_annual_consumption_kwh, :html)
+    FormatUnit.format(:kwh, current_system_annual_consumption_kwh, :html)
   end
 
   def current_system_annual_cost_£
@@ -76,7 +76,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def current_system_annual_cost_£_html
-    FormatEnergyUnit.format(:£, current_system_annual_cost_£, :html)
+    FormatUnit.format(:£, current_system_annual_cost_£, :html)
   end
 
   def better_boiler_control_co2_saving_kg
@@ -84,7 +84,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def better_boiler_control_co2_saving_kg_html
-    FormatEnergyUnit.format(:co2, better_boiler_control_co2_saving_kg, :html)
+    FormatUnit.format(:co2, better_boiler_control_co2_saving_kg, :html)
   end
 
   def better_boiler_control_co2_saving_percent
@@ -92,7 +92,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def better_boiler_control_co2_saving_percent_html
-    FormatEnergyUnit.format(:percent, better_boiler_control_co2_saving_percent, :html)
+    FormatUnit.format(:percent, better_boiler_control_co2_saving_percent, :html)
   end
 
   def better_boiler_control_£_saving
@@ -100,7 +100,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def better_boiler_control_£_saving_html
-    FormatEnergyUnit.format(:£, better_boiler_control_£_saving, :html)
+    FormatUnit.format(:£, better_boiler_control_£_saving, :html)
   end
 
   def point_of_use_electric_payback_years
@@ -112,7 +112,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def point_of_use_electric_£_saving_html
-    FormatEnergyUnit.format(:£, point_of_use_electric_£_saving, :html)
+    FormatUnit.format(:£, point_of_use_electric_£_saving, :html)
   end
 
   def point_of_use_electric_co2_saving_kg
@@ -120,7 +120,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def point_of_use_electric_co2_saving_kg_html
-    FormatEnergyUnit.format(:co2, point_of_use_electric_co2_saving_kg, :html)
+    FormatUnit.format(:co2, point_of_use_electric_co2_saving_kg, :html)
   end
 
   def point_of_use_electric_co2_saving_percent
@@ -128,7 +128,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   def point_of_use_electric_co2_saving_percent_html
-    FormatEnergyUnit.format(:percent, point_of_use_electric_co2_saving_percent, :html)
+    FormatUnit.format(:percent, point_of_use_electric_co2_saving_percent, :html)
   end
 
   public def annual_litres
@@ -136,7 +136,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   public def formatted_annual_litres
-    FormatEnergyUnit.format(:litre, annual_litres)
+    FormatUnit.format(:litre, annual_litres)
   end
 
   public def annual_kwh
@@ -144,7 +144,7 @@ class HotWaterInvestmentAnalysisText
   end
 
   public def formatted_annual_kwh
-    FormatEnergyUnit.format(:kwh, annual_kwh)
+    FormatUnit.format(:kwh, annual_kwh)
   end
 
   def introductory_hot_water_text_1
@@ -163,7 +163,7 @@ class HotWaterInvestmentAnalysisText
       <p>
         The circulatory gas-based systems in schools are generally very
         inefficient, averaging about 15&percnt; &semi; for your school we estimate
-        <%= FormatEnergyUnit.format(:percent, current_system_efficiency_percent) %>.
+        <%= FormatUnit.format(:percent, current_system_efficiency_percent) %>.
         These inefficiencies offer significant cost and carbon emission saving
         opportunities if addressed.
       </p>

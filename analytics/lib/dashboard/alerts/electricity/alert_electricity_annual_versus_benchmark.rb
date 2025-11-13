@@ -423,15 +423,15 @@ class AlertElectricityAnnualVersusBenchmark < AlertElectricityOnlyBase
 
   def summary
     I18n.t("analytics.annual_cost_with_adjective",
-      cost: FormatEnergyUnit.format(:£, @last_year_£, :text),
-      relative_percent: FormatEnergyUnit.format(:relative_percent, @percent_difference_from_average_per_pupil, :text),
+      cost: FormatUnit.format(:£, @last_year_£, :text),
+      relative_percent: FormatUnit.format(:relative_percent, @percent_difference_from_average_per_pupil, :text),
       adjective: simple_percent_difference_adjective)
   end
 
   def summary_current
     I18n.t("analytics.annual_cost_with_adjective",
-      cost: FormatEnergyUnit.format(:£, @last_year_£current, :text),
-      relative_percent: FormatEnergyUnit.format(:relative_percent, @percent_difference_from_average_per_pupil, :text),
+      cost: FormatUnit.format(:£, @last_year_£current, :text),
+      relative_percent: FormatUnit.format(:relative_percent, @percent_difference_from_average_per_pupil, :text),
       adjective: simple_percent_difference_adjective)
   end
 

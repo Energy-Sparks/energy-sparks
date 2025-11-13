@@ -47,7 +47,7 @@ class SchoolComparisonComponent < ApplicationComponent
   end
 
   def format_unit(value)
-    FormatEnergyUnit.format(@comparison.unit, value, :text)
+    FormatUnit.format(@comparison.unit, value, :text)
   end
 
   def render?

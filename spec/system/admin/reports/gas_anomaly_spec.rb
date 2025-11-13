@@ -52,8 +52,8 @@ describe 'Gas anomaly report' do
 
   it 'displays the table' do
     rows = all('tr').map { |tr| tr.all('th, td').map(&:text) }
-    today_temp = FormatEnergyUnit.format(:temperature, anomaly.today_temperature.to_f, :html, false, true, :benchmark)
-    prev_temp = FormatEnergyUnit.format(:temperature, anomaly.previous_temperature.to_f, :html, false, true, :benchmark)
+    today_temp = FormatUnit.format(:temperature, anomaly.today_temperature.to_f, :html, false, true, :benchmark)
+    prev_temp = FormatUnit.format(:temperature, anomaly.previous_temperature.to_f, :html, false, true, :benchmark)
 
     expect(rows).to eq([
                          ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Reading Date', 'Kwh', 'Previous Kwh', 'Temperature', 'Previous Temperature', 'Period', 'Chart'],
@@ -63,8 +63,8 @@ describe 'Gas anomaly report' do
 
   it 'allows csv download' do
     click_on 'CSV'
-    today_temp = FormatEnergyUnit.format(:temperature, Report::GasAnomaly.first.today_temperature.to_f, :html, false, true, :benchmark)
-    prev_temp = FormatEnergyUnit.format(:temperature, Report::GasAnomaly.first.previous_temperature.to_f, :html, false, true, :benchmark)
+    today_temp = FormatUnit.format(:temperature, Report::GasAnomaly.first.today_temperature.to_f, :html, false, true, :benchmark)
+    prev_temp = FormatUnit.format(:temperature, Report::GasAnomaly.first.previous_temperature.to_f, :html, false, true, :benchmark)
 
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \

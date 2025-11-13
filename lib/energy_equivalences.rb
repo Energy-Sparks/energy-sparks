@@ -15,7 +15,7 @@ class EnergyEquivalences
   end
 
   # shorten name
-  class X < FormatEnergyUnit
+  class X < FormatUnit
   end
 
   J_TO_KWH = 1000.0 * 60 * 60

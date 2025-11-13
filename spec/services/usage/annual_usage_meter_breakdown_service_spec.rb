@@ -10,7 +10,7 @@ describe Usage::AnnualUsageMeterBreakdownService, type: :service do
 
   describe '#calculate_breakdown' do
     def format_unit(unit, val)
-      FormatEnergyUnit.format(unit, val, :html, true, true)
+      FormatUnit.format(unit, val, :html, true, true)
     end
 
     context 'with electricity' do
