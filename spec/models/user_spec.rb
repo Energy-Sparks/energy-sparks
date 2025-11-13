@@ -48,9 +48,16 @@ describe User do
 
       describe "when school admin becomes #{role}" do
         let!(:user) { create(:school_admin, :with_cluster_schools) }
+        let(:school_group) do
+          if role == :group_admin
+            create(:school_group)
+          else
+            create(:school_group, :project_group)
+          end
+        end
 
         before do
-          user.update!(role: role, school_group: create(:school_group))
+          user.update!(role: role, school_group:)
         end
 
         it 'removes the schools' do
@@ -188,25 +195,44 @@ describe User do
       end
     end
 
-    [:group_admin, :group_manager].each do |role|
-      context "for #{role}" do
-        let(:school_group)    { create(:school_group) }
-        let(:user)            { create(:user, role: role, school_group:) }
+    context 'for group_admin' do
+      let(:user)            { create(:group_admin) }
+      let(:school_group)    { user.default_school_group }
 
-        context 'without schools in group' do
-          it 'returns empty' do
-            expect(user.schools).to eq([])
-          end
+      context 'without schools in group' do
+        it 'returns empty' do
+          expect(user.schools).to eq([])
         end
+      end
 
-        context 'with schools in group' do
-          let(:school_1)        { create(:school, school_group:) }
-          let(:school_2)        { create(:school, school_group:) }
-          let(:school_3)        { create(:school) }
+      context 'with schools in group' do
+        let(:school_1)        { create(:school, school_group:) }
+        let(:school_2)        { create(:school, school_group:) }
+        let(:school_3)        { create(:school) }
 
-          it 'returns schools from group' do
-            expect(user.schools).to contain_exactly(school_1, school_2)
-          end
+        it 'returns schools from group' do
+          expect(user.schools).to contain_exactly(school_1, school_2)
+        end
+      end
+    end
+
+    context 'for group_manager' do
+      let(:user)            { create(:group_manager) }
+      let(:school_group)    { user.default_school_group }
+
+      context 'without schools in group' do
+        it 'returns empty' do
+          expect(user.schools).to eq([])
+        end
+      end
+
+      context 'with schools in group' do
+        let(:school_1)        { create(:school, :with_project, group: school_group) }
+        let(:school_2)        { create(:school, :with_project, group: school_group) }
+        let(:school_3)        { create(:school) }
+
+        it 'returns schools from group' do
+          expect(user.schools).to contain_exactly(school_1, school_2)
         end
       end
     end
@@ -336,7 +362,8 @@ describe User do
 
     [:group_admin, :group_manager].each do |role|
       context "when exporting #{role}" do
-        let!(:user) { create(role, school_group:) }
+        let!(:user) { create(role) }
+        let(:school_group) { user.default_school_group }
 
         it 'includes the expected data' do
           expect(parsed[1]).to eq([school_group.name,
