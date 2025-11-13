@@ -41,12 +41,14 @@ en:
       download: Download
       edit: Edit
       enable: Enable
+      end_date: End date
       energy_saving_actions: Energy saving actions
       enquire_now: Enquire now
       finish: Finish
       finished: Finished
       home: Home
       inactive: Inactive
+      last_month: Last month
       last_updated: Last updated
       last_week: Last week
       last_year: Last year
