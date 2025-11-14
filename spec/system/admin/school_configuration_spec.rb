@@ -25,15 +25,16 @@ RSpec.describe 'editing school configuration', type: :system do
     end
 
     context 'when editing diocese' do
-      let!(:diocese) { create(:school_group, :diocese) }
+      let!(:diocese) { create(:school_group, group_type: :diocese) }
 
       before do
+        refresh
         select diocese.name, from: 'Diocese'
         click_on('Update configuration')
       end
 
       it 'allows diocese to be updated' do
-        expect(school.reload.diocese_group).to eq school_group
+        expect(school.reload.diocese_group).to eq diocese
       end
     end
 
