@@ -31,15 +31,17 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-12" id="area-groups">
-      <%= f.label :project_group_ids, 'Diocese & Local Authority Area' %>
-      <%= f.collection_select :area_group_ids,
-                              SchoolGroup.area_groups.order(:name),
-                              :id,
-                              :name,
-                              { selected: @school.area_group_ids },
-                              { multiple: true, class: 'form-control select2' } %>
-    </div>
+    <%= f.fields_for :diocese_school_grouping do |grouping_fields| %>
+      <div class="form-group col-md-12">
+        <%= grouping_fields.label :school_group_id, 'Diocese' %>
+        <%= grouping_fields.collection_select :school_group_id,
+                                              SchoolGroup.diocese_groups.order(:name),
+                                              :id,
+                                              :name,
+                                              { selected: @school.diocese_group&.id },
+                                              { class: 'form-control' } %>
+      </div>
+    <% end %>
   </div>
 
   <div class="form-row">

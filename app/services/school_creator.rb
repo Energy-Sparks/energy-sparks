@@ -96,7 +96,7 @@ private
       chart_preference: onboarding.default_chart_preference
     )
     @school.project_groups << onboarding.project_group if onboarding.project_group
-    @school.area_groups << onboarding.diocese if onboarding.diocese
+    @school.diocese_group = onboarding.diocese if onboarding.diocese
     Solar::SolarAreaLookupService.new(@school).assign
   end
 

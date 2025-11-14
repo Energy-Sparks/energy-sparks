@@ -6,6 +6,7 @@ module Schools
 
     def edit
       @school.build_organisation_school_grouping unless @school.organisation_school_grouping
+      @school.build_diocese_school_grouping unless @school.diocese_school_grouping
     end
 
     def update
@@ -36,8 +37,8 @@ module Schools
         :country,
         :data_sharing,
         organisation_school_grouping_attributes: [:school_group_id],
-        project_group_ids: [],
-        area_group_ids: []
+        diocese_school_grouping_attributes: [:school_group_id],
+        project_group_ids: []
       )
     end
 

@@ -53,7 +53,7 @@ describe 'School groups map page', :school_groups do
 
     context 'with an area group' do
       let!(:school) { create(:school, :with_fuel_configuration, :with_diocese, name: 'Xavier school for gifted children') }
-      let!(:school_group) { school.area_groups.first }
+      let!(:school_group) { school.diocese_group }
 
       it_behaves_like 'a group map page'
     end

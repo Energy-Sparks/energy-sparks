@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'editing school configuration', type: :system do
-  let!(:admin)              { create(:admin)}
-  let!(:school)             { create(:school)}
+  let!(:school) { create(:school)}
 
   before do
-    sign_in(admin)
+    sign_in(create(:admin))
     visit school_path(school)
   end
 
@@ -23,6 +22,19 @@ RSpec.describe 'editing school configuration', type: :system do
       click_on('Update configuration')
       school.reload
       expect(school.school_group).to eq school_group
+    end
+
+    context 'when editing diocese' do
+      let!(:diocese) { create(:school_group, :diocese) }
+
+      before do
+        select diocese.name, from: 'Diocese'
+        click_on('Update configuration')
+      end
+
+      it 'allows diocese to be updated' do
+        expect(school.reload.diocese_group).to eq school_group
+      end
     end
 
     it 'allows scoreboard to be updated' do
@@ -144,54 +156,6 @@ RSpec.describe 'editing school configuration', type: :system do
         it 'has updated the association' do
           school.reload
           expect(school.project_groups).to eq([project_groups.last])
-        end
-      end
-    end
-  end
-
-  context 'when editing area groups' do
-    let!(:area_groups) { [create(:school_group, group_type: :diocese), create(:school_group, group_type: :local_authority_area)] }
-
-    before do
-      click_on('School configuration')
-    end
-
-    it 'displays the groups' do
-      expect(page).to have_select('school_area_group_ids', options: area_groups.sort_by(&:name).map(&:name))
-    end
-
-    context 'when adding groups' do
-      before do
-        select(area_groups.first.name, from: 'school_area_group_ids')
-        click_on 'Update configuration'
-      end
-
-      it 'has updated the association' do
-        school.reload
-        expect(school.area_groups).to eq([area_groups.first])
-      end
-    end
-
-    context 'when there are existing editing groups' do
-      before do
-        school.area_groups = area_groups
-        school.save
-        refresh
-      end
-
-      it 'has the groups selected' do
-        expect(page).to have_select('school_area_group_ids', selected: area_groups.sort_by(&:name).map(&:name))
-      end
-
-      context 'when updating the groups' do
-        before do
-          unselect(area_groups.first.name, from: 'school_area_group_ids')
-          click_on 'Update configuration'
-        end
-
-        it 'has updated the association' do
-          school.reload
-          expect(school.area_groups).to eq([area_groups.last])
         end
       end
     end

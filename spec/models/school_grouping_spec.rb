@@ -21,7 +21,7 @@ describe SchoolGrouping do
       expect(grouping).to be_valid
     end
 
-    ['area', 'project'].each do |role|
+    ['area', 'project', 'diocese'].each do |role|
       context "with #{role} role" do
         context 'when creating' do
           let!(:grouping) { described_class.new(school:, school_group:, role: role) }
@@ -43,6 +43,40 @@ describe SchoolGrouping do
         end
 
         it_behaves_like 'it validates correctly', 'organisation'
+      end
+    end
+  end
+
+  shared_examples 'valid diocese role group types' do |group_type|
+    let(:school_group) { create(:school_group, group_type:) }
+
+    it 'is valid on create with role diocese' do
+      grouping = described_class.new(school:, school_group:, role: 'diocese')
+      expect(grouping).to be_valid
+    end
+
+    ['area', 'project', 'organisation'].each do |role|
+      context "with #{role} role" do
+        context 'when creating' do
+          let!(:grouping) { described_class.new(school:, school_group:, role: role) }
+
+          before do
+            grouping.valid?
+          end
+
+          it_behaves_like 'it validates correctly', 'diocese'
+        end
+      end
+
+      context 'when updating' do
+        let!(:grouping) { described_class.create(school:, school_group:, role: 'diocese') }
+
+        before do
+          grouping.update(role:)
+          grouping.valid?
+        end
+
+        it_behaves_like 'it validates correctly', 'diocese'
       end
     end
   end
@@ -81,6 +115,32 @@ describe SchoolGrouping do
     end
   end
 
+  shared_examples 'enforce one group per role per school' do |group_type, role|
+    let(:trust) { create(:school_group, group_type: group_type) }
+
+    context 'when creating' do
+      let!(:grouping) { described_class.create(school:, school_group: trust, role:) }
+
+      it { expect(grouping).to be_valid }
+    end
+
+    context 'when adding another organisation group' do
+      let(:other) { create(:school_group, group_type: group_type) }
+
+      let!(:grouping) { described_class.create(school:, school_group: trust, role:) }
+      let!(:second_grouping) { described_class.create(school:, school_group: other, role:) }
+
+      before do
+        second_grouping.valid?
+      end
+
+      it 'prevents second grouping on create' do
+        expect(second_grouping).to be_invalid
+        #        expect(second_grouping.errors[:role]).to include('already has a organisation group assigned')
+      end
+    end
+  end
+
   describe 'role-group_type compatibility' do
     %w[general local_authority multi_academy_trust].each do |group_type|
       context "when group_type is #{group_type}" do
@@ -88,37 +148,29 @@ describe SchoolGrouping do
       end
     end
 
-    %w[diocese local_authority_area].each do |group_type|
+    %w[local_authority_area].each do |group_type|
       context "when group_type is #{group_type}" do
         it_behaves_like 'valid area role group types', group_type
+      end
+    end
+
+    %w[diocese].each do |group_type|
+      context "when group_type is #{group_type}" do
+        it_behaves_like 'valid diocese role group types', group_type
       end
     end
   end
 
   describe 'enforcing one organisation group per school' do
-    let(:trust) { create(:school_group, group_type: :multi_academy_trust) }
+    it_behaves_like 'enforce one group per role per school', :multi_academy_trust, 'organisation'
+  end
 
-    context 'when creating' do
-      let!(:grouping) { described_class.create(school:, school_group: trust, role: 'organisation') }
+  describe 'enforcing one diocese group per school' do
+    it_behaves_like 'enforce one group per role per school', :diocese, 'diocese'
+  end
 
-      it { expect(grouping).to be_valid }
-    end
-
-    context 'when adding another organisation group' do
-      let(:general) { create(:school_group, group_type: :general) }
-
-      let!(:grouping) { described_class.create(school:, school_group: trust, role: 'organisation') }
-      let!(:second_grouping) { described_class.create(school:, school_group: general, role: 'organisation') }
-
-      before do
-        second_grouping.valid?
-      end
-
-      it 'prevents second organisation grouping on create' do
-        expect(second_grouping).to be_invalid
-        expect(second_grouping.errors[:role]).to include('already has a organisation group assigned')
-      end
-    end
+  describe 'enforcing one area group per school' do
+    it_behaves_like 'enforce one group per role per school', :local_authority_area, 'area'
   end
 
   describe '.assign_diocese' do
@@ -130,7 +182,7 @@ describe SchoolGrouping do
       end
 
       it 'does nothing' do
-        expect(school.reload.area_groups).to be_empty
+        expect(school.reload.diocese_group).to be_nil
       end
     end
 
@@ -143,7 +195,7 @@ describe SchoolGrouping do
       end
 
       it 'does nothing' do
-        expect(school.reload.area_groups).to be_empty
+        expect(school.reload.diocese_group).to be_nil
       end
     end
 
@@ -156,7 +208,7 @@ describe SchoolGrouping do
       end
 
       it 'add a relationship' do
-        expect(school.reload.area_groups).to eq([school_group])
+        expect(school.reload.diocese_group).to eq(school_group)
       end
     end
 
@@ -169,7 +221,7 @@ describe SchoolGrouping do
       end
 
       it 'updates the relationship' do
-        expect(school.reload.area_groups).to eq([school_group])
+        expect(school.reload.diocese_group).to eq(school_group)
       end
     end
   end

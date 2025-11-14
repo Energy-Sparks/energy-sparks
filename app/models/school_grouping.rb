@@ -37,12 +37,12 @@ class SchoolGrouping < ApplicationRecord
   #
   # "project" roles can only refer to "project" SchoolGroups. The remaining
   # SchoolGroup types are restricted to "area" relationships.
-  enum :role, %i[organisation area project].index_with(&:to_s), prefix: true
+  enum :role, %i[organisation area project diocese].index_with(&:to_s), prefix: true
 
   validates :role, presence: true
   validates :role, inclusion: { in: roles.keys }
 
-  validate :only_one_organisation_group
+  validate :only_one_groups
   validate :role_matches_group_type
 
   def self.assign_diocese(school)
@@ -53,7 +53,7 @@ class SchoolGrouping < ApplicationRecord
     return unless school_group
 
     grouping = joins(:school_group)
-      .where(school: school, role: 'area', school_groups: { group_type: :diocese })
+      .where(school: school, role: 'diocese', school_groups: { group_type: :diocese })
       .first_or_initialize
 
     grouping.school_group = school_group
@@ -62,14 +62,22 @@ class SchoolGrouping < ApplicationRecord
 
   private
 
-  def only_one_organisation_group
-    return unless role_organisation?
+  def only_one_groups
+    if role_organisation?
+      only_one_group_for_role('organisation')
+    elsif role_diocese?
+      only_one_group_for_role('diocese')
+    elsif role_area?
+      only_one_group_for_role('area')
+    end
+  end
 
-    existing = SchoolGrouping.where(school_id: school_id, role: 'organisation')
+  def only_one_group_for_role(role)
+    existing = SchoolGrouping.where(school_id: school_id, role:)
     existing = existing.where.not(id: id) if persisted?
 
     if existing.exists?
-      errors.add(:role, 'already has a organisation group assigned')
+      errors.add(:role, "already has a #{role} group assigned")
     end
   end
 
@@ -79,7 +87,9 @@ class SchoolGrouping < ApplicationRecord
     case school_group.group_type
     when *SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS
       errors.add(:role, 'must be organisation for this group type') unless role_organisation?
-    when *SchoolGroup::AREA_GROUP_TYPE_KEYS
+    when 'diocese'
+      errors.add(:role, 'must be diocese for this group type') unless role_diocese?
+    when 'local_authority_area'
       errors.add(:role, 'must be area for this group type') unless role_area?
     else
       errors.add(:role, 'must be project for project groups') unless role_project?

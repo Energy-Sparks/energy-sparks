@@ -34,6 +34,8 @@ FactoryBot.define do
           school_group.organisation_schools = schools
         when :area
           school_group.area_schools = schools
+        when :diocese
+          school_group.diocese_schools = schools
         else
           school_group.project_schools = schools
         end
