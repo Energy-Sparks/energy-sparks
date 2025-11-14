@@ -20,6 +20,7 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
+#  dfe_code                                 :string
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  mailchimp_fields_changed_at              :datetime
@@ -152,6 +153,7 @@ class SchoolGroup < ApplicationRecord
   scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }
 
   validates :name, presence: true
+  validates :dfe_code, uniqueness: true, allow_blank: true
 
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries

@@ -120,4 +120,57 @@ describe SchoolGrouping do
       end
     end
   end
+
+  describe '.assign_diocese' do
+    context 'when there is no matching group' do
+      let!(:school) { create(:school, establishment: create(:establishment)) }
+
+      before do
+        described_class.assign_diocese(school)
+      end
+
+      it 'does nothing' do
+        expect(school.reload.area_groups).to be_empty
+      end
+    end
+
+    context 'when there is no existing diocese' do
+      let!(:school_group) { create(:school_group, dfe_code: 'CH01') }
+      let!(:school) { create(:school, establishment: create(:establishment, diocese_code: 'CH01')) }
+
+      before do
+        described_class.assign_diocese(school)
+      end
+
+      it 'does nothing' do
+        expect(school.reload.area_groups).to be_empty
+      end
+    end
+
+    context 'when there is no existing grouping' do
+      let!(:school_group) { create(:school_group, group_type: :diocese, dfe_code: 'CH01') }
+      let!(:school) { create(:school, establishment: create(:establishment, diocese_code: 'CH01')) }
+
+      before do
+        described_class.assign_diocese(school)
+      end
+
+      it 'add a relationship' do
+        expect(school.reload.area_groups).to eq([school_group])
+      end
+    end
+
+    context 'when there is an existing grouping' do
+      let!(:school_group) { create(:school_group, group_type: :diocese, dfe_code: 'CH01') }
+      let!(:school) { create(:school, :with_diocese, establishment: create(:establishment, diocese_code: 'CH01')) }
+
+      before do
+        described_class.assign_diocese(school)
+      end
+
+      it 'updates the relationship' do
+        expect(school.reload.area_groups).to eq([school_group])
+      end
+    end
+  end
 end

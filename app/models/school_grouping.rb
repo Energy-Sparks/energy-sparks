@@ -45,6 +45,23 @@ class SchoolGrouping < ApplicationRecord
   validate :only_one_organisation_group
   validate :role_matches_group_type
 
+  def self.assign_diocese(school)
+    establishment = school.establishment
+    return unless establishment&.diocese_code
+
+    school_group = SchoolGroup.find_by(group_type: :diocese, dfe_code: establishment.diocese_code)
+    return unless school_group
+
+    grouping = joins(:school_group)
+      .where(school: school, role: 'area', school_groups: { group_type: :diocese })
+      .first_or_initialize
+
+    grouping.school_group = school_group
+    grouping.save!
+  end
+
+  private
+
   def only_one_organisation_group
     return unless role_organisation?
 
