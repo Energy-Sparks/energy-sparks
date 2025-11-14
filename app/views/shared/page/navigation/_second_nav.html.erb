@@ -70,7 +70,7 @@
 
         <div class="vr <%= navbar_hide_class %>"></div>
 
-        <% if request.path.starts_with?('/school_groups') && can?(:update_settings, current_school_group) %>
+        <% if request.path.starts_with?('/school_groups') && can?(:view_settings, current_school_group) %>
           <!-- 'Manage group' menu -->
           <!-- Context: /school_groups path - show manage school group menu for users with permission to update settings for current school group -->
           <%= render 'shared/page/navigation/second_nav/manage_school_group_menu', school_group: current_school_group %>
@@ -82,7 +82,7 @@
           <%= render 'shared/page/navigation/second_nav/manage_school_menu', school: current_school %>
         <% end %>
 
-        <% if current_user_school_group && can?(:update_settings, current_user_school_group) %>
+        <% if current_user_school_group && can?(:read, :my_school_group_menu) %>
           <!-- 'My school group' menu -->
           <!-- links back to school group dashboard & lists schools in group -->
           <!-- Context: current user has associated school group -->

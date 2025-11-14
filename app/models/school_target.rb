@@ -112,7 +112,7 @@ class SchoolTarget < ApplicationRecord
   end
 
   MONTHLY_CONSUMPTION_FIELDS =
-    %i[year month current_consumption previous_consumption target_consumption current_missing previous_missing]
+    %i[year month current_consumption previous_consumption target_consumption current_missing previous_missing manual]
     .each_with_index.to_h
 
   def monthly_consumption(fuel_type)

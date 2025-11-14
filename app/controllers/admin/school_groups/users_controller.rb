@@ -83,10 +83,10 @@ module Admin
           user.name,
           user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
-          user.group_admin? ? 'N/A' : user.staff_role&.title,
+          user.group_user? ? 'N/A' : user.staff_role&.title,
           y_n(user.confirmed?),
           display_last_signed_in_as(user),
-          user.group_admin? ? 'N/A' : y_n(user.contact_for_school),
+          user.group_user? ? 'N/A' : y_n(user.contact_for_school),
           I18n.t("languages.#{user.preferred_locale}"),
           y_n(user.access_locked?)
         ]

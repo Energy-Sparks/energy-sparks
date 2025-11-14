@@ -15,6 +15,9 @@ function setupSchoolGroupAndClusterControls() {
     case 'group_admin':
       $(".user_school_group_id").show();
       break;
+    case 'group_manager':
+      $(".user_school_group_id").show();
+      break;
   }
 }
 

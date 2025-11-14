@@ -60,6 +60,7 @@ RSpec.shared_examples 'target advice page' do
       #{if fuel_type == :storage_heater
           'In the meantime you can learn more about this topic.'
         else
+          "Alternatively you can manually add monthly readings from your bill or supplier portal.\n" \
           'In the meantime you can monitor your usage using the charts on the ' \
             "long term #{fuel_type} usage advice page"
         end}
@@ -105,16 +106,6 @@ RSpec.shared_examples 'target advice page' do
       create_target
       visit_tab(tab)
       expect(content(tab)).to eq(insight_content)
-    end
-
-    it 'new target with no consumption' do
-      create(:school_target, school:)
-      visit_tab(tab)
-      expect(content(tab)).to have_content(<<~CONTENT.chomp)
-        Waiting to process data for your new target
-        Data for your new target should be available tomorrow.
-        In the meantime you can learn more about this topic.
-      CONTENT
     end
 
     it 'target in future' do
@@ -225,7 +216,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 1,020 1,000 1,010 -0.98&percnt; \
         November #{year} 1,020 1,000 1,010 -0.98&percnt; \
         December #{year} 1,020 1,000 1,010 -0.98&percnt;
-        Partial months are shown in red. How did we calculate these figures?
+        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
         Cumulative progress
         Back to top
         This table summarises your overall progress towards reducing your #{fuel_string} use by 4&percnt;. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by January #{year + 1}.
@@ -242,7 +233,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 10,200 10,000 10,100 -0.98&percnt; \
         November #{year} 11,220 11,000 11,110 -0.98&percnt; \
         December #{year} 12,240 12,000 12,120 -0.98&percnt;
-        Partial months are shown in red. How did we calculate these figures?
+        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
       CONTENT
     end
 
@@ -268,16 +259,6 @@ RSpec.shared_examples 'target advice page' do
         Target date Previous year (kWh) Target year (kWh) % change Target \
         January 2026 12,120 12,000 -0.98&percnt; 4&percnt; \
         January 2025 11,000 10,000 +10&percnt; 5&percnt;
-      CONTENT
-    end
-
-    it 'new target with no consumption' do
-      create(:school_target, school:)
-      visit_tab(tab)
-      expect(content(tab)).to eq(<<~CONTENT.chomp)
-        Waiting to process data for your new target
-        Data for your new target should be available tomorrow.
-        In the meantime you can learn more about this topic.
       CONTENT
     end
 
