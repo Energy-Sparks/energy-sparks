@@ -255,6 +255,8 @@ class School < ApplicationRecord
   accepts_nested_attributes_for :organisation_school_grouping, update_only: true
 
   has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :area_school_groupings, allow_destroy: true
+
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
   accepts_nested_attributes_for :project_school_groupings, allow_destroy: true
 

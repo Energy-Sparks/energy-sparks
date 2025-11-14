@@ -10,6 +10,7 @@
 #  dark_sky_area_id         :bigint(8)
 #  data_sharing             :enum             default("public"), not null
 #  default_chart_preference :integer          default("default"), not null
+#  diocese_id               :bigint(8)
 #  full_school              :boolean          default(TRUE)
 #  funder_id                :bigint(8)
 #  id                       :bigint(8)        not null, primary key
@@ -30,6 +31,7 @@
 #
 #  index_school_onboardings_on_created_by_id         (created_by_id)
 #  index_school_onboardings_on_created_user_id       (created_user_id)
+#  index_school_onboardings_on_diocese_id            (diocese_id)
 #  index_school_onboardings_on_funder_id             (funder_id)
 #  index_school_onboardings_on_project_group_id      (project_group_id)
 #  index_school_onboardings_on_school_group_id       (school_group_id)
@@ -42,6 +44,7 @@
 #
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
+#  fk_rails_...  (diocese_id => school_groups.id)
 #  fk_rails_...  (project_group_id => school_groups.id)
 #  fk_rails_...  (school_group_id => school_groups.id) ON DELETE => restrict
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
@@ -59,6 +62,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :school, optional: true
   belongs_to :school_group, optional: true
   belongs_to :project_group, -> { where(group_type: :project) }, class_name: 'SchoolGroup', optional: true
+  belongs_to :diocese, -> { where(group_type: :diocese) }, class_name: 'SchoolGroup', optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
@@ -80,15 +84,6 @@ class SchoolOnboarding < ApplicationRecord
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, School.countries
 
-  before_save :update_country_from_urn
-
-  def update_country_from_urn
-    est = Lists::Establishment.current_establishment_from_urn(@urn)
-    unless est.nil?
-      est.gor_code == 'W' ? :wales : :england
-    end
-  end
-
   def populate_default_values(user)
     assign_attributes({
                         uuid: SecureRandom.uuid,
@@ -98,7 +93,8 @@ class SchoolOnboarding < ApplicationRecord
                         weather_station: school_group&.default_weather_station,
                         scoreboard: school_group&.default_scoreboard,
                         default_chart_preference: school_group&.default_chart_preference,
-                        country: school_group&.default_country
+                        country: school_group&.default_country,
+                        diocese: find_diocese
                       })
   end
 
@@ -190,5 +186,11 @@ class SchoolOnboarding < ApplicationRecord
 
   def name
     school_name
+  end
+
+  def find_diocese
+    establishment = Lists::Establishment.current_establishment_from_urn(urn)
+    return nil unless establishment && establishment&.diocese_code
+    SchoolGroup.find_by(group_type: :diocese, dfe_code: establishment.diocese_code)
   end
 end

@@ -31,6 +31,18 @@
     </div>
   </div>
   <div class="form-row">
+    <div class="form-group col-md-12" id="area-groups">
+      <%= f.label :project_group_ids, 'Diocese & Local Authority Area' %>
+      <%= f.collection_select :area_group_ids,
+                              SchoolGroup.area_groups.order(:name),
+                              :id,
+                              :name,
+                              { selected: @school.area_group_ids },
+                              { multiple: true, class: 'form-control select2' } %>
+    </div>
+  </div>
+
+  <div class="form-row">
     <div class="form-group col-md-12">
       <%= f.label :template_calendar_id, 'Template calendar' %>
       <%= f.select :template_calendar_id,

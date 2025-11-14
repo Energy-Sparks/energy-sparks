@@ -36,7 +36,8 @@ module Schools
         :country,
         :data_sharing,
         organisation_school_grouping_attributes: [:school_group_id],
-        project_group_ids: []
+        project_group_ids: [],
+        area_group_ids: []
       )
     end
 
