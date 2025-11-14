@@ -3,7 +3,7 @@ module Schools
     include DashboardAlerts
     load_and_authorize_resource :school
 
-    layout Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
+    layout -> { Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application' }
 
     def index
       authorize! :view_content_reports, @school

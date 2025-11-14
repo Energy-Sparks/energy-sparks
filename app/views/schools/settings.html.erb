@@ -24,7 +24,7 @@
 
   <%= render TitledSectionComponent.new(id: 'settings-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
-      <h2><%= t('components.manage_school_navigation.settings') %></h2>
+      <h2><%= t('common.settings') %></h2>
     <% end %>
     <% section.with_body do %>
       <%= render PromptComponent.new(icon: 'school', style: :compact, status: :none) do |p| %>

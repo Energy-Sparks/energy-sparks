@@ -1,6 +1,7 @@
 cy:
   co2: CO2
   common:
+    admin: Gweinyddwr
     application: Sbarcynni
     author_html: gan %{author}
     back_to_top: Yn ôl i'r brig
@@ -93,6 +94,7 @@ cy:
       secondary: Uwchradd
       special: Darpariaeth Arbennig neu Amgen
     schools: Ysgolion
+    settings: Gosodiadau
     solar_pv: Solar ffotofoltaig
     storage_heater: Stôr-wresogydd
     storage_heaters: Stôr-wresogyddion

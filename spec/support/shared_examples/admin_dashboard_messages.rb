@@ -10,7 +10,11 @@ RSpec.shared_examples 'admin dashboard messages' do |permitted: true|
       it { expect(page).not_to have_selector('#dashboard-message a', text: 'Delete') }
 
       context "Clicking on 'Set message'" do
-        before { click_link 'Set message' }
+        before do
+          within('#dashboard-message') do
+            click_link 'Set message'
+          end
+        end
 
         it { expect(page).to have_content("Dashboard Message for #{messageable.name}") }
         it { expect(page).to have_field('Message', with: '') }

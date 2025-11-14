@@ -2,7 +2,7 @@ module Schools
   class SolarFeedsConfigurationController < ApplicationController
     load_and_authorize_resource :school
 
-    layout Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
+    layout -> { Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application' }
 
     def index
       @start_time = formatted_localised_utc_time('12pm')

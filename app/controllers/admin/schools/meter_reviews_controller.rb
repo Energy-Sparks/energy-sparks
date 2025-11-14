@@ -4,7 +4,7 @@ module Admin
       load_and_authorize_resource :school
       load_and_authorize_resource
 
-      layout Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application'
+      layout -> { Flipper.enabled?(:new_manage_school_pages) ? 'dashboards' : 'application' }
 
       def index
         @meter_reviews = @school.meter_reviews.order(:created_at)

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :include_url_helpers, type: :component do
+RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :include_url_helpers, type: :component do
   subject(:component) do
     described_class.new(**params)
   end
@@ -78,10 +78,10 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
 
     context 'with school admin' do
       it 'has the expected sections' do
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.settings'))
+        expect(html).to have_content(I18n.t('common.settings'))
         expect(html).to have_content(I18n.t('components.manage_school_navigation.users'))
         expect(html).to have_content(I18n.t('components.manage_school_navigation.metering'))
-        expect(html).not_to have_content(I18n.t('components.manage_school_navigation.admin'))
+        expect(html).not_to have_content(I18n.t('common.admin'))
       end
 
       it_behaves_like 'a correctly populated settings section'
@@ -94,10 +94,10 @@ RSpec.describe ManageSchoolNavigationComponent, :include_application_helper, :in
       let(:current_user) { create(:admin) }
 
       it 'has the expected sections' do
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.settings'))
+        expect(html).to have_content(I18n.t('common.settings'))
         expect(html).to have_content(I18n.t('components.manage_school_navigation.users'))
         expect(html).to have_content(I18n.t('components.manage_school_navigation.metering'))
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.admin'))
+        expect(html).to have_content(I18n.t('common.admin'))
       end
 
       it_behaves_like 'a correctly populated settings section'

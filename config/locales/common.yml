@@ -2,15 +2,19 @@
 en:
   co2: CO2
   common:
+    admin: Admin
     application: Energy Sparks
     author_html: by %{author}
     back_to_top: Back to top
     bar_charts: Bar charts
+    charts: Charts
+    clusters: Clusters
     confirm: Are you sure?
     data: data
     electricity: Electricity
     electricity_and_solar_pv: Electricity and Solar PV
     email_us: email us
+    engagement: Engagement
     explore_energy_data: Explore energy data
     exported_solar_pv: Exported Solar PV
     gas: Gas
@@ -103,6 +107,7 @@ en:
       secondary: Secondary
       special: Special or Alternative Provision
     schools: Schools
+    settings: Settings
     solar_pv: Solar PV
     storage_heater: Storage heater
     storage_heaters: Storage heaters
@@ -112,7 +117,9 @@ en:
         co2_kg: CO2 (kg)
         cost_gbp: Cost (£)
         use_kwh: Use (kWh)
+    tariffs: Tariffs
     terms_and_conditions: terms and conditions
+    timeline: Timeline
     units:
       minutes:
         one: "%{count} minute"

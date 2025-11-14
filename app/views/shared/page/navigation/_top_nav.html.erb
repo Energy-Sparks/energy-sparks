@@ -1,10 +1,10 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-top">
   <div class="container">
     <%= navigation_image_link %>
-    <%= render 'shared/navigation/top_nav/on_test' %>
+    <%= render 'shared/page/navigation/top_nav/on_test' %>
 
     <div class='<%= order_expand_class %>'>
-      <%= render 'shared/navigation/top_nav/locale_switcher' %>
+      <%= render 'shared/page/navigation/top_nav/locale_switcher' %>
 
       <!-- Toggler icon - shown on collapse -->
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-top" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,13 +25,13 @@
         </li>
 
         <!-- Our schools menu -->
-        <%= render 'shared/navigation/top_nav/our_schools_menu' %>
+        <%= render 'shared/page/navigation/top_nav/our_schools_menu' %>
 
         <!-- Our services menu -->
-        <%= render 'shared/navigation/top_nav/our_services_menu' %>
+        <%= render 'shared/page/navigation/top_nav/our_services_menu' %>
 
         <!-- About menu -->
-        <%= render 'shared/navigation/top_nav/about_menu' %>
+        <%= render 'shared/page/navigation/top_nav/about_menu' %>
 
         <% if Flipper.enabled?(:support_pages, current_user) %>
           <li class="nav-item">
@@ -41,7 +41,7 @@
 
         <% if can?(:manage, :admin_functions) %>
           <!-- Manage menu - admin only -->
-          <%= render 'shared/navigation/top_nav/manage_menu' %>
+          <%= render 'shared/page/navigation/top_nav/manage_menu' %>
         <% end %>
       </ul>
     </div>
