@@ -69,7 +69,7 @@ FactoryBot.define do
 
       transient do
         group_type { :diocese }
-        role { :area }
+        role { :diocese }
       end
     end
 

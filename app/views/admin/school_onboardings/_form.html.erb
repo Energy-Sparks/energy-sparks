@@ -55,19 +55,6 @@
 
   <div class="form-row">
     <div class="form-group col-md-12">
-      <%= f.label :project_group_id, 'Project Group' %>
-      <%= f.select :project_group_id,
-                   options_from_collection_for_select(
-                     SchoolGroup.project_groups.order(:name), 'id', 'name', school_onboarding.project_group_id
-                   ),
-                   { include_blank: true },
-                   { class: 'form-control' } %>
-      <small>Optional: configure a project group that this school will be a part of once onboarded</small>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-12">
       <%= f.label :funder_id %>
       <%= f.select :funder_id,
                    options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),

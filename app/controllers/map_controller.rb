@@ -3,7 +3,10 @@ class MapController < ApplicationController
 
   def index
     schools = School.visible
-    schools = schools.where(school_group_id: params[:school_group_id]) if params[:school_group_id]
+    if params[:school_group_id]
+      schools = schools.joins(:school_groupings)
+                       .where(school_groupings: { school_group_id: params[:school_group_id] })
+    end
     render json: Maps::SchoolFeatures.new(schools).as_json, status: :ok
   end
 

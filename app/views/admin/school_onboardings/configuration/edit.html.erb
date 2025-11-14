@@ -3,7 +3,34 @@
 <%= form_for(@school_onboarding, url: admin_school_onboarding_configuration_path) do |f| %>
   <h2>Calendar, weather feeds, scoreboards and other default settings</h2>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
+      <%= f.label :project_group_id, 'Project Group' %>
+      <%= f.select :project_group_id,
+                   options_from_collection_for_select(
+                     SchoolGroup.project_groups.order(:name), 'id', 'name', @school_onboarding.project_group_id
+                   ),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+      <small>Optional: configure a project group that this school will be a part of once onboarded</small>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :diocese_id, 'Diocese' %>
+      <%= f.select :diocese_id,
+                   options_from_collection_for_select(
+                     SchoolGroup.diocese.order(:name), 'id', 'name', @school_onboarding.diocese_id
+                   ),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+      <small>Optional: configure these diocese that this school will be a part of once onboarded.
+        Should be automatically defaulted from URNs found in DfE data</small>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
       <%= f.label :template_calendar_id, 'Template calendar' %>
       <%= f.select :template_calendar_id,
                    options_from_collection_for_select(Calendar.regional.order(:title),
@@ -15,7 +42,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :weather_station_id, 'Weather Station' %>
       <%= f.select :weather_station_id,
                    options_from_collection_for_select(WeatherStation.by_title,
@@ -27,7 +54,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id,
                    options_from_collection_for_select(Scoreboard.order(:name),
@@ -39,7 +66,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
+    <div class="form-group col-md-12">
       <%= f.label :country, 'Country' %>
       <%= f.select :country,
                    options_for_select(School.countries.map { |key, _value| [key.titleize, key] },
