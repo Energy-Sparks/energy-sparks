@@ -97,7 +97,7 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
         expect(html).to have_content(I18n.t('common.settings'))
         expect(html).to have_content(I18n.t('components.manage_school_navigation.users'))
         expect(html).to have_content(I18n.t('components.manage_school_navigation.metering'))
-        expect(html).to have_content(I18n.t('components.manage_school_navigation.admin'))
+        expect(html).to have_content(I18n.t('common.admin'))
       end
 
       it_behaves_like 'a correctly populated settings section'
