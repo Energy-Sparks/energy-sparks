@@ -3,7 +3,7 @@
                                 icon: nil, href: settings_school_path(school),
                                 options: { user: current_user, match_controller: true } do |c| %>
   <% classes = 'small' %>
-  <% c.with_section name: t('components.manage_school_navigation.settings'),
+  <% c.with_section name: t('common.settings'),
                     icon: 'gear',
                     expanded: false,
                     options: { match_controller: false } do |s| %>
@@ -72,7 +72,7 @@
     <% end %>
   <% end %>
 
-  <% c.with_section name: t('components.manage_school_navigation.admin'),
+  <% c.with_section name: t('common.admin'),
                     icon: 'lock',
                     expanded: true,
                     visible: current_user.admin?,

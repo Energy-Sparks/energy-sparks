@@ -187,6 +187,7 @@ describe 'School group scores page' do
 
     it_behaves_like 'an access controlled group page' do
       let(:path) { scores_school_group_advice_path(school_group) }
+      let(:group_role) { :group_manager }
     end
 
     before do

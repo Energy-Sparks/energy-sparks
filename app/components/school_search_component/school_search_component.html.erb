@@ -41,7 +41,7 @@
           <div class="col-12 col-md-10">
             <nav aria-label="<%= t("components.school_search.#{tab}.pagination") %>">
               <ul class=" pagination justify-content-start justify-content-md-end flex-wrap ">
-                <% ('A'..'Z').each do |letter| %>
+                <% (('A'..'Z').to_a + ['#']).each do |letter| %>
                   <li class=" page-item mr-1 letter <%= letter_status(tab, letter) %> ">
                     <%= link_to letter,
                                 schools_path(letter: letter, scope: tab),
