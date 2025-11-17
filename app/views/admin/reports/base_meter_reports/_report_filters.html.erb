@@ -5,7 +5,10 @@
         <span class="nowrap">
           <%= label_tag :school_group, nil, class: 'small' %>
           <%= select_tag :school_group,
-                         options_from_collection_for_select(SchoolGroup.by_name, :id, :name, params[:school_group]),
+                         options_from_collection_for_select(SchoolGroup.organisation_groups.by_name,
+                                                            :id,
+                                                            :name,
+                                                            params[:school_group]),
                          include_blank: 'Any School Group',
                          class: 'form-control-sm' %>
         </span>
