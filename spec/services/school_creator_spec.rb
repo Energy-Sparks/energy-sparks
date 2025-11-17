@@ -56,7 +56,7 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       it { expect(school.project_groups).to be_empty }
-      it { expect(school.diocese_group).to be_nil }
+      it { expect(school.diocese).to be_nil }
 
       it 'converts the onboarding user to a school admin' do
         onboarding_user.reload
@@ -94,7 +94,7 @@ describe SchoolCreator, :schools, type: :service do
         service.onboard_school!(school_onboarding)
       end
 
-      it { expect(school.diocese_group).to eq(diocese) }
+      it { expect(school.diocese).to eq(diocese) }
     end
 
     context 'when school should be private' do

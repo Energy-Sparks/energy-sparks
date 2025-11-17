@@ -265,7 +265,7 @@ class School < ApplicationRecord
 
   # school groups via the filtered SchoolGrouping relationships
   has_one :organisation_group, through: :organisation_school_grouping, source: :school_group
-  has_one :diocese_group, through: :diocese_school_grouping, source: :school_group
+  has_one :diocese, through: :diocese_school_grouping, source: :school_group
   has_one :local_authority_area_group, through: :area_school_grouping, source: :school_group
 
   has_many :project_groups, through: :project_school_groupings, source: :school_group

@@ -38,7 +38,7 @@
                                               SchoolGroup.diocese_groups.order(:name),
                                               :id,
                                               :name,
-                                              { selected: @school.diocese_group&.id },
+                                              { selected: @school.diocese&.id },
                                               { class: 'form-control' } %>
       </div>
     <% end %>
