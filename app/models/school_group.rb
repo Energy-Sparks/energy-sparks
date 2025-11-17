@@ -47,6 +47,7 @@ class SchoolGroup < ApplicationRecord
   include ParentMeterAttributeHolder
   include Scorable
   include MailchimpUpdateable
+  include AlphabeticalScopes
 
   watch_mailchimp_fields :name
 
@@ -116,8 +117,6 @@ class SchoolGroup < ApplicationRecord
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
 
-  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
   scope :with_visible_schools, -> {
     where(
       "id IN (
