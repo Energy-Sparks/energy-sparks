@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-  <head>
-    <%= render 'shared/head' %>
-  </head>
-  <body vocab="http://schema.org/">
-    <%= render 'shared/navigation' %>
-    <div class="application container navigation-margin<%= conditional_application_container_classes %>">
-      <%= render 'shared/breadcrumbs' %>
-      <%= render 'shared/alerts' if flash.any? %>
-      <%= content_for(:report_header) %>
-    </div>
-    <div class="<%= @container %>">
-      <%= yield %>
-    </div>
-    <%= render 'shared/footer' %>
-  </body>
-  <%= render 'layouts/set_mobility_locale' %>
-</html>
+<%= content_for(:page) do %>
+  <div class="application container<%= conditional_application_container_classes %>">
+    <%= render 'shared/page/breadcrumbs_and_flash' %>
+    <%= content_for(:report_header) %>
+  </div>
+  <div class="<%= @container %>">
+    <%= yield %>
+  </div>
+<% end %>
+<%= render template: 'layouts/page' %>

@@ -324,6 +324,7 @@ Rails.application.routes.draw do
       get :comparisons
       get :priority_actions
       get :current_scores
+      get :settings
     end
   end
   resources :scoreboards, only: %i[show index]
