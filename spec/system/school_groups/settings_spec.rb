@@ -66,16 +66,6 @@ RSpec.describe 'school group settings', :include_application_helper, :school_gro
       end
     end
 
-    it 'has SECR report link' do
-      within('#schools-section') do
-        expect(page).to have_content(I18n.t('school_groups.sub_nav.secr_report'))
-        expect(page).to have_link(
-          I18n.t('common.labels.view'),
-          href: school_group_secr_index_path(school_group)
-        )
-      end
-    end
-
     it 'has digital signage link' do
       within('#schools-section') do
         expect(page).to have_content(I18n.t('manage_school_menu.digital_signage'))
@@ -92,6 +82,16 @@ RSpec.describe 'school group settings', :include_application_helper, :school_gro
         expect(page).to have_link(
           I18n.t('common.labels.view'),
           href: school_group_school_engagement_index_path(school_group)
+        )
+      end
+    end
+
+    it 'has SECR report link' do
+      within('#schools-section') do
+        expect(page).to have_content(I18n.t('school_groups.sub_nav.secr_report'))
+        expect(page).to have_link(
+          I18n.t('common.labels.view'),
+          href: school_group_secr_index_path(school_group)
         )
       end
     end

@@ -30,12 +30,12 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
   shared_examples 'a correctly populated schools section' do
     it 'has the correct links' do
       within('#schools') do
-        expect(html).to have_link(I18n.t('school_groups.sub_nav.secr_report'),
-                                  href: school_group_secr_index_path(school_group))
         expect(html).to have_link(I18n.t('manage_school_menu.digital_signage'),
                                   href: school_group_digital_signage_index_path(school_group))
         expect(html).to have_link(I18n.t('common.engagement'),
                                   href: school_group_school_engagement_index_path(school_group))
+        expect(html).to have_link(I18n.t('school_groups.sub_nav.secr_report'),
+                                  href: school_group_secr_index_path(school_group))
         expect(html).to have_link(I18n.t('common.timeline'),
                                   href: school_group_timeline_path(school_group))
       end
@@ -47,14 +47,14 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
       within('#admin') do
         expect(html).to have_link(I18n.t('school_groups.sub_nav.edit_group'),
                                   href: edit_admin_school_group_path(school_group))
-        expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_users'),
-                                  href: admin_school_group_users_path(school_group))
-        expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_partners'),
-                                  href: admin_school_group_partners_path(school_group))
         expect(html).to have_link(I18n.t('school_groups.sub_nav.group_admin'),
                                   href: admin_school_group_path(school_group))
         expect(html).to have_link('Issues',
                                   href: admin_school_group_issues_path(school_group))
+        expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_users'),
+                                  href: admin_school_group_users_path(school_group))
+        expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_partners'),
+                                  href: admin_school_group_partners_path(school_group))
       end
     end
   end
