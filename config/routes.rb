@@ -325,6 +325,7 @@ Rails.application.routes.draw do
       get :priority_actions
       get :current_scores
       get :settings
+      get :status
     end
   end
   resources :scoreboards, only: %i[show index]

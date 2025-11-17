@@ -37,6 +37,8 @@
       <% s.with_item(name: t('school_groups.sub_nav.secr_report'),
                      href: school_group_secr_index_path(school_group), classes:) %>
     <% end %>
+    <% s.with_item(name: t('common.labels.status'),
+                   href: status_school_group_path(school_group), classes:) %>
     <% s.with_item(name: t('common.timeline'),
                    href: school_group_timeline_path(school_group), classes:) %>
   <% end %>

@@ -6,9 +6,7 @@
 </div>
 
 <% if current_user.admin? %>
-  <% if can? :manage, DashboardMessage %>
-    <%= render 'admin/shared/dashboard_message', messageable: @school %>
-  <% end %>
+  <%= render 'shared/dashboard_message', messageable: @school %>
   <div class="alert alert-secondary mb-2">
     <% if can?(:validate_meters, @school) && @school.meters_with_readings.any? && @school.process_data? %>
       <%= link_to t('schools.meters.index.validate_meter_readings'), school_meter_readings_validation_path(@school),
