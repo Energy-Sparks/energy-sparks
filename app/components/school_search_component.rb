@@ -109,10 +109,10 @@ class SchoolSearchComponent < ApplicationComponent
   end
 
   def schools_by_letter
-    @schools_by_letter ||= @schools.group('substr(upper(name), 1, 1)').count
+    @schools_by_letter ||= @schools.group_by_letter.count
   end
 
   def school_groups_by_letter
-    @school_groups_by_letter ||= @school_groups.group('substr(upper(name), 1, 1)').count
+    @school_groups_by_letter ||= @school_groups.group_by_letter.count
   end
 end
