@@ -34,7 +34,7 @@ RSpec.describe 'editing school configuration', type: :system do
       end
 
       it 'allows diocese to be updated' do
-        expect(school.reload.diocese_group).to eq diocese
+        expect(school.reload.diocese).to eq diocese
       end
     end
 

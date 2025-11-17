@@ -182,7 +182,7 @@ describe SchoolGrouping do
       end
 
       it 'does nothing' do
-        expect(school.reload.diocese_group).to be_nil
+        expect(school.reload.diocese).to be_nil
       end
     end
 
@@ -195,7 +195,7 @@ describe SchoolGrouping do
       end
 
       it 'does nothing' do
-        expect(school.reload.diocese_group).to be_nil
+        expect(school.reload.diocese).to be_nil
       end
     end
 
@@ -208,7 +208,7 @@ describe SchoolGrouping do
       end
 
       it 'add a relationship' do
-        expect(school.reload.diocese_group).to eq(school_group)
+        expect(school.reload.diocese).to eq(school_group)
       end
     end
 
@@ -221,7 +221,7 @@ describe SchoolGrouping do
       end
 
       it 'updates the relationship' do
-        expect(school.reload.diocese_group).to eq(school_group)
+        expect(school.reload.diocese).to eq(school_group)
       end
     end
   end
