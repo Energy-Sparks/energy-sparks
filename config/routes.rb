@@ -324,6 +324,7 @@ Rails.application.routes.draw do
       get :comparisons
       get :priority_actions
       get :current_scores
+      get :settings
     end
   end
   resources :scoreboards, only: %i[show index]
@@ -586,7 +587,7 @@ Rails.application.routes.draw do
 
     concerns :issueable
     resources :funders
-    resources :users do
+    resources :users, except: [:show] do
       get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
       get 'disable', to: 'users#disable'
@@ -692,7 +693,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :meter_attributes, only: :index
     resources :meter_reviews, only: :index
     resources :meter_statuses, except: :show
 
@@ -828,7 +828,6 @@ Rails.application.routes.draw do
     resources :reports, only: [:index]
 
     namespace :schools do
-      resources :meter_collections, only: :index
       resources :removals, only: :index
       namespace :search do
         resources :find_school_by_mpxn, only: :index
@@ -838,8 +837,6 @@ Rails.application.routes.draw do
 
     resources :schools, only: [:show] do
       resource :unvalidated_amr_data, only: :show
-      resource :validated_amr_data, only: :show
-      resource :aggregated_meter_collection, only: :show, constraints: ->(request) { request.format == :yaml }
       scope module: :schools do
         resources :meter_attributes
         resources :school_attributes

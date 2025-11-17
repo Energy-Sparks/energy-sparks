@@ -5,6 +5,8 @@ class SchoolsController < ApplicationController
   include DashboardTimeline
   include SchoolProgress
 
+  layout 'dashboards', only: %i[show settings]
+
   load_and_authorize_resource except: %i[show index]
   load_resource only: [:show]
   before_action only: [:index] do
@@ -67,7 +69,6 @@ class SchoolsController < ApplicationController
     @audience = :adult
     @observations = setup_timeline(@school.observations.includes(:activity, :intervention_type))
     @progress_summary = progress_service.progress_summary if @school.data_enabled?
-    render :show, layout: 'dashboards'
   end
 
   # GET /schools/1/edit
@@ -118,7 +119,6 @@ class SchoolsController < ApplicationController
 
   def settings
     authorize! :manage_settings, @school
-    render :settings, layout: 'dashboards'
   end
 
   private
