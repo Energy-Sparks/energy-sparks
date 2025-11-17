@@ -1,8 +1,8 @@
-<h1>Edit <%= @school_group.project? ? 'Project' : 'School' %> group</h1>
+<h1>Edit <%= @school_group.admin_form_label %></h1>
 
 <div class="row">
   <div class="col-sm-8">
-    <%= render 'form', school_group: @school_group, project_group: @school_group.project? %>
+    <%= render 'form', school_group: @school_group %>
   </div>
 
   <div class="col-sm-4">

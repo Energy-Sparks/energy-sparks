@@ -3,19 +3,20 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @project_groups = project_group?
-      @school_groups = @project_groups ? @school_groups.project_groups : @school_groups.organisation_groups
+      @group_type = group_type
+      @organisation_group = organisation_group?
+      @school_groups = load_groups
       respond_to do |format|
         format.html { @school_groups = @school_groups.by_name }
         format.csv do
-          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name, include_total: !@project_groups).export_detail,
+          send_data ::SchoolGroups::CsvGenerator.new(@school_groups.by_name, include_total: @organisation_group).export_detail,
           filename: ::SchoolGroups::CsvGenerator.filename
         end
       end
     end
 
     def new
-      @project_group = project_group?
+      @school_group = SchoolGroup.build(group_type: group_type)
     end
 
     def edit
@@ -26,7 +27,6 @@ module Admin
       if @school_group.save
         redirect_to admin_school_groups_path(group_type: @school_group.group_type), notice: 'School group was successfully created.'
       else
-        @project_group = @school_group.project?
         render :new
       end
     end
@@ -72,8 +72,25 @@ module Admin
       )
     end
 
-    def project_group?
-      params[:group_type] == 'project'
+    def group_type
+      params[:group_type] || 'multi_academy_trust'
+    end
+
+    def organisation_group?
+      SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
+    end
+
+    def load_groups
+      case group_type
+      when 'area'
+        SchoolGroup.area_groups
+      when 'diocese'
+        SchoolGroup.diocese_groups
+      when 'project'
+        SchoolGroup.project_groups
+      else
+        SchoolGroup.organisation_groups
+      end
     end
   end
 end
