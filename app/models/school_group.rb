@@ -48,6 +48,7 @@ class SchoolGroup < ApplicationRecord
   include ParentMeterAttributeHolder
   include Scorable
   include MailchimpUpdateable
+  include AlphabeticalScopes
 
   watch_mailchimp_fields :name
 
@@ -119,8 +120,6 @@ class SchoolGroup < ApplicationRecord
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
 
-  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
   scope :with_visible_schools, -> {
     where(
       "id IN (
@@ -144,6 +143,7 @@ class SchoolGroup < ApplicationRecord
   # in the DfE database and our system as a multi_academy_trust.
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
+  # FIXME
   ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
   AREA_GROUP_TYPE_KEYS = %w[local_authority_area].freeze
   DIOCESE_GROUP_TYPE_KEYS = %w[diocese].freeze

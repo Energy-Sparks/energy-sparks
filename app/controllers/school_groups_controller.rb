@@ -7,6 +7,8 @@ class SchoolGroupsController < ApplicationController
   include Scoring
   include SchoolGroupBreadcrumbs
 
+  layout 'group_settings', only: %i[settings]
+
   load_resource
 
   before_action :find_partners
@@ -46,6 +48,12 @@ class SchoolGroupsController < ApplicationController
 
   def current_scores
     redirect_to scores_school_group_advice_path(@school_group) and return
+  end
+
+  def settings
+    redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
+    # Taking this out for now
+    # authorize! :manage_settings, @school_group
   end
 
   private

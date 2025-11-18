@@ -5,7 +5,7 @@ module TargetsHelper
 
   def estimated_usage_for(school, fuel_type)
     return nil unless school.configuration.estimated_consumption_for_fuel_type(fuel_type).present?
-    FormatEnergyUnit.format(:kwh, school.configuration.estimated_consumption_for_fuel_type(fuel_type), :html, false, true, :target)
+    FormatUnit.format(:kwh, school.configuration.estimated_consumption_for_fuel_type(fuel_type), :html, false, true, :target)
   end
 
   def link_to_progress_report?(school_target, fuel_type)

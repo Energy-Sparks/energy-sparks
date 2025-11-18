@@ -181,6 +181,7 @@ describe 'School group priorities page' do
 
     it_behaves_like 'an access controlled group page' do
       let(:path) { priorities_school_group_advice_path(school_group) }
+      let(:group_role) { :group_manager }
     end
 
     include_context 'with a group management priority' do

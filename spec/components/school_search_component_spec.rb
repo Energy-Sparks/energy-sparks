@@ -25,13 +25,15 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
 
   let!(:a_school_group) { create(:school_group, name: 'A Group') }
   let!(:b_school_group) { create(:school_group, name: 'B Group') }
+  let!(:numbered_school_group) { create(:school_group, name: '5 Group') }
 
   let!(:a_school) { create(:school, :with_school_group, active: true, visible: true, name: 'A School') }
   let!(:b_school) { create(:school, :with_school_group, active: true, visible: true, name: 'B School') }
   let!(:c_school) { create(:school, :with_school_group, active: true, visible: true, name: 'C School') }
+  let!(:numbered_school) { create(:school, :with_school_group, active: true, visible: true, name: '5 School') }
 
   before do
-    %w[A B C].each do |letter|
+    %w[A B C 5].each do |letter|
       create(:school, :with_school_group, active: false, name: "#{letter} Inactive School",)
     end
   end
@@ -48,28 +50,30 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       it { expect(component.letter_status(:schools, 'B')).to be_nil }
       it { expect(component.letter_status(:schools, 'C')).to be_nil }
       it { expect(component.letter_status(:schools, 'Z')).to eq('disabled') }
+      it { expect(component.letter_status(:schools, '#')).to be_nil }
     end
 
     context 'with inactive tab' do
       it { expect(component.letter_status(:school_groups, 'A')).to eq('active') }
       it { expect(component.letter_status(:school_groups, 'B')).to be_nil }
       it { expect(component.letter_status(:school_groups, 'Z')).to eq('disabled') }
+      it { expect(component.letter_status(:school_groups, '#')).to be_nil }
     end
   end
 
   describe '#schools_count' do
-    it { expect(component.schools_count).to eq(3) }
+    it { expect(component.schools_count).to eq(4) }
 
     context 'with alternate scope' do
-      let(:schools) { School.all }
+      let(:schools) { School.all } # all schools, including inactive ones
 
-      it { expect(component.schools_count).to eq(6) }
+      it { expect(component.schools_count).to eq(8) }
     end
   end
 
   describe '#school_groups_count' do
     # every school has its own group in the default setup
-    it { expect(component.school_groups_count).to eq(8) }
+    it { expect(component.school_groups_count).to eq(11) }
 
     context 'with alternate scope' do
       let(:school_groups) { SchoolGroup.local_authority }
@@ -84,7 +88,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
     context 'with visible schools' do
       let(:school_groups) { SchoolGroup.organisation_groups.with_visible_schools }
 
-      it { expect(component.school_groups_count).to eq(6) }
+      it { expect(component.school_groups_count).to eq(8) }
     end
   end
 
@@ -109,13 +113,19 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
       context 'with longer keyword' do
         let(:keyword) { 'School' }
 
-        it { expect(component.default_results(:schools)).to eq([a_school, b_school, c_school]) }
+        it { expect(component.default_results(:schools)).to eq([numbered_school, a_school, b_school, c_school]) }
       end
 
       context 'with letter' do
         let(:letter) { 'C' }
 
         it { expect(component.default_results(:schools)).to eq([c_school])}
+      end
+
+      context 'with #' do
+        let(:letter) { '#' }
+
+        it { expect(component.default_results(:schools)).to eq([numbered_school])}
       end
     end
 
@@ -141,6 +151,12 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
 
         it { expect(component.default_results_title(:schools)).to eq(letter)}
       end
+
+      context 'with number' do
+        let(:letter) { '#' }
+
+        it { expect(component.default_results_title(:schools)).to eq(letter)}
+      end
     end
 
     context 'with inactive tab' do
@@ -162,6 +178,12 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
 
       context 'with letter' do
         let(:letter) { 'C' }
+
+        it { expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle', count: 1))}
+      end
+
+      context 'with number' do
+        let(:letter) { '#' }
 
         it { expect(component.default_results_subtitle(:schools)).to eq(I18n.t('components.search_results.schools.subtitle', count: 1))}
       end

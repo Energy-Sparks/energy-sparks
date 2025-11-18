@@ -324,6 +324,7 @@ Rails.application.routes.draw do
       get :comparisons
       get :priority_actions
       get :current_scores
+      get :settings
     end
   end
   resources :scoreboards, only: %i[show index]
@@ -586,7 +587,7 @@ Rails.application.routes.draw do
 
     concerns :issueable
     resources :funders
-    resources :users do
+    resources :users, except: [:show] do
       get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
       get 'disable', to: 'users#disable'

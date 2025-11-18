@@ -121,6 +121,7 @@ class School < ApplicationRecord
   include MailchimpUpdateable
   include Enums::DataSharing
   include Enums::SchoolType
+  include AlphabeticalScopes
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
@@ -316,8 +317,6 @@ class School < ApplicationRecord
 
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
-  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
 
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
 
