@@ -1,0 +1,23 @@
+<%# Base page layout with navigation, partners (if present), cookie banner & footer %>
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <%= render 'shared/page/head' %>
+  </head>
+  <body vocab="http://schema.org/">
+    <%= render 'shared/page/navigation' %>
+    <div class="navigation-margin">
+      <%= content_for?(:page) ? yield(:page) : yield %>
+    </div>
+    <% if show_partner_footer? %>
+      <div class="container-fluid bg-light">
+        <div class="container">
+          <%= render 'shared/page/partners', partnered: partnered %>
+        </div>
+      </div>
+    <% end %>
+    <%= render 'shared/page/cookie_banner' %>
+    <%= render 'shared/page/footer' %>
+  </body>
+  <%= render 'shared/page/set_mobility_locale' %>
+</html>

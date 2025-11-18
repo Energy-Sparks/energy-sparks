@@ -142,33 +142,61 @@ describe Mailchimp::Contact do
       end
     end
 
-    [:group_admin, :group_manager].each do |role|
-      context "with a #{role}" do
-        let!(:user) { create(role, school_group: create(:school_group, :with_default_scoreboard)) }
+    context 'with a group_admin' do
+      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
 
-        it_behaves_like 'it correctly creates a contact', group_admin: true
+      it_behaves_like 'it correctly creates a contact', group_admin: true
 
-        it_behaves_like 'it adds the interests'
+      it_behaves_like 'it adds the interests'
 
-        context 'when subscribed to alerts' do
-          let!(:user) do
-            school_group = create(:school_group, :with_default_scoreboard, :with_active_schools)
-            user = create(role, school_group: school_group)
-            user.contacts << create(:contact_with_name_email_phone, school: school_group.schools.first)
-            user
-          end
-
-          it 'uses correct status' do
-            expect(contact.alert_subscriber).to eq 'Yes'
-          end
+      context 'when subscribed to alerts' do
+        let!(:user) do
+          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools)
+          user = create(:group_admin, school_group: school_group)
+          user.contacts << create(:contact_with_name_email_phone, school: school_group.assigned_schools.first)
+          user
         end
 
-        context 'when account is disabled' do
-          let!(:user) { create(role, school_group: create(:school_group, :with_default_scoreboard), active: false) }
+        it 'uses correct status' do
+          expect(contact.alert_subscriber).to eq 'Yes'
+        end
+      end
 
-          it 'switches user to Organic' do
-            expect(contact.contact_source).to eq 'Organic'
-          end
+      context 'when account is disabled' do
+        let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard), active: false) }
+
+        it 'switches user to Organic' do
+          expect(contact.contact_source).to eq 'Organic'
+        end
+      end
+    end
+
+    context 'with a group_manager' do
+      let(:school_group) { create(:school_group, :project_group, :with_default_scoreboard) }
+      let!(:user) { create(:group_manager, school_group:) }
+
+      it_behaves_like 'it correctly creates a contact', group_admin: true
+
+      it_behaves_like 'it adds the interests'
+
+      context 'when subscribed to alerts' do
+        let!(:user) do
+          school_group = create(:school_group, :project_group, :with_default_scoreboard, :with_active_schools)
+          user = create(:group_manager)
+          user.contacts << create(:contact_with_name_email_phone, school: school_group.assigned_schools.first)
+          user
+        end
+
+        it 'uses correct status' do
+          expect(contact.alert_subscriber).to eq 'Yes'
+        end
+      end
+
+      context 'when account is disabled' do
+        let!(:user) { create(:group_manager, school_group: create(:school_group, :project_group, :with_default_scoreboard), active: false) }
+
+        it 'switches user to Organic' do
+          expect(contact.contact_source).to eq 'Organic'
         end
       end
     end

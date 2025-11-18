@@ -26,9 +26,9 @@ class YAxisScaling
       per_1000_pupils:  'per 1000 pupil (average size secondary school)'
     }
     # dummy insert of 10 and its subsequent removal is a fudge to
-    # offset formatting change in FormatEnergyUnit which removes the
+    # offset formatting change in FormatUnit which removes the
     # unit e.g. £ if the value is nil PH 20Nov2019
-    formatted_value = FormatEnergyUnit.format(unit, 10).gsub('10','').strip
+    formatted_value = FormatUnit.format(unit, 10).gsub('10','').strip
     unless scaling_factor_type.nil? || scaling_factor_type == :none
       formatted_value += '/' + factor_type_description[scaling_factor_type]
     end
@@ -58,7 +58,7 @@ class YAxisScaling
   def self.convert(from_unit, to_unit, fuel_type, from_value, round, meter_collection)
     # TODO(PH, 17Nov2022) not tested as only called by simulator advice
     val = YAxisScaling.scale(from_unit, to_unit, from_value, fuel_type, meter_collection)
-    round ? FormatEnergyUnit.scale_num(val) : val
+    round ? FormatUnit.scale_num(val) : val
   end
 
   def self.convert_multiple(from_unit, to_units, fuel_type, from_value, round = true)

@@ -415,7 +415,7 @@ class AlertTargetBase < AlertAnalysisBase
 
   def summary
     I18n.t("#{i18n_prefix}.summary",
-      percent: FormatEnergyUnit.format(:percent, current_year_percent_of_target_absolute, :text),
+      percent: FormatUnit.format(:percent, current_year_percent_of_target_absolute, :text),
       above_or_below: current_year_percent_of_target_adjective)
   end
 

@@ -116,7 +116,7 @@ module Admin
 
     def set_schools_options
       @schools = School.order(:name)
-      @school_groups = SchoolGroup.organisation_groups.by_name
+      @school_groups = SchoolGroup.by_name.select(:name, :id, :group_type)
     end
 
     def school_users

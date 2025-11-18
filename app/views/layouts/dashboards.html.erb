@@ -1,28 +1,13 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-  <head>
-    <%= render 'shared/head' %>
-  </head>
-  <body>
-    <%= render 'shared/navigation' %>
-    <div class="container-fluid <%= @audience || :adult %> pb-2">
-      <div class="container navigation-margin">
-        <%= render 'shared/breadcrumbs' %>
-        <%= render 'shared/alerts' if flash.any? %>
-        <%= yield :dashboard_header %>
-      </div>
+<%# For dashboard layouts - does not render a container in the central portion of the page %>
+<%# Views using this layout usually contain a mix of container-fluid and container blocks %>
+<%# Please use the new application layout in favour of this where a container for the main content is required. %>
+<%= content_for(:page) do %>
+  <div class="container-fluid <%= @audience || :adult %> pb-2">
+    <div class="container">
+      <%= render 'shared/page/breadcrumbs_and_flash' %>
+      <%= yield :dashboard_header if content_for?(:dashboard_header) %>
     </div>
-    <%= yield %>
-
-    <% if show_partner_footer? %>
-      <div class="container-fluid bg-light">
-        <div class="container">
-          <%= render 'shared/partners', partnered: partnered %>
-        </div>
-      </div>
-    <% end %>
-    <%= render 'shared/cookie_banner' %>
-    <%= render 'shared/footer' %>
-  </body>
-  <%= render 'layouts/set_mobility_locale' %>
-</html>
+  </div>
+  <%= yield %>
+<% end %>
+<%= render template: 'layouts/page' %>

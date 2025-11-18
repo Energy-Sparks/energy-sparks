@@ -352,7 +352,7 @@ module ApplicationHelper
   end
 
   def format_target(value, units)
-    FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
+    FormatUnit.format(units, value, :html, false, true, :target).html_safe
   end
 
   def progress_as_percent(completed, total)
@@ -546,11 +546,8 @@ module ApplicationHelper
   end
 
   def home_class
-    if controller_name == 'home' && %w[index show].include?(action_name)
-      'home'
-    else
-      'home-page'
-    end
+    return '' unless controller_name == 'home'
+    %w[index show].include?(action_name) ? ' home' : ' home-page'
   end
 
   def admin_user_label(school_group)
@@ -560,5 +557,13 @@ module ApplicationHelper
 
   def schools_count
     number_with_delimiter(School.active.visible.count)
+  end
+
+  # 'wide': container-fluid
+  # 'normal': or not specified: container
+  # 'none' or anything else: no container class
+  def container_class
+    return 'container' if !content_for?(:container_size) || content_for(:container_size) == 'normal'
+    content_for(:container_size) == 'wide' ? 'container-fluid' : ''
   end
 end

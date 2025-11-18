@@ -11,7 +11,7 @@ module Targets
     end
 
     def progress_formatted
-      FormatEnergyUnit.format(:relative_percent, @progress, :html, false, true, :target) unless progress.nil?
+      FormatUnit.format(:relative_percent, @progress, :html, false, true, :target) unless progress.nil?
     end
 
     def recent_data?

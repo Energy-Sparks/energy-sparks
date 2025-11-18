@@ -2,8 +2,8 @@
 <div>
   <%= form_with method: :get do |form| %>
     <%= form.label :query, 'School Group:' %>
-    <%= form.collection_select :id, SchoolGroup.order(name: :asc), :id, :name %>
-    <%= form.submit 'Show' %>
+    <%= form.collection_select :id, SchoolGroup.order(name: :asc), :id, :name, {}, { class: 'form-control select2' } %>
+    <%= form.submit 'Show', class: 'mt-2 btn btn-primary' %>
   <% end %>
 </div>
 <div>
