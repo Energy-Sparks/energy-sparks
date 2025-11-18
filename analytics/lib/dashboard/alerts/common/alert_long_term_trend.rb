@@ -236,9 +236,9 @@ class AlertLongTermTrend < AlertAnalysisBase
 
   def summary
     I18n.t("#{i18n_prefix}.summary",
-      cost: FormatEnergyUnit.format(:£, @year_change_£_temp_adj, :text),
+      cost: FormatUnit.format(:£, @year_change_£_temp_adj, :text),
       increase_or_reduction: prefix_2,
-      percent: FormatEnergyUnit.format(:relative_percent, @percent_change_£_temp_adj, :text))
+      percent: FormatUnit.format(:relative_percent, @percent_change_£_temp_adj, :text))
   end
 
   def temperature_compensation_factor

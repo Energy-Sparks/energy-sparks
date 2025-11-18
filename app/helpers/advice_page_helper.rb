@@ -36,7 +36,7 @@ module AdvicePageHelper
     if dash_if_nil && value.nil?
       '-'
     else
-      FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+      FormatUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
     end
   end
 

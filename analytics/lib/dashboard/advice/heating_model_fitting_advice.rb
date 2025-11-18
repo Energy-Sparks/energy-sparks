@@ -134,9 +134,9 @@ class DashboardEnergyAdvice
 
     def annual_gas_kwh_£
       kwh = heat_amr.kwh_period(current_year)
-      annual_kwh = FormatEnergyUnit.format(:kwh, kwh)
+      annual_kwh = FormatUnit.format(:kwh, kwh)
       £ = ConvertKwh.convert(:kwh, :£, :gas, kwh)
-      £_format = FormatEnergyUnit.format(:£, £).gsub(/£/, '&pound;')
+      £_format = FormatUnit.format(:£, £).gsub(/£/, '&pound;')
       if days_gas_data > 360
         "#{annual_kwh} of gas in the last year at a cost of #{£_format}"
       else
@@ -220,7 +220,7 @@ class DashboardEnergyAdvice
     def formatted_model_deviation_information(model)
       [
         model.name,
-        FormatEnergyUnit.format(:kwh, model.standard_deviation),
+        FormatUnit.format(:kwh, model.standard_deviation),
         (model.standard_deviation_percent * 100.0).round(1).to_s + '%',
         model.average_heating_school_day_r2.round(2),
         model.average_base_temperature.round(1).to_s + 'C',
@@ -252,7 +252,7 @@ class DashboardEnergyAdvice
     def example_predicted_kwh(model, name, results)
       temperature = model.heating_model?(name) ? 8.0 : 20.0
       kwh = results.predicted_kwh_temperature(temperature)
-      FormatEnergyUnit.format(:kwh, kwh) + "@ #{temperature.round(1)}C"
+      FormatUnit.format(:kwh, kwh) + "@ #{temperature.round(1)}C"
     end
 
     def round_nan(value, dp)
