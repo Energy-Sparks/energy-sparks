@@ -1,6 +1,8 @@
 module Schools
   module Advice
     class BaseLongTermController < AdviceBaseController
+      before_action :set_page_subtitle, only: %i[analysis]
+
       def insights
         @benchmarked_usage = usage_service.benchmark_usage
         set_consumption_by_month

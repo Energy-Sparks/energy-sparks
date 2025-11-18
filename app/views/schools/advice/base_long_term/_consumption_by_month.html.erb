@@ -1,5 +1,6 @@
 <h4><%= t('advice_pages.electricity_long_term.analysis.consumption_by_month.title',
           fuel_type: t("common.#{fuel_type}")) %></h4>
+<%= render 'manual_readings_prompt', consumption_by_month:, school: %>
 <table class="table table-sm advice-table">
   <thead class="thead-dark">
     <tr>
@@ -21,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @consumption_by_month&.each do |month, consumption| %>
+    <% consumption_by_month&.each do |month, consumption| %>
       <tr>
         <td><%= t_month(month.month) %></td>
         <% %i[kwh gbp co2].each do |type| %>

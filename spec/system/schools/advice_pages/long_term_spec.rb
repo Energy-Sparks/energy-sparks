@@ -4,7 +4,7 @@ require 'rails_helper'
 
 shared_examples 'a long term advice page' do
   let(:reading_start_date) { 1.year.ago }
-  let(:school) do
+  def create_school
     school = create(:school,
                     :with_school_group,
                     :with_fuel_configuration,
@@ -16,8 +16,10 @@ shared_examples 'a long term advice page' do
                                              start_date: nil, end_date: nil)
     create(:"#{fuel_type}_meter_with_validated_reading_dates",
            school:, start_date: reading_start_date, end_date: Time.zone.today, reading: 10)
+    yield school
     school
   end
+  let(:school) { create_school }
   let(:key) { :"#{fuel_type}_long_term" }
 
   before { create(:advice_page, key:, fuel_type:) }
@@ -58,12 +60,17 @@ shared_examples 'a long term advice page' do
         end
       end
 
+      def manual_readings_prompt_text
+        "We don't have enough data at show a complete year."
+      end
+
       context 'with more than 90 days of meter data' do
         let(:reading_start_date) { 90.days.ago }
 
         it_behaves_like 'a long term advice page tab', tab: 'Insights'
 
         it 'includes expected sections' do
+          expect(page).to have_content(manual_readings_prompt_text)
           expect(page).to have_content('Tracking long term trends')
           expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title"))
           expect(page).to have_content(I18n.t("advice_pages.#{fuel_type}_long_term.insights.comparison.title"))
@@ -91,6 +98,18 @@ shared_examples 'a long term advice page' do
 
         it 'excludes the comparison' do
           expect(page).to have_no_css("##{fuel_type}-comparison")
+        end
+
+        context 'with manual readings' do
+          let(:school) do
+            create_school do |school|
+              (3..24).each { |i| school.manual_readings.create!(month: Date.current - i.months, fuel_type => 1) }
+            end
+          end
+
+          it "doesn't show manual readings prompt" do
+            expect(page).to have_no_content(manual_readings_prompt_text)
+          end
         end
       end
 
