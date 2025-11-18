@@ -148,16 +148,12 @@ describe SchoolGrouping do
       end
     end
 
-    %w[local_authority_area].each do |group_type|
-      context "when group_type is #{group_type}" do
-        it_behaves_like 'valid area role group types', group_type
-      end
+    context 'when group_type is local_authority_area' do
+      it_behaves_like 'valid area role group types', :local_authority_area
     end
 
-    %w[diocese].each do |group_type|
-      context "when group_type is #{group_type}" do
-        it_behaves_like 'valid diocese role group types', group_type
-      end
+    context 'when group_type is diocese' do
+      it_behaves_like 'valid diocese role group types', :diocese
     end
   end
 
