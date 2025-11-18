@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'editing school configuration', type: :system do
-  let!(:admin)              { create(:admin)}
-  let!(:school)             { create(:school)}
+  let!(:school) { create(:school)}
 
   before do
-    sign_in(admin)
+    sign_in(create(:admin))
     visit school_path(school)
   end
 
@@ -23,6 +22,20 @@ RSpec.describe 'editing school configuration', type: :system do
       click_on('Update configuration')
       school.reload
       expect(school.school_group).to eq school_group
+    end
+
+    context 'when editing diocese' do
+      let!(:diocese) { create(:school_group, group_type: :diocese) }
+
+      before do
+        refresh
+        select diocese.name, from: 'Diocese'
+        click_on('Update configuration')
+      end
+
+      it 'allows diocese to be updated' do
+        expect(school.reload.diocese).to eq diocese
+      end
     end
 
     it 'allows scoreboard to be updated' do
