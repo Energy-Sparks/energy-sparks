@@ -155,12 +155,6 @@ describe SchoolGrouping do
     context 'when group_type is diocese' do
       it_behaves_like 'valid diocese role group types', :diocese
     end
-
-    %w[diocese].each do |group_type|
-      context "when group_type is #{group_type}" do
-        it_behaves_like 'valid diocese role group types', group_type
-      end
-    end
   end
 
   describe 'enforcing one organisation group per school' do
