@@ -41,6 +41,9 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
   describe '.sanitize_tab' do
     it { expect(described_class.sanitize_tab(:schools)).to eq(:schools) }
     it { expect(described_class.sanitize_tab(:school_groups)).to eq(:school_groups) }
+    it { expect(described_class.sanitize_tab(:diocese)).to eq(:diocese) }
+    it { expect(described_class.sanitize_tab(:areas)).to eq(:areas) }
+
     it { expect(described_class.sanitize_tab(:invalid)).to eq(SchoolSearchComponent::DEFAULT_TAB) }
   end
 

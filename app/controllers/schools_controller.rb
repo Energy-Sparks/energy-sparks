@@ -125,8 +125,13 @@ class SchoolsController < ApplicationController
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
     @schools = current_user_admin? ? School.active : School.visible
-    @scope = if @tab == :schools
+    @scope = case @tab
+             when :schools
                @schools
+             when :diocese
+               SchoolGroup.diocese_groups.with_visible_schools
+             when :areas
+               SchoolGroup.area_groups.with_visible_schools
              else
                SchoolGroup.organisation_groups.with_visible_schools
              end

@@ -2,7 +2,7 @@ class SchoolSearchComponent < ApplicationComponent
   attr_reader :schools, :school_groups, :tab, :letter, :keyword, :schools_total_key
 
   DEFAULT_TAB = :schools
-  TABS = [:schools, :school_groups].freeze
+  TABS = [:schools, :school_groups, :diocese, :areas].freeze
 
   # i18n-tasks-use t("components.school_search.schools.total")
   # i18n-tasks-use t("components.school_search.schools.total_for_admins")
@@ -19,6 +19,8 @@ class SchoolSearchComponent < ApplicationComponent
     @keyword = keyword.present? ? keyword : nil
     @schools = schools
     @school_groups = school_groups
+    @diocese = SchoolGroup.diocese_groups.with_visible_schools
+    @areas = SchoolGroup.area_groups.with_visible_schools
     @schools_total_key = schools_total_key
   end
 
@@ -42,6 +44,10 @@ class SchoolSearchComponent < ApplicationComponent
       'active' # Activate letter based on parameter
     elsif tab == :schools
       'disabled' unless schools_by_letter.key?(letter)
+    elsif tab == :diocese
+      'disabled' unless diocese_by_letter.key?(letter)
+    elsif tab == :areas
+      'disabled' unless areas_by_letter.key?(letter)
     else
       'disabled' unless school_groups_by_letter.key?(letter)
     end
@@ -50,7 +56,16 @@ class SchoolSearchComponent < ApplicationComponent
   # i18n-tasks-use t("components.search_results.schools.subtitle")
   # i18n-tasks-use t("components.search_results.school_groups.subtitle")
   def letter_title(tab, letter)
-    count = tab == :schools ? schools_by_letter[letter] : school_groups_by_letter[letter]
+    count = case tab
+            when :schools
+              schools_by_letter[letter]
+            when :diocese
+              diocese_by_letter[letter]
+            when :areas
+              areas_by_letter[letter]
+            else
+              school_groups_by_letter[letter]
+            end
     return '' if count.nil?
     I18n.t("components.search_results.#{tab}.subtitle", count: count)
   end
@@ -101,8 +116,13 @@ class SchoolSearchComponent < ApplicationComponent
   end
 
   def search_scope(scope = @tab)
-    if scope == :schools
+    case scope
+    when :schools
       @schools
+    when :diocese
+      @diocese
+    when :areas
+      @areas
     else
       @school_groups
     end
@@ -114,5 +134,13 @@ class SchoolSearchComponent < ApplicationComponent
 
   def school_groups_by_letter
     @school_groups_by_letter ||= @school_groups.group_by_letter.count
+  end
+
+  def diocese_by_letter
+    @diocese_by_letter ||= @diocese.group_by_letter.count
+  end
+
+  def areas_by_letter
+    @areas_by_letter ||= @areas.group_by_letter.count
   end
 end
