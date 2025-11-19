@@ -354,6 +354,7 @@ shared_examples 'a long term advice page' do
                ['2,630', '2,630', '0%'],
                ['2,720', '87.6 i', '-']].zip(rows).each { |gas_row, row| row[-gas_row.length..] = gas_row }
             end
+            rows
           end
         end
       end
