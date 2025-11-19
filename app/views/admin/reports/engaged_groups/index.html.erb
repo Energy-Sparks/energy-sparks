@@ -35,7 +35,7 @@
         <td><%= school_group.engaged_count %></td>
         <% percentage = school_group.engaged_count.to_f / school_group.active_count %>
         <td data-order="<%= percentage %>">
-            <%= FormatEnergyUnit.format(:percent, percentage) unless school_group.active_count.zero? %>
+            <%= FormatUnit.format(:percent, percentage) unless school_group.active_count.zero? %>
         </td>
       </tr>
     <% end %>

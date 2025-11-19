@@ -18,12 +18,27 @@ RSpec.describe 'map', type: :system do
       expect(json['features'].count).to eq(3)
     end
 
-    it 'provides JSON for one group' do
-      get map_path(school_group_id: school_group_2.id, format: :json)
-      json = JSON.parse(response.body)
+    context 'when requesting data for a single group' do
+      let(:json) { JSON.parse(response.body) }
+      let!(:school_group) { create(:school_group, schools: [school_3]) }
 
-      expect(json['type']).to eq('FeatureCollection')
-      expect(json['features'].count).to eq(1)
+      before do
+        get map_path(school_group_id: school_group.id, format: :json)
+      end
+
+      it 'provides JSON for one group' do
+        expect(json['type']).to eq('FeatureCollection')
+        expect(json['features'].count).to eq(1)
+      end
+
+      context 'with a diocese' do
+        let!(:diocese) { create(:school_group, group_type: :diocese, schools: [school_3]) }
+
+        it 'provides JSON for one group' do
+          expect(json['type']).to eq('FeatureCollection')
+          expect(json['features'].count).to eq(1)
+        end
+      end
     end
   end
 
