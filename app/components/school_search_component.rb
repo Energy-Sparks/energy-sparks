@@ -55,6 +55,8 @@ class SchoolSearchComponent < ApplicationComponent
 
   # i18n-tasks-use t("components.search_results.schools.subtitle")
   # i18n-tasks-use t("components.search_results.school_groups.subtitle")
+  # i18n-tasks-use t("components.search_results.diocese.subtitle")
+  # i18n-tasks-use t("components.search_results.areas.subtitle")
   def letter_title(tab, letter)
     count = case tab
             when :schools
