@@ -42,22 +42,15 @@ class SchoolsController < ApplicationController
   before_action :set_breadcrumbs
 
   def index
-    if Flipper.enabled?(:new_schools_page, current_user)
-      @letter = search_params.fetch(:letter, nil)
-      @keyword = search_params.fetch(:keyword, nil)
-      @results = if @keyword
-                   @scope.by_keyword(@keyword).by_name
-                 else
-                   @scope.by_letter(@letter).by_name
-                 end
-      @count = @results.count
-      @school_count = School.visible.count
-    else
-      @schools = School.visible.by_name.select(:name, :slug)
-      @school_groups = SchoolGroup.with_visible_schools.by_name
-      @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
-      @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
-    end
+    @letter = search_params.fetch(:letter, nil)
+    @keyword = search_params.fetch(:keyword, nil)
+    @results = if @keyword
+                 @scope.by_keyword(@keyword).by_name
+               else
+                 @scope.by_letter(@letter).by_name
+               end
+    @count = @results.count
+    @school_count = School.visible.count
   end
 
   def show
