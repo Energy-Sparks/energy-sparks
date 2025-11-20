@@ -45,19 +45,30 @@ class SchoolGrouping < ApplicationRecord
   validate :only_one_groups
   validate :role_matches_group_type
 
-  def self.assign_diocese(school)
+  def self.assign_group(school, code_attr:, group_type:, role:)
     establishment = school.establishment
-    return unless establishment&.diocese_code
+    return unless establishment
 
-    school_group = SchoolGroup.find_by(group_type: :diocese, dfe_code: establishment.diocese_code)
+    code = establishment.public_send(code_attr)
+    return unless code
+
+    school_group = SchoolGroup.find_by(group_type: group_type, dfe_code: code)
     return unless school_group
 
     grouping = joins(:school_group)
-      .where(school: school, role: 'diocese', school_groups: { group_type: :diocese })
+      .where(school: school, role: role, school_groups: { group_type: group_type })
       .first_or_initialize
 
     grouping.school_group = school_group
     grouping.save!
+  end
+
+  def self.assign_diocese(school)
+    assign_group(school, code_attr: :diocese_code, group_type: :diocese, role: 'diocese')
+  end
+
+  def self.assign_area(school)
+    assign_group(school, code_attr: :la_code, group_type: :local_authority_area, role: 'area')
   end
 
   private

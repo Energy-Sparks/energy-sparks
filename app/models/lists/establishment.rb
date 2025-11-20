@@ -22,6 +22,7 @@
 #  gssla_code_name                 :string
 #  id                              :bigint(8)        not null, primary key
 #  la_code                         :integer
+#  la_name                         :string
 #  last_changed_date               :datetime
 #  locality                        :string
 #  lsoa_code                       :string
@@ -64,6 +65,25 @@ module Lists
       .where.not(diocese_code: SchoolGroup.diocese.select(:dfe_code))
       .distinct
       .pluck(:diocese_code)
+    end
+
+    def self.sync_local_authority_groups
+      areas = open.where.not("la_code = 0 OR gor_code = 'Z'").select(:la_code, :la_name).distinct
+
+      SchoolGroup.transaction do
+        areas.each do |area|
+          la_code = area.la_code
+          la_name = transform_la_name(area.la_name)
+
+          group = SchoolGroup.find_or_initialize_by(
+            group_type: :local_authority_area,
+            dfe_code: la_code
+          )
+
+          group.name = la_name if group.name != la_name
+          group.save! if group.changed?
+        end
+      end
     end
 
     def self.csv_name_starts_with
@@ -120,6 +140,19 @@ module Lists
       puts "Warning: Couldn\'t match school with ID #{sch.id} and URN #{sch.urn} to any establishment!"
       stats[:unmatched] += 1
       return nil
+    end
+
+    def self.transform_la_name(raw_name)
+      case raw_name
+      when /, City of\z/
+        base = raw_name.delete_suffix(', City of')
+        "City of #{base} Local Authority"
+      when /, County of\z/
+        base = raw_name.delete_suffix(', County of')
+        "County of #{base} Local Authority"
+      else
+        "#{raw_name} Local Authority"
+      end
     end
   end
 end
