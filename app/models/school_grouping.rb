@@ -60,6 +60,22 @@ class SchoolGrouping < ApplicationRecord
     grouping.save!
   end
 
+  def self.assign_area(school)
+    establishment = school.establishment
+    return unless establishment&.la_code
+
+    school_group = SchoolGroup.find_by(group_type: :local_authority_area, dfe_code: establishment.la_code)
+    return unless school_group
+
+    grouping = joins(:school_group)
+      .where(school: school, role: 'area', school_groups: { group_type: :local_authority_area })
+      .first_or_initialize
+
+    puts school.id
+    grouping.school_group = school_group
+    grouping.save!
+  end
+
   private
 
   def only_one_groups

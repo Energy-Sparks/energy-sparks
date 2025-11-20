@@ -22,6 +22,7 @@
 #  gssla_code_name                 :string
 #  id                              :bigint(8)        not null, primary key
 #  la_code                         :integer
+#  la_name                         :string
 #  last_changed_date               :datetime
 #  locality                        :string
 #  lsoa_code                       :string
@@ -64,6 +65,33 @@ module Lists
       .where.not(diocese_code: SchoolGroup.diocese.select(:dfe_code))
       .distinct
       .pluck(:diocese_code)
+    end
+
+    def self.sync_local_authority_groups
+      areas = open.where.not("la_code = 0 OR gor_code = 'Z'").select(:la_code, :la_name).distinct
+
+      existing_area_groups = SchoolGroup.where(group_type: :local_authority_area)
+                                   .index_by(&:dfe_code)
+
+      SchoolGroup.transaction do
+        areas.each do |area|
+          la_code = area.la_code
+          la_name = area.la_name
+
+          puts la_code
+          puts la_name
+          if (group = existing_area_groups[la_code])
+            # update only if the name differs
+            group.update!(name: la_name) if group.name != la_name
+          else
+            SchoolGroup.create!(
+              group_type: :local_authority_area,
+              dfe_code: la_code,
+              name: la_name
+            )
+          end
+        end
+      end
     end
 
     def self.csv_name_starts_with
