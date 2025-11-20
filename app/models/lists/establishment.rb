@@ -70,9 +70,6 @@ module Lists
     def self.sync_local_authority_groups
       areas = open.where.not("la_code = 0 OR gor_code = 'Z'").select(:la_code, :la_name).distinct
 
-      SchoolGroup.where(group_type: :local_authority_area)
-                                   .index_by(&:dfe_code)
-
       SchoolGroup.transaction do
         areas.each do |area|
           la_code = area.la_code
@@ -83,7 +80,6 @@ module Lists
             dfe_code: la_code
           )
 
-          # update name if new or changed
           group.name = la_name if group.name != la_name
           group.save! if group.changed?
         end

@@ -114,7 +114,7 @@ module Lists
 
       context 'when group_exists' do
         let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of')}
-        let(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383', name: 'Old name') }
+        let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383', name: 'Old name') }
 
         before do
           described_class.sync_local_authority_groups
