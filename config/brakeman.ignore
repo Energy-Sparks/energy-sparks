@@ -54,7 +54,7 @@
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/admin/newsletters/index.html.erb",
-      "line": 20,
+      "line": 21,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to((Unresolved Model).new.url, (Unresolved Model).new.url)",
       "render_path": [
@@ -62,7 +62,7 @@
           "type": "controller",
           "class": "Admin::NewslettersController",
           "method": "index",
-          "line": 8,
+          "line": 13,
           "file": "app/controllers/admin/newsletters_controller.rb",
           "rendered": {
             "name": "admin/newsletters/index",
@@ -157,7 +157,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/schools/users_controller.rb",
-      "line": 98,
+      "line": 143,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)",
       "render_path": null,
@@ -272,7 +272,7 @@
       "check_name": "Redirect",
       "message": "Possible unprotected redirect",
       "file": "app/controllers/admin/issues_controller.rb",
-      "line": 41,
+      "line": 46,
       "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
       "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully created\"))",
       "render_path": null,
@@ -295,7 +295,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/admin/users_controller.rb",
-      "line": 101,
+      "line": 114,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :cluster_school_ids => ([]))",
       "render_path": null,
@@ -352,7 +352,7 @@
       "check_name": "Redirect",
       "message": "Possible unprotected redirect",
       "file": "app/controllers/admin/issues_controller.rb",
-      "line": 49,
+      "line": 54,
       "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
       "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully updated\"))",
       "render_path": null,
@@ -367,6 +367,52 @@
         601
       ],
       "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "991767223532deb416a08ff98d6a033d78d5d41be90c4a51c8c20cc05cb92d15",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/concerns/alphabetical_scopes.rb",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "where(\"        CASE\\n          WHEN substr(#{remove_prefix_from_name(ignore_prefix)}, 1, 1) ~ '^[0-9]' THEN '#'\\n          ELSE substr(upper(#{remove_prefix_from_name(ignore_prefix)}), 1, 1)\\n        END = ?\\n\".squish, letter)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AlphabeticalScopes",
+        "method": null
+      },
+      "user_input": "remove_prefix_from_name(ignore_prefix)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": "ignore_prefix is not user input"
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "9a9657ec4d3b260cd6cf194ced8e6e94cc02f9091da595e94592307e507b924d",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/concerns/alphabetical_scopes.rb",
+      "line": 28,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "group(\"        CASE\\n          WHEN substr(#{remove_prefix_from_name(ignore_prefix)}, 1, 1) ~ '^[0-9]' THEN '#'\\n          ELSE substr(upper(#{remove_prefix_from_name(ignore_prefix)}), 1, 1)\\n        END\\n\".squish)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AlphabeticalScopes",
+        "method": null
+      },
+      "user_input": "remove_prefix_from_name(ignore_prefix)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": "ignore_prefix is not user input"
     },
     {
       "warning_type": "Mass Assignment",
@@ -474,7 +520,7 @@
           "type": "controller",
           "class": "JobsController",
           "method": "index",
-          "line": 7,
+          "line": 6,
           "file": "app/controllers/jobs_controller.rb",
           "rendered": {
             "name": "jobs/index",
@@ -540,5 +586,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "7.0.0"
+  "brakeman_version": "7.1.1"
 }
