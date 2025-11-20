@@ -2,23 +2,25 @@ class SchoolSearchComponent < ApplicationComponent
   attr_reader :schools, :school_groups, :tab, :letter, :keyword, :schools_total_key
 
   DEFAULT_TAB = :schools
-  TABS = [:schools, :school_groups].freeze
+  TABS = [:schools, :school_groups, :diocese, :areas].freeze
+  DIOCESE_PREFIX = 'Diocese of'.freeze # common prefix for CofE diocese
 
   # i18n-tasks-use t("components.school_search.schools.total")
   # i18n-tasks-use t("components.school_search.schools.total_for_admins")
   def initialize(tab: DEFAULT_TAB,
                  schools: School.visible,
-                 school_groups: SchoolGroup.organisation_groups.with_visible_schools,
                  letter: 'A',
                  keyword: nil,
                  schools_total_key: 'components.school_search.schools.total',
-                 id: nil, classes: '')
-    super(id: id, classes: classes)
+                 id: nil, classes: '', **_kwargs)
+    super
     @tab = self.class.sanitize_tab(tab)
     @letter = letter || 'A'
     @keyword = keyword.present? ? keyword : nil
     @schools = schools
-    @school_groups = school_groups
+    @school_groups = SchoolGroup.organisation_groups.with_visible_schools
+    @diocese = SchoolGroup.diocese_groups.with_visible_schools
+    @areas = SchoolGroup.area_groups.with_visible_schools
     @schools_total_key = schools_total_key
   end
 
@@ -28,6 +30,18 @@ class SchoolSearchComponent < ApplicationComponent
       tab.to_sym
     else
       DEFAULT_TAB
+    end
+  end
+
+  def self.ignore_prefix(tab)
+    tab == :diocese ? DIOCESE_PREFIX : nil
+  end
+
+  def all_tabs
+    if Flipper.enabled?(:find_new_group_types, current_user)
+      TABS
+    else
+      [:schools, :school_groups].freeze
     end
   end
 
@@ -42,6 +56,10 @@ class SchoolSearchComponent < ApplicationComponent
       'active' # Activate letter based on parameter
     elsif tab == :schools
       'disabled' unless schools_by_letter.key?(letter)
+    elsif tab == :diocese
+      'disabled' unless diocese_by_letter.key?(letter)
+    elsif tab == :areas
+      'disabled' unless areas_by_letter.key?(letter)
     else
       'disabled' unless school_groups_by_letter.key?(letter)
     end
@@ -49,8 +67,19 @@ class SchoolSearchComponent < ApplicationComponent
 
   # i18n-tasks-use t("components.search_results.schools.subtitle")
   # i18n-tasks-use t("components.search_results.school_groups.subtitle")
+  # i18n-tasks-use t("components.search_results.diocese.subtitle")
+  # i18n-tasks-use t("components.search_results.areas.subtitle")
   def letter_title(tab, letter)
-    count = tab == :schools ? schools_by_letter[letter] : school_groups_by_letter[letter]
+    count = case tab
+            when :schools
+              schools_by_letter[letter]
+            when :diocese
+              diocese_by_letter[letter]
+            when :areas
+              areas_by_letter[letter]
+            else
+              school_groups_by_letter[letter]
+            end
     return '' if count.nil?
     I18n.t("components.search_results.#{tab}.subtitle", count: count)
   end
@@ -74,7 +103,7 @@ class SchoolSearchComponent < ApplicationComponent
 
   def default_results(tab)
     if tab_active?(tab) && @keyword
-      by_keyword
+      search_scope.by_keyword(@keyword).by_name
     elsif tab_active?(tab)
       by_letter
     else
@@ -86,33 +115,42 @@ class SchoolSearchComponent < ApplicationComponent
     @schools.count
   end
 
-  def school_groups_count
-    @school_groups.count
-  end
-
   private
 
-  def by_letter(letter = @letter, scope = @tab)
-    search_scope(scope).by_letter(letter).by_name
-  end
-
-  def by_keyword
-    search_scope.by_keyword(@keyword).by_name
-  end
-
   def search_scope(scope = @tab)
-    if scope == :schools
+    case scope
+    when :schools
       @schools
+    when :diocese
+      @diocese
+    when :areas
+      @areas
     else
       @school_groups
     end
   end
 
+  def by_letter(letter = @letter, scope = @tab)
+    search_scope(scope).by_letter(letter, self.class.ignore_prefix(scope)).by_name
+  end
+
   def schools_by_letter
-    @schools_by_letter ||= @schools.group_by_letter.count
+    @schools_by_letter ||= group_by_letter(:schools)
   end
 
   def school_groups_by_letter
-    @school_groups_by_letter ||= @school_groups.group_by_letter.count
+    @school_groups_by_letter ||= group_by_letter(:school_groups)
+  end
+
+  def diocese_by_letter
+    @diocese_by_letter ||= group_by_letter(:diocese)
+  end
+
+  def areas_by_letter
+    @areas_by_letter ||= group_by_letter(:areas)
+  end
+
+  def group_by_letter(scope)
+    search_scope(scope).group_by_letter(self.class.ignore_prefix(scope)).count
   end
 end
