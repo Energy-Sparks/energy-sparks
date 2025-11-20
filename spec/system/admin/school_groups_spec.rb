@@ -228,7 +228,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
       context 'when creating a project group' do
         before do
           click_on 'Manage Project Groups'
-          click_on 'New project group'
+          click_on 'New Project group'
         end
 
         it { expect(page).to have_content('New Project group')}
