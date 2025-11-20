@@ -82,7 +82,7 @@ module Admin
 
     def load_groups
       case group_type
-      when 'area'
+      when 'local_authority_area'
         SchoolGroup.area_groups
       when 'diocese'
         SchoolGroup.diocese_groups

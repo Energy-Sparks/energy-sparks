@@ -143,7 +143,6 @@ class SchoolGroup < ApplicationRecord
   # in the DfE database and our system as a multi_academy_trust.
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
-  # FIXME
   ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
   AREA_GROUP_TYPE_KEYS = %w[local_authority_area].freeze
   DIOCESE_GROUP_TYPE_KEYS = %w[diocese].freeze
