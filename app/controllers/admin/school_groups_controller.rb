@@ -5,7 +5,7 @@ module Admin
     def index
       @group_type = group_type
       @organisation_group = organisation_group?
-      @school_groups = load_groups
+      @school_groups = SchoolGroup.by_group_type(@group_type)
       respond_to do |format|
         format.html { @school_groups = @school_groups.by_name }
         format.csv do
@@ -78,19 +78,6 @@ module Admin
 
     def organisation_group?
       SchoolGroup::ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
-    end
-
-    def load_groups
-      case group_type
-      when 'local_authority_area'
-        SchoolGroup.area_groups
-      when 'diocese'
-        SchoolGroup.diocese_groups
-      when 'project'
-        SchoolGroup.project_groups
-      else
-        SchoolGroup.organisation_groups
-      end
     end
   end
 end

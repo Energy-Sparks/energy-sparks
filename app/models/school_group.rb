@@ -160,6 +160,19 @@ class SchoolGroup < ApplicationRecord
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
 
+  def self.by_group_type(group_type)
+    case group_type
+    when 'local_authority_area'
+      SchoolGroup.area_groups
+    when 'diocese'
+      SchoolGroup.diocese_groups
+    when 'project'
+      SchoolGroup.project_groups
+    else
+      SchoolGroup.organisation_groups
+    end
+  end
+
   def self.organisation_group_types
     group_types.slice(*ORGANISATION_GROUP_TYPE_KEYS)
   end
@@ -318,9 +331,5 @@ class SchoolGroup < ApplicationRecord
 
   def onboardings_for_group
     project? ? project_onboardings : school_onboardings
-  end
-
-  def admin_form_label
-    organisation? ? 'School group' : "#{group_type.humanize} group"
   end
 end

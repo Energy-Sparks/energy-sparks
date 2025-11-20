@@ -15,7 +15,7 @@
     <h2>Groups</h2>
     <ul>
       <li><%= link_to 'Manage School Groups', admin_school_groups_path %></li>
-      <% %i[diocese project local_authority_area].each do |group_type| %>
+      <% SchoolGroup::RESTRICTED_GROUP_TYPES.sort.each do |group_type| %>
         <li><%= link_to "Manage #{group_type.to_s.humanize} Groups", admin_school_groups_path(group_type:) %></li>
       <% end %>
     </ul>
