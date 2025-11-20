@@ -12,9 +12,7 @@
     <%= f.text_area :description, class: 'form-control' %>
   </div>
 
-  <% if project_group %>
-    <%= f.hidden_field :group_type, value: :project %>
-  <% else %>
+  <% if school_group.organisation? %>
     <div class="form-group">
       <%= f.label :group_type %>
       <%= f.select :group_type,
@@ -26,6 +24,8 @@
                    ),
                    { include_blank: false }, { class: 'form-control' } %>
     </div>
+  <% else %>
+    <%= f.hidden_field :group_type, value: school_group.group_type %>
   <% end %>
 
   <div class="form-group">
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <% unless project_group %>
+  <% if school_group.organisation? %>
     <%= render 'group_default_fields', f: f, school_group: school_group %>
   <% end %>
 

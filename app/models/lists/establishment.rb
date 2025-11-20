@@ -56,6 +56,15 @@ module Lists
     self.table_name = 'lists_establishments'
 
     has_many :links, class_name: 'Lists::EstablishmentLink'
+    scope :open, -> { where(close_date: nil) }
+
+    scope :missing_diocese, -> do
+      open
+      .where('diocese_code LIKE ?', 'CE%') # DfE use CE prefix for Church of England
+      .where.not(diocese_code: SchoolGroup.diocese.select(:dfe_code))
+      .distinct
+      .pluck(:diocese_code)
+    end
 
     def self.csv_name_starts_with
       'edubasealldata'

@@ -42,22 +42,15 @@ class SchoolsController < ApplicationController
   before_action :set_breadcrumbs
 
   def index
-    if Flipper.enabled?(:new_schools_page, current_user)
-      @letter = search_params.fetch(:letter, nil)
-      @keyword = search_params.fetch(:keyword, nil)
-      @results = if @keyword
-                   @scope.by_keyword(@keyword).by_name
-                 else
-                   @scope.by_letter(@letter).by_name
-                 end
-      @count = @results.count
-      @school_count = School.visible.count
-    else
-      @schools = School.visible.by_name.select(:name, :slug)
-      @school_groups = SchoolGroup.with_visible_schools.by_name
-      @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
-      @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
-    end
+    @letter = search_params.fetch(:letter, nil)
+    @keyword = search_params.fetch(:keyword, nil)
+    @results = if @keyword
+                 @scope.by_keyword(@keyword).by_name
+               else
+                 @scope.by_letter(@letter, SchoolSearchComponent.ignore_prefix(@tab)).by_name
+               end
+    @count = @results.count
+    @school_count = School.visible.count
   end
 
   def show
@@ -132,8 +125,13 @@ class SchoolsController < ApplicationController
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
     @schools = current_user_admin? ? School.active : School.visible
-    @scope = if @tab == :schools
+    @scope = case @tab
+             when :schools
                @schools
+             when :diocese
+               SchoolGroup.diocese_groups.with_visible_schools
+             when :areas
+               SchoolGroup.area_groups.with_visible_schools
              else
                SchoolGroup.organisation_groups.with_visible_schools
              end

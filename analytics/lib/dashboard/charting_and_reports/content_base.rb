@@ -285,7 +285,7 @@ class ContentBase
 
   private def format_for_table(value, unit, medium)
     return value if medium == :raw || unit == String
-    FormatEnergyUnit.format(unit, value, medium, false, true)
+    FormatUnit.format(unit, value, medium, false, true)
   end
 
   private def percent_change(old_value, new_value)

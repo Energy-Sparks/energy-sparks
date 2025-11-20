@@ -12,7 +12,7 @@
 <% if @multiple_meters %>
   <ul>
     <li>
-      <%= link_to(advice_t("#{@fuel_type}_costs.analysis.cost_breakdown_by_meter.title",
+      <%= link_to(advice_t('gas_costs.analysis.cost_breakdown_by_meter.title',
                            period: format_unit(@annual_costs.days / 365.0, :years)),
                   '#cost-breakdown-by-meter') %>
     </li>
@@ -34,7 +34,8 @@
   <%= render 'cost_breakdown_by_meter', school: @school,
                                         analysis_dates: @analysis_dates,
                                         annual_costs: @annual_costs,
-                                        annual_costs_breakdown_by_meter: @annual_costs_breakdown_by_meter %>
+                                        annual_costs_breakdown_by_meter: @annual_costs_breakdown_by_meter,
+                                        fuel_type: @fuel_type %>
   <%= render 'meter_breakdown', school: @school,
                                 options_for_meter_select: @options_for_meter_select,
                                 default_meter: @aggregate_meter_adapter.mpan_mprn,

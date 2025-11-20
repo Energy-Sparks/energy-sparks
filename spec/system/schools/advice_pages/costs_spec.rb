@@ -76,7 +76,7 @@ shared_examples 'a costs advice page' do
       context 'with single meter' do
         it 'displays a brief summary of total cost' do
           expect(page).to \
-            have_no_content(I18n.t("advice_pages.#{fuel_type}_costs.analysis.cost_breakdown_by_meter.title"))
+            have_no_content(I18n.t('advice_pages.gas_costs.analysis.cost_breakdown_by_meter.title'))
           expect(page).to have_content("We estimate your total #{fuel_type} cost over the last 12 months to be £1,000")
         end
 
