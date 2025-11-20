@@ -221,4 +221,57 @@ describe SchoolGrouping do
       end
     end
   end
+
+  describe '.assign_area' do
+    context 'when there is no matching group' do
+      let!(:school) { create(:school, establishment: create(:establishment)) }
+
+      before do
+        described_class.assign_area(school)
+      end
+
+      it 'does nothing' do
+        expect(school.reload.local_authority_area_group).to be_nil
+      end
+    end
+
+    context 'when there is no existing local authority area' do
+      let!(:school_group) { create(:school_group, dfe_code: '383') }
+      let!(:school) { create(:school, establishment: create(:establishment, la_code: '383')) }
+
+      before do
+        described_class.assign_area(school)
+      end
+
+      it 'does nothing' do
+        expect(school.reload.local_authority_area_group).to be_nil
+      end
+    end
+
+    context 'when there is no existing grouping' do
+      let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383') }
+      let!(:school) { create(:school, establishment: create(:establishment, la_code: '383')) }
+
+      before do
+        described_class.assign_area(school)
+      end
+
+      it 'add a relationship' do
+        expect(school.reload.local_authority_area_group).to eq(school_group)
+      end
+    end
+
+    context 'when there is an existing grouping' do
+      let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383') }
+      let!(:school) { create(:school, :with_local_authority_area, establishment: create(:establishment, la_code: '383')) }
+
+      before do
+        described_class.assign_area(school)
+      end
+
+      it 'updates the relationship' do
+        expect(school.reload.local_authority_area_group).to eq(school_group)
+      end
+    end
+  end
 end
