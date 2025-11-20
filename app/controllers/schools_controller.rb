@@ -47,7 +47,7 @@ class SchoolsController < ApplicationController
     @results = if @keyword
                  @scope.by_keyword(@keyword).by_name
                else
-                 @scope.by_letter(@letter).by_name
+                 @scope.by_letter(@letter, @tab == :diocese ? 'Diocese of' : nil).by_name
                end
     @count = @results.count
     @school_count = School.visible.count

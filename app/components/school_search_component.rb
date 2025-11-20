@@ -8,17 +8,16 @@ class SchoolSearchComponent < ApplicationComponent
   # i18n-tasks-use t("components.school_search.schools.total_for_admins")
   def initialize(tab: DEFAULT_TAB,
                  schools: School.visible,
-                 school_groups: SchoolGroup.organisation_groups.with_visible_schools,
                  letter: 'A',
                  keyword: nil,
                  schools_total_key: 'components.school_search.schools.total',
-                 id: nil, classes: '')
-    super(id: id, classes: classes)
+                 id: nil, classes: '', **_kwargs)
+    super
     @tab = self.class.sanitize_tab(tab)
     @letter = letter || 'A'
     @keyword = keyword.present? ? keyword : nil
     @schools = schools
-    @school_groups = school_groups
+    @school_groups = SchoolGroup.organisation_groups.with_visible_schools
     @diocese = SchoolGroup.diocese_groups.with_visible_schools
     @areas = SchoolGroup.area_groups.with_visible_schools
     @schools_total_key = schools_total_key
@@ -30,6 +29,14 @@ class SchoolSearchComponent < ApplicationComponent
       tab.to_sym
     else
       DEFAULT_TAB
+    end
+  end
+
+  def all_tabs
+    if Flipper.enabled?(:find_new_group_types, current_user)
+      TABS
+    else
+      [:schools, :school_groups].freeze
     end
   end
 
@@ -103,14 +110,10 @@ class SchoolSearchComponent < ApplicationComponent
     @schools.count
   end
 
-  def school_groups_count
-    @school_groups.count
-  end
-
   private
 
   def by_letter(letter = @letter, scope = @tab)
-    search_scope(scope).by_letter(letter).by_name
+    search_scope(scope).by_letter(letter, scope == :diocese ? 'Diocese of' : nil).by_name
   end
 
   def by_keyword
@@ -139,7 +142,7 @@ class SchoolSearchComponent < ApplicationComponent
   end
 
   def diocese_by_letter
-    @diocese_by_letter ||= @diocese.group_by_letter.count
+    @diocese_by_letter ||= @diocese.group_by_letter('Diocese of').count
   end
 
   def areas_by_letter
