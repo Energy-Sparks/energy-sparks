@@ -70,26 +70,22 @@ module Lists
     def self.sync_local_authority_groups
       areas = open.where.not("la_code = 0 OR gor_code = 'Z'").select(:la_code, :la_name).distinct
 
-      existing_area_groups = SchoolGroup.where(group_type: :local_authority_area)
+      SchoolGroup.where(group_type: :local_authority_area)
                                    .index_by(&:dfe_code)
 
       SchoolGroup.transaction do
         areas.each do |area|
           la_code = area.la_code
-          la_name = area.la_name
+          la_name = transform_la_name(area.la_name)
 
-          puts la_code
-          puts la_name
-          if (group = existing_area_groups[la_code])
-            # update only if the name differs
-            group.update!(name: la_name) if group.name != la_name
-          else
-            SchoolGroup.create!(
-              group_type: :local_authority_area,
-              dfe_code: la_code,
-              name: la_name
-            )
-          end
+          group = SchoolGroup.find_or_initialize_by(
+            group_type: :local_authority_area,
+            dfe_code: la_code
+          )
+
+          # update name if new or changed
+          group.name = la_name if group.name != la_name
+          group.save! if group.changed?
         end
       end
     end
@@ -148,6 +144,19 @@ module Lists
       puts "Warning: Couldn\'t match school with ID #{sch.id} and URN #{sch.urn} to any establishment!"
       stats[:unmatched] += 1
       return nil
+    end
+
+    def self.transform_la_name(raw_name)
+      case raw_name
+      when /, City of\z/
+        base = raw_name.delete_suffix(', City of')
+        "City of #{base} Local Authority"
+      when /, County of\z/
+        base = raw_name.delete_suffix(', County of')
+        "County of #{base} Local Authority"
+      else
+        "#{raw_name} Local Authority"
+      end
     end
   end
 end

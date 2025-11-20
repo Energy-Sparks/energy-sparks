@@ -71,7 +71,6 @@ class SchoolGrouping < ApplicationRecord
       .where(school: school, role: 'area', school_groups: { group_type: :local_authority_area })
       .first_or_initialize
 
-    puts school.id
     grouping.school_group = school_group
     grouping.save!
   end
