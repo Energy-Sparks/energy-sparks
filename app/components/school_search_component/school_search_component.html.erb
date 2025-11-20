@@ -1,5 +1,5 @@
 <%= tag.div id: id, class: class_names(classes, 'mt-4') do %>
-  <ul class="nav nav-tabs" id="search-tabs" role="tablist">
+  <ul class="nav nav-tabs locales" id="search-tabs" role="tablist">
     <% all_tabs.each do |tab| %>
       <li class="nav-item">
         <a class="nav-link <%= 'active' if tab_active?(tab) %>" id="<%= label(tab, 'tab') %>"
