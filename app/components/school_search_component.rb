@@ -3,6 +3,7 @@ class SchoolSearchComponent < ApplicationComponent
 
   DEFAULT_TAB = :schools
   TABS = [:schools, :school_groups, :diocese, :areas].freeze
+  DIOCESE_PREFIX = 'Diocese of'.freeze # common prefix for CofE diocese
 
   # i18n-tasks-use t("components.school_search.schools.total")
   # i18n-tasks-use t("components.school_search.schools.total_for_admins")
@@ -30,6 +31,10 @@ class SchoolSearchComponent < ApplicationComponent
     else
       DEFAULT_TAB
     end
+  end
+
+  def self.ignore_prefix(tab)
+    tab == :diocese ? DIOCESE_PREFIX : nil
   end
 
   def all_tabs
@@ -98,7 +103,7 @@ class SchoolSearchComponent < ApplicationComponent
 
   def default_results(tab)
     if tab_active?(tab) && @keyword
-      by_keyword
+      search_scope.by_keyword(@keyword).by_name
     elsif tab_active?(tab)
       by_letter
     else
@@ -111,14 +116,6 @@ class SchoolSearchComponent < ApplicationComponent
   end
 
   private
-
-  def by_letter(letter = @letter, scope = @tab)
-    search_scope(scope).by_letter(letter, scope == :diocese ? 'Diocese of' : nil).by_name
-  end
-
-  def by_keyword
-    search_scope.by_keyword(@keyword).by_name
-  end
 
   def search_scope(scope = @tab)
     case scope
@@ -133,19 +130,27 @@ class SchoolSearchComponent < ApplicationComponent
     end
   end
 
+  def by_letter(letter = @letter, scope = @tab)
+    search_scope(scope).by_letter(letter, self.class.ignore_prefix(scope)).by_name
+  end
+
   def schools_by_letter
-    @schools_by_letter ||= @schools.group_by_letter.count
+    @schools_by_letter ||= group_by_letter(:schools)
   end
 
   def school_groups_by_letter
-    @school_groups_by_letter ||= @school_groups.group_by_letter.count
+    @school_groups_by_letter ||= group_by_letter(:school_groups)
   end
 
   def diocese_by_letter
-    @diocese_by_letter ||= @diocese.group_by_letter('Diocese of').count
+    @diocese_by_letter ||= group_by_letter(:diocese)
   end
 
   def areas_by_letter
-    @areas_by_letter ||= @areas.group_by_letter.count
+    @areas_by_letter ||= group_by_letter(:areas)
+  end
+
+  def group_by_letter(scope)
+    search_scope(scope).group_by_letter(self.class.ignore_prefix(scope)).count
   end
 end
