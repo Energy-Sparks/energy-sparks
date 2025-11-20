@@ -143,7 +143,6 @@ class SchoolGroup < ApplicationRecord
   # in the DfE database and our system as a multi_academy_trust.
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
-  # FIXME
   ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
   AREA_GROUP_TYPE_KEYS = %w[local_authority_area].freeze
   DIOCESE_GROUP_TYPE_KEYS = %w[diocese].freeze
@@ -160,6 +159,19 @@ class SchoolGroup < ApplicationRecord
 
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
+
+  def self.by_group_type(group_type)
+    case group_type
+    when 'local_authority_area'
+      SchoolGroup.area_groups
+    when 'diocese'
+      SchoolGroup.diocese_groups
+    when 'project'
+      SchoolGroup.project_groups
+    else
+      SchoolGroup.organisation_groups
+    end
+  end
 
   def self.organisation_group_types
     group_types.slice(*ORGANISATION_GROUP_TYPE_KEYS)

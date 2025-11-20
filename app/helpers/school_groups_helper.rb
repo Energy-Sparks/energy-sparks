@@ -63,4 +63,8 @@ module SchoolGroupsHelper
   def include_clusters?(school_group)
     school_group.organisation? && can?(:update_settings, school_group)
   end
+
+  def admin_form_label(school_group)
+    school_group.organisation? ? 'School group' : "#{school_group.group_type.humanize} group"
+  end
 end
