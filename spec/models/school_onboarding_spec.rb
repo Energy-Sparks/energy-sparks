@@ -133,6 +133,23 @@ describe SchoolOnboarding, type: :model do
         expect(school_onboarding.country).to eq(school_group.default_country)
       end
     end
+
+    context 'with a diocese and local authority area' do
+      let!(:establishment) { create(:establishment, la_code: 343, diocese_code: 'CE99')}
+      let!(:diocese) { create(:school_group, group_type: :diocese, dfe_code: 'CE99') }
+      let!(:area) { create(:school_group, group_type: :local_authority_area, dfe_code: 343) }
+
+      let(:school_onboarding) { create(:school_onboarding, urn: establishment.id) }
+
+      before do
+        school_onboarding.populate_default_values(user)
+      end
+
+      it 'finds the groups' do
+        expect(school_onboarding.diocese).to eq(diocese)
+        expect(school_onboarding.local_authority_area).to eq(area)
+      end
+    end
   end
 
   it_behaves_like 'restricted school group association', :school_onboarding

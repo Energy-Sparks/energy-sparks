@@ -38,6 +38,20 @@ RSpec.describe 'editing school configuration', type: :system do
       end
     end
 
+    context 'when editing local authority area' do
+      let!(:area) { create(:school_group, name: 'LA', group_type: :local_authority_area) }
+
+      before do
+        refresh
+        select area.name, from: 'Local Authority Area'
+        click_on('Update configuration')
+      end
+
+      it 'allows local authority area to be updated' do
+        expect(school.reload.local_authority_area_group).to eq area
+      end
+    end
+
     it 'allows scoreboard to be updated' do
       select scoreboard.name, from: 'Scoreboard'
       click_on('Update configuration')
