@@ -14,6 +14,24 @@ module Schools
       if (grouping_attrs = params[:school][:organisation_school_grouping_attributes])
         @school.school_group_id = grouping_attrs[:school_group_id]
       end
+
+      [:area_school_grouping_attributes, :diocese_school_grouping_attributes].each do |attributes|
+        if params[:school][attributes]
+          attrs = params[:school][attributes]
+
+          if attrs[:school_group_id].blank?
+            case attributes
+            when :diocese_school_grouping_attributes
+              @school.diocese_school_grouping&.destroy
+            else
+              @school.area_school_grouping&.destroy
+            end
+
+            params[:school].delete(attributes)
+          end
+        end
+      end
+
       @school.update!(school_params)
       redirect_to school_path(@school)
     end
