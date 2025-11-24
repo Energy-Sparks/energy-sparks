@@ -26,7 +26,7 @@ RSpec.describe 'onboarding', :schools do
 
   let!(:project_group) { create(:school_group, group_type: :project) }
   let!(:diocese) { create(:school_group, group_type: :diocese) }
-
+  let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area)}
   let!(:funder) { create(:funder) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
@@ -79,6 +79,7 @@ RSpec.describe 'onboarding', :schools do
           before do
             select project_group.name, from: 'Project Group'
             select diocese.name, from: 'Diocese'
+            select local_authority_area.name, from: 'Local Authority Area'
 
             click_on 'Next'
           end
@@ -97,6 +98,7 @@ RSpec.describe 'onboarding', :schools do
             it { expect(onboarding.default_chart_preference).to eq 'carbon' }
             it { expect(onboarding.project_group).to eq(project_group) }
             it { expect(onboarding.diocese).to eq(diocese) }
+            it { expect(onboarding.local_authority_area).to eq(local_authority_area) }
             it { expect(onboarding.funder).to eq funder }
 
             it 'has sent an email' do

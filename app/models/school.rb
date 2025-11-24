@@ -259,7 +259,7 @@ class School < ApplicationRecord
   accepts_nested_attributes_for :diocese_school_grouping, update_only: true
 
   has_one :area_school_grouping, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
-  accepts_nested_attributes_for :area_school_grouping, allow_destroy: true
+  accepts_nested_attributes_for :area_school_grouping, update_only: true
 
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
   accepts_nested_attributes_for :project_school_groupings, allow_destroy: true
