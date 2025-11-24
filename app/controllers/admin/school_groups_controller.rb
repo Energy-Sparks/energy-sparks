@@ -16,6 +16,7 @@ module Admin
     end
 
     def new
+      redirect_to admin_path and return if ['diocese', 'local_authority_area'].include?(group_type)
       @school_group = SchoolGroup.build(group_type: group_type)
     end
 

@@ -5,7 +5,7 @@
     <div>
       <% if @organisation_group %>
         <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
-      <% else %>
+      <% elsif @group_type == 'project' %>
         <%= link_to "New #{t(@group_type, scope: 'school_groups.clusters.group_type')} group",
                     new_admin_school_group_path(group_type: @group_type),
                     class: 'btn btn-sm btn-primary' %>

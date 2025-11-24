@@ -354,6 +354,7 @@ class Ability
     common_school_admin_permissions(user, school_scope, related_school_scope)
 
     can :update_settings, SchoolGroup, id: user.school_group_id
+    can :secr, SchoolGroup, id: user.school_group_id
 
     can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
     can :manage, EnergyTariff, tariff_holder: user.school_group
