@@ -24,7 +24,21 @@
                    ),
                    { include_blank: true },
                    { class: 'form-control' } %>
-      <small>Optional: configure these diocese that this school will be a part of once onboarded.
+      <small>Optional: configure the diocese that this school will be a part of once onboarded.
+        Should be automatically defaulted from URNs found in DfE data</small>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :local_authority_area_id, 'Local Authority Area' %>
+      <%= f.select :local_authority_area_id,
+                   options_from_collection_for_select(
+                     SchoolGroup.area_groups.order(:name), 'id', 'name', @school_onboarding.local_authority_area_id
+                   ),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+      <small>Optional: configure the local authority area that this school will be a part of once onboarded.
         Should be automatically defaulted from URNs found in DfE data</small>
     </div>
   </div>

@@ -45,6 +45,20 @@
   </div>
 
   <div class="form-row">
+    <%= f.fields_for :area_school_grouping do |grouping_fields| %>
+      <div class="form-group col-md-12">
+        <%= grouping_fields.label :school_group_id, 'Local Authority Area Group' %>
+        <%= grouping_fields.collection_select :school_group_id,
+                                              SchoolGroup.area_groups.order(:name),
+                                              :id,
+                                              :name,
+                                              { selected: @school.local_authority_area_group&.id },
+                                              { class: 'form-control' } %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="form-row">
     <div class="form-group col-md-12">
       <%= f.label :template_calendar_id, 'Template calendar' %>
       <%= f.select :template_calendar_id,
