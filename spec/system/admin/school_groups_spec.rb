@@ -182,6 +182,22 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
     end
 
     describe 'Adding a new school group' do
+      context 'with diocese' do
+        before do
+          click_on 'Manage School Groups'
+        end
+
+        it { expect(page).not_to have_link("New #{I18n.t('school_groups.clusters.group_type.diocese')} group") }
+      end
+
+      context 'with local authority group' do
+        before do
+          click_on 'Manage School Groups'
+        end
+
+        it { expect(page).not_to have_link("New #{I18n.t('school_groups.clusters.group_type.local_authority_area')} group") }
+      end
+
       context 'when creating an organisation group' do
         let!(:scoreboard)             { create(:scoreboard, name: 'BANES and Frome') }
         let!(:dark_sky_weather_area)  { create(:dark_sky_area, title: 'BANES dark sky weather') }
