@@ -38,7 +38,7 @@
                                               SchoolGroup.diocese_groups.order(:name),
                                               :id,
                                               :name,
-                                              { selected: @school.diocese&.id },
+                                              { selected: @school.diocese&.id, include_blank: true },
                                               { class: 'form-control' } %>
       </div>
     <% end %>
@@ -52,7 +52,7 @@
                                               SchoolGroup.area_groups.order(:name),
                                               :id,
                                               :name,
-                                              { selected: @school.local_authority_area_group&.id },
+                                              { selected: @school.local_authority_area_group&.id, include_blank: true },
                                               { class: 'form-control' } %>
       </div>
     <% end %>
