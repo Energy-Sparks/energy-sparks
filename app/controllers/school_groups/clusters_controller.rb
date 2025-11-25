@@ -51,7 +51,7 @@ module SchoolGroups
     private
 
     def redirect_unless_authorised
-      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+      redirect_to school_group_path(@school_group) and return unless can?(:manage_clusters, @school_group)
     end
 
     def cluster_params

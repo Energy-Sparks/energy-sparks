@@ -351,6 +351,10 @@ class Ability
     can :update_settings, SchoolGroup, id: user.school_group_id
     can :secr, SchoolGroup, id: user.school_group_id
 
+    # can view clusters on dashboards, advice, downloads
+    can :view_clusters, SchoolGroup, id: user.school_group_id
+    can :manage_clusters, SchoolGroup, id: user.school_group_id
+
     can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
     can :manage, EnergyTariff, tariff_holder: user.school_group
     can :manage, EnergyTariff, related_school_scope

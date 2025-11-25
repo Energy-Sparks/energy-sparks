@@ -21,7 +21,7 @@
       <% p.with_title { t('common.clusters') } %>
       <% p.with_link { link_to t('common.labels.manage'), school_group_clusters_path(@school_group) } %>
       <%= t('school_groups.settings.clusters') %>
-    <% end %>
+    <% end if can?(:manage_clusters, school_group) %>
 
     <%= render PromptComponent.new(icon: 'sterling-sign', style: :compact, status: :none) do |p| %>
       <% p.with_title { t('common.tariffs') } %>
