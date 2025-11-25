@@ -74,9 +74,7 @@
 # SCHOOL GROUP ACTIONS
 #
 # :compare - can compare schools in this group. Used to add/remove links to compare functionality
-# But also used to control access to school group page with data.
-# :view_settings - see manage group menu
-# :read, :my_school_group_menu - see my school group menu
+# :manage_settings - see manage group menu
 # :update_settings - can use manage settings (chart prefs, clusters) for school group. But also used to gate
 # access to viewing clusters on school group dashboard. Used to control access to SECR report page too
 #
@@ -133,12 +131,10 @@ class Ability
     can %i[show show_pupils_dash], School, visible: true, data_sharing: :public
 
     can :read, Scoreboard, public: true
-    # TODO only need show as there's no :index?
-    can :read, SchoolGroup
 
-    # Allow anyone to compare schools in public school group. The actual schools that are shown
+    # Allow anyone to see public school group. The actual schools that are shown
     # are filtered using based on whether user can :show the school
-    can :compare, SchoolGroup, public: true
+    can :show, SchoolGroup, public: true
 
     # TODO: do we need both index and show here, or just show?
     can :read, Activity, school: { visible: true }
@@ -184,7 +180,7 @@ class Ability
     can %i[show show_pupils_dash], School,
         data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true
 
-    can :compare, SchoolGroup, id: user.school.school_group_id
+    can :show, SchoolGroup, id: user.school.school_group_id
     can :show_management_dash, SchoolGroup, id: user.school.school_group_id
 
     can %i[show read index], Audit, school: school_scope
@@ -209,7 +205,7 @@ class Ability
           { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
 
       # Can compare own school group, even if not public
-      can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
+      can :show, SchoolGroup, { id: user.school.school_group_id, public: false }
       # Can see messages on school group dashboard for their group
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
     end
@@ -250,10 +246,9 @@ class Ability
   end
 
   def common_group_user_permissions(user)
-    can %i[show compare show_management_dash], SchoolGroup, id: user.school_group_id
+    can %i[show show_management_dash], SchoolGroup, id: user.school_group_id
 
-    can :view_settings, SchoolGroup, id: user.school_group_id
-    can :read, :my_school_group_menu
+    can :manage_settings, SchoolGroup, id: user.school_group_id
   end
 
   def pupil_permissions(user)
