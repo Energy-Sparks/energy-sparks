@@ -233,7 +233,7 @@ GEM
     compare-xml (0.66)
       nokogiri (~> 1.8)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.4)
+    connection_pool (2.5.5)
     crack (1.0.1)
       bigdecimal
       rexml
@@ -394,7 +394,7 @@ GEM
       domain_name (~> 0.5)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    i18n-tasks (1.1.0)
+    i18n-tasks (1.1.1)
       activesupport (>= 4.0.2)
       ast (>= 2.1.0)
       erubi
@@ -952,7 +952,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   handlebars_assets
-  i18n-tasks (~> 1.1.0)
+  i18n-tasks (~> 1.1.1)
   image_processing (~> 1.14)
   importmap-rails
   jbuilder (~> 2.14)
