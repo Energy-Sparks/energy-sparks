@@ -3,10 +3,11 @@
 # During holidays alert schools if they are consuming energy
 class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
   USAGE_THRESHOLD_£ = 10.0
-  attr_reader :holiday_usage_to_date_kwh, :holiday_projected_usage_kwh, :holiday_usage_to_date_£, :holiday_projected_usage_£, :holiday_usage_to_date_co2, :holiday_projected_usage_co2
+  attr_reader :holiday_usage_to_date_kwh, :holiday_projected_usage_kwh, :holiday_usage_to_date_£,
+              :holiday_projected_usage_£, :holiday_usage_to_date_co2, :holiday_projected_usage_co2
 
   def initialize(school, report_type)
-    super(school, report_type)
+    super
     @rating = 10.0
     @relevance = :never_relevant unless holiday?(@today)
   end
@@ -127,21 +128,21 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
   # are currently within a holiday (@relevance) and we have the necessary aggregate
   # meter
   def calculate(asof_date)
-    @holiday_period     = @school.holidays.holiday(asof_date)
-    holiday_date_range  = @holiday_period.start_date..@holiday_period.end_date
+    @holiday_period = @school.holidays.holiday(asof_date)
+    @holiday_date_range = @holiday_period.start_date..@holiday_period.end_date
 
     # Calculate summary of usage by day type
-    usage_to_date  = calculate_usage_to_date(holiday_date_range)
+    usage_to_date = calculate_usage_to_date(@holiday_date_range)
 
     # Calculate total usage across both day types
     totals_to_date = totals(usage_to_date)
 
-    @holiday_usage_to_date_kwh   = totals_to_date[:kwh]
-    @holiday_usage_to_date_£   = totals_to_date[:£]
-    @holiday_usage_to_date_co2   = totals_to_date[:co2]
+    @holiday_usage_to_date_kwh = totals_to_date[:kwh]
+    @holiday_usage_to_date_£ = totals_to_date[:£]
+    @holiday_usage_to_date_co2 = totals_to_date[:co2]
 
     # Calculate number of work and weekend days in holiday as a whole
-    workdays_days, weekend_days = holiday_weekday_workday_stats(holiday_date_range)
+    workdays_days, weekend_days = holiday_weekday_workday_stats(@holiday_date_range)
     # Project usage for the entire holiday, based on current usage
     projected_totals = calculate_projected_totals(usage_to_date, workdays_days, weekend_days)
 
@@ -154,24 +155,22 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
     @rating = @holiday_usage_to_date_£ < USAGE_THRESHOLD_£ ? nil : 0.0
   end
 
-  def calculate_usage_to_date(holiday_date_range)
+  def calculate_usage_to_date(holiday_date_range, community_use: nil)
     amr = aggregate_meter.amr_data
     start_date = [holiday_date_range.first, amr.start_date].max
     end_date   = [holiday_date_range.last,  amr.end_date, @today].min
 
     # lambda used to access data for a data typ
-    lamda = ->(date, data_type) { amr.one_day_kwh(date, data_type) }
+    lambda = ->(date, data_type) { amr.one_day_kwh(date, data_type, community_use:) }
     # classified used to identify day type, into :workday, :weekend
     classifier = ->(date) { day_type(date) }
 
     # Calculate total, average for each day type for each data type (kwh, £ and co2)
     # Produces hash of data type => { weekend: {}, workday: {} }
-    %i[kwh £ co2].map do |data_type|
-      [
-        data_type,
-        @school.holidays.calculate_statistics(start_date, end_date, lamda, classifier: classifier, args: data_type, statistics: %i[total average])
-      ]
-    end.to_h
+    %i[kwh £ co2].index_with do |data_type|
+      @school.holidays.calculate_statistics(start_date, end_date, lambda, classifier:, args: data_type,
+                                                                          statistics: %i[total average])
+    end
   end
 
   def holiday_name
@@ -191,7 +190,7 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
   end
 
   def totals(usage_to_date)
-    usage_to_date.transform_values { |v| v.values.map { |vv| vv[:total] }.sum }
+    usage_to_date.transform_values { |v| v.values.sum { |vv| vv[:total] } }
   end
 
   def day_type(date)
@@ -210,8 +209,8 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
     usage_to_date.transform_values do |v|
       # at start of holiday may only have sample weekend or weekday,
       # so use backup type if missing sample i.e. workday if no weekend day sample etc.
-      workdays_days * (v.dig(:workday, :average) || v.dig(:weekend, :average)) +
-        weekend_days * (v.dig(:weekend, :average) || v.dig(:workday, :average))
+      (workdays_days * (v.dig(:workday, :average) || v.dig(:weekend, :average))) +
+        (weekend_days * (v.dig(:weekend, :average) || v.dig(:workday, :average)))
     end
   end
 
