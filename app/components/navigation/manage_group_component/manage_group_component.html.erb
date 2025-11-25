@@ -9,8 +9,10 @@
                     expanded: true,
                     visible: school_group.organisation?,
                     options: { match_controller: false } do |s| %>
-    <% s.with_item(name: t('common.charts'),
-                   href: school_group_chart_updates_path(school_group), classes:) %>
+    <% if can?(:manage_chart_defaults, school_group) %>
+      <% s.with_item(name: t('common.charts'),
+                     href: school_group_chart_updates_path(school_group), classes:) %>
+    <% end %>
     <% if can?(:manage_clusters, school_group)
          s.with_item(name: t('common.clusters'),
                      href: school_group_clusters_path(school_group), classes:)
