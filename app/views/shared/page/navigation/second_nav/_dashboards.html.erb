@@ -1,4 +1,4 @@
-<% if request.path.starts_with?('/school_groups') && can?(:manage_settings, current_school_group) %>
+<% if request.path.starts_with?('/school_groups') && can?(:show, current_school_group) %>
   <li class="nav-item nowrap">
     <%= link_to t('dashboards.group_dashboard'),
                 school_group_path(current_school_group), class: 'nav-link dash' %>
