@@ -18,7 +18,7 @@
                   school_group_energy_tariffs_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('manage_school_menu.digital_signage'),
                   school_group_digital_signage_index_path(school_group), class: 'dropdown-item' %>
-      <% if Flipper.enabled?(:school_group_secr_report,  current_user) %>
+      <% if can?(:view_secr_report, school_group) %>
         <%= link_to t('school_groups.sub_nav.secr_report'),
                     school_group_secr_index_path(school_group), class: 'dropdown-item' %>
       <% end %>

@@ -51,7 +51,7 @@
       <% p.with_title { t('school_groups.sub_nav.secr_report') } %>
       <% p.with_link { link_to t('common.labels.view'), school_group_secr_index_path(@school_group) } %>
       <%= t('school_groups.settings.secr') %>
-    <% end if @school_group.organisation? && Flipper.enabled?(:school_group_secr_report,  current_user) %>
+    <% end if @school_group.organisation? && can?(:view_secr_report, school_group) %>
     <%= render PromptComponent.new(icon: 'timeline', style: :compact, status: :none) do |p| %>
       <% p.with_title { t('common.timeline') } %>
       <% p.with_link { link_to t('common.labels.manage'), school_group_timeline_path(@school_group) } %>

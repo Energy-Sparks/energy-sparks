@@ -352,10 +352,9 @@ class Ability
 
     # FIXME rename
     can :update_settings, SchoolGroup, id: user.school_group_id
-    can :secr, SchoolGroup, id: user.school_group_id
 
     # can view clusters on dashboards, advice, downloads
-    can %i[view_clusters manage_clusters manage_chart_defaults], SchoolGroup, id: user.school_group_id
+    can %i[view_clusters manage_clusters manage_chart_defaults view_secr_report], SchoolGroup, id: user.school_group_id
 
     can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
     can :manage, EnergyTariff, tariff_holder: user.school_group
