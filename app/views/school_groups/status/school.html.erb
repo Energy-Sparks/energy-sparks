@@ -32,12 +32,12 @@
   <%= grid.with_block do %>
     <dl class="row">
       <% if @school.school_onboarding.complete? %>
-        <dt class="col-5"><%= t('school_groups.status.data_onboarded') %></dt>
-        <dd class="col-7"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
+        <dt class="col-6"><%= t('school_groups.status.date_onboarded') %></dt>
+        <dd class="col-6"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
       <% end %>
       <% if @school.data_enabled? %>
-        <dt class="col-5"><%= t('school_groups.status.date_data_enabled') %></dt>
-        <dd class="col-7">
+        <dt class="col-6"><%= t('school_groups.status.date_data_enabled') %></dt>
+        <dd class="col-6">
           <%= nice_dates(
                 @school.school_onboarding.first_made_data_enabled || @school.school_onboarding.completed_on
               ) %>
