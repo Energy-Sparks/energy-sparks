@@ -2,17 +2,6 @@
 
 module Alerts
   module UsageDuringCurrentHolidayWithCommunityUse
-    #     def enough_data #
-    #   holiday_period = @school.holidays.holiday(@today)
-    #   if !holiday_period.nil? &&
-    #      aggregate_meter.amr_data.start_date <= holiday_period.start_date &&
-    #      aggregate_meter.amr_data.end_date   >= holiday_period.start_date
-    #     :enough
-    #   else
-    #     :not_enough
-    #   end
-    # end
-
     TEMPLATE_VARIABLES = AlertUsageDuringCurrentHolidayBase::TEMPLATE_VARIABLES.merge(
       community_usage_to_date_kwh: {
         description: 'Community usage so far this holiday - kwh',
@@ -40,14 +29,9 @@ module Alerts
       }
     ).freeze
 
-    # def enough_data
-    #   enough = super
-    #   if enough == :enough && school.open_close_times.usage(@today).key?(:community)
-    #     :enough
-    #   else
-    #     :not_enough
-    #   end
-    # end
+    def enough_data
+      super(community_use: :any?)
+    end
 
     def community_usage_to_date_kwh
       @community_usage_to_date[:kwh]
@@ -62,15 +46,15 @@ module Alerts
     end
 
     def holiday_use_without_community_to_date_kwh
-      @holiday_usage_to_date_kwh - community_usage_to_date_kwh
+      holiday_usage_to_date_kwh - community_usage_to_date_kwh
     end
 
     def holiday_use_without_community_usage_to_date_gbp
-      @holiday_usage_to_date_£ - community_usage_to_date_gbp
+      holiday_usage_to_date_gbp - community_usage_to_date_gbp
     end
 
     def holiday_use_without_community_usage_to_date_co2
-      @holiday_usage_to_date_co2 - community_usage_to_date_co2
+      holiday_usage_to_date_co2 - community_usage_to_date_co2
     end
 
     private

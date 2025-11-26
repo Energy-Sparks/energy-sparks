@@ -5,6 +5,7 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
   USAGE_THRESHOLD_£ = 10.0
   attr_reader :holiday_usage_to_date_kwh, :holiday_projected_usage_kwh, :holiday_usage_to_date_£,
               :holiday_projected_usage_£, :holiday_usage_to_date_co2, :holiday_projected_usage_co2
+  alias holiday_usage_to_date_gbp holiday_usage_to_date_£
 
   def initialize(school, report_type)
     super
@@ -77,11 +78,14 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
   }.freeze
 
   # We have enough data so long as there is some recorded usage within the current holiday
-  def enough_data
+  def enough_data(community_use: :none?)
     holiday_period = @school.holidays.holiday(@today)
     if !holiday_period.nil? &&
        aggregate_meter.amr_data.start_date <= holiday_period.start_date &&
-       aggregate_meter.amr_data.end_date   >= holiday_period.start_date
+       aggregate_meter.amr_data.end_date   >= holiday_period.start_date &&
+       (holiday_period.start_date..holiday_period.end_date).public_send(community_use) do |date|
+         @school.open_close_times.usage(date).key?(:community)
+       end
       :enough
     else
       :not_enough

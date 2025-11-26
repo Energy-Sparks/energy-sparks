@@ -5,7 +5,7 @@ RSpec.shared_examples 'a holiday usage alert' do
 
   include_context 'with today'
 
-  describe '#enough_data?' do
+  describe '#enough_data' do
     context 'with enough data' do
       it 'returns :enough' do
         expect(alert.enough_data).to eq(:enough)

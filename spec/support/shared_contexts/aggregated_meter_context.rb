@@ -72,7 +72,9 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
   end
 
   # TODO: add holidays, temperatures, solar
-  let(:meter_collection) { build(:meter_collection, holidays: holidays) }
+  let(:meter_collection) do
+    build(:meter_collection, school: build(:analytics_school, school_times:, community_use_times:), holidays:)
+  end
 
   # Configure objects as if we've run the aggregation process
   before do
