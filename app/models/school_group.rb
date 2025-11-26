@@ -64,8 +64,8 @@ class SchoolGroup < ApplicationRecord
   has_many :assigned_schools, through: :school_groupings, source: :school
 
   has_many :meters, through: :assigned_schools
-  has_many :school_onboardings
-  has_many :project_onboardings, class_name: 'SchoolOnboarding', foreign_key: :project_group_id
+  has_many :school_onboardings, dependent: :nullify
+  has_many :project_onboardings, class_name: 'SchoolOnboarding', foreign_key: :project_group_id, dependent: :nullify
 
   has_many :calendars, through: :assigned_schools
   has_many :users
