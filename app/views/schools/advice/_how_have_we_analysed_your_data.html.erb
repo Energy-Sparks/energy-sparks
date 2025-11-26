@@ -8,6 +8,7 @@
   </p>
 <% else %>
    <%= render Schools::EnergyDataStatusComponent.new(
+         school: @school,
          overview_data: @overview_data,
          show_fuel_icon: false
        ) %>
