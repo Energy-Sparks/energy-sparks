@@ -44,7 +44,7 @@ RSpec.describe Elements::IconComponent, type: :component do
       end
 
       it 'renders the icon' do
-        expect(html).to have_css('span.text-electric')
+        expect(html).to have_css('i.text-electric')
         expect(html).to have_css('i.fa-info-circle')
       end
 
@@ -54,19 +54,20 @@ RSpec.describe Elements::IconComponent, type: :component do
         end
 
         it 'renders the icon' do
-          expect(html).to have_css('span.text-electric')
+          expect(html).to have_css('i.text-electric')
           expect(html).to have_css('i.fa-info-circle.fa-fw')
         end
       end
 
       context 'with colour' do
         let(:params) do
-          { name: 'info-circle', fuel_type: :electricity, colour: :primary }
+          { fuel_type: :electricity, colour: :danger }
         end
 
         it 'overrides the colour' do
-          expect(html).to have_css('span.text-primary')
-          expect(html).to have_css('i.fa-info-circle')
+          expect(html).to have_css('i.text-danger')
+          expect(html).not_to have_css('i.text-electric')
+          expect(html).to have_css('i.fa-bolt')
         end
       end
     end
