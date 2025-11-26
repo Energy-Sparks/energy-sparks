@@ -17,18 +17,24 @@ describe Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse do
         describe '#analyse' do
           before { alert.analyse(asof_date) }
 
-          it 'calculates expected usage', :aggregate_failures do
+          it 'calculates community usage', :aggregate_failures do
             expect(alert.community_usage_to_date_kwh).to be_within(0.001).of(500.0)
             expect(alert.community_usage_to_date_gbp).to be_within(0.001).of(50.0)
             expect(alert.community_usage_to_date_co2).to be_within(0.001).of(100.0)
           end
+
+          it 'calculate usage without community usage', :aggregate_failures do
+            expect(alert.holiday_use_without_community_to_date_kwh).to be_within(0.001).of(3340.0)
+            expect(alert.holiday_use_without_community_usage_to_date_gbp).to be_within(0.001).of(334.0)
+            expect(alert.holiday_use_without_community_usage_to_date_co2).to be_within(0.001).of(668.0)
+          end
         end
       end
+    end
 
-      context 'without community use' do
-        describe '#enough_data' do
-          it { expect(alert.enough_data).to eq(:not_enough) }
-        end
+    context 'without community use' do
+      describe '#enough_data' do
+        it { expect(alert.enough_data).to eq(:not_enough) }
       end
     end
   end
