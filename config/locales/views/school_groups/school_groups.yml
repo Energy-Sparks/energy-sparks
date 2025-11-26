@@ -405,9 +405,14 @@ en:
           one: We are working with 1 school in this %{group_type}
           other: We are working with %{count} schools in this %{group_type}
     status:
+      data_onboarded: Data onboarded
+      date_data_enabled: Date made data enabled
       individual_meter_data: Individual meter data
       no_meters: This school has no meters configured
       no_schools: There are no schools in this group
+      number_of_users: Number of users
+      receiving_alerts: "(%{count} receiving alerts)"
+      school_info: School information
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters

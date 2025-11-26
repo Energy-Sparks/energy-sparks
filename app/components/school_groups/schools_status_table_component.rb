@@ -4,10 +4,12 @@ module SchoolGroups
   class SchoolsStatusTableComponent < ApplicationComponent
     attr_reader :records
 
-    def initialize(school_group:, records:, **_kwargs)
+    def initialize(school_group:, schools: [], onboardings: [], **_kwargs)
       super
       @school_group = school_group
-      @records = records
+      @schools = schools # should we enforce active here?
+      @onboardings = onboardings # should we enforce incomplete here?
+      @records = merge_schools_and_onboardings
     end
 
     def fuel_types
@@ -23,6 +25,12 @@ module SchoolGroups
       else
         :onboarding
       end
+    end
+
+    def merge_schools_and_onboardings
+      school_ids = @schools.map(&:id).to_set
+
+      @schools + @onboardings.reject { |o| school_ids.include?(o.school_id) }
     end
 
     def render?

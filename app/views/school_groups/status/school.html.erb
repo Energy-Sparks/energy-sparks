@@ -1,7 +1,7 @@
-<% content_for :header_title, "#{@school.name} - Meters" %>
+<% content_for :header_title, "#{@school.name} - #{t('schools.downloads.index.meters')}" %>
 
-<h3>School information</h3>
-<%= render Layout::GridComponent.new(classes: 'w-100', cell_classes: 'mb-2',
+<h3><%= t('school_groups.status.school_info') %></h3>
+<%= render Layout::GridComponent.new(classes: 'w-100 mb-4', cell_classes: 'mb-2',
                                      component_classes: 'rounded-2 bg-light pt-3 px-4 h-100', cols: 2) do |grid| %>
   <%= grid.with_block do %>
     <dl class="row">
@@ -21,10 +21,10 @@
         <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %>
       </dt>
       <dd class="col-7"><%= t("common.school_types.#{@school.school_type}") %></dd>
-      <dt class="col-5">Number of users</dt>
+      <dt class="col-5"><%= t('school_groups.status.number_of_users') %></dt>
       <dd class="col-7"><%= @school.active_adult_users.count %>
         <% if @school.active_adult_users.any? %>
-          (<%= @school.active_alert_contacts.count %> receiving alerts)
+          <%= t('school_groups.status.receiving_alerts', count: @school.active_alert_contacts.count) %>
         <% end %>
       </dd>
     </dl>
@@ -32,11 +32,11 @@
   <%= grid.with_block do %>
     <dl class="row">
       <% if @school.school_onboarding.complete? %>
-        <dt class="col-5">Date onboarded</dt>
+        <dt class="col-5"><%= t('school_groups.status.data_onboarded') %></dt>
         <dd class="col-7"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
       <% end %>
       <% if @school.data_enabled? %>
-        <dt class="col-5">Date made data enabled</dt>
+        <dt class="col-5"><%= t('school_groups.status.date_data_enabled') %></dt>
         <dd class="col-7">
           <%= nice_dates(
                 @school.school_onboarding.first_made_data_enabled || @school.school_onboarding.completed_on
@@ -48,22 +48,22 @@
 <% end %>
 
 <% if @meters.any? %>
-  <h4><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></h4>
+  <h3><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></h3>
   <%= render Schools::EnergyDataStatusComponent.new(
         school: @school,
         show_fuel_icon: true,
         table_small: false
       ) %>
-  <h4><%= t('school_groups.status.individual_meter_data') %></h4>
+  <h3><%= t('school_groups.status.individual_meter_data') %></h3>
   <table class="table table-sorted">
     <thead class="thead-dark text-nowrap">
       <tr>
-        <th></th>
-        <th>Meter type</th>
-        <th class="text-left">MPXN</th>
-        <th class="text-left">Name</th>
-        <th>Start date</th>
-        <th>End date</th>
+        <th class='no-sort'></th>
+        <th><%= I18n.t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
+        <th class="text-left"><%= t('schools.meters.index.meter') %></th>
+        <th class="text-left"><%= t('schools.meters.index.name') %></th>
+        <th><%= t('common.labels.start_date') %></th>
+        <th><%= t('common.labels.end_date') %></th>
       </tr>
     </thead>
     <tbody>

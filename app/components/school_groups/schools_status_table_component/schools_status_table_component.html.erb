@@ -24,7 +24,7 @@
             <% end %>
           </td>
           <td>
-            <%= render(Elements::BadgeComponent.new(t(status(record), scope: 'schools.status'), style: :light)) %>
+            <%= render(Elements::BadgeComponent.new(t(status(record), scope: 'schools.status'), colour: :light)) %>
           </td>
           <% fuel_types.each do |fuel_type| %>
             <td class="text-center offset">

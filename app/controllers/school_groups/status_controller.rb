@@ -12,7 +12,7 @@ module SchoolGroups
 
     def index
       redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
-      @records = merge_schools_and_onboardings
+      @onboardings = @school_group.onboardings_for_group.incomplete
     end
 
     def school
@@ -22,13 +22,6 @@ module SchoolGroups
     end
 
     private
-
-    def merge_schools_and_onboardings
-      @onboardings = @school_group.onboardings_for_group.incomplete
-      school_ids = @schools.map(&:id).to_set # should we enforce active here?
-
-      @schools + @onboardings.reject { |o| school_ids.include?(o.school_id) }
-    end
 
     def breadcrumbs
       build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
