@@ -62,7 +62,7 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
         it 'produces expected rows' do
           expect(rows).to eq([[
                                school.name,
-                               I18n.t('common.labels.data_published'),
+                               I18n.t('schools.status.data_enabled'),
                                nil,
                                nil,
                                'Y',
