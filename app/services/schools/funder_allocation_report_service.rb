@@ -74,13 +74,13 @@ module Schools
             school.funding_status.humanize,
             school.postcode,
             country(school),
-            school&.diocese&.name,
-            project_names(school),
             school.number_of_pupils,
             school.percentage_free_school_meals,
             school.all_adult_school_users.count,
             local_authority_area(school),
             region(school),
+            school&.diocese&.name,
+            project_names(school),
             activities_this_academic_year(school),
             actions_this_academic_year(school),
             electricity_data_sources[0],
@@ -129,7 +129,7 @@ module Schools
     end
 
     def project_names(school)
-      school.project_groups.any? ? school.project_groups.map(&:name).join(',') : nil
+      school.project_groups.any? ? school.project_groups.order(:name).map(&:name).join('|') : nil
     end
 
     def first_made_data_enabled(school)
