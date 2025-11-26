@@ -8,7 +8,7 @@
   <% end %>
 <% elsif style == :circle %>
   <%# Use font-awesome stacking support. %>
-  <span class="fa-stack <%= classes %> <%= fuel_type_class(fuel_type) if fuel_type %>">
+  <span class="fa-stack <%= classes %> <%= fuel_type_class(fuel_type) if !@colour && fuel_type %>">
     <i class="fa-solid fa-circle fa-stack-2x fa-inverse"></i>
     <%= icon(icon_set, icon_name, class: 'fa-stack-1x') %>
   </span>

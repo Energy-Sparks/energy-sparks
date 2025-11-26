@@ -1,0 +1,54 @@
+<% if records.any? %>
+  <table class="table table-sorted">
+    <thead class="thead-dark">
+      <tr>
+        <th><%= School.human_attribute_name(:name) %></th>
+        <th><%= t('common.labels.status') %></th>
+        <% fuel_types.each do |fuel_type| %>
+          <th class="text-center">
+            <span title="<%= t(fuel_type, scope: 'common') %>" data-toggle="tooltip">
+              <%= render Elements::IconComponent.new(fuel_type: fuel_type, style: :circle, size: 'f7') %>
+            </span>
+          </th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% records.sort_by(&:name).each do |record| %>
+        <tr>
+          <td>
+            <% if record.is_a?(School) %>
+              <%= link_to(record.name, school_school_group_status_index_path(@school_group, record)) %>
+            <% else %>
+              <%= record.name %>
+            <% end %>
+          </td>
+          <td>
+            <%= render(Elements::BadgeComponent.new(t(status(record), scope: 'schools.status'), style: :light)) %>
+          </td>
+          <% fuel_types.each do |fuel_type| %>
+            <td class="text-center offset">
+              <span title="<%= t(fuel_type, scope: 'common') %>" data-toggle="tooltip">
+                <% if status(record) == :data_visible %>
+                  <% if record.fuel_type?(fuel_type) %>
+                    <%= render Elements::IconComponent.new(name: 'circle-check') %>
+                  <% else %>
+                    <%= render Elements::IconComponent.new(name: 'xmark') %>
+                  <% end %>
+                <% else %>
+                  <%= render Elements::IconComponent.new(name: 'hourglass-half', classes: 'text-grey-light') %>
+                <% end %>
+              </span>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <%= render PromptComponent.new(
+        status: :info,
+        icon: :info_circle,
+        message: t('school_groups.status.no_schools')
+      ) %>
+<% end %>

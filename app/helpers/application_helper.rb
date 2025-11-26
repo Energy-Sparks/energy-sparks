@@ -182,6 +182,7 @@ module ApplicationHelper
   end
 
   def fuel_type_icon(fuel_type)
+    return nil unless fuel_type
     case fuel_type.to_sym
     when :electricity
       'bolt'
@@ -565,5 +566,8 @@ module ApplicationHelper
   def container_class
     return 'container' if !content_for?(:container_size) || content_for(:container_size) == 'normal'
     content_for(:container_size) == 'wide' ? 'container-fluid' : ''
+  end
+
+  def school_public_status_badge(public_status)
   end
 end

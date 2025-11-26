@@ -3,14 +3,14 @@ module Elements
     renders_many :rows, ->(**kwargs) {
       RowComponent.new(**kwargs)
     }
-    renders_many :head_rows, ->(**kwargs) {
-      RowComponent.new(**kwargs)
+    renders_many :head_rows, ->(cells = [], **kwargs) {
+      RowComponent.new(**kwargs.merge(header_cells: cells))
     }
-    renders_many :body_rows, ->(**kwargs) {
-      RowComponent.new(**kwargs)
+    renders_many :body_rows, ->(cells = [], **kwargs) {
+      RowComponent.new(**kwargs.merge(cells: cells))
     }
-    renders_many :foot_rows, ->(**kwargs) {
-      RowComponent.new(**kwargs)
+    renders_many :foot_rows, ->(cells = [], **kwargs) {
+      RowComponent.new(**kwargs.merge(call: cells))
     }
 
     class RowComponent < ApplicationComponent
@@ -24,6 +24,17 @@ module Elements
           as: :header_cell
         }
       }
+
+      def initialize(header_cells: [], cells: [], **kwargs)
+        super
+        @header_cells = header_cells
+        @cells = cells
+      end
+
+      def before_render
+        @header_cells.each { |cell| with_header_cell(cell) }
+        @cells.each { |cell| with_cell(cell) }
+      end
 
       def call
         tag.tr(class: classes) do
@@ -42,7 +53,7 @@ module Elements
 
       def call
         content_tag(@tag, **@options) do
-          content || @text
+          (content || @text).to_s.html_safe
         end
       end
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IconComponent, type: :component do
+RSpec.describe Elements::IconComponent, type: :component do
   subject(:component) { described_class.new(**params) }
 
   let(:params) { {} }

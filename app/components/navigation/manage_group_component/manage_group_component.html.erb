@@ -23,8 +23,6 @@
                     icon: 'school',
                     expanded: true,
                     options: { match_controller: false } do |s| %>
-    <%# s.with_item(name: t('common.status'),
-                   href: '/', classes:) %>
     <% if school_group.organisation? %>
       <% s.with_item(name: t('manage_school_menu.digital_signage'),
                      href: school_group_digital_signage_index_path(school_group), classes:) %>
@@ -33,12 +31,13 @@
       <% s.with_item(name: t('common.engagement'),
                      href: school_group_school_engagement_index_path(school_group), classes:) %>
     <% end %>
+    <% s.with_item(name: t('school_groups.titles.school_status'),
+                   href: school_group_status_index_path(school_group), classes:,
+                   match_controller: true) %>
     <% if school_group.organisation? && Flipper.enabled?(:school_group_secr_report,  current_user) %>
       <% s.with_item(name: t('school_groups.sub_nav.secr_report'),
                      href: school_group_secr_index_path(school_group), classes:) %>
     <% end %>
-    <% s.with_item(name: t('common.labels.status'),
-                   href: status_school_group_path(school_group), classes:) %>
     <% s.with_item(name: t('common.timeline'),
                    href: school_group_timeline_path(school_group), classes:) %>
   <% end %>

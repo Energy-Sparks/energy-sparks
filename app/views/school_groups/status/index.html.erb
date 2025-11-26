@@ -1,0 +1,10 @@
+<%= render 'shared/dashboard_message', messageable: @school_group %>
+
+<% content_for :header_title, "#{@school_group.name} - #{t('school_groups.titles.school_status')}" %>
+
+<h3><%= t('common.schools') %></h3>
+
+<%= render SchoolGroups::SchoolsStatusTableComponent.new(
+      school_group: @school_group,
+      records: @records
+    ) %>

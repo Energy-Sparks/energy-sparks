@@ -287,6 +287,12 @@ Rails.application.routes.draw do
       end
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
+      resources :status, only: [:index] do
+        collection do
+          get 'school/:school_id', action: :school, as: :school
+        end
+      end
+
       resource :advice, controller: 'advice', only: [:show] do
         %i[baseload
            electricity_out_of_hours
@@ -325,7 +331,6 @@ Rails.application.routes.draw do
       get :priority_actions
       get :current_scores
       get :settings
-      get :status
     end
   end
   resources :scoreboards, only: %i[show index]

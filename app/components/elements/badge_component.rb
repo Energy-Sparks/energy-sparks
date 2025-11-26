@@ -6,13 +6,16 @@ module Elements
       @text = text
       @style = style
 
-      add_classes('badge')
-      add_classes('badge-pill') if pill
-      add_classes("badge-#{style}") if style
+      add_classes('d-inline-flex align-items-center badge')
+      add_classes('rounded-pill') if pill
+      if style
+        add_classes("bg-#{style}")
+        add_classes('text-dark') if [:light, :warning].include?(style)
+      end
     end
 
     def call
-      tag.span(id: id, class: classes) { "#{@text}#{content}" }
+      tag.span(id: id, class: classes) { "#{@text}#{content}".html_safe }
     end
 
     def render?

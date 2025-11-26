@@ -404,6 +404,10 @@ en:
         no_partnership:
           one: We are working with 1 school in this %{group_type}
           other: We are working with %{count} schools in this %{group_type}
+    status:
+      individual_meter_data: Individual meter data
+      no_meters: This school has no meters configured
+      no_schools: There are no schools in this group
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
@@ -428,7 +432,7 @@ en:
       priority_actions: Priority Actions
       recent_usage: Recent Usage
       reports: Reports
+      school_status: School status
       secr: SECR report
       settings: Settings
       show: Group Dashboard
-      status: Status

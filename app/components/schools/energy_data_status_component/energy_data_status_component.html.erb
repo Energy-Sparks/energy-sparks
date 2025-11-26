@@ -1,0 +1,25 @@
+<%= tag.table id: id, class: class_names('table', classes) do %>
+  <thead class="thead-dark">
+  <tr>
+    <% if show_fuel_icon? %>
+      <th></th>
+    <% end %>
+    <th class="w-100"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.fuel_type') %></th>
+    <th class="text-nowrap text-right">
+      <%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.aggregated_meter_date_range') %>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% overview_data&.table_date_ranges&.each do |fuel_type, date_range| %>
+    <tr>
+      <% if show_fuel_icon? %>
+        <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
+      <% end %>
+      <td class="text-left"><%= t("common.#{fuel_type}") %></td>
+      <td class="text-right text-nowrap"><%= date_range[:start_date] %> - <%= date_range[:end_date] %></td>
+    </tr>
+  <% end %>
+
+  </tbody>
+<% end %>

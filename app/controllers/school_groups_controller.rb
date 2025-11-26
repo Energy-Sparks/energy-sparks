@@ -7,12 +7,12 @@ class SchoolGroupsController < ApplicationController
   include Scoring
   include SchoolGroupBreadcrumbs
 
-  layout 'group_settings', only: %i[settings status]
+  layout 'group_settings', only: %i[settings]
 
   load_resource
 
   before_action :find_partners
-  before_action :load_schools, except: [:map]
+  before_action :load_schools, except: [:map, :settings]
   before_action :redirect_unless_authorised, except: [:map]
   before_action :breadcrumbs
   before_action :find_school_group_fuel_types
@@ -56,9 +56,6 @@ class SchoolGroupsController < ApplicationController
     # authorize! :manage_settings, @school_group
   end
 
-  def status
-    redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
-  end
 
   private
 
@@ -80,10 +77,6 @@ class SchoolGroupsController < ApplicationController
 
   def find_school_group_fuel_types
     @fuel_types = @school_group.fuel_types
-  end
-
-  def find_school_group
-    @school_group = SchoolGroup.find(params[:id])
   end
 
   def breadcrumbs
