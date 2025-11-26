@@ -2,6 +2,12 @@
 en:
   components:
     school_search:
+      areas:
+        pagination: Local Authority A-Z navigation
+        tab: Find Local Authorities
+      diocese:
+        pagination: Diocese A-Z navigation
+        tab: Find Diocese
       school_groups:
         pagination: School group A-Z navigation
         tab: Find School Groups

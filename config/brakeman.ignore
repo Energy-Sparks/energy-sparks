@@ -24,37 +24,13 @@
       "note": ""
     },
     {
-      "warning_type": "Dangerous Eval",
-      "warning_code": 13,
-      "fingerprint": "0f25778721b063301de6007cd5970a21a8c4088a1116de52eec5fa6a125091b9",
-      "check_name": "Evaluation",
-      "message": "Dynamic code evaluation",
-      "file": "app/models/management_dashboard_table.rb",
-      "line": 41,
-      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_eval/",
-      "code": "eval(alert.template_data[\"summary_data\"])",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "ManagementDashboardTable",
-        "method": "data"
-      },
-      "user_input": null,
-      "confidence": "Weak",
-      "cwe_id": [
-        913,
-        95
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "2a0eb755ecc6c2ae98f486a5f6bb5032443a2512e2a6713da0e1e0dc9a5d86ce",
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/admin/newsletters/index.html.erb",
-      "line": 20,
+      "line": 21,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to((Unresolved Model).new.url, (Unresolved Model).new.url)",
       "render_path": [
@@ -62,7 +38,7 @@
           "type": "controller",
           "class": "Admin::NewslettersController",
           "method": "index",
-          "line": 8,
+          "line": 13,
           "file": "app/controllers/admin/newsletters_controller.rb",
           "rendered": {
             "name": "admin/newsletters/index",
@@ -128,6 +104,29 @@
       "note": ""
     },
     {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "43cf96088c6bfa6a597275fa5934d96169413ee60d19e8c7b99f506c0a931ef8",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/models/concerns/alphabetical_scopes.rb",
+      "line": 24,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "where(\"#{alphabetical_scope_sql(ignore_prefix)} = ?\", letter)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AlphabeticalScopes",
+        "method": null
+      },
+      "user_input": "alphabetical_scope_sql(ignore_prefix)",
+      "confidence": "Medium",
+      "cwe_id": [
+        89
+      ],
+      "note": "ignore_prefix is not user input"
+    },
+    {
       "warning_type": "Redirect",
       "warning_code": 18,
       "fingerprint": "468b1f5d7e0c483cafe243903549520ad177011e2655a1039b8e6c0c0405d1a7",
@@ -157,7 +156,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/schools/users_controller.rb",
-      "line": 98,
+      "line": 143,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)",
       "render_path": null,
@@ -272,7 +271,7 @@
       "check_name": "Redirect",
       "message": "Possible unprotected redirect",
       "file": "app/controllers/admin/issues_controller.rb",
-      "line": 41,
+      "line": 46,
       "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
       "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully created\"))",
       "render_path": null,
@@ -295,7 +294,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/admin/users_controller.rb",
-      "line": 101,
+      "line": 114,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :cluster_school_ids => ([]))",
       "render_path": null,
@@ -352,7 +351,7 @@
       "check_name": "Redirect",
       "message": "Possible unprotected redirect",
       "file": "app/controllers/admin/issues_controller.rb",
-      "line": 49,
+      "line": 54,
       "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
       "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully updated\"))",
       "render_path": null,
@@ -474,7 +473,7 @@
           "type": "controller",
           "class": "JobsController",
           "method": "index",
-          "line": 7,
+          "line": 6,
           "file": "app/controllers/jobs_controller.rb",
           "rendered": {
             "name": "jobs/index",
@@ -540,5 +539,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "7.0.0"
+  "brakeman_version": "7.1.1"
 }

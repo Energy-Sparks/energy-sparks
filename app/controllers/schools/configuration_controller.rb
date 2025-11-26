@@ -6,12 +6,32 @@ module Schools
 
     def edit
       @school.build_organisation_school_grouping unless @school.organisation_school_grouping
+      @school.build_diocese_school_grouping unless @school.diocese_school_grouping
+      @school.build_area_school_grouping unless @school.area_school_grouping
     end
 
     def update
       if (grouping_attrs = params[:school][:organisation_school_grouping_attributes])
         @school.school_group_id = grouping_attrs[:school_group_id]
       end
+
+      [:area_school_grouping_attributes, :diocese_school_grouping_attributes].each do |attributes|
+        if params[:school][attributes]
+          attrs = params[:school][attributes]
+
+          if attrs[:school_group_id].blank?
+            case attributes
+            when :diocese_school_grouping_attributes
+              @school.diocese_school_grouping&.destroy
+            else
+              @school.area_school_grouping&.destroy
+            end
+
+            params[:school].delete(attributes)
+          end
+        end
+      end
+
       @school.update!(school_params)
       redirect_to school_path(@school)
     end
@@ -36,6 +56,8 @@ module Schools
         :country,
         :data_sharing,
         organisation_school_grouping_attributes: [:school_group_id],
+        diocese_school_grouping_attributes: [:school_group_id],
+        area_school_grouping_attributes: [:school_group_id],
         project_group_ids: []
       )
     end

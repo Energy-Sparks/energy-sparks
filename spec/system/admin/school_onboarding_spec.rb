@@ -25,6 +25,8 @@ RSpec.describe 'onboarding', :schools do
   end
 
   let!(:project_group) { create(:school_group, group_type: :project) }
+  let!(:diocese) { create(:school_group, group_type: :diocese) }
+  let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area)}
   let!(:funder) { create(:funder) }
 
   let(:last_email) { ActionMailer::Base.deliveries.last }
@@ -54,22 +56,20 @@ RSpec.describe 'onboarding', :schools do
       it { expect(page).to have_select('Data Sharing', selected: 'Public') }
       it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
       it { expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name)) }
-      it { expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name)) }
 
       context 'when completing the first form' do
         before do
           fill_in 'School name', with: school_name
           fill_in 'URN', with: 100000
           fill_in 'Contact email', with: 'oldfield@test.com'
-
           select 'Within Group', from: 'Data Sharing'
 
           select school_group.name, from: 'School Group'
-          select project_group.name, from: 'Project Group'
           select funder.name, from: 'Funder'
           click_on 'Next'
         end
 
+        it { expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name)) }
         it { expect(page).to have_select('Template calendar', selected: template_calendar.title) }
         it { expect(page).to have_select('Weather Station', selected: weather_station.title) }
         it { expect(page).to have_select('Scoreboard', selected: scoreboard.name) }
@@ -77,6 +77,10 @@ RSpec.describe 'onboarding', :schools do
 
         context 'when the second form is completed' do
           before do
+            select project_group.name, from: 'Project Group'
+            select diocese.name, from: 'Diocese'
+            select local_authority_area.name, from: 'Local Authority Area'
+
             click_on 'Next'
           end
 
@@ -93,6 +97,8 @@ RSpec.describe 'onboarding', :schools do
             it { expect(onboarding.data_sharing_within_group?).to be true }
             it { expect(onboarding.default_chart_preference).to eq 'carbon' }
             it { expect(onboarding.project_group).to eq(project_group) }
+            it { expect(onboarding.diocese).to eq(diocese) }
+            it { expect(onboarding.local_authority_area).to eq(local_authority_area) }
             it { expect(onboarding.funder).to eq funder }
 
             it 'has sent an email' do

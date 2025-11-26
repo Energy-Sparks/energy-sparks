@@ -1,18 +1,19 @@
-<h1>Manage <%= @project_groups ? 'Project' : 'School' %> Groups</h1>
+<h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
 
 <div class="row">
   <div class="col-12 d-flex justify-content-between">
     <div>
-      <% if @project_groups %>
-        <%= link_to 'New project group', new_admin_school_group_path(group_type: :project),
-                    class: 'btn btn-sm btn-primary' %>
-      <% else %>
+      <% if @organisation_group %>
         <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
+      <% elsif @group_type == 'project' %>
+        <%= link_to "New #{t(@group_type, scope: 'school_groups.clusters.group_type')} group",
+                    new_admin_school_group_path(group_type: @group_type),
+                    class: 'btn btn-sm btn-primary' %>
       <% end %>
     </div>
     <div>
       <%= link_to 'Download as CSV',
-                  admin_school_groups_path(format: :csv, group_type: @project_groups ? :project : nil),
+                  admin_school_groups_path(format: :csv, group_type: @organisation_group ? nil : @group_type.to_sym),
                   class: 'btn btn-sm' %>
     </div>
   </div>
@@ -25,7 +26,7 @@
         <thead>
           <tr>
             <th>Name</th>
-            <% unless @project_groups %>
+            <% if @organisation_group %>
               <th title="Group type" class="nowrap">Type</th>
               <th title="Issues admin" class="d-none d-md-table-cell nowrap">Admin</th>
             <% end %>
@@ -45,7 +46,7 @@
                 <%= link_to(dashboard_message_icon(school_group),
                             edit_admin_school_group_dashboard_message_path(school_group)) %>
               </td>
-              <% unless @project_groups %>
+              <% if @organisation_group %>
                 <td>
                   <span class="badge badge-pill badge-secondary"><%= school_group.group_type.humanize %></span>
                 </td>
@@ -73,7 +74,7 @@
             </tr>
           <% end %>
         </tbody>
-        <% unless @project_groups %>
+        <% if @organisation_group %>
           <tfooter>
             <tr class="font-weight-bold">
               <td>All Energy Sparks Schools</td>

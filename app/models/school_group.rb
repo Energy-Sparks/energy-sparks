@@ -20,6 +20,7 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
+#  dfe_code                                 :string
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  mailchimp_fields_changed_at              :datetime
@@ -107,10 +108,12 @@ class SchoolGroup < ApplicationRecord
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
 
   has_many :organisation_school_groupings, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  has_many :diocese_school_groupings, -> { where(role: 'diocese') }, class_name: 'SchoolGrouping'
   has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
   has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
 
   has_many :organisation_schools, through: :organisation_school_groupings, source: :school
+  has_many :diocese_schools, through: :diocese_school_groupings, source: :school
   has_many :area_schools, through: :area_school_groupings, source: :school
   has_many :project_schools, through: :project_school_groupings, source: :school
 
@@ -141,19 +144,34 @@ class SchoolGroup < ApplicationRecord
   enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
   ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
-  AREA_GROUP_TYPE_KEYS = %w[diocese local_authority_area].freeze
+  AREA_GROUP_TYPE_KEYS = %w[local_authority_area].freeze
+  DIOCESE_GROUP_TYPE_KEYS = %w[diocese].freeze
   PROJECT_GROUP_TYPE_KEYS = %w[project].freeze
-
-  RESTRICTED_GROUP_TYPES = (AREA_GROUP_TYPE_KEYS + PROJECT_GROUP_TYPE_KEYS).freeze
+  RESTRICTED_GROUP_TYPES = (AREA_GROUP_TYPE_KEYS + DIOCESE_GROUP_TYPE_KEYS + PROJECT_GROUP_TYPE_KEYS).freeze
 
   scope :organisation_groups, -> { where(group_type: ORGANISATION_GROUP_TYPE_KEYS) }
   scope :area_groups, -> { where(group_type: AREA_GROUP_TYPE_KEYS) }
+  scope :diocese_groups, -> { where(group_type: DIOCESE_GROUP_TYPE_KEYS) }
   scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }
 
   validates :name, presence: true
+  validates :dfe_code, uniqueness: true, allow_blank: true
 
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
+
+  def self.by_group_type(group_type)
+    case group_type
+    when 'local_authority_area'
+      SchoolGroup.area_groups
+    when 'diocese'
+      SchoolGroup.diocese_groups
+    when 'project'
+      SchoolGroup.project_groups
+    else
+      SchoolGroup.organisation_groups
+    end
+  end
 
   def self.organisation_group_types
     group_types.slice(*ORGANISATION_GROUP_TYPE_KEYS)
@@ -167,8 +185,16 @@ class SchoolGroup < ApplicationRecord
     group_types.slice(*PROJECT_GROUP_TYPE_KEYS)
   end
 
+  def self.diocese_group_types
+    group_types.slice(*DIOCESE_GROUP_TYPE_KEYS)
+  end
+
   def organisation?
     ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
+  end
+
+  def diocese?
+    DIOCESE_GROUP_TYPE_KEYS.include?(group_type)
   end
 
   def visible_schools_count

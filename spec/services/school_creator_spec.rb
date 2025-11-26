@@ -56,6 +56,7 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       it { expect(school.project_groups).to be_empty }
+      it { expect(school.diocese).to be_nil }
 
       it 'converts the onboarding user to a school admin' do
         onboarding_user.reload
@@ -80,6 +81,34 @@ describe SchoolCreator, :schools, type: :service do
       end
 
       it { expect(school.project_groups).to eq([project_group]) }
+    end
+
+    context 'when school should be assigned to a diocese' do
+      let!(:diocese) { create(:school_group, group_type: :diocese) }
+
+      let(:school_onboarding) do
+        create(:school_onboarding, created_user: onboarding_user, school_group:, diocese:)
+      end
+
+      before do
+        service.onboard_school!(school_onboarding)
+      end
+
+      it { expect(school.diocese).to eq(diocese) }
+    end
+
+    context 'when school should be assigned to a local authority area' do
+      let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
+
+      let(:school_onboarding) do
+        create(:school_onboarding, created_user: onboarding_user, school_group:, local_authority_area:)
+      end
+
+      before do
+        service.onboard_school!(school_onboarding)
+      end
+
+      it { expect(school.local_authority_area_group).to eq(local_authority_area) }
     end
 
     context 'when school should be private' do

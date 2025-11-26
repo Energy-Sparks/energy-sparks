@@ -217,16 +217,12 @@ en:
       other_schools_html: In the meantine, take a look at how %{other_schools_link} are using Energy Sparks
       schools_in_area: schools in your area
     index:
-      a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       case_studies: Read case studies
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
       introduction_2: We have %{count} schools across England, Wales, and Scotland including state primary and secondary schools, independent schools, special schools and nursery schools
       introduction_3: Explore their electricity and gas consumption data, find out how much energy they generate from their solar panels and learn about their energy saving activities
       introduction_4: We’re proud to have a great network of schools all working hard to save energy and help fight climate change
-      not_visible_schools: Not visible schools
       title: Energy Sparks schools across the UK
-      view_all_energy_sparks_schools: View all Energy Sparks schools
-      view_energy_sparks_schools_by_group: View Energy Sparks schools by group
     live_data:
       show:
         choose_another_activity: Choose another activity

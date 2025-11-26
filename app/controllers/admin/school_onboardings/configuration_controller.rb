@@ -22,6 +22,9 @@ module Admin
           :template_calendar_id,
           :dark_sky_area_id,
           :scoreboard_id,
+          :project_group_id,
+          :diocese_id,
+          :local_authority_area_id,
           :weather_station_id,
           :default_chart_preference,
           :country

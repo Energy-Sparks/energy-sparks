@@ -414,10 +414,10 @@ class AlertPeriodComparisonBase < AlertAnalysisBase
   #£130 increase since last holiday, +160%
   def summary
     I18n.t("analytics.time_period_comparison",
-      difference: FormatEnergyUnit.format(:kwh, @difference_kwh, :text),
+      difference: FormatUnit.format(:kwh, @difference_kwh, :text),
       adjective: prefix_2,
       period_type: period_type,
-      relative_percent: FormatEnergyUnit.format(:relative_percent, @difference_percent, :text))
+      relative_percent: FormatUnit.format(:relative_percent, @difference_percent, :text))
   end
 
   def url_bookmark

@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'editing school configuration', type: :system do
-  let!(:admin)              { create(:admin)}
-  let!(:school)             { create(:school)}
+  let!(:school) { create(:school)}
 
   before do
-    sign_in(admin)
+    sign_in(create(:admin))
     visit school_path(school)
   end
 
@@ -24,6 +23,69 @@ RSpec.describe 'editing school configuration', type: :system do
       school.reload
       expect(school.school_group).to eq school_group
     end
+
+    context 'with diocese' do
+      context 'when editing' do
+        let!(:diocese) { create(:school_group, group_type: :diocese) }
+
+        before do
+          refresh
+          select diocese.name, from: 'Diocese'
+          click_on('Update configuration')
+        end
+
+        it 'allows diocese to be updated' do
+          expect(school.reload.diocese).to eq diocese
+        end
+      end
+
+      context 'when removing' do
+        let!(:diocese) { create(:school_group, group_type: :diocese) }
+
+        before do
+          school.update_attribute(:diocese, diocese)
+          refresh
+          select '', from: 'Diocese'
+          click_on('Update configuration')
+        end
+
+        it 'allows diocese to be removed' do
+          expect(school.reload.diocese).to be_nil
+        end
+      end
+    end
+
+    context 'with local authority area' do
+      context 'when editing' do
+        let!(:area) { create(:school_group, name: 'LA', group_type: :local_authority_area) }
+
+        before do
+          refresh
+          select area.name, from: 'Local Authority Area'
+          click_on('Update configuration')
+        end
+
+        it 'allows local authority area to be updated' do
+          expect(school.reload.local_authority_area_group).to eq area
+        end
+      end
+
+      context 'when removing' do
+        let!(:area) { create(:school_group, name: 'LA', group_type: :local_authority_area) }
+
+        before do
+          school.update_attribute(:local_authority_area_group, area)
+          refresh
+          select '', from: 'Local Authority Area'
+          click_on('Update configuration')
+        end
+
+        it 'allows local authority area to be updated' do
+          expect(school.reload.local_authority_area_group).to be_nil
+        end
+      end
+    end
+
 
     it 'allows scoreboard to be updated' do
       select scoreboard.name, from: 'Scoreboard'

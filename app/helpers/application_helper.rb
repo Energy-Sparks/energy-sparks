@@ -353,7 +353,7 @@ module ApplicationHelper
   end
 
   def format_target(value, units)
-    FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
+    FormatUnit.format(units, value, :html, false, true, :target).html_safe
   end
 
   def progress_as_percent(completed, total)
