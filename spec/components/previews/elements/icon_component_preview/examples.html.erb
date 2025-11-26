@@ -96,7 +96,12 @@
           <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
         </tr>
       <% end %>
+      <tr>
+        <% args = { fuel_type: :electricity, colour: :secondary } %>
+        <td><code><%= args.inspect %></code></td>
+        <td><%= render Elements::IconComponent.new(**args) %></td>
     </table>
+
   </div>
 </div>
 

@@ -58,6 +58,17 @@ RSpec.describe Elements::IconComponent, type: :component do
           expect(html).to have_css('i.fa-info-circle.fa-fw')
         end
       end
+
+      context 'with colour' do
+        let(:params) do
+          { name: 'info-circle', fuel_type: :electricity, colour: :primary }
+        end
+
+        it 'overrides the colour' do
+          expect(html).to have_css('span.text-primary')
+          expect(html).to have_css('i.fa-info-circle')
+        end
+      end
     end
 
     context 'when style is circle' do

@@ -1,14 +1,8 @@
 <% if style == :default %>
-  <% if fuel_type.present? %>
-    <span class="<%= fuel_type_class(fuel_type) %>">
-      <%= icon(icon_set, "#{icon_name} #{classes}") %>
-    </span>
-  <% else %>
-    <%= icon(icon_set, "#{icon_name} #{classes}") %>
-  <% end %>
+  <%= icon(icon_set, "#{icon_name} #{classes}") %>
 <% elsif style == :circle %>
   <%# Use font-awesome stacking support. %>
-  <span class="fa-stack <%= classes %> <%= fuel_type_class(fuel_type) if !@colour && fuel_type %>">
+  <span class="fa-stack <%= classes %>">
     <i class="fa-solid fa-circle fa-stack-2x fa-inverse"></i>
     <%= icon(icon_set, icon_name, class: 'fa-stack-1x') %>
   </span>
