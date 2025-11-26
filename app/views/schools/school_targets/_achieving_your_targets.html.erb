@@ -60,7 +60,7 @@
           <%= link_to t('schools.school_targets.achieving_your_targets.view_recent_alerts'),
                       school_path(school, anchor: 'dashboard-alerts') %>
         </li>
-        <% if school.school_group && can?(:compare, school.school_group) %>
+        <% if school.school_group && can?(:show, school.school_group) %>
           <li>
             <%= link_to t('schools.school_targets.achieving_your_targets.compare_usage_with_schools_in_your_group'),
                         "#{compare_index_path(school_group_ids: [school.school_group.id])}#groups" %>

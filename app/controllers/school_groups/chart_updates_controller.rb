@@ -1,12 +1,12 @@
 module SchoolGroups
   class ChartUpdatesController < BaseController
     def index
-      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+      redirect_to school_group_path(@school_group) and return unless can?(:manage_chart_defaults, @school_group)
       build_breadcrumbs([name: t('school_groups.chart_updates.index.group_chart_settings').capitalize])
     end
 
     def bulk_update_charts
-      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+      redirect_to school_group_path(@school_group) and return unless can?(:manage_chart_defaults, @school_group)
 
       if @school_group.assigned_schools.update_all(chart_preference: default_chart_preference) && @school_group.update!(default_chart_preference: default_chart_preference)
         count = @school_group.assigned_schools.count

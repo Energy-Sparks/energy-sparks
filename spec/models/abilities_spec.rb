@@ -40,9 +40,7 @@ describe Ability do
     end
 
     context 'with School Groups' do
-      [:show, :compare].freeze.each do |permission|
-        it { is_expected.to be_able_to(permission, create(:school_group, public: true)) }
-      end
+      it { is_expected.to be_able_to(:show, create(:school_group, public: true)) }
     end
   end
 
@@ -183,7 +181,7 @@ describe Ability do
       context 'with school groups' do
         it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
         it { is_expected.not_to be_able_to(:update_settings, create(:school_group))}
-        it { is_expected.not_to be_able_to(:compare, create(:school_group, public: false))}
+        it { is_expected.not_to be_able_to(:show, create(:school_group, public: false))}
       end
 
       context 'with schools' do
@@ -265,7 +263,7 @@ describe Ability do
 
         context 'with their school group' do
           it 'they can view the group' do
-            expect(ability).to be_able_to(:compare, school_group)
+            expect(ability).to be_able_to(:show, school_group)
             expect(ability).to be_able_to(:show_management_dash, school_group)
           end
 
@@ -355,7 +353,7 @@ describe Ability do
       shared_examples 'a user with common group permissions' do
         it_behaves_like 'a user with permissions common to all'
 
-        it { is_expected.to be_able_to(:compare, school_group) }
+        it { is_expected.to be_able_to(:show, school_group) }
         it { is_expected.to be_able_to(:show_management_dash, school_group)}
 
         context 'with schools outside group' do
@@ -365,14 +363,14 @@ describe Ability do
         context 'with other public groups' do
           let(:other_school_group) { create(:school_group) }
 
-          it { is_expected.to be_able_to(:compare, other_school_group) }
+          it { is_expected.to be_able_to(:show, other_school_group) }
           it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
         end
 
         context 'with other private groups' do
           let(:other_school_group) { create(:school_group, public: false) }
 
-          it { is_expected.not_to be_able_to(:compare, other_school_group) }
+          it { is_expected.not_to be_able_to(:show, other_school_group) }
           it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
         end
       end

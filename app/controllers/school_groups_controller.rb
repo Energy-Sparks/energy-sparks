@@ -52,8 +52,7 @@ class SchoolGroupsController < ApplicationController
 
   def settings
     redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
-    # Taking this out for now
-    # authorize! :manage_settings, @school_group
+    authorize! :manage_settings, @school_group
   end
 
   private

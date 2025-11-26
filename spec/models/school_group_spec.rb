@@ -197,8 +197,8 @@ describe SchoolGroup, :school_groups, type: :model do
 
     context 'public group' do
       context 'as guest' do
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
     end
@@ -209,24 +209,24 @@ describe SchoolGroup, :school_groups, type: :model do
       let(:group)     { nil }
 
       context 'as guest' do
-        it 'does not allow comparison' do
-          expect(ability).not_to be_able_to(:compare, school_group)
+        it 'does not allow viewing' do
+          expect(ability).not_to be_able_to(:show, school_group)
         end
       end
 
       context 'as user from another school' do
         let!(:user) { create(:school_admin) }
 
-        it 'does not allow comparison' do
-          expect(ability).not_to be_able_to(:compare, school_group)
+        it 'does not allow viewing' do
+          expect(ability).not_to be_able_to(:show, school_group)
         end
       end
 
       context 'as admin' do
         let!(:user) { create(:admin) }
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
 
@@ -234,8 +234,8 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:group) { school_group }
         let!(:user) { create(:pupil, school: school)}
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
 
@@ -243,8 +243,8 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:group) { school_group }
         let!(:user) { create(:school_admin, school: school) }
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
 
@@ -253,8 +253,8 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:other_school)    { create(:school, school_group: school_group) }
         let!(:user)           { create(:school_admin, school: other_school) }
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
     end
