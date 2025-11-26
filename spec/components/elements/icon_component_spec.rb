@@ -83,5 +83,13 @@ RSpec.describe Elements::IconComponent, type: :component do
         expect(html).to have_css('i.fa-info-circle.fa-stack-1x')
       end
     end
+
+    context 'when the colour is unrecognised' do
+      let(:params) do
+        { fuel_type: :electricity, colour: :notgood }
+      end
+
+      it { expect { html }.to raise_error(ArgumentError, 'Unknown colour variant: notgood. Valid values are: primary, secondary, success, info, warning, danger, light, dark') }
+    end
   end
 end

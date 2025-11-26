@@ -4,12 +4,10 @@ module Elements
       super
       self.class.raise_unknown_variant_error(colour: colour) if colour
       @text = text
-      @colour = colour
 
       add_classes('d-inline-flex align-items-center badge')
       add_classes('rounded-pill') if pill
       add_classes("bg-#{colour}") if colour
-
       add_classes('text-dark') if !colour || [:light, :warning].include?(colour)
     end
 
