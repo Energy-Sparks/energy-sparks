@@ -19,11 +19,11 @@ module Alerts
         description: 'Usage so far this holiday without community usage - kwh',
         units: :kwh
       },
-      holiday_use_without_community_usage_to_date_gbp: {
+      holiday_use_without_community_to_date_gbp: {
         description: 'Usage so far this holiday without community usage - £',
         units: :£
       },
-      holiday_use_without_community_usage_to_date_co2: {
+      holiday_use_without_community_to_date_co2: {
         description: 'Usage so far this holiday without community usage- co2',
         units: :co2
       }
@@ -49,11 +49,11 @@ module Alerts
       holiday_usage_to_date_kwh - community_usage_to_date_kwh
     end
 
-    def holiday_use_without_community_usage_to_date_gbp
+    def holiday_use_without_community_to_date_gbp
       holiday_usage_to_date_gbp - community_usage_to_date_gbp
     end
 
-    def holiday_use_without_community_usage_to_date_co2
+    def holiday_use_without_community_to_date_co2
       holiday_usage_to_date_co2 - community_usage_to_date_co2
     end
 

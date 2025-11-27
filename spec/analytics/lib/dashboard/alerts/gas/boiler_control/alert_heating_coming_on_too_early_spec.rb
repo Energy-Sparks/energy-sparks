@@ -3,13 +3,9 @@
 require 'rails_helper'
 
 describe AlertHeatingComingOnTooEarly do
-  subject(:alert) { described_class.new(meter_collection) }
+  subject(:alert) { described_class.new(aggregate_meter.meter_collection) }
 
   context 'when during a holiday' do
-    it_behaves_like 'a never relevant alert' do
-      let(:asof_date) { Date.new(2023, 12, 22) }
-      let(:fuel_type) { :gas }
-      before { alert.analyse(asof_date) }
-    end
+    it_behaves_like 'a never relevant alert', :gas, asof_date: Date.new(2023, 12, 22)
   end
 end

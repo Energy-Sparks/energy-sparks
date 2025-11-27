@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.shared_examples 'a holiday usage alert' do
+RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
   let(:asof_date) { Date.new(2023, 12, 23) }
 
   include_context 'with today'
@@ -59,7 +59,7 @@ RSpec.shared_examples 'a holiday usage alert' do
         # usage_per_hh * 48 * 7 days
         expect(alert.holiday_usage_to_date_kwh).to be_within(0.001).of(3360.0)
         # flat_rate tariff * kwh above
-        expect(alert.holiday_usage_to_date_£).to be_within(0.001).of(336.0)
+        expect(alert.holiday_usage_to_date_gbp).to be_within(0.001).of(336.0)
         # carbon_intensity * kwh above
         expect(alert.holiday_usage_to_date_co2).to be_within(0.001).of(672.0)
       end
@@ -67,7 +67,7 @@ RSpec.shared_examples 'a holiday usage alert' do
       it 'calculates expected projection' do
         # usage_per_hh * 48 * 17 days
         expect(alert.holiday_projected_usage_kwh).to be_within(0.001).of(8160.0)
-        expect(alert.holiday_projected_usage_£).to be_within(0.001).of(816.0)
+        expect(alert.holiday_projected_usage_gbp).to be_within(0.001).of(816.0)
         expect(alert.holiday_projected_usage_co2).to be_within(0.001).of(1632.0)
       end
 
@@ -79,13 +79,13 @@ RSpec.shared_examples 'a holiday usage alert' do
           expect(alert.holiday_usage_to_date_kwh).to be_within(0.001).of(33.60)
           # flat_rate tariff * kwh above
           # This is less than the £10 usage threshold
-          expect(alert.holiday_usage_to_date_£).to be_within(0.001).of(3.36)
+          expect(alert.holiday_usage_to_date_gbp).to be_within(0.001).of(3.36)
           # carbon_intensity * kwh above
           expect(alert.holiday_usage_to_date_co2).to be_within(0.001).of(6.72)
         end
 
         it 'assigns nil rating when usage is less than threshold' do
-          expect(alert.rating).to eq(nil)
+          expect(alert.rating).to be_nil
         end
       end
     end
@@ -102,7 +102,7 @@ RSpec.shared_examples 'a holiday usage alert' do
         # usage_per_hh * 48 * 2 days
         expect(alert.holiday_usage_to_date_kwh).to be_within(0.001).of(960.0)
         # flat_rate tariff * kwh above
-        expect(alert.holiday_usage_to_date_£).to be_within(0.001).of(96.0)
+        expect(alert.holiday_usage_to_date_gbp).to be_within(0.001).of(96.0)
         # carbon_intensity * kwh above
         expect(alert.holiday_usage_to_date_co2).to be_within(0.001).of(192.0)
       end
@@ -112,7 +112,7 @@ RSpec.shared_examples 'a holiday usage alert' do
         # confirms that weekend usage is substituted for weekday
         # when we don't have additional data
         expect(alert.holiday_projected_usage_kwh).to be_within(0.001).of(8160.0)
-        expect(alert.holiday_projected_usage_£).to be_within(0.001).of(816.0)
+        expect(alert.holiday_projected_usage_gbp).to be_within(0.001).of(816.0)
         expect(alert.holiday_projected_usage_co2).to be_within(0.001).of(1632.0)
       end
     end

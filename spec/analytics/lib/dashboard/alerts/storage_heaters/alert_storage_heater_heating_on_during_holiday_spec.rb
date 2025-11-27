@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'analytics/lib/dashboard/alerts/shared_example_for_holiday_usage_alert'
 
 describe AlertStorageHeaterHeatingOnDuringHoliday do
   subject(:alert) do
@@ -19,9 +20,5 @@ describe AlertStorageHeaterHeatingOnDuringHoliday do
     it_behaves_like 'a holiday usage alert'
   end
 
-  context 'when school does not have storage heaters' do
-    it_behaves_like 'a never relevant alert' do
-      let(:fuel_type) { :electricity }
-    end
-  end
+  it_behaves_like 'a never relevant alert', :electricity
 end

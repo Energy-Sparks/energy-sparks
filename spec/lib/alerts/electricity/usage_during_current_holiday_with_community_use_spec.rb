@@ -1,47 +1,11 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'lib/alerts/shared_example_for_holiday_community_usage'
 
 describe Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse do
   subject(:alert) { described_class.new(meter_collection) }
 
-  context 'when a school has electricity' do
-    include_context 'with an aggregated meter with tariffs and school times'
-    context 'with community use' do
-      let(:community_use_times) do
-        [{ day: :weekdays, usage_type: :community_use, calendar_period: :all_year,
-           opening_time: TimeOfDay.new(15, 0), closing_time: TimeOfDay.new(20, 0) }]
-      end
-
-      it_behaves_like 'a holiday usage alert' do
-        describe '#analyse' do
-          before { alert.analyse(asof_date) }
-
-          it 'calculates community usage', :aggregate_failures do
-            expect(alert.community_usage_to_date_kwh).to be_within(0.001).of(500.0)
-            expect(alert.community_usage_to_date_gbp).to be_within(0.001).of(50.0)
-            expect(alert.community_usage_to_date_co2).to be_within(0.001).of(100.0)
-          end
-
-          it 'calculate usage without community usage', :aggregate_failures do
-            expect(alert.holiday_use_without_community_to_date_kwh).to be_within(0.001).of(3340.0)
-            expect(alert.holiday_use_without_community_usage_to_date_gbp).to be_within(0.001).of(334.0)
-            expect(alert.holiday_use_without_community_usage_to_date_co2).to be_within(0.001).of(668.0)
-          end
-        end
-      end
-    end
-
-    context 'without community use' do
-      describe '#enough_data' do
-        it { expect(alert.enough_data).to eq(:not_enough) }
-      end
-    end
-  end
-
-  context 'when a school has gas only' do
-    it_behaves_like 'a never relevant alert' do
-      let(:fuel_type) { :gas }
-    end
-  end
+  it_behaves_like 'an alert for the current holiday with community usage', :electricity
+  it_behaves_like 'a never relevant alert', :gas
 end

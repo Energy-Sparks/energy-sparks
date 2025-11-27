@@ -6,6 +6,7 @@ class AlertUsageDuringCurrentHolidayBase < AlertAnalysisBase
   attr_reader :holiday_usage_to_date_kwh, :holiday_projected_usage_kwh, :holiday_usage_to_date_£,
               :holiday_projected_usage_£, :holiday_usage_to_date_co2, :holiday_projected_usage_co2
   alias holiday_usage_to_date_gbp holiday_usage_to_date_£
+  alias holiday_projected_usage_gbp holiday_projected_usage_£
 
   def initialize(school, report_type)
     super
