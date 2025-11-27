@@ -1,19 +1,21 @@
 # frozen_string_literal: true
 
 module SchoolGroups
-  class SchoolsStatusTableComponent < ApplicationComponent
+  class SchoolsStatusComponent < ApplicationComponent
     attr_reader :records
 
-    def initialize(school_group:, schools: [], onboardings: [], **_kwargs)
+    def initialize(school_group:, schools:, onboardings:, **_kwargs)
       super
       @school_group = school_group
-      @schools = schools # should we enforce active here?
-      @onboardings = onboardings # should we enforce incomplete here?
+      @schools = schools.active # should already be active, but just to be sure
+      @onboardings = onboardings.incomplete # should already be incomplete by now
       @records = merge_schools_and_onboardings
     end
 
     def fuel_types
-      @school_group.fuel_types
+      # @school_group.fuel_types(@schools)
+      # Display all possible fuel types for consistency
+      Schools::FuelConfiguration.fuel_types
     end
 
     def status(record)

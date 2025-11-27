@@ -4,7 +4,7 @@ module Schools
   class EnergyDataStatusComponent < ApplicationComponent
     attr_reader :school
 
-    def initialize(school: nil, overview_data: nil, table_small: true, show_fuel_icon: false, **_kwargs)
+    def initialize(school:, overview_data: nil, table_small: true, show_fuel_icon: false, **_kwargs)
       super
       @school = school
       @overview_data = overview_data

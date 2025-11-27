@@ -4,7 +4,7 @@
 
 <h3><%= t('common.schools') %></h3>
 
-<%= render SchoolGroups::SchoolsStatusTableComponent.new(
+<%= render SchoolGroups::SchoolsStatusComponent.new(
       school_group: @school_group,
       schools: @schools,
       onboardings: @onboardings

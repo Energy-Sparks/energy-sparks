@@ -408,6 +408,7 @@ en:
       date_data_enabled: Date made data enabled
       date_onboarded: Date onboarded
       individual_meter_data: Individual meter data
+      key_dates: Key dates
       no_meters: This school has no meters configured
       no_schools: There are no schools in this group
       number_of_users: Number of users

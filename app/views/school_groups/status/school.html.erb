@@ -1,49 +1,55 @@
 <% content_for :header_title, "#{@school.name} - #{t('schools.downloads.index.meters')}" %>
 
-<h3><%= t('school_groups.status.school_info') %></h3>
-<%= render Layout::GridComponent.new(classes: 'w-100 mb-4', cell_classes: 'mb-2',
-                                     component_classes: 'rounded-2 bg-light pt-3 px-4 h-100', cols: 2) do |grid| %>
+<%= render Layout::GridComponent.new(classes: 'mb-4',
+                                     component_classes: 'd-flex flex-column flex-fill',
+                                     cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
   <%= grid.with_block do %>
-    <dl class="row">
-      <dt class="col-5">
-        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.floor_area') %>
-      </dt>
-      <dd class="col-7"><%= @school.floor_area %>m<sup>2</sup></dd>
-      <dt class="col-5">
-        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.location') %>
-      </dt>
-      <dd class="col-7"><%= @school.full_location_to_s %></dd>
-      <dt class="col-5">
-        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.pupils') %>
-      </dt>
-      <dd class="col-7"><%= @school.number_of_pupils %></dd>
-      <dt class="col-5">
-        <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %>
-      </dt>
-      <dd class="col-7"><%= t("common.school_types.#{@school.school_type}") %></dd>
-      <dt class="col-5"><%= t('school_groups.status.number_of_users') %></dt>
-      <dd class="col-7"><%= @school.active_adult_users.count %>
-        <% if @school.active_adult_users.any? %>
-          <%= t('school_groups.status.receiving_alerts', count: @school.active_alert_contacts.count) %>
-        <% end %>
-      </dd>
-    </dl>
+    <h3><%= t('school_groups.status.school_info') %></h3>
+    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <dl class="row">
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.floor_area') %>
+        </dt>
+        <dd class="col-7"><%= @school.floor_area %>m<sup>2</sup></dd>
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.location') %>
+        </dt>
+        <dd class="col-7"><%= @school.full_location_to_s %></dd>
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.pupils') %>
+        </dt>
+        <dd class="col-7"><%= @school.number_of_pupils %></dd>
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %>
+        </dt>
+        <dd class="col-7"><%= t("common.school_types.#{@school.school_type}") %></dd>
+        <dt class="col-5"><%= t('school_groups.status.number_of_users') %></dt>
+        <dd class="col-7"><%= @school.active_adult_users.count %>
+          <% if @school.active_adult_users.any? %>
+            <%= t('school_groups.status.receiving_alerts', count: @school.active_alert_contacts.count) %>
+          <% end %>
+        </dd>
+      </dl>
+    </div>
   <% end %>
   <%= grid.with_block do %>
-    <dl class="row">
-      <% if @school.school_onboarding.complete? %>
-        <dt class="col-6"><%= t('school_groups.status.date_onboarded') %></dt>
-        <dd class="col-6"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
-      <% end %>
-      <% if @school.data_enabled? %>
-        <dt class="col-6"><%= t('school_groups.status.date_data_enabled') %></dt>
-        <dd class="col-6">
-          <%= nice_dates(
-                @school.school_onboarding.first_made_data_enabled || @school.school_onboarding.completed_on
-              ) %>
-        </dd>
-      <% end %>
-    </dl>
+    <h3><%= t('school_groups.status.key_dates') %></h3>
+    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <dl class="row">
+        <% if @school.school_onboarding.complete? %>
+          <dt class="col-6"><%= t('school_groups.status.date_onboarded') %></dt>
+          <dd class="col-6"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
+        <% end %>
+        <% if @school.data_enabled? %>
+          <dt class="col-6"><%= t('school_groups.status.date_data_enabled') %></dt>
+          <dd class="col-6">
+            <%= nice_dates(
+                  @school.school_onboarding.first_made_data_enabled || @school.school_onboarding.completed_on
+                ) %>
+          </dd>
+        <% end %>
+      </dl>
+    </div>
   <% end %>
 <% end %>
 
