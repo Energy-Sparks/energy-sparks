@@ -38,7 +38,8 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
     build(:meter, :with_flat_rate_tariffs, type: fuel_type, amr_data: amr_data,
                                            tariff_start_date: amr_start_date,
                                            tariff_end_date: amr_end_date,
-                                           rates: create_flat_rate(rate: flat_rate, standing_charge: 1.0))
+                                           rates: create_flat_rate(rate: flat_rate, standing_charge: 1.0),
+                                           meter_collection:)
   end
 
   let(:community_use_times) { {} }

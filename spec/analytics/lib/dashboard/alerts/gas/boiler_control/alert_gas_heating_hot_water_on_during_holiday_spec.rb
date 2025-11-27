@@ -16,15 +16,8 @@ describe AlertGasHeatingHotWaterOnDuringHoliday do
   end
 
   context 'when a school has electricity only' do
-    include_context 'with an aggregated meter with tariffs and school times' do
+    it_behaves_like 'a never relevant alert' do
       let(:fuel_type) { :electricity }
-    end
-    include_context 'with today'
-
-    let(:asof_date) { Date.new(2023, 12, 23) }
-
-    it 'is never relevant' do
-      expect(alert.relevance).to eq(:never_relevant)
     end
   end
 end

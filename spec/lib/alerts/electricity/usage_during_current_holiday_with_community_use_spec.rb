@@ -39,16 +39,9 @@ describe Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse do
     end
   end
 
-  # context 'when a school has gas only' do
-  #   include_context 'with an aggregated meter with tariffs and school times' do
-  #     let(:fuel_type) { :gas }
-  #   end
-  #   include_context 'with today'
-
-  #   let(:asof_date) { Date.new(2023, 12, 23) }
-
-  #   it 'is never relevant' do
-  #     expect(alert.relevance).to eq(:never_relevant)
-  #   end
-  # end
+  context 'when a school has gas only' do
+    it_behaves_like 'a never relevant alert' do
+      let(:fuel_type) { :gas }
+    end
+  end
 end

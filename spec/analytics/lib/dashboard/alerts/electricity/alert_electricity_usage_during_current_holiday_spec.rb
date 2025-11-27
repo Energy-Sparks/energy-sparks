@@ -17,13 +17,13 @@ describe AlertElectricityUsageDuringCurrentHoliday do
               opening_time: TimeOfDay.new(15, 0), closing_time: TimeOfDay.new(20, 0) }]
           end
 
-          context 'with all year community use' do
+          context 'when all year' do
             let(:calendar_period) { :all_year }
 
             it { expect(alert.enough_data).to eq(:not_enough) }
           end
 
-          context 'with term community use' do
+          context 'when term time' do
             let(:calendar_period) { :term_times }
 
             it { expect(alert.enough_data).to eq(:enough) }
@@ -34,15 +34,8 @@ describe AlertElectricityUsageDuringCurrentHoliday do
   end
 
   context 'when a school has gas only' do
-    include_context 'with an aggregated meter with tariffs and school times' do
+    it_behaves_like 'a never relevant alert' do
       let(:fuel_type) { :gas }
-    end
-    include_context 'with today'
-
-    let(:asof_date) { Date.new(2023, 12, 23) }
-
-    it 'is never relevant' do
-      expect(alert.relevance).to eq(:never_relevant)
     end
   end
 end
