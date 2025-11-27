@@ -32,11 +32,8 @@ module SchoolGroups
     def merge_schools_and_onboardings
       school_ids = @schools.map(&:id).to_set
 
+      # add onboardings that do not have a corresponding school already
       @schools + @onboardings.reject { |o| school_ids.include?(o.school_id) }
-    end
-
-    def render?
-      @records.any?
     end
   end
 end

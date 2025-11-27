@@ -8,7 +8,6 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
   let(:classes) { 'extra-classes' }
   let(:school_group) { create(:school_group) }
   let!(:school) { create(:school, school_group:, visible: true, data_enabled: true) }
-  # let!(:onboarding)   { create(:school_onboarding, school_group:) }
 
   let(:params) do
     {
@@ -34,26 +33,71 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
   end
 
   it 'shows the school name' do
-    expect(html).to have_css('table tbody tr td', text: school.name)
+    expect(html).to have_content(school.name)
   end
 
-  context 'when school is not visible' do
-    let!(:school) { create(:school, visible: false, school_group:) }
-
-    it 'does shows fuel type icon headers' do
+  shared_examples 'fuel type icon headers' do
+    it 'shows the fuel type icon headers' do
       expect(html).to have_css('th i.fa-sun')
       expect(html).to have_css('th i.fa-bolt')
       expect(html).to have_css('th i.fa-fire')
       expect(html).to have_css('th i.fa-fire-alt')
     end
+  end
 
-    it 'shows the school name' do
-      expect(html).to have_content(school.name)
-    end
-
-    it 'shows the timer icon for each fuel type' do
+  shared_examples 'hourglass icons for all fuel types' do
+    it 'shows the hourglass icon for each fuel type' do
       expect(html).to have_css('td i.fa-hourglass-half', count: 4)
     end
+  end
+
+  shared_examples 'linking to school specific page' do
+    it 'links to the school specific page' do
+      expect(html).to have_link(school.name, href: school_school_group_status_index_path(school_group, school))
+    end
+  end
+
+  context 'when school is onboarding' do
+    let!(:onboarding) { create(:school_onboarding, school_group:) }
+
+    it 'shows the school name' do
+      expect(html).to have_content(onboarding.name)
+    end
+
+    it 'does not link to a school specific page' do
+      expect(html).not_to have_link(onboarding.name)
+    end
+
+    it 'shows the school status as onboarding' do
+      expect(html).to have_css('td', text: I18n.t('schools.status.onboarding'))
+    end
+
+    it_behaves_like 'fuel type icon headers'
+    it_behaves_like 'hourglass icons for all fuel types'
+  end
+
+  context 'when school is not visible or data enabled' do
+    let!(:school) { create(:school, data_enabled: false, visible: false, school_group:) }
+
+    it 'shows the school status as onboarding' do
+      expect(html).to have_css('td', text: I18n.t('schools.status.onboarding'))
+    end
+
+    it_behaves_like 'linking to school specific page'
+    it_behaves_like 'fuel type icon headers'
+    it_behaves_like 'hourglass icons for all fuel types'
+  end
+
+  context 'when school is visible but not data enabled' do
+    let!(:school) { create(:school, visible: true, data_enabled: false, school_group:) }
+
+    it 'shows the school status as visible' do
+      expect(html).to have_css('td', text: I18n.t('schools.status.visible'))
+    end
+
+    it_behaves_like 'linking to school specific page'
+    it_behaves_like 'fuel type icon headers'
+    it_behaves_like 'hourglass icons for all fuel types'
   end
 
   Schools::FuelConfiguration.fuel_types.each do |fuel_type|
@@ -61,6 +105,8 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
       let!(:school) { create(:school, :with_fuel_configuration, **fuel_configuration.merge(fuel), school_group:) }
 
       let(:fuel) { { "has_#{fuel_type}": true } }
+
+      it_behaves_like 'linking to school specific page'
 
       it "shows a tick icon for #{fuel_type} fuel type" do
         expect(html).to have_css("td span[title=\"#{I18n.t(fuel_type, scope: 'common')}\"] i.fa-circle-check")
@@ -73,7 +119,5 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
       end
     end
   end
-
-  # ### todo test with onboardings
 end
 # rubocop:enable RSpec/MultipleMemoizedHelpers

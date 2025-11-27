@@ -3,7 +3,7 @@
     <table class="table table-sorted">
       <thead class="thead-dark">
         <tr>
-          <th><%= School.human_attribute_name(:name) %></th>
+          <th class='w-100'><%= School.human_attribute_name(:name) %></th>
           <th><%= t('common.labels.status') %></th>
           <% fuel_types.each do |fuel_type| %>
             <th class="text-center">

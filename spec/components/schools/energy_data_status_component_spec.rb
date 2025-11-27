@@ -13,7 +13,6 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
     render_inline(described_class.new(**params))
   end
 
-
   context 'with base params' do
     let(:params) { base_params }
 
@@ -22,6 +21,4 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
       let(:expected_id) { id }
     end
   end
-
-  #### Further tests to be added here ####
 end
