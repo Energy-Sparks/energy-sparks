@@ -1,31 +1,24 @@
 module SchoolGroups
-  class RecentUsageCsvGenerator
+  class RecentUsageCsvGenerator < BaseSchoolCsvGenerator
     METRIC_HEADERS = [:change, :usage, :cost, :co2].freeze
     METRICS = [:change, :usage, :cost_text, :co2].freeze
 
     def initialize(school_group:, schools: school_group.schools.visible, include_cluster: false)
-      @school_group = school_group
-      @schools = schools
-      @include_cluster = include_cluster
-    end
-
-    def export
-      CSV.generate(headers: true) do |csv|
-        csv << headers
-        @schools.order(:name).each do |school|
-          recent_usage = school&.recent_usage
-          row = []
-          row << school.name
-          row << school.school_group_cluster_name if @include_cluster
-          row << school.number_of_pupils
-          row << school.floor_area
-          row += columns_for_usage(recent_usage)
-          csv << row
-        end
-      end
+      super
     end
 
     private
+
+    def generate_rows
+      @schools.order(:name).map do |school|
+        [
+          school.name,
+          *(@include_cluster ? [school.school_group_cluster_name] : []),
+          school.number_of_pupils,
+          school.floor_area
+        ] + columns_for_usage(school&.recent_usage)
+      end
+    end
 
     def columns_for_usage(recent_usage)
       columns = []
@@ -46,11 +39,6 @@ module SchoolGroups
         # rubocop:enable Style/CombinableLoops
       end
       columns
-    end
-
-    def fuel_types
-      # Only include electricity, gas and storage heaters fuel types (e.g. exclude solar pv)
-      @fuel_types ||= @school_group.fuel_types & [:electricity, :gas, :storage_heaters]
     end
 
     def headers

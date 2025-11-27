@@ -34,6 +34,8 @@ en:
       continue: Continue
       create: Create
       created: Created
+      data_published: Data published
+      data_published_date: Data published date
       date: Date
       deactivate: Deactivate
       delete: Delete
@@ -59,6 +61,7 @@ en:
       no_label: 'No'
       not_applicable: N/A
       not_set: Not set
+      onboarded_date: Onboarded date
       place: Place
       points: Points
       previous: Previous
@@ -88,6 +91,7 @@ en:
       view_now: View now
       view_opportunities: View opportunities
       view_results: View results
+      visible: Visible
       welcome: Welcome
       yes_label: 'Yes'
     line_graphs: Line graphs
