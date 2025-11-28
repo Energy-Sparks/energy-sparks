@@ -19,3 +19,11 @@ updates:
       - dependency-name: "bootstrap"
         update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 20 # default 5
+  - package-ecosystem: "bundler"
+    directory: "/analytics"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
