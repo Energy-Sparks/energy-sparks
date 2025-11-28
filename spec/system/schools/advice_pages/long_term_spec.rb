@@ -22,7 +22,22 @@ shared_examples 'a long term advice page' do
   let(:school) { create_school }
   let(:key) { :"#{fuel_type}_long_term" }
 
-  before { create(:advice_page, key:, fuel_type:) }
+  before do
+    create(:advice_page, key:, fuel_type:)
+    SecrCo2Equivalence.create!(year: 2024,
+                               electricity_co2e: 0.20705,
+                               electricity_co2e_co2: 0.20493,
+                               transmission_distribution_co2e: 0.0183,
+                               natural_gas_co2e: 0.1829,
+                               natural_gas_co2e_co2: 0.18253)
+    SecrCo2Equivalence.create!(year: 2023,
+                               electricity_co2e: 0.207074,
+                               electricity_co2e_co2: 0.20496,
+                               transmission_distribution_co2e: 0.0183,
+                               natural_gas_co2e: 0.18,
+                               natural_gas_co2e_co2: 0.18256)
+    Flipper.enable(:manual_readings)
+  end
 
   shared_examples 'a long term advice page tab' do |tab:|
     it_behaves_like('an advice page tab', tab:) do
@@ -299,11 +314,10 @@ shared_examples 'a long term advice page' do
                       ['October', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
                       ['November', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
                       ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
-
               if fuel_type == :gas
-                [['2,740 m', '2,720', '-0.8%'],
+                [['2,740 m', '2,720', '-0.82%'],
                  ['2,740 m', '2,540', '-7.2%'],
-                 ['2,740 m', '2,720', '-0.8%'],
+                 ['2,740 m', '2,720', '-0.82%'],
                  ['2,740 m', '2,630', '-4%'],
                  ['-', '2,720'],
                  ['-', '2,630'],

@@ -56,7 +56,7 @@ module Schools
       end
 
       private_class_method def self.calculate_co2(month, fuel_type, consumption)
-        SecrCo2Equivalence.co2e_co2(year: month.year)[fuel_type] * consumption
+        SecrCo2Equivalence.co2e_co2(month.year)[fuel_type] * consumption
       end
     end
   end

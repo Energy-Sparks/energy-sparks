@@ -25,7 +25,7 @@ describe Schools::ManualReadingsService do
     end
 
     context 'with fuel configuration with enough months' do
-      let(:school) { create(:school, :with_meter_dates, reading_start_date: 13.months.ago) }
+      let(:school) { create(:school, :with_meter_dates, reading_start_date: 24.months.ago) }
 
       it { is_expected.not_to be_show_on_menu }
     end
