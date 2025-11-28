@@ -35,7 +35,8 @@ class SecrCo2Equivalence < ApplicationRecord
     find_by(year:)&.public_send(type)
   end
 
-  def self.emissions(year, type, consumption)
-    (factor(year, type) * consumption).round(2)
+  def self.co2e_co2(year)
+    equivalence = find_by!(year:)
+    { electricity: equivalence.electricity_co2e_co2, gas: equivalence.natural_gas_co2e_co2 }
   end
 end

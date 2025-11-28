@@ -1,4 +1,4 @@
-<% if can?(:manage, Schools::ManualReading) &&
+<% if can?(:manage, Schools::ManualReading) && Flipper.enabled?(:manual_readings, current_user)
         consumption_by_month
           .values
           .flat_map { |consumption| %i[previous current].map{ |period| consumption[period][:missing] } }

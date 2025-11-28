@@ -1,12 +1,11 @@
 <%= render 'schools/advice/section_title',
            section_id: 'current',
            section_title: t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title") %>
-
-<%= render AlertsComponent.new(school: school, dashboard_alerts: dashboard_alerts,
+<%= render AlertsComponent.new(school:, dashboard_alerts:,
                                alert_types: alert_types_for_class({ electricity: AlertElectricityAnnualVersusBenchmark,
                                                                     gas: AlertGasAnnualVersusBenchmark }[fuel_type]),
                                show_links: false) %>
-
+<%= render 'manual_readings_prompt', school:, consumption_by_month: %>
 <table class="table table-sm advice-table">
   <thead class="thead-dark">
     <tr>
@@ -31,7 +30,7 @@
         </td>
         <% if period == :last_month
              month, usage =
-               @consumption_by_month.reject { |_date, consumption| consumption[:current][:missing] }.to_a.last
+               consumption_by_month.reject { |_date, consumption| consumption[:current][:missing] }.to_a.last
              date_range = [month, month.end_of_month]
            else
              usage = usage_service.usage(period:)

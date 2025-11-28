@@ -1,8 +1,6 @@
 module Schools
   module Advice
     class BaseLongTermController < AdviceBaseController
-      before_action :set_page_subtitle, only: %i[analysis]
-
       def insights
         @benchmarked_usage = usage_service.benchmark_usage
         set_consumption_by_month
@@ -23,7 +21,7 @@ module Schools
       private
 
       def multiple_meters?
-        @school.meters.active.where(meter_type: fuel_type).count > 1
+        @school.meters.active.where(meter_type: fuel_type).many?
       end
 
       def create_analysable

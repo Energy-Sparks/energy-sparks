@@ -22,7 +22,7 @@ module Schools
           manual_consumption = school.manual_readings.find_by(month:)&.[](aggregate_meter.fuel_type)
           if manual_consumption
             consumption.merge!(kwh: manual_consumption,
-                               co2: calculate_co2(manual_consumption, aggregate_meter.fuel_type),
+                               co2: calculate_co2(month, aggregate_meter.fuel_type, manual_consumption),
                                gbp: nil,
                                manual: true,
                                missing: false)
@@ -55,8 +55,8 @@ module Schools
         end
       end
 
-      private_class_method def self.calculate_co2(consumption, fuel_type)
-        EnergyEquivalences.co2_kg_kwh(fuel_type) * consumption
+      private_class_method def self.calculate_co2(month, fuel_type, consumption)
+        SecrCo2Equivalence.co2e_co2(year: month.year)[fuel_type] * consumption
       end
     end
   end
