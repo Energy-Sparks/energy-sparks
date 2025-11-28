@@ -303,7 +303,7 @@ class AMRData < HalfHourlyData
   def one_day_kwh(date, type = :kwh, community_use: nil)
     check_type(type)
 
-    return open_close_breakdown.one_day_kwh(date, type, community_use: community_use) unless community_use.nil?
+    return open_close_breakdown.one_day_kwh(date, type, community_use:) unless community_use.nil?
 
     return self[date].one_day_kwh if type == :kwh
     return @economic_tariff.one_day_total_cost(date) if %i[£ economic_cost gbp].include?(type)
