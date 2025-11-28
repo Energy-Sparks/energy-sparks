@@ -1,95 +1,34 @@
 <% content_for :page_title, t('schools.index.title') %>
 
-<% if Flipper.enabled?(:new_schools_page, current_user) %>
-  <div class="row">
-    <div class="col-12 col-md-6">
+<div class="row">
+  <div class="col-12 col-md-6">
 
-      <div class="row">
-        <div class="col-8 mt-2 p-4">
-          <h1><%= t('schools.index.title') %></h1>
-
-          <p><%= t('schools.index.introduction_1') %>.</p>
-          <p><%= t('schools.index.introduction_2', count: @school_count) %>.</p>
-          <p><%= t('schools.index.introduction_3') %>.</p>
-          <p><%= t('schools.index.introduction_4') %>.</p>
-          <p>
-            <%= link_to t('schools.index.case_studies'), case_studies_path, class: 'btn btn-primary' %>
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="mt-4 col-12 col-md-6">
-      <div class="map" id="geo-json-map"></div>
-    </div>
-  </div>
-
-  <%= render SchoolSearchComponent.new(
-        schools: @schools,
-        letter: params[:letter],
-        keyword: params[:keyword],
-        tab: params[:scope],
-        schools_total_key: "components.school_search.schools.total#{'_for_admins' if current_user&.admin?}"
-      ) %>
-
-<% else %>
-  <div class="row">
-    <div class="col-md-12">
-      <h1><%= t('schools.index.title') %></h1>
-    </div>
-  </div>
-
-  <div class="map" id="geo-json-map"></div>
-
-  <div class="col-md-12">
-
-    <p><%= t('schools.index.introduction_1') %>.</p>
-    <p><%= t('schools.index.introduction_2', count: @schools.length) %>.</p>
-    <p><%= t('schools.index.introduction_3') %>.</p>
-    <p><%= t('schools.index.introduction_4') %>.</p>
-
-    <br>
-
-    <h2><%= t('schools.index.view_energy_sparks_schools_by_group') %></h2>
     <div class="row">
-      <% school_groups_left, school_groups_right = @school_groups.partition.with_index { |_, v| v.even? } %>
-      <div class="col-lg-6">
-        <% school_groups_left.each do |school_group| %>
-          <%= render 'school_group', school_group: school_group %>
-        <% end %>
-      </div>
-      <div class="col-lg-6">
-        <% school_groups_right.each do |school_group| %>
-          <%= render 'school_group', school_group: school_group %>
-        <% end %>
+      <div class="col-8 mt-2 p-4">
+        <h1><%= t('schools.index.title') %></h1>
+
+        <p><%= t('schools.index.introduction_1') %>.</p>
+        <p><%= t('schools.index.introduction_2', count: @school_count) %>.</p>
+        <p><%= t('schools.index.introduction_3') %>.</p>
+        <p><%= t('schools.index.introduction_4') %>.</p>
+        <p>
+          <%= link_to t('schools.index.case_studies'), case_studies_path, class: 'btn btn-primary' %>
+        </p>
       </div>
     </div>
-
-    <br>
-    <br>
-
-    <div class="all-schools">
-      <h2><%= t('schools.index.view_all_energy_sparks_schools') %></h2>
-      <div class="row">
-        <div class="col-lg-12">
-          <%= render 'schools', schools: @schools, title: t('schools.index.a_to_z_of_all_energy_sparks_schools'),
-                                label: 'allSchools' %>
-        </div>
-      </div>
-    </div>
-
-    <% if @schools_not_visible.any? && can?(:read_invisible_schools, School) %>
-      <br>
-      <br>
-      <h2><%= t('schools.index.not_visible_schools') %></h2>
-      <div class="row">
-        <div class="col-lg-12">
-          <%= render 'schools', schools: @schools_not_visible, title: t('schools.index.not_visible_schools'),
-                                label: 'invisibleSchools' %>
-        </div>
-      </div>
-    <% end %>
 
   </div>
-<% end %>
+
+  <div class="mt-4 col-12 col-md-6">
+    <div class="map" id="geo-json-map"></div>
+  </div>
+</div>
+
+<%= render SchoolSearchComponent.new(
+      schools: @schools,
+      letter: params[:letter],
+      keyword: params[:keyword],
+      tab: params[:scope],
+      current_user: current_user,
+      schools_total_key: "components.school_search.schools.total#{'_for_admins' if current_user&.admin?}"
+    ) %>

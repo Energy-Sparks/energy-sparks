@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_14_132029) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_20_145205) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1271,6 +1271,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_14_132029) do
     t.integer "fsm"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "la_name"
   end
 
   create_table "local_authority_areas", force: :cascade do |t|
