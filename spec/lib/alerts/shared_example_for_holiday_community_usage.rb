@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'analytics/lib/dashboard/alerts/shared_example_for_holiday_usage_alert'
+
 shared_examples 'an alert for the current holiday with community usage' do |fuel_type|
   context "when a school has #{fuel_type}" do
     include_context 'with an aggregated meter with tariffs and school times' do
