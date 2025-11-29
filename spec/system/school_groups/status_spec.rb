@@ -83,6 +83,43 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
     it { expect(page).to have_content('Onboarding') }
   end
 
+  context 'with downloads' do
+    it { expect(page).to have_button(I18n.t('common.labels.download')) }
+
+    context 'when clicking the botton', :js do
+      before do
+        click_button I18n.t('common.labels.download')
+      end
+
+      it 'has the schools download link' do
+        expect(page).to have_link(I18n.t('school_groups.schools_as_csv'),
+          href: school_group_status_index_path(school_group, format: :csv))
+      end
+
+      it 'has the meters download link' do
+        expect(page).to have_link(I18n.t('school_groups.meters_as_csv'),
+          href: meters_school_group_status_index_path(school_group, format: :csv)
+        )
+      end
+    end
+
+    context 'when clicking the schools download link' do
+      before do
+        click_on I18n.t('school_groups.schools_as_csv')
+      end
+
+      it { expect(page).to have_content(school.floor_area) } # further tests available in service
+    end
+
+    context 'when clicking the meters download link' do
+      before do
+        click_on I18n.t('school_groups.meters_as_csv')
+      end
+
+      it { expect(page).to have_content(school.meters.first.mpan_mprn) } # further tests available in service
+    end
+  end
+
   context 'when visiting the school specific page' do
     before do
       create(:school_onboarding, :with_events, school:, school_group:, event_names: [:onboarding_complete, :onboarding_data_enabled])
@@ -112,6 +149,20 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
     context 'with meter data' do
       it { expect(page).to have_content('Individual meter data') }
       it { expect(page).to have_selector('.schools-meter-status-component') }
+
+      it 'has the meters download link' do
+        expect(page).to have_link(I18n.t('school_groups.download_as_csv'),
+          href: school_school_group_status_index_path(school_group, school, format: :csv)
+        )
+      end
+
+      context 'when clicking the meters download link' do
+        before do
+          click_on I18n.t('school_groups.download_as_csv')
+        end
+
+        it { expect(page).to have_content(school.meters.first.mpan_mprn) } # further tests available in service
+      end
     end
   end
 end

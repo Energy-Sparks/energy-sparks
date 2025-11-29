@@ -26,12 +26,8 @@ module SchoolGroups
 
     def school
       respond_to do |format|
-        format.html do
-          render :school
-        end
-        format.csv do
-          meter_csv
-        end
+        format.html { render :school }
+        format.csv { meter_csv }
       end
     end
 
@@ -54,12 +50,12 @@ filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-statu
 
     def redirect_unless_authorised
       redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
-      # no permission on group
-
-      #      redirect_to map_school_group_path(@school_group) and return if @schools &&  && @schools.empty?
-
-      # not filtering by schools for now as we need to still display the page if there are incomplete onboardings too
       redirect_to map_school_group_path(@school_group) and return if cannot?(:compare, @school_group)
+
+      # modified filtering of schools, because we have onboardings to consider too
+      if @schools && @schools.empty? && @onboardings && @onboardings.empty?
+        redirect_to map_school_group_path(@school_group) and return
+      end
     end
 
     def breadcrumbs
