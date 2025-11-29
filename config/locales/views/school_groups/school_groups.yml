@@ -141,6 +141,7 @@ en:
       view_map: View map
     labels:
       floor_area: Floor area (m2)
+    meters_as_csv: Download meters as CSV
     priority_actions:
       alert_types:
         alert_electricity_annual_versus_benchmark_html: |-
@@ -254,6 +255,7 @@ en:
       received_an_audit: Received an audit
       recorded_temperatures: Recorded temperatures
       title: School engagement
+    schools_as_csv: Download schools as CSV
     secr:
       csv:
         consumption_for_the_year: Consumption for the year

@@ -290,6 +290,7 @@ Rails.application.routes.draw do
       resources :status, only: [:index] do
         collection do
           get 'school/:school_id', action: :school, as: :school
+          get 'meters'
         end
       end
 

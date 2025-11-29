@@ -6,18 +6,47 @@ module SchoolGroups
     layout 'group_settings'
     load_and_authorize_resource :school, through: :school_group
 
-    before_action :load_schools, only: [:index]
+    before_action :load_schools, only: [:index, :meters]
     before_action :load_onboardings, only: [:index]
     before_action :redirect_unless_authorised
 
     def index
+      respond_to do |format|
+        format.html do
+          render :index
+        end
+        format.csv do
+          send_data SchoolGroups::SchoolStatusCsvGenerator.new(school_group: @school_group,
+                                                              schools: @schools,
+                                                              include_cluster: false).export,
+                    filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-status")
+        end
+      end
     end
 
     def school
-      @meters = @school.meters.active # .accessible_by(current_ability, :show)
+      respond_to do |format|
+        format.html do
+          render :school
+        end
+        format.csv do
+          meter_csv
+        end
+      end
+    end
+
+    def meters
+      meter_csv
     end
 
     private
+
+    def meter_csv
+      send_data SchoolGroups::SchoolMeterStatusCsvGenerator.new(school_group: @school_group,
+      schools: @schools || [@school],
+      include_cluster: false).export,
+filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-status")
+    end
 
     def load_onboardings
       @onboardings = @school_group.onboardings_for_group.incomplete # .accessible_by(current_ability, :show)

@@ -24,10 +24,8 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
   end
 
   before do
-    # if school
     meter_collection = AggregateSchoolService.new(school).aggregate_school
     Schools::GenerateConfiguration.new(school, meter_collection).generate
-    # end
 
     Flipper.enable :group_settings
     sign_in(create(:admin))

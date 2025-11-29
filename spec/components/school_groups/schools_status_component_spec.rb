@@ -54,7 +54,7 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
     end
   end
 
-  context 'when school is onboarding' do
+  context 'when school is onboarding (with no school record)' do
     let!(:onboarding) { create(:school_onboarding, school_group:) }
 
     it 'shows the school name' do
@@ -71,6 +71,17 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
 
     it_behaves_like 'fuel type icon headers'
     it_behaves_like 'hourglass icons for all fuel types'
+  end
+
+  context 'when there is an onboarding (with school record)' do
+    let(:school) { create(:school, data_enabled: false, visible: false, school_group:) }
+    let(:onboarding) { create(:school_onboarding, school: school, school_group:) }
+
+    it 'shows the school status as onboarding' do
+      expect(html).to have_css('td', text: I18n.t('schools.status.onboarding'))
+    end
+
+    it_behaves_like 'linking to school specific page'
   end
 
   context 'when school is not visible or data enabled' do

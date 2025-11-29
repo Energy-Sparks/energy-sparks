@@ -26,8 +26,8 @@ module SchoolGroups
             I18n.t(meter.meter_type, scope: 'common'),
             meter.mpan_mprn,
             meter.name,
-            meter.first_validated_reading.iso8601,
-            meter.last_validated_reading.iso8601,
+            meter.first_validated_reading&.iso8601,
+            meter.last_validated_reading&.iso8601,
           ]
         end
       end

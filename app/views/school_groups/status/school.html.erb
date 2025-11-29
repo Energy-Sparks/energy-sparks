@@ -53,15 +53,20 @@
   <% end %>
 <% end %>
 
-<% if @meters.any? %>
+<% if @school.meters.active.any? %>
   <% if @school.data_enabled? %><%# check this and does it need extending to the below block? %>
     <h3><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></h3>
     <%= render Schools::EnergyDataStatusComponent.new(school: @school) %>
   <% end %>
 
-  <h3><%= t('school_groups.status.individual_meter_data') %></h3>
-  <%= render Schools::MeterStatusComponent.new(school: @school, meters: @meters) %>
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h3 class="mb-0"><%= t('school_groups.status.individual_meter_data') %></h3>
 
+    <%= link_to t('school_groups.download_as_csv'),
+                school_school_group_status_index_path(@school_group, @school, format: :csv),
+                class: 'btn btn-sm' %>
+  </div>
+  <%= render Schools::MeterStatusComponent.new(school: @school) %>
 <% else %>
   <%= render PromptComponent.new status: :neutral, style: :compact, icon: 'gauge' do |c| %>
     <%= t('school_groups.status.no_meters') %>
