@@ -14,7 +14,7 @@ module SchoolGroups
     end
 
     def school
-      @meters = @school.meters.active # accessible_by(current_ability, :show)
+      @meters = @school.meters.active # .accessible_by(current_ability, :show)
     end
 
     private
@@ -24,9 +24,11 @@ module SchoolGroups
     end
 
     def redirect_unless_authorised
-      # feature not switched on yet
       redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
       # no permission on group
+
+      #      redirect_to map_school_group_path(@school_group) and return if @schools &&  && @schools.empty?
+
       # not filtering by schools for now as we need to still display the page if there are incomplete onboardings too
       redirect_to map_school_group_path(@school_group) and return if cannot?(:compare, @school_group)
     end

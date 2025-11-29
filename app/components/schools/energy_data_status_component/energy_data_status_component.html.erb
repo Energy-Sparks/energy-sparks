@@ -11,15 +11,19 @@
   </tr>
   </thead>
   <tbody>
-  <% overview_data&.table_date_ranges&.each do |fuel_type, date_range| %>
-    <tr>
-      <% if show_fuel_icon? %>
-        <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
+    <% (Schools::FuelConfiguration.fuel_types - [:solar_pv]).each do |fuel_type| %>
+      <% if school.fuel_type?(fuel_type) %>
+        <tr>
+          <% if show_fuel_icon? %>
+              <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
+          <% end %>
+          <td class="text-left"><%= t("common.#{fuel_type}") %></td>
+          <td class="text-right text-nowrap">
+            <%= short_dates(school.configuration.meter_start_date(fuel_type)) %> -
+            <%= short_dates(school.configuration.meter_end_date(fuel_type)) %>
+          </td>
+        </tr>
       <% end %>
-      <td class="text-left"><%= t("common.#{fuel_type}") %></td>
-      <td class="text-right text-nowrap"><%= date_range[:start_date] %> - <%= date_range[:end_date] %></td>
-    </tr>
-  <% end %>
-
+    <% end %>
   </tbody>
 <% end %>

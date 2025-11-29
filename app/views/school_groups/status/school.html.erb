@@ -54,39 +54,14 @@
 <% end %>
 
 <% if @meters.any? %>
-  <h3><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></h3>
-  <%= render Schools::EnergyDataStatusComponent.new(
-        school: @school,
-        show_fuel_icon: true,
-        table_small: false
-      ) %>
+  <% if @school.data_enabled? %><%# check this and does it need extending to the below block? %>
+    <h3><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></h3>
+    <%= render Schools::EnergyDataStatusComponent.new(school: @school) %>
+  <% end %>
+
   <h3><%= t('school_groups.status.individual_meter_data') %></h3>
-  <table class="table table-sorted">
-    <thead class="thead-dark text-nowrap">
-      <tr>
-        <th class='no-sort'></th>
-        <th><%= I18n.t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
-        <th class="text-left"><%= t('schools.meters.index.meter') %></th>
-        <th class="text-left"><%= t('schools.meters.index.name') %></th>
-        <th><%= t('common.labels.start_date') %></th>
-        <th><%= t('common.labels.end_date') %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @meters.order('meter_type, active desc').each do |meter| %>
-        <tr>
-          <td>
-            <%= render Elements::IconComponent.new(fuel_type: meter.fuel_type) %>
-          </td>
-          <td class="text-left"><%= t(meter.fuel_type, scope: 'common') %></td>
-          <td class="text-left"><%= meter.mpan_mprn %></td>
-          <td class="w-100 text-left"><%= meter.name.to_s %></td>
-          <td class="text-nowrap"><%= short_dates(meter.first_validated_reading) %></td>
-          <td class="text-nowrap"><%= short_dates(meter.last_validated_reading) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render Schools::MeterStatusComponent.new(school: @school, meters: @meters) %>
+
 <% else %>
   <%= render PromptComponent.new status: :neutral, style: :compact, icon: 'gauge' do |c| %>
     <%= t('school_groups.status.no_meters') %>
