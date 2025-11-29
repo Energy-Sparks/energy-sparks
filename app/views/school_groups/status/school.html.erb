@@ -36,7 +36,7 @@
     <h3><%= t('school_groups.status.key_dates') %></h3>
     <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
       <dl class="row">
-        <% if @school.school_onboarding.complete? %>
+        <% if @school.school_onboarding&.complete? %>
           <dt class="col-6"><%= t('school_groups.status.date_onboarded') %></dt>
           <dd class="col-6"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
         <% end %>
@@ -44,7 +44,7 @@
           <dt class="col-6"><%= t('school_groups.status.date_data_enabled') %></dt>
           <dd class="col-6">
             <%= nice_dates(
-                  @school.school_onboarding.first_made_data_enabled || @school.school_onboarding.completed_on
+                  @school.school_onboarding&.first_made_data_enabled || @school.school_onboarding&.completed_on
                 ) %>
           </dd>
         <% end %>

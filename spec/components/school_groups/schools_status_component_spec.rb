@@ -1,17 +1,14 @@
 # frozen_string_literal: true
 
-# rubocop:disable RSpec/MultipleMemoizedHelpers
 require 'rails_helper'
 
 RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type: :component do
-  let(:id) { 'custom-id' }
-  let(:classes) { 'extra-classes' }
   let(:school_group) { create(:school_group) }
   let!(:school) { create(:school, school_group:, visible: true, data_enabled: true) }
 
   let(:params) do
     {
-      id:, classes:,
+      id: 'custom-id', classes: 'extra-classes',
       school_group:,
       schools: School.all,
       onboardings: SchoolOnboarding.all
@@ -21,8 +18,8 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
   subject(:html) { render_inline(described_class.new(**params)) }
 
   it_behaves_like 'an application component' do
-    let(:expected_classes) { classes }
-    let(:expected_id) { id }
+    let(:expected_classes) { params[:classes] }
+    let(:expected_id) { params[:id] }
   end
 
   let(:fuel_configuration) do
@@ -120,4 +117,3 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
     end
   end
 end
-# rubocop:enable RSpec/MultipleMemoizedHelpers
