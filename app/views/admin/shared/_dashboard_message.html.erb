@@ -19,7 +19,5 @@
     </div>
   </div>
 <% else %>
-  <%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
-    <%= messageable.dashboard_message.message %>
-  <% end %>
+  <%= render 'shared/dashboard_message', messageable: messageable %>
 <% end %>
