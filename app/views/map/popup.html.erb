@@ -7,16 +7,16 @@
 <p class="small">
   <%= I18n.t('maps.school_features.fuel_types') %>:
   <% if @school.has_electricity? %>
-    &nbsp;<%= render IconComponent.new(fuel_type: :electricity) %>
+    &nbsp;<%= render Elements::IconComponent.new(fuel_type: :electricity) %>
   <% end %>
   <% if @school.has_gas? %>
-    &nbsp;<%= render IconComponent.new(fuel_type: :gas) %>
+    &nbsp;<%= render Elements::IconComponent.new(fuel_type: :gas) %>
   <% end %>
   <% if @school.has_solar_pv? %>
-    &nbsp;<%= render IconComponent.new(fuel_type: :solar_pv) %>
+    &nbsp;<%= render Elements::IconComponent.new(fuel_type: :solar_pv) %>
   <% end %>
   <% if @school.has_storage_heaters? %>
-    &nbsp;<%= render IconComponent.new(fuel_type: :storage_heater) %>
+    &nbsp;<%= render Elements::IconComponent.new(fuel_type: :storage_heater) %>
   <% end %>
 </p>
 <p class="small">

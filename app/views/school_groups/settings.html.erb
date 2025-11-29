@@ -1,10 +1,4 @@
-<% if can? :manage, DashboardMessage %>
-  <%= render 'admin/shared/dashboard_message', messageable: @school_group %>
-<% elsif @school_group.dashboard_message %>
-  <%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
-    <%= @school_group.dashboard_message.message %>
-  <% end %>
-<% end %>
+<%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
 <%= render TitledSectionComponent.new(id: 'settings-section', classes: 'scrollable-title') do |section| %>
   <% section.with_title do %>
@@ -47,6 +41,11 @@
       <% p.with_link { link_to t('common.labels.view'), school_group_school_engagement_index_path(@school_group) } %>
       <%= t('school_groups.settings.engagement') %>
     <% end if SchoolGroups::SchoolEngagementController.show?(current_user) %>
+    <%= render PromptComponent.new(icon: 'bars-progress', style: :compact, status: :none) do |p| %>
+      <% p.with_title { t('school_groups.titles.school_status') } %>
+      <% p.with_link { link_to t('common.labels.manage'), school_group_status_index_path(@school_group) } %>
+      <%= t('school_groups.settings.status') %>
+    <% end %>
     <%= render PromptComponent.new(icon: 'table', style: :compact, status: :none) do |p| %>
       <% p.with_title { t('school_groups.sub_nav.secr_report') } %>
       <% p.with_link { link_to t('common.labels.view'), school_group_secr_index_path(@school_group) } %>

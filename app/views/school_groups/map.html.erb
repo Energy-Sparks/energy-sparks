@@ -58,16 +58,16 @@
         <br>
         <% if school.configuration %>
           <% if school.has_electricity? %>
-            <%= render IconComponent.new(fuel_type: :electricity) %>
+            <%= render Elements::IconComponent.new(fuel_type: :electricity) %>
           <% end %>
           <% if school.has_gas? %>
-            <%= render IconComponent.new(fuel_type: :gas) %>
+            <%= render Elements::IconComponent.new(fuel_type: :gas) %>
           <% end %>
           <% if school.has_solar_pv? %>
-            <%= render IconComponent.new(fuel_type: :solar_pv) %>
+            <%= render Elements::IconComponent.new(fuel_type: :solar_pv) %>
           <% end %>
           <% if school.has_storage_heaters? %>
-            <%= render IconComponent.new(fuel_type: :storage_heater) %>
+            <%= render Elements::IconComponent.new(fuel_type: :storage_heater) %>
           <% end %>
         <% end %>
         <span class="badge badge-secondary" style="vertical-align: middle;">

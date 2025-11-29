@@ -31,7 +31,7 @@ module SchoolGroups
       @schools.map do |school|
         [
           school.name,
-          school.data_visible? ? I18n.t('common.labels.data_published') : I18n.t('common.labels.visible'),
+          school.data_visible? ? I18n.t('schools.status.data_visible') : I18n.t('schools.status.visible'),
           *(@include_cluster ? [school.school_group_cluster_name] : []),
           school&.school_onboarding&.onboarding_completed_on&.to_date&.iso8601,
           school&.school_onboarding&.first_made_data_enabled&.to_date&.iso8601,

@@ -5,7 +5,10 @@
 /* making the eventual upgrade to Bootstrap 5 smoother and less disruptive */
 
 /* The .close class has been replaced with .btn-close */
-button.btn-close { @extend button.close !optional; }
+button.btn-close {
+  @extend button !optional;
+  @extend .close !optional;
+}
 
 // The .no-gutters class has been replaced with .g-0
 // Use class="row g-0" instead of "row no-gutters"

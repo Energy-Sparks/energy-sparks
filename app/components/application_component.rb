@@ -32,4 +32,18 @@ class ApplicationComponent < ViewComponent::Base
     kwargs[:classes] = class_names(classes, kwargs[:classes])
     kwargs
   end
+
+  class << self
+    def colour_variants
+      [:primary, :secondary, :success, :info, :warning, :danger, :light, :dark]
+    end
+
+    def raise_unknown_variant_error(**pair)
+      key, value = pair.first
+
+      unless colour_variants.include?(value)
+        raise ArgumentError, "Unknown #{key} variant: #{value}. Valid values are: #{colour_variants.join(', ')}"
+      end
+    end
+  end
 end

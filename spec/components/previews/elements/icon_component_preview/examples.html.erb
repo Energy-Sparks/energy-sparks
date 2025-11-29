@@ -10,7 +10,7 @@
 
     <table class="table">
       <tr>
-        <td>Default</td><td><%= render IconComponent.new(name: 'info-circle') %></td>
+        <td>Default</td><td><%= render Elements::IconComponent.new(name: 'info-circle') %></td>
       </tr>
       <% %w[f1 f2 f3 f4 f5 f6].reverse.each do |size| %>
         <tr>
@@ -18,7 +18,7 @@
             <code>size: '<%= size %>'</code>
           </td>
           <td>
-            <%= render IconComponent.new(name: 'info-circle', size: size) %>
+            <%= render Elements::IconComponent.new(name: 'info-circle', size: size) %>
           </td>
         </tr>
       <% end %>
@@ -40,7 +40,7 @@
           <td>
             <code>name: '<%= name %>', fixed_width: true</code>
           </td>
-          <td><%= render IconComponent.new(name: name, fixed_width: true) %> text</td>
+          <td><%= render Elements::IconComponent.new(name: name, fixed_width: true) %> text</td>
         </tr>
       <% end %>
     </table>
@@ -62,7 +62,7 @@
             <code>style: :circle, size: '<%= size %>'</code>
           </td>
           <td>
-            <%= render IconComponent.new(name: 'bolt', size: size, style: :circle) %>
+            <%= render Elements::IconComponent.new(name: 'bolt', size: size, style: :circle) %>
           </td>
         </tr>
       <% end %>
@@ -78,7 +78,7 @@
       <% %i[electricity gas storage_heater solar_pv exported_solar_pv].each do |fuel_type| %>
         <tr>
           <td><code>name: 'info-circle', fuel_type: :<%= fuel_type %></code></td>
-          <td><%= render IconComponent.new(name: 'info-circle', fuel_type: fuel_type) %></td>
+          <td><%= render Elements::IconComponent.new(name: 'info-circle', fuel_type: fuel_type) %></td>
         </tr>
       <% end %>
     </table>
@@ -93,10 +93,15 @@
       <% %i[electricity gas storage_heater solar_pv exported_solar_pv].each do |fuel_type| %>
         <tr>
           <td><code>fuel_type: :<%= fuel_type %></code></td>
-          <td><%= render IconComponent.new(fuel_type: fuel_type) %></td>
+          <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
         </tr>
       <% end %>
+      <tr>
+        <% args = { fuel_type: :electricity, colour: :secondary } %>
+        <td><code><%= args.inspect %></code></td>
+        <td><%= render Elements::IconComponent.new(**args) %></td>
     </table>
+
   </div>
 </div>
 
@@ -108,7 +113,7 @@
         <tr>
           <% args = { icon_set: 'fab', name: name, style: :circle } %>
           <td><code><%= args.inspect %></code></td>
-          <td><%= render IconComponent.new(**args) %></td>
+          <td><%= render Elements::IconComponent.new(**args) %></td>
         </tr>
       <% end %>
     </table>
@@ -124,7 +129,7 @@
         <tr>
           <% args = { fuel_type: fuel_type, name: name, style: :circle, size: 'f5' } %>
           <td><code><%= args.inspect %></code></td>
-          <td><%= render IconComponent.new(**args) %></td>
+          <td><%= render Elements::IconComponent.new(**args) %></td>
         </tr>
       <% end %>
     </table>

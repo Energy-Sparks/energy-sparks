@@ -47,14 +47,14 @@
             <% end %>
             <%= row.with_cell(classes: 'text-center align-middle') do %>
               <% if feature.key?(:starter_icon) %>
-                <%= render IconComponent.new(name: feature[:starter_icon]) %>
+                <%= render Elements::IconComponent.new(name: feature[:starter_icon]) %>
               <% else %>
                 <%= feature[:starter] %>
               <% end %>
             <% end %>
             <%= row.with_cell(classes: 'text-center align-middle') do %>
               <% if feature.key?(:standard_icon) %>
-                <%= render IconComponent.new(name: feature[:standard_icon]) %>
+                <%= render Elements::IconComponent.new(name: feature[:standard_icon]) %>
               <% else %>
                 <%= feature[:standard] %>
               <% end %>

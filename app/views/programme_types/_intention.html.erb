@@ -1,7 +1,7 @@
 <% if programme_type.activity_type_todos.none? %>
-  <%= render IconComponent.new(name: 'people-group') %> <%= t('programme_types.intention.adults') %>
+  <%= render Elements::IconComponent.new(name: 'people-group') %> <%= t('programme_types.intention.adults') %>
 <% elsif programme_type.intervention_type_todos.none? %>
-  <%= render IconComponent.new(name: 'book-open-reader') %> <%= t('programme_types.intention.pupils') %>
+  <%= render Elements::IconComponent.new(name: 'book-open-reader') %> <%= t('programme_types.intention.pupils') %>
 <% else %>
-  <%= render IconComponent.new(name: 'school') %> <%= t('programme_types.intention.all') %>
+  <%= render Elements::IconComponent.new(name: 'school') %> <%= t('programme_types.intention.all') %>
 <% end %>

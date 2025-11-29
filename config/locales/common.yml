@@ -34,7 +34,6 @@ en:
       continue: Continue
       create: Create
       created: Created
-      data_published: Data published
       data_published_date: Data published date
       date: Date
       deactivate: Deactivate
@@ -91,7 +90,6 @@ en:
       view_now: View now
       view_opportunities: View opportunities
       view_results: View results
-      visible: Visible
       welcome: Welcome
       yes_label: 'Yes'
     line_graphs: Line graphs

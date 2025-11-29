@@ -8,7 +8,7 @@
            role="tab"
            aria-controls="<%= fuel_type %>-overview"
            aria-selected="true">
-           <%= render IconComponent.new(fuel_type: fuel_type) %> <%= t(fuel_type, scope: 'common') %>
+           <%= render Elements::IconComponent.new(fuel_type: fuel_type) %> <%= t(fuel_type, scope: 'common') %>
         </a>
       </li>
     <% end %>

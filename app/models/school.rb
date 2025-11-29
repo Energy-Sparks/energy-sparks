@@ -525,7 +525,7 @@ class School < ApplicationRecord
     configuration && configuration.analysis_charts.present?
   end
 
-  delegate :fuel_types_for_analysis, to: :configuration
+  delegate :fuel_types_for_analysis, :fuel_type?, to: :configuration
 
   def has_solar_pv?
     configuration.has_solar_pv

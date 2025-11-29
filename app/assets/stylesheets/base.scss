@@ -201,3 +201,9 @@ input, progress {
 .border-blue-dark {
   border-color: $blue-dark !important;
 }
+
+// DataTables – add extra right-padding to body cells when their header includes a sorting arrow.
+// Needed when centring text in both header and data cells, so both line up correctly.
+table.dataTable.table-sorted td.offset {
+  padding-right: 30px !important;
+}
