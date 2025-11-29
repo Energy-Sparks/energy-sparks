@@ -3,12 +3,14 @@
 module SchoolGroups
   class StatusController < BaseController
     include SchoolGroupAccessControl
+
     layout 'group_settings'
     load_and_authorize_resource :school, through: :school_group
 
     before_action :load_schools, only: [:index, :meters]
     before_action :load_onboardings, only: [:index]
     before_action :redirect_unless_authorised
+    before_action :breadcrumbs, only: [:index, :school]
 
     def index
       respond_to do |format|
@@ -59,7 +61,11 @@ filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-statu
     end
 
     def breadcrumbs
-      build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
+      if @school
+        @breadcrumbs = [name: I18n.t('school_groups.titles.school_status')]
+      else
+        build_breadcrumbs([name: I18n.t('school_groups.titles.school_status')])
+      end
     end
   end
 end
