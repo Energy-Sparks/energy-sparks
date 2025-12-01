@@ -1,15 +1,27 @@
-<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.chart_updates.index.group_chart_settings').capitalize %>
+<% if Flipper.enabled?(:group_settings, current_user) %>
+  <% content_for :header_title, "#{@school_group.name} - #{t('school_groups.chart_updates.index.group_chart_settings')}" %>
+  <h2><%= t('school_groups.chart_updates.index.default_chart_preference.form_group') %></h2>
+<% else %>
+  <% content_for :page_title,
+                 "#{@school_group.name} | #{t('school_groups.chart_updates.index.group_chart_settings').capitalize}" %>
+  <h1><%= @school_group.name %> <%= t('school_groups.chart_updates.index.group_chart_settings') %></h1>
+<% end %>
 
-<h1><%= @school_group.name %> <%= t('school_groups.chart_updates.index.group_chart_settings') %></h1>
-
-<%= simple_form_for :school_group, url: school_group_chart_update_bulk_update_charts_path(chart_update_id: @school_group.id), method: :post do |form| %>
+<%= simple_form_for :school_group,
+                    url: school_group_chart_update_bulk_update_charts_path(chart_update_id: @school_group.id),
+                    method: :post do |form| %>
   <div class="form-group">
-    <label><%= t("school_groups.chart_updates.index.default_chart_preference.form_group") %></label>
-    <p class="small"><%= t("school_groups.chart_updates.index.default_chart_preference.explanation") %></p>
+    <% unless Flipper.enabled?(:group_settings, current_user) %>
+      <label><%= t('school_groups.chart_updates.index.default_chart_preference.form_group') %></label>
+    <% end %>
+    <p class="small"><%= t('school_groups.chart_updates.index.default_chart_preference.explanation') %></p>
     <% SchoolGroup.default_chart_preferences.keys.each do |preference| %>
       <div class="form-check">
-        <%= form.radio_button :default_chart_preference, preference, checked: @school_group.default_chart_preference == preference, class: "form-check-input" %>
-        <%= form.label "default_chart_preference_#{preference.to_sym}", t("school_groups.chart_updates.index.default_chart_preference.#{preference}", default: preference.humanize),  class: "form-check-label" %>
+        <%= form.radio_button :default_chart_preference, preference,
+                              checked: @school_group.default_chart_preference == preference, class: 'form-check-input' %>
+        <%= form.label "default_chart_preference_#{preference.to_sym}",
+                       t("school_groups.chart_updates.index.default_chart_preference.#{preference}",
+                         default: preference.humanize), class: 'form-check-label' %>
       </div>
     <% end %>
   </div>
