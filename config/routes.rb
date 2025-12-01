@@ -287,6 +287,13 @@ Rails.application.routes.draw do
       end
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
+      resources :status, only: [:index] do
+        collection do
+          get 'school/:school_id', action: :school, as: :school
+          get 'meters'
+        end
+      end
+
       resource :advice, controller: 'advice', only: [:show] do
         %i[baseload
            electricity_out_of_hours

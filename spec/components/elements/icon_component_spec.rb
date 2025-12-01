@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe IconComponent, type: :component do
+RSpec.describe Elements::IconComponent, type: :component do
   subject(:component) { described_class.new(**params) }
 
   let(:params) { {} }
@@ -44,7 +44,7 @@ RSpec.describe IconComponent, type: :component do
       end
 
       it 'renders the icon' do
-        expect(html).to have_css('span.text-electric')
+        expect(html).to have_css('i.text-electric')
         expect(html).to have_css('i.fa-info-circle')
       end
 
@@ -54,8 +54,20 @@ RSpec.describe IconComponent, type: :component do
         end
 
         it 'renders the icon' do
-          expect(html).to have_css('span.text-electric')
+          expect(html).to have_css('i.text-electric')
           expect(html).to have_css('i.fa-info-circle.fa-fw')
+        end
+      end
+
+      context 'with colour' do
+        let(:params) do
+          { fuel_type: :electricity, colour: :danger }
+        end
+
+        it 'overrides the colour' do
+          expect(html).to have_css('i.text-danger')
+          expect(html).not_to have_css('i.text-electric')
+          expect(html).to have_css('i.fa-bolt')
         end
       end
     end
@@ -70,6 +82,14 @@ RSpec.describe IconComponent, type: :component do
         expect(html).to have_css('i.fa-solid.fa-stack-2x.fa-inverse')
         expect(html).to have_css('i.fa-info-circle.fa-stack-1x')
       end
+    end
+
+    context 'when the colour is unrecognised' do
+      let(:params) do
+        { fuel_type: :electricity, colour: :notgood }
+      end
+
+      it { expect { html }.to raise_error(ArgumentError, 'Unknown colour variant: notgood. Valid values are: primary, secondary, success, info, warning, danger, light, dark') }
     end
   end
 end
