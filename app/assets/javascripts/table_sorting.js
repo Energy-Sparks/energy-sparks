@@ -4,7 +4,7 @@ $(document).ready(function() {
   DataTable.ext.errMode = 'throw';
 
   $('.table-sorted').DataTable({
-    columnDefs: [{ targets: 'no-sort', orderable: false }],
+    columnDefs: [{ targets: 'no-sort', orderable: false }, { targets: '.sort-desc', orderSequence: ['desc', 'asc'] }],
     order: [],        // Default do not sort
     paging: false,
     searching: false, // Switch off search field
