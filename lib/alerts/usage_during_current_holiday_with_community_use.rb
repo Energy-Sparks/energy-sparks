@@ -2,7 +2,7 @@
 
 module Alerts
   module UsageDuringCurrentHolidayWithCommunityUse
-    TEMPLATE_VARIABLES = AlertUsageDuringCurrentHolidayBase::TEMPLATE_VARIABLES.merge(
+    TEMPLATE_VARIABLES = UsageDuringCurrentHolidayBase::TEMPLATE_VARIABLES.merge(
       community_usage_to_date_kwh: {
         description: 'Community usage so far this holiday - kwh',
         units: :kwh
