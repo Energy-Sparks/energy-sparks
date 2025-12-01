@@ -121,28 +121,28 @@ RSpec.describe 'manual readings' do
     before { visit school_manual_readings_path(school) }
 
     it 'shows only electricity inputs on the form' do
-      expect(form_input_values).to eq(expected_input_values(2024, 7, 11, [nil]))
+      expect(form_input_values).to eq(expected_input_values(2023, 8, 22, [nil]))
     end
 
     it 'saves the correct readings' do
       complete_form
-      expect(actual_manual_readings).to eq((0..11).map { |i| [Date.new(2024, 7) + i.months, 5, nil] })
+      expect(actual_manual_readings).to eq((0..22).map { |i| [Date.new(2023, 8) + i.months, 5, nil] })
     end
 
     it 'saves a single reading' do
       complete_form(single: true)
-      expect(actual_manual_readings).to eq([[Date.new(2024, 7), 5, nil]])
+      expect(actual_manual_readings).to eq([[Date.new(2023, 8), 5, nil]])
     end
   end
 
   shared_examples 'and gas enabled' do
     it 'shows the gas inputs' do
-      expect(form_input_values).to eq(expected_input_values(2024, 7, 11, [nil, nil]))
+      expect(form_input_values).to eq(expected_input_values(2023, 8, 22, [nil, nil]))
     end
 
     it 'saves the correct readings' do
       complete_form
-      expect(actual_manual_readings).to eq((0..11).map { |i| [Date.new(2024, 7) + i.months, 5, 5] })
+      expect(actual_manual_readings).to eq((0..22).map { |i| [Date.new(2023, 8) + i.months, 5, 5] })
     end
   end
 
@@ -191,10 +191,10 @@ RSpec.describe 'manual readings' do
     before { visit school_manual_readings_path(school) }
 
     it 'shows the existing meter data in the form inputs' do
-      expect(form_input_values).to eq(expected_input_values(2024, 7, 11).zip(
-                                        [nil, nil] +
+      expect(form_input_values).to eq(expected_input_values(2023, 8, 22).zip(
+                                        Array.new(13, nil) +
                                           %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0],
-                                        Array.new(12, nil)
+                                        []
                                       ))
     end
 
@@ -216,11 +216,11 @@ RSpec.describe 'manual readings' do
     end
 
     it 'displays manual readings over calculated values' do
-      expect(form_input_values[2]).to eq(['2024-09-01', '1000.0', nil])
+      expect(form_input_values[13]).to eq(['2024-09-01', '1000.0', nil])
     end
 
     it 'allows changing the manual reading' do
-      form_inputs[2][1].fill_in(with: 1001)
+      form_inputs[13][1].fill_in(with: 1001)
       click_on 'Save'
       expect(actual_manual_readings).to eq([[Date.new(2024, 9), 1001, nil]])
     end
@@ -229,7 +229,7 @@ RSpec.describe 'manual readings' do
   context 'with enough meter data' do
     let(:school) do
       create(:school, :with_basic_configuration_single_meter_and_tariffs, :with_fuel_configuration,
-             has_gas: false, reading_start_date: 14.months.ago.to_date)
+             has_gas: false, reading_start_date: 25.months.ago.to_date)
     end
 
     before { visit school_manual_readings_path(school) }
