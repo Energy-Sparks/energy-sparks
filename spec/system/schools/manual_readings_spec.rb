@@ -243,6 +243,6 @@ RSpec.describe 'manual readings' do
   it 'validates invalid readings' do
     visit school_manual_readings_path(school)
     complete_form(single: true, with: 'a')
-    expect(page).to have_content(['July 2024', 'is not a number'].join("\n"))
+    expect(page).to have_content(['August 2023', 'is not a number'].join("\n"))
   end
 end
