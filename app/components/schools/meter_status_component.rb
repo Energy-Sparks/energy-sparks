@@ -5,7 +5,6 @@ module Schools
     def initialize(school:, table_small: false, **_kwargs)
       super
       @school = school
-      @meters = meters
       add_classes('table-sm') if table_small
     end
 
