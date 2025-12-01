@@ -17,7 +17,7 @@ module SchoolGroups
 
     def generate_rows
       meters = []
-      @schools.map do |school|
+      @schools.select(&:data_visible?).each do |school|
         school.meters.active.order(:mpan_mprn).each do |meter|
           meters << [
             school.school_group.name,
