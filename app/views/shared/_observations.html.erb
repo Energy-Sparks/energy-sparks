@@ -1,18 +1,34 @@
 <table class="table">
   <thead>
     <tr>
+      <th>School group</th>
+      <th>Admin</th>
+      <th>School</th>
+      <th>User</th>
+      <th>User Role</th>
+      <th>User Staff Role</th>
       <th>Recorded</th>
       <th>Happened</th>
-      <th>School</th>
       <th>Intervention Type</th>
+      <th>Images?</th>
     </tr>
   </thead>
   <tbody>
     <% observations.each do |observation| %>
       <tr>
-        <td><%= nice_dates(observation.created_at) %></td>
-        <td><%= nice_dates(observation.at) %></td>
+        <td><%= link_to observation.school&.school_group&.name, school_group_url(observation.school&.school_group) %></td>
+        <td><%= observation.school&.school_group&.default_issues_admin_user&.name %></td>
         <td><%= link_to observation.school.name, school_url(observation.school) %></td>
+        <td><% if observation&.created_by&.has_profile? %>
+          <%= link_to email_with_wbr(observation&.created_by&.name || 'View profile'), user_url(observation&.created_by) %>
+        <% elsif observation&.created_by&.name %>
+          <%= email_with_wbr(observation&.created_by&.name) %>
+        <% end %>
+        </td>
+        <td><%= observation&.created_by&.role&.humanize %></td>
+        <td><%= observation&.created_by&.staff_role&.title %></td>
+        <td><%= observation.created_at.to_date.iso8601 %></td>
+        <td><%= observation.at.to_date.iso8601 %></td>
         <td>
           <%= link_to school_intervention_url(observation.school, observation) do %>
             <% if observation.description.present? %>
@@ -21,6 +37,9 @@
               <span class="text-muted"><%= observation.intervention_type.name %></span>
             <% end %>
           <% end %>
+        </td>
+        <td>
+          <%= fa_icon('check-circle text-success') if observation&.description_includes_images? %>
         </td>
       </tr>
     <% end %>
