@@ -129,7 +129,7 @@ module Schools
     end
 
     def project_names(school)
-      school.project_groups.any? ? school.project_groups.order(:name).map(&:name).join('|') : nil
+      school.project_groups.order(:name).pluck(:name).join('|').presence
     end
 
     def first_made_data_enabled(school)
