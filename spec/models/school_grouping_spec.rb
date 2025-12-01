@@ -169,6 +169,29 @@ describe SchoolGrouping do
     it_behaves_like 'enforce one group per role per school', :local_authority_area, 'area'
   end
 
+  describe 'enforcing uniquess of school group relationship for projects' do
+    let(:school_group) { create(:school_group, group_type: :project) }
+
+    before do
+      create(:school_grouping, school:, school_group:, role: 'project')
+    end
+
+    it 'is invalid when duplicating project grouping for same school and group' do
+      duplicate = build(:school_grouping, school:, school_group:, role: 'project')
+      expect(duplicate).not_to be_valid
+    end
+
+    it 'is valid when using a different group' do
+      valid = build(:school_grouping, school:, school_group: create(:school_group, group_type: :project), role: 'project')
+      expect(valid).to be_valid
+    end
+
+    it 'is valid when using a different school' do
+      valid = build(:school_grouping, school: create(:school), school_group: school_group, role: 'project')
+      expect(valid).to be_valid
+    end
+  end
+
   describe '.assign_diocese' do
     context 'when there is no matching group' do
       let!(:school) { create(:school, establishment: create(:establishment)) }

@@ -42,6 +42,11 @@ class SchoolGrouping < ApplicationRecord
   validates :role, presence: true
   validates :role, inclusion: { in: roles.keys }
 
+  validates :school_group_id,
+            uniqueness: { scope: [:school_id, :role],
+                          message: 'already linked to this school for this role' },
+            if: :role_project?
+
   validate :only_one_groups
   validate :role_matches_group_type
 
