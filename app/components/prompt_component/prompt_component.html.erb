@@ -1,10 +1,10 @@
 <%= tag.div id: id, class: class_names(classes, 'mb-2') do %>
   <%# Padding added to create space within div %>
-  <div class="row pt-3 pb-3">
+  <div class="row py-3">
     <% if render_icon? %>
       <%# Icon is hidden on smallest size, visible from sm and above as single column %>
       <div class="d-none d-sm-block col-1">
-        <%= render IconComponent.new fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
+        <%= render Elements::IconComponent.new fuel_type: fuel_type, name: icon, style: :circle, size: 'f5' %>
       </div>
     <% end %>
     <%# if no icon then use full width row %>

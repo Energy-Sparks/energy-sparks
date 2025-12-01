@@ -9,7 +9,6 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
   end
 
   let(:school_group) { create(:school_group) }
-  let(:school_group_cluster) { create(:school_group_cluster, school_group:) }
 
   let!(:school) do
     create(:school,
@@ -20,7 +19,7 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
            number_of_pupils: 20,
            floor_area: 300.0,
            school_group:,
-           school_group_cluster:)
+           school_group_cluster: create(:school_group_cluster))
   end
 
   let!(:service) { described_class.new(school_group:, schools: [school], include_cluster: false) }
@@ -62,7 +61,7 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
         it 'produces expected rows' do
           expect(rows).to eq([[
                                school.name,
-                               I18n.t('common.labels.data_published'),
+                               I18n.t('schools.status.data_visible'),
                                nil,
                                nil,
                                'Y',
@@ -104,8 +103,8 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
           it 'produces expected rows' do
             expect(rows).to eq([[
                                  school.name,
-                                 I18n.t('common.labels.data_published'),
-                                 school_group_cluster.name,
+                                 I18n.t('schools.status.data_visible'),
+                                 school.school_group_cluster.name,
                                  nil,
                                  nil,
                                  'Y',
@@ -128,7 +127,7 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
           it 'produces expected rows' do
             expect(rows).to eq([[
                                  school.name,
-                                 I18n.t('common.labels.data_published'),
+                                 I18n.t('schools.status.data_visible'),
                                  Date.current.iso8601,
                                  Date.current.iso8601,
                                  'Y',
@@ -180,7 +179,7 @@ RSpec.describe SchoolGroups::SchoolStatusCsvGenerator do
         it 'produces expected rows' do
           expect(rows).to eq([[
                                school.name,
-                               I18n.t('common.labels.data_published'),
+                               I18n.t('schools.status.data_visible'),
                                nil,
                                nil,
                                'N',

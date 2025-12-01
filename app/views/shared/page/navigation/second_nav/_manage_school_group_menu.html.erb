@@ -23,6 +23,10 @@
       <%= link_to t('school_groups.sub_nav.school_engagement'), school_group_school_engagement_index_path(school_group),
                   class: 'dropdown-item' %>
     <% end %>
+    <% if can?(:update_settings, @school_group) && Flipper.enabled?(:group_settings, current_user) %>
+      <%= link_to t('school_groups.titles.school_status'),
+                  school_group_status_index_path(school_group), class: 'dropdown-item' %>
+    <% end %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
       <%= link_to t('school_groups.sub_nav.edit_group'),

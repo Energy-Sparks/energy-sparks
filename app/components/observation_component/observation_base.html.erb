@@ -12,7 +12,7 @@
     </div>
   </div>
 <% elsif style == :description %>
-  <%= render IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
+  <%= render Elements::IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
   <%= I18n.t(:description_html, scope: i18n_scope,
                                 target: target,
                                 message: message,
@@ -20,7 +20,7 @@
                                 compact_path: compact_path).html_safe %>
 <% else %>
   <td>
-    <%= render IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
+    <%= render Elements::IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
     <%= I18n.t(:description_html, scope: i18n_scope,
                                   target: target,
                                   message: message,
