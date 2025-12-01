@@ -37,7 +37,7 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
     end
 
     it 'shows the date ranges for the fuel type' do
-      expect(html).to have_selector('tr', text: /Electricity\s*26 Sep 2024 -\s+26 Sep 2025/)
+      expect(html).to have_selector('tr', text: /Electricity\s*26 Sep 2024\s+26 Sep 2025/)
     end
 
     context 'when show_icon is false' do
@@ -56,7 +56,7 @@ RSpec.describe Schools::EnergyDataStatusComponent, :include_url_helpers, type: :
     end
 
     it 'shows the date ranges for the fuel type' do
-      expect(html).to have_selector('tr', text: /Gas\s*26 Sep 2024 -\s+26 Sep 2025/)
+      expect(html).to have_selector('tr', text: /Gas\s*26 Sep 2024\s+26 Sep 2025/)
     end
   end
 
