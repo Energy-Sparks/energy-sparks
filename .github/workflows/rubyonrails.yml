@@ -33,7 +33,7 @@ jobs:
       CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
       CI_NODE_INDEX: ${{ matrix.ci_node_index }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       # https://github.com/actions/download-artifact/issues/3
       - run: gh run download --name knapsack_rspec_report --dir ${{ github.workspace }}
@@ -51,7 +51,7 @@ jobs:
   overcommit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
         with:
           ruby-only: true
@@ -70,7 +70,7 @@ jobs:
     strategy:
       fail-fast: false
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - uses: ./.github/actions/setup
       with:
         ruby-only: true
