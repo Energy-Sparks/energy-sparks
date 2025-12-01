@@ -18,10 +18,11 @@ module SchoolGroups
           render :index
         end
         format.csv do
-          send_data SchoolGroups::SchoolStatusCsvGenerator.new(school_group: @school_group,
-                                                              schools: @schools,
-                                                              include_cluster: false).export,
-                    filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-status")
+          send_data SchoolGroups::SchoolStatusCsvGenerator.new(
+            school_group: @school_group,
+            schools: @schools,
+            include_cluster: false).export,
+            filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-status")
         end
       end
     end
@@ -40,10 +41,11 @@ module SchoolGroups
     private
 
     def meter_csv
-      send_data SchoolGroups::SchoolMeterStatusCsvGenerator.new(school_group: @school_group,
-      schools: @schools || [@school],
-      include_cluster: false).export,
-filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-status")
+      send_data SchoolGroups::SchoolMeterStatusCsvGenerator.new(
+        school_group: @school_group,
+        schools: @schools || [@school],
+        include_cluster: false).export,
+        filename: EnergySparks::Filenames.csv("#{@school_group.slug}-schools-meter-status")
     end
 
     def load_onboardings
