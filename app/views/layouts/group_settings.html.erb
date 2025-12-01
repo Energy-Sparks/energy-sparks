@@ -1,4 +1,8 @@
-<% content_for :page_title, "#{t('school_groups.sub_nav.manage_group')} | #{@school_group.name}" %>
+<% if content_for(:header_title) %>
+  <% content_for :page_title, yield(:header_title) %>
+<% else %>
+  <% content_for :page_title, "#{t('school_groups.sub_nav.manage_group')} | #{@school_group.name}" %>
+<% end %>
 
 <% content_for(:application) do %>
   <% if Flipper.enabled?(:group_settings, current_user) %>

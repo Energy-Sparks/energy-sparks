@@ -17,9 +17,13 @@
         </td>
         <td class="text-left"><%= t(meter.fuel_type, scope: 'common') %></td>
         <td class="text-left"><%= meter.mpan_mprn %></td>
-        <td class="w-100 text-left"><%= meter.name.to_s %></td>
-        <td class="text-nowrap"><%= short_dates(meter.first_validated_reading) %></td>
-        <td class="text-nowrap"><%= short_dates(meter.last_validated_reading) %></td>
+        <td class="w-100 text-left"><%= meter.name %></td>
+        <td class="text-nowrap" data-order='<%= meter.first_validated_reading&.iso8601 %>'>
+          <%= short_dates(meter.first_validated_reading) %>
+        </td>
+        <td class="text-nowrap" data-order='<%= meter.last_validated_reading&.iso8601 %>'>
+          <%= short_dates(meter.last_validated_reading) %>
+        </td>
       </tr>
     <% end %>
   </tbody>

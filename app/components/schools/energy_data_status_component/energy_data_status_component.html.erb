@@ -5,9 +5,8 @@
       <th></th>
     <% end %>
     <th class="w-100"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.fuel_type') %></th>
-    <th class="text-nowrap text-right">
-      <%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.aggregated_meter_date_range') %>
-    </th>
+    <th><%= t('common.labels.start_date') %></th>
+    <th><%= t('common.labels.end_date') %></th>
   </tr>
   </thead>
   <tbody>
@@ -18,8 +17,10 @@
               <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
           <% end %>
           <td class="text-left"><%= t("common.#{fuel_type}") %></td>
-          <td class="text-right text-nowrap">
-            <%= short_dates(school.configuration.meter_start_date(fuel_type)) %> -
+          <td class="text-nowrap">
+            <%= short_dates(school.configuration.meter_start_date(fuel_type)) %>
+          </td>
+          <td class="text-nowrap">
             <%= short_dates(school.configuration.meter_end_date(fuel_type)) %>
           </td>
         </tr>

@@ -28,16 +28,12 @@
               <%= render(Elements::BadgeComponent.new(t(status(record), scope: 'schools.status'), colour: :light)) %>
             </td>
             <% fuel_types.each do |fuel_type| %>
-              <td class="text-center offset">
+              <td class="text-center offset" data-order="<%= fuel_sort(record, fuel_type) %>">
                 <span title="<%= t(fuel_type, scope: 'common') %>" data-toggle="tooltip">
                   <% if status(record) == :data_visible %>
-                    <% if record.fuel_type?(fuel_type) %>
-                      <%= render Elements::IconComponent.new(name: 'circle-check') %>
-                    <% else %>
-                      <%= render Elements::IconComponent.new(name: 'xmark') %>
-                    <% end %>
+                    <%= checkmark(record.fuel_type?(fuel_type)) %>
                   <% else %>
-                    <%= render Elements::IconComponent.new(name: 'hourglass-half', classes: 'text-grey-light') %>
+                    <%= render Elements::IconComponent.new(name: 'minus', classes: 'text-grey-light') %>
                   <% end %>
                 </span>
               </td>

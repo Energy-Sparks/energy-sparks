@@ -407,12 +407,13 @@ en:
           one: We are working with 1 school in this %{group_type}
           other: We are working with %{count} schools in this %{group_type}
     status:
-      date_data_enabled: Date made data enabled
-      date_onboarded: Date onboarded
+      data_published: Data published
       individual_meter_data: Individual meter data
       key_dates: Key dates
+      made_visible: Made visible
       no_meters: This school has no meters configured
       no_schools: There are no schools in this group
+      not_data_enabled: Meter information will appear here once school is data published
       number_of_users: Number of users
       receiving_alerts: "(%{count} receiving alerts)"
       school_info: School information

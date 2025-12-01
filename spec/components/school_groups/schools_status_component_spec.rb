@@ -33,18 +33,21 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
     expect(html).to have_content(school.name)
   end
 
-  shared_examples 'fuel type icon headers' do
-    it 'shows the fuel type icon headers' do
+  shared_examples 'fuel type icon headers' do |include_storage_heaters: false|
+    it 'shows the mandatory fuel type icon headers' do
       expect(html).to have_css('th i.fa-sun')
       expect(html).to have_css('th i.fa-bolt')
       expect(html).to have_css('th i.fa-fire')
+    end
+
+    it 'shows storage heaters fuel type icon heater', if: include_storage_heaters do
       expect(html).to have_css('th i.fa-fire-alt')
     end
   end
 
-  shared_examples 'hourglass icons for all fuel types' do
-    it 'shows the hourglass icon for each fuel type' do
-      expect(html).to have_css('td i.fa-hourglass-half', count: 4)
+  shared_examples 'minus icons for fuel types' do |count: 3|
+    it 'shows the minus icon for each fuel type' do
+      expect(html).to have_css('td i.fa-minus', count: count)
     end
   end
 
@@ -70,7 +73,7 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
     end
 
     it_behaves_like 'fuel type icon headers'
-    it_behaves_like 'hourglass icons for all fuel types'
+    it_behaves_like 'minus icons for fuel types'
   end
 
   context 'when there is an onboarding (with school record)' do
@@ -93,7 +96,7 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
 
     it_behaves_like 'linking to school specific page'
     it_behaves_like 'fuel type icon headers'
-    it_behaves_like 'hourglass icons for all fuel types'
+    it_behaves_like 'minus icons for fuel types'
   end
 
   context 'when school is visible but not data enabled' do
@@ -105,7 +108,7 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
 
     it_behaves_like 'linking to school specific page'
     it_behaves_like 'fuel type icon headers'
-    it_behaves_like 'hourglass icons for all fuel types'
+    it_behaves_like 'minus icons for fuel types'
   end
 
   Schools::FuelConfiguration.fuel_types.each do |fuel_type|
@@ -114,15 +117,16 @@ RSpec.describe SchoolGroups::SchoolsStatusComponent, :include_url_helpers, type:
 
       let(:fuel) { { "has_#{fuel_type}": true } }
 
+      it_behaves_like 'fuel type icon headers', include_storage_heaters: (fuel_type == :storage_heaters)
       it_behaves_like 'linking to school specific page'
 
       it "shows a tick icon for #{fuel_type} fuel type" do
-        expect(html).to have_css("td span[title=\"#{I18n.t(fuel_type, scope: 'common')}\"] i.fa-circle-check")
+        expect(html).to have_css("td span[title=\"#{I18n.t(fuel_type, scope: 'common')}\"] i.fa-check-circle")
       end
 
       it 'shows a cross icon for other fuel types' do
-        (Schools::FuelConfiguration.fuel_types - [fuel_type]).each do |other_fuel_type|
-          expect(html).to have_css("td span[title=\"#{I18n.t(other_fuel_type, scope: 'common')}\"] i.fa-xmark")
+        (Schools::FuelConfiguration.fuel_types - [fuel_type, :storage_heaters]).each do |other_fuel_type|
+          expect(html).to have_css("td span[title=\"#{I18n.t(other_fuel_type, scope: 'common')}\"] i.fa-times-circle")
         end
       end
     end

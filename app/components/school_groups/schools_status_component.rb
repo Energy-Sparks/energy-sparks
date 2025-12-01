@@ -12,10 +12,14 @@ module SchoolGroups
       @records = merge_schools_and_onboardings
     end
 
+    # Display all possible fuel types
+    # But removing storage_heaters if school group does not have it
     def fuel_types
-      # @school_group.fuel_types(@schools)
-      # Display all possible fuel types for consistency
-      Schools::FuelConfiguration.fuel_types
+      @fuel_types ||= begin
+        fuel_types = Schools::FuelConfiguration.fuel_types.dup
+        fuel_types -= [:storage_heaters] unless @school_group.fuel_types.include?(:storage_heaters)
+        fuel_types
+      end
     end
 
     def status(record)
@@ -27,6 +31,11 @@ module SchoolGroups
       else
         :onboarding
       end
+    end
+
+    def fuel_sort(record, fuel_type)
+      return 3 if status(record) != :data_visible
+      record.fuel_type?(fuel_type) ? 1 : 2
     end
 
     def merge_schools_and_onboardings
