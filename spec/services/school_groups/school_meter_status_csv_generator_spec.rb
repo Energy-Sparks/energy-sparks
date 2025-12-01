@@ -9,18 +9,18 @@ RSpec.describe SchoolGroups::SchoolMeterStatusCsvGenerator do
   end
 
   let(:school_group) { create(:school_group) }
-  let(:school_group_cluster) { create(:school_group_cluster, school_group:) }
+  let(:data_enabled) { true }
 
   let!(:school) do
     create(:school,
            :with_basic_configuration_single_meter_and_tariffs,
            fuel_type: fuel_type,
            visible: true,
-           data_enabled: true,
+           data_enabled: data_enabled,
            number_of_pupils: 20,
            floor_area: 300.0,
            school_group:,
-           school_group_cluster:)
+           school_group_cluster: create(:school_group_cluster))
   end
 
   let!(:service) { described_class.new(school_group:, schools: [school], include_cluster: false) }
@@ -84,13 +84,21 @@ RSpec.describe SchoolGroups::SchoolMeterStatusCsvGenerator do
             expect(rows).to eq([[
                                  school.school_group.name,
                                  school.name,
-                                 school_group_cluster.name,
+                                 school.school_group_cluster.name,
                                  I18n.t(fuel_type, scope: 'common'),
                                  school.meters.first.mpan_mprn.to_s,
                                  school.meters.first.name,
                                  school.meters.first.first_validated_reading.iso8601,
                                  school.meters.first.last_validated_reading.iso8601
                                ]])
+          end
+        end
+
+        context 'when school is not data enabled' do
+          let(:data_enabled) { false }
+
+          it 'does not include meters for school' do
+            expect(rows).to be_empty
           end
         end
       end

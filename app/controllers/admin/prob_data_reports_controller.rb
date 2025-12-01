@@ -6,7 +6,7 @@ module Admin
       super + [
         Column.new(:meter_type,
                    ->(meter) { meter.meter_type.to_s },
-                   ->(meter) { render_to_string(IconComponent.new(fuel_type: meter.meter_type), layout: false) }),
+                   ->(meter) { render_to_string(Elements::IconComponent.new(fuel_type: meter.meter_type), layout: false) }),
         Column.new(:count,
                    ->(meter) { meter.count })
       ]
