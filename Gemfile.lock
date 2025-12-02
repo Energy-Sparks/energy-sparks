@@ -37,13 +37,13 @@ PATH
   remote: analytics
   specs:
     energy-sparks_analytics (1.2.1)
-      activesupport (>= 6.0, < 8.1)
+      activesupport (>= 6.0, < 8.2)
       benchmark-memory (~> 0)
       chroma (~> 0)
       hashdiff (~> 1)
       interpolate (~> 0.3.0)
       require_all (~> 3)
-      roo (~> 2)
+      roo (>= 2, < 4)
       roo-xls (~> 1)
       ruby-sun-times (~> 0)
       statsample (~> 2)
