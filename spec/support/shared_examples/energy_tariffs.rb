@@ -4,7 +4,7 @@ RSpec.shared_examples 'the user does not have access to the tariff editor' do
     if current_user.nil?
       expect(page).to have_current_path('/users/sign_in', ignore_query: true)
     elsif current_user.school
-      if current_user.pupil?
+      if current_user.student_user?
         expect(page).to have_current_path("/pupils/schools/#{current_user.school.slug}", ignore_query: true)
       else
         expect(page).to have_current_path("/schools/#{current_user.school.slug}", ignore_query: true)
