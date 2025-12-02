@@ -108,6 +108,21 @@ RSpec.describe 'adult dashboard navigation', type: :system do
     end
   end
 
+  context 'as student' do
+    let(:user) { create(:student, school: school) }
+
+    it_behaves_like 'navigation' do
+      let(:test_school) { school }
+    end
+
+    it 'shows me the public dashboard by default' do
+      visit schools_path
+      expect(page.has_content?('Energy Sparks schools across the UK')).to be true
+      click_on(school.name, match: :first)
+      expect(page.has_link?('Adult dashboard')).to be true
+    end
+  end
+
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 

@@ -35,6 +35,15 @@ RSpec.describe 'manage school' do
     end
   end
 
+  context 'as student' do
+    let(:user) { create(:student, school: school) }
+
+    it 'does not have my school menu' do
+      visit school_path(school, switch: true)
+      expect(page).to have_no_css('#manage_school')
+    end
+  end
+
   context 'as staff' do
     let(:user) { create(:staff, school: school) }
 

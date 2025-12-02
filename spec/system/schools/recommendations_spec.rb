@@ -17,6 +17,14 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
       end
     end
 
+    context 'when current user is student' do
+      let(:user) { create(:student) }
+
+      it 'has pupil checked' do
+        expect(section).to have_checked_field('Pupil activities')
+      end
+    end
+
     context 'when current user is staff' do
       let(:user) { create(:staff) }
 

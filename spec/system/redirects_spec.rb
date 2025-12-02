@@ -86,6 +86,43 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
 
+    context 'when logged in as a student user' do
+      let!(:user) { create(:student, school: school) }
+
+      before do
+        sign_in(user)
+        visit path
+      end
+
+      it 'has redirected' do
+        expect(page).to have_current_path school_advice_path(user.school), ignore_query: true
+      end
+
+      context 'with dashboard redirect' do
+        let(:path) { "#{base}/dashboard" }
+
+        it 'has redirected' do
+          expect(page).to have_current_path school_path(user.school), ignore_query: true
+        end
+      end
+
+      context 'with pupil dashboard redirect' do
+        let(:path) { "#{base}/pupils" }
+
+        it 'has redirected' do
+          expect(page).to have_current_path pupils_school_path(user.school), ignore_query: true
+        end
+      end
+
+      context 'with scoreboard redirect' do
+        let(:path) { "#{base}/scoreboard" }
+
+        it 'has redirected' do
+          expect(page).to have_current_path scoreboard_path(user.school.scoreboard), ignore_query: true
+        end
+      end
+    end
+
     context 'when logged in as a school admin user' do
       let!(:user) { create(:school_admin, school: school) }
 

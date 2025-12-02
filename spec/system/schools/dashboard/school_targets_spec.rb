@@ -177,6 +177,27 @@ RSpec.describe 'adult dashboard target prompts', type: :system do
     end
   end
 
+  context 'as student' do
+    let(:user) { create(:student, school: school) }
+
+    context 'when no target is set' do
+      before do
+        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
+        allow_any_instance_of(::Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
+        visit school_path(school, switch: true)
+      end
+
+      it 'does not display target prompt' do
+        expect(page).not_to have_content("Set targets to reduce your school's energy consumption")
+        expect(page).not_to have_link('Set energy saving target')
+      end
+    end
+
+    it_behaves_like 'progress reports' do
+      let(:test_school) { school }
+    end
+  end
+
   context 'as group admin' do
     let(:school_group)  { create(:school_group) }
     let(:school)        { create(:school, school_group: school_group) }
