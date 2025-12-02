@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 namespace :after_party do
   desc 'Deployment task: holiday_community_use_alerts'
   task holiday_community_use_alerts: :environment do
     puts "Running deploy task 'holiday_community_use_alerts'"
+
+    require 'dashboard'
 
     [[AlertElectricityUsageDuringCurrentHoliday, Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse],
      [AlertGasHeatingHotWaterOnDuringHoliday, Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse],
