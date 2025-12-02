@@ -346,6 +346,27 @@ describe Ability do
           end
         end
       end
+
+      context 'when user is a student' do
+        let(:user) { create(:student, school: school) }
+
+        it_behaves_like 'a user with common school user permissions'
+
+        it 'does not allow them to create targets' do
+          expect(ability).not_to be_able_to(:manage, create(:school_target, school: school))
+        end
+
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
+
+        context 'when school does not have public data sharing' do
+          let(:school) { create(:school, school_group: school_group, data_sharing: :within_group) }
+
+          it 'restricts access to some analysis' do
+            expect(ability).not_to be_able_to(:read_restricted_analysis, school)
+            expect(ability).not_to be_able_to(:read_restricted_advice, school)
+          end
+        end
+      end
     end
 
     context 'with group users' do
