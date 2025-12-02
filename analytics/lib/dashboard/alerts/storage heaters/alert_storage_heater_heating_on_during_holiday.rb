@@ -1,4 +1,4 @@
-class AlertStorageHeaterHeatingOnDuringHoliday < AlertUsageDuringCurrentHolidayBase
+class AlertStorageHeaterHeatingOnDuringHoliday < Alerts::UsageDuringCurrentHolidayBase
   def initialize(school)
     super(school, :storage_heaters)
   end
