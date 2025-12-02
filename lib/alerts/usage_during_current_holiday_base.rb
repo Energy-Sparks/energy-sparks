@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dashboard/alerts/common/alert_analysis_base'
-
 # During holidays alert schools if they are consuming energy
 module Alerts
   class UsageDuringCurrentHolidayBase < AlertAnalysisBase
