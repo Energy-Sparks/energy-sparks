@@ -23,7 +23,7 @@
      <tbody>
        <% @categories.each do |category| %>
         <tr>
-          <th><%= render IconComponent.new(name: category.icon) if category.icon %></th>
+          <th><%= render Elements::IconComponent.new(name: category.icon) if category.icon %></th>
           <td><%= link_to category.title, edit_admin_cms_category_path(category) %></td>
           <td><%= checkmark category.published? %></td>
           <td><%= category.pages.published.count %> / <%= category.pages.count %></td>

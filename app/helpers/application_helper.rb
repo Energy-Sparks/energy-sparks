@@ -182,6 +182,7 @@ module ApplicationHelper
   end
 
   def fuel_type_icon(fuel_type)
+    return nil unless fuel_type
     case fuel_type.to_sym
     when :electricity
       'bolt'

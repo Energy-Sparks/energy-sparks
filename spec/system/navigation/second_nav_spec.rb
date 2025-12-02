@@ -249,6 +249,7 @@ RSpec.describe 'Navigation -> second nav' do
 
       context 'when user is a site admin' do
         before { Flipper.enable(:school_group_secr_report) }
+        before { Flipper.enable(:group_settings) }
 
         let(:user) { create(:admin) }
 

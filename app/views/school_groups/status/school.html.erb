@@ -1,0 +1,78 @@
+<% content_for :header_title, "#{@school.name} - #{t('schools.downloads.index.meters')}" %>
+
+<%= render Layout::GridComponent.new(classes: 'mb-4',
+                                     component_classes: 'd-flex flex-column flex-fill',
+                                     cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+  <%= grid.with_block do %>
+    <h3><%= t('school_groups.status.school_info') %></h3>
+    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <dl class="row">
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.type') %>
+        </dt>
+        <dd class="col-7"><%= t("common.school_types.#{@school.school_type}") %></dd>
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.floor_area') %>
+        </dt>
+        <dd class="col-7"><%= @school.floor_area %>m<sup>2</sup></dd>
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.pupils') %>
+        </dt>
+        <dd class="col-7"><%= @school.number_of_pupils %></dd>
+        <dt class="col-5">
+          <%= t('advice_pages.how_have_we_analysed_your_data.school_characteristics_table.rows.location') %>
+        </dt>
+        <dd class="col-7"><%= @school.full_location_to_s %></dd>
+        <dt class="col-5"><%= t('school_groups.status.number_of_users') %></dt>
+        <dd class="col-7"><%= @school.active_adult_users.count %>
+          <% if @school.active_adult_users.any? %>
+            <%= t('school_groups.status.receiving_alerts', count: @school.active_alert_contacts.count) %>
+          <% end %>
+        </dd>
+      </dl>
+    </div>
+  <% end %>
+  <%= grid.with_block do %>
+    <h3><%= t('school_groups.status.key_dates') %></h3>
+    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <dl class="row">
+        <% if @school.school_onboarding&.complete? %>
+          <dt class="col-6"><%= t('school_groups.status.made_visible') %></dt>
+          <dd class="col-6"><%= nice_dates(@school.school_onboarding.completed_on) %></dd>
+        <% end %>
+        <% if @school.data_enabled? %>
+          <dt class="col-6"><%= t('school_groups.status.data_published') %></dt>
+          <dd class="col-6">
+            <%= nice_dates(
+                  @school.school_onboarding&.first_made_data_enabled || @school.school_onboarding&.completed_on
+                ) %>
+          </dd>
+        <% end %>
+      </dl>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @school.data_enabled? %>
+  <% if @school.meters.active.any? %>
+    <h3><%= t('advice_pages.how_have_we_analysed_your_data.energy_data') %></h3>
+    <%= render Schools::EnergyDataStatusComponent.new(school: @school) %>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h3 class="mb-0"><%= t('school_groups.status.individual_meter_data') %></h3>
+
+      <%= link_to t('school_groups.download_as_csv'),
+                  school_school_group_status_index_path(@school_group, @school, format: :csv),
+                  class: 'btn btn-sm' %>
+    </div>
+    <%= render Schools::MeterStatusComponent.new(school: @school) %>
+  <% else %>
+    <%= render PromptComponent.new status: :neutral, style: :compact, icon: 'gauge' do |c| %>
+      <%= t('school_groups.status.no_meters') %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= render PromptComponent.new status: :neutral, style: :compact, icon: 'gauge' do |c| %>
+    <%= t('school_groups.status.not_data_enabled') %>
+  <% end %>
+<% end %>
