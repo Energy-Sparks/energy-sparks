@@ -32,8 +32,8 @@ RSpec.describe Admin::RecordComponent, :include_url_helpers, type: :component do
       render_inline(component)
     end
 
-    it { expect(html).to have_content(created_at.to_fs(:es_compact))}
-    it { expect(html).to have_content(updated_at.to_fs(:es_compact))}
+    it { expect(html).to have_content(record.created_at.to_fs(:es_compact))}
+    it { expect(html).to have_content(record.updated_at.to_fs(:es_compact))}
 
     context 'with staff users' do
       it { expect(html).to have_link(updated_by.display_name, href: user_path(updated_by))}
