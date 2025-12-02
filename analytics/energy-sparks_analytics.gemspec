@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 3.2'
 
-  s.add_dependency 'activesupport', '>= 6.0', '< 8.1'
+  s.add_dependency 'activesupport', '>= 6.0', '< 8.2'
   s.add_dependency 'benchmark-memory', '~> 0'
   s.add_dependency 'chroma', '~> 0'
   s.add_dependency 'hashdiff', '~> 1'
