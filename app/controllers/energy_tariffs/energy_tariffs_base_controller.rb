@@ -13,6 +13,8 @@ module EnergyTariffs
     before_action :tariff_holder
     before_action :build_breadcrumbs
 
+    layout -> { @school_group ? 'group_settings' : 'application' }
+
     private
 
     def tariff_holder

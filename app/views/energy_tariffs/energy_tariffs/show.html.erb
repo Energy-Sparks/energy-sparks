@@ -1,5 +1,4 @@
-<% content_for :page_title, @energy_tariff.name %>
-<h1><%= @energy_tariff.name %></h1>
+<% content_for :header_title, @energy_tariff.name %>
 
 <div class="energy_tariff">
   <% if @energy_tariff.usable? %>
@@ -7,7 +6,11 @@
       <%= render NoticeComponent.new(classes: 'mb-2', status: :neutral) do |c| %>
         <p>
           <%= t('schools.user_tariffs.show.introduction_html',
-                analysis_path: analysis_page_finder_path(urn: @tariff_holder.urn, analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)), meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
+                analysis_path: analysis_page_finder_path(
+                  urn: @tariff_holder.urn,
+                  analysis_class: cost_analysis_class_for(@energy_tariff.meter_type)
+                ),
+                meter_type: t("common.#{@energy_tariff.meter_type}").downcase) %>.
         </p>
       <% end %>
     <% end %>
@@ -58,7 +61,12 @@
     <% c.with_charges_section do %>
       <tr class="positive-row">
         <td class="description"><%= t('schools.user_tariffs.tariff_partial.type') %></td>
-        <td class="value"><%= @energy_tariff.flat_rate? ? t('schools.user_tariffs.tariff_partial.flat_rate_tariff') : t('schools.user_tariffs.tariff_partial.differential_tariff') %></td>
+        <td class="value">
+          <%= if @energy_tariff.flat_rate? %>
+            <%= t('schools.user_tariffs.tariff_partial.flat_rate_tariff') %>
+          <% else %>
+            <%= t('schools.user_tariffs.tariff_partial.differential_tariff') %>
+          </td>
       </tr>
     <% end %>
   <% end %>
@@ -72,7 +80,9 @@
         ) do |c| %>
       <% c.with_charges_section do %>
         <tr class="positive-row">
-          <td class="description"><%= t("schools.user_tariffs.choose_meters.#{@energy_tariff.applies_to}").capitalize %></td>
+          <td class="description">
+            <%= t("schools.user_tariffs.choose_meters.#{@energy_tariff.applies_to}").capitalize %>
+          </td>
           <td class="value"></td>
         </tr>
       <% end %>
@@ -116,10 +126,13 @@
       ) do |c| %>
     <% c.with_charges_section do %>
       <% if @energy_tariff.flat_rate? %>
-        <%= render 'energy_tariffs/energy_tariffs/flat_rate', energy_tariff: @energy_tariff, allow_edits: false %>
+        <%= render 'energy_tariffs/energy_tariffs/flat_rate',
+                   energy_tariff: @energy_tariff, allow_edits: false %>
       <% else %>
-        <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, feedback: true,
-                                                                allow_edits: false %>
+        <%= render 'energy_tariffs/energy_tariffs/rates_table',
+                   energy_tariff: @energy_tariff,
+                   feedback: true,
+                   allow_edits: false %>
       <% end %>
     <% end %>
   <% end %>
@@ -131,7 +144,9 @@
         show_button: !@energy_tariff.dcc?
       ) do |c| %>
     <% c.with_charges_section do %>
-      <%= render 'energy_tariffs/energy_tariffs/charges_table', energy_tariff: @energy_tariff, allow_edits: false %>
+      <%= render 'energy_tariffs/energy_tariffs/charges_table',
+                 energy_tariff: @energy_tariff,
+                 allow_edits: false %>
     <% end %>
   <% end %>
 

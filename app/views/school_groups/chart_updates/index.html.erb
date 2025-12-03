@@ -1,12 +1,7 @@
+<% content_for :header_title, "#{@school_group.name} #{t('school_groups.chart_updates.index.group_chart_settings')}" %>
 <% if Flipper.enabled?(:group_settings, current_user) %>
-  <% content_for :header_title, "#{@school_group.name} - #{t('school_groups.chart_updates.index.group_chart_settings')}" %>
   <h2><%= t('school_groups.chart_updates.index.default_chart_preference.form_group') %></h2>
-<% else %>
-  <% content_for :page_title,
-                 "#{@school_group.name} | #{t('school_groups.chart_updates.index.group_chart_settings').capitalize}" %>
-  <h1><%= @school_group.name %> <%= t('school_groups.chart_updates.index.group_chart_settings') %></h1>
 <% end %>
-
 <%= simple_form_for :school_group,
                     url: school_group_chart_update_bulk_update_charts_path(chart_update_id: @school_group.id),
                     method: :post do |form| %>
