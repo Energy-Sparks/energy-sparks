@@ -2,7 +2,6 @@
 en:
   schools:
     energy_tariffs:
-      header_title: "%{name} energy tariffs"
       title: Energy Tariffs
     tariffs_helper:
       charge_value: "%{value} per %{units}"
