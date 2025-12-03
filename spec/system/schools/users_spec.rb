@@ -8,6 +8,45 @@ describe 'School user management' do
   let(:school) { create(:school) }
   let(:school_admin) { create(:school_admin, school:) }
 
+  shared_examples 'creating an account with an email address' do
+    let(:name) { 'New user' }
+    let(:email) { 'new_user@test.com' }
+
+    let(:staff_role) { nil }
+
+    before do
+      click_on I18n.t("schools.users.index.new_#{role}_account")
+      fill_in 'Name', with: name
+      fill_in 'Email', with: email
+      select staff_role.title, from: 'Role' if staff_role
+    end
+
+    it 'creates the user' do
+      expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
+      user = school.users.where(role:).first
+      expect(user.email).to eq(email)
+      expect(user.confirmed?).to be false
+      expect(user.created_by).to eq(school_admin)
+      expect(user.staff_role).to eq(staff_role) if staff_role
+    end
+
+    it 'sends an email' do
+      click_on 'Create account'
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq('Please confirm your account on Energy Sparks')
+    end
+
+    context 'with an invalid form' do
+      let(:name) { '' }
+      let(:email) { '' }
+
+      before { click_on 'Create account' }
+
+      it { expect(page).to have_text("Name *\ncan't be blank") }
+      it { expect(page).to have_text("Email *\ncan't be blank") }
+    end
+  end
+
   shared_examples 'can edit and delete an existing user' do
     let(:role) { :pupil }
 
@@ -141,36 +180,9 @@ describe 'School user management' do
       before { visit school_users_path(school) }
 
       context 'when creating an account' do
-        let(:name) { 'Mrs Jones' }
-
-        before do
-          click_on 'New staff account'
-          fill_in 'Name', with: name
-          fill_in 'Email', with: 'mrsjones@test.com'
-          select teacher_role.title, from: 'Role'
-        end
-
-        it 'creates the user' do
-          expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
-          staff = school.users.staff.first
-          expect(staff.email).to eq('mrsjones@test.com')
-          expect(staff.staff_role).to eq(teacher_role)
-          expect(staff.confirmed?).to be false
-          expect(staff.created_by).to eq(school_admin)
-        end
-
-        it 'sends an email' do
-          click_on 'Create account'
-          email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
-        end
-
-        context 'with an invalid form' do
-          let(:name) { '' }
-
-          before { click_on 'Create account' }
-
-          it { expect(page).to have_text("Name *\ncan't be blank") }
+        it_behaves_like 'creating an account with an email address' do
+          let(:staff_role) { teacher_role}
+          let(:role) { :staff }
         end
       end
 
@@ -258,35 +270,9 @@ describe 'School user management' do
       before { visit school_users_path(school) }
 
       context 'when creating an account' do
-        let(:name) { 'Mrs Jones' }
-
-        before do
-          click_on 'New student account'
-          fill_in 'Name', with: name
-          fill_in 'Email', with: 'user@test.com'
-        end
-
-        it 'creates the user' do
-          expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
-          user = school.users.student.first
-          expect(user.email).to eq('user@test.com')
-          expect(user.staff_role).to be_nil
-          expect(user.confirmed?).to be false
-          expect(user.created_by).to eq(school_admin)
-        end
-
-        it 'sends an email' do
-          click_on 'Create account'
-          email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
-        end
-
-        context 'with an invalid form' do
-          let(:name) { '' }
-
-          before { click_on 'Create account' }
-
-          it { expect(page).to have_text("Name *\ncan't be blank") }
+        it_behaves_like 'creating an account with an email address' do
+          let(:staff_role) { nil }
+          let(:role) { :student }
         end
       end
 
