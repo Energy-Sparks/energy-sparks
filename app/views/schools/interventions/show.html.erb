@@ -1,12 +1,59 @@
-<div class="row justify-content-md-center">
-  <div class="col col-lg-8">
-    <h3>
-      <%= fa_icon("#{@observation.intervention_type.intervention_type_group.icon}") %>
-      <%= @observation.intervention_type.name %>
-    </h3>
-    <h4><%= nice_dates(@observation.at) %></h4>
-    <%= @observation.description %>
+<% content_for :page_title, "#{@school.name} " + t('interventions.show.page_title') %>
 
-    <%= t('interventions.show.pupils_involved_in_this_activity') %>: <%= @observation.pupil_count %>
+<div class="row">
+  <div class="col-md-12">
+    <h1><%= @observation.intervention_type.name %></h1>
+    <p class="text-muted">
+      <span>
+        <%= link_to @school.name, school_path(@school) %>, <%= @observation.at.strftime('%A, %d %B %Y') %>
+      </span>
+      <br>
+      <span class="badge badge-success"
+            data-toggle="tooltip"
+            data-placement="bottom" title="<%= t('activities.show.score_awarded_for_this_activity') %>">
+            <%= @observation.points %>
+      </span>
+      <span class="badge badge-secondary"
+            data-toggle="tooltip"
+            data-placement="bottom" title="<%= t('activities.show.category_of_activity') %>">
+            <%= @observation.intervention_type.intervention_type_group.name %>
+      </span>
+    </p>
   </div>
 </div>
+
+<% if @observation.description %>
+  <div class="row">
+    <div class="col-md-12 activity">
+      <%= @observation.description %>
+    </div>
+  </div>
+  <% if @observation.pupil_count %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= t('interventions.show.pupils_involved_in_this_activity') %>: <%= @observation.pupil_count %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="row">
+  <div class="col-md-12 activity">
+    <p></p>
+    <%= link_to t('activities.show.all_activities'), school_timeline_path(@school), class: 'btn btn-secondary' %>
+    <% if can? :manage, @observation %>
+      <%= link_to t('activities.actions.home'), school_path(@school),
+                  class: 'btn btn-primary' %>
+      <%= link_to t('activities.actions.edit'),
+                  edit_school_intervention_path(@school, @observation),
+                  class: 'btn btn-primary' %>
+      <%= link_to t('activities.actions.delete'),
+                  school_intervention_path(@school, @observation),
+                  method: :delete,
+                  data: { confirm: t('activities.actions.are_you_sure') },
+                  class: 'btn btn-danger' %>
+    <% end %>
+  </div>
+</div>
+
+<%= render Admin::RecordComponent.new(@observation, current_user:) %>

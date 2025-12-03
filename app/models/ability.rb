@@ -146,6 +146,8 @@ class Ability
     can :read, Location
 
     can :live_data, Cad, visible: true, public: true
+
+    cannot :debug_metadata, :all
   end
 
   # Users who are not yet signed in, or registered can begin onboarding
