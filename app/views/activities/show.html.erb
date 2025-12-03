@@ -35,7 +35,14 @@
       <%= @activity.description %>
     </div>
   </div>
-  <p></p>
+  <% if @activity.pupil_count %>
+    <div class="row">
+      <div class="col-md-12">
+        <%= t('interventions.show.pupils_involved_in_this_activity') %>: <%= @activity.pupil_count %>
+      </div>
+    </div>
+  <% end %>
+
 <% else %>
   <div class="row">
     <div class="col-md-12 activity">

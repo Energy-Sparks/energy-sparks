@@ -108,10 +108,20 @@ describe 'viewing and recording activities' do
     end
 
     context 'viewing a previously recorded activity' do
-      let!(:activity) { create(:activity, school:, activity_type:) }
+      let!(:activity) { create(:activity, school:, activity_type:, pupil_count: nil) }
 
       before do
         refresh
+      end
+
+      context 'when there is a pupil count' do
+        let!(:activity) { create(:activity, school:, activity_type:, pupil_count: 15) }
+
+        before do
+          visit school_activity_path(school, activity)
+        end
+
+        it { expect(page).to have_content(I18n.t('interventions.show.pupils_involved_in_this_activity')) }
       end
 
       context 'when updating the activity' do

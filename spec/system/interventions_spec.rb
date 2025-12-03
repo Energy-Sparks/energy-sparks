@@ -185,6 +185,16 @@ describe 'viewing and recording action' do
       it 'links to the intervention' do
         expect(page).to have_link(href: school_intervention_path(school, observation))
       end
+
+      context 'when there is a pupil count' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, pupil_count: 27) }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it { expect(page).to have_content(I18n.t('interventions.show.pupils_involved_in_this_activity')) }
+      end
     end
 
     context 'when requesting an incorrect url' do
