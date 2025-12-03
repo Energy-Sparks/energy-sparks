@@ -165,4 +165,21 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
       end
     end
   end
+
+  context 'when group is a project group' do
+    let(:school_group) { create(:school_group, :with_grouping, role: :project, group_type: :project) }
+    let(:school) do
+      create(:school,
+          :with_basic_configuration_single_meter_and_tariffs,
+          fuel_type: :electricity, **statuses,
+          project_groups: [school_group])
+    end
+
+    before do
+      click_on school.name
+    end
+
+    it { expect(page).to have_http_status(:ok) }
+    it { expect(page).to have_content(school.name) }
+  end
 end

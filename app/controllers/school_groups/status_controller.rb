@@ -5,7 +5,6 @@ module SchoolGroups
     include SchoolGroupAccessControl
 
     layout 'group_settings'
-    load_and_authorize_resource :school, through: :school_group
 
     before_action :load_schools, only: [:index, :meters]
     before_action :load_onboardings, only: [:index]
@@ -28,6 +27,8 @@ module SchoolGroups
     end
 
     def school
+      @school = filtered_schools.find(params[:school_id])
+
       respond_to do |format|
         format.html { render :school }
         format.csv { meter_csv }
