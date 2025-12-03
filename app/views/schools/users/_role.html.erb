@@ -1,0 +1,13 @@
+<h2 class="mt-4"><%= t("schools.users.index.#{role}_accounts") %></h2>
+<p><%= t("schools.users.index.#{role}_accounts_have_access_message") %></p>
+
+<div id="<%= role %>">
+  <% if users.any? %>
+    <%= render 'users', users: users %>
+  <% else %>
+    <p><%= t("schools.users.index.no_#{role}_accounts") %>.</p>
+  <% end %>
+</div>
+
+<%= link_to t("schools.users.index.new_#{role}_account"), new_school_user_path(@school, role: role),
+            class: 'btn btn-primary' %>
