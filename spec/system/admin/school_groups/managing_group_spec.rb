@@ -132,6 +132,8 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it { expect(page).to have_link('View', href: school_group_path(school_group)) }
     it { expect(page).to have_link('Edit', href: edit_admin_school_group_path(school_group)) }
+    it { expect(page).to have_link(I18n.t('school_groups.titles.school_status'), href: school_group_status_index_path(school_group)) }
+    it { expect(page).to have_link('Manage users', href: admin_school_group_users_path(school_group)) }
     it { expect(page).to have_link('Manage partners', href: admin_school_group_partners_path(school_group)) }
     it { expect(page).to have_link('Delete', href: admin_school_group_path(school_group)) }
 
@@ -147,7 +149,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       visit admin_school_group_path(school_group)
     end
 
-    it { expect(page).to have_link('Manage users', href: admin_school_group_users_path(school_group)) }
     it { expect(page).to have_link('Meter attributes', href: admin_school_group_meter_attributes_path(school_group)) }
     it { expect(page).to have_link('Manage tariffs', href: school_group_energy_tariffs_path(school_group)) }
     it { expect(page).to have_link('Chart updates', href: school_group_chart_updates_path(school_group)) }

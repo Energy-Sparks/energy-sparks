@@ -1,9 +1,9 @@
 <div id="school-group-button-panel" class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
   <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
-  <% if @school_group.organisation? %>
-    <%= link_to 'Manage users', admin_school_group_users_path(@school_group), class: 'btn btn-sm' %>
-  <% end %>
+  <%= link_to t('school_groups.titles.school_status'),
+              school_group_status_index_path(@school_group), class: 'btn btn-sm' %>
+  <%= link_to 'Manage users', admin_school_group_users_path(@school_group), class: 'btn btn-sm' %>
   <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
   <% if @school_group.organisation? %>
     <%= link_to 'Manage tariffs', school_group_energy_tariffs_path(@school_group), class: 'btn btn-sm' %>
