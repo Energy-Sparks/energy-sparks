@@ -62,7 +62,7 @@
       <tr class="positive-row">
         <td class="description"><%= t('schools.user_tariffs.tariff_partial.type') %></td>
         <td class="value">
-          <%= if @energy_tariff.flat_rate? %>
+          <% if @energy_tariff.flat_rate? %>
             <%= t('schools.user_tariffs.tariff_partial.flat_rate_tariff') %>
           <% else %>
             <%= t('schools.user_tariffs.tariff_partial.differential_tariff') %>
