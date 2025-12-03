@@ -70,7 +70,7 @@ class ActivitiesController < ApplicationController
     @activity.destroy
     respond_to do |format|
       format.html do
-        redirect_back fallback_location: school_activities_path(@school), notice: 'Activity was successfully destroyed.'
+        redirect_to school_activities_path(@school), notice: 'Activity was successfully destroyed.'
       end
       format.json { head :no_content }
     end
