@@ -39,6 +39,7 @@ module EnergySparks
     config.session_store :cookie_store, key: '_energy-sparks_session'
     config.after_initialize do
       if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
+        require 'dashboard/alerts/common/benchmark_metrics'
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
 

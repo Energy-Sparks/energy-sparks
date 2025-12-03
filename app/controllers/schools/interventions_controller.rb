@@ -61,7 +61,7 @@ module Schools
     def destroy
       authorize! :delete, @observation
       ObservationRemoval.new(@observation).process
-      redirect_back fallback_location: school_interventions_path(@school)
+      redirect_to school_interventions_path(@school)
     end
 
     def completed; end
