@@ -272,7 +272,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
           end
         end
 
-        it_behaves_like 'a working account form'
+        it_behaves_like 'a working account form', staff_role: false
       end
     end
 

@@ -102,7 +102,7 @@ RSpec.describe 'User account page and updates', :include_application_helper do
         let(:path) { "#{base}/dashboard" }
 
         it 'has redirected' do
-          expect(page).to have_current_path school_path(user.school), ignore_query: true
+          expect(page).to have_current_path pupils_school_path(user.school), ignore_query: true
         end
       end
 
