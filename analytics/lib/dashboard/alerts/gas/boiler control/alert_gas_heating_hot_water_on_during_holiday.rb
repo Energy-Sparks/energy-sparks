@@ -1,4 +1,4 @@
-class AlertGasHeatingHotWaterOnDuringHoliday < AlertUsageDuringCurrentHolidayBase
+class AlertGasHeatingHotWaterOnDuringHoliday < Alerts::UsageDuringCurrentHolidayBase
   def initialize(school)
     super(school, :gas)
   end
