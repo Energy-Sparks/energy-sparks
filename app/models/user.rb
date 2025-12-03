@@ -362,6 +362,10 @@ class User < ApplicationRecord
     end
   end
 
+  def can_be_made_school_admin?
+    staff?
+  end
+
   protected
 
   def preferred_locale_presence_in_available_locales
