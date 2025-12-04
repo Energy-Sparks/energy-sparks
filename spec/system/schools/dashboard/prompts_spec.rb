@@ -35,22 +35,15 @@ RSpec.describe 'adult dashboard prompts', type: :system do
     it_behaves_like 'a rich audit prompt', displayed: true
   end
 
-  context 'as pupil' do
-    let(:user) { create(:pupil, school: school, confirmed_at: confirmed_at) }
+  %i[pupil student].each do |role|
+    context "as a #{role}" do
+      let(:user) { create(role, school: school, confirmed_at: confirmed_at) }
 
-    it_behaves_like 'dashboard message prompts', displayed: true
-    it_behaves_like 'a training prompt', displayed: true
-    it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a rich audit prompt', displayed: true
-  end
-
-  context 'as student' do
-    let(:user) { create(:student, school: school, confirmed_at: confirmed_at) }
-
-    it_behaves_like 'dashboard message prompts', displayed: true
-    it_behaves_like 'a training prompt', displayed: true
-    it_behaves_like 'a complete programme prompt', displayed: true
-    it_behaves_like 'a rich audit prompt', displayed: true
+      it_behaves_like 'dashboard message prompts', displayed: true
+      it_behaves_like 'a training prompt', displayed: true
+      it_behaves_like 'a complete programme prompt', displayed: true
+      it_behaves_like 'a rich audit prompt', displayed: true
+    end
   end
 
   context 'as staff' do
