@@ -8,6 +8,7 @@ class ActivityCreator
 
   def process
     @activity.activity_category = @activity.activity_type.activity_category if @activity.activity_type
+    @activity.created_by = @user
 
     if @activity.save
       process_programmes if started_active_programmes.any?

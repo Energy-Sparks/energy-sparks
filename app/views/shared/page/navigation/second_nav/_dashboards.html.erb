@@ -16,7 +16,7 @@
         !current_page?(school_path(current_school)) %>
     <li class="nav-item nowrap">
       <%= link_to t('dashboards.adult_dashboard'),
-                  school_path(current_school, ({ switch: true } if current_user&.pupil?)),
+                  school_path(current_school, ({ switch: true } if current_user&.student_user?)),
                   class: 'nav-link dash' %>
     </li>
   <% end %>

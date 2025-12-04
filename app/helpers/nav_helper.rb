@@ -70,10 +70,6 @@ module NavHelper
     current_user && current_user.admin? && !school.data_enabled?
   end
 
-  def show_sub_nav?(school, hide_subnav)
-    school.present? && school.id && hide_subnav.nil?
-  end
-
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)

@@ -43,6 +43,11 @@ FactoryBot.define do
       association :observable, factory: :school_target
     end
 
+    trait :with_contributors do
+      created_by { association :user }
+      updated_by { association :user }
+    end
+
     factory :observation_with_temperature_recording_and_location do
       observation_type { :temperature }
       after(:create) do |observation, _evaluator|

@@ -51,6 +51,10 @@ describe Tasks::Recorder do
         expect(processed).to be true
       end
 
+      it 'sets created_by' do
+        expect(activity.created_by).to eq(user)
+      end
+
       it 'sets activity category from activity type' do
         expect(activity.activity_category).to eq(activity_category)
       end

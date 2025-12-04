@@ -55,7 +55,7 @@ module Admin
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
           end
-          school_group.schools.by_name.each do |school|
+          school_group.assigned_schools.by_name.each do |school|
             school_users[school].each do |user|
               add_user_to_csv(csv, school_group, school, user)
             end
