@@ -10,12 +10,15 @@
                     visible: school_group.organisation?,
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('common.charts'),
-                   href: school_group_chart_updates_path(school_group), classes:) %>
+                   href: school_group_chart_updates_path(school_group), classes:,
+                   match_controller: true) %>
     <% s.with_item(name: t('common.clusters'),
-                   href: school_group_clusters_path(school_group), classes:) %>
+                   href: school_group_clusters_path(school_group), classes:,
+                   match_controller: true) %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('common.tariffs'),
-                     href: school_group_energy_tariffs_path(@school_group), classes:) %>
+                     href: school_group_energy_tariffs_path(@school_group), classes:,
+                     selected: controller_path.starts_with?('energy_tariff')) %>
     <% end %>
   <% end %>
 

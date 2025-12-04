@@ -51,7 +51,7 @@
                                                             checked: @subscribe_alerts %>
     <% end %>
 
-    <% if @confirmed %>
+    <% if can_subscribe_newsletter?(user_from_token) %>
       <div class="row mt-4">
         <div class="col-md-12">
           <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
@@ -61,6 +61,9 @@
                  email_types: @email_types,
                  interests: @interests %>
 
+    <% end %>
+
+    <% if @confirmed %>
       <%= render 'shared/agree_terms_checkbox' %>
     <% end %>
 

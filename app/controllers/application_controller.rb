@@ -32,19 +32,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    @current_school ||= if @school&.persisted?
-                          @school
-                        elsif @tariff_holder&.school? && @tariff_holder.persisted?
-                          @tariff_holder
-                        end
+    @current_school ||= @school if @school&.persisted?
   end
 
   def current_school_group
-    @current_school_group ||= if @school_group&.persisted?
-                                @school_group
-                              elsif @tariff_holder&.school_group? && @tariff_holder.persisted?
-                                @tariff_holder
-                              end
+    @current_school_group ||= @school_group if @school_group&.persisted?
   end
 
   def current_school_podium

@@ -5,10 +5,13 @@ class PasswordsController < Devise::PasswordsController
   include AlertContactCreator
   include NewsletterSubscriber
 
+  helper_method :can_subscribe_newsletter?
+  helper_method :user_from_token
+
   def edit
     super
     # the resource is NOT the actual user - have to find it ourselves
-    user = User.with_reset_password_token(params[:reset_password_token])
+    user = user_from_token
     if user
       @allow_alerts = allow_alerts?(user)
       @subscribe_alerts = true
@@ -26,13 +29,21 @@ class PasswordsController < Devise::PasswordsController
       user.preferred_locale = resource_params[:preferred_locale] if resource_params[:preferred_locale]
       if user.errors.empty?
         create_or_update_alert_contact(user.school, resource) if @subscribe_alerts
-        subscribe_newsletter(user, params.permit(interests: {})) if @confirmed
+        subscribe_newsletter(user, params.permit(interests: {})) if can_subscribe_newsletter?(user)
       end
       @interests = default_interests(user)
     end
   end
 
   private
+
+  def can_subscribe_newsletter?(user)
+    @confirmed && !user&.student_user?
+  end
+
+  def user_from_token
+    User.with_reset_password_token(params[:reset_password_token])
+  end
 
   def set_email_types
     @email_types = list_of_email_types

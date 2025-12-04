@@ -108,10 +108,33 @@ describe 'viewing and recording activities' do
     end
 
     context 'viewing a previously recorded activity' do
-      let!(:activity) { create(:activity, school:, activity_type:) }
+      let!(:activity) { create(:activity, school:, activity_type:, pupil_count: nil) }
 
       before do
         refresh
+      end
+
+      context 'when there is no description' do
+        let!(:activity) { create(:activity, school:, activity_type:, description: '', pupil_count: nil) }
+
+        before do
+          visit school_activity_path(school, activity)
+        end
+
+        it 'shows prompt to add detail' do
+          expect(page).to have_content(I18n.t('activities.form.tell_us_more_label'))
+          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_activity_path(school, activity))
+        end
+      end
+
+      context 'when there is a pupil count' do
+        let!(:activity) { create(:activity, school:, activity_type:, pupil_count: 15) }
+
+        before do
+          visit school_activity_path(school, activity)
+        end
+
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: activity.pupil_count)) }
       end
 
       context 'when updating the activity' do
@@ -467,6 +490,7 @@ describe 'viewing and recording activities' do
         expect { click_on 'Save activity' }.to change(other_school.activities, :count).by(1)
         expect(page).to have_content('Congratulations!')
         expect(other_school.activities.most_recent.first.happened_on).to eq(Time.zone.today)
+        expect(other_school.activities.most_recent.first.created_by).to eq(group_admin)
         expect(other_school.activities.most_recent.first.observations.first.created_by).to eq(group_admin)
       end
     end

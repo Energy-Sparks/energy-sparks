@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_02_192429) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_04_131621) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -87,8 +87,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_02_192429) do
     t.bigint "activity_category_id"
     t.integer "pupil_count"
     t.bigint "updated_by_id"
+    t.bigint "created_by_id"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
+    t.index ["created_by_id"], name: "index_activities_on_created_by_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
     t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
   end
@@ -2262,6 +2264,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_02_192429) do
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
   add_foreign_key "activities", "activity_types", on_delete: :restrict
   add_foreign_key "activities", "schools", on_delete: :cascade
+  add_foreign_key "activities", "users", column: "created_by_id"
   add_foreign_key "activities", "users", column: "updated_by_id"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
