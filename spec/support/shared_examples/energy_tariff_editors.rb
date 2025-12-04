@@ -254,6 +254,7 @@ RSpec.shared_examples 'a school tariff editor' do
     before { visit school_energy_tariffs_path(school) }
 
     it_behaves_like 'a tariff editor index'
+    it_behaves_like 'a page not displaying the school group settings nav'
   end
 
   it 'is navigable from the manage school menu' do
@@ -286,6 +287,7 @@ RSpec.shared_examples 'a school tariff editor' do
     it_behaves_like 'the user can select the meters'
     it_behaves_like 'the user can select the meter system'
     it_behaves_like 'the user can not see the meterless applies to editor'
+    it_behaves_like 'a page not displaying the school group settings nav'
   end
 
   context 'when editing a school gas tariff' do
@@ -302,6 +304,7 @@ RSpec.shared_examples 'a school tariff editor' do
     it_behaves_like 'the user can select the meters'
     it_behaves_like 'the user can not select the meter system'
     it_behaves_like 'the user can not see the meterless applies to editor'
+    it_behaves_like 'a page not displaying the school group settings nav'
   end
 end
 
@@ -324,6 +327,7 @@ RSpec.shared_examples 'a school group energy tariff editor' do
     before { visit school_group_energy_tariffs_path(school_group) }
 
     it_behaves_like 'a tariff editor index'
+    it_behaves_like 'a page displaying the school group settings nav'
   end
 
   context 'when creating tariffs' do
@@ -338,6 +342,7 @@ RSpec.shared_examples 'a school group energy tariff editor' do
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
     it_behaves_like 'the meterless applies to editor'
+    it_behaves_like 'a page displaying the school group settings nav'
   end
 end
 
@@ -353,6 +358,7 @@ RSpec.shared_examples 'the site settings energy tariff editor' do
     before { visit admin_settings_energy_tariffs_path }
 
     it_behaves_like 'a tariff editor index'
+    it_behaves_like 'a page not displaying the school group settings nav'
   end
 
   it 'has expected index' do
@@ -368,5 +374,6 @@ RSpec.shared_examples 'the site settings energy tariff editor' do
     it_behaves_like 'a basic gas tariff editor'
     it_behaves_like 'a basic electricity tariff editor'
     it_behaves_like 'the meterless applies to editor'
+    it_behaves_like 'a page not displaying the school group settings nav'
   end
 end

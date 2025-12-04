@@ -34,6 +34,8 @@ describe 'school group clusters', :school_group_clusters, type: :system do
     it "doesn't display cluster", unless: name do
       expect(page).not_to have_link('Edit', href: /clusters/)
     end
+
+    it_behaves_like 'a page displaying the school group settings nav'
   end
 
   shared_examples 'school group cluster form' do |name: ''|

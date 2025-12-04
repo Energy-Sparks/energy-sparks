@@ -92,6 +92,7 @@ en:
         no_schools: This cluster has no schools
         select_cluster: Select cluster
         title: Clusters
+        unassign_selected: Unassign selected
         unassigned_title: Schools not in a cluster
       intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
       labels:

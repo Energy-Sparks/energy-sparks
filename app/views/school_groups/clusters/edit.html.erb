@@ -1,5 +1,6 @@
-<% content_for :page_title, @school_group.name + ' | ' +  t('school_groups.clusters.edit.title').capitalize %>
+<% content_for :header_title, "#{@school_group.name} #{t('school_groups.clusters.index.title')}" %>
+<% content_for :page_title, "#{@school_group.name} | #{t('school_groups.clusters.edit.title').capitalize}" %>
 
 <h2><%= t('school_groups.clusters.edit.title') %></h2>
 
-<%= render "form" %>
+<%= render 'form' %>
