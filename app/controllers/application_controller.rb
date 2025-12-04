@@ -92,7 +92,7 @@ class ApplicationController < ActionController::Base
   end
 
   def pagy_locale
-    @pagy_locale = I18n.locale.to_s
+    Pagy::I18n.locale = I18n.locale.to_s
   end
 
   # user has signed in via devise "remember me" functionality
