@@ -36,8 +36,6 @@
         <%= @observation.description %>
       </div>
     </div>
-  <% elsif current_user.nil? %>
-    Not logged in
   <% end %>
 <% elsif can? :manage, @observation %>
   <div class="row">

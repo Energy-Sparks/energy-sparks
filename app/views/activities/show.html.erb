@@ -42,8 +42,6 @@
         <%= @activity.description %>
       </div>
     </div>
-  <% elsif current_user.nil? %>
-    Not logged in
   <% end %>
 <% elsif can? :manage, @activity %>
   <div class="row">
