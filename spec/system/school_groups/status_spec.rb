@@ -42,7 +42,7 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
     expect(page).to have_content("#{school_group.name} - #{I18n.t('school_groups.titles.school_status')}")
   end
 
-  it_behaves_like 'a page displaying the school group settings nav'
+  it_behaves_like 'a page always displaying the school group settings nav'
 
   context 'when there is a data visible school' do
     let(:statuses) { { visible: true, data_enabled: true } }
