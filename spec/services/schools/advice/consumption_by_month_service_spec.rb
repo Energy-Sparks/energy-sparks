@@ -11,7 +11,10 @@ describe Schools::Advice::ConsumptionByMonthService, type: :service do
                                                                rates: create_flat_rate(rate: 1, standing_charge: 1))
   end
 
-  before { travel_to(Date.new(2024, 12, 1)) }
+  before do
+    travel_to(Date.new(2024, 12, 1))
+    create(:secr_co2_equivalence, year: 2024)
+  end
 
   def empty_expected(start_date: Date.new(2023, 12))
     (0..11).to_h do |i|
@@ -34,7 +37,6 @@ describe Schools::Advice::ConsumptionByMonthService, type: :service do
     context 'with a week of readings and a manual reading' do
       before do
         school.manual_readings.create!(month: Date.new(2024, 11), electricity: 1)
-        create(:secr_co2_equivalence, year: 2024)
       end
 
       it 'has the correct consumption' do
@@ -79,7 +81,6 @@ describe Schools::Advice::ConsumptionByMonthService, type: :service do
 
       before do
         school.manual_readings.create!(month: Date.new(2024, 12), electricity: 1)
-        create(:secr_co2_equivalence, year: 2024)
       end
 
       it 'has the correct consumption' do
