@@ -121,7 +121,7 @@ describe 'viewing and recording activities' do
           visit school_activity_path(school, activity)
         end
 
-        it { expect(page).to have_content(I18n.t('interventions.show.pupils_involved_in_this_activity')) }
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: activity.pupil_count)) }
       end
 
       context 'when updating the activity' do

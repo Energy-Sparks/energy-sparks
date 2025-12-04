@@ -71,17 +71,15 @@
 <div class="row">
   <div class="col-md-12 activity">
     <p></p>
-    <%= link_to t('activities.show.all_activities'), school_activities_path(@school), class: 'btn btn-secondary' %>
+    <%= link_to t('activities.show.all_activities'), school_activities_path(@school), class: 'btn btn-sm btn-secondary' %>
     <% if can? :manage, @activity %>
-      <%= link_to t('activities.actions.home'), school_path(@school),
-                  class: 'btn btn-primary' %>
       <%= link_to t('activities.actions.edit'),
                   edit_school_activity_path(@school, @activity),
-                  class: 'btn btn-primary' %>
+                  class: 'btn btn-sm btn-warning' %>
       <%= link_to t('activities.actions.delete'),
                   school_activity_path(@school, @activity), method: :delete,
                                                             data: { confirm: t('activities.actions.are_you_sure') },
-                                                            class: 'btn btn-danger' %>
+                                                            class: 'btn btn-sm btn-danger' %>
     <% end %>
   </div>
 </div>

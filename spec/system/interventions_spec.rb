@@ -193,7 +193,7 @@ describe 'viewing and recording action' do
           visit school_intervention_path(school, observation)
         end
 
-        it { expect(page).to have_content(I18n.t('interventions.show.pupils_involved_in_this_activity')) }
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: observation.pupil_count)) }
       end
     end
 
