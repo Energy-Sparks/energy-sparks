@@ -13,7 +13,7 @@ class SchoolGroupsController < ApplicationController
 
   before_action :find_partners
   before_action :load_schools, except: [:map, :settings]
-  before_action :redirect_unless_authorised, except: [:map]
+  before_action :redirect_unless_authorised, except: [:map, :settings]
   before_action :breadcrumbs
   before_action :find_school_group_fuel_types
   before_action :set_show_school_group_message
@@ -51,8 +51,8 @@ class SchoolGroupsController < ApplicationController
   end
 
   def settings
-    redirect_to school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
     redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+    redirect_to school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
   end
 
   private
