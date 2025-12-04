@@ -17,5 +17,10 @@ FactoryBot.define do
     title             { 'test activity title' }
     description       { 'test activity description' }
     happened_on       { Time.zone.today - 1.day }
+
+    trait :with_contributors do
+      created_by { association :user }
+      updated_by { association :user }
+    end
   end
 end

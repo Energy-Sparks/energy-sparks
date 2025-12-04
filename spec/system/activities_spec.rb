@@ -490,6 +490,7 @@ describe 'viewing and recording activities' do
         expect { click_on 'Save activity' }.to change(other_school.activities, :count).by(1)
         expect(page).to have_content('Congratulations!')
         expect(other_school.activities.most_recent.first.happened_on).to eq(Time.zone.today)
+        expect(other_school.activities.most_recent.first.created_by).to eq(group_admin)
         expect(other_school.activities.most_recent.first.observations.first.created_by).to eq(group_admin)
       end
     end

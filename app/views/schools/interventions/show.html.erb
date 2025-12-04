@@ -30,11 +30,15 @@
 </div>
 
 <% if @observation.description.present? %>
-  <div class="row">
-    <div class="col-md-12 activity">
-      <%= @observation.description %>
+  <% if can? :view_contributed_content, @observation %>
+    <div class="row">
+      <div class="col-md-12 activity">
+        <%= @observation.description %>
+      </div>
     </div>
-  </div>
+  <% elsif current_user.nil? %>
+    Not logged in
+  <% end %>
 <% elsif can? :manage, @observation %>
   <div class="row">
     <div class="col-md-12 activity">

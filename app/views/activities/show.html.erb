@@ -36,11 +36,15 @@
 </div>
 
 <% if @activity.description.present? %>
-  <div class="row">
-    <div class="col-md-12 activity">
-      <%= @activity.description %>
+  <% if can? :view_contributed_content, @activity %>
+    <div class="row">
+      <div class="col-md-12 activity">
+        <%= @activity.description %>
+      </div>
     </div>
-  </div>
+  <% elsif current_user.nil? %>
+    Not logged in
+  <% end %>
 <% elsif can? :manage, @activity %>
   <div class="row">
     <div class="col-md-12 activity">
@@ -84,4 +88,4 @@
   </div>
 </div>
 
-<%= render Admin::RecordComponent.new(@activity.observations.first, current_user:) %>
+<%= render Admin::RecordComponent.new(@activity, current_user:) %>
