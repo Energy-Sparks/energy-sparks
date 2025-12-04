@@ -12,6 +12,7 @@ function setupSchoolGroupAndClusterControls() {
   // Show fields dependent on selected role
   switch (selectedRole) {
     case "pupil":
+    case "student":
       document.querySelectorAll(".user_school_id").forEach(el => el.style.display = "");
       break;
     case "staff":
