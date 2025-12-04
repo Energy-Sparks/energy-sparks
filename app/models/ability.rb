@@ -107,6 +107,8 @@ class Ability
       super_user_permissions(user)
     elsif user.pupil?
       pupil_permissions(user)
+    elsif user.student?
+      student_permissions(user)
     elsif user.staff?
       staff_permissions(user)
     elsif user.school_admin?
@@ -176,7 +178,7 @@ class Ability
 
   # These are permissions for school users (staff and pupils)
   def school_user_common_permissions(user, school_scope = { id: user.school_id, visible: true })
-    return unless user.pupil? || user.staff?
+    return unless user.student_user? || user.staff?
 
     can :manage, Location, school_id: user.school_id
 
@@ -258,8 +260,8 @@ class Ability
     can :read, :my_school_group_menu
   end
 
-  def pupil_permissions(user)
-    return unless user.pupil?
+  def common_student_user_permissions(user)
+    return unless user.student_user?
 
     school_scope = { id: user.school_id, visible: true }
     school_user_common_permissions(user)
@@ -272,6 +274,17 @@ class Ability
     # pupils can only read real cost data if their school is set to share data publicly
     can %i[read_restricted_analysis read_restricted_advice], School,
       { id: user.school_id, visible: true, data_sharing: :public }
+  end
+
+  def pupil_permissions(user)
+    return unless user.pupil?
+    common_student_user_permissions(user)
+  end
+
+  def student_permissions(user)
+    return unless user.student?
+    registered_user_permissions(user)
+    common_student_user_permissions(user)
   end
 
   def staff_permissions(user)

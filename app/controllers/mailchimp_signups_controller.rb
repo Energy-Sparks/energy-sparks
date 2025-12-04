@@ -62,7 +62,7 @@ class MailchimpSignupsController < ApplicationController
 
   def redirect_if_signed_in
     return unless Flipper.enabled?(:profile_pages, current_user)
-    return unless user_signed_in? && !(current_user.pupil? || current_user.school_onboarding?)
+    return unless user_signed_in? && !(current_user.student_user? || current_user.school_onboarding?)
 
     redirect_to user_emails_path(current_user)
   end

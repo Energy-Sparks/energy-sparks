@@ -47,6 +47,7 @@ en:
     school_admin: School admin
     school_onboarding: Onboarding admin
     staff: Staff
+    student: Student
   staff_role:
     building_site_manager_or_caretaker: Building/site manager or caretaker
     business_manager: Business manager
