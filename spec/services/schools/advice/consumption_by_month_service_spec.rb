@@ -5,18 +5,17 @@ require 'rails_helper'
 describe Schools::Advice::ConsumptionByMonthService, type: :service do
   let(:school) { create(:school) }
   let(:start_date) { Date.yesterday - 7 }
-  let(:aggregate_meter) do
+  let(:meter_collection) do
     build(:meter_collection, :with_aggregated_aggregate_meter, start_date:,
                                                                random_generator: Random.new(24),
                                                                rates: create_flat_rate(rate: 1, standing_charge: 1))
-      .aggregate_meter(:electricity)
   end
 
   before { travel_to(Date.new(2024, 12, 1)) }
 
-  def empty_expected
+  def empty_expected(start_date: Date.new(2023, 12))
     (0..11).to_h do |i|
-      [Date.new(2023, 12) + i.months,
+      [start_date + i.months,
        { change: { co2: nil, gbp: nil, kwh: nil },
          current: { co2: nil, gbp: nil, kwh: nil, missing: true },
          previous: { co2: nil, gbp: nil, kwh: nil, missing: true } }]
@@ -28,7 +27,7 @@ describe Schools::Advice::ConsumptionByMonthService, type: :service do
       it 'has the correct consumption' do
         expected = empty_expected
         expected[Date.new(2024, 11)][:current].merge!(co2: 96.384, gbp: 384, kwh: 384)
-        expect(described_class.consumption_by_month(aggregate_meter, school)).to eq(expected)
+        expect(described_class.consumption_by_month(meter_collection, school, :electricity)).to eq(expected)
       end
     end
 
@@ -41,7 +40,7 @@ describe Schools::Advice::ConsumptionByMonthService, type: :service do
       it 'has the correct consumption' do
         expected = empty_expected
         expected[Date.new(2024, 11)][:current].merge!(co2: 0.2, kwh: 1, manual: true, missing: false)
-        expect(described_class.consumption_by_month(aggregate_meter, school)).to eq(expected)
+        expect(described_class.consumption_by_month(meter_collection, school, :electricity)).to eq(expected)
       end
     end
 
@@ -62,7 +61,31 @@ describe Schools::Advice::ConsumptionByMonthService, type: :service do
             consumption[:change].merge!(co2: 0.0, gbp: 0.0, kwh: 0)
           end
         end
-        expect(described_class.consumption_by_month(aggregate_meter, school).sort.to_h).to eq(expected)
+        expect(described_class.consumption_by_month(meter_collection, school, :electricity).sort.to_h).to eq(expected)
+      end
+    end
+
+    context 'with no readings' do
+      let(:meter_collection) { build(:meter_collection) }
+
+      it 'has the correct consumption' do
+        expect(described_class.consumption_by_month(meter_collection, school, :electricity)).to \
+          eq(empty_expected(start_date: Date.new(2024, 1)))
+      end
+    end
+
+    context 'with only manual readings' do
+      let(:meter_collection) { build(:meter_collection) }
+
+      before do
+        school.manual_readings.create!(month: Date.new(2024, 12), electricity: 1)
+        create(:secr_co2_equivalence, year: 2024)
+      end
+
+      it 'has the correct consumption' do
+        expected = empty_expected(start_date: Date.new(2024, 1))
+        expected[Date.new(2024, 12)][:current].merge!(co2: 0.2, kwh: 1, manual: true, missing: false)
+        expect(described_class.consumption_by_month(meter_collection, school, :electricity)).to eq(expected)
       end
     end
   end
