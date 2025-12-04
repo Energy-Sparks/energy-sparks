@@ -87,7 +87,7 @@ class Activity < ApplicationRecord
   end
 
   def update_observations?
-    happened_on_previously_changed? || description_previously_changed?
+    happened_on_previously_changed? || description_previously_changed? || updated_by_previously_changed?
   end
 
   def update_observations
