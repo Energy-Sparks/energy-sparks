@@ -37,10 +37,8 @@
                   admin_school_group_users_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.manage_partners'),
                   admin_school_group_partners_path(school_group), class: 'dropdown-item' %>
-      <% if school_group.organisation? %>
-        <%= link_to t('school_groups.sub_nav.group_admin'),
-                    admin_school_group_path(school_group), class: 'dropdown-item' %>
-      <% end %>
+      <%= link_to t('school_groups.sub_nav.group_admin'),
+                  admin_school_group_path(school_group), class: 'dropdown-item' %>
     <% end %>
   </div>
 </li>

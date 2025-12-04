@@ -132,6 +132,8 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it { expect(page).to have_link('View', href: school_group_path(school_group)) }
     it { expect(page).to have_link('Edit', href: edit_admin_school_group_path(school_group)) }
+    it { expect(page).to have_link(I18n.t('school_groups.titles.school_status'), href: school_group_status_index_path(school_group)) }
+    it { expect(page).to have_link('Manage users', href: admin_school_group_users_path(school_group)) }
     it { expect(page).to have_link('Manage partners', href: admin_school_group_partners_path(school_group)) }
     it { expect(page).to have_link('Delete', href: admin_school_group_path(school_group)) }
 
@@ -147,7 +149,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       visit admin_school_group_path(school_group)
     end
 
-    it { expect(page).to have_link('Manage users', href: admin_school_group_users_path(school_group)) }
     it { expect(page).to have_link('Meter attributes', href: admin_school_group_meter_attributes_path(school_group)) }
     it { expect(page).to have_link('Manage tariffs', href: school_group_energy_tariffs_path(school_group)) }
     it { expect(page).to have_link('Chart updates', href: school_group_chart_updates_path(school_group)) }
@@ -333,6 +334,31 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
   end
 
+  shared_examples 'a downloadable csv of users is available' do
+    before do
+      freeze_time
+      visit admin_school_group_path(school_group)
+      within '#school-group-button-panel' do
+        click_on 'Manage users'
+      end
+      click_on 'Download as CSV'
+    end
+
+    it 'has csv content type' do
+      expect(response_headers['Content-Type']).to eq 'text/csv'
+    end
+
+    it 'has expected file name' do
+      expect(response_headers['Content-Disposition']).to include("#{school_group.name.parameterize}-users.csv")
+    end
+
+    it 'has expected content' do
+      lines = CSV.parse(page.body)
+      expect(lines[0]).to eq(['School Group', 'School', 'School type', 'School active', 'School data enabled', 'Funder', 'Region', 'Name', 'Email', 'Role', 'Staff Role', 'Confirmed', 'Last signed in', 'Alerts', 'Language', 'Locked'])
+      expect(lines.length).to eq(2)
+    end
+  end
+
   describe 'with a project group' do
     let!(:school_group) { create(:school_group, group_type: :project) }
 
@@ -379,6 +405,14 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
     it_behaves_like 'a downloadable csv of issues is available' do
       let!(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
+    end
+
+    context 'when viewing users' do
+      let!(:user) do
+        create(:school_admin, school: create(:school, :with_project, :with_school_group, group: school_group))
+      end
+
+      it_behaves_like 'a downloadable csv of users is available'
     end
 
     it_behaves_like 'a deletable group' do
@@ -694,6 +728,12 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
     it_behaves_like 'a downloadable csv of issues is available' do
       let(:school) { create(:school, school_group: school_group) }
+    end
+
+    context 'when viewing users' do
+      let!(:user) { create(:school_admin, school: create(:school, school_group:)) }
+
+      it_behaves_like 'a downloadable csv of users is available'
     end
 
     it_behaves_like 'a deletable group' do

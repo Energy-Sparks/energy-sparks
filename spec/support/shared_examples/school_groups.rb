@@ -70,7 +70,7 @@ RSpec.shared_examples 'a page with a limited manage school group menu and admin 
   it 'shows standard items and admin links' do
     expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
       ['School engagement',
-       'Edit group', 'Set message', 'Manage users', 'Manage partners']
+       'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin']
     )
   end
 end
