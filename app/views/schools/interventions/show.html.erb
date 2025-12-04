@@ -29,22 +29,35 @@
   </div>
 </div>
 
-<% if @observation.description %>
+<% if @observation.description.present? %>
   <div class="row">
     <div class="col-md-12 activity">
       <%= @observation.description %>
     </div>
   </div>
+<% elsif can? :manage, @observation %>
+  <div class="row">
+    <div class="col-md-12 activity">
+      <h4><%= t('activities.form.tell_us_more_label') %></h4>
+      <p>
+        <%= t('activities.form.tell_us_more_message') %>
+      </p>
+      <p><%= link_to t('activities.actions.edit'),
+                     edit_school_intervention_path(@school, @observation),
+                     class: 'btn btn-sm btn-primary' %></p>
+    </div>
+  </div>
 <% end %>
 
-<div class="row">
+<div class="row mt-4">
   <div class="col-md-12 activity">
-    <p></p>
     <%= link_to t('activities.show.all_activities'), school_timeline_path(@school), class: 'btn btn-sm btn-secondary' %>
     <% if can? :manage, @observation %>
-      <%= link_to t('activities.actions.edit'),
-                  edit_school_intervention_path(@school, @observation),
-                  class: 'btn btn-sm btn-warning' %>
+      <%= if @observation.description.present?
+            link_to t('activities.actions.edit'),
+                    edit_school_intervention_path(@school, @observation),
+                    class: 'btn btn-sm btn-warning'
+          end %>
       <%= link_to t('activities.actions.delete'),
                   school_intervention_path(@school, @observation),
                   method: :delete,
