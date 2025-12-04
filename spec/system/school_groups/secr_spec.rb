@@ -8,12 +8,7 @@ describe 'School group SECR' do
 
   before do
     travel_to(Date.new(2025, 5, 1))
-    SecrCo2Equivalence.create!(year: 2025,
-                               electricity_co2e: 0.207074,
-                               electricity_co2e_co2: 0.20496,
-                               transmission_distribution_co2e: 0.01830,
-                               natural_gas_co2e: 0.18,
-                               natural_gas_co2e_co2: 0.18256)
+    create(:secr_co2_equivalence, year: 2025)
     MeterMonthlySummary.create!(meter: gas_meter, type: :consumption, year: 2024,
                                 total: 1200, consumption: [100] * 12, quality: [:actual] * 12)
     MeterMonthlySummary.create!(meter:, type: :consumption, year: 2024,
@@ -56,16 +51,16 @@ describe 'School group SECR' do
       it 'displays the table' do
         click_on('Data')
         expect(all('tbody tr').map { |tr| tr.all('td').map(&:text) }).to \
-          eq([['Scope 1 Total', '1,200.0', '', '0.22'],
-              ['Gas consumption', '1,200.0', '0.18', '0.22'],
-              ['Scope 2 Total', '3,000.0', '', '0.5'],
-              ['Purchased electricity', '2,400.0', '0.207074', '0.5'],
+          eq([['Scope 1 Total', '1,200.0', '', '0.24'],
+              ['Gas consumption', '1,200.0', '0.2', '0.24'],
+              ['Scope 2 Total', '3,000.0', '', '0.48'],
+              ['Purchased electricity', '2,400.0', '0.2', '0.48'],
               ['Solar self consumption', '600.0', '', '0.0'],
-              ['Scope 3 Total', '2,400.0', '', '0.04'],
-              ['Electricity transmission and distribution', '2,400.0', '0.0183', '0.04'],
-              ['Total', '4,200.0', '', '0.76'],
-              ['Solar export', '300.0', '0.207074', '0.06'],
-              ['Net', '3,900.0', '', '0.69'],
+              ['Scope 3 Total', '2,400.0', '', '0.05'],
+              ['Electricity transmission and distribution', '2,400.0', '0.02', '0.05'],
+              ['Total', '4,200.0', '', '0.77'],
+              ['Solar export', '300.0', '0.2', '0.06'],
+              ['Net', '3,900.0', '', '0.71'],
               ['Intensity ratio', '', '', ''],
               ['Tonnes CO2e per pupil', '', '', '0.2564']])
       end
