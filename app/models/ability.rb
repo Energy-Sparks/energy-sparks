@@ -97,7 +97,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     alias_action :create, :read, :update, :destroy, to: :crud
 
-    common_permissions
+    common_permissions(user)
 
     if user.guest?
       guest_permissions(user)
@@ -121,7 +121,7 @@ class Ability
   end
 
   # All users can do these things, even if not logged in
-  def common_permissions
+  def common_permissions(user)
     can %i[read recommended], [ActivityCategory, InterventionTypeGroup]
     can %i[read search for_school], [ActivityType, InterventionType]
     can :read, ProgrammeType
@@ -150,6 +150,26 @@ class Ability
     can :live_data, Cad, visible: true, public: true
 
     cannot :debug_metadata, :all
+
+    # Used to limit access to content contributed by student/pupil users
+    # Content posted by adult users, or where user is not known (legacy content) is visible to all
+    # Otherwise pupil content only visible to users in same school or group
+    can :view_contributed_content, [Activity, Observation] do |content|
+      contributors = [content.created_by, content.updated_by].compact
+      any_student  = contributors.any?(&:student_user?)
+
+      user_school = user&.school
+      user_group  = user&.school_group || user_school&.school_group
+
+      content_school = content&.school
+      content_group  = content_school&.school_group
+
+      same_school = content_school && user_school && content_school == user_school
+      same_group  = content_group && user_group && content_group == user_group
+
+      # Allow if no student contributors; otherwise restrict to same school or same group
+      !any_student || same_school || same_group
+    end
   end
 
   # Users who are not yet signed in, or registered can begin onboarding

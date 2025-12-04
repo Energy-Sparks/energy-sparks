@@ -18,6 +18,9 @@ function setupSchoolGroupAndClusterControls() {
     case "staff":
       document.querySelectorAll(".user_staff_role_id, .user_school_id").forEach(el => el.style.display = "");
       break;
+    case "student":
+      document.querySelectorAll(".user_school_id").forEach(el => el.style.display = "");
+      break;
     case "school_admin":
       document.querySelectorAll(".user_staff_role_id, .user_school_id, .user_cluster_schools")
         .forEach(el => el.style.display = "");

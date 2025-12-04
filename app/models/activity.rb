@@ -5,6 +5,7 @@
 #  activity_category_id :bigint(8)
 #  activity_type_id     :bigint(8)        not null
 #  created_at           :datetime         not null
+#  created_by_id        :bigint(8)
 #  happened_on          :date
 #  id                   :bigint(8)        not null, primary key
 #  pupil_count          :integer
@@ -17,6 +18,7 @@
 #
 #  index_activities_on_activity_category_id  (activity_category_id)
 #  index_activities_on_activity_type_id      (activity_type_id)
+#  index_activities_on_created_by_id         (created_by_id)
 #  index_activities_on_school_id             (school_id)
 #  index_activities_on_updated_by_id         (updated_by_id)
 #
@@ -24,6 +26,7 @@
 #
 #  fk_rails_...  (activity_category_id => activity_categories.id) ON DELETE => restrict
 #  fk_rails_...  (activity_type_id => activity_types.id) ON DELETE => restrict
+#  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #  fk_rails_...  (updated_by_id => users.id)
 #
@@ -35,6 +38,7 @@ class Activity < ApplicationRecord
   belongs_to :school, inverse_of: :activities
   belongs_to :activity_type, inverse_of: :activities
   belongs_to :activity_category, optional: true
+  belongs_to :created_by, optional: true, class_name: 'User'
   belongs_to :updated_by, optional: true, class_name: 'User'
 
   has_many :programme_activities
@@ -83,12 +87,12 @@ class Activity < ApplicationRecord
   end
 
   def update_observations?
-    happened_on_previously_changed? || description_previously_changed?
+    happened_on_previously_changed? || description_previously_changed? || updated_by_previously_changed?
   end
 
   def update_observations
     if update_observations?
-      observations.each { |o| o.update(at: happened_on) } # forces callbacks to update points
+      observations.each { |o| o.update(updated_by:, at: happened_on) } # forces callbacks to update points
     end
   end
 end
