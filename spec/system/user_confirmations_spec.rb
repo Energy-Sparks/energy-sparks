@@ -106,6 +106,44 @@ RSpec.describe 'User confirmations', :schools, type: :system do
     end
   end
 
+  context 'when confirming new student user' do
+    let(:school) { create(:school) }
+    let!(:user) do
+      create(:user, confirmation_token:, confirmed_at: nil, school:, role: :student, email: 'foo@bar.com', name: 'Foo Bar')
+    end
+
+    before do
+      visit user_confirmation_path(confirmation_token: confirmation_token)
+    end
+
+    it 'confirms email address' do
+      expect(page).to have_content('Your email address has been successfully confirmed')
+    end
+
+    it 'does not allow blank passwords' do
+      click_button 'Complete registration'
+      expect(page).to have_content("Password can't be blank")
+    end
+
+    it 'does not show newsletter options' do
+      expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+    end
+
+    context 'when confirming' do
+      it 'does not add to newsletter' do
+        expect(audience_manager).not_to receive(:subscribe_or_update_contact) do |contact, kwargs|
+          expect(contact.interests.values.any?).to be(false)
+          expect(kwargs[:status]).to eq('subscribed')
+        end
+        fill_in :user_password, with: valid_password
+        fill_in :user_password_confirmation, with: valid_password
+        check 'privacy'
+        click_button 'Complete registration'
+        expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
+      end
+    end
+  end
+
   context 'when resetting password for existing user' do
     let(:school)  { create(:school) }
     let(:user)    { create(:user, email: 'a@b.com', school: school) }

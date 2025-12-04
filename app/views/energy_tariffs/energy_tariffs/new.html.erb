@@ -1,4 +1,6 @@
-<h1><%= t('schools.user_tariffs.new.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
+<% content_for :header_title,
+               t('schools.user_tariffs.new.title', fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %>
+
 <div class="row mt-4">
   <div class="col-md-12">
     <div class="energy_tariff">

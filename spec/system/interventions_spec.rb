@@ -185,6 +185,29 @@ describe 'viewing and recording action' do
       it 'links to the intervention' do
         expect(page).to have_link(href: school_intervention_path(school, observation))
       end
+
+      context 'when there is no description' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, description: '') }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it 'shows prompt to add detail' do
+          expect(page).to have_content(I18n.t('activities.form.tell_us_more_label'))
+          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_intervention_path(school, observation))
+        end
+      end
+
+      context 'when there is a pupil count' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, pupil_count: 27) }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: observation.pupil_count)) }
+      end
     end
 
     context 'when requesting an incorrect url' do
