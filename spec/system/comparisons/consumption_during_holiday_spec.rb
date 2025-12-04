@@ -35,16 +35,14 @@ describe '*_consumption_during_holiday' do
                                      Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse],
     storage_heater_consumption_during_holiday: [AlertStorageHeaterHeatingOnDuringHoliday,
                                                 Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse]
-  }.each do |key, classes|
-    classes.each do |alert_class|
-      describe "#{key} - #{alert_class}" do
-        let(:alert_class) { alert_class }
-        let(:key) { key }
+  }.flat_map { |key, classes| classes.zip([key].cycle) }.each do |alert_class, key|
+    describe "#{key} - #{alert_class}" do
+      let(:alert_class) { alert_class }
+      let(:key) { key }
 
-        it_behaves_like 'a school comparison report'
-        it_behaves_like 'a school comparison report with a table'
-        it_behaves_like 'a school comparison report with a chart'
-      end
+      it_behaves_like 'a school comparison report'
+      it_behaves_like 'a school comparison report with a table'
+      it_behaves_like 'a school comparison report with a chart'
     end
   end
 end
