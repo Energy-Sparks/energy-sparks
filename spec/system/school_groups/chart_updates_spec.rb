@@ -27,6 +27,8 @@ describe 'school group chart settings' do
         expect(school_group.schools.map(&:chart_preference).uniq).to eq(['cost'])
       end
     end
+
+    it_behaves_like 'a page displaying the school group settings nav'
   end
 
   context 'when not logged in' do
