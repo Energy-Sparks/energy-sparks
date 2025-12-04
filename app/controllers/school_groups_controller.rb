@@ -51,10 +51,9 @@ class SchoolGroupsController < ApplicationController
   end
 
   def settings
-    redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
     redirect_to school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
+    redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
   end
-
 
   private
 
