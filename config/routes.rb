@@ -572,6 +572,10 @@ Rails.application.routes.draw do
 
   devise_for :users, skip: :sessions
 
+  devise_scope :user do
+    post "confirmation/confirm", to: "confirmations#confirm", as: :user_confirmation_confirm
+  end
+
   get '/admin', to: 'admin#index'
 
   concern :issueable do

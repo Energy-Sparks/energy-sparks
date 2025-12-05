@@ -1,0 +1,79 @@
+<% content_for :page_title do %>
+    <%= t('devise.passwords.edit.page_title') %>
+<% end %>
+<div class="application container">
+  <h1>
+    <%= t('devise.passwords.edit.complete_your_registration') %>
+  </h1>
+
+  <%= form_for(resource, as: resource_name, url: user_confirmation_confirm_path,
+                         html: { method: :post, class: 'form-horizontal' }) do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
+
+    <%= hidden_field_tag :confirmation_token, params[:confirmation_token] %>
+
+    <div class="form-group">
+      <%= f.label :password, t('devise.passwords.edit.new_password'), class: 'col-form-label' %>
+      <%= f.password_field :password, autocomplete: 'off', class: 'form-control' %>
+      <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> <%= t('devise.passwords.edit.characters_minimum') %>)</em><br>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :password_confirmation, t('devise.passwords.edit.confirm_new_password'), class: 'col-form-label' %>
+      <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control' %>
+      <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> <%= t('devise.passwords.edit.characters_minimum') %>)</em><br>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :preferred_locale, t('schools.users.form.preferred_locale'), class: 'col-form-label' %>
+      <%= f.select :preferred_locale,
+                   options_for_select(I18n.available_locales.map { |locale|
+                     [I18n.t("languages.#{locale}"), locale]
+                   }, resource.preferred_locale),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
+    </div>
+
+    <% if @allow_alerts %>
+      <hr>
+      <%= render 'schools/users/auto_create_alert_contact', f: f, school: resource.school, user: resource,
+                                                            checked: true %>
+    <% end %>
+
+    <% if @can_subscribe_newsletter %>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
+        </div>
+      </div>
+      <%= render 'users/emails/mailchimp_interest_fields',
+                 email_types: @email_types,
+                 interests: @interests %>
+
+    <% end %>
+
+    <div>
+      <%= f.check_box :terms_accepted,
+                      { class: 'custom-control-input multi-select must-check' },
+                      '1',
+                      '0' %>
+      <%= f.label :terms_accepted, t('terms_and_conditions.message_html',
+                                     terms_and_conditions_link: link_to(t('common.terms_and_conditions'),
+                                                                        terms_and_conditions_path,
+                                                                        target: '_blank', rel: 'noopener'),
+                                     privacy_policy_link: link_to(t('common.privacy_policy'),
+                                                                  privacy_and_cookie_policy_path,
+                                                                  target: '_blank',
+                                                                  rel: 'noopener')),
+                  class: 'custom-control-label' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit t('devise.passwords.edit.complete_registration'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
