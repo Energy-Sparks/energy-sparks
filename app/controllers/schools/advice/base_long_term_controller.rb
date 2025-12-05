@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   module Advice
     class BaseLongTermController < AdviceBaseController
@@ -33,8 +35,7 @@ module Schools
       end
 
       def set_consumption_by_month
-        @consumption_by_month = Schools::Advice::ConsumptionByMonthService
-                                .consumption_by_month(aggregate_school.aggregate_meter(fuel_type), @school)
+        @consumption_by_month = ConsumptionByMonthService.consumption_by_month(aggregate_school, @school, fuel_type)
       end
     end
   end
