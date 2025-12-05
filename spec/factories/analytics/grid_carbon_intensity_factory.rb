@@ -8,7 +8,8 @@ FactoryBot.define do
       transient do
         start_date { Date.yesterday - 7 }
         end_date { Date.yesterday }
-        kwh_data_x48 { Array.new(48) { rand(0.2..0.3).round(3) } }
+        random_generator { nil }
+        kwh_data_x48 { Array.new(48) { (random_generator || Random.new).rand(0.2..0.3).round(3) } }
       end
 
       after(:build) do |gci, evaluator|

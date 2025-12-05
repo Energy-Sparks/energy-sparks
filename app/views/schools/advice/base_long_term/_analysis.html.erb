@@ -22,7 +22,8 @@
            annual_usage: @usage_service.usage,
            vs_exemplar: @vs_exemplar,
            estimated_savings_vs_exemplar: @estimated_savings_vs_exemplar,
-           fuel_type: @fuel_type %>
+           fuel_type: @fuel_type,
+           consumption_by_month: @consumption_by_month %>
 <%= render 'academic_year_comparisons',
            meter_selection: @meter_selection,
            analysis_dates: @analysis_dates,

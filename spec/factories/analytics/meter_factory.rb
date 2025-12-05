@@ -25,7 +25,7 @@ FactoryBot.define do
 
     trait :with_flat_rate_tariffs do
       transient do
-        rates { create_flat_rate(rate: 0.10, standing_charge: 1.0) }
+        rates { nil }
         tariff_start_date { nil }
         tariff_end_date   { nil }
       end
@@ -34,7 +34,7 @@ FactoryBot.define do
         accounting_tariff = create_accounting_tariff_generic(
           start_date: tariff_start_date,
           end_date: tariff_end_date,
-          rates: rates
+          rates: rates || create_flat_rate(rate: 0.1, standing_charge: 1.0)
         )
         new(meter_collection: meter_collection,
             amr_data: amr_data, type: type, identifier: identifier,

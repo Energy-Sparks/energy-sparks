@@ -109,8 +109,7 @@ class EnergyEquivalences
     if Rails.env.test? || ENV['CI'] == 'true'
       { electricity: 0.20493, gas: 0.18253 }
     else
-      equivalence = SecrCo2Equivalence.find_by!(year: 2025)
-      { electricity: equivalence.electricity_co2e_co2, gas: equivalence.natural_gas_co2e_co2 }
+      SecrCo2Equivalence.co2e_co2(year: 2025)
     end
   end
 
