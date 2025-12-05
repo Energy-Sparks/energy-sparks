@@ -9,8 +9,6 @@ describe 'school group energy tariffs', type: :system do
     end
   end
 
-  before { school_group.schools.reload }
-
   context 'as an admin user' do
     let!(:current_user) { create(:admin) }
 

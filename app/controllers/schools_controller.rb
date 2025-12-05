@@ -163,7 +163,7 @@ class SchoolsController < ApplicationController
   end
 
   def redirect_pupils
-    return unless user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+    return unless user_signed_in_and_linked_to_school? && current_user.student_user? && !switch_dashboard?
 
     redirect_to pupils_school_path(@school)
   end

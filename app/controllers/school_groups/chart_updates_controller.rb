@@ -1,5 +1,7 @@
 module SchoolGroups
   class ChartUpdatesController < BaseController
+    layout -> { Flipper.enabled?(:group_settings, current_user) ? 'group_settings' : 'application' }
+
     def index
       redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
       build_breadcrumbs([name: t('school_groups.chart_updates.index.group_chart_settings').capitalize])

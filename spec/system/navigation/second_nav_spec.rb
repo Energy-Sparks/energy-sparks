@@ -425,7 +425,7 @@ RSpec.describe 'Navigation -> second nav' do
       it { expect(nav).to have_no_css('#my-school-menu') }
     end
 
-    %i[pupil school_admin staff pupil].each do |user_type|
+    %i[pupil school_admin staff student].each do |user_type|
       let(:user) { create(user_type, school:) }
 
       it "displays the menu for #{user_type}" do
@@ -627,6 +627,12 @@ RSpec.describe 'Navigation -> second nav' do
         let(:user) { create(:pupil) }
 
         it { expect(nav).to have_no_link(href: user_path(user), title: I18n.t('nav.my_account')) }
+      end
+
+      context 'when student signed in' do
+        let(:user) { create(:student) }
+
+        it { expect(nav).to have_link(href: user_path(user), title: I18n.t('nav.my_account')) }
       end
 
       context 'when school onboarding user signed in' do

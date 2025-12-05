@@ -8,13 +8,12 @@ Flipper.configure do |config|
   config.adapter do
     Flipper::Adapters::ActiveSupportCacheStore.new(
       Flipper::Adapters::ActiveRecord.new,
-      ActiveSupport::Cache::MemoryStore.new,
+      Rails.cache,
       5.minutes
     )
   end
 end
 
 Rails.application.configure do
-  # disable standard caching because of caching above
-  config.flipper.memoize = false
+  config.flipper.memoize = true
 end

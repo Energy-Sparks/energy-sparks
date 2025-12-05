@@ -1,11 +1,11 @@
 <% if content_for(:header_title) %>
-  <% content_for :page_title, yield(:header_title) %>
+  <% content_for :page_title, yield(:header_title) unless content_for(:page_title) %>
 <% else %>
   <% content_for :page_title, "#{t('school_groups.sub_nav.manage_group')} | #{@school_group.name}" %>
 <% end %>
 
 <% content_for(:application) do %>
-  <% if Flipper.enabled?(:group_settings, current_user) %>
+  <% if @school_group && Flipper.enabled?(:group_settings, current_user) %>
     <% content_for :header do %>
       <%= render(Layout::Cards::PageHeaderComponent.new(
                    title: content_for?(:header_title) ? yield(:header_title) : t('school_groups.sub_nav.manage_group')
