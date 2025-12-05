@@ -400,6 +400,7 @@ en:
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
+      status_note_html: This table show schools with published data. <a href="%{path}">See a full list of schools and their status</a>
       we_are_working_with:
         in_partnership_with_html:
           one: We are working with 1 school in this %{group_type} in partnership with %{partners}
