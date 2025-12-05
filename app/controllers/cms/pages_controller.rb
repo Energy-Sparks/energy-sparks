@@ -2,7 +2,7 @@
 
 module Cms
   class PagesController < ApplicationController
-    include Pagy::Backend
+    include Pagy::Method
     include ContentManagement
 
     skip_before_action :authenticate_user!

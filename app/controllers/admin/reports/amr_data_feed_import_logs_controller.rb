@@ -1,7 +1,7 @@
 module Admin
   module Reports
     class AmrDataFeedImportLogsController < AdminController
-      include Pagy::Backend
+      include Pagy::Method
       before_action :set_log_counts
       SUMMARY_PERIOD_IN_DAYS = 30
 
