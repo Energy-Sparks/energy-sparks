@@ -55,6 +55,9 @@
 class User < ApplicationRecord
   include MailchimpUpdateable
 
+  # FIXME
+  attr_accessor :terms_accepted
+
   watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id,
                          :active
   before_save :enforce_role_associations, if: :role_changed?
@@ -129,6 +132,9 @@ class User < ApplicationRecord
 
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  # FIXME keep this? allows error on new page, not showing otherwise
+  validates :password, confirmation: true, if: -> { password.present? && password_required? }
 
   validates :pupil_password, presence: true, if: :pupil?
   validates :pupil_password, length: { minimum: 12 }, if: :pupil?
