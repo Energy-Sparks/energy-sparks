@@ -16,6 +16,12 @@ module Dashboards
       can_manage_group? && user.confirmed_at > 30.days.ago
     end
 
+    def prompt_for_onboarding?
+      return false unless can?(:update_settings, @school_group)
+
+      @school_group.onboardings_for_group.incomplete.count.positive?
+    end
+
     def prompt_for_clusters?
       can_manage_group? && school_group.organisation? && !school_group.clusters.exists?
     end
@@ -29,7 +35,8 @@ module Dashboards
     end
 
     def render?
-      prompt_for_training? ||
+      prompt_for_onboarding? ||
+        prompt_for_training? ||
         prompt_for_clusters? ||
         prompt_for_tariff_review? ||
         prompt_for_dashboard_message?

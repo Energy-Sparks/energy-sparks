@@ -139,4 +139,36 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
       end
     end
   end
+
+  describe '#prompt_for_onboarding?' do
+    context 'when user is a group admin' do
+      let(:user) { create(:group_admin, school_group: school_group) }
+
+      context 'with no onboardings' do
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
+      end
+
+      context 'with incomplete school onboardings' do
+        before do
+          create(:school_onboarding, school_group: school_group)
+        end
+
+        it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
+      end
+    end
+
+    context 'when user is not a group admin' do
+      let(:user) { create(:school_admin) }
+
+      context 'with incomplete project onboardings' do
+        let(:school_group) { create(:school_group, :project_group)}
+
+        before do
+          create(:school_onboarding, project_group: school_group)
+        end
+
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
+      end
+    end
+  end
 end
