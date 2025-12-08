@@ -12,7 +12,7 @@
                   pupils_school_path(current_school), class: 'nav-link dash' %>
     </li>
   <% end %>
-  <% if request.path.starts_with?('/pupils/schools/') && can?(:show, current_school) %>
+  <% if request.path.starts_with?('/schools/','/pupils/schools/') && can?(:show, current_school) %>
     <li class="nav-item nowrap">
       <%= link_to t('dashboards.adult_dashboard'),
                   school_path(current_school, ({ switch: true } if current_user&.student_user?)),

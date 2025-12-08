@@ -6,8 +6,8 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="manage-school-group" id="dropdown-manage-school-group">
     <% if school_group.organisation? %>
-      <%= link_to t('school_groups.sub_nav.chart_settings'),
-                  school_group_chart_updates_path(school_group), class: 'dropdown-item' %>
+        <%= link_to t('school_groups.sub_nav.chart_settings'),
+                    school_group_chart_updates_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.clusters'),
                   school_group_clusters_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('manage_school_menu.manage_tariffs'),
