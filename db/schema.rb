@@ -3626,10 +3626,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_131621) do
               data_1.holiday_type,
               data_1.holiday_start_date,
               data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))) data,
+             FROM ((alerts
+               CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id)))
+            WHERE (alert_types.class_name = ANY (ARRAY['AlertElectricityUsageDuringCurrentHoliday'::text, 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text]))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
@@ -3739,10 +3739,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_131621) do
               data_1.holiday_type,
               data_1.holiday_start_date,
               data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'::text))) data,
+             FROM ((alerts
+               CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id)))
+            WHERE (alert_types.class_name = ANY (ARRAY['AlertGasHeatingHotWaterOnDuringHoliday'::text, 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text]))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
@@ -4258,10 +4258,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_04_131621) do
               data_1.holiday_type,
               data_1.holiday_start_date,
               data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterHeatingOnDuringHoliday'::text))) data,
+             FROM ((alerts
+               CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id)))
+            WHERE (alert_types.class_name = ANY (ARRAY['AlertStorageHeaterHeatingOnDuringHoliday'::text, 'Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse'::text]))) data,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
