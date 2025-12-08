@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable RSpec/MultipleMemoizedHelpers
+
 require 'rails_helper'
 
 RSpec.describe 'school group status', :include_application_helper, :school_groups do
@@ -13,28 +15,36 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
   let!(:setup_data) {} # hook for dashboard messages - goes before page is loaded
   let!(:school_group) { create(:school_group, :with_grouping) }
   let(:statuses) { { visible: true, data_enabled: true } }
-  let!(:onboarding) {}
+  let!(:onboarding) { }
+
   let!(:school) do
     create(:school,
-        :with_basic_configuration_single_meter_and_tariffs,
-        fuel_type: :electricity, **statuses,
-        number_of_pupils: 20,
-        floor_area: 300.0,
-        school_group:)
+          :with_basic_configuration_single_meter_and_tariffs,
+          fuel_type: :electricity, **statuses,
+          number_of_pupils: 20,
+          floor_area: 300.0,
+          school_group:)
   end
+  let(:user) { create(:admin) }
 
   before do
     meter_collection = AggregateSchoolService.new(school).aggregate_school
     Schools::GenerateConfiguration.new(school, meter_collection).generate
 
     Flipper.enable :group_settings
-    sign_in(create(:admin))
+    sign_in user
     visit school_group_status_index_path(school_group)
   end
 
   describe 'Dashboard message panel' do
-    it_behaves_like 'admin dashboard messages' do
-      let(:messageable) { school_group }
+    let(:messageable) { school_group }
+
+    it_behaves_like 'admin dashboard messages'
+
+    context 'when user is not a super admin (but still a group user)' do
+      let(:user) { create(:group_admin, school_group:) }
+
+      it_behaves_like 'a dashboard message'
     end
   end
 
@@ -185,3 +195,5 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
     it { expect(page).to have_content(school.name) }
   end
 end
+
+# rubocop:enable RSpec/MultipleMemoizedHelpers
