@@ -78,7 +78,7 @@
           <% elsif can?(:view_settings, current_school_group) && Flipper.enabled?(:group_settings, current_user) %>
             <%# 'Group settings' link - show to users with permission to view settings for current school group %>
             <li class="nav-item nowrap">
-              <%= link_to "#{fa_icon('cog')} #{t('school_groups.sub_nav.group_settings')}",
+              <%= link_to fa_icon('cog') + " #{t('school_groups.sub_nav.group_settings')}",
                           settings_school_group_path(current_school_group), class: 'nav-link' %>
             </li>
           <% end %>
