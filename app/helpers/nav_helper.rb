@@ -98,10 +98,10 @@ module NavHelper
   end
 
   def school_context?
-    request.path.starts_with?('/schools/') && current_school
+    request.path.starts_with?('/schools/', '/admin/schools/') && current_school
   end
 
   def school_group_context?
-    request.path.starts_with?('/school_groups/') && current_school_group
+    request.path.starts_with?('/school_groups/', '/admin/school_groups/') && current_school_group
   end
 end
