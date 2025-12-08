@@ -29,6 +29,17 @@ module Alerts
       }
     ).freeze
 
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+
+    module ClassMethods
+      def template_variables
+        specific = { 'Usage during current holiday' => TEMPLATE_VARIABLES }
+        specific.merge(AlertAnalysisBase.template_variables)
+      end
+    end
+
     def enough_data
       super(community_use: :any?)
     end

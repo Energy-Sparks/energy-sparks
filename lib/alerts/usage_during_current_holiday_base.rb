@@ -227,14 +227,14 @@ module Alerts
         I18n.t("#{i18n_prefix}.holiday_cost_to_date",
                holiday_name: holiday_name,
                date: I18n.l(@asof_date, format: '%A %e %b %Y'),
-               cost_to_date: FormatUnit.format(:£, @holiday_usage_to_date_£)) +
+               cost_to_date: FormatUnit.format(:£, @holiday_usage_to_date_gbp)) +
           I18n.t("#{i18n_prefix}.holiday_predicted_cost",
-                 predicted_cost: FormatUnit.format(:£, @holiday_projected_usage_£))
+                 predicted_cost: FormatUnit.format(:£, @holiday_projected_usage_gbp))
       else
         I18n.t("#{i18n_prefix}.holiday_cost_to_date",
                holiday_name: holiday_name,
                date: I18n.l(@asof_date, format: '%A %e %b %Y'),
-               usage_to_date: FormatUnit.format(:£, @holiday_usage_to_date_£))
+               usage_to_date: FormatUnit.format(:£, @holiday_usage_to_date_gbp))
       end
     end
   end
