@@ -98,12 +98,12 @@ module NavHelper
   end
 
   def school_context?
-    request.path.starts_with?('/schools/', '/admin/schools/') && current_school
+    request.path.starts_with?('/schools/', '/admin/schools/', '/pupils/schools/') && current_school
   end
 
   def school_group_context?
     # Historically we have not allowed /admin/school_group routes to have school group
-    # context menus etc, so leaving as is for now. Would be better to match above
+    # context menus etc, so leaving as is for now. Would be better to be the same as above
     request.path.starts_with?('/school_groups/') && current_school_group
   end
 end
