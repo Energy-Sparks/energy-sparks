@@ -20,15 +20,15 @@ shared_examples 'an alert for the current holiday with community usage' do |fuel
           before { alert.analyse(asof_date) }
 
           it 'calculates community usage' do
-            expect(alert.community_usage_to_date_kwh).to be_within(0.001).of(500.0)
-            expect(alert.community_usage_to_date_gbp).to be_within(0.001).of(50.0)
-            expect(alert.community_usage_to_date_co2).to be_within(0.001).of(100.0)
+            expect(variables[:community_usage_to_date_kwh]).to be_within(0.001).of(500.0)
+            expect(variables[:community_usage_to_date_gbp]).to be_within(0.001).of(50.0)
+            expect(variables[:community_usage_to_date_co2]).to be_within(0.001).of(100.0)
           end
 
           it 'calculates usage without community usage' do
-            expect(alert.holiday_use_without_community_to_date_kwh).to be_within(0.001).of(2860.0)
-            expect(alert.holiday_use_without_community_to_date_gbp).to be_within(0.001).of(286.0)
-            expect(alert.holiday_use_without_community_to_date_co2).to be_within(0.001).of(572.0)
+            expect(variables[:holiday_use_without_community_to_date_kwh]).to be_within(0.001).of(2860.0)
+            expect(variables[:holiday_use_without_community_to_date_gbp]).to be_within(0.001).of(286.0)
+            expect(variables[:holiday_use_without_community_to_date_co2]).to be_within(0.001).of(572.0)
           end
         end
       end
