@@ -9,6 +9,7 @@ module SchoolGroups
     before_action :load_schools, only: [:index, :meters]
     before_action :load_onboardings, only: [:index]
     before_action :redirect_unless_authorised
+    before_action :load_school, only: [:school]
     before_action :breadcrumbs, only: [:index, :school]
 
     def index
@@ -27,8 +28,6 @@ module SchoolGroups
     end
 
     def school
-      @school = filtered_schools.find(params[:school_id])
-
       respond_to do |format|
         format.html { render :school }
         format.csv { meter_csv }
@@ -40,6 +39,10 @@ module SchoolGroups
     end
 
     private
+
+    def load_school
+      @school = filtered_schools.find(params[:school_id])
+    end
 
     def meter_csv
       send_data SchoolGroups::SchoolMeterStatusCsvGenerator.new(

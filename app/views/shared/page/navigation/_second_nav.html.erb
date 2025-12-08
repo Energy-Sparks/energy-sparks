@@ -1,7 +1,7 @@
 <nav class="navbar <%= navbar_expand_class %> navbar-second <%= navbar_secondary_class %>">
   <div class="container">
     <ul id="left-link" class="navbar-nav nowrap">
-      <% if current_school %>
+      <% if school_context? %>
         <li class="nav-item">
           <%# School name, with link to dashboard %>
           <%# Context: any page scoped to school %>
@@ -15,7 +15,7 @@
             <%= fa_icon('chevron-left') %> <%= t('nav.back_to_dashboard') %>
           <% end %>
         </li>
-      <% elsif request.path.starts_with?('/school_groups') %>
+      <% elsif school_group_context? %>
         <li class="nav-item">
           <%# School group name, with link to dashboard %>
           <%# Context: any page scoped to school group %>
@@ -70,21 +70,21 @@
 
         <div class="vr <%= navbar_hide_class %>"></div>
 
-        <% if request.path.starts_with?('/school_groups') %>
+        <% if school_group_context? %>
           <%# Context: /school_groups path %>
-          <% if current_user&.admin? %>
-            <%# 'Manage group' menu - show to admin users %>
+          <% if current_user&.admin? || (can?(:view_settings, current_school_group) && Flipper.disabled?(:group_settings, current_user)) %>
+            <%# 'Manage group' menu - show to admin users only %>
             <%= render 'shared/page/navigation/second_nav/manage_school_group_menu', school_group: current_school_group %>
           <% elsif can?(:view_settings, current_school_group) && Flipper.enabled?(:group_settings, current_user) %>
             <%# 'Group settings' link - show to users with permission to view settings for current school group %>
             <li class="nav-item nowrap">
-              <%= link_to fa_icon('cog') + " #{t('school_groups.sub_nav.group_settings')}",
+              <%= link_to t('school_groups.sub_nav.manage_group'),
                           settings_school_group_path(current_school_group), class: 'nav-link' %>
             </li>
           <% end %>
         <% end %>
 
-        <% if current_school && can?(:update, current_school) %>
+        <% if school_context? && can?(:update, current_school) %>
           <%# 'Manage school' menu
           <%#  Context: any page scoped to school - user must have permission to update school %>
           <%= render 'shared/page/navigation/second_nav/manage_school_menu', school: current_school %>

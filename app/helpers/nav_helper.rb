@@ -96,4 +96,12 @@ module NavHelper
     nav_class += " #{kwargs[:class]}" if kwargs[:class]
     link_to link_text, link_path, class: nav_class
   end
+
+  def school_context?
+    request.path.starts_with?('/schools/') && current_school
+  end
+
+  def school_group_context?
+    request.path.starts_with?('/school_groups/') && current_school_group
+  end
 end
