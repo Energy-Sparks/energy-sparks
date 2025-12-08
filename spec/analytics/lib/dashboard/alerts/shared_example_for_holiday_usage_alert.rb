@@ -68,6 +68,10 @@ RSpec.shared_examples 'a holiday usage alert', :aggregate_failures do
         expect(variables[:summary]).to eq(expected)
       end
 
+      it 'has the correct timescale' do
+        expect(variables[:timescale]).to eq('this holiday')
+      end
+
       it 'calculates expected usage' do
         # usage_per_hh * 48 * 7 days
         expect(alert.holiday_usage_to_date_kwh).to be_within(0.001).of(3360.0)
