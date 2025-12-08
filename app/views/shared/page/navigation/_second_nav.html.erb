@@ -3,22 +3,22 @@
     <ul id="left-link" class="navbar-nav nowrap">
       <% if current_school %>
         <li class="nav-item">
-          <!-- School name, with link to dashboard -->
-          <!-- Context: any page scoped to school -->
+          <%# School name, with link to dashboard %>
+          <%# Context: any page scoped to school %>
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
         </li>
       <% elsif current_user_school %>
         <li class="nav-item">
-          <!-- Back to dashboard link -->
-          <!-- Context: a non-school scoped page -->
+          <%# Back to dashboard link %>
+          <%# Context: a non-school scoped page %>
           <%= link_to school_path(current_user_school), class: 'nav-link' do %>
             <%= fa_icon('chevron-left') %> <%= t('nav.back_to_dashboard') %>
           <% end %>
         </li>
       <% elsif request.path.starts_with?('/school_groups') %>
         <li class="nav-item">
-          <!-- School group name, with link to dashboard -->
-          <!-- Context: any page scoped to school group -->
+          <%# School group name, with link to dashboard %>
+          <%# Context: any page scoped to school group %>
           <%= link_to_unless current_page?(map_school_group_path(current_school_group)),
                              current_school_group.name,
                              school_group_path(current_school_group),
@@ -27,7 +27,7 @@
       <% end %>
     </ul>
     <div class='ml-auto'>
-      <!-- Toggler icon - shown on collapse -->
+      <%# Toggler icon - shown on collapse %>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-second" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -37,8 +37,8 @@
       <ul class="navbar-nav nowrap">
         <li class='nav-item my-auto'>
           <% if current_school %>
-            <!-- Mini podium -->
-            <!-- Context: any page scoped to school -->
+            <%# Mini podium %>
+            <%# Context: any page scoped to school %>
             <%= render 'shared/page/navigation/second_nav/podium',
                        podium: current_school_podium, school: current_school %>
           <% end %>
@@ -47,8 +47,8 @@
 
       <ul class="navbar-nav mx-auto">
         <% if current_school&.active %>
-          <!-- School status buttons (admin only) -->
-          <!-- Context: any page scoped to an active school -->
+          <%# School status buttons (admin only) %>
+          <%# Context: any page scoped to an active school %>
           <li id="school-status-buttons" class="nav-item nowrap d-none d-xl-inline-block nav-link">
             <%= render 'shared/school_status_buttons', school: current_school %>
           </li>
@@ -56,13 +56,13 @@
       </ul>
 
       <ul class="navbar-nav">
-        <!-- Dashboard link(s) that user is currently not viewing -->
-        <!-- Context: any school -->
+        <%# Dashboard link(s) that user is currently not viewing %>
+        <%# Context: any school %>
         <%= render 'shared/page/navigation/second_nav/dashboards' %>
 
         <% unless user_signed_in? %>
-          <!-- Enrol link -->
-          <!-- Context: user not signed in -->
+          <%# Enrol link %>
+          <%# Context: user not signed in %>
           <li class="nav-item nowrap">
             <%= link_to t('nav.enrol'), enrol_path, class: 'nav-link' %>
          </li>
@@ -70,34 +70,42 @@
 
         <div class="vr <%= navbar_hide_class %>"></div>
 
-        <% if request.path.starts_with?('/school_groups') && can?(:view_settings, current_school_group) %>
-          <!-- 'Manage group' menu -->
-          <!-- Context: /school_groups path - show manage school group menu for users with permission to update settings for current school group -->
-          <%= render 'shared/page/navigation/second_nav/manage_school_group_menu', school_group: current_school_group %>
+        <% if request.path.starts_with?('/school_groups') %>
+          <%# Context: /school_groups path %>
+          <% if current_user&.admin? %>
+            <%# 'Manage group' menu - show to admin users %>
+            <%= render 'shared/page/navigation/second_nav/manage_school_group_menu', school_group: current_school_group %>
+          <% elsif can?(:view_settings, current_school_group) && Flipper.enabled?(:group_settings, current_user) %>
+            <%# 'Group settings' link - show to users with permission to view settings for current school group %>
+            <li class="nav-item nowrap">
+              <%= link_to "#{fa_icon('cog')} #{t('school_groups.sub_nav.group_settings')}",
+                          settings_school_group_path(current_school_group), class: 'nav-link' %>
+            </li>
+          <% end %>
         <% end %>
 
         <% if current_school && can?(:update, current_school) %>
-          <!-- 'Manage school' menu -->
-          <!-- Context: any page scoped to school - user must have permission to update school -->
+          <%# 'Manage school' menu
+          <%#  Context: any page scoped to school - user must have permission to update school %>
           <%= render 'shared/page/navigation/second_nav/manage_school_menu', school: current_school %>
         <% end %>
 
         <% if current_user_school_group && can?(:read, :my_school_group_menu) %>
-          <!-- 'My school group' menu -->
-          <!-- links back to school group dashboard & lists schools in group -->
-          <!-- Context: current user has associated school group -->
+          <%# 'My school group' menu %>
+          <%# links back to school group dashboard & lists schools in group %>
+          <%# Context: current user has associated school group %>
           <%= render 'shared/page/navigation/second_nav/my_school_group_menu', school_group: current_user_school_group %>
         <% end %>
 
         <% if can?(:read, :my_school_menu) && current_user_school&.visible? %>
-          <!-- 'My school' menu -->
-          <!-- Context: current user has associated school and has permission to view the menu (currently admins can't!) -->
+          <%# 'My school' menu %>
+          <%# Context: current user has associated school and has permission to view the menu (currently admins can't!) %>
           <%= render 'shared/page/navigation/second_nav/my_school_menu' %>
         <% end %>
 
         <% if can?(:switch, School) && current_user&.cluster_schools_for_switching&.any? %>
-          <!-- 'My schools' (cluster schools) menu -->
-          <!-- Context: current user has cluser schools and has switch school permission -->
+          <%# 'My schools' (cluster schools) menu %>
+          <%# Context: current user has cluser schools and has switch school permission %>
           <%= render 'shared/page/navigation/second_nav/my_schools_menu' %>
         <% end %>
 
@@ -111,10 +119,10 @@
 
         <li class="nav-item nowrap">
           <% if user_signed_in? %>
-            <!-- Sign out - context: user signed in -->
+            <%# Sign out - context: user signed in %>
             <%= link_to t('nav.sign_out'), destroy_user_session_path, method: :delete, class: 'nav-link' %>
           <% else %>
-            <!-- Sign in  - context: user signed out -->
+            <%# Sign in  - context: user signed out %>
             <%= link_to t('nav.sign_in'), new_user_session_path, class: 'nav-link' %>
           <% end %>
         </li>

@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Navigation -> second nav' do
+  # These are on in production now, so assume on all the time
+  before { Flipper.enable(:school_group_secr_report) }
+  before { Flipper.enable(:group_settings) }
+
   let!(:user) {}
   let(:school_group) { create(:school_group) }
   let(:data_enabled) { true }
@@ -248,9 +252,6 @@ RSpec.describe 'Navigation -> second nav' do
       let(:path) { school_group_path(school.school_group) }
 
       context 'when user is a site admin' do
-        before { Flipper.enable(:school_group_secr_report) }
-        before { Flipper.enable(:group_settings) }
-
         let(:user) { create(:admin) }
 
         it_behaves_like 'a page with a manage school group menu'
@@ -294,9 +295,10 @@ RSpec.describe 'Navigation -> second nav' do
         let(:path) { school_group_path(school.project_groups.first) }
 
         context 'with a group manager' do
-          let(:user) { create(:group_manager, school_group: school.project_groups.first) }
+          let(:school_group) { school.project_groups.first }
+          let(:user) { create(:group_manager, school_group:) }
 
-          it_behaves_like 'a page with a limited manage school group menu'
+          it_behaves_like 'a page with a group settings link'
         end
 
         context 'with an admin user' do
