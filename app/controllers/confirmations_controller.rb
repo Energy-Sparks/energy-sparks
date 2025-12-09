@@ -51,7 +51,6 @@ class ConfirmationsController < Devise::ConfirmationsController
       create_or_update_alert_contact(resource.school, resource) if subscribe_to_alerts?
       subscribe_newsletter(resource, params.permit(interests: {})) if can_subscribe_newsletter?(resource)
 
-      # FIXME is this in the right place?
       resource.after_database_authentication
       sign_in(resource_name, resource)
 

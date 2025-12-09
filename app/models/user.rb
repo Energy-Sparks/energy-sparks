@@ -377,6 +377,10 @@ class User < ApplicationRecord
     errors.add(:preferred_locale, 'must be present in the list of availale locales')
   end
 
+  def password_required?
+    confirmed? ? super : false
+  end
+
   def update_contact
     return unless (contact = contact_for_school)
 
