@@ -54,7 +54,7 @@
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('school_groups.sub_nav.edit_group'),
                    href: edit_admin_school_group_path(school_group), classes:) %>
-    <% if school_group.organisation? %>
+    <% if school_group.organisation? # CHECK: these can be done for all group types? %>
       <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
                      href: admin_school_group_path(school_group), classes:) %>
       <% s.with_item(name: 'Issues',

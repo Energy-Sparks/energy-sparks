@@ -41,8 +41,8 @@ RSpec.shared_examples 'a page with a limited manage school group menu' do
 
   it 'shows non-organisation group specific items and admin links' do
     expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
-      ['School engagement', 'School status',
-       'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin']
+      ['Settings', 'School engagement', 'School status', 'Timeline',
+       'Edit group', 'Manage users', 'Manage partners', 'Set message']
     )
   end
 end
@@ -54,8 +54,9 @@ RSpec.shared_examples 'a page with a manage school group menu' do
 
   it 'shows standard items and admin links' do
     expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
-      ['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'SECR report', 'School engagement', 'School status',
-       'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin']
+      ['Settings', 'Chart settings', 'Manage clusters', 'Manage tariffs',
+       'Digital signage', 'School engagement', 'School status', 'SECR report', 'Timeline',
+       'Edit group', 'Group admin', 'Issues', 'Manage users', 'Manage partners', 'Set message']
     )
   end
 end
