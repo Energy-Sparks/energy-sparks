@@ -164,7 +164,7 @@ RSpec.describe 'User confirmations', :schools, type: :system do
   end
 
   context 'when following an emailed confirmation link' do
-    let!(:user) { create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, email: 'unconfirmed@test.com', school: school) }
+    let!(:user) { create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, email: 'unconfirmed@test.com') }
 
     before do
       open_email 'unconfirmed@test.com'
