@@ -7,21 +7,14 @@
 #  created_at                          :datetime         not null
 #  electricity                         :float
 #  electricity_monthly_consumption     :jsonb
-#  electricity_progress                :json
-#  electricity_report                  :jsonb
 #  gas                                 :float
 #  gas_monthly_consumption             :jsonb
-#  gas_progress                        :json
-#  gas_report                          :jsonb
 #  id                                  :bigint(8)        not null, primary key
-#  report_last_generated               :datetime
 #  revised_fuel_types                  :string           default([]), not null, is an Array
 #  school_id                           :bigint(8)        not null
 #  start_date                          :date
 #  storage_heaters                     :float
 #  storage_heaters_monthly_consumption :jsonb
-#  storage_heaters_progress            :json
-#  storage_heaters_report              :jsonb
 #  target_date                         :date
 #  updated_at                          :datetime         not null
 #
@@ -56,7 +49,6 @@ class SchoolTarget < ApplicationRecord
 
   alias_attribute :storage_heater, :storage_heaters
   alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
-  alias_attribute :storage_heater_progress, :storage_heaters_progress
 
   FUEL_TYPES = %i[electricity gas storage_heater].freeze
 
@@ -92,14 +84,14 @@ class SchoolTarget < ApplicationRecord
     revised_fuel_types.any?
   end
 
-  def to_progress_summary
-    Targets::ProgressSummary.new(
-      school_target: self,
-      electricity: electricity_progress.any? ? Targets::FuelProgress.new(**electricity_progress.symbolize_keys!) : nil,
-      gas: gas_progress.any? ? Targets::FuelProgress.new(**gas_progress.symbolize_keys!) : nil,
-      storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(**storage_heaters_progress.symbolize_keys!) : nil
-    )
-  end
+  # def to_progress_summary
+  #   Targets::ProgressSummary.new(
+  #     school_target: self,
+  #     electricity: electricity_progress.any? ? Targets::FuelProgress.new(**electricity_progress.symbolize_keys!) : nil,
+  #     gas: gas_progress.any? ? Targets::FuelProgress.new(**gas_progress.symbolize_keys!) : nil,
+  #     storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(**storage_heaters_progress.symbolize_keys!) : nil
+  #   )
+  # end
 
   def saved_progress_report_for(fuel_type)
     fuel_type = :storage_heaters if fuel_type == :storage_heater
