@@ -9,9 +9,14 @@ class ConfirmationsController < Devise::ConfirmationsController
     return head(:ok) if request.head?
 
     self.resource = resource_class.find_by(confirmation_token: params[:confirmation_token])
+
     if resource.nil?
-      # FIXME add flash message? e.g. set_flash_message!(:notice, :invalid_token)
-      respond_with_navigational(resource.errors, status: :unprocessable_entity) { render :new }
+      # FIXME add flash notice?
+      redirect_to new_user_confirmation_path and return
+    elsif resource.confirmed? && current_user.nil?
+      redirect_to new_session_path(resource_name) and return
+    elsif resource.confirmed? && current_user
+      redirect_to after_sign_in_path_for(resource) and return
     else
       @allow_alerts = allow_alerts?(resource)
       @can_subscribe_newsletter = can_subscribe_newsletter?(resource)
@@ -21,11 +26,9 @@ class ConfirmationsController < Devise::ConfirmationsController
   end
 
   def confirm
-    # FIXME if user already confirmed, then do something else
-    # what does Devise do here?
     self.resource = resource_class.find_by(confirmation_token: params[:confirmation_token])
 
-    # FIXME write spec for this
+    # FIXME write spec for this, and if already confirmed?
     if resource.nil?
       set_flash_message!(:alert, :invalid_token)
       respond_with_navigational(resource.errors, status: :unprocessable_entity) { render :show }

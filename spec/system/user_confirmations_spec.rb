@@ -179,16 +179,48 @@ RSpec.describe 'User confirmations', :schools, type: :system do
   end
 
   context 'with an unknown token' do
-    it 'handles it sensibly'
+    let!(:user) do
+      create(:group_admin,
+             confirmation_token: confirmation_token,
+             school_group: create(:school_group, :with_active_schools))
+    end
+
+    before do
+      visit user_confirmation_path(confirmation_token: 'unknown')
+    end
+
+    it 'redirects to confirmation form' do
+      expect(page).to have_current_path(new_user_confirmation_path)
+    end
   end
 
   context 'when confirming a user that is already confirmed' do
+    # Devise doesn't remove token when confirming, so ensure one is set
+    let!(:user) do
+      create(:group_admin,
+             confirmation_token: confirmation_token,
+             school_group: create(:school_group, :with_active_schools))
+    end
+
     context 'when user not logged in' do
-      it 'prompts for login'
+      before do
+        visit user_confirmation_path(confirmation_token: confirmation_token)
+      end
+
+      it 'prompts for login' do
+        expect(page).to have_content(I18n.t('devise.sessions.new.title'))
+      end
     end
 
     context 'when user logged in' do
-      it 'redirects'
+      before do
+        sign_in(user)
+        visit user_confirmation_path(confirmation_token: confirmation_token)
+      end
+
+      it 'redirects' do
+        expect(page).to have_current_path(school_group_path(user.school_group))
+      end
     end
   end
 
