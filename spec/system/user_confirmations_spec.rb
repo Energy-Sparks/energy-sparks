@@ -178,6 +178,10 @@ RSpec.describe 'User confirmations', :schools, type: :system do
     end
   end
 
+  context 'with an unknown token' do
+    it 'handles it sensibly'
+  end
+
   context 'when confirming a user that is already confirmed' do
     context 'when user not logged in' do
       it 'prompts for login'
