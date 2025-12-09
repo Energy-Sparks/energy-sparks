@@ -3,6 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe 'Navigation -> second nav' do
+  # These are on in production now, so assume on all the time
+  before { Flipper.enable(:school_group_secr_report) }
+  before { Flipper.enable(:group_settings) }
+
   let!(:user) {}
   let(:school_group) { create(:school_group) }
   let(:data_enabled) { true }
@@ -179,6 +183,10 @@ RSpec.describe 'Navigation -> second nav' do
       it 'has a link to pupil dashboard' do
         expect(nav).to have_link('Pupil dashboard', href: pupils_school_path(school))
       end
+
+      it 'does not have a link to adult dashboard' do
+        expect(nav).not_to have_link('Adult dashboard', href: school_path(school))
+      end
     end
 
     context 'when on pupil dashboard' do
@@ -186,6 +194,10 @@ RSpec.describe 'Navigation -> second nav' do
 
       it 'has a link to adult dashboard' do
         expect(nav).to have_link('Adult dashboard', href: school_path(school))
+      end
+
+      it 'does not have a link to pupil dashboard' do
+        expect(nav).not_to have_link('Pupil dashboard', href: pupils_school_path(school))
       end
     end
 
@@ -234,51 +246,49 @@ RSpec.describe 'Navigation -> second nav' do
     end
   end
 
-  describe 'Manage school group menu' do
+  describe 'Manage school group menu / link' do
     let(:path) { school_group_path(school.school_group) }
     let(:manage_school_group_menu) { nav.find_by(id: 'manage-school-group-menu') }
 
     context 'when on a non school group page' do
       let(:path) { visit home_page_path }
 
-      it_behaves_like 'a page without a manage school group menu'
+      it_behaves_like 'a page without a manage school group menu or link'
     end
 
     context 'when on a school group page' do
       let(:path) { school_group_path(school.school_group) }
 
-      context 'when user is a site admin' do
-        before { Flipper.enable(:school_group_secr_report) }
-        before { Flipper.enable(:group_settings) }
-
+      context 'when user is a super admin' do
         let(:user) { create(:admin) }
 
         it_behaves_like 'a page with a manage school group menu'
-        it_behaves_like 'a page with a manage school group menu including admin links'
       end
 
       context 'when user is a school group admin for different group' do
         let(:user) { create(:group_admin, school_group: create(:school_group)) }
 
-        it_behaves_like 'a page without a manage school group menu'
+        it_behaves_like 'a page without a manage school group menu or link'
       end
 
       context 'when user is a group admin for own group' do
         let(:user) { create(:group_admin, school_group: school_group) }
 
-        it_behaves_like 'a page with a manage school group menu'
-        it_behaves_like 'a page with a manage school group menu not including admin links'
+        it_behaves_like 'a page with a manage group link'
 
-        it_behaves_like 'a page with a manage school group menu' do
+        it_behaves_like 'a page with a manage group link' do
           let(:path) { map_school_group_path(school_group) }
         end
-        it_behaves_like 'a page with a manage school group menu' do
+
+        it_behaves_like 'a page with a manage group link' do
           let(:path) { comparisons_school_group_path(school_group) }
         end
-        it_behaves_like 'a page with a manage school group menu' do
+
+        it_behaves_like 'a page with a manage group link' do
           let(:path) { priority_actions_school_group_path(school_group) }
         end
-        it_behaves_like 'a page with a manage school group menu' do
+
+        it_behaves_like 'a page with a manage group link' do
           let(:path) { current_scores_school_group_path(school_group) }
         end
       end
@@ -286,7 +296,7 @@ RSpec.describe 'Navigation -> second nav' do
       context 'when user is not a school group admin' do
         let(:path) { school_group_path(school.school_group) }
 
-        it_behaves_like 'a page without a manage school group menu'
+        it_behaves_like 'a page without a manage school group menu or link'
       end
 
       context 'with a project group' do
@@ -294,15 +304,16 @@ RSpec.describe 'Navigation -> second nav' do
         let(:path) { school_group_path(school.project_groups.first) }
 
         context 'with a group manager' do
-          let(:user) { create(:group_manager, school_group: school.project_groups.first) }
+          let(:school_group) { school.project_groups.first }
+          let(:user) { create(:group_manager, school_group:) }
 
-          it_behaves_like 'a page with a limited manage school group menu'
+          it_behaves_like 'a page with a manage group link'
         end
 
         context 'with an admin user' do
           let(:user) { create(:admin) }
 
-          it_behaves_like 'a page with a limited manage school group menu and admin links'
+          it_behaves_like 'a page with a limited manage school group menu'
         end
       end
     end
