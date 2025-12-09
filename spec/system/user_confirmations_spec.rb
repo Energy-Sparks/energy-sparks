@@ -163,6 +163,21 @@ RSpec.describe 'User confirmations', :schools, type: :system do
     end
   end
 
+  context 'when following an emailed confirmation link' do
+    let!(:user) { create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, email: 'unconfirmed@test.com', school: school) }
+
+    before do
+      open_email 'unconfirmed@test.com'
+      current_email.click_link 'Confirm my account'
+      fill_in_password_and_register(valid_password, valid_password)
+    end
+
+    it 'logs me in and confirms my account' do
+      expect(page).to have_content('Sign Out')
+      expect(teacher.reload.confirmed?).to be(true)
+    end
+  end
+
   context 'when confirming a user that is already confirmed' do
     context 'when user not logged in' do
       it 'prompts for login'
