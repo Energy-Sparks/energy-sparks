@@ -40,8 +40,27 @@
 
     <% if @allow_alerts %>
       <hr>
-      <%= render 'schools/users/auto_create_alert_contact', f: f, school: resource.school, user: resource,
-                                                            checked: true %>
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <%= simple_fields_for :contact do |n| %>
+            <%= n.input :auto_create_alert_contact,
+                        label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
+                        as: :boolean,
+                        class: 'custom-checkbox pb-3',
+                        wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
+                        label_html: { class: 'custom-control-label' },
+                        input_html: { class: 'custom-control-input', checked: true } %>
+          <% end %>
+        </div>
+        <div class="col-sm-8">
+          <p><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts') %>:</p>
+          <ul>
+            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_1') %></li>
+            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_2') %></li>
+            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_3') %></li>
+          </ul>
+        </div>
+      </div>
     <% end %>
 
     <% if @can_subscribe_newsletter %>
@@ -56,7 +75,7 @@
 
     <% end %>
 
-    <div>
+    <div class="custom-control custom-checkbox agreements">
       <%= f.check_box :terms_accepted,
                       { class: 'custom-control-input multi-select must-check' },
                       '1',

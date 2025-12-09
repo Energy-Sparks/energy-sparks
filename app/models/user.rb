@@ -133,9 +133,6 @@ class User < ApplicationRecord
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
-  # FIXME keep this? allows error on new page, not showing otherwise
-  validates :password, confirmation: true, if: -> { password.present? && password_required? }
-
   validates :pupil_password, presence: true, if: :pupil?
   validates :pupil_password, length: { minimum: 12 }, if: :pupil?
   validate :pupil_password_unique, if: :pupil?
@@ -378,10 +375,6 @@ class User < ApplicationRecord
     return if I18n.available_locales.include? preferred_locale&.to_sym
 
     errors.add(:preferred_locale, 'must be present in the list of availale locales')
-  end
-
-  def password_required?
-    confirmed? ? super : false
   end
 
   def update_contact
