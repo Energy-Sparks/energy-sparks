@@ -174,7 +174,7 @@ RSpec.describe 'User confirmations', :schools, type: :system do
 
     it 'logs me in and confirms my account' do
       expect(page).to have_content('Sign Out')
-      expect(teacher.reload.confirmed?).to be(true)
+      expect(user.reload.confirmed?).to be(true)
     end
   end
 
