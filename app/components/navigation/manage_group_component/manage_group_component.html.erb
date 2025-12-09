@@ -9,12 +9,14 @@
                     expanded: true,
                     visible: school_group.organisation?,
                     options: { match_controller: false } do |s| %>
-    <% s.with_item(name: t('common.charts'),
-                   href: school_group_chart_updates_path(school_group), classes:,
-                   match_controller: true) %>
-    <% s.with_item(name: t('common.clusters'),
-                   href: school_group_clusters_path(school_group), classes:,
-                   match_controller: true) %>
+    <% if can?(:update_settings, @school_group) %>
+      <% s.with_item(name: t('common.charts'),
+                     href: school_group_chart_updates_path(school_group), classes:,
+                     match_controller: true) %>
+      <% s.with_item(name: t('common.clusters'),
+                     href: school_group_clusters_path(school_group), classes:,
+                     match_controller: true) %>
+    <% end %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('common.tariffs'),
                      href: school_group_energy_tariffs_path(@school_group), classes:,
@@ -37,7 +39,7 @@
     <% s.with_item(name: t('school_groups.titles.school_status'),
                    href: school_group_status_index_path(school_group), classes:,
                    match_controller: true) %>
-    <% if school_group.organisation? && Flipper.enabled?(:school_group_secr_report,  current_user) %>
+    <% if school_group.organisation? && Flipper.enabled?(:school_group_secr_report,  current_user) && can?(:secr, school_group) %>
       <% s.with_item(name: t('school_groups.sub_nav.secr_report'),
                      href: school_group_secr_index_path(school_group), classes:) %>
     <% end %>
@@ -52,12 +54,10 @@
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('school_groups.sub_nav.edit_group'),
                    href: edit_admin_school_group_path(school_group), classes:) %>
-    <% if school_group.organisation? %>
-      <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
-                     href: admin_school_group_path(school_group), classes:) %>
-      <% s.with_item(name: 'Issues',
-                     href: admin_school_group_issues_path(school_group), classes:) %>
-    <% end %>
+    <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
+                   href: admin_school_group_path(school_group), classes:) %>
+    <% s.with_item(name: 'Issues',
+                   href: admin_school_group_issues_path(school_group), classes:) %>
     <% s.with_item(name: t('school_groups.sub_nav.manage_users'),
                    href: admin_school_group_users_path(school_group), classes:) %>
 
