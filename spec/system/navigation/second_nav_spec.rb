@@ -183,6 +183,10 @@ RSpec.describe 'Navigation -> second nav' do
       it 'has a link to pupil dashboard' do
         expect(nav).to have_link('Pupil dashboard', href: pupils_school_path(school))
       end
+
+      it 'does not have a link to adult dashboard' do
+        expect(nav).not_to have_link('Adult dashboard', href: school_path(school))
+      end
     end
 
     context 'when on pupil dashboard' do
@@ -190,6 +194,10 @@ RSpec.describe 'Navigation -> second nav' do
 
       it 'has a link to adult dashboard' do
         expect(nav).to have_link('Adult dashboard', href: school_path(school))
+      end
+
+      it 'does not have a link to pupil dashboard' do
+        expect(nav).not_to have_link('Pupil dashboard', href: pupils_school_path(school))
       end
     end
 
