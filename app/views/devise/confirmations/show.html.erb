@@ -12,31 +12,12 @@
 
     <%= hidden_field_tag :confirmation_token, params[:confirmation_token] %>
 
-    <div class="form-group">
-      <%= f.label :password, t('devise.passwords.edit.new_password'), class: 'col-form-label' %>
-      <%= f.password_field :password, autocomplete: 'off', class: 'form-control' %>
-      <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> <%= t('devise.passwords.edit.characters_minimum') %>)</em><br>
-      <% end %>
-    </div>
+    <%= render 'devise/passwords/password_fields',
+               resource: resource,
+               form: f,
+               minimum_password_length: @minimum_password_length %>
 
-    <div class="form-group">
-      <%= f.label :password_confirmation, t('devise.passwords.edit.confirm_new_password'), class: 'col-form-label' %>
-      <%= f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control' %>
-      <% if @minimum_password_length %>
-          <em>(<%= @minimum_password_length %> <%= t('devise.passwords.edit.characters_minimum') %>)</em><br>
-      <% end %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label :preferred_locale, t('schools.users.form.preferred_locale'), class: 'col-form-label' %>
-      <%= f.select :preferred_locale,
-                   options_for_select(I18n.available_locales.map { |locale|
-                     [I18n.t("languages.#{locale}"), locale]
-                   }, resource.preferred_locale),
-                   { include_blank: false },
-                   { class: 'form-control' } %>
-    </div>
+    <%= render 'users/preferred_locale', resource:, form: f %>
 
     <% if @allow_alerts %>
       <hr>
