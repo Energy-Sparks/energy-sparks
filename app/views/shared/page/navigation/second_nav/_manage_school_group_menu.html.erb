@@ -28,7 +28,7 @@
     <% end %>
     <%= link_to t('school_groups.titles.school_status'),
                 school_group_status_index_path(school_group), class: 'dropdown-item' %>
-    <% if school_group.organisation? && Flipper.enabled?(:school_group_secr_report,  current_user) && can?(:secr, school_group) %>
+    <% if school_group.organisation? && can?(:secr, school_group) %>
       <%= link_to t('school_groups.sub_nav.secr_report'),
                   school_group_secr_index_path(school_group), class: 'dropdown-item' %>
     <% end %>

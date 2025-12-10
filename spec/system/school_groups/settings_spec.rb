@@ -8,8 +8,6 @@ RSpec.describe 'school group settings', :include_application_helper, :school_gro
   let!(:user) { create(:admin) }
 
   before do
-    Flipper.enable :school_group_secr_report
-
     sign_in(user)
     visit settings_school_group_path(school_group)
   end
