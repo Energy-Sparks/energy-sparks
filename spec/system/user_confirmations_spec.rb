@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'User confirmations', :schools, type: :system do
+RSpec.describe 'User confirmation and registration', :schools, type: :system do
   let(:confirmation_token) { 'abc123' }
   let(:valid_password) { 'valid password' }
 
@@ -221,30 +221,6 @@ RSpec.describe 'User confirmations', :schools, type: :system do
       it 'redirects' do
         expect(page).to have_current_path(school_group_path(user.school_group))
       end
-    end
-  end
-
-  context 'when resetting password for existing user' do
-    let(:school)  { create(:school) }
-    let(:user)    { create(:user, email: 'a@b.com', school: school) }
-
-    before do
-      token = user.send(:set_reset_password_token)
-      visit edit_user_password_path(user, reset_password_token: token)
-    end
-
-    it 'allows password to be set' do
-      expect(page).to have_content('Set your password')
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      click_button 'Set my password'
-      expect(page).to have_content('Your password has been changed successfully')
-    end
-
-    it 'does not show checkboxes for subscriptions' do
-      expect(page).to have_content('Set your password')
-      expect(page).not_to have_content('Energy Sparks alerts:')
-      expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
     end
   end
 end

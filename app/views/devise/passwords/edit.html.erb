@@ -2,20 +2,14 @@
     <%= t('devise.passwords.edit.page_title') %>
 <% end %>
 <div class="application container">
-
   <h1>
-    <% if @confirmed %>
-      <%= t('devise.passwords.edit.complete_your_registration') %>
-    <% else %>
-      <%= t('devise.passwords.edit.set_your_password') %>
-    <% end %>
+    <%= t('devise.passwords.edit.set_your_password') %>
   </h1>
 
   <%= form_for(resource, as: resource_name, url: password_path(resource_name),
                          html: { method: :put, class: 'form-horizontal' }) do |f| %>
     <%= render 'devise/shared/error_messages', resource: resource %>
     <%= f.hidden_field :reset_password_token %>
-    <%= hidden_field_tag :confirmed, @confirmed %>
 
     <div class="form-group">
       <%= f.label :password, t('devise.passwords.edit.new_password'), class: 'col-form-label' %>
@@ -33,48 +27,8 @@
       <% end %>
     </div>
 
-    <% if @confirmed %>
-      <div class="form-group">
-        <%= f.label :preferred_locale, t('schools.users.form.preferred_locale'), class: 'col-form-label' %>
-        <%= f.select :preferred_locale,
-                     options_for_select(I18n.available_locales.map { |locale|
-                       [I18n.t("languages.#{locale}"), locale]
-                     }, resource.preferred_locale),
-                     { include_blank: false },
-                     { class: 'form-control' } %>
-      </div>
-    <% end %>
-
-    <% if @allow_alerts %>
-      <hr>
-      <%= render 'schools/users/auto_create_alert_contact', f: f, school: resource.school, user: resource,
-                                                            checked: @subscribe_alerts %>
-    <% end %>
-
-    <% if can_subscribe_newsletter?(user_from_token) %>
-      <div class="row mt-4">
-        <div class="col-md-12">
-          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
-        </div>
-      </div>
-      <%= render 'users/emails/mailchimp_interest_fields',
-                 email_types: @email_types,
-                 interests: @interests %>
-
-    <% end %>
-
-    <% if @confirmed %>
-      <%= render 'shared/agree_terms_checkbox' %>
-    <% end %>
-
     <div class="form-group">
-      <% if @confirmed %>
-        <%= f.submit t('devise.passwords.edit.complete_registration'), class: 'btn btn-primary' %>
-      <% else %>
-        <%= f.submit t('devise.passwords.edit.set_my_password'), class: 'btn btn-primary' %>
-      <% end %>
+      <%= f.submit t('devise.passwords.edit.set_my_password'), class: 'btn btn-primary' %>
     </div>
-
   <% end %>
-
 </div>
