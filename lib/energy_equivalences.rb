@@ -106,11 +106,7 @@ class EnergyEquivalences
   end
 
   private_class_method def self.set_co2_kg_kwh
-    if Rails.env.test? || ENV['CI'] == 'true'
-      { electricity: 0.20493, gas: 0.18253 }
-    else
-      SecrCo2Equivalence.co2e_co2(year: 2025)
-    end
+    SecrCo2Equivalence.co2e_co2(2025)
   end
 
   def self.all_equivalences(uk_electric_grid_co2_kg_kwh = nil)
