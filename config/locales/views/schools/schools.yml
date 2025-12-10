@@ -485,6 +485,7 @@ en:
         page_title: Your current energy saving targets
       edit:
         before_changing_your_targets: Before changing your targets, check our recommendations to see what you can do to reduce costs and emissions
+        cannot_update_expired: Cannot edit an expired target
         if_you_do_revise_your_targets: If you do revise your targets we will update your progress report to apply that target to all of your energy usage this year
         page_title: Update your energy saving target
         review_your_dashboard: Review your dashboard

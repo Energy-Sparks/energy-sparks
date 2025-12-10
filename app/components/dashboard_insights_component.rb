@@ -6,12 +6,11 @@ class DashboardInsightsComponent < ApplicationComponent
 
   attr_reader :school, :progress_summary, :user, :audience
 
-  def initialize(school:, audience: :adult, progress_summary: nil, user: nil, id: nil, classes: '')
+  def initialize(school:, audience: :adult, user: nil, id: nil, classes: '')
     super(id: id, classes: classes)
     @school = school
     @audience = audience
     @user = user
-    @progress_summary = progress_summary
     @target = school.most_recent_target
   end
 
@@ -30,6 +29,7 @@ class DashboardInsightsComponent < ApplicationComponent
 
   def data_enabled?
     return true if user.present? && user.admin?
+
     @school.data_enabled?
   end
 
@@ -38,21 +38,9 @@ class DashboardInsightsComponent < ApplicationComponent
     data_enabled? && (alerts.any? || any_targets?)
   end
 
-  def any_passing_targets?
-    reportable_progress?(@progress_summary) && @progress_summary.any_passing_targets?
-  end
-
-  def any_failing_targets?
-    reportable_progress?(@progress_summary) && @progress_summary.any_failing_targets?
-  end
-
   def any_targets?
-    if Flipper.enabled?(:target_advice_pages2025, user)
-      [@target&.electricity_monthly_consumption,
-       @target&.gas_monthly_consumption,
-       @target&.storage_heater_monthly_consumption].any?
-    else
-      any_passing_targets? || any_failing_targets?
-    end
+    [@target&.electricity_monthly_consumption,
+     @target&.gas_monthly_consumption,
+     @target&.storage_heater_monthly_consumption].any?
   end
 end

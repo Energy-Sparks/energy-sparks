@@ -61,7 +61,6 @@ class SchoolsController < ApplicationController
     authorize! :show, @school
     @audience = :adult
     @observations = setup_timeline(@school.observations.includes(:activity, :intervention_type))
-    @progress_summary = progress_service.progress_summary if @school.data_enabled?
   end
 
   # GET /schools/1/edit
