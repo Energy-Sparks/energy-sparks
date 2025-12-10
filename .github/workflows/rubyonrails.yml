@@ -74,6 +74,5 @@ jobs:
     - uses: ./.github/actions/setup
       with:
         ruby-only: true
-    - run: env
     - name: Run standard test
       run: bundle exec ruby analytics/script/standard/standard_test_github_actions.rb

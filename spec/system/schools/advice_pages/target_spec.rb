@@ -216,7 +216,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 1,020 1,000 1,010 -0.98&percnt; \
         November #{year} 1,020 1,000 1,010 -0.98&percnt; \
         December #{year} 1,020 1,000 1,010 -0.98&percnt;
-        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
+        Partial months are shown in red.m - manual readings used How did we calculate these figures?
         Cumulative progress
         Back to top
         This table summarises your overall progress towards reducing your #{fuel_string} use by 4&percnt;. Each entry in the table shows the cumulative target and consumption for each month in the target period. This table help you to monitor whether you are on track to achieve the target by January #{year + 1}.
@@ -233,7 +233,7 @@ RSpec.shared_examples 'target advice page' do
         October #{year} 10,200 10,000 10,100 -0.98&percnt; \
         November #{year} 11,220 11,000 11,110 -0.98&percnt; \
         December #{year} 12,240 12,000 12,120 -0.98&percnt;
-        Partial months are shown in red.[m] - manual readings used How did we calculate these figures?
+        Partial months are shown in red.m - manual readings used How did we calculate these figures?
       CONTENT
     end
 

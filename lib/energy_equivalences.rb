@@ -106,7 +106,7 @@ class EnergyEquivalences
   end
 
   private_class_method def self.set_co2_kg_kwh
-    if Rails.env.test? || ENV['GITHUB_JOB'] == 'analytics_tests'
+    if Rails.env.test? || File.basename($PROGRAM_NAME) == 'standard_test_github_actions.rb'
       { electricity: 0.20493, gas: 0.18253 }
     else
       SecrCo2Equivalence.co2e_co2(2025)
