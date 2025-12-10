@@ -46,11 +46,8 @@ class ConfirmationsController < Devise::ConfirmationsController
       resource.confirm
       resource.save
 
-      create_or_update_alert_contact(resource.school, resource) if subscribe_to_alerts?
-      subscribe_newsletter(resource, params.permit(interests: {})) if can_subscribe_newsletter?(resource)
-
-      resource.after_database_authentication
-      sign_in(resource_name, resource)
+      subscribe_to_emails(resource)
+      devise_sign_in(resource)
 
       flash[:success] = I18n.t('devise.confirmations.confirmed')
       respond_with resource, location: after_resetting_password_path_for(resource)
@@ -64,6 +61,17 @@ class ConfirmationsController < Devise::ConfirmationsController
   end
 
   private
+
+  def subscribe_to_emails(resource)
+    create_or_update_alert_contact(resource.school, resource) if subscribe_to_alerts?
+    subscribe_newsletter(resource, params.permit(interests: {})) if can_subscribe_newsletter?(resource)
+  end
+
+  # Same as usual sign-in step following resetting password
+  def devise_sign_in
+    resource.after_database_authentication
+    sign_in(resource_name, resource)
+  end
 
   def after_resetting_password_path_for(resource)
     resource_class.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
