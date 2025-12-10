@@ -39,12 +39,7 @@ RSpec.describe 'SECR CO₂ equivalences' do
 
   context 'with existing' do
     let!(:equivalence) do
-      SecrCo2Equivalence.create!(year: 2024,
-                                 electricity_co2e: 0.20705,
-                                 electricity_co2e_co2: 0.20493,
-                                 transmission_distribution_co2e: 0.01830,
-                                 natural_gas_co2e: 0.18290,
-                                 natural_gas_co2e_co2: 0.18253)
+      create(:secr_co2_equivalence, year: 2024)
     end
 
     before { refresh }
@@ -55,7 +50,7 @@ RSpec.describe 'SECR CO₂ equivalences' do
         [['Year', 'Electricity kg CO₂e', 'Electricity kg CO₂e of CO₂',
           'Transmission & distribution kg CO₂e', 'Natural gas kg CO₂e',
           'Natural gas kg CO₂e of CO₂'],
-         ['2024', '0.20705', '0.20493', '0.0183', '0.1829', '0.18253', 'Edit']]
+         ['2024', '0.2', '0.2', '0.02', '0.2', '0.2', 'Edit']]
       )
     end
 
