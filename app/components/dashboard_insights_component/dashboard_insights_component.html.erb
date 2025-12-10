@@ -1,10 +1,4 @@
-<%= tag.div id: id, class: classes do %>
-  <div class="row">
-    <div class="col-12">
-      <h2 id="<%= id %>" class="scrollable-title"><%= t('components.dashboard_insights.title') %></h2>
-    </div>
-  </div>
-
+<%= tag.div id: id, class: class_names(classes, 'scrollable-title') do %>
   <div class="row">
     <%# split to 2 column view on larger screens if we are displaying alerts %>
     <div class="col-12 <%= displaying_alerts? ? 'col-lg-6' : '' %>">
@@ -13,7 +7,7 @@
             user: user,
             id: "#{audience}-reminders"
           ) do |c| %>
-        <% c.with_title { t('components.dashboard_insights.reminders.title') } %>
+        <% c.with_title(level: 2) { t('components.dashboard_insights.reminders.title') } %>
       <% end %>
     </div>
 
@@ -26,7 +20,7 @@
               user: user,
               id: "#{audience}-alerts"
             ) do |c| %>
-          <% c.with_title { t('advice_pages.index.alerts.title') } %>
+          <% c.with_title(level: 2) { t('advice_pages.index.alerts.title') } %>
           <% c.with_link do %>
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(school) %>
           <% end %>

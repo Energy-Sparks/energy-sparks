@@ -2,9 +2,7 @@
   <% if title? || link? %>
     <div class="row">
       <div class="col d-flex flex-wrap justify-content-between align-items-center">
-        <% if title? %>
-          <h3><%= title %></h3>
-        <% end %>
+        <%= title if title? %>
         <% if link? %>
           <div>
             <%= link %>
