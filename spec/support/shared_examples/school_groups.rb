@@ -96,23 +96,13 @@ RSpec.shared_examples 'a page never displaying the school group settings nav' do
 end
 
 RSpec.shared_examples 'a page displaying the school group settings nav' do
-  context with_feature: :group_settings do
-    before { refresh }
+  before { refresh }
 
-    it_behaves_like 'a page always displaying the school group settings nav'
-  end
-
-  context without_feature: :group_settings do
-    before { refresh }
-
-    it_behaves_like 'a page never displaying the school group settings nav'
-  end
+  it_behaves_like 'a page always displaying the school group settings nav'
 end
 
 RSpec.shared_examples 'a page not displaying the school group settings nav' do
-  context toggle_feature: :group_settings do
-    before { refresh }
+  before { refresh }
 
-    it_behaves_like 'a page never displaying the school group settings nav'
-  end
+  it_behaves_like 'a page never displaying the school group settings nav'
 end

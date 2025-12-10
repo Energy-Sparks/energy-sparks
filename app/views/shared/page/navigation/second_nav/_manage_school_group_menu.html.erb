@@ -5,11 +5,9 @@
      <%= t('school_groups.sub_nav.manage_group') %>
   </a>
   <div class="dropdown-menu" aria-labelledby="manage-school-group" id="dropdown-manage-school-group">
-    <% if Flipper.enabled?(:group_settings, current_user) %>
-      <%= link_to t('common.settings'),
-                  settings_school_group_path(school_group), class: 'dropdown-item' %>
-      <div class="dropdown-divider"></div>
-    <% end %>
+    <%= link_to t('common.settings'),
+                settings_school_group_path(school_group), class: 'dropdown-item' %>
+    <div class="dropdown-divider"></div>
 
     <% if school_group.organisation? %>
       <%= link_to t('school_groups.sub_nav.chart_settings'),
@@ -28,10 +26,8 @@
       <%= link_to t('school_groups.sub_nav.school_engagement'), school_group_school_engagement_index_path(school_group),
                   class: 'dropdown-item' %>
     <% end %>
-    <% if Flipper.enabled?(:group_settings, current_user) %>
-      <%= link_to t('school_groups.titles.school_status'),
-                  school_group_status_index_path(school_group), class: 'dropdown-item' %>
-    <% end %>
+    <%= link_to t('school_groups.titles.school_status'),
+                school_group_status_index_path(school_group), class: 'dropdown-item' %>
     <% if school_group.organisation? && Flipper.enabled?(:school_group_secr_report,  current_user) && can?(:secr, school_group) %>
       <%= link_to t('school_groups.sub_nav.secr_report'),
                   school_group_secr_index_path(school_group), class: 'dropdown-item' %>
