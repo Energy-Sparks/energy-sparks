@@ -20,7 +20,7 @@ RSpec.describe 'school group settings', :include_application_helper, :school_gro
     end
   end
 
-  it_behaves_like 'a page always displaying the school group settings nav'
+  it_behaves_like 'a page with the school group settings nav'
 
   describe 'Settings section' do
     it 'has the title' do
