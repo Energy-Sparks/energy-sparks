@@ -73,21 +73,12 @@ class ConfirmationsController < Devise::ConfirmationsController
     resource_class.sign_in_after_reset_password ? after_sign_in_path_for(resource) : new_session_path(resource_name)
   end
 
-  def set_email_types
-    @email_types = list_of_email_types
-  end
-
   def allow_alerts?(resource)
     resource&.school&.present?
   end
 
   def can_subscribe_newsletter?(resource)
     !resource&.student_user?
-  end
-
-  # FIXME rename concern method and form details
-  def subscribe_to_alerts?
-    auto_create_alert_contact?
   end
 
   def subscribe_newsletter(resource, sign_up_params)

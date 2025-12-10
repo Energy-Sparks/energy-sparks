@@ -195,7 +195,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
   end
 
   context 'when confirming a user that is already confirmed' do
-    # Devise doesn't remove token when confirming, so ensure one is set
+    # Devise doesn't remove token when confirming, so ensure one is set that we can follow
     let!(:user) do
       create(:group_admin,
              confirmation_token: confirmation_token,
