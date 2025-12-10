@@ -35,10 +35,12 @@
   </div>
   <div class="row mt-4">
     <div class="col">
-      <%= render DashboardInsightsComponent.new(id: 'alerts-and-reminders',
-                                                audience: @audience,
-                                                school: @school,
-                                                user: current_user) %>
+      <%= render DashboardInsightsComponent.new(
+            id: 'alerts-and-reminders',
+            audience: @audience,
+            school: @school,
+            user: current_user
+          ) %>
     </div>
   </div>
 </div>
