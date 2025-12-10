@@ -8,7 +8,7 @@ module Dashboards
       render(Dashboards::GroupAlertsComponent.new(school_group: school_group,
                                                   schools: school_group.schools,
                                                   limit:, grouped:)) do |g|
-        g.with_title {'Title'}
+        g.with_title { 'Title' }
       end
     end
 
