@@ -4,7 +4,7 @@
       <%# split to 2 column view on larger screens if we are also displaying alerts %>
       <div class="<%= class_names('col-12', { 'col-lg-6': showing_alerts? }) %>">
         <%= render reminders_component do |c| %>
-          <% c.with_title(level: 2) { t('components.dashboard_insights.reminders.title') } %>
+          <% c.with_title { t('components.dashboard_insights.reminders.title') } %>
         <% end %>
       </div>
     <% end %>
