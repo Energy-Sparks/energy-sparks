@@ -2,8 +2,8 @@
 
 module Schools
   class ManualReadingsService
-    # use 13 months for comparisons
-    MONTHS_REQUIRED_WHEN_NO_TARGET = 13.months
+    # need 13 months for comparisons and 24 months for longterm monthly consumption table
+    MONTHS_REQUIRED_WHEN_NO_TARGET = 24.months
 
     attr_reader :target
 
