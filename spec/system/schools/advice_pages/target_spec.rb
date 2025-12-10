@@ -61,7 +61,7 @@ RSpec.shared_examples 'target advice page' do
           'In the meantime you can learn more about this topic.'
         else
           "Alternatively you can manually add monthly readings from your bill or supplier portal.\n" \
-          'In the meantime you can monitor your usage using the charts on the ' \
+            'In the meantime you can monitor your usage using the charts on the ' \
             "long term #{fuel_type} usage advice page"
         end}
     CONTENT
@@ -299,6 +299,26 @@ RSpec.shared_examples 'target advice page' do
                                       'May 2024 5,100 5,000 3,040 ' \
                                       'June 2024 6,120 6,000 ' \
                                       'July 2024 7,140 7,000 ')
+    end
+
+    context 'with manual readings' do
+      before do
+        create_target(current_consumption: [*[1010] * 11, nil],
+                      manual: [true] * 12, current_missing: [*[false] * 11, true])
+        visit_tab(tab)
+      end
+
+      it_behaves_like 'it contains the expected data table', aligned: false, sortable: false do
+        let(:table_id) { '#monthly-progress-table' }
+        let(:expected_header) do
+          [['Month', 'Last year (kWh)', 'Target (kWh)', 'This year (kWh)', '% change', 'On target?']]
+        end
+        let(:expected_rows) do
+          [*%w[January February March April May June July August September October
+               November].map { |month| ["#{month} 2024 m", '1,020', '1,000', '1,010', '-0.98&percnt;', ''] },
+           ['December 2024 m', '1,020', '1,000', '', '-', '']]
+        end
+      end
     end
   end
 end

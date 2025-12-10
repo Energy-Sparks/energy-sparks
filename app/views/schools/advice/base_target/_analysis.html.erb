@@ -15,7 +15,7 @@
 <p><%= t('advice_pages.target.analysis.monthly_progress.text_html',
          fuel_type: t_fuel_type,
          percent: formatted_target) %></p>
-<%= render 'monthly_table', consumption: @consumption.consumption %>
+<%= render 'monthly_table', id: 'monthly-progress-table', consumption: @consumption.consumption %>
 <%= render 'schools/advice/section_title',
            section_id: 'cumulative-progress',
            section_title: t('advice_pages.target.analysis.cumulative_progress.title') %>
@@ -34,7 +34,7 @@
         end
       end
     end
-    render 'monthly_table', consumption: %>
+    render 'monthly_table', id: 'cumulative-progress-table', consumption: %>
 <% if @historical_targets.any? %>
   <%= render 'schools/advice/section_title',
              section_id: 'historical-progress',
