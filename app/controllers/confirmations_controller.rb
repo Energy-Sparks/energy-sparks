@@ -11,11 +11,12 @@ class ConfirmationsController < Devise::ConfirmationsController
     self.resource = resource_class.find_by(confirmation_token: params[:confirmation_token])
 
     if resource.nil?
-      # FIXME add flash notice?
       redirect_to new_user_confirmation_path and return
     elsif resource.confirmed? && current_user.nil?
+      flash[:error] = I18n.t('errors.messages.already_confirmed')
       redirect_to new_session_path(resource_name) and return
     elsif resource.confirmed? && current_user
+      flash[:error] = I18n.t('devise.failure.already_authenticated')
       redirect_to after_sign_in_path_for(resource) and return
     else
       @allow_alerts = allow_alerts?(resource)
@@ -28,9 +29,7 @@ class ConfirmationsController < Devise::ConfirmationsController
   def confirm
     self.resource = resource_class.find_by(confirmation_token: params[:confirmation_token])
 
-    # FIXME write spec for this, and if already confirmed?
     if resource.nil?
-      set_flash_message!(:alert, :invalid_token)
       respond_with_navigational(resource.errors, status: :unprocessable_entity) { render :show }
       return
     end
@@ -46,10 +45,6 @@ class ConfirmationsController < Devise::ConfirmationsController
     if resource.valid? && resource.terms_accepted == '1'
       resource.confirm
       resource.save
-      # FIXME update translations
-      # FIXME add a message?
-      #      flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
-      #      set_flash_message!(:notice, flash_message)
 
       create_or_update_alert_contact(resource.school, resource) if subscribe_to_alerts?
       subscribe_newsletter(resource, params.permit(interests: {})) if can_subscribe_newsletter?(resource)
@@ -57,6 +52,7 @@ class ConfirmationsController < Devise::ConfirmationsController
       resource.after_database_authentication
       sign_in(resource_name, resource)
 
+      flash[:success] = I18n.t('devise.confirmations.confirmed')
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
       @allow_alerts = allow_alerts?(resource)

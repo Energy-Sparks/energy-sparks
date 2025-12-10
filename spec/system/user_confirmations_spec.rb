@@ -113,6 +113,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
             expect(kwargs[:status]).to eq('subscribed')
           end
           fill_in_password_and_register(valid_password, valid_password)
+          expect(page).to have_content(I18n.t('devise.confirmations.confirmed'))
           expect(page).to have_current_path(school_path(school))
           expect(user.reload.confirmed?).to be(true)
         end
@@ -207,6 +208,8 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
         visit user_confirmation_path(confirmation_token: confirmation_token)
       end
 
+      it { expect(page).to have_content(I18n.t('errors.messages.already_confirmed')) }
+
       it 'prompts for login' do
         expect(page).to have_content(I18n.t('devise.sessions.new.title'))
       end
@@ -217,6 +220,8 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
         sign_in(user)
         visit user_confirmation_path(confirmation_token: confirmation_token)
       end
+
+      it { expect(page).to have_content(I18n.t('devise.failure.already_authenticated')) }
 
       it 'redirects' do
         expect(page).to have_current_path(school_group_path(user.school_group))
