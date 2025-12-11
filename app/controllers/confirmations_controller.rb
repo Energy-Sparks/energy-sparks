@@ -36,14 +36,14 @@ class ConfirmationsController < Devise::ConfirmationsController
 
     # FIXME Save this don't use virtual attribute
     resource.assign_attributes(
+      confirmed_at: Time.zone.now, # setting confirmed means password validation is now active
       password: resource_params[:password],
       password_confirmation: resource_params[:password_confirmation],
-      terms_accepted: resource_params[:terms_accepted],
       preferred_locale: resource_params[:preferred_locale] || 'en',
-      confirmed_at: Time.zone.now # setting confirmed means password validation is now active
+      terms_accepted: resource_params[:terms_accepted]
     )
 
-    if resource.valid? && resource.terms_accepted == '1'
+    if resource.valid? && resource.terms_accepted
       resource.save
 
       subscribe_to_emails(resource)

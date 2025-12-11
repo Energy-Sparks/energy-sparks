@@ -31,6 +31,7 @@
 #  school_id                   :bigint(8)
 #  sign_in_count               :integer          default(0), not null
 #  staff_role_id               :bigint(8)
+#  terms_accepted              :boolean          default(FALSE)
 #  unlock_token                :string
 #  updated_at                  :datetime         not null
 #
@@ -54,9 +55,6 @@
 
 class User < ApplicationRecord
   include MailchimpUpdateable
-
-  # FIXME
-  attr_accessor :terms_accepted
 
   watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id,
                          :active

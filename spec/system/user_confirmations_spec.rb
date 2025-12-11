@@ -106,6 +106,17 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
     end
 
     context 'when successfully registering' do
+      context 'with default options' do
+        before do
+          fill_in_password_and_register(valid_password, valid_password)
+        end
+
+        it { expect(page).to have_content(I18n.t('devise.confirmations.confirmed')) }
+        it { expect(page).to have_current_path(school_path(school)) }
+        it { expect(user.reload.confirmed?).to be(true) }
+        it { expect(user.reload.terms_accepted?).to be(true) }
+      end
+
       context 'with newsletter' do
         it 'subscribes user with default options' do
           expect(audience_manager).to receive(:subscribe_or_update_contact) do |contact, kwargs|
@@ -113,8 +124,6 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
             expect(kwargs[:status]).to eq('subscribed')
           end
           fill_in_password_and_register(valid_password, valid_password)
-          expect(page).to have_content(I18n.t('devise.confirmations.confirmed'))
-          expect(page).to have_current_path(school_path(school))
           expect(user.reload.confirmed?).to be(true)
         end
 
@@ -123,15 +132,7 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
             expect(contact.interests.values.all?).to be(false)
             expect(kwargs[:status]).to eq('subscribed')
           end
-          fill_in_password(valid_password, valid_password)
-          all('input[type=checkbox]').each do |checkbox|
-            if checkbox.checked?
-              checkbox.click
-            end
-          end
-          check 'user_terms_accepted'
-          click_button 'Complete registration'
-          expect(page).to have_current_path(school_path(school))
+          fill_in_password_and_register(valid_password, valid_password)
           expect(user.reload.confirmed?).to be(true)
         end
       end
