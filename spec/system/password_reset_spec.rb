@@ -34,7 +34,7 @@ describe 'User password reset' do
     context 'with a preference for Welsh' do
       let(:preferred_locale) { :cy }
 
-      it 'has text in english' do
+      it 'has text in Welsh' do
         expect(email).to have_content(I18n.t('devise.mailer.reset_password_instructions.energy_sparks_password_reset', locale: :cy))
       end
 
@@ -60,13 +60,7 @@ describe 'User password reset' do
       current_email.click_link I18n.t('devise.mailer.reset_password_instructions.change_my_password')
     end
 
-    it 'allows password to be set' do
-      expect(page).to have_content('Set your password')
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      click_button 'Set my password'
-      expect(page).to have_content('Your password has been changed successfully')
-    end
+    it { expect(page).to have_content('Set your password') }
 
     it 'does not show checkboxes for alerts' do
       expect(page).not_to have_content('Energy Sparks alerts:')
@@ -74,6 +68,16 @@ describe 'User password reset' do
 
     it 'does not show checkboxes for newsletter' do
       expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+    end
+
+    context 'with valid password and confirmation' do
+      before do
+        fill_in :user_password, with: valid_password
+        fill_in :user_password_confirmation, with: valid_password
+        click_button 'Set my password'
+      end
+
+      it { expect(page).to have_content('Your password has been changed successfully') }
     end
   end
 end

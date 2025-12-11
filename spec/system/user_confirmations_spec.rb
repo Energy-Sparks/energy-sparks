@@ -36,22 +36,35 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
   end
 
   shared_examples 'can set alert preferences' do
-    it 'creates alert contact by default' do
-      fill_in_password_and_register(valid_password, valid_password)
-      expect(user.reload.confirmed?).to be(true)
+    context 'with valid password and terms accepted' do
+      before do
+        fill_in_password(valid_password, valid_password)
+        check 'user_terms_accepted'
+      end
 
-      expect(user.contacts.count).to eq(1)
-      expect(school.contacts.last.email_address).to eq(user.email)
-    end
+      context 'with default options' do
+        before { click_button 'Complete registration' }
 
-    it 'allows user to opt out' do
-      fill_in_password(valid_password, valid_password)
-      check 'user_terms_accepted'
-      uncheck 'Subscribe to school alerts'
-      click_button 'Complete registration'
+        it { expect(user.reload.confirmed?).to be(true) }
 
-      expect(user.reload.confirmed?).to be(true)
-      expect(user.contacts).to be_empty
+        it 'creates alert contact' do
+          expect(user.contacts.count).to eq(1)
+          expect(school.contacts.last.email_address).to eq(user.email)
+        end
+      end
+
+      context 'when opting out of alerts' do
+        before do
+          uncheck 'Subscribe to school alerts'
+          click_button 'Complete registration'
+        end
+
+        it { expect(user.reload.confirmed?).to be(true) }
+
+        it 'does not create alert contact' do
+          expect(user.contacts).to be_empty
+        end
+      end
     end
   end
 
