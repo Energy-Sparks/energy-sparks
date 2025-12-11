@@ -6,8 +6,8 @@ en:
       new:
         resend_confirmation_instructions: Resend confirmation instructions
         title: Resend confirmation instructions
-      send_instructions: You will receive an email with instructions for how to confirm your email address in a few minutes.
-      send_paranoid_instructions: If your email address exists in our database, you will receive an email with instructions for how to confirm your email address in a few minutes.
+      send_instructions: You will receive an email with instructions on how to confirm your email address in a few minutes.
+      send_paranoid_instructions: If your email address exists in our database, you will receive an email with instructions on how to confirm your email address in a few minutes.
     failure:
       already_authenticated: You are already signed in.
       inactive: Your account is not activated yet.
@@ -113,7 +113,7 @@ en:
       new:
         resend_unlock_instructions: Resend unlock instructions
         title: Resend unlock instructions
-      send_instructions: You will receive an email with instructions for how to unlock your account in a few minutes.
+      send_instructions: You will receive an email with instructions on how to unlock your account in a few minutes.
       unlocked: Your account has been unlocked successfully. Please sign in to continue.
   errors:
     messages:
