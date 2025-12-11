@@ -28,7 +28,7 @@ describe 'school group chart settings' do
       end
     end
 
-    it_behaves_like 'a page displaying the school group settings nav'
+    it_behaves_like 'a page with the school group settings nav'
   end
 
   context 'when not logged in' do
