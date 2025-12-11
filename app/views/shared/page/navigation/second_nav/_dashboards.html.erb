@@ -1,19 +1,17 @@
-<% if request.path.starts_with?('/school_groups') && can?(:compare, current_school_group) %>
+<% if school_group_context? && can?(:compare, current_school_group) %>
   <li class="nav-item nowrap">
     <%= link_to t('dashboards.group_dashboard'),
                 school_group_path(current_school_group), class: 'nav-link dash' %>
   </li>
 <% end %>
-<% if current_school %>
-  <% if can?(:show_pupils_dash, current_school) &&
-        !current_page?(pupils_school_path(current_school)) %>
+<% if school_context? %>
+  <% if can?(:show_pupils_dash, current_school) && !current_page?(pupils_school_path(current_school)) %>
     <li class="nav-item nowrap">
       <%= link_to t('dashboards.pupil_dashboard'),
                   pupils_school_path(current_school), class: 'nav-link dash' %>
     </li>
   <% end %>
-  <% if can?(:show, current_school) &&
-        !current_page?(school_path(current_school)) %>
+  <% if can?(:show, current_school) && !current_page?(school_path(current_school)) %>
     <li class="nav-item nowrap">
       <%= link_to t('dashboards.adult_dashboard'),
                   school_path(current_school, ({ switch: true } if current_user&.student_user?)),

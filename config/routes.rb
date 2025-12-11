@@ -568,9 +568,13 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: %i[new create show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
+
+  devise_scope :user do
+    post "confirmation/confirm", to: "confirmations#confirm", as: :user_confirmation_confirm
+  end
 
   get '/admin', to: 'admin#index'
 
