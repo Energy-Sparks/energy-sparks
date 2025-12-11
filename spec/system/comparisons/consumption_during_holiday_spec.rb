@@ -14,7 +14,7 @@ describe '*_consumption_during_holiday' do
   end
   let!(:alerts) do
     create(:alert, :with_run, school: expected_school,
-                              alert_type: create(:alert_type, class_name: alert_class),
+                              alert_type: create(:alert_type, class_name: alert_class.name),
                               variables: {
                                 holiday_projected_usage_gbp: 1,
                                 holiday_usage_to_date_gbp: 2,
@@ -28,30 +28,21 @@ describe '*_consumption_during_holiday' do
     travel_to Date.new(2023, 4, 1)
   end
 
-  describe 'electricity_consumption_during_holiday' do
-    let(:alert_class) { 'AlertElectricityUsageDuringCurrentHoliday' }
-    let(:key) { 'electricity_consumption_during_holiday' }
+  {
+    electricity_consumption_during_holiday: [AlertElectricityUsageDuringCurrentHoliday,
+                                             Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse],
+    gas_consumption_during_holiday: [AlertGasHeatingHotWaterOnDuringHoliday,
+                                     Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse],
+    storage_heater_consumption_during_holiday: [AlertStorageHeaterHeatingOnDuringHoliday,
+                                                Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse]
+  }.flat_map { |key, classes| classes.zip([key].cycle) }.each do |alert_class, key|
+    describe "#{key} - #{alert_class}" do
+      let(:alert_class) { alert_class }
+      let(:key) { key }
 
-    it_behaves_like 'a school comparison report'
-    it_behaves_like 'a school comparison report with a table'
-    it_behaves_like 'a school comparison report with a chart'
-  end
-
-  describe 'gas_consumption_during_holiday' do
-    let(:alert_class) { 'AlertGasHeatingHotWaterOnDuringHoliday' }
-    let(:key) { 'gas_consumption_during_holiday' }
-
-    it_behaves_like 'a school comparison report'
-    it_behaves_like 'a school comparison report with a table'
-    it_behaves_like 'a school comparison report with a chart'
-  end
-
-  describe 'storage_heater_consumption_during_holiday' do
-    let(:alert_class) { 'AlertStorageHeaterHeatingOnDuringHoliday' }
-    let(:key) { 'storage_heater_consumption_during_holiday' }
-
-    it_behaves_like 'a school comparison report'
-    it_behaves_like 'a school comparison report with a table'
-    it_behaves_like 'a school comparison report with a chart'
+      it_behaves_like 'a school comparison report'
+      it_behaves_like 'a school comparison report with a table'
+      it_behaves_like 'a school comparison report with a chart'
+    end
   end
 end

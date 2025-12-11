@@ -49,6 +49,19 @@ describe 'Activity' do
       end
     end
 
+    context 'when updated_by changed' do
+      let!(:activity) { create(:activity) } # also creates observation
+      let(:user) { create(:school_admin) }
+
+      before do
+        activity.update(updated_by: user)
+      end
+
+      it 'updates associated observation updated_by' do
+        expect(observation.updated_by).to eq(user)
+      end
+    end
+
     context 'when description does not have an image' do
       let(:description) { 'Initial description without bonus points' }
       let!(:activity) { create(:activity, description:, happened_on: Date.new(2025, 10, 5)) } # also creates observation

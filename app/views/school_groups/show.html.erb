@@ -34,6 +34,7 @@
           fuel_types: @fuel_types,
           metric: params[:metric],
           classes: 'mt-2',
+          show_status_note: can?(:view_settings, @school_group),
           show_clusters: include_clusters?(@school_group)
         ) do |summary| %>
         <% summary.with_modal_link do %>

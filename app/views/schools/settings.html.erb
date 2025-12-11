@@ -14,13 +14,7 @@
     </div>
   <% end %>
 
-  <% if can? :manage, DashboardMessage %>
-    <%= render 'admin/shared/dashboard_message', messageable: @school %>
-  <% elsif @school.dashboard_message %>
-    <%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
-      <%= @school.dashboard_message.message %>
-    <% end %>
-  <% end %>
+  <%= render 'admin/shared/dashboard_message', messageable: @school %>
 
   <%= render TitledSectionComponent.new(id: 'settings-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
@@ -154,5 +148,4 @@
       <% end if can? :manage, TransportSurvey %>
     <% end %>
   <% end %>
-
 <% end %>

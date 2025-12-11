@@ -9,17 +9,20 @@
                     expanded: true,
                     visible: school_group.organisation?,
                     options: { match_controller: false } do |s| %>
-    <% if can?(:manage_chart_defaults, school_group) %>
+    <% if can?(:manage_chart_defaults, @school_group) %>
       <% s.with_item(name: t('common.charts'),
-                     href: school_group_chart_updates_path(school_group), classes:) %>
+                     href: school_group_chart_updates_path(@school_group), classes:,
+                     match_controller: true) %>
     <% end %>
-    <% if can?(:manage_clusters, school_group)
+    <% if can?(:manage_clusters, @school_group)
          s.with_item(name: t('common.clusters'),
-                     href: school_group_clusters_path(school_group), classes:)
+                     href: school_group_clusters_path(@school_group), classes:,
+                     match_controller: true)
        end %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('common.tariffs'),
-                     href: school_group_energy_tariffs_path(@school_group), classes:) %>
+                     href: school_group_energy_tariffs_path(@school_group), classes:,
+                     selected: controller_path.starts_with?('energy_tariff')) %>
     <% end %>
   <% end %>
 
@@ -27,8 +30,6 @@
                     icon: 'school',
                     expanded: true,
                     options: { match_controller: false } do |s| %>
-    <%# s.with_item(name: t('common.status'),
-                   href: '/', classes:) %>
     <% if school_group.organisation? %>
       <% s.with_item(name: t('manage_school_menu.digital_signage'),
                      href: school_group_digital_signage_index_path(school_group), classes:) %>
@@ -37,6 +38,9 @@
       <% s.with_item(name: t('common.engagement'),
                      href: school_group_school_engagement_index_path(school_group), classes:) %>
     <% end %>
+    <% s.with_item(name: t('school_groups.titles.school_status'),
+                   href: school_group_status_index_path(school_group), classes:,
+                   match_controller: true) %>
     <% if school_group.organisation? && can?(:view_secr_report, school_group) %>
       <% s.with_item(name: t('school_groups.sub_nav.secr_report'),
                      href: school_group_secr_index_path(school_group), classes:) %>
@@ -52,12 +56,10 @@
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('school_groups.sub_nav.edit_group'),
                    href: edit_admin_school_group_path(school_group), classes:) %>
-    <% if school_group.organisation? %>
-      <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
-                     href: admin_school_group_path(school_group), classes:) %>
-      <% s.with_item(name: 'Issues',
-                     href: admin_school_group_issues_path(school_group), classes:) %>
-    <% end %>
+    <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
+                   href: admin_school_group_path(school_group), classes:) %>
+    <% s.with_item(name: 'Issues',
+                   href: admin_school_group_issues_path(school_group), classes:) %>
     <% s.with_item(name: t('school_groups.sub_nav.manage_users'),
                    href: admin_school_group_users_path(school_group), classes:) %>
 

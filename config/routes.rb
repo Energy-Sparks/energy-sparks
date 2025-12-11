@@ -287,6 +287,13 @@ Rails.application.routes.draw do
       end
       resources :secr, only: [:index]
       resources :school_engagement, only: [:index]
+      resources :status, only: [:index] do
+        collection do
+          get 'school/:school_id', action: :school, as: :school
+          get 'meters'
+        end
+      end
+
       resource :advice, controller: 'advice', only: [:show] do
         %i[baseload
            electricity_out_of_hours
@@ -561,9 +568,13 @@ Rails.application.routes.draw do
 
   resource :email_unsubscription, only: %i[new create show], controller: :email_unsubscription
 
-  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions', passwords: 'passwords' }
+  devise_for :users, controllers: { confirmations: 'confirmations', sessions: 'sessions' }
 
   devise_for :users, skip: :sessions
+
+  devise_scope :user do
+    post "confirmation/confirm", to: "confirmations#confirm", as: :user_confirmation_confirm
+  end
 
   get '/admin', to: 'admin#index'
 

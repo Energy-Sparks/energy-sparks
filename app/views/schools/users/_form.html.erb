@@ -1,11 +1,13 @@
 <%= f.input :name, label: t('schools.users.form.name'), required: true %>
 <%= f.input :email, label: t('schools.users.form.email') %>
-<%= f.input :staff_role_id,
-            label: t('schools.users.form.role'),
-            required: true,
-            collection: StaffRole.translated_names_and_ids,
-            hint: t('schools.users.form.what_is_their_primary_role'),
-            prompt: '' %>
+<%= unless @user.student?
+      f.input :staff_role_id,
+              label: t('schools.users.form.role'),
+              required: true,
+              collection: StaffRole.translated_names_and_ids,
+              hint: t('schools.users.form.what_is_their_primary_role'),
+              prompt: ''
+    end %>
 <%= f.input :preferred_locale,
             label: t('schools.users.form.preferred_locale'),
             required: true,

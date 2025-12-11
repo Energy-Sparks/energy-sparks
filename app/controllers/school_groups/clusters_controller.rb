@@ -1,5 +1,7 @@
 module SchoolGroups
   class ClustersController < BaseController
+    layout 'group_settings'
+
     before_action :redirect_unless_authorised
     load_and_authorize_resource :cluster, class: 'SchoolGroupCluster', through: :school_group
 

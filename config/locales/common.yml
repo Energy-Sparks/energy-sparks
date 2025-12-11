@@ -34,6 +34,7 @@ en:
       continue: Continue
       create: Create
       created: Created
+      data_published_date: Data published date
       date: Date
       deactivate: Deactivate
       delete: Delete
@@ -59,6 +60,7 @@ en:
       no_label: 'No'
       not_applicable: N/A
       not_set: Not set
+      onboarded_date: Onboarded date
       place: Place
       points: Points
       previous: Previous
@@ -96,6 +98,7 @@ en:
     points_html: "%{count} points"
     privacy_policy: privacy policy
     programmes: Programmes
+    pupil_count: "%{count} pupils"
     saved: Saved
     school: School
     school_types:

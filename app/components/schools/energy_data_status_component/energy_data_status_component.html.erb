@@ -1,0 +1,30 @@
+<%= tag.table id: id, class: class_names('table', classes) do %>
+  <thead class="thead-dark">
+  <tr>
+    <% if show_fuel_icon? %>
+      <th></th>
+    <% end %>
+    <th class="w-100"><%= t('advice_pages.how_have_we_analysed_your_data.total_energy_use_table.columns.fuel_type') %></th>
+    <th><%= t('common.labels.start_date') %></th>
+    <th><%= t('common.labels.end_date') %></th>
+  </tr>
+  </thead>
+  <tbody>
+    <% (Schools::FuelConfiguration.fuel_types - [:solar_pv]).each do |fuel_type| %>
+      <% if school.fuel_type?(fuel_type) %>
+        <tr>
+          <% if show_fuel_icon? %>
+              <td><%= render Elements::IconComponent.new(fuel_type: fuel_type) %></td>
+          <% end %>
+          <td class="text-left"><%= t("common.#{fuel_type}") %></td>
+          <td class="text-nowrap">
+            <%= short_dates(school.configuration.meter_start_date(fuel_type)) %>
+          </td>
+          <td class="text-nowrap">
+            <%= short_dates(school.configuration.meter_end_date(fuel_type)) %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+<% end %>

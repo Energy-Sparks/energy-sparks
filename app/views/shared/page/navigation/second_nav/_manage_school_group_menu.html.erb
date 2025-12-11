@@ -5,6 +5,10 @@
      <%= t('school_groups.sub_nav.manage_group') %>
   </a>
   <div class="dropdown-menu" aria-labelledby="manage-school-group" id="dropdown-manage-school-group">
+    <%= link_to t('common.settings'),
+                settings_school_group_path(school_group), class: 'dropdown-item' %>
+    <div class="dropdown-divider"></div>
+
     <% if school_group.organisation? %>
       <% if can?(:manage_chart_defaults, school_group) %>
         <%= link_to t('school_groups.sub_nav.chart_settings'),
@@ -16,31 +20,38 @@
       <% end %>
       <%= link_to t('manage_school_menu.manage_tariffs'),
                   school_group_energy_tariffs_path(school_group), class: 'dropdown-item' %>
+      <div class="dropdown-divider"></div>
+    <% end %>
+    <% if school_group.organisation? %>
       <%= link_to t('manage_school_menu.digital_signage'),
                   school_group_digital_signage_index_path(school_group), class: 'dropdown-item' %>
-      <% if can?(:view_secr_report, school_group) %>
-        <%= link_to t('school_groups.sub_nav.secr_report'),
-                    school_group_secr_index_path(school_group), class: 'dropdown-item' %>
-      <% end %>
     <% end %>
     <% if SchoolGroups::SchoolEngagementController.show?(current_user) %>
       <%= link_to t('school_groups.sub_nav.school_engagement'), school_group_school_engagement_index_path(school_group),
                   class: 'dropdown-item' %>
     <% end %>
+    <%= link_to t('school_groups.titles.school_status'),
+                school_group_status_index_path(school_group), class: 'dropdown-item' %>
+    <% if school_group.organisation? && can?(:view_secr_report, school_group) %>
+      <%= link_to t('school_groups.sub_nav.secr_report'),
+                  school_group_secr_index_path(school_group), class: 'dropdown-item' %>
+    <% end %>
+    <%= link_to t('common.timeline'),
+                school_group_timeline_path(school_group), class: 'dropdown-item' %>
     <% if current_user.admin? %>
       <div class="dropdown-divider"></div>
       <%= link_to t('school_groups.sub_nav.edit_group'),
                   edit_admin_school_group_path(school_group), class: 'dropdown-item' %>
-      <%= link_to t('school_groups.sub_nav.set_message'),
-                  edit_admin_school_group_dashboard_message_path(school_group), class: 'dropdown-item' %>
+      <%= link_to t('school_groups.sub_nav.group_admin'),
+                  admin_school_group_path(school_group), class: 'dropdown-item' %>
+      <%= link_to 'Issues',
+                  admin_school_group_issues_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.manage_users'),
                   admin_school_group_users_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.manage_partners'),
                   admin_school_group_partners_path(school_group), class: 'dropdown-item' %>
-      <% if school_group.organisation? %>
-        <%= link_to t('school_groups.sub_nav.group_admin'),
-                    admin_school_group_path(school_group), class: 'dropdown-item' %>
-      <% end %>
+      <%= link_to t('school_groups.sub_nav.set_message'),
+                  edit_admin_school_group_dashboard_message_path(school_group), class: 'dropdown-item' %>
     <% end %>
   </div>
 </li>

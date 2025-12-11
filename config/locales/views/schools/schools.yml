@@ -688,6 +688,10 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       upload_energy_bill: Upload a bill
       view_more_alerts: View more alerts
+    status:
+      data_visible: Data published
+      onboarding: Onboarding
+      visible: Visible
     timeline:
       activity_in_current_year: A list of all adult and pupil-led activities at this school recorded in the current school year
       activity_in_year: A list of all adult and pupil-led activities at this school recorded in the %{school_year} school year
@@ -749,19 +753,23 @@ en:
         new_pupil_account: New pupil account
         new_school_admin_account: New school admin account
         new_staff_account: New staff account
+        new_student_account: New student account
         no_pupil_accounts: There are no pupil accounts for this school
         no_school_admin_accounts: There are no school admin accounts for this school
         no_staff_accounts: There are no staff accounts for this school
+        no_student_accounts: There are no student accounts for this school
         password: Password
         preferred_locale: Preferred language
-        pupil_accounts: Pupil accounts
-        pupil_accounts_message_1: Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required
-        pupil_accounts_message_2: These accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils
+        pupil_accounts: Shared pupil accounts
+        pupil_accounts_message_1: A simplified login that uses only a password, no email address is required
+        pupil_accounts_message_2: These accounts can be created for use in classrooms or with eco-teams where the passwords can be shared with the pupils. However you are recommended to use individual student accounts where possible.
         receives_alerts: Receives alerts?
         resend_confirmation: Resend confirmation
         role: Role
         staff_accounts: Staff accounts
-        staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts
+        staff_accounts_have_access_message: Staff accounts have access to all Energy Sparks functionality for their school, but cannot manage the school account or other users
+        student_accounts: Individual student accounts
+        student_accounts_have_access_message: Student accounts have access to all Energy Sparks functionality for their school, but cannot manage the school account or other users. They should be registered using their individual email address. They cannot manage other accounts.
         title: School admin accounts
         unlock: Unlock
       new:

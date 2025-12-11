@@ -70,10 +70,6 @@ module NavHelper
     current_user && current_user.admin? && !school.data_enabled?
   end
 
-  def show_sub_nav?(school, hide_subnav)
-    school.present? && school.id && hide_subnav.nil?
-  end
-
   def nav_link(link_text, link_path)
     content_tag(:li) do
       if current_page?(link_path)
@@ -99,5 +95,15 @@ module NavHelper
     nav_class = 'btn '
     nav_class += " #{kwargs[:class]}" if kwargs[:class]
     link_to link_text, link_path, class: nav_class
+  end
+
+  def school_context?
+    current_school && request.path.starts_with?('/schools/', '/pupils/schools/', '/admin/')
+  end
+
+  def school_group_context?
+    # Historically we have not allowed /admin/school_group routes to have school group
+    # context menus etc, so leaving as is for now. Something to consider for the future
+    current_school_group && request.path.starts_with?('/school_groups/')
   end
 end

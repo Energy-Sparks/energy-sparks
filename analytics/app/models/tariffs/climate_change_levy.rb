@@ -6,7 +6,6 @@ class ClimateChangeLevy
   class MissingClimateChangeLevyData < StandardError; end
 
   # https://www.gov.uk/guidance/climate-change-levy-rates
-  # Updated 2023-11-22
   DEFAULT_RATES = {
     electricity: {
       Date.new(2018, 4, 1)..Date.new(2019, 3, 31) => 0.00583,
@@ -17,7 +16,8 @@ class ClimateChangeLevy
       Date.new(2023, 4, 1)..Date.new(2024, 3, 31) => 0.00775,
       Date.new(2024, 4, 1)..Date.new(2025, 3, 31) => 0.00775,
       Date.new(2025, 4, 1)..Date.new(2026, 3, 31) => 0.00775,
-      Date.new(2026, 4, 1)..Date.new(2027, 3, 31) => 0.00801
+      Date.new(2026, 4, 1)..Date.new(2027, 3, 31) => 0.00801,
+      Date.new(2027, 4, 1)..Date.new(2028, 3, 31) => 0.00827
     },
     gas: {
       Date.new(2018, 4, 1)..Date.new(2019, 3, 31) => 0.00203,
@@ -28,7 +28,8 @@ class ClimateChangeLevy
       Date.new(2023, 4, 1)..Date.new(2024, 3, 31) => 0.00672,
       Date.new(2024, 4, 1)..Date.new(2025, 3, 31) => 0.00775,
       Date.new(2025, 4, 1)..Date.new(2026, 3, 31) => 0.00775,
-      Date.new(2026, 4, 1)..Date.new(2027, 3, 31) => 0.00801
+      Date.new(2026, 4, 1)..Date.new(2027, 3, 31) => 0.00801,
+      Date.new(2027, 4, 1)..Date.new(2028, 3, 31) => 0.00827
     }
   }.freeze
 

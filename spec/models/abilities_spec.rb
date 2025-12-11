@@ -166,6 +166,30 @@ describe Ability do
     end
   end
 
+  shared_examples 'adult contributions are visible and pupil content is protected' do
+    context 'with activities' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator)) }
+      it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors)) }
+      it { is_expected.not_to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors, updated_by: create(:pupil))) }
+    end
+
+    context 'with interventions' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention)) }
+      it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors)) }
+      it { is_expected.not_to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors, updated_by: create(:pupil))) }
+    end
+  end
+
+  shared_examples 'pupil contributions for school are accessible' do
+    context 'with activities' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors, school: user.school, updated_by: create(:pupil))) }
+    end
+
+    context 'with interventions' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors, school: user.school, updated_by: create(:pupil))) }
+    end
+  end
+
   describe 'abilities' do
     subject(:ability) { Ability.new(user) }
 
@@ -217,6 +241,10 @@ describe Ability do
         it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
           let(:school) { create(:school, :with_school_group) }
         end
+      end
+
+      context 'with contributed content' do
+        it_behaves_like 'adult contributions are visible and pupil content is protected'
       end
     end
 
@@ -298,6 +326,11 @@ describe Ability do
           expect(ability).to be_able_to(:read_restricted_analysis, school)
           expect(ability).to be_able_to(:read_restricted_advice, school)
         end
+
+        context 'with contributed content' do
+          it_behaves_like 'adult contributions are visible and pupil content is protected'
+          it_behaves_like 'pupil contributions for school are accessible'
+        end
       end
 
       context 'when user is a school admin' do
@@ -344,6 +377,27 @@ describe Ability do
           end
         end
       end
+
+      context 'when user is a student' do
+        let(:user) { create(:student, school: school) }
+
+        it_behaves_like 'a user with common school user permissions'
+
+        it 'does not allow them to create targets' do
+          expect(ability).not_to be_able_to(:manage, create(:school_target, school: school))
+        end
+
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
+
+        context 'when school does not have public data sharing' do
+          let(:school) { create(:school, school_group: school_group, data_sharing: :within_group) }
+
+          it 'restricts access to some analysis' do
+            expect(ability).not_to be_able_to(:read_restricted_analysis, school)
+            expect(ability).not_to be_able_to(:read_restricted_advice, school)
+          end
+        end
+      end
     end
 
     context 'with group users' do
@@ -372,6 +426,18 @@ describe Ability do
 
           it { is_expected.not_to be_able_to(:show, other_school_group) }
           it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        end
+
+        context 'with contributed content' do
+          it_behaves_like 'adult contributions are visible and pupil content is protected'
+
+          context 'with activities' do
+            it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors, school: create(:school, school_group:), updated_by: create(:pupil))) }
+          end
+
+          context 'with interventions' do
+            it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors, school: create(:school, school_group:), updated_by: create(:pupil))) }
+          end
         end
       end
 

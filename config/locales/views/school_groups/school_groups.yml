@@ -92,6 +92,7 @@ en:
         no_schools: This cluster has no schools
         select_cluster: Select cluster
         title: Clusters
+        unassign_selected: Unassign selected
         unassigned_title: Schools not in a cluster
       intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
       labels:
@@ -141,6 +142,7 @@ en:
       view_map: View map
     labels:
       floor_area: Floor area (m2)
+    meters_as_csv: Download meters as CSV
     priority_actions:
       alert_types:
         alert_electricity_annual_versus_benchmark_html: |-
@@ -254,6 +256,7 @@ en:
       received_an_audit: Received an audit
       recorded_temperatures: Recorded temperatures
       title: School engagement
+    schools_as_csv: Download schools as CSV
     secr:
       csv:
         consumption_for_the_year: Consumption for the year
@@ -381,9 +384,10 @@ en:
       charts: Set your default display units for energy charts - choose between kg CO₂, kWh, £, or the system default
       clusters: Group similar schools within your organisation into clusters to simplify comparisons
       digital_signage: Display your analysis on public signage around schools
-      engagement: This report summarises how your schools are engaging with Energy Sparks features. Higher engagement typically leads to greater energy savings.
+      engagement: This report summarises how your schools are engaging with Energy Sparks features. Higher engagement typically leads to greater energy savings
       history: Manage the activities and actions previously recorded by your schools
       secr: Use this tool to prepare SECR reports for your Multi-Academy Trust by reviewing your energy consumption and emissions data
+      status: View status of schools in this group
       tariffs: Manage current and historical energy tariffs for your group and schools
     show:
       change_units: Change units
@@ -396,6 +400,7 @@ en:
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
+      status_note_html: This table show schools with published data. <a href="%{path}">See a full list of schools and their status</a>
       we_are_working_with:
         in_partnership_with_html:
           one: We are working with 1 school in this %{group_type} in partnership with %{partners}
@@ -403,6 +408,17 @@ en:
         no_partnership:
           one: We are working with 1 school in this %{group_type}
           other: We are working with %{count} schools in this %{group_type}
+    status:
+      data_published: Data published
+      individual_meter_data: Individual meter data
+      key_dates: Key dates
+      made_visible: Made visible
+      no_meters: This school has no meters configured
+      no_schools: There are no schools in this group
+      not_data_enabled: Meter information will appear here once school is data published
+      number_of_users: Number of users
+      receiving_alerts: "(%{count} receiving alerts)"
+      school_info: School information
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
@@ -427,6 +443,7 @@ en:
       priority_actions: Priority Actions
       recent_usage: Recent Usage
       reports: Reports
+      school_status: School status
       secr: SECR report
       settings: Settings
       show: Group Dashboard
