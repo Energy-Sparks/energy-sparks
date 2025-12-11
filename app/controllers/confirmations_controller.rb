@@ -39,11 +39,11 @@ class ConfirmationsController < Devise::ConfirmationsController
       password: resource_params[:password],
       password_confirmation: resource_params[:password_confirmation],
       terms_accepted: resource_params[:terms_accepted],
-      preferred_locale: resource_params[:preferred_locale] || 'en'
+      preferred_locale: resource_params[:preferred_locale] || 'en',
+      confirmed_at: Time.zone.now # setting confirmed means password validation is now active
     )
 
     if resource.valid? && resource.terms_accepted == '1'
-      resource.confirm
       resource.save
 
       subscribe_to_emails(resource)
