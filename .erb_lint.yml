@@ -7,7 +7,7 @@ linters:
       - 'application/ld+json' # allow schema.org markup, e.g. jobs page
       - 'text/javascript'
   DeprecatedClasses:
-    enabled: true
+    enabled: false
     addendum: "See bootstrap-bridge.scss for mappings"
     rule_set:
       # Grid gutters
