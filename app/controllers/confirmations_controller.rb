@@ -68,7 +68,7 @@ class ConfirmationsController < Devise::ConfirmationsController
   end
 
   # Same as usual sign-in step following resetting password
-  def devise_sign_in
+  def devise_sign_in(resource)
     resource.after_database_authentication
     sign_in(resource_name, resource)
   end
