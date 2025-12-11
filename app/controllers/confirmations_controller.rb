@@ -5,6 +5,8 @@ class ConfirmationsController < Devise::ConfirmationsController
   before_action :set_minimum_password_length, only: [:show, :confirm]
   before_action :set_email_types
 
+  helper_method :subscribe_to_alerts?
+
   def show
     return head(:ok) if request.head?
 
@@ -34,7 +36,6 @@ class ConfirmationsController < Devise::ConfirmationsController
       return
     end
 
-    # FIXME Save this don't use virtual attribute
     resource.assign_attributes(
       confirmed_at: Time.zone.now, # setting confirmed means password validation is now active
       password: resource_params[:password],
@@ -54,13 +55,16 @@ class ConfirmationsController < Devise::ConfirmationsController
     else
       @allow_alerts = allow_alerts?(resource)
       @can_subscribe_newsletter = can_subscribe_newsletter?(resource)
-      @interests = default_interests(resource) if @can_subscribe_newsletter
-
+      @interests = newsletter_interests if @can_subscribe_newsletter
       respond_with_navigational(resource.errors, status: :unprocessable_entity) { render :show }
     end
   end
 
   private
+
+  def newsletter_interests
+    params.permit(interests: {}).to_h['interests'].transform_values { |v| v == 'true' }
+  end
 
   def subscribe_to_emails(resource)
     create_or_update_alert_contact(resource.school, resource) if subscribe_to_alerts?

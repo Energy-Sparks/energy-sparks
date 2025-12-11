@@ -1,5 +1,5 @@
 <% content_for :page_title do %>
-    <%= t('devise.passwords.edit.page_title') %>
+    <%= t('devise.passwords.edit.complete_your_registration') %>
 <% end %>
 <div class="application container">
   <h1>
@@ -30,7 +30,10 @@
                         class: 'custom-checkbox pb-3',
                         wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
                         label_html: { class: 'custom-control-label' },
-                        input_html: { class: 'custom-control-input', checked: true } %>
+                        input_html: {
+                          class: 'custom-control-input',
+                          checked: params[:contact].present? ? subscribe_to_alerts? : true
+                        } %>
           <% end %>
         </div>
         <div class="col-sm-8">
@@ -58,7 +61,8 @@
 
     <div class="custom-control custom-checkbox agreements">
       <%= f.check_box :terms_accepted,
-                      { class: 'custom-control-input multi-select must-check' },
+                      { class:
+                         class_names('custom-control-input multi-select', 'must-check': !resource.terms_accepted) },
                       '1',
                       '0' %>
       <%= f.label :terms_accepted, t('terms_and_conditions.message_html',

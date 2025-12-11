@@ -79,6 +79,11 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
       visit user_confirmation_path(confirmation_token: confirmation_token)
     end
 
+    it { expect(page).to have_title(I18n.t('devise.passwords.edit.complete_your_registration')) }
+    it { expect(page).to have_checked_field('Subscribe to school alerts') }
+    it { expect(page).to have_checked_field('Getting the most out of Energy Sparks') }
+    it { expect(page).to have_css('input.must-check') } # must select terms
+
     context 'when validating passwords' do
       context 'with blank password' do
         before do
@@ -103,6 +108,18 @@ RSpec.describe 'User confirmation and registration', :schools, type: :system do
 
         it { expect(page).to have_content("Password confirmation doesn't match") }
       end
+    end
+
+    context 'when unsuccessfully registering' do
+      before do
+        uncheck 'Subscribe to school alerts'
+        uncheck 'Getting the most out of Energy Sparks'
+        fill_in_password_and_register('', '')
+      end
+
+      it { expect(page).not_to have_css('input.must-check') } # terms already pre-selected
+      it { expect(page).to have_unchecked_field('Subscribe to school alerts') }
+      it { expect(page).to have_unchecked_field('Getting the most out of Energy Sparks') }
     end
 
     context 'when successfully registering' do
