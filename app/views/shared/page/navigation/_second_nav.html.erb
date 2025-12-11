@@ -90,7 +90,7 @@
           <%= render 'shared/page/navigation/second_nav/manage_school_menu', school: current_school %>
         <% end %>
 
-        <% if current_user_school_group %>
+        <% if current_user_school_group && can?(:manage_settings, current_user_school_group) %>
           <%# 'My school group' menu %>
           <%# links back to school group dashboard & lists schools in group %>
           <%# Context: current user has associated school group %>
