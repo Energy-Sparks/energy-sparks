@@ -21,9 +21,7 @@ class ConfirmationsController < Devise::ConfirmationsController
       flash[:error] = I18n.t('devise.failure.already_authenticated')
       redirect_to after_sign_in_path_for(resource) and return
     else
-      @allow_alerts = allow_alerts?(resource)
-      @can_subscribe_newsletter = can_subscribe_newsletter?(resource)
-      @interests = default_interests(resource) if @can_subscribe_newsletter
+      set_form_options(resource, true)
       render :show
     end
   end
@@ -53,16 +51,22 @@ class ConfirmationsController < Devise::ConfirmationsController
       flash[:success] = I18n.t('devise.confirmations.confirmed')
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
-      @allow_alerts = allow_alerts?(resource)
-      @can_subscribe_newsletter = can_subscribe_newsletter?(resource)
-      @interests = newsletter_interests if @can_subscribe_newsletter
+      set_form_options(resource, false)
       respond_with_navigational(resource.errors, status: :unprocessable_entity) { render :show }
     end
   end
 
   private
 
-  def newsletter_interests
+  def set_form_options(resource, default_interests)
+    @allow_alerts = allow_alerts?(resource)
+    @can_subscribe_newsletter = can_subscribe_newsletter?(resource)
+    if @can_subscribe_newsletter
+      @interests = default_interests ? default_interests(resource) : interests_from_params
+    end
+  end
+
+  def interests_from_params
     params.permit(interests: {}).to_h['interests'].transform_values { |v| v == 'true' }
   end
 
@@ -71,7 +75,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     subscribe_newsletter(resource, params.permit(interests: {})) if can_subscribe_newsletter?(resource)
   end
 
-  # Same as usual sign-in step following resetting password
+  # Same as usual Devise sign-in step following resetting password
   def devise_sign_in(resource)
     resource.after_database_authentication
     sign_in(resource_name, resource)
