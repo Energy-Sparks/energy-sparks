@@ -39,7 +39,7 @@ describe 'School group SECR' do
         visit school_group_secr_index_path(school_group)
       end
 
-      it { expect(page).to have_content('You are not authorized to access this page.') }
+      it { expect(page).to have_current_path(school_group_path(school_group)) }
     end
 
     context 'when signed in as a group admin in the same group' do
