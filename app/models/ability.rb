@@ -223,7 +223,7 @@ class Ability
 
   # These are permissions for roles with ability to create, manage and view
   # school specific content (school_admin, group_admin, group manager roles)
-  def common_school_content_admin_permissions(user, school_scope, related_school_scope)
+  def common_school_content_admin_permissions(school_scope, related_school_scope)
     can :start_programme, School, school_scope
 
     can :crud, Programme, related_school_scope
@@ -251,7 +251,7 @@ class Ability
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
     end
 
-    common_school_content_admin_permissions(user, school_scope, related_school_scope)
+    common_school_content_admin_permissions(school_scope, related_school_scope)
 
     # Permissions for both school and group admins. These use the scopes defined above so work regardless of
     # type of user
@@ -400,7 +400,7 @@ class Ability
       }
     }
 
-    common_school_content_admin_permissions(user, school_scope, related_school_scope)
+    common_school_content_admin_permissions(school_scope, related_school_scope)
   end
 
   def group_admin_permissions(user)
