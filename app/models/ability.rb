@@ -75,7 +75,6 @@
 #
 # :compare - can compare schools in this group. Used to add/remove links to compare functionality
 # :manage_settings - see manage group menu
-# :update_settings - can use manage settings (chart prefs, clusters) for school group. But also used to gate
 # access to viewing clusters on school group dashboard. Used to control access to SECR report page too
 #
 # METERS
@@ -384,9 +383,6 @@ class Ability
     related_school_scope = { school: { school_group_id: user.school_group_id } }
 
     common_school_admin_permissions(user, school_scope, related_school_scope)
-
-    # FIXME rename
-    can :update_settings, SchoolGroup, id: user.school_group_id
 
     # can view clusters on dashboards, advice, downloads
     can %i[view_clusters manage_clusters manage_chart_defaults view_secr_report view_digital_signage], SchoolGroup, id: user.school_group_id

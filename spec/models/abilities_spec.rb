@@ -204,7 +204,7 @@ describe Ability do
 
       context 'with school groups' do
         it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
-        it { is_expected.not_to be_able_to(:update_settings, create(:school_group))}
+        it { is_expected.not_to be_able_to(:manage_settings, create(:school_group))}
         it { is_expected.not_to be_able_to(:show, create(:school_group, public: false))}
       end
 
@@ -270,7 +270,6 @@ describe Ability do
       context 'with all school groups' do
         [true, false].each do |public|
           it { is_expected.to be_able_to(:show_management_dash, create(:school_group, public: public))}
-          it { is_expected.to be_able_to(:update_settings, create(:school_group, public: public))}
         end
       end
 
@@ -296,7 +295,7 @@ describe Ability do
           end
 
           it 'they cannot manage the group' do
-            expect(ability).not_to be_able_to(:update_settings, school_group)
+            expect(ability).not_to be_able_to(:manage_settings, school_group)
           end
         end
 
@@ -462,7 +461,7 @@ describe Ability do
             end
           end
 
-          it { is_expected.to be_able_to(:update_settings, school_group)}
+          it { is_expected.to be_able_to(:manage_settings, school_group)}
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
@@ -538,8 +537,6 @@ describe Ability do
             it { is_expected.not_to be_able_to(:download_school_data, school) }
             it { is_expected.not_to be_able_to(:show_management_dash, school) }
           end
-
-          it { is_expected.not_to be_able_to(:update_settings, school_group)}
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
