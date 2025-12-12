@@ -14,14 +14,15 @@ module Admin
 
       def create
         service = Meters::MeterAttributeManager.new(@school)
+        meter = Meter.find(params[:attribute][:meter_id])
         service.create!(
-          params[:attribute][:meter_id],
+          meter.id,
           params[:attribute][:type],
           params[:attribute][:root],
           params[:attribute][:reason],
           current_user
         )
-        redirect_to admin_school_meter_attributes_path(@school)
+        redirect_to admin_school_single_meter_attribute_path(@school, meter)
       rescue => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
@@ -41,21 +42,21 @@ module Admin
 
       def update
         service = Meters::MeterAttributeManager.new(@school)
-        service.update!(
+        attribute = service.update!(
           params[:id],
           params[:attribute][:root],
           params[:attribute][:reason],
           current_user
         )
-        redirect_to admin_school_meter_attributes_path(@school)
+        redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter)
       rescue => e
         redirect_back fallback_location: edit_admin_school_meter_attribute_path(@school, meter_attribute), notice: e.message
       end
 
       def destroy
         service = Meters::MeterAttributeManager.new(@school)
-        service.delete!(params[:id], current_user)
-        redirect_to admin_school_meter_attributes_path(@school)
+        attribute = service.delete!(params[:id], current_user)
+        redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter)
       rescue => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
