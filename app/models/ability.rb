@@ -384,7 +384,6 @@ class Ability
 
     common_school_admin_permissions(user, school_scope, related_school_scope)
 
-    # can view clusters on dashboards, advice, downloads
     can %i[view_clusters manage_clusters manage_chart_defaults view_secr_report view_digital_signage], SchoolGroup, id: user.school_group_id
 
     can :manage, SchoolGroupCluster, school_group_id: user.school_group_id

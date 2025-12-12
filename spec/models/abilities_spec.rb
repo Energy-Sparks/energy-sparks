@@ -461,7 +461,16 @@ describe Ability do
             end
           end
 
+          it { is_expected.to be_able_to(:show, school_group)}
+          it { is_expected.to be_able_to(:show_management_dash, school_group)}
           it { is_expected.to be_able_to(:manage_settings, school_group)}
+          it { is_expected.to be_able_to(:view_engagement_report, school_group)}
+
+          it { is_expected.to be_able_to(:view_clusters, school_group)}
+          it { is_expected.to be_able_to(:manage_clusters, school_group)}
+          it { is_expected.to be_able_to(:manage_chart_defaults, school_group)}
+          it { is_expected.to be_able_to(:view_secr_report, school_group)}
+          it { is_expected.to be_able_to(:view_digital_signage, school_group)}
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
@@ -541,6 +550,17 @@ describe Ability do
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
           end
+
+          it { is_expected.to be_able_to(:show, school_group)}
+          it { is_expected.to be_able_to(:show_management_dash, school_group)}
+          it { is_expected.to be_able_to(:manage_settings, school_group)}
+          it { is_expected.to be_able_to(:view_engagement_report, school_group)}
+
+          it { is_expected.not_to be_able_to(:view_clusters, school_group)}
+          it { is_expected.not_to be_able_to(:manage_clusters, school_group)}
+          it { is_expected.not_to be_able_to(:manage_chart_defaults, school_group)}
+          it { is_expected.not_to be_able_to(:view_secr_report, school_group)}
+          it { is_expected.not_to be_able_to(:view_digital_signage, school_group)}
         end
 
         it_behaves_like 'their access to school dashboards is limited by data sharing settings', group_manager: true do
