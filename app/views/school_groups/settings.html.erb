@@ -21,7 +21,7 @@
       <% p.with_title { t('common.tariffs') } %>
       <% p.with_link { link_to t('common.labels.manage'), school_group_energy_tariffs_path(@school_group) } %>
       <%= t('school_groups.settings.tariffs') %>
-    <% end if can? :manage, EnergyTariff %> <%# not sure if this is needed. Copied from school page %>
+    <% end if can?(:manage, EnergyTariff) %>
 
   <% end %>
 <% end if @school_group.organisation? %>

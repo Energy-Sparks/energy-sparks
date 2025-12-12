@@ -13,7 +13,7 @@ module SchoolGroups
     end
 
     def redirect_unless_authorised
-      if required_permission.present? && can?(required_permission, @school_group)
+      if required_permission.present? && cannot?(required_permission, @school_group)
         redirect_to school_group_path(@school_group) and return
       end
     end

@@ -18,8 +18,10 @@
         <%= link_to t('school_groups.sub_nav.clusters'),
                     school_group_clusters_path(school_group), class: 'dropdown-item' %>
       <% end %>
-      <%= link_to t('manage_school_menu.manage_tariffs'),
-                  school_group_energy_tariffs_path(school_group), class: 'dropdown-item' %>
+      <% if can?(:manage, EnergyTariff) %>
+        <%= link_to t('manage_school_menu.manage_tariffs'),
+                    school_group_energy_tariffs_path(school_group), class: 'dropdown-item' %>
+      <% end %>
       <div class="dropdown-divider"></div>
       <% if can?(:view_digital_signage, school_group) %>
         <%= link_to t('manage_school_menu.digital_signage'),
