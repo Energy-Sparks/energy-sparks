@@ -225,6 +225,7 @@ class Ability
   # school specific content (school_admin, group_admin, group manager roles)
   def common_school_content_admin_permissions(school_scope, related_school_scope)
     can :start_programme, School, school_scope
+    can :manage, Location, school_scope
 
     can :crud, Programme, related_school_scope
     can :manage, [Activity, Observation, TransportSurvey], related_school_scope
