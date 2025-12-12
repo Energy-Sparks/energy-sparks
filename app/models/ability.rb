@@ -221,6 +221,18 @@ class Ability
     can :start_programme, School, school_scope
   end
 
+  # These are permissions for roles with ability to create, manage and view
+  # school specific content (school_admin, group_admin, group manager roles)
+  def common_school_content_admin_permissions(user, school_scope, related_school_scope)
+    can :start_programme, School, school_scope
+
+    can :crud, Programme, related_school_scope
+    can :manage, [Activity, Observation, TransportSurvey], related_school_scope
+    can :manage, TransportSurvey::Response, transport_survey: related_school_scope
+
+    can %i[show read index], Audit, related_school_scope
+  end
+
   # These are permissions for roles with ability to manage schools (school_admin, group_admin)
   def common_school_admin_permissions(user, school_scope, related_school_scope)
     return unless user.school_admin? || user.group_admin?
@@ -239,22 +251,21 @@ class Ability
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
     end
 
+    common_school_content_admin_permissions(user, school_scope, related_school_scope)
+
     # Permissions for both school and group admins. These use the scopes defined above so work regardless of
     # type of user
     can %i[
       show show_pupils_dash update manage_school_times manage_users
-      show_management_dash read start_programme read_restricted_analysis read_restricted_advice manage_settings
+      show_management_dash read read_restricted_analysis read_restricted_advice manage_settings
     ], School, school_scope
 
-    can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey],
-        related_school_scope
-    can :manage, TransportSurvey::Response, transport_survey: related_school_scope
+    can :manage, [EstimatedAnnualConsumption, SchoolTarget, Contact], related_school_scope
 
     can :show, Cad, related_school_scope
     can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
     can %i[index read], ConsentGrant, related_school_scope
     can %i[index create read update], [ConsentDocument, Meter], related_school_scope
-    can :crud, Programme, related_school_scope
 
     can :activate, Meter, { active: false }.merge(related_school_scope)
     can :deactivate, Meter, { active: true }.merge(related_school_scope)
@@ -269,7 +280,6 @@ class Ability
       user.id == other_user.id
     end
 
-    can %i[show read index], Audit, related_school_scope
     can :download_school_data, School, school_scope
     can :manage, Schools::ManualReading, related_school_scope
   end
@@ -372,6 +382,25 @@ class Ability
 
     registered_user_permissions(user)
     common_group_user_permissions(user)
+
+    school_scope = {
+      school: {
+        school_groupings: {
+          school_group_id: user.school_group_id
+        },
+        visible: true
+      }
+    }
+
+    related_school_scope = {
+      school: {
+        school_groupings: {
+          school_group_id: user.school_group_id
+        }
+      }
+    }
+
+    common_school_content_admin_permissions(user, school_scope, related_school_scope)
   end
 
   def group_admin_permissions(user)
