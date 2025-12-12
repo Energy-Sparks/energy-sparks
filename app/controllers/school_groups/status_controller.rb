@@ -57,7 +57,7 @@ module SchoolGroups
     end
 
     def redirect_unless_authorised
-      redirect_to school_group_path(@school_group) and return if cannot?(:view_settings, @school_group)
+      redirect_to school_group_path(@school_group) and return if cannot?(:view_school_status, @school_group)
 
       # modified filtering of schools, because we have onboardings to consider too
       if @schools && @schools.empty? && @onboardings && @onboardings.empty?

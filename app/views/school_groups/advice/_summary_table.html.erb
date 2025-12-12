@@ -9,7 +9,7 @@
   <thead>
     <tr>
       <th></th>
-      <% if can?(:update_settings, school_group) %>
+      <% if include_clusters?(school_group) %>
         <th></th>
       <% end %>
       <% if fuel_types.include?(:electricity) %>
@@ -30,7 +30,7 @@
     </tr>
     <tr>
       <th colspan="1"><%= t('common.school') %></th>
-      <% if can?(:update_settings, school_group) %>
+      <% if include_clusters?(school_group) %>
         <th><%= t('school_groups.clusters.labels.cluster') %></th>
       <% end %>
       <% if fuel_types.include?(:electricity) %>
@@ -53,7 +53,7 @@
         <td>
           <%= link_to school.name, school_path(school) %>
         </td>
-        <% if can?(:update_settings, school_group) %>
+        <% if include_clusters?(school_group) %>
           <td>
             <%= school.school_group_cluster_name %>
           </td>

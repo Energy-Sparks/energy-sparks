@@ -10,25 +10,33 @@
     <div class="dropdown-divider"></div>
 
     <% if school_group.organisation? %>
-      <%= link_to t('school_groups.sub_nav.chart_settings'),
-                  school_group_chart_updates_path(school_group), class: 'dropdown-item' %>
-      <%= link_to t('school_groups.sub_nav.clusters'),
-                  school_group_clusters_path(school_group), class: 'dropdown-item' %>
-      <%= link_to t('manage_school_menu.manage_tariffs'),
-                  school_group_energy_tariffs_path(school_group), class: 'dropdown-item' %>
+      <% if can?(:manage_chart_defaults, school_group) %>
+        <%= link_to t('school_groups.sub_nav.chart_settings'),
+                    school_group_chart_updates_path(school_group), class: 'dropdown-item' %>
+      <% end %>
+      <% if can?(:manage_clusters, school_group) %>
+        <%= link_to t('school_groups.sub_nav.clusters'),
+                    school_group_clusters_path(school_group), class: 'dropdown-item' %>
+      <% end %>
+      <% if can?(:manage, EnergyTariff) %>
+        <%= link_to t('manage_school_menu.manage_tariffs'),
+                    school_group_energy_tariffs_path(school_group), class: 'dropdown-item' %>
+      <% end %>
       <div class="dropdown-divider"></div>
+      <% if can?(:view_digital_signage, school_group) %>
+        <%= link_to t('manage_school_menu.digital_signage'),
+                    school_group_digital_signage_index_path(school_group), class: 'dropdown-item' %>
+      <% end %>
     <% end %>
-    <% if school_group.organisation? %>
-      <%= link_to t('manage_school_menu.digital_signage'),
-                  school_group_digital_signage_index_path(school_group), class: 'dropdown-item' %>
-    <% end %>
-    <% if SchoolGroups::SchoolEngagementController.show?(current_user) %>
+    <% if can?(:view_engagement_report, school_group) %>
       <%= link_to t('school_groups.sub_nav.school_engagement'), school_group_school_engagement_index_path(school_group),
                   class: 'dropdown-item' %>
     <% end %>
-    <%= link_to t('school_groups.titles.school_status'),
-                school_group_status_index_path(school_group), class: 'dropdown-item' %>
-    <% if school_group.organisation? && can?(:secr, school_group) %>
+    <% if can?(:view_school_status, school_group) %>
+      <%= link_to t('school_groups.titles.school_status'),
+                  school_group_status_index_path(school_group), class: 'dropdown-item' %>
+    <% end %>
+    <% if school_group.organisation? && can?(:view_secr_report, school_group) %>
       <%= link_to t('school_groups.sub_nav.secr_report'),
                   school_group_secr_index_path(school_group), class: 'dropdown-item' %>
     <% end %>

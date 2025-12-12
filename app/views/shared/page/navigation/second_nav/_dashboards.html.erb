@@ -1,4 +1,4 @@
-<% if school_group_context? && can?(:compare, current_school_group) %>
+<% if school_group_context? && can?(:show, current_school_group) %>
   <li class="nav-item nowrap">
     <%= link_to t('dashboards.group_dashboard'),
                 school_group_path(current_school_group), class: 'nav-link dash' %>
