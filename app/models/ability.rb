@@ -274,7 +274,7 @@ class Ability
 
     # guards access to the group settings page, individual settings have
     # their own permissions
-    can :manage_settings, SchoolGroup, id: user.school_group_id
+    can %i[manage_settings view_engagement_report], SchoolGroup, id: user.school_group_id
   end
 
   def common_student_user_permissions(user)
@@ -389,7 +389,7 @@ class Ability
     can :update_settings, SchoolGroup, id: user.school_group_id
 
     # can view clusters on dashboards, advice, downloads
-    can %i[view_clusters manage_clusters manage_chart_defaults view_secr_report], SchoolGroup, id: user.school_group_id
+    can %i[view_clusters manage_clusters manage_chart_defaults view_secr_report view_digital_signage], SchoolGroup, id: user.school_group_id
 
     can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
     can :manage, EnergyTariff, tariff_holder: user.school_group

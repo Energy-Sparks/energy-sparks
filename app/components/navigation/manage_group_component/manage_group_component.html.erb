@@ -9,19 +9,19 @@
                     expanded: true,
                     visible: school_group.organisation?,
                     options: { match_controller: false } do |s| %>
-    <% if can?(:manage_chart_defaults, @school_group) %>
+    <% if can?(:manage_chart_defaults, school_group) %>
       <% s.with_item(name: t('common.charts'),
-                     href: school_group_chart_updates_path(@school_group), classes:,
+                     href: school_group_chart_updates_path(school_group), classes:,
                      match_controller: true) %>
     <% end %>
-    <% if can?(:manage_clusters, @school_group)
+    <% if can?(:manage_clusters, school_group)
          s.with_item(name: t('common.clusters'),
-                     href: school_group_clusters_path(@school_group), classes:,
+                     href: school_group_clusters_path(school_group), classes:,
                      match_controller: true)
        end %>
     <% if can? :manage, EnergyTariff %>
       <% s.with_item(name: t('common.tariffs'),
-                     href: school_group_energy_tariffs_path(@school_group), classes:,
+                     href: school_group_energy_tariffs_path(school_group), classes:,
                      selected: controller_path.starts_with?('energy_tariff')) %>
     <% end %>
   <% end %>
@@ -30,11 +30,11 @@
                     icon: 'school',
                     expanded: true,
                     options: { match_controller: false } do |s| %>
-    <% if school_group.organisation? %>
+    <% if school_group.organisation? && can?(:view_digital_signage, school_group) %>
       <% s.with_item(name: t('manage_school_menu.digital_signage'),
                      href: school_group_digital_signage_index_path(school_group), classes:) %>
     <% end %>
-    <% if SchoolGroups::SchoolEngagementController.show?(current_user) %>
+    <% if can?(:view_engagement_report, school_group) %>
       <% s.with_item(name: t('common.engagement'),
                      href: school_group_school_engagement_index_path(school_group), classes:) %>
     <% end %>
