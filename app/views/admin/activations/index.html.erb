@@ -43,8 +43,6 @@
                 <td data-order="<%= school.school_onboarding&.completed_on&.to_date&.iso8601 || 'last' %>">
                     <% if school.school_onboarding.present? %>
                       <%= school.school_onboarding&.completed_on&.to_date&.iso8601 %>
-                    <% else %>
-                      -
                     <% end %>
                 </td>
                 <td><%= checkmark(school.visible) %></td>
