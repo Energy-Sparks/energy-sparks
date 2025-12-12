@@ -234,6 +234,17 @@ describe User do
         it 'returns schools from group' do
           expect(user.schools).to contain_exactly(school_1, school_2)
         end
+
+        context 'when filtering schools' do
+          before do
+            create(:school, :with_project, group: school_group, active: false)
+            create(:school, :with_project, group: school_group, visible: false)
+          end
+
+          it 'returns the filtered schools' do
+            expect(user.schools(current_ability: Ability.new(user))).to contain_exactly(school_1, school_2)
+          end
+        end
       end
     end
 

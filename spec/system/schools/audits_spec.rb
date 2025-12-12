@@ -432,12 +432,10 @@ describe 'Audits', :include_application_helper, type: :system do
   end
 
   context toggle_feature: :todos do
-    describe 'as a staff member' do
-      let!(:staff) { create(:staff, school: school) }
-
+    shared_examples 'a user with access to an audit' do
       before do
         Audits::AuditService.new(school).process(audit)
-        sign_in(staff)
+        sign_in(user)
         visit school_path(school)
       end
 
@@ -456,28 +454,30 @@ describe 'Audits', :include_application_helper, type: :system do
       end
     end
 
+    describe 'as a staff member' do
+      let!(:user) { create(:staff, school: school) }
+
+      it_behaves_like 'a user with access to an audit'
+    end
+
     describe 'as pupil' do
-      let(:pupil) { create(:pupil, school: school)}
+      let(:user) { create(:pupil, school: school)}
 
-      before do
-        Audits::AuditService.new(school).process(audit)
-        sign_in(pupil)
-        visit school_path(school)
-      end
+      it_behaves_like 'a user with access to an audit'
+    end
 
-      it 'shows audit in timeline' do
-        expect(page).to have_content('Received an energy audit')
-      end
+    describe 'as a group admin' do
+      let!(:school) { create(:school, :with_school_group) }
+      let(:user) { create(:group_admin, school_group: school.school_group) }
 
-      context 'when viewing an audit', if: Flipper.enabled?(:todos) do
-        before do
-          visit school_audit_path(school, audit)
-        end
+      it_behaves_like 'a user with access to an audit'
+    end
 
-        it_behaves_like 'a todo list when there is a completable' do
-          let(:assignable) { audit }
-        end
-      end
+    describe 'as a group manager' do
+      let!(:school) { create(:school, :with_school_group, :with_project, group: user.school_group) }
+      let(:user) { create(:group_manager) }
+
+      it_behaves_like 'a user with access to an audit'
     end
 
     describe 'as a guest user' do

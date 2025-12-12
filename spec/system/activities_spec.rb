@@ -452,13 +452,9 @@ describe 'viewing and recording activities' do
     end
   end
 
-  context 'as a group admin' do
-    let!(:group_admin)    { create(:group_admin) }
-    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group) }
-
+  shared_examples 'a group user recording activities' do
     before do
-      school.update(school_group: group_admin.school_group)
-      sign_in(group_admin)
+      sign_in(group_user)
       visit activity_type_path(activity_type)
     end
 
@@ -483,15 +479,18 @@ describe 'viewing and recording activities' do
     end
 
     context 'when recording an activity', toggle_feature: :todos do
-      it 'associates activity with correct school from group' do
+      before do
         select other_school.name, from: :school_id
         click_on 'Record this activity'
         fill_in :activity_happened_on, with: Time.zone.today.strftime('%d/%m/%Y')
+      end
+
+      it 'associates activity with correct school from group' do
         expect { click_on 'Save activity' }.to change(other_school.activities, :count).by(1)
         expect(page).to have_content('Congratulations!')
         expect(other_school.activities.most_recent.first.happened_on).to eq(Time.zone.today)
-        expect(other_school.activities.most_recent.first.created_by).to eq(group_admin)
-        expect(other_school.activities.most_recent.first.observations.first.created_by).to eq(group_admin)
+        expect(other_school.activities.most_recent.first.created_by).to eq(group_user)
+        expect(other_school.activities.most_recent.first.observations.first.created_by).to eq(group_user)
       end
     end
 
@@ -504,6 +503,22 @@ describe 'viewing and recording activities' do
         expect(page).to have_no_button('Save activity')
       end
     end
+  end
+
+  context 'as a group admin' do
+    let!(:group_user) { create(:group_admin) }
+    let!(:school) { create(:school, school_group: group_user.school_group) }
+    let!(:other_school) { create(:school, name: 'Other School', school_group: group_user.school_group) }
+
+    it_behaves_like 'a group user recording activities'
+  end
+
+  context 'as a group manager' do
+    let!(:group_user) { create(:group_manager) }
+    let!(:school) { create(:school, :with_school_group, :with_project, scoreboard:, group: group_user.school_group) }
+    let!(:other_school) { create(:school, :with_school_group, :with_project, group: group_user.school_group) }
+
+    it_behaves_like 'a group user recording activities'
   end
 
   context 'as an admin' do

@@ -523,10 +523,10 @@ describe Ability do
 
         shared_examples 'they have group manager rights' do
           context 'with schools in the group' do
-            let(:school) { create(:school, school_group: school_group) }
+            let(:school) { create(:school, :with_school_group, :with_project, group: school_group) }
 
-            it 'does not allow activities to be recorded and managed' do
-              expect(ability).not_to be_able_to(:manage, Activity.new(school: school))
+            it 'allows activities to be recorded and managed' do
+              expect(ability).to be_able_to(:manage, Activity.new(school: school))
             end
 
             it 'does not allow access to restricted advice' do
