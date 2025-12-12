@@ -273,7 +273,7 @@ class Ability
 
     # guards access to the group settings page, individual settings have
     # their own permissions
-    can %i[manage_settings view_engagement_report], SchoolGroup, id: user.school_group_id
+    can %i[manage_settings view_school_status view_engagement_report], SchoolGroup, id: user.school_group_id
   end
 
   def common_student_user_permissions(user)

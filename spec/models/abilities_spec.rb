@@ -465,6 +465,7 @@ describe Ability do
           it { is_expected.to be_able_to(:show_management_dash, school_group)}
           it { is_expected.to be_able_to(:manage_settings, school_group)}
           it { is_expected.to be_able_to(:view_engagement_report, school_group)}
+          it { is_expected.to be_able_to(:view_school_status, school_group)}
 
           it { is_expected.to be_able_to(:view_clusters, school_group)}
           it { is_expected.to be_able_to(:manage_clusters, school_group)}
@@ -555,6 +556,7 @@ describe Ability do
           it { is_expected.to be_able_to(:show_management_dash, school_group)}
           it { is_expected.to be_able_to(:manage_settings, school_group)}
           it { is_expected.to be_able_to(:view_engagement_report, school_group)}
+          it { is_expected.to be_able_to(:view_school_status, school_group)}
 
           it { is_expected.not_to be_able_to(:view_clusters, school_group)}
           it { is_expected.not_to be_able_to(:manage_clusters, school_group)}
