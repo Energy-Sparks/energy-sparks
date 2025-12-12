@@ -17,7 +17,7 @@ module Dashboards
     end
 
     def prompt_for_onboarding?
-      return false unless can?(:manage_settings)
+      return false unless can?(:view_school_status)
 
       @school_group.onboardings_for_group.incomplete.count.positive?
     end
