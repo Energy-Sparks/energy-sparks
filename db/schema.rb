@@ -3613,6 +3613,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
 
   create_view "comparison_electricity_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
       SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
@@ -3719,6 +3720,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
 
   create_view "comparison_gas_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
       SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
@@ -4231,6 +4233,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
 
   create_view "comparison_storage_heater_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
       SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,

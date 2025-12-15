@@ -1,4 +1,4 @@
-SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id, data.*
+SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id, alert_generation_runs.id, data.*
 FROM alert_generation_runs
 JOIN alerts ON alerts.alert_generation_run_id = alert_generation_runs.id
 JOIN alert_types ON alert_types.id = alerts.alert_type_id
