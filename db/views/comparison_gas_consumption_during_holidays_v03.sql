@@ -11,5 +11,5 @@ WHERE (alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWith
        AND alerts.enough_data = 1)
   OR alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'
 ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
-  CASE WHEN alert_types.class_name = 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'
+  CASE WHEN alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'
     THEN 0 ELSE 1 END

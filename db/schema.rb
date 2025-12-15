@@ -3731,7 +3731,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
                            WHERE (((alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'::text))
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
           CASE
-    WHEN (alert_types.class_name = 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text) THEN 0
+    WHEN (alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text) THEN 0
               ELSE 1
           END;
   SQL
