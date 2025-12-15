@@ -145,7 +145,7 @@ class Ability
 
     # TODO: do we need both index and show here, or just show?
     can :read, Activity, school: { visible: true }
-    can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, SchoolTarget]
+    can :read, [FindOutMore, Observation, TransportSurvey, SchoolTarget]
     can :read, Location
 
     can :live_data, Cad, visible: true, public: true
@@ -300,7 +300,7 @@ class Ability
 
     can :show_management_dash, School, school_scope
     # Note: prior to refactoring these to TransportSurvey permissions were using related_school_scope which
-    # was note defined in the original context, so have changed to match scope in staff, i.e. same school only
+    # was not defined in the original context, so have changed to match scope in staff, i.e. same school only
     can %i[start read update create], TransportSurvey, school: school_scope
     can %i[read create], TransportSurvey::Response, transport_survey: { school: school_scope }
     # pupils can only read real cost data if their school is set to share data publicly

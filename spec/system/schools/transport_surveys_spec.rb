@@ -152,19 +152,27 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
     end
   end
 
-  describe 'Abilities' do
-    # admin / group admin / school admin / staff - can manage Transport Surveys, Transport Survey Responses
-    # pupil - as above except deleting Surveys and Transport Survey Responses
-    # public user - read access only for everything (but not the start page)
 
-    managing_user_types = [:admin, :group_admin, :school_admin, :staff]
+
+  describe 'Abilities' do
+    # admin / group admin / group manager / school admin / staff - can manage Transport Surveys, Transport Survey Responses
+    # pupil - as above except deleting Surveys and Transport Survey Responses
+    # public user - read access only Surveys (but not the start page or responses)
+
+    managing_user_types = [:admin, :group_admin, :group_manager, :school_admin, :staff]
     surveying_user_types = managing_user_types + [:pupil]
 
     surveying_user_types.each do |user_type|
       describe "as a #{user_type} user who can carry out surveys" do
-        let(:user) { create(user_type, school: school) }
+        let(:user) { create(user_type) }
 
         before do
+          if user.group_user?
+            user.school_group = school.school_group
+          else
+            user.school = school
+          end
+
           sign_in(user)
         end
 
@@ -192,16 +200,20 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
 
     managing_user_types.each do |user_type|
       describe "as a #{user_type} user who can delete surveys and manage & delete responses" do
-        let!(:user) { create(user_type, school: school) }
+        let!(:user) { create(user_type) }
 
         before do
-          user.school_group = school.school_group if user_type == :group_admin
+          if user.group_user?
+            user.school_group = school.school_group
+          else
+            user.school = school
+          end
+
           sign_in(user)
         end
 
         let!(:transport_survey) { create(:transport_survey, school: school) }
         let!(:transport_survey_response) { create(:transport_survey_response, transport_survey: transport_survey, transport_type: transport_type) }
-
 
         context 'when viewing transport surveys index' do
           before do

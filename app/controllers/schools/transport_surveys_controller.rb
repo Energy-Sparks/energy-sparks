@@ -4,10 +4,7 @@ module Schools
     skip_before_action :authenticate_user!, only: [:index, :show]
 
     load_resource :school
-    load_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:update]
-
-    authorize_resource :transport_survey
-    before_action :load_or_create, only: [:update]
+    load_and_authorize_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:start, :update]
     before_action :set_breadcrumbs
 
     def index
@@ -17,6 +14,8 @@ module Schools
 
     def start
       @transport_survey = @school.transport_surveys.find_or_initialize_by(run_on: Time.zone.today)
+      authorize! :start, @transport_survey
+
       render :edit
     end
 
@@ -25,6 +24,13 @@ module Schools
     end
 
     def update
+      @transport_survey = @school.transport_surveys.find_or_initialize_by(
+        run_on: transport_survey_params[:run_on]
+      )
+      authorize! :start, @transport_survey
+      # TransportSurvey#reponses= requires a persisted record
+      @transport_survey.save! unless @transport_survey.persisted?
+
       if @transport_survey.update(transport_survey_params)
         render json: @transport_survey, status: :ok
       else
@@ -40,6 +46,8 @@ module Schools
     end
 
     def destroy
+      authorize! :delete, @transport_survey
+
       @transport_survey.destroy
       redirect_to school_transport_surveys_url(@school), notice: t('schools.transport_surveys.destroy.notice')
     end
@@ -54,10 +62,6 @@ module Schools
 
     def transport_survey_params
       params.require(:transport_survey).permit(:run_on, responses: [:run_identifier, :journey_minutes, :surveyed_at, :passengers, :transport_type_id, :weather])
-    end
-
-    def load_or_create
-      @transport_survey = @school.transport_surveys.find_or_create_by!(run_on: transport_survey_params[:run_on])
     end
   end
 end
