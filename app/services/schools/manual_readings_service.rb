@@ -52,9 +52,9 @@ module Schools
     end
 
     def readings
-      @readings.transform_values do |missing_and_readings|
-        missing_and_readings.transform_values do |missing_and_reading|
-          missing_and_reading[:reading]
+      @readings.transform_values do |readings|
+        readings.transform_values do |reading_hash|
+          reading_hash[:reading]
         end
       end
     end
@@ -81,17 +81,6 @@ module Schools
           add_reading(month, fuel_type, consumption[:current_missing], consumption[:current_consumption])
           add_reading(month.prev_year, fuel_type, consumption[:previous_missing], consumption[:previous_consumption])
         end
-
-        # next if aggregate_school.nil?
-
-        # @existing_readings.each do |reading|
-        #   next if @readings.dig(reading.month, fuel_type)
-
-        #   consumption, consumption_missing = calculate_month_consumption(aggregate_school, reading.month, fuel_type)
-        #   add_reading(reading.month, fuel_type, consumption_missing, consumption)
-
-        #   # add_reading
-        # end
       end
     end
 
