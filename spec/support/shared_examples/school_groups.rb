@@ -83,36 +83,14 @@ RSpec.shared_examples 'a group advice page secr nav link' do |display: true|
   end
 end
 
-RSpec.shared_examples 'a page always displaying the school group settings nav' do
+RSpec.shared_examples 'a page with the school group settings nav' do
   it 'shows school group settings nav' do
     expect(page).to have_css('#page-nav .navigation-manage-group-component')
   end
 end
 
-RSpec.shared_examples 'a page never displaying the school group settings nav' do
+RSpec.shared_examples 'a page without the school group settings nav' do
   it 'does not show school group settings nav' do
     expect(page).not_to have_css('#page-nav .navigation-manage-group-component')
-  end
-end
-
-RSpec.shared_examples 'a page displaying the school group settings nav' do
-  context with_feature: :group_settings do
-    before { refresh }
-
-    it_behaves_like 'a page always displaying the school group settings nav'
-  end
-
-  context without_feature: :group_settings do
-    before { refresh }
-
-    it_behaves_like 'a page never displaying the school group settings nav'
-  end
-end
-
-RSpec.shared_examples 'a page not displaying the school group settings nav' do
-  context toggle_feature: :group_settings do
-    before { refresh }
-
-    it_behaves_like 'a page never displaying the school group settings nav'
   end
 end

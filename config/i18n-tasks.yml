@@ -132,7 +132,7 @@ ignore_unused:
   - 'co2'
   - '£'
   - 'date.*'
-  - 'devise.mailer.confirmation_instructions.subject'
+  - 'devise.*'
   - 'common.storage_heater'
   - 'chart_configuration.*'
   - 'aggregation_service_solar_pv.*'

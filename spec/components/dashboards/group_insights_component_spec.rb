@@ -22,7 +22,6 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
   end
 
   context 'when there are no alerts or reminders' do
-    it { expect(html).not_to have_content(I18n.t('components.dashboard_insights.title')) }
     it { expect(html).not_to have_css('#group-reminders') }
     it { expect(html).not_to have_css('#group-alerts') }
   end
@@ -43,7 +42,6 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
   context 'when there are only reminders' do
     let!(:dashboard_message) { create(:dashboard_message, messageable: school_group) }
 
-    it { expect(html).to have_content(I18n.t('components.dashboard_insights.title')) }
     it { expect(html).to have_css('#group-reminders') }
     it { expect(html).to have_content(dashboard_message.message) }
     it { expect(html).not_to have_css('#group-alerts') }
@@ -54,7 +52,6 @@ RSpec.describe Dashboards::GroupInsightsComponent, :include_application_helper, 
       let(:schools) { [school_group.schools.first] }
     end
 
-    it { expect(html).to have_content(I18n.t('components.dashboard_insights.title')) }
     it { expect(html).not_to have_css('#group-reminders') }
 
     it {

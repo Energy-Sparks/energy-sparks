@@ -57,7 +57,6 @@ module SchoolGroups
     end
 
     def redirect_unless_authorised
-      redirect_to school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
       redirect_to school_group_path(@school_group) and return if cannot?(:view_settings, @school_group)
 
       # modified filtering of schools, because we have onboardings to consider too
