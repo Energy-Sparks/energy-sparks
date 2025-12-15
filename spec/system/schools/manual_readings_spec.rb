@@ -92,7 +92,7 @@ RSpec.describe 'manual readings' do
     end
 
     it 'display only past months' do
-      expect(form_input_values).to eq([['2024-08-01', nil],
+      expect(form_input_values).to eq([*expected_input_values(2023, 8, 12, [nil]),
                                        *expected_input_values(2024, 9, 9).zip(
                                          %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0]
                                        )])
@@ -100,20 +100,8 @@ RSpec.describe 'manual readings' do
 
     it 'saves the correct readings' do
       complete_form
-      expect(actual_manual_readings).to eq([[Date.new(2024, 8), 5, nil]])
+      expect(actual_manual_readings).to eq((0..12).map { |i| [Date.new(2023, 8) + i.months, 5, nil] })
       expect(school.most_recent_target.monthly_consumption(:electricity)[0][:previous_consumption]).to eq(5)
-    end
-  end
-
-  context 'with a complete target' do
-    before do
-      create(:school_target, :with_monthly_consumption, school:)
-      visit school_manual_readings_path(school)
-    end
-
-    it 'shows the enough data message' do
-      expect(page).to \
-        have_content("We have enough data from your meters so you don't need to enter any readings manually.")
     end
   end
 
@@ -152,7 +140,7 @@ RSpec.describe 'manual readings' do
       visit school_manual_readings_path(school)
     end
 
-    include_examples 'and gas enabled'
+    it_behaves_like 'and gas enabled'
   end
 
   context 'with a gas fuel configuration' do
@@ -161,7 +149,7 @@ RSpec.describe 'manual readings' do
       visit school_manual_readings_path(school)
     end
 
-    include_examples 'and gas enabled'
+    it_behaves_like 'and gas enabled'
   end
 
   context 'with existing manual readings' do
