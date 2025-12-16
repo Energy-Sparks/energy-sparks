@@ -19,7 +19,7 @@
                      href: school_group_clusters_path(school_group), classes:,
                      match_controller: true)
        end %>
-    <% if can? :manage, EnergyTariff %>
+    <% if can? :manage, EnergyTariff.new(tariff_holder: school_group) %>
       <% s.with_item(name: t('common.tariffs'),
                      href: school_group_energy_tariffs_path(school_group), classes:,
                      selected: controller_path.starts_with?('energy_tariff')) %>

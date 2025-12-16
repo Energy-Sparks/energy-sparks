@@ -28,7 +28,7 @@ module Dashboards
 
     def prompt_for_tariff_review?
       return false unless school_group.organisation?
-      can?(:manage, EnergyTariff) && user.school_group == @school_group && [3, 9].include?(Time.zone.today.month)
+      can?(:manage, EnergyTariff.new(tariff_holder: @school_group)) && user.school_group == @school_group && [3, 9].include?(Time.zone.today.month)
     end
 
     def prompt_for_dashboard_message?
