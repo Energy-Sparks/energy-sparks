@@ -227,11 +227,16 @@ class User < ApplicationRecord
     end
   end
 
-  def schools
-    return School.visible.by_name if admin?
-    return school_group.assigned_schools.visible.by_name if school_group
-
-    [school].compact
+  def schools(current_ability: nil, permission: :show)
+    if admin?
+      School.visible.by_name
+    elsif school_group && current_ability
+      school_group.assigned_schools.active.by_name.accessible_by(current_ability, permission)
+    elsif school_group
+      school_group.assigned_schools.visible.by_name
+    else
+      [school].compact
+    end
   end
 
   def school_name
