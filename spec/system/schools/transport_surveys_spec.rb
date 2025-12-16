@@ -213,8 +213,10 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
         let!(:user) { create(user_type) }
 
         before do
-          if user.group_user?
+          if user.group_admin?
             user.school_group = school.school_group
+          elsif user.group_manager?
+            school.project_groups << user.school_group
           else
             user.school = school
           end
