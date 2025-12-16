@@ -40,7 +40,32 @@
 # So some of the actions given below actually map to controller actions. But others are custom actions used in
 # specific parts of the code, usually in controllers or templates to manage access to other fine-grained functionality
 #
-# SCHOOLS AND GROUP CUSTOM ACTIONS
+# CUSTOM ABILITIES
+#
+# The default set of CRUD actions defined for Active Record models is not fine-grained enough to cover our use cases.
+# E.g. some users may be able to edit some details of a school, but not its full configuration.
+#
+# In other cases we provide additional reports or views of information about a School or SchoolGroup which are not tied
+# to a specific model, e.g. being able to view the onboarding status of a set of schools. Or a summary of their metering
+# setup and data.
+#
+# In both of these cases we will create and use custom abilities to allow these to be granted to different roles
+#
+# Where these features are tied to specific controller actions, then the ability will be named after the action. Otherwise
+# we should use a clear, describable name
+#
+#
+# CARE OVER USE OF :manage
+#
+# The +:manage+ alias covers all CRUD actions AND all custom abilities. We should avoid granting +:manage+ access to
+# models as it can lead to granting permissions that a user shouldn't have.
+#
+# This means listing out all the abilities for a model and role in this file, but this is ultimately much clearer
+# to debug and test.
+#
+# There is still some retrospective tidying up to do around use of +:manage+
+#
+# SCHOOLS AND GROUP CUSTOM ABILITIES
 #
 # :change_data_enabled - can enable/disable data enabled features for a school. Admin only
 # :change_data_processing - can enabled/disable data processing. Admin only
