@@ -40,7 +40,32 @@
 # So some of the actions given below actually map to controller actions. But others are custom actions used in
 # specific parts of the code, usually in controllers or templates to manage access to other fine-grained functionality
 #
-# SCHOOLS AND GROUP CUSTOM ACTIONS
+# CUSTOM ABILITIES
+#
+# The default set of CRUD actions defined for Active Record models is not fine-grained enough to cover our use cases.
+# E.g. some users may be able to edit some details of a school, but not its full configuration.
+#
+# In other cases we provide additional reports or views of information about a School or SchoolGroup which are not tied
+# to a specific model, e.g. being able to view the onboarding status of a set of schools. Or a summary of their metering
+# setup and data.
+#
+# In both of these cases we will create and use custom abilities to allow these to be granted to different roles
+#
+# Where these features are tied to specific controller actions, then the ability will be named after the action. Otherwise
+# we should use a clear, describable name
+#
+#
+# CARE OVER USE OF :manage
+#
+# The +:manage+ alias covers all CRUD actions AND all custom abilities. We should avoid granting +:manage+ access to
+# models as it can lead to granting permissions that a user shouldn't have.
+#
+# This means listing out all the abilities for a model and role in this file, but this is ultimately much clearer
+# to debug and test.
+#
+# There is still some retrospective tidying up to do around use of +:manage+
+#
+# SCHOOLS AND GROUP CUSTOM ABILITIES
 #
 # :change_data_enabled - can enable/disable data enabled features for a school. Admin only
 # :change_data_processing - can enabled/disable data processing. Admin only
@@ -74,12 +99,8 @@
 # SCHOOL GROUP ACTIONS
 #
 # :compare - can compare schools in this group. Used to add/remove links to compare functionality
-# But also used to control access to school group page with data.
-# :view_settings - view group settings page
-# :read, :my_school_group_menu - see my school group menu
-# :update_settings - can manage settings (chart prefs, clusters) for school group. But also used to gate
-# access to viewing clusters on school group dashboard.
-# :secr - Used to control access to SECR report page
+# :manage_settings - see manage group menu
+# access to viewing clusters on school group dashboard. Used to control access to SECR report page too
 #
 # METERS
 #
@@ -136,16 +157,14 @@ class Ability
     can %i[show show_pupils_dash], School, visible: true, data_sharing: :public
 
     can :read, Scoreboard, public: true
-    # TODO only need show as there's no :index?
-    can :read, SchoolGroup
 
-    # Allow anyone to compare schools in public school group. The actual schools that are shown
+    # Allow anyone to see public school group. The actual schools that are shown
     # are filtered using based on whether user can :show the school
-    can :compare, SchoolGroup, public: true
+    can :show, SchoolGroup, public: true
 
     # TODO: do we need both index and show here, or just show?
     can :read, Activity, school: { visible: true }
-    can :read, [FindOutMore, Observation, TransportSurvey, TransportSurvey::Response, SchoolTarget]
+    can :read, [FindOutMore, Observation, TransportSurvey, SchoolTarget]
     can :read, Location
 
     can :live_data, Cad, visible: true, public: true
@@ -209,7 +228,7 @@ class Ability
     can %i[show show_pupils_dash], School,
         data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true
 
-    can :compare, SchoolGroup, id: user.school.school_group_id
+    can :show, SchoolGroup, id: user.school.school_group_id
     can :show_management_dash, SchoolGroup, id: user.school.school_group_id
 
     can %i[show read index], Audit, school: school_scope
@@ -219,6 +238,19 @@ class Ability
     can :download_school_data, School, school_scope
     can :read, Meter
     can :start_programme, School, school_scope
+  end
+
+  # These are permissions for roles with ability to create, manage and view
+  # school specific content (school_admin, group_admin, group manager roles)
+  def common_school_content_admin_permissions(school_scope, related_school_scope)
+    can :start_programme, School, school_scope
+    can :manage, Location, school_scope
+
+    can :crud, Programme, related_school_scope
+    can :manage, [Activity, Observation, TransportSurvey], related_school_scope
+    can :manage, TransportSurvey::Response, transport_survey: related_school_scope
+
+    can %i[show read index], Audit, related_school_scope
   end
 
   # These are permissions for roles with ability to manage schools (school_admin, group_admin)
@@ -234,27 +266,26 @@ class Ability
           { data_sharing: :within_group, school_group_id: user.school.school_group_id, visible: true }
 
       # Can compare own school group, even if not public
-      can :compare, SchoolGroup, { id: user.school.school_group_id, public: false }
+      can :show, SchoolGroup, { id: user.school.school_group_id, public: false }
       # Can see messages on school group dashboard for their group
       can :show_management_dash, SchoolGroup, { id: user.school.school_group_id }
     end
+
+    common_school_content_admin_permissions(school_scope, related_school_scope)
 
     # Permissions for both school and group admins. These use the scopes defined above so work regardless of
     # type of user
     can %i[
       show show_pupils_dash update manage_school_times manage_users
-      show_management_dash read start_programme read_restricted_analysis read_restricted_advice manage_settings
+      show_management_dash read read_restricted_analysis read_restricted_advice manage_settings
     ], School, school_scope
 
-    can :manage, [EstimatedAnnualConsumption, SchoolTarget, Activity, Contact, Observation, TransportSurvey],
-        related_school_scope
-    can :manage, TransportSurvey::Response, transport_survey: related_school_scope
+    can :manage, [EstimatedAnnualConsumption, SchoolTarget, Contact], related_school_scope
 
     can :show, Cad, related_school_scope
     can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
     can %i[index read], ConsentGrant, related_school_scope
     can %i[index create read update], [ConsentDocument, Meter], related_school_scope
-    can :crud, Programme, related_school_scope
 
     can :activate, Meter, { active: false }.merge(related_school_scope)
     can :deactivate, Meter, { active: true }.merge(related_school_scope)
@@ -269,16 +300,16 @@ class Ability
       user.id == other_user.id
     end
 
-    can %i[show read index], Audit, related_school_scope
     can :download_school_data, School, school_scope
     can :manage, Schools::ManualReading, related_school_scope
   end
 
   def common_group_user_permissions(user)
-    can %i[show compare show_management_dash], SchoolGroup, id: user.school_group_id
+    can %i[show show_management_dash], SchoolGroup, id: user.school_group_id
 
-    can :view_settings, SchoolGroup, id: user.school_group_id
-    can :read, :my_school_group_menu
+    # guards access to the group settings page, individual settings have
+    # their own permissions
+    can %i[manage_settings view_school_status view_engagement_report], SchoolGroup, id: user.school_group_id
   end
 
   def common_student_user_permissions(user)
@@ -289,7 +320,7 @@ class Ability
 
     can :show_management_dash, School, school_scope
     # Note: prior to refactoring these to TransportSurvey permissions were using related_school_scope which
-    # was note defined in the original context, so have changed to match scope in staff, i.e. same school only
+    # was not defined in the original context, so have changed to match scope in staff, i.e. same school only
     can %i[start read update create], TransportSurvey, school: school_scope
     can %i[read create], TransportSurvey::Response, transport_survey: { school: school_scope }
     # pupils can only read real cost data if their school is set to share data publicly
@@ -372,6 +403,25 @@ class Ability
 
     registered_user_permissions(user)
     common_group_user_permissions(user)
+
+    school_scope = {
+      school: {
+        school_groupings: {
+          school_group_id: user.school_group_id
+        },
+        visible: true
+      }
+    }
+
+    related_school_scope = {
+      school: {
+        school_groupings: {
+          school_group_id: user.school_group_id
+        }
+      }
+    }
+
+    common_school_content_admin_permissions(school_scope, related_school_scope)
   end
 
   def group_admin_permissions(user)
@@ -389,8 +439,7 @@ class Ability
 
     common_school_admin_permissions(user, school_scope, related_school_scope)
 
-    can :update_settings, SchoolGroup, id: user.school_group_id
-    can :secr, SchoolGroup, id: user.school_group_id
+    can %i[view_clusters manage_clusters manage_chart_defaults view_secr_report view_digital_signage], SchoolGroup, id: user.school_group_id
 
     can :manage, SchoolGroupCluster, school_group_id: user.school_group_id
     can :manage, EnergyTariff, tariff_holder: user.school_group
