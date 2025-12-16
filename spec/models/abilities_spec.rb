@@ -469,6 +469,10 @@ describe Ability do
             end
           end
 
+          context 'with other schools' do
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school))) }
+          end
+
           it { is_expected.to be_able_to(:update_settings, school_group)}
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
@@ -521,6 +525,7 @@ describe Ability do
 
         context 'with transport surveys' do
           it { is_expected.to be_able_to(:start, create(:transport_survey, school: create(:school, school_group:))) }
+          it { is_expected.not_to be_able_to(:start, create(:transport_survey, school: create(:school))) }
         end
       end
 
@@ -552,6 +557,12 @@ describe Ability do
 
             it { is_expected.not_to be_able_to(:download_school_data, school) }
             it { is_expected.not_to be_able_to(:show_management_dash, school) }
+          end
+
+          context 'with other schools' do
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school))) }
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school, :with_school_group))) }
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school, :with_project))) }
           end
 
           it { is_expected.not_to be_able_to(:update_settings, school_group)}
