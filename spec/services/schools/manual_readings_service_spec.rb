@@ -75,9 +75,29 @@ describe Schools::ManualReadingsService do
   end
 
   describe '#calculate_required' do
+    before { travel_to(Date.new(2025, 5)) }
+
+    def expected_readings(usage)
+      months = (2..24).map { |i| Date.new(2025, 5) - i.months }.reverse
+      usage = [*usage, *[1020] * 11]
+      expect(service.readings).to eq(months.zip(usage).to_h { |month, value| [month, { electricity: value }] })
+      months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
+    end
+
+    context 'with a target' do
+      before do
+        create(:school_target, :with_monthly_consumption, school:)
+        meter_collection = build(:meter_collection)
+        service.calculate_required(meter_collection)
+      end
+
+      it 'calculates the correct readings' do
+        expect(service.readings).to eq(expected_readings([nil] * 12))
+      end
+    end
+
     context 'with a target and meter readings' do
       before do
-        travel_to(Date.new(2025, 5))
         create(:school_target, :with_monthly_consumption, school:)
         meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: 2.years.ago.to_date,
                                                                            kwh_data_x48: [1] * 48)
@@ -85,9 +105,8 @@ describe Schools::ManualReadingsService do
       end
 
       it 'calculates the correct readings' do
-        months = (2..24).map { |i| Date.new(2025, 5) - i.months }.reverse
-        usage = [1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440, *[1020] * 11]
-        expect(service.readings).to eq(months.zip(usage).to_h { |month, value| [month, { electricity: value }] })
+        expect(service.readings).to \
+          eq(expected_readings([1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440]))
       end
     end
   end
