@@ -3,7 +3,7 @@ module Schools
     include Pagy::Backend
     skip_before_action :authenticate_user!, only: [:index, :show]
 
-    load_resource :school
+    load_and_authorize_resource :school
     load_and_authorize_resource :transport_survey, find_by: :run_on, id_param: :run_on, through: :school, except: [:start, :update]
     before_action :set_breadcrumbs
 

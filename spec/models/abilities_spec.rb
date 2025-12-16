@@ -81,6 +81,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:read_restricted_analysis, create(:school)) }
     it { is_expected.not_to be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
     it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
+    it { is_expected.not_to be_able_to(:start, create(:transport_survey, school: create(:school))) }
   end
 
   shared_examples 'they can manage correct types of tariffs' do |school_tariffs: false, group_tariffs: false, site_tariffs: false|
@@ -324,6 +325,10 @@ describe Ability do
           expect(ability).to be_able_to(:manage, Activity.new(school: school))
         end
 
+        it 'allows transport surveys to be started' do
+          expect(ability).to be_able_to(:start, create(:transport_survey, school: school))
+        end
+
         it 'allows access to restricted advice' do
           expect(ability).to be_able_to(:read_restricted_analysis, school)
           expect(ability).to be_able_to(:read_restricted_advice, school)
@@ -513,6 +518,10 @@ describe Ability do
             end
           end
         end
+
+        context 'with transport surveys' do
+          it { is_expected.to be_able_to(:start, create(:transport_survey, school: create(:school, school_group:))) }
+        end
       end
 
       context 'when users is a group manager' do
@@ -524,6 +533,10 @@ describe Ability do
         shared_examples 'they have group manager rights' do
           context 'with schools in the group' do
             let(:school) { create(:school, :with_school_group, :with_project, group: school_group) }
+
+            context 'with transport surveys' do
+              it { is_expected.to be_able_to(:start, create(:transport_survey, school:)) }
+            end
 
             it 'allows activities to be recorded and managed' do
               expect(ability).to be_able_to(:manage, Activity.new(school: school))

@@ -152,8 +152,6 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
     end
   end
 
-
-
   describe 'Abilities' do
     # admin / group admin / group manager / school admin / staff - can manage Transport Surveys, Transport Survey Responses
     # pupil - as above except deleting Surveys and Transport Survey Responses
@@ -167,8 +165,10 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
         let(:user) { create(user_type) }
 
         before do
-          if user.group_user?
+          if user.group_admin?
             user.school_group = school.school_group
+          elsif user.group_manager?
+            school.project_groups << user.school_group
           else
             user.school = school
           end
@@ -186,6 +186,16 @@ describe 'TransportSurveys', type: :system, include_application_helper: true do
           it { expect(page).to have_content('Javascript must be enabled to use this functionality') }
           it { expect(page).to have_link('View all transport surveys') }
           it { expect(page).not_to have_css('#survey_nav') }
+
+          context 'when attempting to start a survey for a different school' do
+            before do
+              visit start_school_transport_surveys_path(create(:school, :with_school_group, :with_project))
+            end
+
+            it 'limits access' do
+              expect(page).not_to have_content('Today\'s travel to school survey') unless user.admin?
+            end
+          end
 
           context "when clicking the 'View all transport surveys' button" do
             before do
