@@ -14,15 +14,14 @@ module Admin
 
       def create
         service = Meters::MeterAttributeManager.new(@school)
-        meter = Meter.find(params[:attribute][:meter_id])
-        service.create!(
-          meter.id,
+        attribute = service.create!(
+          params[:attribute][:meter_id],
           params[:attribute][:type],
           params[:attribute][:root],
           params[:attribute][:reason],
           current_user
         )
-        redirect_to admin_school_single_meter_attribute_path(@school, meter)
+        redirect_to admin_school_single_meter_attribute_path(@school, attribute.meter)
       rescue => e
         redirect_back fallback_location: admin_school_meter_attributes_path(@school), notice: e.message
       end
