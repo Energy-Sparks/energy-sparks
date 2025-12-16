@@ -1,5 +1,11 @@
-<h1>Meter attributes: <%= @school.name %></h1>
-<p><%= link_to 'School meter management', school_meters_path(@school) %></p>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Meter attributes for <%= @school.name %></h1>
+
+  <div class="h5">
+    <%= link_to t('schools.meters.show.school_meter_management'), school_meters_path(@school),
+                class: 'btn btn-default' %>
+  </div>
+</div>
 
 <ul class="nav nav-tabs" id="top-level-meter-attribute-tabs">
   <li class="nav-item">
