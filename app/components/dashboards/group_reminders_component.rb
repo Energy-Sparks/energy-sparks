@@ -13,21 +13,22 @@ module Dashboards
 
     def prompt_for_training?
       return false if user&.admin?
-      can_manage_group? && user.confirmed_at > 30.days.ago
+      can?(:manage_settings) && user.confirmed_at > 30.days.ago
     end
 
     def prompt_for_onboarding?
-      return false unless can?(:update_settings, @school_group)
+      return false unless can?(:view_school_status)
 
       @school_group.onboardings_for_group.incomplete.count.positive?
     end
 
     def prompt_for_clusters?
-      can_manage_group? && school_group.organisation? && !school_group.clusters.exists?
+      can?(:manage_clusters) && school_group.organisation? && !school_group.clusters.exists?
     end
 
     def prompt_for_tariff_review?
-      can_manage_group? && school_group.organisation? && [3, 9].include?(Time.zone.today.month)
+      return false unless school_group.organisation?
+      can?(:manage, EnergyTariff.new(tariff_holder: @school_group)) && user.school_group == @school_group && [3, 9].include?(Time.zone.today.month)
     end
 
     def prompt_for_dashboard_message?
@@ -56,16 +57,11 @@ module Dashboards
       end
     end
 
-    def can_manage_group?
-      return true if user&.admin?
-      can?(:show_management_dash, @school_group) && user.school_group == @school_group
-    end
-
     def ability
       @ability ||= Ability.new(@user)
     end
 
-    def can?(permission, context)
+    def can?(permission, context = @school_group)
       ability.can?(permission, context)
     end
   end
