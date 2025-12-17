@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   before_action :pagy_locale
   before_action :check_admin_mode
   helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group,
-                :current_user_default_school_group, :current_school, :current_school_group, :utm_params
+                :current_user_default_school_group, :current_school, :current_school_group, :utm_params,
+                :stored_location_for
   before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|

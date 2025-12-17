@@ -23,7 +23,17 @@
         </p>
       </div>
     </div>
-
+    <div class='row'>
+      <div class="px-4">
+        <% if !user_signed_in? && !@school_group.public? %> <%# && session["user_return_to"] %>
+          <%= render PromptComponent.new icon: 'user', status: :none do |p| %>
+            <% p.with_title { t('school_groups.login_prompt.title', school_group: @school_group.name) } %>
+            <%= t('school_groups.login_prompt.body') %>
+            <% p.with_link { link_to 'Login', new_user_session_path, class: 'btn mt-3' } %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <div class="mt-4 col-12 col-md-6">
@@ -39,7 +49,7 @@
     <nav aria-label="schools-pagination">
       <ul class="pagination justify-content-start flex-wrap ">
         <% (('A'..'Z').to_a + ['#']).each do |letter| %>
-          <li class="<%= class_names('page-item mr-1 letter', { 'disabled': !@grouped_schools.key?(letter) }) %>">
+          <li class="<%= class_names('page-item me-1 letter', { 'disabled': !@grouped_schools.key?(letter) }) %>">
             <a class="page-link" href="#<%= letter %>-schools"><%= letter %></a>
           </li>
         <% end %>
@@ -70,7 +80,7 @@
             <%= render Elements::IconComponent.new(fuel_type: :storage_heater) %>
           <% end %>
         <% end %>
-        <span class="badge badge-secondary" style="vertical-align: middle;">
+        <span class="badge bg-secondary" style="vertical-align: middle;">
           <%= t("common.school_types.#{school.school_type}") %>
         </span>
         <br>

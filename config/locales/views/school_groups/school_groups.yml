@@ -142,6 +142,9 @@ en:
       view_map: View map
     labels:
       floor_area: Floor area (m2)
+    login_prompt:
+      body: Login as a group or school user for this group to view the dashboard and energy analysis
+      title: Access to %{school_group} is restricted
     meters_as_csv: Download meters as CSV
     priority_actions:
       alert_types:
