@@ -17,7 +17,7 @@ class InterventionTypesController < ApplicationController
     if current_user_school
       @interventions = current_user_school.observations.includes(:intervention_type).intervention.where(intervention_type: @intervention_type).visible.by_date
     end
-    @can_be_completed_for_schools = current_user.schools if current_user
+    @can_be_completed_for_schools = current_user.schools(current_ability:) if current_user
   end
 
   def for_school

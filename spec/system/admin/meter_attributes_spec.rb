@@ -21,7 +21,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
         click_on 'Meter attributes'
-        expect(page).to have_content('Meter attributes: Oldfield Park Infants')
+        expect(page).to have_content('Meter attributes for Oldfield Park Infants')
         expect(page).to have_content('There was an error')
       end
 

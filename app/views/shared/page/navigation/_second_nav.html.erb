@@ -72,10 +72,10 @@
 
         <% if school_group_context? %>
           <%# Context: any page scoped to school group %>
-          <% if current_user&.admin? || (can?(:view_settings, current_school_group) && !Flipper.enabled?(:group_settings, current_user)) %>
+          <% if current_user&.admin? %>
             <%# 'Manage group' menu - show to admin users only %>
             <%= render 'shared/page/navigation/second_nav/manage_school_group_menu', school_group: current_school_group %>
-          <% elsif can?(:view_settings, current_school_group) && Flipper.enabled?(:group_settings, current_user) %>
+          <% elsif can?(:manage_settings, current_school_group) %>
             <%# 'Group settings' link - show to users with permission to view settings for current school group %>
             <li class="nav-item nowrap">
               <%= link_to t('school_groups.sub_nav.manage_group'),
@@ -90,7 +90,7 @@
           <%= render 'shared/page/navigation/second_nav/manage_school_menu', school: current_school %>
         <% end %>
 
-        <% if current_user_school_group && can?(:read, :my_school_group_menu) %>
+        <% if current_user_school_group && can?(:manage_settings, current_user_school_group) %>
           <%# 'My school group' menu %>
           <%# links back to school group dashboard & lists schools in group %>
           <%# Context: current user has associated school group %>

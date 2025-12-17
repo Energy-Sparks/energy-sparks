@@ -35,7 +35,7 @@ class ActivityTypesController < ApplicationController
 
   def can_be_completed_for_schools(activity_type, user)
     return user.schools if user.admin?
-    user.schools.select do |school|
+    user.schools(current_ability:).select do |school|
       ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
     end
   end

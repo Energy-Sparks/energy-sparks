@@ -8,9 +8,6 @@ RSpec.describe 'school group settings', :include_application_helper, :school_gro
   let!(:user) { create(:admin) }
 
   before do
-    Flipper.enable :group_settings
-    Flipper.enable :school_group_secr_report
-
     sign_in(user)
     visit settings_school_group_path(school_group)
   end
@@ -21,7 +18,7 @@ RSpec.describe 'school group settings', :include_application_helper, :school_gro
     end
   end
 
-  it_behaves_like 'a page always displaying the school group settings nav'
+  it_behaves_like 'a page with the school group settings nav'
 
   describe 'Settings section' do
     it 'has the title' do

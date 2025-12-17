@@ -27,8 +27,6 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     let(:expected_id) { id }
   end
 
-  it { expect(html).to have_content(I18n.t('components.dashboard_insights.title')) }
-
   it 'displays the reminders column' do
     expect(html).to have_css('#adult-reminders')
     expect(html).to have_content(I18n.t('components.dashboard_insights.reminders.title'))

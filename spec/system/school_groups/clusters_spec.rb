@@ -35,7 +35,7 @@ describe 'school group clusters', :school_group_clusters, type: :system do
       expect(page).not_to have_link('Edit', href: /clusters/)
     end
 
-    it_behaves_like 'a page displaying the school group settings nav'
+    it_behaves_like 'a page with the school group settings nav'
   end
 
   shared_examples 'school group cluster form' do |name: ''|
@@ -91,10 +91,8 @@ describe 'school group clusters', :school_group_clusters, type: :system do
         let!(:user) { create(user_type, school_group: school_group) }
 
         before do
-          visit school_group_url(school_group)
-          within('#manage-school-group-menu') do
-            click_on 'Manage clusters'
-          end
+          visit settings_school_group_url(school_group)
+          click_on 'Clusters'
         end
 
         it_behaves_like 'school group clusters index page'

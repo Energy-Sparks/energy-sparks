@@ -1,6 +1,6 @@
 module SchoolGroups
   class ClustersController < BaseController
-    layout -> { Flipper.enabled?(:group_settings, current_user) ? 'group_settings' : 'application' }
+    layout 'group_settings'
 
     before_action :redirect_unless_authorised
     load_and_authorize_resource :cluster, class: 'SchoolGroupCluster', through: :school_group
@@ -52,8 +52,8 @@ module SchoolGroups
 
     private
 
-    def redirect_unless_authorised
-      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+    def required_permission
+      :manage_clusters
     end
 
     def cluster_params

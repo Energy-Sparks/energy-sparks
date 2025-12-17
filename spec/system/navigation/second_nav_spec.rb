@@ -3,10 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Navigation -> second nav' do
-  # These are on in production now, so assume on all the time
-  before { Flipper.enable(:school_group_secr_report) }
-  before { Flipper.enable(:group_settings) }
-
   let!(:user) {}
   let(:school_group) { create(:school_group) }
   let(:data_enabled) { true }
