@@ -80,7 +80,6 @@ describe Schools::ManualReadingsService do
     def expected_readings(usage)
       months = (2..24).map { |i| Date.new(2025, 5) - i.months }.reverse
       usage = [*usage, *[1020] * 11]
-      expect(service.readings).to eq(months.zip(usage).to_h { |month, value| [month, { electricity: value }] })
       months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
     end
 
