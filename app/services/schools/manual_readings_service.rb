@@ -27,14 +27,9 @@ module Schools
 
     def calculate_required(aggregate_school)
       calculate_required_when_target(aggregate_school) if target?
-      required_months.each do |month|
-        @fuel_types.each do |fuel_type|
-          next if fuel_type == :gas && !(@school.configuration.fuel_type?(:gas) || @school.heating_gas)
-          next unless @readings.dig(month, fuel_type).nil?
-
-          consumption, consumption_missing = calculate_month_consumption(aggregate_school, month, fuel_type)
-          add_reading(month, fuel_type, consumption_missing, consumption)
-        end
+      required_months_and_fuel_types do |month, fuel_type|
+        consumption, consumption_missing = calculate_month_consumption(aggregate_school, month, fuel_type)
+        add_reading(month, fuel_type, consumption_missing, consumption)
       end
     end
 
@@ -66,9 +61,20 @@ module Schools
 
     private
 
+    def required_months_and_fuel_types
+      required_months.each do |month|
+        @fuel_types.each do |fuel_type|
+          next if fuel_type == :gas && !(@school.configuration.fuel_type?(:gas) || @school.heating_gas)
+          next unless @readings.dig(month, fuel_type).nil?
+
+          yield month, fuel_type
+        end
+      end
+    end
+
     def required_months
       (@existing_readings.map(&:month) |
-       DateService.start_of_months(MONTHS_REQUIRED.ago, Date.current.prev_month).to_a).sort
+      DateService.start_of_months(MONTHS_REQUIRED.ago, Date.current.prev_month).to_a).sort
     end
 
     def calculate_required_when_target(aggregate_school)
