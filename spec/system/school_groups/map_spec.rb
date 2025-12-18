@@ -89,14 +89,20 @@ describe 'School groups map page', :school_groups do
     end
   end
 
-  shared_examples 'a map page with a login prompt' do
+  shared_examples 'a map page with an access restricted prompt' do
     it { expect(page).to have_content(I18n.t('school_groups.login_prompt.title', school_group: school_group.name)) }
-    it { expect(page).to have_content(I18n.t('school_groups.login_prompt.body', school_group: school_group.name)) }
+    it { expect(page).to have_content('Please explore other school groups that are publicly available') }
   end
 
-  shared_examples 'a map page without a login prompt' do
+  shared_examples 'a map page with a login prompt' do
+    it { expect(page).to have_content(I18n.t('school_groups.login_prompt.title', school_group: school_group.name)) }
+    it { expect(page).to have_content(I18n.t('school_groups.login_prompt.login')) }
+  end
+
+  shared_examples 'a map page without a login or restricted prompt' do
     it { expect(page).not_to have_content(I18n.t('school_groups.login_prompt.title', school_group: school_group.name)) }
-    it { expect(page).not_to have_content(I18n.t('school_groups.login_prompt.body', school_group: school_group.name)) }
+    it { expect(page).not_to have_content(I18n.t('school_groups.login_prompt.login')) }
+    it { expect(page).not_to have_content('Please explore other school groups that are publicly available') }
   end
 
   shared_context 'when a group user signs in' do
@@ -114,10 +120,10 @@ describe 'School groups map page', :school_groups do
 
   describe 'Login prompt for private groups' do
     let!(:school_group) { }
-    let!(:user) {}
+    let!(:signed_in_user) {}
 
     before do
-      sign_in user if user
+      sign_in signed_in_user if signed_in_user
     end
 
     context 'when visiting the map page' do
@@ -140,11 +146,23 @@ describe 'School groups map page', :school_groups do
           end
         end
 
-        context 'when user is already signed in as a group user' do
-          let(:user) { create(:group_admin, school_group:) }
+        context 'when user is already signed in as a user without access' do
+          let(:signed_in_user) { create(:group_admin, school_group: create(:school_group)) }
 
-          it_behaves_like 'a map page without a login prompt'
+          it_behaves_like 'a map page with an access restricted prompt'
         end
+
+        context 'when user is already signed in as a group user for the same group' do
+          let(:signed_in_user) { create(:group_admin, school_group:) }
+
+          it_behaves_like 'a map page without a login or restricted prompt'
+        end
+      end
+
+      context 'when group is not private' do
+        let!(:school_group) { create(:school_group, :with_active_schools, group_type: :general, public: true) }
+
+        it_behaves_like 'a map page without a login or restricted prompt'
       end
     end
 
@@ -168,10 +186,10 @@ describe 'School groups map page', :school_groups do
           end
         end
 
-        context 'when user is signed in as a group user' do
-          let(:user) { create(:group_manager) }
+        context 'when user is signed in as a group user for the same group' do
+          let(:signed_in_user) { create(:group_admin, school_group:) }
 
-          it_behaves_like 'a map page without a login prompt'
+          it_behaves_like 'a map page without a login or restricted prompt'
         end
       end
     end

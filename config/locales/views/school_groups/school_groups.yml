@@ -143,7 +143,8 @@ en:
     labels:
       floor_area: Floor area (m2)
     login_prompt:
-      body: Login as a group or school user for this group to view the dashboard and energy analysis
+      login: Login as a group or school user for this group to view the dashboard and energy analysis
+      restricted_html: Please <a href='%{href}'>explore other school groups</a> that are publicly available
       title: Access to %{school_group} is restricted
     meters_as_csv: Download meters as CSV
     priority_actions:

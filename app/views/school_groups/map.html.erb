@@ -25,11 +25,15 @@
     </div>
     <div class='row'>
       <div class="px-4">
-        <% if !user_signed_in? && !@school_group.public? %> <%# && session["user_return_to"] %>
+        <% unless @school_group.public? %>
           <%= render PromptComponent.new icon: 'user', status: :none do |p| %>
             <% p.with_title { t('school_groups.login_prompt.title', school_group: @school_group.name) } %>
-            <%= t('school_groups.login_prompt.body') %>
-            <% p.with_link { link_to 'Login', new_user_session_path, class: 'btn mt-3' } %>
+            <% if user_signed_in? && cannot?(:show, @school_group) %>
+              <%= t('school_groups.login_prompt.restricted_html', href: schools_path(anchor: 'school-groups')) %>
+            <% elsif !user_signed_in? %>
+              <%= t('school_groups.login_prompt.login') %>
+              <% p.with_link { link_to 'Login', new_user_session_path, class: 'btn mt-3' } %>
+            <% end %>
           <% end %>
         <% end %>
       </div>

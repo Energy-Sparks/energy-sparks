@@ -41,7 +41,7 @@ linters:
       - deprecated: ['text-monospace']
         suggestion: 'Use "font-monospace" instead of "text-monospace"'
       # Spacing (directional shorthands)
-      - deprecated: ['[pm][lr]-.*']
+      - deprecated: ['[pm][lr]-\d+']
         suggestion: 'Use ps-/pe-/ms-/me- classes instead of pl-/pr-/ml-/mr-'
       # Margin auto
       - deprecated: ['m[lr]-auto']
