@@ -24,18 +24,8 @@ shared_examples 'a long term advice page' do
 
   before do
     create(:advice_page, key:, fuel_type:)
-    SecrCo2Equivalence.create!(year: 2024,
-                               electricity_co2e: 0.20705,
-                               electricity_co2e_co2: 0.20493,
-                               transmission_distribution_co2e: 0.0183,
-                               natural_gas_co2e: 0.1829,
-                               natural_gas_co2e_co2: 0.18253)
-    SecrCo2Equivalence.create!(year: 2023,
-                               electricity_co2e: 0.207074,
-                               electricity_co2e_co2: 0.20496,
-                               transmission_distribution_co2e: 0.0183,
-                               natural_gas_co2e: 0.18,
-                               natural_gas_co2e_co2: 0.18256)
+    create(:secr_co2_equivalence, year: 2024)
+    create(:secr_co2_equivalence, year: 2023)
     Flipper.enable(:manual_readings)
   end
 
@@ -302,10 +292,10 @@ shared_examples 'a long term advice page' do
 
           it_behaves_like 'it contains the monthly consumption table' do
             let(:expected_consumption_rows) do
-              rows = [['January', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21%'],
-                      ['February', '15,000 m', '13,900', '-7.2%', '-', '£1,390', '-', '3,070 m', '2,270', '-26%'],
-                      ['March', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,070 m', '2,430', '-21%'],
-                      ['April', '15,000 m', '14,400', '-4%', '-', '£1,440', '-', '3,070 m', '2,350', '-24%'],
+              rows = [['January', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,000 m', '2,430', '-19%'],
+                      ['February', '15,000 m', '13,900', '-7.2%', '-', '£1,390', '-', '3,000 m', '2,270', '-24%'],
+                      ['March', '15,000 m', '14,900', '-0.8%', '-', '£1,490', '-', '3,000 m', '2,430', '-19%'],
+                      ['April', '15,000 m', '14,400', '-4%', '-', '£1,440', '-', '3,000 m', '2,350', '-22%'],
                       ['May', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
                       ['June', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
                       ['July', '-', '14,900', '-', '-', '£1,490', '-', '-', '2,430', '-'],
@@ -315,10 +305,10 @@ shared_examples 'a long term advice page' do
                       ['November', '-', '14,400', '-', '-', '£1,440', '-', '-', '2,350', '-'],
                       ['December', '14,900', '480 i', '-', '£1,490', '£48 i', '-', '2,440', '78.2 i', '-']]
               if fuel_type == :gas
-                [['2,740 m', '2,720', '-0.82%'],
-                 ['2,740 m', '2,540', '-7.2%'],
-                 ['2,740 m', '2,720', '-0.82%'],
-                 ['2,740 m', '2,630', '-4%'],
+                [['3,000 m', '2,720', '-9.5%'],
+                 ['3,000 m', '2,540', '-15%'],
+                 ['3,000 m', '2,720', '-9.5%'],
+                 ['3,000 m', '2,630', '-12%'],
                  ['-', '2,720'],
                  ['-', '2,630'],
                  ['-', '2,720'],
