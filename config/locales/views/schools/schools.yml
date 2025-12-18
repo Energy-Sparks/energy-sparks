@@ -522,17 +522,13 @@ en:
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
         where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
-      generating_report:
-        get_started_with_the_activities: Get started with the activities below to start working towards your goal
-        we_need_to_process_your_data: We need to process your data to create a more detailed progress report that will show progress against your targets. Check back tomorrow to see the results
       new:
         before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
         carried_forward: By default we've carried forward your targets from last year. You can amend them below
         page_title: Update your energy saving target
         review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
         review_your_dashboard: Review your dashboard
-        target_date_reached_advice_page: The target date for your previous target has been reached. Its time to review your progress and set a new target.
-        target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target.
+        target_date_reached_advice_page: The target date for your previous target has been reached. It's time to review your progress and set a new target.
         tip: Tip
         your_new_target: Your new target
       progress:
@@ -629,7 +625,6 @@ en:
         revise_your_target: Revise your target
         set_a_new_target: Set a new target
         view_current_target: View current target
-        we_are_calculating_your_progress: We are calculating your progress
       warn_recent_data:
         we_have_not_received_data:
           one: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date

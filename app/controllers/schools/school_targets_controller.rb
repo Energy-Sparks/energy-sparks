@@ -29,7 +29,7 @@ module Schools
     # create first or new target if current has expired
     def new
       if @school.has_current_target?
-        redirect_to school_school_target_path(@school, @school.current_target)
+        redirect_to school_school_targets_path(@school)
       elsif @school.school_targets.any?(&:persisted?)
         @previous_school_target = @school.most_recent_target
         @school_target = target_service.build_target
@@ -57,7 +57,7 @@ module Schools
       authorize! :create, @school_target
       if @school_target.save
         update_monthly_consumption
-        redirect_to edit_school_school_target_path(@school, @school_target),
+        redirect_to school_school_targets_path(@school),
                     notice: t('schools.school_targets.successfully_created')
       elsif @school.has_target?
         render :new

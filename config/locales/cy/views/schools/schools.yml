@@ -532,16 +532,12 @@ cy:
         your_new_target_will_run_for_12_months: Bydd eich targed newydd yn rhedeg am 12 mis o'r dyddiad a nodwch
       fuel_type_note:
         where_we_have_enough_data_note: Lle mae gennym ddigon o ddata i asesu eich perfformiad byddwch yn gallu gosod targed ar gyfer defnydd trydan, nwy neu stôr-wresogyddion. Os byddwn yn derbyn data ychwanegol, byddwn yn eich annog i adolygu eich targedau
-      generating_report:
-        get_started_with_the_activities: Cychwynnwch arni gyda'r gweithgareddau isod i ddechrau gweithio tuag at eich nod
-        we_need_to_process_your_data: Mae angen i ni brosesu'ch data i greu adroddiad cynnydd mwy manwl a fydd yn dangos cynnydd yn erbyn eich targedau. Dewch yn ôl yfory i weld y canlyniadau
       new:
         before_setting_your_new_target: Cyn gosod eich targed newydd, gwiriwch ein hargymhellion i helpu i lywio eich cynllunio
         carried_forward: 'Rydym wedi cario eich targedau o''r llynedd drosodd yn ddiofyn. Gallwch eu haddasu isod '
         page_title: Diweddaru'ch targed arbed ynni
         review_and_set_your_next_energy_saving_target: Adolygu a gosod eich targed arbed ynni nesaf
         review_your_dashboard: Adolygu'ch dangosfwrdd
-        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd.'
         target_date_reached_advice_page: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i adolygu eich cynnydd a gosod targed newydd.'
         tip: Awgrym
         your_new_target: Eich targed newydd
@@ -639,7 +635,6 @@ cy:
         revise_your_target: Addasu'ch targed
         set_a_new_target: Gosod targed newydd
         view_current_target: Gweld targed presennol
-        we_are_calculating_your_progress: Rydym yn cyfrifo'ch cynnydd
       warn_recent_data:
         we_have_not_received_data:
           one: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
