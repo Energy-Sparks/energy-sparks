@@ -34,6 +34,19 @@ describe 'School group dashboard page', :school_groups do
         end
       end
 
+      context 'when downloading the CSV' do
+        before do
+          within '#electricity-overview' do
+            click_on 'Download as CSV'
+          end
+        end
+
+        it 'downloads a CSV' do
+          header = page.response_headers['Content-Disposition']
+          expect(header).to match(/#{school_group.slug}-recent-usage-#{Time.zone.today.iso8601}/)
+        end
+      end
+
       context 'when toggling to kWh', :js do
         before do
           choose(option: 'usage')
