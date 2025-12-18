@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_11_093058) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -3612,29 +3612,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_093058) do
   add_index "comparison_configurable_periods", ["school_id", "comparison_report_id"], name: "idx_on_school_id_comparison_report_id_7e281be411", unique: true
 
   create_view "comparison_electricity_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
+      SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+      alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
       data.holiday_start_date,
       data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM ((alerts
-               CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
-               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id)))
-            WHERE (alert_types.class_name = ANY (ARRAY['AlertElectricityUsageDuringCurrentHoliday'::text, 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text]))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+     FROM (((alert_generation_runs
+       JOIN alerts ON ((alerts.alert_generation_run_id = alert_generation_runs.id)))
+       JOIN alert_types ON ((alert_types.id = alerts.alert_type_id)))
+       CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+    WHERE (((alert_types.class_name = 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))
+    ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
+          CASE
+              WHEN (alert_types.class_name = 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text) THEN 0
+              ELSE 1
+          END;
   SQL
   add_index "comparison_electricity_consumption_during_holidays", ["school_id"], name: "idx_on_school_id_f87dfdb857", unique: true
 
@@ -3725,29 +3719,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_093058) do
   add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
 
   create_view "comparison_gas_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
+      SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+      alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
       data.holiday_start_date,
       data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM ((alerts
-               CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
-               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id)))
-            WHERE (alert_types.class_name = ANY (ARRAY['AlertGasHeatingHotWaterOnDuringHoliday'::text, 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text]))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+     FROM (((alert_generation_runs
+       JOIN alerts ON ((alerts.alert_generation_run_id = alert_generation_runs.id)))
+       JOIN alert_types ON ((alert_types.id = alerts.alert_type_id)))
+       CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+    WHERE (((alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'::text))
+    ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
+          CASE
+              WHEN (alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text) THEN 0
+              ELSE 1
+          END;
   SQL
   add_index "comparison_gas_consumption_during_holidays", ["school_id"], name: "index_comparison_gas_consumption_during_holidays_on_school_id", unique: true
 
@@ -4244,29 +4232,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_11_093058) do
   add_index "comparison_solar_pv_benefit_estimates", ["school_id"], name: "index_comparison_solar_pv_benefit_estimates_on_school_id", unique: true
 
   create_view "comparison_storage_heater_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
+      SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+      alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
       data.holiday_start_date,
       data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM ((alerts
-               CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
-               JOIN alert_types ON ((alerts.alert_type_id = alert_types.id)))
-            WHERE (alert_types.class_name = ANY (ARRAY['AlertStorageHeaterHeatingOnDuringHoliday'::text, 'Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse'::text]))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+     FROM (((alert_generation_runs
+       JOIN alerts ON ((alerts.alert_generation_run_id = alert_generation_runs.id)))
+       JOIN alert_types ON ((alert_types.id = alerts.alert_type_id)))
+       CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+    WHERE (((alert_types.class_name = 'Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertStorageHeaterHeatingOnDuringHoliday'::text))
+    ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
+          CASE
+              WHEN (alert_types.class_name = 'Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse'::text) THEN 0
+              ELSE 1
+          END;
   SQL
   add_index "comparison_storage_heater_consumption_during_holidays", ["school_id"], name: "idx_on_school_id_43b0326934", unique: true
 

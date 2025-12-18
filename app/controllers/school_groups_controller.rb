@@ -3,6 +3,7 @@
 class SchoolGroupsController < ApplicationController
   include SchoolGroupAccessControl
   include PartnersHelper
+  include SchoolGroupsHelper
   include Promptable
   include Scoring
   include SchoolGroupBreadcrumbs
@@ -28,7 +29,7 @@ class SchoolGroupsController < ApplicationController
       format.csv do
         send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
                                                             schools: @schools,
-                                                            include_cluster: include_cluster).export,
+                                                            include_cluster: include_clusters?(@school_group)).export,
                   filename: csv_filename_for('recent_usage')
       end
     end
@@ -51,7 +52,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def settings
-    redirect_to school_group_path(@school_group) and return unless can?(:view_settings, @school_group)
+    redirect_to school_group_path(@school_group) and return unless can?(:manage_settings, @school_group)
   end
 
   private
@@ -82,9 +83,5 @@ class SchoolGroupsController < ApplicationController
 
   def find_partners
     @partners = @school_group.partners
-  end
-
-  def include_cluster
-    can?(:update_settings, @school_group)
   end
 end

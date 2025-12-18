@@ -2,8 +2,9 @@
 
 module SchoolGroups
   class SecrController < BaseController
+    before_action :redirect_unless_authorised
+
     def index
-      authorize!(:secr, @school_group)
       build_breadcrumbs([name: I18n.t('school_groups.sub_nav.secr_report')])
       @last_two_academic_year_periods = Periods::FixedAcademicYear.enumerator(
         MeterMonthlySummary.start_date(Time.zone.today, 2), Time.zone.today
@@ -21,6 +22,10 @@ module SchoolGroups
     end
 
     private
+
+    def required_permission
+      :view_secr_report
+    end
 
     def csv_headers(year)
       [t('common.school'),
