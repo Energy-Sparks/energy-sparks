@@ -1,5 +1,5 @@
 class ActivityTypesController < ApplicationController
-  include Pagy::Backend
+  include Pagy::Method
   before_action :handle_head_request, only: [:show]
   load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:show, :search, :for_school]
