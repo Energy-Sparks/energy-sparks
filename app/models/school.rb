@@ -457,13 +457,6 @@ class School < ApplicationRecord
     intervention_types.merge(observations.in_academic_year_for(self, date).by_date(:desc)).uniq # first occurance is kept when using uniq
   end
 
-  # to be removed when removing the todos feature
-  def suggested_programme_types
-    ProgrammeType.active.with_school_activity_type_count(self)
-                 .merge(activities.in_academic_year(current_academic_year))
-                 .not_in(programme_types)
-  end
-
   def suggested_programme_types_from_activities
     ProgrammeType.active.not_in(programme_types)
                  .with_school_activity_type_task_count(self)

@@ -27,8 +27,8 @@ class ProgrammeType < ApplicationRecord
   t_has_one_attached :image
 
   ## these two relationships to be removed when todos feature removed
-  has_many :programme_type_activity_types
-  has_many :activity_types, through: :programme_type_activity_types
+  # has_many :programme_type_activity_types
+  # has_many :activity_types, through: :programme_type_activity_types
 
   has_many :programmes
 
@@ -39,14 +39,6 @@ class ProgrammeType < ApplicationRecord
   scope :default_first, -> { order(default: :desc) }
   scope :featured, -> { active.default_first.by_title }
   scope :tx_resources, -> { active.order(:id) }
-
-  # to be removed when todos feature removed
-  scope :with_school_activity_type_count, ->(school) {
-    joins(activity_types: :activities)
-    .where(activity_types: { activities: { school: school } })
-    .select('programme_types.*, COUNT(distinct activity_types.id) activity_type_count')
-    .group('programme_types.id').order(activity_type_count: :desc)
-  }
 
   scope :with_school_activity_type_task_count, ->(school) {
     joins("INNER JOIN todos on todos.assignable_id = programme_types.id and todos.assignable_type = 'ProgrammeType'")
@@ -69,8 +61,6 @@ class ProgrammeType < ApplicationRecord
   validates_presence_of :title
   validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :default, if: :default
-
-  accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
 
   def activity_types_by_position
     programme_type_activity_types.order(:position).map(&:activity_type)
