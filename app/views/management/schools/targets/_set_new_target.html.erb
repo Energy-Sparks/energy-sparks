@@ -1,6 +1,0 @@
-<%= render InfoBarComponent.new(
-      status: :neutral,
-      title: t('schools.show.set_new_target', target_date: I18n.l(school.expired_target.target_date, format: '%B %Y')),
-      icon: fa_icon('tachometer-alt fa-3x'),
-      buttons: { t('schools.show.review_progress') => school_school_targets_path(school) }
-    ) %>

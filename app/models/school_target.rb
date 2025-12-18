@@ -10,6 +10,7 @@
 #  gas                                 :float
 #  gas_monthly_consumption             :jsonb
 #  id                                  :bigint(8)        not null, primary key
+#  report_last_generated               :datetime
 #  revised_fuel_types                  :string           default([]), not null, is an Array
 #  school_id                           :bigint(8)        not null
 #  start_date                          :date
@@ -93,15 +94,15 @@ class SchoolTarget < ApplicationRecord
   #   )
   # end
 
-  def saved_progress_report_for(fuel_type)
-    fuel_type = :storage_heaters if fuel_type == :storage_heater
-    raise 'Invalid fuel type' unless %i[electricity gas storage_heaters].include?(fuel_type)
+  # def saved_progress_report_for(fuel_type)
+  #   fuel_type = :storage_heaters if fuel_type == :storage_heater
+  #   raise 'Invalid fuel type' unless %i[electricity gas storage_heaters].include?(fuel_type)
 
-    report = self[:"#{fuel_type}_report"]
-    return nil unless report&.any?
+  #   report = self[:"#{fuel_type}_report"]
+  #   return nil unless report&.any?
 
-    TargetsProgress.new(**reformat_saved_report(report))
-  end
+  #   TargetsProgress.new(**reformat_saved_report(report))
+  # end
 
   MONTHLY_CONSUMPTION_FIELDS =
     %i[year month current_consumption previous_consumption target_consumption current_missing previous_missing manual]

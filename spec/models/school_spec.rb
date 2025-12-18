@@ -500,20 +500,6 @@ describe School do
         end
       end
 
-      describe '#has_expired_target_for_fuel_type?' do
-        before do
-          target.update!(electricity: 5)
-        end
-
-        let!(:expired_target) do
-          create(:school_target, :with_progress_report, start_date: Date.yesterday.prev_year, school: school,
-                                                        electricity: 5, gas: nil)
-        end
-
-        it { expect(school.has_expired_target_for_fuel_type?(:electricity)).to be true }
-        it { expect(school.has_expired_target_for_fuel_type?(:gas)).to be false }
-      end
-
       describe '#previous_expired_target' do
         let!(:expired_target) { create(:school_target, start_date: Date.yesterday.prev_year, school: school) }
         let!(:older_expired_target) { create(:school_target, start_date: Date.yesterday.years_ago(2), school: school) }

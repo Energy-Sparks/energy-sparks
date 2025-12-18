@@ -1808,6 +1808,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
             t.jsonb "electricity_monthly_consumption"
     t.jsonb "gas_monthly_consumption"
     t.jsonb "storage_heaters_monthly_consumption"
+t.datetime "report_last_generated"
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 
