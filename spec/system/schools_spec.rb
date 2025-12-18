@@ -185,7 +185,7 @@ RSpec.describe 'Schools page' do
 
     context 'when browsing by letter' do
       before do
-        within('#school-groups-content') do
+        within('#school-groups') do
           click_on('B')
         end
       end
