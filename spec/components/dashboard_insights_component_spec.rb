@@ -39,10 +39,6 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   end
 
   context 'with alerts' do
-    before do
-      Flipper.enable :new_dashboards_2024 # alert component has conditional
-    end
-
     include_context 'with dashboard alerts'
 
     it 'displays the alerts column' do
@@ -94,10 +90,6 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   end
 
   context 'with a target progress summary' do
-    before do
-      Flipper.enable :new_dashboards_2024 # alert component has conditional
-    end
-
     let!(:school_target)   { create(:school_target, school: school) }
     let(:progress_summary) { build(:progress_summary, school_target: school_target) }
 
