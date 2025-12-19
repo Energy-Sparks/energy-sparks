@@ -75,7 +75,7 @@ RSpec.describe PupilRemindersComponent, :include_application_helper, :include_ur
     context 'when school has an active programme' do
       let!(:programme) { create(:programme, school: school) }
 
-      it { expect(html).to have_content('You have completed') }
+      it { expect(html).to have_content("You haven't yet completed") }
 
       it {
         expect(html).to have_link(I18n.t('common.labels.view_now'),

@@ -17,17 +17,6 @@ cy:
       adults: Mae'r rhaglen hon wedi'i bwriadu ar gyfer oedolion
       all: Mae'r rhaglen hon wedi'i bwriadu ar gyfer yr ysgol gyfan
       pupils: Mae'r rhaglen hon wedi'i bwriadu ar gyfer disgyblion
-    prompt:
-      completed_message_html:
-        one: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> pwynt bonws?
-        two: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> bwynt bonws?
-        many: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> o bwyntiau bonws?
-        other: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen hon. Marcio fel wedi'i wneud i sgorio <strong>%{count}</strong> o bwyntiau bonws?
-      message_html:
-        one: Rydych wedi cwblhau gweithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
-        two: Rydych wedi cwblhau %{count} weithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
-        many: Rydych wedi cwblhau %{count} gweithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
-        other: Rydych wedi cwblhau %{count} gweithgaredd sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
     prompt_login:
       are_you_an_energy_sparks_user_html: Ydych chi'n ddefnyddiwr Sbarcynni?<br>Mewngofnodwch a chofrestrwch eich ysgol ar y rhaglen hon, neu cofnodwch eich cynnydd diweddar
       sign_in_now: Mewngofnodi nawr
@@ -43,9 +32,6 @@ cy:
         many: Rydych wedi cwblhau %{count} o dasgauo sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
         other: Rydych wedi cwblhau %{count} o dasgau sy'n rhan o'r rhaglen hon yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
     show:
-      activities: Gweithgareddau
-      completed_on: Cwblhawyd ar
-      current_progress: Cynnydd Presennol
       download: Lawrlwytho
       overview: Trosolwg
       view_all_programmes: Gweld pob rhaglen

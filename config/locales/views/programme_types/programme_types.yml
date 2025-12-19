@@ -18,15 +18,6 @@ en:
       adults: This programme is intended for adults
       all: This programme is intended for the whole school
       pupils: This programme is intended for pupils
-    prompt:
-      completed_message_html:
-        one: You've completed all the activities in this programme. Mark it done to score <strong>%{count}</strong> bonus point?
-        other: You've completed all the activities in this programme. Mark it done to score <strong>%{count}</strong> bonus points?
-        zero: You've completed all the activities in this programme. Mark it as complete?
-      message_html:
-        one: You've recently completed an activity that is part of this programme. Do you want to enrol in the programme?
-        other: You've recently completed %{count} activities that are part of this programme. Do you want to enrol in the programme?
-        zero: You can enrol your school in this programme
     prompt_login:
       are_you_an_energy_sparks_user_html: Are you an Energy Sparks user?<br>Sign in and enrol your school in this programme, or record your recent progress
       sign_in_now: Sign in now
@@ -40,9 +31,6 @@ en:
         other: You've recently completed %{count} tasks that are part of this programme. Do you want to enrol in the programme?
         zero: You can enrol your school in this programme
     show:
-      activities: Activities
-      completed_on: Completed on
-      current_progress: Current Progress
       download: Download
       overview: Overview
       view_all_programmes: View all programmes
