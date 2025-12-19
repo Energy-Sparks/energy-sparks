@@ -38,10 +38,8 @@ module EnergySparks
     # session cookie config will be overridden in production.rb
     config.session_store :cookie_store, key: '_energy-sparks_session'
     config.after_initialize do
-      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
-        require 'dashboard/alerts/common/benchmark_metrics'
-        BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
-      end
+      require 'dashboard/alerts/common/benchmark_metrics'
+      BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
 
       # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
       ActionText::ContentHelper.allowed_attributes =
