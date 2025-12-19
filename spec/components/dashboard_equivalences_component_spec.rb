@@ -105,9 +105,9 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
 
       it {
         expect(html).to have_link(I18n.t('pupils.analysis.explore_energy_data_html',
-                                          fuel_type: I18n.t('common.electricity').downcase),
-                                     href: pupils_school_analysis_path(school,
-                                                                       category: equivalence_type.meter_type))
+                                         fuel_type: I18n.t('common.electricity').downcase),
+                                  href: pupils_school_analysis_path(school,
+                                                                    category: equivalence_type.meter_type))
       }
 
 
