@@ -170,8 +170,8 @@ class School < ApplicationRecord
   has_many :audits,               inverse_of: :school
 
   # relationships to be removed when :todos removed
-  has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
-  has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
+  # has_many :audit_activity_types, -> { distinct }, through: :audits, source: :activity_types
+  # has_many :audit_intervention_types, -> { distinct }, through: :audits, source: :intervention_types
 
   has_many :audit_todos, through: :audits, source: :todos
   has_many :audit_activity_type_tasks, through: :audit_todos, source: :task, source_type: 'ActivityType'
@@ -181,7 +181,7 @@ class School < ApplicationRecord
   has_many :programme_types, through: :programmes
 
   # relationships to be removed when :todos removed
-  has_many :programme_activity_types, through: :programmes, source: :activity_types
+  # has_many :programme_activity_types, through: :programmes, source: :activity_types
 
   has_many :alerts,                                   inverse_of: :school
   has_many :content_generation_runs,                  inverse_of: :school
@@ -459,13 +459,13 @@ class School < ApplicationRecord
 
   def suggested_programme_types_from_activities
     ProgrammeType.active.not_in(programme_types)
-                 .with_school_activity_type_task_count(self)
+                 .with_school_activity_type_count(self)
                  .merge(activities.in_academic_year(current_academic_year))
   end
 
   def suggested_programme_types_from_actions
     ProgrammeType.active.not_in(programme_types)
-                 .with_school_intervention_type_task_count(self)
+                 .with_school_intervention_type_count(self)
                  .merge(observations.in_academic_year(current_academic_year))
   end
 

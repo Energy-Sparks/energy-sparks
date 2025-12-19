@@ -6,7 +6,6 @@ module Admin
 
       def index
         @programmes = @programmes.sort_by { |programme| programme.school.name }
-        @activity_types_count = @programme_type.activity_types.count
         @schools_to_enrol = School.by_name - @programmes.map(&:school).uniq
       end
 
