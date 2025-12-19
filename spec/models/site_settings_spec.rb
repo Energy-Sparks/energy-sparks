@@ -18,30 +18,28 @@ describe SiteSettings do
 
   describe 'prices' do
     it 'validates values for all price fields are floats' do
-      ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true' do
-        site_setting = SiteSettings.new(electricity_price: 1, solar_export_price: 1, gas_price: 1)
+      site_setting = SiteSettings.new(electricity_price: 1, solar_export_price: 1, gas_price: 1)
 
-        site_setting.electricity_price = 'not a float'
-        expect(site_setting).not_to be_valid
-        site_setting.electricity_price = nil
-        expect(site_setting).not_to be_valid
-        site_setting.electricity_price = 1.0
-        expect(site_setting).to be_valid
+      site_setting.electricity_price = 'not a float'
+      expect(site_setting).not_to be_valid
+      site_setting.electricity_price = nil
+      expect(site_setting).not_to be_valid
+      site_setting.electricity_price = 1.0
+      expect(site_setting).to be_valid
 
-        site_setting.solar_export_price = 'not a float'
-        expect(site_setting).not_to be_valid
-        site_setting.solar_export_price = nil
-        expect(site_setting).not_to be_valid
-        site_setting.solar_export_price = 1.0
-        expect(site_setting).to be_valid
+      site_setting.solar_export_price = 'not a float'
+      expect(site_setting).not_to be_valid
+      site_setting.solar_export_price = nil
+      expect(site_setting).not_to be_valid
+      site_setting.solar_export_price = 1.0
+      expect(site_setting).to be_valid
 
-        site_setting.gas_price = 'not a float'
-        expect(site_setting).not_to be_valid
-        site_setting.gas_price = nil
-        expect(site_setting).not_to be_valid
-        site_setting.gas_price = 1.0
-        expect(site_setting).to be_valid
-      end
+      site_setting.gas_price = 'not a float'
+      expect(site_setting).not_to be_valid
+      site_setting.gas_price = nil
+      expect(site_setting).not_to be_valid
+      site_setting.gas_price = 1.0
+      expect(site_setting).to be_valid
     end
   end
 
