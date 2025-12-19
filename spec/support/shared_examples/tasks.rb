@@ -1,4 +1,4 @@
-RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: '1st', with_todos: false|
+RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: '1st'|
   it { expect(page).to have_content 'Congratulations!' }
 
   it 'displays points score', if: points > 0 do
@@ -38,11 +38,7 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
 
   it_behaves_like 'a join programme prompt', programme: 'Other programme!', task_count: 1 do
     let(:setup_data) do
-      if with_todos
-        activity_type = create(:programme_type, :with_todos, title: 'Other programme!').activity_type_tasks.first
-      else
-        activity_type = create(:programme_type_with_activity_types, title: 'Other programme!').activity_types.first
-      end
+      activity_type = create(:programme_type, :with_todos, title: 'Other programme!').activity_type_tasks.first
       school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
     end
   end
@@ -50,17 +46,13 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
   it_behaves_like 'a recommended prompt'
 end
 
-RSpec.shared_examples 'a task completed page with programme complete message' do |with_todos: false, task_type:|
+RSpec.shared_examples 'a task completed page with programme complete message' do |task_type:|
   context 'when there is a programme type that contains task' do
     let(:activity_types) { [] }
     let(:intervention_types) { [] }
     let(:bonus_score) { 30 }
     let(:programme_type) do
-      if with_todos
-        create(:programme_type, title: 'Super programme!', activity_type_tasks: activity_types, intervention_type_tasks: intervention_types, bonus_score: bonus_score)
-      else
-        create(:programme_type, title: 'Super programme!', activity_types: activity_types, bonus_score: bonus_score)
-      end
+      create(:programme_type, title: 'Super programme!', activity_type_tasks: activity_types, intervention_type_tasks: intervention_types, bonus_score: bonus_score)
     end
     let(:programme) { create(:programme, school: school, programme_type: programme_type) }
 

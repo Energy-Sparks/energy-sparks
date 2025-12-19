@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Programmes::Enroller do
   let(:school)          { create(:school) }
-  let(:programme_type)  { create(:programme_type_with_activity_types) }
+  let(:programme_type)  { create(:programme_type) }
   let(:enrol_programme) { nil }
 
   let(:service) { Programmes::Enroller.new(enrol_programme) }
@@ -23,7 +23,7 @@ describe Programmes::Enroller do
     end
 
     context 'when there is a default programme type' do
-      let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
+      let!(:programme_type)  { create(:programme_type, default: true) }
 
       before do
         service.enrol(school)
@@ -36,7 +36,7 @@ describe Programmes::Enroller do
     end
 
     context 'when the school is already enrolled' do
-      let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
+      let!(:programme_type)  { create(:programme_type, default: true) }
 
       before do
         service.enrol(school)
@@ -50,7 +50,7 @@ describe Programmes::Enroller do
     end
 
     context 'when a programme type is supplied' do
-      let!(:other_programme_type)  { create(:programme_type_with_activity_types, default: true) }
+      let!(:other_programme_type)  { create(:programme_type, default: true) }
       let(:enrol_programme) { programme_type }
 
       before do
@@ -66,7 +66,7 @@ describe Programmes::Enroller do
   describe '#enroll_all' do
     let!(:school) { create(:school) }
     let!(:enrol_programme) { programme_type }
-    let!(:programme_type)  { create(:programme_type_with_activity_types, default: true) }
+    let!(:programme_type)  { create(:programme_type, default: true) }
 
     before do
       service.enrol_all

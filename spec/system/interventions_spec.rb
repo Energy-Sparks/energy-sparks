@@ -267,8 +267,8 @@ describe 'viewing and recording action' do
           expect(observation.points).to be_zero
         end
 
-        it_behaves_like 'a task completed page', points: 0, task_type: :action, with_todos: true
-        it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
+        it_behaves_like 'a task completed page', points: 0, task_type: :action
+        it_behaves_like 'a task completed page with programme complete message', task_type: :action
       end
 
       context 'when time is in a future academic year' do
@@ -284,7 +284,7 @@ describe 'viewing and recording action' do
           click_on 'Record action'
         end
 
-        it_behaves_like 'a task completed page', points: 30, task_type: :action, with_todos: true do
+        it_behaves_like 'a task completed page', points: 30, task_type: :action do
           let(:future_academic_year) { next_academic_year.title }
         end
       end
@@ -305,8 +305,8 @@ describe 'viewing and recording action' do
           expect(observation.created_by).to eq(school_admin)
         end
 
-        it_behaves_like 'a task completed page', points: 30, task_type: :action, with_todos: true
-        it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
+        it_behaves_like 'a task completed page', points: 30, task_type: :action
+        it_behaves_like 'a task completed page with programme complete message', task_type: :action
 
         context 'when viewing action' do
           before do
