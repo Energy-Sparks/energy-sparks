@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 describe 'school energy tariffs', type: :system do
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
-      example.run
-    end
-  end
-
   describe 'when creating tariffs' do
     include_context 'a school with meters'
 

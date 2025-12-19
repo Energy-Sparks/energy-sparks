@@ -5,11 +5,13 @@ describe 'activity types', type: :system do
     let!(:activity_type_1) { create(:activity_type, name: 'foo', description: 'activity') }
     let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'second activity') }
 
-    it 'links from activity categories page and shows empty page' do
-      ClimateControl.modify FEATURE_FLAG_ACTIVITY_TYPE_SEARCH: 'true' do
+    context 'when visiting search page' do
+      before do
         visit activity_categories_path
         click_on 'Search'
+      end
 
+      it 'shows empty page' do
         expect(page).to have_content('Find pupil activities')
         expect(page).not_to have_content('No results found')
       end
