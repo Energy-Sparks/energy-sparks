@@ -214,8 +214,8 @@ describe 'viewing and recording activities' do
           click_on 'Save activity'
         end
 
-        it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
-        it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
+        it_behaves_like 'a task completed page', points: 25, task_type: :activity
+        it_behaves_like 'a task completed page with programme complete message', task_type: :activity
 
         context 'when viewing the activity' do
           before do
@@ -240,7 +240,7 @@ describe 'viewing and recording activities' do
           click_on 'Save activity'
         end
 
-        it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true do
+        it_behaves_like 'a task completed page', points: 25, task_type: :activity do
           let(:future_academic_year) { next_academic_year.title }
         end
       end
@@ -259,8 +259,8 @@ describe 'viewing and recording activities' do
           click_on 'Save activity'
         end
 
-        it_behaves_like 'a task completed page', points: 25, task_type: :activity, with_todos: true
-        it_behaves_like 'a task completed page with programme complete message', task_type: :activity, with_todos: true
+        it_behaves_like 'a task completed page', points: 25, task_type: :activity
+        it_behaves_like 'a task completed page with programme complete message', task_type: :activity
 
         context 'when viewing the activity' do
           before do
