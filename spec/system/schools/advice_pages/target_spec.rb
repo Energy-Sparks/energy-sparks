@@ -35,7 +35,7 @@ RSpec.shared_examples 'target advice page' do
   context 'with no target' do
     it 'redirects to the new target page' do
       visit_tab(nil)
-      expect(page).to have_current_path("/schools/#{school.slug}/school_targets/new")
+      expect(page).to have_current_path(school_school_targets_path(school))
     end
   end
 
