@@ -36,6 +36,10 @@ module Completables
       completable.uncompleted_todos.count
     end
 
+    def bonus_points
+      completable.available_bonus_points
+    end
+
     def message
       I18n.t("schools.prompts.#{i18n_base}.#{i18n_message_key}",
         title: assignable.title,
@@ -70,10 +74,6 @@ module Completables
       assignable.title
     end
 
-    def bonus_points
-      assignable.bonus_score
-    end
-
     def i18n_message_key
       'message_html'
     end
@@ -86,10 +86,6 @@ module Completables
   class Audit < ProgressBase
     def i18n_base
       'audit.progress'
-    end
-
-    def bonus_points
-      completable.available_bonus_points
     end
 
     def recent?

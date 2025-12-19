@@ -66,6 +66,10 @@ class Programme < ApplicationRecord
     programme_type.bonus_score
   end
 
+  def available_bonus_points
+    completed? ? 0 : points_for_completion
+  end
+
   def add_observation
     return unless completed?
 
