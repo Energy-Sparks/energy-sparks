@@ -67,7 +67,7 @@ describe Audits::Progress, type: :service do
     let(:activity) { build(:activity, school: school, activity_type: audit.activity_types.first, happened_on: 1.day.ago) }
     let!(:observation) { create(:observation, school: school, observation_type: :intervention, intervention_type: audit.intervention_types.first, at: 1.day.ago) }
 
-    before { ActivityCreator.new(activity, nil).process }
+    before { Tasks::Recorder.new(activity, nil).process }
 
     describe '#notification' do
       it { expect(service.notification).to eq('You have completed <strong>1/3</strong> of the activities and <strong>1/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>110</strong> points and <strong>50</strong> bonus points for completing all audit tasks') }
@@ -78,7 +78,7 @@ describe Audits::Progress, type: :service do
     let(:activity) { build(:activity, school: school, activity_type: audit.activity_types.first, happened_on: 5.days.ago) }
     let!(:observation) { create(:observation, school: school, observation_type: :intervention, intervention_type: audit.intervention_types.first, at: 5.days.ago) }
 
-    before { ActivityCreator.new(activity, nil).process }
+    before { Tasks::Recorder.new(activity, nil).process }
 
     describe '#notification' do
       it { expect(service.notification).to eq('You have completed <strong>0/3</strong> of the activities and <strong>0/3</strong> of the actions from your recent energy audit<br />Complete the others to score <strong>165</strong> points and <strong>50</strong> bonus points for completing all audit tasks') }
@@ -89,7 +89,7 @@ describe Audits::Progress, type: :service do
     before do
       audit.activity_types.each do |activity_type|
         activity = build(:activity, school: school, activity_type: activity_type, happened_on: 2.days.ago)
-        ActivityCreator.new(activity, nil).process
+        Tasks::Recorder.new(activity, nil).process
       end
     end
 

@@ -1,51 +1,25 @@
 <% if school %>
-  <% if Flipper.enabled?(:todos, current_user) %>
-    <% if (programme_type, count = school.suggested_programme_type) %>
-      <% if programme_type.todos.length == count %>
-        <%= render InfoBarComponent.new(
-              status: :neutral,
-              style: local_assigns[:style],
-              title: t('schools.prompts.programme.join.completed_message_html',
-                       count: programme_type.bonus_score,
-                       title: programme_type.title),
-              icon: fa_icon('tasks fa-3x'),
-              buttons: { t('common.labels.complete') => programme_type_path(programme_type) }
-            ) %>
-      <% else %>
-        <%= render InfoBarComponent.new(
-              status: :neutral,
-              style: local_assigns[:style],
-              title: t('schools.prompts.programme.join.message_html',
-                       count: count,
-                       title: programme_type.title),
-              icon: fa_icon('tasks fa-3x'),
-              buttons: { t('common.labels.start') => programme_type_path(programme_type) }
-            ) %>
-      <% end %>
-    <% end %>
-  <% else %>
-    <% if programme_type = school.suggested_programme_types.first %>
-      <% if programme_type.activity_types.length == programme_type.activity_type_count %>
-        <%= render InfoBarComponent.new(
-              status: :neutral,
-              style: local_assigns[:style],
-              title: t('schools.prompts.join_programme.completed_message_html',
-                       count: programme_type.bonus_score,
-                       title: programme_type.title),
-              icon: fa_icon('tasks fa-3x'),
-              buttons: { t('common.labels.complete') => programme_type_path(programme_type) }
-            ) %>
-      <% else %>
-        <%= render InfoBarComponent.new(
-              status: :neutral,
-              style: local_assigns[:style],
-              title: t('schools.prompts.join_programme.message_html',
-                       count: programme_type.activity_type_count,
-                       title: programme_type.title),
-              icon: fa_icon('tasks fa-3x'),
-              buttons: { t('common.labels.start') => programme_type_path(programme_type) }
-            ) %>
-      <% end %>
+  <% if (programme_type, count = school.suggested_programme_type) %>
+    <% if programme_type.todos.length == count %>
+      <%= render InfoBarComponent.new(
+            status: :neutral,
+            style: local_assigns[:style],
+            title: t('schools.prompts.programme.join.completed_message_html',
+                     count: programme_type.bonus_score,
+                     title: programme_type.title),
+            icon: fa_icon('tasks fa-3x'),
+            buttons: { t('common.labels.complete') => programme_type_path(programme_type) }
+          ) %>
+    <% else %>
+      <%= render InfoBarComponent.new(
+            status: :neutral,
+            style: local_assigns[:style],
+            title: t('schools.prompts.programme.join.message_html',
+                     count: count,
+                     title: programme_type.title),
+            icon: fa_icon('tasks fa-3x'),
+            buttons: { t('common.labels.start') => programme_type_path(programme_type) }
+          ) %>
     <% end %>
   <% end %>
 <% end %>

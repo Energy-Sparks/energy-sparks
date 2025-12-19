@@ -61,7 +61,7 @@ describe Programmes::UserProgress, type: :service do
         let(:activity)      { create(:activity, school: school, activity_type: programme_type_1.activity_types.first)}
 
         before do
-          ActivityCreator.new(activity, nil).process
+          Tasks::Recorder.new(activity, nil).process
         end
 
         it 'returns the expected results' do

@@ -12,46 +12,22 @@
 <h2>Description</h2>
 <p><%= @programme_type.description %></p>
 
-<% if !Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_parallel, current_user) %>
-  <h2>Activities</h2>
-  <ol class="activities">
-    <% @programme_type.activity_types.order(:position).each do |activity_type| %>
-      <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
-    <% end %>
-  </ol>
-<% end %>
-<% if Flipper.enabled?(:todos, current_user) %>
-  <h2>Activities</h2>
-  <ol id="activity-type-tasks">
-    <% @programme_type.activity_type_tasks.each do |activity_type| %>
-      <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
-    <% end %>
-  </ol>
-<% end %>
-<% if Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_parallel, current_user) %>
-  <h2>Actions</h2>
-  <ol id="intervention-type-tasks">
-    <% @programme_type.intervention_type_tasks.each do |intervention_type| %>
-      <li><%= link_to intervention_type.name, intervention_type_path(intervention_type) %></li>
-    <% end %>
-  </ol>
-<% end %>
+<h2>Activities</h2>
+<ol id="activity-type-tasks">
+  <% @programme_type.activity_type_tasks.each do |activity_type| %>
+    <li><%= link_to activity_type.name, activity_type_path(activity_type) %></li>
+  <% end %>
+</ol>
+<h2>Actions</h2>
+<ol id="intervention-type-tasks">
+  <% @programme_type.intervention_type_tasks.each do |intervention_type| %>
+    <li><%= link_to intervention_type.name, intervention_type_path(intervention_type) %></li>
+  <% end %>
+</ol>
 
 <p>
-  <% if !Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_parallel, current_user) %>
-      <%= link_to 'Edit activities',
-                  admin_programme_type_activity_types_path(@programme_type),
-                  class: 'btn btn-warning btn-sm nowrap' %>
-  <% end %>
-  <% if Flipper.enabled?(:todos, current_user) %>
-      <%= link_to 'Edit activities & actions',
-                  edit_admin_programme_type_todos_path(@programme_type),
-                  class: 'btn btn-warning btn-sm nowrap' %>
-  <% end %>
-  <% if Flipper.enabled?(:todos_parallel, current_user) %>
-      <%= link_to 'Edit actions',
-                  edit_admin_programme_type_todos_path(@programme_type),
-                  class: 'btn btn-warning btn-sm nowrap' %>
-  <% end %>
+  <%= link_to 'Edit activities & actions',
+              edit_admin_programme_type_todos_path(@programme_type),
+              class: 'btn btn-warning btn-sm nowrap' %>
 </p>
 <p><%= link_to 'All programme types', admin_programme_types_path, class: 'btn btn-primary' %></p>

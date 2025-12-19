@@ -3,11 +3,7 @@
     <%= render InfoBarComponent.new(
           status: :neutral,
           style: local_assigns[:style],
-          title: if Flipper.enabled?(:todos, current_user)
-                   Completables::Progress.new(programme).notification
-                 else
-                   Programmes::Progress.new(programme).notification
-                 end,
+          title: Completables::Progress.new(programme).notification,
           icon: fa_icon('tasks fa-3x'),
           buttons: { I18n.t('common.labels.view_now') => programme_type_path(programme.programme_type) }
         ) %>

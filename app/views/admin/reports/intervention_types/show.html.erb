@@ -85,18 +85,7 @@
       <% end %>
     </ul>
   </div>
-  <% if Flipper.enabled?(:todos, current_user) %>
-      <%= render 'admin/shared/task_completables', task: @intervention_type %>
-  <% else %>
-    <div class="col col-md-3">
-      <h3>Audits</h3>
-      <ul>
-        <% @intervention_type.audits.each do |audit| %>
-          <li><%= link_to audit.title, school_audits_path(audit.school, audit) %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'admin/shared/task_completables', task: @intervention_type %>
   <div class="col col-md-3">
     <h3>Find Out More</h3>
     <ul>

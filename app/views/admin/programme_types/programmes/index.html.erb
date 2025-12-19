@@ -9,12 +9,8 @@
   </div>
 </div>
 
-<% if Flipper.enabled?(:todos, current_user) %>
-  <h2>Total activities: <%= @programme_type.activity_type_todos.count %>,
-    interventions: <%= @programme_type.intervention_type_todos.count %></h2>
-<% else %>
-  <h2>Total activities: <%= @activity_types_count %></h2>
-<% end %>
+<h2>Total activities: <%= @programme_type.activity_type_todos.count %>,
+  interventions: <%= @programme_type.intervention_type_todos.count %></h2>
 
 <% if @programmes.any? %>
   <table class="table table-striped table-sm">
@@ -22,9 +18,7 @@
       <tr>
         <th>School</th>
         <th>Activities types completed</th>
-        <% if Flipper.enabled?(:todos, current_user) %>
-          <th>Intervention types completed</th>
-        <% end %>
+        <th>Intervention types completed</th>
         <th>Progress</th>
         <th>Status</th>
         <th>Started on</th>
@@ -35,14 +29,9 @@
       <% @programmes.each do |programme| %>
         <tr>
           <td><%= link_to programme.school.name, school_path(programme.school) %></td>
-          <% if Flipper.enabled?(:todos, current_user) %>
-            <td><%= programme.completed_activity_types.count %> / <%= @programme_type.activity_type_todos.count %></td>
-            <td><%= programme.completed_intervention_types.count %> / <%= @programme_type.intervention_type_todos.count %></td>
-            <td><%= progress_as_percent(programme.completed_todos.count, @programme_type.todos.count) %></td>
-          <% else %>
-            <td><%= programme.activity_types_completed.count %></td>
-            <td><%= progress_as_percent(programme.activity_types_completed.count, @activity_types_count) %></td>
-          <% end %>
+          <td><%= programme.completed_activity_types.count %> / <%= @programme_type.activity_type_todos.count %></td>
+          <td><%= programme.completed_intervention_types.count %> / <%= @programme_type.intervention_type_todos.count %></td>
+          <td><%= progress_as_percent(programme.completed_todos.count, @programme_type.todos.count) %></td>
           <td><%= programme.status %></td>
           <td><%= nice_dates(programme.started_on) %></td>
           <td><%= nice_dates(programme.ended_on) %></td>

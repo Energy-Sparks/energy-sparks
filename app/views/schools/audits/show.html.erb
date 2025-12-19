@@ -47,89 +47,38 @@
   </div>
 </div>
 
-<% if Flipper.enabled?(:todos, current_user) %>
-  <% if @audit.has_todos? %>
-    <p>
-      <%= t('schools.audits.show.completed_points') %>
-      <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
-      <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
-    </p>
-  <% end %>
+<% if @audit.has_todos? %>
+  <p>
+    <%= t('schools.audits.show.completed_points') %>
+    <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
+    <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
+  </p>
+<% end %>
 
-  <% if @audit.completed? %>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row alert info-bar text-dark bg-neutral" role="alert">
-          <div class="col-md-1">
-            <i class="fas fa-check fa-2x"></i>
-          </div>
-          <div class="col-md-11 align-self-center">
-            <%= t('schools.audits.show.completed_message',
-                  date: nice_dates(@audit.tasks_completed_on)) %>
-          </div>
+<% if @audit.completed? %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row alert info-bar text-dark bg-neutral" role="alert">
+        <div class="col-md-1">
+          <i class="fas fa-check fa-2x"></i>
+        </div>
+        <div class="col-md-11 align-self-center">
+          <%= t('schools.audits.show.completed_message',
+                date: nice_dates(@audit.tasks_completed_on)) %>
         </div>
       </div>
     </div>
-  <% end %>
-
-  <%= render 'shared/todos/list',
-             assignable: @audit,
-             completable: @audit,
-             task_type: 'InterventionType',
-             label: t('schools.audits.show.recommended_energy_saving_actions') %>
-
-  <%= render 'shared/todos/list',
-             assignable: @audit,
-             completable: @audit,
-             task_type: 'ActivityType',
-             label: t('schools.audits.show.recommended_pupil_lead_activities') %>
+  </div>
 <% end %>
-<% if !Flipper.enabled?(:todos, current_user) || Flipper.enabled?(:todos_old, current_user) %>
-  <%= render TogglerDropdownComponent.new title: 'Deprecated', hide: Flipper.enabled?(:todos_old, current_user) do %>
-    <% if @audit.audit_intervention_types.any? %>
-      <h3><%= t('schools.audits.show.recommended_energy_saving_actions') %></h3>
 
-      <% @audit.audit_intervention_types.by_name.each_with_index do |audit_intervention_type, idx| %>
-        <div class="row">
-          <div class="col-sm-2 text-center align-self-center">
-              <span class="h4"><%= idx + 1 %>.</span>
-          </div>
-          <div class="col-sm-10">
-            <h4>
-              <%= link_to audit_intervention_type.intervention_name,
-                          intervention_type_path(audit_intervention_type.intervention_type) %>
-            </h4>
-            <p>
-              <%= audit_intervention_type.notes %>
-            </p>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+<%= render 'shared/todos/list',
+           assignable: @audit,
+           completable: @audit,
+           task_type: 'InterventionType',
+           label: t('schools.audits.show.recommended_energy_saving_actions') %>
 
-    <% if @audit.audit_activity_types.any? %>
-      <h3><%= t('schools.audits.show.recommended_pupil_lead_activities') %></h3>
-      <p>
-        <%= t('schools.audits.show.completing_all_of_these_activities_will_award_you') %>
-        <span class="badge badge-success"><%= SiteSettings.current&.audit_activities_bonus_points %></span>
-        <%= t('schools.audits.show.points', count: SiteSettings.current&.audit_activities_bonus_points) %>
-      </p>
-
-      <% @audit.audit_activity_types.by_name.each_with_index do |audit_activity_type, idx| %>
-        <div class="row">
-          <div class="col-sm-2 text-center align-self-center">
-              <span class="h4"><%= idx + 1 %>.</span>
-          </div>
-          <div class="col-sm-10">
-            <h4>
-              <%= link_to audit_activity_type.activity_name, activity_type_path(audit_activity_type.activity_type) %>
-            </h4>
-            <p>
-              <%= audit_activity_type.notes %>
-            </p>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
-  <% end %>
-<% end %>
+<%= render 'shared/todos/list',
+           assignable: @audit,
+           completable: @audit,
+           task_type: 'ActivityType',
+           label: t('schools.audits.show.recommended_pupil_lead_activities') %>
