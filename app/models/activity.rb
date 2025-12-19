@@ -56,6 +56,8 @@ class Activity < ApplicationRecord
   scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
+
+  # If no academic year is found for school for specified date, nothing is returned
   scope :in_academic_year_for, ->(school, date) { (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none }
   scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
   scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}

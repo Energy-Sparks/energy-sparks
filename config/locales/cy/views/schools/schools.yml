@@ -98,7 +98,6 @@ cy:
         completed_message: Llongyfarchiadau, gwnaethoch chi gwblhau'r holl gamau a gweithgareddau a argymhellwyd ar %{date}!
         completed_on: Cwblhawyd ar
         completed_points: Bydd cwblhau'r holl dasgau hyn yn eich gwobrwyo
-        completing_all_of_these_activities_will_award_you: Bydd cwblhau'r holl weithgareddau hyn yn rhoi
         download_report: Lawrlwytho adroddiad
         points:
           one: un pwynt i chi
@@ -329,8 +328,6 @@ cy:
       alerts:
         message: Wedi'u diweddaru'n ddyddiol, mae'r rhybuddion hyn yn amlygu'r newidiadau mwyaf arwyddocaol yn eich defnydd o ynni
       audit:
-        message_html: Rydych chi wedi cwblhau <strong>%{completed_activities_count}/%{total_activities_count}</strong> o'r gweithgareddau a <strong>%{completed_actions_count}/%{total_actions_count}</strong> o'r camau gweithredu o'ch archwiliad ynni diweddar
-        message_older_html: Rydych chi wedi cwblhau <strong>%{completed_activities_count}/%{total_activities_count}</strong> o'r gweithgareddau a <strong>%{completed_actions_count}/%{total_actions_count}</strong> o'r camau gweithredu o'ch archwiliad ynni
         progress:
           message_html:
             one: Rydych wedi cwblhau <strong>%{count}/%{total_tasks_count}</strong> o'r tasgau o'ch archwiliad ynni diweddar
@@ -345,28 +342,12 @@ cy:
           summary_final_html: Cwblhewch y dasg olaf nawr i sgorio <strong>%{uncompleted_scores}</strong> o bwyntiau a <strong>%{bonus_points}</strong> o bwyntiau bonws am gwblhau'r holl dasgau archwilio
           summary_html: Cwblhewch y lleill i sgorio <strong>%{uncompleted_scores}</strong> o bwyntiau a <strong>%{bonus_points}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
           summary_none_html: Os byddwch chi'n eu cwblhau, byddwch chi'n sgorio  <strong>%{uncompleted_scores}</strong> o bwyntiau a <strong>%{bonus_points}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
-        summary_html:
-          one: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{count}</strong> pwynt bonws ar gyfer cwblhau pob tasg archwilio
-          two: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{count}</strong> bwynt bonws ar gyfer cwblhau pob tasg archwilio
-          many: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{count}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
-          other: Cwblhewch y lleill i sgorio <strong>%{remaining_points}</strong> o bwyntiau a <strong>%{count}</strong> o bwyntiau bonws ar gyfer cwblhau pob tasg archwilio
       completed_programme:
         message_html:
           one: Da iawn, rydych newydd gwblhau'r rhaglen <strong>%{title}</strong> ac wedi ennill <strong>%{count}</strong> pwynt bonws!
           two: Da iawn, rydych newydd gwblhau'r rhaglen <strong>%{title}</strong> ac wedi ennill <strong>%{count}</strong> bwynt bonws!
           many: Da iawn, rydych newydd gwblhau'r rhaglen <strong>%{title}</strong> ac wedi ennill <strong>%{count}</strong> phwynt bonws!
           other: Da iawn, rydych newydd gwblhau'r rhaglen <strong>%{title}</strong> ac wedi ennill <strong>%{count}</strong> pwynt bonws!
-      join_programme:
-        completed_message_html:
-          one: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen <strong>%{title}</strong>. Marciwch fel wedi gorffen i sgorio <strong>%{count}</strong> pwynt bonws?
-          two: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen <strong>%{title}</strong>. Marciwch fel wedi gorffen i sgorio <strong>%{count}</strong> bwynt bonws?
-          many: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen <strong>%{title}</strong>. Marciwch fel wedi gorffen i sgorio <strong>%{count}</strong> pwynt bonws?
-          other: Rydych wedi cwblhau'r holl weithgareddau yn y rhaglen <strong>%{title}</strong>. Marciwch fel wedi gorffen i sgorio <strong>%{count}</strong> pwynt bonws?
-        message_html:
-          one: Rydych chi wedi cwblhau gweithgaredd sy'n rhan o'r rhaglen <strong>%{title}</strong> yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
-          two: Rydych chi wedi cwblhau %{count} weithgaredd sy'n rhan o'r rhaglen <strong>%{title}</strong> yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
-          many: Rydych chi wedi cwblhau %{count} gweithgaredd sy'n rhan o'r rhaglen <strong>%{title}</strong> yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
-          other: Rydych chi wedi cwblhau %{count} gweithgaredd sy'n rhan o'r rhaglen <strong>%{title}</strong> yn ddiweddar. Ydych chi eisiau cofrestru ar y rhaglen?
       no_active_programmes:
         choose_programme: Dewiswch raglen
         message: Llongyfarchiadau rydych chi wedi cwblhau eich holl raglenni arbed ynni! Mae'n bryd dewis eich rhaglen nesaf

@@ -233,7 +233,7 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
     before do
       Programmes::Enroller.new(programme_type_1).enrol(school)
-      ActivityCreator.new(activity, nil).process
+      Tasks::Recorder.new(activity, nil).process
       click_on programme_type_1.title
     end
 
@@ -420,242 +420,122 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
 
   #### TESTS START HERE #####
 
-  context without_feature: :todos do
-    let!(:programme_type_1) { create(:programme_type_with_activity_types) }
-    let!(:programme_type_2) { create(:programme_type, active: false) }
-    let!(:programme_type_3) { create(:programme_type) }
-    let!(:programme_type_4) { create(:programme_type_with_activity_types, bonus_score: bonus_points) }
+  let!(:programme_type_1) { create(:programme_type, :with_todos) }
+  let!(:programme_type_2) { create(:programme_type, :with_todos, active: false) }
+  let!(:programme_type_3) { create(:programme_type, :with_todos) }
+  let!(:programme_type_4) { create(:programme_type, :with_todos, bonus_score: bonus_points) }
+  let!(:programme_type_empty) { create(:programme_type) }
+  let!(:programme_type_activities) { create(:programme_type, :with_activity_type_todos) }
+  let!(:programme_type_actions) { create(:programme_type, :with_intervention_type_todos) }
 
-    context 'as a public user' do
+  context 'as a public user' do
+    before do
+      visit programme_types_path
+    end
+
+    it 'displays summary of programmes' do
+      expect(page).to have_content(programme_type_1.title)
+      expect(page).to have_content(programme_type_1.short_description)
+    end
+
+    it 'shows only active programme types' do
+      expect(page).to have_content(programme_type_1.title)
+      expect(page).to have_content(programme_type_3.title)
+      expect(page).to have_no_content(programme_type_2.title)
+    end
+
+    it 'does not show programme types without todos' do
+      expect(page).to have_no_content(programme_type_empty.title)
+    end
+
+    context 'viewing activity only programme type' do
       before do
-        visit programme_types_path
+        click_on programme_type_activities.title
       end
 
-      it 'displays summary of programmes' do
+      it { expect(page).to have_content('This programme is intended for pupils')}
+    end
+
+    context 'viewing action only programme type' do
+      before do
+        click_on programme_type_actions.title
+      end
+
+      it { expect(page).to have_content('This programme is intended for adults')}
+    end
+
+    context 'viewing a programme type' do
+      before do
+        click_on programme_type_1.title
+      end
+
+      it 'displays the programme overview' do
         expect(page).to have_content(programme_type_1.title)
         expect(page).to have_content(programme_type_1.short_description)
+        expect(page).to have_content(programme_type_1.description.body.to_plain_text)
+        expect(page).to have_link(href: programme_type_1.document_link)
+        expect(page).to have_content('This programme is intended for the whole school')
       end
 
-      it 'shows only active programme types' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_3.title)
-        expect(page).to have_no_content(programme_type_2.title)
+      it_behaves_like 'a todo list when user is not enrolled' do
+        let(:assignable) { programme_type_1 }
       end
 
-      context 'viewing a programme type' do
-        before do
-          click_on programme_type_1.title
-        end
+      it 'does not prompt to start' do
+        expect(page).to have_no_content('You can enrol your school in this programme')
+      end
 
-        it 'displays the programme overview' do
+      it 'prompts to login' do
+        expect(page).to have_content('Are you an Energy Sparks user?')
+        expect(page).to have_link('Sign in now')
+      end
+
+      context 'when logging in to enrol' do
+        let!(:staff) { create(:staff, school:) }
+
+        it 'redirects back to programme after login' do
+          click_on 'Sign in now'
+          fill_in 'Email', with: staff.email
+          fill_in 'Password', with: staff.password
+          within '#staff' do
+            click_on 'Sign in'
+          end
           expect(page).to have_content(programme_type_1.title)
-          expect(page).to have_content(programme_type_1.short_description)
-          expect(page).to have_content(programme_type_1.description.body.to_plain_text)
-          expect(page).to have_link(href: programme_type_1.document_link)
-        end
-
-        it 'lists all the activities' do
-          programme_type_1.activity_types.each do |activity_type|
-            expect(page).to have_link(activity_type.name, href: activity_type_path(activity_type))
-          end
-        end
-
-        it 'does not have checklist' do
-          expect(page).to have_no_css('i.fa-circle.text-muted')
-          expect(page).to have_no_css('i.fa-circle.text-success')
-        end
-
-        it 'does not prompt to start' do
-          expect(page).to have_no_content('You can enrol your school in this programme')
-        end
-
-        it 'prompts to login' do
-          expect(page).to have_content('Are you an Energy Sparks user?')
-          expect(page).to have_link('Sign in now')
-        end
-
-        context 'when logging in to enrol' do
-          let!(:staff) { create(:staff, school:) }
-
-          it 'redirects back to programme after login' do
-            click_on 'Sign in now'
-            fill_in 'Email', with: staff.email
-            fill_in 'Password', with: staff.password
-            within '#staff' do
-              click_on 'Sign in'
-            end
-            expect(page).to have_content(programme_type_1.title)
-            expect(page).to have_content('You can enrol your school in this programme')
-          end
-        end
-
-        context 'when programme type is not active' do
-          before do
-            visit programme_type_path(programme_type_2)
-          end
-
-          it { expect(page).to have_content('Page not found') }
+          expect(page).to have_content('You can enrol your school in this programme')
         end
       end
-    end
 
-    context 'as a school admin' do
-      before do
-        sign_in school_admin
-        visit programme_types_path
+      context 'when programme type is not active' do
+        before do
+          visit programme_type_path(programme_type_2)
+        end
+
+        it { expect(page).to have_content('Page not found') }
       end
-
-      it_behaves_like 'a no active programmes prompt'
-      it_behaves_like 'a user enrolling in a programme'
-      it_behaves_like 'a user that has not yet enrolled in a programme'
-      it_behaves_like 'a user that is enrolled in a programme'
-    end
-
-    context 'as a pupil' do
-      before do
-        sign_in pupil
-        visit programme_types_path
-      end
-
-      it_behaves_like 'a no active programmes prompt'
-      it_behaves_like 'a user enrolling in a programme'
-      it_behaves_like 'a user that has not yet enrolled in a programme'
-      it_behaves_like 'a user that is enrolled in a programme'
-    end
-
-    context 'as a student' do
-      let!(:pupil) { create(:student, school:) }
-
-      before do
-        sign_in pupil
-        visit programme_types_path
-      end
-
-      it_behaves_like 'a no active programmes prompt'
-      it_behaves_like 'a user enrolling in a programme'
-      it_behaves_like 'a user that has not yet enrolled in a programme'
-      it_behaves_like 'a user that is enrolled in a programme'
     end
   end
 
-  context with_feature: :todos do
-    let!(:programme_type_1) { create(:programme_type, :with_todos) }
-    let!(:programme_type_2) { create(:programme_type, :with_todos, active: false) }
-    let!(:programme_type_3) { create(:programme_type, :with_todos) }
-    let!(:programme_type_4) { create(:programme_type, :with_todos, bonus_score: bonus_points) }
-    let!(:programme_type_empty) { create(:programme_type) }
-    let!(:programme_type_activities) { create(:programme_type, :with_activity_type_todos) }
-    let!(:programme_type_actions) { create(:programme_type, :with_intervention_type_todos) }
-
-    context 'as a public user' do
-      before do
-        visit programme_types_path
-      end
-
-      it 'displays summary of programmes' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_1.short_description)
-      end
-
-      it 'shows only active programme types' do
-        expect(page).to have_content(programme_type_1.title)
-        expect(page).to have_content(programme_type_3.title)
-        expect(page).to have_no_content(programme_type_2.title)
-      end
-
-      it 'does not show programme types without todos' do
-        expect(page).to have_no_content(programme_type_empty.title)
-      end
-
-      context 'viewing activity only programme type' do
-        before do
-          click_on programme_type_activities.title
-        end
-
-        it { expect(page).to have_content('This programme is intended for pupils')}
-      end
-
-      context 'viewing action only programme type' do
-        before do
-          click_on programme_type_actions.title
-        end
-
-        it { expect(page).to have_content('This programme is intended for adults')}
-      end
-
-      context 'viewing a programme type' do
-        before do
-          click_on programme_type_1.title
-        end
-
-        it 'displays the programme overview' do
-          expect(page).to have_content(programme_type_1.title)
-          expect(page).to have_content(programme_type_1.short_description)
-          expect(page).to have_content(programme_type_1.description.body.to_plain_text)
-          expect(page).to have_link(href: programme_type_1.document_link)
-          expect(page).to have_content('This programme is intended for the whole school')
-        end
-
-        it_behaves_like 'a todo list when user is not enrolled' do
-          let(:assignable) { programme_type_1 }
-        end
-
-        it 'does not prompt to start' do
-          expect(page).to have_no_content('You can enrol your school in this programme')
-        end
-
-        it 'prompts to login' do
-          expect(page).to have_content('Are you an Energy Sparks user?')
-          expect(page).to have_link('Sign in now')
-        end
-
-        context 'when logging in to enrol' do
-          let!(:staff) { create(:staff, school:) }
-
-          it 'redirects back to programme after login' do
-            click_on 'Sign in now'
-            fill_in 'Email', with: staff.email
-            fill_in 'Password', with: staff.password
-            within '#staff' do
-              click_on 'Sign in'
-            end
-            expect(page).to have_content(programme_type_1.title)
-            expect(page).to have_content('You can enrol your school in this programme')
-          end
-        end
-
-        context 'when programme type is not active' do
-          before do
-            visit programme_type_path(programme_type_2)
-          end
-
-          it { expect(page).to have_content('Page not found') }
-        end
-      end
+  context 'as a school admin' do
+    before do
+      sign_in school_admin
+      visit programme_types_path
     end
 
-    context 'as a school admin' do
-      before do
-        sign_in school_admin
-        visit programme_types_path
-      end
+    it_behaves_like 'a no active programmes prompt'
+    it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that has not yet enrolled in a programme with todos'
+    it_behaves_like 'a user that is enrolled in a programme with todos'
+  end
 
-      it_behaves_like 'a no active programmes prompt'
-      it_behaves_like 'a user enrolling in a programme'
-      it_behaves_like 'a user that has not yet enrolled in a programme with todos'
-      it_behaves_like 'a user that is enrolled in a programme with todos'
+  context 'as a pupil' do
+    before do
+      sign_in pupil
+      visit programme_types_path
     end
 
-    context 'as a pupil' do
-      before do
-        sign_in pupil
-        visit programme_types_path
-      end
-
-      it_behaves_like 'a no active programmes prompt'
-      it_behaves_like 'a user enrolling in a programme'
-      it_behaves_like 'a user that has not yet enrolled in a programme with todos'
-      it_behaves_like 'a user that is enrolled in a programme with todos'
-    end
+    it_behaves_like 'a no active programmes prompt'
+    it_behaves_like 'a user enrolling in a programme'
+    it_behaves_like 'a user that has not yet enrolled in a programme with todos'
+    it_behaves_like 'a user that is enrolled in a programme with todos'
   end
 end

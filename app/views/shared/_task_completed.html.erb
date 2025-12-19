@@ -15,38 +15,19 @@
   <% end %>
 </h1>
 
-<% if Flipper.enabled?(:todos) %>
-  <% recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
-    <%= render InfoBarComponent.new(
-          status: :neutral,
-          title: t('schools.prompts.completed_programme.message_html',
-                   title: programme.title,
-                   count: programme.points_for_completion),
-          icon: image_tag(programme.programme_type.t_attached_or_default(
-                            :image, placeholder: 'placeholder300x200.png'
-                          ),
-                          class: 'img-fluid'),
-          icon_cols: 2,
-          buttons: { t('common.labels.view') => programme_type_path(programme.programme_type) }
-        ) %>
-  <% end %>
-<% else %>
-  <% if recording.is_a? Activity %>
-    <% recording.programmes.completed.recently_ended.each do |programme| %>
-      <%= render InfoBarComponent.new(
-            status: :neutral,
-            title: t('schools.prompts.completed_programme.message_html',
-                     title: programme.title,
-                     count: programme.points_for_completion),
-            icon: image_tag(programme.programme_type.t_attached_or_default(
-                              :image, placeholder: 'placeholder300x200.png'
-                            ),
-                            class: 'img-fluid'),
-            icon_cols: 2,
-            buttons: { t('common.labels.view') => programme_type_path(programme.programme_type) }
-          ) %>
-    <% end %>
-  <% end %>
+<% recording.programmes_completed_todos.completed.recently_ended.each do |programme| %>
+  <%= render InfoBarComponent.new(
+        status: :neutral,
+        title: t('schools.prompts.completed_programme.message_html',
+                 title: programme.title,
+                 count: programme.points_for_completion),
+        icon: image_tag(programme.programme_type.t_attached_or_default(
+                          :image, placeholder: 'placeholder300x200.png'
+                        ),
+                        class: 'img-fluid'),
+        icon_cols: 2,
+        buttons: { t('common.labels.view') => programme_type_path(programme.programme_type) }
+      ) %>
 <% end %>
 
 <%= render Scoreboards::SchoolSummaryComponent.new(podium: current_school_podium, title: '') %>

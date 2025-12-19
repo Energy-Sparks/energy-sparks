@@ -17,10 +17,6 @@
   </div>
 </div>
 
-<% if Flipper.enabled?(:todos, current_user) %>
-  <% @programme_types.each do |programme_type| %>
-    <%= render('programme_type', programme_type:) if programme_type.has_todos? %>
-  <% end %>
-<% else %>
-  <%= render 'cards', programme_types: @programme_types, user_progress: @user_progress %>
+<% @programme_types.each do |programme_type| %>
+  <%= render('programme_type', programme_type:) if programme_type.has_todos? %>
 <% end %>

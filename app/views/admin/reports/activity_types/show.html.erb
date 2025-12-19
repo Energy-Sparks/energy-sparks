@@ -92,18 +92,7 @@
       <% end %>
     </ul>
   </div>
-  <% if Flipper.enabled?(:todos, current_user) %>
-    <%= render 'admin/shared/task_completables', task: @activity_type %>
-  <% else %>
-    <div class="col col-md-3">
-      <h3>Programmes</h3>
-      <ul>
-        <% @activity_type.programme_types.each do |programme_type| %>
-          <li><%= link_to programme_type.title, edit_admin_programme_type_path(programme_type) %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'admin/shared/task_completables', task: @activity_type %>
 
   <div class="col col-md-3">
     <h3>Find Out More</h3>

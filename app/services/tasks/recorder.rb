@@ -19,7 +19,7 @@ class Tasks::Recorder
   def process
     if @recording.save
       after_save
-      # This uses the same logic as the current activity creator
+      # This logic is taken from the old activity creator
       # i.e. go through all subscribed programmes,
       # regardless of if activity_type or intervention_type is part of it or not.
       # It is probably less complicated than the alternative,

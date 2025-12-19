@@ -4,66 +4,12 @@ describe 'programme type management', :include_application_helper, type: :system
   let!(:school) { create(:school) }
   let!(:admin)  { create(:admin, school: school) }
 
-  context with_feature: :todos_parallel do
-    let!(:programme_type) do
-      create(:programme_type, title: 'Test Programme',
-        activity_types: create_list(:activity_type, 3)) # old way
-    end
-
-    # new way
-    let!(:activity_type_todos) { create_list(:activity_type_todo, 2, assignable: programme_type) }
-    let!(:intervention_type_todos) { create_list(:intervention_type_todo, 2, assignable: programme_type) }
-
-    context 'when viewing programme type admin index' do
-      before do
-        sign_in(admin)
-        visit root_path
-        click_on 'Admin'
-        click_on 'Programme Types'
-      end
-
-      it 'displays a count of activities' do
-        expect(page).to have_selector(:table_row, { 'Activities in Programme' => 3 })
-      end
-
-      it 'displays a count of actions' do
-        expect(page).to have_selector(:table_row, { 'Actions in Programme' => 2 })
-      end
-
-      it 'has a button to edit activities (old way)' do
-        expect(page).to have_link('Edit activities')
-      end
-
-      context 'when clicking Edit activities button' do
-        before do
-          click_on 'Edit activities'
-        end
-
-        it { expect(page).not_to have_css('#activity-type-todos') }
-        it { expect(page).not_to have_css('#intervention-type-todos') }
-      end
-
-      it 'has a button to edit actions (new way)' do
-        expect(page).to have_link('Edit actions')
-      end
-
-      context 'when clicking Edit actions button' do
-        before do
-          click_on 'Edit actions'
-        end
-
-        it { expect(page).not_to have_css('#activity-type-todos') }
-        it { expect(page).to have_css('#intervention-type-todos') }
-      end
-    end
+  before do
+    # enrolment only enabled if targets enabled...
+    allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
   end
 
-  context with_feature: :todos do
-    before do
-      # enrolment only enabled if targets enabled...
-      allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-    end
-
+  context 'with todos' do
     let!(:programme_type) { create(:programme_type, title: 'Test Programme') }
     let!(:activity_type_todos) { create_list(:activity_type_todo, 3, assignable: programme_type) }
     let!(:intervention_type_todos) { create_list(:intervention_type_todo, 3, assignable: programme_type) }
@@ -233,7 +179,7 @@ describe 'programme type management', :include_application_helper, type: :system
     end
   end
 
-  describe 'managing' do
+  describe 'Managing programmes' do
     before do
       sign_in(admin)
       visit root_path
@@ -280,53 +226,13 @@ describe 'programme type management', :include_application_helper, type: :system
       expect(page).to have_content('There are no programme types')
     end
 
-    context 'when todos feature is switched off' do
-      context 'manages order' do
-        let!(:activity_category)  { create(:activity_category)}
-        let!(:activity_type_1)    { create(:activity_type, name: 'Turn off the lights', activity_category: activity_category) }
-        let!(:activity_type_2)    { create(:activity_type, name: 'Turn down the heating', activity_category: activity_category) }
-        let!(:activity_type_3)    { create(:activity_type, name: 'Turn down the cooker', activity_category: activity_category) }
-
-        it 'assigns activity types to programme types via a text box position' do
-          description = 'SPN1'
-          old_title = 'Super programme number 1'
-
-          programme_type = ProgrammeType.create(description: description, title: old_title)
-
-          visit current_path
-
-          click_on 'Edit activities'
-
-          expect(page.find_field('Turn off the light').value).to be_blank
-          expect(page.find_field('Turn down the heating').value).to be_blank
-
-          fill_in 'Turn down the heating', with: '1'
-          fill_in 'Turn off the lights', with: '2'
-
-          click_on 'Update associated activity type', match: :first
-          click_on old_title
-
-          expect(programme_type.activity_types).to match_array([activity_type_2, activity_type_1])
-          expect(programme_type.programme_type_activity_types.first.position).to eq(1)
-          expect(programme_type.programme_type_activity_types.second.position).to eq(2)
-
-          expect(all('ol.activities li').map(&:text)).to eq ['Turn down the heating', 'Turn off the lights']
-        end
-      end
-    end
-
     context 'when progammes exist for schools' do
       let!(:activity_type_1)    { create(:activity_type) }
       let!(:activity_type_2)    { create(:activity_type) }
-      let!(:programme_type)     { create(:programme_type, activity_types: [activity_type_1, activity_type_2]) }
+      let!(:programme_type)     { create(:programme_type, activity_type_tasks: [activity_type_1, activity_type_2]) }
       let!(:programme)          { create(:programme, school: school, programme_type: programme_type, started_on: Time.zone.today) }
       let!(:activity_1)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Dark now', happened_on: Date.yesterday) }
       let!(:activity_2)           { create(:activity, school: school, activity_type: activity_type_1, title: 'Still dark', happened_on: Time.zone.today) }
-
-      before do
-        # enrolment only enabled if targets enabled...
-        allow(EnergySparks::FeatureFlags).to receive(:active?).and_return(true)
-      end
 
       it 'shows links to programmes and progress' do
         visit admin_programme_types_path

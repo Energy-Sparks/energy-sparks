@@ -363,7 +363,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
     context 'when school has an active programme' do
       let!(:programme) { create(:programme, school: school) }
 
-      it { expect(html).to have_content('You have completed') }
+      it { expect(html).to have_content("You haven't yet completed") }
 
       it {
         expect(html).to have_link(I18n.t('common.labels.view_now'),
@@ -418,7 +418,7 @@ RSpec.describe AdultRemindersComponent, :include_application_helper, :include_ur
     end
 
     context 'when there has been an audit with unfinished tasks' do
-      let!(:audit) { create(:audit, :with_activity_and_intervention_types, school: school) }
+      let!(:audit) { create(:audit, :with_todos, school: school) }
 
       it {
         expect(html).to have_link(I18n.t('common.labels.view_now'),

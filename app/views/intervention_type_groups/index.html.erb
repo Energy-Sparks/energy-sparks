@@ -21,9 +21,7 @@
 
 <%= render 'schools/prompt_recommended', scope: :adult %>
 
-<% if Flipper.enabled?(:todos, current_user) %>
-  <%= render 'shared/tasks/programme_types', programme_types: @programme_types %>
-<% end %>
+<%= render 'shared/tasks/programme_types', programme_types: @programme_types %>
 
 <% @intervention_type_groups.each do |intervention_type_group| %>
   <div class="row mt-3">

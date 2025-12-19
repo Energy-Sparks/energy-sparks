@@ -44,9 +44,7 @@
       <th>Schools</th>
       <th>Suggested</th>
       <th>Find Out Mores</th>
-      <% if Flipper.enabled?(:todos, current_user) %>
-        <th>Programmes</th>
-      <% end %>
+      <th>Programmes</th>
       <th>Audits</th>
       <th></th>
     </tr>
@@ -60,12 +58,8 @@
         <td><%= intervention_type.observations.select(:school_id).distinct.count %></td>
         <td><%= intervention_type.suggested_types.count %></td>
         <td><%= intervention_type.alert_type_ratings.count %></td>
-        <% if Flipper.enabled?(:todos, current_user) %>
-          <td><%= intervention_type.programme_types_todo.count %></td>
-          <td><%= intervention_type.audits_todo.count %></td>
-        <% else %>
-          <td><%= intervention_type.audits.count %></td>
-        <% end %>
+        <td><%= intervention_type.programme_types_todo.count %></td>
+        <td><%= intervention_type.audits_todo.count %></td>
         <td><%= link_to 'Report', admin_reports_intervention_type_path(intervention_type),
                         class: 'btn btn-primary' %></td>
       </tr>

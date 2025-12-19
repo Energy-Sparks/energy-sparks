@@ -4,7 +4,7 @@ RSpec.shared_examples 'a completable getting latest recording for todo' do
     let!(:todo) { create(:todo, assignable: assignable, task: activity_type) }
 
     context 'when school has a recording for task' do
-      let!(:activity) { create(:activity, activity_type: activity_type, school: school) }
+      let!(:activity) { create(:activity_without_creator, activity_type: activity_type, school: school) }
 
       it 'returns latest recorded task for completable' do
         expect(recording).to eq(activity)
@@ -12,10 +12,10 @@ RSpec.shared_examples 'a completable getting latest recording for todo' do
     end
 
     context 'when school has multiple recordings for task' do
-      let!(:older) { create(:activity, activity_type:, school:, happened_on: 3.days.ago) }
-      let!(:new) { create(:activity, activity_type:, school:, happened_on: 2.days.ago) }
-      let!(:newer) { create(:activity, activity_type:, school:, happened_on: 2.days.ago) }
-      let!(:created_last) { create(:activity, activity_type:, school:, happened_on: 4.days.ago) }
+      let!(:older) { create(:activity_without_creator, activity_type:, school:, happened_on: 3.days.ago) }
+      let!(:new) { create(:activity_without_creator, activity_type:, school:, happened_on: 2.days.ago) }
+      let!(:newer) { create(:activity_without_creator, activity_type:, school:, happened_on: 2.days.ago) }
+      let!(:created_last) { create(:activity_without_creator, activity_type:, school:, happened_on: 4.days.ago) }
 
       it 'returns latest recorded task for completable' do
         expect(recording).to eq(newer)
@@ -23,7 +23,7 @@ RSpec.shared_examples 'a completable getting latest recording for todo' do
     end
 
     context "when recording is not in school's academic year" do
-      let!(:old) { create(:activity, activity_type:, school:, happened_on: 3.years.ago) }
+      let!(:old) { create(:activity_without_creator, activity_type:, school:, happened_on: 3.years.ago) }
 
       it 'returns nothing' do
         expect(recording).to be_nil
@@ -37,7 +37,7 @@ RSpec.shared_examples 'a completable getting latest recording for todo' do
     end
 
     context 'when a different school has a recording for the task' do
-      let!(:other) { create(:activity, activity_type:, school: create(:school)) }
+      let!(:other) { create(:activity_without_creator, activity_type:, school: create(:school)) }
 
       it 'returns nothing' do
         expect(recording).to be_nil
@@ -182,7 +182,7 @@ RSpec.shared_examples 'a completable' do
   end
 
   describe '#complete_todos_this_academic_year!' do
-    context 'when there is one recording' do
+    context 'when completing all todos this academic year' do
       subject(:recording) do
         completable.complete_todos_this_academic_year!
         completable.reload.completed_todos.last&.recording

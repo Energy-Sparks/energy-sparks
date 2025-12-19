@@ -253,8 +253,8 @@ describe 'Todo' do
     context 'when completable is a programme and task is an activity_type' do
       it_behaves_like 'a completable completing a task' do
         let!(:task) { create(:activity_type) }
-        let(:recording) { create(:activity, activity_type: task, school:) }
-        let(:new_recording) { create(:activity, activity_type: task, school:) }
+        let(:recording) { create(:activity_without_creator, activity_type: task, school:) }
+        let(:new_recording) { create(:activity_without_creator, activity_type: task, school:) }
         let!(:assignable) { create(:programme_type, activity_type_tasks: [task]) }
         let!(:completable) { create(:programme, programme_type: assignable, school:) }
       end
@@ -273,8 +273,8 @@ describe 'Todo' do
     context 'when completable is an audit and task is an activity_type' do
       it_behaves_like 'a completable completing a task' do
         let!(:task) { create(:activity_type) }
-        let(:recording) { create(:activity, activity_type: task, school:) }
-        let(:new_recording) { create(:activity, activity_type: task, school:) }
+        let(:recording) { create(:activity_without_creator, activity_type: task, school:) }
+        let(:new_recording) { create(:activity_without_creator, activity_type: task, school:) }
         let!(:assignable) { create(:audit, activity_type_tasks: [task]) }
         let!(:completable) { assignable }
       end

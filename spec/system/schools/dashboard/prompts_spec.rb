@@ -9,7 +9,7 @@ RSpec.describe 'adult dashboard prompts', type: :system do
   let!(:school_group_dashboard_message) { school.school_group.create_dashboard_message(message: 'School group message') }
   let!(:school_dashboard_message)       { school.create_dashboard_message(message: 'School message') }
   let!(:programme)                      { }
-  let!(:audit)                          { create(:audit, :with_activity_and_intervention_types, school: school) }
+  let!(:audit)                          { create(:audit, :with_todos, school: school) }
 
   before do
     sign_in(user) if user.present?
@@ -121,21 +121,6 @@ RSpec.describe 'adult dashboard prompts', type: :system do
 
           it_behaves_like 'a training prompt', displayed: false
         end
-      end
-    end
-
-    describe 'programme prompt' do
-      context 'when there is a programme' do
-        let(:programme) { create(:programme, programme_type: create(:programme_type_with_activity_types), started_on: '2020-01-01', school: school) }
-        let(:message) { 'You have completed 0/3' }
-
-        it_behaves_like 'a standard prompt', displayed: true
-      end
-
-      context "when there isn't a programme" do
-        let(:message) { "It's time to choose a new programme of activities" }
-
-        it_behaves_like 'a standard prompt', displayed: true
       end
     end
   end

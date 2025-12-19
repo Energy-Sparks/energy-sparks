@@ -24,19 +24,5 @@ FactoryBot.define do
         create_list(:intervention_type_todo, 3, assignable: programme_type)
       end
     end
-
-    # old way - remove when :todos feature removed
-    factory :programme_type_with_activity_types do
-      transient do
-        count { 3 }
-      end
-
-      after(:create) do |programme_type, evaluator|
-        evaluator.count.times.each do |counter|
-          activity_type = create(:activity_type)
-          ProgrammeTypeActivityType.create(programme_type: programme_type, activity_type: activity_type, position: counter)
-        end
-      end
-    end
   end
 end

@@ -1,33 +1,29 @@
-<% if Flipper.enabled?(:todos, current_user) || !Flipper.enabled?(:todos_parallel, current_user) %>
+<%= render 'shared/todos/task_type_form', f: f,
+      assignable: assignable,
+      tasks: ActivityCategory.listed_with_activity_types.map { |category, types|
+            [category.name, types.map do |type|
+              [type.name_with_key_stages, type.id]
+            end]
+          },
+      type: 'activity_type',
+      label: t('schools.audits.form.activity_type'),
+      title: t('schools.audits.form.activities'),
+      description: t('schools.audits.form.activities_message_html',
+      activity_categories_path: activity_categories_path),
+      custom: t('schools.audits.form.add_a_custom_activity_message'),
+      add_label: t('schools.audits.form.add_activity') %>
 
-  <%= render 'shared/todos/task_type_form', f: f,
-        assignable: assignable,
-        tasks: ActivityCategory.listed_with_activity_types.map { |category, types|
-             [category.name, types.map do |type|
-               [type.name_with_key_stages, type.id]
-             end]
-           },
-        type: 'activity_type',
-        label: t('schools.audits.form.activity_type'),
-        title: t('schools.audits.form.activities'),
-        description: t('schools.audits.form.activities_message_html', activity_categories_path: activity_categories_path),
-        custom: t('schools.audits.form.add_a_custom_activity_message'),
-        add_label: t('schools.audits.form.add_activity') %>
-<% end %>
-
-<% if Flipper.enabled?(:todos, current_user) || (Flipper.enabled?(:todos_parallel, current_user) && assignable.is_a?(ProgrammeType)) %>
-
-  <%= render 'shared/todos/task_type_form', f: f,
-        assignable: assignable,
-        tasks: InterventionTypeGroup.listed_with_intervention_types.map { |category, types|
-             [category.name, types.map do |type|
-               [type.name, type.id]
-             end]
-           },
-        type: 'intervention_type',
-        label: t('schools.audits.form.action_type'),
-        title: t('common.labels.actions'),
-        description: t('schools.audits.form.actions_message_1_html', intervention_type_groups_path: intervention_type_groups_path),
-        custom: t('schools.audits.form.actions_message_2'),
-        add_label: t('schools.audits.form.add_action') %>
-<% end %>
+<%= render 'shared/todos/task_type_form', f: f,
+      assignable: assignable,
+      tasks: InterventionTypeGroup.listed_with_intervention_types.map { |category, types|
+            [category.name, types.map do |type|
+              [type.name, type.id]
+            end]
+          },
+      type: 'intervention_type',
+      label: t('schools.audits.form.action_type'),
+      title: t('common.labels.actions'),
+      description: t('schools.audits.form.actions_message_1_html',
+      intervention_type_groups_path: intervention_type_groups_path),
+      custom: t('schools.audits.form.actions_message_2'),
+      add_label: t('schools.audits.form.add_action') %>

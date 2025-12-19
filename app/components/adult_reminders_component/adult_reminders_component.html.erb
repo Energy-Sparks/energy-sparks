@@ -68,30 +68,16 @@
   <% end %>
 
   <%# i18n-tasks-use t("common.labels.view_now") %>
-  <% if Flipper.enabled?(:todos, user) %>
-    <% add_prompt(id: :audit,
-                  check: last_audit&.todos_incomplete?,
-                  list: list,
-                  status: :neutral,
-                  icon: 'laptop',
-                  link: 'common.labels.view_now',
-                  path: last_audit ? school_audit_path(school, last_audit) : nil) do %>
-      <p>
-        <%= Completables::Progress.new(last_audit).notification %>
-      </p>
-    <% end %>
-  <% else %>
-    <% add_prompt(id: :audit,
-                  check: last_audit&.tasks_remaining?,
-                  list: list,
-                  status: :neutral,
-                  icon: 'laptop',
-                  link: 'common.labels.view_now',
-                  path: last_audit ? school_audit_path(school, last_audit) : nil) do %>
-      <p>
-        <%= Audits::Progress.new(last_audit).notification %>
-      </p>
-    <% end %>
+  <% add_prompt(id: :audit,
+                check: last_audit&.todos_incomplete?,
+                list: list,
+                status: :neutral,
+                icon: 'laptop',
+                link: 'common.labels.view_now',
+                path: last_audit ? school_audit_path(school, last_audit) : nil) do %>
+    <p>
+      <%= Completables::Progress.new(last_audit).notification %>
+    </p>
   <% end %>
 
   <%# i18n-tasks-use t("schools.show.set_target") %>
@@ -142,11 +128,7 @@
                     link: 'common.labels.view_now',
                     path: programme_type_path(programme.programme_type)) do %>
         <p>
-          <% if Flipper.enabled?(:todos, user) %>
-            <%= Completables::Progress.new(programme).notification %>
-          <% else %>
-            <%= Programmes::Progress.new(programme).notification %>
-          <% end %>
+          <%= Completables::Progress.new(programme).notification %>
         </p>
       <% end %>
     <% end %>
