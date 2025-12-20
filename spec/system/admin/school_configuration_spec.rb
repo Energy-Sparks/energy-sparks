@@ -17,6 +17,17 @@ RSpec.describe 'editing school configuration', type: :system do
       click_on('School configuration')
     end
 
+    context 'when editing full school flag' do
+      before do
+        uncheck 'Full school'
+        click_on('Update configuration')
+      end
+
+      it 'allows the option to be changed' do
+        expect(school.reload.full_school).to be(false)
+      end
+    end
+
     it 'allows school group to be updated' do
       select school_group.name, from: 'School group'
       click_on('Update configuration')
