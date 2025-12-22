@@ -7,8 +7,10 @@
 #  created_at                          :datetime         not null
 #  electricity                         :float
 #  electricity_monthly_consumption     :jsonb
+#  electricity_progress                :json
 #  gas                                 :float
 #  gas_monthly_consumption             :jsonb
+#  gas_progress                        :json
 #  id                                  :bigint(8)        not null, primary key
 #  report_last_generated               :datetime
 #  revised_fuel_types                  :string           default([]), not null, is an Array
@@ -16,6 +18,7 @@
 #  start_date                          :date
 #  storage_heaters                     :float
 #  storage_heaters_monthly_consumption :jsonb
+#  storage_heaters_progress            :json
 #  target_date                         :date
 #  updated_at                          :datetime         not null
 #
@@ -50,6 +53,7 @@ class SchoolTarget < ApplicationRecord
 
   alias_attribute :storage_heater, :storage_heaters
   alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
 
   FUEL_TYPES = %i[electricity gas storage_heater].freeze
 
