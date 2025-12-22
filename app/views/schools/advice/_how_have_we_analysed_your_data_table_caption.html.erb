@@ -1,5 +1,5 @@
 <div class="text-right advice-table-caption">
-  <%= additional_notice_text.html_safe if defined? additional_notice_text %>
+  <%= additional_notice_text&.html_safe if defined? additional_notice_text %>
   <%= render FootnoteModalComponent::Link.new(
         modal_id: defined?(data_target) ? data_target : 'how-have-we-analysed-your-data-footnotes'
       ) do %>

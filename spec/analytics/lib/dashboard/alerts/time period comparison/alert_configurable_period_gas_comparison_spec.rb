@@ -5,7 +5,7 @@ require 'rails_helper'
 describe AlertConfigurablePeriodGasComparison, :aggregate_failures do
   subject(:alert) do
     school = build(:analytics_school)
-    meter_collection = build(:meter_collection, :with_fuel_and_aggregate_meters,
+    meter_collection = build(:meter_collection, :with_aggregated_aggregate_meter,
                              start_date: Date.new(2022, 11, 1), end_date: Date.new(2023, 11, 30),
                              fuel_type: :gas, random_generator: Random.new(22), school:,
                              pseudo_meter_attributes: { school_level_data: {

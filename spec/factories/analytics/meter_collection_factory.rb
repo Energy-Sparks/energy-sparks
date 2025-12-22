@@ -10,7 +10,7 @@ FactoryBot.define do
       random_generator        { nil }
       temperatures            { build(:temperatures, :with_days, start_date:, end_date:, random_generator:) }
       solar_pv                { build(:solar_pv, :with_days, start_date:, end_date:, random_generator:) }
-      grid_carbon_intensity   { build(:grid_carbon_intensity, :with_days, start_date: start_date, end_date: end_date) }
+      grid_carbon_intensity   { build(:grid_carbon_intensity, :with_days, start_date:, end_date:, random_generator:) }
       pseudo_meter_attributes { {} }
       solar_irradiation       { nil }
     end
@@ -72,37 +72,6 @@ FactoryBot.define do
       end
     end
 
-    # Meter collection with a single meter, of configurable fuel type.
-    # Invokes the validation and aggregation process
-    trait :with_fuel_and_aggregate_meters do
-      fuel_type { :electricity }
-      transient do
-        storage_heaters { false }
-        kwh_data_x48 { Array.new(48, 1) }
-      end
-      with_aggregate_meter
-
-      after(:build) do |meter_collection, evaluator|
-        meter_attributes = {}
-        if evaluator.storage_heaters
-          meter_attributes[:storage_heaters] = [{ charge_start_time: TimeOfDay.parse('02:00'),
-                                                  charge_end_time: TimeOfDay.parse('06:00') }]
-          # match charge times, increases usage just enough for model to consider heating on
-          evaluator.kwh_data_x48[4, 10] = [4] * 10
-        end
-        meter = build(:meter, :with_flat_rate_tariffs,
-                      meter_collection: meter_collection, type: evaluator.fuel_type,
-                      meter_attributes: meter_attributes,
-                      amr_data: build(:amr_data, :with_date_range,
-                                      type: evaluator.fuel_type,
-                                      start_date: evaluator.start_date,
-                                      end_date: evaluator.end_date,
-                                      kwh_data_x48: evaluator.kwh_data_x48))
-        meter_collection.send(evaluator.fuel_type == :electricity ? :add_electricity_meter : :add_heat_meter, meter)
-        AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
-      end
-    end
-
     # Meter collection with an aggregate meter of configurable fuel type
     # Does not invoke the normal validation/aggregation process
     trait :with_aggregate_meter do
@@ -129,6 +98,39 @@ FactoryBot.define do
       after(:build) do |meter_collection, evaluator|
         aggregate_meter = meter_collection.aggregate_meter(evaluator.fuel_type)
         aggregate_meter.sub_meters.merge!(evaluator.sub_meters)
+      end
+    end
+
+    # Meter collection with a single meter, of configurable fuel type.
+    # Invokes the validation and aggregation process
+    trait :with_aggregated_aggregate_meter do
+      transient do
+        fuel_type { :electricity }
+        storage_heaters { false }
+        kwh_data_x48 { Array.new(48, 1) }
+        rates { nil }
+      end
+      with_aggregate_meter
+
+      after(:build) do |meter_collection, evaluator|
+        meter_attributes = {}
+        if evaluator.storage_heaters
+          meter_attributes[:storage_heaters] = [{ charge_start_time: TimeOfDay.parse('02:00'),
+                                                  charge_end_time: TimeOfDay.parse('06:00') }]
+          # match charge times, increases usage just enough for model to consider heating on
+          evaluator.kwh_data_x48[4, 10] = [4] * 10
+        end
+        meter = build(:meter, :with_flat_rate_tariffs,
+                      meter_collection: meter_collection, type: evaluator.fuel_type,
+                      meter_attributes: meter_attributes,
+                      amr_data: build(:amr_data, :with_date_range,
+                                      type: evaluator.fuel_type,
+                                      start_date: evaluator.start_date,
+                                      end_date: evaluator.end_date,
+                                      kwh_data_x48: evaluator.kwh_data_x48),
+                      rates: evaluator.rates)
+        meter_collection.send(evaluator.fuel_type == :electricity ? :add_electricity_meter : :add_heat_meter, meter)
+        AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
       end
     end
   end
