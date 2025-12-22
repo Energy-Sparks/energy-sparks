@@ -128,9 +128,6 @@ module AdvicePageHelper
 
   def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type, current_user)
     advice_pages = advice_pages.where(fuel_type:)
-    unless Flipper.enabled?(:target_advice_pages2025, current_user)
-      advice_pages = advice_pages.where.not(key: %i[electricity_target gas_target storage_heater_target])
-    end
     school.multiple_meters?(fuel_type) ? advice_pages : advice_pages.where(multiple_meters: false)
   end
 

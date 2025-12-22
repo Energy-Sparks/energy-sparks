@@ -649,10 +649,6 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired[idx + 1]
   end
 
-  def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
-  end
-
   def has_expired_target?
     expired_target.present?
   end

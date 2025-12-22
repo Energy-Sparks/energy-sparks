@@ -43,10 +43,6 @@ private
     @school.most_recent_target.revised_fuel_types
   end
 
-  def progress_service
-    @progress_service ||= Targets::ProgressService.new(@school)
-  end
-
   def target_service
     @target_service ||= Targets::SchoolTargetService.new(@school)
   end

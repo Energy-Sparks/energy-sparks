@@ -1,8 +1,4 @@
 module TargetsHelper
-  def reportable_progress?(progress_summary)
-    progress_summary.present? && progress_summary.current_target?
-  end
-
   def estimated_usage_for(school, fuel_type)
     return nil unless school.configuration.estimated_consumption_for_fuel_type(fuel_type).present?
     FormatUnit.format(:kwh, school.configuration.estimated_consumption_for_fuel_type(fuel_type), :html, false, true, :target)

@@ -1805,16 +1805,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "revised_fuel_types", default: [], null: false, array: true
-    t.datetime "report_last_generated", precision: nil
-    t.json "electricity_progress", default: {}
-    t.json "gas_progress", default: {}
-    t.json "storage_heaters_progress", default: {}
-    t.jsonb "electricity_report", default: {}
-    t.jsonb "gas_report", default: {}
-    t.jsonb "storage_heaters_report", default: {}
     t.jsonb "electricity_monthly_consumption"
     t.jsonb "gas_monthly_consumption"
     t.jsonb "storage_heaters_monthly_consumption"
+    t.datetime "report_last_generated"
+    t.json "electricity_progress", default: {}
+    t.json "gas_progress", default: {}
+    t.json "storage_heaters_progress", default: {}
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 
@@ -3668,25 +3665,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
       WITH current_targets AS (
            SELECT ranked.id
              FROM ( SELECT school_targets_1.id,
-                      school_targets_1.school_id,
-                      school_targets_1.target_date,
-                      school_targets_1.start_date,
-                      school_targets_1.electricity,
-                      school_targets_1.gas,
-                      school_targets_1.storage_heaters,
-                      school_targets_1.created_at,
-                      school_targets_1.updated_at,
-                      school_targets_1.revised_fuel_types,
-                      school_targets_1.report_last_generated,
-                      school_targets_1.electricity_progress,
-                      school_targets_1.gas_progress,
-                      school_targets_1.storage_heaters_progress,
-                      school_targets_1.electricity_report,
-                      school_targets_1.gas_report,
-                      school_targets_1.storage_heaters_report,
-                      school_targets_1.electricity_monthly_consumption,
-                      school_targets_1.gas_monthly_consumption,
-                      school_targets_1.storage_heaters_monthly_consumption,
                       row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
                      FROM school_targets school_targets_1
                     WHERE (school_targets_1.start_date < now())) ranked
@@ -3743,26 +3721,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
       WITH current_targets AS (
            SELECT ranked.id
              FROM ( SELECT school_targets_1.id,
-                      school_targets_1.school_id,
-                      school_targets_1.target_date,
-                      school_targets_1.start_date,
-                      school_targets_1.electricity,
-                      school_targets_1.gas,
-                      school_targets_1.storage_heaters,
-                      school_targets_1.created_at,
-                      school_targets_1.updated_at,
-                      school_targets_1.revised_fuel_types,
-                      school_targets_1.report_last_generated,
-                      school_targets_1.electricity_progress,
-                      school_targets_1.gas_progress,
-                      school_targets_1.storage_heaters_progress,
-                      school_targets_1.electricity_report,
-                      school_targets_1.gas_report,
-                      school_targets_1.storage_heaters_report,
-                      school_targets_1.electricity_monthly_consumption,
-                      school_targets_1.gas_monthly_consumption,
-                      school_targets_1.storage_heaters_monthly_consumption,
-                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                                            row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
                      FROM school_targets school_targets_1
                     WHERE (school_targets_1.start_date < now())) ranked
             WHERE (ranked.rank = 1)
