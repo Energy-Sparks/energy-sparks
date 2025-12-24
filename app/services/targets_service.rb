@@ -2,27 +2,11 @@
 
 class TargetsService
   include Logging
+
   def initialize(aggregate_school, fuel_type, period: :year)
     @aggregate_school = aggregate_school
     @fuel_type = set_fuel_type(fuel_type)
     @period = period
-  end
-
-  def progress
-    TargetsProgress.new(
-      fuel_type: @fuel_type,
-      months: data_headers, # populate table in report
-      monthly_targets_kwh: data_series(:full_targets_kwh), # populate report, Target consumption
-      monthly_usage_kwh: data_series(:current_year_kwhs), # populate report, Actual consumption
-      monthly_performance: data_series(:monthly_performance), # UNUSED
-      cumulative_targets_kwh: data_series(:full_cumulative_targets_kwhs), # populate report, Target consumption
-      cumulative_usage_kwh: data_series(:full_cumulative_current_year_kwhs), # populate report, Actual consumption
-      cumulative_performance: data_series(:cumulative_performance), # UNUSED
-      monthly_performance_versus_synthetic_last_year: data_series(:monthly_performance_versus_last_year), # populate report, Overall change since last year
-      cumulative_performance_versus_synthetic_last_year: data_series(:cumulative_performance_versus_last_year), # populate report, Overall change since last year, latest progress
-      partial_months: data_series(:partial_months), # add colour coding to annotate tables
-      percentage_synthetic: data_series(:percentage_synthetic)
-    )
   end
 
   # Called by application to determine if we have enough data for a school to
@@ -30,15 +14,12 @@ class TargetsService
   #
   # We require at least a years worth of calendar data, as well as ~1 year of AMR data OR an estimate of their annual consumption
   def enough_data_to_set_target?
-    !fuel_type_disabled? && enough_holidays? && enough_temperature_data? && (enough_readings_to_calculate_target? || enough_estimate_data_to_calculate_target?)
+    !fuel_type_disabled? && enough_holidays? && enough_temperature_data? &&
+      (enough_readings_to_calculate_target? || enough_estimate_data_to_calculate_target?)
   end
 
   def enough_holidays?
     TargetMeter.enough_holidays?(aggregate_meter)
-  end
-
-  def holiday_integrity_problems
-    @aggregate_school.holidays.check_school_holidays(@aggregate_school)
   end
 
   def default_target_start_date
@@ -115,7 +96,7 @@ class TargetsService
   def annual_kwh_estimate_kwh
     return nil if aggregate_meter.nil?
 
-    estimator = TargetingAndTrackingAnnualKwhEstimate.new(aggregate_meter)
+    estimator = AnnualKwhEstimate.new(aggregate_meter)
     estimator.calculate_apportioned_annual_estimate
   rescue BivariateSolarTemperatureModel::BivariateModel::BivariateModelCalculationFailed => e
     # statsample error: blows up without raising named exception, so reraise from ES wrapped library
@@ -123,17 +104,17 @@ class TargetsService
     nil
   end
 
-  def invalid_annual_estimate_less_than_historic_kwh_data_to_date?
-    [MissingGasEstimationBase::MoreDataAlreadyThanEstimate,
-     MissingElectricityEstimation::MoreDataAlreadyThanEstimate]
-      .include?(target_meter_calculation_problem&.[](:type))
-  end
+  # def invalid_annual_estimate_less_than_historic_kwh_data_to_date?
+  #   [MissingGasEstimationBase::MoreDataAlreadyThanEstimate,
+  #    MissingElectricityEstimation::MoreDataAlreadyThanEstimate]
+  #     .include?(target_meter_calculation_problem&.[](:type))
+  # end
 
   # returns nil if ok, otherwise { text: "error message", type: ExceptionClass from POTENTIAL_EXPECTED_TARGET_METER_CREATION_ERRORS }
-  def target_meter_calculation_problem
-    target_meter # forces calculation
-    target_school.reason_for_nil_meter(@fuel_type)
-  end
+  # def target_meter_calculation_problem
+  #   target_meter # forces calculation
+  #   target_school.reason_for_nil_meter(@fuel_type)
+  # end
 
   # go off to internet to pick up DEC data
   def dec_annual_kwh_estimate_kwh
@@ -150,29 +131,27 @@ class TargetsService
   end
 
   # Not used by application currently
-  def valid?
-    !aggregate_meter.nil? &&
-      target_set? &&
-      #    recent_data? &&
-      enough_data_to_set_target? &&
-      !target_meter.nil?
-  end
+  # def valid?
+  #   !aggregate_meter.nil? &&
+  #     target_set? &&
+  #     #    recent_data? &&
+  #     enough_data_to_set_target? &&
+  #     !target_meter.nil?
+  # end
 
   def meter_present?
     aggregate_meter.present?
   end
 
   # Does the analytics think there's a target set?
-  def target_set?
-    aggregate_meter.target_set?
-  end
+  delegate :target_set?, to: :aggregate_meter
 
   # returns hash, value-attribute list,
   # .to_s key & value to view,
   # needs to be called after target meter data calculated
-  def analytics_debug_info
-    valid? ? target_meter.analytics_debug_info : {}
-  end
+  # def analytics_debug_info
+  #   valid? ? target_meter.analytics_debug_info : {}
+  # end
 
   def culmulative_progress_chart
     case @fuel_type
@@ -218,25 +197,13 @@ class TargetsService
     ENV["FEATURE_FLAG_TARGETS_DISABLE_#{@fuel_type.to_s.upcase}"] == 'true'
   end
 
-  def data_headers
-    data[:current_year_date_ranges].map { |r| Date.new(r.first.year, r.first.month, 1) }
-  end
+  # def target_school
+  #   @target_school ||= @aggregate_school.target_school
+  # end
 
-  def data_series(key)
-    data[key]
-  end
-
-  def data
-    @data ||= CalculateMonthlyTrackAndTraceData.new(@aggregate_school, @fuel_type).raw_data
-  end
-
-  def target_school
-    @target_school ||= @aggregate_school.target_school
-  end
-
-  def target_meter
-    @target_meter ||= target_school.aggregate_meter(@fuel_type)
-  end
+  # def target_meter
+  #   @target_meter ||= target_school.aggregate_meter(@fuel_type)
+  # end
 
   def aggregate_meter
     @aggregate_meter ||= @aggregate_school.aggregate_meter(@fuel_type)

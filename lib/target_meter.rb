@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TargetMeter < Dashboard::Meter
   class TargetStartDateBeforeFirstMeterDate < StandardError; end
   class UnexpectedPluralStorageHeaterFuel < StandardError; end
@@ -116,7 +118,7 @@ class TargetMeter < Dashboard::Meter
   def self.calculation_factory(type, meter_to_clone)
     case type
     when :month
-      TargetMeterMonthlyDayType.new(meter_to_clone)
+      MonthlyDayType.new(meter_to_clone)
     when :day
       if meter_to_clone.fuel_type == :gas || storage_heater_fuel_type?(meter_to_clone.fuel_type)
         # LD 2024-03-21. Remove gas specific modelling pending further work on the targets
@@ -125,15 +127,15 @@ class TargetMeter < Dashboard::Meter
         # we instead just use the same process as electricity: taking the average usage over a few
         # similar days in the last year.
         # TargetMeterTemperatureCompensatedDailyDayTypeMatchWeekendsAndHolidays.new(meter_to_clone)
-        TargetMeterDailyDayType.new(meter_to_clone)
+        DailyDayType.new(meter_to_clone)
       else
-        TargetMeterDailyDayType.new(meter_to_clone)
+        DailyDayType.new(meter_to_clone)
       end
     when :stretch_target_day
       if meter_to_clone.fuel_type == :gas || storage_heater_fuel_type?(meter_to_clone.fuel_type)
-        TargetMeterTemperatureCompensatedDailyDayTypeStretchTarget.new(meter_to_clone)
+        TemperatureCompensatedDailyDayTypeStretchTarget.new(meter_to_clone)
       else
-        TargetMeterDailyDayType.new(meter_to_clone)
+        DailyDayType.new(meter_to_clone)
       end
     else
       raise EnergySparksUnexpectedStateException, "Unexpected target averaging type #{type}"
@@ -289,91 +291,4 @@ class TargetMeter < Dashboard::Meter
       target_day_calculation_failed.delete(target_date)
     end
   end
-end
-
-# calculates average profiles per month from previous year
-# and then applies a scalar target reduction to them
-# takes about 24ms per 365 days to calculate
-class TargetMeterMonthlyDayType < TargetMeter
-  include Logging
-
-  private
-
-  def profile_x48(target_date:, synthetic_date:, synthetic_amr_data:)
-    day_type = @meter_collection.holidays.day_type(target_date)
-    average_days_for_month_x48_xdaytype(synthetic_date, synthetic_amr_data)[day_type]
-  end
-
-  def average_days_for_month_x48_xdaytype(date, amr_data)
-    @average_profiles_for_month ||= {}
-    first_of_month = DateTimeHelper.first_day_of_month(date)
-    @average_profiles_for_month[first_of_month] ||= calculate_month_profile(amr_data, first_of_month)
-  end
-
-  def empty_profile
-    {
-      holiday:    [],
-      weekend:    [],
-      schoolday:  []
-    }
-  end
-
-  def calculate_month_profile(amr_data, first_of_month)
-    profiles = empty_profile
-    last_of_month = DateTimeHelper.last_day_of_month(first_of_month)
-
-    (first_of_month..last_of_month).each do |date|
-      dt = @meter_collection.holidays.day_type(date)
-      profiles[dt].push(amr_data.one_days_data_x48(date))
-    end
-
-   average_kwh_x48(profiles)
-  end
-
-  def average_kwh_x48(profiles)
-    profiles.transform_values do |kwhs_x48|
-      total = AMRData.fast_add_multiple_x48_x_x48(kwhs_x48)
-      AMRData.fast_multiply_x48_x_scalar(total, 1.0 / kwhs_x48.length)
-    end
-  end
-end
-
-# calculates average profiles from nearby days from previous year
-# and then applies a scalar target reduction to them
-# takes about 45ms per 365 days to calculate
-# holiday averaging requirement less as don't want to have to go too far
-# to a matching holiday which is too far seasonally away from the one
-# we want to calculate an average profile for
-class TargetMeterDailyDayType < TargetMeter
-  NUM_SAME_DAYTYPE_REQUIRED = {
-    holiday:     4,
-    weekend:     6,
-    schoolday:  10
-  }
-
-  private
-
-  def profile_x48(target_date:, synthetic_date:, synthetic_amr_data:)
-    average_profile_for_day_x48(synthetic_date: synthetic_date, synthetic_amr_data: synthetic_amr_data, target_date: target_date)
-  end
-
-  def scan_days_offset(distance = 100)
-    # work outwards from target day with these offsets
-    # [0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6, 7, -7, 8, -8, 9, -9, 10, -10......-100]
-    @scan_days_offset ||= [0, (1..distance).to_a.zip((-distance..-1).to_a.reverse)].flatten
-  end
-
-  def average_profile_for_day_x48(synthetic_date:, synthetic_amr_data:, target_date: nil)
-    day_type = @meter_collection.holidays.day_type(synthetic_date)
-    profiles_to_average = []
-    scan_days_offset.each do |days_offset|
-      date_offset = synthetic_date + days_offset
-      if synthetic_amr_data.date_exists?(date_offset) && @meter_collection.holidays.day_type(date_offset) == day_type
-        profiles_to_average.push(synthetic_amr_data.one_days_data_x48(date_offset))
-      end
-      break if profiles_to_average.length >= NUM_SAME_DAYTYPE_REQUIRED[day_type]
-    end
-    AMRData.fast_average_multiple_x48(profiles_to_average)
-  end
-  alias_method :average_profile_for_day_x48_super, :average_profile_for_day_x48
 end
