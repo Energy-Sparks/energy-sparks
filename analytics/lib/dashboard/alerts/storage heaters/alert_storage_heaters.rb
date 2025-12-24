@@ -97,39 +97,6 @@ class AlertStorageHeatersLongTermTrend < AlertGasLongTermTrend
   end
 end
 
-class AlertStorageHeaterTargetAnnual < AlertGasTargetAnnual
-  include AlertGasToStorageHeaterSubstitutionMixIn
-  include ElectricityCostCo2Mixin
-  def self.template_variables
-    specific = { 'Storage heaters targetting and tracking' => long_term_variables('storage heaters')}
-    specific.merge(self.superclass.template_variables)
-  end
-
-  def fuel_type
-    :storage_heaters
-  end
-
-  def aggregate_meter
-    @school.storage_heater_meter
-  end
-
-  def aggregate_target_meter
-    @school.target_school.storage_heater_meter
-  end
-end
-
-class AlertStorageHeaterTarget4Week < AlertStorageHeaterTargetAnnual
-  def rating_target_percent
-    last_4_weeks_percent_of_target
-  end
-end
-
-class AlertStorageHeaterTarget1Week < AlertStorageHeaterTargetAnnual
-  def rating_target_percent
-    last_week_percent_of_target
-  end
-end
-
 class AlertSchoolWeekComparisonStorageHeater < AlertSchoolWeekComparisonGas
   include AlertGasToStorageHeaterSubstitutionMixIn
   include ElectricityCostCo2Mixin

@@ -88,9 +88,9 @@ class TargetsService
     TargetMeter.annual_kwh_estimate_required?(aggregate_meter)
   end
 
-  def annual_kwh_estimate_helpful?
-    TargetMeter.annual_kwh_estimate_helpful?(aggregate_meter)
-  end
+  # def annual_kwh_estimate_helpful?
+  #   TargetMeter.annual_kwh_estimate_helpful?(aggregate_meter)
+  # end
 
   # use model to calculate prorata type estimate of annual kwh in abscence of full year data
   def annual_kwh_estimate_kwh
@@ -117,10 +117,10 @@ class TargetsService
   # end
 
   # go off to internet to pick up DEC data
-  def dec_annual_kwh_estimate_kwh
-    dec = DisplayEnergyCertificate.new.recent_aggregate_data(@aggregate_school.postcode)
-    @fuel_type == :electricity ? dec[:electricity_kwh] : dec[:heating_kwh]
-  end
+  # def dec_annual_kwh_estimate_kwh
+  #   dec = DisplayEnergyCertificate.new.recent_aggregate_data(@aggregate_school.postcode)
+  #   @fuel_type == :electricity ? dec[:electricity_kwh] : dec[:heating_kwh]
+  # end
 
   def recent_data?
     TargetMeter.recent_data?(aggregate_meter)
@@ -144,7 +144,7 @@ class TargetsService
   end
 
   # Does the analytics think there's a target set?
-  delegate :target_set?, to: :aggregate_meter
+  # delegate :target_set?, to: :aggregate_meter
 
   # returns hash, value-attribute list,
   # .to_s key & value to view,
@@ -153,43 +153,43 @@ class TargetsService
   #   valid? ? target_meter.analytics_debug_info : {}
   # end
 
-  def culmulative_progress_chart
-    case @fuel_type
-    when :electricity
-      :targeting_and_tracking_weekly_electricity_to_date_cumulative_line
-    when :gas
-      :targeting_and_tracking_weekly_gas_to_date_cumulative_line
-    when :storage_heater
-      :targeting_and_tracking_weekly_storage_heater_to_date_cumulative_line
-    end
-  end
+  # def culmulative_progress_chart
+  #   case @fuel_type
+  #   when :electricity
+  #     :targeting_and_tracking_weekly_electricity_to_date_cumulative_line
+  #   when :gas
+  #     :targeting_and_tracking_weekly_gas_to_date_cumulative_line
+  #   when :storage_heater
+  #     :targeting_and_tracking_weekly_storage_heater_to_date_cumulative_line
+  #   end
+  # end
 
-  def weekly_progress_chart
-    case @fuel_type
-    when :electricity
-      :targeting_and_tracking_weekly_electricity_to_date_line
-    when :gas
-      :targeting_and_tracking_weekly_gas_to_date_line
-    when :storage_heater
-      :targeting_and_tracking_weekly_storage_heater_to_date_line
-    end
-  end
+  # def weekly_progress_chart
+  #   case @fuel_type
+  #   when :electricity
+  #     :targeting_and_tracking_weekly_electricity_to_date_line
+  #   when :gas
+  #     :targeting_and_tracking_weekly_gas_to_date_line
+  #   when :storage_heater
+  #     :targeting_and_tracking_weekly_storage_heater_to_date_line
+  #   end
+  # end
 
-  def weekly_progress_to_date_chart
-    case @fuel_type
-    when :electricity
-      :targeting_and_tracking_weekly_electricity_one_year_line
-    when :gas
-      :targeting_and_tracking_weekly_gas_one_year_line
-    when :storage_heater
-      :targeting_and_tracking_weekly_storage_heater_one_year_line
-    end
-  end
+  # def weekly_progress_to_date_chart
+  #   case @fuel_type
+  #   when :electricity
+  #     :targeting_and_tracking_weekly_electricity_one_year_line
+  #   when :gas
+  #     :targeting_and_tracking_weekly_gas_one_year_line
+  #   when :storage_heater
+  #     :targeting_and_tracking_weekly_storage_heater_one_year_line
+  #   end
+  # end
 
-  def self.analytics_relevant(meter)
-    rel = !meter.nil? && meter.target_set?
-    rel ? :relevant : :never_relevant
-  end
+  # def self.analytics_relevant(meter)
+  #   rel = !meter.nil? && meter.target_set?
+  #   rel ? :relevant : :never_relevant
+  # end
 
   private
 
