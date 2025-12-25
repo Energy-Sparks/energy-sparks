@@ -142,15 +142,15 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
     end
   end
 
-  def target_schools
-    target_school = school.target_school(chart_config.target_calculation_type)
+  # def target_schools
+  #   target_school = school.target_school(chart_config.target_calculation_type)
 
-    if chart_config.show_only_target_school?
-      [target_school]
-    else
-      [school, target_school]
-    end
-  end
+  #   if chart_config.show_only_target_school?
+  #     [target_school]
+  #   else
+  #     [school, target_school]
+  #   end
+  # end
 
   def determine_multi_school_chart_date_range_private
     extend_to_future = chart_config.include_target? && chart_config.extend_chart_into_future?

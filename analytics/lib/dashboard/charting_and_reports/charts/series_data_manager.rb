@@ -185,20 +185,20 @@ module Series
 
     def single_name; nil end
 
-    def target_school
-      @school.target_school? ? @school : @school.target_school(target_calculation_type)
-    end
+    # def target_school
+    #   @school.target_school? ? @school : @school.target_school(target_calculation_type)
+    # end
 
-    def target_meter(meter)
-      original_school = school.target_school? ? @school : @school.target_school(target_calculation_type)
-      target_school.aggregate_meter(meter.fuel_type)
-    end
+    # def target_meter(meter)
+    #   original_school = school.target_school? ? @school : @school.target_school(target_calculation_type)
+    #   target_school.aggregate_meter(meter.fuel_type)
+    # end
 
-    # only call if dealing with target meter, else will force expensive
-    # lazy target meter calculation
-    def target_start_date(meter)
-      target_meter(meter).target_dates.target_start_date
-    end
+    # # only call if dealing with target meter, else will force expensive
+    # # lazy target meter calculation
+    # def target_start_date(meter)
+    #   target_meter(meter).target_dates.target_start_date
+    # end
 
     def amr_data_date_range(meter, start_date, end_date, data_type)
 

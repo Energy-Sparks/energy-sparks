@@ -1,4 +1,5 @@
-require 'require_all'
+# frozen_string_literal: true
+
 # creates a 'target' school from an existing school
 # the initial implementation is the school with the
 # and data shifted 1 year and then scaled by the target factor
