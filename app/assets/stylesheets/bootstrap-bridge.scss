@@ -92,3 +92,11 @@ button.btn-close { @extend button.close !optional; }
       @extend .mr#{$infix}-auto;
   }
 }
+
+/* Make BS5-style input-group buttons sit flush in BS4 */
+.input-group > .btn,
+.input-group > button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
