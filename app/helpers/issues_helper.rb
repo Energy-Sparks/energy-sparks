@@ -43,10 +43,10 @@ module IssuesHelper
       title = issue.review_date.nil? ? 'No next review date set' : 'Next review date is over a week away'
     elsif issue.review_date > Time.zone.today
       colour = 'bg-warning text-white'
-      title = 'Next review approaching soon'
+      title = 'Next review date approaching soon'
     else
       colour = 'bg-danger text-white'
-      title = 'Next review is overdue'
+      title = 'Next review date is overdue'
     end
     text = issue.review_date ? short_dates(issue.review_date, humanise:) : 'No date set'
 
