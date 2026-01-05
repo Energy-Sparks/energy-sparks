@@ -38,13 +38,13 @@ describe '*_consumption_during_holiday' do
                                                 Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse]
   }.flat_map { |key, classes| classes.permutation.map { |classes| [classes] + [key] } }
     .each do |alert_classes, key|
-    describe "#{key} - #{alert_classes.first}" do
-      let(:alert_classes) { alert_classes }
-      let(:key) { key }
+      describe "#{key} - #{alert_classes.first}" do
+        let(:alert_classes) { alert_classes }
+        let(:key) { key }
 
-      it_behaves_like 'a school comparison report'
-      it_behaves_like 'a school comparison report with a table'
-      it_behaves_like 'a school comparison report with a chart'
-    end
+        it_behaves_like 'a school comparison report'
+        it_behaves_like 'a school comparison report with a table'
+        it_behaves_like 'a school comparison report with a chart'
+      end
   end
 end
