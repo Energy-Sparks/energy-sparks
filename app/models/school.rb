@@ -702,10 +702,10 @@ class School < ApplicationRecord
                       pseudo_meter_attributes,
                       school_target_attributes]
                      .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
-      pseudo_attributes.each do |meter_type, attributes|
-        collection[meter_type] ||= []
-        collection[meter_type] = collection[meter_type] + attributes
-      end
+                       pseudo_attributes.each do |meter_type, attributes|
+                         collection[meter_type] ||= []
+                         collection[meter_type] = collection[meter_type] + attributes
+                       end
     end
 
     all_attributes[:aggregated_electricity] ||= []
