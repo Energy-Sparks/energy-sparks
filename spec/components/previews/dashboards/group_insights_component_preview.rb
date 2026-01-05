@@ -4,7 +4,7 @@ module Dashboards
     def example(slug: nil)
       school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
       user = school_group.users.group_admin.sample
-      render(Dashboards::GroupInsightsComponent.new(school_group: school_group, user: user))
+      render(Dashboards::GroupInsightsComponent.new(school_group: school_group, schools: school_group.schools, user: user))
     end
 
     private

@@ -6,6 +6,67 @@ linters:
       - 'application/json'
       - 'application/ld+json' # allow schema.org markup, e.g. jobs page
       - 'text/javascript'
+  DeprecatedClasses:
+    enabled: true
+    addendum: "See bootstrap-bridge.scss for mappings"
+    rule_set:
+      # Grid gutters
+      - deprecated: ['no-gutters']
+        suggestion: 'Use "row g-0" instead of "row no-gutters"'
+      # Close button
+      - deprecated: ['close']
+        suggestion: 'Replace "button.close" with "button.btn-close"'
+      # Float utilities
+      - deprecated: ['float-(left|right)']
+        suggestion: 'Use "float-start"/"float-end" instead of "float-left"/"float-right"'
+      # Border direction
+      - deprecated: ['border-(left|right)']
+        suggestion: 'Use "border-start"/"border-end" instead of "border-left"/"border-right"'
+      # Rounded corners
+      - deprecated: ['rounded-(left|right)', 'rounded-sm', 'rounded$', 'rounded-lg']
+        suggestion: 'Use "rounded-start"/"rounded-end"/"rounded-1"/"rounded-2"/"rounded-3" instead'
+      # Text alignment
+      - deprecated: ['text-(left|right)']
+        suggestion: 'Use "text-start"/"text-end" instead of "text-left"/"text-right"'
+      # Screen reader utilities
+      - deprecated: ['sr-only(-focusable)?']
+        suggestion: 'Use "visually-hidden"/"visually-hidden-focusable" instead of "sr-only"/"sr-only-focusable"'
+      # Font weights
+      - deprecated: ['font-weight-(light|normal|bold)']
+        suggestion: 'Use "fw-light/fw-normal/fw-bold" instead of "font-weight-light/normal/bold"'
+      # Font style
+      - deprecated: ['font-italic']
+        suggestion: 'Use "fst-italic" instead of "font-italic"'
+      # Monospace font
+      - deprecated: ['text-monospace']
+        suggestion: 'Use "font-monospace" instead of "text-monospace"'
+      # Spacing (directional shorthands)
+      - deprecated: ['[pm][lr]-\d+']
+        suggestion: 'Use ps-/pe-/ms-/me- classes instead of pl-/pr-/ml-/mr-'
+      # Margin auto
+      - deprecated: ['m[lr]-auto']
+        suggestion: 'Use "ms-auto"/"me-auto" instead of "ml-auto"/"mr-auto"'
+      # Badge classes
+      - deprecated: ['badge-[_\w]*']
+        suggestion: 'Use "bg-*" or "badge rounded-pill" classes instead of old badge-* or badge-pill'
+      # Offset utilities
+      - deprecated: ['offset(-[sm|md|lg|xl|xxl])?-[\d]+']
+        suggestion: 'Replace offset-* classes with spacing utilities (ms-*, me-*)'
+      # Order utilities
+      - deprecated: ['order(-[sm|md|lg|xl|xxl])?-(6|7|8|9|1[0-2])']
+        suggestion: 'Use order-0 to order-5, or order-first/order-last, instead of higher numbers'
+      # Form layout
+      - deprecated: ['form-row']
+        suggestion: 'Use "row" instead of "form-row" (works in BS4 and BS5)'
+      # Custom form controls removed in BS5
+      - deprecated: ['custom-(control|checkbox|radio|select)']
+        suggestion: 'Use "form-check" and "form-check-input" for checkboxes/radios, keep "custom-select" for selects'
+      # Input group wrappers removed in BS5
+      - deprecated: ['input-group-(prepend|append)']
+        suggestion: 'Use "input-group" and place inputs/buttons directly inside'
+      # Card layout utilities removed in BS5
+      - deprecated: ['card-(deck|columns)']
+        suggestion: 'Use "row" with columns like "col-*" inside (works in BS4 and can map to BS5)'
   Rubocop:
     enabled: true
     rubocop_config:

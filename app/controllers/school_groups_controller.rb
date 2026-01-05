@@ -3,6 +3,7 @@
 class SchoolGroupsController < ApplicationController
   include SchoolGroupAccessControl
   include PartnersHelper
+  include SchoolGroupsHelper
   include Promptable
   include Scoring
   include SchoolGroupBreadcrumbs
@@ -12,8 +13,8 @@ class SchoolGroupsController < ApplicationController
   load_resource
 
   before_action :find_partners
-  before_action :load_schools, except: [:map]
-  before_action :redirect_unless_authorised, except: [:map]
+  before_action :load_schools, except: [:map, :settings]
+  before_action :redirect_unless_authorised, except: [:map, :settings]
   before_action :breadcrumbs
   before_action :find_school_group_fuel_types
   before_action :set_show_school_group_message
@@ -28,7 +29,7 @@ class SchoolGroupsController < ApplicationController
       format.csv do
         send_data SchoolGroups::RecentUsageCsvGenerator.new(school_group: @school_group,
                                                             schools: @schools,
-                                                            include_cluster: include_cluster).export,
+                                                            include_cluster: include_clusters?(@school_group)).export,
                   filename: csv_filename_for('recent_usage')
       end
     end
@@ -51,9 +52,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def settings
-    redirect_to map_school_group_path(@school_group) and return unless Flipper.enabled?(:group_settings, current_user)
-    # Taking this out for now
-    # authorize! :manage_settings, @school_group
+    redirect_to school_group_path(@school_group) and return unless can?(:manage_settings, @school_group)
   end
 
   private
@@ -78,19 +77,11 @@ class SchoolGroupsController < ApplicationController
     @fuel_types = @school_group.fuel_types
   end
 
-  def find_school_group
-    @school_group = SchoolGroup.find(params[:id])
-  end
-
   def breadcrumbs
     build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
   end
 
   def find_partners
     @partners = @school_group.partners
-  end
-
-  def include_cluster
-    can?(:update_settings, @school_group)
   end
 end

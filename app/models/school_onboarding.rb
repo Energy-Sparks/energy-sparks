@@ -66,6 +66,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :school_group, optional: true
   belongs_to :project_group, -> { where(group_type: :project) }, class_name: 'SchoolGroup', optional: true
   belongs_to :diocese, -> { where(group_type: :diocese) }, class_name: 'SchoolGroup', optional: true
+  belongs_to :local_authority_area, -> { where(group_type: :local_authority_area) }, class_name: 'SchoolGroup', optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :dark_sky_area, class_name: 'DarkSkyArea', optional: true
   belongs_to :weather_station, optional: true
@@ -97,7 +98,8 @@ class SchoolOnboarding < ApplicationRecord
                         scoreboard: school_group&.default_scoreboard,
                         default_chart_preference: school_group&.default_chart_preference,
                         country: school_group&.default_country,
-                        diocese: find_diocese
+                        diocese: find_group(group_type: :diocese, code_attr: :diocese_code),
+                        local_authority_area: find_group(group_type: :local_authority_area, code_attr: :la_code)
                       })
   end
 
@@ -191,9 +193,9 @@ class SchoolOnboarding < ApplicationRecord
     school_name
   end
 
-  def find_diocese
+  def find_group(group_type:, code_attr:)
     establishment = Lists::Establishment.current_establishment_from_urn(urn)
-    return nil unless establishment && establishment&.diocese_code
-    SchoolGroup.find_by(group_type: :diocese, dfe_code: establishment.diocese_code)
+    return nil unless establishment && establishment&.public_send(code_attr)
+    SchoolGroup.find_by(group_type:, dfe_code: establishment.public_send(code_attr))
   end
 end

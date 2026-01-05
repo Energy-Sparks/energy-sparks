@@ -78,13 +78,9 @@ describe 'viewing and recording action' do
     end
   end
 
-  context 'as a group admin' do
-    let!(:group_admin)    { create(:group_admin) }
-    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group) }
-
+  shared_examples 'a group user recording actions' do
     before do
-      school.update(school_group: group_admin.school_group)
-      sign_in(group_admin)
+      sign_in(group_user)
       visit intervention_type_path(intervention_type)
     end
 
@@ -103,15 +99,18 @@ describe 'viewing and recording action' do
     end
 
     context 'recording an intervention' do
-      it 'associates intervention with correct school from group' do
+      before do
         select other_school.name, from: :school_id
         click_on 'Record this action'
         fill_in :observation_at, with: Time.zone.today.strftime('%d/%m/%Y')
         click_on 'Record action'
+      end
+
+      it 'associates intervention with correct school from group' do
         expect(page).to have_content('Congratulations!')
         expect(other_school.observations.count).to eq(1)
         expect(other_school.observations.first.at).to eq(Time.zone.today)
-        expect(other_school.observations.first.created_by).to eq(group_admin)
+        expect(other_school.observations.first.created_by).to eq(group_user)
       end
     end
 
@@ -124,6 +123,22 @@ describe 'viewing and recording action' do
         expect(page).to have_no_button('Record action')
       end
     end
+  end
+
+  context 'as a group admin' do
+    let!(:group_user) { create(:group_admin) }
+    let!(:school) { create(:school, school_group: group_user.school_group) }
+    let!(:other_school) { create(:school, school_group: group_user.school_group) }
+
+    it_behaves_like 'a group user recording actions'
+  end
+
+  context 'as a group manager' do
+    let!(:group_user) { create(:group_manager) }
+    let!(:school) { create(:school, :with_school_group, :with_project, scoreboard:, group: group_user.school_group) }
+    let!(:other_school) { create(:school, :with_school_group, :with_project, group: group_user.school_group) }
+
+    it_behaves_like 'a group user recording actions'
   end
 
   context 'as an admin' do
@@ -184,6 +199,29 @@ describe 'viewing and recording action' do
 
       it 'links to the intervention' do
         expect(page).to have_link(href: school_intervention_path(school, observation))
+      end
+
+      context 'when there is no description' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, description: '') }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it 'shows prompt to add detail' do
+          expect(page).to have_content(I18n.t('activities.form.tell_us_more_label'))
+          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_intervention_path(school, observation))
+        end
+      end
+
+      context 'when there is a pupil count' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, pupil_count: 27) }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: observation.pupil_count)) }
       end
     end
 

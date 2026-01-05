@@ -60,11 +60,6 @@ module Schools
         up_downify(format_unit(change, :relative_percent, true, :target), sanitize: false)
       end
       helper_method :formatted_target_change
-
-      def t_fuel_type
-        t("advice_pages.fuel_type.#{@fuel_type}")
-      end
-      helper_method :t_fuel_type
     end
   end
 end

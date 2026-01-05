@@ -12,20 +12,6 @@ RSpec.describe SchoolsController, type: :controller do
     { name: nil }
   end
 
-  describe 'GET #index' do
-    it 'assigns schools that are visible but not grouped as @ungrouped_visible_schools' do
-      FactoryBot.create :school, visible: true
-      get :index, params: {}
-      expect(assigns(:ungrouped_visible_schools).length).to eq(1)
-    end
-
-    it 'assigns not visible schools as @schools_not_visible' do
-      FactoryBot.create :school, visible: false
-      get :index, params: {}
-      expect(assigns(:schools_not_visible).length).to eq(1)
-    end
-  end
-
   describe 'GET #show' do
     it 'shows the adult dashboard' do
       school = FactoryBot.create :school

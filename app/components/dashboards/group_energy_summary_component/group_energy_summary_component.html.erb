@@ -8,7 +8,7 @@
            role="tab"
            aria-controls="<%= fuel_type %>-overview"
            aria-selected="true">
-           <%= render IconComponent.new(fuel_type: fuel_type) %> <%= t(fuel_type, scope: 'common') %>
+           <%= render Elements::IconComponent.new(fuel_type: fuel_type) %> <%= t(fuel_type, scope: 'common') %>
         </a>
       </li>
     <% end %>
@@ -31,17 +31,24 @@
                  fuel_type: fuel_type,
                  metric: metric&.to_sym,
                  show_clusters: show_clusters?
-               ) do |table| %>
-                <% if modal_link? %>
-                  <% table.with_modal_link do %>
-                    <%= modal_link %>
-                  <% end %>
-                <% end %>
-          <% end %>
+               ) %>
       </div>
     <% end %>
   </div>
 <% end %>
+
+<div class="mt-3 d-flex">
+  <div class="flex-grow-1">
+    <% if show_status_note? %>
+      <%= fa_icon('circle-info') %>
+      <%= t('school_groups.show.status_note_html', path: school_group_status_index_path(school_group)) %>
+    <% end %>
+  </div>
+  <div>
+    <%= modal_link if modal_link %>
+  </div>
+</div>
+
 <% if footer? %>
   <%= footer %>
 <% end %>

@@ -1,10 +1,16 @@
-<div class="row">
-  <div class="col-md-3">
+<div class="form-group row">
+  <div class="col-sm-4">
     <%= simple_fields_for :contact do |n| %>
-      <%= n.input :auto_create_alert_contact, label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'), as: :boolean, class: "custom-checkbox pb-3", wrapper_html: { id: "test", class: "custom-checkbox pb-3"}, label_html: {class: "custom-control-label"}, input_html: { class: "custom-control-input", checked: checked } %>
+      <%= n.input :auto_create_alert_contact,
+                  label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
+                  as: :boolean,
+                  class: 'custom-checkbox pb-3',
+                  wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
+                  label_html: { class: 'custom-control-label' },
+                  input_html: { class: 'custom-control-input', checked: checked } %>
     <% end %>
   </div>
-  <div class="col-md-9">
+  <div class="col-sm-8">
     <p><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts') %>:</p>
     <ul>
       <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_1') %></li>
@@ -13,4 +19,3 @@
     </ul>
   </div>
 </div>
-

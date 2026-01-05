@@ -21,7 +21,7 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
   end
 
   shared_context 'with equivalences' do
-    let(:equivalence_type) { create(:equivalence_type, time_period: :last_week) }
+    let(:equivalence_type) { create(:equivalence_type, time_period: :last_week, meter_type: :electricity) }
     let(:equivalence_type_content) do
       create(:equivalence_type_content_version,
                equivalence_type: equivalence_type,
@@ -104,9 +104,10 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       it { expect(html).to have_content('Your school spent £2.00 on electricity last year!') }
 
       it {
-        expect(html).to have_link(I18n.t('pupils.schools.show.find_how_much_energy_used'),
-                                     href: pupils_school_analysis_path(school,
-                                                                       category: equivalence_type.meter_type))
+        expect(html).to have_link(I18n.t('pupils.analysis.explore_energy_data_html',
+                                         fuel_type: I18n.t('common.electricity').downcase),
+                                  href: pupils_school_analysis_path(school,
+                                                                    category: equivalence_type.meter_type))
       }
 
 

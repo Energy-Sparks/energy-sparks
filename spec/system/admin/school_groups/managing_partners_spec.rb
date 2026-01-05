@@ -49,6 +49,7 @@ RSpec.describe 'Managing school group partners', :include_application_helper, :s
   before do
     sign_in(admin)
     visit admin_school_group_path(school_group)
+
     click_on 'Manage partners'
   end
 

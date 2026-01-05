@@ -22,12 +22,12 @@ jobs:
       RAILS_ENV: test
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - run: bundle exec rspec --profile 10
         env:
           KNAPSACK_GENERATE_REPORT: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: knapsack_rspec_report
           path: knapsack_rspec_report.json

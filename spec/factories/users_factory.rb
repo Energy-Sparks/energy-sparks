@@ -38,6 +38,12 @@ FactoryBot.define do
       school
     end
 
+    factory :student do
+      name { 'A Student' }
+      role { :student }
+      school
+    end
+
     factory :onboarding_user do
       name { 'A Teacher' }
       role { :school_onboarding }

@@ -20,7 +20,7 @@ module Scoreboards
     end
 
     def render?
-      podium&.scoreboard && helpers.can?(:read, podium.scoreboard)
+      podium&.scoreboard && helpers.can?(:show, podium.scoreboard)
     end
 
     def show_recent_activity?

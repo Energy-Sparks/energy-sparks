@@ -19,7 +19,7 @@
     <div class="section">
       <div class="nested-fields row mb-2">
         <div class="col-1">
-          <%= render IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
+          <%= render Elements::IconComponent.new(name: 'up-down-left-right', classes: 'handle') %>
         </div>
         <div class="col-9">
           <%= link_to s.object.title, edit_admin_cms_section_path(s.object), target: '_blank', rel: 'noopener' %>

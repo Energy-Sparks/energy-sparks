@@ -40,9 +40,7 @@ describe Ability do
     end
 
     context 'with School Groups' do
-      [:show, :compare].freeze.each do |permission|
-        it { is_expected.to be_able_to(permission, create(:school_group, public: true)) }
-      end
+      it { is_expected.to be_able_to(:show, create(:school_group, public: true)) }
     end
   end
 
@@ -81,6 +79,7 @@ describe Ability do
     it { is_expected.not_to be_able_to(:read_restricted_analysis, create(:school)) }
     it { is_expected.not_to be_able_to(:download_school_data, create(:school, school_group: school.school_group)) }
     it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
+    it { is_expected.not_to be_able_to(:start, create(:transport_survey, school: create(:school))) }
   end
 
   shared_examples 'they can manage correct types of tariffs' do |school_tariffs: false, group_tariffs: false, site_tariffs: false|
@@ -168,6 +167,30 @@ describe Ability do
     end
   end
 
+  shared_examples 'adult contributions are visible and pupil content is protected' do
+    context 'with activities' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator)) }
+      it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors)) }
+      it { is_expected.not_to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors, updated_by: create(:pupil))) }
+    end
+
+    context 'with interventions' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention)) }
+      it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors)) }
+      it { is_expected.not_to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors, updated_by: create(:pupil))) }
+    end
+  end
+
+  shared_examples 'pupil contributions for school are accessible' do
+    context 'with activities' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors, school: user.school, updated_by: create(:pupil))) }
+    end
+
+    context 'with interventions' do
+      it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors, school: user.school, updated_by: create(:pupil))) }
+    end
+  end
+
   describe 'abilities' do
     subject(:ability) { Ability.new(user) }
 
@@ -182,8 +205,8 @@ describe Ability do
 
       context 'with school groups' do
         it { is_expected.not_to be_able_to(:show_management_dash, create(:school_group))}
-        it { is_expected.not_to be_able_to(:update_settings, create(:school_group))}
-        it { is_expected.not_to be_able_to(:compare, create(:school_group, public: false))}
+        it { is_expected.not_to be_able_to(:manage_settings, create(:school_group))}
+        it { is_expected.not_to be_able_to(:show, create(:school_group, public: false))}
       end
 
       context 'with schools' do
@@ -220,6 +243,10 @@ describe Ability do
           let(:school) { create(:school, :with_school_group) }
         end
       end
+
+      context 'with contributed content' do
+        it_behaves_like 'adult contributions are visible and pupil content is protected'
+      end
     end
 
     context 'when user is an admin' do
@@ -244,7 +271,6 @@ describe Ability do
       context 'with all school groups' do
         [true, false].each do |public|
           it { is_expected.to be_able_to(:show_management_dash, create(:school_group, public: public))}
-          it { is_expected.to be_able_to(:update_settings, create(:school_group, public: public))}
         end
       end
 
@@ -265,12 +291,12 @@ describe Ability do
 
         context 'with their school group' do
           it 'they can view the group' do
-            expect(ability).to be_able_to(:compare, school_group)
+            expect(ability).to be_able_to(:show, school_group)
             expect(ability).to be_able_to(:show_management_dash, school_group)
           end
 
           it 'they cannot manage the group' do
-            expect(ability).not_to be_able_to(:update_settings, school_group)
+            expect(ability).not_to be_able_to(:manage_settings, school_group)
           end
         end
 
@@ -296,9 +322,18 @@ describe Ability do
           expect(ability).to be_able_to(:manage, Activity.new(school: school))
         end
 
+        it 'allows transport surveys to be started' do
+          expect(ability).to be_able_to(:start, create(:transport_survey, school: school))
+        end
+
         it 'allows access to restricted advice' do
           expect(ability).to be_able_to(:read_restricted_analysis, school)
           expect(ability).to be_able_to(:read_restricted_advice, school)
+        end
+
+        context 'with contributed content' do
+          it_behaves_like 'adult contributions are visible and pupil content is protected'
+          it_behaves_like 'pupil contributions for school are accessible'
         end
       end
 
@@ -346,6 +381,27 @@ describe Ability do
           end
         end
       end
+
+      context 'when user is a student' do
+        let(:user) { create(:student, school: school) }
+
+        it_behaves_like 'a user with common school user permissions'
+
+        it 'does not allow them to create targets' do
+          expect(ability).not_to be_able_to(:manage, create(:school_target, school: school))
+        end
+
+        it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false
+
+        context 'when school does not have public data sharing' do
+          let(:school) { create(:school, school_group: school_group, data_sharing: :within_group) }
+
+          it 'restricts access to some analysis' do
+            expect(ability).not_to be_able_to(:read_restricted_analysis, school)
+            expect(ability).not_to be_able_to(:read_restricted_advice, school)
+          end
+        end
+      end
     end
 
     context 'with group users' do
@@ -355,7 +411,7 @@ describe Ability do
       shared_examples 'a user with common group permissions' do
         it_behaves_like 'a user with permissions common to all'
 
-        it { is_expected.to be_able_to(:compare, school_group) }
+        it { is_expected.to be_able_to(:show, school_group) }
         it { is_expected.to be_able_to(:show_management_dash, school_group)}
 
         context 'with schools outside group' do
@@ -365,15 +421,27 @@ describe Ability do
         context 'with other public groups' do
           let(:other_school_group) { create(:school_group) }
 
-          it { is_expected.to be_able_to(:compare, other_school_group) }
+          it { is_expected.to be_able_to(:show, other_school_group) }
           it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
         end
 
         context 'with other private groups' do
           let(:other_school_group) { create(:school_group, public: false) }
 
-          it { is_expected.not_to be_able_to(:compare, other_school_group) }
+          it { is_expected.not_to be_able_to(:show, other_school_group) }
           it { is_expected.not_to be_able_to(:show_management_dash, other_school_group)}
+        end
+
+        context 'with contributed content' do
+          it_behaves_like 'adult contributions are visible and pupil content is protected'
+
+          context 'with activities' do
+            it { is_expected.to be_able_to(:view_contributed_content, create(:activity_without_creator, :with_contributors, school: create(:school, school_group:), updated_by: create(:pupil))) }
+          end
+
+          context 'with interventions' do
+            it { is_expected.to be_able_to(:view_contributed_content, create(:observation, :intervention, :with_contributors, school: create(:school, school_group:), updated_by: create(:pupil))) }
+          end
         end
       end
 
@@ -398,7 +466,21 @@ describe Ability do
             end
           end
 
-          it { is_expected.to be_able_to(:update_settings, school_group)}
+          context 'with other schools' do
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school))) }
+          end
+
+          it { is_expected.to be_able_to(:show, school_group)}
+          it { is_expected.to be_able_to(:show_management_dash, school_group)}
+          it { is_expected.to be_able_to(:manage_settings, school_group)}
+          it { is_expected.to be_able_to(:view_engagement_report, school_group)}
+          it { is_expected.to be_able_to(:view_school_status, school_group)}
+
+          it { is_expected.to be_able_to(:view_clusters, school_group)}
+          it { is_expected.to be_able_to(:manage_clusters, school_group)}
+          it { is_expected.to be_able_to(:manage_chart_defaults, school_group)}
+          it { is_expected.to be_able_to(:view_secr_report, school_group)}
+          it { is_expected.to be_able_to(:view_digital_signage, school_group)}
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: true, group_tariffs: true, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
@@ -447,6 +529,11 @@ describe Ability do
             end
           end
         end
+
+        context 'with transport surveys' do
+          it { is_expected.to be_able_to(:start, create(:transport_survey, school: create(:school, school_group:))) }
+          it { is_expected.not_to be_able_to(:start, create(:transport_survey, school: create(:school))) }
+        end
       end
 
       context 'when users is a group manager' do
@@ -457,10 +544,14 @@ describe Ability do
 
         shared_examples 'they have group manager rights' do
           context 'with schools in the group' do
-            let(:school) { create(:school, school_group: school_group) }
+            let(:school) { create(:school, :with_school_group, :with_project, group: school_group) }
 
-            it 'does not allow activities to be recorded and managed' do
-              expect(ability).not_to be_able_to(:manage, Activity.new(school: school))
+            context 'with transport surveys' do
+              it { is_expected.to be_able_to(:start, create(:transport_survey, school:)) }
+            end
+
+            it 'allows activities to be recorded and managed' do
+              expect(ability).to be_able_to(:manage, Activity.new(school: school))
             end
 
             it 'does not allow access to restricted advice' do
@@ -475,11 +566,27 @@ describe Ability do
             it { is_expected.not_to be_able_to(:show_management_dash, school) }
           end
 
-          it { is_expected.not_to be_able_to(:update_settings, school_group)}
+          context 'with other schools' do
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school))) }
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school, :with_school_group))) }
+            it { expect(ability).not_to be_able_to(:manage, Activity.new(school: create(:school, :with_project))) }
+          end
 
           it_behaves_like 'they can manage correct types of tariffs', school_tariffs: false, group_tariffs: false, site_tariffs: false do
             let(:school) { create(:school, school_group: school_group) }
           end
+
+          it { is_expected.to be_able_to(:show, school_group)}
+          it { is_expected.to be_able_to(:show_management_dash, school_group)}
+          it { is_expected.to be_able_to(:manage_settings, school_group)}
+          it { is_expected.to be_able_to(:view_engagement_report, school_group)}
+          it { is_expected.to be_able_to(:view_school_status, school_group)}
+
+          it { is_expected.not_to be_able_to(:view_clusters, school_group)}
+          it { is_expected.not_to be_able_to(:manage_clusters, school_group)}
+          it { is_expected.not_to be_able_to(:manage_chart_defaults, school_group)}
+          it { is_expected.not_to be_able_to(:view_secr_report, school_group)}
+          it { is_expected.not_to be_able_to(:view_digital_signage, school_group)}
         end
 
         it_behaves_like 'their access to school dashboards is limited by data sharing settings', group_manager: true do

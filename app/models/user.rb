@@ -31,6 +31,7 @@
 #  school_id                   :bigint(8)
 #  sign_in_count               :integer          default(0), not null
 #  staff_role_id               :bigint(8)
+#  terms_accepted              :boolean          default(FALSE)
 #  unlock_token                :string
 #  updated_at                  :datetime         not null
 #
@@ -95,7 +96,7 @@ class User < ApplicationRecord
 
   # volunteer has been removed, this was 8
   enum :role, { guest: 0, staff: 1, admin: 2, school_admin: 3, school_onboarding: 4, pupil: 5,
-                group_admin: 6, analytics: 7, group_manager: 8 }
+                group_admin: 6, analytics: 7, group_manager: 8, student: 9 }
 
   enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
 
@@ -104,7 +105,7 @@ class User < ApplicationRecord
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
   scope :mailchimp_roles, lambda {
-    where.not(role: %i[pupil school_onboarding]).where.not(confirmed_at: nil)
+    where.not(role: %i[pupil student school_onboarding]).where.not(confirmed_at: nil)
   }
 
   scope :mailchimp_update_required, lambda {
@@ -138,7 +139,7 @@ class User < ApplicationRecord
   validates :staff_role_id, :school_id, presence: true, if: :school_admin?
   validates :staff_role_id, presence: true, if: :school_onboarding?
 
-  validates :school_id, presence: true, if: :pupil?
+  validates :school_id, presence: true, if: :student_user?
 
   validates :school_group_id, presence: true, if: :group_user?
   validate :validate_group_association
@@ -150,6 +151,10 @@ class User < ApplicationRecord
 
   def group_user?
     group_admin? || group_manager?
+  end
+
+  def student_user?
+    pupil? || student?
   end
 
   # Hook into devise so we can use our own status flag to permanently disable an account
@@ -222,11 +227,16 @@ class User < ApplicationRecord
     end
   end
 
-  def schools
-    return School.visible.by_name if admin?
-    return school_group.assigned_schools.visible.by_name if school_group
-
-    [school].compact
+  def schools(current_ability: nil, permission: :show)
+    if admin?
+      School.visible.by_name
+    elsif school_group && current_ability
+      school_group.assigned_schools.active.by_name.accessible_by(current_ability, permission)
+    elsif school_group
+      school_group.assigned_schools.visible.by_name
+    else
+      [school].compact
+    end
   end
 
   def school_name
@@ -356,6 +366,10 @@ class User < ApplicationRecord
     else
       ''
     end
+  end
+
+  def can_be_made_school_admin?
+    staff?
   end
 
   protected

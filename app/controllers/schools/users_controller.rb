@@ -13,6 +13,7 @@ module Schools
       @users = @school.users
       @school_admins = @school.all_school_admins.uniq
       @staff = @users.staff
+      @students = @users.student
       @pupils = @users.pupil
     end
 
