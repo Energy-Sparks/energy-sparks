@@ -6,6 +6,12 @@
 <%= form_for(school, url: school_configuration_path, method: method) do |f| %>
 
   <h3>Basic Configuration</h3>
+  <div class="form-group">
+    <%= f.check_box :full_school %>
+    <%= f.label :full_school, 'Full school' %>
+    <small class="form-text text-muted">Uncheck this option if this is a separate building or campus</small>
+  </div>
+
   <div class="form-row">
     <%= f.fields_for :organisation_school_grouping do |grouping_fields| %>
       <div class="form-group col-md-12">
