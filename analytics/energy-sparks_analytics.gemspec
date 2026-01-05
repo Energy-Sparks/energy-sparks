@@ -17,18 +17,18 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
   s.required_ruby_version = '>= 3.2'
 
-  s.add_dependency 'activesupport', '>= 6.0', '< 8.2'
-  s.add_dependency 'benchmark-memory', '~> 0'
-  s.add_dependency 'chroma', '~> 0'
-  s.add_dependency 'hashdiff', '~> 1'
-  s.add_dependency 'interpolate', '~> 0.3.0' # upstream repository archived since 2018
-  s.add_dependency 'require_all', '~> 3'
-  s.add_dependency 'roo', '>= 2', '< 4'
-  s.add_dependency 'roo-xls', '~> 1'
-  s.add_dependency 'ruby-sun-times', '~> 0'
+  s.add_dependency 'activesupport'
+  s.add_dependency 'benchmark-memory'
+  s.add_dependency 'chroma'
+  s.add_dependency 'hashdiff'
+  s.add_dependency 'interpolate' # upstream repository archived since 2018
+  s.add_dependency 'require_all'
+  s.add_dependency 'roo'
+  s.add_dependency 'roo-xls'
+  s.add_dependency 'ruby-sun-times'
   # doesn't appear to be used - s.add_dependency 'soda-ruby', '~> 0' # version 1 released 2019
-  s.add_dependency 'statsample', '~> 2' # no release since 2017 - using forked version in Gemfile
-  s.add_dependency 'write_xlsx', '~> 1'
+  s.add_dependency 'statsample' # no release since 2017 - using forked version in Gemfile
+  s.add_dependency 'write_xlsx'
 
   s.metadata['rubygems_mfa_required'] = 'true'
 end
