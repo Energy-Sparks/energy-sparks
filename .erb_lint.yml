@@ -7,7 +7,7 @@ linters:
       - 'application/ld+json' # allow schema.org markup, e.g. jobs page
       - 'text/javascript'
   DeprecatedClasses:
-    enabled: false
+    enabled: true
     addendum: "See bootstrap-bridge.scss for mappings"
     rule_set:
       # Grid gutters
@@ -41,13 +41,13 @@ linters:
       - deprecated: ['text-monospace']
         suggestion: 'Use "font-monospace" instead of "text-monospace"'
       # Spacing (directional shorthands)
-      - deprecated: ['[pm][lr]-.*']
+      - deprecated: ['[pm][lr]-\d+']
         suggestion: 'Use ps-/pe-/ms-/me- classes instead of pl-/pr-/ml-/mr-'
       # Margin auto
       - deprecated: ['m[lr]-auto']
         suggestion: 'Use "ms-auto"/"me-auto" instead of "ml-auto"/"mr-auto"'
       # Badge classes
-      - deprecated: ['badge[-_\w]*']
+      - deprecated: ['badge-[_\w]*']
         suggestion: 'Use "bg-*" or "badge rounded-pill" classes instead of old badge-* or badge-pill'
       # Offset utilities
       - deprecated: ['offset(-[sm|md|lg|xl|xxl])?-[\d]+']
