@@ -55,6 +55,7 @@
 
 class User < ApplicationRecord
   include MailchimpUpdateable
+  include ActorAssociations
 
   watch_mailchimp_fields :confirmed_at, :name, :preferred_locale, :school_id, :school_group_id, :role, :staff_role_id,
                          :active
@@ -74,19 +75,27 @@ class User < ApplicationRecord
   belongs_to :created_by, class_name: :User, optional: true
   has_many :contacts
   has_many :consent_grants, inverse_of: :user, dependent: :nullify
-  has_many :users_created, class_name: :User, inverse_of: :created_by, dependent: :nullify
-
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,
                               foreign_key: :default_issues_admin_user_id, dependent: :nullify
 
-  has_many :observations_created, class_name: 'Observation', inverse_of: :created_by, dependent: :nullify
-  has_many :observations_updated, class_name: 'Observation', inverse_of: :updated_by, dependent: :nullify
-  has_many :energy_tariffs_created, class_name: 'EnergyTariff', inverse_of: :created_by, dependent: :nullify
-  has_many :energy_tariffs_updated, class_name: 'EnergyTariff', inverse_of: :updated_by, dependent: :nullify
-  has_many :issues_created, class_name: 'Issue', inverse_of: :created_by, dependent: :nullify
-  has_many :issues_updated, class_name: 'Issue', inverse_of: :updated_by, dependent: :nullify
-  has_many :activities_updated, class_name: 'Activity', inverse_of: :updated_by, dependent: :nullify
+  actor_associations_for \
+    Activity: [:created, :updated],
+    CaseStudy: [:created, :updated],
+    'Cms::Category': [:created, :updated],
+    'Cms::Page': [:created, :updated],
+    'Cms::Section': [:created, :updated],
+    EnergyTariff: [:created, :updated],
+    Issue: [:created, :updated],
+    Newsletter: [:created, :updated],
+    Observation: [:created, :updated],
+    MeterAttribute: [:created, :deleted],
+    SchoolGroupMeterAttribute: [:created, :deleted],
+    SchoolMeterAttribute: [:created, :deleted],
+    GlobalMeterAttribute: [:created, :deleted],
+    SchoolOnboarding: :created,
+    SchoolAlertTypeExclusion: :created,
+    User: :created
 
   has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
 
