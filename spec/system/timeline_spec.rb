@@ -1,23 +1,16 @@
 require 'rails_helper'
 
 describe 'timelines' do
-  # rubocop:disable RSpec/MultipleMemoizedHelpers
   before { travel_to(Date.new(2025, 12, 31)) }
 
-  let(:user) { nil }
   let(:schools) { [] }
-  let(:school) { schools.first }
-
-  let!(:observations_by_year) do # create observations for this year, last year and 3 years ago, for each school
-    [0, 1, 3].collect do |i|
-      schools.collect do |school|
-        create(:observation, :activity, school:, at: i.years.ago)
-      end
-    end
-  end
-
-  let!(:observation_invisible) do # create invisible observations for current year
-    create(:observation, :activity, school:, at: Time.current, visible: false)
+  let!(:observations) do
+    {
+      # create observations for this year, last year and 3 years ago, for each school
+      by_year: [0, 1, 3].map { |i| schools.map { |school| create(:observation, :activity, school:, at: i.years.ago) } },
+      # create invisible observations for current year
+      invisible: create(:observation, :activity, school: schools.first, at: Time.current, visible: false)
+    }
   end
 
   shared_examples 'a timeline' do |show_school: false|
@@ -31,7 +24,7 @@ describe 'timelines' do
 
     it 'shows recent observations in table' do
       within('.table') do
-        observations_by_year.first.each do |observation|
+        observations[:by_year].first.each do |observation|
           expect(page).to have_content(observation.activity.display_name)
           expect(page).to have_content(observation.points)
           expect(page).to have_content(observation.at.to_fs(:es_short))
@@ -56,16 +49,16 @@ describe 'timelines' do
     end
 
     it 'does not show old observations' do
-      observations_by_year.second.each do |observation|
+      observations[:by_year].second.each do |observation|
         expect(page).to have_no_content(observation.activity.display_name)
       end
-      observations_by_year.last.each do |observation|
+      observations[:by_year].last.each do |observation|
         expect(page).to have_no_content(observation.activity.display_name)
       end
     end
 
     it 'does not show invisible observations' do
-      expect(page).to have_no_content(observation_invisible.activity.display_name)
+      expect(page).to have_no_content(observations[:invisible].activity.display_name)
     end
 
     it 'shows links to previous years, including missing ones' do
@@ -95,7 +88,7 @@ describe 'timelines' do
 
       it 'shows observations from that year' do
         within('.table') do
-          observations_by_year.second.each do |observation|
+          observations[:by_year].second.each do |observation|
             expect(page).to have_content(observation.activity.display_name)
           end
         end
@@ -103,11 +96,11 @@ describe 'timelines' do
 
       it 'does not show observations from other years' do
         within('.table') do
-          observations_by_year.first.each do |observation|
+          observations[:by_year].first.each do |observation|
             expect(page).to have_no_content(observation.activity.display_name)
           end
 
-          observations_by_year.last.each do |observation|
+          observations[:by_year].last.each do |observation|
             expect(page).to have_no_content(observation.activity.display_name)
           end
         end
@@ -118,20 +111,27 @@ describe 'timelines' do
   describe 'school timeline' do
     let(:data_sharing) {}
     let(:calendar) { create(:calendar, :for_school, previous_academic_year_count: 3) }
-    let(:school) { create(:school, calendar:, data_sharing:, school_group: create(:school_group), visible: true) }
-    let!(:schools) { [school] }
+    let(:schools) { [create(:school, calendar:, data_sharing:, school_group: create(:school_group), visible: true)] }
 
-    before do
-      sign_in(user) if user
+    def school
+      schools.first
+    end
+
+    def school_group
+      school.school_group
+    end
+
+    def visit_timeline(user: false)
+      sign_in(create(:school_admin, school: create(:school, school_group:))) if user
       visit school_timeline_path(school)
     end
+
+    before { visit_timeline }
 
     context 'when school is public' do
       let(:data_sharing) { :public }
 
       context 'when not logged in' do
-        let(:user) { nil }
-
         it_behaves_like 'a timeline', show_school: false
       end
     end
@@ -140,13 +140,11 @@ describe 'timelines' do
       let(:data_sharing) { :private }
 
       context 'when not logged in' do
-        let(:user) { nil }
-
         it { expect(page).to have_content('has no public data') }
       end
 
       context 'when user is school admin to a school in same group' do
-        let(:user) { create(:school_admin, school: create(:school, school_group: school.school_group)) }
+        before { visit_timeline(user: true) }
 
         it { expect(page).to have_content('has no public data') }
       end
@@ -156,13 +154,11 @@ describe 'timelines' do
       let(:data_sharing) { :within_group }
 
       context 'when not logged in' do
-        let(:user) { nil }
-
         it { expect(page).to have_content('has no public data') }
       end
 
       context 'when user is school admin to a school in same group' do
-        let(:user) { create(:school_admin, school: create(:school, school_group: school.school_group)) }
+        before { visit_timeline(user: true) }
 
         it_behaves_like 'a timeline', show_school: false
       end
@@ -175,10 +171,7 @@ describe 'timelines' do
     let(:school_group) { create(:school_group, default_template_calendar: calendar, public:) }
     let!(:schools) { create_list(:school, 2, school_group:) }
 
-    before do
-      sign_in(user) if user
-      visit school_group_timeline_path(school_group)
-    end
+    before { visit school_group_timeline_path(school_group) }
 
     context 'when not logged in' do
       context 'when school group is public' do
