@@ -3,12 +3,6 @@ require 'rails_helper'
 describe 'school group energy tariffs', type: :system do
   let!(:school_group) { create(:school_group, public: true) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_NEW_ENERGY_TARIFF_EDITOR: 'true' do
-      example.run
-    end
-  end
-
   context 'as an admin user' do
     let!(:current_user) { create(:admin) }
 

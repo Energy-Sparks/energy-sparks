@@ -102,6 +102,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
   end
 
   describe '#label' do
+    it { expect(component.label(:schools)).to eq('schools')}
     it { expect(component.label(:schools, 'content')).to eq('schools-content')}
     it { expect(component.label(:school_groups, 'tab')).to eq('school-groups-tab')}
   end
@@ -251,7 +252,7 @@ RSpec.describe SchoolSearchComponent, :include_url_helpers, type: :component do
     it 'renders all the named tabs and sections' do
       %w[schools school-groups diocese areas].each do |tab|
         expect(html).to have_css("##{tab}-tab")
-        expect(html).to have_css("##{tab}-content")
+        expect(html).to have_css("##{tab}")
         expect(html).to have_css("##{tab}-results")
       end
     end

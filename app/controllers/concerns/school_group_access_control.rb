@@ -12,6 +12,8 @@ module SchoolGroupAccessControl
   end
 
   def redirect_unless_authorised
+    store_location_for(:user, request.fullpath) unless user_signed_in? || @school_group.public?
+
     # no permission on group
     redirect_to map_school_group_path(@school_group) and return if cannot?(:show, @school_group)
     # no permissions on any current schools in group. Will not redirect if @schools is nil
