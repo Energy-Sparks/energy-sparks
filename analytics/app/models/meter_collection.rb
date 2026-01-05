@@ -418,10 +418,10 @@ class MeterCollection
     @open_close_times
   end
 
-  def target_school(type = :day)
-    @target_school ||= {}
-    @target_school[type] ||= TargetSchool.new(self, type)
-  end
+  # def target_school(type = :day)
+  #   @target_school ||= {}
+  #   @target_school[type] ||= TargetSchool.new(self, type)
+  # end
 
   def benchmark_school(benchmark_type = :benchmark)
     @benchmark_school ||= {}
