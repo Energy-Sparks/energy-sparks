@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'interpolate', '~> 0.3.0' # upstream repository archived since 2018
   s.add_dependency 'require_all', '~> 3'
   s.add_dependency 'roo', '>= 2', '< 4'
-  s.add_dependency 'roo-xls', '~> 1'
+  s.add_dependency 'roo-xls', '>= 1', '< 3'
   s.add_dependency 'ruby-sun-times', '~> 0'
   # doesn't appear to be used - s.add_dependency 'soda-ruby', '~> 0' # version 1 released 2019
   s.add_dependency 'statsample', '~> 2' # no release since 2017 - using forked version in Gemfile
