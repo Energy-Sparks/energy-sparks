@@ -1,7 +1,8 @@
 require 'rails_helper'
 
-describe 'timelines', type: :system do
+describe 'timelines' do
   # rubocop:disable RSpec/MultipleMemoizedHelpers
+  before { travel_to(Date.new(2025, 12, 31)) }
 
   let(:user) { nil }
   let(:schools) { [] }
@@ -23,7 +24,9 @@ describe 'timelines', type: :system do
     let(:academic_year) { calendar.national_calendar.current_academic_year }
 
     it 'shows summary' do
-      expect(page).to have_content("Showing 1 - #{schools.count} of #{schools.count} activities recorded between #{academic_year.start_date.to_fs(:es_long)} and #{Time.zone.today.to_fs(:es_long)}")
+      expect(page).to have_content("Showing 1 - #{schools.count} of #{schools.count} " \
+                                   "activities recorded between #{academic_year.start_date.to_fs(:es_long)} " \
+                                   "and #{Time.zone.today.to_fs(:es_long)}")
     end
 
     it 'shows recent observations in table' do
@@ -47,22 +50,22 @@ describe 'timelines', type: :system do
     it 'does not show school name in table', unless: show_school do
       within('.table') do
         schools.each do |school|
-          expect(page).not_to have_content(school.name)
+          expect(page).to have_no_content(school.name)
         end
       end
     end
 
     it 'does not show old observations' do
       observations_by_year.second.each do |observation|
-        expect(page).not_to have_content(observation.activity.display_name)
+        expect(page).to have_no_content(observation.activity.display_name)
       end
       observations_by_year.last.each do |observation|
-        expect(page).not_to have_content(observation.activity.display_name)
+        expect(page).to have_no_content(observation.activity.display_name)
       end
     end
 
     it 'does not show invisible observations' do
-      expect(page).not_to have_content(observation_invisible.activity.display_name)
+      expect(page).to have_no_content(observation_invisible.activity.display_name)
     end
 
     it 'shows links to previous years, including missing ones' do
@@ -101,11 +104,11 @@ describe 'timelines', type: :system do
       it 'does not show observations from other years' do
         within('.table') do
           observations_by_year.first.each do |observation|
-            expect(page).not_to have_content(observation.activity.display_name)
+            expect(page).to have_no_content(observation.activity.display_name)
           end
 
           observations_by_year.last.each do |observation|
-            expect(page).not_to have_content(observation.activity.display_name)
+            expect(page).to have_no_content(observation.activity.display_name)
           end
         end
       end
@@ -113,9 +116,9 @@ describe 'timelines', type: :system do
   end
 
   describe 'school timeline' do
-    let(:data_sharing) { }
+    let(:data_sharing) {}
     let(:calendar) { create(:calendar, :for_school, previous_academic_year_count: 3) }
-    let(:school) { create(:school, calendar:, data_sharing:, school_group: create(:school_group), visible: true)}
+    let(:school) { create(:school, calendar:, data_sharing:, school_group: create(:school_group), visible: true) }
     let!(:schools) { [school] }
 
     before do
@@ -194,12 +197,13 @@ describe 'timelines', type: :system do
     end
 
     context 'when school group does not have calendars available' do
-      let(:calendar) { create(:national_calendar, :with_academic_years, previous_academic_year_count: 3, title: 'England and Wales') }
+      let(:calendar) do
+        create(:national_calendar, :with_academic_years, previous_academic_year_count: 3, title: 'England and Wales')
+      end
       let(:school_group) { create(:school_group, default_template_calendar: nil, public:) }
 
       it_behaves_like 'a timeline', show_school: true
     end
   end
-
   # rubocop:enable RSpec/MultipleMemoizedHelpers
 end
