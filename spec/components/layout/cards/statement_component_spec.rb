@@ -10,7 +10,7 @@ RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, t
 
   let(:html) do
     render_inline(described_class.new(**params)) do |card|
-      card.with_badge('badge text', style: :secondary)
+      card.with_badge('badge text', colour: :secondary)
       card.with_statement { 'Statement' }
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe Layout::Cards::StatementComponent, :include_application_helper, t
       let(:expected_theme) { theme }
     end
 
-    it { expect(html).to have_css('span.badge.badge-secondary') }
+    it { expect(html).to have_css('span.badge.bg-secondary') }
     it { expect(html).to have_content('Statement') }
   end
 end

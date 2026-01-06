@@ -26,7 +26,7 @@ module Admin
 
       def school_users
         users = {}
-        @school_group.schools.each do |school|
+        @school_group.assigned_schools.each do |school|
           users[school] = (school.users + school.cluster_users).uniq.sort_by(&:email)
         end
         users
@@ -55,7 +55,7 @@ module Admin
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
           end
-          school_group.schools.by_name.each do |school|
+          school_group.assigned_schools.by_name.each do |school|
             school_users[school].each do |user|
               add_user_to_csv(csv, school_group, school, user)
             end
@@ -83,10 +83,10 @@ module Admin
           user.name,
           user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
-          user.group_admin? ? 'N/A' : user.staff_role&.title,
+          user.group_user? ? 'N/A' : user.staff_role&.title,
           y_n(user.confirmed?),
           display_last_signed_in_as(user),
-          user.group_admin? ? 'N/A' : y_n(user.contact_for_school),
+          user.group_user? ? 'N/A' : y_n(user.contact_for_school),
           I18n.t("languages.#{user.preferred_locale}"),
           y_n(user.access_locked?)
         ]

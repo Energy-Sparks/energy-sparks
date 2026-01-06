@@ -1,0 +1,54 @@
+<%= render 'expired' %>
+<h2><%= t('advice_pages.target.insights.title') %></h2>
+<%= render PromptComponent.new(status: :none, icon: :lightbulb) do |c| %>
+  <%= t('advice_pages.target.insights.what_is_your_target.text_html',
+        fuel_type: @advice_page.t_fuel_type,
+        percent: formatted_target,
+        target_date: formatted_target_date) %>
+  <% if !@target.expired? && can?(:manage, @target) %>
+    <p><%= t('advice_pages.target.insights.what_is_your_target.revise_html',
+             path: edit_school_school_target_path(@target.school, @target)) %></p>
+  <% end %>
+  <% c.with_link do
+       link_to t('common.labels.learn_more'), polymorphic_path([@fuel_type, :target_learn_more, @school, :advice])
+     end %>
+<% end %>
+<%= render 'schools/advice/section_title',
+           section_id: 'progress',
+           section_title: t('advice_pages.target.insights.your_current_progress.title') %>
+<%= render 'meeting_target_prompt' %>
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <th><%= t('advice_pages.tables.columns.period') %></th>
+    <th><%= t('advice_pages.target.insights.your_current_progress.cumulative_consumption') %></th>
+    <th><%= t('advice_pages.target.insights.your_current_progress.target_consumption') %></th>
+    <th class="text-right"><%= t('advice_pages.baseload.current_baseload.tables.columns.percentage_change') %></th>
+  </thead>
+  <tbody>
+    <tr>
+      <% last_month = @consumption.non_missing.last
+         if last_month.nil?
+           last_month = @consumption.consumption.last
+           current = @consumption.consumption.pluck(:current_consumption).compact.sum
+           target = @consumption.consumption.pluck(:target_consumption).compact.sum
+         end %>
+      <td><%= format_date_range([@target.start_date, Date.new(last_month[:year], last_month[:month]).end_of_month]) %>
+      </td>
+      <td><%= format_unit(current || @consumption.current_consumption, :kwh, numeric_level: :target) %></td>
+      <td><%= format_unit(target || @consumption.target_consumption, :kwh, numeric_level: :target) %></td>
+      <td td class="text-right">
+        <%= formatted_target_change(@consumption.current_consumption,
+                                    @consumption.non_missing.pluck(:previous_consumption).sum) %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption' %>
+<% analysis_path = polymorphic_path([@fuel_type, :target_analysis, @school, :advice])
+   if @fuel_type == :storage_heater %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_no_comparison_html', analysis_path:) %>
+<% else %>
+  <%= t('advice_pages.target.insights.your_current_progress.text_html',
+        analysis_path:,
+        comparison_path: compare_for_school_group_path("#{@fuel_type}_targets", @school)) %>
+<% end %>

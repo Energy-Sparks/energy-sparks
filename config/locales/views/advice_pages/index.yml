@@ -13,7 +13,7 @@ en:
             description: Description
             fuel_type: Fuel
             kwh_saving: Energy (kWh)
-            savings: Savings
+            savings: Potential savings
         table_note: Use the table headings to sort the recommendations. Potential cost savings for the same fuel type are not additive.
         table_title: Prioritised opportunities
         title: Energy saving opportunities
@@ -35,16 +35,19 @@ en:
           electricity_meter_breakdown: A summary of use across your electricity meters
           electricity_out_of_hours: How much of your electricity use is outside of school hours?
           electricity_recent_changes: How has your electricity use changed over the last few weeks?
+          electricity_target: Target for reducing your electricity use
           gas_costs: Review how much your school has recently spent on gas
           gas_long_term: See long term trends in your gas use
           gas_meter_breakdown: A summary of use across your gas meters
           gas_out_of_hours: How much of your gas use is outside of school hours?
           gas_recent_changes: How has your gas use changed over the last few weeks?
+          gas_target: Target for reducing your gas use
           heating_control: Review your central heating timings and use of gas to heat the school
           hot_water: Understand the efficiency of your hot water system
           solar_pv:
             has_solar: See the benefits of having solar panels on your school
             no_solar: See the potential benefits of installing solar panels on your school
+          storage_heater_target: Target for reducing your storage heater use
           storage_heaters: Review how much energy you consume to power your storage heaters
           thermostatic_control: Understand how well your gas use adapts to changing temperatures
         title: Overview

@@ -51,6 +51,10 @@ describe Tasks::Recorder do
         expect(processed).to be true
       end
 
+      it 'sets created_by' do
+        expect(activity.created_by).to eq(user)
+      end
+
       it 'sets activity category from activity type' do
         expect(activity.activity_category).to eq(activity_category)
       end
@@ -80,7 +84,7 @@ describe Tasks::Recorder do
         let(:activity) { build(:activity, activity_type:, happened_on: 3.years.ago) }
 
         it 'no points are scored' do
-          expect(observation.points).to be_nil
+          expect(observation.points).to be_zero
         end
       end
     end
@@ -124,7 +128,7 @@ describe Tasks::Recorder do
         let(:at) { 3.years.ago }
 
         it 'no points are scored' do
-          expect(observation.points).to be_nil
+          expect(observation.points).to be_zero
         end
       end
     end

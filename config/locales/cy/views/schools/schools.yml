@@ -155,7 +155,6 @@ cy:
         intro: Rhestr o weithgareddau diweddar dan arweiniad oedolion a disgyblion yn yr ysgol hon
     downloads:
       index:
-        aggregated_meter_collection: Casgliad mesuryddion cyfun
         back_to_school_dashboard: Yn ôl i'r dangosfwrdd ysgol
         carbon_intensity_data: Data dwyster carbon
         carbon_intensity_data_csv: Data dwyster carbon CSV
@@ -174,7 +173,6 @@ cy:
         title: "Lawrlwythiadau %{school_name}"
         unvalidated_meter_data: Data mesurydd sydd heb eu dilysu
         unvalidated_meter_data_as_csv: Data mesurydd sydd heb eu dilysu fel CSV
-        validated_meter_data: Data mesurydd sydd wedi'u dilysu
         we_use_sheffield_solar_pv_api_message_html: Rydym yn defnyddio <a href="https://www.solar.sheffield.ac.uk/pvlive/">API Solar Ffotofoltaig Prifysgol Sheffield</a> ar gyfer data cynhyrchu solar ffotofoltaig, gallwch lawrlwytho'r data sydd gennym ar gyfer eich ysgol yma
     estimated_annual_consumptions:
       breadcrumb: Amcangyfrif o ddefnydd blynyddol
@@ -220,16 +218,12 @@ cy:
       other_schools_html: Yn y cyfamser, edrychwch sut mae %{other_schools_link} yn defnyddio Sbarcynni
       schools_in_area: ysgolion yn eich ardal
     index:
-      a_to_z_of_all_energy_sparks_schools: A i Y o holl ysgolion Sbarcynni
       case_studies: Darllenwch astudiaethau achos
       introduction_1: Darganfod pa ysgolion sy'n defnyddio Energy Sparks i leihau eu defnydd o ynni
       introduction_2: Mae gennym %{count} o ysgolion ar draws Cymru, Lloegr a'r Alban gan gynnwys ysgolion cynradd ac uwchradd y wladwriaeth, ysgolion annibynnol, ysgolion arbennig ac ysgolion meithrin
       introduction_3: Archwiliwch eu data defnydd trydan a nwy, darganfod faint o ynni maen nhw'n ei gynhyrchu o'u paneli solar a dysgu am eu gweithgareddau arbed ynni
       introduction_4: Rydym yn falch o gael rhwydwaith gwych o ysgolion i gyd yn gweithio’n galed i arbed ynni a helpu i frwydro yn erbyn newid hinsawdd
-      not_visible_schools: Ysgolion nad ydynt yn weladwy
       title: Ysgolion Sbarcynni ledled y DU
-      view_all_energy_sparks_schools: Gweld holl ysgolion Sbarcynni
-      view_energy_sparks_schools_by_group: Gweld ysgolion Sbarcynni fesul grŵp
     live_data:
       show:
         choose_another_activity: Dewis gweithgaredd arall
@@ -477,7 +471,6 @@ cy:
       view_on_map: Gweld ar y map
     school_group:
       compare_schools: Cymharu ysgolion
-      view_schools: Gweld ysgolion
     school_targets:
       achieving_your_targets:
         be_sure_to_regularly_check: Gwnewch yn siŵr eich bod yn gwirio'ch dangosfwrdd a hysbysebion wythnosol yn rheolaidd i gael ein cyngor diweddaraf
@@ -548,7 +541,8 @@ cy:
         page_title: Diweddaru'ch targed arbed ynni
         review_and_set_your_next_energy_saving_target: Adolygu a gosod eich targed arbed ynni nesaf
         review_your_dashboard: Adolygu'ch dangosfwrdd
-        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd '
+        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd.'
+        target_date_reached_advice_page: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i adolygu eich cynnydd a gosod targed newydd.'
         tip: Awgrym
         your_new_target: Eich targed newydd
       progress:

@@ -1,0 +1,49 @@
+<nav class="navbar <%= navbar_expand_class %> navbar-top">
+  <div class="container">
+    <%= navigation_image_link %>
+    <%= render 'shared/page/navigation/top_nav/on_test' %>
+
+    <div class='<%= order_expand_class %>'>
+      <%= render 'shared/page/navigation/top_nav/locale_switcher' %>
+
+      <!-- Toggler icon - shown on collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-top" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <div class="navbar-collapse collapse justify-content-end" id="nav-top">
+      <ul class="navbar-nav nowrap">
+        <!-- Pupil activities link -->
+        <li class="nav-item">
+          <%= link_to t('common_nav_bar_menus.activities'), activity_categories_path, class: 'nav-link' %>
+        </li>
+
+        <!-- Adult actions link -->
+        <li class="nav-item">
+          <%= link_to t('common_nav_bar_menus.actions'), intervention_type_groups_path, class: 'nav-link' %>
+        </li>
+
+        <!-- Our schools menu -->
+        <%= render 'shared/page/navigation/top_nav/our_schools_menu' %>
+
+        <!-- Our services menu -->
+        <%= render 'shared/page/navigation/top_nav/our_services_menu' %>
+
+        <!-- About menu -->
+        <%= render 'shared/page/navigation/top_nav/about_menu' %>
+
+        <% if Flipper.enabled?(:support_pages, current_user) %>
+          <li class="nav-item">
+            <%= link_to t('common_nav_bar_menus.help'), support_path, class: 'nav-link' %>
+          </li>
+        <% end %>
+
+        <% if can?(:manage, :admin_functions) %>
+          <!-- Manage menu - admin only -->
+          <%= render 'shared/page/navigation/top_nav/manage_menu' %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>

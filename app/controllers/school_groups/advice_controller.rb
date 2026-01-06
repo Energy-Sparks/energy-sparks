@@ -1,11 +1,13 @@
 module SchoolGroups
   class AdviceController < SchoolGroups::Advice::BaseController
+    MODAL_ID = 'analysis-footnotes'.freeze
+    CACHE_TIME = 1.hour
+
     include Scoring
     include Promptable
 
     def show
       build_breadcrumbs([name: I18n.t('advice_pages.breadcrumbs.root')])
-      @fuel_types = @school_group.fuel_types
 
       respond_to do |format|
         format.html {}
@@ -50,6 +52,18 @@ module SchoolGroups
       end
     end
 
+    def comparison_reports
+      build_breadcrumbs([name: I18n.t('school_groups.titles.comparisons')])
+    end
+
+    def charts
+      build_breadcrumbs([name: I18n.t('school_groups.titles.charts')])
+      @charts = SchoolGroups::Charts.new.safe_charts
+      @default_school = params[:school].present? ? School.find_by(slug: params[:school]) : nil
+      @default_chart_type = params[:chart_type]&.to_sym
+      @default_fuel_type = params[:fuel_type]&.to_sym
+    end
+
     private
 
     def breadcrumbs; end
@@ -64,7 +78,7 @@ module SchoolGroups
     end
 
     def include_cluster
-      can?(:update_settings, @school_group)
+      helpers.include_clusters?(@school_group)
     end
 
     def priority_actions_csv

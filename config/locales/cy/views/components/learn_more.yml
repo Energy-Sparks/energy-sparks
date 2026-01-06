@@ -2,7 +2,6 @@ cy:
   components:
     dashboard_learn_more:
       adult:
-        explore: Archwilio data ynni
         intro: Gweld siartiau, cael cipolwg ar leihau'r defnydd o ynni a chymharu perfformiad yn erbyn ysgolion eraill
         opportunities: Cyfleoedd arbed ynni
         title: Dysgu rhagor am eich defnydd o ynni

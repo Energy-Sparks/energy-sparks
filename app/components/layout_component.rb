@@ -41,7 +41,7 @@ class LayoutComponent < ApplicationComponent
     end
 
     def themes
-      [:dark, :light, :accent, :pale]
+      [:dark, :light, :accent, :pale, :white]
     end
   end
 end

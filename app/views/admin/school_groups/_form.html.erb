@@ -12,15 +12,21 @@
     <%= f.text_area :description, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :group_type %>
-    <%= f.select :group_type,
-                 options_from_collection_for_select(
-                   SchoolGroup.group_types.map { |k, _v| OpenStruct.new(id: k, group_type: k.humanize.capitalize) },
-                   'id', 'group_type', @school_group.group_type
-                 ),
-                 { include_blank: false }, { class: 'form-control' } %>
-  </div>
+  <% if school_group.organisation? %>
+    <div class="form-group">
+      <%= f.label :group_type %>
+      <%= f.select :group_type,
+                   options_from_collection_for_select(
+                     SchoolGroup.organisation_group_types.map do |k, _v|
+                       OpenStruct.new(id: k, group_type: k.humanize.capitalize)
+                     end,
+                     'id', 'group_type', school_group.group_type
+                   ),
+                   { include_blank: false }, { class: 'form-control' } %>
+    </div>
+  <% else %>
+    <%= f.hidden_field :group_type, value: school_group.group_type %>
+  <% end %>
 
   <div class="form-group">
     <div class="form-check form-check-inline">
@@ -29,139 +35,12 @@
     </div>
   </div>
 
-  <div class="card bg-light mb-3">
-    <div class="card-header">Group defaults</div>
-    <div class="card-body">
-      <p class="card-text alert alert-info">
-        The following defaults are used to pre-populate values when creating a school. Changing them here will not
-        affect areas for schools currently in this group.
-      </p>
-      <div class="form-group">
-        <%= f.label :default_template_calendar_id, 'Default Template Calendar' %>
-        <%= f.select :default_template_calendar_id,
-                     options_from_collection_for_select(Calendar.regional.order(:title), 'id', 'title',
-                                                        @school_group.default_template_calendar_id),
-                     { include_blank: true }, { class: 'form-control' } %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_dark_sky_area_id, 'Default Dark Sky Weather Data Feed Area' %>
-        <%= f.select :default_dark_sky_area_id,
-                     options_from_collection_for_select(DarkSkyArea.order(:title), 'id', 'title',
-                                                        @school_group.default_dark_sky_area_id),
-                     { include_blank: true }, { class: 'form-control' } %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_weather_station_id, 'Default Weather Station' %>
-        <%= f.select :default_weather_station_id,
-                     options_from_collection_for_select(WeatherStation.order(:title), 'id', 'title',
-                                                        @school_group.default_weather_station_id),
-                     { include_blank: true }, { class: 'form-control' } %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_scoreboard_id, 'Default scoreboard' %>
-        <%= f.select :default_scoreboard_id,
-                     options_from_collection_for_select(Scoreboard.order(:name), 'id', 'name',
-                                                        @school_group.default_scoreboard_id),
-                     { include_blank: true }, { class: 'form-control' } %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_country, 'Default country' %>
-        <%= f.select :default_country,
-                     options_for_select(School.countries.map { |key, _value| [key.titleize, key] },
-                                        @school_group.default_country),
-                     { include_blank: false }, { class: 'form-control' } %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :admin_meter_statuses_electricity_id, 'Default admin meter status for Electricity' %>
-        <%= f.select(:admin_meter_statuses_electricity_id,
-                     AdminMeterStatus.all.order(:label).collect { |d| [d.label, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :admin_meter_statuses_gas_id, 'Default admin meter status for Gas' %>
-        <%= f.select(:admin_meter_statuses_gas_id,
-                     AdminMeterStatus.all.order(:label).collect { |d| [d.label, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :admin_meter_statuses_solar_pv_id, 'Default admin meter status for Solar PV' %>
-        <%= f.select(:admin_meter_statuses_solar_pv_id,
-                     AdminMeterStatus.all.order(:label).collect { |d| [d.label, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_data_source_electricity_id, 'Default data source for Electricity' %>
-        <%= f.select(:default_data_source_electricity_id, DataSource.all.order(:name).collect { |d| [d.name, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_data_source_gas_id, 'Default data source for Gas' %>
-        <%= f.select(:default_data_source_gas_id, DataSource.all.order(:name).collect { |d| [d.name, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_data_source_solar_pv_id, 'Default data source for Solar PV' %>
-        <%= f.select(:default_data_source_solar_pv_id, DataSource.all.order(:name).collect { |d| [d.name, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_procurement_route_electricity_id, 'Default procurement route for Electricity' %>
-        <%= f.select(:default_procurement_route_electricity_id,
-                     ProcurementRoute.all.order(:organisation_name).collect { |d| [d.organisation_name, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_procurement_route_gas_id, 'Default procurement route for Gas' %>
-        <%= f.select(:default_procurement_route_gas_id,
-                     ProcurementRoute.all.order(:organisation_name).collect { |d| [d.organisation_name, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_procurement_route_solar_pv_id, 'Default procurement route for Solar PV' %>
-        <%= f.select(:default_procurement_route_solar_pv_id,
-                     ProcurementRoute.all.order(:organisation_name).collect { |d| [d.organisation_name, d.id] },
-                     { include_blank: true }, class: 'form-control') %>
-      </div>
-
-      <div class="form-group">
-        <label><%= t('school_groups.chart_updates.index.default_chart_preference.form_group') %></label>
-        <p class="small"><%= t('school_groups.chart_updates.index.default_chart_preference.explanation') %></p>
-        <% SchoolGroup.default_chart_preferences.keys.each do |preference| %>
-          <div class="form-check">
-            <%= f.radio_button :default_chart_preference, preference,
-                               checked: @school_group.default_chart_preference == preference, class: 'form-check-input' %>
-            <%= f.label "default_chart_preference_#{preference.to_sym}",
-                        t("school_groups.chart_updates.index.default_chart_preference.#{preference}",
-                          default: preference.humanize), class: 'form-check-label' %>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :default_issues_admin_user_id, 'Default issues admin user' %>
-        <%= f.select :default_issues_admin_user_id,
-                     options_from_collection_for_select(User.admin, 'id', 'display_name',
-                                                        @school_group.default_issues_admin_user_id),
-                     { include_blank: true }, { class: 'form-control' } %>
-      </div>
-
-    </div>
-  </div>
+  <% if school_group.organisation? %>
+    <%= render 'group_default_fields', f: f, school_group: school_group %>
+  <% end %>
 
   <div class="actions">
     <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to 'Back', admin_school_groups_path, class: 'btn btn-secondary' %>
   </div>
 <% end %>

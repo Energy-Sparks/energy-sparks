@@ -29,4 +29,71 @@ describe 'Activity' do
       expect(Activity.recorded_in_last_week).to match_array([activity_last_week_1, activity_last_week_2])
     end
   end
+
+  describe 'Callbacks' do
+    before do
+      SiteSettings.current.update(photo_bonus_points: 5)
+    end
+
+    let(:observation) { activity.observations.last.reload }
+
+    context 'when updating happened_on' do
+      let!(:activity) { create(:activity, happened_on: Date.new(2025, 10, 5)) } # also creates observation
+
+      before do
+        activity.update(happened_on: Date.new(2025, 10, 7))
+      end
+
+      it 'updates associated observation at date' do
+        expect(observation.at.to_date).to eq(Date.new(2025, 10, 7))
+      end
+    end
+
+    context 'when updated_by changed' do
+      let!(:activity) { create(:activity) } # also creates observation
+      let(:user) { create(:school_admin) }
+
+      before do
+        activity.update(updated_by: user)
+      end
+
+      it 'updates associated observation updated_by' do
+        expect(observation.updated_by).to eq(user)
+      end
+    end
+
+    context 'when description does not have an image' do
+      let(:description) { 'Initial description without bonus points' }
+      let!(:activity) { create(:activity, description:, happened_on: Date.new(2025, 10, 5)) } # also creates observation
+
+      it { expect(observation.points).to eq(activity.activity_type.score) }
+
+      context 'when updating description to have an image' do
+        before do
+          activity.update(description: 'New description with figure')
+        end
+
+        it 'updates associated observation points' do
+          expect(observation.points).to eq(activity.activity_type.score + SiteSettings.current.photo_bonus_points)
+        end
+      end
+    end
+
+    context 'when description already has image' do
+      let(:description) { 'Initial description with bonus points figure' }
+      let!(:activity) { create(:activity, description:) } # also creates observation
+
+      it { expect(observation.points).to eq(activity.activity_type.score + SiteSettings.current.photo_bonus_points) }
+
+      context 'when updating description to have no image' do
+        before do
+          activity.update(description: 'New description without bonus points')
+        end
+
+        it 'updates associated observation points' do
+          expect(observation.points).to eq(activity.activity_type.score)
+        end
+      end
+    end
+  end
 end

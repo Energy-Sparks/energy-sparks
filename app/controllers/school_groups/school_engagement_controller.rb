@@ -5,13 +5,9 @@ module SchoolGroups
     include Columns
     include ApplicationHelper
 
-    def self.show?(user)
-      user.admin? || user.group_admin?
-    end
+    before_action :redirect_unless_authorised
 
     def index
-      raise CanCan::AccessDenied unless self.class.show?(current_user)
-
       build_breadcrumbs([name: I18n.t('school_groups.sub_nav.school_engagement')])
       @rows = Schools::EngagedSchoolService.list_schools(false, @school_group.id, only_data_enabled: true)
       @columns = [Column.new(I18n.t('common.school'),
@@ -35,11 +31,18 @@ module SchoolGroups
                   Column.new(I18n.t('school_groups.school_engagement.active_users'),
                              ->(service) { service.recently_logged_in_user_count }),
                   Column.new(I18n.t('school_groups.school_engagement.last_visit'),
+                             ->(service) { service.most_recent_login&.to_date&.iso8601 },
                              ->(service) { service.most_recent_login&.to_date&.to_fs(:es_compact) })]
       respond_to do |format|
         format.html
         format.csv { send_data csv_report(@columns, @rows), filename: EnergySparks::Filenames.csv('school-engagement') }
       end
+    end
+
+    private
+
+    def required_permission
+      :view_engagement_report
     end
   end
 end

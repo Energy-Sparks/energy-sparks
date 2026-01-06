@@ -115,6 +115,6 @@ class AlertBaseloadBase < AlertElectricityOnlyBase
   end
 
   def format_kw(value)
-    FormatEnergyUnit.format(:kw, value, :html)
+    FormatUnit.format(:kw, value, :html)
   end
 end

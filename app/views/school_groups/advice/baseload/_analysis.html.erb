@@ -7,39 +7,75 @@
   <li>
     <%= link_to(t('school_groups.advice_pages.baseload.analysis.comparisons.title'), '#comparison') %>
   </li>
+  <li>
+    <%= link_to(t('school_groups.advice_pages.analysis.other_reports.title'), '#other-reports') %>
+  </li>
 </ul>
 
 <%= render 'schools/advice/section_title',
            section_id: 'potential-savings',
            section_title: t('school_groups.advice_pages.baseload.analysis.potential_savings.title') %>
 
-<%= t('school_groups.advice_pages.baseload.analysis.potential_savings.table.header_html') %>
+<%= t('school_groups.advice_pages.baseload.analysis.potential_savings.table.header_html',
+      modal_id: SchoolGroups::AdviceController::MODAL_ID) %>
 
 <%= render 'school_groups/advice/shared/savings_table', school_group: @school_group,
                                                         alerts: @baseload_alerts,
-                                                        benchmarks: @baseload_benchmarks,
-                                                        advice_page: @advice_page %>
+                                                        categorised_savings: @categorised_savings,
+                                                        advice_page: @advice_page,
+                                                        schools: @schools %>
 
 <%= render 'schools/advice/section_title',
            section_id: 'comparison',
            section_title: t('school_groups.advice_pages.baseload.analysis.comparisons.title') %>
 
 <%= render Charts::GroupComparisonChartComponent.new(school_group: @school_group,
-                                                     report: @baseload_per_pupil_report) do |c| %>
+                                                     report: @report,
+                                                     classes: 'mb-4') do |c| %>
   <% c.with_title { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.title') } %>
   <% c.with_subtitle { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.subtitle') } %>
   <% c.with_header { I18n.t('school_groups.advice_pages.baseload.analysis.comparisons.chart.header') } %>
+  <% c.with_footer do %>
+    <%= render 'school_groups/advice/shared/analysis_footnotes_link' %>
+  <% end %>
 <% end %>
 
 <%= t('school_groups.advice_pages.baseload.analysis.comparisons.table.header_html') %>
 
 <%= render 'comparisons/baseload_per_pupil/table',
            results: @results,
-           report: @baseload_per_pupil_report,
+           report: @report,
            advice_page: @advice_page,
            table_name: :table,
            index_params: index_params,
            headers: @baseload_per_pupil_headers,
            colgroups: [],
            advice_page_tab: @advice_page_tab,
+           table_classes: comparison_table_class(@results),
            table_number: 0 %>
+
+<%= render 'schools/advice/section_title',
+           section_id: 'other-reports',
+           section_title: t('school_groups.advice_pages.analysis.other_reports.title') %>
+
+<p>
+  <%= t('school_groups.advice_pages.analysis.other_reports.introduction') %>
+</p>
+
+<%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                           fuel_types: @fuel_types) do |list| %>
+  <% list.with_link t('school_groups.advice.comparison_reports.links.recent_baseload'),
+                    report: :recent_change_in_baseload,
+                    fuel_type: :electricity %>
+  <% list.with_link t('school_groups.advice.comparison_reports.links.peak_use'),
+                    report: :electricity_peak_kw_per_pupil,
+                    fuel_type: :electricity %>
+  <% list.with_named t('school_groups.advice.comparison_reports.links.baseload_variation'),
+                     fuel_type: :electricity,
+                     reports: {
+                       seasonal_baseload_variation:
+                        t('school_groups.advice.comparison_reports.links.seasonal'),
+                       weekday_baseload_variation:
+                        t('school_groups.advice.comparison_reports.links.weekday')
+                     } %>
+<% end %>

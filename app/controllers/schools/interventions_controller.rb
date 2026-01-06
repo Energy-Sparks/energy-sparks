@@ -2,13 +2,9 @@
 
 module Schools
   class InterventionsController < ApplicationController
-    skip_before_action :authenticate_user!, only: %i[index show]
+    skip_before_action :authenticate_user!, only: %i[show]
     load_resource :school
     load_and_authorize_resource :observation, through: :school, parent: false
-
-    def index
-      @interventions = @observations.intervention.visible.order('at DESC')
-    end
 
     def show
       if @observation.observation_type == 'activity'
@@ -65,7 +61,7 @@ module Schools
     def destroy
       authorize! :delete, @observation
       ObservationRemoval.new(@observation).process
-      redirect_back fallback_location: school_interventions_path(@school)
+      redirect_to school_interventions_path(@school)
     end
 
     def completed; end

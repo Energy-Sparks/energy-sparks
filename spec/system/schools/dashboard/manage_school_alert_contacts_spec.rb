@@ -17,12 +17,23 @@ RSpec.describe 'manage school alert contacts', type: :system do
     end
   end
 
-  context 'as a pupil' do
-    let(:user) { create(:pupil, school: school) }
+  %i[pupil student].each do |role|
+    context "as a #{role}" do
+      let(:user) { create(role, school: school) }
 
-    it 'is not able to visit the alert contacts page and instead redirected to the schools pupil page' do
+      it 'is not able to visit the alert contacts page and instead redirected to the schools pupil page' do
+        visit school_contacts_path(school)
+        expect(page).to have_current_path(pupils_school_path(school), ignore_query: true)
+      end
+    end
+  end
+
+  context 'as staff user' do
+    let(:user) { create(:staff, school: school) }
+
+    it 'is able to visit the alert contacts page' do
       visit school_contacts_path(school)
-      expect(page).to have_current_path(pupils_school_path(school), ignore_query: true)
+      expect(page).to have_current_path(school_path(school), ignore_query: true)
     end
   end
 

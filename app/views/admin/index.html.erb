@@ -12,9 +12,16 @@
       <li><%= link_to 'Meter Reviews', admin_meter_reviews_path %></li>
     </ul>
 
-    <h2>Schools, groups and scoreboards</h2>
+    <h2>Groups</h2>
     <ul>
       <li><%= link_to 'Manage School Groups', admin_school_groups_path %></li>
+      <% SchoolGroup::RESTRICTED_GROUP_TYPES.sort.each do |group_type| %>
+        <li><%= link_to "Manage #{group_type.to_s.humanize} Groups", admin_school_groups_path(group_type:) %></li>
+      <% end %>
+    </ul>
+
+    <h2>Schools and and scoreboards</h2>
+    <ul>
       <li><%= link_to 'Find school by MPXN', admin_find_school_by_mpxn_index_path %></li>
       <li><%= link_to 'Find school by URN', admin_find_school_by_urn_index_path %></li>
       <li><%= link_to 'Manage Scoreboards', admin_scoreboards_path %></li>

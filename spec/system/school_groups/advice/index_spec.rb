@@ -1,61 +1,99 @@
 require 'rails_helper'
 
 describe 'School group advice index page' do
-  let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
-  let(:school) { school_group.schools.first }
+  shared_examples 'a group advice index page' do
+    let(:group_role) { :group_admin }
+    context 'with a dashboard message' do
+      let!(:message) { create(:dashboard_message, messageable: school_group) }
 
-  include_context 'school group recent usage'
-
-  context 'when not logged in' do
-    before do
-      visit school_group_advice_path(school_group)
-    end
-
-    it_behaves_like 'it contains the expected data table', aligned: true do
-      let(:table_id) { '#school-group-recent-usage' }
-      let(:expected_header) do
-        [
-          ['', 'Electricity', 'Gas', 'Storage heaters'],
-          ['School', 'Last week', 'Last year', 'Last week', 'Last year', 'Last week', 'Last year']
-        ]
-      end
-      let(:expected_rows) do
-        [
-          [school.name, '-16%', '-16%', '-5%', '-5%', '-12%', '-12%']
-        ]
-      end
-    end
-
-    context 'when toggling to kWh', :js do
-      before do
-        choose(option: 'usage')
-      end
-
-      it_behaves_like 'it contains the expected data table', aligned: true do
-        let(:table_id) { '#school-group-recent-usage' }
-        let(:expected_header) do
-          [
-            ['', 'Electricity', 'Gas', 'Storage heaters'],
-            ['School', 'Last week', 'Last year', 'Last week', 'Last year', 'Last week', 'Last year']
-          ]
+      context 'when not signed in' do
+        before do
+          visit school_group_advice_path(school_group)
         end
-        let(:expected_rows) do
-          [
-            [school.name, '910', '910', '500', '500', '312', '312']
-          ]
+
+        it { expect(page).to have_no_content(message.message) }
+      end
+
+      context 'when signed in as a group user' do
+        before do
+          sign_in(create(group_role, school_group:))
+          visit school_group_advice_path(school_group)
         end
+
+        it { expect(page).to have_content(message.message) }
       end
     end
 
-    it_behaves_like 'schools are filtered by permissions'
+    it 'displays the charts' do
+      within('div.charts-group-dashboard-charts-component') do
+        expect(page).to have_content(I18n.t('school_groups.show.energy_use.title'))
+      end
+    end
   end
 
-  context 'when logged in as group admin' do
+  before do
+    create(:report, key: :annual_electricity_costs_per_pupil)
+  end
+
+  context 'with an organisation group' do
+    let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
+
     before do
-      sign_in(create(:group_admin, school_group:))
       visit school_group_advice_path(school_group)
     end
 
-    it_behaves_like 'schools are filtered by permissions', admin: true
+    it_behaves_like 'a group advice index page'
+  end
+
+  context 'with a project group' do
+    let!(:school_group) { create(:school_group, :with_grouping, role: :project, group_type: :project, count: 2) }
+
+    before do
+      visit school_group_advice_path(school_group)
+    end
+
+    it_behaves_like 'a group advice index page' do
+      let(:group_role) { :group_manager }
+    end
+  end
+
+  context 'when displaying the navbar' do
+    let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
+
+    context 'when not logged in' do
+      before do
+        visit school_group_advice_path(school_group)
+      end
+
+      it_behaves_like 'a group advice page secr nav link', display: false
+    end
+
+    context 'when logged in as group admin' do
+      before do
+        sign_in(create(:group_admin, school_group:))
+        visit school_group_advice_path(school_group)
+      end
+
+      it_behaves_like 'a group advice page secr nav link', display: true
+    end
+
+    context 'when logged in as group admin for a different group' do
+      before do
+        sign_in(create(:group_admin, school_group: create(:school_group)))
+        visit school_group_advice_path(school_group)
+      end
+
+      it_behaves_like 'a group advice page secr nav link', display: false
+    end
+
+    context 'with a project group' do
+      let!(:school_group) { create(:school_group, :with_grouping, role: :project, group_type: :project, count: 2) }
+
+      before do
+        visit school_group_advice_path(school_group)
+      end
+
+      it_behaves_like 'a group advice page secr nav link', display: false
+    end
   end
 end

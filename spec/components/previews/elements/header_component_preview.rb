@@ -23,5 +23,9 @@ module Elements
     def h6
       render(Elements::HeaderComponent.new(title: 'Header level 6', level: 6))
     end
+
+    def header_with_block
+      render(Elements::HeaderComponent.new(title: 'Header with block')) { 'Block text' }
+    end
   end
 end

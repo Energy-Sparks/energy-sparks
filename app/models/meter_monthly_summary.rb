@@ -105,12 +105,12 @@ class MeterMonthlySummary < ApplicationRecord
       :incomplete
     else
       types = month_readings.to_set(&:type)
-      if %w[ORIG SOLN].to_set.superset?(types)
+      if %w[ORIG SOLN SOL0].to_set.superset?(types)
         :actual
+      elsif types.intersect?(%w[PROB ZMDR E0H1])
+        :incomplete
       elsif types.intersect?(%w[SOLR SOLO SOLE BKPV])
         :estimated
-      elsif types.intersect?(%w[PROB SOL0 ZMDR])
-        :incomplete
       else
         raise "unknown #{types} - #{month_start} #{month_readings}"
       end

@@ -8,11 +8,14 @@ module Charts
     renders_one :subtitle
     renders_one :introduction
 
-    def initialize(x_axis:, x_data:, y_axis_label:, **_kwargs)
+    def initialize(x_axis:, x_data:, y_axis_label:, x_min_value: nil, x_max_value: nil, fuel_type: nil, **_kwargs)
       super
       @x_axis = x_axis
       @x_data = x_data
       @y_axis_label = y_axis_label
+      @x_min_value = x_min_value
+      @x_max_value = x_max_value
+      @fuel_type = fuel_type
     end
 
     def height
@@ -21,7 +24,7 @@ module Charts
     end
 
     def chart_json
-      output = ChartDataValues.new(chart_config, @id).process
+      output = ChartDataValues.new(chart_config, @id, fuel_type: @fuel_type).process
       formatted_json_data = ChartDataValues.as_chart_json(output)
 
       {
@@ -44,6 +47,8 @@ module Charts
         x_axis: @x_axis,
         x_data: @x_data,
         y_axis_label: @y_axis_label,
+        x_min_value: @x_min_value,
+        x_max_value: @x_max_value,
         chart1_type: :bar,
         chart1_subtype: :stacked
       }

@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
-  <head>
-    <%= render 'shared/head' %>
-  </head>
-  <body>
-    <%= render 'shared/navigation' %>
-
-    <!-- don't render application container as you do for the other pages -->
-    <div class="navigation-margin <%= home_class %>">
-      <% if flash.any? %>
-        <section class="alerts">
-          <%= render 'shared/alerts' %>
-        </section>
-      <% end %>
-      <%= yield %>
-    </div>
-    <%= render 'shared/cookie_banner' %>
-    <%= render 'shared/footer' %>
-  </body>
-</html>
+<%= content_for(:page) do %>
+  <%# don't render container as you do for most other pages %>
+  <div class="<%= home_class %>">
+    <% if flash.any? %>
+      <section class="alerts">
+        <%= render 'shared/page/flash' %>
+      </section>
+    <% end %>
+    <%= yield %>
+  </div>
+<% end %>
+<%= render template: 'layouts/page' %>

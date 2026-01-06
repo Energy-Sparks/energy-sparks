@@ -1,3 +1,4 @@
+
 <h1><%= t('alert_mailer.alert_email.title') %></h1>
 
 <div class="s-3"></div>
@@ -11,12 +12,12 @@
 
 <div class="s-3"></div>
 
-<% if @target_prompt %>
+<% if @target_prompt && !Flipper.enabled?(:target_advice_pages2025) %>
   <% if @school.has_current_target? %>
     <p>
       <%= t('alert_mailer.alert_email.your_school_has_current_target_html',
             target_date: nice_dates(@school.current_target.target_date),
-            school_targets_url: school_school_targets_url(@school, params: targets_utm_parameters)) %>.
+            school_targets_url: school_school_targets_url(@school, params: targets_utm_parameters)) %>
     </p>
     <%= link_to t('alert_mailer.alert_email.view_your_progress_report'),
                 school_school_targets_url(@school, params: targets_utm_parameters),

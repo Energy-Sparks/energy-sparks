@@ -33,9 +33,34 @@ class AdminMailer < ApplicationMailer
     mail(to: to, subject: subject(title))
   end
 
+  def school_group_meter_data_export(school_group, to)
+    time = Time.current
+    Dir.mktmpdir do |dir|
+      files_dir = File.join(dir, 'files')
+      Dir.mkdir(files_dir)
+      school_group.assigned_schools.data_visible.find_each do |school|
+        csv = CsvDownloader.readings_to_csv(
+          AmrValidatedReading.download_query_for_school(school, extra_selects: ['schools.name', 'schools.id'])
+                             .joins(meter: :school).where(meters: { active: true }).to_sql,
+          "School Name,School Id,#{AmrValidatedReading::CSV_HEADER_FOR_SCHOOL}"
+        )
+        File.write(File.join(files_dir, EnergySparks::Filenames.csv(school.slug, time:)), csv)
+      end
+      entries = Dir.entries(files_dir) - %w[. ..]
+      zip_path = File.join(dir,
+                           EnergySparks::Filenames.name("#{school_group.slug}-meter-data", time:, extension: :zip))
+      Zip::File.open(zip_path, create: true) do |zipfile|
+        entries.each { |entry| zipfile.add(entry, File.join(files_dir, entry)) }
+      end
+      attachments[File.basename(zip_path)] = File.read(zip_path)
+      @school_group = school_group
+      mail(to:, subject: "Meter data export for #{school_group.name}")
+    end
+  end
+
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).status_open.issue.by_updated_at.includes(%i[created_by updated_by issueable])
+    @issues = Issue.for_owned_by(@user).status_open.issue.by_review_date.by_updated_at.includes(%i[created_by updated_by issueable])
     title = "Issue report for #{@user.display_name}"
 
     return unless @issues.any?
@@ -75,7 +100,7 @@ class AdminMailer < ApplicationMailer
 
   def build_issues_csv_for(issues)
     CSV.generate(headers: true) do |csv|
-      csv << ['Issue type', 'Issue for', '', 'Group', 'Title', 'Fuel', 'Created By', 'Created', 'Updated By',
+      csv << ['Issue type', 'Issue for', 'New', 'Group', 'Title', 'Fuel', 'Review date', 'Created by', 'Created', 'Updated by',
               'Updated', 'View', 'Edit']
       issues.each do |issue|
         csv << [
@@ -85,6 +110,7 @@ class AdminMailer < ApplicationMailer
           issue&.school_group&.name,
           issue.title,
           issue.fuel_type&.humanize,
+          issue.review_date&.strftime('%d/%m/%Y'),
           issue.created_by.display_name,
           issue.created_at.strftime('%d/%m/%Y'),
           issue.updated_by.display_name,

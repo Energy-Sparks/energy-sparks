@@ -1,6 +1,13 @@
 module Schools
   class FuelConfiguration
     attr_reader :has_solar_pv, :has_storage_heaters, :has_gas, :has_electricity
+
+    FUEL_CONFIG_FUEL_TYPES = [:electricity, :gas, :solar_pv, :storage_heaters].freeze
+
+    def self.fuel_types
+      FUEL_CONFIG_FUEL_TYPES
+    end
+
     def initialize(has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :none, has_gas: false, has_electricity: false)
       @has_solar_pv = has_solar_pv
       @has_storage_heaters = has_storage_heaters
@@ -19,6 +26,19 @@ module Schools
 
     def no_meters_with_validated_readings
       !has_electricity && !has_gas
+    end
+
+    def fuel_types
+      {
+        electricity: has_electricity,
+        gas: has_gas,
+        solar_pv: has_solar_pv,
+        storage_heaters: has_storage_heaters
+      }.select { |_, v| v }.keys
+    end
+
+    def fuel_type_tokens
+      fuel_types.map(&:to_s).join(' ')
     end
   end
 end

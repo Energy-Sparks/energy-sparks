@@ -5,15 +5,16 @@
 <p><%= link_to 'School group meter reports', admin_reports_meter_reports_path, class: 'btn btn-success' %></p>
 
 <h2>Downloads</h2>
-<p>You can download the individual meter collections (unvalidated, validated and aggregated) for each school</p>
-<p><%= link_to "Download meter collections", admin_schools_meter_collections_path(anchor: "school-group-#{@school_group.id}") %>
-
 <p>You can request this school group meter report, including a CSV</p>
 <%= render 'admin/school_groups/email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
 
 <% unless params[:all_meters] %>
   <h2>Meters</h2>
-  <p>This shows all active meters by default, if you would like deprecated meters to be included: <%= link_to 'Show all meters', admin_school_group_meter_report_path(@school_group, all_meters: true), class: 'btn' %></p>
+  <p>This shows all active meters by default, if you would like deprecated meters to be included:
+    <%= link_to 'Show all meters',
+                admin_school_group_meter_report_path(@school_group, all_meters: true),
+                class: 'btn' %>
+  </p>
 <% end %>
 
 <h3>Loader Legend</h3>

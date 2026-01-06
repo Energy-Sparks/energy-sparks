@@ -32,60 +32,107 @@ describe SchoolCreator, :schools, type: :service do
       onboarding
     end
 
-    it 'saves the school' do
-      service.onboard_school!(school_onboarding)
-      expect(school).to be_persisted
+    context 'with a valid onboarding' do
+      before do
+        service.onboard_school!(school_onboarding)
+        school_onboarding.reload
+      end
+
+      it { expect(school).to be_persisted }
+      it { expect(school_onboarding.school).to eq(school) }
+      it { expect(school_onboarding.school.public).to be(true) }
+      it { expect(school.issues.first.title).to eq('onboarding issue') }
+      it { expect(school_onboarding.school.data_sharing_within_group?).to be true }
+
+      it 'assigns attributes' do
+        expect(school.school_group).to eq(school_group)
+        expect(school.template_calendar).to eq template_calendar
+        expect(school.calendar.based_on).to eq(template_calendar)
+        expect(school.dark_sky_area).to eq(dark_sky_area)
+        expect(school.scoreboard).to eq(scoreboard)
+        expect(school.configuration).not_to be_nil
+        expect(school.weather_station).not_to be_nil
+        expect(school.funder).to eq(funder)
+      end
+
+      it { expect(school.project_groups).to be_empty }
+      it { expect(school.diocese).to be_nil }
+
+      it 'converts the onboarding user to a school admin' do
+        onboarding_user.reload
+        expect(onboarding_user.role).to eq('school_admin')
+      end
+
+      it 'assigns the school to the onboarding user' do
+        onboarding_user.reload
+        expect(onboarding_user.school).to eq(school)
+      end
     end
 
-    it 'assigns attributes' do
-      service.onboard_school!(school_onboarding)
-      expect(school.school_group).to eq(school_group)
-      expect(school.template_calendar).to eq template_calendar
-      expect(school.calendar.based_on).to eq(template_calendar)
-      expect(school.dark_sky_area).to eq(dark_sky_area)
-      expect(school.scoreboard).to eq(scoreboard)
-      expect(school.configuration).not_to be_nil
-      expect(school.weather_station).not_to be_nil
-      expect(school.funder).to eq(funder)
-      expect(school.issues.first.title).to eq('onboarding issue')
+    context 'when school should be assigned to a project group' do
+      let!(:project_group) { create(:school_group, group_type: :project) }
+
+      let(:school_onboarding) do
+        create(:school_onboarding, created_user: onboarding_user, school_group:, project_group:)
+      end
+
+      before do
+        service.onboard_school!(school_onboarding)
+      end
+
+      it { expect(school.project_groups).to eq([project_group]) }
     end
 
-    it 'converts the onboarding user to a school admin' do
-      service.onboard_school!(school_onboarding)
-      onboarding_user.reload
-      expect(onboarding_user.role).to eq('school_admin')
+    context 'when school should be assigned to a diocese' do
+      let!(:diocese) { create(:school_group, group_type: :diocese) }
+
+      let(:school_onboarding) do
+        create(:school_onboarding, created_user: onboarding_user, school_group:, diocese:)
+      end
+
+      before do
+        service.onboard_school!(school_onboarding)
+      end
+
+      it { expect(school.diocese).to eq(diocese) }
     end
 
-    it 'sets the data sharing enum' do
-      service.onboard_school!(school_onboarding)
-      expect(school_onboarding.school.data_sharing_within_group?).to be true
+    context 'when school should be assigned to a local authority area' do
+      let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
+
+      let(:school_onboarding) do
+        create(:school_onboarding, created_user: onboarding_user, school_group:, local_authority_area:)
+      end
+
+      before do
+        service.onboard_school!(school_onboarding)
+      end
+
+      it { expect(school.local_authority_area_group).to eq(local_authority_area) }
     end
 
-    it 'sets the public flag' do
-      school_onboarding.update(school_will_be_public: false)
-      service.onboard_school!(school_onboarding)
-      expect(school_onboarding.school.public).to be_falsey
+    context 'when school should be private' do
+      before do
+        school_onboarding.update(school_will_be_public: false)
+        service.onboard_school!(school_onboarding)
+      end
+
+      it { expect(school_onboarding.school.public).to be_falsey }
     end
 
-    it 'assigns the school to the onboarding user' do
-      service.onboard_school!(school_onboarding)
-      onboarding_user.reload
-      expect(onboarding_user.school).to eq(school)
-    end
+    context 'when onboarding user already has a school' do
+      let(:other_school) { create(:school) }
 
-    it 'adds the school to the onboarding user cluster, if user already has school' do
-      pre_existing_school = create(:school)
-      onboarding_user.update!(school: pre_existing_school)
-      service.onboard_school!(school_onboarding)
-      onboarding_user.reload
-      expect(onboarding_user.school).to eq(pre_existing_school)
-      expect(onboarding_user.cluster_schools).to include(school)
-    end
+      before do
+        onboarding_user.update!(school: other_school)
+        service.onboard_school!(school_onboarding)
+        onboarding_user.reload
+      end
 
-    it 'assigns the school to the onboarding' do
-      service.onboard_school!(school_onboarding)
-      school_onboarding.reload
-      expect(school_onboarding.school).to eq(school)
+      it 'adds the school to the onboarding user cluster' do
+        expect(onboarding_user.school).to eq(other_school)
+        expect(onboarding_user.cluster_schools).to include(school)
+      end
     end
 
     it 'creates an alert contact for the school administrator' do
@@ -158,6 +205,15 @@ describe SchoolCreator, :schools, type: :service do
         expect(school.activation_date).to eq(Time.zone.today)
       end
 
+      context 'with school group' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, :with_consent, school_group:, data_enabled: false, visible:) }
+
+        it 'touches the group' do
+          expect { service.make_data_enabled! }.to(change {school_group.reload.updated_at })
+        end
+      end
+
       context 'when there is an activation date' do
         let(:school) { create(:school, :with_consent, data_enabled: false, visible:, activation_date: Time.zone.today - 1) }
 
@@ -195,6 +251,15 @@ describe SchoolCreator, :schools, type: :service do
 
       it 'completes the onboarding process' do
         expect(school.visible).to be(true)
+      end
+    end
+
+    context 'with school group' do
+      let!(:school_group) { create(:school_group) }
+      let(:school) { create(:school, school_group:, visible: false) }
+
+      it 'touches the group' do
+        expect { service.make_visible! }.to(change {school_group.reload.updated_at })
       end
     end
 

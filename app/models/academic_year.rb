@@ -17,6 +17,8 @@ class AcademicYear < ApplicationRecord
   belongs_to :calendar
 
   scope :for_date, ->(date) { where('start_date <= ? AND end_date >= ?', date, date) }
+  scope :for_date_onwards, ->(date) { where('end_date >= ? AND start_date <= ?', date, Time.zone.today) }
+  scope :ordered, ->(order = :asc) { order(start_date: order) }
 
   def self.current
     for_date(Time.zone.today).first
@@ -24,6 +26,14 @@ class AcademicYear < ApplicationRecord
 
   def current?(today = Time.zone.today)
     (start_date <= today) && (end_date >= today)
+  end
+
+  def previous?(today = Time.zone.today)
+    end_date < today
+  end
+
+  def future?(today = Time.zone.today)
+    start_date > today
   end
 
   def previous_year

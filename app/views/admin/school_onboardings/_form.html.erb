@@ -2,57 +2,71 @@
 
   <%= render 'shared/errors', subject: school_onboarding, subject_name: 'form' %>
 
-  <div class="form-group">
-    <%= f.label :school_name %>
-    <%= f.text_field :school_name, class: 'form-control' %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :school_name %>
+      <%= f.text_field :school_name, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :urn, 'URN' %>
+      <%= f.text_field :urn, class: 'form-control' %>
+    </div>
   </div>
 
   <div class="form-group">
-    <%= f.label :urn %>
-    <%= f.text_field :urn, class: 'form-control' %>
+    <%= f.check_box :full_school %>
+    <%= f.label :full_school, 'Is this onboarding for an entire school?' %>
   </div>
 
-  <%= f.check_box :full_school %>
-  <%= f.label :full_school %>
-
-  <div class="form-group">
-    <%= f.label :contact_email, 'Contact email address' %>
-    <%= f.text_field :contact_email, class: 'form-control' %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :contact_email, 'Contact email address' %>
+      <%= f.text_field :contact_email, class: 'form-control' %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :notes, 'Setup notes (not shown to school)' %>
-    <%= f.text_area :notes, class: 'form-control' %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :data_sharing, 'Data Sharing' %>
+      <%= f.select :data_sharing,
+                   options_for_select(
+                     School.data_sharings.map { |key, _value| [key.titleize, key] },
+                     @school_onboarding.data_sharing
+                   ),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= f.label :data_sharing, 'Data Sharing' %>
-    <%= f.select :data_sharing,
-                 options_for_select(
-                   School.data_sharings.map { |key, _value| [key.titleize, key] },
-                   @school_onboarding.data_sharing
-                 ),
-                 { include_blank: false },
-                 { class: 'form-control' } %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :school_group_id, 'School Group' %>
+      <%= f.select :school_group_id,
+                   options_from_collection_for_select(
+                     SchoolGroup.organisation_groups.order(:name), 'id', 'name', school_onboarding.school_group_id
+                   ),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+    </div>
   </div>
 
-  <h2>School Group</h2>
-  <div class="form-group">
-    <%= f.label :school_group_id, 'Group' %>
-    <%= f.select :school_group_id,
-                 options_from_collection_for_select(
-                   SchoolGroup.order(:name), 'id', 'name', school_onboarding.school_group_id
-                 ),
-                 { include_blank: true },
-                 { class: 'form-control' } %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :funder_id %>
+      <%= f.select :funder_id,
+                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),
+                   { include_blank: true }, { class: 'form-control' } %>
+    </div>
   </div>
 
-  <h2>Funder</h2>
-  <div class="form-group">
-    <%= f.label :funder_id %>
-    <%= f.select :funder_id,
-                 options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),
-                 { include_blank: true }, { class: 'form-control' } %>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <%= f.label :notes, 'Setup notes (not shown to school)' %>
+      <%= f.text_area :notes, class: 'form-control' %>
+    </div>
   </div>
 
   <div class="actions">

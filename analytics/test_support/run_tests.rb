@@ -66,8 +66,6 @@ class RunTests
         run_model_fitting(configuration[:control])
       when :benchmarks
         run_benchmarks(configuration, @test_script[:schools], @test_script[:source], @test_script[:cache_school])
-      when :management_summary_table
-        run_management_summary_tables(configuration[:combined_html_output_file], configuration[:control])
       else
         configure_log_file(configuration) if component.to_s.include?('logger')
       end
@@ -241,23 +239,6 @@ class RunTests
     end
     run_class.summarise_differences(differences, control) if !control[:summarise_differences].nil? && control[:summarise_differences]
     RunCharts.report_failed_charts(failed_charts, control[:report_failed_charts]) if control.key?(:report_failed_charts)
-  end
-
-  def run_management_summary_tables(combined_html_output_file, control)
-    html = ""
-    schools_list.sort.each do |school_name|
-      school = load_school(school_name)
-      puts "=" * 30
-      puts "running for summary management table for #{school_name}"
-      start_profiler
-      test = RunManagementSummaryTable.new(school)
-      test.run_management_table(control)
-      stop_profiler('management table')
-      html += "<h2>#{school.name}</h2>" + test.html
-    end
-    html_writer = HtmlFileWriter.new(control[:combined_html_output_file], results_sub_directory_type: RunManagementSummaryTable.test_type)
-    html_writer.write(html)
-    html_writer.close
   end
 
   def run_equivalences(control)

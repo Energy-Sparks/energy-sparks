@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe SchoolRemover, :schools, type: :service do
+  include ActiveJob::TestHelper
+  include EmailHelpers
+
   let(:school)                   { create(:school, visible: false, number_of_pupils: 12) }
   let(:visible_school)           { create(:school, visible: true, number_of_pupils: 12) }
 
@@ -19,6 +22,10 @@ describe SchoolRemover, :schools, type: :service do
 
   let(:archive) { false }
   let(:service) { SchoolRemover.new(school, archive: archive) }
+
+  around do |example|
+    ClimateControl.modify(SEND_AUTOMATED_EMAILS: 'true') { example.run }
+  end
 
   before do
     electricity_meter_issue.meters << electricity_meter
@@ -87,6 +94,15 @@ describe SchoolRemover, :schools, type: :service do
 
   describe '#remove_school!' do
     context 'when archive flag is set to false (pure delete)' do
+      context 'when a school is removed' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
+
+        it 'touches the group' do
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
+        end
+      end
+
       context 'when school is not visible' do
         before do
           service.remove_school!
@@ -109,9 +125,14 @@ describe SchoolRemover, :schools, type: :service do
           expect(gas_meter.issues.count).to eq 0
           expect(school.issues.count).to eq 0
         end
+
+        it 'sends no archived email' do
+          perform_enqueued_jobs
+          expect(ActionMailer::Base.deliveries.count).to eq(0)
+        end
       end
 
-      context 'when school is visiable' do
+      context 'when school is visible' do
         before do
           school.update(visible: true)
         end
@@ -126,6 +147,15 @@ describe SchoolRemover, :schools, type: :service do
 
     context 'when archive flag set true (archive - soft delete)' do
       let(:archive) { true }
+
+      context 'when a school is removed' do
+        let!(:school_group) { create(:school_group) }
+        let(:school) { create(:school, school_group: school_group, visible: false, number_of_pupils: 12) }
+
+        it 'touches the group' do
+          expect { service.remove_school! }.to(change { school_group.reload.updated_at })
+        end
+      end
 
       context 'when school is not visible' do
         before do
@@ -153,9 +183,27 @@ describe SchoolRemover, :schools, type: :service do
           expect(gas_meter.issues.count).to eq 1
           expect(school.issues.count).to eq 3
         end
+
+        it 'sends an archived email' do
+          perform_enqueued_jobs
+          email = ActionMailer::Base.deliveries.last
+          expect(email.subject).to eq("#{school.name} has been archived on Energy Sparks")
+          expect(email.to).to contain_exactly(school_admin.email, school_admin_user.email, staff_user.email)
+          expect(bootstrap_email_body_to_markdown(email)).to eq(<<~EMAIL.chomp)
+            # School archived
+
+            #{school.name} has been archived on Energy Sparks. You will no longer be able to access the energy data insights or previously recorded activities for your school.
+
+            Your account may have been archived because the school's funded use of Energy Sparks has ended and you have chosen not to pay for our services going forward. It could also be because you have not renewed a paid-for contract to use our online energy management tool.
+
+            We would love to support your school again in future. You can view our current services and prices [here](http://localhost/product) or request to re-enrol your school by emailing [hello@energysparks.uk](mailto:hello@energysparks.uk).
+
+            If you are subscribed to our newsletters, you will continue to receive these, but you can choose to opt-out using the unsubscribe link at the bottom of every newsletter.
+          EMAIL
+        end
       end
 
-      context 'when school is visiable' do
+      context 'when school is visible' do
         before do
           school.update(visible: true)
         end

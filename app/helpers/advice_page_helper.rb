@@ -8,14 +8,6 @@ module AdvicePageHelper
     end
   end
 
-  def group_advice_page_path(school_group, advice_page_key = nil, tab = :insights, params: {}, anchor: nil)
-    if advice_page_key.present?
-      polymorphic_path([tab, school_group, :advice, advice_page_key], params: params, anchor: anchor)
-    else
-      school_group_advice_path(school_group)
-    end
-  end
-
   def sort_by_label(advice_pages)
     advice_pages.sort_by { |ap| translated_label(ap) }
   end
@@ -28,17 +20,32 @@ module AdvicePageHelper
   # our naming convention and page keys. Will only work on advice pages
   # content, e.g advice_pages.*
   def advice_t(key, **vars)
-    I18n.t(key, **vars.merge(scope: [:advice_pages])).html_safe
+    I18n.t(key, **vars, scope: [:advice_pages]).html_safe
   end
 
-  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html)
-    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and not -4.7e-15)
+  def format_unit(value, units, in_table = true, user_numeric_comprehension_level = :ks2, medium = :html,
+                  numeric_level: nil, dash_if_nil: false)
+    user_numeric_comprehension_level = numeric_level unless numeric_level.nil?
+    # Ensure all tiny numbers are displayed as zero (e.g. -0.000000000000004736951571734001 should be shown as 0 and
+    # not -4.7e-15)
     begin
       value = 0.0 if value&.between?(-0.001, 0.001)
     rescue ArgumentError
       # use original value, probably NaN
     end
-    FormatEnergyUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+    if dash_if_nil && value.nil?
+      '-'
+    else
+      FormatUnit.format(units, value, medium, false, in_table, user_numeric_comprehension_level).html_safe
+    end
+  end
+
+  def format_percent(percent)
+    if percent.present?
+      up_downify(format_unit(percent, :relative_percent, false), sanitize: false)
+    else
+      '-'
+    end
   end
 
   def advice_baseload_high?(estimated_savings_vs_benchmark)
@@ -63,6 +70,7 @@ module AdvicePageHelper
   def relative_percent(base, current)
     return 0.0 if base.nil? || current.nil? || base == current
     return 0.0 if base == 0.0
+
     (current - base) / base
   end
 
@@ -75,15 +83,16 @@ module AdvicePageHelper
   end
 
   def meters_by_estimated_saving(meters)
-    meters.sort_by {|_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
+    meters.sort_by { |_, v| v.estimated_saving_£.present? ? -v.estimated_saving_£ : 0.0 }
   end
 
   def meters_by_percentage_baseload(meters)
-    meters.sort_by {|_, v| -v.percentage_baseload }
+    meters.sort_by { |_, v| -v.percentage_baseload }
   end
 
   def heating_time_class(heating_start_time, recommended_time)
     return '' if heating_start_time.nil?
+
     if heating_start_time >= recommended_time
       'text-positive'
     else
@@ -93,6 +102,7 @@ module AdvicePageHelper
 
   def heating_time_assessment(heating_start_time, recommended_time)
     return I18n.t('analytics.modelling.heating.no_heating') if heating_start_time.nil?
+
     if heating_start_time >= recommended_time
       I18n.t('analytics.modelling.heating.on_time')
     else
@@ -109,19 +119,19 @@ module AdvicePageHelper
   end
 
   def warm_weather_on_days_status(rating)
-    if [:excellent, :good].include?(rating)
+    if %i[excellent good].include?(rating)
       :positive
     else
       :negative
     end
   end
 
-  def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type)
-    if school.multiple_meters?(fuel_type)
-      advice_pages.where(fuel_type: fuel_type)
-    else
-      advice_pages.where(fuel_type: fuel_type, multiple_meters: false)
+  def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type, current_user)
+    advice_pages = advice_pages.where(fuel_type:)
+    unless Flipper.enabled?(:target_advice_pages2025, current_user)
+      advice_pages = advice_pages.where.not(key: %i[electricity_target gas_target storage_heater_target])
     end
+    school.multiple_meters?(fuel_type) ? advice_pages : advice_pages.where(multiple_meters: false)
   end
 
   def display_advice_page?(school, fuel_type)
@@ -131,7 +141,7 @@ module AdvicePageHelper
   def school_has_fuel_type?(school, fuel_type)
     fuel_type = 'storage_heaters' if fuel_type == 'storage_heater'
     fuel_type = 'electricity' if fuel_type == 'solar_pv'
-    school.send("has_#{fuel_type}?".to_sym)
+    school.send(:"has_#{fuel_type}?")
   end
 
   def can_benchmark?(advice_page:)
@@ -140,6 +150,7 @@ module AdvicePageHelper
 
   def tariff_source(tariff_summary)
     return t('advice_pages.tables.labels.default') unless tariff_summary.real
+
     if tariff_summary.name.include?('DCC SMETS2')
       t('advice_pages.tables.labels.smart_meter')
     else
@@ -156,12 +167,12 @@ module AdvicePageHelper
     AlertType.where(class_name: class_names)
   end
 
-  def dashboard_alert_groups(dashboard_alerts)
+  def dashboard_alert_groups(dashboard_alerts, filter: true)
     # alert type groups have a specific order here
-    %w[priority change benchmarking advice].filter_map do |group|
-      alerts = dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }
-      [group, alerts] if alerts.any?
+    groups = %w[priority change benchmarking advice].map do |group|
+      [group, dashboard_alerts.select { |dashboard_alert| dashboard_alert.alert.alert_type.group == group }]
     end
+    filter ? groups.reject { |_group, alerts| alerts.empty? } : groups
   end
 
   def t_weekday(week_day)
@@ -169,7 +180,10 @@ module AdvicePageHelper
   end
 
   def icon_tooltip(text = '')
-    tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text }, class: 'text-muted') if text.present?
+    return unless text.present?
+
+    tag.span(fa_icon('info-circle'), data: { toggle: 'tooltip', placement: 'top', title: text },
+                                     class: 'text-muted')
   end
 
   def formatted_unit_to_num(value)

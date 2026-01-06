@@ -14,17 +14,11 @@
     </div>
   <% end %>
 
-  <% if can? :manage, DashboardMessage %>
-    <%= render 'admin/shared/dashboard_message', messageable: @school %>
-  <% elsif @school.dashboard_message %>
-    <%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
-      <%= @school.dashboard_message.message %>
-    <% end %>
-  <% end %>
+  <%= render 'admin/shared/dashboard_message', messageable: @school %>
 
   <%= render TitledSectionComponent.new(id: 'settings-section', classes: 'scrollable-title') do |section| %>
     <% section.with_title do %>
-      <h2><%= t('components.manage_school_navigation.settings') %></h2>
+      <h2><%= t('common.settings') %></h2>
     <% end %>
     <% section.with_body do %>
       <%= render PromptComponent.new(icon: 'school', style: :compact, status: :none) do |p| %>
@@ -117,6 +111,13 @@
         <%= t('schools.settings.metering.school_downloads') %>
       <% end %>
 
+      <% if Flipper.enabled?(:manual_readings, current_user) %>
+        <%= render PromptComponent.new(icon: 'keyboard', style: :compact, status: :none) do |p| %>
+          <% p.with_title { t('manage_school_menu.manage_manual_readings') } %>
+          <% p.with_link { link_to t('schools.settings.manage_link'), school_manual_readings_path(@school) } %>
+          <%= t('schools.settings.metering.manual_readings') %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 
@@ -147,5 +148,4 @@
       <% end if can? :manage, TransportSurvey %>
     <% end %>
   <% end %>
-
 <% end %>

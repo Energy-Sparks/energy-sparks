@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   before_action :update_trackable!
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    redirect_to root_path, alert: exception.message
   end
 
   def after_sign_in_path_for(user)
@@ -32,19 +32,11 @@ class ApplicationController < ActionController::Base
   end
 
   def current_school
-    @current_school ||= if @school&.persisted?
-                          @school
-                        elsif @tariff_holder&.school? && @tariff_holder.persisted?
-                          @tariff_holder
-                        end
+    @current_school ||= @school if @school&.persisted?
   end
 
   def current_school_group
-    @current_school_group ||= if @school_group&.persisted?
-                                @school_group
-                              elsif @tariff_holder&.school_group? && @tariff_holder.persisted?
-                                @tariff_holder
-                              end
+    @current_school_group ||= @school_group if @school_group&.persisted?
   end
 
   def current_school_podium

@@ -50,7 +50,6 @@ button.btn-close { @extend button.close !optional; }
 
 // badge styles
 // Not maps as such but allow us to use the new class names
-
 .badge:not(.badge-warning):not(.badge-light) {
   color: #fff;
 }
@@ -92,4 +91,12 @@ button.btn-close { @extend button.close !optional; }
   .me#{$infix}-auto {
       @extend .mr#{$infix}-auto;
   }
+}
+
+/* Make BS5-style input-group buttons sit flush in BS4 */
+.input-group > .btn,
+.input-group > button {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
 }

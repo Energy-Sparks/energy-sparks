@@ -59,7 +59,7 @@ describe SchoolGroup, :school_groups, type: :model do
       create(:school, school_group: sg1, active: true)
       school2 = create(:school, school_group: sg2, active: false)
       create(:school, school_group: sg2, active: false)
-      expect(SchoolGroup.all.count).to eq(3)
+      expect(SchoolGroup.organisation_groups.count).to eq(3)
       expect(SchoolGroup.with_active_schools.count).to eq(1)
       school2.update(active: true)
       expect(SchoolGroup.with_active_schools.count).to eq(2)
@@ -86,39 +86,66 @@ describe SchoolGroup, :school_groups, type: :model do
 
   describe 'fuel_types' do
     let(:school_group) { create(:school_group) }
-    let(:school_1) { create(:school, school_group: school_group) }
-    let(:school_2) { create(:school, school_group: school_group) }
-    let(:school_group_2) { create(:school_group) }
-    let(:school_group_3) { create(:school_group) }
-    let(:school_3) { create(:school, school_group: school_group_3, visible: false) }
 
-    it 'returns an array of symbolized fuel types used across all schools in a given group' do
-      Schools::Configuration.create!(school: school_1, fuel_configuration: { "has_solar_pv": false, "has_storage_heaters": false, "fuel_types_for_analysis": 'electric_and_gas', "has_gas": true, "has_electricity": true })
-      expect(school_group.fuel_types.sort).to eq([:electricity, :gas])
-      configuration = Schools::Configuration.create!(school: school_1, fuel_configuration: { "has_solar_pv": true, "has_storage_heaters": false, "fuel_types_for_analysis": 'electric_and_gas', "has_gas": false, "has_electricity": true })
-      expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv])
-      configuration.update(fuel_configuration: { "has_solar_pv": false, "has_storage_heaters": true, "fuel_types_for_analysis": 'electric_and_gas', "has_gas": false, "has_electricity": true })
-      expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :storage_heaters])
+    context 'with gas and electricity' do
+      before do
+        create(:school, :with_fuel_configuration, school_group: school_group,
+                has_gas: true, has_electricity: true, has_storage_heaters: false, has_solar_pv: false)
+      end
+
+      it 'returns expected fuel types' do
+        expect(school_group.fuel_types.sort).to eq([:electricity, :gas])
+      end
     end
 
-    it 'returns an empty array if a school group has no visible schools' do
-      expect(school_group_2.schools.count).to eq(0)
-      expect(school_group_2.schools.visible.count).to eq(0)
-      expect(school_group_2.fuel_types).to eq([])
+    context 'with gas and electricity and solar' do
+      before do
+        create(:school, :with_fuel_configuration, school_group: school_group,
+                has_gas: true, has_electricity: true, has_solar_pv: true, has_storage_heaters: false)
+      end
 
-      Schools::Configuration.create!(school: school_3, fuel_configuration: { "has_solar_pv": false, "has_storage_heaters": false, "fuel_types_for_analysis": 'electric_and_gas', "has_gas": true, "has_electricity": true })
-      expect(school_group_3.schools.count).to eq(1)
-      expect(school_group_3.schools.visible.count).to eq(0)
-      expect(school_group_3.fuel_types).to eq([])
+      it 'returns expected fuel types' do
+        expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv])
+      end
+    end
+
+    context 'with all fuels' do
+      before do
+        create(:school, :with_fuel_configuration, school_group: school_group)
+      end
+
+      it 'returns expected fuel types' do
+        expect(school_group.fuel_types.sort).to eq([:electricity, :gas, :solar_pv, :storage_heaters])
+      end
+    end
+
+    context 'with no data enabled schools' do
+      before do
+        create(:school, :with_fuel_configuration, school_group: school_group, data_enabled: false)
+      end
+
+      it 'returns empty array' do
+        expect(school_group.fuel_types).to eq([])
+      end
+    end
+
+    context 'with no visible schools' do
+      before do
+        create(:school, :with_fuel_configuration, school_group: school_group, visible: false)
+      end
+
+      it 'returns empty array' do
+        expect(school_group.fuel_types).to eq([])
+      end
     end
   end
 
   describe 'issues csv' do
     def issue_csv_line(issue)
-      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
+      [issue.issueable_type.titleize, issue.issueable.name, issue.title, issue.description.to_plain_text, issue.fuel_type, issue.issue_type, issue.status, issue.status_summary, issue.mpan_mprns, issue.admin_meter_statuses, issue.data_source_names, issue.owned_by.try(:display_name), issue.review_date, issue.created_by.display_name, issue.created_at, issue.updated_by.display_name, issue.updated_at].join(',')
     end
 
-    let(:header) { 'For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Meter status,Data sources,Owned by,Created by,Created at,Updated by,Updated at' }
+    let(:header) { 'For,Name,Title,Description,Fuel type,Type,Status,Status summary,Meters,Meter status,Data sources,Owned by,Review date,Created by,Created at,Updated by,Updated at' }
     let(:user) { create(:admin) }
     let(:data_source) { create(:data_source) }
 
@@ -139,8 +166,9 @@ describe SchoolGroup, :school_groups, type: :model do
 
       let!(:school_for_bug) { School.find_by(id: school_group.id) || create(:school, id: school_group.id) }
       let!(:school_issue_with_issueable_id_same_as_school_group_id) { create(:issue, updated_by: user, issueable_type: 'School', issueable_id: school_group.id) }
+      let!(:review_date_issue) { create(:issue, issueable: school_group, review_date: 3.days.ago, fuel_type: :electricity) }
 
-      it { expect(csv.lines.count).to eq(8) }
+      it { expect(csv.lines.count).to eq(9) }
       it { expect(csv.lines.first.chomp).to eq(header) }
 
       it { expect(csv).to include(issue_csv_line(school_in_school_group_issue)) }
@@ -150,6 +178,7 @@ describe SchoolGroup, :school_groups, type: :model do
       it { expect(csv).to include(issue_csv_line(school_issue_with_data_sources)) }
       it { expect(csv).to include(issue_csv_line(closed_school_group_issue)) }
       it { expect(csv).to include(issue_csv_line(school_group_note)) }
+      it { expect(csv).to include(issue_csv_line(review_date_issue)) }
 
       it { expect(csv).not_to include(issue_csv_line(school_in_different_school_group_issue)) }
       it { expect(csv).not_to include(issue_csv_line(different_school_group_issue)) }
@@ -168,8 +197,8 @@ describe SchoolGroup, :school_groups, type: :model do
 
     context 'public group' do
       context 'as guest' do
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
     end
@@ -180,24 +209,24 @@ describe SchoolGroup, :school_groups, type: :model do
       let(:group)     { nil }
 
       context 'as guest' do
-        it 'does not allow comparison' do
-          expect(ability).not_to be_able_to(:compare, school_group)
+        it 'does not allow viewing' do
+          expect(ability).not_to be_able_to(:show, school_group)
         end
       end
 
       context 'as user from another school' do
         let!(:user) { create(:school_admin) }
 
-        it 'does not allow comparison' do
-          expect(ability).not_to be_able_to(:compare, school_group)
+        it 'does not allow viewing' do
+          expect(ability).not_to be_able_to(:show, school_group)
         end
       end
 
       context 'as admin' do
         let!(:user) { create(:admin) }
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
 
@@ -205,8 +234,8 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:group) { school_group }
         let!(:user) { create(:pupil, school: school)}
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
 
@@ -214,8 +243,8 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:group) { school_group }
         let!(:user) { create(:school_admin, school: school) }
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
 
@@ -224,8 +253,8 @@ describe SchoolGroup, :school_groups, type: :model do
         let(:other_school)    { create(:school, school_group: school_group) }
         let!(:user)           { create(:school_admin, school: other_school) }
 
-        it 'allows comparison' do
-          expect(ability).to be_able_to(:compare, school_group)
+        it 'allows viewing' do
+          expect(ability).to be_able_to(:show, school_group)
         end
       end
     end

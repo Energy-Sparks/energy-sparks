@@ -12,23 +12,24 @@ module Schools
       before_action { redirect_unless_permitted :show } # redirect to login if user can't view the school
       before_action :school_inactive
       before_action :load_advice_pages
-      before_action :load_advice_page, only: [:insights, :analysis, :learn_more]
-      before_action :check_authorisation, only: [:insights, :analysis, :learn_more]
-      before_action :set_tab_name, only: [:insights, :analysis, :learn_more]
+      before_action :load_advice_page, only: %i[insights analysis learn_more]
+      before_action :check_authorisation, only: %i[insights analysis learn_more]
+      before_action :set_tab_name, only: %i[insights analysis learn_more]
       before_action :load_recommendations, only: [:insights]
-      before_action :set_page_title, only: [:insights, :analysis, :learn_more]
-      before_action :check_has_fuel_type, only: [:insights, :analysis]
-      before_action :check_aggregated_school_in_cache, only: [:insights, :analysis]
+      before_action :set_page_title, only: %i[insights analysis learn_more]
+      before_action :check_has_fuel_type, only: %i[insights analysis]
+      before_action :check_aggregated_school_in_cache, only: %i[insights analysis]
       before_action :set_analysis_dates, only: %i[insights analysis]
-      before_action :check_can_run_analysis, only: [:insights, :analysis]
-      before_action :set_data_warning, only: [:insights, :analysis]
-      before_action :set_page_subtitle, only: [:insights, :analysis]
-      before_action :set_breadcrumbs, only: [:insights, :analysis, :learn_more]
+      before_action :check_can_run_analysis, only: %i[insights analysis]
+      before_action :set_data_warning, only: %i[insights analysis]
+      before_action :set_page_subtitle, only: %i[insights analysis]
+      before_action :set_breadcrumbs, only: %i[insights analysis learn_more]
       before_action :set_insights_next_steps, only: [:insights]
 
       rescue_from StandardError do |exception|
         Rollbar.error(exception, advice_page: advice_page_key, school: @school.name, school_id: @school.id, tab: @tab)
         raise if !Rails.env.production? || @advice_page.nil?
+
         locale = LocaleFinder.new(params, request).locale
         I18n.with_locale(locale) do
           render 'error', status: :internal_server_error
@@ -78,15 +79,12 @@ module Schools
       def set_breadcrumbs
         @breadcrumbs = [
           { name: t('advice_pages.breadcrumbs.root'), href: school_advice_path(@school) },
-          { name: @advice_page_title, href: advice_page_path(@school, @advice_page) },
+          { name: @advice_page_title, href: advice_page_path(@school, @advice_page) }
         ]
       end
 
       def if_exists(key)
-        full_key = "advice_pages.#{@advice_page.key}.#{key}"
-        if I18n.exists?(full_key, I18n.locale)
-          t(full_key)
-        end
+        t("advice_pages.#{@advice_page.key}.#{key}", default: nil)
       end
 
       def set_data_warning
@@ -98,17 +96,19 @@ module Schools
       end
 
       def load_advice_page
-        @advice_page = AdvicePage.find_by_key(advice_page_key)
+        @advice_page = AdvicePage.find_by!(key: advice_page_key)
+        @fuel_type = advice_page_fuel_type
       end
 
       def check_authorisation
-        if @advice_page && @advice_page.restricted && cannot?(:read_restricted_advice, @school)
-          redirect_to school_advice_path(@school), notice: 'Only an admin or staff user for this school can access this content'
-        end
+        return unless @advice_page&.restricted && cannot?(:read_restricted_advice, @school)
+
+        redirect_to school_advice_path(@school), notice: t('advice_pages.authorisation_failed')
       end
 
       def check_has_fuel_type
         render('no_fuel_type', status: :bad_request) and return unless school_has_fuel_type?
+
         true
       end
 
@@ -117,9 +117,9 @@ module Schools
       # and provides hook for controllers to plug in custom checks
       def check_can_run_analysis
         @analysable = create_analysable
-        if @analysable.present? && !@analysable.enough_data?
-          render 'not_enough_data'
-        end
+        return unless @analysable.present? && !@analysable.enough_data?
+
+        render 'not_enough_data'
       end
 
       def school_has_fuel_type?

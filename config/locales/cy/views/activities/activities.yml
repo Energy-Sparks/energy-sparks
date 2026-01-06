@@ -4,11 +4,6 @@ cy:
       are_you_sure: Ydych chi'n siŵr?
       delete: Dileu
       edit: Golygu
-      home: Hafan
-      title: Camau
-    activity_title: Teitl gweithgaredd
-    choose_next_activity: Dewiswch y Gweithgaredd Nesaf
-    completed_on: Cwblhawyd ar
     edit:
       page_title: Diweddaru gweithgaredd
       update_your_activity: Diweddaru eich gweithgaredd
@@ -39,21 +34,13 @@ cy:
       the_activity_you_completed: Y gweithgaredd a gwblhawyd gennych
       update_activity: Diweddaru gweithgaredd
       when_did_you_complete_this_activity: Pryd wnaethoch chi gwblhau'r gweithgaredd hwn?
-    home: Hafan
-    introduction: Rhestr o'r gweithgareddau arbed ynni diweddar a gofnodwyd gan
     new:
       page_title: Cofnodi gweithgaredd
       record_a_new_activity: Cofnodi gweithgaredd arbed ynni newydd ar gyfer eich ysgol
-    no_activities_completed: Dim gweithgareddau wedi'u cwblhau
-    page_title: Pob Gweithgaredd
     show:
       activity_description: Disgrifiad o'r gweithgaredd
       all_activities: Pob gweithgaredd
       category_of_activity: Categori'r gweithgaredd
       key_stages: Cyfnodau Allweddol
-      no_entry: Nid ydych wedi nodi'r hyn a wnaethoch ar gyfer y gweithgaredd hwn, golygwch y gweithgaredd a dywedwch wrthym beth wnaethoch chi
       page_title: Gweithgaredd
       score_awarded_for_this_activity: Sgôr a roddwyd am y gweithgaredd hwn
-    sign_in_html: "<a href='%{new_user_session_path}'>Mewngofnodwch</a> i gofnodi gweithgaredd arbed ynni newydd sydd wedi digwydd yn eich ysgol"
-    title: Gweithgareddau arbed ynni
-    type: Math

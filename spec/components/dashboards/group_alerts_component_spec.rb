@@ -17,7 +17,8 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
     {
       id: 'custom-id',
       classes: 'extra-classes',
-      school_group: school_group
+      school_group: school_group,
+      schools: school_group.schools
     }
   end
 
@@ -31,6 +32,34 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
                                      rating_to: 10.0))
   end
 
+
+  shared_examples 'it links to advice pages' do
+    context 'when the alert has an advice page' do
+      context 'when there is no group advice page' do
+        it 'does not link' do
+          expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+        end
+      end
+
+      context 'when there is non-matching advice page' do
+        let(:alert_type) { create(:alert_type, group: :benchmarking, advice_page: create(:advice_page)) }
+
+        it 'does not link' do
+          expect(html).not_to have_link(I18n.t('schools.show.find_out_more'))
+        end
+      end
+
+      context 'when there is a group advice page' do
+        let(:advice_page) { create(:advice_page, key: :baseload) }
+        let(:alert_type) { create(:alert_type, group: :benchmarking, advice_page:) }
+
+        it 'includes a link' do
+          expect(html).to have_link(I18n.t('schools.show.find_out_more'),
+                                    href: polymorphic_path([:analysis, school_group, :advice, advice_page.key.to_sym]))
+        end
+      end
+    end
+  end
 
   context 'when there are alerts to display' do
     before do
@@ -65,20 +94,29 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       end
     end
 
+    it 'does not include group headings' do
+      expect(html).not_to have_css('#benchmarking-alerts')
+    end
+
+    it_behaves_like 'it links to advice pages'
+
     context 'when showing groups' do
+      let(:fragment) { html.css('#benchmarking-alerts') }
       let(:params) do
         {
           id: 'custom-id',
           classes: 'extra-classes',
-          school_group: school_group
+          school_group: school_group,
+          schools: school_group.schools,
+          grouped: true
         }
       end
 
+      it_behaves_like 'it links to advice pages'
+
       it 'shows the group headings' do
-        within('#benchmarking-alerts') do
-          expect(html).to have_content(content_version.group_dashboard_title.to_plain_text)
-          expect(html).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
-        end
+        expect(fragment).to have_content(content_version.group_dashboard_title.to_plain_text)
+        expect(fragment).to have_content(I18n.t('advice_pages.alerts.groups.benchmarking'))
       end
     end
 
@@ -133,6 +171,38 @@ RSpec.describe Dashboards::GroupAlertsComponent, :include_application_helper, :i
       it 'interpolates correctly' do
         expect(html).to have_content(' number: 2; schools: 2 schools; describe_schools: all schools; 2 kWh, £4, 6 kg CO2')
       end
+    end
+
+    context 'when some schools are not data enabled' do
+      before do
+        school_group.schools.last.update!(data_enabled: false)
+      end
+
+      let(:group_dashboard_title) { 'number: {{number_of_schools}}; schools: {{schools}}; describe_schools: {{describe_schools}}; {{total_one_year_saving_kwh}}, {{total_average_one_year_saving_gbp}}, {{total_one_year_saving_co2}}' }
+
+      let(:content_version) do
+        create(:alert_type_rating_content_version,
+               group_dashboard_title: group_dashboard_title,
+               alert_type_rating: create(:alert_type_rating,
+                                         alert_type: alert_type,
+                                         group_dashboard_alert_active: true,
+                                         rating_from: 6.0,
+                                         rating_to: 10.0))
+      end
+
+      it 'only includes the data enabled schools' do
+        expect(html).to have_content(' number: 1; schools: 1 school; describe_schools: all schools; 1 kWh, £2, 3 kg CO2')
+      end
+    end
+
+    context 'when there are no data enabled schools' do
+      subject(:component) { described_class.new(**params) }
+
+      before do
+        school_group.schools.update_all(data_enabled: false)
+      end
+
+      it { expect(component.render?).to be(false) }
     end
   end
 end

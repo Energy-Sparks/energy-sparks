@@ -6,7 +6,7 @@ module Admin
     load_and_authorize_resource
 
     def index
-      @school_groups = SchoolGroup.all.by_name
+      @school_groups = SchoolGroup.organisation_groups.by_name
       @search_users = find_users
       @unattached_users = @users.where(school_id: nil, school_group_id: nil).order(:email)
       respond_to do |format|
@@ -116,7 +116,7 @@ module Admin
 
     def set_schools_options
       @schools = School.order(:name)
-      @school_groups = SchoolGroup.order(:name)
+      @school_groups = SchoolGroup.by_name.select(:name, :id, :group_type)
     end
 
     def school_users

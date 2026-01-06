@@ -11,10 +11,10 @@ class ComparisonTableComponent < ApplicationComponent
   include AdvicePageHelper
   include ComparisonsHelper
 
-  attr_reader :report, :table_name, :index_params, :headers, :colgroups
+  attr_reader :report, :table_name, :index_params, :headers, :colgroups, :table_classes
 
   def initialize(report:, advice_page:, table_name:, index_params:, headers: [], colgroups: [],
-                 advice_page_tab: :insights, advice_page_anchor: nil, **_kwargs)
+                 advice_page_tab: :insights, advice_page_anchor: nil, table_classes: 'table-sorted table-hover', **_kwargs)
     super
     @report = report
     @advice_page = advice_page
@@ -24,6 +24,7 @@ class ComparisonTableComponent < ApplicationComponent
     @colgroups = colgroups
     @advice_page_tab = advice_page_tab
     @advice_page_anchor = advice_page_anchor
+    @table_classes = table_classes
     @seen = {}
   end
 

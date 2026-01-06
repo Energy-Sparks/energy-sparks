@@ -9,7 +9,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:progress_summary) { nil }
-  let(:user) { create(:school_admin, school: school)}
+  let(:user) { create(:school_admin, school: school) }
   let(:audience) { :adult }
   let(:params) do
     {
@@ -29,22 +29,16 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     let(:expected_id) { id }
   end
 
-  it { expect(html).to have_content(I18n.t('components.dashboard_insights.title')) }
-
   it 'displays the reminders column' do
     expect(html).to have_css('#adult-reminders')
     expect(html).to have_content(I18n.t('components.dashboard_insights.reminders.title'))
   end
 
   it 'does not display the alerts' do
-    expect(html).not_to have_css('#adult-alerts')
+    expect(html).to have_no_css('#adult-alerts')
   end
 
   context 'with alerts' do
-    before do
-      Flipper.enable :new_dashboards_2024 # alert component has conditional
-    end
-
     include_context 'with dashboard alerts'
 
     it 'displays the alerts column' do
@@ -82,7 +76,7 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       let(:school) { create(:school, data_enabled: false) }
 
       it 'does not display the alerts' do
-        expect(html).not_to have_css('#adult-alerts')
+        expect(html).to have_no_css('#adult-alerts')
       end
 
       context 'with an admin' do
@@ -96,10 +90,6 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
   end
 
   context 'with a target progress summary' do
-    before do
-      Flipper.enable :new_dashboards_2024 # alert component has conditional
-    end
-
     let!(:school_target)   { create(:school_target, school: school) }
     let(:progress_summary) { build(:progress_summary, school_target: school_target) }
 
@@ -122,20 +112,24 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     end
 
     context 'when target has expired' do
-      let!(:school_target)    { create(:school_target, school: school, start_date: 1.year.ago, target_date: Date.yesterday) }
-      let(:progress_summary)  { build(:progress_summary, school_target: school_target) }
+      let!(:school_target) do
+        create(:school_target, school: school, start_date: 1.year.ago, target_date: Date.yesterday)
+      end
+      let(:progress_summary) { build(:progress_summary, school_target: school_target) }
 
       it 'does not display a prompt' do
-        expect(html).not_to have_content('Well done, you are making progress towards achieving your target')
+        expect(html).to have_no_content('Well done, you are making progress towards achieving your target')
       end
     end
 
     context 'with lagging data' do
-      let(:electricity_progress) { build(:fuel_progress, recent_data: false)}
-      let(:progress_summary) { build(:progress_summary, electricity: electricity_progress, school_target: school_target) }
+      let(:electricity_progress) { build(:fuel_progress, recent_data: false) }
+      let(:progress_summary) do
+        build(:progress_summary, electricity: electricity_progress, school_target: school_target)
+      end
 
       it 'displays a notice for the other fuel types' do
-        expect(html).not_to have_content('Unfortunately you are not meeting your target')
+        expect(html).to have_no_content('Unfortunately you are not meeting your target')
         expect(html).to have_content('Well done, you are making progress towards achieving your target to reduce your gas and storage heater usage')
       end
     end
@@ -144,7 +138,49 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
       let(:school) { create(:school, data_enabled: false) }
 
       it 'does not display the alerts' do
-        expect(html).not_to have_css('#adult-alerts')
+        expect(html).to have_no_css('#adult-alerts')
+      end
+    end
+  end
+
+  context 'with a target monthly summary' do
+    let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates) }
+
+    before do
+      Flipper.enable(:target_advice_pages2025)
+    end
+
+    def div_text
+      html.css('div').last.text.strip.gsub(/  +/, '')
+    end
+
+    it 'displays a negative electricity prompt' do
+      create(:school_target, :with_monthly_consumption, school:)
+      expect(div_text).to eq(
+        "Unfortunately you are not meeting your target to reduce your electricity usage\n\n\nReview progress"
+      )
+      expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/electricity_target")
+    end
+
+    it 'works with old target data' do
+      electricity_monthly_consumption = (0..12).map do |i|
+        month = Date.new(2024, 9) + i.months
+        [month.year, month.month, 100, nil, nil, true]
+      end
+      create(:school_target, school:, electricity_monthly_consumption:)
+      expect(div_text).to eq('')
+    end
+
+    context 'with gas' do
+      let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates, fuel_type: :gas) }
+
+      it 'displays a positive gas prompt' do
+        create(:school_target, :with_monthly_consumption, school:, fuel_type: :gas, current_consumption: 1000)
+        expect(div_text).to eq(
+          "Well done, you are making progress towards achieving your target to reduce your gas usage!\n\n\n" \
+          'Review progress'
+        )
+        expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
       end
     end
   end

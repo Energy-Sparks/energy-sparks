@@ -101,7 +101,7 @@ gem 'oj'
 gem 'rollbar'
 
 # Internationalisation
-gem 'i18n-tasks', '~> 1.0.15'
+gem 'i18n-tasks', '~> 1.1.2'
 gem 'mobility', '~> 1.3.2'
 gem 'mobility-actiontext', '~> 1.1.1'
 
@@ -118,6 +118,7 @@ gem 'premailer-rails'
 
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-active_support_cache_store'
 gem 'flipper-ui', '~> 1.3'
 
 gem 'net-sftp'

@@ -280,7 +280,7 @@ class AdviceBase < ContentBase
     {
       timescale_days:         time_scale_days,
       timescale_years:        time_scale_days / 365.0,
-      timescale_description:  FormatEnergyUnit.format(:years, time_scale_days / 365.0, :html),
+      timescale_description:  FormatUnit.format(:years, time_scale_days / 365.0, :html),
       start_date:             chart_results[:x_axis].first,
       end_date:               chart_results[:x_axis].last
     }
@@ -335,11 +335,11 @@ class AdviceBase < ContentBase
   end
 
   def format_£(value)
-    FormatEnergyUnit.format(:£, value, :html)
+    FormatUnit.format(:£, value, :html)
   end
 
   def format_kw(value)
-    FormatEnergyUnit.format(:kw, value, :html)
+    FormatUnit.format(:kw, value, :html)
   end
 
   # This feature allows the advice classes to copy values from one or more underlying
@@ -388,10 +388,10 @@ class AdviceBase < ContentBase
   def format_meter_data(meter_data)
     {
       name:     meter_data[:meter].analytics_name,
-      kwh:      FormatEnergyUnit.format(:kwh,     meter_data[:annual_kwh], :html),
-      £:        FormatEnergyUnit.format(:£,       meter_data[:annual_£],   :html),
-      percent:  FormatEnergyUnit.format(:percent, meter_data[:percent],    :html),
-      period:   FormatEnergyUnit.format(:years,   meter_data[:years],      :html)
+      kwh:      FormatUnit.format(:kwh,     meter_data[:annual_kwh], :html),
+      £:        FormatUnit.format(:£,       meter_data[:annual_£],   :html),
+      percent:  FormatUnit.format(:percent, meter_data[:percent],    :html),
+      period:   FormatUnit.format(:years,   meter_data[:years],      :html)
     }
   end
 

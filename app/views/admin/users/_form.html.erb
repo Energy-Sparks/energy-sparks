@@ -1,9 +1,16 @@
 <%= simple_form_for([:admin, user], html: { class: 'admin-user-form' }) do |f| %>
   <%= f.input :name, required: true %>
   <%= f.input :email %>
-  <%= f.input :role, collection: User.roles.except(:guest).keys, label_method: :titleize %>
+  <%= f.input :role, collection: User.roles.except(:guest).keys.sort, label_method: :titleize %>
   <%= f.input :school_id, collection: @schools, hint: 'For staff and school admins' %>
-  <%= f.input :school_group_id, collection: @school_groups, hint: 'For group admins' %>
+
+  <%= f.input :school_group_id,
+              collection: @school_groups.map { |sg| [sg.name, sg.id, { data: { group_type: sg.group_type } }] },
+              label_method: :first,
+              value_method: :second,
+              include_blank: 'Select a school group',
+              input_html: { id: 'school_group_select' } %>
+
   <%= f.association :cluster_schools, collection: @schools, hint: 'For school admins' %>
   <%= f.input :staff_role_id, label: 'Staff role', collection: StaffRole.order(:title), label_method: :title,
                               hint: 'For school admins and staff' %>

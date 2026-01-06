@@ -1,0 +1,148 @@
+<%= render 'school_groups/advice/shared/advice_page',
+           page_title: t('school_groups.advice.comparison_reports.title', name: @school_group.name),
+           school_group: @school_group do %>
+  <div class="row">
+    <div class="col-12">
+      <h3><%= t('school_groups.advice.comparison_reports.page_heading') %></h3>
+      <p><%= t('school_groups.advice.comparison_reports.introduction') %></p>
+    </div>
+  </div>
+
+  <% i18n_scope = 'school_groups.advice.comparison_reports.links' %>
+
+  <%= render Layout::GridComponent.new(id: 'report-grid',
+                                       cols: 2,
+                                       cell_classes: 'mb-4 pb-2',
+                                       component_classes: %w[h-100 p-4 bg-light rounded]) do |grid| %>
+    <% grid.with_block do %>
+      <h4><%= t('school_groups.advice.comparison_reports.lists.long_term') %></h4>
+      <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                                 fuel_types: @fuel_types) do |list| %>
+        <% list.with_fuel_types t(:annual, scope: i18n_scope), reports: {
+             electricity: { report: :annual_electricity_costs_per_pupil,
+                            label: t(:electricity_per_pupil,
+                                     scope: i18n_scope) },
+             gas: { report: :annual_heating_costs_per_floor_area,
+                    label: t(:gas_per_floor_area, scope: i18n_scope) }
+           } %>
+        <% list.with_fuel_types t(:annual_change, scope: i18n_scope), reports: {
+             electricity: :change_in_electricity_since_last_year,
+             gas: :change_in_gas_since_last_year,
+             storage_heaters: :change_in_storage_heaters_since_last_year
+           } %>
+        <% list.with_fuel_types t(:progress, scope: i18n_scope), reports: {
+             electricity: :electricity_targets,
+             gas: :gas_targets
+           } %>
+      <% end %>
+    <% end %>
+    <% grid.with_block do %>
+      <h4><%= t('school_groups.advice.comparison_reports.lists.out_of_hours') %></h4>
+      <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                                 fuel_types: @fuel_types) do |list| %>
+        <% list.with_fuel_types t(:annual, scope: i18n_scope), reports: {
+             electricity: :annual_electricity_out_of_hours_use,
+             gas: :annual_gas_out_of_hours_use,
+             storage_heaters: :annual_storage_heater_out_of_hours_use
+           } %>
+        <% list.with_fuel_types t(:annual_change,
+                                  scope: i18n_scope), reports: {
+                                    electricity: :change_in_electricity_since_last_year,
+                                    gas: :change_in_gas_since_last_year,
+                                    storage_heaters: :change_in_storage_heaters_since_last_year
+                                  } %>
+        <% list.with_fuel_types t(:last_two_holidays,
+                                  scope: i18n_scope), reports: {
+                                    electricity: :change_in_electricity_holiday_consumption_previous_holiday,
+                                    gas: :change_in_gas_holiday_consumption_previous_holiday
+                                  } %>
+        <% list.with_fuel_types t(:same_holiday,
+                                  scope: i18n_scope), reports: {
+                                    electricity: :change_in_electricity_holiday_consumption_previous_years_holiday,
+                                    gas: :change_in_gas_holiday_consumption_previous_years_holiday
+                                  } %>
+        <% list.with_fuel_types t(:current_holiday,
+                                  scope: i18n_scope), reports: {
+                                    electricity: :electricity_consumption_during_holiday,
+                                    gas: :gas_consumption_during_holiday,
+                                    storage_heaters: :storage_heater_consumption_during_holiday
+                                  } %>
+        <% list.with_link t(:upcoming_holiday, scope: i18n_scope),
+                          report: :holiday_usage_last_year %>
+      <% end %>
+    <% end %>
+    <% grid.with_block do %>
+      <h4><%= t('school_groups.advice.comparison_reports.lists.baseload') %></h4>
+      <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                                 fuel_types: @fuel_types) do |list| %>
+        <% list.with_link t(:baseload_per_pupil, scope: i18n_scope),
+                          report: :baseload_per_pupil,
+                          fuel_type: :electricity %>
+        <% list.with_link t(:recent_baseload, scope: i18n_scope),
+                          report: :recent_change_in_baseload,
+                          fuel_type: :electricity %>
+        <% list.with_link t(:peak_use, scope: i18n_scope),
+                          report: :electricity_peak_kw_per_pupil,
+                          fuel_type: :electricity %>
+        <% list.with_named t(:baseload_variation, scope: i18n_scope),
+                           fuel_type: :electricity,
+                           reports: {
+                             seasonal_baseload_variation:
+                              t(:seasonal, scope: i18n_scope),
+                             weekday_baseload_variation:
+                              t(:weekday, scope: i18n_scope)
+                           } %>
+      <% end %>
+    <% end if @fuel_types.include?(:electricity) %>
+    <% grid.with_block do %>
+      <h4><%= t('school_groups.advice.comparison_reports.lists.heating') %></h4>
+      <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                                 fuel_types: @fuel_types) do |list| %>
+        <% list.with_link t(:change_thermostat, scope: i18n_scope),
+                          report: :thermostat_sensitivity,
+                          fuel_type: :gas %>
+        <% list.with_link t(:heating_times, scope: i18n_scope),
+                          report: :heating_coming_on_too_early,
+                          fuel_type: :gas %>
+        <% list.with_link t(:warm_weather, scope: i18n_scope),
+                          report: :heating_in_warm_weather,
+                          fuel_type: :gas %>
+        <% list.with_link t(:thermostatic_control, scope: i18n_scope),
+                          report: :thermostatic_control,
+                          fuel_type: :gas %>
+        <% list.with_link t(:heating_hot_water, scope: i18n_scope),
+                          report: :heating_vs_hot_water,
+                          fuel_type: :gas %>
+        <% list.with_link t(:hot_water_efficiency,
+                            scope: i18n_scope),
+                          report: :hot_water_efficiency,
+                          fuel_type: :gas %>
+      <% end %>
+    <% end if @fuel_types.include?(:gas) %>
+    <% grid.with_block do %>
+      <h4><%= t('school_groups.advice.comparison_reports.lists.total') %></h4>
+      <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                                 fuel_types: @fuel_types) do |list| %>
+        <% list.with_link t(:annual_energy, scope: i18n_scope),
+                          report: :annual_energy_use %>
+        <% list.with_named t(:annual_energy, scope: i18n_scope), reports: {
+             annual_energy_costs_per_pupil: t(:per_pupil, scope: i18n_scope),
+             annual_energy_costs_per_floor_area: t(:per_floor_area,
+                                                   scope: i18n_scope)
+           } %>
+      <% end %>
+    <% end %>
+    <% grid.with_block do %>
+      <h4><%= t('school_groups.advice.comparison_reports.lists.solar') %></h4>
+      <%= render SchoolGroups::ComparisonReportListComponent.new(school_group: @school_group,
+                                                                 fuel_types: @fuel_types) do |list| %>
+        <% list.with_link t(:solar_benefit, scope: i18n_scope),
+                          report: :solar_pv_benefit_estimate %>
+        <% list.with_link t(:solar_generation, scope: i18n_scope),
+                          report: :solar_generation_summary %>
+        <% list.with_link t(:solar_change, scope: i18n_scope),
+                          report: :change_in_solar_pv_since_last_year %>
+      <% end %>
+    <% end if @fuel_types.include?(:solar_pv) %>
+  <% end %>
+<% end %>

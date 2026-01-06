@@ -9,11 +9,13 @@ describe 'Recommendations Page', type: :system, include_application_helper: true
   let(:user) {}
 
   shared_examples_for 'a panel selector with scope' do
-    context 'when current user is pupil' do
-      let(:user) { create(:pupil) }
+    %i[pupil student].each do |role|
+      context "when current user is #{role}" do
+        let(:user) { create(role) }
 
-      it 'has pupil checked' do
-        expect(section).to have_checked_field('Pupil activities')
+        it 'has pupil checked' do
+          expect(section).to have_checked_field('Pupil activities')
+        end
       end
     end
 

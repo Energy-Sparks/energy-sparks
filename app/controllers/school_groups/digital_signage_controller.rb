@@ -1,5 +1,7 @@
 module SchoolGroups
   class DigitalSignageController < BaseController
+    before_action :redirect_unless_authorised
+
     def index
       build_breadcrumbs([name: I18n.t('manage_school_menu.digital_signage')])
     end
@@ -13,6 +15,10 @@ module SchoolGroups
     end
 
     private
+
+    def required_permission
+      :view_digital_signage
+    end
 
     def csv_filename_for(link_type)
       title = I18n.t("pupils.digital_signage.index.school_group.links.#{link_type}")
@@ -82,7 +88,7 @@ module SchoolGroups
     end
 
     def schools
-      @school_group.schools.active.data_enabled.where(data_sharing: :public).order(:name)
+      @school_group.assigned_schools.active.data_enabled.where(data_sharing: :public).order(:name)
     end
   end
 end

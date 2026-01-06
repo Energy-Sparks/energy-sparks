@@ -1,0 +1,32 @@
+<%= tag.div id: id, class: class_names(classes, 'mt-1') do %>
+  <%= render Layout::GridComponent.new(cols: 2,
+                                       component_classes: 'h-100 p-4 rounded-lg',
+                                       cell_classes: 'mb-4') do |grid| %>
+    <% grid.with_feature_card(theme: :pale) do |feature| %>
+      <%= feature.with_header title: t('components.dashboards.group_learn_more.schools.title') %>
+      <%= feature.with_description { t('components.dashboards.group_learn_more.schools.intro') } %>
+      <%= feature.with_block(classes: 'mb-1') do %>
+        <%= form_with url: schools_path, method: :get, local: true,
+                      class: 'd-flex align-items-center justify-content-end' do |form| %>
+            <%= form.select :school, options_for_select(schools.pluck(:name, :slug)),
+                            { prompt: t('activity_types.show.select_school') }, class: 'form-control select2' %>
+            <%= form.submit t('common.labels.view'), class: 'btn btn-primary ml-2' %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <% if data_enabled? %>
+      <% grid.with_feature_card(theme: :pale) do |feature| %>
+        <%= feature.with_header title: t('components.dashboards.group_learn_more.advice.title') %>
+        <%= feature.with_description { t('components.dashboards.group_learn_more.advice.intro') } %>
+        <%= feature.with_button t('common.explore_energy_data'),
+                                school_group_advice_path(school_group),
+                                style: :primary, classes: 'ml-auto' %>
+      <% end %>
+    <% else %>
+      <% grid.with_feature_card(classes: 'data-disabled') do |feature| %>
+        <%= feature.with_header title: t('schools.show.coming_soon') %>
+        <%= feature.with_description { t('components.dashboards.group_learn_more.intro_no_data') } %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -85,7 +85,7 @@ class AlertSeasonalBaseloadVariation < AlertBaseloadBase
               <% else %>
                 There is a large variation in your seasonal usage from <%= format_kw(winter_kw) %>
                 in the winter to <%= format_kw(summer_kw) %> in the summer. Reducing this difference
-                could save you <%= FormatEnergyUnit.format(:£, @annual_cost_£current, :html) %> annually.
+                could save you <%= FormatUnit.format(:£, @annual_cost_£current, :html) %> annually.
               <% end %>
             )
     ERB.new(text).result(binding)

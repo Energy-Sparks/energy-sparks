@@ -1,0 +1,9 @@
+<% if @school&.persisted? && !request.path.starts_with?('/onboarding') ||
+      request.path.starts_with?('/school_groups', '/admin', '/support', '/comparisons') %>
+  <div class="page-breadcrumb">
+    <%= render BreadcrumbsComponent.new do |c| %>
+      <% c.with_school(@school) if @school %>
+      <% c.with_items(@breadcrumbs) if @breadcrumbs&.any? %>
+    <% end %>
+  </div>
+<% end %>

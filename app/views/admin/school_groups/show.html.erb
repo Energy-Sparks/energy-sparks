@@ -1,17 +1,20 @@
 <div class="d-flex justify-content-between align-items-center">
   <div class='align-middle pb-3'>
-    <h1 class='pb-0'><%= @school_group.name %> School Group</h1>
+    <h1 class='pb-0'>
+      <%= @school_group.name %>
+    </h1>
     <span class="badge badge-pill badge-primary"><%= @school_group.group_type.humanize %></span>
   </div>
   <div>
-    <%= header_nav_link 'All school groups', admin_school_groups_url %>
+    <%= header_nav_link 'All school groups',
+                        admin_school_groups_path(group_type: @school_group.group_type) %>
   </div>
 </div>
 <div class="row pb-2">
   <div class="col-lg-6">
     Pupils in active schools:
     <span class="badge badge-success">
-      <%= number_with_delimiter @school_group.schools.visible.map(&:number_of_pupils).compact.sum %>
+      <%= number_with_delimiter @school_group.assigned_schools.visible.map(&:number_of_pupils).compact.sum %>
     </span>
   </div>
   <div class="col-lg-6 text-right">
@@ -24,24 +27,24 @@
       <div class="card">
         <div class="card-body">
           <div>
-            Active <span class="float-right badge badge-success"><%= @school_group.schools.visible.count %></span>
+            Active <span class="float-right badge badge-success"><%= @school_group.assigned_schools.visible.count %></span>
           </div>
           <div>
             Active (with data visible)
-            <span class="float-right badge badge-success"><%= @school_group.schools.visible.data_enabled.count %></span>
+            <span class="float-right badge badge-success"><%= @school_group.assigned_schools.visible.data_enabled.count %></span>
           </div>
           <div>
             Invisible
-            <span class="float-right badge badge-info"><%= @school_group.schools.not_visible.count %></span>
+            <span class="float-right badge badge-info"><%= @school_group.assigned_schools.not_visible.count %></span>
           </div>
           <div>
             Onboarding
             <span class="float-right badge badge-warning">
-              <%= @school_group.school_onboardings.incomplete.count %>
+              <%= @school_group.onboardings_for_group.incomplete.count %>
             </span>
           </div>
           <div>
-            Removed <span class="float-right badge badge-secondary"><%= @school_group.schools.inactive.count %></span>
+            Removed <span class="float-right badge badge-secondary"><%= @school_group.assigned_schools.inactive.count %></span>
           </div>
         </div>
       </div>
@@ -51,7 +54,7 @@
             <div>
               <%= school_type.humanize %>
               <span class="float-right badge badge-success">
-                <%= @school_group.schools.visible.where(school_type: school_type).count %>
+                <%= @school_group.assigned_schools.visible.where(school_type: school_type).count %>
               </span>
             </div>
           <% end %>
@@ -63,43 +66,25 @@
 
 <%= render 'admin/shared/dashboard_message', messageable: @school_group %>
 
-<div id="school-group-button-panel" class="bg-light p-2 mb-2 d-flex justify-content-between border rounded">
-  <%= link_to 'View', school_group_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Edit', edit_admin_school_group_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Manage users', admin_school_group_users_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Manage partners', admin_school_group_partners_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Manage tariffs', school_group_energy_tariffs_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Meter attributes', admin_school_group_meter_attributes_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Meter updates', admin_school_group_meter_updates_path(@school_group), class: 'btn btn-sm' %>
-  <%= link_to 'Chart updates', school_group_chart_updates_path(@school_group), class: 'btn btn-sm' %>
-  <%= render 'email_meter_report_button', school_group: @school_group, class: 'btn btn-sm' %>
-  <%= link_to "#{fa_icon('file-download')} Issues".html_safe,
-              admin_school_group_issues_path(@school_group, format: :csv),
-              class: 'btn btn-sm', title: 'Download issues csv' %>
-  <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
-    <%= link_to 'Delete', admin_school_group_path(@school_group),
-                method: :delete, data: { confirm: 'Are you sure?' },
-                class: "btn btn-sm#{' disabled' unless @school_group.safe_to_destroy?}" %>
-  </div>
-</div>
+<%= render 'button_panel' %>
 
 <%= render TabsComponent.new do |component| %>
   <% component.with_tab(name: :active, label: 'Active') do %>
-    <% if @school_group.schools.active.any? %>
+    <% if @school_group.assigned_schools.active.any? %>
       <%= render 'active_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No active schools for <%= @school_group.name %>.</div>
     <% end %>
   <% end %>
   <% component.with_tab(name: :onboarding, label: 'Onboarding') do %>
-    <% if @school_group.school_onboardings.incomplete.any? %>
+    <% if @school_group.onboardings_for_group.incomplete.any? %>
       <%= render 'onboarding_schools', school_group: @school_group, anchor: 'onboarding' %>
     <% else %>
       <div class="bg-light p-2">No schools currently onboarding for <%= @school_group.name %>.</div>
     <% end %>
   <% end %>
   <% component.with_tab(name: :removed, label: 'Removed') do %>
-    <% if @school_group.schools.inactive.any? %>
+    <% if @school_group.assigned_schools.inactive.any? %>
       <%= render 'removed_schools', school_group: @school_group %>
     <% else %>
       <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
@@ -111,7 +96,7 @@
   <% component.with_tab(name: :'school-group-issues',
                         label: issues_label.call(:Group, @school_group.issues.status_open.count)) do %>
     <% if @school_group.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.issues, issueable_type: 'Group' %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues.by_priority_order, issueable_type: 'Group' %>
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
@@ -120,7 +105,9 @@
   <% component.with_tab(name: :'school-issues',
                         label: issues_label.call(:School, @school_group.school_issues.status_open.count)) do %>
     <% if @school_group.school_issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.school_issues, issueable_type: 'School' %>
+      <%= render 'admin/issues/issues_list',
+                 issues: @school_group.school_issues.by_priority_order,
+                 issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
     <% end %>

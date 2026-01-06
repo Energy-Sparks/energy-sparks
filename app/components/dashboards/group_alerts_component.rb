@@ -2,17 +2,21 @@ module Dashboards
   # FIXME should use PromptList directly, and pass through additional prompts if possible.
   class GroupAlertsComponent < ApplicationComponent
     ALERT_GROUPS = %w[priority change benchmarking advice].freeze # specific order
+    GROUP_ADVICE_PAGES = %w[baseload electricity_long_term electricity_out_of_hours gas_long_term gas_out_of_hours heating_control].freeze
 
     attr_reader :school_group, :limit
 
-    renders_one :title
+    renders_one :title, ->(**kwargs) do
+      Elements::HeaderComponent.new(**{ level: 2 }.merge(kwargs))
+    end
+
     renders_one :link
     renders_many :prompts, PromptComponent
 
-    def initialize(school_group:, limit: 3, grouped: false, **_kwargs)
+    def initialize(school_group:, schools:, limit: 2, grouped: false, **_kwargs)
       super
       @school_group = school_group
-      @schools = @school_group.schools.active
+      @schools = schools.data_enabled
       @limit = limit
       @grouped = grouped
     end
@@ -55,11 +59,18 @@ module Dashboards
     end
 
     def render?
+      return false unless @schools.any?
       prompts? || summarised_alerts.any?
     end
 
     def summarised_alerts
+      return [] unless @schools.any?
       @summarised_alerts ||= SchoolGroups::Alerts.new(@schools).summarise
+    end
+
+    def advice_link?(alert_type)
+      return false unless alert_type.advice_page
+      GROUP_ADVICE_PAGES.include?(alert_type.advice_page.key)
     end
 
     private

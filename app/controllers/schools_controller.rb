@@ -5,8 +5,13 @@ class SchoolsController < ApplicationController
   include DashboardTimeline
   include SchoolProgress
 
+  layout 'dashboards', only: %i[show settings]
+
   load_and_authorize_resource except: %i[show index]
   load_resource only: [:show]
+  before_action only: [:index] do
+    redirect_to_school
+  end
 
   skip_before_action :authenticate_user!, only: %i[index show]
   before_action :set_key_stages, only: %i[create edit update]
@@ -37,22 +42,15 @@ class SchoolsController < ApplicationController
   before_action :set_breadcrumbs
 
   def index
-    if Flipper.enabled?(:new_schools_page, current_user)
-      @letter = search_params.fetch(:letter, nil)
-      @keyword = search_params.fetch(:keyword, nil)
-      @results = if @keyword
-                   @scope.by_keyword(@keyword).by_name
-                 else
-                   @scope.by_letter(@letter).by_name
-                 end
-      @count = @results.count
-      @school_count = School.visible.count
-    else
-      @schools = School.visible.by_name.select(:name, :slug)
-      @school_groups = SchoolGroup.with_visible_schools.by_name
-      @ungrouped_visible_schools = School.visible.without_group.by_name.select(:name, :slug)
-      @schools_not_visible = School.not_visible.by_name.select(:name, :slug)
-    end
+    @letter = search_params.fetch(:letter, nil)
+    @keyword = search_params.fetch(:keyword, nil)
+    @results = if @keyword
+                 @scope.by_keyword(@keyword).by_name
+               else
+                 @scope.by_letter(@letter, SchoolSearchComponent.ignore_prefix(@tab)).by_name
+               end
+    @count = @results.count
+    @school_count = School.visible.count
   end
 
   def show
@@ -64,7 +62,6 @@ class SchoolsController < ApplicationController
     @audience = :adult
     @observations = setup_timeline(@school.observations.includes(:activity, :intervention_type))
     @progress_summary = progress_service.progress_summary if @school.data_enabled?
-    render :show, layout: 'dashboards'
   end
 
   # GET /schools/1/edit
@@ -115,18 +112,28 @@ class SchoolsController < ApplicationController
 
   def settings
     authorize! :manage_settings, @school
-    render :settings, layout: 'dashboards'
   end
 
   private
 
+  def redirect_to_school
+    if params[:school].present?
+      redirect_to school_path(params[:school]) and return
+    end
+  end
+
   def set_search_scope
     @tab = SchoolSearchComponent.sanitize_tab(search_params.fetch(:scope).to_sym)
     @schools = current_user_admin? ? School.active : School.visible
-    @scope = if @tab == :schools
+    @scope = case @tab
+             when :schools
                @schools
+             when :diocese
+               SchoolGroup.diocese_groups.with_visible_schools
+             when :areas
+               SchoolGroup.area_groups.with_visible_schools
              else
-               SchoolGroup.with_visible_schools
+               SchoolGroup.organisation_groups.with_visible_schools
              end
   end
 
@@ -156,7 +163,7 @@ class SchoolsController < ApplicationController
   end
 
   def redirect_pupils
-    return unless user_signed_in_and_linked_to_school? && current_user.pupil? && !switch_dashboard?
+    return unless user_signed_in_and_linked_to_school? && current_user.student_user? && !switch_dashboard?
 
     redirect_to pupils_school_path(@school)
   end

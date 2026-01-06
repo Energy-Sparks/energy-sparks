@@ -43,6 +43,7 @@
     <h3>Development</h3>
 
     <ul>
+      <li><%= link_to 'School scenarios', admin_reports_school_scenarios_path %></li>
       <li><%= link_to 'Good Job Statistics', admin_reports_good_jobs_path %></li>
       <li><%= link_to 'Mailchimp status', admin_reports_mailchimp_status_index_path %></li>
       <li><%= link_to 'Transifex Content Loads', admin_reports_transifex_loads_path %></li>
@@ -71,6 +72,7 @@
            <li><%= link_to 'Zero readings', admin_reports_zero_readings_path %></li>
          </ul>
       </li>
+      <li><%= link_to 'New data for inactive meters', admin_reports_new_data_inactive_meter_report_index_path %></li>
       <li><%= link_to 'Meter loading report', admin_reports_meter_loading_reports_path %></li>
       <li><%= link_to 'Recent manual imports', admin_reports_data_loads_path %></li>
       <li><%= link_to 'School group meter reports', admin_reports_meter_reports_path %></li>
@@ -79,6 +81,7 @@
 
     <h3>Meters & readings</h3>
     <ul>
+      <li><%= link_to 'Meters for admin user', admin_reports_admin_user_meter_report_index_path %></li>
       <li><%= link_to 'Baseload anomalies', admin_reports_baseload_anomaly_index_path %></li>
       <li><%= link_to 'DCC meter status', admin_reports_dcc_status_index_path %></li>
       <li><%= link_to 'Gas anomalies', admin_reports_gas_anomaly_index_path %></li>
@@ -107,13 +110,6 @@
     <ul>
       <li><%= link_to 'Carbon intensity data', data_feeds_carbon_intensity_readings_path %></li>
       <li><%= link_to 'Carbon intensity data CSV', data_feeds_carbon_intensity_readings_path(format: 'csv') %></li>
-    </ul>
-  </div>
-  <div class="col">
-    <h3>Misc Downloads</h3>
-    <ul>
-      <li><%= link_to 'Download meter collections', admin_schools_meter_collections_path %></li>
-      <li><%= link_to 'Download meter attributes', admin_meter_attributes_path(format: :yaml) %></li>
     </ul>
   </div>
 </div>

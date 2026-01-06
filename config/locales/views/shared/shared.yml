@@ -47,6 +47,7 @@ en:
     title: 'Energy Sparks alerts:'
   dashboards:
     adult_dashboard: Adult dashboard
+    group_dashboard: Group dashboard
     pupil_dashboard: Pupil dashboard
   errors:
     '404':
@@ -87,6 +88,7 @@ en:
     manage_audits: Manage Audits
     manage_cads: Manage CADs
     manage_issues: Manage issues
+    manage_manual_readings: Supply historical manual readings
     manage_meters: Manage meters
     manage_partners: Manage partners
     manage_school: Manage School
@@ -118,6 +120,7 @@ en:
     scoreboard: Scoreboard
     storage_heater_usage: Storage heater usage
   nav:
+    back_to_dashboard: Back to dashboard
     enrol: Enrol
     my_account: My account
     my_schools: My schools

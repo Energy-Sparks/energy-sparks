@@ -15,6 +15,7 @@ en:
         title: Long term trends
       recent_trend:
         title: Recent trend
+    authorisation_failed: Only an admin or staff user for this school can access this content
     benchmarks:
       benchmark_school: Well managed
       exemplar_school: Exemplar
@@ -63,9 +64,10 @@ en:
           type: Type
       school_comparisons: School comparisons
       school_comparisons_introduction_html: |-
-        <p>School comparisons are based on benchmarking your school against comparable schools based on the characteristics outlined below.</p>
+        <p>Comparisons are based on benchmarking a school against a comparable school based on the characteristics outlined above.</p>
         <p>"<strong>Exemplar</strong>" schools represent the top 17.5% of Energy Sparks schools</p>
         <p>"<strong>Well managed</strong>" schools represent the top 30% of Energy Sparks schools</p>
+        <p>Potential savings are based on a school reducing its usage to match those of an Exemplar school with similar characteristics.</p>
       total_energy_use_table:
         columns:
           aggregated_meter_date_range: Meter date range
@@ -78,6 +80,7 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
+      manage_targets: Manage targets
       overview: Overview
       pages:
         baseload: Baseload
@@ -87,14 +90,17 @@ en:
         electricity_meter_breakdown: Meter comparisons
         electricity_out_of_hours: Out of school hours
         electricity_recent_changes: Recent changes
+        electricity_target: Target
         gas_costs: Tariffs and costs
         gas_long_term: Long term changes
         gas_meter_breakdown: Meter comparisons
         gas_out_of_hours: Out of school hours
         gas_recent_changes: Recent changes
+        gas_target: Target
         heating_control: Heating control
         hot_water: Hot water
         solar_pv: Solar PV
+        storage_heater_target: Target
         storage_heaters: Storage heaters
         thermostatic_control: Thermostatic control
       sections:

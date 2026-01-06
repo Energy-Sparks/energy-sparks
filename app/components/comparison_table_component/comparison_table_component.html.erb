@@ -2,7 +2,8 @@
   <%= download_link(report, table_name, index_params) %>
 </div>
 
-<table id="<%= comparison_table_id(report, table_name) %>" class="table advice-table table-sorted table-hover">
+<table id="<%= comparison_table_id(report, table_name) %>"
+       class="<%= class_names('table table-sm advice-table', table_classes) %>">
   <thead class="sticky-heading">
     <% if colgroups.any? %>
       <tr>

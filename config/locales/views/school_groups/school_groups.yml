@@ -5,6 +5,49 @@ en:
       alerts:
         subtitle_html: A summary of energy use alerts currently being shown to schools in this group
         title: Recent alerts
+      charts:
+        introduction: This page provides quick access to a range of energy use charts for schools in this group. A wider set of charts is available on the advice pages for each school.
+        title: School energy use charts
+      comparison_reports:
+        introduction: Select one of the following reports to compare energy use across schools in this group
+        links:
+          annual: Annual use
+          annual_change: Annual change
+          annual_energy: Annual energy use
+          baseload_per_pupil: Baseload per pupil
+          baseload_variation: Baseload variation
+          change_thermostat: Annual saving through 1C reduction in thermostat temperature
+          current_holiday: Use during current holiday
+          electricity_per_pupil: Electricity (per pupil)
+          gas_per_floor_area: Gas (per floor area)
+          heating_hot_water: Heating vs hot water usage
+          heating_times: Heating start time
+          hot_water_efficiency: Hot water efficiency
+          last_two_holidays: Change in use between last two holidays
+          peak_use: Peak school day electricity use
+          per_floor_area: per_floor_area
+          per_pupil: per pupil
+          progress: Progress against target
+          recent_baseload: Recent change in baseload
+          same_holiday: Change in use between this holiday and the same holiday last year
+          savings_potential: Annual savings potential
+          seasonal: Seasonal
+          solar_benefit: Benefit of solar installation
+          solar_change: Annual change in solar PV production and resulting CO2 savings
+          solar_generation: Solar generation summary
+          thermostatic_control: Quality of thermostatic control
+          upcoming_holiday: Cost of energy used in upcoming holiday last year
+          warm_weather: Heating used in warm weather
+          weekday: Weekday
+        lists:
+          baseload: Baseload and peak energy use
+          heating: Heating and hot water control
+          long_term: Long term energy use
+          out_of_hours: Out of hours energy use
+          solar: Solar
+          total: Total energy use
+        page_heading: Choose a report
+        title: "%{name} school comparisons"
       priorities:
         title: Energy saving opportunities
       scores:
@@ -33,9 +76,12 @@ en:
       edit:
         title: Edit cluster
       group_type:
-        general: School Group
+        diocese: Diocese
+        general: Group
         local_authority: Local Authority
+        local_authority_area: Local Authority Area
         multi_academy_trust: Multi-Academy Trust
+        project: Project
       index:
         all_schools: All schools are in a cluster
         cluster: "%{cluster} cluster"
@@ -46,6 +92,7 @@ en:
         no_schools: This cluster has no schools
         select_cluster: Select cluster
         title: Clusters
+        unassign_selected: Unassign selected
         unassigned_title: Schools not in a cluster
       intro: A cluster is a set of schools that are grouped together within your %{group_type}. For example, you may want to group all your southern and northern schools, all your primaries, etc. Grouping schools into clusters will allow you to more easily compare related schools
       labels:
@@ -79,7 +126,6 @@ en:
         gas_out_of_hours: How does the out of school hours gas use of your schools compare to other schools on Energy Sparks, with a similar floor area?
         heating_control: How does the heating control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
         thermostatic_control: How does the thermostatic control analysis of your schools compare to other schools on Energy Sparks, with a similar floor area?
-      introduction_html: View a comparison of %{fuel_types} usage across a number of key benchmarks. Or <a href="%{link}">explore all school comparison benchmarks for this group</a>.
       modal_subtitle_html: |-
         <p>School are benchmarked as comparable schools based on the key characteristics including
         floor area, location, pupil numbers and type.</p>
@@ -93,10 +139,14 @@ en:
       view_current_scores: View the current scores
     download_as_csv: Download as CSV
     header:
-      view_group: View dashboard
       view_map: View map
     labels:
       floor_area: Floor area (m2)
+    login_prompt:
+      login: Login as a group or school user for this group to view the dashboard and energy analysis
+      restricted_html: Please <a href='%{href}'>explore other school groups</a> that are publicly available
+      title: Access to %{school_group} is restricted
+    meters_as_csv: Download meters as CSV
     priority_actions:
       alert_types:
         alert_electricity_annual_versus_benchmark_html: |-
@@ -210,6 +260,7 @@ en:
       received_an_audit: Received an audit
       recorded_temperatures: Recorded temperatures
       title: School engagement
+    schools_as_csv: Download schools as CSV
     secr:
       csv:
         consumption_for_the_year: Consumption for the year
@@ -333,42 +384,45 @@ en:
           format compatible with SECR reporting. However you will need to check that it is complete and add any other
           required data.
           </p>
+    settings:
+      charts: Set your default display units for energy charts - choose between kg CO₂, kWh, £, or the system default
+      clusters: Group similar schools within your organisation into clusters to simplify comparisons
+      digital_signage: Display your analysis on public signage around schools
+      engagement: This report summarises how your schools are engaging with Energy Sparks features. Higher engagement typically leads to greater energy savings
+      history: Manage the activities and actions previously recorded by your schools
+      secr: Use this tool to prepare SECR reports for your Multi-Academy Trust by reviewing your energy consumption and emissions data
+      status: View status of schools in this group
+      tariffs: Manage current and historical energy tariffs for your group and schools
     show:
       change_units: Change units
+      chart_note: Chart shows all schools with at least a year of data available.
       energy_use:
         title: Energy use
-      intro_html: <a href="#explore-energy-data">Explore the latest energy data</a>, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activities at these schools</a>.
+      intro_html: Explore the latest energy data, review recent <a href="#alerts-and-reminders">energy use alerts</a> and see the <a href="#scoreboard-update">latest activities at these schools</a>.
       metric:
         change: "% Change"
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Use (kWh)
-      recent_usage_intro:
-        general: A summary of the recent energy usage across schools in this group.
-        local_authority: A summary of the recent energy usage across schools in this local authority.
-        multi_academy_trust: A summary of the recent energy usage across schools in this multi-academy trust.
+      status_note_html: This table show schools with published data. <a href="%{path}">See a full list of schools and their status</a>
       we_are_working_with:
-        general:
-          in_partnership_with_html:
-            one: We are working with 1 school in this group in partnership with %{partners}
-            other: We are working with %{count} schools in this group in partnership with %{partners}
-          no_partnership:
-            one: We are working with 1 school in this group
-            other: We are working with %{count} schools in this group
-        local_authority:
-          in_partnership_with_html:
-            one: We are working with 1 school in this local authority in partnership with %{partners}
-            other: We are working with %{count} schools in this local authority in partnership with %{partners}
-          no_partnership:
-            one: We are working with 1 school in this local authority
-            other: We are working with %{count} schools in this local authority
-        multi_academy_trust:
-          in_partnership_with_html:
-            one: We are working with 1 school in this multi-academy trust in partnership with %{partners}
-            other: We are working with %{count} schools in this multi-academy trust in partnership with %{partners}
-          no_partnership:
-            one: We are working with 1 school in this multi-academy trust
-            other: We are working with %{count} schools in this multi-academy trust
+        in_partnership_with_html:
+          one: We are working with 1 school in this %{group_type} in partnership with %{partners}
+          other: We are working with %{count} schools in this %{group_type} in partnership with %{partners}
+        no_partnership:
+          one: We are working with 1 school in this %{group_type}
+          other: We are working with %{count} schools in this %{group_type}
+    status:
+      data_published: Data published
+      individual_meter_data: Individual meter data
+      key_dates: Key dates
+      made_visible: Made visible
+      no_meters: This school has no meters configured
+      no_schools: There are no schools in this group
+      not_data_enabled: Meter information will appear here once school is data published
+      number_of_users: Number of users
+      receiving_alerts: "(%{count} receiving alerts)"
+      school_info: School information
     sub_nav:
       chart_settings: Chart settings
       clusters: Manage clusters
@@ -380,12 +434,20 @@ en:
       school_engagement: School engagement
       secr_report: SECR report
       set_message: Set message
+    timeline:
+      activity_in_current_year: A list of all adult and pupil-led activities at this school group recorded in the current school year
+      activity_in_year: A list of all adult and pupil-led activities at this school group recorded in the %{school_year} school year
     titles:
       advice: Advice
+      charts: Energy use charts
       comparisons: Comparisons
       current_scores: Current Scores
       map: Map
       previous_scores: Previous Scores
       priority_actions: Priority Actions
       recent_usage: Recent Usage
+      reports: Reports
+      school_status: School status
+      secr: SECR report
+      settings: Settings
       show: Group Dashboard

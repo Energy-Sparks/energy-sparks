@@ -62,7 +62,7 @@ class SolarPVProfitLoss
       kwh: kwh.magnitude,
       days: days,
       co2: co2.magnitude,
-      period_description: FormatEnergyUnit.format(:years, days / 365.0, :text)
+      period_description: FormatUnit.format(:years, days / 365.0, :text)
     }
   end
 

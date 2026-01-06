@@ -1,0 +1,40 @@
+<table class="mt-2 table table-sm advice-table">
+  <thead>
+    <tr>
+      <th><%= t('schools.school_targets.progress.current.month') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.last_year') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.target') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.this_year') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.percentage_change') %></th>
+      <th><%= t('advice_pages.target.analysis.monthly_progress.on_target') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% consumption.each do |month| %>
+      <tr>
+        <% manual_reading = '[m]' if month[:manual] %>
+        <td><%= Date.new(month[:year], month[:month]).to_fs(:es_month) %><%= manual_reading %></td>
+        <td><%= format_unit(month[:previous_consumption], :kwh, numeric_level: :target) %></td>
+        <td><%= format_unit(month[:target_consumption], :kwh, numeric_level: :target) %></td>
+        <%= tag.td(class: month[:missing] ? 'old-data' : nil) do %>
+          <% unless month[:current_consumption].nil? && month[:missing] %>
+            <%= format_unit(month[:current_consumption], :kwh, numeric_level: :target) %>
+          <% end %>
+        <% end %>
+        <td>
+          <% if !month[:missing] || month[:manual] %>
+            <%= formatted_target_change(month[:current_consumption], month[:previous_consumption]) %>
+          <% end %>
+        </td>
+        <td>
+          <% if !month[:missing] || month[:manual] %>
+            <%= checkmark(month[:current_consumption] < month[:target_consumption]) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
+           additional_notice_text: "#{t('advice_pages.target.analysis.monthly_progress.partial')}<br>" \
+                                   "[m] - #{t('advice_pages.target.analysis.monthly_progress.manual_readings')}<br>" %>

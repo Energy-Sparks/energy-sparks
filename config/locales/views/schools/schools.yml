@@ -154,7 +154,6 @@ en:
         intro: A list of recent adult and pupil-led activities at this school
     downloads:
       index:
-        aggregated_meter_collection: Aggregated meter collection
         back_to_school_dashboard: Back to school dashboard
         carbon_intensity_data: Carbon intensity data
         carbon_intensity_data_csv: Carbon intensity data CSV
@@ -173,7 +172,6 @@ en:
         title: "%{school_name} Downloads"
         unvalidated_meter_data: Unvalidated meter data
         unvalidated_meter_data_as_csv: Unvalidated meter data as CSV
-        validated_meter_data: Validated meter data
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
     estimated_annual_consumptions:
       breadcrumb: Estimated annual consumption
@@ -219,16 +217,12 @@ en:
       other_schools_html: In the meantine, take a look at how %{other_schools_link} are using Energy Sparks
       schools_in_area: schools in your area
     index:
-      a_to_z_of_all_energy_sparks_schools: A to Z of all Energy Sparks schools
       case_studies: Read case studies
       introduction_1: Discover which schools are using Energy Sparks to reduce their energy usage
       introduction_2: We have %{count} schools across England, Wales, and Scotland including state primary and secondary schools, independent schools, special schools and nursery schools
       introduction_3: Explore their electricity and gas consumption data, find out how much energy they generate from their solar panels and learn about their energy saving activities
       introduction_4: We’re proud to have a great network of schools all working hard to save energy and help fight climate change
-      not_visible_schools: Not visible schools
       title: Energy Sparks schools across the UK
-      view_all_energy_sparks_schools: View all Energy Sparks schools
-      view_energy_sparks_schools_by_group: View Energy Sparks schools by group
     live_data:
       show:
         choose_another_activity: Choose another activity
@@ -240,6 +234,14 @@ en:
       timeout_modal:
         still_watching_your_live_data_usage: Still watching your live data usage?
         temporarily_paused_message_html: You've been viewing your live data for %{timeout_interval} minutes. We've temporarily paused updates. Click Restart to continue viewing
+    manual_readings:
+      enough_data: We have enough data from your meters so you don't need to enter any readings manually.
+      intro_html: |-
+        <p>We have limited energy data for your school. To allow you to set targets to reduce your energy use you can use this form to provide historical usage data. You will need to check either your monthly bill or your energy supplier portal and then provide the total kWh used for each month.</p>
+        <p>If we are later able to get access to historical half-hourly readings from your energy supplier then we will automatically use these instead.</p>
+        <p>Fields shown in grey indicate months for which we already have automatically supplied meter readings for the school. These cannot be manually updated and are shown for reference.</p>
+      with_target: In order to calculate progress towards reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
+      without_target: To show historical progress towards reducing your energy use, we need at least 13 months of historical readings.
     meters:
       creatable_meter_types:
         electricity: Electricity
@@ -458,7 +460,6 @@ en:
       view_on_map: View on map
     school_group:
       compare_schools: Compare schools
-      view_schools: View schools
     school_targets:
       achieving_your_targets:
         be_sure_to_regularly_check: Be sure to regularly check your dashboard and weekly alerts for our latest advice
@@ -516,7 +517,7 @@ en:
         set_this_target: Set this target
         start_date: Start date
         update_our_target: Update our target
-        you_are_currently_aiming_to_achieve_your_target_by_html: You are currenly aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
+        you_are_currently_aiming_to_achieve_your_target_by_html: You are currently aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
         where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
@@ -529,7 +530,8 @@ en:
         page_title: Update your energy saving target
         review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
         review_your_dashboard: Review your dashboard
-        target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target
+        target_date_reached_advice_page: The target date for your previous target has been reached. Its time to review your progress and set a new target.
+        target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target.
         tip: Tip
         your_new_target: Your new target
       progress:
@@ -603,6 +605,8 @@ en:
       show:
         final_results: See the final results of your goal to reduce your target by %{target_date}
         view_results: View results
+      successfully_created: Target successfully created
+      successfully_updated: Target successfully updated
       target_table:
         current_progress: Current progress
         final_result: Final result
@@ -636,6 +640,7 @@ en:
       metering:
         manage_meters: View and manage your school electricity and gas meters
         manage_tariffs: Manage current and historical energy tariffs for your school
+        manual_readings: Enter historical manual readings to allow us to track additional progress towards reducing your energy use
         school_downloads: Download copies of your meter data
       settings:
         add_community_use: Add community use times
@@ -683,8 +688,15 @@ en:
       setup_pupil_account: Set up a pupil account for your school to give your pupils direct access to the pupil dashboard. No email address is needed for a pupil account.
       upload_energy_bill: Upload a bill
       view_more_alerts: View more alerts
+    status:
+      data_visible: Data published
+      onboarding: Onboarding
+      visible: Visible
     timeline:
+      activity_in_current_year: A list of all adult and pupil-led activities at this school recorded in the current school year
+      activity_in_year: A list of all adult and pupil-led activities at this school recorded in the %{school_year} school year
       no_events: No events to show
+      summary: Showing %{from} - %{to} of %{count} activities recorded between %{start_date} and %{end_date}
       title: What's been going on?
     times:
       closing_time: Closing Time
@@ -741,24 +753,29 @@ en:
         new_pupil_account: New pupil account
         new_school_admin_account: New school admin account
         new_staff_account: New staff account
+        new_student_account: New student account
         no_pupil_accounts: There are no pupil accounts for this school
         no_school_admin_accounts: There are no school admin accounts for this school
         no_staff_accounts: There are no staff accounts for this school
+        no_student_accounts: There are no student accounts for this school
         password: Password
         preferred_locale: Preferred language
-        pupil_accounts: Pupil accounts
-        pupil_accounts_message_1: Pupil accounts allow your school's pupils to log into Energy Sparks using only a password, no email address is required
-        pupil_accounts_message_2: These accounts can be created to be used in classrooms or with eco-teams, one account per classroom or team and the passwords can then be shared with the pupils
+        pupil_accounts: Shared pupil accounts
+        pupil_accounts_message_1: A simplified login that uses only a password, no email address is required
+        pupil_accounts_message_2: These accounts can be created for use in classrooms or with eco-teams where the passwords can be shared with the pupils. However you are recommended to use individual student accounts where possible.
         receives_alerts: Receives alerts?
         resend_confirmation: Resend confirmation
         role: Role
         staff_accounts: Staff accounts
-        staff_accounts_have_access_message: Staff accounts have access to teacher, management and pupil Energy Sparks functionality and alerts but cannot manage other accounts
+        staff_accounts_have_access_message: Staff accounts have access to all Energy Sparks functionality for their school, but cannot manage the school account or other users
+        student_accounts: Individual student accounts
+        student_accounts_have_access_message: Student accounts have access to all Energy Sparks functionality for their school, but cannot manage the school account or other users. They should be registered using their individual email address. They cannot manage other accounts.
         title: School admin accounts
         unlock: Unlock
       new:
         create_account: Create account
         introduction: New users will be sent an email to confirm their account and will then be asked to set a password for their account before it can be accessed
+        introduction_admin: Enter the email of an existing admin to add them to this school, or provide a new email to create a new admin account
         title: Add %{user_role} account
     your_school_estates:
       edit:

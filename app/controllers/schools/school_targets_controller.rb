@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class SchoolTargetsController < ApplicationController
     load_and_authorize_resource :school
@@ -7,7 +9,7 @@ module Schools
     include SchoolProgress
     include DashboardTimeline
 
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!, only: %i[index show]
 
     before_action :redirect_if_disabled
     before_action :load_advice_pages
@@ -57,17 +59,6 @@ module Schools
       end
     end
 
-    def create
-      authorize! :create, @school_target
-      if @school_target.save
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
-      elsif @school.has_target?
-        render :new
-      else
-        render :first
-      end
-    end
-
     def edit
       authorize! :edit, @school_target
       if @school_target.expired?
@@ -80,11 +71,26 @@ module Schools
       end
     end
 
+    def create
+      authorize! :create, @school_target
+      if @school_target.save
+        update_monthly_consumption
+        redirect_to edit_school_school_target_path(@school, @school_target),
+                    notice: t('schools.school_targets.successfully_created')
+      elsif @school.has_target?
+        render :new
+      else
+        render :first
+      end
+    end
+
     def update
       authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
+        update_monthly_consumption
         AggregateSchoolService.new(@school).invalidate_cache
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
+        redirect_to edit_school_school_target_path(@school, @school_target),
+                    notice: t('schools.school_targets.successfully_updated')
       else
         target_service
         render :edit, layout: 'dashboards'
@@ -97,18 +103,30 @@ module Schools
       redirect_to school_path(@school), notice: 'Target successfully removed'
     end
 
+    def self.breadcrumb(current_user)
+      if Flipper.enabled?(:target_advice_pages2025, current_user)
+        I18n.t('advice_pages.nav.manage_targets')
+      else
+        I18n.t('manage_school_menu.review_targets')
+      end
+    end
+
     private
 
     def set_breadcrumbs
-      @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
+      @breadcrumbs = [{ name: self.class.breadcrumb(current_user) }]
     end
 
     def load_advice_pages
       @advice_pages = AdvicePage.all
     end
 
+    def update_monthly_consumption
+      Targets::GenerateProgressService.new(@school, aggregate_school).update_monthly_consumption(@school_target)
+    end
+
     def school_target_params
-      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+      params.require(:school_target).permit(:electricity, :gas, :storage_heater, :start_date, :target_date, :school_id)
     end
   end
 end

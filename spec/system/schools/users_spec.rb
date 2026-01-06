@@ -2,225 +2,311 @@
 
 require 'rails_helper'
 
-describe 'School admin user management' do
+describe 'School user management' do
   include ActiveJob::TestHelper
 
   let(:school) { create(:school) }
   let(:school_admin) { create(:school_admin, school:) }
 
-  describe 'as school admin' do
+  shared_examples 'creating an account with an email address' do
+    let(:name) { 'New user' }
+    let(:email) { 'new_user@test.com' }
+
+    let(:staff_role) { nil }
+
     before do
-      sign_in(school_admin)
+      click_on I18n.t("schools.users.index.new_#{role}_account")
+      fill_in 'Name', with: name
+      fill_in 'Email', with: email
+      select staff_role.title, from: 'Role' if staff_role
     end
 
-    it 'is present on the school menu' do
-      visit school_path(school)
-      click_on 'Manage users'
-      expect(page).to have_selector(:link_or_button, 'New staff account')
+    it 'creates the user' do
+      expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
+      user = school.users.where(role:).first
+      expect(user.email).to eq(email)
+      expect(user.confirmed?).to be false
+      expect(user.created_by).to eq(school_admin)
+      expect(user.staff_role).to eq(staff_role) if staff_role
     end
 
-    describe 'for pupils' do
-      before { visit school_users_path(school) }
+    it 'sends an email' do
+      click_on 'Create account'
+      email = ActionMailer::Base.deliveries.last
+      expect(email.subject).to eq('Please confirm your account on Energy Sparks')
+    end
 
-      it 'can create pupils' do
-        visit school_users_path(school)
-        click_on 'New pupil account'
+    context 'with an invalid form' do
+      let(:name) { '' }
+      let(:email) { '' }
 
-        fill_in 'Name', with: 'The Pupils'
-        fill_in 'Pupil password', with: 'the elektrons'
-        click_on 'Create account'
+      before { click_on 'Create account' }
 
-        pupil = school.users.pupil.first
-        expect(pupil.email).not_to be_nil
-        expect(pupil.pupil_password).to eq('the elektrons')
+      it { expect(page).to have_text("Name *\ncan't be blank") }
+      it { expect(page).to have_text("Email *\ncan't be blank") }
+    end
+  end
 
-        expect(ActionMailer::Base.deliveries.last).to be_nil
-      end
+  shared_examples 'can edit and delete an existing user' do
+    let(:role) { :pupil }
 
-      it 'can edit and delete pupils' do
-        pupil = create(:pupil, school:)
-        visit school_users_path(school)
-        within '.pupils' do
+    before { visit school_users_path(school) }
+
+    context 'when editing' do
+      before do
+        within "##{role}" do
           click_on 'Edit'
         end
 
-        fill_in 'Name', with: 'Dave'
+        fill_in 'Name', with: 'New name'
         click_on 'Update account'
-
-        pupil.reload
-        expect(pupil.name).to eq('Dave')
-
-        within '.pupils' do
-          click_on 'Delete'
-        end
-
-        expect(school.users.pupil.count).to eq(0)
       end
+
+      it { expect(user.reload.name).to eq('New name') }
     end
 
-    describe 'for staff' do
-      let!(:teacher_role) { create(:staff_role, :teacher, title: 'Teacher or teaching assistant') }
-
-      context 'when creating staff' do
-        before do
-          visit school_users_path(school)
-          click_on 'New staff account'
-          fill_in 'Name', with: 'Mrs Jones'
-          fill_in 'Email', with: 'mrsjones@test.com'
-          select 'Teacher or teaching assistant', from: 'Role'
-        end
-
-        it 'requires a name' do
-          fill_in 'Name', with: ''
-          click_on 'Create account'
-          expect(page).to have_text("Name *\ncan't be blank")
-        end
-
-        it 'can create staff' do
-          expect { click_on 'Create account' }.to change(User, :count).by(1).and change(Contact, :count).by(0)
-
-          staff = school.users.staff.first
-          expect(staff.email).to eq('mrsjones@test.com')
-          expect(staff.staff_role).to eq(teacher_role)
-          expect(staff.confirmed?).to be false
-          expect(staff.created_by).to eq(school_admin)
-
-          email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to eq('Please confirm your account on Energy Sparks')
-          expect(email.encoded).to match(school.name)
-        end
-      end
-
-      it 'can edit and delete staff' do
-        staff = create(:staff, school:)
-        visit school_users_path(school)
-        within '.staff' do
-          click_on 'Edit'
-        end
-
-        expect(page).to have_content('Edit staff account')
-
-        fill_in 'Name', with: 'Ms Jones'
-        click_on 'Update account'
-
-        staff.reload
-        expect(staff.name).to eq('Ms Jones')
-
-        within '.staff' do
+    context 'when deleting' do
+      before do
+        within "##{role}" do
           click_on 'Delete'
         end
-        expect(school.users.staff.count).to eq(0)
       end
 
-      it 'can edit alert contact' do
-        staff = create(:staff, school:)
-        create(:contact, name: staff.name, user: staff, email_address: staff.email, school:)
+      it { expect(school.users.where(role:).count).to eq(0) }
+    end
+  end
+
+  shared_examples 'can manage alerts' do
+    let(:role) { :staff }
+
+    context 'when user not confirmed' do
+      let!(:user) { create(role, school:, confirmed_at: nil) }
+
+      before do
         visit school_users_path(school)
-        within '.staff' do
+        within "##{role}" do
+          click_on 'Edit'
+        end
+      end
+
+      it { expect(page).to have_no_content 'Subscribe to school alerts' }
+    end
+
+    context 'when not subscribed to alerts' do
+      before do
+        visit school_users_path(school)
+        within "##{role}" do
+          click_on 'Edit'
+        end
+        check 'Subscribe to school alerts'
+      end
+
+      it { expect { click_on 'Update account' }.to change(Contact, :count).by(1) }
+    end
+
+    context 'when subscribed to alerts' do
+      before do
+        create(:contact, name: user.name, user:, email_address: user.email, school:)
+        visit school_users_path(school)
+        within "##{role}" do
           click_on 'Edit'
         end
 
         uncheck 'Subscribe to school alerts'
-        expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
-
-        within '.staff' do
-          click_on 'Edit'
-        end
-        expect(page).to have_no_checked_field('contact_auto_create_alert_contact')
-        check 'Subscribe to school alerts'
-        expect { click_on 'Update account' }.to change(Contact, :count).by(1)
       end
 
-      it 'cannot edit alert contact if user is not yet confirmed' do
-        create(:staff, school:, confirmed_at: nil)
-        visit school_users_path(school)
-        within '.staff' do
-          click_on 'Edit'
-        end
+      it { expect { click_on 'Update account' }.to change(Contact, :count).by(-1) }
+    end
 
-        expect(page).to have_no_content 'Subscribe to school alerts'
-      end
+    context 'when editing user email' do
+      let!(:contact) { create(:contact, name: user.name, user:, email_address: user.email, school:) }
 
-      it 'can update contact email address if contact has user association' do
-        staff = create(:staff, school:)
-        contact = create(:contact, name: staff.name, user: staff, email_address: staff.email, school:)
+      before do
         visit school_users_path(school)
-        within '.staff' do
+        within "##{role}" do
           click_on 'Edit'
         end
 
         fill_in 'Email', with: 'blah@test.com'
+      end
 
+      it 'updates the contact email' do
         expect { click_on 'Update account' }.not_to(change(Contact, :count))
-
-        contact.reload
-        expect(contact.email_address).to eq('blah@test.com')
+        expect(contact.reload.email_address).to eq('blah@test.com')
       end
+    end
+  end
 
-      it 'can update contact when contact exists for that email without user association' do
-        staff = create(:staff, school:)
-        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
-        visit school_users_path(school)
-        within '.staff' do
-          click_on 'Edit'
-        end
+  describe 'with a logged in school admin' do
+    before do
+      sign_in(school_admin)
+    end
 
-        expect { click_on 'Update account' }.not_to(change(Contact, :count))
+    describe 'when managing pupils' do
+      before { visit school_users_path(school) }
 
-        expect(contact.reload.user).to eq(staff)
-      end
-
-      it 'can remove contact when contact exists for that email without user association' do
-        staff = create(:staff, school:)
-        contact = create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
-        visit school_users_path(school)
-        within '.staff' do
-          click_on 'Edit'
-        end
-
-        uncheck 'Subscribe to school alerts'
-        expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
-        expect { contact.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-
-      it 'can promote staff user to school admin' do
-        staff = create(:staff, school:)
-        create(:contact, name: staff.name, user: nil, email_address: staff.email, school:)
-        visit school_users_path(school)
-        within '.staff' do
-          expect(page).to have_content(staff.name)
-          click_on 'Make school admin'
-        end
-
-        within '.school_admin' do
-          expect(page).to have_content(staff.name)
-        end
-
-        staff.reload
-        expect(staff.role).to eq('school_admin')
-      end
-
-      it 'no lock if not an admin' do
-        visit school_users_path(school)
-        expect(page).to have_no_selector(:link_or_button, 'Lock')
-      end
-
-      context 'when displaying users' do
-        let!(:staff) { create(:staff, school:, preferred_locale: :cy) }
-
+      context 'when creating an account' do
         before do
+          click_on I18n.t('schools.users.index.new_pupil_account')
+          fill_in 'Name', with: 'The Pupils'
+          fill_in 'Pupil password', with: 'the elektrons'
+          click_on 'Create account'
+        end
+
+        subject(:pupil) { school.users.pupil.first }
+
+        it 'creates the account' do
+          expect(pupil.email).not_to be_nil
+          expect(pupil.pupil_password).to eq('the elektrons')
+        end
+
+        it 'does not send an email' do
+          expect(ActionMailer::Base.deliveries.last).to be_nil
+        end
+      end
+
+      context 'with an existing account' do
+        let!(:user) { create(:pupil, school:) }
+
+        it_behaves_like 'can edit and delete an existing user' do
+          let(:role) { :pupil }
+        end
+      end
+    end
+
+    describe 'when managing staff' do
+      let!(:teacher_role) { create(:staff_role, :teacher, title: 'Teacher or teaching assistant') }
+
+      before { visit school_users_path(school) }
+
+      context 'when creating an account' do
+        it_behaves_like 'creating an account with an email address' do
+          let(:staff_role) { teacher_role}
+          let(:role) { :staff }
+        end
+      end
+
+      context 'with an existing account' do
+        let!(:user) { create(:staff, school:, preferred_locale: :cy) }
+
+        it_behaves_like 'can edit and delete an existing user' do
+          let(:role) { :staff }
+        end
+
+        it 'does not have option to lock accounts' do
           visit school_users_path(school)
+          expect(page).to have_no_selector(:link_or_button, 'Lock')
         end
 
         it 'shows preferred language' do
-          within '.staff' do
+          visit school_users_path(school)
+          within '#staff' do
             expect(page).to have_content('Welsh')
           end
         end
 
         it 'does not have link to profile' do
-          within('.staff') do
-            expect(page).not_to have_link(staff.name, href: user_path(staff))
+          visit school_users_path(school)
+          within('#staff') do
+            expect(page).not_to have_link(user.name, href: user_path(user))
+          end
+        end
+
+        context 'when promoting to school admin' do
+          before do
+            visit school_users_path(school)
+            within '#staff' do
+              click_on 'Make school admin'
+            end
+          end
+
+          it { expect(user.reload.role).to eq('school_admin') }
+        end
+
+        context 'when managing alerts' do
+          it_behaves_like 'can manage alerts' do
+            let(:role) { :staff }
+          end
+
+          context 'when there is an orphaned contact' do
+            let!(:contact) { create(:contact, name: user.name, user: nil, email_address: user.email, school:) }
+
+            context 'when user is edited' do
+              before do
+                visit school_users_path(school)
+                within '#staff' do
+                  click_on 'Edit'
+                end
+
+                click_on 'Update account'
+              end
+
+              it 'links the contact when user is edited' do
+                expect(contact.reload.user).to eq(user)
+              end
+            end
+
+            context 'when user is unsubscribed' do
+              before do
+                visit school_users_path(school)
+                within '#staff' do
+                  click_on 'Edit'
+                end
+
+                uncheck 'Subscribe to school alerts'
+              end
+
+              it 'removes the contact' do
+                expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
+                expect { contact.reload }.to raise_error(ActiveRecord::RecordNotFound)
+              end
+            end
+          end
+        end
+      end
+    end
+
+    describe 'when managing students' do
+      before { visit school_users_path(school) }
+
+      context 'when creating an account' do
+        it_behaves_like 'creating an account with an email address' do
+          let(:staff_role) { nil }
+          let(:role) { :student }
+        end
+      end
+
+      context 'with an existing account' do
+        let!(:user) { create(:student, school:, preferred_locale: :cy) }
+
+        it_behaves_like 'can edit and delete an existing user' do
+          let(:role) { :student }
+        end
+
+        it 'shows preferred language' do
+          visit school_users_path(school)
+          within '#student' do
+            expect(page).to have_content('Welsh')
+          end
+        end
+
+        it 'does not have link to profile' do
+          visit school_users_path(school)
+          within('#student') do
+            expect(page).not_to have_link(user.name, href: user_path(user))
+          end
+        end
+
+        it 'does not have link to promote' do
+          visit school_users_path(school)
+          within('#student') do
+            expect(page).not_to have_link('Make school admin')
+          end
+        end
+
+        context 'when managing alerts' do
+          it_behaves_like 'can manage alerts' do
+            let(:role) { :student }
           end
         end
       end
@@ -230,7 +316,7 @@ describe 'School admin user management' do
       it 'only shows the email input' do
         visit school_users_path(school)
         click_on 'New school admin account'
-        expect(first('form').text).to eq('Email *')
+        expect(all('form label').map(&:text)).to eq(['Email *'])
       end
 
       it 'validates the email' do
@@ -238,7 +324,7 @@ describe 'School admin user management' do
         click_on 'New school admin account'
         fill_in 'Email', with: 'invalid email'
         click_on 'Continue'
-        expect(first('form').text).to eq("Email *\nis invalid")
+        expect(first('.form-group').text).to eq("Email *\nis invalid")
       end
 
       context 'when adding a user' do
@@ -274,7 +360,7 @@ describe 'School admin user management' do
         end
 
         it 'can edit fields' do
-          within '.school_admin' do
+          within '#school_admin' do
             # this avoids problems with ambiguous matches in find/click_on
             # find the row for the new admin, using name set above
             tr = find(:xpath, '//td', text: new_admin.name).ancestor('tr')
@@ -295,7 +381,7 @@ describe 'School admin user management' do
         end
 
         it 'can edit alert contact' do
-          within '.school_admin' do
+          within '#school_admin' do
             # this avoids problems with ambiguous matches in find/click_on
             # find the row for the new admin, using name set above
             tr = find(:xpath, '//td', text: new_admin.name).ancestor('tr')
@@ -307,7 +393,7 @@ describe 'School admin user management' do
           uncheck 'Subscribe to school alerts'
           expect { click_on 'Update account' }.to change(Contact, :count).by(-1)
 
-          within '.school_admin' do
+          within '#school_admin' do
             # this avoids problems with ambiguous matches in find/click_on
             # find the row for the new admin, using name set above
             tr = find(:xpath, '//td', text: new_admin.name).ancestor('tr')
@@ -323,7 +409,7 @@ describe 'School admin user management' do
 
         context 'when deleting' do
           before do
-            within '.school_admin' do
+            within '#school_admin' do
               # there's only one delete button because users cant delete themselves
               click_on 'Delete'
             end
@@ -394,7 +480,7 @@ describe 'School admin user management' do
 
         it 'can edit fields' do
           expect(page).to have_content('Other admin')
-          within '.school_admin' do
+          within '#school_admin' do
             # this avoids problems with ambiguous matches in find/click_on
             # find the row for the new admin, using name set above
             tr = find(:xpath, '//td', text: other_school_admin.name).ancestor('tr')
@@ -414,7 +500,7 @@ describe 'School admin user management' do
 
         context 'when deleting' do
           before do
-            within '.school_admin' do
+            within '#school_admin' do
               # there's only one delete button because users cant delete themselves
               click_on 'Delete'
             end
@@ -435,7 +521,7 @@ describe 'School admin user management' do
         it 'shows preferred language' do
           create(:school_admin, school:, preferred_locale: :cy)
           visit school_users_path(school)
-          within '.school_admin' do
+          within '#school_admin' do
             expect(page).to have_content('Welsh')
           end
         end
@@ -458,7 +544,7 @@ describe 'School admin user management' do
     end
 
     it 'can view profile' do
-      within('.staff') do
+      within('#staff') do
         expect(page).to have_link(staff.name, href: user_path(staff))
       end
     end
@@ -476,26 +562,26 @@ describe 'School admin user management' do
     end
 
     it 'can disable users' do
-      within('.staff') { click_on 'Disable' }
+      within('#staff') { click_on 'Disable' }
       expect(staff.reload.active).to be(false)
     end
 
     it 'can unlock users' do
       staff.lock_access!(send_instructions: false)
       refresh
-      within('.staff') { click_on 'Unlock' }
+      within('#staff') { click_on 'Unlock' }
       expect(staff.reload.locked_at).to be_nil
     end
 
     it 'can disable pupils' do
-      within('.pupils') { click_on 'Disable' }
+      within('#pupil') { click_on 'Disable' }
       expect(pupil.reload.active).to be(false)
     end
 
     it 'can unlock pupils' do
       pupil.lock_access!(send_instructions: false)
       refresh
-      within('.pupils') { click_on 'Unlock' }
+      within('#pupil') { click_on 'Unlock' }
       expect(pupil.reload.locked_at).to be_nil
     end
   end

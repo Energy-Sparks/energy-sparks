@@ -121,8 +121,10 @@ class School < ApplicationRecord
   include MailchimpUpdateable
   include Enums::DataSharing
   include Enums::SchoolType
+  include AlphabeticalScopes
 
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
+  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+                         :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
 
@@ -211,6 +213,13 @@ class School < ApplicationRecord
 
   has_many :advice_page_school_benchmarks
 
+  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
+  accepts_nested_attributes_for :manual_readings,
+                                reject_if: proc { |attributes|
+                                  attributes[:gas].blank? && attributes[:electricity].blank?
+                                },
+                                allow_destroy: true
+
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
   belongs_to :school_group_cluster, optional: true
@@ -238,6 +247,29 @@ class School < ApplicationRecord
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
+
+  has_many :school_groupings, dependent: :destroy
+  has_many :assigned_school_groups, through: :school_groupings, source: :school_group
+
+  # filtered relationships
+  has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :organisation_school_grouping, update_only: true
+
+  has_one :diocese_school_grouping, -> { where(role: 'diocese') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :diocese_school_grouping, update_only: true
+
+  has_one :area_school_grouping, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :area_school_grouping, update_only: true
+
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :project_school_groupings, allow_destroy: true
+
+  # school groups via the filtered SchoolGrouping relationships
+  has_one :organisation_group, through: :organisation_school_grouping, source: :school_group
+  has_one :diocese, through: :diocese_school_grouping, source: :school_group
+  has_one :local_authority_area_group, through: :area_school_grouping, source: :school_group
+
+  has_many :project_groups, through: :project_school_groupings, source: :school_group
 
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }
@@ -285,8 +317,6 @@ class School < ApplicationRecord
 
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
-  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
 
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
 
@@ -337,6 +367,10 @@ class School < ApplicationRecord
   before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
+
+  # Sync legacy school_group_id with new "organisation" grouping
+  after_create :sync_organisation_grouping_from_legacy
+  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -412,9 +446,7 @@ class School < ApplicationRecord
   end
 
   def academic_year_for(date)
-    return nil unless calendar.present?
-
-    calendar.academic_year_for(date)
+    calendar&.academic_year_for(date)
   end
 
   def activity_types_in_academic_year(date = Time.zone.now)
@@ -451,9 +483,7 @@ class School < ApplicationRecord
     programme_types.each_with_object(Hash.new(0)) { |r, hash| hash[r] += r.recording_count }.max_by { |_, value| value }
   end
 
-  def national_calendar
-    calendar.based_on.based_on
-  end
+  delegate :national_calendar, to: :calendar
 
   def area_name
     school_group.name if school_group
@@ -495,7 +525,7 @@ class School < ApplicationRecord
     configuration && configuration.analysis_charts.present?
   end
 
-  delegate :fuel_types_for_analysis, to: :configuration
+  delegate :fuel_types_for_analysis, :fuel_type?, to: :configuration
 
   def has_solar_pv?
     configuration.has_solar_pv
@@ -672,10 +702,10 @@ class School < ApplicationRecord
                       pseudo_meter_attributes,
                       school_target_attributes]
                      .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
-      pseudo_attributes.each do |meter_type, attributes|
-        collection[meter_type] ||= []
-        collection[meter_type] = collection[meter_type] + attributes
-      end
+                       pseudo_attributes.each do |meter_type, attributes|
+                         collection[meter_type] ||= []
+                         collection[meter_type] = collection[meter_type] + attributes
+                       end
     end
 
     all_attributes[:aggregated_electricity] ||= []
@@ -764,7 +794,7 @@ class School < ApplicationRecord
   end
 
   def recent_usage
-    Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
+    @recent_usage ||= Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
   end
 
   def all_data_sources(meter_type)
@@ -841,7 +871,7 @@ class School < ApplicationRecord
       per_pupil = 5
     end
 
-    twice_recommended_size = 2 * (base_area + per_pupil * number_of_pupils)
+    twice_recommended_size = 2 * (base_area + (per_pupil * number_of_pupils))
     floor_area.between?(minimum, twice_recommended_size)
   end
 
@@ -863,18 +893,21 @@ class School < ApplicationRecord
 
   def needs_solar_configuration?
     return false unless indicated_has_solar_panels?
-    return !has_solar_configuration?
+
+    !has_solar_configuration?
   end
 
   def needs_storage_heater_configuration?
     return false unless indicated_has_storage_heaters?
-    return !has_storage_heater_configuration?
+
+    !has_storage_heater_configuration?
   end
 
   # Estimated ranges based on what seems sensible for different school types looking
   # across the registered schools
   def pupil_numbers_ok?
     return true unless number_of_pupils
+
     case school_type
     when 'infant', 'primary'
       number_of_pupils.between?(10, 800)
@@ -895,40 +928,40 @@ class School < ApplicationRecord
     est = Lists::Establishment.current_establishment_from_urn(onboarding.urn)
 
     sch = new({
-      data_enabled:       false,
-      name:               onboarding.school_name,
-      establishment:      est,
-      urn:                onboarding.urn,
-      full_school:        onboarding.full_school
-    })
+                data_enabled: false,
+                name: onboarding.school_name,
+                establishment: est,
+                urn: onboarding.urn,
+                full_school: onboarding.full_school
+              })
 
     return sch if sch.establishment.nil?
 
     sch.assign_attributes({
-      urn:                            sch.establishment_id,
-      name:                           est.establishment_name,
-      address:                        address_from_establishment(est),
-      postcode:                       est.postcode,
-      website:                        est.school_website,
-      school_type:                    school_type_from_phase_of_education_code(est.phase_of_education_code),
-      number_of_pupils:               est.number_of_pupils,
-      percentage_free_school_meals:   est.percentage_fsm,
-      region:                         GOR_CODE_TO_REGION[est.gor_code],
-      country:                        est.gor_code == 'W' ? :wales : :england,
-      local_authority_area:           LocalAuthorityArea.find_by(code: est.district_administrative_code)
-    })
+                            urn: sch.establishment_id,
+                            name: est.establishment_name,
+                            address: address_from_establishment(est),
+                            postcode: est.postcode,
+                            website: est.school_website,
+                            school_type: school_type_from_phase_of_education_code(est.phase_of_education_code),
+                            number_of_pupils: est.number_of_pupils,
+                            percentage_free_school_meals: est.percentage_fsm,
+                            region: GOR_CODE_TO_REGION[est.gor_code],
+                            country: est.gor_code == 'W' ? :wales : :england,
+                            local_authority_area: LocalAuthorityArea.find_by(code: est.district_administrative_code)
+                          })
 
-    return sch
+    sch
   end
 
   # Any combinations of these five columns might be empty
   # Formatting is the same as on the GIAS website, except for postcode after county name
   def self.address_from_establishment(est)
-    return concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
+    concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
   end
 
   def self.concatenate_address(elements)
-    return elements.filter(&:present?).join(', ')
+    elements.filter(&:present?).join(', ')
   end
 
   #
@@ -937,20 +970,19 @@ class School < ApplicationRecord
   def self.school_type_from_phase_of_education_code(poe_code)
     case poe_code
     when 2 # "Primary"
-      return school_types[:primary]
+      school_types[:primary]
     when 3 # "Middle deemed primary"
-      return school_types[:middle]
+      school_types[:middle]
     when 4 # "Secondary"
-      return school_types[:secondary]
+      school_types[:secondary]
     when 5 # "Middle deemed secondary"
-      return school_types[:middle]
-    else # 0 - "Not applicable"
-      # TODO
-      # 1 - "Nursery"
-      # 6 - "16 plus"
-      # 7 - "All-through"
-      return nil
+      school_types[:middle]
     end
+    # otherwise - 0 - "Not applicable"
+    # TODO
+    # 1 - "Nursery"
+    # 6 - "16 plus"
+    # 7 - "All-through"
   end
 
   private
@@ -963,5 +995,16 @@ class School < ApplicationRecord
 
   def update_local_distribution_zone
     self.local_distribution_zone_id = LocalDistributionZonePostcode.zone_id_for_school(self)
+  end
+
+  def sync_organisation_grouping_from_legacy
+    return unless school_group_id.present?
+
+    existing = SchoolGrouping.find_by(school_id: id, role: 'organisation')
+    if existing
+      existing.update(school_group_id: school_group_id)
+    else
+      SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
+    end
   end
 end

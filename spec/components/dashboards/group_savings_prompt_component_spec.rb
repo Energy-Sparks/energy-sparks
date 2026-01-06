@@ -36,7 +36,7 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
     it { expect(html).to have_content('4,400 kWh') }
 
     it {
-      expect(html).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_savings'),
+      expect(html).to have_link(I18n.t('components.dashboards.group_savings_prompt.view_all_potential_savings'),
                                    href: priorities_school_group_advice_path(school_group))
     }
 
@@ -50,6 +50,16 @@ RSpec.describe Dashboards::GroupSavingsPromptComponent, :include_url_helpers, ty
       let(:metric) { :gbp }
 
       it { expect(html).to have_content('£2,000') }
+    end
+
+    context 'when no data enabled schools' do
+      subject(:component) { described_class.new(**params) }
+
+      before do
+        school_group.schools.update_all(data_enabled: false)
+      end
+
+      it { expect(component.render?).to be false }
     end
   end
 end

@@ -1,0 +1,22 @@
+<% if content_for(:header_title) %>
+  <% content_for :page_title, yield(:header_title) unless content_for(:page_title) %>
+<% else %>
+  <% content_for :page_title, "#{t('school_groups.sub_nav.manage_group')} | #{@school_group.name}" %>
+<% end %>
+
+<% content_for(:application) do %>
+  <% if @school_group %>
+    <% content_for :header do %>
+      <%= render(Layout::Cards::PageHeaderComponent.new(
+                   title: content_for?(:header_title) ? yield(:header_title) : t('school_groups.sub_nav.manage_group')
+                 )) %>
+    <% end %>
+    <% content_for :page_nav do %>
+      <%= render Navigation::ManageGroupComponent.new(school_group: @school_group, current_user: current_user) %>
+    <% end %>
+    <%= yield %>
+  <% else %>
+    <%= yield %>
+  <% end %>
+<% end %>
+<%= render template: 'layouts/application' %>

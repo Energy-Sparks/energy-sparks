@@ -10,20 +10,29 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
   end
 
   it 'aligns the data cells correctly', if: aligned do
-    all("#{table_id} > tbody > tr").each do |tr|
-      tr.all('td')[1..].each do |td|
+    body_rows = page.find("#{table_id} > tbody").find_all('tr')
+    body_rows.each do |tr|
+      td_cells = tr.find_all('td')[(aligned == true ? 1 : aligned)..] || []
+      td_cells.each do |td|
         expect(td[:class].to_s.split).to include('text-right')
       end
     end
   end
 
   it 'has the expected headers' do
-    expect(all("#{table_id} > thead > tr").map { |tr| tr.all('th').map(&:text).map(&:strip) }).to \
-      eq(expected_header)
+    header_rows = page.find("#{table_id} > thead").all('tr')
+    actual_header = header_rows.map do |tr|
+      tr.find_all('th').map { |th| th.text.strip }
+    end
+    expect(actual_header).to eq(expected_header)
   end
 
   it 'has the expected rows', if: rows do
-    expect(all("#{table_id} > tbody > tr").map { |tr| tr.all('td').map(&:text).map(&:strip) }).to \
-      eq(expected_rows)
+    body_rows = page.find("#{table_id} > tbody").find_all('tr')
+    actual_rows = body_rows.map do |tr|
+      tr.find_all('td').map { |td| td.text.strip }
+    end
+
+    expect(actual_rows).to eq(expected_rows)
   end
 end
