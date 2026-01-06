@@ -17,19 +17,19 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         visit url_for([:admin, issueable, :issues])
       end
 
-      context 'when not logged in' do
+      context 'when user is not logged in' do
         let!(:user) { }
 
         it { expect(page).to have_content('You need to sign in or sign up before continuing.') }
       end
 
-      context 'when a non-admin user' do
+      context 'when user is not an admin' do
         let!(:user) { create(:staff) }
 
         it { expect(page).to have_content('You are not authorized to view that page.') }
       end
 
-      context 'when an admin' do
+      context 'when user is an admin' do
         let!(:user) { create(:admin) }
 
         Issue.issue_types.each_key do |issue_type|
@@ -197,7 +197,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 it { expect(page).not_to have_link('Manage School') unless issueable.is_a?(School) }
               end
 
-              context 'and deleting a issue' do
+              context 'when deleting an issue' do
                 before do
                   click_link('Delete')
                 end
@@ -211,7 +211,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
               it { expect(page).to have_link('View') }
 
-              context "and clicking 'View'" do
+              context "when clicking 'View'" do
                 before do
                   click_link('View')
                 end
@@ -225,7 +225,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
               it { expect(page).to have_link('Resolve') }
 
-              context "and clicking 'Resolve'" do
+              context "when clicking 'Resolve'" do
                 before do
                   click_link('Resolve')
                 end
