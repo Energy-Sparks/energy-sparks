@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TargetMeter
-  class TemperatureCompensatedDailyDayTypeBase < TargetMeterDailyDayType
+  class TemperatureCompensatedDailyDayTypeBase < DailyDayType
     DEGREEDAY_BASE_TEMPERATURE = 15.5
     RECOMMENDED_HEATING_ON_TEMPERATURE = 14.5
     WITHIN_TEMPERATURE_RANGE = 3.0
