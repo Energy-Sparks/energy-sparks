@@ -843,7 +843,6 @@ Rails.application.routes.draw do
             post :clear
           end
         end
-        resource :target_data, only: :show
       end
       member do
         post :archive
