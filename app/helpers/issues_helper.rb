@@ -38,18 +38,20 @@ module IssuesHelper
   end
 
   def review_date_badge(issue, label: true, humanise: true, classes: '')
-    colour = if issue.review_date.nil? || issue.review_date >= 1.week.from_now
-               'bg-white text-dark'
-             elsif issue.review_date > Time.zone.today
-               'bg-warning text-white'
-             else
-               'bg-danger text-white'
-             end
-
+    if issue.review_date.nil? || issue.review_date >= 1.week.from_now
+      colour = 'bg-white text-dark'
+      title = issue.review_date.nil? ? 'No next review date set' : 'Next review date is over a week away'
+    elsif issue.review_date > Time.zone.today
+      colour = 'bg-warning text-white'
+      title = 'Next review date approaching soon'
+    else
+      colour = 'bg-danger text-white'
+      title = 'Next review date is overdue'
+    end
     text = issue.review_date ? short_dates(issue.review_date, humanise:) : 'No date set'
 
-    content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes]) do
-      "#{'Review • ' if label}#{text}".html_safe
+    content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes], title: title, data: { toggle: 'tooltip' }) do
+      "#{'Next review • ' if label}#{text}".html_safe
     end
   end
 end

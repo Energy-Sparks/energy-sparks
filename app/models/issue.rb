@@ -90,7 +90,7 @@ class Issue < ApplicationRecord
 
   def self.csv_headers
     ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Meters', 'Meter status',
-     'Data sources', 'Owned by', 'Review date', 'Created by', 'Created at', 'Updated by', 'Updated at']
+     'Data sources', 'Owned by', 'Next review date', 'Created by', 'Created at', 'Updated by', 'Updated at']
   end
 
   def self.csv_attributes

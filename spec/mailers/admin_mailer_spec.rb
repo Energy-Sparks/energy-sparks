@@ -206,7 +206,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
         it 'includes the correct headers' do
           expect(headers).to eq(
-            'Issue type,Issue for,New,Group,Title,Fuel,Review date,Created by,Created,Updated by,Updated,View,Edit'
+            'Issue type,Issue for,New,Group,Title,Fuel,Next review date,Created by,Created,Updated by,Updated,View,Edit'
           )
         end
 

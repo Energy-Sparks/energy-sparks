@@ -12,6 +12,31 @@ describe User do
     it { is_expected.to allow_value(create(:school_group)).for(:school_group) }
   end
 
+  describe 'associations' do
+    subject(:user) { build(:user) }
+
+    describe 'created by and updated by' do
+      [:activities, :case_studies, :cms_categories,
+       :cms_pages, :cms_sections, :energy_tariffs,
+       :issues, :newsletters, :observations].each do |name|
+        it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
+        it { expect(user).to have_many("#{name}_updated").dependent(:nullify) }
+      end
+    end
+
+    describe 'created by and deleted by' do
+      [:meter_attributes, :school_group_meter_attributes, :school_meter_attributes,
+       :global_meter_attributes].each do |name|
+        it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
+        it { expect(user).to have_many("#{name}_deleted").dependent(:nullify) }
+      end
+    end
+
+    [:school_onboardings, :school_alert_type_exclusions, :users].each do |name|
+      it { expect(user).to have_many("#{name}_created").dependent(:nullify) }
+    end
+  end
+
   it 'generates display name' do
     user = create(:user, name: 'Name')
     expect(user.display_name).to eql user.name
