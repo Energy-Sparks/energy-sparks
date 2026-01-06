@@ -426,8 +426,6 @@ Rails.application.routes.draw do
 
       resources :school_targets
 
-      resources :estimated_annual_consumptions, except: [:show]
-
       resources :programmes, only: [:create]
 
       resources :audits

@@ -55,23 +55,6 @@ module Schools
       end
     end
 
-    def suggest_annual_estimate?
-      suggest_estimates_fuel_types.any?
-    end
-
-    def suggest_annual_estimate_for_fuel_type?(fuel_type)
-      case fuel_type.to_s
-      when 'storage_heater', 'storage_heaters'
-        suggest_estimates_fuel_types.include?('storage_heater')
-      else
-        suggest_estimates_fuel_types.include?(fuel_type.to_s)
-      end
-    end
-
-    def estimated_consumption_for_fuel_type(fuel_type)
-      estimated_consumption.symbolize_keys[fuel_type.to_sym]
-    end
-
     def analysis_charts_as_symbols(charts_field = :analysis_charts)
       configuration = {}
       self[charts_field].each do |page, config|

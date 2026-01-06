@@ -661,10 +661,6 @@ class School < ApplicationRecord
     school_onboarding && school_onboarding.has_event?(event_name)
   end
 
-  def suggest_annual_estimate?
-    estimated_annual_consumptions.any? || configuration.suggest_annual_estimate?
-  end
-
   def school_target_attributes
     # use the current target if we have one, otherwise the most current target
     # based on start date. So if target as expired, then progress pages still work

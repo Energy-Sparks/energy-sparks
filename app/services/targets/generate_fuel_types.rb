@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Targets
   class GenerateFuelTypes
     def initialize(school, aggregated_meter_collection)
@@ -13,20 +15,8 @@ module Targets
         fuel_types << 'storage_heater' if enough_data_for_storage_heater?
       rescue TargetDates::TargetDateBeforeFirstMeterStartDate
         # noop
-      rescue => e
+      rescue StandardError => e
         Rollbar.error(e, scope: :fuel_types_with_enough_data, school_id: @school.id, school: @school.name)
-      end
-      fuel_types
-    end
-
-    def suggest_estimates_for_fuel_types
-      fuel_types = []
-      begin
-        fuel_types << 'electricity' if suggest_estimate_for_electricity?
-        fuel_types << 'gas' if suggest_estimate_for_gas?
-        fuel_types << 'storage_heater' if suggest_estimate_for_storage_heater?
-      rescue => e
-        Rollbar.error(e, scope: :suggest_estimates_for_fuel_types, school_id: @school.id, school: @school.name)
       end
       fuel_types
     end
