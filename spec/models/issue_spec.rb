@@ -91,32 +91,26 @@ RSpec.describe Issue, type: :model do
   describe '#resolve!' do
     let!(:user) { create(:admin) }
 
-    context 'when issue is of type note' do
-      subject(:issue) { create(:issue, issue_type: :note) }
+    Issue.issue_types.each_key do |issue_type|
+      context "when issue is of type #{issue_type}" do
+        subject(:issue) { create(:issue, issue_type: issue_type, review_date: 2.days.from_now) }
 
-      before do
-        issue.resolve!(updated_by: user)
+        before do
+          issue.resolve!(updated_by: user)
+        end
+
+        it 'closes issue' do
+          expect(issue).to be_status_closed
+        end
+
+        it 'updates updated_by' do
+          expect(issue.updated_by).to eq(user)
+        end
+
+        it 'removes review date' do
+          expect(issue.review_date).to be_nil
+        end
       end
-
-      it { expect(issue.resolve!(updated_by: user)).to be_truthy }
-
-
-      it { expect(issue).to be_status_closed }
-      it { expect(issue.updated_by).to eq(user) }
-    end
-
-    context 'when issue is of type issue' do
-      subject(:issue) { create(:issue, issue_type: :issue) }
-
-      before do
-        issue.resolve!(updated_by: user)
-      end
-
-      it { expect(issue.resolve!(updated_by: user)).to be_truthy }
-
-
-      it { expect(issue).to be_status_closed }
-      it { expect(issue.updated_by).to eq(user) }
     end
   end
 

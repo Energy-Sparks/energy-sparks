@@ -78,6 +78,7 @@ class Issue < ApplicationRecord
 
   def resolve!(attrs = {})
     self.attributes = attrs
+    self.review_date = nil
     status_closed!
   end
 
