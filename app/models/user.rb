@@ -89,12 +89,12 @@ class User < ApplicationRecord
     Issue: [:created, :updated],
     Newsletter: [:created, :updated],
     Observation: [:created, :updated],
+    GlobalMeterAttribute: [:created, :deleted],
     MeterAttribute: [:created, :deleted],
     SchoolGroupMeterAttribute: [:created, :deleted],
     SchoolMeterAttribute: [:created, :deleted],
-    GlobalMeterAttribute: [:created, :deleted],
-    SchoolOnboarding: :created,
     SchoolAlertTypeExclusion: :created,
+    SchoolOnboarding: :created,
     User: :created
 
   has_and_belongs_to_many :cluster_schools, class_name: 'School', join_table: :cluster_schools_users
