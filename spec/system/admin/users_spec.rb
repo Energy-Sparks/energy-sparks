@@ -200,6 +200,23 @@ describe 'Administering users' do
           expect(ConsentGrant).to exist(consent_grant.id)
         end
       end
+
+      context 'when user has created activities' do
+        let!(:user) { activity.created_by }
+        let!(:activity) { create(:activity, created_by: create(:user)) }
+
+        it 'says the user is deleted' do
+          expect(page).to have_content('User was successfully destroyed')
+        end
+
+        it 'deletes the user' do
+          expect(User).not_to exist(user.id)
+        end
+
+        it 'does not delete the Activity' do
+          expect(Activity).to exist(activity.id)
+        end
+      end
     end
 
     context 'when editing a user' do
