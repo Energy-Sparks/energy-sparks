@@ -29,13 +29,8 @@
             <i class="fas fa-check"></i>
           <% end %>
         </td>
-        <% if Flipper.enabled?(:todos, current_user) %>
-          <td><%= audit.activity_type_todos.count %></td>
-          <td><%= audit.intervention_type_todos.count %></td>
-        <% else %>
-          <td><%= audit.activity_types.count %></td>
-          <td><%= audit.intervention_types.count %></td>
-        <% end %>
+        <td><%= audit.activity_type_todos.count %></td>
+        <td><%= audit.intervention_type_todos.count %></td>
         <td>
           <%= link_to 'Edit', edit_school_audit_path(audit.school, audit), class: 'btn btn-sm' %>
           <%= link_to 'Delete', school_audit_path(audit.school, audit),

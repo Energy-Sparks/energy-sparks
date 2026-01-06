@@ -12,15 +12,11 @@ RSpec.describe 'intervention type groups', type: :system do
     visit intervention_type_groups_path
   end
 
-  context with_feature: :todos do
-    before { refresh }
-
-    it 'shows programmes' do
-      expect(page).to have_content('Our Programmes')
-      programme_types.each do |programme_type|
-        expect(page).to have_content(programme_type.title)
-        expect(page).to have_link(href: programme_type_path(programme_type))
-      end
+  it 'shows programmes' do
+    expect(page).to have_content('Our Programmes')
+    programme_types.each do |programme_type|
+      expect(page).to have_content(programme_type.title)
+      expect(page).to have_link(href: programme_type_path(programme_type))
     end
   end
 

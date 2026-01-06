@@ -28,8 +28,8 @@ class Programme < ApplicationRecord
   belongs_to :programme_type
   belongs_to :school
 
-  has_many :programme_activities # remove this when :todos feature flag removed
-  has_many :activities, through: :programme_activities # remove this when :todos feature flag removed
+  # has_many :programme_activities # remove this when :todos feature flag removed
+  # has_many :activities, through: :programme_activities # remove this when :todos feature flag removed
 
   has_many :observations, as: :observable, dependent: :destroy
 
@@ -66,28 +66,13 @@ class Programme < ApplicationRecord
     programme_type.bonus_score
   end
 
-  # remove this when :todos feature flag removed
-  def activity_types_completed
-    activities.map(&:activity_type).uniq
-  end
-
-  # remove this when :todos feature flag removed
-  def activity_of_type(activity_type)
-    activities.where(activity_type: activity_type).last
+  def available_bonus_points
+    completed? ? 0 : points_for_completion
   end
 
   def add_observation
     return unless completed?
 
     self.observations.programme.first_or_create(at: self.ended_on, points: points_for_completion)
-  end
-
-  # remove this when :todos feature flag removed
-  def all_activities_complete?
-    # Completed programme if all activity types for the programme type are in the list of completed  activities
-    # (extra completed activities are ignored - activity types may have been removed from programme..)
-    programme_type_activity_ids = programme_type.activity_types.pluck(:id)
-    programme_activity_types = activity_types_completed.pluck(:id)
-    (programme_type_activity_ids - programme_activity_types).empty?
   end
 end

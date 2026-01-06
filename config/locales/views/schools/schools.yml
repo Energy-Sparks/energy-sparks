@@ -99,7 +99,6 @@ en:
         completed_message: Congratulations, you completed all recommended actions and activities on %{date}!
         completed_on: Completed on
         completed_points: Completing all of these tasks will award you
-        completing_all_of_these_activities_will_award_you: Completing all of these activities will award you
         download_report: Download report
         points:
           one: point
@@ -336,8 +335,6 @@ en:
       alerts:
         message: Updated daily, these alerts highlight the most significant changes in your energy use
       audit:
-        message_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your recent energy audit
-        message_older_html: You have completed <strong>%{completed_activities_count}/%{total_activities_count}</strong> of the activities and <strong>%{completed_actions_count}/%{total_actions_count}</strong> of the actions from your energy audit
         progress:
           message_html:
             one: You have completed <strong>%{count}/%{total_tasks_count}</strong> of the tasks from your recent energy audit
@@ -350,23 +347,11 @@ en:
           summary_final_html: Complete the final task now to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
           summary_html: Complete the others to score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
           summary_none_html: If you complete them, you will score <strong>%{uncompleted_scores}</strong> points and <strong>%{bonus_points}</strong> bonus points for completing all audit tasks
-        summary_html:
-          one: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{count}</strong> bonus point for completing all audit tasks
-          other: Complete the others to score <strong>%{remaining_points}</strong> points and <strong>%{count}</strong> bonus points for completing all audit tasks
-          zero: Complete the others to score <strong>%{remaining_points}</strong> points for completing all audit tasks
       completed_programme:
         message_html:
           one: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus point!
           other: Well done, you've just completed the <strong>%{title}</strong> programme and have earned <strong>%{count}</strong> bonus points!
           zero: Well done, you've just completed the <strong>%{title}</strong> programme!
-      join_programme:
-        completed_message_html:
-          one: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus point?
-          other: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it done to score <strong>%{count}</strong> bonus points?
-          zero: You've completed all the activities in the <strong>%{title}</strong> programme. Mark it as complete?
-        message_html:
-          one: You've recently completed an activity that is part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
-          other: You've recently completed %{count} activities that are part of the <strong>%{title}</strong> programme. Do you want to enrol in the programme?
       no_active_programmes:
         choose_programme: Choose programme
         message: Congratulations you've completed all your energy saving programmes! Time to choose your next programme

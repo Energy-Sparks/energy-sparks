@@ -32,22 +32,10 @@ class ActivitiesController < ApplicationController
   def edit; end
 
   def create
-    if Flipper.enabled?(:todos, current_user)
-      if Tasks::Recorder.new(@activity, current_user).process
-        redirect_to completed_school_activity_path(@school, @activity)
-      else
-        render :new
-      end
+    if Tasks::Recorder.new(@activity, current_user).process
+      redirect_to completed_school_activity_path(@school, @activity)
     else
-      respond_to do |format|
-        if ActivityCreator.new(@activity, current_user).process
-          format.html { redirect_to completed_school_activity_path(@school, @activity) }
-          format.json { render :show, status: :created, location: @school }
-        else
-          format.html { render :new }
-          format.json { render json: @activity.errors, status: :unprocessable_entity }
-        end
-      end
+      render :new
     end
   end
 

@@ -27,8 +27,8 @@ class ProgrammeType < ApplicationRecord
   t_has_one_attached :image
 
   ## these two relationships to be removed when todos feature removed
-  has_many :programme_type_activity_types
-  has_many :activity_types, through: :programme_type_activity_types
+  # has_many :programme_type_activity_types
+  # has_many :activity_types, through: :programme_type_activity_types
 
   has_many :programmes
 
@@ -40,28 +40,20 @@ class ProgrammeType < ApplicationRecord
   scope :featured, -> { active.default_first.by_title }
   scope :tx_resources, -> { active.order(:id) }
 
-  # to be removed when todos feature removed
   scope :with_school_activity_type_count, ->(school) {
-    joins(activity_types: :activities)
-    .where(activity_types: { activities: { school: school } })
-    .select('programme_types.*, COUNT(distinct activity_types.id) activity_type_count')
-    .group('programme_types.id').order(activity_type_count: :desc)
+    joins(activity_type_tasks: :activities)
+      .where(activity_type_tasks: { activities: { school: school } })
+      .select('programme_types.*, count(distinct activities.activity_type_id) as recording_count')
+      .group('programme_types.id')
+      .order(recording_count: :desc)
   }
 
-  scope :with_school_activity_type_task_count, ->(school) {
-    joins("INNER JOIN todos on todos.assignable_id = programme_types.id and todos.assignable_type = 'ProgrammeType'")
-    .joins("INNER JOIN activities on todos.task_id = activities.activity_type_id and todos.task_type = 'ActivityType'")
-    .where(activity_types: { activities: { school: school } })
-    .select('programme_types.*, count(distinct activities.activity_type_id) as recording_count')
-    .group('programme_types.id').order(recording_count: :desc)
-  }
-
-  scope :with_school_intervention_type_task_count, ->(school) {
-    joins("INNER JOIN todos on todos.assignable_id = programme_types.id and todos.assignable_type = 'ProgrammeType'")
-    .joins("INNER JOIN observations on todos.task_id = observations.intervention_type_id and todos.task_type = 'InterventionType'")
-    .where(observations: { school_id: school.id })
-    .select('programme_types.*, count(distinct observations.intervention_type_id) as recording_count')
-    .group('programme_types.id').order(recording_count: :desc)
+  scope :with_school_intervention_type_count, ->(school) {
+    joins(intervention_type_tasks: :observations)
+      .where(intervention_type_tasks: { observations: { school_id: school.id } })
+      .select('programme_types.*, count(distinct observations.intervention_type_id) as recording_count')
+      .group('programme_types.id')
+      .order(recording_count: :desc)
   }
 
   scope :not_in, ->(programme_types) { where.not(id: programme_types) }
@@ -70,20 +62,8 @@ class ProgrammeType < ApplicationRecord
   validates :bonus_score, numericality: { greater_than_or_equal_to: 0 }
   validates_uniqueness_of :default, if: :default
 
-  accepts_nested_attributes_for :programme_type_activity_types, reject_if: proc {|attributes| attributes['position'].blank? }
-
-  def activity_types_by_position
-    programme_type_activity_types.order(:position).map(&:activity_type)
-  end
-
   def programme_for_school(school)
     programmes.where(school: school).last
-  end
-
-  def activity_of_type_for_school(school, activity_type)
-    if (programme = programme_for_school(school))
-      programme.activity_of_type(activity_type)
-    end
   end
 
   def update_activity_type_positions!(position_attributes)
@@ -93,27 +73,8 @@ class ProgrammeType < ApplicationRecord
     end
   end
 
-  def activity_types_and_school_activity(school)
-    programme_type_activity_types.order(:position).map do |programme_type_activity_type|
-      activity = school.activities.find_by(activity_type_id: programme_type_activity_type.activity_type_id)
-      [programme_type_activity_type.activity_type, activity]
-    end
-  end
-
   def repeatable?(school)
     # Only allow a repeat if the school hasn't completed this programe type this academic year
     school.programmes.where(programme_type: self).completed.where(ended_on: school.current_academic_year.start_date..).none?
-  end
-
-  # Provide a list of activity types a school has already completed this year for this programme type
-  # regardless of having signed up to the programme
-  def activity_type_ids_for_school(school)
-    activity_types.pluck(:id) & school.activity_types_in_academic_year.pluck(:id)
-  end
-
-  # Has the provided school already completed all activity types this year?
-  # regardless of having signed up to the programme
-  def all_activity_types_completed_for_school?(school)
-    (activity_types.pluck(:id) - school.activity_types_in_academic_year.pluck(:id)).empty?
   end
 end
