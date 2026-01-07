@@ -3,7 +3,7 @@
     <h1 class='pb-0'>
       <%= @school_group.name %>
     </h1>
-    <span class="badge badge-pill badge-primary"><%= @school_group.group_type.humanize %></span>
+    <span class="badge rounded-pill text-bg-primary"><%= @school_group.group_type.humanize %></span>
   </div>
   <div>
     <%= header_nav_link 'All school groups',
@@ -13,47 +13,49 @@
 <div class="row pb-2">
   <div class="col-lg-6">
     Pupils in active schools:
-    <span class="badge badge-success">
+    <span class="badge text-bg-success">
       <%= number_with_delimiter @school_group.assigned_schools.visible.map(&:number_of_pupils).compact.sum %>
     </span>
   </div>
-  <div class="col-lg-6 text-right">
+  <div class="col-lg-6 text-end">
     <%= render 'default_issues_admin_user', school_group: @school_group %>
   </div>
 </div>
 <div class="row pb-2">
   <div class="col-lg-12">
-    <div class="card-deck">
-      <div class="card">
-        <div class="card-body">
-          <div>
-            Active <span class="float-right badge badge-success"><%= @school_group.assigned_schools.visible.count %></span>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="border rounded-3 h-100 p-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Active</span>
+            <span class="badge text-bg-success"><%= @school_group.assigned_schools.visible.count %></span>
           </div>
-          <div>
-            Active (with data visible)
-            <span class="float-right badge badge-success"><%= @school_group.assigned_schools.visible.data_enabled.count %></span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Active (with data visible)</span>
+            <span class="badge text-bg-success"><%= @school_group.assigned_schools.visible.data_enabled.count %></span>
           </div>
-          <div>
-            Invisible
-            <span class="float-right badge badge-info"><%= @school_group.assigned_schools.not_visible.count %></span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Invisible</span>
+            <span class="badge text-bg-info"><%= @school_group.assigned_schools.not_visible.count %></span>
           </div>
-          <div>
-            Onboarding
-            <span class="float-right badge badge-warning">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Onboarding</span>
+            <span class="badge text-bg-warning">
               <%= @school_group.onboardings_for_group.incomplete.count %>
             </span>
           </div>
-          <div>
-            Removed <span class="float-right badge badge-secondary"><%= @school_group.assigned_schools.inactive.count %></span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>Removed</span>
+            <span class="badge text-bg-secondary"><%= @school_group.assigned_schools.inactive.count %></span>
           </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
+      <div class="col-lg-6">
+        <div class="border rounded-3 h-100 p-3">
           <% School.school_types.keys.each do |school_type| %>
-            <div>
-              <%= school_type.humanize %>
-              <span class="float-right badge badge-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <span><%= school_type.humanize %></span>
+              <span class="badge text-bg-success">
                 <%= @school_group.assigned_schools.visible.where(school_type: school_type).count %>
               </span>
             </div>
@@ -90,20 +92,30 @@
       <div class="bg-light p-2">No removed schools for <%= @school_group.name %>.</div>
     <% end %>
   <% end %>
-  <% issues_label = lambda do |type, count|
-       "#{type} Issues and Notes #{content_tag(:span, count, class: %w[badge badge-secondary])}".html_safe
-     end %>
   <% component.with_tab(name: :'school-group-issues',
-                        label: issues_label.call(:Group, @school_group.issues.status_open.count)) do %>
-    <% if @school_group.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @school_group.issues.by_priority_order, issueable_type: 'Group' %>
+                        label: issue_type_count('Group issues', @school_group.issues.issue.status_open.count)) do %>
+    <% if @school_group.issues.issue.any? %>
+      <%= render 'admin/issues/issues_list',
+                 issues: @school_group.issues.issue.by_priority_order,
+                 issueable_type: 'Group' %>
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
-    <%= render 'admin/issues/new_issues_links', issueable: @school_group %>
+    <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
+  <% end %>
+  <% component.with_tab(name: :'school-group-notes',
+                        label: issue_type_count('Group notes', @school_group.issues.note.status_open.count)) do %>
+    <% if @school_group.issues.note.any? %>
+      <%= render 'admin/issues/issues_list', issues: @school_group.issues.note.by_priority_order,
+                                             issueable_type: 'Group' %>
+    <% else %>
+      <div class="bg-light p-2">No school group notes for <%= @school_group.name %>.</div>
+    <% end %>
+    <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-issues',
-                        label: issues_label.call(:School, @school_group.school_issues.status_open.count)) do %>
+                        label: issue_type_count('School issues and notes',
+                                                @school_group.school_issues.status_open.count)) do %>
     <% if @school_group.school_issues.any? %>
       <%= render 'admin/issues/issues_list',
                  issues: @school_group.school_issues.by_priority_order,

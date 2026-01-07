@@ -27,6 +27,10 @@ module IssuesHelper
     image_tag "email/#{image}", width: '20px', height: '20px'
   end
 
+  def issue_type_count(label, count)
+    "#{label} #{content_tag(:span, count, class: %w[badge badge-secondary])}".html_safe
+  end
+
   def issueable_icon(issueable)
     return '' if issueable.nil?
 

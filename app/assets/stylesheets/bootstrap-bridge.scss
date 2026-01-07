@@ -1,4 +1,4 @@
-/* Bootstrap 5 bridge classes */
+/* Bootstrap 5.2 bridge classes */
 
 /* These classes map Bootstrap 5 syntax to Bootstrap 4 equivalents */
 /* They allow us to use newer Bootstrap 5 class names in a Bootstrap 4 codebase, */
@@ -39,6 +39,7 @@ button.btn-close { @extend button.close !optional; }
 .fw-light     { @extend .font-weight-light !optional; }
 .fw-lighter   { font-weight: lighter !important; } // Not explicitly in BS4
 .fw-normal    { @extend .font-weight-normal !optional; }
+.fw-semibold  { font-weight: 600; } // Introduced in BS5.2
 .fw-bold      { @extend .font-weight-bold !optional; }
 .fw-bolder    { font-weight: bolder !important; } // Not explicitly in BS4
 
@@ -48,10 +49,36 @@ button.btn-close { @extend button.close !optional; }
 
 .font-monospace { @extend .text-monospace !optional; }
 
-// badge styles
-// Not maps as such but allow us to use the new class names
-.badge:not(.badge-warning):not(.badge-light) {
-  color: #fff;
+// Colours that should use dark text (bootstrap 4 onwards)
+$dark-text-backgrounds-bs-4: warning, light;
+
+// badge styles - reset these up so we can use the new styles with badges too
+// This also allows us to use bg-* and text-* classes on badges directly (bootstrap 5 style)
+.badge {
+  @extend .text-white;
+}
+
+@each $name in $dark-text-backgrounds-bs-4 {
+  .badge-#{$name} {
+    @extend .text-dark;
+  }
+}
+
+// Colours that should use dark text (bootstrap 5 onwards)
+$dark-text-backgrounds-bs-5: warning, info, light;
+
+// bootstrap 5.2.0 new colours that can be used with badges or other elements
+// text-bg-* classes
+
+@each $name, $value in $theme-colors {
+  .text-bg-#{$name} {
+    @extend .bg-#{$name};
+    @if index($dark-text-backgrounds-bs-5, $name) {
+      @extend .text-dark;
+    } @else {
+      @extend .text-white;
+    }
+  }
 }
 
 .badge.rounded-pill {

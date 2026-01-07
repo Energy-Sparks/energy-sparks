@@ -1,7 +1,7 @@
 <% if issue.created_by %>
-  <span class="badge border badge-pill border-secondary font-weight-normal">
-    <%= link_to (issue.created_by == current_user ? "You" : issue.created_by.display_name),
-        polymorphic_path([:admin, Issue], user: issue.created_by_id),
-        class: 'text-decoration-none' %>
+  <span class="badge border border-primary rounded-pill fw-normal">
+    <%= link_to (issue.created_by == current_user ? 'You' : issue.created_by.display_name),
+                polymorphic_path([:admin, Issue], user: issue.created_by_id),
+                class: 'text-decoration-none' %>
   </span>
 <% end %>

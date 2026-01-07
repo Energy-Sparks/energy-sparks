@@ -23,7 +23,7 @@ linters:
       - deprecated: ['border-(left|right)']
         suggestion: 'Use "border-start"/"border-end" instead of "border-left"/"border-right"'
       # Rounded corners
-      - deprecated: ['rounded-(left|right)', 'rounded-sm', 'rounded$', 'rounded-lg']
+      - deprecated: ['rounded-(left|right|sm|lg)']
         suggestion: 'Use "rounded-start"/"rounded-end"/"rounded-1"/"rounded-2"/"rounded-3" instead'
       # Text alignment
       - deprecated: ['text-(left|right)']
@@ -48,7 +48,7 @@ linters:
         suggestion: 'Use "ms-auto"/"me-auto" instead of "ml-auto"/"mr-auto"'
       # Badge classes
       - deprecated: ['badge-[_\w]*']
-        suggestion: 'Use "bg-*" or "badge rounded-pill" classes instead of old badge-* or badge-pill'
+        suggestion: 'Use "badge text-bg-*" or "badge rounded-pill text-bg-*" classes instead of old badge-* or badge-pill'
       # Offset utilities
       - deprecated: ['offset(-[sm|md|lg|xl|xxl])?-[\d]+']
         suggestion: 'Replace offset-* classes with spacing utilities (ms-*, me-*)'
