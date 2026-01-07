@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TargetMeter
+module Targets
   class TargetDates
     class TargetBeforeExistingDataStartBackfillNotSupported < StandardError; end
     class TargetDateBeforeFirstMeterStartDate < StandardError; end
@@ -102,7 +102,8 @@ class TargetMeter
     # which month (this month, previous month) is used across the different fuel types
     # when it builds the suggested target for the user
     def self.default_target_start_date(original_meter)
-      default_date = Date.new(Date.today.year, Date.today.month, 1)
+      today = Time.zone.today
+      default_date = Date.new(today.year, today.month, 1)
       end_date = original_meter.amr_data.end_date
 
       if end_date && end_date < default_date
@@ -122,19 +123,16 @@ class TargetMeter
     # years worth of data
     #
     # TODO: suggest renaming to: one_year_of_recent_meter_readings
-    def self.one_year_of_meter_readings_available_prior_to_1st_date?(original_meter)
-      target = TargetAttributes.new(original_meter)
-
-      return target.first_target_date - original_meter.amr_data.start_date > DAYSINYEAR if target.target_set?
+    def one_year_of_meter_readings_available_prior_to_1st_date?
+      return @target.first_target_date - @original_meter.amr_data.start_date > DAYSINYEAR if @target.target_set?
       # if target is set, just check there's at least a years worth of data
 
       # while we could potentially generate a report if data is < 30 days old, we've decided not to allow this.
-      # Using TargetMeter.recent_data? to ensure we maintain consistency with TargetsService interface
-      return false unless TargetMeter.recent_data?(original_meter)
+      return false unless recent_data?
 
       # Now, do we have enough data if the user created a target today?
       # Determinee the target start date, then check there's at least a year of data available before then
-      default_target_start_date(original_meter) - original_meter.amr_data.start_date > DAYSINYEAR
+      self.class.default_target_start_date(@original_meter) - @original_meter.amr_data.start_date > DAYSINYEAR
     end
 
     # used by TargetsService
@@ -209,7 +207,7 @@ class TargetMeter
     end
 
     def recent_data?
-      today > Date.today - 30
+      today > Time.zone.today - 30
     end
 
     def serialised_dates_for_debug
@@ -269,20 +267,16 @@ class TargetMeter
             "Target start date #{date} before first meter data #{@original_meter.amr_data.start_date}"
     end
 
-    def first_day_of_next_month(date)
-      date.day == 1 ? date : date.next_month.beginning_of_month
-    end
-
     def holiday_problems
       school = @original_meter.meter_collection
       school.holidays.check_holidays(school, school.holidays, country: school.country)
     end
 
     def today
-      $ENERGYSPARKSTESTTODAYDATE || @original_meter.amr_data.end_date
+      @original_meter.amr_data.end_date
     end
 
-    def self.minimum_5_school_days_1_weekend_meter_readings?(meter)
+    private_class_method def self.minimum_5_school_days_1_weekend_meter_readings?(meter)
       holidays = meter.meter_collection.holidays
       stats = holidays.day_type_statistics(meter.amr_data.start_date, meter.amr_data.end_date)
       stats[:weekend] >= 2 && stats[:schoolday] >= 5
