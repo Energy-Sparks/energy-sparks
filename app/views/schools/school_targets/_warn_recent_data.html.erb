@@ -1,6 +1,0 @@
-<%= render NoticeComponent.new(status: :negative, classes: 'mb-4') do %>
-  <span class="align-middle">
-    <%= t('schools.school_targets.warn_recent_data.we_have_not_received_data',
-          count: @progress_summary.out_of_date_fuel_types.count, out_of_date_fuel_types: t_fuels_as_sentence(@progress_summary.out_of_date_fuel_types)) %>
-  </span>
-<% end %>

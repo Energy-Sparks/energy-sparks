@@ -17,26 +17,26 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         visit url_for([:admin, issueable, :issues])
       end
 
-      context 'when not logged in' do
+      context 'when user is not logged in' do
         let!(:user) { }
 
         it { expect(page).to have_content('You need to sign in or sign up before continuing.') }
       end
 
-      context 'as a non-admin user' do
+      context 'when user is not an admin' do
         let!(:user) { create(:staff) }
 
         it { expect(page).to have_content('You are not authorized to view that page.') }
       end
 
-      context 'as an admin' do
+      context 'when user is an admin' do
         let!(:user) { create(:admin) }
 
-        context 'and creating a new issue' do
-          Issue.issue_types.each_key do |issue_type|
+        Issue.issue_types.each_key do |issue_type|
+          context "when type is a #{issue_type}" do
             it { expect(page).to have_link(text: /New #{issue_type.capitalize}/) }
 
-            context "of type #{issue_type}" do
+            context 'when creating a new issue' do
               before do
                 click_link text: /New #{issue_type.capitalize}/
               end
@@ -51,7 +51,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
                 assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
-                expect(find_field('Review date').value).to be_blank
+                expect(find_field('Next review date').value).to be_blank
                 expect(page).to have_unchecked_field('Pinned')
                 if issueable.is_a? School
                   expect(page).to have_unchecked_field(electricity_meter.mpan_mprn.to_s)
@@ -92,7 +92,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select 'Gas', from: 'Fuel type'
                   check gas_meter.mpan_mprn.to_s if issueable.is_a? School
                   select 'Other Issues Admin', from: 'Assigned to'
-                  fill_in 'Review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
+                  fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   check 'Pinned'
                   click_button 'Save'
                 end
@@ -105,7 +105,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
-                  expect(page).to have_content "Review • #{nice_date_times_today(frozen_time + 7.days)}"
+                  expect(page).to have_content "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).not_to have_content electricity_meter.mpan_mprn
@@ -114,12 +114,8 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
             end
-          end
-        end
 
-        context 'and editing an issue' do
-          Issue.issue_types.each_key do |issue_type|
-            context "of type #{issue_type}" do
+            context 'when editing an issue' do
               let(:date) { Time.zone.today }
 
               let!(:issue) do
@@ -139,7 +135,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Status', selected: issue.status.capitalize) if issue_type == 'issue'
                 expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
                 expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
-                expect(page).to have_field('Review date', with: date.strftime('%d/%m/%Y'))
+                expect(page).to have_field('Next review date', with: date.strftime('%d/%m/%Y'))
                 expect(page).to have_checked_field('Pinned')
                 if issueable.is_a? School
                   expect(page).to have_checked_field(electricity_meter.mpan_mprn.to_s)
@@ -147,7 +143,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
 
-              context 'and saving new values' do
+              context 'when saving new values' do
                 let(:frozen_time) { Time.zone.now }
                 let(:new_issue_type) { Issue.issue_types.keys.excluding(issue_type).first.capitalize }
 
@@ -159,7 +155,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select 'Closed', from: 'Status' if issue_type == 'issue'
                   select new_issue_type, from: 'Issue type'
                   select 'Other Issues Admin', from: 'Assigned to'
-                  fill_in 'Review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
+                  fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   uncheck 'Pinned'
                   if issueable.is_a? School
                     uncheck electricity_meter.mpan_mprn.to_s
@@ -177,7 +173,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                  expect(page).to have_content "Review • #{nice_date_times_today(frozen_time + 7.days)}"
+                  expect(page).to have_content "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).not_to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_content gas_meter.mpan_mprn
@@ -186,60 +182,60 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
             end
-          end
-        end
 
-        context 'and viewing index' do
-          let(:issue) { create(:issue, issueable: issueable, issue_type: :issue, fuel_type: :gas, created_by: user, updated_by: user, owned_by: other_issues_admin) }
+            context 'when viewing index' do
+              let(:issue) { create(:issue, issueable: issueable, issue_type: issue_type, fuel_type: :gas, created_by: user, updated_by: user, owned_by: other_issues_admin) }
 
-          it_behaves_like 'a displayed issue' do
-            let(:issue_admin) { other_issues_admin }
-          end
+              it_behaves_like 'a displayed issue' do
+                let(:issue_admin) { other_issues_admin }
+              end
 
-          it { expect(page).to have_link('Delete') }
+              it { expect(page).to have_link('Delete') }
 
-          context 'displaying school context menu' do
-            it { expect(page).to have_link('Manage School') if issueable.is_a?(School) }
-            it { expect(page).not_to have_link('Manage School') unless issueable.is_a?(School) }
-          end
+              context 'displaying school context menu' do
+                it { expect(page).to have_link('Manage School') if issueable.is_a?(School) }
+                it { expect(page).not_to have_link('Manage School') unless issueable.is_a?(School) }
+              end
 
-          context 'and deleting a issue' do
-            before do
-              click_link('Delete')
-            end
+              context 'when deleting an issue' do
+                before do
+                  click_link('Delete')
+                end
 
-            it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, Issue])) }
+                it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, Issue])) }
 
-            it 'does not show removed issue' do
-              expect(page).not_to have_content issue.title
-            end
-          end
+                it 'does not show removed issue' do
+                  expect(page).not_to have_content issue.title
+                end
+              end
 
-          it { expect(page).to have_link('View') }
+              it { expect(page).to have_link('View') }
 
-          context "and clicking 'View'" do
-            before do
-              click_link('View')
-            end
+              context "when clicking 'View'" do
+                before do
+                  click_link('View')
+                end
 
-            it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, issue])) }
+                it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, issue])) }
 
-            it_behaves_like 'a displayed issue' do
-              let(:issue_admin) { other_issues_admin }
-            end
-          end
+                it_behaves_like 'a displayed issue' do
+                  let(:issue_admin) { other_issues_admin }
+                end
+              end
 
-          it { expect(page).to have_link('Resolve') }
+              it { expect(page).to have_link('Resolve') }
 
-          context "and clicking 'Resolve'" do
-            before do
-              click_link('Resolve')
-            end
+              context "when clicking 'Resolve'" do
+                before do
+                  click_link('Resolve')
+                end
 
-            it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, Issue])) }
+                it { expect(page).to have_current_path(polymorphic_path([:admin, issueable, Issue])) }
 
-            it 'displays issue as closed' do
-              expect(page).to have_content 'Closed'
+                it 'displays issue as closed' do
+                  expect(page).to have_content 'Closed'
+                end
+              end
             end
           end
         end
@@ -284,6 +280,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
       end
 
       it { expect(page).to have_select(:user, selected: []) }
+      it { expect(page).to have_select(:review_date, selected: []) }
       it { expect(page).to have_checked_field('Issue') }
       it { expect(page).to have_checked_field('Note') }
       it { expect(page).to have_checked_field('Open') }
@@ -377,7 +374,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
       end
 
-      context 'and filtering by review date' do
+      context 'and filtering by next review date' do
         let!(:issue_overdue) { create(:issue, review_date: 2.days.ago) }
         let!(:issue_next_week) { create(:issue, review_date: 5.days.from_now) }
         let!(:issue_week_after_next) { create(:issue, review_date: 10.days.from_now) }
@@ -385,9 +382,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:issues) { [issue_overdue, issue_next_week, issue_week_after_next, issue_no_review_date]}
         let(:setup_data) { issues }
 
-        context 'when selecting any review date' do
+        context 'when selecting any next review date' do
           before do
-            select 'Any review date', from: :review_date
+            select 'Any next review date', from: :review_date
             click_button 'Filter'
           end
 
@@ -400,7 +397,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
         context 'when selecting review date not set' do
           before do
-            select 'Review date not set', from: :review_date
+            select 'Next review date not set', from: :review_date
             click_button 'Filter'
           end
 
@@ -410,9 +407,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
           end
         end
 
-        context 'when selecting review date in next week' do
+        context 'when selecting next review date in next week' do
           before do
-            select 'Review date in next week', from: :review_date
+            select 'Next review date in next week', from: :review_date
             click_button 'Filter'
           end
 
@@ -422,9 +419,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
           end
         end
 
-        context 'when selecting review date overdue' do
+        context 'when selecting next review date overdue' do
           before do
-            select 'Review date overdue', from: :review_date
+            select 'Next review date overdue', from: :review_date
             click_button 'Filter'
           end
 
@@ -435,7 +432,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
       end
 
-      context 'and searching issues' do
+      context 'when searching issues' do
         let(:issue_1) { create(:issue, title: 'Issue 1 findme here', description: 'description') }
         let(:issue_2) { create(:issue, title: 'Issue 2 title', description: 'I\'m hiding here') }
         let(:setup_data) { [issue_1, issue_2] }

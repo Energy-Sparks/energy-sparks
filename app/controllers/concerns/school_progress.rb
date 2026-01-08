@@ -22,29 +22,9 @@ private
     Targets::SchoolTargetService.targets_enabled?(@school) && can?(:manage, SchoolTarget) && @school.has_expired_target? && !@school.has_current_target?
   end
 
-  def suggest_estimates_for_fuel_types(check_data: false)
-    if can?(:manage, EstimatedAnnualConsumption)
-      Targets::SuggestEstimatesService.new(@school).suggestions(check_data: check_data)
-    else
-      []
-    end
-  end
-
-  def suggest_estimate_for_fuel_type?(fuel_type, check_data: false)
-    if can?(:manage, EstimatedAnnualConsumption)
-      Targets::SuggestEstimatesService.new(@school).suggest_for_fuel_type?(fuel_type, check_data: check_data)
-    else
-      false
-    end
-  end
-
   def fuel_types_changed
     return nil unless @school.has_target?
     @school.most_recent_target.revised_fuel_types
-  end
-
-  def progress_service
-    @progress_service ||= Targets::ProgressService.new(@school)
   end
 
   def target_service

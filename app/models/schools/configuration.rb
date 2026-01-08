@@ -55,10 +55,6 @@ module Schools
       end
     end
 
-    def suggest_annual_estimate?
-      suggest_estimates_fuel_types.any?
-    end
-
     def suggest_annual_estimate_for_fuel_type?(fuel_type)
       case fuel_type.to_s
       when 'storage_heater', 'storage_heaters'

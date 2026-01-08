@@ -202,8 +202,6 @@ class School < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
-  has_many :estimated_annual_consumptions
-
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
@@ -540,15 +538,22 @@ class School < ApplicationRecord
   end
 
   delegate :school_admin, to: :users
-
   delegate :staff, to: :users
 
   def all_school_admins
-    school_admin + cluster_users
+    User.where(id: school_admin).or(
+      User.where(id: cluster_users)
+    )
   end
 
   def all_adult_school_users
-    (all_school_admins + staff).uniq
+    User.where(id: all_school_admins).or(
+      User.where(id: staff)
+    ).distinct
+  end
+
+  def active_alert_contacts
+    all_adult_school_users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   def activation_users
@@ -649,10 +654,6 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired[idx + 1]
   end
 
-  def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
-  end
-
   def has_expired_target?
     expired_target.present?
   end
@@ -665,10 +666,6 @@ class School < ApplicationRecord
     school_onboarding && school_onboarding.has_event?(event_name)
   end
 
-  def suggest_annual_estimate?
-    estimated_annual_consumptions.any? || configuration.suggest_annual_estimate?
-  end
-
   def school_target_attributes
     # use the current target if we have one, otherwise the most current target
     # based on start date. So if target as expired, then progress pages still work
@@ -679,14 +676,6 @@ class School < ApplicationRecord
     else
       {}
     end
-  end
-
-  def latest_annual_estimate
-    estimated_annual_consumptions.order(created_at: :desc).first
-  end
-
-  def estimated_annual_consumption_meter_attributes
-    latest_annual_estimate.nil? ? {} : latest_annual_estimate.meter_attributes_by_meter_type
   end
 
   def school_group_pseudo_meter_attributes
@@ -702,10 +691,10 @@ class School < ApplicationRecord
                       pseudo_meter_attributes,
                       school_target_attributes]
                      .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
-      pseudo_attributes.each do |meter_type, attributes|
-        collection[meter_type] ||= []
-        collection[meter_type] = collection[meter_type] + attributes
-      end
+                       pseudo_attributes.each do |meter_type, attributes|
+                         collection[meter_type] ||= []
+                         collection[meter_type] = collection[meter_type] + attributes
+                       end
     end
 
     all_attributes[:aggregated_electricity] ||= []
@@ -838,14 +827,6 @@ class School < ApplicationRecord
 
   def data_visible?
     data_enabled && visible
-  end
-
-  def active_adult_users
-    users.active.where.not(role: :pupil)
-  end
-
-  def active_alert_contacts
-    users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   # gov.uk have figures for recommended gross area for different sizes of schools.

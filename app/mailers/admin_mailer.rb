@@ -100,7 +100,7 @@ class AdminMailer < ApplicationMailer
 
   def build_issues_csv_for(issues)
     CSV.generate(headers: true) do |csv|
-      csv << ['Issue type', 'Issue for', 'New', 'Group', 'Title', 'Fuel', 'Review date', 'Created by', 'Created', 'Updated by',
+      csv << ['Issue type', 'Issue for', 'New', 'Group', 'Title', 'Fuel', 'Next review date', 'Created by', 'Created', 'Updated by',
               'Updated', 'View', 'Edit']
       issues.each do |issue|
         csv << [

@@ -173,40 +173,6 @@ en:
         unvalidated_meter_data: Unvalidated meter data
         unvalidated_meter_data_as_csv: Unvalidated meter data as CSV
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
-    estimated_annual_consumptions:
-      breadcrumb: Estimated annual consumption
-      destroy:
-        estimate_successfully_removed: Estimate successfully removed
-      edit:
-        check_our_energy_bill: Check our energy bill
-        estimate_was_successfully_updated: Estimate was successfully updated
-        note: Note
-        page_title: Update an annual usage estimate
-        paragraph_1_html: When we have limited information about your historical energy consumption we are unable to provide you with a detailed progress report that will help you <a href='%{school_targets_path}'>achieve your energy saving targets</a>
-        paragraph_2: If you can provide us with an estimate of your annual energy consumption, then we can use this to calculate your monthly targets and progress
-        tip: Tip
-        update_your_estimated_annual_energy_consumption: Update your estimated annual energy consumption
-        weve_recorded_your_estimate: We've recorded your estimate and will use this when we analyse your data overnight
-        your_estimate: Your estimate
-        your_recent_energy_bills_should_provide_the_data_you_need: Your recent energy bills should provide the data you need
-      form:
-        annual_electricity_consumption: Annual electricity consumption
-        annual_gas_consumption: Annual gas consumption
-        annual_storage_heater_electricity_consumption: Annual storage heater electricity consumption
-        estimate: Estimate
-        estimated_consumption_for_electricity_message: Based on the available data we estimate your electricity usage is likely to be at least %{estimated_usage_for_school_electricity} kwh
-        estimated_consumption_for_gas_message: Based on the available data we estimate your gas usage is likely to be at least %{estimated_usage_for_school_gas} kwh
-        estimated_consumption_for_storage_heater_message: Based on the available data we estimate your storage heater electricity usage is likely to be at least %{estimated_usage_for_school_storage_heater} kwh
-        year_estimate_based_on: Which year is your estimate based on?
-      new:
-        check_our_energy_bill: Check our energy bill
-        page_title: Add an annual usage estimate
-        paragraph_1_html: When we have limited information about your historical energy consumption we are unable to provide you with a detailed progress report that will help you <a href='%{school_targets_path}'>achieve your energy saving targets</a>
-        paragraph_2: If you can provide us with an estimate of your annual energy consumption, then we can use this to calculate your monthly targets and progress
-        provide_an_estimate: Provide an estimate of your annual energy consumption
-        tip: Tip
-        your_estimate: Your estimate
-        your_recent_energy_bills: Your recent energy bills should provide the data you need
     funding_status:
       private_school: Private School
       state_school: State School
@@ -480,10 +446,9 @@ en:
         view_recent_alerts: View recent alerts
         we_analyse_your_data: We analyse your data to provide insights and weekly alerts
         work_with_the_pupils: Work with the pupils
-      current:
-        page_title: Your current energy saving targets
       edit:
         before_changing_your_targets: Before changing your targets, check our recommendations to see what you can do to reduce costs and emissions
+        cannot_update_expired: Cannot edit an expired target
         if_you_do_revise_your_targets: If you do revise your targets we will update your progress report to apply that target to all of your energy usage this year
         page_title: Update your energy saving target
         review_your_dashboard: Review your dashboard
@@ -493,9 +458,6 @@ en:
         update_your_energy_saving_target: Update your energy saving target
         your_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets
         your_current_target: Your current target
-      expired:
-        page_title: Results of reducing your energy usage
-        your_school_set_a_target_to_reduce_html: Your school set a target to reduce its energy usage between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>. This page summarises your results
       first:
         advice: Focus on building momentum and making some early savings.
         careful_planning: Reducing your energy costs and carbon emissions involves careful planning. Energy Sparks provides you with a recommended set of steps to help you achieve your targets by
@@ -521,118 +483,23 @@ en:
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
         where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
-      generating_report:
-        get_started_with_the_activities: Get started with the activities below to start working towards your goal
-        we_need_to_process_your_data: We need to process your data to create a more detailed progress report that will show progress against your targets. Check back tomorrow to see the results
       new:
         before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
         carried_forward: By default we've carried forward your targets from last year. You can amend them below
         page_title: Update your energy saving target
         review_and_set_your_next_energy_saving_target: Review and set your next energy saving target
         review_your_dashboard: Review your dashboard
-        target_date_reached_advice_page: The target date for your previous target has been reached. Its time to review your progress and set a new target.
-        target_date_reached_html: The target date for your previous target has been reached. Its time to <a href='%{school_target_path}'>review your progress</a> and set a new target.
+        target_date_reached_advice_page: The target date for your previous target has been reached. It's time to review your progress and set a new target.
         tip: Tip
         your_new_target: Your new target
       progress:
-        breadcrumbs:
-          electricity: Electricity progress
-          gas: Gas progress
-          storage_heater: Storage heater progress
-        charts:
-          cumulative_progress: Cumulative progress
-          weekly_progress: Weekly progress
-          weekly_progress_to_date: Weekly progress to date
         current:
-          actual_consumption_kwh: Actual Consumption (kWh)
-          cumulative_progress: Cumulative progress
-          debug: Debug
-          error: Error
-          error_message: Unfortunately due to an error we are currently unable to display your detailed progress report
           month: Month
-          month_by_month_progress: Month by month progress
-          overall_change_since_last_year: Overall change since last year
-          overall_performance_since_last_year: Overall performance since last year
-          problem: Problem
-          progress_charts: Progress charts
-          review_targets: Review targets
-          target_consumption_kwh: Target Consumption (kWh)
-          title: Tracking progress to reduce your %{fuel_type} energy usage
-          unfortunately_as_much_as_last_year: Unfortunately you are using as much %{fuel_type} as you did last year
-          unfortunately_more_than_last_year: Unfortunately you are using %{relative_percent} more %{fuel_type} than last year
-          view_last_years_target_report: View last year’s target report
-          we_have_been_notified_about_this_error_2: We have been notified about this error and will investigate
-          we_have_not_received_data: We have not received data for your %{fuel_type} usage for over thirty days. As a result your progress report will be out of date
-          well_done_less_than_last_year: Well done, you are using %{relative_percent} less %{fuel_type} than last year
-          your_school_has_set_a_target_to_reduce_html: Your school has set a target to reduce its %{fuel_type} usage by %{school_target_attributes}% between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>
-        expired:
-          actual_consumption_kwh: Actual Consumption (kWh)
-          cumulative_progress: Cumulative progress
-          month: Month
-          month_by_month_progress: Month by month progress
-          overall_change_since_last_year: Overall change since last year
-          overall_performance_since_last_year: Overall performance since last year
-          results_of_reducing_your_usage: Results of reducing your %{fuel_type} usage by %{target_date}
-          review_targets: Review targets
-          target_consumption_kwh: Target Consumption (kWh)
-          you_didnt_achieve_your_goal_to_reduce: Unfortunately you didn't achieve your goal to reduce your %{fuel_type} usage
-          you_managed_to_reduce_your_usage: Well done! You managed to reduce your %{fuel_type} usage by %{relative_percent}
-          your_school_set_a_target_to_reduce_its_usage_html: Your school set a target to reduce its %{fuel_type} usage by %{school_target_attributes}% between <strong>%{start_date}</strong> and <strong>%{target_date}</strong>
-        footnotes:
-          consumption_data_message_html: <p>Consumption data <span class="partial-month">shown in red</span> indicates a month in which we have only partial data. Your consumption and performance figures will not be accurate until the end of the month. Or until we receive additional historical data.</p>
-          expired_message_html: The values in the table above are a snapshot of your usage data taken on %{report_last_generated_date}. Any later updates to your school configuration or data will not be reflected in these historical results
-          partial_target_data_message_html: We only have limited historical consumption data for your school, so we cannot currently calculate a full set of monthly targets or progress. You can <a href='%{estimated_annual_consumptions_path}'>provide us with an annual estimate</a> to see more detail
-          reporting_period_before_consumption_data_no_start_date_message: We only have limited data on your actual %{fuel_type} consumption. The report will only show your consumption for a portion of your target period
-          reporting_period_before_consumption_data_start_date_message: We only have data on your %{fuel_type} consumption from %{meter_start_date}. The report will only show your consumption for a portion of your target period
-          targets_derived_from_synthetic_data_message_html: Monthly targets <i>shown in italics</i> have been created from the <a href='%{school_estimated_annual_consumptions_path}'>annual estimate</a> you provided, rather than your historical data. Their accuracy will depend on the quality of your estimate
-          this_report_only_shows_message_html: This report only shows progress on reducing your electricity usage. Your <a href='%{storage_heater_path}'>storage heater progress report</a> can be viewed separately
-          title: Footnotes
-          we_use_colour_coding_message_html: We use colour coding to indicate when you have <span class="bg-positive-dark">met your target</span> or <span class="bg-negative-dark">failed to meet your target</span> in a given month
-        missing:
-          tracking_progress_to_reduce_usage: Tracking progress to reduce your %{fuel_type} energy usage
-          we_dont_have_a_record_of: We don't have a record of %{fuel_type} being used at your school
-      prompt_to_add_estimate:
-        add_an_estimate: Add an estimate
-        if_you_can_supply_an_estimate:
-          one: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} target
-          other: If you can supply an estimate of your annual consumption then we can generate a more detailed progress report for your %{fuel_types} targets
-      prompt_to_review_target:
-        review_your_target: Review your target
-        your_fuel_types_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may want to revisit your targets for this year
-      prompt_to_set_new_target:
-        set_a_new_target: Set a new target
-        you_set_a_target_to_reduce: You set a target to reduce your energy usage by %{target_date}. It's now time to review your progress and set a new target
-      show:
-        final_results: See the final results of your goal to reduce your target by %{target_date}
-        view_results: View results
       successfully_created: Target successfully created
       successfully_updated: Target successfully updated
       target_table:
         current_progress: Current progress
-        final_result: Final result
-        reporting_change_in_energy_usage_between: Reporting change in energy usage between
-        start_date_and_end_date: "%{start_date} and %{end_date}"
         target_reduction: Target Reduction
-      target_table_row:
-        last_week: last week
-        not_applicable: N/A
-        view_monthly_report: View monthly report
-      target_timeline:
-        a_reminder_of_the_energy_saving: A reminder of the energy saving activities and actions you recorded between %{start_date} and %{target_date}
-        how_did_you_achieve_your_target: How did you achieve your target?
-        how_did_you_try_to_achieve_your_target: How did you try to achieve your target?
-        you_didnt_record_any_energy_saving: You didn't record any energy saving activities or actions between %{start_date} and %{target_date}
-      title:
-        reducing_your_energy_usage_by: Reducing your energy usage by %{target_date}
-        results_of_reducing_your_energy_usage: Results of reducing your energy usage
-        revise_your_target: Revise your target
-        set_a_new_target: Set a new target
-        view_current_target: View current target
-        we_are_calculating_your_progress: We are calculating your progress
-      warn_recent_data:
-        we_have_not_received_data:
-          one: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
-          other: We have not received data for your %{out_of_date_fuel_types} usage for over thirty days. As a result your progress report will be out of date
     schools:
       compare_schools: Compare schools
     settings:
