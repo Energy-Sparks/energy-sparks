@@ -144,7 +144,7 @@ RSpec.describe 'school group status', :include_application_helper, :school_group
       it { expect(page).to have_content(school.full_location_to_s) }
       it { expect(page).to have_content(school.number_of_pupils) }
       it { expect(page).to have_content(I18n.t("common.school_types.#{school.school_type}"))}
-      it { expect(page).to have_content("Number of users #{school.active_adult_users.count} (1 receiving alerts)")}
+      it { expect(page).to have_content("Number of users #{school.all_adult_school_users.active.count} (1 receiving alerts)")}
     end
 
     context 'with key dates' do
