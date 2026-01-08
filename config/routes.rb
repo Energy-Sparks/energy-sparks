@@ -924,6 +924,16 @@ Rails.application.routes.draw do
   get '/campaigns/find-out-more', to: redirect(path: '/product')
   get '/campaigns/book-demo', to: redirect(path: '/watch-demo')
 
+  # old school target progress paths
+  get '/schools/:name/progress', to: redirect('/schools/%{name}/school_targets')
+  get '/schools/:name/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
+  get '/schools/:name/progress/storage_heater', to: redirect('/schools/%{name}/advice/storage_heater_target')
+  get '/schools/:name/school_targets/:id/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/school_targets/:id/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
+  get '/schools/:name/school_targets/:id/progress/storage_heater',
+      to: redirect('/schools/%{name}/advice/storage_heater_target')
+
   match '/:code', to: 'errors#show', via: :all, constraints: {
     code: /#{ErrorsController::CODES.join('|')}/
   }
