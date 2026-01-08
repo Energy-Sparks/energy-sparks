@@ -28,7 +28,7 @@ module IssuesHelper
   end
 
   def issue_type_count(label, count)
-    "#{label} #{content_tag(:span, count, class: %w[badge badge-secondary])}".html_safe
+    "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
   end
 
   def issueable_icon(issueable)

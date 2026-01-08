@@ -93,7 +93,7 @@
     <% end %>
   <% end %>
   <% component.with_tab(name: :'school-group-issues',
-                        label: issue_type_count('Group issues', @school_group.issues.issue.status_open.count)) do %>
+                        label: label_count('Group issues', @school_group.issues.issue.status_open.count)) do %>
     <% if @school_group.issues.issue.any? %>
       <%= render 'admin/issues/issues_list',
                  issues: @school_group.issues.issue.by_priority_order,
@@ -104,7 +104,7 @@
     <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-group-notes',
-                        label: issue_type_count('Group notes', @school_group.issues.note.status_open.count)) do %>
+                        label: label_count('Group notes', @school_group.issues.note.status_open.count)) do %>
     <% if @school_group.issues.note.any? %>
       <%= render 'admin/issues/issues_list', issues: @school_group.issues.note.by_priority_order,
                                              issueable_type: 'Group' %>
@@ -114,8 +114,8 @@
     <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-issues',
-                        label: issue_type_count('School issues and notes',
-                                                @school_group.school_issues.status_open.count)) do %>
+                        label: label_count('School issues and notes',
+                                           @school_group.school_issues.status_open.count)) do %>
     <% if @school_group.school_issues.any? %>
       <%= render 'admin/issues/issues_list',
                  issues: @school_group.school_issues.by_priority_order,
