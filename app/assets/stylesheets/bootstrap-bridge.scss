@@ -22,10 +22,12 @@ button.btn-close { @extend button.close !optional; }
 // Rounded corners
 .rounded-start { @extend .rounded-left !optional; }
 .rounded-end   { @extend .rounded-right !optional; }
-.rounded-0 { @extend .rounded-0 !optional; } // no change
+// .rounded-0 { @extend .rounded-0 !optional; } // no change
 .rounded-1 { @extend .rounded-sm !optional; }
 .rounded-2 { @extend .rounded !optional; }
 .rounded-3 { @extend .rounded-lg !optional; }
+.rounded-4 { @extend .rounded-xl !optional; } // new BS5.2
+.rounded-5 { @extend .rounded-xxl !optional; } // new BS5.3 (replaces rounded-2xl from BS5.2)
 
 // Text alignment direction
 .text-start   { @extend .text-left !optional; }
@@ -49,7 +51,7 @@ button.btn-close { @extend button.close !optional; }
 
 .font-monospace { @extend .text-monospace !optional; }
 
-// Colours that should use dark text (bootstrap 4 onwards)
+// Colours that should use dark text (bootstrap 4)
 $dark-text-backgrounds-bs-4: warning, light;
 
 // badge styles - reset these up so we can use the new styles with badges too
@@ -65,9 +67,10 @@ $dark-text-backgrounds-bs-4: warning, light;
 }
 
 // Colours that should use dark text (bootstrap 5 onwards)
+// NB info is now dark text rather than white text!
 $dark-text-backgrounds-bs-5: warning, info, light;
 
-// bootstrap 5.2.0 new colours that can be used with badges or other elements
+// bootstrap 5.2+ new colours that can be used with badges or other elements
 // text-bg-* classes
 
 @each $name, $value in $theme-colors {
