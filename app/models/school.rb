@@ -202,8 +202,6 @@ class School < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
 
-  has_many :estimated_annual_consumptions
-
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
   has_many :alert_subscription_events,    through: :contacts
@@ -661,10 +659,6 @@ class School < ApplicationRecord
     school_onboarding && school_onboarding.has_event?(event_name)
   end
 
-  def suggest_annual_estimate?
-    estimated_annual_consumptions.any? || configuration.suggest_annual_estimate?
-  end
-
   def school_target_attributes
     # use the current target if we have one, otherwise the most current target
     # based on start date. So if target as expired, then progress pages still work
@@ -675,14 +669,6 @@ class School < ApplicationRecord
     else
       {}
     end
-  end
-
-  def latest_annual_estimate
-    estimated_annual_consumptions.order(created_at: :desc).first
-  end
-
-  def estimated_annual_consumption_meter_attributes
-    latest_annual_estimate.nil? ? {} : latest_annual_estimate.meter_attributes_by_meter_type
   end
 
   def school_group_pseudo_meter_attributes

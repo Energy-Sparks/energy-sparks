@@ -426,8 +426,6 @@ Rails.application.routes.draw do
 
       resources :school_targets
 
-      resources :estimated_annual_consumptions, except: [:show]
-
       resources :programmes, only: [:create]
 
       resources :audits
@@ -933,6 +931,7 @@ Rails.application.routes.draw do
   get '/schools/:name/school_targets/:id/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
   get '/schools/:name/school_targets/:id/progress/storage_heater',
       to: redirect('/schools/%{name}/advice/storage_heater_target')
+  get '/schools/:name/estimated_annual_consumptions', to: redirect('/schools/%{name}')
 
   match '/:code', to: 'errors#show', via: :all, constraints: {
     code: /#{ErrorsController::CODES.join('|')}/
