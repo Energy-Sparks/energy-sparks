@@ -412,30 +412,6 @@ describe School do
     end
   end
 
-  context 'with annual estimates' do
-    it 'there are no meter attributes without an estimate' do
-      expect(school.estimated_annual_consumption_meter_attributes).to eql({})
-      expect(school.all_pseudo_meter_attributes).to eql({ aggregated_electricity: [], aggregated_gas: [],
-                                                          solar_pv_consumed_sub_meter: [], solar_pv_exported_sub_meter: [] })
-    end
-
-    context 'when an estimate is given' do
-      let!(:estimate) do
-        create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0,
-                                              year: 2021)
-      end
-
-      before do
-        school.reload
-      end
-
-      it 'they are not passed to the analytics' do
-        expect(school.all_pseudo_meter_attributes).to eql({ aggregated_electricity: [], aggregated_gas: [],
-                                                            solar_pv_consumed_sub_meter: [], solar_pv_exported_sub_meter: [] })
-      end
-    end
-  end
-
   context 'with school targets' do
     it 'there is no target by default' do
       expect(school.has_target?).to be false
@@ -659,10 +635,6 @@ describe School do
       let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
       let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
       let!(:target) { create(:school_target, start_date: Date.yesterday, school: school) }
-      let!(:estimate) do
-        create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0,
-                                              year: 2021)
-      end
 
       it 'maps them to the pseudo meters, targets, and estimates' do
         expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 4

@@ -174,40 +174,6 @@ cy:
         unvalidated_meter_data: Data mesurydd sydd heb eu dilysu
         unvalidated_meter_data_as_csv: Data mesurydd sydd heb eu dilysu fel CSV
         we_use_sheffield_solar_pv_api_message_html: Rydym yn defnyddio <a href="https://www.solar.sheffield.ac.uk/pvlive/">API Solar Ffotofoltaig Prifysgol Sheffield</a> ar gyfer data cynhyrchu solar ffotofoltaig, gallwch lawrlwytho'r data sydd gennym ar gyfer eich ysgol yma
-    estimated_annual_consumptions:
-      breadcrumb: Amcangyfrif o ddefnydd blynyddol
-      destroy:
-        estimate_successfully_removed: Tynnwyd yr amcangyfrif yn llwyddiannus
-      edit:
-        check_our_energy_bill: Gwiriwch ein bil ynni
-        estimate_was_successfully_updated: Diweddarwyd yr amcangyfrif yn llwyddiannus
-        note: Nodyn
-        page_title: Diweddaru amcangyfrif defnydd blynyddol
-        paragraph_1_html: Pan fydd gennym wybodaeth gyfyngedig am eich defnydd hanesyddol o ynni ni allwn roi adroddiad cynnydd manwl i chi a fydd yn eich helpu i <a href='%{school_targets_path}'>gyrraedd eich targedau arbed ynni</a>
-        paragraph_2: Os gallwch chi roi amcangyfrif i ni o'ch defnydd ynni blynyddol, yna gallwn ddefnyddio hwn i gyfrifo eich targedau misol a chynnydd
-        tip: Awgrym
-        update_your_estimated_annual_energy_consumption: Diweddarwch eich defnydd blynyddol amcangyfrifedig o ynni
-        weve_recorded_your_estimate: Rydym wedi cofnodi eich amcangyfrif a byddwn yn defnyddio hwn pan fyddwn yn dadansoddi eich data dros nos
-        your_estimate: Eich amcangyfrif
-        your_recent_energy_bills_should_provide_the_data_you_need: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
-      form:
-        annual_electricity_consumption: Defnydd blynyddol o drydan
-        annual_gas_consumption: Defnydd blynyddol o nwy
-        annual_storage_heater_electricity_consumption: Defnydd blynyddol o drydan stôr-wresogyddion
-        estimate: Amcangyfrif
-        estimated_consumption_for_electricity_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o drydan yn debygol o fod o leiaf %{estimated_usage_for_school_electricity} kwh
-        estimated_consumption_for_gas_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o nwy yn debygol o fod o leiaf %{estimated_usage_for_school_gas} kwh
-        estimated_consumption_for_storage_heater_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o drydan stôr-wresogyddion yn debygol o fod o leiaf %{estimated_usage_for_school_storage_heater} kwh
-        year_estimate_based_on: Ar ba flwyddyn mae eich amcangyfrif yn seiliedig?
-      new:
-        check_our_energy_bill: Gwiriwch ein bil ynni
-        page_title: Ychwanegu amcangyfrif defnydd blynyddol
-        paragraph_1_html: Pan fydd gennym wybodaeth gyfyngedig am eich defnydd hanesyddol o ynni ni allwn roi adroddiad cynnydd manwl i chi a fydd yn eich helpu i <a href='%{school_targets_path}'>gyrraedd eich targedau arbed ynni</a>
-        paragraph_2: Os gallwch chi roi amcangyfrif i ni o'ch defnydd ynni blynyddol, yna gallwn ddefnyddio hwn i gyfrifo eich targedau misol a chynnydd
-        provide_an_estimate: Rhowch amcangyfrif o'ch defnydd blynyddol o ynni
-        tip: Awgrym
-        your_estimate: Eich amcangyfrif
-        your_recent_energy_bills: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
     funding_status:
       private_school: Ysgol Breifat
       state_school: Ysgol y Wladwriaeth

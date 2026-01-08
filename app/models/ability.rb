@@ -280,7 +280,7 @@ class Ability
       show_management_dash read read_restricted_analysis read_restricted_advice manage_settings
     ], School, school_scope
 
-    can :manage, [EstimatedAnnualConsumption, SchoolTarget, Contact], related_school_scope
+    can :manage, [SchoolTarget, Contact], related_school_scope
 
     can :show, Cad, related_school_scope
     can :read, Scoreboard, public: false, id: user.default_scoreboard.try(:id)
@@ -347,7 +347,7 @@ class Ability
     school_scope = { id: user.school_id, visible: true }
     school_user_common_permissions(user)
 
-    can :manage, [SchoolTarget, EstimatedAnnualConsumption], school: school_scope
+    can :manage, SchoolTarget, school: school_scope
 
     # These two programme related abilities are unused? In the current user interface pupils can start
     # and restart programmes.

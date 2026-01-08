@@ -173,40 +173,6 @@ en:
         unvalidated_meter_data: Unvalidated meter data
         unvalidated_meter_data_as_csv: Unvalidated meter data as CSV
         we_use_sheffield_solar_pv_api_message_html: We use the <a href="https://www.solar.sheffield.ac.uk/pvlive/">University of Sheffield Solar PV</a> API for solar pv generation data, you can download the data we have for your school here
-    estimated_annual_consumptions:
-      breadcrumb: Estimated annual consumption
-      destroy:
-        estimate_successfully_removed: Estimate successfully removed
-      edit:
-        check_our_energy_bill: Check our energy bill
-        estimate_was_successfully_updated: Estimate was successfully updated
-        note: Note
-        page_title: Update an annual usage estimate
-        paragraph_1_html: When we have limited information about your historical energy consumption we are unable to provide you with a detailed progress report that will help you <a href='%{school_targets_path}'>achieve your energy saving targets</a>
-        paragraph_2: If you can provide us with an estimate of your annual energy consumption, then we can use this to calculate your monthly targets and progress
-        tip: Tip
-        update_your_estimated_annual_energy_consumption: Update your estimated annual energy consumption
-        weve_recorded_your_estimate: We've recorded your estimate and will use this when we analyse your data overnight
-        your_estimate: Your estimate
-        your_recent_energy_bills_should_provide_the_data_you_need: Your recent energy bills should provide the data you need
-      form:
-        annual_electricity_consumption: Annual electricity consumption
-        annual_gas_consumption: Annual gas consumption
-        annual_storage_heater_electricity_consumption: Annual storage heater electricity consumption
-        estimate: Estimate
-        estimated_consumption_for_electricity_message: Based on the available data we estimate your electricity usage is likely to be at least %{estimated_usage_for_school_electricity} kwh
-        estimated_consumption_for_gas_message: Based on the available data we estimate your gas usage is likely to be at least %{estimated_usage_for_school_gas} kwh
-        estimated_consumption_for_storage_heater_message: Based on the available data we estimate your storage heater electricity usage is likely to be at least %{estimated_usage_for_school_storage_heater} kwh
-        year_estimate_based_on: Which year is your estimate based on?
-      new:
-        check_our_energy_bill: Check our energy bill
-        page_title: Add an annual usage estimate
-        paragraph_1_html: When we have limited information about your historical energy consumption we are unable to provide you with a detailed progress report that will help you <a href='%{school_targets_path}'>achieve your energy saving targets</a>
-        paragraph_2: If you can provide us with an estimate of your annual energy consumption, then we can use this to calculate your monthly targets and progress
-        provide_an_estimate: Provide an estimate of your annual energy consumption
-        tip: Tip
-        your_estimate: Your estimate
-        your_recent_energy_bills: Your recent energy bills should provide the data you need
     funding_status:
       private_school: Private School
       state_school: State School

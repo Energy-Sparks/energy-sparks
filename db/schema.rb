@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -952,17 +952,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
     t.json "data_cy", default: {}
     t.index ["equivalence_type_content_version_id"], name: "index_equivalences_on_equivalence_type_content_version_id"
     t.index ["school_id"], name: "index_equivalences_on_school_id"
-  end
-
-  create_table "estimated_annual_consumptions", force: :cascade do |t|
-    t.integer "year", null: false
-    t.float "electricity"
-    t.float "storage_heaters"
-    t.float "gas"
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_estimated_annual_consumptions_on_school_id"
   end
 
   create_table "find_out_mores", force: :cascade do |t|
@@ -2348,7 +2337,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
   add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade
   add_foreign_key "equivalences", "schools", on_delete: :cascade
-  add_foreign_key "estimated_annual_consumptions", "schools"
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
@@ -3721,7 +3709,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
       WITH current_targets AS (
            SELECT ranked.id
              FROM ( SELECT school_targets_1.id,
-                                            row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
                      FROM school_targets school_targets_1
                     WHERE (school_targets_1.start_date < now())) ranked
             WHERE (ranked.rank = 1)
