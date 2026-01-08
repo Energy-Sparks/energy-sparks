@@ -7,7 +7,9 @@ FactoryBot.define do
     description       { 'test activity description' }
     happened_on       { Time.zone.today - 1.day }
 
-    to_create { |instance| ActivityCreator.new(instance, nil).process }
+    to_create do |instance|
+      ActivityCreator.new(instance, instance.created_by).process
+    end
   end
 
   factory :activity_without_creator, class: 'Activity' do

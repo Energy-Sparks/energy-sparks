@@ -9,8 +9,8 @@ namespace :after_party do
 
     [[AlertElectricityUsageDuringCurrentHoliday, Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse],
      [AlertGasHeatingHotWaterOnDuringHoliday, Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse],
-     [AlertStorageHeaterHeatingOnDuringHoliday, Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse]].each do
-      |old_class, new_class|
+     [AlertStorageHeaterHeatingOnDuringHoliday, Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse]]
+     .each do |old_class, new_class|
        type = AlertType.find_by(class_name: old_class.name)
        type = type.dup
        type.title += ' with Community Use'

@@ -51,7 +51,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
                 assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
-                expect(find_field('Review date').value).to be_blank
+                expect(find_field('Next review date').value).to be_blank
                 expect(page).to have_unchecked_field('Pinned')
                 if issueable.is_a? School
                   expect(page).to have_unchecked_field(electricity_meter.mpan_mprn.to_s)
@@ -92,7 +92,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select 'Gas', from: 'Fuel type'
                   check gas_meter.mpan_mprn.to_s if issueable.is_a? School
                   select 'Other Issues Admin', from: 'Assigned to'
-                  fill_in 'Review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
+                  fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   check 'Pinned'
                   click_button 'Save'
                 end
@@ -105,7 +105,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
-                  expect(page).to have_content "Review • #{nice_date_times_today(frozen_time + 7.days)}"
+                  expect(page).to have_content "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).not_to have_content electricity_meter.mpan_mprn
@@ -139,7 +139,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_select('Status', selected: issue.status.capitalize) if issue_type == 'issue'
                 expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
                 expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
-                expect(page).to have_field('Review date', with: date.strftime('%d/%m/%Y'))
+                expect(page).to have_field('Next review date', with: date.strftime('%d/%m/%Y'))
                 expect(page).to have_checked_field('Pinned')
                 if issueable.is_a? School
                   expect(page).to have_checked_field(electricity_meter.mpan_mprn.to_s)
@@ -159,7 +159,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   select 'Closed', from: 'Status' if issue_type == 'issue'
                   select new_issue_type, from: 'Issue type'
                   select 'Other Issues Admin', from: 'Assigned to'
-                  fill_in 'Review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
+                  fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
                   uncheck 'Pinned'
                   if issueable.is_a? School
                     uncheck electricity_meter.mpan_mprn.to_s
@@ -177,7 +177,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                  expect(page).to have_content "Review • #{nice_date_times_today(frozen_time + 7.days)}"
+                  expect(page).to have_content "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
                   expect(page).not_to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_content gas_meter.mpan_mprn
@@ -377,7 +377,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
       end
 
-      context 'and filtering by review date' do
+      context 'and filtering by next review date' do
         let!(:issue_overdue) { create(:issue, review_date: 2.days.ago) }
         let!(:issue_next_week) { create(:issue, review_date: 5.days.from_now) }
         let!(:issue_week_after_next) { create(:issue, review_date: 10.days.from_now) }
@@ -385,9 +385,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:issues) { [issue_overdue, issue_next_week, issue_week_after_next, issue_no_review_date]}
         let(:setup_data) { issues }
 
-        context 'when selecting any review date' do
+        context 'when selecting any next review date' do
           before do
-            select 'Any review date', from: :review_date
+            select 'Any next review date', from: :review_date
             click_button 'Filter'
           end
 
@@ -400,7 +400,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
         context 'when selecting review date not set' do
           before do
-            select 'Review date not set', from: :review_date
+            select 'Next review date not set', from: :review_date
             click_button 'Filter'
           end
 
@@ -410,9 +410,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
           end
         end
 
-        context 'when selecting review date in next week' do
+        context 'when selecting next review date in next week' do
           before do
-            select 'Review date in next week', from: :review_date
+            select 'Next review date in next week', from: :review_date
             click_button 'Filter'
           end
 
@@ -422,9 +422,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
           end
         end
 
-        context 'when selecting review date overdue' do
+        context 'when selecting next review date overdue' do
           before do
-            select 'Review date overdue', from: :review_date
+            select 'Next review date overdue', from: :review_date
             click_button 'Filter'
           end
 
