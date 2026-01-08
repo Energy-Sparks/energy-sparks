@@ -3721,7 +3721,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_12_162919) do
       WITH current_targets AS (
            SELECT ranked.id
              FROM ( SELECT school_targets_1.id,
-                                            row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
                      FROM school_targets school_targets_1
                     WHERE (school_targets_1.start_date < now())) ranked
             WHERE (ranked.rank = 1)
