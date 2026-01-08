@@ -635,10 +635,6 @@ describe School do
       let!(:group_level)      { create(:energy_tariff, :with_flat_price, tariff_holder: school_group) }
       let!(:school_specific)  { create(:energy_tariff, :with_flat_price, tariff_holder: school) }
       let!(:target) { create(:school_target, start_date: Date.yesterday, school: school) }
-      let!(:estimate) do
-        create(:estimated_annual_consumption, school: school, electricity: 1000.0, gas: 1500.0, storage_heaters: 500.0,
-                                              year: 2021)
-      end
 
       it 'maps them to the pseudo meters, targets, and estimates' do
         expect(all_pseudo_meter_attributes[:aggregated_electricity].size).to eq 4
