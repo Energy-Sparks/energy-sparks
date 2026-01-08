@@ -13,7 +13,7 @@ RSpec.describe Issue, type: :model do
 
   describe '#issue_type' do
     it 'is issue by default' do
-      expect(Issue.new(issue_type: nil).issue_type).to eq('issue')
+      expect(Issue.new.issue_type).to eq('issue')
     end
 
     it 'can be set' do
@@ -23,7 +23,7 @@ RSpec.describe Issue, type: :model do
 
   describe '#status' do
     it 'is open by default' do
-      expect(Issue.new(status: nil).status).to eq('open')
+      expect(Issue.new.status).to eq('open')
     end
 
     it 'can be set' do
@@ -46,32 +46,16 @@ RSpec.describe Issue, type: :model do
       it { expect(status_summary).to eq('open issue') }
     end
 
-    context 'note' do
+    context 'closed note' do
+      let(:issue) { build(:issue, issue_type: :note, status: :closed) }
+
+      it { expect(status_summary).to eq('closed note') }
+    end
+
+    context 'open note' do
       let(:issue) { build(:issue, issue_type: :note, status: :open) }
 
-      it { expect(status_summary).to eq('note') }
-    end
-  end
-
-  describe 'before_save :set_note_status' do
-    before do
-      issue.save
-    end
-
-    context 'issue is a note' do
-      subject(:issue) { build(:issue, issue_type: :note, status: :closed) }
-
-      it 'is sets status to open when saved' do
-        expect(issue).to be_status_open
-      end
-    end
-
-    context 'issue is an issue' do
-      subject(:issue) { build(:issue, issue_type: :issue, status: :closed) }
-
-      it 'is does not change status' do
-        expect(issue).to be_status_closed
-      end
+      it { expect(status_summary).to eq('open note') }
     end
   end
 
@@ -107,32 +91,26 @@ RSpec.describe Issue, type: :model do
   describe '#resolve!' do
     let!(:user) { create(:admin) }
 
-    context 'when issue is of type note' do
-      subject(:issue) { create(:issue, issue_type: :note) }
+    Issue.issue_types.each_key do |issue_type|
+      context "when issue is of type #{issue_type}" do
+        subject(:issue) { create(:issue, issue_type: issue_type, review_date: 2.days.from_now) }
 
-      before do
-        issue.resolve!(updated_by: user)
+        before do
+          issue.resolve!(updated_by: user)
+        end
+
+        it 'closes issue' do
+          expect(issue).to be_status_closed
+        end
+
+        it 'updates updated_by' do
+          expect(issue.updated_by).to eq(user)
+        end
+
+        it 'removes review date' do
+          expect(issue.review_date).to be_nil
+        end
       end
-
-      it { expect(issue.resolve!(updated_by: user)).to be_falsey }
-
-
-      it { expect(issue).to be_status_open }
-      it { expect(issue.updated_by).to eq(user) }
-    end
-
-    context 'when issue is of type issue' do
-      subject(:issue) { create(:issue, issue_type: :issue) }
-
-      before do
-        issue.resolve!(updated_by: user)
-      end
-
-      it { expect(issue.resolve!(updated_by: user)).to be_truthy }
-
-
-      it { expect(issue).to be_status_closed }
-      it { expect(issue.updated_by).to eq(user) }
     end
   end
 

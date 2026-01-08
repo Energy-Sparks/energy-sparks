@@ -28,11 +28,7 @@
                   label: "Affected meters #{link_to(fa_icon('external-link-alt'), school_meters_path(issue.school),
                                                     title: 'School meters', data: { toggle: 'tooltip' })}".html_safe %>
     <% end %>
-    <% if issue.issue? %>
-      <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
-    <% else %>
-      <%= f.hidden_field :status %>
-    <% end %>
+    <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
     <% unless issue.new_record? %>
       <%= unless issue.new_record?
             f.input :issue_type, collection: Issue.issue_types.keys, label_method: :humanize, include_blank: false
