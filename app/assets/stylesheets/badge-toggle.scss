@@ -11,7 +11,7 @@
   input.badge-pill-toggle-#{$color} + label {
     border: 1px solid $grey-light;
     @extend .badge;
-    @extend .badge-pill;
+    @extend .rounded-pill;
   }
 
   input.badge-toggle-#{$color}:not(:checked) + label:hover,
