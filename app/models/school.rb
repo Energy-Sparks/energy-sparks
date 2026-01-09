@@ -538,15 +538,22 @@ class School < ApplicationRecord
   end
 
   delegate :school_admin, to: :users
-
   delegate :staff, to: :users
 
   def all_school_admins
-    school_admin + cluster_users
+    User.where(id: school_admin).or(
+      User.where(id: cluster_users)
+    )
   end
 
   def all_adult_school_users
-    (all_school_admins + staff).uniq
+    User.where(id: all_school_admins).or(
+      User.where(id: staff)
+    ).distinct
+  end
+
+  def active_alert_contacts
+    all_adult_school_users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   def activation_users
@@ -820,14 +827,6 @@ class School < ApplicationRecord
 
   def data_visible?
     data_enabled && visible
-  end
-
-  def active_adult_users
-    users.active.where.not(role: :pupil)
-  end
-
-  def active_alert_contacts
-    users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   # gov.uk have figures for recommended gross area for different sizes of schools.
