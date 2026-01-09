@@ -2,16 +2,15 @@
 
 require 'rails_helper'
 
-describe TargetsService do
+describe Targets::TargetsService do
   let(:meter_collection)        { build(:meter_collection) }
   let(:fuel_type)               { :electricity }
   let(:service)                 { described_class.new(meter_collection, fuel_type) }
 
   describe '#enough_data' do
     before do
-      allow_any_instance_of(described_class).to receive(:enough_holidays?).and_return(true)
-      allow_any_instance_of(described_class).to receive(:enough_temperature_data?).and_return(true)
-      allow_any_instance_of(described_class).to receive(:enough_readings_to_calculate_target?).and_return(true)
+      allow(service).to receive_messages(enough_holidays?: true, enough_temperature_data?: true,
+                                         enough_readings_to_calculate_target?: true)
     end
 
     it 'is enabled by default' do
