@@ -8,7 +8,7 @@
       <th class="nowrap">Assigned to</th>
       <th>Status</th>
       <th>Updated</th>
-      <th>Review</th>
+      <th class="nowrap">Next review</th>
       <th class="no-sort"></th>
     </tr>
   </thead>
@@ -30,14 +30,14 @@
         <td class="fit"><%= render 'admin/issues/status', issue: issue %></td>
 
         <td class="fit" data-order="<%= issue.updated_at %>">
-          <div class="badge badge-pill bg-white text-dark font-weight-normal nowrap">
+          <div class="badge rounded-pill bg-white text-dark fw-normal nowrap">
             <%= nice_date_times_today(issue.updated_at) %>
           </div>
         </td>
-        <td class="fit" data-order="<%= issue.review_date %>">
-          <%= review_date_badge(issue, label: false, classes: 'ml-auto pl-2') %>
+        <td class="fit text-center" data-order="<%= issue.review_date %>">
+          <%= review_date_badge(issue, label: false, classes: 'pl-2') %>
         </td>
-        <td class="fit nowrap text-right">
+        <td class="fit nowrap text-end">
           <%= link_to 'Edit', edit_polymorphic_path([:admin, @issueable, issue]), class: 'btn btn-secondary btn-sm edit' %>
         </td>
       </tr>

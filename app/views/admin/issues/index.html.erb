@@ -12,10 +12,10 @@
       <%= @issueable.model_name.human.capitalize %> >
       <%= @issueable.try(:name) %>
     </div>
-    <div class="ml-auto"><%= render 'new_issues_links', issueable: @issueable %></div>
+    <div class="ms-auto"><%= render 'new_issues_links', issueable: @issueable %></div>
   </div>
 <% end %>
-<div class="bg-light ps-2 pt-2 my-2 border rounded">
+<div class="bg-light ps-2 pt-2 my-2 border rounded-2">
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       ),
@@ -33,11 +33,11 @@
       </div>
       <div class="pe-2 pb-2">
         <%= select_tag :review_date,
-                       options_for_select([['Review date not set', :review_unset],
-                                           ['Review date in next week', :review_next_week],
-                                           ['Review date overdue', :review_overdue]],
+                       options_for_select([['Next review date not set', :review_unset],
+                                           ['Next review date in next week', :review_next_week],
+                                           ['Next review date overdue', :review_overdue]],
                                           params[:review_date]),
-                       include_blank: 'Any review date',
+                       include_blank: 'Any next review date',
                        class: 'form-control' %>
       </div>
       <div class="pb-1">

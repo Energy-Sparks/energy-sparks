@@ -69,28 +69,26 @@ class Issue < ApplicationRecord
   scope :by_priority_order, -> { by_review_date.by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
-  enum :issue_type, { issue: 0, note: 1 }
+  enum :issue_type, { issue: 0, note: 1 }, default: :issue
   enum :fuel_type, { electricity: 0, gas: 1, solar: 2, gas_and_electricity: 3, alternative_heating: 4 }
-  enum :status, { open: 0, closed: 1 }, prefix: true
+  enum :status, { open: 0, closed: 1 }, prefix: true, default: :open
 
   validates :issue_type, :status, :title, :description, presence: true
   validate :school_issue_meters_only
 
-  after_initialize :set_enum_defaults
-  before_save :set_note_status
-
   def resolve!(attrs = {})
     self.attributes = attrs
-    status_closed! if issue?
+    self.review_date = nil
+    status_closed!
   end
 
   def resolvable?
-    issue? && status_open?
+    status_open?
   end
 
   def self.csv_headers
     ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Meters', 'Meter status',
-     'Data sources', 'Owned by', 'Review date', 'Created by', 'Created at', 'Updated by', 'Updated at']
+     'Data sources', 'Owned by', 'Next review date', 'Created by', 'Created at', 'Updated by', 'Updated at']
   end
 
   def self.csv_attributes
@@ -115,7 +113,7 @@ class Issue < ApplicationRecord
   end
 
   def status_summary
-    issue? ? "#{status} issue" : 'note'
+    "#{status} #{issue_type}"
   end
 
   def issue_type_image
@@ -155,17 +153,6 @@ class Issue < ApplicationRecord
   end
 
   private
-
-  # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
-  # But until then we have to do this:
-  def set_enum_defaults
-    self.issue_type ||= :issue
-    self.status ||= :open
-  end
-
-  def set_note_status
-    self.status = :open if note?
-  end
 
   def school_issue_meters_only
     return unless meters.any? && !issueable.is_a?(School)
