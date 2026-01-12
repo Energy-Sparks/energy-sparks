@@ -72,10 +72,6 @@ class MeterCollection
     @pseudo_meter_attributes[pseudo_meter_key]&.delete(attribute_key)
   end
 
-  def target_school?
-    false
-  end
-
   # Factory method to create a new meter in this meter collection,
   # copying values and data from an existing meter.
   #
@@ -397,18 +393,9 @@ class MeterCollection
 
   attr_reader :heat_meters, :electricity_meters, :storage_heater_meters, :school, :model_cache, :open_close_times
 
-  # def target_school(type = :day)
-  #   @target_school ||= {}
-  #   @target_school[type] ||= TargetSchool.new(self, type)
-  # end
-
   def benchmark_school(benchmark_type = :benchmark)
     @benchmark_school ||= {}
     @benchmark_school[benchmark_type] ||= BenchmarkSchool.new(self, benchmark_type: benchmark_type)
-  end
-
-  def reset_target_school_for_testing(type = :day)
-    @target_school.delete(type) unless @target_school.nil?
   end
 
   def pseudo_meter_attributes(type)

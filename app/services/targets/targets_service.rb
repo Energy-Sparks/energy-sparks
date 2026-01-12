@@ -85,14 +85,6 @@ module Targets
       ENV["FEATURE_FLAG_TARGETS_DISABLE_#{@fuel_type.to_s.upcase}"] == 'true'
     end
 
-    # def target_school
-    #   @target_school ||= @aggregate_school.target_school
-    # end
-
-    # def target_meter
-    #   @target_meter ||= target_school.aggregate_meter(@fuel_type)
-    # end
-
     def aggregate_meter
       @aggregate_meter ||= @aggregate_school.aggregate_meter(@fuel_type)
     end

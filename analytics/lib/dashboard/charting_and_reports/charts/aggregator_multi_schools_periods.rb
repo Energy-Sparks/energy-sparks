@@ -129,10 +129,8 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
   end
 
   def schools_list
-    schools = chart_config.include_target? ? target_schools : [school]
-
+    schools = [school]
     schools += benchmark_exemplar_schools_list if chart_config.include_benchmark?
-
     schools
   end
 
@@ -141,16 +139,6 @@ class AggregatorMultiSchoolsPeriods < AggregatorBase
       school.benchmark_school(calculation_type)
     end
   end
-
-  # def target_schools
-  #   target_school = school.target_school(chart_config.target_calculation_type)
-
-  #   if chart_config.show_only_target_school?
-  #     [target_school]
-  #   else
-  #     [school, target_school]
-  #   end
-  # end
 
   def determine_multi_school_chart_date_range_private
     extend_to_future = chart_config.include_target? && chart_config.extend_chart_into_future?
