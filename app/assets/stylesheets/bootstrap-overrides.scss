@@ -56,7 +56,17 @@ $spacers: (
   6: ($spacer * 4) // extra
 );
 
-$border-radius-sm: .2rem; // 3.2px bootstrap default 0.2rem / 3.2 px
-$border-radius: .25rem; // 4px - Bootstrap default 0.25rem / 4px
-$border-radius-lg: .5rem; // 8px - Bootstrap default is 0.3rem / 4.8px
-$border-radius-xl: .75rem; // 12px - extra one in addition to bootstrap ones
+$border-radius-sm: .2rem; // Bootstrap 4 default 0.2rem
+$border-radius: .25rem; // Bootstrap 4 default 0.25rem
+$border-radius-lg: .5rem; // Bootstrap 4 default is 0.3rem
+// New in bootstrap 5.2+
+$border-radius-xl: .75rem; // Bootstrap 5.2+ default is 1rem
+$border-radius-xxl: 2rem; // Bootstrap 5.3 default is 2rem
+
+// Bootstrap 5.3 default values for reference
+// (Changed since the introduction of xl and xxl)
+//$border-radius-sm:            .25rem !default;
+//$border-radius:               .375rem !default;
+//$border-radius-lg:            .5rem !default;
+//$border-radius-xl:            1rem !default;
+//$border-radius-xxl:           2rem !default;
