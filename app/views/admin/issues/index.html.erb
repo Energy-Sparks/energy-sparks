@@ -19,7 +19,7 @@
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       ),
-               method: :get, local: true do %>
+               method: :get do %>
     <div class='d-flex justify-content-between flex-wrap align-items-center'>
       <div class="me-2 mb-2">
         <%= text_field_tag :search, params[:search], autocomplete: 'off',
@@ -74,7 +74,7 @@
                        name: 'format',
                        value: 'csv',
                        class: 'btn btn-sm',
-                       data: { confirm: 'Are you sure? This could be a large download if unfiltered' } %>
+                       data: { confirm: 'Are you sure?' } %>
       </div>
     </div>
   <% end %>
