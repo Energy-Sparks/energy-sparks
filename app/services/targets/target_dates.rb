@@ -4,87 +4,11 @@ module Targets
   class TargetDates
     class TargetBeforeExistingDataStartBackfillNotSupported < StandardError; end
     class TargetDateBeforeFirstMeterStartDate < StandardError; end
-    include Logging
 
     DAYSINYEAR = 365
     def initialize(original_meter, target)
       @original_meter = original_meter
       @target = target
-    end
-
-    def to_s
-      serialised_dates_for_debug
-    end
-
-    def check_consistent
-      # TODO(PH, 2Mar2022) - could do with further checks for date self-consistency and support
-      # TODO can be removed now?
-      return unless target_start_date < original_meter_start_date
-
-      raise TargetBeforeExistingDataStartBackfillNotSupported,
-            "Target start date #{target_start_date} must be after first meter reading #{original_meter_start_date}"
-    end
-
-    def target_start_date
-      @target_start_date ||= calculate_target_start_date
-    end
-
-    def target_end_date
-      original_target_start_date + DAYSINYEAR - 1
-    end
-
-    def original_target_start_date
-      [@target.first_target_date, @original_meter.amr_data.end_date - DAYSINYEAR].max
-    end
-
-    # case where user set target date where < 1 year data and no annual_kwh estimate
-    # target only available after 1 year data point, so no target from user set
-    # target date until 1 year's data, then target data for remainder of year
-    # e.g. user target date = 1 Dec 2021, 1st meter date = 1 Mar 2021
-    #      targets from 1 Mar 2022 to 1 Dec 2022 but not 1 Dec 2021 to 28 Feb 2022
-    def pre_target_date?(date)
-      date.between?(original_target_start_date, target_start_date - 1)
-    end
-
-    def target_date_range
-      target_start_date..target_end_date
-    end
-
-    # 'benchmark' = up to 1 year period of real amr_data before target_start_date
-    def benchmark_start_date
-      [@original_meter.amr_data.start_date, synthetic_benchmark_start_date].max
-    end
-
-    def benchmark_end_date
-      [synthetic_benchmark_end_date, @original_meter.amr_data.start_date].max
-    end
-
-    def benchmark_date_range
-      benchmark_start_date..benchmark_end_date
-    end
-
-    def original_meter_start_date
-      @original_meter.amr_data.start_date
-    end
-
-    def original_meter_end_date
-      @original_meter.amr_data.end_date
-    end
-
-    def original_meter_date_range
-      original_meter_start_date..original_meter_end_date
-    end
-
-    def synthetic_benchmark_start_date
-      target_start_date - DAYSINYEAR
-    end
-
-    def synthetic_benchmark_end_date
-      target_start_date - 1
-    end
-
-    def synthetic_benchmark_date_range
-      synthetic_benchmark_start_date..synthetic_benchmark_end_date
     end
 
     # Used by TargetsService
@@ -115,6 +39,27 @@ module Targets
     end
 
     # used by TargetsService
+    def self.can_calculate_one_year_of_synthetic_data?(original_meter)
+      target = TargetAttributes.new(original_meter)
+
+      # TODO(PH, 10Sep2021) - this is arbitrarily set to 30 days for the moment, refine
+      if original_meter.fuel_type == :electricity
+        minimum_5_school_days_1_weekend_meter_readings?(original_meter)
+      else
+        start_date = target.target_set? ? target.first_target_date : default_target_start_date(original_meter)
+        start_date - original_meter.amr_data.start_date > 30
+      end
+    end
+
+    def enough_holidays?
+      if @target.target_set?
+        final_holiday_date >= target_end_date && first_holiday_date <= synthetic_benchmark_start_date
+      else
+        final_holiday_date >= today + DAYSINYEAR && first_holiday_date <= today - DAYSINYEAR
+      end
+    end
+
+    # used by TargetsService
     #
     # Should return true if we have at more than a years worth of AMR data
     # but only if that data is not lagging by more than 30 days
@@ -135,27 +80,6 @@ module Targets
       self.class.default_target_start_date(@original_meter) - @original_meter.amr_data.start_date > DAYSINYEAR
     end
 
-    # used by TargetsService
-    def self.can_calculate_one_year_of_synthetic_data?(original_meter)
-      target = TargetAttributes.new(original_meter)
-
-      # TODO(PH, 10Sep2021) - this is arbitrarily set to 30 days for the moment, refine
-      if original_meter.fuel_type == :electricity
-        TargetDates.minimum_5_school_days_1_weekend_meter_readings?(original_meter)
-      else
-        start_date = target.target_set? ? target.first_target_date : default_target_start_date(original_meter)
-        start_date - original_meter.amr_data.start_date > 30
-      end
-    end
-
-    def days_benchmark_data
-      (benchmark_end_date - benchmark_start_date + 1).to_i
-    end
-
-    def days_target_data
-      (target_end_date - target_start_date + 1).to_i
-    end
-
     def full_years_benchmark_data?
       if @target.target_set?
         days_benchmark_data >= DAYSINYEAR
@@ -164,24 +88,55 @@ module Targets
       end
     end
 
-    # circumstance where meter target start date has been bumped
-    # forward but would be better if annual estimate provided and
-    # full synthetic calculation takes place
-    def annual_kwh_estimate_helpful?
-      @original_meter.annual_kwh_estimate.nan? &&
-        moved_target_start_date_forward? &&
-        original_target_start_date - original_meter_start_date < DAYSINYEAR
+    def to_s
+      serialised_dates_for_debug
     end
 
-    def percentage_synthetic_data_in_date_range(start_date, end_date)
-      total_days = end_date - start_date + 1
-      synthetic_days = (start_date..end_date).count do |date|
-        date < benchmark_start_date && date >= synthetic_benchmark_start_date
-      end
+    private
 
-      return 0.0 if total_days.nil? || total_days.zero?
+    def target_start_date
+      @target_start_date ||= calculate_target_start_date
+    end
 
-      (synthetic_days / total_days).to_f
+    def target_end_date
+      original_target_start_date + DAYSINYEAR - 1
+    end
+
+    def original_target_start_date
+      [@target.first_target_date, @original_meter.amr_data.end_date - DAYSINYEAR].max
+    end
+
+    # 'benchmark' = up to 1 year period of real amr_data before target_start_date
+    def benchmark_start_date
+      [@original_meter.amr_data.start_date, synthetic_benchmark_start_date].max
+    end
+
+    def benchmark_end_date
+      [synthetic_benchmark_end_date, @original_meter.amr_data.start_date].max
+    end
+
+    def original_meter_start_date
+      @original_meter.amr_data.start_date
+    end
+
+    def original_meter_end_date
+      @original_meter.amr_data.end_date
+    end
+
+    def original_meter_date_range
+      original_meter_start_date..original_meter_end_date
+    end
+
+    def synthetic_benchmark_start_date
+      target_start_date - DAYSINYEAR
+    end
+
+    def synthetic_benchmark_end_date
+      target_start_date - 1
+    end
+
+    def days_benchmark_data
+      (benchmark_end_date - benchmark_start_date + 1).to_i
     end
 
     def final_holiday_date
@@ -192,18 +147,6 @@ module Targets
     def first_holiday_date
       hols = @original_meter.meter_collection.holidays
       hols.holidays.first.start_date
-    end
-
-    def enough_holidays?
-      if @target.target_set?
-        final_holiday_date >= target_end_date && first_holiday_date <= synthetic_benchmark_start_date
-      else
-        final_holiday_date >= today + DAYSINYEAR && first_holiday_date <= today - DAYSINYEAR
-      end
-    end
-
-    def missing_date_range
-      synthetic_benchmark_start_date..benchmark_start_date
     end
 
     def recent_data?
@@ -231,8 +174,6 @@ module Targets
       }
       # or TargetDates.instance_methods(false).map { |m| [m, self.send(m)]}
     end
-
-    private
 
     def moved_target_start_date_forward?
       original_target_start_date != target_start_date

@@ -13,7 +13,7 @@ module Targets
         fuel_types << 'electricity' if enough_data_for_electricity?
         fuel_types << 'gas' if enough_data_for_gas?
         fuel_types << 'storage_heater' if enough_data_for_storage_heater?
-      rescue Targets::TargetsService::TargetDates::TargetDateBeforeFirstMeterStartDate
+      rescue TargetDates::TargetDateBeforeFirstMeterStartDate
         # noop
       rescue StandardError => e
         Rollbar.error(e, scope: :fuel_types_with_enough_data, school_id: @school.id, school: @school.name)
