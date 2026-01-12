@@ -284,7 +284,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
 
     it 'has expected file name' do
-      expect(response_headers['Content-Disposition']).to include("#{"energy-sparks-issues-#{Time.zone.now.iso8601}".parameterize}.csv")
+      expect(response_headers['Content-Disposition']).to include(EnergySparks::Filenames.csv('issues'))
     end
   end
 
