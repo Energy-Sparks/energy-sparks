@@ -43,6 +43,10 @@ q {
   border-radius: $border-radius-xl;
 }
 
+.rounded-xxl {
+  border-radius: $border-radius-xxl;
+}
+
 .rounded-top-xl {
   border-top-left-radius: $border-radius-xl;
   border-top-right-radius: $border-radius-xl;

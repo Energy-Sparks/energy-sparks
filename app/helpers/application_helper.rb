@@ -567,4 +567,8 @@ module ApplicationHelper
     return 'container' if !content_for?(:container_size) || content_for(:container_size) == 'normal'
     content_for(:container_size) == 'wide' ? 'container-fluid' : ''
   end
+
+  def label_count(label, count)
+    "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
+  end
 end
