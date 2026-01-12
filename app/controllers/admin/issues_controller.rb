@@ -63,9 +63,8 @@ module Admin
     end
 
     def resolve
-      notice = 'was successfully resolved'
-      notice = 'Can only resolve issues (and not notes).' unless @issue.resolve!(updated_by: current_user)
-      redirect_back_or_index notice:
+      @issue.resolve!(updated_by: current_user)
+      redirect_back_or_index notice: 'was successfully resolved'
     end
 
     def meter_issues
