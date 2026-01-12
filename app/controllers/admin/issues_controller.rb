@@ -31,7 +31,7 @@ module Admin
         format.csv do
           @issues = @issueable.all_issues if @issueable.is_a?(SchoolGroup)
           send_data @issues.by_review_date.by_updated_at.to_csv,
-                    filename: "#{"#{t('common.application')}-issues-#{Time.zone.now.iso8601}".parameterize}.csv"
+                    filename: EnergySparks::Filenames.csv('issues')
         end
       end
     end

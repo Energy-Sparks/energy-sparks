@@ -19,7 +19,7 @@
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       ),
-               method: :get do %>
+               method: :get, local: true do %>
     <div class='d-flex justify-content-between flex-wrap align-items-center'>
       <div class="me-2 mb-2">
         <%= text_field_tag :search, params[:search], autocomplete: 'off',
@@ -65,10 +65,16 @@
         <% end %>
       </div>
       <div class="ms-xxl-auto me-2 mb-2">
-        <%= submit_tag 'Filter', class: 'btn btn-sm' %>
-        <%= link_to 'CSV',
-                    url_for(request.query_parameters.merge(format: :csv)),
-                    class: 'btn btn-sm' %>
+        <%= button_tag 'Filter',
+                       type: 'submit',
+                       class: 'btn btn-sm' %>
+
+        <%= button_tag 'CSV',
+                       type: 'submit',
+                       name: 'format',
+                       value: 'csv',
+                       class: 'btn btn-sm',
+                       data: { confirm: 'Are you sure? This could be a large download if unfiltered' } %>
       </div>
     </div>
   <% end %>
