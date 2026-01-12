@@ -79,10 +79,16 @@
   <%= tag.span(classes, class: classes) %>
 <% end %>
 
-<h4>Bootstrap 5 syntax (requires adding text-dark for warning and light)</h4>
+<h4>Bootstrap 5 syntax (requires adding text-dark for warning, info and light)</h4>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
   <% classes = "badge bg-#{key}" %>
-  <% classes += ' text-dark' if %i[warning light].include?(key) %>
+  <% classes += ' text-dark' if %i[warning info light].include?(key) %>
+  <%= tag.span(classes, class: classes) %>
+<% end %>
+
+<h4>Bootstrap 5.2 syntax (use this!)</h4>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <% classes = "badge text-bg-#{key}" %>
   <%= tag.span(classes, class: classes) %>
 <% end %>
 
@@ -94,10 +100,16 @@
   <%= tag.span(classes, class: classes) %>
 <% end %>
 
-<h4>Bootstrap 5 syntax (requires adding text-dark for warning and light)</h4>
+<h4>Bootstrap 5 syntax (requires adding text-dark for warning, info and light)</h4>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
   <% classes = "badge bg-#{key} rounded-pill" %>
-  <% classes += ' text-dark' if %i[warning light].include?(key) %>
+  <% classes += ' text-dark' if %i[warning info light].include?(key) %>
+  <%= tag.span(classes, class: classes) %>
+<% end %>
+
+<h4>Bootstrap 5.2 syntax (use this!)</h4>
+<% Colours::PALETTE[:bootstrap].each do |key, _value| %>
+  <% classes = "badge text-bg-#{key} rounded-pill" %>
   <%= tag.span(classes, class: classes) %>
 <% end %>
 
@@ -116,19 +128,14 @@
 
 <hr>
 
-<div class="custom-control custom-checkbox">
-  <input type="checkbox" class="custom-control-input" id="customCheck" name="example1" checked>
-  <label class="custom-control-label" for="customCheck">Custom checkbox</label>
+<div class="form-check">
+  <input class="form-check-input" type="checkbox" id="customCheck" name="example1" checked>
+  <label class="form-check-label" for="customCheck">Custom checkbox</label>
 </div>
 
-<div class="custom-control custom-radio">
-  <input type="radio" class="custom-control-input" id="customRadio" name="example2" value="customEx" checked>
-  <label class="custom-control-label" for="customRadio">Custom radio</label>
-</div>
-
-<div class="custom-control custom-switch">
-  <input type="checkbox" class="custom-control-input" id="switch1" checked>
-  <label class="custom-control-label" for="switch1">Custom switch</label>
+<div class="form-check">
+  <input class="form-check-input" type="radio" id="customRadio" name="example2" value="customEx" checked>
+  <label class="form-check-label" for="customRadio">Custom radio</label>
 </div>
 
 <h2>Rounding</h2>
@@ -161,7 +168,7 @@
     <% grouped, ungrouped = group.partition { |_, value| value.is_a?(Hash) }.map(&:to_h) %>
     <% grouped.each do |name, shades| %>
       <h3><%= key %>: <%= name %></h3>
-      <div class="row no-gutters">
+      <div class="row g-0">
         <% shades.each do |shade, mapping| %>
           <%= render 'colour', name: "#{name}_#{shade}", map: mapping, hex: Colours.hex(mapping) %>
         <% end %>
@@ -169,7 +176,7 @@
     <% end %>
     <% if ungrouped.any? %>
       <h3><%= key %></h3>
-      <div class="row no-gutters">
+      <div class="row g-0">
         <% ungrouped.each do |name, value| %>
           <%= render 'colour', name: name, map: value, hex: Colours.hex(value) %>
         <% end %>
@@ -180,7 +187,7 @@
 
 <div>
   <h2>Default Chart Colours</h2>
-  <div class="row no-gutters">
+  <div class="row g-0">
     <% Colours::DEFAULT_CHART_COLOURS.each do |colour| %>
       <%= render 'colour', hex: colour %>
     <% end %>
@@ -189,7 +196,7 @@
 
 <div>
   <h2>Validated Meter Readings Colours</h2>
-  <div class="row no-gutters">
+  <div class="row g-0">
     <% Colours::AMR_COLOURS.each do |colour| %>
       <%= render 'colour', hex: colour %>
     <% end %>
@@ -198,7 +205,7 @@
 
 <div>
   <h2>Transport Chart Colours</h2>
-  <div class="row no-gutters">
+  <div class="row g-0">
     <% Colours::TRANSPORT_CHART_COLOURS.each do |colour| %>
       <%= render 'colour', hex: colour %>
     <% end %>

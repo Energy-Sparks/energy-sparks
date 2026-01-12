@@ -10,21 +10,6 @@ RSpec.shared_examples 'redirects to login page' do
   end
 end
 
-RSpec.shared_examples 'a page with a manage school group menu' do
-  before do
-    visit path
-  end
-
-  it { expect(page).to have_selector(id: 'manage-school-group') }
-
-  it 'shows all items and admin links' do
-    expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
-      ['Chart settings', 'Manage clusters', 'Manage tariffs', 'Digital signage', 'SECR report', 'School engagement', 'School status',
-       'Edit group', 'Set message', 'Manage users', 'Manage partners', 'Group admin']
-    )
-  end
-end
-
 RSpec.shared_examples 'a page without a manage school group menu or link' do
   before do
     visit path
