@@ -42,10 +42,6 @@ module Schools
       FuelConfiguration.new(**super.symbolize_keys)
     end
 
-    def enough_data_to_set_target?
-      school_target_fuel_types.any?
-    end
-
     def enough_data_to_set_target_for_fuel_type?(fuel_type)
       case fuel_type.to_s
       when 'storage_heater', 'storage_heaters'
