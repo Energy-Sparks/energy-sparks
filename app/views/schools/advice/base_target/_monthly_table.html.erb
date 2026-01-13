@@ -1,4 +1,4 @@
-<table class="mt-2 table table-sm advice-table">
+<table id="<%= id %>" class="mt-2 table table-sm advice-table">
   <thead>
     <tr>
       <th><%= t('schools.school_targets.progress.current.month') %></th>
@@ -12,8 +12,12 @@
   <tbody>
     <% consumption.each do |month| %>
       <tr>
-        <% manual_reading = '[m]' if month[:manual] %>
-        <td><%= Date.new(month[:year], month[:month]).to_fs(:es_month) %><%= manual_reading %></td>
+        <td>
+          <%= Date.new(month[:year], month[:month]).to_fs(:es_month) %>
+          <% if month[:manual] %>
+            <sup>m</sup>
+          <% end %>
+        </td>
         <td><%= format_unit(month[:previous_consumption], :kwh, numeric_level: :target) %></td>
         <td><%= format_unit(month[:target_consumption], :kwh, numeric_level: :target) %></td>
         <%= tag.td(class: month[:missing] ? 'old-data' : nil) do %>
@@ -27,7 +31,8 @@
           <% end %>
         </td>
         <td>
-          <% if !month[:missing] || month[:manual] %>
+          <% if !month[:missing] ||
+                (month[:manual] && !month[:current_consumption].nil? && !month[:target_consumption].nil?) %>
             <%= checkmark(month[:current_consumption] < month[:target_consumption]) %>
           <% end %>
         </td>
@@ -36,5 +41,6 @@
   </tbody>
 </table>
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
-           additional_notice_text: "#{t('advice_pages.target.analysis.monthly_progress.partial')}<br>" \
-                                   "[m] - #{t('advice_pages.target.analysis.monthly_progress.manual_readings')}<br>" %>
+           additional_notice_text: [t('advice_pages.target.analysis.monthly_progress.partial'), \
+                                    t('advice_pages.target.analysis.monthly_progress.manual_readings_html'),
+                                    ''].join('<br>') %>
