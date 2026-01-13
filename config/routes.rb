@@ -424,27 +424,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :progress, controller: :progress, only: [:index] do
-        collection do
-          get :electricity
-          get :gas
-          get :storage_heater
-        end
-      end
-
-      resources :school_targets do
-        scope module: :school_targets do
-          resources :progress do
-            collection do
-              get :electricity
-              get :gas
-              get :storage_heater
-            end
-          end
-        end
-      end
-
-      resources :estimated_annual_consumptions, except: [:show]
+      resources :school_targets
 
       resources :programmes, only: [:create]
 
@@ -941,6 +921,17 @@ Rails.application.routes.draw do
   end
   get '/campaigns/find-out-more', to: redirect(path: '/product')
   get '/campaigns/book-demo', to: redirect(path: '/watch-demo')
+
+  # old school target progress paths
+  get '/schools/:name/progress', to: redirect('/schools/%{name}/school_targets')
+  get '/schools/:name/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
+  get '/schools/:name/progress/storage_heater', to: redirect('/schools/%{name}/advice/storage_heater_target')
+  get '/schools/:name/school_targets/:id/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/school_targets/:id/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
+  get '/schools/:name/school_targets/:id/progress/storage_heater',
+      to: redirect('/schools/%{name}/advice/storage_heater_target')
+  get '/schools/:name/estimated_annual_consumptions', to: redirect('/schools/%{name}')
 
   match '/:code', to: 'errors#show', via: :all, constraints: {
     code: /#{ErrorsController::CODES.join('|')}/

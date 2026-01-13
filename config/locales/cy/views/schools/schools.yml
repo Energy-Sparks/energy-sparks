@@ -174,40 +174,6 @@ cy:
         unvalidated_meter_data: Data mesurydd sydd heb eu dilysu
         unvalidated_meter_data_as_csv: Data mesurydd sydd heb eu dilysu fel CSV
         we_use_sheffield_solar_pv_api_message_html: Rydym yn defnyddio <a href="https://www.solar.sheffield.ac.uk/pvlive/">API Solar Ffotofoltaig Prifysgol Sheffield</a> ar gyfer data cynhyrchu solar ffotofoltaig, gallwch lawrlwytho'r data sydd gennym ar gyfer eich ysgol yma
-    estimated_annual_consumptions:
-      breadcrumb: Amcangyfrif o ddefnydd blynyddol
-      destroy:
-        estimate_successfully_removed: Tynnwyd yr amcangyfrif yn llwyddiannus
-      edit:
-        check_our_energy_bill: Gwiriwch ein bil ynni
-        estimate_was_successfully_updated: Diweddarwyd yr amcangyfrif yn llwyddiannus
-        note: Nodyn
-        page_title: Diweddaru amcangyfrif defnydd blynyddol
-        paragraph_1_html: Pan fydd gennym wybodaeth gyfyngedig am eich defnydd hanesyddol o ynni ni allwn roi adroddiad cynnydd manwl i chi a fydd yn eich helpu i <a href='%{school_targets_path}'>gyrraedd eich targedau arbed ynni</a>
-        paragraph_2: Os gallwch chi roi amcangyfrif i ni o'ch defnydd ynni blynyddol, yna gallwn ddefnyddio hwn i gyfrifo eich targedau misol a chynnydd
-        tip: Awgrym
-        update_your_estimated_annual_energy_consumption: Diweddarwch eich defnydd blynyddol amcangyfrifedig o ynni
-        weve_recorded_your_estimate: Rydym wedi cofnodi eich amcangyfrif a byddwn yn defnyddio hwn pan fyddwn yn dadansoddi eich data dros nos
-        your_estimate: Eich amcangyfrif
-        your_recent_energy_bills_should_provide_the_data_you_need: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
-      form:
-        annual_electricity_consumption: Defnydd blynyddol o drydan
-        annual_gas_consumption: Defnydd blynyddol o nwy
-        annual_storage_heater_electricity_consumption: Defnydd blynyddol o drydan stôr-wresogyddion
-        estimate: Amcangyfrif
-        estimated_consumption_for_electricity_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o drydan yn debygol o fod o leiaf %{estimated_usage_for_school_electricity} kwh
-        estimated_consumption_for_gas_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o nwy yn debygol o fod o leiaf %{estimated_usage_for_school_gas} kwh
-        estimated_consumption_for_storage_heater_message: Yn seiliedig ar y data sydd ar gael rydym yn amcangyfrif bod eich defnydd o drydan stôr-wresogyddion yn debygol o fod o leiaf %{estimated_usage_for_school_storage_heater} kwh
-        year_estimate_based_on: Ar ba flwyddyn mae eich amcangyfrif yn seiliedig?
-      new:
-        check_our_energy_bill: Gwiriwch ein bil ynni
-        page_title: Ychwanegu amcangyfrif defnydd blynyddol
-        paragraph_1_html: Pan fydd gennym wybodaeth gyfyngedig am eich defnydd hanesyddol o ynni ni allwn roi adroddiad cynnydd manwl i chi a fydd yn eich helpu i <a href='%{school_targets_path}'>gyrraedd eich targedau arbed ynni</a>
-        paragraph_2: Os gallwch chi roi amcangyfrif i ni o'ch defnydd ynni blynyddol, yna gallwn ddefnyddio hwn i gyfrifo eich targedau misol a chynnydd
-        provide_an_estimate: Rhowch amcangyfrif o'ch defnydd blynyddol o ynni
-        tip: Awgrym
-        your_estimate: Eich amcangyfrif
-        your_recent_energy_bills: Dylai eich biliau ynni diweddar ddarparu'r data sydd eu hangen arnoch
     funding_status:
       private_school: Ysgol Breifat
       state_school: Ysgol y Wladwriaeth
@@ -491,8 +457,6 @@ cy:
         view_recent_alerts: Gweld hysbysiadau diweddar
         we_analyse_your_data: Rydym yn dadansoddi'ch data i ddarparu mewnwelediadau a hysbysiadau wythnosol
         work_with_the_pupils: Gweithiwch gyda'r disgyblion
-      current:
-        page_title: Eich targedau arbed ynni presennol
       edit:
         before_changing_your_targets: Cyn newid eich targedau, cymerwch olwg ar ein hargymhellion i weld beth allwch chi ei wneud i leihau costau ac allyriadau
         if_you_do_revise_your_targets: Os byddwch yn addasu eich targedau byddwn yn diweddaru eich adroddiad cynnydd i gymhwyso'r targed hwnnw at eich holl ddefnydd ynni eleni
@@ -504,9 +468,6 @@ cy:
         update_your_energy_saving_target: Diweddaru'ch targed arbed ynni
         your_configuration_has_changed: Mae eich ffurfweddiad %{fuel_types_changed} wedi newid, sy'n golygu efallai bydd angen i chi adolygu'ch targedau ar gyfer y flwyddyn hon. Efallai y byddwch yn gallu gosod targedau ychwanegol
         your_current_target: Eich targed presennol
-      expired:
-        page_title: Canlyniadau lleihau'ch defnydd ynni
-        your_school_set_a_target_to_reduce_html: Gosododd eich ysgol darged i leihau ei defnydd o ynni rhwng <strong>%{start_date}</strong> a <strong>%{target_date}</strong>. Mae'r dudalen hon yn crynhoi'ch canlyniadau
       first:
         advice: Canolbwyntiwch ar adeiladu momentwm a gwneud rhai arbedion cynnar.
         careful_planning: Mae lleihau eich costau ynni ac allyriadau carbon yn golygu cynllunio gofalus. Mae Sbarcynni yn darparu set o gamau a argymhellir i'ch helpu i gyrraedd eich targedau trwy
@@ -532,120 +493,18 @@ cy:
         your_new_target_will_run_for_12_months: Bydd eich targed newydd yn rhedeg am 12 mis o'r dyddiad a nodwch
       fuel_type_note:
         where_we_have_enough_data_note: Lle mae gennym ddigon o ddata i asesu eich perfformiad byddwch yn gallu gosod targed ar gyfer defnydd trydan, nwy neu stôr-wresogyddion. Os byddwn yn derbyn data ychwanegol, byddwn yn eich annog i adolygu eich targedau
-      generating_report:
-        get_started_with_the_activities: Cychwynnwch arni gyda'r gweithgareddau isod i ddechrau gweithio tuag at eich nod
-        we_need_to_process_your_data: Mae angen i ni brosesu'ch data i greu adroddiad cynnydd mwy manwl a fydd yn dangos cynnydd yn erbyn eich targedau. Dewch yn ôl yfory i weld y canlyniadau
       new:
         before_setting_your_new_target: Cyn gosod eich targed newydd, gwiriwch ein hargymhellion i helpu i lywio eich cynllunio
         carried_forward: 'Rydym wedi cario eich targedau o''r llynedd drosodd yn ddiofyn. Gallwch eu haddasu isod '
         page_title: Diweddaru'ch targed arbed ynni
         review_and_set_your_next_energy_saving_target: Adolygu a gosod eich targed arbed ynni nesaf
         review_your_dashboard: Adolygu'ch dangosfwrdd
-        target_date_reached_html: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i <a href=''%{school_target_path}''>adolygu eich cynnydd</a> a gosod targed newydd.'
         target_date_reached_advice_page: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i adolygu eich cynnydd a gosod targed newydd.'
         tip: Awgrym
         your_new_target: Eich targed newydd
-      progress:
-        breadcrumbs:
-          electricity: Cynnydd trydan
-          gas: Cynnydd nwy
-          storage_heater: Cynnydd stôr-wresogydd
-        charts:
-          cumulative_progress: Cynnydd cronnus
-          weekly_progress: Cynnydd wythnosol
-          weekly_progress_to_date: Cynnydd wythnosol hyd yma
-        current:
-          actual_consumption_kwh: Defnydd Gwirioneddol (kWh)
-          cumulative_progress: Cynnydd cronnus
-          debug: Dadfygio
-          error: Gwall
-          error_message: Yn anffodus oherwydd gwall ni allwn arddangos eich adroddiad cynnydd manwl ar hyn o bryd
-          month: Mis
-          month_by_month_progress: Cynnydd o fis i fis
-          overall_change_since_last_year: Newid cyffredinol ers y llynedd
-          overall_performance_since_last_year: Perfformiad cyffredinol ers y llynedd
-          problem: Problem
-          progress_charts: Siartiau cynnydd
-          review_targets: Adolygu targedau
-          target_consumption_kwh: Defnydd Targed (kWh)
-          title: Olrhain cynnydd i lehau'ch defnydd ynni %{fuel_type}
-          unfortunately_as_much_as_last_year: Yn anffodus rydych chi'n defnyddio cymaint o %{fuel_type} ag y llynedd
-          unfortunately_more_than_last_year: 'Yn anffodus rydych chi''n defnyddio %{relative_percent} yn fwy o %{fuel_type}na''r llynedd '
-          view_last_years_target_report: Gweld adroddiad targed y llynedd
-          we_have_been_notified_about_this_error_2: Rydym wedi cael gwybod am y gwall hwn ac byddwn yn ymchwilio iddo
-          we_have_not_received_data: Nid ydym wedi derbyn eich data am eich defnydd %{fuel_type} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
-          well_done_less_than_last_year: Da iawn, rydych chi'n defnyddio %{relative_percent} yn llai o %{fuel_type} na'r llynedd
-          your_school_has_set_a_target_to_reduce_html: Mae eich ysgol wedi gosod targed i leihau ei defnydd o %{fuel_type} gan %{school_target_attributes}% rhwng <strong>%{start_date}</strong> a <strong>%{target_date}</strong>
-        expired:
-          actual_consumption_kwh: Defnydd Gwirioneddol (kWh)
-          cumulative_progress: Cynnydd cronnus
-          month: Mis
-          month_by_month_progress: Cynnydd o fis i fis
-          overall_change_since_last_year: Newid cyffredinol ers y llynedd
-          overall_performance_since_last_year: Perfformiad cyffredinol ers y llynedd
-          results_of_reducing_your_usage: Canlyniadau lleihau eich defnydd o %{fuel_type} erbyn %{target_date}
-          review_targets: Adolygu targedau
-          target_consumption_kwh: Defnydd Targed (kWh)
-          you_didnt_achieve_your_goal_to_reduce: Yn anffodus ni wnaethoch gyrraedd eich targed i leihau eich defnydd o %{fuel_type}
-          you_managed_to_reduce_your_usage: Da iawn! Gwnaethoch lwyddo i leihau eich defnydd o %{fuel_type} gan %{relative_percent}
-          your_school_set_a_target_to_reduce_its_usage_html: Gosododd eich ysgol darged i leihau ei defnydd o %{fuel_type} gan %{school_target_attributes}% rhwng <strong>%{start_date}</strong> a <strong>%{target_date}</strong>
-        footnotes:
-          consumption_data_message_html: Mae <p>data defnydd <span class="partial-month">a ddangosir yn goch</span> yn nodi mis pan mae gennym data rhannol yn unig. Ni fydd eich ffigurau defnydd a pherfformiad yn gywir tan ddiwedd y mis, neu hyd nes y byddwn yn derbyn data hanesyddol ychwanegol.</p>
-          expired_message_html: Mae'r gwerthoedd yn y tabl uchod yn giplun o'ch data defnydd a gymerwyd ar %{report_last_generated_date}. Ni fydd unrhyw ddiweddariadau mwy diweddar i ffurfweddiad neu ddata'ch ysgol yn cael eu hadlewyrchu yn y canlyniadau hanesyddol hyn.
-          partial_target_data_message_html: Dim ond data defnydd hanesyddol cyfyngedig sydd gennym ar gufer eich ysgol, felly ni allwn gyfrifo set lawn o dargedau misol neu gynnydd ar hyn o bryd. Gallwch <a href='%{estimated_annual_consumptions_path}'>ddarparu amcangyfrif blynyddol i ni</a> i weld rhagor o fanylion
-          reporting_period_before_consumption_data_no_start_date_message: Dim ond data cyfyngedig sydd gennym ar eich defnydd %{fuel_type} gwirioneddol. Bydd yr adroddiad yn dangos eich defnydd am gyfran o'ch cyfnod targed yn unig
-          reporting_period_before_consumption_data_start_date_message: Dim ond data o %{meter_start_date} sydd gennym am eich defnydd o %{fuel_type}. Bydd yr adroddiad yn dangos eich defnydd am gyfran o'ch cyfnod targed yn unig
-          targets_derived_from_synthetic_data_message_html: Mae targedau misol <i>a ddangosir mewn llythrennau italig</i> wedi'u creu o'r <a href='%{school_estimated_annual_consumptions_path}'>amcangyfrif blynyddol</a> a ddarparoch, yn hytrach na'ch data hanesyddol. Bydd y cywirdeb yn dibynnu ar ansawdd eich amcangyfrif
-          this_report_only_shows_message_html: Mae'r adroddiad hwn yn dangos cynnyd ar eich defnydd o drydan yn unig. Gellir gweld eich <a href='%{storage_heater_path}'>adroddiad cynnydd stôr-wresogyddion</a> ar wahân
-          title: Troednodiadau
-          we_use_colour_coding_message_html: Rydym yn defnyddio codio lliw i nodi lle rydych wedi <span class="bg-positive-dark">cwrdd â'ch targed</span> neu <span class="bg-negative-dark">fethu â chwrdd â'ch targed</span> mewn mis penodol
-        missing:
-          tracking_progress_to_reduce_usage: Olrhain cynnydd i lehau'ch defnydd ynni %{fuel_type}
-          we_dont_have_a_record_of: Nid oes gennym gofnod o %{fuel_type} yn cael ei ddefnyddio yn eich ysgol
-      prompt_to_add_estimate:
-        add_an_estimate: Ychwanegu amcangyfrif
-        if_you_can_supply_an_estimate:
-          one: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targed %{fuel_types}
-          two: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
-          many: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
-          other: Os gallwch ddarparu amcangyfrif o'ch defnydd blynyddol yna gallwn gynhyrchu adroddiad cynnydd mwy manwl ar gyfer eich targedau %{fuel_types}
-      prompt_to_review_target:
-        review_your_target: Adolygu eich targed
-        your_fuel_types_configuration_has_changed: Mae eich ffurfweddiad %{fuel_types_changed} wedi newid, sy'n golygu efallai y byddwch am adolygu'ch targedau ar gyfer eleni
-      prompt_to_set_new_target:
-        set_a_new_target: Gosod targed newydd
-        you_set_a_target_to_reduce: Gwnaethoch osod targed i leihau eich defnydd o ynni erbyn %{target_date}. Mae'n bryd adolygu eich cynnydd a gosod targed newydd
-      show:
-        final_results: Gweld canlyniadau terfynol eich nod i leihau eich targed erbyn %{target_date}
-        view_results: Gweld canlyniadau
       target_table:
         current_progress: Cynnydd presennol
-        final_result: Canlyniad terfynol
-        reporting_change_in_energy_usage_between: Adrodd am newid yn nefnydd ynni rhwng
-        start_date_and_end_date: "%{start_date} a %{end_date}"
         target_reduction: Gostyngiad Targed
-      target_table_row:
-        last_week: wythnos diwethaf
-        not_applicable: Amh
-        view_monthly_report: Gweld adroddiad misol
-      target_timeline:
-        a_reminder_of_the_energy_saving: Atgoffwr o'r gweithgareddau a chamau gweithredu arbed ynni a gofnodoch rhwng %{start_date} a %{target_date}
-        how_did_you_achieve_your_target: Sut gwnaethoch chi gyrraedd eich targed?
-        how_did_you_try_to_achieve_your_target: Sut gwnaethoch chi geisio gyrraedd eich targed?
-        you_didnt_record_any_energy_saving: Ni wnaethoch gofnodi unrhyw weithgareddau neu gamau gweithredu arbed ynni rhwng %{start_date} a %{target_date}
-      title:
-        reducing_your_energy_usage_by: Lleihau'ch defnydd ynni erbyn %{target_date}
-        results_of_reducing_your_energy_usage: Canlyniadau lleihau'ch defnydd ynni
-        revise_your_target: Addasu'ch targed
-        set_a_new_target: Gosod targed newydd
-        view_current_target: Gweld targed presennol
-        we_are_calculating_your_progress: Rydym yn cyfrifo'ch cynnydd
-      warn_recent_data:
-        we_have_not_received_data:
-          one: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
-          two: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
-          many: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
-          other: Nid ydym wedi derbyn eich data am eich defnydd %{out_of_date_fuel_types} am dros dri deg diwrnod. O ganlyniad, bydd eich adroddiad cynnydd ar ei hôl hi
     schools:
       compare_schools: Cymharu ysgolion
     settings:

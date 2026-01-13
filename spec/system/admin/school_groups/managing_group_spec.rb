@@ -44,7 +44,25 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
   end
 
-  shared_examples 'a group Issues and Notes tab' do
+  shared_examples 'buttons for creating issues or notes' do
+    it { expect(page).to have_link('New Issue') }
+    it { expect(page).to have_link('New Note') }
+  end
+
+  shared_examples 'an issue listed in a tab' do |id|
+    it 'lists issue in tab' do
+      within id do
+        expect(page).to have_link(issue.title, href: polymorphic_path([:admin, issue.issueable, issue]))
+        expect(page).to have_content issue.issueable.name
+        expect(page).to have_content issue.fuel_type.capitalize
+        expect(page).to have_content nice_date_times_today(issue.updated_at)
+        expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue]))
+        expect(page).to have_css("i[class*='fa-thumbtack']")
+      end
+    end
+  end
+
+  shared_examples 'a group issues tab' do
     context 'when there are issues for the school group' do
       let!(:issue) do
         create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas,
@@ -56,19 +74,11 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
 
       it 'displays a count of school group issues' do
-        expect(page).to have_content 'Group Issues and Notes 1'
+        expect(page).to have_content 'Group issues 1'
       end
 
-      it 'lists issue in issues tab' do
-        within '#school-group-issues' do
-          expect(page).to have_link(issue.title, href: polymorphic_path([:admin, school_group, issue]))
-          expect(page).to have_content issue.issueable.name
-          expect(page).to have_content issue.fuel_type.capitalize
-          expect(page).to have_content nice_date_times_today(issue.updated_at)
-          expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue]))
-          expect(page).to have_css("i[class*='fa-thumbtack']")
-        end
-      end
+      it_behaves_like 'an issue listed in a tab', '#school-group-issues'
+      it_behaves_like 'buttons for creating issues or notes'
     end
 
     context 'when there are no issues' do
@@ -77,19 +87,42 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
 
       it { expect(page).to have_content("No school group issues for #{school_group.name}") }
-    end
 
-    context 'with buttons' do
+      it_behaves_like 'buttons for creating issues or notes'
+    end
+  end
+
+  shared_examples 'a group notes tab' do
+    context 'when there are notes for the school group' do
+      let!(:issue) do
+        create(:issue, issue_type: :note, status: :open, updated_by: admin, issueable: school_group, fuel_type: :gas,
+                       pinned: true)
+      end
+
       before do
         visit admin_school_group_path(school_group)
       end
 
-      it { expect(page).to have_link('New Issue') }
-      it { expect(page).to have_link('New Note') }
+      it 'displays a count of school group issues' do
+        expect(page).to have_content 'Group notes 1'
+      end
+
+      it_behaves_like 'an issue listed in a tab', '#school-group-notes'
+      it_behaves_like 'buttons for creating issues or notes'
+    end
+
+    context 'when there are no notes' do
+      before do
+        visit admin_school_group_path(school_group)
+      end
+
+      it { expect(page).to have_content("No school group notes for #{school_group.name}") }
+
+      it_behaves_like 'buttons for creating issues or notes'
     end
   end
 
-  shared_examples 'a school Issues and Notes tab' do
+  shared_examples 'a school issues and notes tab' do
     context 'when there are issues for schools in the school group' do
       let!(:issue) do
         create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas,
@@ -100,20 +133,11 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         visit admin_school_group_path(school_group)
       end
 
-      it 'displays a count of school group issues' do
-        expect(page).to have_content 'School Issues and Notes 1'
+      it 'displays a count of school issues' do
+        expect(page).to have_content 'School issues and notes 1'
       end
 
-      it 'lists issue in issues tab' do
-        within '#school-issues' do
-          expect(page).to have_link(issue.title, href: polymorphic_path([:admin, school, issue]))
-          expect(page).to have_content issue.issueable.name
-          expect(page).to have_content issue.fuel_type.capitalize
-          expect(page).to have_content nice_date_times_today(issue.updated_at)
-          expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue]))
-          expect(page).to have_css("i[class*='fa-thumbtack']")
-        end
-      end
+      it_behaves_like 'an issue listed in a tab', '#school-issues'
     end
 
     context 'when there are no issues' do
@@ -399,8 +423,9 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
     end
 
-    it_behaves_like 'a group Issues and Notes tab'
-    it_behaves_like 'a school Issues and Notes tab' do
+    it_behaves_like 'a group issues tab'
+    it_behaves_like 'a group notes tab'
+    it_behaves_like 'a school issues and notes tab' do
       let!(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
     end
     it_behaves_like 'a downloadable csv of issues is available' do
@@ -545,8 +570,9 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
     end
 
-    it_behaves_like 'a group Issues and Notes tab'
-    it_behaves_like 'a school Issues and Notes tab' do
+    it_behaves_like 'a group issues tab'
+    it_behaves_like 'a group notes tab'
+    it_behaves_like 'a school issues and notes tab' do
       let!(:school) { create(:school, :with_diocese, :with_school_group, group: school_group) }
     end
     it_behaves_like 'a downloadable csv of issues is available' do
@@ -722,8 +748,9 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     it_behaves_like 'an organisation button panel'
     it_behaves_like 'a group admin page message panel'
 
-    it_behaves_like 'a group Issues and Notes tab'
-    it_behaves_like 'a school Issues and Notes tab' do
+    it_behaves_like 'a group issues tab'
+    it_behaves_like 'a group notes tab'
+    it_behaves_like 'a school issues and notes tab' do
       let!(:school) { create(:school, school_group: school_group) }
     end
     it_behaves_like 'a downloadable csv of issues is available' do

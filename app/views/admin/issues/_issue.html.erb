@@ -3,7 +3,7 @@
   <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
     <h4>
       <%= issue_type_icon(issue.issue_type, 1) %> <%= issue.title %>
-      <div class="float-right">
+      <div class="float-end">
         <small>
           <%= render 'admin/issues/owned_by', issue: issue %>
           <%= render 'admin/issues/status', issue: issue %>
@@ -13,9 +13,9 @@
       </div>
     </h4>
     <div class="clearfix">
-      <span data-toggle="collapse" href="#issue-<%= issue.id %>" role="button" aria-expanded="true"
-            aria-controls="issue-<%= issue.id %>"
-            class="badge badge-light toggler text-decoration-none<%= ' collapsed' unless expand %>">
+      <span data-toggle="collapse" href="#issue-<%= issue.id %>" role="button"
+            aria-expanded="true" aria-controls="issue-<%= issue.id %>"
+            class="badge text-dark toggler text-decoration-none<%= ' collapsed' unless expand %>">
         <%= toggler %>
       </span>
       <span class="badge <%= issue.issue? ? 'badge-danger' : 'badge-warning' %>">
@@ -24,7 +24,7 @@
       <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
       <%= render 'admin/issues/fuel_type', issue: issue %>
       <%= render 'admin/issues/meters', issue: issue %>
-      <span class='float-right pb-2'>
+      <span class='float-end pb-2'>
           <%= if issue.resolvable?
                 link_to 'Resolve', polymorphic_path([:resolve, :admin, @issueable, issue]),
                         method: :post, class: 'btn btn-primary btn-sm'
@@ -41,13 +41,13 @@
     <div class="collapse<%= ' show' if expand %>" id="issue-<%= issue.id %>">
       <div class="bg-white mb-2 p-2"><%= issue.description %></div>
       <div class="pb-2 d-flex">
-        <div class="badge badge-pill bg-white text-dark font-weight-normal pr-2">
+        <div class="badge rounded-pill bg-white text-dark fw-normal pe-2">
           Created • <%= issue.created_by.display_name %> • <%= nice_date_times_today(issue.created_at) %>
         </div>
-        <div class="badge badge-pill bg-white text-dark font-weight-normal">
+        <div class="badge rounded-pill bg-white text-dark fw-normal">
           Updated • <%= issue.updated_by.display_name %> • <%= nice_date_times_today(issue.updated_at) %>
         </div>
-        <%= review_date_badge(issue, classes: 'ml-auto pl-2') %>
+        <%= review_date_badge(issue, classes: 'ms-auto ps-2') %>
       </div>
     </div>
   </div>

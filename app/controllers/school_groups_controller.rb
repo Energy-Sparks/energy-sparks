@@ -3,6 +3,7 @@
 class SchoolGroupsController < ApplicationController
   include SchoolGroupAccessControl
   include PartnersHelper
+  include SchoolGroupsHelper
   include Promptable
   include Scoring
   include SchoolGroupBreadcrumbs

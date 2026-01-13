@@ -8,11 +8,9 @@
 #  electricity                         :float
 #  electricity_monthly_consumption     :jsonb
 #  electricity_progress                :json
-#  electricity_report                  :jsonb
 #  gas                                 :float
 #  gas_monthly_consumption             :jsonb
 #  gas_progress                        :json
-#  gas_report                          :jsonb
 #  id                                  :bigint(8)        not null, primary key
 #  report_last_generated               :datetime
 #  revised_fuel_types                  :string           default([]), not null, is an Array
@@ -21,7 +19,6 @@
 #  storage_heaters                     :float
 #  storage_heaters_monthly_consumption :jsonb
 #  storage_heaters_progress            :json
-#  storage_heaters_report              :jsonb
 #  target_date                         :date
 #  updated_at                          :datetime         not null
 #
@@ -90,25 +87,6 @@ class SchoolTarget < ApplicationRecord
 
   def suggest_revision?
     revised_fuel_types.any?
-  end
-
-  def to_progress_summary
-    Targets::ProgressSummary.new(
-      school_target: self,
-      electricity: electricity_progress.any? ? Targets::FuelProgress.new(**electricity_progress.symbolize_keys!) : nil,
-      gas: gas_progress.any? ? Targets::FuelProgress.new(**gas_progress.symbolize_keys!) : nil,
-      storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(**storage_heaters_progress.symbolize_keys!) : nil
-    )
-  end
-
-  def saved_progress_report_for(fuel_type)
-    fuel_type = :storage_heaters if fuel_type == :storage_heater
-    raise 'Invalid fuel type' unless %i[electricity gas storage_heaters].include?(fuel_type)
-
-    report = self[:"#{fuel_type}_report"]
-    return nil unless report&.any?
-
-    TargetsProgress.new(**reformat_saved_report(report))
   end
 
   MONTHLY_CONSUMPTION_FIELDS =
@@ -183,10 +161,9 @@ class SchoolTarget < ApplicationRecord
 
   def monthly_consumption_meeting_target(fuel_type, consumption, current_consumption, target_consumption)
     analysis_dates = Schools::AnalysisDates.new(school, fuel_type)
-    if consumption&.any? { |month| month[:previous_consumption].nil? } ||
-       analysis_dates.analysis_date.nil? ||
-       !analysis_dates.recent_data ||
-       [current_consumption, target_consumption].any?(&:nil?)
+    if [*consumption&.pluck(:previous_consumption), analysis_dates.analysis_date,
+        current_consumption, target_consumption].any?(&:nil?) ||
+       !analysis_dates.recent_data
       return
     end
 

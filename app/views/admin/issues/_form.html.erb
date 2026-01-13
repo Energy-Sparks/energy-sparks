@@ -1,5 +1,5 @@
 <div class="row p-2">
-  <div class="admin-issue col-md-12 rounded pb-2 <%= issue.issue_type %>">
+  <div class="admin-issue col-md-12 rounded-2 pb-2 <%= issue.issue_type %>">
 
   <%= render 'header', title: "#{issue_type_icon(issue.issue_type, 1)} #{title}".html_safe do %>
     <% if issue.issueable %>
@@ -28,11 +28,7 @@
                   label: "Affected meters #{link_to(fa_icon('external-link-alt'), school_meters_path(issue.school),
                                                     title: 'School meters', data: { toggle: 'tooltip' })}".html_safe %>
     <% end %>
-    <% if issue.issue? %>
-      <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
-    <% else %>
-      <%= f.hidden_field :status %>
-    <% end %>
+    <%= f.input :status, collection: Issue.statuses.keys, label_method: :humanize, include_blank: false %>
     <% unless issue.new_record? %>
       <%= unless issue.new_record?
             f.input :issue_type, collection: Issue.issue_types.keys, label_method: :humanize, include_blank: false
@@ -51,7 +47,7 @@
                                             end %>
       </div>
       <div class="col-md-6">
-        <%= f.input :review_date, label: 'Review date', as: :tempus_dominus_date %>
+        <%= f.input :review_date, label: 'Next review date', as: :tempus_dominus_date %>
       </div>
     </div>
     <%= f.input :pinned, as: :boolean, label: 'Pinned' %>

@@ -20,9 +20,7 @@ module Schools
         @school.configuration.aggregate_meter_dates.empty? ||
         @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
                    .reject(&:empty?)
-                   .any? do |dates|
-          dates[:start_date] > MONTHS_REQUIRED.ago || dates[:end_date] < 2.months.ago
-        end
+                   .any? { |dates| dates[:start_date] > MONTHS_REQUIRED.ago || dates[:end_date] < 2.months.ago }
     end
 
     def calculate_required(aggregate_school)
