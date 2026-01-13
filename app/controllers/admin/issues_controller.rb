@@ -14,6 +14,9 @@ module Admin
       params[:issue_types] ||= Issue.issue_types.keys
       params[:statuses] ||= Issue.statuses.keys
 
+      @issues = @issues.includes(:issueable, :owned_by, :created_by, :updated_by,
+        meters: [:data_source, :admin_meter_status])
+
       if @issueable.is_a?(SchoolGroup) && params[:all]
         # School group admin csv download
         # Includes all school group and school issues
@@ -36,11 +39,9 @@ module Admin
           @pagy, @issues = pagy(@issues.by_priority_order)
         end
         format.csv do
-          issues = @issues.with_rich_text_description
-                            .includes(:issueable, :owned_by, :created_by, :updated_by,
-                              meters: [:data_source, :admin_meter_status])
+          @issues = @issues.with_rich_text_description
 
-          send_data issues.to_csv,
+          send_data @issues.to_csv,
                     filename: EnergySparks::Filenames.csv('issues')
         end
       end

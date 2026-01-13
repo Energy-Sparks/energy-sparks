@@ -140,7 +140,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     context "when clicking 'Download issues' button" do
       before { click_link 'Issues' }
 
-      it { expect(page).to have_current_path(admin_school_group_issues_path(school_group, format: :csv)) }
+      it { expect(page).to have_current_path(admin_school_group_issues_path(school_group, all: true, format: :csv)) }
     end
   end
 
