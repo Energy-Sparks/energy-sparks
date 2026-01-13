@@ -58,10 +58,6 @@ class AMRData < HalfHourlyData
     @accounting_tariff = tariff
   end
 
-  def set_carbon_schedule(co2)
-    @carbon_emissions = co2
-  end
-
   # Called from aggregation_mixin, SyntheticMeter and TargetMeter
   def set_carbon_emissions(meter_id_for_debug, flat_rate, grid_carbon)
     @carbon_emissions = CarbonEmissionsParameterised.create_carbon_emissions(meter_id_for_debug, self, flat_rate,
