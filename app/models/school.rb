@@ -374,6 +374,8 @@ class School < ApplicationRecord
 
   validates :weather_station, presence: true
 
+  before_validation :set_default_contract_holder, if: -> { default_contract_holder.nil? }
+
   accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
                                                allow_destroy: true
 
@@ -1004,5 +1006,9 @@ class School < ApplicationRecord
     else
       SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
     end
+  end
+
+  def set_default_contract_holder
+    self.default_contract_holder = school_group if school_group.present?
   end
 end
