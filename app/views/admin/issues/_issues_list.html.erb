@@ -34,7 +34,7 @@
             <%= nice_date_times_today(issue.updated_at) %>
           </div>
         </td>
-        <td class="fit text-center" data-order="<%= issue.review_date %>">
+        <td class="fit text-start" data-order="<%= issue.review_date %>">
           <%= review_date_badge(issue, label: false, classes: 'pl-2') %>
         </td>
         <td class="fit nowrap text-end">
