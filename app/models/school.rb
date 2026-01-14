@@ -1009,6 +1009,6 @@ class School < ApplicationRecord
   end
 
   def set_default_contract_holder
-    self.default_contract_holder = school_group if school_group.present?
+    self.default_contract_holder = organisation_group
   end
 end

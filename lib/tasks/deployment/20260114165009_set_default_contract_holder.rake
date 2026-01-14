@@ -4,8 +4,7 @@ namespace :after_party do
     puts "Running deploy task 'set_default_contract_holder'"
 
     School.includes(:school_group).find_each do |school|
-      next unless school.school_group
-      school.update!(default_contract_holder: school.school_group)
+      school.update!(default_contract_holder: school.organisation_group)
     end
 
     # Update task as completed.  If you remove the line below, the task will
