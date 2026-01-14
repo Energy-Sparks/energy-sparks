@@ -28,7 +28,7 @@ class ContractsModel < ActiveRecord::Migration[7.2]
 
       t.string :name, null: false, index: { unique: true }
       t.text :comments
-      t.enum :status, enum_type: :contract_status, null: false
+      t.enum :status, enum_type: :contract_status, null: false, default: 'provisional'
 
       t.date :start_date, null: false
       t.date :end_date, null: false
@@ -50,7 +50,7 @@ class ContractsModel < ActiveRecord::Migration[7.2]
       t.references :contract, null: false, foreign_key: { to_table: :commercial_contracts }
       t.references :school, null: false
 
-      t.enum :status, enum_type: :licence_status, null: false
+      t.enum :status, enum_type: :licence_status, null: false, default: 'provisional'
       t.string :invoice_reference
 
       t.date :start_date, null: false
@@ -79,5 +79,15 @@ class ContractsModel < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
+
+    create_enum :renewal_behaviour, %w[renew archive waitlist]
+
+    add_reference :schools, :default_contract_holder, polymorphic: true, index: true
+    add_column :schools, :renewal_behaviour, :renewal_behaviour, default: 'renew', null: false
+
+    add_reference :school_onboardings,
+               :contract,
+               foreign_key: { to_table: :commercial_contracts },
+               index: true
   end
 end

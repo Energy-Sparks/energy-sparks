@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -21,14 +21,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "amr_data_feed_config_convert_to_kwh", ["no", "m3", "meter"]
   create_enum "audience", ["anyone", "school_users", "school_admins", "group_admins"]
+  create_enum "contract_contact_type", ["procurement", "invoicing", "loa", "renewals"]
+  create_enum "contract_invoice_terms", ["pro_rata", "full"]
+  create_enum "contract_licence_period", ["contract", "one_year"]
+  create_enum "contract_status", ["provisional", "confirmed"]
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
+  create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
   create_enum "meter_monthly_summary_type", ["consumption", "generation", "self_consume", "export"]
   create_enum "meter_perse_api", ["half_hourly"]
+  create_enum "renewal_behaviour", ["renew", "archive", "waitlist"]
   create_enum "school_grouping_role", ["organisation", "area", "project", "diocese"]
 
   create_table "academic_years", force: :cascade do |t|
@@ -678,6 +684,84 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
     t.index ["created_by_id"], name: "index_cms_sections_on_created_by_id"
     t.index ["page_id"], name: "index_cms_sections_on_page_id"
     t.index ["updated_by_id"], name: "index_cms_sections_on_updated_by_id"
+  end
+
+  create_table "commercial_contract_contacts", force: :cascade do |t|
+    t.string "contract_holder_type", null: false
+    t.bigint "contract_holder_id", null: false
+    t.bigint "user_id"
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "comments"
+    t.enum "contact_type", null: false, enum_type: "contract_contact_type"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contract_contacts_on_contract_holder"
+    t.index ["created_by_id"], name: "index_commercial_contract_contacts_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_commercial_contract_contacts_on_updated_by_id"
+    t.index ["user_id"], name: "index_commercial_contract_contacts_on_user_id"
+  end
+
+  create_table "commercial_contracts", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "contract_holder_type", null: false
+    t.bigint "contract_holder_id", null: false
+    t.string "name", null: false
+    t.text "comments"
+    t.enum "status", default: "provisional", null: false, enum_type: "contract_status"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "number_of_schools", null: false
+    t.enum "licence_period", default: "contract", null: false, enum_type: "contract_licence_period"
+    t.enum "invoice_terms", default: "pro_rata", null: false, enum_type: "contract_invoice_terms"
+    t.float "agreed_school_price"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contracts_on_contract_holder"
+    t.index ["created_by_id"], name: "index_commercial_contracts_on_created_by_id"
+    t.index ["name"], name: "index_commercial_contracts_on_name", unique: true
+    t.index ["product_id"], name: "index_commercial_contracts_on_product_id"
+    t.index ["updated_by_id"], name: "index_commercial_contracts_on_updated_by_id"
+  end
+
+  create_table "commercial_licences", force: :cascade do |t|
+    t.bigint "contract_id", null: false
+    t.bigint "school_id", null: false
+    t.enum "status", default: "provisional", null: false, enum_type: "licence_status"
+    t.string "invoice_reference"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_id"], name: "index_commercial_licences_on_contract_id"
+    t.index ["created_by_id"], name: "index_commercial_licences_on_created_by_id"
+    t.index ["school_id"], name: "index_commercial_licences_on_school_id"
+    t.index ["updated_by_id"], name: "index_commercial_licences_on_updated_by_id"
+  end
+
+  create_table "commercial_products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "comments"
+    t.boolean "default", default: false, null: false
+    t.float "small_school_price"
+    t.float "large_school_price"
+    t.integer "size_threshold"
+    t.float "mat_price"
+    t.float "private_account_fee"
+    t.float "metering_fee"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_commercial_products_on_created_by_id"
+    t.index ["name"], name: "index_commercial_products_on_name", unique: true
+    t.index ["updated_by_id"], name: "index_commercial_products_on_updated_by_id"
   end
 
   create_table "comparison_custom_periods", force: :cascade do |t|
@@ -1753,6 +1837,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
     t.bigint "project_group_id"
     t.bigint "diocese_id"
     t.bigint "local_authority_area_id"
+    t.bigint "contract_id"
+    t.index ["contract_id"], name: "index_school_onboardings_on_contract_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
     t.index ["diocese_id"], name: "index_school_onboardings_on_diocese_id"
@@ -1794,13 +1880,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "revised_fuel_types", default: [], null: false, array: true
-    t.jsonb "electricity_monthly_consumption"
-    t.jsonb "gas_monthly_consumption"
-    t.jsonb "storage_heaters_monthly_consumption"
-    t.datetime "report_last_generated"
+    t.datetime "report_last_generated", precision: nil
     t.json "electricity_progress", default: {}
     t.json "gas_progress", default: {}
     t.json "storage_heaters_progress", default: {}
+    t.jsonb "electricity_monthly_consumption"
+    t.jsonb "gas_monthly_consumption"
+    t.jsonb "storage_heaters_monthly_consumption"
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 
@@ -1903,7 +1989,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
     t.bigint "local_distribution_zone_id"
     t.bigint "establishment_id"
     t.boolean "full_school", default: true
+    t.string "default_contract_holder_type"
+    t.bigint "default_contract_holder_id"
+    t.enum "renewal_behaviour", default: "renew", null: false, enum_type: "renewal_behaviour"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["default_contract_holder_type", "default_contract_holder_id"], name: "index_schools_on_default_contract_holder"
     t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -2315,6 +2405,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
   add_foreign_key "cms_sections", "cms_pages", column: "page_id"
   add_foreign_key "cms_sections", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "cms_sections", "users", column: "updated_by_id", on_delete: :nullify
+  add_foreign_key "commercial_contract_contacts", "users", column: "created_by_id"
+  add_foreign_key "commercial_contract_contacts", "users", column: "updated_by_id"
+  add_foreign_key "commercial_contracts", "commercial_products", column: "product_id"
+  add_foreign_key "commercial_contracts", "users", column: "created_by_id"
+  add_foreign_key "commercial_contracts", "users", column: "updated_by_id"
+  add_foreign_key "commercial_licences", "commercial_contracts", column: "contract_id"
+  add_foreign_key "commercial_licences", "users", column: "created_by_id"
+  add_foreign_key "commercial_licences", "users", column: "updated_by_id"
+  add_foreign_key "commercial_products", "users", column: "created_by_id"
+  add_foreign_key "commercial_products", "users", column: "updated_by_id"
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
@@ -2413,6 +2513,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_08_122214) do
   add_foreign_key "school_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
   add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
+  add_foreign_key "school_onboardings", "commercial_contracts", column: "contract_id"
   add_foreign_key "school_onboardings", "school_groups", column: "diocese_id"
   add_foreign_key "school_onboardings", "school_groups", column: "local_authority_area_id"
   add_foreign_key "school_onboardings", "school_groups", column: "project_group_id"

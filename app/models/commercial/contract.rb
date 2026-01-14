@@ -16,7 +16,7 @@
 #  number_of_schools    :integer          not null
 #  product_id           :bigint(8)        not null
 #  start_date           :date             not null
-#  status               :enum             not null
+#  status               :enum             default("provisional"), not null
 #  updated_at           :datetime         not null
 #  updated_by_id        :bigint(8)
 #
@@ -37,7 +37,7 @@
 module Commercial
   class Contract < ApplicationRecord
     include Trackable
-    include DateRanged
+    include TemporalRange
 
     self.table_name = 'commercial_contracts'
 
