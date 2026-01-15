@@ -30,6 +30,7 @@
 module Commercial
   class ContractContact < ApplicationRecord
     include Trackable
+    include HasContractHolder
 
     self.table_name = 'commercial_contract_contacts'
 

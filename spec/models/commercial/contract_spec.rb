@@ -13,5 +13,6 @@ describe Commercial::Contract do
 
     it_behaves_like 'a temporal ranged model'
     it_behaves_like 'a date ranged model'
+    it_behaves_like 'has a contract holder'
   end
 end

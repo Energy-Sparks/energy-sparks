@@ -38,6 +38,7 @@ module Commercial
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
+    include HasContractHolder
 
     self.table_name = 'commercial_contracts'
 
