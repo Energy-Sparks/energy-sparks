@@ -25,11 +25,10 @@ describe AmrImportJob do
       object_data[context.params[:key]] || 'NoSuchKey'
     })
     allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-    allow(ENV).to receive(:fetch).with('AWS_S3_AMR_DATA_FEEDS_BUCKET').and_return(bucket)
   end
 
   it 'imports and archives files correctly' do
-    described_class.import_all(config)
+    described_class.import_all(config, bucket)
     expect(ActiveJob::Base.queue_adapter.enqueued_jobs.size).to eq(1)
     perform_enqueued_jobs
     expect(s3_client.api_requests.pluck(:operation_name)).to \
@@ -43,7 +42,7 @@ describe AmrImportJob do
     e = StandardError.new
     allow(Amr::CsvParserAndUpserter).to receive(:perform).and_raise(e)
     allow(Rollbar).to receive(:error)
-    perform_enqueued_jobs { described_class.import_all(config) }
+    perform_enqueued_jobs { described_class.import_all(config, bucket) }
     expect(Rollbar).to \
       have_received(:error).with(e, hash_including(job: :amr_import_job, bucket:, config: thing_prefix, key:))
   end

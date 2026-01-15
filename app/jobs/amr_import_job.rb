@@ -3,22 +3,13 @@
 class AmrImportJob < ApplicationJob
   queue_as :regeneration
 
-  include GoodJob::ActiveJobExtensions::Concurrency
-
-  # in case the job is still running by the time it is scheduled again
-  good_job_control_concurrency_with(
-    total_limit: 1,
-    key: -> { "#{self.class.name}-#{arguments.first.identifier}" } # AmrImportJob-config.identifier
-  )
-
   # initially this import was sequential in the rake task
   # it was then changed to create a job for each file
   # now changing to a job for each config to lower database load
-  def self.import_all(config)
-    bucket = ENV.fetch('AWS_S3_AMR_DATA_FEEDS_BUCKET')
+  def self.import_all(config, bucket)
     s3_client = Aws::S3::Client.new
     Rails.logger.info "Download all from S3 key pattern: #{config.identifier}"
-    objects = s3_client.list_objects_v2(bucket:, prefix: "#{config.identifier}/").contents
+    objects = s3_client.list_objects_v2(bucket: bucket, prefix: "#{config.identifier}/").contents
                        # need to ignore application/x-directory objects ending with /
                        .reject { |object| object.key.end_with?('/') }
     perform_later(config, bucket, objects.map(&:key)) unless objects.empty?
