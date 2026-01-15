@@ -1,4 +1,4 @@
-RSpec.shared_examples_for 'a displayed issue' do
+RSpec.shared_examples 'a displayed issue' do
   it 'displays issue' do
     expect(page).to have_content issue.issue_type.capitalize
     expect(page).to have_content issue.title
@@ -15,8 +15,8 @@ RSpec.shared_examples_for 'a displayed issue' do
   end
 end
 
-RSpec.shared_examples_for 'a displayed list issue' do
-  it 'displays issue' do
+RSpec.shared_examples 'a displayed list issue' do |type: 'Filter'|
+  it 'displays issue', if: type == 'Filter' do
     expect(page).to have_link(issue.title, href: polymorphic_path([:admin, issue.issueable, issue]))
     expect(page).to have_content issue.issueable.name
     expect(page).to have_content issue.fuel_type.capitalize
@@ -25,6 +25,16 @@ RSpec.shared_examples_for 'a displayed list issue' do
     end
     expect(page).to have_content nice_date_times_today(issue.updated_at)
     expect(page).to have_css("i[class*='fa-thumbtack']") if issue.pinned?
+  end
+
+  it 'displays csv issue', if: type == 'CSV' do
+    expect(page).to have_content(issue.title)
+    expect(page).to have_content issue.issueable.name
+    expect(page).to have_content issue.fuel_type
+    issue.meters.each do |meter|
+      expect(page).to have_content meter.mpan_mprn
+    end
+    expect(page).to have_content issue.updated_at
   end
 
   it "doesn't show other issues", if: defined? all_issues do

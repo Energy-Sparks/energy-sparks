@@ -123,7 +123,7 @@ RSpec.describe Schools::Advice::BaseloadService, type: :service do
     let(:meter_collection) do
       grid_carbon_intensity = build(:grid_carbon_intensity, :with_days, start_date:, end_date:,
                                                                         kwh_data_x48: Array.new(48, 0.2))
-      build(:meter_collection, :with_fuel_and_aggregate_meters, start_date:, end_date:, grid_carbon_intensity:)
+      build(:meter_collection, :with_aggregated_aggregate_meter, start_date:, end_date:, grid_carbon_intensity:)
     end
 
     def round_floats(array)

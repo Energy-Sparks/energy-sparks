@@ -25,7 +25,7 @@ describe Schools::ManualReadingsService do
     end
 
     context 'with fuel configuration with enough months' do
-      let(:school) { create(:school, :with_meter_dates, reading_start_date: 13.months.ago) }
+      let(:school) { create(:school, :with_meter_dates, reading_start_date: 24.months.ago) }
 
       it { is_expected.not_to be_show_on_menu }
     end
@@ -33,7 +33,7 @@ describe Schools::ManualReadingsService do
     context 'with a complete target' do
       let(:school) { create(:school_target, :with_monthly_consumption).school }
 
-      it { is_expected.not_to be_show_on_menu }
+      it { is_expected.to be_show_on_menu }
     end
 
     context 'with a previous months incomplete target' do
@@ -45,7 +45,7 @@ describe Schools::ManualReadingsService do
     context 'with a current months incomplete target' do
       let(:school) { create(:school_target, :with_monthly_consumption, current_missing: true).school }
 
-      it { is_expected.not_to be_show_on_menu }
+      it { is_expected.to be_show_on_menu }
     end
 
     context 'with a current months incomplete target started two month ago' do
@@ -71,6 +71,42 @@ describe Schools::ManualReadingsService do
       end
 
       it { is_expected.to be_show_on_menu }
+    end
+  end
+
+  describe '#calculate_required' do
+    before { travel_to(Date.new(2025, 5)) }
+
+    def expected_readings(usage)
+      months = (2..24).map { |i| Date.new(2025, 5) - i.months }.reverse
+      usage = [*usage, *[1020] * 11]
+      months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
+    end
+
+    context 'with a target' do
+      before do
+        create(:school_target, :with_monthly_consumption, school:)
+        meter_collection = build(:meter_collection)
+        service.calculate_required(meter_collection)
+      end
+
+      it 'calculates the correct readings' do
+        expect(service.readings).to eq(expected_readings([nil] * 12))
+      end
+    end
+
+    context 'with a target and meter readings' do
+      before do
+        create(:school_target, :with_monthly_consumption, school:)
+        meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: 2.years.ago.to_date,
+                                                                           kwh_data_x48: [1] * 48)
+        service.calculate_required(meter_collection)
+      end
+
+      it 'calculates the correct readings' do
+        expect(service.readings).to \
+          eq(expected_readings([1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440]))
+      end
     end
   end
 end
