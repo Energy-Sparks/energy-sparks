@@ -36,13 +36,9 @@ class AmrImportJob < ApplicationJob
     EnergySparks::Log.exception(e, job: :amr_import_job, bucket:, config: config.identifier, key:)
   end
 
-  def url_encode(url)
-    URI.encode_www_form_component(url).gsub('%2F', '/')
-  end
-
   def archive_file(s3_client, config, bucket, key, key_without_parent)
     archived_key = "#{config.s3_archive_folder}/#{key_without_parent}"
-    s3_client.copy_object(bucket:, copy_source: url_encode("#{bucket}/#{key}"), key: archived_key)
+    s3_client.copy_object(bucket:, copy_source: Rack::Utils.escape_path("#{bucket}/#{key}"), key: archived_key)
     s3_client.delete_object(bucket:, key:)
     Rails.logger.info "Archived #{key} to #{archived_key} and removed local file"
   end

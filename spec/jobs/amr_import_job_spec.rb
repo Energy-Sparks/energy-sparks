@@ -6,12 +6,12 @@ require 'fileutils'
 describe AmrImportJob do
   include ActiveJob::TestHelper
 
-  let(:bucket)        { 'test-bucket' }
-  let(:thing_prefix)  { 'this-path' }
-  let(:thing_name)    { 'test-thing.csv' }
-  let(:key)           { "#{thing_prefix}/20250325-125200/#{thing_name}" }
+  let(:bucket) { 'test-bucket' }
+  let(:thing_prefix) { 'this-path' }
+  let(:thing_name) { 'test-thing.csv' }
+  let(:key) { "#{thing_prefix}/20250325-125200/#{thing_name}" }
 
-  let(:config)        { create(:amr_data_feed_config, identifier: thing_prefix) }
+  let(:config) { create(:amr_data_feed_config, identifier: thing_prefix) }
 
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
 
@@ -46,5 +46,15 @@ describe AmrImportJob do
     perform_enqueued_jobs { described_class.import_all(config) }
     expect(Rollbar).to \
       have_received(:error).with(e, hash_including(job: :amr_import_job, bucket:, config: thing_prefix, key:))
+  end
+
+  context 'with non breaking space' do
+    let(:thing_name) { "test\u00A0thing.csv" }
+
+    it 'encodes the copy source' do
+      perform_enqueued_jobs { described_class.import_all(config) }
+      expect(s3_client.api_requests[2][:params][:copy_source]).to \
+        eq('test-bucket/this-path/20250325-125200/test%C2%A0thing.csv')
+    end
   end
 end
