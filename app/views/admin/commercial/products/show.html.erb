@@ -1,0 +1,113 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @product.name %>
+  <% header_nav.with_button 'All products', admin_commercial_products_path %>
+<% end %>
+
+<%= render Layout::GridComponent.new(classes: 'mb-4',
+                                     component_classes: 'd-flex flex-column flex-fill',
+                                     cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+  <%= grid.with_block do %>
+    <h3>Pricing</h3>
+    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <dl class="row">
+        <dt class="col-5">
+          Small school price
+        </dt>
+        <dd class="col-7">
+          <%= format_unit(@product.small_school_price, :£) %>
+        </dd>
+        <dt class="col-5">
+          Large school price
+        </dt>
+        <dd class="col-7">
+          <%= format_unit(@product.large_school_price, :£) %>
+        </dd>
+        <dt class="col-5">
+          School size threshold
+        </dt>
+        <dd class="col-7">
+          <%= format_unit(@product.size_threshold, :pupils, false) %>
+        </dd>
+        <dt class="col-5">
+          MAT price
+        </dt>
+        <dd class="col-7">
+          <%= format_unit(@product.mat_price, :£) %>
+        </dd>
+        <dt class="col-5">
+          Private account fee
+        </dt>
+        <dd class="col-7">
+          <%= format_unit(@product.private_account_fee, :£) %>
+        </dd>
+        <dt class="col-5">
+          Metering fee (per meter)
+        </dt>
+        <dd class="col-7">
+          <%= format_unit(@product.metering_fee, :£) %>
+        </dd>
+        <dt class="col-5">
+          Comments
+        </dt>
+        <dd class="col-7">
+          <%= @product.comments %>
+        </dd>
+      </dl>
+      <%= link_to 'Edit', edit_admin_commercial_product_path(@product),
+                  class: 'btn btn-secondary btn-sm' %>
+    </div>
+  <% end %>
+  <%= grid.with_block do %>
+    <h3>Contract Summary</h3>
+    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Current</td>
+            <td>Provisional</td>
+            <td><%= @product.contracts.current.provisional.count %></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Confirmed</td>
+            <td><%= @product.contracts.current.confirmed.count %></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>All</td>
+            <td><%= @product.contracts.current.count %></td>
+          </tr>
+          <tr>
+            <td>Future</td>
+            <td>Provisional</td>
+            <td><%= @product.contracts.future.provisional.count %></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>Confirmed</td>
+            <td><%= @product.contracts.future.confirmed.count %></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>All</td>
+            <td><%= @product.contracts.future.count %></td>
+          </tr>
+          <tr>
+            <td>Historical</td>
+            <td>All</td>
+            <td><%= @product.contracts.historical.count %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+
+<%= render Admin::RecordComponent.new(@product, current_user:) %>
