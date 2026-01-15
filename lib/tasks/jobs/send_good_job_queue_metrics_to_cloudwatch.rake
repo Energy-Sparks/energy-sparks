@@ -10,7 +10,7 @@ namespace :jobs do
     GoodJob::Job.distinct(:queue_name).pluck(:queue_name).each do |queue_name|
       # possible statuses: [:scheduled, :retried, :queued, :running, :finished, :discarded]
       commands = %i[queued running].map do |metric_name|
-        value = GoodJob::Job.where(queue_name:).send(status).count
+        value = GoodJob::Job.where(queue_name:).send(metric_name).count
         format(command_template, metric_name:, time_stamp: Time.now.to_i, value:, queue_name:)
       end
       system(commands.join('; '))
