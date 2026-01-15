@@ -28,7 +28,7 @@ module Targets
     end
 
     def target_service(aggregate_school, fuel_type)
-      ::TargetsService.new(aggregate_school, fuel_type)
+      TargetsService.new(aggregate_school, fuel_type)
     end
 
     # OpenStruct to group them

@@ -1,4 +1,5 @@
-require_relative './../../../../app/models/open_close_times.rb'
+# frozen_string_literal: true
+
 # manages getting disperate sources of chart data as chart series
 # typically by date range, or by half hour
 module Series
@@ -53,10 +54,6 @@ module Series
 
     def meter
       @meter ||= determine_meter
-    end
-
-    def ignore_missing_amr_data?
-      meter.is_a?(TargetMeter)
     end
 
     def kwh_cost_or_co2
@@ -168,8 +165,6 @@ module Series
     end
 
     def amr_data_by_half_hour(meter, date, halfhour_index, data_type = :kwh)
-      return missing_data if ignore_missing_amr_data? && !meter.amr_data.date_exists?(date)
-
       return nil if target_truncate_before_start_date? && date < target_start_date(meter)
 
       meter.amr_data.kwh(date, halfhour_index, data_type, community_use: community_use)
@@ -185,21 +180,6 @@ module Series
 
     def single_name; nil end
 
-    def target_school
-      @school.target_school? ? @school : @school.target_school(target_calculation_type)
-    end
-
-    def target_meter(meter)
-      original_school = school.target_school? ? @school : @school.target_school(target_calculation_type)
-      target_school.aggregate_meter(meter.fuel_type)
-    end
-
-    # only call if dealing with target meter, else will force expensive
-    # lazy target meter calculation
-    def target_start_date(meter)
-      target_meter(meter).target_dates.target_start_date
-    end
-
     def amr_data_date_range(meter, start_date, end_date, data_type)
 
       if target_truncate_before_start_date?
@@ -209,16 +189,6 @@ module Series
 
       if @adjust_by_temperature && meter.fuel_type == :gas
         adjust_for_temperature(meter, start_date, end_date, data_type)
-      elsif ignore_missing_amr_data?
-        values = (start_date..end_date).map do |date|
-          meter.amr_data.date_exists?(date) ? meter.amr_data.one_day_kwh(date, data_type, community_use: community_use) : missing_data
-        end
-
-        if values.all?{ |v| v == missing_data }
-          missing_data
-        else
-          values.map { |v| v == missing_data ? 0.0 : v }.sum
-        end
       elsif override_meter_end_date?
         total = 0.0
         (start_date..end_date).each do |date|
@@ -318,7 +288,6 @@ module Series
     end
 
     def check_requested_meter_date(meters, start_date, end_date)
-      return if ignore_missing_amr_data?
       # TODO(PH, 11Mar2022) - perhaps revisit as pre-refactor implementation only selected one meter for this test
       [meters].flatten.compact.each do |meter|
         if start_date < meter.amr_data.start_date || end_date > meter.amr_data.end_date
@@ -710,9 +679,9 @@ module Series
 
   #=====================================================================================================
   class HeatingNonHeating < ModelManagerBase
-    HEATINGDAY              = 'Heating on in cold weather'.freeze
-    NONHEATINGDAY           = 'Hot Water (& Kitchen)'.freeze
-    HEATINGDAYWARMWEATHER   = 'Heating on in warm weather'.freeze
+    HEATINGDAY              = 'Heating on in cold weather'
+    NONHEATINGDAY           = 'Hot Water (& Kitchen)'
+    HEATINGDAYWARMWEATHER   = 'Heating on in warm weather'
 
     HEATINGDAY_I18N_KEY = 'heating_day'
     NONHEATINGDAY_I18N_KEY = 'non_heating_day'
@@ -1025,7 +994,7 @@ module Series
     SCHOOLDAYHOTWATER = 'Hot water/kitchen only On School Days'
     HOLIDAYHOTWATER   = 'Hot water/kitchen only On Holidays'
     WEEKENDHOTWATER   = 'Hot water/kitchen only On Weekends'
-    BOILEROFF         = 'Boiler Off'.freeze
+    BOILEROFF         = 'Boiler Off'
     HEATINGDAYTYPESERIESNAMES = [SCHOOLDAYHEATING, HOLIDAYHEATING, WEEKENDHEATING, SCHOOLDAYHOTWATER, HOLIDAYHOTWATER, WEEKENDHOTWATER, BOILEROFF]
 
     SCHOOLDAYHEATING_I18N_KEY  = 'school_day_heating'

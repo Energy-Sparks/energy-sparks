@@ -786,36 +786,6 @@ cy:
     targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
       title:
         - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
-    targeting_and_tracking_weekly_electricity_one_year_cumulative_line:
-      title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
-    targeting_and_tracking_weekly_electricity_one_year_line:
-      title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
-    targeting_and_tracking_weekly_electricity_to_date_cumulative_line:
-      title:
-        - Cynnydd cronnus yn erbyn targed
-    targeting_and_tracking_weekly_electricity_to_date_line:
-      title:
-        - Cynnydd wythnosol yn erbyn targed
-    targeting_and_tracking_weekly_gas_one_year_line:
-      title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
-    targeting_and_tracking_weekly_gas_to_date_cumulative_line:
-      title:
-        - Cynnydd cronnus yn erbyn targed
-    targeting_and_tracking_weekly_gas_to_date_line:
-      title:
-        - Cynnydd wythnosol yn erbyn targed
-    targeting_and_tracking_weekly_storage_heater_one_year_line:
-      title:
-        - Cynnydd wythnosol yn erbyn y targed hyd yma
-    targeting_and_tracking_weekly_storage_heater_to_date_cumulative_line:
-      title:
-        - Cynnydd cronnus yn erbyn targed
-    targeting_and_tracking_weekly_storage_heater_to_date_line:
-      title:
-        - Cynnydd wythnosol yn erbyn targed
     teachers_landing_page_electricity:
       title:
         - Cymhariaeth o ddefnydd trydan y 2 wythnos diwethaf

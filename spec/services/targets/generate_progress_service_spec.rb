@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Targets::GenerateProgressService do
-  subject!(:service) { Targets::GenerateProgressService.new(school, aggregated_school) }
+  subject!(:service) { described_class.new(school, aggregated_school) }
 
   let!(:school) { create(:school) }
   let!(:aggregated_school) { build(:meter_collection, :with_aggregate_meter) }
@@ -13,17 +15,11 @@ describe Targets::GenerateProgressService do
 
   describe '#generate!' do
     it 'does nothing if school has no target' do
-      SchoolTarget.all.destroy_all
+      SchoolTarget.destroy_all
       expect(service.generate!).to be_nil
     end
 
     context 'with only electricity fuel type' do
-      before do
-        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
-        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
-        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-      end
-
       let(:target) { service.generate! }
 
       it 'updates the target' do
@@ -39,12 +35,6 @@ describe Targets::GenerateProgressService do
 
     context 'and not enough data' do
       let(:school_target_fuel_types) { [] }
-
-      before do
-        allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
-        allow_any_instance_of(TargetsService).to receive(:target_meter_calculation_problem).and_return(nil)
-        allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-      end
 
       it 'still generates' do
         expect(service.generate!).to eq school_target

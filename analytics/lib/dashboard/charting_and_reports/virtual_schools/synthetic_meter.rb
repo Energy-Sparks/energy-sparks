@@ -23,9 +23,7 @@ class SyntheticMeter < Dashboard::Meter
   private
 
   def calculate_carbon_emissions_for_meter
-    if fuel_type == :electricity ||
-       fuel_type == :aggregated_electricity ||
-        TargetMeter.storage_heater_fuel_type?(fuel_type)
+    if %i[electricity aggregated_electricity storage_heater].include?(fuel_type)
       @amr_data.set_carbon_emissions(id, nil, @meter_collection.grid_carbon_intensity)
     else
       @amr_data.set_carbon_emissions(id, EnergyEquivalences.co2_kg_kwh(:gas), nil)
