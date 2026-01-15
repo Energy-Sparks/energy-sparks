@@ -748,7 +748,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   create_table "commercial_products", force: :cascade do |t|
     t.string "name", null: false
     t.text "comments"
-    t.boolean "default", default: false, null: false
+    t.boolean "default_product", default: false, null: false
     t.float "small_school_price"
     t.float "large_school_price"
     t.integer "size_threshold"
@@ -760,6 +760,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by_id"], name: "index_commercial_products_on_created_by_id"
+    t.index ["default_product"], name: "index_commercial_products_on_default_product", unique: true, where: "(default_product = true)"
     t.index ["name"], name: "index_commercial_products_on_name", unique: true
     t.index ["updated_by_id"], name: "index_commercial_products_on_updated_by_id"
   end

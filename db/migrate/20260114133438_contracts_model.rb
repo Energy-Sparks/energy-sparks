@@ -3,7 +3,7 @@ class ContractsModel < ActiveRecord::Migration[7.2]
     create_table :commercial_products do |t|
       t.string :name, null: false, index: { unique: true }
       t.text :comments
-      t.boolean :default, null: false, default: false
+      t.boolean :default_product, null: false, default: false
 
       t.float :small_school_price
       t.float :large_school_price
@@ -17,6 +17,8 @@ class ContractsModel < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
+
+    add_index :commercial_products, :default_product, unique: true, where: 'default_product = true'
 
     create_enum :contract_status, %w[provisional confirmed]
     create_enum :contract_licence_period, %w[contract one_year]

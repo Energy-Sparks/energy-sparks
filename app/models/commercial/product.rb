@@ -5,7 +5,7 @@
 #  comments            :text
 #  created_at          :datetime         not null
 #  created_by_id       :bigint(8)
-#  default             :boolean          default(FALSE), not null
+#  default_product     :boolean          default(FALSE), not null
 #  id                  :bigint(8)        not null, primary key
 #  large_school_price  :float
 #  mat_price           :float
@@ -19,9 +19,10 @@
 #
 # Indexes
 #
-#  index_commercial_products_on_created_by_id  (created_by_id)
-#  index_commercial_products_on_name           (name) UNIQUE
-#  index_commercial_products_on_updated_by_id  (updated_by_id)
+#  index_commercial_products_on_created_by_id    (created_by_id)
+#  index_commercial_products_on_default_product  (default_product) UNIQUE WHERE (default_product = true)
+#  index_commercial_products_on_name             (name) UNIQUE
+#  index_commercial_products_on_updated_by_id    (updated_by_id)
 #
 # Foreign Keys
 #
@@ -35,5 +36,6 @@ module Commercial
     self.table_name = 'commercial_products'
 
     validates_presence_of :name
+    validates :default_product, uniqueness: { message: 'already exists' }, if: :default_product?
   end
 end

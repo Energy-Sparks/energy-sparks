@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :commercial_product, class: 'Commercial::Product' do
     sequence(:name) {|n| "Product #{n}"}
     sequence(:comments) {|n| "Product #{n} comments"}
-    default { false }
+    default_product { false }
     mat_price { 545.0 }
     large_school_price { 595.0 }
     small_school_price { 545.0 }
