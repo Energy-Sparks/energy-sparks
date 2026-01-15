@@ -190,4 +190,90 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
   end
+
+  context 'when visiting a group redirect' do
+    let(:path) { '/r/group/advice' }
+
+    let!(:school_group) { create(:school_group, :with_active_schools) }
+
+    context 'without a session' do
+      before do
+        visit path
+      end
+
+      it_behaves_like 'the page requires a login'
+
+      context 'with a successful adult login' do
+        let!(:user) { create(:school_admin, school: school_group.schools.first, password: 'thisismyuserpassword') }
+
+        before do
+          fill_in 'Email', with: user.email
+          fill_in 'Password', with: user.password
+          within '#staff' do
+            click_on 'Sign in'
+          end
+        end
+
+        it 'has redirected' do
+          expect(page).to have_current_path school_group_advice_path(school_group), ignore_query: true
+        end
+      end
+
+      context 'with a successful pupil login' do
+        let!(:user) { create(:pupil, school: school_group.schools.first, pupil_password: 'thisismyuserpassword') }
+        let(:select_school) { "#{user.school.name} (#{user.school.school_group.name})" }
+
+        before do
+          within '#pupil' do
+            select select_school, from: 'Select your school'
+            fill_in 'Your pupil password', with: 'thisismyuserpassword'
+            click_on 'Sign in'
+          end
+        end
+
+        it 'has redirected' do
+          expect(page).to have_current_path school_group_advice_path(school_group), ignore_query: true
+        end
+      end
+    end
+
+    context 'when logged in as a school admin user' do
+      let!(:user) { create(:school_admin, school: school_group.schools.first) }
+
+      before do
+        sign_in(user)
+        visit path
+      end
+
+      it 'has redirected' do
+        expect(page).to have_current_path school_group_advice_path(school_group), ignore_query: true
+      end
+    end
+
+    context 'when logged in as an admin' do
+      let!(:user) { create(:admin) }
+
+      before do
+        sign_in(user)
+        visit path
+      end
+
+      it 'has redirected' do
+        expect(page).to have_current_path school_group_advice_path(school_group), ignore_query: true
+      end
+    end
+
+    context 'when logged in as a group admin user' do
+      let!(:user) { create(:group_admin, school_group:) }
+
+      before do
+        sign_in(user)
+        visit path
+      end
+
+      it 'has redirected' do
+        expect(page).to have_current_path school_group_advice_path(school_group), ignore_query: true
+      end
+    end
+  end
 end
