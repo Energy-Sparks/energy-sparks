@@ -6,11 +6,12 @@ class AmrImportJob < ApplicationJob
   # initially this import was sequential in the rake task
   # it was then changed to create a job for each file
   # now changing to a job for each config to lower database load
-  def self.import_all(config, bucket)
+  def self.import_all(config)
+    bucket = ENV.fetch('AWS_S3_AMR_DATA_FEEDS_BUCKET')
     s3_client = Aws::S3::Client.new
     Rails.logger.info "Download all from S3 key pattern: #{config.identifier}"
-    objects = s3_client.list_objects_v2(bucket: bucket, prefix: "#{config.identifier}/").contents
-                       # need to ignore application/x-directory objects ending with /
+    objects = s3_client.list_objects_v2(bucket:, prefix: "#{config.identifier}/").contents
+                       # seeing application/x-directory objects ending with /
                        .reject { |object| object.key.end_with?('/') }
     perform_later(config, bucket, objects.map(&:key)) unless objects.empty?
   end
@@ -37,7 +38,7 @@ class AmrImportJob < ApplicationJob
 
   def archive_file(s3_client, config, bucket, key, key_without_parent)
     archived_key = "#{config.s3_archive_folder}/#{key_without_parent}"
-    s3_client.copy_object(bucket:, copy_source: "#{bucket}/#{key}", key: archived_key)
+    s3_client.copy_object(bucket:, copy_source: Rack::Utils.escape_path("#{bucket}/#{key}"), key: archived_key)
     s3_client.delete_object(bucket:, key:)
     Rails.logger.info "Archived #{key} to #{archived_key} and removed local file"
   end
