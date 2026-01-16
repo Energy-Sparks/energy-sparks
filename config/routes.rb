@@ -596,6 +596,12 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :commercial do
+      resources :contracts do
+        get :contract_holder_options, on: :collection
+      end
+    end
+
     namespace :comparisons do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]
