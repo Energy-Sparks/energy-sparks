@@ -10,6 +10,7 @@
 #
 class Funder < ApplicationRecord
   include MailchimpUpdateable
+  include ContractHolder
 
   watch_mailchimp_fields :name
 

@@ -82,6 +82,10 @@ class User < ApplicationRecord
   actor_associations_for \
     Activity: [:created, :updated],
     CaseStudy: [:created, :updated],
+    'Commercial::Contract': [:created, :updated],
+    'Commercial::ContractContact': [:created, :updated],
+    'Commercial::Licence': [:created, :updated],
+    'Commercial::Product': [:created, :updated],
     'Cms::Category': [:created, :updated],
     'Cms::Page': [:created, :updated],
     'Cms::Section': [:created, :updated],

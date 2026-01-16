@@ -49,6 +49,7 @@ class SchoolGroup < ApplicationRecord
   include Scorable
   include MailchimpUpdateable
   include AlphabeticalScopes
+  include ContractHolder
 
   watch_mailchimp_fields :name
 
