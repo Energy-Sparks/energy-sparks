@@ -76,6 +76,7 @@ resource "aws_cloudwatch_dashboard" "dashboard" {
           }
         }
       },
+      # these next 2 not working on test - think because extended monitoring not enabled
       {
         "height" : 10,
         "width" : 10,
