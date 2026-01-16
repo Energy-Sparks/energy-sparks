@@ -11,5 +11,9 @@ FactoryBot.define do
     metering_fee { 25.0 }
     association :created_by, factory: :user
     association :updated_by, factory: :user
+
+    trait :default_product do
+      default_product { true }
+    end
   end
 end

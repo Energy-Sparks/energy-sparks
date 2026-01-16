@@ -1,0 +1,50 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Contracts' %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New contract', new_admin_commercial_contract_path,
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comments</th>
+      <th>Licences</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @contracts.each do |contract| %>
+      <tr>
+        <td>
+          <%= link_to contract.name, admin_commercial_contract_path(contract) %>
+        </td>
+        <td>
+          <%= contract.comments %>
+        </td>
+        <td>
+          <%= contract.licences.count %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_commercial_contract_path(contract),
+                        class: 'btn btn-secondary btn-sm' %>
+            <%= link_to 'Delete', admin_commercial_contract_path(contract),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-danger btn-sm' %>
+
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

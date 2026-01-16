@@ -1,0 +1,49 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% url = if contract.new_record?
+               admin_commercial_contracts_path
+             else
+               admin_commercial_contract_path(contract)
+             end %>
+    <%= simple_form_for(contract, as: :contract, url: url) do |f| %>
+      <%= render 'shared/errors', subject: contract, subject_name: 'contract' %>
+      <%= f.input :name %>
+      <%= f.input :comments %>
+
+      <%= f.input :product_id, collection: Commercial::Product.with_default_first, include_blank: false %>
+
+      <%= f.input :contract_holder_type,
+                  as: :radio_buttons,
+                  collection: HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
+                  include_blank: false,
+                  input_html: { class: 'contract-holder-type' } %>
+
+      <%= f.input :contract_holder_id,
+                  collection: [],
+                  include_blank: true,
+                  input_html: {
+                    class: 'contract-holder-select',
+                    data: { selected_id: @contract.contract_holder_id }
+                  } %>
+
+      <%= f.input :number_of_schools %>
+      <%= f.input :start_date, as: :tempus_dominus_date %>
+      <%= f.input :end_date, as: :tempus_dominus_date %>
+
+      <%= f.input :agreed_school_price %>
+
+      <%= f.input :status, collection: Commercial::Contract.statuses.keys.sort, include_blank: false %>
+      <%= f.input :invoice_terms, collection: Commercial::Contract.invoice_terms.keys.sort, include_blank: false %>
+
+      <%= f.input :licence_period, collection: Commercial::Contract.licence_periods.keys.sort, include_blank: false %>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', admin_commercial_contracts_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>
