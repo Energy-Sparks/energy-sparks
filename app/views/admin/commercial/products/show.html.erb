@@ -8,7 +8,7 @@
                                      cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
   <%= grid.with_block do %>
     <h3>Pricing</h3>
-    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
+    <div id="pricing" class="rounded-2 bg-light pt-3 px-4 flex-fill">
       <dl class="row">
         <dt class="col-5">
           Small school price
@@ -55,12 +55,18 @@
       </dl>
       <%= link_to 'Edit', edit_admin_commercial_product_path(@product),
                   class: 'btn btn-secondary btn-sm' %>
+      <% unless @product.default_product? %>
+        <%= link_to 'Delete', admin_commercial_product_path(@product),
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' },
+                    class: 'btn btn-danger btn-sm' %>
+      <% end %>
     </div>
   <% end %>
   <%= grid.with_block do %>
     <h3>Contract Summary</h3>
-    <div class="rounded-2 bg-light pt-3 px-4 flex-fill">
-      <table class="table table-sm">
+    <div id="contract-summary" class="rounded-2 bg-light pt-3 px-4 flex-fill">
+      <table id='contract-summary-table' class="table table-sm">
         <thead>
           <tr>
             <th>Category</th>
@@ -110,4 +116,4 @@
   <% end %>
 <% end %>
 
-<%= render Admin::RecordComponent.new(@product, current_user:) %>
+<%= render Admin::RecordComponent.new(@product, id: 'metadata', current_user:) %>
