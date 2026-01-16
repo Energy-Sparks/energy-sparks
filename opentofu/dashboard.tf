@@ -4,8 +4,8 @@ locals {
   test_db = [for id in data.aws_db_instances.all.instance_identifiers : id if can(regex("energy-sparks-test.*", id))][0]
 }
 
-resource "aws_cloudwatch_dashboard" "cpu_memory_storage" {
-  dashboard_name = "CPU_Memory_Storage"
+resource "aws_cloudwatch_dashboard" "dashboard" {
+  dashboard_name = "Main"
   dashboard_body = jsonencode({
     "widgets" : [
       {
@@ -86,8 +86,8 @@ resource "aws_cloudwatch_dashboard" "cpu_memory_storage" {
           "metrics" : [
             [{ "color" : "#1f77b4", "expression" : "100*(m5/4294967296)", "id" : "e2", "label" : "test", "region" : "eu-west-2" }],
             [{ "color" : "#d62728", "expression" : "100*(m4/17179869184)", "id" : "e3", "label" : "prod", "region" : "eu-west-2" }],
-            ["System/Linux", "procstat_memory_rss", "pidfile", "/var/pids/worker.pid", "InstanceId", data.aws_instances.production.ids[0], "process_name", "ruby3.4", "AutoScalingGroupName", var.prod_asg_name, { "id" : "m4", "region" : "eu-west-2", "visible" : false }],
-            ["...", data.aws_instances.test.ids[0], ".", ".", ".", var.test_asg_name, { "id" : "m5", "region" : "eu-west-2", "visible" : false }]
+            ["System/Linux", "procstat_memory_rss", "pidfile", "/var/pids/worker.pid", "InstanceId", data.aws_instances.production.ids[0], "process_name", "ruby3.2", "AutoScalingGroupName", var.prod_asg_name, { "id" : "m4", "region" : "eu-west-2", "visible" : false }],
+            ["...", data.aws_instances.test.ids[0], ".", "ruby", ".", var.test_asg_name, { "id" : "m5", "region" : "eu-west-2", "visible" : false }]
           ],
           "period" : 300,
           "region" : "eu-west-2",
@@ -116,8 +116,8 @@ resource "aws_cloudwatch_dashboard" "cpu_memory_storage" {
         "y" : 10,
         "properties" : {
           "metrics" : [
-            ["System/Linux", "procstat_cpu_usage", "pidfile", "/var/pids/worker.pid", "InstanceId", data.aws_instances.production.ids[0], "process_name", "ruby3.2", "AutoScalingGroupName", var.prod_asg_name],
-            ["...", data.aws_instances.test.ids[0], ".", ".", ".", var.test_asg_name, { "color" : "#d62728" }]
+            ["System/Linux", "procstat_cpu_usage", "pidfile", "/var/pids/worker.pid", "InstanceId", data.aws_instances.production.ids[0], "process_name", "ruby3.2", "AutoScalingGroupName", var.prod_asg_name, { "color" : "#d62728" }],
+            ["...", data.aws_instances.test.ids[0], ".", "ruby", ".", var.test_asg_name, { "color" : "#1f77b4" }]
           ],
           "period" : 300,
           "region" : "eu-west-2",
@@ -141,8 +141,8 @@ resource "aws_cloudwatch_dashboard" "cpu_memory_storage" {
         "type" : "metric",
         "properties" : {
           "metrics": [
-            [ "GoodJob", "queued", "InstanceId", data.aws_instances.production.ids[0], "QueueName", "default", { "region": "eu-west-2", "color": "#d62728" } ],
-            [ "...", data.aws_instances.test.ids[0], ".", ".", { "region": "eu-west-2", "color": "#1f77b4" } ]
+            [ "GoodJob", "Queued", "InstanceId", data.aws_instances.production.ids[0], "QueueName", "default", { "region": "eu-west-2", "color": "#d62728" } ],
+            [ "...", "queued", ".", data.aws_instances.test.ids[0], ".", ".", { "region": "eu-west-2", "color": "#1f77b4" } ]
           ],
           "view": "timeSeries",
           "stacked": false,
@@ -183,8 +183,8 @@ resource "aws_cloudwatch_dashboard" "cpu_memory_storage" {
         "type" : "metric",
         "properties" : {
           "metrics": [
-            [ "GoodJob", "queued", "InstanceId", data.aws_instances.production.ids[0], "QueueName", "regeneration", { "region": "eu-west-2", "color": "#d62728" } ],
-            [ "...", data.aws_instances.test.ids[0], ".", ".", { "region": "eu-west-2", "color": "#1f77b4" } ]
+            [ "GoodJob", "Queued", "InstanceId", data.aws_instances.production.ids[0], "QueueName", "regeneration", { "region": "eu-west-2", "color": "#d62728" } ],
+            [ "...", "queued", ".", data.aws_instances.test.ids[0], ".", ".", { "region": "eu-west-2", "color": "#1f77b4" } ]
           ],
           "view": "timeSeries",
           "stacked": false,
