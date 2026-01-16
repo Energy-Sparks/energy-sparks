@@ -1,0 +1,51 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Products' %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New product', new_admin_commercial_product_path,
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comments</th>
+      <th>Contracts</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @products.each do |product| %>
+      <tr class="<%= class_names('table-info': product.default_product?) %>">
+        <td>
+          <%= link_to product.name, admin_commercial_product_path(product) %>
+        </td>
+        <td>
+          <%= product.comments %>
+        </td>
+        <td>
+          <%= product.contracts.count %>
+        </td>
+        <td>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_admin_commercial_product_path(product),
+                        class: 'btn btn-secondary btn-sm' %>
+            <% unless product.default_product? %>
+              <%= link_to 'Delete', admin_commercial_product_path(product),
+                          method: :delete,
+                          data: { confirm: 'Are you sure?' },
+                          class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

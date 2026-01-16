@@ -596,6 +596,10 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :commercial do
+      resources :products
+    end
+
     namespace :comparisons do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]

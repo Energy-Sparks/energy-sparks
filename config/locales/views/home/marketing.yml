@@ -146,16 +146,16 @@ en:
     per_school_per_year: Per school per year
     prices:
       large:
-        note: With more than 250 pupils
-        price: "£595 + VAT"
+        note: With more than %{size_threshold} pupils
+        price: "%{large_school_price} + VAT"
         title: Large schools
       mat_and_la:
         note: Min. 5 schools on the same energy contract
-        price: "£545 + VAT"
+        price: "%{mat_price} + VAT"
         title: Multi-Academy Trust and Local Authority clusters
       small:
-        note: With fewer than 250 pupils
-        price: "£545 + VAT"
+        note: With fewer than %{size_threshold} pupils
+        price: "%{small_school_price} + VAT"
         title: Small schools
     product_features:
       categories:
@@ -236,11 +236,11 @@ en:
         - title_html: Private account (standard accounts are publicly visible to empower the whole school community to engage with the energy data insights)
           starter_icon: xmark
           standard_icon: sterling-sign
-          info: "£95 + VAT per school per year"
+          info: "%{private_account_fee} + VAT per school per year"
         - title_html: Analysis of data for more than 5 meters
           starter_icon: xmark
           standard_icon: sterling-sign
-          info: "£25 + VAT per meter"
+          info: "%{metering_fee} + VAT per meter"
       standard:
         description_html: Available to UK schools with an<br>Energy Sparks account
         title: Standard

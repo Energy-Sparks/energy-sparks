@@ -1,0 +1,29 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All products', admin_commercial_products_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% url = if product.new_record?
+               admin_commercial_products_path
+             else
+               admin_commercial_product_path(product)
+             end %>
+    <%= simple_form_for(product, as: :product, url: url) do |f| %>
+      <%= render 'shared/errors', subject: product, subject_name: 'product' %>
+      <%= f.input :name %>
+      <%= f.input :comments %>
+      <%= f.input :default_product %>
+      <%= f.input :small_school_price %>
+      <%= f.input :large_school_price %>
+      <%= f.input :size_threshold %>
+      <%= f.input :mat_price %>
+      <%= f.input :private_account_fee %>
+      <%= f.input :metering_fee %>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', admin_commercial_products_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>
