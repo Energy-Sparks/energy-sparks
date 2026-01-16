@@ -2,7 +2,7 @@
 #
 # Table name: commercial_contracts
 #
-#  agreed_school_price  :float
+#  agreed_school_price  :decimal(10, 2)
 #  comments             :text
 #  contract_holder_id   :bigint(8)        not null
 #  contract_holder_type :string           not null

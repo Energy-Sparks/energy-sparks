@@ -7,13 +7,13 @@
 #  created_by_id       :bigint(8)
 #  default_product     :boolean          default(FALSE), not null
 #  id                  :bigint(8)        not null, primary key
-#  large_school_price  :float
-#  mat_price           :float
-#  metering_fee        :float
+#  large_school_price  :decimal(10, 2)
+#  mat_price           :decimal(10, 2)
+#  metering_fee        :decimal(10, 2)
 #  name                :string           not null
-#  private_account_fee :float
+#  private_account_fee :decimal(10, 2)
 #  size_threshold      :integer
-#  small_school_price  :float
+#  small_school_price  :decimal(10, 2)
 #  updated_at          :datetime         not null
 #  updated_by_id       :bigint(8)
 #

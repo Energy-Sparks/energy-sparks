@@ -5,12 +5,12 @@ class ContractsModel < ActiveRecord::Migration[7.2]
       t.text :comments
       t.boolean :default_product, null: false, default: false
 
-      t.float :small_school_price
-      t.float :large_school_price
+      t.decimal :small_school_price, precision: 10, scale: 2
+      t.decimal :large_school_price, precision: 10, scale: 2
       t.integer :size_threshold
-      t.float :mat_price
-      t.float :private_account_fee
-      t.float :metering_fee
+      t.decimal :mat_price, precision: 10, scale: 2
+      t.decimal :private_account_fee, precision: 10, scale: 2
+      t.decimal :metering_fee, precision: 10, scale: 2
 
       t.references :created_by, foreign_key: { to_table: :users }
       t.references :updated_by, foreign_key: { to_table: :users }
@@ -38,7 +38,7 @@ class ContractsModel < ActiveRecord::Migration[7.2]
       t.enum :licence_period, enum_type: :contract_licence_period, null: false, default: 'contract'
       t.enum :invoice_terms, enum_type: :contract_invoice_terms, null: false, default: 'pro_rata'
 
-      t.float :agreed_school_price
+      t.decimal :agreed_school_price, precision: 10, scale: 2
 
       t.references :created_by, foreign_key: { to_table: :users }
       t.references :updated_by, foreign_key: { to_table: :users }
