@@ -716,7 +716,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.integer "number_of_schools", null: false
     t.enum "licence_period", default: "contract", null: false, enum_type: "contract_licence_period"
     t.enum "invoice_terms", default: "pro_rata", null: false, enum_type: "contract_invoice_terms"
-    t.float "agreed_school_price"
+    t.decimal "agreed_school_price", precision: 10, scale: 2
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false
@@ -749,12 +749,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.string "name", null: false
     t.text "comments"
     t.boolean "default_product", default: false, null: false
-    t.float "small_school_price"
-    t.float "large_school_price"
+    t.decimal "small_school_price", precision: 10, scale: 2
+    t.decimal "large_school_price", precision: 10, scale: 2
     t.integer "size_threshold"
-    t.float "mat_price"
-    t.float "private_account_fee"
-    t.float "metering_fee"
+    t.decimal "mat_price", precision: 10, scale: 2
+    t.decimal "private_account_fee", precision: 10, scale: 2
+    t.decimal "metering_fee", precision: 10, scale: 2
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false
