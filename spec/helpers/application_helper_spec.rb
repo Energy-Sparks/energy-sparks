@@ -345,4 +345,8 @@ describe ApplicationHelper do
       expect(helper.user_school_role(user_without_staff_role)).to eq('Group admin')
     end
   end
+
+  describe '#i18n_custom_interpolation' do
+    it { expect(helper.i18n_custom_interpolation('%{value} per year', value: 100)).to eq('100 per year')}
+  end
 end
