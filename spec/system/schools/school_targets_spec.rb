@@ -3,17 +3,23 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'managing targets', :include_application_helper do
-  let!(:gas_meter)         { create(:gas_meter, school: test_school) }
-  let!(:electricity_meter) { create(:electricity_meter, school: test_school) }
-
-  let(:fuel_configuration)   do
+  let(:fuel_configuration) do
     Schools::FuelConfiguration.new(
       has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true
     )
   end
 
-  let(:aggregate_meter_dates) do
-    {
+  before do
+    create(:gas_meter, school: test_school)
+    create(:electricity_meter, school: test_school)
+
+    allow_any_instance_of(Targets::TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
+    allow_any_instance_of(Targets::TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
+
+    # Update the configuration rather than creating one, as the school factory builds one
+    # and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
+    # relationship
+    test_school.configuration.update!(fuel_configuration:, aggregate_meter_dates: {
       electricity: {
         start_date: '2021-12-01',
         end_date: '2022-02-01'
@@ -22,21 +28,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
         start_date: '2021-03-01',
         end_date: '2022-02-01'
       }
-    }
-  end
-
-  before do
-    allow_any_instance_of(TargetsService).to receive(:enough_data_to_set_target?).and_return(true)
-    allow_any_instance_of(TargetsService).to receive(:annual_kwh_estimate_required?).and_return(false)
-    allow_any_instance_of(TargetsService).to receive(:recent_data?).and_return(true)
-
-    # Update the configuration rather than creating one, as the school factory builds one
-    # and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
-    # relationship
-    test_school.configuration.update!(fuel_configuration: fuel_configuration,
-                                      aggregate_meter_dates: aggregate_meter_dates)
-    # So tests for 'prompts always show on dashboard' we need to set months_between to always be below the threshold for filtering
-    allow_any_instance_of(Targets::SuggestEstimatesService).to receive(:months_between) { Targets::SuggestEstimatesService::THRESHOLD_FOR_FILTERING - 1 }
+    })
   end
 
   context 'when school has no target' do
@@ -130,13 +122,12 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
   end
 
   context 'with a current target' do
-    let!(:target)             { create(:school_target, school: test_school) }
-    let(:activity_type)       { create(:activity_type) }
-    let(:intervention_type)   { create(:intervention_type) }
-    # let!(:expired_targets)    {}
+    let!(:target) { create(:school_target, school: test_school) }
 
     before do
+      intervention_type = create(:intervention_type)
       allow_any_instance_of(Recommendations::Actions).to receive(:based_on_energy_use).and_return([intervention_type])
+      activity_type = create(:activity_type)
       allow_any_instance_of(Recommendations::Activities).to receive(:based_on_energy_use).and_return([activity_type])
       visit school_school_targets_path(test_school)
     end
@@ -159,7 +150,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
       expect(page).to have_current_path(school_school_targets_path(test_school))
     end
 
-    context 'and I edit the target' do
+    context 'when I edit the target' do
       it 'allows target to be edited' do
         expect(page).to have_content('Update your energy saving target')
         fill_in 'Reducing electricity usage by', with: 7
@@ -211,7 +202,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
       expect(page).to have_content('Cannot edit an expired target')
     end
 
-    context 'it allows me to create a new target' do
+    context 'when creating a new target' do
       before do
         visit school_school_target_path(test_school, target)
       end
@@ -242,7 +233,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
       end
     end
 
-    context 'and there is a newer target' do
+    context 'when there is a newer target' do
       before do
         create(:school_target, school: test_school, start_date: target_date, target_date: target_date + 1.year,
                                report_last_generated: last_generated)
@@ -288,7 +279,7 @@ describe 'school targets' do
 
   let!(:school) { create(:school) }
 
-  context 'as a school admin' do
+  context 'when a school admin' do
     let!(:user) { create(:school_admin, school: school) }
 
     it_behaves_like 'managing targets' do
@@ -298,7 +289,7 @@ describe 'school targets' do
     it_behaves_like 'targets are hidden when disabled'
   end
 
-  context 'as staff' do
+  context 'when staff' do
     let!(:user) { create(:staff, school: school) }
 
     it_behaves_like 'managing targets' do
@@ -311,7 +302,7 @@ describe 'school targets' do
   # Admins can delete
   # Admins can view debugging data
   # otherwise same as school admin
-  context 'as an admin' do
+  context 'when an admin' do
     let(:user) { create(:admin) }
 
     it_behaves_like 'managing targets' do
@@ -344,7 +335,7 @@ describe 'school targets' do
     end
   end
 
-  context 'as a pupil' do
+  context 'when a pupil' do
     let!(:target) { create(:school_target, school:) }
     let(:user) { create(:pupil, school:) }
 
