@@ -60,6 +60,10 @@ class Issue < ApplicationRecord
     joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
   }
 
+  scope :for_issueable, ->(issueable = nil) { issueable ? where(issueable: issueable) : all }
+
+  scope :with_owner, -> { where.not(owned_by_id: nil) }
+
   scope :by_pinned, -> { order(pinned: :desc) }
   scope :by_review_date, -> { order(review_date: :asc) }
   scope :by_status, -> { order(status: :asc) }

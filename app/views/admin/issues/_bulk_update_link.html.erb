@@ -1,0 +1,6 @@
+<%= render FootnoteModalComponent::Link.new(
+      modal_id: 'issues-bulk-update',
+      href: url_for({}.merge(params.permit)), classes: 'btn btn-sm'
+    ) do
+      "#{fa_icon('list-check')} Bulk update".html_safe
+    end %>

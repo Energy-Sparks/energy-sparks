@@ -80,17 +80,19 @@
   <% end %>
 </div>
 
-<% if @issues.any? %>
-  <% if @issueable %>
-    <div class="container">
-      <% @issues.each do |issue| %>
-        <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
-      <% end %>
-    </div>
+<div id='issues-list'>
+  <% if @issues.any? %>
+    <% if @issueable %>
+      <div class="container">
+        <% @issues.each do |issue| %>
+          <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render 'issues_list', issues: @issues %>
+    <% end %>
+    <%= render 'shared/pagy_footer' %>
   <% else %>
-    <%= render 'issues_list', issues: @issues %>
+    <p>No issues or notes to display.</p>
   <% end %>
-  <%= render 'shared/pagy_footer' %>
-<% else %>
-  <p>No issues or notes to display.</p>
-<% end %>
+</div>

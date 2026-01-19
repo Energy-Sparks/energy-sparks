@@ -237,6 +237,42 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
             end
+
+            context 'when bulk editing issues' do
+              let!(:issue1) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+              let!(:issue2) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+
+              context 'with missing fields' do
+                before do
+                  visit url_for([:bulk_edit, :admin, issueable, Issue])
+                  click_button 'Update all'
+                end
+
+                it 'shows error messages' do
+                  expect(page).to have_content 'Both current and new admin users are required'
+                end
+              end
+
+              context 'with required fields' do
+                before do
+                  visit url_for([:bulk_edit, :admin, issueable, Issue])
+                  select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
+                  select other_issues_admin.display_name, from: 'user_to'
+                  click_button 'Update all'
+                end
+
+                it 'updates issues to new admin' do
+                  expect(page).to have_current_path(polymorphic_path([:admin, issueable, :issues]))
+                  expect(page).to have_content '2 issues updated'
+                  within('div#issues-list') do
+                    expect(page).to have_content(other_issues_admin.display_name, count: 2)
+                    [issue1, issue2].each do |issue|
+                      expect(page).to have_content issue.title
+                    end
+                  end
+                end
+              end
+            end
           end
         end
       end

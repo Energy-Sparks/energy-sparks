@@ -3,12 +3,13 @@
 module Admin
   class IssuesController < AdminController
     include Pagy::Backend
-    load_and_authorize_resource :school, instance_name: 'issueable'
-    load_and_authorize_resource :school_group, instance_name: 'issueable'
-    load_and_authorize_resource :data_source, instance_name: 'issueable'
-    load_and_authorize_resource :school_onboarding, instance_name: 'issueable', find_by: :uuid
+    load_and_authorize_resource :school
+    load_and_authorize_resource :school_group
+    load_and_authorize_resource :data_source
+    load_and_authorize_resource :school_onboarding, find_by: :uuid
+    before_action :issueable
+
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
-    load_and_authorize_resource :school # For school context menu if school available
 
     def index
       params[:issue_types] ||= Issue.issue_types.keys
@@ -67,6 +68,24 @@ module Admin
       end
     end
 
+    def bulk_update
+      errors = []
+      errors << 'issueable is required' unless @issueable # Not currently linked to without issueable context but best to check
+      errors << 'Both current and new admin users are required' if params[:user_from].blank? || params[:user_to].blank?
+
+      if errors.any?
+        flash.now[:alert] = helpers.safe_join(errors, helpers.tag.br)
+        return render :bulk_edit
+      end
+
+      updated_count =
+        @issueable.issues
+                  .where(owned_by_id: params[:user_from])
+                  .update_all(owned_by_id: params[:user_to], updated_by_id: current_user.id, updated_at: Time.current)
+
+      redirect_index notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
+    end
+
     def destroy
       @issue.destroy
       redirect_back_or_index notice: 'was successfully deleted'
@@ -84,6 +103,11 @@ module Admin
 
     private
 
+    def issueable
+      # For school context menu if school available
+      @issueable ||= @school || @school_group || @data_source || @school_onboarding
+    end
+
     def redirect_index(notice:)
       redirect_to issueable_index_url, notice: issueable_notice(notice)
     end
@@ -93,11 +117,15 @@ module Admin
     end
 
     def issueable_index_url
-      @issue.issueable ? polymorphic_url([:admin, @issue.issueable, Issue]) : polymorphic_url([:admin, Issue])
+      polymorphic_url([:admin, @issue&.issueable || @issueable, Issue].compact)
     end
 
     def issueable_notice(notice)
-      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(' ').capitalize
+      if @issue
+        [@issue&.issueable&.model_name&.human, @issue.issue_type, notice].compact.join(' ').capitalize
+      else
+        notice
+      end
     end
 
     def issue_params
