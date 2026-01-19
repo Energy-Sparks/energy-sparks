@@ -119,15 +119,6 @@ class SchoolTarget < ApplicationRecord
 
   private
 
-  # ensure TargetsProgress is round-tripped properly
-  def reformat_saved_report(report)
-    report.symbolize_keys!
-    report[:fuel_type] = report[:fuel_type].to_sym
-    # reparse to Dates from yyyy-mm-dd format
-    report[:months].map! { |m| Date.strptime(m, '%Y-%m-%d') }
-    report
-  end
-
   def target_to_hash(target)
     {
       start_date: start_date,
