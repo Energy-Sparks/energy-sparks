@@ -40,7 +40,13 @@
           <% end %>
         </td>
         <td>
-          <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
+          <% if activity.description_includes_images? %>
+            <% if controller.class.ancestors.include?(ActionMailer::Base) %>
+              <%= image_tag 'email/fa-check-circle_text-success.png' %>
+            <% else %>
+              <%= fa_icon('check-circle text-success') %>
+            <% end %>
+          <% end %>
         </td>
       </tr>
     <% end %>
