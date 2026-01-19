@@ -71,7 +71,11 @@ module Admin
     def bulk_update
       errors = []
       errors << 'issueable is required' unless @issueable # Not currently linked to without issueable context but best to check
-      errors << 'Both current and new admin users are required' if params[:user_from].blank? || params[:user_to].blank?
+      if params[:user_from].blank? || params[:user_to].blank?
+        errors << 'Both current and new admin users are required'
+      elsif params[:user_from] == params[:user_to]
+        errors << "Current and new admin users can't be the same" if params[:user_from] == params[:user_to]
+      end
 
       if errors.any?
         flash.now[:alert] = helpers.safe_join(errors, helpers.tag.br)

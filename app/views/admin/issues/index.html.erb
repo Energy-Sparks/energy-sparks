@@ -5,16 +5,17 @@
     <%= header_nav_link "#{@issueable.name} #{@issueable.model_name.human.downcase}", [:admin, @issueable] %>
   <% end %>
 <% end %>
-<% if @issueable %>
-  <div class="d-flex">
-    <div>
-      <%= link_to 'Issues & Notes', admin_issues_path %>&nbsp;>
-      <%= @issueable.model_name.human.capitalize %> >
-      <%= @issueable.try(:name) %>
+<div class="d-flex align-items-center">
+  <%= render 'breadcrumbs' %>
+  <% if @issueable %>
+    <div class="ms-auto">
+      <%= link_to polymorphic_path([:bulk_edit, :admin, @issueable, Issue].compact), class: 'btn btn-sm' do %>
+        <%= fa_icon('list-check') %> Bulk update
+      <% end %>
+      <%= render 'new_issues_links', issueable: @issueable if @issueable %>
     </div>
-    <div class="ms-auto"><%= render 'new_issues_links', issueable: @issueable %></div>
-  </div>
-<% end %>
+  <% end %>
+</div>
 <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]

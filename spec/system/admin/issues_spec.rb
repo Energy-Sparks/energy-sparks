@@ -250,6 +250,20 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
                 it 'shows error messages' do
                   expect(page).to have_content 'Both current and new admin users are required'
+                  expect(page).not_to have_content "Current and new admin users can't be the same"
+                end
+              end
+
+              context 'when to and from are the same' do
+                before do
+                  visit url_for([:bulk_edit, :admin, issueable, Issue])
+                  select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
+                  select school_group_issues_admin.display_name, from: 'user_to'
+                  click_button 'Update all'
+                end
+
+                it 'shows error messages' do
+                  expect(page).to have_content "Current and new admin users can't be the same"
                 end
               end
 

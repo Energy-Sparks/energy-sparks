@@ -30,7 +30,7 @@
       <div class="col-md-6">
         <%= label_tag :user_to, 'Change owner to:' %>
         <%= select_tag :user_to,
-                       options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:to_user]),
+                       options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user_to]),
                        include_blank: 'Please select',
                        class: 'form-control mb-3' %>
 
