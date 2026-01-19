@@ -9,10 +9,7 @@
   <%= render 'breadcrumbs' %>
   <% if @issueable %>
     <div class="ms-auto">
-      <%= link_to polymorphic_path([:bulk_edit, :admin, @issueable, Issue].compact), class: 'btn btn-sm' do %>
-        <%= fa_icon('list-check') %> Bulk update
-      <% end %>
-      <%= render 'new_issues_links', issueable: @issueable if @issueable %>
+      <%= render 'issues_links', issueable: @issueable %>
     </div>
   <% end %>
 </div>

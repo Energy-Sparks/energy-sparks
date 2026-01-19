@@ -101,7 +101,7 @@
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-group-notes',
                         label: label_count('Group notes', @school_group.issues.note.status_open.count)) do %>
@@ -111,7 +111,7 @@
     <% else %>
       <div class="bg-light p-2">No school group notes for <%= @school_group.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-issues',
                         label: label_count('School issues and notes',

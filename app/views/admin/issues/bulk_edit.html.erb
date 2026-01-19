@@ -10,7 +10,7 @@
   <h4>Update all issues and notes<%= " for <strong>#{@issueable.name}</strong>".html_safe if @issueable %>:</h4>
   <%= form_tag polymorphic_path([:bulk_update, :admin, @issueable, Issue].compact),
                method: :post do %>
-
+    <%= redirect_back_tag params %>
     <div class="row">
       <div class="col-md-6">
         <%= label_tag :user_from, 'Currently owned by:' %>

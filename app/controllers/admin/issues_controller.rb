@@ -83,11 +83,10 @@ module Admin
       end
 
       updated_count =
-        @issueable.issues
-                  .where(owned_by_id: params[:user_from])
+        @issueable.issues.where(owned_by_id: params[:user_from])
                   .update_all(owned_by_id: params[:user_to], updated_by_id: current_user.id, updated_at: Time.current)
 
-      redirect_index notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
+      redirect_to params[:redirect_back], notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
     end
 
     def destroy

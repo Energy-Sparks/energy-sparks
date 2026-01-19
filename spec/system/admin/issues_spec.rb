@@ -242,10 +242,14 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
               let!(:issue1) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
               let!(:issue2) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
 
+              before do
+                visit url_for([:admin, issueable, Issue])
+                click_on 'Bulk update'
+              end
+
               context 'with missing fields' do
                 before do
-                  visit url_for([:bulk_edit, :admin, issueable, Issue])
-                  click_button 'Update all'
+                  click_on 'Update all'
                 end
 
                 it 'shows error messages' do
@@ -256,10 +260,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
               context 'when to and from are the same' do
                 before do
-                  visit url_for([:bulk_edit, :admin, issueable, Issue])
                   select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
                   select school_group_issues_admin.display_name, from: 'user_to'
-                  click_button 'Update all'
+                  click_on 'Update all'
                 end
 
                 it 'shows error messages' do
@@ -269,14 +272,14 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
               context 'with required fields' do
                 before do
-                  visit url_for([:bulk_edit, :admin, issueable, Issue])
                   select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
                   select other_issues_admin.display_name, from: 'user_to'
-                  click_button 'Update all'
+                  click_on 'Update all'
                 end
 
                 it 'updates issues to new admin' do
-                  expect(page).to have_current_path(polymorphic_path([:admin, issueable, :issues]))
+                  expect(page).to have_current_path(url_for([:admin, issueable, :issues]))
+
                   expect(page).to have_content '2 issues updated'
                   within('div#issues-list') do
                     expect(page).to have_content(other_issues_admin.display_name, count: 2)
