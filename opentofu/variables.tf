@@ -5,5 +5,5 @@ variable "prod_asg_name" {
 
 variable "test_asg_name" {
   type    = string
-  default = "awseb-e-7ptg5q2z3v-stack-AWSEBAutoScalingGroup-JGBf5ZY8MxoX"
+  default = "awseb-e-4mavdvpapq-stack-AWSEBAutoScalingGroup-R0KgD0ig7oX8"
 }
