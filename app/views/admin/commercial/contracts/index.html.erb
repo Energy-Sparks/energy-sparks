@@ -11,13 +11,13 @@
   </div>
 </div>
 
-<table class="table table-sorted">
+<table class="table table-sm table-paged">
   <thead>
     <tr>
       <th>Name</th>
       <th>Comments</th>
-      <th>Licences</th>
-      <th>Actions</th>
+      <th class="text-end">Licences</th>
+      <th class="text-end no-sort">Actions</th>
     </tr>
   </thead>
 
@@ -30,10 +30,10 @@
         <td>
           <%= contract.comments %>
         </td>
-        <td>
+        <td class="text-end">
           <%= contract.licences.count %>
         </td>
-        <td>
+        <td class="text-end">
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_commercial_contract_path(contract),
                         class: 'btn btn-secondary btn-sm' %>

@@ -1,0 +1,69 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @funder.name %>
+  <% header_nav.with_button 'All funders', admin_funders_path %>
+<% end %>
+
+<h2>Funder allocations (current model)</h2>
+
+<table class="table table-sm">
+  <thead>
+    <th>Category</th>
+    <th>Schools</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Visible not data enabled</td>
+      <td><%= @funder.schools.visible.where(data_enabled: false).count %></td>
+    </tr>
+    <tr>
+      <td>Visible and data enabled</td>
+      <td><%= @funder.schools.visible.data_enabled.count %></td>
+    </tr>
+    <tr>
+      <td>Onboarding</td>
+      <td>
+        <%= @funder.school_onboardings.where(school_id: nil).count %>
+      </td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td><%= @funder.schools.visible.count + @funder.school_onboardings.where(school_id: nil).count %></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Contracts</h2>
+
+<table id="contracts-table" class="table table-sm">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Comments</th>
+      <th>Product</th>
+      <th>Status</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Number of Schools</th>
+      <th>Licensed Schools</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @funder.contracts.by_start_date.each do |contract| %>
+      <tr>
+        <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
+        <td><%= contract.comments %></td>
+        <td><%= contract.product.name %></td>
+        <td>
+          <%= render(Elements::BadgeComponent.new(
+                       contract.status.humanize,
+                       colour: contract.status == 'provisional' ? :warning : :success
+                     )) %>
+        </td>
+        <td><%= contract.start_date %></td>
+        <td><%= contract.end_date %></td>
+        <td><%= contract.number_of_schools %></td>
+        <td><%= contract.licences.current.count %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
