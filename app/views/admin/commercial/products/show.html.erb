@@ -3,12 +3,14 @@
   <% header_nav.with_button 'All products', admin_commercial_products_path %>
 <% end %>
 
+<div class="row">
+  <div class="col-12">
 <%= render Layout::GridComponent.new(classes: 'mb-4',
                                      component_classes: 'd-flex flex-column flex-fill',
                                      cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
   <%= grid.with_block do %>
     <h3>Pricing</h3>
-    <div id="pricing" class="rounded-2 bg-light pt-3 px-4 flex-fill">
+    <div id="pricing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
       <dl class="row">
         <dt class="col-5">
           Small school price
@@ -35,7 +37,7 @@
           <%= format_unit(@product.mat_price, :£) %>
         </dd>
         <dt class="col-5">
-          Private account fee
+          Private account fee (per year)
         </dt>
         <dd class="col-7">
           <%= format_unit(@product.private_account_fee, :£) %>
@@ -65,7 +67,7 @@
   <% end %>
   <%= grid.with_block do %>
     <h3>Contract Summary</h3>
-    <div id="contract-summary" class="rounded-2 bg-light pt-3 px-4 flex-fill">
+    <div id="contract-summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
       <table id='contract-summary-table' class="table table-sm">
         <thead>
           <tr>
@@ -115,5 +117,11 @@
     </div>
   <% end %>
 <% end %>
+  </div>
+</div>
 
-<%= render Admin::RecordComponent.new(@product, id: 'metadata', current_user:) %>
+<div class="row">
+  <div class="col-12">
+    <%= render Admin::RecordComponent.new(@product, id: 'metadata', current_user:) %>
+  </div>
+</div>
