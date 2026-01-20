@@ -479,7 +479,7 @@ en:
         school_target: School target
         set_this_target: Set this target
         start_date: Start date
-        update_our_target: Update our target
+        update_our_target: Update your target
         you_are_currently_aiming_to_achieve_your_target_by_html: You are currently aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
