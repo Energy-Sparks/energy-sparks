@@ -3,17 +3,22 @@
 require 'rails_helper'
 
 describe Targets::TargetDates do
+  subject(:target_dates) { described_class.new(aggregate_meter, Targets::TargetAttributes.new(aggregate_meter)) }
+
   # mock objects that will feed test data into methods
-  let(:aggregate_meter) { instance_double(Dashboard::Meter) }
-  let(:amr_data) { instance_double(AMRData) }
+  let(:aggregate_meter) do
+    instance_double(Dashboard::Meter).tap do |meter|
+      allow(meter).to receive(:amr_data).and_return(amr_data)
+    end
+  end
+  let(:amr_data) do
+    instance_double(AMRData).tap do |amr_data|
+      allow(amr_data).to receive_messages(start_date: amr_start_date, end_date: amr_end_date)
+    end
+  end
   let(:amr_start_date) { nil }
   let(:amr_end_date) { nil }
 
-  before do
-    allow(aggregate_meter).to receive(:amr_data).and_return(amr_data)
-    allow(amr_data).to receive_messages(start_date: amr_start_date, end_date: amr_end_date)
-    # allow(amr_data).to receive(:days).and_return(amr_end_date - amr_start_date)
-  end
 
   describe '#default_target_start_date' do
     context 'when there is no data' do
@@ -50,8 +55,6 @@ describe Targets::TargetDates do
   end
 
   describe '#one_year_of_meter_readings_available_prior_to_1st_date?' do
-    subject(:target_dates) { described_class.new(aggregate_meter, Targets::TargetAttributes.new(aggregate_meter)) }
-
     context 'when no target set' do
       before do
         allow(aggregate_meter).to receive(:target_set?).and_return(false)
@@ -89,6 +92,18 @@ describe Targets::TargetDates do
           expect(target_dates.one_year_of_meter_readings_available_prior_to_1st_date?).to be false
         end
       end
+    end
+  end
+
+  describe '#enough_holidays?' do
+    context 'with limited data and target set' do
+      let(:aggregate_meter) do
+        build(:meter_collection, :with_aggregate_meter,
+              meter_attributes: { targeting_and_tracking: [{ start_date: 1.year.ago }] })
+          .aggregated_electricity_meters
+      end
+
+      it { expect(target_dates.enough_holidays?).to be false }
     end
   end
 end
