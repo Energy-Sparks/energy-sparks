@@ -45,12 +45,11 @@ module Admin::Commercial
     end
 
     def destroy
-      path = admin_commercial_contracts_path
-      if @contract.licences.any?
-        redirect_to(path, notice: 'Cannot delete a contract with licences') and return
+      if @contract.destroy
+        redirect_to(admin_commercial_contracts_path, alert: 'Contract has been deleted')
+      else
+        redirect_to(admin_commercial_contracts_path, alert: @contract.errors.full_messages.to_sentence)
       end
-      @contract.destroy
-      redirect_to(path, notice: 'Contract has been deleted')
     end
 
     private

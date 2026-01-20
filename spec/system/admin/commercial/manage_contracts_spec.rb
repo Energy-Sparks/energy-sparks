@@ -141,6 +141,24 @@ describe 'manage contracts' do
     it { expect(page).to have_content(contract.name) }
     it { expect(page).to have_content(contract.comments) }
 
+    context 'when viewing terms' do
+      it {
+        expect(page).to have_link(contract.contract_holder.name,
+                                     href: polymorphic_path([:admin, contract.contract_holder]))
+      }
+
+      it { expect(page).to have_content(contract.contract_holder_type) }
+      it { expect(page).to have_content(contract.product.name) }
+      it { expect(page).to have_content(contract.start_date) }
+      it { expect(page).to have_content(contract.end_date) }
+      it { expect(page).to have_content(contract.status.humanize) }
+      it { expect(page).to have_content(contract.invoice_terms.humanize) }
+      it { expect(page).to have_content(contract.licence_period.humanize) }
+      it { expect(page).to have_content(contract.number_of_schools) }
+      it { expect(page).to have_content(FormatUnit.format(:£, contract.agreed_school_price)) }
+      it { expect(page).to have_content(contract.comments) }
+    end
+
     context 'when viewing licence summary' do
       before do
         create(:commercial_licence, status: :confirmed, contract:)
