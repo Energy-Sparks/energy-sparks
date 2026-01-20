@@ -43,7 +43,7 @@
               <%= feature[:title_html].html_safe %>
               <% if feature.key?(:info) %>
                 <br><span class='small text-muted'>
-                  <%= i18n_custom_interpolation(feature[:info], @prices).html_safe %>
+                  <%= I18n.interpolate(feature[:info], @prices).html_safe %>
                 </span>
               <% end %>
             <% end %>

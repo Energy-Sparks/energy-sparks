@@ -571,8 +571,4 @@ module ApplicationHelper
   def label_count(label, count)
     "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
   end
-
-  def i18n_custom_interpolation(key, values = {})
-    I18n.backend.send(:interpolate, I18n.locale, key, values)
-  end
 end

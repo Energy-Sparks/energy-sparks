@@ -47,5 +47,22 @@ module Commercial
     }
 
     has_many :contracts, class_name: 'Commercial::Contract'
+
+    before_destroy :prevent_destroy_if_default
+    before_destroy :prevent_destroy_if_contracts_exist
+
+    private
+
+    def prevent_destroy_if_default
+      return unless default_product?
+      errors.add(:base, 'Cannot delete default product')
+      throw(:abort)
+    end
+
+    def prevent_destroy_if_contracts_exist
+      return unless contracts.exists?
+      errors.add(:base, 'Cannot delete a product with contracts')
+      throw(:abort)
+    end
   end
 end

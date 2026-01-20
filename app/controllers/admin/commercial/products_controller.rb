@@ -27,15 +27,11 @@ module Admin::Commercial
     end
 
     def destroy
-      path = admin_commercial_products_path
-      if @product.default_product?
-        redirect_to(path, notice: 'Cannot delete default product') and return
+      if @product.destroy
+        redirect_to(admin_commercial_products_path, notice: 'Product has been deleted')
+      else
+        redirect_to(admin_commercial_products_path, alert: @product.errors.full_messages.to_sentence)
       end
-      if @product.contracts.any?
-        redirect_to(path, notice: 'Cannot delete a product with contracts') and return
-      end
-      @product.destroy
-      redirect_to(path, notice: 'Product has been deleted')
     end
 
     private
