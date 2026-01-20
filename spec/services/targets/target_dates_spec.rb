@@ -19,7 +19,6 @@ describe Targets::TargetDates do
   let(:amr_start_date) { nil }
   let(:amr_end_date) { nil }
 
-
   describe '#default_target_start_date' do
     context 'when there is no data' do
       let(:this_month) { Date.new(Time.zone.today.year, Time.zone.today.month, 1) }
@@ -96,6 +95,12 @@ describe Targets::TargetDates do
   end
 
   describe '#enough_holidays?' do
+    context 'with limited data' do
+      let(:aggregate_meter) { build(:meter_collection, :with_aggregate_meter).aggregated_electricity_meters }
+
+      it { expect(target_dates.enough_holidays?).to be false }
+    end
+
     context 'with limited data and target set' do
       let(:aggregate_meter) do
         build(:meter_collection, :with_aggregate_meter,
