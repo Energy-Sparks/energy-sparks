@@ -21,26 +21,37 @@ module Admin
         end
       end
 
+      # Fetches a list of all attachments that have images, along with the id, school id and name as well as its
+      # associated with an activity or an action.
+      #
+      # An Activity/Observation has_one RichText
+      # RichText has many Attachments
+      # Each attachment has a blob
+      # A blob has a content type.
       def image_feed
+        records_union = <<~SQL.squish
+          (
+            SELECT id, school_id, created_at, 'Activity' AS record_type FROM activities
+            UNION ALL
+            SELECT id, school_id, created_at, 'Observation' AS record_type FROM observations
+          ) AS records
+        SQL
+
         ActiveStorage::Attachment
           .joins(:blob)
-          .joins('INNER JOIN action_text_rich_texts ON action_text_rich_texts.id = active_storage_attachments.record_id')
-          .joins(<<~SQL.squish)
-            INNER JOIN (
-              SELECT id, school_id, created_at, 'Activity' AS record_type
-              FROM activities
-              UNION ALL
-              SELECT id, school_id, created_at, 'Observation' AS record_type
-              FROM observations
-            ) AS records
-            ON records.id = action_text_rich_texts.record_id
-          SQL
+          .joins("INNER JOIN action_text_rich_texts
+                    ON action_text_rich_texts.id = active_storage_attachments.record_id")
+          .joins("INNER JOIN #{records_union}
+                    ON records.id = action_text_rich_texts.record_id") # joins to fetch school data
           .joins('INNER JOIN schools ON schools.id = records.school_id')
           .where(
-            active_storage_attachments: { record_type: 'ActionText::RichText', name: 'embeds' },
+            active_storage_attachments: {
+              record_type: 'ActionText::RichText',
+              name: 'embeds'
+            },
             action_text_rich_texts: { name: 'description' }
           )
-          .where("active_storage_blobs.content_type LIKE 'image/%'")
+          .where("active_storage_blobs.content_type LIKE 'image/%'") # filter to blobs with images
           .select(
             'active_storage_attachments.*',
             'records.record_type AS record_type',

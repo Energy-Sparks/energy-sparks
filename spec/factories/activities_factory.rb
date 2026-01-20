@@ -24,5 +24,29 @@ FactoryBot.define do
       created_by { association :user }
       updated_by { association :user }
     end
+
+    trait :with_image_in_description do
+      after(:create) do |activity|
+        # Create a blob for the image
+        blob = ActiveStorage::Blob.create_and_upload!(
+          io: File.open(Rails.root.join('spec/fixtures/images/placeholder.png')),
+          filename: 'placeholder.png',
+          content_type: 'image/png'
+        )
+
+        # Attach the blob to the description
+        activity.description.embeds.attach(blob)
+
+        # Ensure the description body references the attachment
+        activity.description.body = <<~HTML
+          <div>
+            <action-text-attachment sgid="#{blob.attachable_sgid}">
+            </action-text-attachment>
+          </div>
+        HTML
+
+        activity.save!
+      end
+    end
   end
 end
