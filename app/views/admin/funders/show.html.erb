@@ -40,11 +40,11 @@
       <th>Name</th>
       <th>Comments</th>
       <th>Product</th>
-      <th>Status</th>
-      <th>Start Date</th>
-      <th>End Date</th>
-      <th>Number of Schools</th>
-      <th>Licensed Schools</th>
+      <th class="text-end">Status</th>
+      <th class="text-end">Start Date</th>
+      <th class="text-end">End Date</th>
+      <th class="text-end">Number of Schools</th>
+      <th class="text-end">Licensed Schools</th>
     </tr>
   </thead>
   <tbody>
@@ -53,16 +53,16 @@
         <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
         <td><%= contract.comments %></td>
         <td><%= contract.product.name %></td>
-        <td>
+        <td class="text-end">
           <%= render(Elements::BadgeComponent.new(
                        contract.status.humanize,
                        colour: contract.status == 'provisional' ? :warning : :success
                      )) %>
         </td>
-        <td><%= contract.start_date %></td>
-        <td><%= contract.end_date %></td>
-        <td><%= contract.number_of_schools %></td>
-        <td><%= contract.licences.current.count %></td>
+        <td class="text-end"><%= contract.start_date %></td>
+        <td class="text-end"><%= contract.end_date %></td>
+        <td class="text-end"><%= contract.number_of_schools %></td>
+        <td class="text-end"><%= contract.licences.current.count %></td>
       </tr>
     <% end %>
   </tbody>
