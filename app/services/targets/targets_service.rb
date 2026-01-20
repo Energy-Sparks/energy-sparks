@@ -3,8 +3,6 @@
 # originally from analytics containing target logic, probably should be refactored future
 module Targets
   class TargetsService
-    include Logging
-
     def initialize(aggregate_school, fuel_type, period: :year)
       @aggregate_school = aggregate_school
       @fuel_type = set_fuel_type(fuel_type)

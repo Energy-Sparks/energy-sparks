@@ -187,7 +187,7 @@ module Targets
                    first_day_of_next_month(@original_meter.amr_data.start_date + DAYSINYEAR),
                    @original_meter.amr_data.end_date - DAYSINYEAR
                  ].max
-                 logger.info "Moving target start date forward to #{td} as target not set"
+                 Rails.logger.info "Moving target start date forward to #{td} as target not set"
                  td
                else
                  [@target.first_target_date, @original_meter.amr_data.end_date - DAYSINYEAR].max
