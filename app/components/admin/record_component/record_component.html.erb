@@ -1,45 +1,49 @@
-<div id="<%= id %>" class="mt-4 mb-4 alert alert-secondary row">
+<div id="<%= id %>" class="mt-4 mb-4 row">
   <div class="col">
-    <h4>Admin information</h4>
-    <table class="table table-sm">
-      <tr>
-        <td><%= t('schools.user_tariffs.show.created_by') %></td>
-        <td>
-          <% if created_by&.has_profile? %>
-            <%= link_to email_with_wbr(created_by&.display_name), user_path(created_by) %>
-          <% elsif created_by&.name %>
-            <%= email_with_wbr(created_by&.name) %>
-          <% else %>
-            N/A
-          <% end %>
-          <% if created_by %>
-            (<%= created_by&.role&.humanize %>)
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <td><%= t('schools.user_tariffs.show.created_at') %></td>
-        <td><%= @record.created_at&.to_fs(:es_compact) %></td>
-      </tr>
-      <tr>
-        <td><%= t('schools.user_tariffs.show.updated_by') %></td>
-        <td>
-          <% if updated_by&.has_profile? %>
-            <%= link_to email_with_wbr(updated_by&.display_name), user_path(updated_by) %>
-          <% elsif updated_by&.name %>
-            <%= email_with_wbr(updated_by&.name) %>
-          <% else %>
-            N/A
-          <% end %>
-          <% if updated_by %>
-            (<%= updated_by&.role&.humanize %>)
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <td><%= t('schools.user_tariffs.show.updated_at') %></td>
-        <td><%= @record.updated_at&.to_fs(:es_compact) %></td>
-      </tr>
-    </table>
+    <h3>Record summary</h3>
+    <div class="row pt-3">
+      <div class="col">
+        <table class="table table-sm table-borderless">
+          <tr>
+            <td><%= t('schools.user_tariffs.show.created_by') %></td>
+            <td>
+              <% if created_by&.has_profile? %>
+                <%= link_to email_with_wbr(created_by&.display_name), user_path(created_by) %>
+              <% elsif created_by&.name %>
+                <%= email_with_wbr(created_by&.name) %>
+              <% else %>
+                N/A
+              <% end %>
+              <% if created_by %>
+                (<%= created_by&.role&.humanize %>)
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td><%= t('schools.user_tariffs.show.created_at') %></td>
+            <td><%= @record.created_at&.to_fs(:es_compact) %></td>
+          </tr>
+          <tr>
+            <td><%= t('schools.user_tariffs.show.updated_by') %></td>
+            <td>
+              <% if updated_by&.has_profile? %>
+                <%= link_to email_with_wbr(updated_by&.display_name), user_path(updated_by) %>
+              <% elsif updated_by&.name %>
+                <%= email_with_wbr(updated_by&.name) %>
+              <% else %>
+                N/A
+              <% end %>
+              <% if updated_by %>
+                (<%= updated_by&.role&.humanize %>)
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td><%= t('schools.user_tariffs.show.updated_at') %></td>
+            <td><%= @record.updated_at&.to_fs(:es_compact) %></td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </div>

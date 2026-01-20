@@ -599,6 +599,7 @@ Rails.application.routes.draw do
       resources :contracts do
         get :contract_holder_options, on: :collection
       end
+      resources :products
     end
 
     namespace :comparisons do
@@ -846,7 +847,6 @@ Rails.application.routes.draw do
             post :clear
           end
         end
-        resource :target_data, only: :show
       end
       member do
         post :archive
