@@ -11,8 +11,8 @@ RSpec.describe 'Admin Image Feed' do
   end
 
   context 'when viewing feed' do
-    let!(:activity_no_image) { create(:activity, school: create(:school, :with_school_group)) }
-    let!(:observation_no_image) { create(:observation, :intervention, school: create(:school, :with_school_group)) }
+    let!(:activity_no_image) { create(:activity, description: 'Activity no image') }
+    let!(:observation_no_image) { create(:observation, :intervention, description: 'Intervention no image') }
 
     let!(:activity_with_image) do
       create(:activity_without_creator, :with_image_in_description, school: create(:school, :with_school_group))
@@ -26,8 +26,8 @@ RSpec.describe 'Admin Image Feed' do
       click_on('Images')
     end
 
-    it { expect(page).not_to have_content(activity_no_image.school.name) }
-    it { expect(page).not_to have_content(observation_no_image.school.name) }
+    it { expect(page).not_to have_content(activity_no_image.id) }
+    it { expect(page).not_to have_content(observation_no_image.id) }
 
     it { expect(page).to have_content(activity_with_image.school.name) }
     it { expect(page).to have_content(observation_with_image.school.name) }
