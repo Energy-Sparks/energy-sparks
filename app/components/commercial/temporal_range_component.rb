@@ -29,8 +29,7 @@ module Commercial
     end
 
     def model_class
-      namespace = Commercial
-      namespace.const_get(@association_name.to_s.classify)
+      Commercial.const_get(@association_name.to_s.classify)
     end
 
     def normalize_range(range)

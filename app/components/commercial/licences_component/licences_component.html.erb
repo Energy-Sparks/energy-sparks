@@ -20,7 +20,9 @@
       <% associations.each do |licence| %>
         <tr>
           <td>
-            <%= link_to licence.school.school_group.name, school_group_path(licence.school.school_group) %>
+            <%= if licence.school.school_group
+                  link_to(licence.school.school_group.name, school_group_path(licence.school.school_group))
+                end %>
           </td>
           <td>
             <%= link_to licence.school.name, school_path(licence.school) %>
