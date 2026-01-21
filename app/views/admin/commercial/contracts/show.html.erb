@@ -147,6 +147,21 @@
 </div>
 
 <div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New licence', new_admin_commercial_licence_path(contract_id: @contract.id),
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Commercial::LicencesComponent.new(holder: @contract) %>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-12">
     <%= render Admin::RecordComponent.new(@contract, id: 'metadata', current_user:) %>
   </div>

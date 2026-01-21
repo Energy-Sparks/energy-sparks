@@ -37,6 +37,8 @@ module Commercial
     belongs_to :contract, class_name: 'Commercial::Contract'
     belongs_to :school
 
+    delegate :product, to: :contract
+
     LICENCE_STATUS = {
       provisional: 'provisional',
       confirmed: 'confirmed',

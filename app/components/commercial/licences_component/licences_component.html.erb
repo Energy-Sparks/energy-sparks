@@ -1,0 +1,62 @@
+<%= tag.div id: id, class: classes do %>
+  <h2><%= @range.to_s.humanize %> Licences</h2>
+
+  <table id="<%= @range.to_s %>-licences-table" class="table table-paged table-sm">
+    <thead>
+      <tr>
+        <th>School Group</th>
+        <th>School</th>
+        <th>Product</th>
+        <th>Contract</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Status</th>
+        <% if @show_actions %>
+          <th class="text-end no-sort">Actions</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% associations.each do |licence| %>
+        <tr>
+          <td>
+            <%= link_to licence.school.school_group.name, school_group_path(licence.school.school_group) %>
+          </td>
+          <td>
+            <%= link_to licence.school.name, school_path(licence.school) %>
+          </td>
+          <td>
+            <%= link_to licence.contract.product.name, admin_commercial_product_path(licence.contract.product) %>
+          </td>
+          <td>
+            <%= link_to licence.contract.name, admin_commercial_contract_path(licence.contract) %>
+          </td>
+          <td>
+            <%= licence.start_date %>
+          </td>
+          <td>
+            <%= licence.end_date %>
+          </td>
+          <td>
+            <%= render(Elements::BadgeComponent.new(
+                         licence.status.humanize,
+                         colour: licence.status == 'confirmed' ? :success : :warning
+                       )) %>
+          </td>
+          <% if @show_actions %>
+            <td class="text-end">
+              <div class="btn-group">
+                <%= link_to 'Edit', edit_admin_commercial_licence_path(licence),
+                            class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Delete', admin_commercial_licence_path(licence),
+                            method: :delete,
+                            data: { confirm: 'Are you sure?' },
+                            class: 'btn btn-danger btn-sm' %>
+              </div>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

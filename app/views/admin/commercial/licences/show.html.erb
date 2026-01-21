@@ -1,0 +1,78 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @licence.school.name.to_s %>
+  <% header_nav.with_button 'All licences', admin_commercial_licences_path %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Layout::GridComponent.new(classes: 'mb-4',
+                                         component_classes: 'd-flex flex-column flex-fill',
+                                         cell_classes: 'mb-2 d-flex', cols: 1) do |grid| %>
+      <%= grid.with_block do %>
+        <h3>Licence details</h3>
+        <div id="pricing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <dl class="row">
+            <dt class="col-5">
+              Product
+            </dt>
+            <dd class="col-7">
+              <%= link_to @licence.product.name, polymorphic_path([:admin, @licence.product]) %>
+            </dd>
+            <dt class="col-5">
+              Contract
+            </dt>
+            <dd class="col-7">
+              <%= link_to @licence.contract.name, polymorphic_path([:admin, @licence.contract]) %>
+            </dd>
+            <dt class="col-5">
+              School
+            </dt>
+            <dd class="col-7">
+              <%= link_to @licence.school.name, school_path(@licence.school) %>
+            </dd>
+            <dt class="col-5">
+              Start date
+            </dt>
+            <dd class="col-7">
+              <%= @licence.start_date %>
+            </dd>
+            <dt class="col-5">
+              End date
+            </dt>
+            <dd class="col-7">
+              <%= @licence.end_date %>
+            </dd>
+            <dt class="col-5">
+              Status
+            </dt>
+            <dd class="col-7">
+              <%= render(Elements::BadgeComponent.new(
+                           @licence.status.humanize,
+                           colour: @licence.status == 'confirmed' ? :success : :warning
+                         )) %>
+            </dd>
+            <dt class="col-5">
+              Invoice reference
+            </dt>
+            <dd class="col-7">
+              <%= @licence.invoice_reference %>
+            </dd>
+          </dl>
+          <%= link_to 'Edit', edit_admin_commercial_licence_path(@licence),
+                      class: 'btn btn-secondary btn-sm' %>
+          <%= link_to 'Delete', admin_commercial_licence_path(@licence),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' },
+                      class: 'btn btn-danger btn-sm' %>
+
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Admin::RecordComponent.new(@licence, id: 'metadata', current_user:) %>
+  </div>
+</div>

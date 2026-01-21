@@ -9,10 +9,11 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
 
   before do
     render_inline(described_class.new(
-                    contract_holder:,
+                    holder: contract_holder,
                     range:,
                     id: 'custom-id',
                     classes: 'extra-classes',
+                    show_actions: false
     ))
   end
 

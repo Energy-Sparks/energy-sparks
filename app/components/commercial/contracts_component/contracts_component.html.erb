@@ -12,10 +12,13 @@
         <th class="text-end">End Date</th>
         <th class="text-end">Number of Schools</th>
         <th class="text-end">Licensed Schools</th>
+        <% if @show_actions %>
+          <th class="text-end no-sort">Actions</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
-      <% contracts.by_start_date.each do |contract| %>
+      <% associations.by_start_date.each do |contract| %>
         <tr>
           <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
           <td><%= contract.comments %></td>
@@ -30,6 +33,19 @@
           <td class="text-end"><%= contract.end_date %></td>
           <td class="text-end"><%= contract.number_of_schools %></td>
           <td class="text-end"><%= contract.licences.current.count %></td>
+          <% if @show_actions %>
+          <td class="text-end">
+            <div class="btn-group">
+              <%= link_to 'Edit', edit_admin_commercial_contract_path(contract),
+                          class: 'btn btn-secondary btn-sm' %>
+              <%= link_to 'Delete', admin_commercial_contract_path(contract),
+                          method: :delete,
+                          data: { confirm: 'Are you sure?' },
+                          class: 'btn btn-danger btn-sm' %>
+
+            </div>
+          </td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
