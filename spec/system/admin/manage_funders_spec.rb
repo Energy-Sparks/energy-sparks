@@ -89,7 +89,7 @@ describe 'manage funders' do
       it { expect(page).to have_link(contract.name, href: admin_commercial_contract_path(contract)) }
 
       it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
-        let(:table_id) { '#contracts-table' }
+        let(:table_id) { '#all-contracts-table' }
         let(:expected_header) do
           [
             ['Name', 'Comments', 'Product', 'Status', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools']

@@ -121,6 +121,12 @@
 </div>
 
 <div class="row">
+  <div class="col">
+    <%= render(Commercial::ContractsComponent.new(contract_holder: @product)) %>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-12">
     <%= render Admin::RecordComponent.new(@product, id: 'metadata', current_user:) %>
   </div>

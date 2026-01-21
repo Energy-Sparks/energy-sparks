@@ -1,0 +1,37 @@
+<%= tag.div id: id, class: classes do %>
+  <h2><%= @range.to_s.humanize %> Contracts</h2>
+
+  <table id="<%= @range.to_s %>-contracts-table" class="table table-paged table-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Comments</th>
+        <th>Product</th>
+        <th class="text-end">Status</th>
+        <th class="text-end">Start Date</th>
+        <th class="text-end">End Date</th>
+        <th class="text-end">Number of Schools</th>
+        <th class="text-end">Licensed Schools</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% contracts.by_start_date.each do |contract| %>
+        <tr>
+          <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
+          <td><%= contract.comments %></td>
+          <td><%= link_to contract.product.name, admin_commercial_product_path(contract.product) %></td>
+          <td class="text-end">
+            <%= render(Elements::BadgeComponent.new(
+                         contract.status.humanize,
+                         colour: contract.status == 'provisional' ? :warning : :success
+                       )) %>
+          </td>
+          <td class="text-end"><%= contract.start_date %></td>
+          <td class="text-end"><%= contract.end_date %></td>
+          <td class="text-end"><%= contract.number_of_schools %></td>
+          <td class="text-end"><%= contract.licences.current.count %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -28,7 +28,7 @@
               Product
             </dt>
             <dd class="col-7">
-              <%= @contract.product.name %>
+              <%= link_to @contract.product.name, admin_commercial_product_path(@contract.product) %>
             </dd>
             <dt class="col-5">
               Start date

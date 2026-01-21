@@ -32,38 +32,8 @@
   </tbody>
 </table>
 
-<h2>Contracts</h2>
-
-<table id="contracts-table" class="table table-sm">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Comments</th>
-      <th>Product</th>
-      <th class="text-end">Status</th>
-      <th class="text-end">Start Date</th>
-      <th class="text-end">End Date</th>
-      <th class="text-end">Number of Schools</th>
-      <th class="text-end">Licensed Schools</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @funder.contracts.by_start_date.each do |contract| %>
-      <tr>
-        <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
-        <td><%= contract.comments %></td>
-        <td><%= contract.product.name %></td>
-        <td class="text-end">
-          <%= render(Elements::BadgeComponent.new(
-                       contract.status.humanize,
-                       colour: contract.status == 'provisional' ? :warning : :success
-                     )) %>
-        </td>
-        <td class="text-end"><%= contract.start_date %></td>
-        <td class="text-end"><%= contract.end_date %></td>
-        <td class="text-end"><%= contract.number_of_schools %></td>
-        <td class="text-end"><%= contract.licences.current.count %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col">
+    <%= render(Commercial::ContractsComponent.new(contract_holder: @funder)) %>
+  </div>
+</div>
