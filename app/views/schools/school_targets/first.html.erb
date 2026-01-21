@@ -1,61 +1,17 @@
-<% content_for :page_title, t('schools.school_targets.first.page_title') %>
-
-<% content_for :dashboard_header do %>
-  <div class="d-flex justify-content-between align-items-center">
-    <h1><%= t('schools.school_targets.first.set_your_first_energy_saving_target') %></h1>
-    <div>
-      <%= link_to_help_for_feature :school_targets, css: 'btn btn-default' %>
-    </div>
-  </div>
+<% content_for :pre do %>
+  <p><%= t('schools.school_targets.first.its_time') %>.</p>
+  <p><%= t('schools.school_targets.first.careful_planning') %>:</p>
+  <ul>
+    <li><%= t('schools.school_targets.first.providing_reports') %>'</li>
+    <li><%= t('schools.school_targets.first.suggesting_ways_to_reduce_consumption') %></li>
+    <li><%= t('schools.school_targets.first.suggesting_activities_for_pupils') %></li>
+    <li><%= t('schools.school_targets.first.providing_more_insight') %></li>
+  </ul>
 <% end %>
-<div class="container">
-  <div class="row mt-2">
-    <div class="col-md-3 col-lg-3 col-xl-2 advice-page-nav">
-      <%= render 'schools/advice/nav', school: @school, advice_pages: @advice_pages %>
-    </div>
-    <div class="col-md-9 col-lg-9 col-xl-10">
-      <div class="row">
-        <div class="col-md-8">
-          <p>
-            <%= t('schools.school_targets.first.its_time') %>.
-          </p>
-
-          <p>
-            <%= t('schools.school_targets.first.careful_planning') %>:
-          </p>
-
-          <ul>
-            <li><%= t('schools.school_targets.first.providing_reports') %>'</li>
-            <li><%= t('schools.school_targets.first.suggesting_ways_to_reduce_consumption') %></li>
-            <li><%= t('schools.school_targets.first.suggesting_activities_for_pupils') %></li>
-            <li><%= t('schools.school_targets.first.providing_more_insight') %></li>
-          </ul>
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-8">
-          <h3><%= t('schools.school_targets.first.your_first') %></h3>
-
-          <div class="alert alert-info">
-            <p>
-              <%= far_icon('lightbulb fa-lg') %>
-              <%= t('schools.school_targets.first.tip_html') %>.
-            </p>
-            <%= t('schools.school_targets.first.advice') %>
-          </div>
-
-          <%= render 'fuel_type_note' %>
-
-          <p>
-            <%= t('schools.school_targets.first.recommend') %>
-          </p>
-
-          <%= render 'form', target_service: @target_service, school_target: @school_target %>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<% content_for :after_subheading do %>
+  <%= render 'tip', text: t('schools.school_targets.first.advice') %>
+<% end %>
+<%= render 'common', page_title: t('schools.school_targets.first.page_title'),
+                     heading: t('schools.school_targets.first.set_your_first_energy_saving_target'),
+                     subheading: t('schools.school_targets.first.your_first'),
+                     form_intro: t('schools.school_targets.first.recommend') %>

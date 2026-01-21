@@ -25,7 +25,7 @@
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(school) %>
           <% end %>
           <% SchoolTarget::FUEL_TYPES.each do |fuel_type|
-                meeting_target = @target&.monthly_consumption_status(fuel_type)&.meeting_target
+                meeting_target = Targets::MonthlyConsumptionService.new(@target, fuel_type).meeting_target
                 next if meeting_target.nil? %>
             <%= c.with_prompt icon: fuel_type_icon(fuel_type),
                               status: meeting_target ? :positive : :negative do |prompt| %>

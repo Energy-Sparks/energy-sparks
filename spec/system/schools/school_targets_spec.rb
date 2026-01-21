@@ -156,7 +156,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
         fill_in 'Reducing electricity usage by', with: 7
         fill_in 'Reducing gas usage by', with: 7
         fill_in 'Reducing storage heater usage by', with: 7
-        click_on 'Update our target'
+        click_on 'Update your target'
         expect(page).to have_content('Target successfully updated')
         expect(test_school.current_target.electricity).to be 7.0
         expect(test_school.current_target.gas).to be 7.0
@@ -169,7 +169,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
 
       it 'validates target values' do
         fill_in 'Reducing gas usage by', with: 123
-        click_on 'Update our target'
+        click_on 'Update your target'
         expect(page).to have_content('Gas must be less than or equal to 100')
       end
     end
@@ -274,7 +274,6 @@ end
 describe 'school targets' do
   before do
     sign_in(user) if defined? user
-    # visit school_school_targets_path(school)
   end
 
   let!(:school) { create(:school) }
