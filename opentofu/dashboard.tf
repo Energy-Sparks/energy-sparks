@@ -184,8 +184,8 @@ resource "aws_cloudwatch_dashboard" "dashboard" {
         "type" : "metric",
         "properties" : {
           "metrics": [
-            [ "GoodJob", "Queued", "InstanceId", data.aws_instances.production.ids[0], "QueueName", "regeneration", { "region": "eu-west-2", "color": "#d62728" } ],
-            [ "...", "queued", ".", data.aws_instances.test.ids[0], ".", ".", { "region": "eu-west-2", "color": "#1f77b4" } ]
+            [ "GoodJob", "queued", "InstanceId", data.aws_instances.production.ids[0], "QueueName", "regeneration", { "region": "eu-west-2", "color": "#d62728" } ],
+            [ "...", data.aws_instances.test.ids[0], ".", ".", { "region": "eu-west-2", "color": "#1f77b4" } ]
           ],
           "view": "timeSeries",
           "stacked": false,
