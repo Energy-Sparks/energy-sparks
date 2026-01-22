@@ -3,11 +3,12 @@
     <%= render 'tip', title_prefix: t('schools.school_targets.edit.suggestion'),
                       title: t('schools.school_targets.edit.review_your_targets'),
                       text: t('schools.school_targets.edit.your_configuration_has_changed',
-                              fuel_types_changed: @fuel_types_changed.map(&:humanize).to_sentence)  %>
+                              fuel_types_changed: @fuel_types_changed.map(&:humanize).to_sentence) %>
   <% else %>
     <%= render 'tip', text: t('schools.school_targets.edit.before_changing_your_targets') %>
   <% end %>
   <%= render 'schools/school_targets/manual_readings_prompt', school: @school, target: @school_target %>
+  <p><%= t('schools.school_targets.edit.if_you_do_revise_your_targets') %>.</p>
 <% end %>
 <% content_for :extra_row do %>
   <% if current_user.admin? %>
@@ -15,10 +16,10 @@
       <div class="alert alert-danger col-md-8">
         <strong>Admin only:</strong>
         <%= link_to 'Delete',
-                  school_school_target_path(@school, @school_target),
-                  method: :delete,
-                  data: { confirm: 'Are you sure?' },
-                  class: 'btn btn-danger' %>
+                    school_school_target_path(@school, @school_target),
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' },
+                    class: 'btn btn-danger' %>
       </div>
     </div>
   <% end %>

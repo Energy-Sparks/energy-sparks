@@ -452,10 +452,8 @@ en:
         cannot_update_expired: Cannot edit an expired target
         if_you_do_revise_your_targets: If you do revise your targets we will update your progress report to apply that target to all of your energy usage this year
         page_title: Update your energy saving target
-        review_your_dashboard: Review your dashboard
         review_your_targets: Review your targets
         suggestion: Suggestion
-        tip: Tip
         update_your_energy_saving_target: Update your energy saving target
         your_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets
         your_current_target: Your current target
@@ -470,7 +468,7 @@ en:
         set_your_first_energy_saving_target: Set your first energy saving target
         suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
         suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
-        tip_html: "<strong>Tip</strong>: don't try to be too ambitious"
+        too_ambitious: don't try to be too ambitious
         your_first: Your first target
       form:
         reducing_electricity_usage_by: Reducing electricity usage by

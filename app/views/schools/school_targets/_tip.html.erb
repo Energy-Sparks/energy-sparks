@@ -1,5 +1,7 @@
 <%= render PromptComponent.new(status: :neutral, icon: :lightbulb) do %>
-  <strong><%= defined?(title_prefix ? title_prefix : t('schools.school_targets.new.tip') %></strong>:
-  <%= defined?(title) ? title : t('schools.school_targets.new.review_your_dashboard') %>.<br>
-  <%= text %>
+  <p class="mb-2">
+    <strong><%= defined?(title_prefix) ? title_prefix : t('schools.school_targets.new.tip') %></strong>:
+    <%= defined?(title) ? title : t('schools.school_targets.new.review_your_dashboard') %>.<br>
+  </p>
+  <p><%= text %></p>
 <% end %>

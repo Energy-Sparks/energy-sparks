@@ -9,7 +9,8 @@
   </ul>
 <% end %>
 <% content_for :after_subheading do %>
-  <%= render 'tip', text: t('schools.school_targets.first.advice') %>
+  <%= render 'tip', title: t('schools.school_targets.first.too_ambitious'),
+                    text: t('schools.school_targets.first.advice') %>
 <% end %>
 <%= render 'common', page_title: t('schools.school_targets.first.page_title'),
                      heading: t('schools.school_targets.first.set_your_first_energy_saving_target'),
