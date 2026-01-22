@@ -1,7 +1,6 @@
 <%= render 'schools/advice/section_title',
            section_id: 'recent-trend',
            section_title: t('advice_pages.electricity_long_term.analysis.recent_trend.title') %>
-
 <% if analysis_dates.one_years_data? %>
   <% if annual_usage.kwh < vs_exemplar.kwh %>
     <%= render PromptComponent.new(icon: :fire, fuel_type: :gas, status: :positive) do %>
@@ -51,4 +50,4 @@
   <% end %>
 <% end %>
 
-<%= render 'consumption_by_month', fuel_type: %>
+<%= render 'consumption_by_month', fuel_type:, school:, consumption_by_month: %>

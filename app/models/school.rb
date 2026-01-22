@@ -18,6 +18,8 @@
 #  dark_sky_area_id                        :bigint(8)
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
+#  default_contract_holder_id              :bigint(8)
+#  default_contract_holder_type            :string
 #  enable_targets_feature                  :boolean          default(TRUE)
 #  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
@@ -76,6 +78,7 @@
 #  public                                  :boolean          default(TRUE)
 #  region                                  :integer
 #  removal_date                            :date
+#  renewal_behaviour                       :enum             default("renew"), not null
 #  school_group_cluster_id                 :bigint(8)
 #  school_group_id                         :bigint(8)
 #  school_type                             :integer          not null
@@ -95,6 +98,7 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
+#  index_schools_on_default_contract_holder     (default_contract_holder_type,default_contract_holder_id)
 #  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
@@ -122,6 +126,7 @@ class School < ApplicationRecord
   include Enums::DataSharing
   include Enums::SchoolType
   include AlphabeticalScopes
+  include ContractHolder
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
@@ -211,12 +216,15 @@ class School < ApplicationRecord
 
   has_many :advice_page_school_benchmarks
 
+  has_many :licences, class_name: 'Commercial::Licence'
+
   has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
   accepts_nested_attributes_for :manual_readings,
                                 reject_if: proc { |attributes|
                                   attributes[:gas].blank? && attributes[:electricity].blank?
                                 },
                                 allow_destroy: true
+
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
@@ -236,6 +244,7 @@ class School < ApplicationRecord
 
   belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
+  belongs_to :default_contract_holder, polymorphic: true, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -274,6 +283,14 @@ class School < ApplicationRecord
   enum :funding_status, { state_school: 0, private_school: 1 }
   enum :region, { north_east: 0, north_west: 1, yorkshire_and_the_humber: 2, east_midlands: 3,
                   west_midlands: 4, east_of_england: 5, london: 6, south_east: 7, south_west: 8 }
+
+  RENEWAL_BEHAVIOUR = {
+    renew: 'renew',
+    archive: 'archive',
+    waitlist: 'waitlist'
+  }.freeze
+
+  enum :renewal_behaviour, RENEWAL_BEHAVIOUR
 
   # active flag is a soft-delete, those with a removal date are deleted, others
   # are archived, with chance of returning if we receive funding
@@ -356,6 +373,8 @@ class School < ApplicationRecord
             numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true })
 
   validates :weather_station, presence: true
+
+  before_validation :set_default_contract_holder, if: -> { default_contract_holder.nil? }
 
   accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
                                                allow_destroy: true
@@ -987,5 +1006,9 @@ class School < ApplicationRecord
     else
       SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
     end
+  end
+
+  def set_default_contract_holder
+    self.default_contract_holder = organisation_group
   end
 end

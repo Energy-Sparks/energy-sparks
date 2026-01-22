@@ -15,7 +15,7 @@ describe ManagementSummaryTable do
 
   describe '#reporting_period' do
     let(:meter_collection) do
-      build(:meter_collection, :with_fuel_and_aggregate_meters,
+      build(:meter_collection, :with_aggregated_aggregate_meter,
             start_date: start_date, end_date: today)
     end
 
@@ -38,7 +38,7 @@ describe ManagementSummaryTable do
       subject(:electricity_data) { variables.dig(:summary_data, :electricity) }
 
       let(:meter_collection) do
-        build(:meter_collection, :with_fuel_and_aggregate_meters,
+        build(:meter_collection, :with_aggregated_aggregate_meter,
               start_date: start_date, end_date: today)
       end
 
@@ -106,7 +106,7 @@ describe ManagementSummaryTable do
 
       context 'when the data is stale' do
         let(:meter_collection) do
-          build(:meter_collection, :with_fuel_and_aggregate_meters,
+          build(:meter_collection, :with_aggregated_aggregate_meter,
                 start_date: start_date, end_date: Date.new(2023, 6, 1))
         end
 
@@ -229,7 +229,7 @@ describe ManagementSummaryTable do
       subject(:gas_data) { variables.dig(:summary_data, :gas) }
 
       let(:meter_collection) do
-        build(:meter_collection, :with_fuel_and_aggregate_meters,
+        build(:meter_collection, :with_aggregated_aggregate_meter,
               start_date: start_date, end_date: today, fuel_type: :gas)
       end
 
@@ -300,7 +300,7 @@ describe ManagementSummaryTable do
 
     context 'when school has storage heaters' do
       let(:meter_collection) do
-        build(:meter_collection, :with_fuel_and_aggregate_meters,
+        build(:meter_collection, :with_aggregated_aggregate_meter,
               start_date: start_date, end_date: today, storage_heaters: true)
       end
 

@@ -274,6 +274,8 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
     end
 
     describe 'index' do
+      buttons = ['Filter', 'CSV']
+
       before do
         setup_data
         visit admin_issues_url
@@ -309,68 +311,93 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         context 'and deselecting notes' do
           before do
             uncheck 'Note'
-            click_button 'Filter'
           end
 
-          it 'only shows issues' do
-            expect(page).not_to have_content note_issue.title
-            expect(page).to have_content issue_issue.title
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it 'only shows issues' do
+                expect(page).not_to have_content note_issue.title
+                expect(page).to have_content issue_issue.title
+              end
+            end
           end
         end
 
-        context 'and deselecting issues' do
+        context 'when deselecting issues' do
           before do
             uncheck 'Issue'
-            click_button 'Filter'
           end
 
-          it 'only shows notes' do
-            expect(page).to have_content note_issue.title
-            expect(page).not_to have_content issue_issue.title
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it 'only shows notes' do
+                expect(page).to have_content note_issue.title
+                expect(page).not_to have_content issue_issue.title
+              end
+            end
           end
         end
 
-        context 'and deselecting open' do
+        context 'when deselecting open' do
           before do
             uncheck 'Open'
-            click_button 'Filter'
           end
 
-          it 'onlies show closed issues' do
-            expect(page).not_to have_content open_issue.title
-            expect(page).to have_content closed_issue.title
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it 'only show closed issues' do
+                expect(page).not_to have_content open_issue.title
+                expect(page).to have_content closed_issue.title
+              end
+            end
           end
         end
 
-        context 'and deselecting closed' do
+        context 'when deselecting closed' do
           before do
             uncheck 'Closed'
-            click_button 'Filter'
           end
 
-          it 'onlies show open issues' do
-            expect(page).to have_content open_issue.title
-            expect(page).not_to have_content closed_issue.title
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it 'only show open issues' do
+                expect(page).to have_content open_issue.title
+                expect(page).not_to have_content closed_issue.title
+              end
+            end
           end
         end
       end
 
-      context 'and selecting a user' do
+      context 'when selecting a user' do
         let!(:user_issue) { create(:issue, owned_by: user)}
         let!(:other_user_issue) { create(:issue, owned_by: create(:admin, name: 'Not you'))}
         let(:setup_data) { [user_issue, other_user_issue] }
 
         before do
           select user.display_name, from: :user
-          click_button 'Filter'
         end
 
-        it_behaves_like 'a displayed list issue' do
-          let(:issue) { user_issue }
-        end
+        buttons.each do |button|
+          context "when clicking #{button}" do
+            before { click_on button }
 
-        it "doesn't display issue for other user" do
-          expect(page).not_to have_content other_user_issue.title
+            it_behaves_like 'a displayed list issue', type: button do
+              let(:issue) { user_issue }
+            end
+
+            it "doesn't display issue for other user" do
+              expect(page).not_to have_content other_user_issue.title
+            end
+          end
         end
       end
 
@@ -385,12 +412,17 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         context 'when selecting any next review date' do
           before do
             select 'Any next review date', from: :review_date
-            click_button 'Filter'
           end
 
-          it 'shows all issues' do
-            issues.each do |issue|
-              expect(page).to have_content issue.title
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it 'shows all issues' do
+                issues.each do |issue|
+                  expect(page).to have_content issue.title
+                end
+              end
             end
           end
         end
@@ -398,36 +430,51 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         context 'when selecting review date not set' do
           before do
             select 'Next review date not set', from: :review_date
-            click_button 'Filter'
           end
 
-          it_behaves_like 'a displayed list issue' do
-            let(:issue) { issue_no_review_date }
-            let(:all_issues) { issues }
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it_behaves_like 'a displayed list issue', type: button do
+                let(:issue) { issue_no_review_date }
+                let(:all_issues) { issues }
+              end
+            end
           end
         end
 
         context 'when selecting next review date in next week' do
           before do
             select 'Next review date in next week', from: :review_date
-            click_button 'Filter'
           end
 
-          it_behaves_like 'a displayed list issue' do
-            let(:issue) { issue_next_week }
-            let(:all_issues) { issues }
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it_behaves_like 'a displayed list issue', type: button do
+                let(:issue) { issue_next_week }
+                let(:all_issues) { issues }
+              end
+            end
           end
         end
 
         context 'when selecting next review date overdue' do
           before do
             select 'Next review date overdue', from: :review_date
-            click_button 'Filter'
           end
 
-          it_behaves_like 'a displayed list issue' do
-            let(:issue) { issue_overdue }
-            let(:all_issues) { issues }
+          buttons.each do |button|
+            context "when clicking #{button}" do
+              before { click_on button }
+
+              it_behaves_like 'a displayed list issue', type: button do
+                let(:issue) { issue_overdue }
+                let(:all_issues) { issues }
+              end
+            end
           end
         end
       end
@@ -439,14 +486,19 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
         before do
           fill_in :search, with: 'findme|hiding'
-          click_button 'Filter'
         end
 
-        it_behaves_like 'a displayed list issue' do
-          let(:issue) { issue_1 }
-        end
-        it_behaves_like 'a displayed list issue' do
-          let(:issue) { issue_2 }
+        buttons.each do |button|
+          context "when clicking #{button}" do
+            before { click_on button }
+
+            it_behaves_like 'a displayed list issue', type: button do
+              let(:issue) { issue_1 }
+            end
+            it_behaves_like 'a displayed list issue', type: button do
+              let(:issue) { issue_2 }
+            end
+          end
         end
       end
 

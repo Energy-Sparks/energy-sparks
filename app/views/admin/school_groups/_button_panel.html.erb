@@ -20,7 +20,7 @@
     <div class="mb-2">This will email you a zip file containing meter reading data for each school in the group.</div>
   <% end %>
   <%= link_to "#{fa_icon('file-download')} Issues".html_safe,
-              admin_school_group_issues_path(@school_group, format: :csv),
+              admin_school_group_issues_path(@school_group, all: true, format: :csv),
               class: 'btn btn-sm', title: 'Download issues csv' %>
   <div title="School groups can only be deleted if there are no associated schools or users" rel="tooltip">
     <%= link_to 'Delete', admin_school_group_path(@school_group),
