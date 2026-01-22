@@ -37,5 +37,32 @@ module Commercial
 
     validates_presence_of :name
     validates :default_product, uniqueness: { message: 'already exists' }, if: :default_product?
+
+    scope :default_product, -> {
+      where(default_product: true).first
+    }
+
+    scope :with_default_first, -> {
+      order(default_product: :desc).order(:name)
+    }
+
+    has_many :contracts, class_name: 'Commercial::Contract'
+
+    before_destroy :prevent_destroy_if_default
+    before_destroy :prevent_destroy_if_contracts_exist
+
+    private
+
+    def prevent_destroy_if_default
+      return unless default_product?
+      errors.add(:base, 'Cannot delete default product')
+      throw(:abort)
+    end
+
+    def prevent_destroy_if_contracts_exist
+      return unless contracts.exists?
+      errors.add(:base, 'Cannot delete a product with contracts')
+      throw(:abort)
+    end
   end
 end
