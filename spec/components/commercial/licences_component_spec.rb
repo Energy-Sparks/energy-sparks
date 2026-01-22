@@ -35,12 +35,13 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
       let(:table_id) { '#current-licences-table' }
       let(:expected_header) do
         [
-          ['School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status']
+          ['ID', 'School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status']
         ]
       end
       let(:expected_rows) do
         [
           [
+            licence.id,
             licence.school.school_group.name,
             licence.school.name,
             licence.contract.product.name,
