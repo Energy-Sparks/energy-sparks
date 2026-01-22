@@ -73,20 +73,10 @@ module Commercial
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
 
-    has_many :licences, class_name: 'Commercial::Licence'
-
-    before_destroy :prevent_destroy_if_licences_exist
+    has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 
     def status_colour
       STATUS_COLOUR[status.to_sym]
-    end
-
-    private
-
-    def prevent_destroy_if_licences_exist
-      return unless licences.exists?
-      errors.add(:base, 'Cannot delete a contract with licences')
-      throw(:abort)
     end
   end
 end
