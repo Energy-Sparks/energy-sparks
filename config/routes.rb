@@ -596,6 +596,9 @@ Rails.application.routes.draw do
     end
 
     namespace :commercial do
+      resources :contracts do
+        get :contract_holder_options, on: :collection
+      end
       resources :products
     end
 
