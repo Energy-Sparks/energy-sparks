@@ -1,3 +1,5 @@
+"use strict"
+
 document.addEventListener("DOMContentLoaded", () => {
   const typeInputs = document.querySelectorAll(".contract-holder-type");
   const select = document.querySelector(".contract-holder-select");
