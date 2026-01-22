@@ -46,6 +46,17 @@ module Commercial
       invoiced: 'invoiced'
     }.freeze
 
+    STATUS_COLOUR = {
+      provisional: :warning,
+      confirmed: :info,
+      pending_invoice: :danger,
+      invoiced: :success
+    }.freeze
+
+    def status_colour
+      STATUS_COLOUR[status.to_sym]
+    end
+
     enum :status, LICENCE_STATUS
   end
 end

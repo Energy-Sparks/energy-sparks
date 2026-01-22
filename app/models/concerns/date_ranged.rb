@@ -2,6 +2,8 @@ module DateRanged
   extend ActiveSupport::Concern
 
   included do
+    scope :by_start_date, -> { order(start_date: :asc, end_date: :asc) }
+
     validate :validate_date_range
   end
 

@@ -50,6 +50,11 @@ module Commercial
       confirmed: 'confirmed',
     }.freeze
 
+    STATUS_COLOUR = {
+      provisional: :warning,
+      confirmed: :success
+    }.freeze
+
     CONTRACT_LICENCE_PERIOD = {
       contract: 'contract',
       one_year: 'one_year',
@@ -71,6 +76,10 @@ module Commercial
     has_many :licences, class_name: 'Commercial::Licence'
 
     before_destroy :prevent_destroy_if_licences_exist
+
+    def status_colour
+      STATUS_COLOUR[status.to_sym]
+    end
 
     private
 

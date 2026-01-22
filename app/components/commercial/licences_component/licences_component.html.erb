@@ -4,6 +4,7 @@
   <table id="<%= @range.to_s %>-licences-table" class="table table-paged table-sm">
     <thead>
       <tr>
+        <th>ID</th>
         <th>School Group</th>
         <th>School</th>
         <th>Product</th>
@@ -19,6 +20,9 @@
     <tbody>
       <% associations.each do |licence| %>
         <tr>
+          <td>
+            <%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %>
+          </td>
           <td>
             <%= if licence.school.school_group
                   link_to(licence.school.school_group.name, school_group_path(licence.school.school_group))
@@ -42,7 +46,7 @@
           <td>
             <%= render(Elements::BadgeComponent.new(
                          licence.status.humanize,
-                         colour: licence.status == 'confirmed' ? :success : :warning
+                         colour: licence.status_colour
                        )) %>
           </td>
           <% if @show_actions %>

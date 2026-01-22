@@ -26,7 +26,7 @@
           <td class="text-end">
             <%= render(Elements::BadgeComponent.new(
                          contract.status.humanize,
-                         colour: contract.status == 'provisional' ? :warning : :success
+                         colour: contract.status_colour
                        )) %>
           </td>
           <td class="text-end"><%= contract.start_date %></td>

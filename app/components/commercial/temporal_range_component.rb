@@ -15,7 +15,7 @@ module Commercial
     end
 
     def associations
-      scoped_source.public_send(@range)
+      scoped_source.public_send(@range).by_start_date
     end
 
     private

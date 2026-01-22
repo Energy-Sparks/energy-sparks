@@ -13,7 +13,7 @@ module Admin::Commercial
     def create
       @licence = Commercial::Licence.build(licence_params.merge(created_by: current_user))
       if @licence.save
-        redirect_to admin_commercial_licences_path, notice: 'Licence has been created'
+        redirect_to admin_commercial_contract_path(@licence.contract), notice: 'Licence has been created'
       else
         render :new
       end
@@ -24,17 +24,18 @@ module Admin::Commercial
 
     def update
       if @licence.update(licence_params.merge(updated_by: current_user))
-        redirect_to admin_commercial_licences_path, notice: 'Licence has been updated'
+        redirect_to admin_commercial_contract_path(@licence.contract), notice: 'Licence has been updated'
       else
         render :edit
       end
     end
 
     def destroy
+      path = admin_commercial_contract_path(@licence.contract)
       if @licence.destroy
-        redirect_to(admin_commercial_licences_path, alert: 'Licence has been deleted')
+        redirect_to(path, alert: 'Licence has been deleted')
       else
-        redirect_to(admin_commercial_licences_path, alert: @licence.errors.full_messages.to_sentence)
+        redirect_to(path, alert: @licence.errors.full_messages.to_sentence)
       end
     end
 
