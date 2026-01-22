@@ -58,5 +58,7 @@ module Commercial
     end
 
     enum :status, LICENCE_STATUS
+
+    validates_presence_of :start_date, :end_date
   end
 end
