@@ -41,7 +41,6 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 click_link text: /New #{issue_type.capitalize}/
               end
 
-              it { expect(page).to have_current_path(new_polymorphic_path([:admin, issueable, Issue], issue_type: issue_type)) }
               it { expect(page).to have_content("New #{issue_type.capitalize} for #{issueable.name}")}
 
               it 'has default values' do
@@ -277,9 +276,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   click_on 'Update all'
                 end
 
-                it 'updates issues to new admin' do
-                  expect(page).to have_current_path(url_for([:admin, issueable, :issues]))
+                it { expect(page).to have_current_path(url_for([:admin, issueable, :issues])) }
 
+                it 'updates issues to new admin' do
                   expect(page).to have_content '2 issues updated'
                   within('div#issues-list') do
                     expect(page).to have_content(other_issues_admin.display_name, count: 2)

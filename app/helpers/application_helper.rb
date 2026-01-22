@@ -429,7 +429,18 @@ module ApplicationHelper
   end
 
   def redirect_back_url(params)
-    params[:redirect_back].blank? ? request.referer : params[:redirect_back]
+    params[:redirect_back].blank? ? safe_referer_path : params[:redirect_back]
+  end
+
+  def safe_referer_path
+    return unless request.referer
+
+    uri = URI.parse(request.referer)
+    return unless uri.host == request.host
+
+    uri.request_uri
+  rescue URI::InvalidURIError
+    nil
   end
 
   def redirect_back_tag(params)

@@ -54,7 +54,7 @@ module Admin
     def create
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
-        redirect_to params[:redirect_back], notice: issueable_notice('was successfully created')
+        redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully created')
       else
         render :new
       end
@@ -62,7 +62,7 @@ module Admin
 
     def update
       if @issue.update(issue_params.merge(updated_by: current_user))
-        redirect_to params[:redirect_back], notice: issueable_notice('was successfully updated')
+        redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully updated')
       else
         render :edit
       end
@@ -86,7 +86,7 @@ module Admin
         @issueable.issues.where(owned_by_id: params[:user_from])
                   .update_all(owned_by_id: params[:user_to], updated_by_id: current_user.id, updated_at: Time.current)
 
-      redirect_to params[:redirect_back], notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
+      redirect_to url_from(params[:redirect_back]), notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
     end
 
     def destroy
