@@ -69,7 +69,7 @@ RSpec.describe 'manual readings' do
                                        *expected_input_values(2023, 9, 10, %w[1021 1022]),
                                        %w[2024-08-01 1010 1010],
                                        ['2024-09-01', '1010', nil],
-                                       *expected_input_values(2024, 10, 8, %w[1010 1010])])
+                                       *expected_input_values(2024, 10, 9, %w[1010 1010])])
     end
 
     it 'saves the correct readings' do
@@ -93,8 +93,8 @@ RSpec.describe 'manual readings' do
 
     it 'display only past months' do
       expect(form_input_values).to eq([*expected_input_values(2023, 8, 12, [nil]),
-                                       *expected_input_values(2024, 9, 9).zip(
-                                         %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0]
+                                       *expected_input_values(2024, 9, 10).zip(
+                                         %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0 744.0]
                                        )])
     end
 
@@ -109,12 +109,12 @@ RSpec.describe 'manual readings' do
     before { visit school_manual_readings_path(school) }
 
     it 'shows only electricity inputs on the form' do
-      expect(form_input_values).to eq(expected_input_values(2023, 8, 22, [nil]))
+      expect(form_input_values).to eq(expected_input_values(2023, 8, 23, [nil]))
     end
 
     it 'saves the correct readings' do
       complete_form
-      expect(actual_manual_readings).to eq((0..22).map { |i| [Date.new(2023, 8) + i.months, 5, nil] })
+      expect(actual_manual_readings).to eq((0..23).map { |i| [Date.new(2023, 8) + i.months, 5, nil] })
     end
 
     it 'saves a single reading' do
@@ -179,19 +179,19 @@ RSpec.describe 'manual readings' do
     before { visit school_manual_readings_path(school) }
 
     it 'shows the existing meter data in the form inputs' do
-      expect(form_input_values).to eq(expected_input_values(2023, 8, 22).zip(
+      expect(form_input_values).to eq(expected_input_values(2023, 8, 23).zip(
                                         Array.new(13, nil) +
-                                          %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0],
+                                          %w[720.0 744.0 720.0 744.0 744.0 672.0 744.0 720.0 744.0 720.0 744.0],
                                         []
                                       ))
     end
 
     it 'updates correctly', :aggregate_failures do
       complete_form(last: true)
-      expect(actual_manual_readings).to eq([[Date.new(2025, 6, 1), nil, 5]])
-      expect(form_input_values.last).to eq(%w[2025-06-01 720.0 5.0])
+      expect(actual_manual_readings).to eq([[Date.new(2025, 7, 1), nil, 5]])
+      expect(form_input_values.last).to eq(%w[2025-07-01 744.0 5.0])
       complete_form(last: true, with: '6')
-      expect(actual_manual_readings).to eq([[Date.new(2025, 6, 1), nil, 6]])
+      expect(actual_manual_readings).to eq([[Date.new(2025, 7, 1), nil, 6]])
     end
   end
 
