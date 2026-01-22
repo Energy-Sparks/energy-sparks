@@ -41,7 +41,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
       let(:expected_rows) do
         [
           [
-            licence.id,
+            "##{licence.id}",
             licence.school.school_group.name,
             licence.school.name,
             licence.contract.product.name,
