@@ -15,6 +15,7 @@ class Funder < ApplicationRecord
   watch_mailchimp_fields :name
 
   has_many :schools
+  has_many :school_onboardings
 
   scope :with_schools,  -> { where.associated(:schools) }
   scope :by_name,       -> { order(name: :asc) }
@@ -29,5 +30,15 @@ class Funder < ApplicationRecord
                    ['schools.visible = ? AND schools.data_enabled = ?', visible, data_enabled]
                  )}")
           .group(:name).count('schools.id')
+  end
+
+  before_destroy :prevent_destroy_if_contracts_exist
+
+  private
+
+  def prevent_destroy_if_contracts_exist
+    return unless contracts.exists?
+    errors.add(:base, 'Cannot delete a funder with contracts')
+    throw(:abort)
   end
 end

@@ -67,5 +67,17 @@ module Commercial
     validates_presence_of :name, :start_date, :end_date
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
+
+    has_many :licences, class_name: 'Commercial::Licence'
+
+    before_destroy :prevent_destroy_if_licences_exist
+
+    private
+
+    def prevent_destroy_if_licences_exist
+      return unless licences.exists?
+      errors.add(:base, 'Cannot delete a contract with licences')
+      throw(:abort)
+    end
   end
 end

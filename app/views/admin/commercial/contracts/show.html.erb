@@ -1,0 +1,153 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @contract.name %>
+  <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Layout::GridComponent.new(classes: 'mb-4',
+                                         component_classes: 'd-flex flex-column flex-fill',
+                                         cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+      <%= grid.with_block do %>
+        <h3>Terms</h3>
+        <div id="pricing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <dl class="row">
+            <dt class="col-5">
+              Contract holder
+            </dt>
+            <dd class="col-7">
+              <%= link_to @contract.contract_holder.name, polymorphic_path([:admin, @contract.contract_holder]) %>
+            </dd>
+            <dt class="col-5">
+              Contract holder type
+            </dt>
+            <dd class="col-7">
+              <%= @contract.contract_holder_type %>
+            </dd>
+            <dt class="col-5">
+              Product
+            </dt>
+            <dd class="col-7">
+              <%= @contract.product.name %>
+            </dd>
+            <dt class="col-5">
+              Start date
+            </dt>
+            <dd class="col-7">
+              <%= @contract.start_date %>
+            </dd>
+            <dt class="col-5">
+              End date
+            </dt>
+            <dd class="col-7">
+              <%= @contract.end_date %>
+            </dd>
+            <dt class="col-5">
+              Status
+            </dt>
+            <dd class="col-7">
+              <%= render(Elements::BadgeComponent.new(
+                           @contract.status.humanize,
+                           colour: @contract.status == 'provisional' ? :warning : :success
+                         )) %>
+            </dd>
+            <dt class="col-5">
+              Invoice terms
+            </dt>
+            <dd class="col-7">
+              <%= @contract.invoice_terms.humanize %>
+            </dd>
+            <dt class="col-5">
+              Licence period
+            </dt>
+            <dd class="col-7">
+              <%= @contract.licence_period.humanize %>
+            </dd>
+            <dt class="col-5">
+              Number of schools
+            </dt>
+            <dd class="col-7">
+              <%= @contract.number_of_schools %>
+            </dd>
+            <dt class="col-5">
+              Agreed School Price
+            </dt>
+            <dd class="col-7">
+              <%= format_unit(@contract.agreed_school_price, :£) %>
+            </dd>
+            <dt class="col-5">
+              Comments
+            </dt>
+            <dd class="col-7">
+              <%= @contract.comments %>
+            </dd>
+          </dl>
+          <%= link_to 'Edit', edit_admin_commercial_contract_path(@contract),
+                      class: 'btn btn-secondary btn-sm' %>
+          <%= link_to 'Delete', admin_commercial_contract_path(@contract),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' },
+                      class: 'btn btn-danger btn-sm' %>
+
+        </div>
+      <% end %>
+      <%= grid.with_block do %>
+        <h3>Licence Summary</h3>
+        <div id="licence-summary" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+          <table id='licence-summary-table' class="table table-sm">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Current</td>
+                <td>Provisional</td>
+                <td><%= @contract.licences.current.provisional.count %></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Confirmed</td>
+                <td><%= @contract.licences.current.confirmed.count %></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>All</td>
+                <td><%= @contract.licences.current.count %></td>
+              </tr>
+              <tr>
+                <td>Future</td>
+                <td>Provisional</td>
+                <td><%= @contract.licences.future.provisional.count %></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>Confirmed</td>
+                <td><%= @contract.licences.future.confirmed.count %></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>All</td>
+                <td><%= @contract.licences.future.count %></td>
+              </tr>
+              <tr>
+                <td>Historical</td>
+                <td>All</td>
+                <td><%= @contract.licences.historical.count %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Admin::RecordComponent.new(@contract, id: 'metadata', current_user:) %>
+  </div>
+</div>
