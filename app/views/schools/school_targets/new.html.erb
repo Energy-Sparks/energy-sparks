@@ -1,10 +1,9 @@
-<% content_for :pre do %>
-  <p><%= t('schools.school_targets.new.target_date_reached_advice_page') %></p>
-<% end %>
 <% content_for :after_subheading do %>
   <%= render 'tip', text: t('schools.school_targets.new.before_setting_your_new_target') %>
 <% end %>
 <%= render 'common', page_title: t('schools.school_targets.new.page_title'),
                      heading: t('schools.school_targets.new.review_and_set_your_next_energy_saving_target'),
                      subheading: t('schools.school_targets.new.your_new_target'),
-                     form_intro: t('schools.school_targets.new.carried_forward') %>
+                     form_intro: t('schools.school_targets.new.carried_forward') do %>
+  <p><%= t('schools.school_targets.new.target_date_reached_advice_page') %></p>
+<% end %>

@@ -13,7 +13,7 @@
     <div class="col-md-9 col-lg-9 col-xl-10">
       <div class="row">
         <div class="col-md-8">
-          <%= yield :pre %>
+          <%= yield %>
         </div>
       </div>
       <div class="row">
@@ -21,7 +21,9 @@
           <h3><%= subheading %></h3>
           <%= yield :after_subheading %>
           <%= render 'fuel_type_note' %>
-          <% form_intro if defined? form_intro %>
+          <% if defined? form_intro %>
+            <p><%= form_intro %></p>
+          <% end %>
           <%= render 'form', target_service: @target_service, school_target: @school_target %>
         </div>
       </div>
