@@ -125,12 +125,12 @@ RSpec.describe 'manual readings' do
 
   shared_examples 'and gas enabled' do
     it 'shows the gas inputs' do
-      expect(form_input_values).to eq(expected_input_values(2023, 8, 22, [nil, nil]))
+      expect(form_input_values).to eq(expected_input_values(2023, 8, 23, [nil, nil]))
     end
 
     it 'saves the correct readings' do
       complete_form
-      expect(actual_manual_readings).to eq((0..22).map { |i| [Date.new(2023, 8) + i.months, 5, 5] })
+      expect(actual_manual_readings).to eq((0..23).map { |i| [Date.new(2023, 8) + i.months, 5, 5] })
     end
   end
 
