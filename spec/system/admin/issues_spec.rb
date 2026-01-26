@@ -293,7 +293,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:closed_issue) { create :issue, status: :closed }
         let(:issue_issue) { create :issue }
         let(:note_issue) { create :issue, issue_type: :note, pinned: true}
-        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue]}
+        let(:inactive_school_issue) { create :issue, issueable: create(:school, active: false) }
+
+        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue, inactive_school_issue]}
 
         it_behaves_like 'a displayed list issue' do
           let(:issue) { open_issue }
@@ -306,6 +308,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
         it_behaves_like 'a displayed list issue' do
           let(:issue) { note_issue }
+        end
+        it "doesn't show issues for inactive schools" do
+          expect(page).not_to have_content inactive_school_issue.title
         end
 
         context 'and deselecting notes' do

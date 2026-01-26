@@ -128,6 +128,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas,
                        pinned: true)
       end
+      let!(:inactive_school_issue) { create :issue, issue_type: :issue, status: :open, issueable: create(:school, school_group: school_group, active: false) }
 
       before do
         visit admin_school_group_path(school_group)
@@ -137,10 +138,16 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         expect(page).to have_content 'School issues and notes 1'
       end
 
+      it 'does not show issues for inactive schools' do
+        expect(page).not_to have_content inactive_school_issue.title
+      end
+
       it_behaves_like 'an issue listed in a tab', '#school-issues'
     end
 
-    context 'when there are no issues' do
+    context 'when there are no active issues' do
+      let!(:inactive_school_issue) { create :issue, issue_type: :issue, status: :open, issueable: create(:school, school_group: school_group, active: false) }
+
       before do
         visit admin_school_group_path(school_group)
       end
@@ -289,6 +296,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     let!(:issue) do
       create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas)
     end
+    # let!(:inactive_school_issue) { create :issue, issueable: create(:school, school_group: school_group, active: false) }
 
     before do
       school

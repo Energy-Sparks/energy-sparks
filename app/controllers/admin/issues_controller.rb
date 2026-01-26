@@ -17,9 +17,9 @@ module Admin
       if @issueable.is_a?(SchoolGroup) && params[:all]
         # School group admin csv download
         # Includes all school group and school issues
-        @issues = @issueable.all_issues if @issueable.is_a?(SchoolGroup)
+        @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
       else
-        @issues = @issues.for_issue_types(params[:issue_types])
+        @issues = @issues.active.for_issue_types(params[:issue_types])
         @issues = @issues.for_statuses(params[:statuses])
         @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
         @issues = @issues.search(params[:search]) if params[:search].present?

@@ -141,6 +141,8 @@ RSpec.describe AdminMailer, include_application_helper: true do
     let(:issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 2.weeks.ago, review_date: 1.day.ago, issueable: school) }
     let(:closed_issue) { create(:issue, issue_type: :issue, status: :closed, owned_by: admin) }
     let(:someone_elses_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: nil) }
+    let(:inactive_school_issue) { create :issue, owned_by: admin, issueable: create(:school, active: false) }
+
     let!(:issues) { [] }
     let(:attachment) { email.attachments[0] }
     let(:body) { email.html_part.body.raw_source }
@@ -186,6 +188,14 @@ RSpec.describe AdminMailer, include_application_helper: true do
     end
 
     context "when there aren't any issues for user" do
+      it "doesn't send email" do
+        expect(email).to be_nil
+      end
+    end
+
+    context 'with issues for inactive schools' do
+      let(:issues) { [inactive_school_issue] }
+
       it "doesn't send email" do
         expect(email).to be_nil
       end
