@@ -25,28 +25,19 @@ FactoryBot.define do
 
     trait :intervention_with_image_in_description do
       intervention
-      description       { 'default description' }
+      description { 'default description' }
 
-      after(:create) do |observation|
-        # Create a blob for the image
+      after(:build) do |observation|
+        file = Rails.root.join('spec/fixtures/images/placeholder.png')
+
         blob = ActiveStorage::Blob.create_and_upload!(
-          io: File.open(Rails.root.join('spec/fixtures/images/placeholder.png')),
+          io: File.open(file),
           filename: 'placeholder.png',
           content_type: 'image/png'
         )
 
-        # Attach the blob to the description
-        observation.description.embeds.attach(blob)
-
-        # Ensure the description body references the attachment
-        observation.description.body = <<~HTML
-          <div>
-            <action-text-attachment sgid="#{blob.attachable_sgid}">
-            </action-text-attachment>
-          </div>
-        HTML
-
-        observation.save!
+        attachment_html = ActionText::Attachment.from_attachable(blob).to_html
+        observation.description = ActionText::Content.new("<div>#{attachment_html}</div>")
       end
     end
 

@@ -26,26 +26,17 @@ FactoryBot.define do
     end
 
     trait :with_image_in_description do
-      after(:create) do |activity|
-        # Create a blob for the image
+      after(:build) do |activity|
+        file = Rails.root.join('spec/fixtures/images/placeholder.png')
+
         blob = ActiveStorage::Blob.create_and_upload!(
-          io: File.open(Rails.root.join('spec/fixtures/images/placeholder.png')),
+          io: File.open(file),
           filename: 'placeholder.png',
           content_type: 'image/png'
         )
 
-        # Attach the blob to the description
-        activity.description.embeds.attach(blob)
-
-        # Ensure the description body references the attachment
-        activity.description.body = <<~HTML
-          <div>
-            <action-text-attachment sgid="#{blob.attachable_sgid}">
-            </action-text-attachment>
-          </div>
-        HTML
-
-        activity.save!
+        attachment_html = ActionText::Attachment.from_attachable(blob).to_html
+        activity.description = ActionText::Content.new("<div>#{attachment_html}</div>")
       end
     end
   end

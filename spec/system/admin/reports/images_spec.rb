@@ -26,8 +26,8 @@ RSpec.describe 'Admin Image Feed' do
       click_on('Images')
     end
 
-    it { expect(page).not_to have_content(activity_no_image.id) }
-    it { expect(page).not_to have_content(observation_no_image.id) }
+    it { expect(page).not_to have_content(activity_no_image.school.name) }
+    it { expect(page).not_to have_content(observation_no_image.school.name) }
 
     it { expect(page).to have_content(activity_with_image.school.name) }
     it { expect(page).to have_content(observation_with_image.school.name) }
