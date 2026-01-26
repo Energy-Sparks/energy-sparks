@@ -69,24 +69,17 @@ module Admin
     end
 
     def bulk_update
-      errors = []
-      errors << 'issueable is required' unless @issueable # Not currently linked to without issueable context but best to check
-      if params[:user_from].blank? || params[:user_to].blank?
-        errors << 'Both current and new admin users are required'
-      elsif params[:user_from] == params[:user_to]
-        errors << "Current and new admin users can't be the same" if params[:user_from] == params[:user_to]
-      end
-
-      if errors.any?
-        flash.now[:alert] = helpers.safe_join(errors, helpers.tag.br)
-        return render :bulk_edit
-      end
-
-      updated_count =
-        @issueable.issues.where(owned_by_id: params[:user_from])
-                  .update_all(owned_by_id: params[:user_to], updated_by_id: current_user.id, updated_at: Time.current)
+      updated_count = Issues::BulkUpdate.new(
+        issueable: @issueable,
+        user_from: params[:user_from],
+        user_to: params[:user_to],
+        updated_by: current_user.id
+      ).perform
 
       redirect_to url_from(params[:redirect_back]), notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
+    rescue Issues::BulkError => e
+      flash.now[:alert] = helpers.safe_join(e.messages, helpers.tag.br)
+      render :bulk_edit
     end
 
     def destroy
