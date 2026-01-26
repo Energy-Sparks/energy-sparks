@@ -11,40 +11,8 @@
   </div>
 </div>
 
-<table class="table table-sm table-paged">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Comments</th>
-      <th class="text-end">Licences</th>
-      <th class="text-end no-sort">Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @contracts.each do |contract| %>
-      <tr>
-        <td>
-          <%= link_to contract.name, admin_commercial_contract_path(contract) %>
-        </td>
-        <td>
-          <%= contract.comments %>
-        </td>
-        <td class="text-end">
-          <%= contract.licences.count %>
-        </td>
-        <td class="text-end">
-          <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_commercial_contract_path(contract),
-                        class: 'btn btn-secondary btn-sm' %>
-            <%= link_to 'Delete', admin_commercial_contract_path(contract),
-                        method: :delete,
-                        data: { confirm: 'Are you sure?' },
-                        class: 'btn btn-danger btn-sm' %>
-
-          </div>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <div class="col">
+    <%= render(Commercial::ContractsComponent.new) %>
+  </div>
+</div>

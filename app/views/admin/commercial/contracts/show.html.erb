@@ -28,7 +28,7 @@
               Product
             </dt>
             <dd class="col-7">
-              <%= @contract.product.name %>
+              <%= link_to @contract.product.name, admin_commercial_product_path(@contract.product) %>
             </dd>
             <dt class="col-5">
               Start date
@@ -143,6 +143,21 @@
         </div>
       <% end %>
     <% end %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New licence', new_admin_commercial_licence_path(contract_id: @contract.id),
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Commercial::LicencesComponent.new(id: 'licences', holder: @contract) %>
   </div>
 </div>
 
