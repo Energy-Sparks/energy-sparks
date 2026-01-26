@@ -1,5 +1,10 @@
 "use strict"
 
+// Automatically fetch and update the options for valid contract holders wheb
+// a user switches between one of the valid types (e.g. Funder, School Group, School)
+//
+// Makes a call to a custom controller method which returns the relevant options for the
+// select box.
 document.addEventListener("DOMContentLoaded", () => {
   const typeInputs = document.querySelectorAll(".contract-holder-type");
   const select = document.querySelector(".contract-holder-select");
