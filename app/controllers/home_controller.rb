@@ -1,6 +1,7 @@
 class HomeController < ApplicationController
   include VideoHelper
   include ApplicationHelper
+  include AdvicePageHelper
 
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
@@ -21,6 +22,7 @@ class HomeController < ApplicationController
   end
 
   def product
+    @prices = formatted_prices
   end
 
   def contact
@@ -125,5 +127,18 @@ class HomeController < ApplicationController
     else
       school_inactive_path(current_user.school)
     end
+  end
+
+  def formatted_prices
+    product = Commercial::Product.default_product
+    return {} unless product
+    {
+      small_school_price: format_unit(product.small_school_price, :£),
+      large_school_price: format_unit(product.large_school_price, :£),
+      mat_price: format_unit(product.mat_price, :£),
+      private_account_fee: format_unit(product.private_account_fee, :£),
+      metering_fee: format_unit(product.metering_fee, :£),
+      size_threshold: product.size_threshold
+    }
   end
 end

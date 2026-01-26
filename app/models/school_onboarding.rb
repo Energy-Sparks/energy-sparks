@@ -3,6 +3,7 @@
 # Table name: school_onboardings
 #
 #  contact_email            :string           not null
+#  contract_id              :bigint(8)
 #  country                  :integer          default("england"), not null
 #  created_at               :datetime         not null
 #  created_by_id            :bigint(8)
@@ -30,6 +31,7 @@
 #
 # Indexes
 #
+#  index_school_onboardings_on_contract_id              (contract_id)
 #  index_school_onboardings_on_created_by_id            (created_by_id)
 #  index_school_onboardings_on_created_user_id          (created_user_id)
 #  index_school_onboardings_on_diocese_id               (diocese_id)
@@ -44,6 +46,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (contract_id => commercial_contracts.id)
 #  fk_rails_...  (created_by_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (created_user_id => users.id) ON DELETE => nullify
 #  fk_rails_...  (diocese_id => school_groups.id)
@@ -74,6 +77,7 @@ class SchoolOnboarding < ApplicationRecord
   belongs_to :created_user, class_name: 'User', optional: true
   belongs_to :created_by, class_name: 'User', optional: true
   belongs_to :funder, optional: true
+  belongs_to :contract, class_name: 'Commercial::Contract', optional: true
 
   has_many :events, class_name: 'SchoolOnboardingEvent'
   has_many :issues, as: :issueable, dependent: :destroy
