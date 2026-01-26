@@ -22,7 +22,7 @@ module Admin
       end
 
       # Fetches a list of all attachments that have images, along with the id, school id and name as well as its
-      # associated with an activity or an action.
+      # associated activity or an action.
       def image_feed
         records_union = <<~SQL.squish
           (
