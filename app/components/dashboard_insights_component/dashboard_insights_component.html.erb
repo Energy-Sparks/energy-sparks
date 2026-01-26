@@ -35,7 +35,7 @@
             <% end %>
           <% end %>
           <% if Flipper.enabled?(:manual_readings, current_user) &&
-                 Schools::ManualReadingsService.new(school).show_on_menu? %>
+                Targets::MonthlyConsumptionService.any_missing?(@target) %>
             <%= c.with_prompt icon: 'tasks', status: :negative do |prompt| %>
               <p><%= t('schools.show.manual_readings') %></p>
               <% prompt.with_link do %>

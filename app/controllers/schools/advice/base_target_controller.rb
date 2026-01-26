@@ -27,9 +27,7 @@ module Schools
 
       def set_consumption
         @consumption = Targets::MonthlyConsumptionService.new(@target, @fuel_type)
-        if @consumption.consumption.nil? || @consumption.consumption.any? { |month| month[:previous_missing] }
-          render 'limited_data'
-        end
+        render 'limited_data' if @consumption.any_missing?
       end
 
       def advice_page_key

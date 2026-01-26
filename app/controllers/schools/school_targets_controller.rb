@@ -105,11 +105,9 @@ module Schools
     end
 
     def redirect_path(previous_changes)
-      if (%w[electricity gas] - previous_changes).empty?
-        school_advice_path(@school)
-      elsif previous_changes.include?('electricity')
+      if previous_changes.include?('electricity') && previous_changes.exclude?('gas')
         school_advice_electricity_target_path(@school)
-      elsif previous_changes.include?('gas')
+      elsif previous_changes.include?('gas') && previous_changes.exclude?('electricity')
         school_advice_gas_target_path(@school)
       else
         school_advice_path(@school)
