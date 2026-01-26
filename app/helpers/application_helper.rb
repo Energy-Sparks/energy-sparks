@@ -571,4 +571,8 @@ module ApplicationHelper
   def label_count(label, count)
     "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
   end
+
+  def collection_from_enum(enum)
+    enum.transform_keys(&:humanize).sort.to_h
+  end
 end

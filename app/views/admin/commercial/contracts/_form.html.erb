@@ -15,7 +15,9 @@
       <%= f.input :name %>
       <%= f.input :comments %>
 
-      <%= f.input :product_id, collection: Commercial::Product.with_default_first, include_blank: false %>
+      <%= f.input :product_id,
+                  collection: Commercial::Product.with_default_first,
+                  include_blank: false %>
 
       <%= f.input :contract_holder_type,
                   as: :radio_buttons,
@@ -37,10 +39,15 @@
 
       <%= f.input :agreed_school_price %>
 
-      <%= f.input :status, collection: Commercial::Contract.statuses.keys.sort, include_blank: false %>
-      <%= f.input :invoice_terms, collection: Commercial::Contract.invoice_terms.keys.sort, include_blank: false %>
-
-      <%= f.input :licence_period, collection: Commercial::Contract.licence_periods.keys.sort, include_blank: false %>
+      <%= f.input :status,
+                  collection: collection_from_enum(Commercial::Contract.statuses),
+                  include_blank: false %>
+      <%= f.input :invoice_terms,
+                  collection: collection_from_enum(Commercial::Contract.invoice_terms),
+                  include_blank: false %>
+      <%= f.input :licence_period,
+                  collection: collection_from_enum(Commercial::Contract.licence_periods),
+                  include_blank: false %>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>
       <%= link_to 'Cancel', admin_commercial_contracts_path, class: 'btn' %>

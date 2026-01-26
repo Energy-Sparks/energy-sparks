@@ -37,6 +37,8 @@ module Commercial
     belongs_to :contract, class_name: 'Commercial::Contract'
     belongs_to :school
 
+    delegate :product, to: :contract
+
     LICENCE_STATUS = {
       provisional: 'provisional',
       confirmed: 'confirmed',
@@ -44,6 +46,19 @@ module Commercial
       invoiced: 'invoiced'
     }.freeze
 
+    STATUS_COLOUR = {
+      provisional: :warning,
+      confirmed: :info,
+      pending_invoice: :danger,
+      invoiced: :success
+    }.freeze
+
+    def status_colour
+      STATUS_COLOUR[status.to_sym]
+    end
+
     enum :status, LICENCE_STATUS
+
+    validates_presence_of :start_date, :end_date
   end
 end

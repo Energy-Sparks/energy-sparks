@@ -599,6 +599,7 @@ Rails.application.routes.draw do
       resources :contracts do
         get :contract_holder_options, on: :collection
       end
+      resources :licences
       resources :products
     end
 

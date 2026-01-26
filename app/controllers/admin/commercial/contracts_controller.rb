@@ -3,7 +3,6 @@ module Admin::Commercial
     load_and_authorize_resource :contract, class: 'Commercial::Contract'
 
     def index
-      # FIXME ordering, scope
       @contracts = Commercial::Contract.all
     end
 

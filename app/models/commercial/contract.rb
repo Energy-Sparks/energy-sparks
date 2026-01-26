@@ -50,6 +50,11 @@ module Commercial
       confirmed: 'confirmed',
     }.freeze
 
+    STATUS_COLOUR = {
+      provisional: :warning,
+      confirmed: :success
+    }.freeze
+
     CONTRACT_LICENCE_PERIOD = {
       contract: 'contract',
       one_year: 'one_year',
@@ -68,16 +73,10 @@ module Commercial
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
 
-    has_many :licences, class_name: 'Commercial::Licence'
+    has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 
-    before_destroy :prevent_destroy_if_licences_exist
-
-    private
-
-    def prevent_destroy_if_licences_exist
-      return unless licences.exists?
-      errors.add(:base, 'Cannot delete a contract with licences')
-      throw(:abort)
+    def status_colour
+      STATUS_COLOUR[status.to_sym]
     end
   end
 end

@@ -124,7 +124,7 @@ describe 'manage contracts' do
         click_on 'Delete'
       end
 
-      it { expect(page).to have_content('Cannot delete a contract with licences') }
+      it { expect(page).to have_content('Cannot delete record because dependent licences exist') }
     end
   end
 
