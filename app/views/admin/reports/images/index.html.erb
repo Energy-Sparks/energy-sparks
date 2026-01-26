@@ -25,6 +25,11 @@
           <p>
             Posted <%= item.created_at.to_date %>
           </p>
+          <% if item.updated_at.to_date != item.created_at.to_date %>
+            <p>
+              Updated <%= item.updated_at.to_date %>
+            </p>
+          <% end %>
         </div>
       </div>
     </div>

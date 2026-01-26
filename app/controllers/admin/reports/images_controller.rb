@@ -31,9 +31,9 @@ module Admin
       def image_feed
         records_union = <<~SQL.squish
           (
-            SELECT id, school_id, created_at, 'Activity' AS record_type FROM activities
+            SELECT id, school_id, created_at, updated_at, 'Activity' AS record_type FROM activities
             UNION ALL
-            SELECT id, school_id, created_at, 'Observation' AS record_type FROM observations
+            SELECT id, school_id, created_at, updated_at, 'Observation' AS record_type FROM observations
           ) AS records
         SQL
 
@@ -57,10 +57,11 @@ module Admin
             'records.record_type AS record_type',
             'records.id AS record_id',
             'records.created_at AS created_at',
+            'records.updated_at AS updated_at',
             'schools.id AS school_id',
             'schools.name AS school_name'
           )
-          .order('records.created_at DESC')
+          .order('records.updated_at DESC')
       end
     end
   end
