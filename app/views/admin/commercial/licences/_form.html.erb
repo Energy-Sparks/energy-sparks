@@ -14,7 +14,7 @@
       <%= render 'shared/errors', subject: licence, subject_name: 'licence' %>
       <%= f.input :contract_id, collection: Commercial::Contract.all, include_blank: false %>
       <%= f.input :school_id, collection: School.visible.by_name, include_blank: false %>
-      <%= f.input :status, collection: Commercial::Licence.statuses.keys.sort, include_blank: false %>
+      <%= f.input :status, collection: collection_from_enum(Commercial::Licence.statuses), include_blank: false %>
 
       <%= f.input :start_date, as: :tempus_dominus_date %>
       <%= f.input :end_date, as: :tempus_dominus_date %>

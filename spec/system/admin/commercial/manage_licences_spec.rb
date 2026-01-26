@@ -20,7 +20,7 @@ describe 'manage licences' do
 
     context 'with valid data', :js do
       before do
-        select 'confirmed', from: 'Status'
+        select 'Confirmed', from: 'Status'
         set_date('#licence_start_date', '01/01/2026')
         set_date('#licence_end_date', '31/12/2026')
         fill_in 'Invoice reference', with: 'INV-001'
@@ -65,7 +65,7 @@ describe 'manage licences' do
 
     context 'with valid data', :js do
       before do
-        select 'pending_invoice', from: 'Status'
+        select 'Pending invoice', from: 'Status'
         set_date('#licence_start_date', '01/01/2026')
         set_date('#licence_end_date', '31/12/2026')
         fill_in 'Invoice reference', with: 'INV-001'
