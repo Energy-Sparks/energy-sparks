@@ -127,10 +127,10 @@
 <% end %>
 
 <script>
-document.querySelectorAll('#school-group-schools-content a.btn.edit').forEach((element) => {
+document.querySelectorAll('.tab-content a.btn.edit').forEach((element) => {
   element.addEventListener('click', (event) => {
     event.preventDefault();
-    window.location.href = `${element.href}?redirect_back=${encodeURIComponent(window.location.pathname + window.location.hash)}`;
+    window.location.href = `${element.href}${encodeURIComponent(window.location.hash)}`;
   });
 });
 </script>
