@@ -11,4 +11,4 @@ pin 'transport_surveys/notifier', preload: false
 pin 'transport_surveys/handlebars_helpers', preload: false
 pin 'transport_surveys/helpers', preload: false
 
-pin_all_from 'app/javascript/commercial', under: 'commercial'
+pin_all_from 'app/javascript/commercial', under: 'commercial', preload: false
