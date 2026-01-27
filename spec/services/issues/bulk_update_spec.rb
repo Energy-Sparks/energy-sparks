@@ -1,11 +1,8 @@
 # frozen_string_literal: true
 
-# rubocop:disable RSpec/MultipleMemoizedHelpers
 require 'rails_helper'
 
 RSpec.describe Issues::BulkUpdate do
-  include ActiveSupport::Testing::TimeHelpers
-
   let(:issueable) { create(:school) }
   let(:user_from) { create(:admin) }
   let(:user_to) { create(:admin) }
@@ -63,8 +60,6 @@ RSpec.describe Issues::BulkUpdate do
         bulk_update
       end
 
-      after { travel_back }
-
       it 'returns the number of updated records' do
         expect(bulk_update).to eq(3)
       end
@@ -112,5 +107,3 @@ RSpec.describe Issues::BulkUpdate do
     end
   end
 end
-
-# rubocop:enable RSpec/MultipleMemoizedHelpers
