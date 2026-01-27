@@ -532,7 +532,7 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     netrc (0.11.0)
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     nkf (0.2.0)
     nokogiri (1.19.0)
       mini_portile2 (~> 2.8.2)
@@ -593,7 +593,7 @@ GEM
       date
       stringio
     public_suffix (7.0.0)
-    puma (7.1.0)
+    puma (7.2.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
