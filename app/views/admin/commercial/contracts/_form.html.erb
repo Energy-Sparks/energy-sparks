@@ -1,3 +1,7 @@
+<% content_for :head do %>
+  <%= javascript_import_module_tag 'commercial/contract_holder' %>
+<% end %>
+
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
   <% header_nav.with_header title: title %>
   <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
