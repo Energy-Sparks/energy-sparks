@@ -8,31 +8,39 @@
 </div>
 
 <div class="row g-4">
-  <% @images.each do |item| %>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-      <div class="border rounded h-100 overflow-hidden">
-        <%= link_to feed_item_path(item) do %>
-          <%= image_tag(
-                item.representation(resize_to_limit: [600, 600]),
-                class: 'img-fluid w-100'
-              ) %>
-        <% end %>
-        <div class="p-3">
-          <h4 class="mb-1"><%= item.school_name %></h4>
-          <p>
-            <%= item.record_type %> #<%= item.record_id %>
-          </p>
-          <p>
-            Posted <%= item.created_at.to_date %>
-          </p>
-          <% if item.updated_at.to_date != item.created_at.to_date %>
-            <p>
-              Updated <%= item.updated_at.to_date %>
-            </p>
+  <% @records.each do |item| %>
+    <% images = item.description.embeds.select(&:image?) %>
+
+    <% images.each do |blob| %>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="border rounded h-100 overflow-hidden">
+          <%= link_to polymorphic_path([item.school, item]) do %>
+            <%= image_tag(
+                  blob.variant(resize_to_limit: [600, 600]),
+                  class: 'img-fluid w-100'
+                ) %>
           <% end %>
+
+          <div class="p-3">
+            <h4 class="mb-1"><%= item.school.name %></h4>
+
+            <p>
+              <%= item.class.name %> #<%= item.id %>
+            </p>
+
+            <p>
+              Posted <%= item.created_at.to_date %>
+            </p>
+
+            <% if item.updated_at.to_date != item.created_at.to_date %>
+              <p>
+                Updated <%= item.updated_at.to_date %>
+              </p>
+            <% end %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
 
