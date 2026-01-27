@@ -39,7 +39,7 @@
           <% end %>
         </td>
         <td>
-          <%= fa_icon('check-circle text-success') if observation&.description_includes_images? %>
+          <%= render 'shared/check_circle_icon' if observation&.description_includes_images? %>
         </td>
       </tr>
     <% end %>
