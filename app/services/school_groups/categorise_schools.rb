@@ -33,7 +33,7 @@ module SchoolGroups
     end
 
     def query
-      <<-SQL.squish
+      <<~SQL.squish
         SELECT
         advice_pages.key AS advice_page_key,
         advice_pages.fuel_type AS fuel_type,

@@ -206,7 +206,7 @@ class SchoolGroup < ApplicationRecord
     school_ids = schools_to_check.data_visible.pluck(:id)
     return [] if school_ids.empty?
 
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT DISTINCT(fuel_types.key) FROM (
         SELECT
           row_to_json(json_each(fuel_configuration))->>'key' as key,
