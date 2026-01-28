@@ -58,8 +58,12 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
                       local_authority_area: local_authority_area,
                       percentage_free_school_meals: 50,
                       funder: funder,
-                      removal_date: nil)
+                      removal_date: nil,
+                      default_contract_holder: school_group)
       school.project_groups << create(:school_group, :project)
+      school.organisation_group = school_group
+      contract = create(:commercial_contract, contract_holder: school_group)
+      create(:commercial_licence, contract:, school:)
       create(:staff, school:)
       school
     end
@@ -104,6 +108,8 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       expect(school_1.archived?).to be(false)
       expect(school_2.archived?).to be(true)
 
+      current_licence = school_1.licences.current.by_start_date.first
+
       expect(csv.lines[1].chomp).to eq [
         school_1.school_group.name,
         school_1.name,
@@ -142,7 +148,14 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         solar_meter.procurement_route.organisation_name,
         nil,
-        nil
+        nil,
+        current_licence.contract.contract_holder.name,
+        school_1.default_contract_holder.name,
+        current_licence.contract.start_date,
+        current_licence.contract.end_date,
+        current_licence.start_date,
+        current_licence.end_date,
+        current_licence.contract.product.name,
       ].join(',')
       expect(csv.lines[2].chomp).to eq [
         school_2.school_group.name,
@@ -177,6 +190,13 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         nil,
         nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil, # Curent Contract Holder
         nil,
         nil,
         nil,
