@@ -459,12 +459,9 @@ cy:
         work_with_the_pupils: Gweithiwch gyda'r disgyblion
       edit:
         before_changing_your_targets: Cyn newid eich targedau, cymerwch olwg ar ein hargymhellion i weld beth allwch chi ei wneud i leihau costau ac allyriadau
-        if_you_do_revise_your_targets: Os byddwch yn addasu eich targedau byddwn yn diweddaru eich adroddiad cynnydd i gymhwyso'r targed hwnnw at eich holl ddefnydd ynni eleni
         page_title: Diweddaru'ch targed arbed ynni
-        review_your_dashboard: Adolygu'ch dangosfwrdd
         review_your_targets: Adolygu'ch targedau
         suggestion: Awgrym
-        tip: Cyngor
         update_your_energy_saving_target: Diweddaru'ch targed arbed ynni
         your_configuration_has_changed: Mae eich ffurfweddiad %{fuel_types_changed} wedi newid, sy'n golygu efallai bydd angen i chi adolygu'ch targedau ar gyfer y flwyddyn hon. Efallai y byddwch yn gallu gosod targedau ychwanegol
         your_current_target: Eich targed presennol
@@ -479,7 +476,7 @@ cy:
         set_your_first_energy_saving_target: Gosodwch eich targed arbed ynni cyntaf
         suggesting_activities_for_pupils: awgrymu gweithgareddau i ddisgyblion i'ch helpu i ymddiddori'r ysgol gyfan
         suggesting_ways_to_reduce_consumption: awgrymu ffurdd i leihau defnydd trwy'ch dangosfwrdd, hysbysiadau wythnosol ac atgoffwyr
-        tip_html: "<strong>Awgrym</strong>: peidiwch â cheisio bod yn rhy uchelgeisiol"
+        too_ambitious: peidiwch â cheisio bod yn rhy uchelgeisiol
         your_first: Eich targed cyntaf
       form:
         reducing_electricity_usage_by: Lleihau defnydd trydan gan
@@ -500,7 +497,6 @@ cy:
         review_and_set_your_next_energy_saving_target: Adolygu a gosod eich targed arbed ynni nesaf
         review_your_dashboard: Adolygu'ch dangosfwrdd
         target_date_reached_advice_page: 'Rydych chi wedi cyrraedd y dyddiad targed ar gyfer eich targed blaenorol. Mae''n amser i adolygu eich cynnydd a gosod targed newydd.'
-        tip: Awgrym
         your_new_target: Eich targed newydd
       target_table:
         current_progress: Cynnydd presennol

@@ -78,8 +78,8 @@ describe Schools::ManualReadingsService do
     before { travel_to(Date.new(2025, 5)) }
 
     def expected_readings(usage)
-      months = (2..24).map { |i| Date.new(2025, 5) - i.months }.reverse
-      usage = [*usage, *[1020] * 11]
+      months = (1..24).map { |i| Date.new(2025, 5) - i.months }.reverse
+      usage = [*usage, *[1020] * 12]
       months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
     end
 

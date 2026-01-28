@@ -89,7 +89,7 @@ module Schools
     end
 
     def add_reading(month, fuel_type, missing, reading)
-      return if month >= Date.current.prev_month.beginning_of_month
+      return if month > Date.current.prev_month.beginning_of_month
 
       existing_reading = @existing_readings.find { |reading| reading.month == month }
       disabled, reading = if existing_reading&.[](fuel_type).present?
