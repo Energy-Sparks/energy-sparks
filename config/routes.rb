@@ -787,6 +787,7 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
+      resources :images, only: :index
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
