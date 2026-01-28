@@ -22,7 +22,6 @@ describe Commercial::ImportFromFunderAllocationService do
               service.import('', school.name)
             end
 
-            it { expect(school.reload.funder).to be_nil }
             it { expect(Commercial::Contract.count).to be(0) }
           end
         end
@@ -34,7 +33,6 @@ describe Commercial::ImportFromFunderAllocationService do
             service.import(funder.name, school.name)
           end
 
-          it { expect(school.reload.funder).to eql(funder) }
           it { expect(Commercial::Contract.count).to be(0) }
         end
 
@@ -73,7 +71,6 @@ describe Commercial::ImportFromFunderAllocationService do
 
           it 'updates the school' do
             expect(school.reload).to have_attributes(
-              funder:,
               default_contract_holder: school.organisation_group
             )
           end
@@ -165,7 +162,6 @@ describe Commercial::ImportFromFunderAllocationService do
 
         it 'updates the school' do
           expect(school.reload).to have_attributes(
-            funder:,
             default_contract_holder: school
           )
         end
@@ -249,7 +245,6 @@ describe Commercial::ImportFromFunderAllocationService do
 
         it 'updates the school' do
           expect(school.reload).to have_attributes(
-            funder:,
             default_contract_holder: school.organisation_group
           )
         end

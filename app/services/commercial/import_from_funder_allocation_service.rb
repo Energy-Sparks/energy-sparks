@@ -25,11 +25,8 @@ module Commercial
 
       case funder_name
       when '', nil
-        # this ensures consistency but might not want to change if the data is out of date?
-        school.update!(funder: nil)
         return
       when *IGNORED_FUNDER_NAMES
-        school.update!(funder: funder) if funder
         return
       when 'School self funding'
         contract_holder = school
@@ -43,7 +40,6 @@ module Commercial
         add_contract_and_licence(contract_holder:, school:) if funder
       end
 
-      # FIXME, this ensures consistency but might not want to change if the data is out of date?
       default_contract_holder = case contract_holder
                                 when Funder, SchoolGroup
                                   school.organisation_group
@@ -51,7 +47,7 @@ module Commercial
                                   school
                                 end
 
-      school.update!(funder:, default_contract_holder:) if funder
+      school.update!(default_contract_holder:) if funder
     end
 
     private
