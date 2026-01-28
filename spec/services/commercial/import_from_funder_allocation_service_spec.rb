@@ -47,6 +47,7 @@ describe Commercial::ImportFromFunderAllocationService do
             expect(Commercial::Contract.first).to have_attributes(
               product: Commercial::Product.default_product,
               contract_holder: funder,
+              name: "#{funder.name} #{start_date.year}-#{end_date.year}",
               start_date:,
               end_date:,
               comments: "Imported on #{Time.zone.today}",
@@ -92,6 +93,7 @@ describe Commercial::ImportFromFunderAllocationService do
             expect(contract.reload).to have_attributes(
               product: Commercial::Product.default_product,
               contract_holder: funder,
+              name: "#{funder.name} #{start_date.year}-#{end_date.year}",
               start_date:,
               end_date:,
               comments: "Imported on #{Time.zone.today}",

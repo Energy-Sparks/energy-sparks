@@ -83,7 +83,7 @@ module Commercial
         end_date:
       )
       contract.update(
-        name: "#{contract_holder.name} #{start_date} to #{end_date}",
+        name: "#{contract_holder.name} #{start_date.year}-#{end_date.year}",
         comments: "Imported on #{Time.zone.today}",
         status:,
         agreed_school_price:,
