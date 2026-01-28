@@ -3,12 +3,13 @@
 module Admin
   class IssuesController < AdminController
     include Pagy::Backend
-    load_and_authorize_resource :school, instance_name: 'issueable'
-    load_and_authorize_resource :school_group, instance_name: 'issueable'
-    load_and_authorize_resource :data_source, instance_name: 'issueable'
-    load_and_authorize_resource :school_onboarding, instance_name: 'issueable', find_by: :uuid
+    load_and_authorize_resource :school
+    load_and_authorize_resource :school_group
+    load_and_authorize_resource :data_source
+    load_and_authorize_resource :school_onboarding, find_by: :uuid
+    before_action :issueable
+
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
-    load_and_authorize_resource :school # For school context menu if school available
 
     def index
       params[:issue_types] ||= Issue.issue_types.keys
@@ -53,7 +54,7 @@ module Admin
     def create
       @issue.attributes = { created_by: current_user, updated_by: current_user }
       if @issue.save
-        redirect_to params[:redirect_back], notice: issueable_notice('was successfully created')
+        redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully created')
       else
         render :new
       end
@@ -61,10 +62,24 @@ module Admin
 
     def update
       if @issue.update(issue_params.merge(updated_by: current_user))
-        redirect_to params[:redirect_back], notice: issueable_notice('was successfully updated')
+        redirect_to url_from(params[:redirect_back]), notice: issueable_notice('was successfully updated')
       else
         render :edit
       end
+    end
+
+    def bulk_update
+      updated_count = Issues::BulkUpdate.new(
+        issueable: @issueable,
+        user_from: params[:user_from],
+        user_to: params[:user_to],
+        updated_by: current_user.id
+      ).perform
+
+      redirect_to url_from(params[:redirect_back]), notice: "#{helpers.pluralize(updated_count, 'issue')} updated"
+    rescue Issues::BulkError => e
+      flash.now[:alert] = helpers.safe_join(e.messages, helpers.tag.br)
+      render :bulk_edit
     end
 
     def destroy
@@ -84,6 +99,11 @@ module Admin
 
     private
 
+    def issueable
+      # For school context menu if school available
+      @issueable ||= @school || @school_group || @data_source || @school_onboarding
+    end
+
     def redirect_index(notice:)
       redirect_to issueable_index_url, notice: issueable_notice(notice)
     end
@@ -93,11 +113,15 @@ module Admin
     end
 
     def issueable_index_url
-      @issue.issueable ? polymorphic_url([:admin, @issue.issueable, Issue]) : polymorphic_url([:admin, Issue])
+      polymorphic_url([:admin, @issue&.issueable || @issueable, Issue].compact)
     end
 
     def issueable_notice(notice)
-      [@issue.issueable.try(:model_name).try(:human), @issue.issue_type, notice].compact.join(' ').capitalize
+      if @issue
+        [@issue&.issueable&.model_name&.human, @issue.issue_type, notice].compact.join(' ').capitalize
+      else
+        notice
+      end
     end
 
     def issue_params

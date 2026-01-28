@@ -56,7 +56,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         expect(page).to have_content issue.issueable.name
         expect(page).to have_content issue.fuel_type.capitalize
         expect(page).to have_content nice_date_times_today(issue.updated_at)
-        expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue]))
+        expect(page).to have_link('Edit', href: edit_polymorphic_path([:admin, issue], redirect_back: admin_school_group_path(school_group)))
         expect(page).to have_css("i[class*='fa-thumbtack']")
       end
     end

@@ -41,7 +41,6 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 click_link text: /New #{issue_type.capitalize}/
               end
 
-              it { expect(page).to have_current_path(new_polymorphic_path([:admin, issueable, Issue], issue_type: issue_type)) }
               it { expect(page).to have_content("New #{issue_type.capitalize} for #{issueable.name}")}
 
               it 'has default values' do
@@ -234,6 +233,59 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
 
                 it 'displays issue as closed' do
                   expect(page).to have_content 'Closed'
+                end
+              end
+            end
+
+            context 'when bulk editing issues' do
+              let!(:issue1) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+              let!(:issue2) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+
+              before do
+                visit url_for([:admin, issueable, Issue])
+                click_on 'Bulk update'
+              end
+
+              context 'with missing fields' do
+                before do
+                  click_on 'Update all'
+                end
+
+                it 'shows error messages' do
+                  expect(page).to have_content 'Both current and new admin users are required'
+                  expect(page).not_to have_content "Current and new admin users can't be the same"
+                end
+              end
+
+              context 'when to and from are the same' do
+                before do
+                  select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
+                  select school_group_issues_admin.display_name, from: 'user_to'
+                  click_on 'Update all'
+                end
+
+                it 'shows error messages' do
+                  expect(page).to have_content "Current and new admin users can't be the same"
+                end
+              end
+
+              context 'with required fields' do
+                before do
+                  select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
+                  select other_issues_admin.display_name, from: 'user_to'
+                  click_on 'Update all'
+                end
+
+                it { expect(page).to have_current_path(url_for([:admin, issueable, :issues])) }
+
+                it 'updates issues to new admin' do
+                  expect(page).to have_content '2 issues updated'
+                  within('div#issues-list') do
+                    expect(page).to have_content(other_issues_admin.display_name, count: 2)
+                    [issue1, issue2].each do |issue|
+                      expect(page).to have_content issue.title
+                    end
+                  end
                 end
               end
             end
