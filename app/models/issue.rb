@@ -53,8 +53,8 @@ class Issue < ApplicationRecord
     )
   }
 
-  # Issues are already removed from school when a school is marked as deleted
   # Exclude issues from inactive (archived schools in this case)
+  # (Issues are already removed when a school is marked as deleted)
   scope :active, -> {
     joins("LEFT JOIN schools ON schools.id = issues.issueable_id AND issues.issueable_type = 'School'")
       .where("issues.issueable_type != 'School' OR schools.active = ?", true)

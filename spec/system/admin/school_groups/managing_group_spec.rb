@@ -296,7 +296,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     let!(:issue) do
       create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas)
     end
-    # let!(:inactive_school_issue) { create :issue, issueable: create(:school, school_group: school_group, active: false) }
 
     before do
       school
