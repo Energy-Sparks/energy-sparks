@@ -2,6 +2,7 @@ module Commercial
   class ImportFromFunderAllocationService
     IGNORED_FUNDER_NAMES = ['Archive', 'Pending data', 'Pitched school self funding', 'Waiting list for funding'].freeze
 
+    attr_reader :product, :import_user
     def initialize(product: Commercial::Product.default_product, import_user: User.admin.first)
       @product = product
       @import_user = import_user
