@@ -21,13 +21,14 @@
     </tr>
   </thead>
   <tbody>
-    <% @funders_visible.each do |funder, school_count| %>
+    <% @funders_visible.each do |funder_name, school_count| %>
+      <% funder = Funder.find_by(name: funder_name) %>
       <tr>
-        <td><%= funder %></td>
+        <td><%= link_to funder_name, admin_funder_path(funder) %></td>
         <td><%= school_count %></td>
-        <td><%= @funders_visible_and_enabled[funder] %></td>
-        <td><%= @onboarding[funder] %>
-        <td><%= school_count + @funders_visible_and_enabled[funder] + @onboarding[funder] %></td>
+        <td><%= @funders_visible_and_enabled[funder_name] %></td>
+        <td><%= @onboarding[funder_name] %>
+        <td><%= school_count + @funders_visible_and_enabled[funder_name] + @onboarding[funder_name] %></td>
       </tr>
     <% end %>
     <tr>
