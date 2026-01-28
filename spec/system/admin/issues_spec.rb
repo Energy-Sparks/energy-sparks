@@ -47,7 +47,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(find_field('Title').text).to be_blank
                 expect(find('trix-editor#issue_description')).to have_text('')
                 expect(page).to have_select('Fuel type', selected: [])
-                expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
+                expect(page).to have_select('Status', selected: 'Open')
                 assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
                 expect(find_field('Next review date').value).to be_blank
@@ -131,7 +131,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_field('Title', with: issue.title)
                 expect(find_field('issue[description]', type: :hidden).value).to eq(issue.description.to_plain_text)
                 expect(page).to have_select('Fuel type', selected: issue.fuel_type.capitalize)
-                expect(page).to have_select('Status', selected: issue.status.capitalize) if issue_type == 'issue'
+                expect(page).to have_select('Status', selected: issue.status.capitalize)
                 expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
                 expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
                 expect(page).to have_field('Next review date', with: date.strftime('%d/%m/%Y'))
@@ -151,7 +151,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   fill_in 'Title', with: "#{issue_type} title"
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
-                  select 'Closed', from: 'Status' if issue_type == 'issue'
+                  select 'Closed', from: 'Status'
                   select new_issue_type, from: 'Issue type'
                   select 'Other Issues Admin', from: 'Assigned to'
                   fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
@@ -168,11 +168,11 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "#{issue_type} title"
                   expect(page).to have_content "#{issue_type} desc"
                   expect(page).to have_content 'Gas'
-                  expect(page).to have_content 'Closed' if new_issue_type == 'issue'
+                  expect(page).to have_content 'Closed'
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                  expect(page).to have_content "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
+                  expect(page).to have_content 'Next review • No date set'
                   expect(page).not_to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_content gas_meter.mpan_mprn
