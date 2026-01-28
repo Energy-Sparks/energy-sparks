@@ -143,6 +143,19 @@ RSpec.describe Issue, type: :model do
     end
   end
 
+  describe '.active' do
+    let!(:active_school_issue) { create(:issue, issueable: create(:school, active: true)) }
+    let!(:school_group_issue) { create(:issue, issueable: create(:school_group)) }
+    let!(:inactive_school_issue) { create(:issue, issueable: create(:school, active: false)) }
+
+    subject(:issues) { Issue.active }
+
+    it { expect(issues.count).to eq(2) }
+    it { expect(issues).to include(active_school_issue) }
+    it { expect(issues).to include(school_group_issue) }
+    it { expect(issues).not_to include(inactive_school_issue) }
+  end
+
   describe '#data_source_names' do
     let(:issue) { create(:issue, meters: meters) }
     let(:meters) { [] }

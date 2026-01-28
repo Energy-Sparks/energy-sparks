@@ -53,6 +53,13 @@ class Issue < ApplicationRecord
     )
   }
 
+  # Exclude issues from inactive (archived schools in this case)
+  # (Issues are already removed when a school is marked as deleted)
+  scope :active, -> {
+    joins("LEFT JOIN schools ON schools.id = issues.issueable_id AND issues.issueable_type = 'School'")
+      .where("issues.issueable_type != 'School' OR schools.active = ?", true)
+  }
+
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
   scope :for_owned_by, ->(owned_by) { where(owned_by:) }
   scope :for_statuses, ->(statuses) { where(status: statuses) }
