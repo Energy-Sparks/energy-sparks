@@ -76,7 +76,7 @@ class Issue < ApplicationRecord
   validates :issue_type, :status, :title, :description, presence: true
   validate :school_issue_meters_only
 
-  before_save :remove_review_date, if: -> { will_save_change_to_status? && status_closed? }
+  before_save :remove_review_date, if: -> { status_changed?(to: 'closed') }
 
   def resolve!(attrs = {})
     self.attributes = attrs
