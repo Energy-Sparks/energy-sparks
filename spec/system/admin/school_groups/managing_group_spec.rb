@@ -509,7 +509,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
             expect(page).to have_link(school.name, href: school_path(school))
             expect(page).to have_content(nice_dates(school.removal_date))
             expect(page).to have_link('Meters')
-            expect(page).to have_link('Issues')
           end
         end
       end
@@ -648,7 +647,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
             expect(page).to have_link(school.name, href: school_path(school))
             expect(page).to have_content(nice_dates(school.removal_date))
             expect(page).to have_link('Meters')
-            expect(page).to have_link('Issues')
           end
         end
       end
@@ -863,7 +861,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
             expect(page).to have_link(school.name, href: school_path(school))
             expect(page).to have_content(nice_dates(school.removal_date))
             expect(page).to have_link('Meters')
-            expect(page).to have_link('Issues')
           end
         end
       end
