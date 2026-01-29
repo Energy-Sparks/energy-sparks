@@ -1,0 +1,9 @@
+<div>
+  <%= link_to 'Issues & Notes', admin_issues_path %>&nbsp;>
+  <% if @issueable %>
+    <%= @issueable.model_name.human.capitalize %> >
+    <%= @issueable.try(:name) %>
+  <% else %>
+    all
+  <% end %>
+</div>

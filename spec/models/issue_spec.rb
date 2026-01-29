@@ -114,6 +114,38 @@ RSpec.describe Issue, type: :model do
     end
   end
 
+  describe 'before_save remove_review_date' do
+    let(:issue) { create(:issue, status: :open, review_date: 2.days.from_now) }
+
+    before { freeze_time }
+
+    context 'when status changed to closed' do
+      before do
+        issue.status = :closed
+        issue.save
+      end
+
+      it 'removes review date' do
+        expect(issue.review_date).to be_nil
+      end
+    end
+
+    context 'when status is not changed' do
+      before do
+        issue.title = 'Updated title'
+        issue.save
+      end
+
+      it 'updates the title' do
+        expect(issue.title).to eq('Updated title')
+      end
+
+      it 'review date should still be present' do
+        expect(issue.review_date).to eq(2.days.from_now.to_date)
+      end
+    end
+  end
+
   describe '.for_school_group' do
     context 'when there are issues for school group and schools in group' do
       let!(:school_issue) { create(:issue, issueable: school) }
@@ -141,6 +173,17 @@ RSpec.describe Issue, type: :model do
         it { expect(issues).not_to include(different_school_group_school_issue) }
       end
     end
+  end
+
+  describe '.active' do
+    let!(:active_school_issue) { create(:issue, issueable: create(:school, active: true)) }
+    let!(:school_group_issue) { create(:issue, issueable: create(:school_group)) }
+    let!(:inactive_school_issue) { create(:issue, issueable: create(:school, active: false)) }
+
+    subject(:issues) { Issue.active }
+
+    it { expect(issues).to contain_exactly(active_school_issue, school_group_issue) }
+    it { expect(issues).not_to include(inactive_school_issue) }
   end
 
   describe '#data_source_names' do
