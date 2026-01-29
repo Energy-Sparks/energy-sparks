@@ -1,0 +1,18 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Contracts' %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New contract', new_admin_commercial_contract_path,
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render(Commercial::ContractsComponent.new) %>
+  </div>
+</div>

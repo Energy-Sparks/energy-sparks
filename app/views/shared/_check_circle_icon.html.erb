@@ -1,0 +1,5 @@
+<% if controller.class.ancestors.include?(ActionMailer::Base) %>
+  <%= image_tag 'email/fa-check-circle_text-success.png' %>
+<% else %>
+  <%= fa_icon('check-circle text-success') %>
+<% end %>

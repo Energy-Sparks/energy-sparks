@@ -562,6 +562,10 @@ Rails.application.routes.draw do
       member do
         post :resolve
       end
+      collection do
+        get :bulk_edit
+        post :bulk_update
+      end
     end
   end
   concern :messageable do
@@ -596,6 +600,10 @@ Rails.application.routes.draw do
     end
 
     namespace :commercial do
+      resources :contracts do
+        get :contract_holder_options, on: :collection
+      end
+      resources :licences
       resources :products
     end
 
@@ -779,6 +787,7 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
+      resources :images, only: :index
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 

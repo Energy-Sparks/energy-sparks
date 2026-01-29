@@ -1,26 +1,35 @@
 <!-- Button trigger modal -->
-<button type="button" class="<%= local_assigns[:class] %>" data-toggle="modal" data-target="#data_source_report-<%= data_source.id %>">
+<button type="button" class="<%= local_assigns[:class] %>" data-toggle="modal"
+    data-target="#data_source_report-<%= data_source.id %>">
   <%= fa_icon('envelope') %> Email Data Source Report
 </button>
 
-<div class="modal fade" id="data_source_report-<%= data_source.id %>" tabindex="-1" aria-labelledby="data_source_report_label" aria-hidden="true">
+<div class="modal fade" id="data_source_report-<%= data_source.id %>" tabindex="-1"
+    aria-labelledby="data_source_report_label" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="data_source_report_label">Email data source report & csv</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <%= form_tag admin_data_source_deliver_path(data_source), method: :post do %>
         <div class="modal-body">
-          <div><strong>To: </strong><span class="badge border badge-pill border-secondary font-weight-normal"><%= current_user.email %></span>
+          <div><strong>To: </strong>
+            <span class="badge border rounded-pill text-dark border-secondary fw-normal">
+              <%= current_user.email %>
+            </span>
           </div>
-          <div class="pb-2"><strong>Data source: </strong><%= data_source.name %>
+          <div class="pb-2">
+            <strong>Data source: </strong><%= data_source.name %>
           </div>
         </div>
         <div class="modal-footer">
-          <%= button_tag(type: 'submit', class: 'btn btn-sm', data: { confirm: "Are you sure you want to send the data source report to #{current_user.email}?" }) do %>
+          <%= button_tag(type: 'submit', class: 'btn btn-sm',
+                         data: {
+                           confirm: "Are you sure you want to send the data source report to #{current_user.email}?"
+                         }) do %>
             <%= fa_icon('envelope') %> Email Data Source Report
           <% end %>
           <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>

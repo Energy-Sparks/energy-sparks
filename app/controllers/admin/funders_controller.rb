@@ -17,7 +17,7 @@ module Admin
 
     def create
       if @funder.save
-        redirect_to admin_funders_path, notice: 'Funder was successfully created'
+        redirect_to(admin_funders_path, notice: 'Funder was successfully created')
       else
         render :new
       end
@@ -25,15 +25,18 @@ module Admin
 
     def update
       if @funder.update(funder_params)
-        redirect_to admin_funders_path, notice: 'Funder was successfully updated.'
+        redirect_to(admin_funders_path, notice: 'Funder was successfully updated.')
       else
         render :edit
       end
     end
 
     def destroy
-      @funder.destroy
-      redirect_to admin_funders_path, notice: 'Funder was successfully deleted.'
+      if @funder.destroy
+        redirect_to(admin_funders_path, alert: 'Funder was successfully deleted.')
+      else
+        redirect_to(admin_funders_path, alert: @funder.errors.full_messages.to_sentence)
+      end
     end
 
     private

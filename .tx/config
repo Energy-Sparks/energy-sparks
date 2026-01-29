@@ -799,6 +799,13 @@ source_lang  = en
 type         = YML
 minimum_perc = 100
 
+[o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-advice-yml]
+file_filter  = config/locales/<lang>/views/school_groups/advice/advice.yml
+source_file  = config/locales/views/school_groups/advice/advice.yml
+source_lang  = en
+type         = YML
+minimum_perc = 100
+
 [o:energy-sparks:p:energy-sparks:r:views-school_groups-advice-advice_pages-yml]
 file_filter  = config/locales/<lang>/views/school_groups/advice/advice_pages.yml
 source_file  = config/locales/views/school_groups/advice/advice_pages.yml

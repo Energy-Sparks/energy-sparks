@@ -101,7 +101,7 @@
     <% else %>
       <div class="bg-light p-2">No school group issues for <%= @school_group.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-group-notes',
                         label: label_count('Group notes', @school_group.issues.note.status_open.count)) do %>
@@ -111,14 +111,14 @@
     <% else %>
       <div class="bg-light p-2">No school group notes for <%= @school_group.name %>.</div>
     <% end %>
-    <div class='pt-3'><%= render 'admin/issues/new_issues_links', issueable: @school_group %></div>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @school_group %></div>
   <% end %>
   <% component.with_tab(name: :'school-issues',
                         label: label_count('School issues and notes',
-                                           @school_group.school_issues.status_open.count)) do %>
-    <% if @school_group.school_issues.any? %>
+                                           @school_group.active_school_issues.status_open.count)) do %>
+    <% if @school_group.active_school_issues.any? %>
       <%= render 'admin/issues/issues_list',
-                 issues: @school_group.school_issues.by_priority_order,
+                 issues: @school_group.active_school_issues.by_priority_order,
                  issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>
@@ -127,10 +127,10 @@
 <% end %>
 
 <script>
-document.querySelectorAll('#school-group-schools-content a.btn.edit').forEach((element) => {
+document.querySelectorAll('.tab-content a.btn.edit').forEach((element) => {
   element.addEventListener('click', (event) => {
     event.preventDefault();
-    window.location.href = `${element.href}?redirect_back=${encodeURIComponent(window.location.pathname + window.location.hash)}`;
+    window.location.href = `${element.href}${encodeURIComponent(window.location.hash)}`;
   });
 });
 </script>

@@ -1,23 +1,31 @@
-<h1>Funders</h1>
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Funders' %>
+<% end %>
 
-<table class="table mt-2">
+<p><%= link_to 'New Funder', new_admin_funder_path, class: 'btn btn-primary btn-sm' %></p>
+
+<table class="table table-paged dataTable table-sm">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Actions</th>
+      <th class="text-end">Contracts</th>
+      <th class="no-sort text-end">Actions</th>
     </tr>
   </thead>
   <% @funders.each do |funder| %>
       <tr>
-        <td><%= funder.name %></td>
-        <td>
+        <td><%= link_to funder.name, admin_funder_path(funder) %></td>
+        <td class="text-end"><%= funder.contracts.count %></td>
+        <td class="text-end">
           <div class="btn-group">
-            <%= link_to 'Edit', edit_admin_funder_path(funder), class: 'btn' %>
-            <%= link_to 'Delete', admin_funder_path(funder), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn' %>
+            <%= link_to 'Edit', edit_admin_funder_path(funder), class: 'btn btn-sm' %>
+            <%= link_to 'Delete',
+                        admin_funder_path(funder),
+                        method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: 'btn btn-danger btn-sm' %>
           </div>
         </td>
       </tr>
   <% end %>
 </table>
-
-<p><%= link_to 'New Funder', new_admin_funder_path, class: 'btn'%></p>

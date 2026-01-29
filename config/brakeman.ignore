@@ -58,29 +58,6 @@
       "note": ""
     },
     {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "2e1954d6865dbd3a28c9b27bf760ebc1f800e138e4b5ba7b93ae9c4590e6a4ea",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/data_sources_controller.rb",
-      "line": 24,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Data source was successfully updated.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::DataSourcesController",
-        "method": "update"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
       "fingerprint": "36e0fbf4927660db93a8c25a75a26c216cb325ddf8d5b2387a678d5e37a0a3cc",
@@ -125,29 +102,6 @@
         89
       ],
       "note": "ignore_prefix is not user input"
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "468b1f5d7e0c483cafe243903549520ad177011e2655a1039b8e6c0c0405d1a7",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/procurement_routes_controller.rb",
-      "line": 7,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Procurement route was successfully created.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::ProcurementRoutesController",
-        "method": "create"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
     },
     {
       "warning_type": "Mass Assignment",
@@ -198,52 +152,6 @@
     {
       "warning_type": "Redirect",
       "warning_code": 18,
-      "fingerprint": "53ca41f97ce098f0458d8efc29553838cf2a49de9f8dc7317a735d2923aaba32",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/data_sources_controller.rb",
-      "line": 16,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Data source was successfully created.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::DataSourcesController",
-        "method": "create"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "5b405296a6a090d6597918a05c3df4daca6efc2c4b78a5bb427ec089b238e6ed",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/procurement_routes_controller.rb",
-      "line": 15,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => \"Procurement route was successfully updated.\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::ProcurementRoutesController",
-        "method": "update"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
       "fingerprint": "6875b4a807a2d988126d5685fd4a7e65a0fefaf99fa6e709c3661cf855c491f3",
       "check_name": "Redirect",
       "message": "Possible unprotected redirect",
@@ -256,29 +164,6 @@
         "type": "method",
         "class": "Admin::DashboardMessagesController",
         "method": "destroy"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "6e7e23ef41df61bd70dd594fd315b2bcbb65531d2c477d89f83993a477767472",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/issues_controller.rb",
-      "line": 46,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully created\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::IssuesController",
-        "method": "create"
       },
       "user_input": "params[:redirect_back]",
       "confidence": "High",
@@ -341,29 +226,6 @@
       "confidence": "Weak",
       "cwe_id": [
         79
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Redirect",
-      "warning_code": 18,
-      "fingerprint": "84e539f57439626893ab67bbb77050b64a2e1128edc4deee013ca8ad7ccdc44d",
-      "check_name": "Redirect",
-      "message": "Possible unprotected redirect",
-      "file": "app/controllers/admin/issues_controller.rb",
-      "line": 54,
-      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
-      "code": "redirect_to(params[:redirect_back], :notice => issueable_notice(\"was successfully updated\"))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::IssuesController",
-        "method": "update"
-      },
-      "user_input": "params[:redirect_back]",
-      "confidence": "High",
-      "cwe_id": [
-        601
       ],
       "note": ""
     },

@@ -750,42 +750,6 @@ cy:
     storage_heater_thermostatic:
       title:
         - Rheolaeth thermostatig
-    targeting_and_tracking_standard_group_by_week_electricity:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
-    targeting_and_tracking_standard_group_by_week_gas:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
-    targeting_and_tracking_standard_group_by_week_storage_heater:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos safonol (<%= total_kwh %> kWh)
-    targeting_and_tracking_synthetic_target_group_by_week_electricity:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
-    targeting_and_tracking_synthetic_target_group_by_week_gas:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
-    targeting_and_tracking_synthetic_target_group_by_week_storage_heater:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed hanesyddol a/neu synthetig (<%= total_kwh %> kWh)
-    targeting_and_tracking_target_only_group_by_week_electricity:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
-    targeting_and_tracking_target_only_group_by_week_gas:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
-    targeting_and_tracking_target_only_group_by_week_storage_heater:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl ysgol targed yn unig (<%= total_kwh %> kWh)
-    targeting_and_tracking_unscaled_target_group_by_week_electricity:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
-    targeting_and_tracking_unscaled_target_group_by_week_gas:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
-    targeting_and_tracking_unscaled_target_group_by_week_storage_heater:
-      title:
-        - Siart <%= meter.fuel_type %> grwpio yn ôl wythnos targed heb raddfa (<%= total_kwh %> kWh)
     teachers_landing_page_electricity:
       title:
         - Cymhariaeth o ddefnydd trydan y 2 wythnos diwethaf
@@ -886,6 +850,7 @@ cy:
       relative_percent: canran
       relative_percent_0dp: canran
       timeofday: Amser o'r dydd
+      values: gwerthoedd
       w: W
       £: "£"
       £_0dp: "£"

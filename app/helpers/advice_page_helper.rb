@@ -126,7 +126,7 @@ module AdvicePageHelper
     end
   end
 
-  def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type, current_user)
+  def advice_pages_for_school_and_fuel(advice_pages, school, fuel_type, _current_user)
     advice_pages = advice_pages.where(fuel_type:)
     school.multiple_meters?(fuel_type) ? advice_pages : advice_pages.where(multiple_meters: false)
   end

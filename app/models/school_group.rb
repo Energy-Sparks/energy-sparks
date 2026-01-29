@@ -78,6 +78,8 @@ class SchoolGroup < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :assigned_schools, source: :issues
+  has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
+
   has_many :observations, through: :assigned_schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
@@ -206,7 +208,7 @@ class SchoolGroup < ApplicationRecord
     school_ids = schools_to_check.data_visible.pluck(:id)
     return [] if school_ids.empty?
 
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT DISTINCT(fuel_types.key) FROM (
         SELECT
           row_to_json(json_each(fuel_configuration))->>'key' as key,

@@ -23,7 +23,7 @@ module Searchable
       dictionary = dictionary_for(locale)
       metadata_fields = searchable_metadata_fields.map { |s| "'#{s}'" }.join(', ')
       search = ActiveRecord::Base.connection.quote(sanitize_websearch_query(query))
-      <<-SQL.squish
+      <<~SQL.squish
         INNER JOIN (
           SELECT
             "#{table_name}"."id" AS search_id,

@@ -15,4 +15,9 @@ describe Commercial::Contract do
     it_behaves_like 'a date ranged model'
     it_behaves_like 'has a contract holder'
   end
+
+  describe '#status_colour' do
+    it { expect(create(:commercial_contract, status: :provisional).status_colour).to eq(:warning) }
+    it { expect(create(:commercial_contract, status: :confirmed).status_colour).to eq(:success) }
+  end
 end

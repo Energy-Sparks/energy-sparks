@@ -50,6 +50,11 @@ module Commercial
       confirmed: 'confirmed',
     }.freeze
 
+    STATUS_COLOUR = {
+      provisional: :warning,
+      confirmed: :success
+    }.freeze
+
     CONTRACT_LICENCE_PERIOD = {
       contract: 'contract',
       one_year: 'one_year',
@@ -67,5 +72,11 @@ module Commercial
     validates_presence_of :name, :start_date, :end_date
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
+
+    has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
+
+    def status_colour
+      STATUS_COLOUR[status.to_sym]
+    end
   end
 end
