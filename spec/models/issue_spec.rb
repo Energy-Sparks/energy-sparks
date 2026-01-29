@@ -150,9 +150,7 @@ RSpec.describe Issue, type: :model do
 
     subject(:issues) { Issue.active }
 
-    it { expect(issues.count).to eq(2) }
-    it { expect(issues).to include(active_school_issue) }
-    it { expect(issues).to include(school_group_issue) }
+    it { expect(issues).to contain_exactly(active_school_issue, school_group_issue) }
     it { expect(issues).not_to include(inactive_school_issue) }
   end
 
