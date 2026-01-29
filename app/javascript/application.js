@@ -2,7 +2,6 @@
 
 import 'trix'
 import '@rails/actiontext'
-import "./commercial/contract_holder"
 
 // per https://github.com/basecamp/trix/pull/434
 Trix.config.attachments.preview.caption = { name: false, size: false }

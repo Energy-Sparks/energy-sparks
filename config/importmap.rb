@@ -10,4 +10,5 @@ pin 'transport_surveys/carbon', preload: false
 pin 'transport_surveys/notifier', preload: false
 pin 'transport_surveys/handlebars_helpers', preload: false
 pin 'transport_surveys/helpers', preload: false
-pin 'commercial/contract_holder', to: 'commercial/contract_holder.js'
+
+pin_all_from 'app/javascript/commercial', under: 'commercial', preload: false

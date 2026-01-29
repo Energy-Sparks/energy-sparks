@@ -47,7 +47,7 @@ class MeterAttribute < ApplicationRecord
   end
 
   def self.metered_solar
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT ma.id, m.id, s.id, s.name, solar.*
       FROM meter_attributes ma
       JOIN meters m ON ma.meter_id = m.id
@@ -83,7 +83,7 @@ class MeterAttribute < ApplicationRecord
   end
 
   def self.solar_pv
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT ma.id, m.school_id, s.name, ma.meter_id, solar.*
       FROM meter_attributes ma
       JOIN meters m ON ma.meter_id = m.id

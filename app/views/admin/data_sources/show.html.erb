@@ -52,6 +52,6 @@
     <% else %>
       <div class="bg-light p-2">No issues for <%= @data_source.name %>.</div>
     <% end %>
-    <%= render 'admin/issues/new_issues_links', issueable: @data_source %>
+    <%= render 'admin/issues/issues_links', issueable: @data_source %>
   </div>
 </div>

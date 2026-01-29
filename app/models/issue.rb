@@ -53,12 +53,23 @@ class Issue < ApplicationRecord
     )
   }
 
+  # Exclude issues from inactive (archived schools in this case)
+  # (Issues are already removed when a school is marked as deleted)
+  scope :active, -> {
+    joins("LEFT JOIN schools ON schools.id = issues.issueable_id AND issues.issueable_type = 'School'")
+      .where("issues.issueable_type != 'School' OR schools.active = ?", true)
+  }
+
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
   scope :for_owned_by, ->(owned_by) { where(owned_by:) }
   scope :for_statuses, ->(statuses) { where(status: statuses) }
   scope :search, lambda { |search|
     joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
   }
+
+  scope :for_issueable, ->(issueable = nil) { issueable ? where(issueable: issueable) : all }
+
+  scope :with_owner, -> { where.not(owned_by_id: nil) }
 
   scope :by_pinned, -> { order(pinned: :desc) }
   scope :by_review_date, -> { order(review_date: :asc) }
@@ -76,9 +87,11 @@ class Issue < ApplicationRecord
   validates :issue_type, :status, :title, :description, presence: true
   validate :school_issue_meters_only
 
+  before_save :remove_review_date, if: -> { status_changed?(to: 'closed') }
+
   def resolve!(attrs = {})
     self.attributes = attrs
-    self.review_date = nil
+    remove_review_date
     status_closed!
   end
 
@@ -153,6 +166,10 @@ class Issue < ApplicationRecord
   end
 
   private
+
+  def remove_review_date
+    self.review_date = nil
+  end
 
   def school_issue_meters_only
     return unless meters.any? && !issueable.is_a?(School)
