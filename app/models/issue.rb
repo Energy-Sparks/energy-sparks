@@ -80,9 +80,11 @@ class Issue < ApplicationRecord
   validates :issue_type, :status, :title, :description, presence: true
   validate :school_issue_meters_only
 
+  before_save :remove_review_date, if: -> { status_changed?(to: 'closed') }
+
   def resolve!(attrs = {})
     self.attributes = attrs
-    self.review_date = nil
+    remove_review_date
     status_closed!
   end
 
@@ -157,6 +159,10 @@ class Issue < ApplicationRecord
   end
 
   private
+
+  def remove_review_date
+    self.review_date = nil
+  end
 
   def school_issue_meters_only
     return unless meters.any? && !issueable.is_a?(School)
