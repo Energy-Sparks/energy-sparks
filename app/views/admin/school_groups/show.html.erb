@@ -115,10 +115,10 @@
   <% end %>
   <% component.with_tab(name: :'school-issues',
                         label: label_count('School issues and notes',
-                                           @school_group.school_issues.status_open.count)) do %>
-    <% if @school_group.school_issues.any? %>
+                                           @school_group.active_school_issues.status_open.count)) do %>
+    <% if @school_group.active_school_issues.any? %>
       <%= render 'admin/issues/issues_list',
-                 issues: @school_group.school_issues.by_priority_order,
+                 issues: @school_group.active_school_issues.by_priority_order,
                  issueable_type: 'School' %>
     <% else %>
       <div class="bg-light p-2">No school issues for <%= @school_group.name %>.</div>

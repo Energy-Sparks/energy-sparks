@@ -78,6 +78,8 @@ class SchoolGroup < ApplicationRecord
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :assigned_schools, source: :issues
+  has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
+
   has_many :observations, through: :assigned_schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
