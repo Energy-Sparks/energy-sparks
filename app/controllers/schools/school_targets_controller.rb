@@ -69,7 +69,6 @@ module Schools
     def update
       authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
-        # debugger
         previous_changes = @school_target.previous_changes.keys
         update_monthly_consumption
         AggregateSchoolService.new(@school).invalidate_cache
@@ -105,10 +104,14 @@ module Schools
     end
 
     def redirect_path(previous_changes)
-      if previous_changes.include?('electricity') && previous_changes.exclude?('gas')
+      fuel_changes = previous_changes & %w[electricity gas storage_heaters]
+      case fuel_changes
+      when %w[electricity]
         school_advice_electricity_target_path(@school)
-      elsif previous_changes.include?('gas') && previous_changes.exclude?('electricity')
+      when %w[gas]
         school_advice_gas_target_path(@school)
+      when %w[storage_heaters]
+        school_advice_storage_heater_target_path(@school)
       else
         school_advice_path(@school)
       end
