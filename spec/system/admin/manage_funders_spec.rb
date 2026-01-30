@@ -17,6 +17,7 @@ describe 'manage funders' do
     context 'with valid data' do
       before do
         fill_in 'Name', with: 'My funder'
+        uncheck 'Do we invoice this funder?'
         click_on 'Create'
       end
 
