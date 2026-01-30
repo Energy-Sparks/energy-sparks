@@ -43,6 +43,8 @@ module Commercial
 
     self.table_name = 'commercial_contracts'
 
+    scope :by_name, -> { order(name: :asc) }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 

@@ -93,6 +93,17 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :contract_id %>
+      <%= f.select :contract_id,
+                   options_for_select(Commercial::Contract.current.by_name.pluck(:name, :id),
+                                      @school_onboarding.contract_id),
+                   { include_blank: true }, { class: 'form-control' } %>
+      <p class="small">Which contract will this school be using when it completes onboarding?</p>
+    </div>
+  </div>
+
   <h2>Weather and Geographic Areas</h2>
 
   <div class="row">
