@@ -23,6 +23,7 @@ class SchoolCreator
           process_new_school!
         end
         create_default_contact(onboarding)
+        Commercial::LicenceManager.new(@school).school_onboarded(onboarding.contract)
         process_new_configuration!
         onboarding_service.record_event(onboarding, :school_calendar_created) if @school.calendar
         onboarding_service.record_event(onboarding, :school_details_created) do
@@ -56,6 +57,7 @@ class SchoolCreator
     @school.update!(data_enabled: true)
     @school.update!(activation_date: Time.zone.today) unless @school.activation_date.present?
     onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
+    Commercial::LicenceManager.new(@school).school_made_data_enabled
     @school&.school_group&.touch
     broadcast(:school_made_data_enabled, @school)
   end
