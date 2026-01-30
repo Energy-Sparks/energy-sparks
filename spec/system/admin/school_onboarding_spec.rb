@@ -53,8 +53,6 @@ RSpec.describe 'onboarding', :schools do
         click_on 'New School Onboarding'
       end
 
-      it { expect(page).to have_select('Data Sharing', selected: 'Public') }
-      it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
       it { expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name)) }
 
       context 'when completing the first form' do
@@ -62,13 +60,12 @@ RSpec.describe 'onboarding', :schools do
           fill_in 'School name', with: school_name
           fill_in 'URN', with: 100000
           fill_in 'Contact email', with: 'oldfield@test.com'
-          select 'Within Group', from: 'Data Sharing'
-
           select school_group.name, from: 'School Group'
-          select funder.name, from: 'Funder'
           click_on 'Next'
         end
 
+        it { expect(page).to have_select('Data Sharing', selected: 'Public') }
+        it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
         it { expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name)) }
         it { expect(page).to have_select('Template calendar', selected: template_calendar.title) }
         it { expect(page).to have_select('Weather Station', selected: weather_station.title) }
@@ -80,6 +77,8 @@ RSpec.describe 'onboarding', :schools do
             select project_group.name, from: 'Project Group'
             select diocese.name, from: 'Diocese'
             select local_authority_area.name, from: 'Local Authority Area'
+            select funder.name, from: 'Funder'
+            select 'Within Group', from: 'Data Sharing'
 
             click_on 'Next'
           end
@@ -145,9 +144,9 @@ RSpec.describe 'onboarding', :schools do
         click_on 'Manage school onboarding'
         click_on 'Edit'
         fill_in 'School name', with: 'A new name'
-        select funder.name, from: 'Funder'
         click_on 'Next'
 
+        select funder.name, from: 'Funder'
         select other_template_calendar.title, from: 'Template calendar'
         select 'Scotland', from: 'Country'
         choose('Display chart data in £, where available')
@@ -169,9 +168,8 @@ RSpec.describe 'onboarding', :schools do
         end
 
         it 'is showing right values' do
-          # check form fields repopulating
-          expect(page).to have_select('Funder', selected: funder.name)
           click_on 'Next'
+          expect(page).to have_select('Funder', selected: funder.name)
           expect(page).to have_select('Template calendar', selected: onboarding.template_calendar.title)
           expect(page).to have_select('Country', selected: 'Scotland')
           # unchanged

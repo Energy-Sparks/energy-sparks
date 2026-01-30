@@ -27,7 +27,9 @@ module Admin
           :local_authority_area_id,
           :weather_station_id,
           :default_chart_preference,
-          :country
+          :country,
+          :data_sharing,
+          :funder_id,
         )
       end
     end
