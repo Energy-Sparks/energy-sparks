@@ -2,6 +2,7 @@
 #
 # Table name: commercial_licences
 #
+#  comments          :text
 #  contract_id       :bigint(8)        not null
 #  created_at        :datetime         not null
 #  created_by_id     :bigint(8)

@@ -92,20 +92,20 @@ describe 'manage funders' do
         let(:table_id) { '#all-contracts-table' }
         let(:expected_header) do
           [
-            ['Name', 'Comments', 'Product', 'Status', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Actions']
+            ['Name', 'Contract Holder', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status', 'Actions']
           ]
         end
         let(:expected_rows) do
           [
             [
               contract.name,
-              contract.comments,
+              contract.contract_holder.name,
               contract.product.name,
-              contract.status.humanize,
               contract.start_date.iso8601,
               contract.end_date.iso8601,
               contract.number_of_schools.to_s,
               '0',
+              contract.status.humanize,
               'Edit Delete'
             ]
           ]
