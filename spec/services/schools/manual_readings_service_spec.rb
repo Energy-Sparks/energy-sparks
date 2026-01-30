@@ -78,7 +78,7 @@ describe Schools::ManualReadingsService do
     before { travel_to(Date.new(2025, 5)) }
 
     def expected_readings(usage)
-      months = (1..24).map { |i| Date.new(2025, 5) - i.months }.reverse
+      months = (1..(usage.length + 12)).map { |i| Date.new(2025, 5) - i.months }.reverse
       usage = [*usage, *[1020] * 12]
       months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
     end
@@ -91,7 +91,7 @@ describe Schools::ManualReadingsService do
       end
 
       it 'calculates the correct readings' do
-        expect(service.readings).to eq(expected_readings([nil] * 12))
+        expect(service.readings).to eq(expected_readings([nil] * 11))
       end
     end
 

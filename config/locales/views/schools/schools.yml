@@ -206,7 +206,7 @@ en:
         <p>Fields shown in grey indicate months for which we already have automatically supplied meter readings for the school. These cannot be manually updated and are shown for reference.</p>
       enough_data: We have enough data from your meters so you don't need to enter any readings manually.
       limited_data: We have limited energy data for your school. You can enter monthly consumption data here to show progress against any targets set or observe changes in consumption over a longer period of time. To show historical progress towards your energy use target, we need at least 13 months of historical readings. To see progress over two full years, enter readings for all months below.
-      with_target: In order to calculate progress towards reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
+      with_target: In order to calculate progress towards your target of reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
     meters:
       creatable_meter_types:
         electricity: Electricity
