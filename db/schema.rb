@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   create_enum "audience", ["anyone", "school_users", "school_admins", "group_admins"]
   create_enum "contract_contact_type", ["procurement", "invoicing", "loa", "renewals"]
   create_enum "contract_invoice_terms", ["pro_rata", "full"]
-  create_enum "contract_licence_period", ["contract", "one_year"]
+  create_enum "contract_licence_period", ["contract", "custom"]
   create_enum "contract_status", ["provisional", "confirmed"]
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
@@ -721,6 +721,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "licence_years", precision: 4, scale: 2
     t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contracts_on_contract_holder"
     t.index ["created_by_id"], name: "index_commercial_contracts_on_created_by_id"
     t.index ["name"], name: "index_commercial_contracts_on_name", unique: true
@@ -739,6 +740,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "comments"
+    t.decimal "school_specific_price", precision: 10, scale: 2
     t.index ["contract_id"], name: "index_commercial_licences_on_contract_id"
     t.index ["created_by_id"], name: "index_commercial_licences_on_created_by_id"
     t.index ["school_id"], name: "index_commercial_licences_on_school_id"
@@ -1081,6 +1084,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   create_table "funders", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "mailchimp_fields_changed_at"
+    t.boolean "invoiced", default: true, null: false
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|

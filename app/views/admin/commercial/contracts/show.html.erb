@@ -64,6 +64,12 @@
               <%= @contract.licence_period.humanize %>
             </dd>
             <dt class="col-5">
+              Licence years
+            </dt>
+            <dd class="col-7">
+              <%= @contract.licence_years %>
+            </dd>
+            <dt class="col-5">
               Number of schools
             </dt>
             <dd class="col-7">
@@ -157,7 +163,7 @@
 
 <div class="row">
   <div class="col-12">
-    <%= render Commercial::LicencesComponent.new(id: 'licences', holder: @contract) %>
+    <%= render Commercial::LicencesComponent.new(id: 'licences', holder: @contract, show_contract: false) %>
   </div>
 </div>
 

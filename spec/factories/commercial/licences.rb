@@ -3,6 +3,8 @@ FactoryBot.define do
     school
     association :contract, factory: :commercial_contract
 
+    sequence(:comments) {|n| "Licence #{n} comments"}
+
     start_date { Time.zone.today }
     end_date { Time.zone.today + 1.year }
 

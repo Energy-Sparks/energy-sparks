@@ -1,8 +1,8 @@
-<h1>School onboarding configuration: <%= @school_onboarding.school_name %> </h1>
+<h1><%= @school_onboarding.school_name %> onboarding configuration</h1>
 
 <%= form_for(@school_onboarding, url: admin_school_onboarding_configuration_path) do |f| %>
-  <h2>Calendar, weather feeds, scoreboards and other default settings</h2>
-  <div class="form-row">
+  <h2>Basic configuration</h2>
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :project_group_id, 'Project Group' %>
       <%= f.select :project_group_id,
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :diocese_id, 'Diocese' %>
       <%= f.select :diocese_id,
@@ -29,7 +29,7 @@
     </div>
   </div>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :local_authority_area_id, 'Local Authority Area' %>
       <%= f.select :local_authority_area_id,
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :template_calendar_id, 'Template calendar' %>
       <%= f.select :template_calendar_id,
@@ -55,19 +55,8 @@
                    { class: 'form-control' } %>
     </div>
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-12">
-      <%= f.label :weather_station_id, 'Weather Station' %>
-      <%= f.select :weather_station_id,
-                   options_from_collection_for_select(WeatherStation.by_title,
-                                                      :id,
-                                                      :title,
-                                                      @school_onboarding.weather_station_id),
-                   {},
-                   { class: 'form-control' } %>
-    </div>
-  </div>
-  <div class="form-row">
+
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id,
@@ -79,7 +68,57 @@
                    { class: 'form-control' } %>
     </div>
   </div>
-  <div class="form-row">
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :data_sharing, 'Data Sharing' %>
+      <%= f.select :data_sharing,
+                   options_for_select(
+                     School.data_sharings.map { |key, _value| [key.titleize, key] },
+                     @school_onboarding.data_sharing
+                   ),
+                   { include_blank: false },
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <h2>Contracts & Licensing</h2>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :funder_id %>
+      <%= f.select :funder_id,
+                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), @school_onboarding.funder_id),
+                   { include_blank: true }, { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :contract_id %>
+      <%= f.select :contract_id,
+                   options_for_select(Commercial::Contract.current.by_name.pluck(:name, :id),
+                                      @school_onboarding.contract_id),
+                   { include_blank: true }, { class: 'form-control' } %>
+      <p class="small">Which contract will this school be using when it completes onboarding?</p>
+    </div>
+  </div>
+
+  <h2>Weather and Geographic Areas</h2>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :weather_station_id, 'Weather Station' %>
+      <%= f.select :weather_station_id,
+                   options_from_collection_for_select(WeatherStation.by_title,
+                                                      :id,
+                                                      :title,
+                                                      @school_onboarding.weather_station_id),
+                   {},
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :country, 'Country' %>
       <%= f.select :country,
@@ -89,6 +128,8 @@
                    { class: 'form-control' } %>
     </div>
   </div>
+
+  <h2>Chart defaults</h2>
 
   <div class="form-group">
     <label><%= t('school_groups.chart_updates.index.default_chart_preference.form_group') %></label>
