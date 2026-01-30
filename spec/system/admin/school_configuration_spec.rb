@@ -97,7 +97,6 @@ RSpec.describe 'editing school configuration', type: :system do
       end
     end
 
-
     it 'allows scoreboard to be updated' do
       select scoreboard.name, from: 'Scoreboard'
       click_on('Update configuration')
@@ -108,8 +107,15 @@ RSpec.describe 'editing school configuration', type: :system do
     it 'allows funder to be updated' do
       select funder.name, from: 'Funder'
       click_on('Update configuration')
-      school.reload
-      expect(school.funder).to eq funder
+      expect(school.reload.funder).to eq funder
+    end
+
+    it 'allows default contract holder to be updated' do
+      school.organisation_group = school_group
+      refresh
+      select 'MAT funded', from: 'How will school be funded in future?'
+      click_on('Update configuration')
+      expect(school.reload.default_contract_holder).to eq school_group
     end
   end
 

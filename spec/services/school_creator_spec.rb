@@ -48,6 +48,7 @@ describe SchoolCreator, :schools, type: :service do
 
       it 'assigns attributes' do
         expect(school.school_group).to eq(school_group)
+        expect(school.default_contract_holder).to eq(school_group)
         expect(school.template_calendar).to eq template_calendar
         expect(school.calendar.based_on).to eq(template_calendar)
         expect(school.dark_sky_area).to eq(dark_sky_area)
