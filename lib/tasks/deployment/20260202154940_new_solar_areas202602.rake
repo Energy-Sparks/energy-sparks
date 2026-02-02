@@ -47,7 +47,7 @@ namespace :after_party do
     # Reassign areas for around 160 schools, so they should pick up
     # one of the above new areas, or an existing nearby area which
     # may now be closer.
-    School.where(solar_pv_tuos_area: to_disable.keys).find_each do |school|
+    School.where(solar_pv_tuos_area: SolarPvTuosArea.where(gsp_id: to_disable.keys)).find_each do |school|
       Solar::SolarAreaLookupService.new(school).assign(scope: SolarPvTuosArea.active.assignable, trigger_load: false)
     end
 
