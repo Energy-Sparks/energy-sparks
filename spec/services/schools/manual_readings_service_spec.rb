@@ -78,8 +78,8 @@ describe Schools::ManualReadingsService do
     before { travel_to(Date.new(2025, 5)) }
 
     def expected_readings(usage)
-      months = (1..(usage.length + 12)).map { |i| Date.new(2025, 5) - i.months }.reverse
-      usage = [*usage, *[1020] * 12]
+      usage += [1020] * 12 if usage.length < 13
+      months = (1..usage.length).map { |i| Date.new(2025, 5) - i.months }.reverse
       months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
     end
 
@@ -106,6 +106,36 @@ describe Schools::ManualReadingsService do
       it 'calculates the correct readings' do
         expect(service.readings).to \
           eq(expected_readings([1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440]))
+      end
+    end
+
+    context 'with meter readings' do
+      before do
+        meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: 1.year.ago.to_date,
+                                                                           kwh_data_x48: [1] * 48)
+        service.calculate_required(meter_collection)
+      end
+
+      it 'calculates the correct readings' do
+        expect(service.readings).to \
+          eq(expected_readings([*[nil] * 12, 1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1344, 1488, 1440]))
+      end
+    end
+
+    context 'with dual fuel meter readings with different end dates' do
+      let(:school) { create(:school, :with_fuel_configuration) }
+
+      before do
+        meter_collection = build(:meter_collection)
+        build(:meter, :aggregate_meter, meter_collection:, start_date: 25.months.ago.to_date, kwh_data_x48: [1] * 48,
+                                                           end_date: 2.months.ago.to_date)
+        build(:meter, :aggregate_meter, meter_collection:, type: :electricity, start_date: 1.year.ago.to_date,
+                                                           kwh_data_x48: [2] * 48)
+        service.calculate_required(meter_collection)
+      end
+
+      it 'disables months with no required reading' do
+        expect(service.disabled?(Date.new(2023, 4), :electricity)).to be true
       end
     end
   end

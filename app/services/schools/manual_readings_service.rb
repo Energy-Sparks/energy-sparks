@@ -29,6 +29,7 @@ module Schools
         consumption, consumption_missing = calculate_month_consumption(aggregate_school, month, fuel_type)
         add_reading(month, fuel_type, consumption_missing, consumption)
       end
+      @readings = @readings.sort.to_h
     end
 
     def all_required_readings_disabled?
@@ -41,7 +42,7 @@ module Schools
     end
 
     def disabled?(month, fuel_type)
-      @readings.dig(month, fuel_type, :disabled)
+      @readings.dig(month, fuel_type, :disabled).nil? || @readings.dig(month, fuel_type, :disabled)
     end
 
     def readings

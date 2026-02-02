@@ -21,5 +21,9 @@ describe Targets::MonthlyConsumptionService do
 
       it { expect(described_class.any_missing?(target)).to be true }
     end
+
+    context 'with no target' do
+      it { expect(described_class.any_missing?(nil)).to be false }
+    end
   end
 end

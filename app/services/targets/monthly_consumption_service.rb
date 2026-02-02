@@ -13,7 +13,7 @@ module Targets
 
     def self.any_missing?(target)
       SchoolTarget::FUEL_TYPES.any? do |fuel_type|
-        !target.public_send(fuel_type).nil? && new(target, fuel_type).any_missing?
+        !target&.public_send(fuel_type).nil? && new(target, fuel_type).any_missing?
       end
     end
 
