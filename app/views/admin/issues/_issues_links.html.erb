@@ -1,17 +1,18 @@
 <span>
-  <%= link_to polymorphic_path([:bulk_edit, :admin, issueable, Issue].compact, redirect_back: request.fullpath), class: 'btn btn-sm' do %>
+  <%= link_to polymorphic_path([:bulk_edit, :admin, issueable, Issue].compact,
+                               redirect_back: redirect_back_path(params)), class: 'btn btn-sm' do %>
     <%= fa_icon('list-check') %> Bulk update
   <% end %>
   <%= link_to "#{issue_type_icon(:issue)} New Issue".html_safe,
               new_polymorphic_path([:admin, issueable, :issue],
                                    issue_type: :issue,
                                    meter_ids: local_assigns[:meter_ids],
-                                   redirect_back: request.fullpath),
+                                   redirect_back: redirect_back_path(params)),
               class: 'btn btn-primary btn-sm' %>
   <%= link_to "#{issue_type_icon(:note)} New Note".html_safe,
               new_polymorphic_path([:admin, issueable, :issue],
                                    issue_type: :note,
                                    meter_ids: local_assigns[:meter_ids],
-                                   redirect_back: request.fullpath),
+                                   redirect_back: redirect_back_path(params)),
               class: 'btn btn-primary btn-sm' %>
 </span>
