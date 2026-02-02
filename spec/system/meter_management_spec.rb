@@ -307,6 +307,27 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         end
       end
 
+      context 'when creating meter issues', :js do
+        let(:meter) { active_meter }
+        let!(:setup_data) { meter }
+
+        before do
+          click_on 'Issues'
+          within('.modal') do
+            click_on 'New Issue'
+          end
+
+          fill_in 'Title', with: 'Meter issue title'
+          fill_in_trix 'trix-editor#issue_description', with: 'Meter issue description'
+          click_on 'Save'
+        end
+
+        it 'redirects to manage meters page' do
+          expect(page).to have_link(school.name)
+          expect(page).to have_content('Manage meters')
+        end
+      end
+
       context 'with meter issues', :js do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin) }
