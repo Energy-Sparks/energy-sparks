@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<%= link_to admin_meter_issues_path(meter, redirect_back: request.fullpath),
+<%= link_to admin_meter_issues_path(meter, redirect_back: redirect_back_path(params)),
             class: 'btn btn-sm text-nowrap',
             title: 'Issues',
             data: {
