@@ -265,6 +265,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
           let(:meter) { inactive_meter }
         end
       end
+    end
+
+    context 'when managing meter issues' do
+      before { visit school_meters_path(school) }
 
       context 'without meter issues' do
         let(:meter) { active_meter }
@@ -286,19 +290,63 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         end
       end
 
-      context 'with meter issues' do
+      shared_examples 'editing an issue for meter via modal' do
+        context 'when editing an issue' do
+          before do
+            click_on 'Issues'
+            within('.modal') do
+              click_on 'Edit'
+            end
+            click_on 'Save'
+          end
+
+          it 'redirects to manage meters page' do
+            expect(page).to have_link(school.name)
+            expect(page).to have_content('Manage meters')
+          end
+        end
+      end
+
+      context 'when creating meter issues', :js do
+        let(:meter) { active_meter }
+        let!(:setup_data) { meter }
+
+        before do
+          click_on 'Issues'
+          within('.modal') do
+            click_on 'New Issue'
+          end
+
+          fill_in 'Title', with: 'Meter issue title'
+          fill_in_trix 'trix-editor#issue_description', with: 'Meter issue description'
+          click_on 'Save'
+        end
+
+        it 'redirects to manage meters page' do
+          expect(page).to have_link(school.name)
+          expect(page).to have_content('Manage meters')
+        end
+      end
+
+      context 'with meter issues', :js do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin) }
         let!(:setup_data) { issue }
 
+        before { stub_request(:get, "https://n3rgy.test/find-mpxn/#{meter.mpan_mprn}") }
+
         it { expect(page).to have_link('Issues') }
         it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+
+        it_behaves_like 'editing an issue for meter via modal'
 
         context "Clicking on meter 'Details'" do
           before { click_link meter.mpan_mprn.to_s }
 
           it { expect(page).to have_link('Issues') }
           it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+
+          it_behaves_like 'editing an issue for meter via modal'
         end
       end
     end
