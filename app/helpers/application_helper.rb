@@ -428,6 +428,10 @@ module ApplicationHelper
     str.gsub('+', ' And ').delete(' ').underscore
   end
 
+  def redirect_back_path(params)
+    params[:redirect_back].blank? ? request.fullpath : params[:redirect_back]
+  end
+
   def redirect_back_url(params)
     params[:redirect_back].blank? ? request.referer : params[:redirect_back]
   end
