@@ -14,7 +14,7 @@ namespace :after_party do
       347 => { name: 'SAFO_1', long: -2.8034640576, lat: 51.3290977974 },
       348 => { name: 'SEAB1', long: -2.5657590903, lat: 51.3097990608 }
     }.each do |gsp_id, data|
-      area = SolarPvTuosArea.find_or_create_by!(gsp_id:)
+      area = SolarPvTuosArea.find_or_create_by(gsp_id:)
       area.update!(
         active: true,
         title: "Region #{gsp_id}",
