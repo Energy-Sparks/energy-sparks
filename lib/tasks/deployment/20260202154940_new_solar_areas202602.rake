@@ -26,8 +26,7 @@ namespace :after_party do
       )
     end
 
-    # These are the old areas, they need to be made inactive so we no
-    # longer load data for them
+    # These are the old areas, they need to be made inactive so we no longer load data for them
     to_disable = {
       41 => 'BRLE_1|FLEE_1',
       158 => 'IVER_1|IVER_6',
@@ -47,7 +46,7 @@ namespace :after_party do
     # Reassign areas for around 160 schools, so they should pick up
     # one of the above new areas, or an existing nearby area which
     # may now be closer.
-    School.active.where(solar_pv_tuos_area: SolarPvTuosArea.where(gsp_id: to_disable.keys)).find_each do |school|
+    School.active.where(solar_pv_tuos_area: SolarPvTuosArea.where(gsp_name: to_disable.values)).find_each do |school|
       Solar::SolarAreaLookupService.new(school).assign(scope: SolarPvTuosArea.active.assignable, trigger_load: false)
     end
 
