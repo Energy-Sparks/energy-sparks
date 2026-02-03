@@ -62,20 +62,6 @@ describe 'Activity' do
       end
     end
 
-    def add_image(activity)
-      file = Rails.root.join('spec/fixtures/images/placeholder.png')
-
-      blob = ActiveStorage::Blob.create_and_upload!(
-        io: File.open(file),
-        filename: 'placeholder.png',
-        content_type: 'image/png'
-      )
-
-      attachment_html = ActionText::Attachment.from_attachable(blob).to_html
-      activity.description = ActionText::Content.new("<div>#{attachment_html}</div>")
-      activity.save
-    end
-
     context 'when description does not have an image' do
       let(:description) { 'Initial description without bonus points' }
       let!(:activity) { create(:activity, description:, happened_on: Date.new(2025, 10, 5)) } # also creates observation
@@ -84,7 +70,8 @@ describe 'Activity' do
 
       context 'when updating description to have an image' do
         before do
-          add_image(activity)
+          add_attachment(activity)
+          activity.save
         end
 
         it 'updates associated observation points' do
@@ -98,7 +85,8 @@ describe 'Activity' do
       let(:activity) { create(:activity, description:) } # also creates observation
 
       before do
-        add_image(activity)
+        add_attachment(activity)
+        activity.save
       end
 
       it { expect(observation.points).to eq(activity.activity_type.score + SiteSettings.current.photo_bonus_points) }
