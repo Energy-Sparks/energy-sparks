@@ -54,7 +54,7 @@ module Schools
     end
 
     def target?
-      @target = @school.most_recent_target
+      @target = @school.current_target
       @target.present?
     end
 
