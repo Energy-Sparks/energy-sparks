@@ -1,0 +1,65 @@
+/*
+ *
+ *= require trix
+ */
+
+ @import "colours";
+ @import "fonts";
+ @import "bootstrap-overrides";
+ @import "bootstrap/scss/bootstrap";
+ @import "bootstrap-bridge";
+
+ @import "font-awesome";
+ @import "base";
+ @import "links";
+ @import "headers";
+ @import "nav";
+ @import "nav-tabs";
+ @import "footer";
+ @import "home";
+ @import "site";
+ @import "school";
+ @import "scoreboard";
+ @import "activities";
+ @import "activity_type";
+
+ @import "calendars";
+ @import "analysis";
+ @import "teachers";
+ @import "pupils";
+ @import "dashboards";
+ @import "modal_fullscreen";
+ @import "transport_surveys";
+ @import "issues";
+ @import "badge-toggle";
+
+ @import "bootstrap-year-calendar";
+ @import "tempusdominus-bootstrap-4";
+ @import "datepickers";
+
+ @import "actiontext";
+ @import "trix_content";
+ @import "trix_editor";
+
+ @import "observations";
+ @import "timeline";
+ @import "alert_editor";
+ @import "reports";
+
+ @import "map";
+ @import "energy_tariffs";
+ @import "targets";
+ @import "help";
+ @import "live_data";
+ @import "activations";
+ @import "toggler";
+ @import "advice_page";
+ @import "compare";
+ @import "comparisons";
+ @import "standout";
+ @import "cookie_banner";
+ @import "themes";
+ @import "palette";
+ @import "tables";
+
+ @import "../../components/**/*"; // loaded here so bootstrap SASS variables are available

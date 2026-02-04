@@ -33,6 +33,14 @@ GIT
     sassc (2.4.0)
       ffi (~> 1.9)
 
+GIT
+  remote: https://github.com/urbanwide/bootstrap4-rubygem.git
+  revision: d602c7b43906b0aa9243b2ba9f6714169b8d436e
+  branch: bootstrap4
+  specs:
+    bootstrap4 (4.6.2.1)
+      autoprefixer-rails (>= 9.1.0)
+
 PATH
   remote: analytics
   specs:
@@ -144,7 +152,7 @@ GEM
     ast (2.4.3)
     auto_strip_attributes (2.6.0)
       activerecord (>= 4.0)
-    autoprefixer-rails (10.4.19.0)
+    autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
     aws-eventstream (1.4.0)
     aws-partitions (1.1206.0)
@@ -187,9 +195,8 @@ GEM
       debug_inspector (>= 1.2.0)
     bootsnap (1.21.1)
       msgpack (~> 1.2)
-    bootstrap (4.6.2.1)
-      autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.16.1, < 2)
+    bootstrap (5.3.8)
+      popper_js (>= 2.11.8, < 3)
     bootstrap-email (1.8.1)
       htmlbeautifier (~> 1.3)
       nokogiri (~> 1.6)
@@ -570,7 +577,7 @@ GEM
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
-    popper_js (1.16.1)
+    popper_js (2.11.8)
     pp (0.6.3)
       prettyprint
     premailer (1.27.0)
@@ -921,8 +928,9 @@ DEPENDENCIES
   better_html
   binding_of_caller
   bootsnap
-  bootstrap (~> 4)
+  bootstrap (~> 5.3)
   bootstrap-email
+  bootstrap4!
   bootstrap4-datetime-picker-rails
   brakeman
   bullet

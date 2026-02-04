@@ -24,7 +24,11 @@
 <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Inter:400,600,700|Quicksand:600,700&display=swap' %>
 <%= stylesheet_link_tag 'https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css' %>
 
-<%= stylesheet_link_tag 'application', media: 'all' %>
+<% if @bootstrap_version == 5 %>
+  <%= stylesheet_link_tag 'application-bootstrap5', media: 'all' %>
+<% else %>
+  <%= stylesheet_link_tag 'application-bootstrap4', media: 'all' %>
+<% end %>
 
 <%= javascript_importmap_tags %>
 
