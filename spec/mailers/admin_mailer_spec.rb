@@ -140,7 +140,9 @@ RSpec.describe AdminMailer, include_application_helper: true do
     let(:school) { create(:school, school_group: school_group) }
     let(:issue) { create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 2.weeks.ago, review_date: 1.day.ago, issueable: school) }
     let(:closed_issue) { create(:issue, issue_type: :issue, status: :closed, owned_by: admin) }
-    let(:someone_elses_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: nil) }
+    let(:someone_elses_issue) { create(:issue, issue_type: :issue, status: :open, owned_by: create(:admin)) }
+    let(:inactive_school_issue) { create :issue, owned_by: admin, issueable: create(:school, active: false) }
+
     let!(:issues) { [] }
     let(:attachment) { email.attachments[0] }
     let(:body) { email.html_part.body.raw_source }
@@ -191,8 +193,16 @@ RSpec.describe AdminMailer, include_application_helper: true do
       end
     end
 
+    context 'with issues for inactive schools' do
+      let(:issues) { [inactive_school_issue] }
+
+      it "doesn't send email" do
+        expect(email).to be_nil
+      end
+    end
+
     context 'csv report' do
-      let(:issues) { [new_issue] }
+      let(:issues) { [new_issue, closed_issue, someone_elses_issue, inactive_school_issue] }
 
       it { expect(email.attachments.count).to eq(1) }
       it { expect(attachment.content_type).to include('text/csv') }
@@ -200,9 +210,10 @@ RSpec.describe AdminMailer, include_application_helper: true do
 
 
       describe 'CSV attachment content' do
+        let(:body) { attachment.body.raw_source }
         let(:csv_lines) { attachment.body.raw_source.split("\r\n") }
-        let(:headers)   { csv_lines.first }
-        let(:body)      { csv_lines.second }
+        let(:headers) { csv_lines.first }
+        let(:first_record) { csv_lines.second }
 
         it 'includes the correct headers' do
           expect(headers).to eq(
@@ -211,7 +222,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
         end
 
         it 'includes the correct issue data row' do
-          expect(body).to eq(
+          expect(first_record).to eq(
             "issue,#{new_issue.issueable.name},New this week!,#{new_issue.school_group}," \
             "#{new_issue.title},Gas,#{new_issue.review_date.strftime('%d/%m/%Y')}," \
             "#{new_issue.created_by.display_name},#{new_issue.created_at.strftime('%d/%m/%Y')}," \
@@ -219,6 +230,18 @@ RSpec.describe AdminMailer, include_application_helper: true do
             "http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id}," \
             "http://localhost/admin/issues/#{new_issue.id}/edit"
           )
+        end
+
+        it 'does not include issues for inactive schools' do
+          expect(body).not_to include(inactive_school_issue.title)
+        end
+
+        it 'does not include closed issues' do
+          expect(body).not_to include(closed_issue.title)
+        end
+
+        it 'does not include issues for other admins' do
+          expect(body).not_to include(someone_elses_issue.title)
         end
       end
     end

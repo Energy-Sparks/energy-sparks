@@ -88,7 +88,7 @@ class Alert < ApplicationRecord
 
   scope :for_latest_run, -> {
     joins(
-      <<-SQL.squish
+      <<~SQL.squish
         JOIN (
           SELECT DISTINCT ON (school_id) id
           FROM alert_generation_runs
@@ -120,7 +120,7 @@ class Alert < ApplicationRecord
 
   def self.summarised_alerts(schools:)
     list_of_ids = schools.map(&:id).join(',')
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       WITH latest_runs AS (
         SELECT DISTINCT ON (school_id) id
         FROM alert_generation_runs
