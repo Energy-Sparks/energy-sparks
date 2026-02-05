@@ -4,6 +4,7 @@ FactoryBot.define do
     sequence(:comments) {|n| "Contract #{n} comments"}
 
     number_of_schools { 100 }
+    licence_years { 1.0 }
 
     start_date { Time.zone.today }
     end_date { Time.zone.today + 1.year }
