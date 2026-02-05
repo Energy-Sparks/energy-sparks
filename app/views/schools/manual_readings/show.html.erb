@@ -2,12 +2,15 @@
 <% if @school.manual_readings.empty? %>
   <p><%= t('schools.manual_readings.enough_data') %></p>
 <% else %>
-  <%= t('schools.manual_readings.intro_html') %>
-  <% if @readings.target %>
-    <p><%= t('schools.manual_readings.with_target',
-             target_date: @readings.target.target_date.to_fs(:es_long),
-             start_date_month: @readings.target.start_date.prev_year.to_fs(:es_month)) %></p>
-  <% end %>
+  <p><%= t('schools.manual_readings.limited_data') %></p>
+  <p>
+    <% if @readings.target %>
+      <%= t('schools.manual_readings.with_target',
+            target_date: @readings.target.target_date.to_fs(:es_long),
+            start_date_month: @readings.target.start_date.prev_year.to_fs(:es_month)) %>
+    <% end %>
+  </p>
+  <%= t('schools.manual_readings.details_html') %>
   <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
     <div class="row mb-2">
       <div class="col-md-2"><strong><%= t('common.labels.date') %></strong></div>

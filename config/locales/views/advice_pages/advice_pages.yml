@@ -80,7 +80,7 @@ en:
         title: What should you do next?
     loading_data: Loading data...
     nav:
-      manage_targets: Manage targets
+      manage_targets: Manage target
       overview: Overview
       pages:
         baseload: Baseload

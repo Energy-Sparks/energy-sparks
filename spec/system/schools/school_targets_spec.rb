@@ -2,11 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'managing targets', :include_application_helper do
+RSpec.shared_examples 'managing targets', :aggregate_failures, :include_application_helper do
   let(:fuel_configuration) do
-    Schools::FuelConfiguration.new(
-      has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric, has_gas: true, has_electricity: true
-    )
+    Schools::FuelConfiguration.new(has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric,
+                                   has_gas: true, has_electricity: true)
   end
 
   before do
@@ -20,15 +19,15 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
     # and so if we call create(:configuration, school: school) we end up with 2 records for a has_one
     # relationship
     test_school.configuration.update!(fuel_configuration:, aggregate_meter_dates: {
-      electricity: {
-        start_date: '2021-12-01',
-        end_date: '2022-02-01'
-      },
-      gas: {
-        start_date: '2021-03-01',
-        end_date: '2022-02-01'
-      }
-    })
+                                        electricity: {
+                                          start_date: '2021-12-01',
+                                          end_date: '2022-02-01'
+                                        },
+                                        gas: {
+                                          start_date: '2021-03-01',
+                                          end_date: '2022-02-01'
+                                        }
+                                      })
   end
 
   context 'when school has no target' do
@@ -57,21 +56,50 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
         click_on 'Set this target'
 
         expect(page).to have_content('Target successfully created')
+        expect(page).to have_current_path(school_advice_path(test_school))
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
         expect(school.current_target.gas).to be 15.0
         expect(school.current_target.storage_heaters).to be 25.0
       end
 
-      it 'allows just gas and electricity targets to be set' do
+      it 'allows just electricity target to be set' do
         fill_in 'Reducing electricity usage by', with: 15
+        fill_in 'Reducing gas usage by', with: ''
         fill_in 'Reducing storage heater usage by', with: ''
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
+        expect(page).to have_current_path(insights_school_advice_electricity_target_path(test_school))
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
-        expect(school.current_target.gas).to be 10.0
+        expect(school.current_target.gas).to be nil
         expect(school.current_target.storage_heaters).to be_nil
+      end
+
+      it 'allows just gas target to be set' do
+        fill_in 'Reducing electricity usage by', with: ''
+        fill_in 'Reducing gas usage by', with: 6
+        fill_in 'Reducing storage heater usage by', with: ''
+        click_on 'Set this target'
+        expect(page).to have_content('Target successfully created')
+        expect(page).to have_current_path(insights_school_advice_gas_target_path(test_school))
+        expect(school.has_current_target?).to be(true)
+        expect(school.current_target.electricity).to be_nil
+        expect(school.current_target.gas).to eq(6)
+        expect(school.current_target.storage_heaters).to be_nil
+      end
+
+      it 'allows just a storage heater target to be set' do
+        fill_in 'Reducing electricity usage by', with: ''
+        fill_in 'Reducing gas usage by', with: ''
+        fill_in 'Reducing storage heater usage by', with: 6
+        click_on 'Set this target'
+        expect(page).to have_content('Target successfully created')
+        expect(page).to have_current_path(insights_school_advice_storage_heater_target_path(test_school))
+        expect(school.has_current_target?).to be(true)
+        expect(school.current_target.electricity).to be_nil
+        expect(school.current_target.gas).to be_nil
+        expect(school.current_target.storage_heaters).to eq(6)
       end
 
       it 'allows start date to be specified' do
@@ -92,9 +120,8 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
 
     context 'with only electricity meters' do
       let(:fuel_configuration) do
-        Schools::FuelConfiguration.new(
-          has_solar_pv: false, has_storage_heaters: false, fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true
-        )
+        Schools::FuelConfiguration.new(has_solar_pv: false, has_storage_heaters: false,
+                                       fuel_types_for_analysis: :electric, has_gas: false, has_electricity: true)
       end
 
       before do
@@ -112,6 +139,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
         fill_in 'Reducing electricity usage by', with: 15
         click_on 'Set this target'
         expect(page).to have_content('Target successfully created')
+        expect(page).to have_current_path(insights_school_advice_electricity_target_path(test_school))
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
         expect(school.current_target.gas).to be_nil
@@ -156,7 +184,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
         fill_in 'Reducing electricity usage by', with: 7
         fill_in 'Reducing gas usage by', with: 7
         fill_in 'Reducing storage heater usage by', with: 7
-        click_on 'Update our target'
+        click_on 'Update your target'
         expect(page).to have_content('Target successfully updated')
         expect(test_school.current_target.electricity).to be 7.0
         expect(test_school.current_target.gas).to be 7.0
@@ -169,7 +197,7 @@ RSpec.shared_examples 'managing targets', :include_application_helper do
 
       it 'validates target values' do
         fill_in 'Reducing gas usage by', with: 123
-        click_on 'Update our target'
+        click_on 'Update your target'
         expect(page).to have_content('Gas must be less than or equal to 100')
       end
     end
@@ -274,7 +302,6 @@ end
 describe 'school targets' do
   before do
     sign_in(user) if defined? user
-    # visit school_school_targets_path(school)
   end
 
   let!(:school) { create(:school) }
