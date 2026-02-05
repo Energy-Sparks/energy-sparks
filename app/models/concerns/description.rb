@@ -15,14 +15,7 @@ module Description
     return false unless description
 
     description.embeds.any? do |embed|
-      blob =
-        if embed.respond_to?(:attachable)
-          embed.attachable
-        elsif embed.respond_to?(:blob)
-          embed.blob
-        end
-
-      blob&.content_type&.start_with?('image/')
+      embed.blob&.content_type&.start_with?('image/')
     end
   end
 end
