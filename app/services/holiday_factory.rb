@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HolidayFactory
   def initialize(calendar)
     @calendar = calendar
@@ -18,27 +20,24 @@ class HolidayFactory
       holiday_end_date = next_term.start_date - 1.day
 
       if holiday_end_date >= holiday_start_date
-        CalendarEvent.where(calendar: @calendar, calendar_event_type: holiday_type, start_date: holiday_start_date, end_date: holiday_end_date).first_or_create!
+        CalendarEvent.where(calendar: @calendar, calendar_event_type: holiday_type,
+                            start_date: holiday_start_date, end_date: holiday_end_date).first_or_create!
       end
     end
   end
 
   def with_neighbour_updates(calendar_event, attributes)
-    managing_state(calendar_event) do |pre_save, post_save|
+    managing_state(calendar_event) do |callbacks|
       calendar_event.attributes = attributes
       reset_parent(calendar_event)
       if calendar_event.calendar_event_type.term_time || calendar_event.calendar_event_type.holiday
-        if calendar_event.start_date_changed?
-          update_previous_events(calendar_event, pre_save, post_save)
-        end
-        if calendar_event.end_date_changed?
-          update_following_events(calendar_event, pre_save, post_save)
-        end
+        update_previous_events(calendar_event, callbacks) if calendar_event.start_date_changed?
+        update_following_events(calendar_event, callbacks) if calendar_event.end_date_changed?
       end
     end
   end
 
-private
+  private
 
   def reset_parent(calendar_event)
     if calendar_event.start_date_changed? || calendar_event.end_date_changed? || calendar_event.calendar_event_type_id_changed?
@@ -46,53 +45,75 @@ private
     end
   end
 
-  def update_previous_events(calendar_event, pre_save, post_save)
-    previous_event = @calendar.terms_and_holidays.find_by(end_date: calendar_event.start_date_was - 1.day)
-    if previous_event
-      callback = calendar_event.start_date > calendar_event.start_date_was ? post_save : pre_save
-      new_event_end = calendar_event.start_date - 1.day
-      callback << if new_event_end < previous_event.start_date
-                    destroy_neighbour(previous_event)
-                  else
-                    move_neighbour(previous_event, :end_date, new_event_end)
-                  end
-    end
+  def update_previous_events(calendar_event, callbacks)
+    delta = -1.day
+    type, event_to_update = find_event_to_update(calendar_event, :start_date, :end_date, delta)
+    return unless event_to_update
+
+    new_event_end = calendar_event.start_date + delta
+    add_callback(callbacks,
+                 type,
+                 new_event_end < event_to_update.start_date,
+                 event_to_update,
+                 :end_date,
+                 new_event_end)
   end
 
-  def update_following_events(calendar_event, pre_save, post_save)
-    following_event = @calendar.terms_and_holidays.find_by(start_date: calendar_event.end_date_was + 1.day)
-    if following_event
-      callback = calendar_event.end_date > calendar_event.end_date_was ? pre_save : post_save
-      new_event_start = calendar_event.end_date + 1.day
-      callback << if new_event_start > following_event.end_date
-                    destroy_neighbour(following_event)
-                  else
-                    move_neighbour(following_event, :start_date, new_event_start)
-                  end
+  def update_following_events(calendar_event, callbacks)
+    delta = 1.day
+    type, event_to_update = find_event_to_update(calendar_event, :end_date, :start_date, delta)
+    return unless event_to_update
+
+    new_event_start = calendar_event.end_date + delta
+    add_callback(callbacks,
+                 type,
+                 new_event_start > event_to_update.end_date,
+                 event_to_update,
+                 :start_date,
+                 new_event_start)
+  end
+
+  def add_callback(callbacks, type, destroy, event, field, new_value)
+    callbacks[type] << if destroy
+                         destroy_neighbour(event)
+                       else
+                         move_neighbour(event, field, new_value)
+                       end
+  end
+
+  def find_event_to_update(calendar_event, date_field, other_date_field, delta)
+    date_was_value = calendar_event.public_send("#{date_field}_was")
+    event_moving_forward = calendar_event[date_field] > date_was_value
+    events = @calendar.terms_and_holidays
+    if date_field == :start_date && event_moving_forward || date_field == :end_date && !event_moving_forward
+      [:post_save, events.find_by(other_date_field => date_was_value + delta)]
+    else
+      range = [calendar_event[date_field], date_was_value]
+      range.reverse! if date_field == :end_date
+      [:pre_save, events.where(other_date_field => range.first..range.last).order(other_date_field).last]
     end
   end
 
   def move_neighbour(event, field, new_date)
-    lambda { event.update!(field => new_date, based_on: nil) }
+    -> { event.update!(field => new_date, based_on: nil) }
   end
 
   def destroy_neighbour(event)
-    lambda { event.destroy }
+    -> { event.destroy }
   end
 
-  def process_changes(calendar_event, pre_save, post_save)
-    pre_save.map(&:call)
+  def process_changes(calendar_event, callbacks)
+    callbacks[:pre_save].map(&:call)
     calendar_event.save!
-    post_save.map(&:call)
+    callbacks[:post_save].map(&:call)
     true
   end
 
   def managing_state(calendar_event)
     calendar_event.transaction do
-      pre_save = []
-      post_save = []
-      yield pre_save, post_save
-      process_changes(calendar_event, pre_save, post_save)
+      callbacks = { pre_save: [], post_save: [] }
+      yield callbacks
+      process_changes(calendar_event, callbacks)
     end
   rescue ActiveRecord::RecordInvalid
     false
