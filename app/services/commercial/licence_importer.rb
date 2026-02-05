@@ -27,7 +27,7 @@ module Commercial
       )
       licence.update!(
         comments: data[:comments],
-        status: data[:status],
+        status: data[:status] || 'pending_invoice',
         school_specific_price: data[:school_specific_price],
         created_by: licence.created_by || @import_user,
         updated_by: @import_user
