@@ -44,9 +44,7 @@ module Commercial
     # Take licence years, which is a float specifying length of licence, e.g. 1.0, 2.0, 1.75 (1 yr, 9 months)
     # and add to a start date
     def add_years(start_date, licence_years)
-      fraction = licence_years - licence_years.floor
-      months = licence_years.floor * 12 + (fraction * 12).round
-      start_date >> months
+      start_date + (licence_years * 12).round.months
     end
   end
 end
