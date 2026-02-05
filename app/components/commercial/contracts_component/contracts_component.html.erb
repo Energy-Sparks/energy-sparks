@@ -5,13 +5,13 @@
     <thead>
       <tr>
         <th>Name</th>
-        <th>Comments</th>
+        <th>Contract Holder</th>
         <th>Product</th>
-        <th class="text-end">Status</th>
         <th class="text-end">Start Date</th>
         <th class="text-end">End Date</th>
         <th class="text-end">Number of Schools</th>
         <th class="text-end">Licensed Schools</th>
+        <th class="text-end">Status</th>
         <% if @show_actions %>
           <th class="text-end no-sort">Actions</th>
         <% end %>
@@ -20,19 +20,19 @@
     <tbody>
       <% associations.by_start_date.each do |contract| %>
         <tr>
-          <td><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
-          <td><%= contract.comments %></td>
+          <td class="col-2"><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
+          <td class="col-2"><%= contract.contract_holder.name %></td>
           <td><%= link_to contract.product.name, admin_commercial_product_path(contract.product) %></td>
+          <td class="text-end col-1"><%= contract.start_date %></td>
+          <td class="text-end col-1"><%= contract.end_date %></td>
+          <td class="text-end"><%= contract.number_of_schools %></td>
+          <td class="text-end"><%= contract.licences.current.count %></td>
           <td class="text-end">
             <%= render(Elements::BadgeComponent.new(
                          contract.status.humanize,
                          colour: contract.status_colour
                        )) %>
           </td>
-          <td class="text-end"><%= contract.start_date %></td>
-          <td class="text-end"><%= contract.end_date %></td>
-          <td class="text-end"><%= contract.number_of_schools %></td>
-          <td class="text-end"><%= contract.licences.current.count %></td>
           <% if @show_actions %>
           <td class="text-end">
             <div class="btn-group">

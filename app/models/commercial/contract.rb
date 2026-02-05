@@ -12,6 +12,7 @@
 #  id                   :bigint(8)        not null, primary key
 #  invoice_terms        :enum             default("pro_rata"), not null
 #  licence_period       :enum             default("contract"), not null
+#  licence_years        :decimal(4, 2)
 #  name                 :string           not null
 #  number_of_schools    :integer          not null
 #  product_id           :bigint(8)        not null
@@ -42,6 +43,8 @@ module Commercial
 
     self.table_name = 'commercial_contracts'
 
+    scope :by_name, -> { order(name: :asc) }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 
@@ -57,7 +60,7 @@ module Commercial
 
     CONTRACT_LICENCE_PERIOD = {
       contract: 'contract',
-      one_year: 'one_year',
+      custom: 'custom',
     }.freeze
 
     CONTRACT_INVOICE_TERMS = {
@@ -72,6 +75,7 @@ module Commercial
     validates_presence_of :name, :start_date, :end_date
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
+    validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 
