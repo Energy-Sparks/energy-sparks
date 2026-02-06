@@ -12,6 +12,10 @@ module Description
   end
 
   def description_includes_images?
-    description&.body&.to_trix_html&.include?('figure')
+    return false unless description
+
+    description.embeds.any? do |embed|
+      embed.blob&.content_type&.start_with?('image/')
+    end
   end
 end
