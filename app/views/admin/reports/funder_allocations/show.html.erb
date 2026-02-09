@@ -21,13 +21,14 @@
     </tr>
   </thead>
   <tbody>
-    <% @funders_visible.each do |funder, school_count| %>
+    <% @funders_visible.each do |funder_name, school_count| %>
+      <% funder = Funder.find_by(name: funder_name) %>
       <tr>
-        <td><%= funder %></td>
+        <td><%= link_to funder_name, admin_funder_path(funder) %></td>
         <td><%= school_count %></td>
-        <td><%= @funders_visible_and_enabled[funder] %></td>
-        <td><%= @onboarding[funder] %>
-        <td><%= school_count + @funders_visible_and_enabled[funder] + @onboarding[funder] %></td>
+        <td><%= @funders_visible_and_enabled[funder_name] %></td>
+        <td><%= @onboarding[funder_name] %>
+        <td><%= school_count + @funders_visible_and_enabled[funder_name] + @onboarding[funder_name] %></td>
       </tr>
     <% end %>
     <tr>
@@ -38,7 +39,7 @@
       <td><%= @unfunded_visible + @unfunded_visible_and_enabled + @unfunded_onboarding %></td>
     </tr>
   </tbody>
-<table>
+</table>
 
 <h1>Funder allocation report</h1>
 
@@ -99,4 +100,11 @@
   <li>Solar Procurement Route 1 - Procurement routes for active solar pv or exported solar pv meters. Route names have been sorted alphabetically for consistency. This will be the first</li>
   <li>Solar Procurement Route 2 - Optional</li>
   <li>Solar Procurement Route 3 - Optional</li>
+  <li>Current Contract Holder - who is currently funding their use of energy sparks?</li>
+  <li>Default Contract Holder - who are we expecting to fund their use in future?</li>
+  <li>Contract Start Date - start of current licensed period</li>
+  <li>Contract End Date - end of current licensed period</li>
+  <li>Licence Start Date - start of current licensed period</li>
+  <li>Licence End Date - end of current licensed period</li>
+  <li>Product - Which product are they contracted/licensed to use?</li>
 </ul>

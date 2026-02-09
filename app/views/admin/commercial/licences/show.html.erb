@@ -57,6 +57,12 @@
             <dd class="col-7">
               <%= @licence.invoice_reference %>
             </dd>
+            <dt class="col-5">
+              Comments
+            </dt>
+            <dd class="col-7">
+              <%= @licence.comments %>
+            </dd>
           </dl>
           <%= link_to 'Edit', edit_admin_commercial_licence_path(@licence),
                       class: 'btn btn-secondary btn-sm' %>

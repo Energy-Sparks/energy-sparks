@@ -5,6 +5,7 @@
 # Table name: funders
 #
 #  id                          :bigint(8)        not null, primary key
+#  invoiced                    :boolean          default(TRUE), not null
 #  mailchimp_fields_changed_at :datetime
 #  name                        :string           not null
 #

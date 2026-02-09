@@ -374,8 +374,6 @@ class School < ApplicationRecord
 
   validates :weather_station, presence: true
 
-  before_validation :set_default_contract_holder, if: -> { default_contract_holder.nil? }
-
   accepts_nested_attributes_for :school_times, reject_if: proc { |attributes| attributes['day'].blank? },
                                                allow_destroy: true
 
@@ -710,10 +708,10 @@ class School < ApplicationRecord
                       pseudo_meter_attributes,
                       school_target_attributes]
                      .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
-      pseudo_attributes.each do |meter_type, attributes|
-        collection[meter_type] ||= []
-        collection[meter_type] = collection[meter_type] + attributes
-      end
+                       pseudo_attributes.each do |meter_type, attributes|
+                         collection[meter_type] ||= []
+                         collection[meter_type] = collection[meter_type] + attributes
+                       end
     end
 
     all_attributes[:aggregated_electricity] ||= []
@@ -1006,9 +1004,5 @@ class School < ApplicationRecord
     else
       SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
     end
-  end
-
-  def set_default_contract_holder
-    self.default_contract_holder = organisation_group
   end
 end
