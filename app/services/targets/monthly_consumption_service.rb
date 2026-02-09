@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Targets
+  # used to calculate monthly consumptions figures for the long term advice page
   class MonthlyConsumptionService
     attr_reader :consumption, :non_missing
 
