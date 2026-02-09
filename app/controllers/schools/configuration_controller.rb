@@ -32,7 +32,16 @@ module Schools
         end
       end
 
-      @school.update!(school_params)
+      default_contract_holder_type = case school_params[:default_contract_holder_id]
+                                     when '', nil
+                                       nil
+                                     when @school.id
+                                       School
+                                     else
+                                       SchoolGroup
+                                     end
+
+      @school.update!(school_params.merge(default_contract_holder_type:))
       redirect_to school_path(@school)
     end
 
@@ -48,6 +57,7 @@ module Schools
         :country,
         :dark_sky_area_id,
         :data_sharing,
+        :default_contract_holder_id,
         :funder_id,
         :full_school,
         :local_authority_area_id,

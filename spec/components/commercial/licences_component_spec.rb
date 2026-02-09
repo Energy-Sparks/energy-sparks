@@ -53,5 +53,39 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
         ]
       end
     end
+
+    context 'when now showing contract information' do
+      before do
+        render_inline(described_class.new(
+                        holder: contract,
+                        range:,
+                        id: 'custom-id',
+                        classes: 'extra-classes',
+                        show_actions: false,
+                        show_contract: false
+        ))
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#current-licences-table' }
+        let(:expected_header) do
+          [
+            ['ID', 'School Group', 'School', 'Start date', 'End date', 'Status']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              "##{licence.id}",
+              licence.school.school_group.name,
+              licence.school.name,
+              licence.start_date.iso8601,
+              licence.end_date.iso8601,
+              licence.status.to_s.humanize
+            ]
+          ]
+        end
+      end
+    end
   end
 end

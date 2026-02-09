@@ -52,6 +52,7 @@
       <%= f.input :licence_period,
                   collection: collection_from_enum(Commercial::Contract.licence_periods),
                   include_blank: false %>
+      <%= f.input :licence_years %>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>
       <%= link_to 'Cancel', admin_commercial_contracts_path, class: 'btn' %>

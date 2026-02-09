@@ -12,7 +12,7 @@
     <small class="form-text text-muted">Uncheck this option if this is a separate building or campus</small>
   </div>
 
-  <div class="form-row">
+  <div class="row">
     <%= f.fields_for :organisation_school_grouping do |grouping_fields| %>
       <div class="form-group col-md-12">
         <%= grouping_fields.label :school_group_id, 'School group' %>
@@ -25,7 +25,7 @@
       </div>
     <% end %>
   </div>
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12" id="project-groups">
       <%= f.label :project_group_ids, 'Project Groups' %>
       <%= f.collection_select :project_group_ids,
@@ -36,7 +36,7 @@
                               { multiple: true, class: 'form-control select2' } %>
     </div>
   </div>
-  <div class="form-row">
+  <div class="row">
     <%= f.fields_for :diocese_school_grouping do |grouping_fields| %>
       <div class="form-group col-md-12">
         <%= grouping_fields.label :school_group_id, 'Diocese' %>
@@ -50,7 +50,7 @@
     <% end %>
   </div>
 
-  <div class="form-row">
+  <div class="row">
     <%= f.fields_for :area_school_grouping do |grouping_fields| %>
       <div class="form-group col-md-12">
         <%= grouping_fields.label :school_group_id, 'Local Authority Area Group' %>
@@ -64,7 +64,7 @@
     <% end %>
   </div>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :template_calendar_id, 'Template calendar' %>
       <%= f.select :template_calendar_id,
@@ -75,7 +75,7 @@
                    { disabled: !edit_template_calendar, class: 'form-control' } %>
     </div>
   </div>
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :scoreboard_id, 'Scoreboard' %>
       <%= f.select :scoreboard_id,
@@ -84,17 +84,8 @@
                    { class: 'form-control' } %>
     </div>
   </div>
-  <div class="form-row">
-    <div class="form-group col-md-12">
-      <%= f.label :funder_id, 'Funder' %>
-      <%= f.select :funder_id,
-                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
-                   { include_blank: true },
-                   { class: 'form-control' } %>
-    </div>
-  </div>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :data_sharing, 'Data Sharing' %>
       <%= f.select :data_sharing,
@@ -104,10 +95,34 @@
     </div>
   </div>
 
+  <h3>Contracts & Licensing</h3>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :funder_id, 'Funder' %>
+      <%= f.select :funder_id,
+                   options_for_select(Funder.all.order(name: :asc).pluck(:name, :id), school.funder_id),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col-md-12">
+      <%= f.label :default_contract_holder_id, 'How will school be funded in future?' %>
+      <%= f.select :default_contract_holder_id,
+                   options_for_select([['Self funding', school.id], ['MAT funded', school.organisation_group&.id]],
+                                      school.default_contract_holder_id),
+                   { include_blank: true },
+                   { class: 'form-control' } %>
+      <p class="small">Indicates whether we expect a school to be self-funded or funded by their MAT in future</p>
+    </div>
+  </div>
+
   <h3>Weather and Solar Data Feeds</h3>
   <p>Select the right data sources to support analysis of school data.</p>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :solar_pv_tuos_area_id, 'The University of Sheffield Solar Data Feed Area' %>
       <%= f.select :solar_pv_tuos_area_id,
@@ -121,7 +136,7 @@
                    { class: 'form-control' } %>
     </div>
   </div>
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :weather_station_id, 'Weather Station' %>
       <%= f.select :weather_station_id,
@@ -132,7 +147,7 @@
                    { class: 'form-control' } %>
     </div>
   </div>
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :dark_sky_area_id, 'Dark Sky Area' %>
       <%= f.select :dark_sky_area_id,
@@ -148,7 +163,7 @@
   <h3>Geographic areas</h3>
   <p>These areas are used for reporting and allocations schools to funders.</p>
 
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :local_authority_area_id, 'Local Authority Area' %>
       <%= f.select :local_authority_area_id,
@@ -160,7 +175,7 @@
       <small class="form-text text-muted">Local authority areas cover the whole of England, Wales and Scotland</small>
     </div>
   </div>
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :region, 'Region' %>
       <%= f.select :region,
@@ -171,7 +186,7 @@
         bank for schools in those countries</small>
     </div>
   </div>
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-md-12">
       <%= f.label :country %>
       <%= f.select :country,
