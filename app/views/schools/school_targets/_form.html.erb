@@ -16,9 +16,11 @@
           <%= f.text_field fuel_type, class: 'form-control', value: school_target.public_send(fuel_type) || 0.0,
                                       pattern: '[0-9.]+' %>
         </div>
-        <div class="input-group-append"><span class="input-group-text"> % </span></div>
+        <span class="input-group-text">%</span>
         <div class="col-sm-3">
-          <a href="<%= polymorphic_path([@school, :advice, fuel_type, :target]) %>" class="btn">View progress</a>
+          <%= link_to t('schools.school_targets.form.view_progress'),
+                      polymorphic_path([@school, :advice, fuel_type, :target]),
+                      class: 'btn' %>
         </div>
       </div>
     <% end %>
