@@ -5,7 +5,7 @@
                           .[](..-2)
                           .any? %>
   <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do %>
-    <%= advice_pages.electricity_long_term.manual_readings_prompt %>
+    <%= t('advice_pages.electricity_long_term.manual_readings_prompt') %>
     <%= t('schools.school_targets.manual_readings_prompt.enter_html', path: school_manual_readings_path(school)) %>
   <% end %>
 <% end %>
