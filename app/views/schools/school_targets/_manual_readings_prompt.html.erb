@@ -1,5 +1,8 @@
-<% if can?(:manage, Schools::ManualReading) && Flipper.enabled?(:manual_readings, current_user) && Targets::MonthlyConsumptionService.any_missing?(target) %>
+<% if can?(:manage, Schools::ManualReading) &&
+      Flipper.enabled?(:manual_readings, current_user) &&
+      Targets::MonthlyConsumptionService.any_missing?(target) %>
   <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do %>
-    <%= t('schools.school_targets.manual_readings_prompt_html', path: school_manual_readings_path(school)) %>
+    <%= t('schools.school_targets.manual_readings_prompt.enough') %>
+    <%= t('schools.school_targets.manual_readings_prompt.enter_html', path: school_manual_readings_path(school)) %>
   <% end %>
 <% end %>

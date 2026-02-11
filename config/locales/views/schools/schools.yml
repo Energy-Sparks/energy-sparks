@@ -481,7 +481,9 @@ en:
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
         where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
-      manual_readings_prompt_html: We don't have enough data to calculate target progress.  You can enter <a href="%{path}">readings manually</a> to complete the year.
+      manual_readings_prompt:
+        enough: We don't have enough data to calculate target progress.
+        enter_html: You can enter <a href="%{path}">readings manually</a> to complete the year.
       new:
         before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
         carried_forward: By default we've carried forward your targets from last year. You can amend them below

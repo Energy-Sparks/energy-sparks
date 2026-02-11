@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples 'managing targets', :aggregate_failures, :include_application_helper do
+RSpec.shared_examples 'managing targets', :aggregate_failures, :include_application_helper do |user_role:|
   let(:fuel_configuration) do
     Schools::FuelConfiguration.new(has_solar_pv: false, has_storage_heaters: true, fuel_types_for_analysis: :electric,
                                    has_gas: true, has_electricity: true)
@@ -72,7 +72,7 @@ RSpec.shared_examples 'managing targets', :aggregate_failures, :include_applicat
         expect(page).to have_current_path(insights_school_advice_electricity_target_path(test_school))
         expect(school.has_current_target?).to be(true)
         expect(school.current_target.electricity).to be 15.0
-        expect(school.current_target.gas).to be nil
+        expect(school.current_target.gas).to be_nil
         expect(school.current_target.storage_heaters).to be_nil
       end
 
@@ -153,6 +153,7 @@ RSpec.shared_examples 'managing targets', :aggregate_failures, :include_applicat
     let!(:target) { create(:school_target, school: test_school) }
 
     before do
+      Flipper.enable(:manual_readings)
       intervention_type = create(:intervention_type)
       allow_any_instance_of(Recommendations::Actions).to receive(:based_on_energy_use).and_return([intervention_type])
       activity_type = create(:activity_type)
@@ -191,14 +192,24 @@ RSpec.shared_examples 'managing targets', :aggregate_failures, :include_applicat
         expect(test_school.current_target.storage_heaters).to be 7.0
       end
 
-      it 'does not show a delete button' do
-        expect(page).to have_no_link('Delete') unless user.admin?
+      unless user_role == :admin
+        it 'does not show a delete button' do
+          expect(page).to have_no_link('Delete')
+        end
       end
 
       it 'validates target values' do
         fill_in 'Reducing gas usage by', with: 123
         click_on 'Update your target'
         expect(page).to have_content('Gas must be less than or equal to 100')
+      end
+
+      unless user_role == :staff
+        it 'has a manual readings prompt unless staff' do
+          expect(page).to have_text("We don't have enough data to calculate target progress. " \
+                                    'You can enter readings manually to complete the year.')
+          expect(page).to have_link('readings manually', href: school_manual_readings_path(test_school))
+        end
       end
     end
   end
@@ -309,7 +320,7 @@ describe 'school targets' do
   context 'when a school admin' do
     let!(:user) { create(:school_admin, school: school) }
 
-    it_behaves_like 'managing targets' do
+    it_behaves_like 'managing targets', user_role: :school_admin do
       let(:test_school) { school }
     end
 
@@ -319,7 +330,7 @@ describe 'school targets' do
   context 'when staff' do
     let!(:user) { create(:staff, school: school) }
 
-    it_behaves_like 'managing targets' do
+    it_behaves_like 'managing targets', user_role: :staff do
       let(:test_school) { school }
     end
 
@@ -332,7 +343,7 @@ describe 'school targets' do
   context 'when an admin' do
     let(:user) { create(:admin) }
 
-    it_behaves_like 'managing targets' do
+    it_behaves_like 'managing targets', user_role: :admin do
       let(:test_school) { school }
     end
 
