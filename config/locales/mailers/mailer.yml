@@ -130,7 +130,7 @@ en:
       paragraph_4_html: For help using Energy Sparks please read our <a href="https://energysparks.uk/resources/12/download">User Guide</a>, watch our <a href="%{user_guide_videos_url}">Training Videos</a> or join one of our <a href="%{training_url}">live webinar training</a> sessions.
       paragraph_5: We hope Energy Sparks will empower your pupils, school staff, and wider school community to take action to make your school more energy efficient.
       set_your_first_targets: Set your first targets
-      subject: "%{school} energy data is now available on Energy Sparks"
+      subject: Energy data is now available on Energy Sparks for %{school}
       thanks_for_joining: Thanks for joining!
       the_energy_sparks_team: The Energy Sparks Team
       title: "%{school_name} energy data is now available on Energy Sparks"
@@ -181,6 +181,8 @@ en:
       subject: Welcome to Energy Sparks
       title: Thanks for confirming your Energy Sparks user account.
       view_your_school: View your school
+    welcome_existing:
+      subject: Welcome to the %{school} Energy Sparks account
   onboarding_mailer2025:
     build_an_energy_saving_team_html: <b>Build an energy saving team:</b> consider <a href="%{root_url}activity_types/33">setting up a student team</a> to lead on energy efficiency at your school and help them to <a href="%{root_url}activity_types/174">find their energy allies</a>. They can start using our educational activities straight away. Watch our <a href="https://www.youtube.com/watch?v=7tTpe2ur67k&list=PLMAAPNnPXGlyu8fqhXjrZgLDduHDzBIca&index=9">video</a> on how to record activities.
     data_enabled_email:
@@ -219,7 +221,6 @@ en:
         <b>Thanks for joining!</b>
         <p>I wish you the best of luck on your energy-saving journey. If you have any questions, I'll be happy to help.</p>
         </div>
-      subject: Energy data is now available on Energy Sparks for %{school}
       we_are_pleased_html: We are pleased to inform you that energy consumption data is now available on your Energy Sparks account. You can use Energy Sparks to <a href="%{url}">see how much energy your school is using</a>.
     familiarise_yourself_html: <b>Familiarise yourself</b> with using Energy Sparks, we have <a href="%{root_url}intervention_types/74">lots of useful guidance and information about training</a>.
     find_your_biggest_html: <b>Find your biggest energy saving opportunities:</b> we analyse your energy data and help you prioritise the action you take to reduce your costs and carbon dioxide emissions. <a href="%{url}">Find these here</a>.
@@ -228,7 +229,6 @@ en:
     onboarded_email:
       in_the_mean_time: 'In the meantime, here is our quick guide for making the most of your Energy Sparks account:'
       review_our_range_html: <b>Review our range of <a href="%{root_url}intervention_type_groups">energy saving actions</a></b> that you, other members of staff and volunteers can carry out to start improving your energy usage.
-      subject: "%{school} is now live on Energy Sparks"
     set_up_a_holiday_switch_off_routine_html: <b>Set up a holiday switch off routine:</b> On average, 15% of schools' energy is used during the holidays. Creating a holiday switch-off checklist and running through the list at the end of term is one of the easiest and cheapest ways to reduce energy bills, even for schools with holiday clubs. We have some <a href="%{root_url}intervention_types/71">example switch-off checklists</a> available for you to use.
     set_up_with_a_staff_account: You have been set up with a staff account. If you think you might need to check and update school details, you will need an admin account.
     sign_up_to_energy_saving_alerts_html: <b>Sign up to energy saving alerts and messages:</b> Our alert system has helped some schools save thousands of pounds by notifying them about expected changes in their energy use. You can also receive regular tips and updates to help your school make the most of its Energy Sparks account throughout the year. <a href="%{root_url}profiles">Change your email preferences here.</a>

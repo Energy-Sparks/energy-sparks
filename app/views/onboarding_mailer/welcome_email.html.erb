@@ -1,19 +1,30 @@
-<h1 class="mb-3"><%= t('onboarding_mailer.welcome_email.title') %></h1>
-
-<p>
-  <%= t('onboarding_mailer.welcome_email.paragraph_1') %>
-</p>
-
-<div class="s-3"></div>
-
-<p>
-  <%= t('onboarding_mailer.welcome_email.paragraph_2_html') %>
-</p>
-
-<div class="s-3"></div>
-
-<p>
-  <%= t('onboarding_mailer.welcome_email.paragraph_3') %>
-</p>
-
-<%= link_to t('onboarding_mailer.welcome_email.view_your_school'), school_url(@school), class: 'btn btn-primary mt-3 mb-3'%>
+<h1 class="mb-2"><%= t('onboarding_mailer2025.welcome_email.thank_you_for_confirming') %></h1>
+<% if @school.data_visible? %>
+  <div class="mb-4"><%= t('onboarding_mailer2025.welcome_email.you_can_now_use') %></div>
+  <div><%= t('onboarding_mailer2025.here_is_our_quick_guide') %></div>
+<% else %>
+  <div class="mb-4"><%= t('onboarding_mailer2025.welcome_email.we_have_now') %></div>
+  <div class="mb-4"><%= t('onboarding_mailer2025.welcome_email.we_are_current_working') %></div>
+  <% if @user.staff? %>
+    <div class="mb-4"><%= t('onboarding_mailer2025.set_up_with_a_staff_account') %></div>
+  <% end %>
+  <div><%= t('onboarding_mailer2025.onboarded_email.in_the_mean_time') %></div>
+<% end %>
+<ol>
+  <li><%= t('onboarding_mailer2025.familiarise_yourself_html', root_url:) %></li>
+  <% if @school.data_visible? %>
+    <li><%= t('onboarding_mailer2025.find_your_biggest_html', url: priorities_school_advice_url(@school)) %></li>
+  <% end %>
+  <li><%= t('onboarding_mailer2025.build_an_energy_saving_team_html', root_url:) %></li>
+  <li><%= t('onboarding_mailer2025.set_up_a_holiday_switch_off_routine_html', root_url:) %></li>
+  <li><%= t('onboarding_mailer2025.sign_up_to_energy_saving_alerts_html', root_url:) %></li>
+  <% if @user.school_admin? && !@school.data_enabled %>
+    <li><%= t('onboarding_mailer2025.welcome_email.check_your_school_details_html',
+              details_url: edit_school_url(@school),
+              times_url: edit_school_times_url(@school),
+              calendar_url: calendar_url(@school.calendar_id)) %></li>
+  <% end %>
+</ol>
+<div class="mb-4"><%= t('onboarding_mailer2025.we_hope') %></div>
+<div class="mb-4"><%= link_to t('onboarding_mailer2025.welcome_email.view_your_school'), school_url(@school) %></div>
+<%= render 'closing' %>

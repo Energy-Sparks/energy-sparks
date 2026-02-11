@@ -2,10 +2,7 @@
 
 class OnboardingMailer < LocaleMailer
   helper :application
-
-  def self.mailer
-    OnboardingMailer2025.enabled? ? OnboardingMailer2025 : self
-  end
+  helper AdvicePageHelper
 
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
@@ -35,6 +32,7 @@ class OnboardingMailer < LocaleMailer
     make_bootstrap_mail(to: email, subject: subject)
   end
 
+  # i18n-tasks-use t('onboarding_mailer2025.onboarded_email.subject')
   def onboarded_email
     @school = params[:school]
     @title = @school.name
@@ -44,10 +42,12 @@ class OnboardingMailer < LocaleMailer
 
   def data_enabled_email
     @school = params[:school]
-    @title = @school.name
-    @to = user_emails(params[:users])
-    @target_prompt = params[:target_prompt]
-    make_bootstrap_mail(to: @to, subject: default_i18n_subject(school: @school.name, locale: locale_param))
+    @users = params[:users]
+    @staff = params[:staff]
+    management_priorities = @school.latest_management_priorities(exclude_capital: true)
+    @top_priority = Schools::Priorities.by_energy_saving(management_priorities).first
+    make_bootstrap_mail(to: user_emails(params[:users]),
+                        subject: default_i18n_subject(school: @school.name, locale: locale_param))
   end
 
   def welcome_email
@@ -55,5 +55,14 @@ class OnboardingMailer < LocaleMailer
     @title = @school.name
     @user = params[:user]
     make_bootstrap_mail(to: @user.email)
+  end
+
+  def welcome_existing
+    @school = params[:school]
+    @title = @school.name
+    @user = params[:user]
+    management_priorities = @school.latest_management_priorities(exclude_capital: true)
+    @top_priority = Schools::Priorities.by_energy_saving(management_priorities).first
+    make_bootstrap_mail(to: @user.email, subject: default_i18n_subject(school: @school.name, locale: locale_param))
   end
 end

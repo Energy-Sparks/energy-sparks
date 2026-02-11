@@ -80,11 +80,6 @@ cy:
       subject: Mae'n bryd adolygu'r tariffau ynni ar gyfer %{school_name} ar Sbarcynni
   mailer:
     get_in_touch: Cysylltwch
-  onboarding_mailer2025:
-    onboarded_email:
-      subject: "Mae %{school} bellach yn fyw ar Sbarcynni"
-    welcome_email:
-      subject: Croeso i Sbarcynni
   onboarding_mailer:
     completion_email:
       find_them_on_energy_sparks: Dewch o hyd iddynt ar Sbarcynni
@@ -101,7 +96,6 @@ cy:
       paragraph_4_html: I gael help i ddefnyddio Sbarcynni darllenwch ein <a href="https://energysparks.uk/resources/12/download">Canllaw Defnyddiwr</a>, gwyliwch ein <a href="%{user_guide_videos_url}">Fideos Hyfforddi</a> neu ymunwch ag un o'n sesiynau <a href="%{training_url}">hyfforddi gweminar byw</a>.
       paragraph_5: Gobeithiwn y bydd Sbarcynni yn grymuso eich disgyblion, staff yr ysgol, a chymuned ehangach yr ysgol i gymryd camau i wneud eich ysgol yn fwy ynni-effeithlon.
       set_your_first_targets: Gosodwch eich targedau cyntaf
-      subject: "Mae data ynni %{school} bellach ar gael ar Sbarcynni"
       thanks_for_joining: Diolch am ymuno!
       the_energy_sparks_team: Tîm Sbarcynni
       title: "Mae data ynni %{school_name} bellach ar gael ar Sbarcynni"

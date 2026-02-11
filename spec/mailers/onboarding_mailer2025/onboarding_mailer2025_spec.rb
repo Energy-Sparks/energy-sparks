@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe OnboardingMailer2025 do
+RSpec.describe 'OnboardingMailer2025' do
   include ActiveJob::TestHelper
   include EmailHelpers
 
@@ -12,7 +12,6 @@ RSpec.describe OnboardingMailer2025 do
 
   before do
     create(:school_onboarding, school_name: 'Test School', created_by: user, school:, country: 'wales')
-    Flipper.enable(:onboarding_mailer_2025)
   end
 
   around do |example|
@@ -100,7 +99,7 @@ RSpec.describe OnboardingMailer2025 do
 
     before do
       create_management_priority
-      OnboardingMailer.mailer.with(user:, school:, locale: preferred_locale).welcome_existing.deliver_now
+      OnboardingMailer.with(user:, school:, locale: preferred_locale).welcome_existing.deliver_now
     end
 
     it 'sends the expected email' do

@@ -130,10 +130,8 @@ module Schools
     end
 
     def send_welcome_email
-      if OnboardingMailer2025.enabled?
-        OnboardingMailer2025.with(user: @user, school: @school, locale: @user.preferred_locale)
-                            .welcome_existing.deliver_later
-      end
+      OnboardingMailer2025.with(user: @user, school: @school, locale: @user.preferred_locale)
+                          .welcome_existing.deliver_later
     end
 
     def set_breadcrumbs
