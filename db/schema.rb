@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_11_155625) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -2299,6 +2299,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
     t.enum "mailchimp_status", enum_type: "mailchimp_status"
     t.boolean "active", default: true, null: false
     t.boolean "terms_accepted", default: false
+    t.boolean "climate_action_lead", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
