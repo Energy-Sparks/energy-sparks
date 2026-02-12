@@ -164,7 +164,7 @@ module Mailchimp
     # Take Array of interests returned by AudienceManager and turn into hash
     # for use on forms, setting the default opt-in state.
     def self.default_interests(interests, user = nil)
-      interest_list = if user&.group_user?
+      interest_list = if user&.group_user? || user&.climate_action_lead
                         ALL_INTERESTS
                       elsif user&.staff_role && SCHOOL_USER_INTERESTS.key?(user.staff_role.title)
                         SCHOOL_USER_INTERESTS[user.staff_role.title]
