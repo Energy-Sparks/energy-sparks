@@ -135,9 +135,9 @@ resource "aws_cloudwatch_metric_alarm" "goodjob_regeneration_running" {
   }
 
   period              = 3600
-  evaluation_periods  = 6
-  datapoints_to_alarm = 6
-  threshold           = 0
+  evaluation_periods  = 8
+  datapoints_to_alarm = 8
+  threshold           = 1
   comparison_operator = "GreaterThanThreshold"
   treat_missing_data  = "missing"
 }
