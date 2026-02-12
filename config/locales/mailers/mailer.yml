@@ -156,7 +156,7 @@ en:
         <b>Thanks for joining!</b>
         <p>I wish you the best of luck on your energy-saving journey. If you have any questions, I'll be happy to help.</p>
         </div>
-      subject: Energy data is now available on Energy Sparks for %{school}
+      subject: "%{school} energy data is now available on Energy Sparks"
       we_are_pleased_html: We are pleased to inform you that energy consumption data is now available on your Energy Sparks account. You can use Energy Sparks to <a href="%{url}">see how much energy your school is using</a>.
     familiarise_yourself_html: <b>Familiarise yourself</b> with using Energy Sparks, we have <a href="%{root_url}intervention_types/74">lots of useful guidance and information about training</a>.
     find_your_biggest_html: <b>Find your biggest energy saving opportunities:</b> we analyse your energy data and help you prioritise the action you take to reduce your costs and carbon dioxide emissions. <a href="%{url}">Find these here</a>.
