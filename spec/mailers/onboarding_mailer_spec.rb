@@ -27,9 +27,8 @@ describe OnboardingMailer, :aggregate_failures do
 
     context 'when country is wales' do
       it 'subject is in both languages' do
-        expect(email.subject).to eq(I18n.t('onboarding_mailer.onboarding_email.subject') + ' / ' + I18n.t(
-          'onboarding_mailer.onboarding_email.subject', locale: :cy
-        ))
+        expect(email.subject).to eq("#{I18n.t('onboarding_mailer.onboarding_email.subject')} / " \
+                                    "#{I18n.t('onboarding_mailer.onboarding_email.subject', locale: :cy)}")
       end
 
       it 'has English text' do
@@ -49,7 +48,7 @@ describe OnboardingMailer, :aggregate_failures do
       end
     end
 
-    context 'country is england' do
+    context 'when country is england' do
       let(:country) { 'england' }
 
       it 'subject is in English' do
