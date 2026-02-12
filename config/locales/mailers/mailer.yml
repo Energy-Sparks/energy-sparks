@@ -208,7 +208,9 @@ en:
       you_can_now_use: You can now use Energy Sparks to see how much energy your school is using, find out about the greatest energy saving opportunities and explore our activities and educational resources designed to teach your pupils about energy whilst saving money for their school.
     welcome_existing:
       dashboard_message: 'Please note: %{message}'
+      need_some_help_html: <b>If you feel like you need some help</b> using Energy Sparks, we have lots of useful guidance and information about training <a href="%{root_url}intervention_types/74">here</a>.
       subject: Welcome to the %{school} Energy Sparks account
+      we_are_pleased_html: We are pleased to welcome you to the Energy Sparks account for %{school}. Although you might already be familiar with Energy Sparks, this email contains important information to help familiarise you with data for %{school} and to give you some reminders in case you need them. You can use Energy Sparks to <a href="%{url}">see how much energy your school is using</a>.
       we_estimated_that_html: We estimate that your highest priority energy saving opportunity is to %{opportunity}. Doing this could save you as much as %{gbp_saving} and %{co2_saving}kg CO₂ per year.
   school_archived_mailer:
     archived:
