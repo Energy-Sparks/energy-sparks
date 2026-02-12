@@ -327,7 +327,7 @@ class User < ApplicationRecord
   def after_confirmation
     return unless school&.visible
 
-    OnboardingMailer.mailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
+    OnboardingMailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
   end
 
   def self.admin_user_export_csv
