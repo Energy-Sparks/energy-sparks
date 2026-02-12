@@ -13,26 +13,33 @@
 
     <% if displaying_alerts? %>
       <div class="col-12 col-lg-6">
-        <%= render AlertsComponent.new(
-              school: school,
-              audience: audience,
-              dashboard_alerts: alerts,
-              user: user,
-              id: "#{audience}-alerts"
-            ) do |c| %>
+        <%= render AlertsComponent.new(school: school,
+                                       audience: audience,
+                                       dashboard_alerts: alerts,
+                                       user: user,
+                                       id: "#{audience}-alerts") do |c| %>
           <% c.with_title(level: 2) { t('advice_pages.index.alerts.title') } %>
           <% c.with_link do %>
             <%= link_to t('schools.show.view_more_alerts'), alerts_school_advice_path(school) %>
           <% end %>
           <% SchoolTarget::FUEL_TYPES.each do |fuel_type|
-                meeting_target = @target&.monthly_consumption_status(fuel_type)&.meeting_target
+                meeting_target = Targets::MonthlyConsumptionService.new(@target, fuel_type).meeting_target
                 next if meeting_target.nil? %>
             <%= c.with_prompt icon: fuel_type_icon(fuel_type),
                               status: meeting_target ? :positive : :negative do |prompt| %>
-              <%= meeting_target_text(meeting_target, fuel_type) %>
+              <p><%= meeting_target_text(meeting_target, fuel_type) %></p>
               <% prompt.with_link do %>
                 <%= link_to t('schools.show.review_progress'),
                             polymorphic_path([school, :"advice_#{fuel_type}_target"]) %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <% if Flipper.enabled?(:manual_readings, current_user) &&
+                Targets::MonthlyConsumptionService.any_missing?(@target) %>
+            <%= c.with_prompt icon: 'tasks', status: :negative do |prompt| %>
+              <p><%= t('schools.show.manual_readings') %></p>
+              <% prompt.with_link do %>
+                <%= link_to t('manage_school_menu.manage_manual_readings'), school_manual_readings_path(school) %>
               <% end %>
             <% end %>
           <% end %>
