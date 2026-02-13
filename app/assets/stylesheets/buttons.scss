@@ -1,0 +1,80 @@
+%btn-default {
+  @include button-variant(
+    $background: $white,
+    $border: $blue-very-dark,
+    $color: $blue-very-dark,
+    $hover-background: $blue-light,
+    $hover-border: $blue-very-dark,
+    $hover-color: $blue-very-dark,
+    $active-background: $blue-light,
+    $active-border: $blue-very-dark,
+    $active-color: $blue-very-dark
+  );
+}
+
+.btn-default {
+  @extend %btn-default;x
+
+  &.transparent {
+    background-color: transparent;
+  }
+}
+
+// This allows btn, when not used with other btn- theme colour classes, to be styled with the default button design.
+// We have some historic use of btn in this way, so this supports this pattern.
+//$btn-exclusions: "";
+//@each $name in map-keys($theme-colors) {
+//  $btn-exclusions: $btn-exclusions + ":not(.btn-#{$name})";
+//  $btn-exclusions: $btn-exclusions + ":not(.btn-outline-#{$name})";
+//}
+
+//.btn#{$btn-exclusions} {
+//  @extend %btn-default;
+//}
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    background-color: $white;
+
+    &.transparent {
+      background-color: transparent;
+    }
+  }
+}
+
+// primary, secondary and success all break from the normal bootstrap styles
+.btn-primary {
+  @include button-variant(
+    $background: $blue-very-dark,
+    $border: $blue-very-dark,
+    $color: $white,
+    $hover-background: $blue-dark,
+    $hover-border: $blue-dark
+  );
+}
+
+.btn-secondary {
+  @extend %btn-default;
+}
+
+.btn-success {
+  @include button-variant(
+    $background: $teal-medium,
+    $border: $teal-medium,
+    $color: $black,
+    $hover-background: $teal-dark,
+    $hover-border: $teal-dark
+  );
+}
+
+// used in the footer newsletter signup form
+.btn-outline-white {
+  @include button-variant(
+    $background: transparent,
+    $border: $white,
+    $color: $white,
+    $hover-background: transparent,
+    $hover-border: $yellow-medium,
+    $hover-color: $yellow-medium,
+  );
+}

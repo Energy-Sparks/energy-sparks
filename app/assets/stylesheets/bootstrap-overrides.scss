@@ -14,7 +14,7 @@ $btn-font-weight: $font-weight-semibold;
 $btn-border-radius: 10rem;
 $btn-border-radius-sm: $btn-border-radius;
 $btn-border-radius-lg: $btn-border-radius;
-
+$min-contrast-ratio: 2; // So we can have white text for danger and info
 $custom-control-indicator-checked-bg: darken($teal-dark, 5%); // darkened slightly to match input accent color (base.scss)
 
 // These values correspond to the minimum width at which the breakpoint applies:

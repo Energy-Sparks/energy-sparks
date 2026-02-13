@@ -1,6 +1,13 @@
-<div class='fixed-top'>
+<div class='fixed-top ms-1'>
   <% if on_test? %>
-    <!-- Test server indicator -->
-    <%= link_to 'Test', '/', class: 'm-1 p-1 badge badge-warning' %>
+    <%# Test server indicator %>
+    <%= link_to 'Test', '/', class: 'p-1 badge text-bg-warning' %>
+  <% end %>
+  <% if Flipper.enabled?(:bootstrap_switcher) %>
+    <%# Switch between Bootstrap 4 and 5 %>
+    <div class='p-1 badge text-bg-success'>
+      Bootstrap <%= @bs5 ? 5 : 4 %>: <%= link_to "switch to #{@bs5 ? 4 : 5}",
+                                                 url_for(request.query_parameters.merge(bs5: !@bs5)) %>
+    </div>
   <% end %>
 </div>
