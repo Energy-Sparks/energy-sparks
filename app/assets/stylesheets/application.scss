@@ -6,12 +6,12 @@
  @import "colours";
  @import "fonts";
  @import "bootstrap-overrides";
- @import "bootstrap/scss/bootstrap";
- @import "bootstrap-bridge";
+ @import "bootstrap";
 
  @import "font-awesome";
  @import "base";
  @import "links";
+ @import "buttons";
  @import "headers";
  @import "nav";
  @import "nav-tabs";
@@ -31,7 +31,7 @@
  @import "modal_fullscreen";
  @import "transport_surveys";
  @import "issues";
- @import "badge-toggle";
+ //@import "badge-toggle";
 
  @import "bootstrap-year-calendar";
  @import "tempusdominus-bootstrap-4";

@@ -33,14 +33,6 @@ GIT
     sassc (2.4.0)
       ffi (~> 1.9)
 
-GIT
-  remote: https://github.com/urbanwide/bootstrap4-rubygem.git
-  revision: d602c7b43906b0aa9243b2ba9f6714169b8d436e
-  branch: bootstrap4
-  specs:
-    bootstrap4 (4.6.2.1)
-      autoprefixer-rails (>= 9.1.0)
-
 PATH
   remote: analytics
   specs:
@@ -152,8 +144,6 @@ GEM
     ast (2.4.3)
     auto_strip_attributes (2.6.0)
       activerecord (>= 4.0)
-    autoprefixer-rails (10.4.21.0)
-      execjs (~> 2)
     aws-eventstream (1.4.0)
     aws-partitions (1.1206.0)
     aws-sdk-core (3.241.4)
@@ -930,7 +920,6 @@ DEPENDENCIES
   bootsnap
   bootstrap (~> 5.3)
   bootstrap-email
-  bootstrap4!
   bootstrap4-datetime-picker-rails
   brakeman
   bullet

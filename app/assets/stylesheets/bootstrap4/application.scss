@@ -5,13 +5,14 @@
 
 @import "colours";
 @import "fonts";
-@import "bootstrap-overrides";
-@import "bootstrap4";
-@import "bootstrap-bridge";
+@import "bootstrap4/bootstrap-overrides";
+@import "bootstrap4/bootstrap";
+@import "bootstrap4/bootstrap-bridge";
 
 @import "font-awesome";
 @import "base";
 @import "links";
+@import "bootstrap4/buttons";
 @import "headers";
 @import "nav";
 @import "nav-tabs";
@@ -62,4 +63,4 @@
 @import "palette";
 @import "tables";
 
-@import "../../components/**/*"; // loaded here so bootstrap SASS variables are available
+@import "../../../components/**/*"; // loaded here so bootstrap SASS variables are available

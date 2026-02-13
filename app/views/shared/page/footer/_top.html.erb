@@ -50,9 +50,8 @@
       <div id='newsletter-signup' class="col-12 col-lg-4">
         <h1><%= t('footer.newsletter_signup') %></h1>
         <%= form_with url: new_mailchimp_signup_path, method: :get, local: true do %>
-          <div class="form-group">
-            <span class="form-text"><%= t('mailchimp.latest_news_title') %></span>
-
+          <div class="mb-3">
+            <div class="form-text"><%= t('mailchimp.latest_news_title') %></div>
             <% unless user_signed_in? %>
               <%= text_field_tag(:email_address, nil,
                                  class: 'form-control',
@@ -68,7 +67,7 @@
               <%= submit_tag t('mailchimp.signup_now'),
                              class: 'btn btn-outline-white mt-2' %>
             <% end %>
-            <span id='emailHelp' class="form-text"><%= t('mailchimp.never_share_your_email_promise') %>.</span>
+            <div id='emailHelp' class="form-text"><%= t('mailchimp.never_share_your_email_promise') %>.</span>
           </div>
         <% end %>
       </div>

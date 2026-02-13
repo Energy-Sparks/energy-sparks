@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :site_settings, :current_school_podium, :current_user_school, :current_user_school_group,
                 :current_user_default_school_group, :current_school, :current_school_group, :utm_params
   before_action :update_trackable!
+  before_action :bootstrap_5_switcher
 
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, alert: exception.message
@@ -61,6 +62,14 @@ class ApplicationController < ActionController::Base
 
   def utm_params
     params.permit(:utm_source, :utm_medium, :utm_campaign).to_h.symbolize_keys
+  end
+
+  def bootstrap_5_switcher
+    @bs5 = params[:bs5] == 'true' && Flipper.enabled?(:bootstrap_switcher) ? true : false
+  end
+
+  def bootstrap_5
+    @bs5 = true unless params[:bs5]
   end
 
   private
