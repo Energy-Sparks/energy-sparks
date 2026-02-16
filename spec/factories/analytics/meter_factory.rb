@@ -103,5 +103,18 @@ FactoryBot.define do
               amr_data: amr_data)
       end
     end
+
+    trait :aggregate_meter do
+      transient do
+        start_date { Date.yesterday - 7 }
+        end_date { Date.yesterday }
+        kwh_data_x48 { nil }
+        amr_data { build(:amr_data, :with_date_range, start_date:, end_date:, kwh_data_x48:) }
+      end
+
+      after(:build) do |meter, evaluator|
+        evaluator.meter_collection.set_aggregate_meter(evaluator.type, meter)
+      end
+    end
   end
 end

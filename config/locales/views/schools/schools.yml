@@ -201,14 +201,12 @@ en:
         still_watching_your_live_data_usage: Still watching your live data usage?
         temporarily_paused_message_html: You've been viewing your live data for %{timeout_interval} minutes. We've temporarily paused updates. Click Restart to continue viewing
     manual_readings:
-      enough_data: We have enough data from your meters so you don't need to enter any readings manually.
-      intro_html: |-
-        <p>We have limited energy data for your school.  You can enter readings data here to show progress against any targets set or to long term usage</p>
-        <p>You will need to check either your monthly bill or your energy supplier portal and then provide the total kWh used for each month.</p>
-        <p>If we are later able to get access to historical half-hourly readings from your energy supplier then we will automatically use these instead.</p>
+      details_html: |-
+        <p>You will need to find monthly consumption data from your monthly bills, energy supplier portal or your own records. These should be entered below in kWh. In the future, if we are able to get access to historical half-hourly readings from your energy supplier then we will automatically use these instead.</p>
         <p>Fields shown in grey indicate months for which we already have automatically supplied meter readings for the school. These cannot be manually updated and are shown for reference.</p>
-        <p>To show historical progress towards reducing your energy use, we need at least 13 months of historical readings.  Enter readings for all months to see a comparison of your energy use over the last 2 years.</p>
-      with_target: In order to calculate progress towards reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
+      enough_data: We have enough data from your meters so you don't need to enter any readings manually.
+      limited_data: We have limited energy data for your school. You can enter monthly consumption data here to show progress against any targets set or observe changes in consumption over a longer period of time. To show historical progress towards your energy use target, we need at least 13 months of historical readings. To see progress over two full years, enter readings for all months below.
+      with_target: In order to calculate progress towards your target of reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
     meters:
       creatable_meter_types:
         electricity: Electricity
@@ -452,10 +450,8 @@ en:
         cannot_update_expired: Cannot edit an expired target
         if_you_do_revise_your_targets: If you do revise your targets we will update your progress report to apply that target to all of your energy usage this year
         page_title: Update your energy saving target
-        review_your_dashboard: Review your dashboard
         review_your_targets: Review your targets
         suggestion: Suggestion
-        tip: Tip
         update_your_energy_saving_target: Update your energy saving target
         your_configuration_has_changed: Your %{fuel_types_changed} configuration has changed, which means you may need to revisit your targets for this year. You may be able to set additional targets
         your_current_target: Your current target
@@ -470,7 +466,7 @@ en:
         set_your_first_energy_saving_target: Set your first energy saving target
         suggesting_activities_for_pupils: suggesting activities for pupils to help you engage the whole school
         suggesting_ways_to_reduce_consumption: suggesting ways to reduce consumption via your dashboard, weekly alerts and reminders
-        tip_html: "<strong>Tip</strong>: don't try to be too ambitious"
+        too_ambitious: don't try to be too ambitious
         your_first: Your first target
       form:
         reducing_electricity_usage_by: Reducing electricity usage by
@@ -479,11 +475,15 @@ en:
         school_target: School target
         set_this_target: Set this target
         start_date: Start date
-        update_our_target: Update our target
+        update_our_target: Update your target
+        view_progress: View progress
         you_are_currently_aiming_to_achieve_your_target_by_html: You are currently aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
         where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
+      manual_readings_prompt:
+        enough: We don't have enough data to calculate target progress.
+        enter_html: You can enter <a href="%{path}">readings manually</a> to complete the year.
       new:
         before_setting_your_new_target: Before setting your new target, check our recommendations to help inform your planning
         carried_forward: By default we've carried forward your targets from last year. You can amend them below
@@ -540,6 +540,7 @@ en:
       find_out_more: Find out more
       find_training: Find training
       making_progress: Well done, you are making progress towards achieving your target to reduce your %{fuels} usage!
+      manual_readings: We have limited energy data for your school. You can enter monthly consumption data to show progress against any targets set or observe changes in consumption over a longer period of time.
       more_information: More information
       not_meeting_target: Unfortunately you are not meeting your target to reduce your %{fuels} usage
       online_training_signup: New to Energy Sparks? Sign up to one of our upcoming free online training courses to help you get the most from the service.
