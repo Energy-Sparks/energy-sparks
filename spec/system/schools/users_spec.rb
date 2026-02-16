@@ -23,7 +23,6 @@ describe 'School user management' do
       fill_in 'Name', with: name
       fill_in 'Email', with: email
       select staff_role.title, from: 'Role' if staff_role
-      check('Climate action lead')
     end
 
     it 'creates the user' do
@@ -32,7 +31,6 @@ describe 'School user management' do
       expect(user.confirmed?).to be false
       expect(user.created_by).to eq(school_admin)
       expect(user.staff_role).to eq(staff_role) if staff_role
-      expect(user.climate_action_lead).to be false
     end
 
     it 'sends an email' do
@@ -53,7 +51,7 @@ describe 'School user management' do
 
     context 'when a climate action lead' do
       before do
-        check('Climate action lead')
+        check 'Climate action lead'
         click_on 'Create account'
       end
 

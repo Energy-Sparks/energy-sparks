@@ -169,6 +169,7 @@ describe 'Administering users' do
 
           it { expect(user.role).to eq('admin') }
           it { expect(user.created_by).to eq(admin) }
+          it { expect(user.climate_action_lead).to be false }
         end
 
         context 'with a climate action lead' do
@@ -177,9 +178,7 @@ describe 'Administering users' do
             click_on 'Create User'
           end
 
-          it 'creates the user' do
-            expect(user.climate_action_lead).to be true
-          end
+          it { expect(user.climate_action_lead).to be true }
         end
       end
     end
