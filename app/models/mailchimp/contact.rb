@@ -6,9 +6,30 @@ module Mailchimp
     attr_accessor :email_address, :interests, :tags
 
     # our Merge Fields
-    attr_accessor :alert_subscriber, :confirmed_date, :contact_source, :country, :funder, :locale, :local_authority, :name, :region, :staff_role, :school, :school_url, :school_group, :school_slug, :school_group_url, :school_group_slug, :school_status, :school_type, :scoreboard, :scoreboard_url, :user_role, :user_status
+    attr_accessor :alert_subscriber,
+                  :confirmed_date,
+                  :contact_source,
+                  :country,
+                  :funder,
+                  :local_authority,
+                  :locale,
+                  :name,
+                  :region,
+                  :school_group_slug,
+                  :school_group_url,
+                  :school_group,
+                  :school_slug,
+                  :school_status,
+                  :school_type,
+                  :school_url,
+                  :school,
+                  :scoreboard_url,
+                  :scoreboard,
+                  :staff_role,
+                  :user_role,
+                  :user_status
 
-    validates_presence_of :email_address, :name
+    validates :email_address, :name, presence: true
 
     def initialize(email_address, name)
       @email_address = email_address
@@ -19,15 +40,13 @@ module Mailchimp
 
     def self.from_user(user, tags: [], interests: {})
       unless user.active?
-        return self.from_params({
-          email_address: user.email,
-          name: user.name,
-          school: user.mailchimp_organisation,
-          interests: {}
-        })
+        return from_params({ email_address: user.email,
+                             name: user.name,
+                             school: user.mailchimp_organisation,
+                             interests: {} })
       end
 
-      contact = self.new(user.email, user.name)
+      contact = new(user.email, user.name)
       contact.contact_source = 'User'
       contact.confirmed_date = user.confirmed_at.to_date.iso8601
       contact.user_role = user.role.humanize
@@ -36,16 +55,18 @@ module Mailchimp
       contact.interests = interests
 
       if user.admin?
-        contact.tags = self.non_fsm_tags(tags)
+        contact.tags = non_fsm_tags(tags)
       elsif user.group_user?
         contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
-        contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school_group.default_scoreboard.slug}" if user.school_group&.default_scoreboard
+        if user.school_group&.default_scoreboard
+          contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school_group.default_scoreboard.slug}"
+        end
         contact.school_group = user.school_group&.name
         contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school_group.slug}"
         contact.school_group_slug = user.school_group.slug
         contact.country = user.school_group&.default_country&.humanize
-        contact.tags = self.non_fsm_tags(tags)
+        contact.tags = non_fsm_tags(tags)
       elsif user.school_admin? && user.has_other_schools?
         contact.user_role = 'Cluster admin'
         contact.staff_role = user&.staff_role&.title
@@ -55,10 +76,12 @@ module Mailchimp
           contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school.school_group.default_scoreboard.slug}"
         end
         contact.school_group = user.school.school_group&.name
-        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}" if user.school.school_group
+        if user.school.school_group
+          contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}"
+        end
         contact.school_group_slug = user.school.school_group&.slug
         contact.country = user.school.school_group&.default_country&.humanize
-        contact.tags = self.tags_for_school_user(user, tags, user.cluster_schools.map(&:slug), fsm_tags: false)
+        contact.tags = tags_for_school_user(user, tags, user.cluster_schools.map(&:slug), fsm_tags: false)
       elsif user.school.present?
         contact.staff_role = user&.staff_role&.title
         contact.alert_subscriber = user.contacts.for_school(user.school).any? ? 'Yes' : 'No'
@@ -74,24 +97,28 @@ module Mailchimp
         contact.school_url = "https://energysparks.uk/schools/#{user.school.slug}"
         contact.school_slug = user.school.slug
         contact.scoreboard = user.school&.scoreboard&.name
-        contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school.scoreboard.slug}" if user.school.scoreboard
+        if user.school.scoreboard
+          contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school.scoreboard.slug}"
+        end
         contact.school_group = user.school&.school_group&.name
-        contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}" if user.school.school_group
+        if user.school.school_group
+          contact.school_group_url = "https://energysparks.uk/school_groups/#{user.school.school_group.slug}"
+        end
         contact.school_group_slug = user.school&.school_group&.slug
         contact.local_authority = user.school&.local_authority_area&.name
         contact.region = user.school&.region&.humanize
         contact.country = user.school.country&.humanize
         contact.funder = user.school&.funder&.name
-        contact.tags = self.tags_for_school_user(user, tags, [user.school.slug])
+        contact.tags = tags_for_school_user(user, tags, [user.school.slug])
       end
       contact
     end
 
     def self.from_params(params)
-      contact = self.new(params[:email_address], params[:name])
+      contact = new(params[:email_address], params[:name])
       contact.school = params[:school]
       contact.contact_source = 'Organic'
-      contact.interests = params[:interests].transform_values {|v| v == 'true' }
+      contact.interests = params[:interests].transform_values { |v| v == 'true' }
       contact
     end
 
@@ -105,8 +132,8 @@ module Mailchimp
     # Cluster admins will not have free school meal tags.
     def self.tags_for_school_user(user, existing_tags = [], slugs = [], fsm_tags: true)
       core_tags = slugs
-      core_tags = core_tags + self.free_school_meal_tags(user.school) if fsm_tags
-      existing_tags = self.non_fsm_tags(existing_tags)
+      core_tags += free_school_meal_tags(user.school) if fsm_tags
+      existing_tags = non_fsm_tags(existing_tags)
       (core_tags + existing_tags)
     end
 
@@ -114,12 +141,14 @@ module Mailchimp
     # these will be refreshed from the database.
     def self.non_fsm_tags(existing_tags)
       return [] unless existing_tags.present?
-      existing_tags.reject {|t| t.match?(/FSM/) }
+
+      existing_tags.reject { |t| t.match?(/FSM/) }
     end
 
     def self.free_school_meal_tags(school)
       tags = []
       return tags unless school.percentage_free_school_meals
+
       percent = school.percentage_free_school_meals
       if percent >= 30
         tags << 'FSM30'
@@ -132,7 +161,6 @@ module Mailchimp
       end
       tags
     end
-
 
     # All the email types
     # Using the names rather than the ids, as this allows us to test against the
@@ -179,10 +207,10 @@ module Mailchimp
     # Convert to hash for submitting to mailchimp api
     def to_mailchimp_hash
       {
-        "email_address": email_address,
-        "merge_fields": merge_fields,
-        "interests": interests,
-        "tags": tags
+        email_address: email_address,
+        merge_fields: merge_fields,
+        interests: interests,
+        tags: tags
       }
     end
 
@@ -200,16 +228,16 @@ module Mailchimp
         'LA' => local_authority || '',
         'LOCALE' => locale || '',
         'REGION' => region || '',
-        'SCHOOL' => school || '',
         'SCHOOL_URL' => school_url || '',
-        'SCOREBOARD' => scoreboard || '',
+        'SCHOOL' => school || '',
         'SCORE_URL' => scoreboard_url || '',
+        'SCOREBOARD' => scoreboard || '',
         'SGROUP' => school_group || '',
         'SOURCE' => contact_source || '',
         'SSLUG' => school_slug || '',
         'SSTATUS' => school_status || '',
-        'STYPE' => school_type || '',
         'STAFFROLE' => staff_role || '',
+        'STYPE' => school_type || '',
         'USERROLE' => user_role || '',
         'USERSTATUS' => user_status || ''
       }
