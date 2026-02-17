@@ -185,7 +185,7 @@ GEM
     bindex (0.8.1)
     binding_of_caller (2.0.0)
       debug_inspector (>= 1.2.0)
-    bootsnap (1.22.0)
+    bootsnap (1.23.0)
       msgpack (~> 1.2)
     bootstrap (4.6.2.1)
       autoprefixer-rails (>= 9.1.0)
