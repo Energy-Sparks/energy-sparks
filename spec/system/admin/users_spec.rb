@@ -296,7 +296,7 @@ describe 'Administering users' do
         end
 
         it 'saves the changes' do
-          expect(user.reload.cluster_schools).to eq([user.school, other_school])
+          expect(user.reload.cluster_schools).to contain_exactly(user.school, other_school)
         end
 
         it 'does send an email' do
