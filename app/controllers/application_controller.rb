@@ -65,11 +65,11 @@ class ApplicationController < ActionController::Base
   end
 
   def bootstrap_5_switcher
-    @bs5 = params[:bs5] == 'true' && Flipper.enabled?(:bootstrap_switcher) ? true : false
+    @bs5 = params[:bs5] == 'true' && Flipper.enabled?(:bootstrap_switcher)
   end
 
   def bootstrap_5
-    @bs5 = true unless params[:bs5]
+    @bs5 = true unless params[:bs5] && Flipper.enabled?(:bootstrap_switcher)
   end
 
   private
