@@ -51,13 +51,11 @@ describe 'School user management' do
 
     context 'when a climate action lead' do
       before do
-        check 'Climate action lead'
+        check 'Climate action lead' unless role == :student
         click_on 'Create account'
       end
 
-      it 'creates the user' do
-        expect(user.climate_action_lead).to be true
-      end
+      it { expect(user.climate_action_lead).to be role != :student }
     end
   end
 
