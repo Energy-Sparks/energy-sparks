@@ -85,7 +85,9 @@ class HolidayFactory
     date_was_value = calendar_event.public_send("#{date_field}_was")
     event_moving_forward = calendar_event[date_field] > date_was_value
     events = @calendar.terms_and_holidays
-    if date_field == :start_date && event_moving_forward || date_field == :end_date && !event_moving_forward
+    # When event is contracting (start date moving forward or end date moving backward) only look 1 day back or forward
+    # for an event to change.  Otherwise, when expanding, look for the first event in the expanded range.
+    if (date_field == :start_date && event_moving_forward) || (date_field == :end_date && !event_moving_forward)
       [:post_save, events.find_by(other_date_field => date_was_value + delta)]
     else
       range = [calendar_event[date_field], date_was_value]
