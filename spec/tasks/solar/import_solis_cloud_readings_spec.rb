@@ -33,7 +33,7 @@ describe 'solar:import_solis_cloud_readings' do # rubocop:disable RSpec/Describe
   # rubocop:enable RSpec/LeakyConstantDeclaration
 
   it 'downloads and saves readings' do
-    travel_to(Time.utc(2025, 1, 10))
+    travel_to(Date.new(2025, 1, 10))
     stub_inverter_day(meter.meter_serial_number, '2025-01-09', self.class::DAY_JSON)
     task.invoke('2025-01-09')
     expect(installation.meters.reload.count).to eq(1)
