@@ -71,6 +71,35 @@ describe Commercial::LicenceImporter do
         })
       end
 
+      context 'with no start or end dates' do
+        subject(:licence) do
+          service.import({
+            contract_name: contract.name,
+            school_group: school.school_group.name,
+            licence_holder: school.name,
+            start_date: nil,
+            end_date: nil,
+            school_specific_price: 650.0,
+            status: 'invoiced',
+            comments: 'Important notes'
+          })
+        end
+
+        it 'creates the expected licence' do
+          expect(licence).to have_attributes({
+            contract:,
+            school:,
+            start_date: contract.start_date,
+            end_date: contract.end_date,
+            school_specific_price: 650.0,
+            status: 'invoiced',
+            comments: 'Important notes',
+            created_by: import_user,
+            updated_by: import_user
+          })
+        end
+      end
+
       context 'with duplicate school names' do
         let!(:duplicate) { create(:school, :with_school_group, name: school.name) }
 

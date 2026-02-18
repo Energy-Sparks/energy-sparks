@@ -5,11 +5,8 @@ module Commercial
     end
 
     def import(data)
-      # FIXME missing dates
       unless data[:contract_name].present? &&
-             data[:licence_holder].present? &&
-             data[:start_date].present? &&
-             data[:end_date].present?
+             data[:licence_holder].present?
         return
       end
 
@@ -23,12 +20,8 @@ module Commercial
       ).first
       return if school.nil?
 
-      licence = Commercial::Licence.find_or_initialize_by(
-        contract:,
-        school:,
-        start_date: Date.parse(data[:start_date]),
-        end_date: Date.parse(data[:end_date])
-      )
+
+      licence = find_or_create_licence(contract, school, data)
       licence.update!(
         comments: data[:comments],
         status: data[:status] || 'pending_invoice',
@@ -37,6 +30,21 @@ module Commercial
         updated_by: @import_user
       )
       licence
+    end
+
+    private
+
+    def find_or_create_licence(contract, school, data)
+      if data[:start_date].present? && data[:end_date].present?
+        Commercial::Licence.find_or_initialize_by(
+          contract:,
+          school:,
+          start_date: Date.parse(data[:start_date]),
+          end_date: Date.parse(data[:end_date])
+        )
+      else
+        Commercial::LicenceManager.new(school).school_onboarded(contract)
+      end
     end
   end
 end
