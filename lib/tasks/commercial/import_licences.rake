@@ -10,6 +10,7 @@ namespace :commercial do
         next if row['Archived?'] == 'TRUE'
         licence = importer.import({
           contract_name: row['Contract name'],
+          school_group: row['School group'],
           licence_holder: row['School name'],
           start_date: row['Licence start date'],
           end_date: row['Licence end date'],

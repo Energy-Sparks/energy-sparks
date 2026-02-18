@@ -16,7 +16,11 @@ module Commercial
       contract = Commercial::Contract.find_by_name(data[:contract_name])
       return if contract.nil?
 
-      school = School.find_by_name(data[:licence_holder])
+      # Match against both as there are some exact duplicate school names
+      school = School.joins(:school_group).where(
+        name: data[:licence_holder],
+        school_group: { name: data[:school_group] }
+      ).first
       return if school.nil?
 
       licence = Commercial::Licence.find_or_initialize_by(

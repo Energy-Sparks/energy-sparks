@@ -5,7 +5,7 @@ describe Commercial::LicenceImporter do
 
   let!(:contract) { create(:commercial_contract) }
   let!(:import_user) { create(:admin) }
-  let!(:school) { create(:school) }
+  let!(:school) { create(:school, :with_school_group) }
 
   let(:start_date) { Date.new(2025, 9, 1) }
   let(:end_date) { Date.new(2026, 8, 31) }
@@ -15,6 +15,7 @@ describe Commercial::LicenceImporter do
       subject(:licence) do
         service.import({
           contract_name: 'Unknown',
+          school_group: school.school_group.name,
           licence_holder: school.name,
           start_date:,
           end_date:
@@ -26,10 +27,11 @@ describe Commercial::LicenceImporter do
       end
     end
 
-    describe 'when school doesnt exist' do
+    describe 'when school cannot be found' do
       subject(:licence) do
         service.import({
           contract_name: contract.name,
+          school_group: 'Unknown',
           licence_holder: 'Unknown',
           start_date:,
           end_date:
@@ -45,6 +47,7 @@ describe Commercial::LicenceImporter do
       subject(:licence) do
         service.import({
           contract_name: contract.name,
+          school_group: school.school_group.name,
           licence_holder: school.name,
           start_date: start_date.iso8601,
           end_date: end_date.iso8601,
@@ -66,6 +69,24 @@ describe Commercial::LicenceImporter do
           created_by: import_user,
           updated_by: import_user
         })
+      end
+
+      context 'with duplicate school names' do
+        let!(:duplicate) { create(:school, :with_school_group, name: school.name) }
+
+        it 'creates the expected licence' do
+          expect(licence).to have_attributes({
+            contract:,
+            school:,
+            start_date:,
+            end_date:,
+            school_specific_price: 650.0,
+            status: 'invoiced',
+            comments: 'Important notes',
+            created_by: import_user,
+            updated_by: import_user
+          })
+        end
       end
 
       context 'with an existing licence' do
