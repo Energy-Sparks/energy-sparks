@@ -633,7 +633,7 @@ Rails.application.routes.draw do
     resources :consent_grants, only: %i[index show]
     resources :find_school_by_mpxn, only: :index
     resources :find_school_by_urn, only: :index
-    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
+    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues', as: :meter_issues
 
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement

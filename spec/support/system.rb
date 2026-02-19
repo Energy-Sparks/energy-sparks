@@ -78,7 +78,7 @@ RSpec.configure do |config|
     rescue exception_class => e
       puts "exception #{e} - #{e.message}"
       retry_count += 1
-      raise unless retry_count < 5
+      raise unless retry_count < 10
 
       sleep(retry_count)
       retry
