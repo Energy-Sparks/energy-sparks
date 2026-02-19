@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.org/Energy-Sparks/energy-sparks.svg?branch=master)](https://travis-ci.org/BathHacked/energy-sparks)
-[![Maintainability](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/maintainability)](https://codeclimate.com/github/BathHacked/energy-sparks/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/1d4f9219bfa9e5848154/test_coverage)](https://codeclimate.com/github/BathHacked/energy-sparks/test_coverage)
-
 # Energy Sparks
 
 Energy Sparks is an open source application that is designed to help schools improve their energy efficiency.
@@ -16,7 +12,7 @@ The application is open source and is powered by open data. It is being designed
 
 Development of the application and documentation is in progress. Please check back later for more information.
 
-For now you may wish to read the evolving documentation in [the project wiki](https://github.com/BathHacked/energy-sparks/wiki).
+For now you may wish to read the evolving documentation in [the project wiki](https://github.com/Energy-Sparks/energy-sparks/wiki).
 
 # For Developers
 
