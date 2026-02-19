@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_19_153106) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -722,6 +722,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "licence_years", precision: 4, scale: 2
+    t.string "purchase_order_number"
     t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contracts_on_contract_holder"
     t.index ["created_by_id"], name: "index_commercial_contracts_on_created_by_id"
     t.index ["name"], name: "index_commercial_contracts_on_name", unique: true
