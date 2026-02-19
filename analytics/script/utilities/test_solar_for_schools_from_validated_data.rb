@@ -1,10 +1,8 @@
 require 'require_all'
-require_relative '../lib/dashboard.rb'
+require_relative '../lib/dashboard'
 require_rel '../test_support'
-require './script/report_config_support.rb'
+require './script/report_config_support'
 require 'ruby-prof'
-
-profile = false
 
 module Logging
   @logger = Logger.new('log/solar for schools' + Time.now.strftime('%H %M') + '.log')
@@ -38,29 +36,30 @@ else
 end
 
 script = {
-  logger1:                  { name: TestDirectory.instance.log_directory + "/datafeeds %{time}.log", format: "%{severity.ljust(5, ' ')}: %{msg}\n" },
-  source:                   source_db,
-  schools:                  school_name_pattern_match,
-  logger2:                  { name: "./log/reports %{school_name} %{time}.log", format: "%{datetime} %{severity.ljust(5, ' ')}: %{msg}\n" },
-  reports:                  {
-                              charts: [
-                                adhoc_worksheet: { name: 'Test', charts: %i[
-                                  solar_pv_group_by_month
-                                  solar_pv_last_7_days_by_submeter
-                                  solar_pv_group_by_month
-                                  solar_pv_last_7_days_by_submeter
-                                  ]},
-                              ],
-                              control: {
-                                display_average_calculation_rate: true,
-                                report_failed_charts:   :summary,
-                                no_compare_results:        [
-                                  :summary,
-                                  :quick_comparison,
-                                ]
-                              }
-                            },
+  logger1: { name: TestDirectory.instance.log_directory + '/datafeeds %{time}.log',
+             format: "%{severity.ljust(5, ' ')}: %{msg}\n" },
+  source: source_db,
+  schools: school_name_pattern_match,
+  logger2: { name: './log/reports %{school_name} %{time}.log',
+             format: "%{datetime} %{severity.ljust(5, ' ')}: %{msg}\n" },
+  reports: {
+    charts: [
+      { adhoc_worksheet: { name: 'Test', charts: %i[
+        solar_pv_group_by_month
+        solar_pv_last_7_days_by_submeter
+        solar_pv_group_by_month
+        solar_pv_last_7_days_by_submeter
+      ] } }
+    ],
+    control: {
+      display_average_calculation_rate: true,
+      report_failed_charts: :summary,
+      no_compare_results: %i[
+        summary
+        quick_comparison
+      ]
+    }
+  }
 }
 
 RunTests.new(script).run
-
