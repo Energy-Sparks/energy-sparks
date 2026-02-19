@@ -66,6 +66,7 @@ module Admin::Commercial
         :name,
         :number_of_schools,
         :product_id,
+        :purchase_order_number,
         :start_date,
         :status
       )
