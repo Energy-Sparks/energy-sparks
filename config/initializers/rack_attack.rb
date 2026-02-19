@@ -11,6 +11,24 @@ unless Rails.env.test?
         [/scrapy/i, /thinkbot/i].any? { |pattern| req.user_agent =~ pattern }
       end
 
+      # Block bots repeatedly hitting /activity_types/search from range of IPs,
+      # no common user agent with repeated cycling of key_stage and search params
+      # but without an actual query.
+      #
+      # Allow:
+      #   - an initial page load: /activity_types/search
+      #   - a real empty form submit: ?query=&key_stages=&subjects=&commit=Search
+      #
+      # Block:
+      #   - any request that has params AND is missing the required "query" param
+      blocklist('block invalid activity_types search') do |req|
+        next false unless req.get? && req.path == '/activity_types/search'
+        next false if req.params.empty? || req.params.key?('query')
+
+        # params exist but "query" is missing, so apply a block, returning 403
+        true
+      end
+
       ### Configure Cache ###
 
       # If you don't want to use Rails.cache (Rack::Attack's default), then
