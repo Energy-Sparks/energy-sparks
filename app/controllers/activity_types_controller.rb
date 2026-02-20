@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 class ActivityTypesController < ApplicationController
   include Pagy::Backend
+
   before_action :handle_head_request, only: [:show]
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:show, :search, :for_school]
+  skip_before_action :authenticate_user!, only: %i[show search for_school]
 
   def search
-    @key_stages = key_stages
-    @subjects = subjects
     if params[:query]
-      activity_types = ActivityTypeSearchService.search(params[:query], @key_stages, @subjects, I18n.locale)
+      activity_types = ActivityTypeSearchService.search(params[:query], key_stages, subjects, I18n.locale)
       @pagy, @activity_types = pagy(activity_types)
     else
       @activity_types = []
@@ -18,11 +19,11 @@ class ActivityTypesController < ApplicationController
   def show
     @recorded = Activity.where(activity_type: @activity_type).count
     @school_count = Activity.select(:school_id).where(activity_type: @activity_type).distinct.count
-    if current_user_school
-      @activity_type_content = load_content(@activity_type, current_user_school)
-    else
-      @activity_type_content = @activity_type.description
-    end
+    @activity_type_content = if current_user_school
+                               load_content(@activity_type, current_user_school)
+                             else
+                               @activity_type.description
+                             end
     @can_be_completed_for_schools = can_be_completed_for_schools(@activity_type, current_user) if current_user
   end
 
@@ -35,6 +36,7 @@ class ActivityTypesController < ApplicationController
 
   def can_be_completed_for_schools(activity_type, user)
     return user.schools if user.admin?
+
     user.schools(current_ability:).select do |school|
       ActivityTypeFilter.new(school: school).activity_types.include?(activity_type)
     end
@@ -50,18 +52,41 @@ class ActivityTypesController < ApplicationController
   end
 
   def key_stages
-    if params[:key_stages]
-      KeyStage.where(name: params[:key_stages].split(',').map(&:strip))
+    limit_params(:key_stages, KeyStage)
+  end
+
+  def subjects
+    limit_params(:subjects, Subject)
+  end
+
+  def limit_params(name, model)
+    if params[name]
+      model.where(name: params[name].split(',').map { |s| CGI.unescape(s.strip) })
     else
       []
     end
   end
 
-  def subjects
-    if params[:subjects]
-      Subject.where(name: params[:subjects].split(',').map(&:strip))
-    else
-      []
-    end
+  def add_or_remove(list, item)
+    item = CGI.escape(item)
+    arr = list ? list.split(',').map(&:strip) : []
+    arr.include?(item) ? arr.delete(item) : arr.append(item)
+    arr.join(',')
   end
+
+  def activity_types_search_link(key_stage, subject)
+    query = params[:query]
+    key_stages = params[:key_stages]
+    subjects = params[:subjects]
+    search_activity_types_path(query:,
+                               key_stages: add_or_remove(key_stages, key_stage),
+                               subjects: add_or_remove(subjects, subject))
+  end
+  helper_method :activity_types_search_link
+
+  def activity_types_badge_class(list, item, color)
+    item = CGI.escape(item)
+    ['badge', list&.include?(item) ? "badge-#{color}" : 'badge-light outline'].join(' ')
+  end
+  helper_method :activity_types_badge_class
 end
