@@ -86,7 +86,7 @@ class ActivityTypesController < ApplicationController
 
   def activity_types_badge_class(list, item, color)
     item = CGI.escape(item)
-    list&.include?(item) ? "badge badge-#{color}" : 'badge badge-light outline'
+    ['badge', list&.include?(item) ? "badge-#{color}" : 'badge-light outline'].join(' ')
   end
   helper_method :activity_types_badge_class
 end
