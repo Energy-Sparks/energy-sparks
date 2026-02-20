@@ -141,7 +141,7 @@ module Schools
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)
+      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale, :climate_action_lead)
     end
   end
 end

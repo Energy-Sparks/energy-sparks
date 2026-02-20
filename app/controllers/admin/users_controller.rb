@@ -111,7 +111,8 @@ module Admin
 
     def user_params
       params.require(:user)
-            .permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, cluster_school_ids: [])
+            .permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :climate_action_lead,
+                    cluster_school_ids: [])
     end
 
     def set_schools_options

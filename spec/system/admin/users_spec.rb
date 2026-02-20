@@ -160,11 +160,26 @@ describe 'Administering users' do
           fill_in 'Name', with: 'Random User'
           fill_in 'Email', with: email
           select 'Admin', from: 'Role'
-          click_on 'Create User'
         end
 
-        it { expect(user.role).to eq('admin') }
-        it { expect(user.created_by).to eq(admin) }
+        context 'with basic information' do
+          before do
+            click_on 'Create User'
+          end
+
+          it { expect(user.role).to eq('admin') }
+          it { expect(user.created_by).to eq(admin) }
+          it { expect(user.climate_action_lead).to be false }
+        end
+
+        context 'with a climate action lead' do
+          before do
+            check 'Climate action lead'
+            click_on 'Create User'
+          end
+
+          it { expect(user.climate_action_lead).to be true }
+        end
       end
     end
 
