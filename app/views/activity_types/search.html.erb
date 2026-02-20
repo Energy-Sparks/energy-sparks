@@ -40,18 +40,16 @@
           <% KeyStage.by_name.each do |key_stage| %>
             <span data-toggle="tooltip" data-placement="bottom" title="<%= t('activity_types.key_stages') %>">
               <%= link_to t(key_stage.i18n_key),
-                          activity_types_search_link(params, key_stage.name, ''),
-                          class: activity_types_badge_class(params[:key_stages],
-                                                            t(key_stage.i18n_key), 'info'),
+                          activity_types_search_link(key_stage.name, ''),
+                          class: activity_types_badge_class(params[:key_stages], t(key_stage.i18n_key), 'info'),
                           data: { disable_with: spinner_icon } %>
             </span>
           <% end %>
           <br>
           <% Subject.by_name.each do |subject| %>
             <span data-toggle="tooltip" data-placement="bottom" title="<%= t('activity_types.subjects') %>">
-              <%= link_to t(subject.i18n_key), activity_types_search_link(params, '', subject.name),
-                          class: activity_types_badge_class(params[:subjects],
-                                                            t(subject.i18n_key), 'dark'),
+              <%= link_to t(subject.i18n_key), activity_types_search_link('', subject.name),
+                          class: activity_types_badge_class(params[:subjects], t(subject.i18n_key), 'dark'),
                           data: { disable_with: spinner_icon } %>
             </span>
           <% end %>
