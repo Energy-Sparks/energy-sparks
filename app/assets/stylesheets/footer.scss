@@ -26,6 +26,11 @@ footer {
     .form-control, .btn {
       font-size: $f9;
     }
+
+    .form-text {
+      @include font(f9);
+      color: $white;
+    }
   }
 
   .footer-second {

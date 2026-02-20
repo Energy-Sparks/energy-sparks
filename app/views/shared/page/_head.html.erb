@@ -24,11 +24,20 @@
 <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Inter:400,600,700|Quicksand:600,700&display=swap' %>
 <%= stylesheet_link_tag 'https://cdn.datatables.net/2.0.2/css/dataTables.bootstrap4.min.css' %>
 
-<%= stylesheet_link_tag 'application', media: 'all' %>
+<% if @bs5 %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+<% else %>
+  <%= stylesheet_link_tag 'bootstrap4/application', media: 'all' %>
+<% end %>
 
 <%= javascript_importmap_tags %>
 
-<%= javascript_include_tag 'application_assets' %>
+<% if @bs5 %>
+  <%= javascript_include_tag 'application_assets' %>
+<% else %>
+  <%= javascript_include_tag 'bootstrap4/application_assets' %>
+<% end %>
+
 <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js' %>
 <%= javascript_include_tag 'https://cdn.datatables.net/2.0.2/js/dataTables.min.js' %>
 <%= javascript_include_tag 'https://cdn.datatables.net/2.0.2/js/dataTables.bootstrap4.min.js' %>

@@ -1,0 +1,28 @@
+@each $color, $value in $theme-colors {
+  input.badge-toggle-#{$color}, input.badge-pill-toggle-#{$color} {
+    display: none;
+  }
+
+  input.badge-toggle-#{$color} + label {
+    border: 1px solid $grey-light;
+    @extend .badge;
+  }
+
+  input.badge-pill-toggle-#{$color} + label {
+    border: 1px solid $grey-light;
+    @extend .badge;
+    @extend .rounded-pill;
+  }
+
+  input.badge-toggle-#{$color}:not(:checked) + label:hover,
+  input.badge-pill-toggle-#{$color}:not(:checked) + label:hover {
+    background: $grey-medium;
+  }
+  input.badge-toggle-#{$color} + label:active,
+  input.badge-toggle-#{$color}:checked + label,
+  input.badge-pill-toggle-#{$color} + label:active,
+  input.badge-pill-toggle-#{$color}:checked + label {
+    @include badge-variant($value);
+    border: 1px solid transparent;
+  }
+}
