@@ -460,7 +460,7 @@ RSpec.describe 'onboarding', :schools do
               click_on 'Complete setup', match: :first
               SchoolCreator.new(school).make_data_enabled!
               email = ActionMailer::Base.deliveries.last
-              expect(email.subject).to eq("#{school.name} energy data is now available on Energy Sparks")
+              expect(email.subject).to eq("Energy data is now available on Energy Sparks for #{school.name}")
             end
           end
         end
