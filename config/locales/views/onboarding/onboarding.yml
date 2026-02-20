@@ -48,7 +48,7 @@ en:
           edit_pupil_account: Edit pupil account
           pupil_account_name: Pupil account name
           pupil_password: Pupil password
-          title: 5. Pupil account
+          title: Pupil account
         review_and_update_your_answers: Review and update your answers before completing setup
         role: Role
         school_details_section:
@@ -136,7 +136,7 @@ en:
       pupil_password: Pupil password
       pupil_password_hint: Make it memorable and easy for pupils to type. Must be at least 12 characters.
       pupil_password_placeholder: ''
-      title: 'Step 5: Create your pupil account'
+      title: Create your pupil account
       title_for_update: Update your pupil account
       update: Update pupil account
     school_details:

@@ -47,7 +47,7 @@ cy:
           edit_pupil_account: Golygu cyfrif disgybl
           pupil_account_name: Enw cyfrif disgybl
           pupil_password: Cyfrinair disgybl
-          title: 5. Cyfrif disgybl
+          title: Cyfrif disgybl
         review_and_update_your_answers: Adolygwch a diweddarwch eich atebion cyn cwblhau'r gosodiad
         role: Rôl
         school_details_section:
@@ -135,7 +135,7 @@ cy:
       pupil_password: Cyfrinair disgybl
       pupil_password_hint: Gwnewch ef yn gofiadwy ac yn hawdd i ddisgyblion ei deipio
       pupil_password_placeholder: e.e. arbedwyrynniarbennig
-      title: 'Cam 5: Creu eich cyfrif disgybl'
+      title: Creu eich cyfrif disgybl
       title_for_update: Diweddaru eich cyfrif disgybl
       update: Diweddaru cyfrif disgybl
     school_details:
