@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_23_095759) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -947,8 +947,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "import_warning_days"
+    t.integer "import_warning_days", default: 7
     t.boolean "load_tariffs", default: true, null: false
+    t.bigint "owned_by_id"
+    t.boolean "alerts_on", default: true
+    t.integer "alert_percentage_threshold"
+    t.index ["owned_by_id"], name: "index_data_sources_on_owned_by_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -2435,6 +2439,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
+  add_foreign_key "data_sources", "users", column: "owned_by_id"
   add_foreign_key "emails", "contacts", on_delete: :cascade
   add_foreign_key "energy_tariffs", "users", column: "created_by_id"
   add_foreign_key "energy_tariffs", "users", column: "updated_by_id"
