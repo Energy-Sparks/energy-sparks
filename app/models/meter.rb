@@ -96,6 +96,7 @@ class Meter < ApplicationRecord
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
+  scope :active_for_active_schools, -> { active.from_active_schools }
 
   scope :with_zero_reading_days_and_dates, lambda {
     left_outer_joins(:amr_validated_readings)

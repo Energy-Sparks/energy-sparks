@@ -146,6 +146,16 @@ describe 'Meter', :meters do
         expect(Meter.meters_to_check_against_dcc).to eq([])
       end
     end
+
+    context 'when finding meters for schools' do
+      it 'only returns active meters from active schools' do
+        create(:electricity_meter, school: create(:school, active: false, removal_date: 1.month.ago))
+        create(:electricity_meter, active: false, school: create(:school, active: false, removal_date: 1.month.ago))
+        create(:electricity_meter, active: false, school: create(:school))
+        active_meter = create(:electricity_meter, school: create(:school))
+        expect(Meter.active_for_active_schools.first).to eq(active_meter)
+      end
+    end
   end
 
   describe '#open_issues_count' do
