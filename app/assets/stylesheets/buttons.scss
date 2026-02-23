@@ -12,25 +12,18 @@
   );
 }
 
+// In Bootstrap 4, we supported `btn` on it's own rendering the same as `btn btn-secondary` or `btn btn-default`.
+// This is not supported with our bootstrap 5 buttons, as really `btn` should not be overridden to have a specific design,
+// and should be used as a base class for all buttons.
+// When migrating, ensure any standalone `btn` is updated to `btn btn-secondary` (or another variant).
+
 .btn-default {
-  @extend %btn-default;x
+  @extend %btn-default;
 
   &.transparent {
     background-color: transparent;
   }
 }
-
-// This allows btn, when not used with other btn- theme colour classes, to be styled with the default button design.
-// We have some historic use of btn in this way, so this supports this pattern.
-//$btn-exclusions: "";
-//@each $name in map-keys($theme-colors) {
-//  $btn-exclusions: $btn-exclusions + ":not(.btn-#{$name})";
-//  $btn-exclusions: $btn-exclusions + ":not(.btn-outline-#{$name})";
-//}
-
-//.btn#{$btn-exclusions} {
-//  @extend %btn-default;
-//}
 
 @each $color, $value in $theme-colors {
   .btn-outline-#{$color} {
