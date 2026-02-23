@@ -52,7 +52,7 @@ describe Commercial::LicenceManager do
           school:,
           status: 'confirmed',
           start_date: Time.zone.today,
-          end_date: Time.zone.today + 1.year
+          end_date: Time.zone.today + 364.days
         })
       end
 
@@ -70,7 +70,7 @@ describe Commercial::LicenceManager do
             school:,
             status: 'confirmed',
             start_date: Time.zone.today,
-            end_date: Time.zone.today + 18.months
+            end_date: Time.zone.today + 18.months - 1.day
           })
         end
       end
@@ -126,7 +126,7 @@ describe Commercial::LicenceManager do
         expect(updated_licence).to have_attributes(
           status: 'pending_invoice',
           start_date: Time.zone.today,
-          end_date: Time.zone.today + 1.year
+          end_date: Time.zone.today + 364.days
         )
       end
 
@@ -142,7 +142,7 @@ describe Commercial::LicenceManager do
           expect(updated_licence).to have_attributes(
             status: 'invoiced',
             start_date: Time.zone.today,
-            end_date: Time.zone.today + 1.year
+            end_date: Time.zone.today + 364.days
           )
         end
       end
@@ -159,7 +159,7 @@ describe Commercial::LicenceManager do
           expect(updated_licence).to have_attributes(
             status: 'pending_invoice',
             start_date: Time.zone.today,
-            end_date: Time.zone.today + 21.months
+            end_date: Time.zone.today + 21.months - 1.day
           )
         end
       end
