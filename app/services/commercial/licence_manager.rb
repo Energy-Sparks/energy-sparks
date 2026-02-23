@@ -42,9 +42,16 @@ module Commercial
     private
 
     # Take licence years, which is a float specifying length of licence, e.g. 1.0, 2.0, 1.75 (1 yr, 9 months)
-    # and add to a start date
+    # and add to a start date.
+    #
+    # The date ranges are specified as exclusive end dates, so subtract a day
     def add_years(start_date, licence_years)
-      start_date + (licence_years * 12).round.months
+      years = licence_years.floor
+      months = ((licence_years - years) * 12).round
+      # Advance by whole years and months
+      end_date = start_date.advance(years: years, months: months)
+      # Inclusive range: subtract 1 day
+      end_date - 1.day
     end
   end
 end
