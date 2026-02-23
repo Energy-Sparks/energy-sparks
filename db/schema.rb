@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_23_103948) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1484,6 +1484,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_30_100604) do
     t.bigint "consent_grant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "disabled", default: false, null: false
     t.index ["consent_grant_id"], name: "index_meter_reviews_on_consent_grant_id"
     t.index ["school_id"], name: "index_meter_reviews_on_school_id"
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"

@@ -110,6 +110,7 @@ describe 'Meter', :meters do
       end
       let(:electricity_meters_not_reviewed) do
         [create(:electricity_meter, dcc_meter: :smets2, meter_review_id: nil, consent_granted: false),
+         create(:electricity_meter, dcc_meter: :smets2, meter_review: create(:meter_review, disabled: true)),
          create(:electricity_meter, dcc_meter: :other, meter_review_id: nil, consent_granted: false)]
       end
 

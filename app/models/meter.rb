@@ -84,9 +84,11 @@ class Meter < ApplicationRecord
     left_outer_joins(:amr_validated_readings).where(amr_validated_readings: { meter_id: nil })
   }
 
-  scope :unreviewed_dcc_meter, -> { dcc.where(consent_granted: false, meter_review_id: nil) }
-  scope :reviewed_dcc_meter, -> { dcc.where.not(meter_review_id: nil) }
-  scope :awaiting_trusted_consent, -> { dcc.where(consent_granted: false).where.not(meter_review: nil) }
+  scope :unreviewed_dcc_meter, lambda {
+    dcc.where(consent_granted: false).left_joins(:meter_review).where(meter_reviews: { disabled: [true, nil] })
+  }
+  scope :reviewed_dcc_meter, -> { dcc.joins(:meter_review).where(meter_reviews: { disabled: false }) }
+  scope :awaiting_trusted_consent, -> { reviewed_dcc_meter.where(consent_granted: false) }
   scope :not_dcc, -> { where(dcc_meter: :no) }
   scope :dcc, -> { where(dcc_meter: %i[smets2 other]) }
   scope :consented, -> { dcc.where(consent_granted: true) }
@@ -108,7 +110,7 @@ class Meter < ApplicationRecord
       )
   }
 
-  scope :with_active_meter_attributes, ->(attribute_types) {
+  scope :with_active_meter_attributes, lambda { |attribute_types|
     joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
   }
 
@@ -287,7 +289,7 @@ class Meter < ApplicationRecord
   end
 
   def can_grant_consent?
-    meter_review.present? && !consent_granted
+    meter_review&.disabled == false && !consent_granted
   end
 
   def can_withdraw_consent?
