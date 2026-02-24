@@ -12,6 +12,18 @@ RSpec.describe DataSource, type: :model do
     it { is_expected.to define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
   end
 
+  describe 'scopes' do
+    context 'when finding meters with stale readings' do
+      it 'returns only active meters with stale readings' do
+        data_source = create(:data_source)
+        create(:gas_meter, active: false, data_source: data_source, school: create(:school, active: true))
+        stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: Date.parse('15/02/2026'), data_source: data_source, school: create(:school, active: true))
+        create(:gas_meter_with_validated_reading_dates, end_date: Date.parse('23/02/2026'), data_source: data_source, school: create(:school, active: true))
+        expect(DataSource.with_stale_readings.first).to eq(stale_meter)
+      end
+    end
+  end
+
   describe '.to_csv' do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }

@@ -38,6 +38,22 @@ class DataSource < ApplicationRecord
 
   belongs_to :owned_by, class_name: :User, optional: true
 
+  scope :with_stale_readings, -> {
+    joins(:meters)
+    .merge(Meter.active_for_active_schools)
+    .joins(<<~SQL.squish)
+      JOIN LATERAL (
+        SELECT id, reading_date
+        FROM amr_validated_readings
+        WHERE amr_validated_readings.meter_id = meters.id
+        ORDER BY reading_date DESC
+        LIMIT 1
+      ) AS max_reading ON true
+    SQL
+    .select('meters.*')
+    .where('reading_date < ?', 1.week.ago)
+  }
+
   validates :alert_percentage_threshold, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
   validates :name, presence: true, uniqueness: true
   has_many :meters
