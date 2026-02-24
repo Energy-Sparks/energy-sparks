@@ -33,7 +33,7 @@ module Admin
       def update
         @meter_review.update(disabled: !@meter_review.disabled)
         redirect_to admin_school_meter_review_path(@school, @meter_review),
-                    notice: "Review was #{@meter_review.disabled ? :disabled : :enabled}."
+                    notice: "Review #{@meter_review.disabled ? :disabled : :enabled}."
       end
 
       private

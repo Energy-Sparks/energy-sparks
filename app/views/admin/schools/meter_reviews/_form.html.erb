@@ -49,14 +49,14 @@
     </div>
   </div>
   <div class="mt-4">
-    <%= value = if @meter_review.new_record?
-                  'Complete review'
-                elsif @meter_review.disabled
-                  'Enable'
-                else
-                  'Disable'
-                end
-        f.button :submit, value, 'data-confirm': 'Are you sure?', disabled: !@school.consent_up_to_date? %>
+    <%= value, disabled = if @meter_review.new_record?
+                            ['Complete review', !@school.consent_up_to_date?]
+                          elsif @meter_review.disabled
+                            ['Enable', false]
+                          else
+                            ['Disable', false]
+                          end
+        f.button :submit, value, 'data-confirm': 'Are you sure?', disabled: %>
   </div>
   <hr>
   <div class="btn-group">
