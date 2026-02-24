@@ -8,7 +8,7 @@ module Commercial
     def calculate(number_of_pupils:, number_of_meters:, product: nil, contract: nil, private_account: false)
       raise unless product || contract
       contracted_product = contract&.product || product
-      return base_price(product:, contract:, number_of_pupils:) +
+      return base_price(product: contracted_product, contract:, number_of_pupils:) +
              metering_fee(product: contracted_product, number_of_meters:) +
              private_account_fee(product: contracted_product, private_account:)
     end
@@ -17,7 +17,7 @@ module Commercial
     # check for any existing licences to find school specific pricing, so not suitable for renewals
     #
     # Intended to be used for a school moving to a MAT based contract..?
-    def for_school(school:, product:, contract:)
+    def for_school(school:, product: nil, contract: nil)
       calculate(
         product:,
         contract:,
@@ -27,13 +27,10 @@ module Commercial
       )
     end
 
-    # Calculates a renewal price for an individual school. Uses the schools current
-    # licence as the basis for the calculation, applying school or contract specific
-    # pricing if set.
-    #
-    # FIXME: if school lapsed? call for_school? maybe just use last licence?
+    # Calculates a renewal price for an individual school. Uses the schools latest licence
+    # as the basis for the calculation, applying school or contract specific pricing if set.
     def for_school_renewal(school:)
-      licence = @school.licences.current.first
+      licence = school.licences.by_end_date.first
       return nil unless licence
 
       base_price = licence.school_specific_price || base_price(product: licence.contract.product,
