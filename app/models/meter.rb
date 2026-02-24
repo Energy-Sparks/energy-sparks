@@ -109,6 +109,20 @@ class Meter < ApplicationRecord
       )
   }
 
+  scope :with_stale_readings, -> {
+    left_outer_joins(:data_source)
+    .joins(<<~SQL.squish)
+      JOIN LATERAL (
+        SELECT id, reading_date
+        FROM amr_validated_readings
+        WHERE amr_validated_readings.meter_id = meters.id
+        ORDER BY reading_date DESC
+        LIMIT 1
+      ) AS max_reading ON true
+    SQL
+    .where("reading_date < CURRENT_DATE - (data_sources.import_warning_days * INTERVAL '1 day')")
+  }
+
   scope :with_active_meter_attributes, ->(attribute_types) {
     joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
   }
