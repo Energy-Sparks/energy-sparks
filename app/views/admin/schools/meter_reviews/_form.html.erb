@@ -1,0 +1,65 @@
+<%= simple_form_for @meter_review, url: do |f| %>
+  <div class="card-group">
+    <div class="card bg-light">
+      <div class="card-body">
+        <% if @meter_review.new_record? %>
+          <%= f.association :meters, label: 'Which meters can be activated?', as: :check_boxes,
+                                     collection: @pending_meters, value_method: :id, label_method: :mpan_mprn %>
+        <% else %>
+            The following meters were reviewed:
+            <ul class="unstyled-list">
+              <% @meter_review.meters.each do |meter| %>
+                <li><%= link_to meter.mpan_mprn, school_meter_path(@school, meter) %></li>
+              <% end %>
+            </ul>
+        <% end %>
+        <%= yield :meters %>
+      </div>
+      <div class="card-footer">
+        <%= link_to 'View meters', school_meters_path(@school), class: 'btn btn-sm btn-default',
+                                                                target: '_blank', rel: 'noopener' %>
+      </div>
+    </div>
+    <div class="card bg-light">
+      <div class="card-body">
+        <% if @meter_review.new_record? %>
+          <%= f.association :consent_documents, label: 'Which documents were checked?', as: :check_boxes,
+                                                collection: @school.consent_documents,
+                                                value_method: :id, label_method: :title %>
+        <% else %>
+          The following documents confirmed access:
+          <ul class="unstyled-list">
+            <% @meter_review.consent_documents.each do |bill| %>
+              <li><%= link_to bill.title, school_consent_document_path(@school, bill) %></li>
+            <% end %>
+          </ul>
+        <% end %>
+      </div>
+      <div class="card-footer">
+        <%= link_to 'View documents', school_consent_documents_path(@school),
+                    class: 'btn btn-sm btn-default', target: '_blank', rel: 'noopener' %>
+        <% if @school.bill_requested %>
+        <%= link_to 'Clear bill request', clear_admin_school_bill_requests_path(@school),
+                    method: :post, class: 'btn btn-sm btn-default' %>
+        <% else %>
+        <%= link_to 'Request bill', new_admin_school_bill_request_path(@school),
+                    class: 'btn btn-sm btn-default' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4">
+    <%= value = if @meter_review.new_record?
+                  'Complete review'
+                elsif @meter_review.disabled
+                  'Enable'
+                else
+                  'Disable'
+                end
+        f.button :submit, value, 'data-confirm': 'Are you sure?', disabled: !@school.consent_up_to_date? %>
+  </div>
+  <hr>
+  <div class="btn-group">
+    <%= link_to 'See all pending reviews', admin_meter_reviews_path, class: 'btn btn-default' %>
+  </div>
+<% end %>
