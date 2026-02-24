@@ -111,6 +111,7 @@ class Meter < ApplicationRecord
 
   scope :with_stale_readings, -> {
     left_outer_joins(:data_source)
+    .merge(Meter.active_for_active_schools)
     .joins(<<~SQL.squish)
       JOIN LATERAL (
         SELECT id, reading_date
