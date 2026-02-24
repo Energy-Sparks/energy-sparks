@@ -27,6 +27,7 @@ describe 'manage contracts' do
         select funder.name, from: 'Contract holder'
 
         fill_in 'Number of schools', with: 100
+        fill_in 'Purchase order number', with: 'PO123'
 
         set_date('#contract_start_date', '01/01/2026')
         set_date('#contract_end_date', '31/12/2026')
@@ -48,6 +49,7 @@ describe 'manage contracts' do
           licence_period: 'custom',
           licence_years: 1.0,
           number_of_schools: 100,
+          purchase_order_number: 'PO123',
           start_date: Date.new(2026, 1, 1),
           end_date: Date.new(2026, 12, 31),
           agreed_school_price: BigDecimal(525),
