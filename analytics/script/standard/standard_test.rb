@@ -37,7 +37,6 @@ scripts = [
     { type: RunAdultDashboard },
     { type: RunAlerts,                parameters: { alerts:   { control: { asof_date: run_date } } } },
     { type: RunBenchmarks,            parameters: benchmark_params},
-    { type: RunManagementSummaryTable },
     { type: RunEquivalences }
 ]
 

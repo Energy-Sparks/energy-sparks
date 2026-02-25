@@ -1,59 +1,59 @@
 <div class="border rounded bg-light px-4 pb-4 pt-2">
 
-<%= simple_form_for [:admin, testimonial], html: { multipart: true } do |f| %>
-  <div class="row">
-    <div class="col-6">
-      <h3>Quote details</h3>
-      <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
-        <%= f.input t_field(:title, locale), label: 'Title' %>
-      <% end %>
-
-      <%= render 'admin/shared/locale_tabs', f: f, field: :quote do |locale| %>
-        <%= f.input t_field(:quote, locale), label: 'Quote', as: :text %>
-      <% end %>
-
-      <%= f.input :case_study_id,
-                  label: 'Case Study',
-                  collection: CaseStudy.order(title: :asc),
-                  label_method: :title,
-                  value_method: :id,
-                  include_blank: 'Select Case Study' %>
-
-      <%= f.input :active, as: :boolean, label: 'Active?' %>
-
-      <%= f.input :category, as: :select, collection: Testimonial.categories.keys, include_blank: false,
-                             label: 'Category' %>
-
-      <div class="form-group">
-        <%= f.input :image, class: 'form-control' %>
-
-        <% if testimonial.image.attached? && testimonial.image.persisted? %>
-          <div class="mt-3">
-            <p>Current Image:</p>
-            <%= image_tag testimonial.image, width: '100%', alt: testimonial.title, class: 'img-thumbnail' %>
-          </div>
-        <% else %>
-          No image attached
+  <%= simple_form_for [:admin, testimonial], html: { multipart: true } do |f| %>
+    <div class="row">
+      <div class="col-6">
+        <h3>Quote details</h3>
+        <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
+          <%= f.input t_field(:title, locale), label: 'Title' %>
         <% end %>
+
+        <%= render 'admin/shared/locale_tabs', f: f, field: :quote do |locale| %>
+          <%= f.input t_field(:quote, locale), label: 'Quote', as: :text %>
+        <% end %>
+
+        <%= f.input :case_study_id,
+                    label: 'Case Study',
+                    collection: CaseStudy.order(title: :asc),
+                    label_method: :title,
+                    value_method: :id,
+                    include_blank: 'Select Case Study' %>
+
+        <%= f.input :active, as: :boolean, label: 'Active?' %>
+
+        <%= f.input :category, as: :select, collection: Testimonial.categories.keys, include_blank: false,
+                               label: 'Category' %>
+
+        <div class='pb-3'>
+          <%= f.input :image, class: 'form-control' %>
+
+          <% if testimonial.image.attached? && testimonial.image.persisted? %>
+            <div class="mt-3">
+              <p>Current Image:</p>
+              <%= image_tag testimonial.image, width: '100%', alt: testimonial.title, class: 'img-thumbnail' %>
+            </div>
+          <% else %>
+            No image attached
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <h3>Source</h3>
+
+        <%= f.input :name, label: 'Name', hint: 'Name of the person making the quote' %>
+
+        <%= render 'admin/shared/locale_tabs', f: f, field: :role do |locale| %>
+          <%= f.input t_field(:role, locale), label: 'Role' %>
+        <% end %>
+
+        <%= f.input :organisation, label: 'Organisation' %>
       </div>
     </div>
 
-    <div class="col-6">
-      <h3>Source</h3>
-
-      <%= f.input :name, label: 'Name', hint: 'Name of the person making the quote' %>
-
-      <%= render 'admin/shared/locale_tabs', f: f, field: :role do |locale| %>
-        <%= f.input t_field(:role, locale), label: 'Role' %>
-      <% end %>
-
-      <%= f.input :organisation, label: 'Organisation' %>
+    <div>
+      <%= f.submit 'Save testimonial', class: 'btn btn-primary btn-small' %>
+      <%= link_to 'Back', admin_testimonials_path, class: 'btn btn-secondary btn-small' %>
     </div>
-  </div>
-
-  <div class="form-actions">
-    <%= f.submit 'Save Testimonial', class: 'btn btn-primary btn-small' %>
-    <%= link_to 'Back', admin_testimonials_path, class: 'btn btn-secondary btn-small' %>
-  </div>
-<% end %>
+  <% end %>
 </div>

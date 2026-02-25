@@ -1,6 +1,4 @@
 require 'active_support/core_ext/string/filters' # for string.truncate
-
-require_rel '../../charting_and_reports/content_base'
 # Alerts: Energy Sparks alerts
 #         this is a mix of short-term alerts e.g. your energy consumption has gone up since last week
 #         and longer term alerts - energy assessments e.g. your energy consumption at weekends it high
@@ -559,12 +557,6 @@ class AlertAnalysisBase < ContentBase
       AlertStorageHeatersLongTermTrend                            => 'shlt',
       AlertOptimumStartAnalysis                                   => 'opts',
       AlertSummerHolidayRefrigerationAnalysis                     => 'free',
-      AlertElectricityTargetAnnual                                => 'etga',
-      AlertGasTargetAnnual                                        => 'gtga',
-      AlertElectricityTarget4Week                                 => 'etg4',
-      AlertGasTarget4Week                                         => 'gtg4',
-      AlertElectricityTarget1Week                                 => 'etg1',
-      AlertGasTarget1Week                                         => 'gtg1',
       AlertSeasonalBaseloadVariation                              => 'sblv',
       AlertIntraweekBaseloadVariation                             => 'iblv',
       AlertGasHeatingHotWaterOnDuringHoliday                      => 'hdhl',

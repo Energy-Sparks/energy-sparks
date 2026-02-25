@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.shared_examples_for 'a listed meter' do |admin: true|
+RSpec.shared_examples_for 'a listed meter' do |admin: true, staff: false|
   it 'displays list heading' do
     if meter.active
       expect(page).to have_content('Active meters')
@@ -11,13 +11,19 @@ RSpec.shared_examples_for 'a listed meter' do |admin: true|
     end
   end
 
-  it 'displays meter' do
+  it 'displays meter data' do
     expect(page).to have_content(meter.mpan_mprn)
     expect(page).to have_content(meter.name)
     expect(page).to have_content(short_dates(meter.first_validated_reading))
     expect(page).to have_content(short_dates(meter.last_validated_reading))
     expect(page).to have_content(meter.zero_reading_days.count)
     expect(page).to have_content(meter.gappy_validated_readings.count)
+  end
+
+  it 'displays meter links' do
+    if !staff && meter.active && meter.amr_validated_readings.any?
+      expect(page).to have_link(href: school_meter_path(meter.school, meter, format: 'csv'))
+    end
     if admin
       expect(page).to have_link('Issues')
       expect(page).to have_link(meter.data_source.name)
@@ -48,7 +54,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   include ActiveJob::TestHelper
 
   let(:school_name)     { 'Oldfield Park Infants' }
-  let!(:school)         { create_active_school(name: school_name) }
+  let!(:school)         { create_active_school(name: school_name, school_group: create(:school_group)) }
   let!(:admin)          { create(:admin) }
   let!(:teacher)        { create(:staff) }
   let!(:school_admin)   { create(:school_admin, school_id: school.id) }
@@ -161,6 +167,36 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
     end
   end
 
+  context 'when a group admin' do
+    before do
+      sign_in(create(:group_admin, school_group: school.school_group))
+      visit root_path
+    end
+
+    context 'Manage meters page' do
+      before { visit school_meters_path(school) }
+
+      it_behaves_like 'admin dashboard messages', permitted: false
+
+      context 'Add meter form' do
+        it 'does not display admin only fields' do
+          expect(page).to have_no_content('Data source')
+        end
+      end
+
+      context 'listing meters' do
+        let!(:setup_data) { meter }
+
+        it_behaves_like 'a listed meter', admin: false do
+          let(:meter) { active_meter }
+        end
+        it_behaves_like 'a listed meter', admin: false do
+          let(:meter) { inactive_meter }
+        end
+      end
+    end
+  end
+
   context 'as teacher' do
     before do
       sign_in(teacher)
@@ -185,10 +221,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
     context 'listing meters' do
       let(:setup_data) { meter }
 
-      it_behaves_like 'a listed meter', admin: false do
+      it_behaves_like 'a listed meter', admin: false, staff: true do
         let(:meter) { active_meter }
       end
-      it_behaves_like 'a listed meter', admin: false do
+      it_behaves_like 'a listed meter', admin: false, staff: true do
         let(:meter) { inactive_meter }
       end
     end
@@ -229,6 +265,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
           let(:meter) { inactive_meter }
         end
       end
+    end
+
+    context 'when managing meter issues' do
+      before { visit school_meters_path(school) }
 
       context 'without meter issues' do
         let(:meter) { active_meter }
@@ -250,19 +290,63 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         end
       end
 
-      context 'with meter issues' do
+      shared_examples 'editing an issue for meter via modal' do
+        context 'when editing an issue' do
+          before do
+            click_on 'Issues'
+            within('.modal') do
+              click_on 'Edit'
+            end
+            click_on 'Save'
+          end
+
+          it 'redirects to manage meters page' do
+            expect(page).to have_link(school.name)
+            expect(page).to have_content('Manage meters')
+          end
+        end
+      end
+
+      context 'when creating meter issues', :js do
+        let(:meter) { active_meter }
+        let!(:setup_data) { meter }
+
+        before do
+          click_on 'Issues'
+          within('.modal') do
+            click_on 'New Issue'
+          end
+
+          fill_in 'Title', with: 'Meter issue title'
+          fill_in_trix 'trix-editor#issue_description', with: 'Meter issue description'
+          click_on 'Save'
+        end
+
+        it 'redirects to manage meters page' do
+          expect(page).to have_link(school.name)
+          expect(page).to have_content('Manage meters')
+        end
+      end
+
+      context 'with meter issues', :js do
         let(:meter) { active_meter }
         let!(:issue) { create(:issue, issueable: school, meters: [meter], created_by: admin, updated_by: admin) }
         let!(:setup_data) { issue }
 
+        before { stub_request(:get, "https://n3rgy.test/find-mpxn/#{meter.mpan_mprn}") }
+
         it { expect(page).to have_link('Issues') }
         it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+
+        it_behaves_like 'editing an issue for meter via modal'
 
         context "Clicking on meter 'Details'" do
           before { click_link meter.mpan_mprn.to_s }
 
           it { expect(page).to have_link('Issues') }
           it { expect(page).to have_css("i[class*='fa-exclamation-circle text-danger']") }
+
+          it_behaves_like 'editing an issue for meter via modal'
         end
       end
     end
@@ -460,30 +544,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         click_on 'Deactivate'
         click_on 'Delete'
         expect(school.meters.count).to eq(0)
-      end
-    end
-
-    context 'when checking target data' do
-      context 'and there is enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(true)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
-      end
-
-      context 'and there is not enough' do
-        before do
-          allow_any_instance_of(Targets::SchoolTargetService).to receive(:enough_data?).and_return(false)
-          click_on 'Manage meters'
-        end
-
-        it 'links to detail' do
-          expect(page).to have_link('View target data', href: admin_school_target_data_path(school))
-        end
       end
     end
   end

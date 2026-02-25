@@ -28,7 +28,7 @@ en:
     section_3_title: What we will do with your data
     section_4_content_html: |-
       <p>Your school has the right to withdraw consent at any time.</p>
-      <p>As described in our %{terms_and_conditions_link} you can do this by emailing hello@energysparks.uk. Energy Sparks will then remove your ongoing and historical energy data from the Energy Sparks website within one month.</p>
+      <p>As described in our %{terms_and_conditions_link} you can do this by emailing support@energysparks.uk. Energy Sparks will then remove your ongoing and historical energy data from the Energy Sparks website within one month.</p>
     section_4_title: Withdrawing consent
     section_5_content_html: |-
       <p>To complete the setup of your school, please read the following consent statement and provide your name and job title.</p>

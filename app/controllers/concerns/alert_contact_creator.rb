@@ -12,7 +12,7 @@ module AlertContactCreator
   end
 
   def update_alert_contact(school, user)
-    if auto_create_alert_contact?
+    if subscribe_to_alerts?
       create_or_update_alert_contact(school, user)
     elsif existing_alert_contact?(school, user)
       delete_contact(school, user)
@@ -42,7 +42,7 @@ module AlertContactCreator
     end
   end
 
-  def auto_create_alert_contact?
+  def subscribe_to_alerts?
     params[:contact] && params[:contact][:auto_create_alert_contact] && ActiveModel::Type::Boolean.new.cast(params[:contact][:auto_create_alert_contact])
   end
 end

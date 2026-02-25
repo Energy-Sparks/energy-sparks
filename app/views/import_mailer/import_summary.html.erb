@@ -1,44 +1,5 @@
-<h2>Data issues</h2>
+<h2>Meter data issues</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Area</th>
-      <th>Meter type</th>
-      <th>School</th>
-      <th>MPAN/MPRN</th>
-      <th>Half-Hourly</th>
-      <th>Data source</th>
-      <th>Procurement route</th>
-      <th>Last validated reading date</th>
-      <th>Admin meter status</th>
-      <th>Manual reads</th>
-      <th colspan="2"></th>
-      <th>Group admin name</th>
-    </tr>
-  </thead>
-  <% if @meters_running_behind.any? %>
-    <thead>
-      <tr align="left">
-        <th colspan="8">Meters with stale data</th>
-      </tr>
-    <thead>
-    <%= render 'meter_table', meters: @meters_running_behind %>
-  <% end %>
-  <% if @meters_with_blank_data.any? %>
-    <thead>
-      <tr align="left">
-        <th colspan="8">Meters with blank readings (whole day)</th>
-      </tr>
-    <thead>
-    <%= render 'meter_table', meters: @meters_with_blank_data %>
-  <% end %>
-  <% if @meters_with_zero_data.any? %>
-    <thead>
-      <tr align="left">
-        <th colspan="8">Zero data imports (whole day)</th>
-      </tr>
-    <thead>
-    <%= render 'meter_table', meters: @meters_with_zero_data %>
-  <% end %>
-</table>
+<p>
+  Attached is a CSV file with latest report on meter data issues (meters with stale data, meters with blank readings, meters with zero consumption for whole data)
+</p>

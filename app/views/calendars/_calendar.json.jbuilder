@@ -8,4 +8,5 @@ json.calendar_events @calendar.calendar_events.order(calendar_event_type_id: :as
   json.color Colours.hex(event.calendar_event_type.analytics_event_type.to_sym)
   json.startDate event.start_date
   json.endDate event.end_date
+  json.basedOn !event.based_on.nil?
 end

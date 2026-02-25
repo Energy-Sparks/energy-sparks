@@ -1,28 +1,22 @@
 module Elements
   class BadgeComponent < ApplicationComponent
-    def initialize(text = nil, pill: false, style: :primary, **_kwargs)
+    def initialize(text = nil, pill: false, colour: nil, **_kwargs)
       super
-      raise ArgumentError, 'Unknown badge style' if style && !self.class.styles.include?(style)
+      self.class.raise_unknown_variant_error(colour: colour) if colour
       @text = text
-      @style = style
 
-      add_classes('badge')
-      add_classes('badge-pill') if pill
-      add_classes("badge-#{style}") if style
+      add_classes('d-inline-flex align-items-center badge')
+      add_classes('rounded-pill') if pill
+      add_classes("bg-#{colour}") if colour
+      add_classes('text-dark') if !colour || [:light, :warning].include?(colour)
     end
 
     def call
-      tag.span(id: id, class: classes) { "#{@text}#{content}" }
+      tag.span(id: id, class: classes) { "#{@text}#{content}".html_safe }
     end
 
     def render?
       @text || content
-    end
-
-    class << self
-      def styles
-        [:primary, :secondary, :success, :info, :warning, :danger, :light, :dark]
-      end
     end
   end
 end

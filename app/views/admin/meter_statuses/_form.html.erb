@@ -1,4 +1,7 @@
 <%= simple_form_for @admin_meter_status do |f| %>
   <%= f.input :label, as: :string %>
+  <%= f.input :ignore_in_inactive_meter_report,
+              as: :boolean,
+              hint: "Exclude meters with this status from the 'New data for inactive meters' report" %>
   <%= f.button :submit %>
 <% end %>

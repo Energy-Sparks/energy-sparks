@@ -1,2 +1,1 @@
-document.getElementById('<%= controller.class::ID_PREFIX %>-<%= @installation.id %>-test').innerHTML =
-  '<i class="fas <%= @api_ok ? 'text-success fa-circle-check' : 'text-danger fa-circle-xmark' %>"></i> Check API';
+<%= render 'shared/check', id: "#{controller.class::ID_PREFIX}-#{@installation.id}-test", api_ok: @api_ok %>

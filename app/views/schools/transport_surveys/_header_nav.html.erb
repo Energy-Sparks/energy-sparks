@@ -11,7 +11,7 @@
     <h1><%= t('schools.transport_surveys.title.default') %></h1>
   <% end %>
   <div>
-    <%= if can?(:start, TransportSurvey)
+    <%= if can?(:start, TransportSurvey.new(school: @school))
           header_nav_link t('schools.transport_surveys.header_nav.survey_today'),
                           start_school_transport_surveys_url(@school),
                           class: 'btn-primary mb-1'

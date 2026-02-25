@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# This script is run annually, typically around September to regenerate data for
+# app/models/schools/average_school_data.yaml.
 namespace :school do
   desc 'Calculate average school'
   task calculate_average: :environment do

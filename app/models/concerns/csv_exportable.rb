@@ -20,9 +20,11 @@ module CsvExportable
 
     def to_csv(header: true)
       CSV.generate(headers: header) do |csv|
+        paths = csv_attributes.map { |a| a.split('.') }
+
         csv << csv_headers if header == true
-        all.find_each do |record|
-          csv << csv_attributes.map { |attr| attr.split('.').inject(record, :try) }
+        find_each do |record|
+          csv << paths.map { |parts| parts.reduce(record) { |obj, m| obj&.public_send(m) } }
         end
       end
     end

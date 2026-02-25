@@ -7,5 +7,5 @@
 
 <%= render 'show' %>
 
-<p><%= link_to 'Delete', school_solis_cloud_installation_path(@school, @installation),
-               method: :delete, data: { confirm: 'Are you sure? This will delete the meters' }, class: 'btn' %>
+<p><%= link_to 'Delete', polymorphic_path([@school, @installation]),
+               method: :delete, data: { confirm: 'Are you sure? This will delete all its meters' } %>

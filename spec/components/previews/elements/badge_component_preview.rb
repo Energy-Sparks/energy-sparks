@@ -7,11 +7,11 @@ module Elements
     end
 
     def with_text_and_style
-      render(Elements::BadgeComponent.new('Badge - success', style: :success))
+      render(Elements::BadgeComponent.new('Badge - success', colour: :success))
     end
 
     def badge_pill
-      render(Elements::BadgeComponent.new('Badge pill - warning', pill: true, style: :warning))
+      render(Elements::BadgeComponent.new('Badge pill - warning', pill: true, colour: :warning))
     end
   end
 end

@@ -1,5 +1,3 @@
-require_relative '../../../../app/services/usage/annual_usage_benchmarks_service'
-
 # For charts configured with:
 #
 # ```

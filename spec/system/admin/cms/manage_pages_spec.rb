@@ -4,6 +4,7 @@ describe 'manage pages' do
   let(:user) { create(:admin) }
 
   before do
+    Flipper.enable :support_pages
     sign_in(user)
     visit admin_path
   end
@@ -42,7 +43,7 @@ describe 'manage pages' do
         click_on('Edit')
         fill_in 'Title en', with: 'Page Title'
         fill_in 'Description en', with: 'Page Description'
-        select 'School group administrators', from: :page_audience
+        select 'School and Group admins', from: :page_audience
       end
 
       it 'updates the model' do

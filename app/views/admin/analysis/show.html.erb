@@ -1,0 +1,40 @@
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Heating Model Fitting" do %>
+
+  <div class="row">
+    <div class="col">
+      <p>
+        View analysis for specific heat meter
+      </p>
+      <ul>
+        <% @aggregate_school.all_heat_meters.each do |heat_meter| %>
+          <li>
+            <%= link_to heat_meter.mpan_mprn,
+                        admin_school_analysis_tab_path(@school,
+                                                       tab: :heating_model_fitting,
+                                                       mpan_mprn: heat_meter.mpan_mprn) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <% @charts.each_with_index do |chart, index| %>
+    <% unless index == 0 %>
+      <hr class="analysis">
+    <% end %>
+    <div id="chart_wrapper_<%= chart %>" class="chart-wrapper">
+      <div class="dynamic-titles">
+        <h3 class="analysis">Loading: <%= chart.to_s.humanize %></h3>
+      </div>
+      <div class="advice-header"></div>
+      <%= render ChartComponent.new(chart_type: chart.to_s, analysis_controls: true, school: @school,
+                                    chart_config: @chart_config.merge!(show_advice: true)) %>
+      <div class="advice-footer"></div>
+    </div>
+  <% end %>
+
+  <% cache [@school.latest_content, :gas, I18n.locale], expires_in: 4.hours do %>
+    <%= render 'schools/advice/how_have_we_analysed_your_data_footnote_modal' %>
+  <% end %>
+<% end %>

@@ -1,0 +1,69 @@
+<%= tag.div id: id, class: classes do %>
+  <% if podium.includes_school? && podium.school_has_points? %>
+    <h4 class="mb-4">
+      <% if national_podium.school_position %>
+        <%# i18n-tasks-use t('components.podium.full_position_html') %>
+        <%= t('full_position_html',
+              scope: i18n_scope,
+              position_ordinal: podium.school_position.ordinal,
+              scoreboard: podium.scoreboard.name,
+              scoreboard_path: path_to_scoreboard,
+              national_position_ordinal: national_podium.school_position.ordinal,
+              national_scoreboard_path: scoreboard_path(national_podium.scoreboard)) %>.
+      <% else %>
+        <%# i18n-tasks-use t('components.podium.scoreboard_position_html') %>
+        <%= t('scoreboard_position_html',
+              scope: i18n_scope,
+              position_ordinal: podium.school_position.ordinal,
+              scoreboard: podium.scoreboard.name,
+              scoreboard_path: path_to_scoreboard) %>.
+        <% end %>
+      </h4>
+  <% else %>
+    <h4 class="mb-4">
+      <%# i18n-tasks-use t('components.podium.no_points_this_year') %>
+      <%= t('no_points_this_year', scope: i18n_scope) %>
+    </h4>
+  <% end %>
+  <% if podium.school_has_points? || podium.positions.count > 1 %>
+    <div class="row align-items-end border-bottom border-secondary">
+      <% podium.low_to_high.each do |position| %>
+        <div class="col-4 text-center">
+          <% if podium.current_school?(position) %>
+            <% if podium.school_has_points? %>
+              <%= fa_icon('crown fa-2x') %>
+              <p class='f2'><%= position.ordinal %></p>
+            <% end %>
+          <% else %>
+            <p><%= position.ordinal %></p>
+            <% if (position.normalised_points * 149).to_i < 70 %>
+              <p class="mb-1"><strong><%= position.points %></strong></p>
+              <p class="text-uppercase"><%= t('common.points') %></p>
+            <% end %>
+          <% end %>
+
+          <div class="bar <%= 'bar-current' if podium.current_school?(position) %>">
+            <div class="bar-arrow"></div>
+            <div class="bar-body" style="height:<%= (position.normalised_points * 149).to_i + 1 %>px">
+              <% if (position.normalised_points * 149).to_i > 70 %>
+                <p class="pt-2 mb-0"><strong><%= position.points %></strong></p>
+                <p class="text-uppercase"><%= t('common.points') %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="row border-top grey">
+      <% podium.low_to_high.each do |position| %>
+        <div class="col-4 text-center px-3 small">
+          <% if podium.current_school?(position) %>
+            <%= position.school.name %>
+          <% else %>
+            <%= link_to position.school.name, pupils_school_path(position.school) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

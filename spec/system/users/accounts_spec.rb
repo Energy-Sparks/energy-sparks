@@ -252,6 +252,30 @@ RSpec.describe 'User account page and updates', :include_application_helper do
       end
     end
 
+    context 'with a student account' do
+      let!(:user) { create(:student) }
+
+      before { sign_in(user) }
+
+      context 'when viewing my profile' do
+        before { visit user_path(user) }
+
+        it_behaves_like 'an account page with navigation'
+        it_behaves_like 'a profile page'
+      end
+
+      context 'when updating my account' do
+        before do
+          visit user_path(user)
+          within('#profile-summary') do
+            click_on('Update account')
+          end
+        end
+
+        it_behaves_like 'a working account form', staff_role: false
+      end
+    end
+
     context 'with a cluster admin' do
       let!(:user) { create(:school_admin, :with_cluster_schools) }
 

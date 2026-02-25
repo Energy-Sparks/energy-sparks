@@ -105,9 +105,10 @@ class DashboardChartAdviceBase
     "#{equivalence_text} <button class=\"btn btn-secondary\" data-toggle=\"popover\" data-container=\"body\" data-placement=\"top\" data-title=\"How we calculate this\" data-content=\"#{calculation_text}\"> See how we calculate this</button>"
   end
 
-  def random_equivalence_text(kwh, fuel_type, uk_grid_carbon_intensity = EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH)
-    equiv_type, conversion_type = EnergyEquivalences.random_equivalence_type_and_via_type(uk_grid_carbon_intensity)
-    _val, equivalence, calc, in_text, out_text = EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, conversion_type, EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH)
+  def random_equivalence_text(kwh, fuel_type)
+    equiv_type, conversion_type = EnergyEquivalences.random_equivalence_type_and_via_type
+    _val, equivalence, calc, in_text, out_text =
+      EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, conversion_type)
     equivalence_tool_tip_html(equivalence, in_text + out_text + calc)
   end
 
@@ -117,7 +118,7 @@ class DashboardChartAdviceBase
 
   def kwh_to_pounds_and_kwh(kwh, fuel_type_sym, data_units = @chart_definition[:yaxis_units], £_datatype = :£)
     pounds = YAxisScaling.new.scale(data_units, £_datatype, kwh, fuel_type, @school)
-    '&pound;' + FormatEnergyUnit.scale_num(pounds) + ' (' + FormatEnergyUnit.scale_num(kwh) + 'kWh)'
+    '&pound;' + FormatUnit.scale_num(pounds) + ' (' + FormatUnit.scale_num(kwh) + 'kWh)'
   end
 
   def benchmark_data_deprecated(fuel_type, benchmark_type, datatype)
@@ -182,7 +183,7 @@ class DashboardChartAdviceBase
   end
 
   def annual_£current_cost_of_1_kw_html
-    FormatEnergyUnit.format(:£current, annual_£current_cost_of_1_kw, :html)
+    FormatUnit.format(:£current, annual_£current_cost_of_1_kw, :html)
   end
 
   def annual_£current_cost_of_1_kw
@@ -190,7 +191,7 @@ class DashboardChartAdviceBase
   end
 
   def blended_rate_£current_per_kwh_html
-    FormatEnergyUnit.format(:£_per_kwh, blended_rate_£current_per_kwh, :html)
+    FormatUnit.format(:£_per_kwh, blended_rate_£current_per_kwh, :html)
   end
 
   def blended_rate_£current_per_kwh
@@ -198,7 +199,7 @@ class DashboardChartAdviceBase
   end
 
   def annualx5_£current_cost_of_1_kw_html
-    FormatEnergyUnit.format(:£current, 5.0 * annual_£current_cost_of_1_kw, :html)
+    FormatUnit.format(:£current, 5.0 * annual_£current_cost_of_1_kw, :html)
   end
 
   def last_chart_end_date

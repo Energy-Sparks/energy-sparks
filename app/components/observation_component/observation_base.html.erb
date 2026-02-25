@@ -12,39 +12,32 @@
     </div>
   </div>
 <% elsif style == :description %>
-  <%= render IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
+  <%= render Elements::IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
   <%= I18n.t(:description_html, scope: i18n_scope,
                                 target: target,
                                 message: message,
                                 count: observation.points || 0,
                                 compact_path: compact_path).html_safe %>
 <% else %>
-  <td class="p-3 text-center">
-    <%= icon %>
-  </td>
   <td>
-    <h4 class='pt-1'>
-      <strong>
-        <% if target %>
-          <%= message %><%= ": #{link_to(target, show_path)}".html_safe if linkable? %>
-        <% else %>
-          <%= link_to message, show_path if linkable? %>
-        <% end %>
-      </strong>
-    </h4>
-    <span class="text-muted"><%= nice_dates(observation.at) %></span>
+    <%= render Elements::IconComponent.new name: icon_name, fixed_width: true, size: 'f5' %>
+    <%= I18n.t(:description_html, scope: i18n_scope,
+                                  target: target,
+                                  message: message,
+                                  count: observation.points || 0,
+                                  compact_path: compact_path).html_safe %>
   </td>
   <% if show_buttons? %>
     <td class="text-right">
       <div class="btn-group">
         <%= if editable?
               link_to t('common.labels.edit'),
-                      edit_path, class: 'btn btn-warning'
+                      edit_path, class: 'btn btn-sm btn-warning'
             end %>
         <%= link_to t('common.labels.delete'),
                     delete_path, method: :delete,
                                  data: { confirm: t('common.confirm') },
-                                 class: 'btn btn-danger' %>
+                                 class: 'btn btn-sm btn-danger' %>
       </div>
     </td>
   <% end %>

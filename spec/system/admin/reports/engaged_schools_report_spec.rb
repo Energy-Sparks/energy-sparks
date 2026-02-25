@@ -7,6 +7,7 @@ describe 'Engaged Schools Report', :aggregate_failures do
 
   let(:admin) { create(:admin) }
   let!(:school) do
+    travel_to(Time.zone.local(2025, 2, 4, 15, 30))
     create(:school, :with_school_group, :with_points,
            calendar: create(:calendar, :with_previous_and_next_academic_years))
   end
@@ -14,7 +15,6 @@ describe 'Engaged Schools Report', :aggregate_failures do
   let!(:user)         { create(:school_admin, school: school, last_sign_in_at: last_sign_in) }
 
   before do
-    travel_to(Time.zone.local(2025, 2, 4, 15, 30))
     sign_in(admin)
     visit admin_reports_engaged_schools_path
   end
@@ -26,7 +26,7 @@ describe 'Engaged Schools Report', :aggregate_failures do
       [['School Group', 'School', 'School Type', 'Funder', 'Country', 'Active', 'Data Visible', 'Admin',
         'Activities', 'Actions', 'Programmes', 'Target?', 'Transport Survey?', 'Temperatures?', 'Audit?',
         'Active Users', 'Last Visit'],
-       [school.school_group.name, school.name, 'Primary', '', school.country.humanize, 'Y', 'Y', '',
+       [school.school_group.name, school.name, 'Primary', '', school.country.humanize, 'Y', 'Y', 'Admin',
         activities.to_s, '0', '0', 'N', 'N', 'N', 'N',
         '1', last_sign_in.iso8601]]
     )

@@ -22,4 +22,18 @@
 class Comparison::AnnualGasOutOfHoursUse < Comparison::View
   scope :with_data, -> { where.not(schoolday_open_percent: nil) }
   scope :sort_default, -> { order(schoolday_open_percent: :desc) }
+
+  def self.default_headers
+    [
+      I18n.t('analytics.benchmarking.configuration.column_headings.school'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.school_day_open'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.school_day_closed'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.holiday'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.weekend'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.community'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.community_usage_cost'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.last_year_out_of_hours_cost'),
+      I18n.t('analytics.benchmarking.configuration.column_headings.saving_if_improve_to_exemplar'),
+    ]
+  end
 end

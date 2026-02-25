@@ -41,7 +41,6 @@ chart_overrides = {
 }.merge(overrides)
 
 scripts = {
-  'Management Summary Table' => RunManagementSummaryTable.default_config.deep_merge(overrides),
   'Expert Analysis Pages'    => RunAdultDashboard.default_config.deep_merge(overrides),
   'Benchmarks'               => RunBenchmarks.default_config.deep_merge(benchmark_overrides),
   'Alerts'                   => RunAlerts.default_config.deep_merge(alert_overrides),

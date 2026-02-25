@@ -71,4 +71,20 @@ describe Calendar do
       expect(calendar.holiday_approaching?).to be false
     end
   end
+
+  describe '.default_national' do
+    subject(:default_national) { Calendar.default_national }
+
+    context 'when England and Wales exists' do
+      before do
+        create(:calendar, calendar_type: :national, title: 'England and Wales')
+      end
+
+      it { expect(default_national.title).to eq('England and Wales') }
+    end
+
+    context 'when there is no default' do
+      it { expect(default_national).to be_nil }
+    end
+  end
 end

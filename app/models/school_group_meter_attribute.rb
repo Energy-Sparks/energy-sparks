@@ -28,6 +28,8 @@
 
 class SchoolGroupMeterAttribute < ApplicationRecord
   include AnalyticsAttribute
+  include RestrictsSchoolGroupTypes
+
   belongs_to :school_group
 
   def invalidate_school_cache_key

@@ -33,6 +33,8 @@
 #  fk_rails_...  (updated_by_id => users.id)
 #
 class EnergyTariff < ApplicationRecord
+  include RestrictsSchoolGroupTypes
+
   belongs_to :tariff_holder, polymorphic: true
 
   # Declaring associations allows us to use .joins(:school) or .joins(:school_group)

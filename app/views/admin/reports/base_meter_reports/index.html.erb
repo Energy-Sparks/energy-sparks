@@ -1,0 +1,50 @@
+<% content_for :page_title, @title %>
+<% content_for :report_header do %>
+  <div class="row">
+    <div class="col">
+      <h1><%= @title %></h1>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items-center">
+    <p>
+       <span class="badge badge-info">Updated <%= @frequency.to_s.humanize %> </span> <%= @description %>
+    </p>
+    <% if lookup_context.exists?('help', lookup_context.prefixes, true) %>
+    <p>
+      <a class="btn btn-sm btn-info" data-toggle="collapse" href="#help" role="button" aria-expanded="false" aria-controls="help">
+        View help
+      </a>
+    </p>
+    <% end %>
+  </div>
+
+  <% if lookup_context.exists?('help', lookup_context.prefixes, true) %>
+    <div class="row">
+      <div class="col">
+        <div class="collapse" id="help">
+          <%= render 'help' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<%= render 'report_filters', path: @path do %>
+  <% if lookup_context.exists?('extra_filters', lookup_context.prefixes, true) %>
+    <%= render 'extra_filters' %>
+  <% end %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <span class="float-right">
+      <%= @results.length %> Results
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render 'admin/reports/column_table', columns: @columns, rows: @results %>
+  </div>
+</div>

@@ -37,7 +37,7 @@ module Mailchimp
 
       if user.admin?
         contact.tags = self.non_fsm_tags(tags)
-      elsif user.group_admin?
+      elsif user.group_user?
         contact.alert_subscriber = user.contacts.any? ? 'Yes' : 'No'
         contact.scoreboard = user.school_group&.default_scoreboard&.name
         contact.scoreboard_url = "https://energysparks.uk/scoreboards/#{user.school_group.default_scoreboard.slug}" if user.school_group&.default_scoreboard
@@ -164,7 +164,7 @@ module Mailchimp
     # Take Array of interests returned by AudienceManager and turn into hash
     # for use on forms, setting the default opt-in state.
     def self.default_interests(interests, user = nil)
-      interest_list = if user&.group_admin?
+      interest_list = if user&.group_user?
                         ALL_INTERESTS
                       elsif user&.staff_role && SCHOOL_USER_INTERESTS.key?(user.staff_role.title)
                         SCHOOL_USER_INTERESTS[user.staff_role.title]

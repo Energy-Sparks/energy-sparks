@@ -17,6 +17,6 @@ class SchoolOnboardingDeletor
   def remove_school(user, school)
     user.remove_school(school)
     school.consent_grants.destroy_all
-    school.delete
+    school.destroy
   end
 end

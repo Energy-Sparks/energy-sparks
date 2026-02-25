@@ -1,0 +1,30 @@
+<%= tag.table id: id, class: classes do %>
+  <% if rows.any? %>
+      <% rows.each do |row| %>
+        <%= row %>
+      <% end %>
+    </tbody>
+  <% else %>
+    <% if head_rows.any? %>
+      <thead>
+        <% head_rows.each do |row| %>
+          <%= row %>
+        <% end %>
+      </thead>
+    <% end %>
+    <% if body_rows.any? %>
+      <tbody>
+        <% body_rows.each do |row| %>
+          <%= row %>
+        <% end %>
+      </tbody>
+    <% end %>
+    <% if foot_rows.any? %>
+      <tfoot>
+        <% foot_rows.each do |row| %>
+          <%= row %>
+        <% end %>
+      </tfoot>
+    <% end %>
+  <% end %>
+<% end %>

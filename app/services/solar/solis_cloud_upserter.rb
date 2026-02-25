@@ -5,14 +5,11 @@ module Solar
     private
 
     def meter_model_attributes(details)
-      { pseudo: true,
-        solis_cloud_installation: @installation,
-        meter_serial_number: details['id'],
-        name: "SolisCloud #{details['stationName']}" }
+      { name: @installation.meter_name(details[:serial_number]) }
     end
 
-    def synthetic_mpan(meter_type, details)
-      Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(details['sno'].to_i(16), meter_type)
+    def find_meter_or_create(meter_type, details)
+      Meter.find_by!(meter_type:, meter_serial_number: details[:serial_number], solis_cloud_installation: @installation)
     end
   end
 end

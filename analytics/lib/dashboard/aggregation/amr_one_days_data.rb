@@ -19,7 +19,7 @@ class OneDayAMRReading
     @kwh_data_x48 = kwh_data_x48
     valid = validate_data(nils_valid)
     if valid != 48
-      raise EnergySparksBadAMRDataTypeException, "Error: expecting all 48 half hour kWh values to be float or integer (or nil) (#{valid})"
+      raise EnergySparksBadAMRDataTypeException, "Error: expecting all 48 half hour kWh values to be float or integer (or nil) (valid: #{valid}, meter_id: #{meter_id}, date: #{date})"
     end
     @one_day_kwh = (nils_valid && kwh_data_x48.any?(&:nil?)) ? nil : kwh_data_x48.inject(:+)
   end

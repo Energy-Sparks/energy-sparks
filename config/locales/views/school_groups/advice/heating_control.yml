@@ -1,0 +1,58 @@
+---
+en:
+  school_groups:
+    advice_pages:
+      heating_control:
+        analysis:
+          comparisons:
+            chart:
+              header: The following charts highlights how much gas has been used to heat schools during periods of warm weather. See the table below for more detail including how warm weather is defined.
+              subtitle: What percentage of gas used for heating was used during period of warm weather over the last 12 months?
+              title: Percentage of annual heating used in warm weather
+            table:
+              header_html: |-
+                <p>
+                The above chart and the following table both use the latest 12 months of data for each school.
+                </p>
+                <p>
+                The analysis refers to the gas used for heating rather than hot water or kitchen use. This is based on the heating model we have calculated for each school, which can
+                be used to predict when the heating is on or off during the course of each day.
+                </p>
+                <p>
+                Warm weather is defined as any day where the average temperature is above %{temperature}. Local weather data is used to estimate daily average temperatures for each school over the last 12 months.
+                </p>
+            title: School comparison
+          potential_savings:
+            table:
+              header_html: |-
+                <p>
+                Schools are benchmarked with comparable schools based on several key characteristics including floor area,
+                location, pupil numbers and type.
+                </p>
+                <p>
+                The following table summarises how we have benchmarked each school in your group according to the quality of their heating control. Good control means that heating is not running during periods of warmer weather.
+                <p>
+                The savings for each school are based on improving the control over their heating to match those of <a data-toggle="modal" data-target="#%{modal_id}" data-remote="false" href="#">an Exemplar school with similar characteristics</a>.
+                </p>
+            title: Potential savings
+          summary: This page provides an overview of the quality of the heating control across the schools in your group.
+        insights:
+          current_use:
+            summary_html: |-
+              <p>
+              Schools should aim to keep their heating off as much as possible in warm weather.
+              </p>
+              <p>
+              The following table summarises how often heating is left on during warmer weather in each school.
+              <p>
+              <p>
+              A <a href="%{link}">more detailed table and a chart</a> is also available.
+              </p>
+            title: Leaving the heating on during warm weather
+          what_is_heating_control_html: |-
+            <p>
+            Heating control refers to the settings used to heat the school effectively while it is fully occupied and to minimise waste out of school hours.
+            </p>
+            Getting the heating control right for your school can save money and carbon very quickly, as well as improving the learning environment for students.
+            </p>
+        page_title: Heating control analysis

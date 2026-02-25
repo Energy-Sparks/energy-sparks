@@ -18,8 +18,12 @@
 #  dark_sky_area_id                        :bigint(8)
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
+#  default_contract_holder_id              :bigint(8)
+#  default_contract_holder_type            :string
 #  enable_targets_feature                  :boolean          default(TRUE)
+#  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
+#  full_school                             :boolean          default(TRUE)
 #  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
@@ -74,6 +78,7 @@
 #  public                                  :boolean          default(TRUE)
 #  region                                  :integer
 #  removal_date                            :date
+#  renewal_behaviour                       :enum             default("renew"), not null
 #  school_group_cluster_id                 :bigint(8)
 #  school_group_id                         :bigint(8)
 #  school_type                             :integer          not null
@@ -93,6 +98,8 @@
 # Indexes
 #
 #  index_schools_on_calendar_id                 (calendar_id)
+#  index_schools_on_default_contract_holder     (default_contract_holder_type,default_contract_holder_id)
+#  index_schools_on_establishment_id            (establishment_id)
 #  index_schools_on_latitude_and_longitude      (latitude,longitude)
 #  index_schools_on_local_authority_area_id     (local_authority_area_id)
 #  index_schools_on_local_distribution_zone_id  (local_distribution_zone_id)
@@ -115,15 +122,31 @@ class School < ApplicationRecord
   extend FriendlyId
   include EnergyTariffHolder
   include ParentMeterAttributeHolder
-  include EnumDataSharing
   include MailchimpUpdateable
+  include Enums::DataSharing
+  include Enums::SchoolType
+  include AlphabeticalScopes
+  include ContractHolder
 
-  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals, :region, :school_group_id, :school_type, :scoreboard_id
+  watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
+                         :region, :school_group_id, :school_type, :scoreboard_id
 
   class ProcessDataError < StandardError; end
 
   HEATING_TYPES = %i[gas electric oil lpg biomass underfloor district_heating ground_source_heat_pump
                      air_source_heat_pump water_source_heat_pump chp].freeze
+
+  GOR_CODE_TO_REGION = {
+    'A' => :north_east,
+    'B' => :north_west,
+    'D' => :yorkshire_and_the_humber,
+    'E' => :east_midlands,
+    'F' => :west_midlands,
+    'G' => :east_of_england,
+    'H' => :london,
+    'J' => :south_east,
+    'K' => :south_west
+  }.freeze
 
   friendly_id :slug_candidates, use: %i[finders slugged history]
 
@@ -174,7 +197,8 @@ class School < ApplicationRecord
   has_many :low_carbon_hub_installations, inverse_of: :school
   has_many :solar_edge_installations, inverse_of: :school
   has_many :rtone_variant_installations, inverse_of: :school
-  has_many :solis_cloud_installations, inverse_of: :school, dependent: nil
+  has_many :solis_cloud_installation_schools
+  has_many :solis_cloud_installations, through: :solis_cloud_installation_schools
 
   has_many :equivalences
 
@@ -182,8 +206,6 @@ class School < ApplicationRecord
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
-
-  has_many :estimated_annual_consumptions
 
   has_many :amr_data_feed_readings,       through: :meters
   has_many :amr_validated_readings,       through: :meters
@@ -193,6 +215,16 @@ class School < ApplicationRecord
   has_many :school_batch_runs
 
   has_many :advice_page_school_benchmarks
+
+  has_many :licences, class_name: 'Commercial::Licence'
+
+  has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
+  accepts_nested_attributes_for :manual_readings,
+                                reject_if: proc { |attributes|
+                                  attributes[:gas].blank? && attributes[:electricity].blank?
+                                },
+                                allow_destroy: true
+
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
@@ -208,8 +240,11 @@ class School < ApplicationRecord
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
 
+  belongs_to :establishment, optional: true, class_name: 'Lists::Establishment'
+
   belongs_to :funder, optional: true
   belongs_to :local_distribution_zone, optional: true
+  belongs_to :default_contract_holder, polymorphic: true, optional: true
 
   has_one :school_onboarding
   has_one :configuration, class_name: 'Schools::Configuration'
@@ -220,14 +255,42 @@ class School < ApplicationRecord
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
 
-  enum :school_type, { primary: 0, secondary: 1, special: 2, infant: 3, junior: 4, middle: 5,
-                       mixed_primary_and_secondary: 6 }
+  has_many :school_groupings, dependent: :destroy
+  has_many :assigned_school_groups, through: :school_groupings, source: :school_group
+
+  # filtered relationships
+  has_one :organisation_school_grouping, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :organisation_school_grouping, update_only: true
+
+  has_one :diocese_school_grouping, -> { where(role: 'diocese') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :diocese_school_grouping, update_only: true
+
+  has_one :area_school_grouping, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :area_school_grouping, update_only: true
+
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+  accepts_nested_attributes_for :project_school_groupings, allow_destroy: true
+
+  # school groups via the filtered SchoolGrouping relationships
+  has_one :organisation_group, through: :organisation_school_grouping, source: :school_group
+  has_one :diocese, through: :diocese_school_grouping, source: :school_group
+  has_one :local_authority_area_group, through: :area_school_grouping, source: :school_group
+
+  has_many :project_groups, through: :project_school_groupings, source: :school_group
 
   enum :chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :country, { england: 0, scotland: 1, wales: 2 }
   enum :funding_status, { state_school: 0, private_school: 1 }
   enum :region, { north_east: 0, north_west: 1, yorkshire_and_the_humber: 2, east_midlands: 3,
                   west_midlands: 4, east_of_england: 5, london: 6, south_east: 7, south_west: 8 }
+
+  RENEWAL_BEHAVIOUR = {
+    renew: 'renew',
+    archive: 'archive',
+    waitlist: 'waitlist'
+  }.freeze
+
+  enum :renewal_behaviour, RENEWAL_BEHAVIOUR
 
   # active flag is a soft-delete, those with a removal date are deleted, others
   # are archived, with chance of returning if we receive funding
@@ -252,6 +315,8 @@ class School < ApplicationRecord
 
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id)) }
 
+  scope :with_establishment, -> { where.not(establishment_id: nil) }
+
   # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   scope :with_recent_engagement,
         ->(range) { where(id: Observation.engagement.recorded_since(range).select(:school_id)) }
@@ -267,8 +332,6 @@ class School < ApplicationRecord
 
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
-  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
 
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
 
@@ -319,6 +382,10 @@ class School < ApplicationRecord
   before_validation :geocode, if: ->(school) { school.postcode.present? && school.postcode_changed? }
 
   before_save :update_local_distribution_zone, if: -> { saved_change_to_postcode }
+
+  # Sync legacy school_group_id with new "organisation" grouping
+  after_create :sync_organisation_grouping_from_legacy
+  after_update :sync_organisation_grouping_from_legacy, if: :saved_change_to_school_group_id?
 
   geocoded_by :postcode do |school, results|
     if (geo = results.first)
@@ -394,9 +461,7 @@ class School < ApplicationRecord
   end
 
   def academic_year_for(date)
-    return nil unless calendar.present?
-
-    calendar.academic_year_for(date)
+    calendar&.academic_year_for(date)
   end
 
   def activity_types_in_academic_year(date = Time.zone.now)
@@ -433,9 +498,7 @@ class School < ApplicationRecord
     programme_types.each_with_object(Hash.new(0)) { |r, hash| hash[r] += r.recording_count }.max_by { |_, value| value }
   end
 
-  def national_calendar
-    calendar.based_on.based_on
-  end
+  delegate :national_calendar, to: :calendar
 
   def area_name
     school_group.name if school_group
@@ -477,7 +540,7 @@ class School < ApplicationRecord
     configuration && configuration.analysis_charts.present?
   end
 
-  delegate :fuel_types_for_analysis, to: :configuration
+  delegate :fuel_types_for_analysis, :fuel_type?, to: :configuration
 
   def has_solar_pv?
     configuration.has_solar_pv
@@ -492,15 +555,22 @@ class School < ApplicationRecord
   end
 
   delegate :school_admin, to: :users
-
   delegate :staff, to: :users
 
   def all_school_admins
-    school_admin + cluster_users
+    User.where(id: school_admin).or(
+      User.where(id: cluster_users)
+    )
   end
 
   def all_adult_school_users
-    (all_school_admins + staff).uniq
+    User.where(id: all_school_admins).or(
+      User.where(id: staff)
+    ).distinct
+  end
+
+  def active_alert_contacts
+    all_adult_school_users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
   end
 
   def activation_users
@@ -550,9 +620,11 @@ class School < ApplicationRecord
     @latest_management_priority_count ||= latest_management_priorities.count
   end
 
-  def latest_management_priorities
+  def latest_management_priorities(exclude_capital: false)
     if latest_content
-      latest_content.management_priorities
+      priorities = latest_content.management_priorities
+      priorities = priorities.without_investment if exclude_capital
+      priorities
     else
       ManagementPriority.none
     end
@@ -599,10 +671,6 @@ class School < ApplicationRecord
     school_targets.by_start_date.expired[idx + 1]
   end
 
-  def has_expired_target_for_fuel_type?(fuel_type)
-    has_expired_target? && expired_target.try(fuel_type).present? && expired_target.saved_progress_report_for(fuel_type).present?
-  end
-
   def has_expired_target?
     expired_target.present?
   end
@@ -615,10 +683,6 @@ class School < ApplicationRecord
     school_onboarding && school_onboarding.has_event?(event_name)
   end
 
-  def suggest_annual_estimate?
-    estimated_annual_consumptions.any? || configuration.suggest_annual_estimate?
-  end
-
   def school_target_attributes
     # use the current target if we have one, otherwise the most current target
     # based on start date. So if target as expired, then progress pages still work
@@ -629,14 +693,6 @@ class School < ApplicationRecord
     else
       {}
     end
-  end
-
-  def latest_annual_estimate
-    estimated_annual_consumptions.order(created_at: :desc).first
-  end
-
-  def estimated_annual_consumption_meter_attributes
-    latest_annual_estimate.nil? ? {} : latest_annual_estimate.meter_attributes_by_meter_type
   end
 
   def school_group_pseudo_meter_attributes
@@ -652,10 +708,10 @@ class School < ApplicationRecord
                       pseudo_meter_attributes,
                       school_target_attributes]
                      .each_with_object(global_pseudo_meter_attributes) do |pseudo_attributes, collection|
-      pseudo_attributes.each do |meter_type, attributes|
-        collection[meter_type] ||= []
-        collection[meter_type] = collection[meter_type] + attributes
-      end
+                       pseudo_attributes.each do |meter_type, attributes|
+                         collection[meter_type] ||= []
+                         collection[meter_type] = collection[meter_type] + attributes
+                       end
     end
 
     all_attributes[:aggregated_electricity] ||= []
@@ -708,7 +764,7 @@ class School < ApplicationRecord
     end
   end
 
-  def all_partners
+  def displayable_partners
     all_partners = partners
     all_partners += school_group.partners if school_group.present?
     all_partners
@@ -744,7 +800,7 @@ class School < ApplicationRecord
   end
 
   def recent_usage
-    Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
+    @recent_usage ||= Schools::ManagementTableService.new(self)&.management_data&.by_fuel_type_table || OpenStruct.new
   end
 
   def all_data_sources(meter_type)
@@ -790,14 +846,6 @@ class School < ApplicationRecord
     data_enabled && visible
   end
 
-  def active_adult_users
-    users.active.where.not(role: :pupil)
-  end
-
-  def active_alert_contacts
-    users.active.alertable.joins(:contacts).where({ contacts: { school: self } })
-  end
-
   # gov.uk have figures for recommended gross area for different sizes of schools.
   #
   # See:
@@ -821,7 +869,7 @@ class School < ApplicationRecord
       per_pupil = 5
     end
 
-    twice_recommended_size = 2 * (base_area + per_pupil * number_of_pupils)
+    twice_recommended_size = 2 * (base_area + (per_pupil * number_of_pupils))
     floor_area.between?(minimum, twice_recommended_size)
   end
 
@@ -843,18 +891,21 @@ class School < ApplicationRecord
 
   def needs_solar_configuration?
     return false unless indicated_has_solar_panels?
-    return !has_solar_configuration?
+
+    !has_solar_configuration?
   end
 
   def needs_storage_heater_configuration?
     return false unless indicated_has_storage_heaters?
-    return !has_storage_heater_configuration?
+
+    !has_storage_heater_configuration?
   end
 
   # Estimated ranges based on what seems sensible for different school types looking
   # across the registered schools
   def pupil_numbers_ok?
     return true unless number_of_pupils
+
     case school_type
     when 'infant', 'primary'
       number_of_pupils.between?(10, 800)
@@ -871,6 +922,67 @@ class School < ApplicationRecord
     end
   end
 
+  def self.from_onboarding(onboarding)
+    est = Lists::Establishment.current_establishment_from_urn(onboarding.urn)
+
+    sch = new({
+                data_enabled: false,
+                name: onboarding.school_name,
+                establishment: est,
+                urn: onboarding.urn,
+                full_school: onboarding.full_school
+              })
+
+    return sch if sch.establishment.nil?
+
+    sch.assign_attributes({
+                            urn: sch.establishment_id,
+                            name: est.establishment_name,
+                            address: address_from_establishment(est),
+                            postcode: est.postcode,
+                            website: est.school_website,
+                            school_type: school_type_from_phase_of_education_code(est.phase_of_education_code),
+                            number_of_pupils: est.number_of_pupils,
+                            percentage_free_school_meals: est.percentage_fsm,
+                            region: GOR_CODE_TO_REGION[est.gor_code],
+                            country: est.gor_code == 'W' ? :wales : :england,
+                            local_authority_area: LocalAuthorityArea.find_by(code: est.district_administrative_code)
+                          })
+
+    sch
+  end
+
+  # Any combinations of these five columns might be empty
+  # Formatting is the same as on the GIAS website, except for postcode after county name
+  def self.address_from_establishment(est)
+    concatenate_address([est.street, est.locality, est.address3, est.town, est.county_name])
+  end
+
+  def self.concatenate_address(elements)
+    elements.filter(&:present?).join(', ')
+  end
+
+  #
+  # TODO - finish mapping phases of education from establishment data
+  #
+  def self.school_type_from_phase_of_education_code(poe_code)
+    case poe_code
+    when 2 # "Primary"
+      school_types[:primary]
+    when 3 # "Middle deemed primary"
+      school_types[:middle]
+    when 4 # "Secondary"
+      school_types[:secondary]
+    when 5 # "Middle deemed secondary"
+      school_types[:middle]
+    end
+    # otherwise - 0 - "Not applicable"
+    # TODO
+    # 1 - "Nursery"
+    # 6 - "16 plus"
+    # 7 - "All-through"
+  end
+
   private
 
   def valid_uk_postcode
@@ -881,5 +993,16 @@ class School < ApplicationRecord
 
   def update_local_distribution_zone
     self.local_distribution_zone_id = LocalDistributionZonePostcode.zone_id_for_school(self)
+  end
+
+  def sync_organisation_grouping_from_legacy
+    return unless school_group_id.present?
+
+    existing = SchoolGrouping.find_by(school_id: id, role: 'organisation')
+    if existing
+      existing.update(school_group_id: school_group_id)
+    else
+      SchoolGrouping.create(school_id: id, school_group_id: school_group_id, role: 'organisation')
+    end
   end
 end

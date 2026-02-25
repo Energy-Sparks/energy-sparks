@@ -32,7 +32,7 @@ module Scorable
   end
 
   def scored(recent_boundary: 1.month.ago)
-    schools.visible.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
+    scorable_schools.visible.select('schools.*, SUM(observations.points) AS sum_points, MAX(observations.at) AS recent_observation').select(
       ActiveRecord::Base.sanitize_sql_array(
         ['SUM(observations.points) FILTER (WHERE observations.at > ?) AS recent_points', recent_boundary]
       )
@@ -41,8 +41,7 @@ module Scorable
       group('schools.id')
   end
 
-  # Scorable needs a calendar
-  def scorable?
-    scorable_calendar.present?
+  def scorable_schools
+    schools
   end
 end

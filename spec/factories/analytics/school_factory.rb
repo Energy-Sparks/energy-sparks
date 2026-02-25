@@ -19,15 +19,14 @@ FactoryBot.define do
       latitude         { 51.509865 }
       longitude        { -0.118092 }
       data_enabled     { true }
+      school_times     { [] }
+      community_use_times { [] }
     end
 
     initialize_with do
-      new(id: id, name: name, address: address, floor_area:
-      floor_area, number_of_pupils: number_of_pupils,
-          school_type: school_type, area_name: area_name,
-          urn: urn, postcode: postcode, country: country, funding_status: funding_status,
-          activation_date: activation_date, created_at: created_at, location: [latitude, longitude],
-          data_enabled: data_enabled)
+      new(id:, name:, address:, floor_area:, number_of_pupils:, school_type:, area_name:, urn:, postcode:, country:,
+          funding_status:, activation_date:, created_at:, location: [latitude, longitude], data_enabled:, school_times:,
+          community_use_times:)
     end
   end
 end

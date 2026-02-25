@@ -199,13 +199,13 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
           kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :£)
     @last_weekend_cost_£current, _x, @last_week_end_£current_including_frost =
          kwh_usage_outside_frost_period(@weekend_dates, FROST_PROTECTION_TEMPERATURE, :£current)
-    @last_weekend_cost_co2 = @last_week_end_kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH
-    @last_weekend_cost_co2_including_frost = @last_week_end_kwh_including_frost * EnergyEquivalences::UK_GAS_CO2_KG_KWH
+    @last_weekend_cost_co2 = @last_week_end_kwh * EnergyEquivalences.co2_kg_kwh(:gas)
+    @last_weekend_cost_co2_including_frost = @last_week_end_kwh_including_frost * EnergyEquivalences.co2_kg_kwh(:gas)
 
     @last_year_weekend_gas_kwh = weekend_gas_consumption_last_year(asof_date, :kwh)
     @last_year_weekend_gas_£ = weekend_gas_consumption_last_year(asof_date, :£)
     @last_year_weekend_gas_£current = weekend_gas_consumption_last_year(asof_date, :£current)
-    @last_year_weekend_gas_co2 = @last_year_weekend_gas_kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH
+    @last_year_weekend_gas_co2 = @last_year_weekend_gas_kwh * EnergyEquivalences.co2_kg_kwh(:gas)
 
     @average_weekend_gas_kwh      = @last_year_weekend_gas_kwh / 52.0
     @average_weekend_gas_£        = @last_year_weekend_gas_£ / 52.0
@@ -218,7 +218,7 @@ class AlertWeekendGasConsumptionShortTerm < AlertGasModelBase
     @last_5_weeks_average_weekend_kwh      = average_last_n_weekends_kwh(@weekend_dates, :kwh, NUM_WEEKEND_COMPARISON)
     @last_5_weeks_average_weekend_£        = average_last_n_weekends_kwh(@weekend_dates, :£,   NUM_WEEKEND_COMPARISON)
     @last_5_weeks_average_weekend_£current = average_last_n_weekends_kwh(@weekend_dates, :£current,   NUM_WEEKEND_COMPARISON)
-    @last_5_weeks_average_weekend_co2 = @last_5_weeks_average_weekend_kwh * EnergyEquivalences::UK_GAS_CO2_KG_KWH
+    @last_5_weeks_average_weekend_co2 = @last_5_weeks_average_weekend_kwh * EnergyEquivalences.co2_kg_kwh(:gas)
     @percent_increase_on_last_5_weekends = @last_5_weeks_average_weekend_kwh == 0.0 ? 0.0 : (@last_week_end_kwh - @last_5_weeks_average_weekend_kwh) / @last_5_weeks_average_weekend_kwh
 
     prior_dates = prior_weekend_dates(@weekend_dates, NUM_WEEKEND_COMPARISON)

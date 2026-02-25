@@ -21,7 +21,7 @@
             <%= link_to t('common.labels.view_results'),
                         school_transport_survey_url(@school, transport_survey),
                         class: 'btn btn-primary btn-sm' %>
-            <%= if can? :manage, TransportSurvey::Response
+            <%= if can?(:manage, TransportSurvey::Response.new(transport_survey: transport_survey))
                   link_to t('common.labels.manage'),
                           school_transport_survey_responses_url(@school, transport_survey),
                           class: 'btn btn-secondary btn-sm'
@@ -43,7 +43,7 @@
   <h4><%= t('schools.transport_surveys.index.no_surveys') %></h4>
 <% end %>
 
-<% if can?(:start, TransportSurvey) %>
+<% if can?(:start, TransportSurvey.new(school: @school)) %>
   <%= link_to t('schools.transport_surveys.index.start_surveying'),
               start_school_transport_surveys_url(@school), class: 'btn btn-primary' %>
 <% end %>

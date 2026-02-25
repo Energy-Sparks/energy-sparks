@@ -78,6 +78,10 @@ module Comparison
       "NULLIF(#{fields.map { |v| "COALESCE(#{v}, 0.0)" }.join(' + ')}, 0.0)"
     end
 
+    def saving_or_nil(field)
+      self[field] > 0 ? self[field] : nil
+    end
+
     def readonly?
       true
     end

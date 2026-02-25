@@ -1,0 +1,10 @@
+<%= content_for(:page) do %>
+  <div class="application container<%= conditional_application_container_classes %>">
+    <%= render 'shared/page/breadcrumbs_and_flash' %>
+    <%= content_for(:report_header) %>
+  </div>
+  <div class="<%= @container %>">
+    <%= yield %>
+  </div>
+<% end %>
+<%= render template: 'layouts/page' %>

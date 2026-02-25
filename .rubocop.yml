@@ -46,7 +46,7 @@ RSpec/ContextWording:
 RSpec/ExampleLength:
   Max: 15 # default 5
 RSpec/MultipleExpectations:
-  Enabled: false
+  Max: 5 # default 1
 RSpec/MultipleMemoizedHelpers:
   Max: 10 # default 5
 RSpec/NestedGroups:

@@ -5,6 +5,7 @@
 #  created_at       :datetime         not null
 #  custom_period_id :bigint(8)
 #  disabled         :boolean          default(FALSE), not null
+#  fuel_type        :integer
 #  id               :bigint(8)        not null, primary key
 #  key              :string           not null
 #  public           :boolean          default(FALSE)
@@ -28,7 +29,8 @@ class Comparison::Report < ApplicationRecord
 
   extend Mobility
   include TransifexSerialisable
-  include EnumReportingPeriod
+  include Enums::ReportingPeriod
+  include Enums::FuelType
   extend FriendlyId
 
   translates :title, type: :string, fallbacks: { cy: :en }

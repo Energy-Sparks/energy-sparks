@@ -1,7 +1,5 @@
 module DataFeeds
   class GenericController < ApplicationController
-    include CsvDownloader
-
     load_and_authorize_resource
 
     before_action :set_up_data_feed
@@ -17,7 +15,7 @@ module DataFeeds
       respond_to do |format|
         format.html { render 'data_feeds/generic/show' }
         format.json { render 'data_feeds/generic/show' }
-        format.csv  { send_data readings_to_csv(@data_class.download_for_area_id(area_id), @csv_header), filename: "#{area_id}-#{@title}.csv" }
+        format.csv  { send_data CsvDownloader.readings_to_csv(@data_class.download_for_area_id(area_id), @csv_header), filename: "#{area_id}-#{@title}.csv" }
       end
     end
 

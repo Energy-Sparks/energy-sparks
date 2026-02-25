@@ -20,6 +20,7 @@
 #  default_template_calendar_id             :bigint(8)
 #  default_weather_station_id               :bigint(8)
 #  description                              :string
+#  dfe_code                                 :string
 #  group_type                               :integer          default("general")
 #  id                                       :bigint(8)        not null, primary key
 #  mailchimp_fields_changed_at              :datetime
@@ -47,15 +48,27 @@ class SchoolGroup < ApplicationRecord
   include ParentMeterAttributeHolder
   include Scorable
   include MailchimpUpdateable
+  include AlphabeticalScopes
+  include ContractHolder
 
   watch_mailchimp_fields :name
 
   friendly_id :name, use: %i[finders slugged history]
 
+  # LEGACY RELATIONSHIP FOR REMOVAL
+  # Use assigned_schools instead to select schools linked to this group.
+  #
+  # Leaving this in place until we've tidied up all scopes and joins across the application
   has_many :schools
-  has_many :meters, through: :schools
-  has_many :school_onboardings
-  has_many :calendars, through: :schools
+
+  has_many :school_groupings
+  has_many :assigned_schools, through: :school_groupings, source: :school
+
+  has_many :meters, through: :assigned_schools
+  has_many :school_onboardings, dependent: :nullify
+  has_many :project_onboardings, class_name: 'SchoolOnboarding', foreign_key: :project_group_id, dependent: :nullify
+
+  has_many :calendars, through: :assigned_schools
   has_many :users
 
   has_many :school_group_partners, -> { order(position: :asc) }
@@ -64,7 +77,10 @@ class SchoolGroup < ApplicationRecord
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
   has_many :issues, as: :issueable, dependent: :destroy
-  has_many :school_issues, through: :schools, source: :issues
+  has_many :school_issues, through: :assigned_schools, source: :issues
+  has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
+
+  has_many :observations, through: :assigned_schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
@@ -93,28 +109,106 @@ class SchoolGroup < ApplicationRecord
   has_many :energy_tariffs, as: :tariff_holder, dependent: :destroy
 
   has_many :clusters, class_name: 'SchoolGroupCluster', dependent: :destroy
+
+  has_many :organisation_school_groupings, -> { where(role: 'organisation') }, class_name: 'SchoolGrouping'
+  has_many :diocese_school_groupings, -> { where(role: 'diocese') }, class_name: 'SchoolGrouping'
+  has_many :area_school_groupings, -> { where(role: 'area') }, class_name: 'SchoolGrouping'
+  has_many :project_school_groupings, -> { where(role: 'project') }, class_name: 'SchoolGrouping'
+
+  has_many :organisation_schools, through: :organisation_school_groupings, source: :school
+  has_many :diocese_schools, through: :diocese_school_groupings, source: :school
+  has_many :area_schools, through: :area_school_groupings, source: :school
+  has_many :project_schools, through: :project_school_groupings, source: :school
+
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
 
-  scope :by_letter, ->(letter) { where('substr(upper(name), 1, 1) = ?', letter) }
-  scope :by_keyword, ->(keyword) { where('upper(name) LIKE ?', "%#{keyword.upcase}%") }
-  scope :with_visible_schools, -> { where("id IN (select distinct school_group_id from schools where visible='t')") }
+  scope :with_visible_schools, -> {
+    where(
+      "id IN (
+        SELECT DISTINCT school_groupings.school_group_id
+        FROM school_groupings
+        INNER JOIN schools ON schools.id = school_groupings.school_id
+        WHERE schools.visible = TRUE
+      )"
+    )
+  }
+
+  # "general", "local_authority" and "multi_academy_trust" are considered to be "organisation" types. So will
+  # be involved in "organisation" type SchoolGroupings.
+  #
+  # "diocese" and "local_authority_area" are considered to be "area" types. We need two group types for local authorities
+  # in order to distinguish between the Local Authority as an organisation that maintains schools ("local_authority") and
+  # the Local Authority as an administrative area whose boundary might contain schools that are maintained by other
+  # organisations.
+  #
+  # A "diocese" here refers to an area. If a diocese (as an organisation) maintains schools then this would be represented
+  # in the DfE database and our system as a multi_academy_trust.
+  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
+
+  ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
+  AREA_GROUP_TYPE_KEYS = %w[local_authority_area].freeze
+  DIOCESE_GROUP_TYPE_KEYS = %w[diocese].freeze
+  PROJECT_GROUP_TYPE_KEYS = %w[project].freeze
+  RESTRICTED_GROUP_TYPES = (AREA_GROUP_TYPE_KEYS + DIOCESE_GROUP_TYPE_KEYS + PROJECT_GROUP_TYPE_KEYS).freeze
+
+  scope :organisation_groups, -> { where(group_type: ORGANISATION_GROUP_TYPE_KEYS) }
+  scope :area_groups, -> { where(group_type: AREA_GROUP_TYPE_KEYS) }
+  scope :diocese_groups, -> { where(group_type: DIOCESE_GROUP_TYPE_KEYS) }
+  scope :project_groups, -> { where(group_type: PROJECT_GROUP_TYPE_KEYS) }
 
   validates :name, presence: true
+  validates :dfe_code, uniqueness: true, allow_blank: true
 
-  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2 }
   enum :default_chart_preference, { default: 0, carbon: 1, usage: 2, cost: 3 }
   enum :default_country, School.countries
 
-  def visible_schools_count
-    schools.visible.count
+  def self.by_group_type(group_type)
+    case group_type
+    when 'local_authority_area'
+      SchoolGroup.area_groups
+    when 'diocese'
+      SchoolGroup.diocese_groups
+    when 'project'
+      SchoolGroup.project_groups
+    else
+      SchoolGroup.organisation_groups
+    end
   end
 
-  def fuel_types
-    school_ids = schools.visible.pluck(:id)
+  def self.organisation_group_types
+    group_types.slice(*ORGANISATION_GROUP_TYPE_KEYS)
+  end
+
+  def self.area_group_types
+    group_types.slice(*AREA_GROUP_TYPE_KEYS)
+  end
+
+  def self.project_group_types
+    group_types.slice(*PROJECT_GROUP_TYPE_KEYS)
+  end
+
+  def self.diocese_group_types
+    group_types.slice(*DIOCESE_GROUP_TYPE_KEYS)
+  end
+
+  def organisation?
+    ORGANISATION_GROUP_TYPE_KEYS.include?(group_type)
+  end
+
+  def diocese?
+    DIOCESE_GROUP_TYPE_KEYS.include?(group_type)
+  end
+
+  def visible_schools_count
+    assigned_schools.visible.count
+  end
+
+  def fuel_types(schools_to_check = assigned_schools)
+    school_ids = schools_to_check.data_visible.pluck(:id)
     return [] if school_ids.empty?
 
-    query = <<-SQL.squish
+    query = <<~SQL.squish
       SELECT DISTINCT(fuel_types.key) FROM (
         SELECT
           row_to_json(json_each(fuel_configuration))->>'key' as key,
@@ -130,20 +224,29 @@ class SchoolGroup < ApplicationRecord
     end
   end
 
+  def most_recent_content_generation_run
+    ContentGenerationRun
+      .joins(:school)
+      .where(schools: { school_group_id: id })
+      .order(created_at: :desc)
+      .limit(1)
+      .first
+  end
+
   def has_visible_schools?
-    schools.visible.any?
+    assigned_schools.visible.any?
   end
 
   def has_schools_awaiting_activation?
-    schools.awaiting_activation.any?
+    assigned_schools.awaiting_activation.any?
   end
 
   def safe_to_destroy?
-    !(schools.any? || users.any?)
+    !(assigned_schools.any? || users.any?)
   end
 
   def safe_destroy
-    raise EnergySparks::SafeDestroyError, 'Group has associated schools' if schools.any?
+    raise EnergySparks::SafeDestroyError, 'Group has associated schools' if assigned_schools.any?
     raise EnergySparks::SafeDestroyError, 'Group has associated users' if users.any?
 
     destroy
@@ -160,12 +263,16 @@ class SchoolGroup < ApplicationRecord
     end
   end
 
+  def displayable_partners
+    partners
+  end
+
   def page_anchor
     name.parameterize
   end
 
   def self.with_active_schools
-    joins(:schools).where('schools.active = true').distinct
+    joins(school_groupings: :school).merge(School.active).distinct
   end
 
   def all_issues
@@ -184,7 +291,48 @@ class SchoolGroup < ApplicationRecord
     Meter::MAIN_METER_TYPES.include?(meter_type.to_sym)
   end
 
+  # For those groups without a scoreboard OR a default calendar (around 3-4)
+  # default to using the academic year defined for the national scoreboard
+  def this_academic_year(today: Time.zone.today)
+    return super(today:) unless scorable_calendar.nil?
+    NationalScoreboard.new.this_academic_year(today:)
+  end
+
+  # For those groups without a scoreboard OR a default calendar (around 3-4)
+  # default to using the academic year defined for the national scoreboard
+  def previous_academic_year(today: Time.zone.today)
+    return super(today:) unless scorable_calendar.nil?
+    NationalScoreboard.new.previous_academic_year(today:)
+  end
+
+  # Groups may have their calendars and scoreboards set up in different ways
+  # depending on whether they are regionally located and centrally managed
+  #
+  # By default use the calendar for the scoreboard, this will be either the
+  # English or Scottish calendar by default. Otherwise use the default
+  # template calendar
   def scorable_calendar
+    return default_scoreboard.academic_year_calendar unless default_scoreboard.nil?
     default_template_calendar
+  end
+
+  def national_calendar
+    scorable_calendar&.national_calendar
+  end
+
+  def grouped_schools_by_name(scope: nil)
+    selected_schools = scope ? assigned_schools.merge(scope) : assigned_schools
+    selected_schools.group_by do |school|
+      first_char = school.name[0]
+      /[A-Za-z]/.match?(first_char) ? first_char.upcase : '#'
+    end.sort.to_h
+  end
+
+  def scorable_schools
+    assigned_schools
+  end
+
+  def onboardings_for_group
+    project? ? project_onboardings : school_onboardings
   end
 end

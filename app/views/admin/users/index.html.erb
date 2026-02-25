@@ -31,9 +31,9 @@
   <div class="col">
     <h2>Users without a school</h2>
 
-    <%= render AdminUserListComponent.new(id: 'unattached-users',
-                                          users: @unattached_users,
-                                          show_organisation: false) %>
+    <%= render Admin::UserListComponent.new(id: 'unattached-users',
+                                            users: @unattached_users,
+                                            show_organisation: false) %>
   </div>
 </div>
 

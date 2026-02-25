@@ -2,7 +2,6 @@ module Onboarding
   class BaseController < ApplicationController
     before_action :load_school_onboarding
     before_action :check_complete
-    before_action :hide_subnav
 
   private
 
@@ -22,10 +21,6 @@ module Onboarding
 
     def check_complete
       redirect_if_event(:onboarding_complete, onboarding_completion_path(@school_onboarding))
-    end
-
-    def hide_subnav
-      @hide_subnav = true
     end
 
     def message(school_onboarding, exception)

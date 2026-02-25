@@ -38,7 +38,8 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
     build(:meter, :with_flat_rate_tariffs, type: fuel_type, amr_data: amr_data,
                                            tariff_start_date: amr_start_date,
                                            tariff_end_date: amr_end_date,
-                                           rates: create_flat_rate(rate: flat_rate, standing_charge: 1.0))
+                                           rates: create_flat_rate(rate: flat_rate, standing_charge: 1.0),
+                                           meter_collection:)
   end
 
   let(:community_use_times) { {} }
@@ -72,7 +73,9 @@ RSpec.shared_context 'with an aggregated meter with tariffs and school times', s
   end
 
   # TODO: add holidays, temperatures, solar
-  let(:meter_collection) { build(:meter_collection, holidays: holidays) }
+  let(:meter_collection) do
+    build(:meter_collection, school: build(:analytics_school, school_times:, community_use_times:), holidays:)
+  end
 
   # Configure objects as if we've run the aggregation process
   before do

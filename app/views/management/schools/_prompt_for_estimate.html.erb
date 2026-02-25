@@ -1,6 +1,0 @@
-<%= render InfoBarComponent.new(
-      status: :neutral,
-      title: t('schools.show.add_consumption_estimate', fuels: t_fuels_as_sentence(fuel_types)),
-      icon: fa_icon('calculator fa-3x'),
-      buttons: { t('schools.show.add_estimate') => school_estimated_annual_consumptions_path(school) }
-    ) %>

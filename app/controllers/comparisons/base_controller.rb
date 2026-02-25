@@ -3,6 +3,11 @@
 module Comparisons
   class BaseController < ApplicationController
     include UserTypeSpecific
+    include ComparisonTableGenerator
+    include SchoolGroupBreadcrumbs
+    include SchoolGroupAdvice
+    include SchoolGroupAccessControl
+
     skip_before_action :authenticate_user!
 
     before_action :filter
@@ -12,10 +17,9 @@ module Comparisons
     before_action :set_results, only: [:index]
     before_action :set_unlisted_schools_count, only: [:index]
     before_action :set_headers, only: [:index]
-
-    helper_method :index_params
-    helper_method :footnote_cache
-    helper_method :unlisted_message
+    before_action :set_school_group, only: [:index]
+    before_action :redirect_unless_authorised, only: [:index]
+    before_action :set_advice_vars_and_breadcrumbs, only: [:index]
 
     protect_from_forgery except: :unlisted
 
@@ -31,31 +35,31 @@ module Comparisons
           response.headers['Content-Disposition'] = "attachment; filename=#{filename}"
           render partial: filter[:table_name].to_s
         end
+        format.json do
+          render json: create_chart_json
+        end
       end
     end
 
     def unlisted
       @unlisted = School.where(id: (@schools - load_data.pluck(:school_id))).order(:name)
-      respond_to(&:js)
-    end
 
-    # Used to store footnotes loaded by the comparison table component across multiple calls in one page
-    def footnote_cache
-      @footnote_cache ||= {}
+      respond_to do |format|
+        format.js # always render unlisted.js.erb
+        format.any { head :not_acceptable }
+      end
     end
 
     private
 
-    def header_groups
-      []
+    # Key for the Comparison::Report
+    def key
+      nil
     end
 
-    def colgroups(groups: nil)
-      (groups || header_groups).each { |group| group[:colspan] = group[:headers].count(&:itself) }
-    end
-
-    def headers(groups: nil)
-      (groups || header_groups).pluck(:headers).flatten.select(&:itself)
+    # Load the results from the view
+    def load_data
+      nil
     end
 
     def set_headers
@@ -80,63 +84,21 @@ module Comparisons
       @advice_page_tab = advice_page_tab
     end
 
-    # Key for the Comparison::Report
-    def key
-      nil
-    end
-
-    # Key for the AdvicePage used to link to school analysis
-    def advice_page_key
-      nil
-    end
-
-    # Tab of the advice page to link to by default
-    def advice_page_tab
-      :insights
-    end
-
-    # Load the results from the view
-    def load_data
-      nil
-    end
-
-    # Returns a list of table names. These correspond to a partial that should be
-    # found in the views folder for the comparison. By default assumes a single table
-    # which is defined in a file called _table.html.erb.
-    #
-    # Partials will be provided with the report, advice page, and results
-    def table_names
-      [:table]
-    end
-
     def create_charts(_results)
       []
     end
 
     def create_chart(results, metric_to_translation_key, multiplier, y_axis_label,
                      column_heading_keys: 'analytics.benchmarking.configuration.column_headings',
-                     y_axis_keys: 'chart_configuration.y_axis_label_name')
-      chart_data = {}
-      schools = []
-
-      results.each do |result|
-        schools << result.school.name
-        result.slice(*metric_to_translation_key.keys).each do |metric, value|
-          next if value.nil? || (value.respond_to?(:nan?) && (value.nan? || value.infinite?))
-
-          # for a percentage metric we'd multiply * 100.0
-          # for converting from kW to W 1000.0
-          value *= multiplier unless multiplier.nil?
-          (chart_data[metric] ||= []) << value
-        end
-      end
-
-      chart_data.transform_keys! { |key| I18n.t("#{column_heading_keys}.#{metric_to_translation_key[key.to_sym]}") }
-
-      { id: :comparison,
-        x_axis: schools,
-        x_data: chart_data, # x is the vertical axis by default for stacked charts in Highcharts
-        y_axis_label: I18n.t("#{y_axis_keys}.#{y_axis_label}") }
+                     y_axis_keys: 'chart_configuration.y_axis_label_name', **kwargs)
+      Charts::ComparisonChartData.new(results,
+                                      column_heading_keys:,
+                                      y_axis_keys:,
+                                      x_min_value: kwargs[:x_min_value],
+                                      x_max_value: kwargs[:x_max_value],
+                                      fuel_type: @report.fuel_type).create_chart(
+                                        metric_to_translation_key, multiplier, y_axis_label
+      )
     end
 
     def create_single_number_chart(results, name, multiplier, series_name, y_axis_label, **kwargs)
@@ -147,15 +109,18 @@ module Comparisons
       [create_chart(results, names, multiplier, y_axis_label, **kwargs)]
     end
 
+    def create_chart_json
+      chart_data = create_charts(@results).first
+      return {} unless chart_data.is_a?(Hash)
+      chart_data = chart_data.except(:id).merge({ chart1_type: :bar, chart1_subtype: :stacked })
+      ChartDataValues.as_chart_json(ChartDataValues.new(chart_data, :comparison, fuel_type: @report.fuel_type).process)
+    end
+
     def filter
       @filter ||= params.permit(:search, :benchmark, :country, :school_type, :funder, :table_name,
                                 school_group_ids: [], school_types: [])
                         .with_defaults(school_group_ids: [], school_types: School.school_types.keys)
                         .to_hash.symbolize_keys
-    end
-
-    def index_params
-      filter.merge(anchor: filter[:search])
     end
 
     def set_schools
@@ -172,8 +137,26 @@ module Comparisons
       filter.pluck(:id)
     end
 
-    def unlisted_message(count)
-      I18n.t('comparisons.unlisted.message', count: count)
+    def set_school_group
+      @school_group_layout = params[:group] == 'true'
+      @school_group = SchoolGroup.find(params[:school_group_ids].reject(&:blank?).first) if @school_group_layout
+    end
+
+    def redirect_unless_authorised
+      return unless @school_group_layout
+      super
+    end
+
+    def set_advice_vars_and_breadcrumbs
+      return unless @school_group_layout
+      load_schools
+      set_fuel_types
+      set_counts
+      build_breadcrumbs([
+                          { name: I18n.t('advice_pages.breadcrumbs.root'), href: school_group_advice_path(@school_group) },
+                          { name: I18n.t('school_groups.titles.comparisons'), href: comparison_reports_school_group_advice_path(@school_group) },
+                          { name: @report.title }
+                        ])
     end
   end
 end

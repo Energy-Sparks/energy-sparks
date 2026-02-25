@@ -1,7 +1,7 @@
 module Layout
   module Cards
     class StatsComponent < LayoutComponent
-      renders_one :icon, 'IconComponent'
+      renders_one :icon, 'Elements::IconComponent'
       renders_one :header, ->(**kwargs) do
         Elements::HeaderComponent.new(**{ level: 5, classes: 'mt-2' }.merge(kwargs))
       end

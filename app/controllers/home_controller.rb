@@ -1,14 +1,12 @@
 class HomeController < ApplicationController
   include VideoHelper
   include ApplicationHelper
+  include AdvicePageHelper
 
   # **** ALL ACTIONS IN THIS CONTROLLER ARE PUBLIC! ****
   skip_before_action :authenticate_user!
   before_action :redirect_if_logged_in, only: :index
-  before_action :set_newsletters, only: [:index, :show]
-  before_action :set_case_studies, only: [:index, :show]
   before_action :set_blog_service, only: [:index, :show]
-  before_action :set_marketing_case_studies, only: [:for_local_authorities, :for_multi_academy_trusts, :for_schools]
 
   def index
   end
@@ -17,25 +15,14 @@ class HomeController < ApplicationController
     render :index
   end
 
-  def for_schools
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
-  def for_local_authorities
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
-  def for_multi_academy_trusts
-    redirect_to find_out_more_campaigns_path(utm_params_for_redirect)
-  end
-
   def energy_audits
   end
 
   def education_workshops
   end
 
-  def pricing
+  def product
+    @prices = formatted_prices
   end
 
   def contact
@@ -45,11 +32,11 @@ class HomeController < ApplicationController
   end
 
   def enrol_our_multi_academy_trust
-    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6'
+    redirect_to 'https://forms.gle/K1XHu3GAUWJkNwFi6', allow_other_host: true
   end
 
   def enrol_our_local_authority
-    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8'
+    redirect_to 'https://forms.gle/v78XueeSdfggcyhz8', allow_other_host: true
   end
 
   def cookies
@@ -76,7 +63,12 @@ class HomeController < ApplicationController
   end
 
   def training
-    @events = Events::ListEvents.new.perform
+    list_events = Events::ListEvents.new
+    @events = list_events.events
+
+    unless Flipper.enabled?(:training_page, current_user)
+      @show_images = list_events.events_without_images.none? || (params[:show_images] && current_user&.admin?)
+    end
   end
 
   def user_guide_videos
@@ -88,7 +80,7 @@ class HomeController < ApplicationController
   end
 
   def school_statistics_key_data
-    @school_groups = SchoolGroup.with_active_schools.is_public.order(:name)
+    @school_groups = SchoolGroup.organisation_groups.with_active_schools.is_public.order(:name)
   end
 
   def team
@@ -111,27 +103,8 @@ class HomeController < ApplicationController
     ]
   end
 
-  def set_newsletters
-    @newsletters = Newsletter.order(published_on: :desc).limit(4)
-  end
-
-  def set_case_studies
-    @case_studies = CaseStudy.order(position: :asc).limit(3)
-  end
-
-  def set_marketing_case_studies
-    @marketing_studies = {
-      costs: CaseStudy.find(15),
-      tool: CaseStudy.find(12),
-      pupils: CaseStudy.find(13),
-      emissions: CaseStudy.find(9)
-    }
-  end
-
   def set_blog_service
-    if Flipper.enabled?(:new_home_page, current_user)
-      @blog = BlogService.new
-    end
+    @blog = BlogService.new
   end
 
   def redirect_if_logged_in
@@ -154,5 +127,18 @@ class HomeController < ApplicationController
     else
       school_inactive_path(current_user.school)
     end
+  end
+
+  def formatted_prices
+    product = Commercial::Product.default_product
+    return {} unless product
+    {
+      small_school_price: format_unit(product.small_school_price, :£),
+      large_school_price: format_unit(product.large_school_price, :£),
+      mat_price: format_unit(product.mat_price, :£),
+      private_account_fee: format_unit(product.private_account_fee, :£),
+      metering_fee: format_unit(product.metering_fee, :£),
+      size_threshold: product.size_threshold
+    }
   end
 end

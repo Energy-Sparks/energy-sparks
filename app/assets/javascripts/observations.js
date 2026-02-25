@@ -27,6 +27,5 @@ $(document).ready(function() {
   }
 
   $('form.intervention input').on('change', setConfirmation);
-  $('form.intervention .wizard-button').on('click', setConfirmation);
 
 });

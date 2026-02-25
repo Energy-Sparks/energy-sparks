@@ -3,7 +3,6 @@ en:
   components:
     dashboard_learn_more:
       adult:
-        explore: Explore energy data
         intro: View charts, get insights into reducing energy usage and compare performance against other schools
         opportunities: Energy saving opportunities
         title: Learn more about your energy use

@@ -1,24 +1,27 @@
-<%= content_for :page_title, t('schools.show.dashboard_title', school_name: @school.name) %>
-
-<% content_for :dashboard_header do %>
-  <%# i18n-tasks-use t('schools.review.title') %>
-  <%= render DashboardHeaderComponent.new school: @school, audience: :adult, title: 'schools.review.title', intro: nil %>
-<% end %>
-
-<div class="container">
-  <div class='mt-4 d-flex justify-content-end align-items-baseline'>
-    <% if current_user.admin? && @school&.school_group %>
-      <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
-    <% end %>
-  </div>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: t('schools.review.title', school_name: @school.name) do %>
+  <% if current_user.admin? && @school&.school_group %>
+    <div class='row mb-2'>
+      <div class="col d-flex justify-content-end align-items-baseline">
+          <%= render 'admin/school_groups/default_issues_admin_user', school_group: @school&.school_group %>
+          <%= if @school.issues.status_open.any?
+                link_to "View school issues (#{@school.issues.status_open.count})",
+                        admin_school_issues_path(school_id: @school.slug),
+                        class: 'btn btn-sm btn-secondary'
+              end %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="row mt-4 mb-4">
     <div class="col">
       <p>
-        This page checks the current configuration of this school to identify possible errors that need to be resolved before making the school data visible.
+        This page checks the current configuration of this school to identify possible errors that need to be
+        resolved before making the school data visible.
       </p>
       <p>
-        It also provides warnings about other aspects of the school setup that might be problematic for the analysis or in terms of encouraging school engagement.
+        It also provides warnings about other aspects of the school setup that might be problematic for the
+        analysis or in terms of encouraging school engagement.
       </p>
     </div>
   </div>
@@ -77,5 +80,4 @@
           end %>
     </div>
   </div>
-
-</div>
+<% end %>

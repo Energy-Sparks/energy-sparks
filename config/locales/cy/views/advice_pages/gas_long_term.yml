@@ -20,7 +20,7 @@ cy:
         meter_breakdown:
           summary: Mae gan eich ysgol sawl mesurydd nwy. Mae'r adran isod yn dangos dadansoddiad o'r defnydd nwy ar gyfer pob mesurydd. Efallai y byddwch yn gallu defnyddio'r wybodaeth hon i nodi defnydd uchel neu anghyffredin o ynni mewn rhai rhannau o'ch ysgol.
           table_explanation: Gall cael mesuryddion lluosog eich helpu i ddeall eich defnydd o ynni yn well, fodd bynnag, mae tâl sefydlog sylweddol am bob mesurydd o fwy na £1,000 y flwyddyn, felly mae potensial i arbed drwy gyfuno mesuryddion.
-          table_introduction: Mae'r tabl isod yn ymdrin âr 12 mis diweddaraf o %{start_date} i %{end_date}.
+          table_introduction: Mae'r tabl isod yn ymdrin â defnydd rhwng %{start_date} a %{end_date}.
           title: Manylion defnydd nwy fesul mesurydd
         recent_trend:
           title: Tueddiad diweddar
@@ -34,28 +34,29 @@ cy:
         gas_by_month_year:
           explanation: Gall y siart hwn fod yn ffordd gyflym o weld a yw newidiadau i reolaeth gwresogi a dŵr poeth yn cael effaith ar eich defnydd o nwy. Mae angen bod yn ofalus wrth gymharu misoedd â gwyliau, yn enwedig y Pasg, sef rhai blynyddoedd ym mis Mawrth ac adegau eraill ym mis Ebrill.
           subtitle_html: Mae'r siart hwn yn dangos y defnydd nwy misol o <span class='start-date'>%{start_date}</span> i <span class='end-date'>%{end_date}</span> ar gyfer <span class='meter'>%{meter}</span>
-          subtitle_two_years_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o nwy ar gyfer y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol ar gyfer <span class='meter'>%{meter}</span>
+          subtitle_two_years_html: Mae'r siart hwn yn dangos y gwahaniaeth yn y defnydd o nwy ar gyfer y flwyddyn academaidd yn diweddu ar <span class='end-date'>%{end_date}</span> a'r flwyddyn academaidd blaenorol ar gyfer <span class='meter'>%{meter}</span>
           title: Cymhariaeth defnydd nwy misol
-          title_two_years: Cymhariaeth defnydd nwy misol dros y ddwy flynedd diwethaf
+          title_two_years: Cymhariaeth defnydd nwy misol dros yr ychydig flynyddoedd academaidd diwethaf
         gas_longterm_trend:
           explanation: Gellir lleihau'r defnydd o nwy trwy droi thermostat eich ysgol i lawr, lleihau'r defnydd y tu allan i oriau, inswleiddio'ch adeiladau neu osod boeler nwy newydd mwy effeithlon.
-          subtitle_html: Mae’r siart hwn, a’r tabl isod yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob blwyddyn lawn o ddata sydd gennym ar gyfer <span class='meter'>%{meter}</span>.
+          subtitle_html: Mae’r siart hwn, a’r tabl isod yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol agored a chaeedig, gwyliau a phenwythnosau ar gyfer pob blwyddyn lawn o ddata sydd gennym ar gyfer <span class='meter'>%{meter}</span>
           temp_compensation: Nid oes unrhyw iawndal tymheredd yn cael ei gymhwyso i'r siart hwn. Dylech ddisgwyl i faint o nwy a ddefnyddir bob blwyddyn amrywio a dilyn dyddiau gradd yn fras - po oeraf y mae y tu allan, y mwyaf o nwy y dylid ei ddefnyddio yn yr ysgol.
           title: Newid yn y defnydd o nwy dros yr ychydig flynyddoedd diwethaf
+          title_academic_year: Newid yn y defnydd o nwy dros yr ychydig flynyddoedd academaidd diwethaf
         group_by_week_gas:
           explanation_html: |-
             <p>Dylai faint o nwy a ddefnyddir trwy gydol y flwyddyn ddilyn yn agos â dyddraddau - po oeraf y mae y tu allan, y mwyaf o nwy y dylid ei ddefnyddio yn yr ysgol. Dylech ddisgwyl i'r defnydd fod yn eithaf isel rhwng gwyliau'r Pasg a hanner tymor yr hydref oherwydd gellir diffodd y gwres a defnyddio nwy yn unig ar gyfer y dŵr poeth, y gegin, neu i gynhesu pwll nofio. Dylai'r defnydd o nwy fod yn isel yn ystod y gwyliau - wedi'i ddangos mewn coch.
             </p>
-          subtitle_html: Mae'r siart hwn yn rhoi dadansoddiad o'r defnydd o nwu rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob wythnos ar gyfer <span class='meter'>%{meter}</span> rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>
+          subtitle_html: Mae'r siart hwn yn rhoi dadansoddiad o'r defnydd o nwy rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer <span class='meter'>%{meter}</span> rhwng <span class='start-date'>%{start_date}</span> a <span class='end-date'>%{end_date}</span>
           title: Defnydd nwy fesul wythnos ar gyfer y 12 mis diwethaf
         group_by_week_gas_meter_breakdown_one_year:
-          header: Mae clicio ar golofnau'r siart yn eich galluogi i ddrilio i lawr i ddata manylach, mae clicio ar yr allwedd yn eich galluogi i ychwanegu a dileu mesuryddion.
+          header: Mae clicio ar golofnau'r siart yn eich galluogi i ddrilio i lawr i ddata manylach. Mae clicio ar yr allwedd yn eich galluogi i ychwanegu a dileu mesuryddion.
           subtitle: Mae'r siart isod yn darparu manylion wythnos o'r nwy a ddefnyddir gan bob mesurydd gwaelodol.
           title: Defnydd nwy fesul mesurydd
         group_by_week_gas_unlimited:
           explanation: Mae’r siart hwn yn dangos sut mae eich defnydd o nwy yn amrywio drwy gydol y flwyddyn dros y tymor hir. Mae pob bar yn cynrychioli wythnos gyfan a'r rhaniad rhwng defnydd gwyliau, penwythnos a diwrnod ysgol ar agor ac ar gau ar gyfer yr wythnos honno. Mae'n amlygu sut mae'r defnydd o nwy yn gyffredinol yn cynyddu yn y gaeaf ac yn is yn yr haf. Gallwch glicio ar y siart i archwilio'r data yn fwy manwl.
           header: Mae pob bar yn cynrychioli wythnos gyfan a'r rhaniad rhwng defnydd gwyliau, penwythnos a diwrnod ysgol ar agor ac ar gau ar gyfer yr wythnos honno. Mae'n amlygu sut mae'r defnydd o nwy yn gyffredinol yn cynyddu yn y gaeaf ac yn is yn yr haf.
-          subtitle_html: Mae’r siart hwn yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau ar gyfer pob wythnos o ddata ar gyfer <span class='meter'>%{meter}</span>
+          subtitle_html: Mae’r siart hwn, a’r tabl isod yn rhoi dadansoddiad o’r defnydd o nwy rhwng diwrnodau ysgol ar agor ac ar gau, gwyliau a phenwythnosau am bob wythnos o ddata ar gyfer <span class='meter'>%{meter}</span>
           title: Defnydd nwy fesul wythnos ar gyfer yr ychydig flynyddoedd diwethaf
       insights:
         comparison:

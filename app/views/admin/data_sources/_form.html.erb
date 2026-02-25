@@ -4,7 +4,6 @@
       <%= header_nav_link 'All data sources', admin_data_sources_url %>
     <% end %>
     <%= simple_form_for [:admin, data_source] do |f| %>
-      <%= redirect_back_tag params %>
       <%= f.input :name, label: 'Organisation name' %>
       <%= f.input :organisation_type, collection: DataSource.organisation_types.keys, label_method: :humanize %>
       <%= f.input :contact_name %>

@@ -1,8 +1,9 @@
 module SchoolGroups
-  class DigitalSignageController < ApplicationController
-    load_and_authorize_resource :school_group
+  class DigitalSignageController < BaseController
+    before_action :redirect_unless_authorised
 
     def index
+      build_breadcrumbs([{ name: I18n.t('manage_school_menu.digital_signage') }])
     end
 
     def charts
@@ -14,6 +15,10 @@ module SchoolGroups
     end
 
     private
+
+    def required_permission
+      :view_digital_signage
+    end
 
     def csv_filename_for(link_type)
       title = I18n.t("pupils.digital_signage.index.school_group.links.#{link_type}")
@@ -35,13 +40,13 @@ module SchoolGroups
               pupils_school_digital_signage_equivalences_url(school, :electricity)
             ]
           end
-          if school.has_gas?
-            csv << [
-              school.name,
-              t('common.gas'),
-              pupils_school_digital_signage_equivalences_url(school, :gas)
-            ]
-          end
+          next unless school.has_gas?
+
+          csv << [
+            school.name,
+            t('common.gas'),
+            pupils_school_digital_signage_equivalences_url(school, :gas)
+          ]
         end
       end
     end
@@ -67,23 +72,23 @@ module SchoolGroups
               ]
             end
           end
-          if school.has_gas?
-            Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
-              csv << [
-                school.name,
-                t('common.gas'),
-                t("pupils.digital_signage.index.charts.#{chart_type}.title"),
-                t("pupils.digital_signage.index.charts.#{chart_type}.description"),
-                pupils_school_digital_signage_charts_url(school, :gas, chart_type)
-              ]
-            end
+          next unless school.has_gas?
+
+          Pupils::DigitalSignageController::CHART_TYPES.each do |chart_type|
+            csv << [
+              school.name,
+              t('common.gas'),
+              t("pupils.digital_signage.index.charts.#{chart_type}.title"),
+              t("pupils.digital_signage.index.charts.#{chart_type}.description"),
+              pupils_school_digital_signage_charts_url(school, :gas, chart_type)
+            ]
           end
         end
       end
     end
 
     def schools
-      @school_group.schools.active.data_enabled.where(data_sharing: :public).order(:name)
+      @school_group.assigned_schools.active.data_enabled.where(data_sharing: :public).order(:name)
     end
   end
 end

@@ -24,9 +24,71 @@ FactoryBot.define do
       name { 'test school'}
     end
 
-    trait :with_school_group do
+    trait :with_consent do
       after(:create) do |school, _evaluator|
-        school.update(school_group: create(:school_group))
+        create(:consent_grant, school:)
+      end
+    end
+
+    trait :with_school_group do
+      transient do
+        default_issues_admin_user { create(:admin) }
+        school_group { nil }
+      end
+
+      after(:create) do |school, evaluator|
+        group = evaluator.school_group || create(:school_group, default_issues_admin_user: evaluator.default_issues_admin_user)
+        school.update(school_group: group)
+      end
+    end
+
+    trait :with_school_grouping do
+      transient do
+        group_type { :multi_academy_trust }
+        role { :organisation }
+        group { nil }
+      end
+
+      after(:create) do |school, evaluator|
+        group = evaluator.group || create(:school_group, group_type: evaluator.group_type)
+        create(:school_grouping, school:, school_group: group, role: evaluator.role)
+        school.reload
+      end
+    end
+
+    trait :with_trust do
+      with_school_grouping
+
+      transient do
+        group_type { :multi_academy_trust }
+        role { :organisation }
+      end
+    end
+
+    trait :with_diocese do
+      with_school_grouping
+
+      transient do
+        group_type { :diocese }
+        role { :diocese }
+      end
+    end
+
+    trait :with_project do
+      with_school_grouping
+
+      transient do
+        group_type { :project }
+        role { :project }
+      end
+    end
+
+    trait :with_local_authority_area do
+      with_school_grouping
+
+      transient do
+        group_type { :local_authority_area }
+        role { :area }
       end
     end
 

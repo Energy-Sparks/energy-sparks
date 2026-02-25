@@ -4,7 +4,7 @@
 #
 #  created_at    :datetime         not null
 #  created_by_id :bigint(8)
-#  icon          :string
+#  icon          :string           default("question")
 #  id            :bigint(8)        not null, primary key
 #  published     :boolean          default(FALSE), not null
 #  slug          :string           not null
@@ -26,6 +26,7 @@ module Cms
     extend FriendlyId
 
     self.table_name = 'cms_categories'
+
     friendly_id :title, use: %i[finders slugged history]
 
     translates :title, type: :string, fallbacks: { cy: :en }
@@ -35,6 +36,10 @@ module Cms
     validate :change_publication_status?, on: :update
 
     has_many :pages, class_name: 'Cms::Page', dependent: :restrict_with_error
+
+    def self.publishable_error_without
+      'without any published pages'
+    end
 
     def publishable?
       pages.published.any?

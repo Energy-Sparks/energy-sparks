@@ -22,7 +22,7 @@ module Comparisons
 
     def load_data
       columns = [:one_year_electricity_per_floor_area_kwh, :one_year_gas_per_floor_area_kwh, :one_year_storage_heater_per_floor_area_kwh]
-      Comparison::AnnualEnergyCostsPerUnit.for_schools(@schools).where_any_present(columns).by_total(columns)
+      Comparison::AnnualEnergyCostsPerUnit.for_schools(@schools).where_any_present(columns).by_total(columns, 'DESC NULLS LAST')
     end
 
     def create_charts(results)

@@ -3,7 +3,7 @@
 module Schools
   class SolarEdgeInstallationsController < BaseInstallationsController
     ID_PREFIX = 'solar-edge'
-    NAME = 'SolarEdge'
+    NAME = 'SolarEdge API feed'
     JOB_CLASS = Solar::SolarEdgeLoaderJob
 
     def show
@@ -32,7 +32,7 @@ module Schools
 
       if @installation.persisted?
         redirect_to school_solar_feeds_configuration_index_path(@school),
-                    notice: "#{NAME} installation was successfully created."
+                    notice: "#{NAME} was successfully created."
       else
         render :new
       end
@@ -45,7 +45,7 @@ module Schools
     def update
       if @installation.update(solar_edge_installation_params)
         Solar::SolarEdgeInstallationFactory.update_information(@installation)
-        redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{NAME} API feed was updated"
+        redirect_to school_solar_feeds_configuration_index_path(@school), notice: "#{NAME} was updated"
       else
         render :edit
       end

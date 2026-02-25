@@ -24,7 +24,7 @@ module Schools
     private
 
     def find_free_school_meal_percentage_counts
-      sql = <<-SQL.squish
+      sql = <<~SQL.squish
         SELECT floor((schools.percentage_free_school_meals + 9) / 10) * 10 AS percentage_range_end, count(*)
         FROM schools
         WHERE schools.active = true AND schools.visible = true
@@ -35,7 +35,7 @@ module Schools
     end
 
     def find_country_summary_counts
-      sql = <<-SQL.squish
+      sql = <<~SQL.squish
         SELECT country, count(distinct(schools.id)) AS school_count, sum(schools.number_of_pupils) AS pupil_count
         FROM schools
         WHERE schools.active = true AND schools.visible = true

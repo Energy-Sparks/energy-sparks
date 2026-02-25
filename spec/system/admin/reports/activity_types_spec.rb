@@ -4,7 +4,7 @@ describe 'activity type reports', type: :system do
   let(:admin)              { create(:admin) }
 
   let!(:activity_type)     { create(:activity_type) }
-  let!(:school)            { create(:school) }
+  let!(:school)            { create(:school, :with_school_group) }
   let!(:activity)          { create(:activity, school: school, activity_type: activity_type) }
 
   before do
@@ -36,7 +36,7 @@ describe 'activity type reports', type: :system do
 
       expect(page).to have_content activity_type.name
       expect(page).to have_content school.name
-      expect(page).to have_link(school.name, href: school_timeline_path(school))
+      expect(page).to have_link(school.name, href: school_url(school, host: 'example.com'))
     end
 
     context 'when the activity has been recorded multiple times' do

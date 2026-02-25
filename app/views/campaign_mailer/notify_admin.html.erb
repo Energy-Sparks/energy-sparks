@@ -10,7 +10,7 @@
 <li>Tel: <%= @contact[:tel] %></li>
 <li>Job Title: <%= @contact[:job_title] %></li>
 <li>Organisation: <%= @contact[:organisation] %></li>
-<li>Organisation Type: <%= @contact[:org_type].map { |t| t.to_s.humanize }.join(',') %></li>
+<li>Organisation Type: <%= @contact[:org_type]&.to_s&.humanize %></li>
 <li>Marketing Consent: <%= @contact[:consent] %></li>
 </ul>
 

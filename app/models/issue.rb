@@ -11,6 +11,7 @@
 #  issueable_type :string
 #  owned_by_id    :bigint(8)
 #  pinned         :boolean          default(FALSE)
+#  review_date    :date
 #  status         :integer          default("open"), not null
 #  title          :string           not null
 #  updated_at     :datetime         not null
@@ -48,8 +49,15 @@ class Issue < ApplicationRecord
 
   scope :for_school_group, lambda { |school_group|
     where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
-      where(issues: { issueable_type: 'School', issueable_id: school_group.schools })
+      where(issues: { issueable_type: 'School', issueable_id: school_group.assigned_schools })
     )
+  }
+
+  # Exclude issues from inactive (archived schools in this case)
+  # (Issues are already removed when a school is marked as deleted)
+  scope :active, -> {
+    joins("LEFT JOIN schools ON schools.id = issues.issueable_id AND issues.issueable_type = 'School'")
+      .where("issues.issueable_type != 'School' OR schools.active = ?", true)
   }
 
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
@@ -59,41 +67,46 @@ class Issue < ApplicationRecord
     joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
   }
 
+  scope :for_issueable, ->(issueable = nil) { issueable ? where(issueable: issueable) : all }
+
+  scope :with_owner, -> { where.not(owned_by_id: nil) }
+
   scope :by_pinned, -> { order(pinned: :desc) }
+  scope :by_review_date, -> { order(review_date: :asc) }
   scope :by_status, -> { order(status: :asc) }
   scope :by_updated_at, -> { order(updated_at: :desc) }
   scope :by_created_at, -> { order(created_at: :desc) }
 
-  scope :by_priority_order, -> { by_pinned.by_status.by_updated_at }
+  scope :by_priority_order, -> { by_review_date.by_pinned.by_status.by_updated_at }
 
   has_rich_text :description
-  enum :issue_type, { issue: 0, note: 1 }
+  enum :issue_type, { issue: 0, note: 1 }, default: :issue
   enum :fuel_type, { electricity: 0, gas: 1, solar: 2, gas_and_electricity: 3, alternative_heating: 4 }
-  enum :status, { open: 0, closed: 1 }, prefix: true
+  enum :status, { open: 0, closed: 1 }, prefix: true, default: :open
 
   validates :issue_type, :status, :title, :description, presence: true
   validate :school_issue_meters_only
 
-  after_initialize :set_enum_defaults
-  before_save :set_note_status
+  before_save :remove_review_date, if: -> { status_changed?(to: 'closed') }
 
   def resolve!(attrs = {})
     self.attributes = attrs
-    status_closed! if issue?
+    remove_review_date
+    status_closed!
   end
 
   def resolvable?
-    issue? && status_open?
+    status_open?
   end
 
   def self.csv_headers
     ['For', 'Name', 'Title', 'Description', 'Fuel type', 'Type', 'Status', 'Status summary', 'Meters', 'Meter status',
-     'Data sources', 'Owned by', 'Created by', 'Created at', 'Updated by', 'Updated at']
+     'Data sources', 'Owned by', 'Next review date', 'Created by', 'Created at', 'Updated by', 'Updated at']
   end
 
   def self.csv_attributes
     %w[issueable_type.titleize issueable.name title description.to_plain_text fuel_type issue_type status
-       status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name created_by.display_name created_at updated_by.display_name updated_at]
+       status_summary mpan_mprns admin_meter_statuses data_source_names owned_by.display_name review_date created_by.display_name created_at updated_by.display_name updated_at]
   end
 
   def self.issue_type_images
@@ -113,7 +126,7 @@ class Issue < ApplicationRecord
   end
 
   def status_summary
-    issue? ? "#{status} issue" : 'note'
+    "#{status} #{issue_type}"
   end
 
   def issue_type_image
@@ -154,15 +167,8 @@ class Issue < ApplicationRecord
 
   private
 
-  # From rails 6.1 onwards, a default for enums can be specified by setting by _default: :open or rails 7: default: :open on the enum definition
-  # But until then we have to do this:
-  def set_enum_defaults
-    self.issue_type ||= :issue
-    self.status ||= :open
-  end
-
-  def set_note_status
-    self.status = :open if note?
+  def remove_review_date
+    self.review_date = nil
   end
 
   def school_issue_meters_only

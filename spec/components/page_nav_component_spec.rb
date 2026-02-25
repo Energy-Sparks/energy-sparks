@@ -53,11 +53,13 @@ RSpec.describe PageNavComponent, type: :component do
       it { expect(list_item).to have_css('i.fa-bolt') }
       it { expect(list_item).to have_css('.bg-section') }
       it { expect(list_item).to have_css('.nav-link') }
+      it { expect(list_item).to have_css('.nav-text') }
       it { expect(list_item).to have_css('.toggler') }
+      it { expect(list_item).to have_css('.nav-toggle-icons') }
       it { expect(page_nav).to have_css('.page-nav-component') } # css based on this
     end
 
-    context 'with toggling for section' do
+    context 'without toggling for section' do
       let(:section_params) { { name: 'Section Name', toggler: false, visible: true, classes: 'bg-section' } }
 
       it { expect(list_item).not_to have_css('.toggler') }
@@ -100,8 +102,16 @@ RSpec.describe PageNavComponent, type: :component do
       subject(:list_item) { list_items[2] }
 
       it { expect(list_item).to have_css('.nav-link') }
+      it { expect(list_item).to have_css('.nav-text') }
       it { expect(list_item).to have_link('Item Name', href: '/schools/index') }
       it { expect(list_item).to have_css('.current') }
+
+      context 'with note on item' do
+        let(:item_params) { all_item_params.update(note: '(X)') }
+
+        it { expect(list_item).to have_css('.nav-toggle-icons') }
+        it { expect(list_item).to have_content('(X)') }
+      end
 
       context 'with match_controller set to false (default)' do
         let(:item_params) { all_item_params.update(href: '/schools/new')}
@@ -113,6 +123,24 @@ RSpec.describe PageNavComponent, type: :component do
         let(:item_params) { all_item_params.update(href: '/schools/new', match_controller: true)}
 
         it { expect(list_item).to have_css('.current') }
+      end
+
+      context 'with selected set to true for the item' do
+        let(:item_params) { all_item_params.update(href: '/schools/new', selected: true)}
+
+        it { expect(list_item).to have_css('.current') }
+      end
+
+      context 'with visible set to false for the item' do
+        let(:item_params) { all_item_params.update(href: '/schools/new', visible: false)}
+
+        it { expect(list_item).not_to have_link('Item Name') }
+      end
+
+      context 'with visible set to true for the item' do
+        let(:item_params) { all_item_params.update(href: '/schools/new', visible: true)}
+
+        it { expect(list_item).to have_link('Item Name') }
       end
 
       context 'with match_controller page nav option set to true' do

@@ -11,5 +11,5 @@ RSpec.shared_context 'when sending solar loader job emails' do
   # parse the html string into something we can match against
   let(:html_email)    { Capybara::Node::Simple.new(email_body) }
 
-  let(:meters_url) { school_meters_url(installation.school, host: 'localhost') }
+  let(:meters_url) { school_meters_url(installation.meters.first&.school || installation.school, host: 'localhost') }
 end

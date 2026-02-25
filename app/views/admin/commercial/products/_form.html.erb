@@ -1,0 +1,38 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'All products', admin_commercial_products_path %>
+<% end %>
+
+<div class="row">
+  <div class="col">
+    <% url = if product.new_record?
+               admin_commercial_products_path
+             else
+               admin_commercial_product_path(product)
+             end %>
+    <%= simple_form_for(product, as: :product, url: url) do |f| %>
+      <%= render 'shared/errors', subject: product, subject_name: 'product' %>
+      <%= f.input :name,
+                  hint: 'Name of the product. For internal use in reporting' %>
+      <%= f.input :comments,
+                  hint: 'Internal comments and notes' %>
+      <%= f.input :default_product,
+                  hint: 'Is this our default product? If true, will be used to display prices on website' %>
+      <%= f.input :small_school_price,
+                  hint: 'Price for smaller schools in £' %>
+      <%= f.input :large_school_price,
+                  hint: 'Price for larger schools in £' %>
+      <%= f.input :size_threshold,
+                  hint: 'Specifies the threshold, in number of pupils, for deciding whether a school is small '\
+                  'or large for price calculations' %>
+      <%= f.input :mat_price, hint: 'Price for MAT wide contracts in £' %>
+      <%= f.input :private_account_fee,
+                  hint: 'Annual price for a school to have a private account, in £' %>
+      <%= f.input :metering_fee,
+                  hint: 'Annual fee for schools with more than 5 meters. Price is per meter, per year in £' %>
+
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <%= link_to 'Cancel', admin_commercial_products_path, class: 'btn' %>
+    <% end %>
+  </div>
+</div>

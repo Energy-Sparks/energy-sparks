@@ -95,7 +95,7 @@ shared_examples 'a meter breakdown page' do
       end
 
       it 'links to additional analysis' do
-        expect(page).to have_link(I18n.t("advice_pages.#{fuel_type}_costs.analysis.meter_breakdown.title"))
+        expect(page).to have_link(I18n.t('advice_pages.electricity_costs.analysis.meter_breakdown.title'))
         if fuel_type == :electricity
           expect(page).to have_link(I18n.t('advice_pages.baseload.analysis.meter_breakdown.title'))
           expect(page).to have_link(I18n.t('advice_pages.baseload.analysis.seasonal_variation.title'))

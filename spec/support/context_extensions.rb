@@ -14,7 +14,6 @@ module ContextExtensions
   def context(description = nil, *args, with_feature: nil, without_feature: nil, toggle_feature: nil, **metadata, &block)
     description = "#{description} " if description
     if (name = toggle_feature || with_feature || without_feature)
-
       if toggle_feature || with_feature
         super("#{description}with #{name} feature switched on", *args, **metadata) do
           before { Flipper.enable(name) }

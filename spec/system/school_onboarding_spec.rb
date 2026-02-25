@@ -16,6 +16,7 @@ RSpec.describe 'onboarding', :schools do
     let!(:ks1) { KeyStage.create(name: 'KS1') }
     let!(:headteacher_role) { create(:staff_role, :management, title: 'Headteacher or Deputy Head') }
     let!(:governor_role) { create(:staff_role, :management, title: 'Governor') }
+    let!(:establishment) { create(:establishment, id: 100000, number_of_pupils: 321) }
 
     let!(:onboarding) do
       create(
@@ -23,7 +24,8 @@ RSpec.describe 'onboarding', :schools do
         event_names: [:email_sent],
         school_name: school_name,
         template_calendar: template_calendar,
-        created_by: admin
+        created_by: admin,
+        urn: 100000
       )
     end
 
@@ -53,6 +55,7 @@ RSpec.describe 'onboarding', :schools do
 
         # School details
         expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_field('Number of pupils', with: '321')
         fill_in 'Unique Reference Number', with: urn
         fill_in 'Address', with: '1 Station Road'
         fill_in 'Postcode', with: postcode
@@ -452,6 +455,7 @@ RSpec.describe 'onboarding', :schools do
 
           context 'when school is later set as data enabled' do
             it 'sends data enabled emails' do
+              create(:consent_grant, school: school)
               school.update(visible: true)
               click_on 'Complete setup', match: :first
               SchoolCreator.new(school).make_data_enabled!

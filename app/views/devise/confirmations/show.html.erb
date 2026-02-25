@@ -1,0 +1,83 @@
+<% content_for :page_title do %>
+    <%= t('devise.passwords.edit.complete_your_registration') %>
+<% end %>
+<div class="application container">
+  <h1>
+    <%= t('devise.passwords.edit.complete_your_registration') %>
+  </h1>
+
+  <%= form_for(resource, as: resource_name, url: user_confirmation_confirm_path,
+                         html: { method: :post, class: 'form-horizontal' }) do |f| %>
+    <%= render 'devise/shared/error_messages', resource: resource %>
+
+    <%= hidden_field_tag :confirmation_token, params[:confirmation_token] %>
+
+    <%= render 'devise/passwords/password_fields',
+               resource: resource,
+               form: f,
+               minimum_password_length: @minimum_password_length %>
+
+    <%= render 'users/preferred_locale', resource:, form: f %>
+
+    <% if @allow_alerts %>
+      <hr>
+      <div class="form-group row">
+        <div class="col-sm-4">
+          <%= simple_fields_for :contact do |n| %>
+            <%= n.input :auto_create_alert_contact,
+                        label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
+                        as: :boolean,
+                        class: 'custom-checkbox pb-3',
+                        wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
+                        label_html: { class: 'custom-control-label' },
+                        input_html: {
+                          class: 'custom-control-input',
+                          checked: params[:contact].present? ? subscribe_to_alerts? : true
+                        } %>
+          <% end %>
+        </div>
+        <div class="col-sm-8">
+          <p><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts') %>:</p>
+          <ul>
+            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_1') %></li>
+            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_2') %></li>
+            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_3') %></li>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @can_subscribe_newsletter %>
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
+        </div>
+      </div>
+      <%= render 'users/emails/mailchimp_interest_fields',
+                 email_types: @email_types,
+                 interests: @interests %>
+
+    <% end %>
+
+    <div class="custom-control custom-checkbox agreements">
+      <%= f.check_box :terms_accepted,
+                      { class:
+                         class_names('custom-control-input multi-select', 'must-check': !resource.terms_accepted) },
+                      '1',
+                      '0' %>
+      <%= f.label :terms_accepted, t('terms_and_conditions.message_html',
+                                     terms_and_conditions_link: link_to(t('common.terms_and_conditions'),
+                                                                        terms_and_conditions_path,
+                                                                        target: '_blank', rel: 'noopener'),
+                                     privacy_policy_link: link_to(t('common.privacy_policy'),
+                                                                  privacy_and_cookie_policy_path,
+                                                                  target: '_blank',
+                                                                  rel: 'noopener')),
+                  class: 'custom-control-label' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit t('devise.passwords.edit.complete_registration'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

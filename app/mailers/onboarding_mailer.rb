@@ -1,5 +1,11 @@
+# frozen_string_literal: true
+
 class OnboardingMailer < LocaleMailer
   helper :application
+
+  def self.mailer
+    OnboardingMailer2025.enabled? ? OnboardingMailer2025 : self
+  end
 
   def onboarding_email
     @school_onboarding = params[:school_onboarding]
@@ -14,10 +20,10 @@ class OnboardingMailer < LocaleMailer
     @school_onboarding = params[:school_onboarding]
     @title = @school_onboarding.school_name
     @school_group_name = @school_onboarding.school&.school_group&.name
-    if @school_onboarding.created_by
-      make_bootstrap_mail(to: 'operations@energysparks.uk', subject:
-        default_i18n_subject(school: @school_onboarding.school_name, school_group: @school_group_name))
-    end
+    return unless @school_onboarding.created_by
+
+    subject = default_i18n_subject(school: @school_onboarding.school_name, school_group: @school_group_name)
+    make_bootstrap_mail(to: 'operations@energysparks.uk', subject:)
   end
 
   def reminder_email
@@ -47,7 +53,7 @@ class OnboardingMailer < LocaleMailer
   def welcome_email
     @school = params[:school]
     @title = @school.name
-    @to = user_emails(params[:users])
-    make_bootstrap_mail(to: @to)
+    @user = params[:user]
+    make_bootstrap_mail(to: @user.email)
   end
 end

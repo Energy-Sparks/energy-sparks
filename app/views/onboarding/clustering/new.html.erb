@@ -4,7 +4,7 @@
 
     <p>You are currently logged in as <strong><%= current_user.email %></strong></p>
 
-    <% if current_user.group_admin? %>
+    <% if current_user.group_user? %>
       <p>Do you want to complete onboarding for <%= @school_onboarding.school_name %> using this school group admin account?</p>
     <% else %>
       <p>Do you want to use this user as your administrator account for <%= @school_onboarding.school_name %>?</p>
@@ -12,7 +12,8 @@
 
     <%= simple_form_for(current_user, url: onboarding_clustering_path(@school_onboarding), method: :post) do |f| %>
       <%= f.button :submit, 'Yes, use this account' %>
-      <%= link_to "No, I'll use a different account", onboarding_sessions_path(@school_onboarding), method: :delete, class: 'btn' %>
+      <%= link_to "No, I'll use a different account",
+                  onboarding_sessions_path(@school_onboarding), method: :delete, class: 'btn' %>
     <% end %>
   </div>
 </div>

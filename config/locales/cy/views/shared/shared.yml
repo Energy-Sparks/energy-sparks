@@ -79,6 +79,7 @@ cy:
     reports: Adroddiadau
   manage_school_menu:
     batch_reports: Adroddiadau swp
+    digital_signage: Arwyddion digidol
     edit_school_details: Golygu manylion yr ysgol
     edit_school_times: Golygu amseroedd ysgol
     expert_analysis: Dadansoddiad arbenigol
@@ -118,6 +119,7 @@ cy:
     storage_heater_usage: Defnydd stôr-wresogyddion
   nav:
     enrol: Cofrestru
+    my_account: Fy nghyfrif
     my_schools: Fy ysgolion
     points: "%{count} o bwyntiau"
     sign_in: Mewngofnodi
@@ -131,12 +133,8 @@ cy:
     case_studies: Astudiaethau achos
     educational_workshops: Gweithdai addysg
     energy_audits: Archwiliadau ynni
-    for_local_authorities: Ar gyfer Awdurdodau Lleol
-    for_multi_academy_trusts: Ar gyfer Ymddiriedolaethau Aml-Academi
-    for_schools: Ar gyfer Ysgolion
     newsletters: Cylchlythyrau
     our_services: Ein gwasanaethau
-    pricing: Prisio
     training: Hyfforddiant
     videos: Fideos
   partners:

@@ -298,7 +298,7 @@
          "invite_only" : false
       },
       {
-         "summary" : "An online induction to help you get started reducing energy consumption with Energy Sparks.",
+         "summary" : "Another online induction to help you get started reducing energy consumption with Energy Sparks.",
          "is_locked" : false,
          "show_remaining" : false,
          "organization_id" : "481005739735",
@@ -360,8 +360,8 @@
          "show_pick_a_seat" : false,
          "online_event" : true,
          "name" : {
-            "html" : "Energy Sparks induction session",
-            "text" : "Energy Sparks induction session"
+            "html" : "Another Energy Sparks induction session",
+            "text" : "Another Energy Sparks induction session"
          },
          "inventory_type" : "limited",
          "organizer_id" : "31812421981",

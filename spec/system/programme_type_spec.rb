@@ -522,6 +522,20 @@ RSpec.describe 'programme types', :include_application_helper, type: :system do
       it_behaves_like 'a user that has not yet enrolled in a programme'
       it_behaves_like 'a user that is enrolled in a programme'
     end
+
+    context 'as a student' do
+      let!(:pupil) { create(:student, school:) }
+
+      before do
+        sign_in pupil
+        visit programme_types_path
+      end
+
+      it_behaves_like 'a no active programmes prompt'
+      it_behaves_like 'a user enrolling in a programme'
+      it_behaves_like 'a user that has not yet enrolled in a programme'
+      it_behaves_like 'a user that is enrolled in a programme'
+    end
   end
 
   context with_feature: :todos do

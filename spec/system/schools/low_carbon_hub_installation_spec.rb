@@ -16,7 +16,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
 
     context 'with no api feeds' do
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'I can add and delete a low carbon hub installation' do
@@ -102,7 +102,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
         end.to change(Meter, :count).by(3).and change(AmrValidatedReading, :count).by(3)
 
         visit school_meters_path(school)
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
 
         low_carbon_hub_installation = LowCarbonHubInstallation.first
 
@@ -119,7 +119,7 @@ RSpec.describe 'Low carbon hub management', :low_carbon_hub_installations do
       let!(:installation) { create(:low_carbon_hub_installation, school: school) }
 
       before do
-        click_on 'Manage Solar API feeds'
+        click_on 'Solar Feeds'
       end
 
       it 'displays the check button with a question mark by default' do

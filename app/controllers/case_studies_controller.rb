@@ -1,17 +1,27 @@
-class CaseStudiesController < ApplicationController
-  include StorageHelper
+class CaseStudiesController < DownloadableController
   skip_before_action :authenticate_user!
+
+  layout 'home'
+
   def index
-    @case_studies = CaseStudy.order(position: :asc)
+    @case_studies = CaseStudy.published.order(:position)
+
+    @show_images = @case_studies.without_images.none? || (params[:show_images] && current_user&.admin?)
+
+    if params[:show_images] && current_user&.admin? # show case studies with images first
+      @case_studies = @case_studies.to_a.sort_by do |cs|
+        [(cs.image.attached? ? 0 : 1), cs.position]
+      end
+    end
   end
 
-  def download
-    resource = CaseStudy.find_by(id: params[:id])
-    if resource.present?
-      file = resource.t_attached(:file, params[:locale])
-      serve_from_storage(file, params[:serve])
-    else
-      route_not_found
-    end
+  private
+
+  def downloadable_model_class
+    CaseStudy
+  end
+
+  def file(model)
+    model.t_attached(:file, params[:locale])
   end
 end

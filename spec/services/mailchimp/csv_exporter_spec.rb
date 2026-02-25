@@ -91,7 +91,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a school admin' do
-      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35) }
+      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, default_issues_admin_user: nil, region: :east_midlands, percentage_free_school_meals: 35) }
       let!(:user) { create(:school_admin, school: school) }
 
       it 'matches the contact' do
@@ -171,7 +171,7 @@ describe Mailchimp::CsvExporter do
       end
 
       context 'with archived school' do
-        let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, :archived, region: :east_midlands) }
+        let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, :archived, default_issues_admin_user: nil, region: :east_midlands) }
 
         it 'uses correct status' do
           expect(contact.school_status).to eq 'Archived'
@@ -207,14 +207,14 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a group admin' do
-      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
+      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil)) }
 
       it_behaves_like 'it correctly creates a contact', group_admin: true
       it_behaves_like 'it adds interests correctly'
 
       context 'when subscribed to alerts' do
         let!(:user) do
-          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools)
+          school_group = create(:school_group, :with_default_scoreboard, :with_active_schools, default_issues_admin_user: nil)
           user = create(:group_admin, school_group: school_group)
           user.contacts << create(:contact_with_name_email_phone, school: school_group.schools.first)
           user
@@ -227,7 +227,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a cluster admin' do
-      let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: create(:school_group, :with_default_scoreboard)) }
+      let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil)) }
       let!(:user) { create(:school_admin, :with_cluster_schools, school: school) }
 
       it_behaves_like 'it correctly creates a contact', school_user: false, cluster_admin: true
@@ -297,7 +297,7 @@ describe Mailchimp::CsvExporter do
     let(:contact) { service.new_nonsubscribed.first }
 
     context 'with a school admin' do
-      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35) }
+      let!(:school) { create(:school, :with_school_group, :with_scoreboard, :with_local_authority, region: :east_midlands, default_issues_admin_user: nil, percentage_free_school_meals: 35) }
       let!(:user) { create(:school_admin, school: school) }
 
       before do
@@ -324,7 +324,7 @@ describe Mailchimp::CsvExporter do
     end
 
     context 'with a group admin' do
-      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard)) }
+      let!(:user) { create(:group_admin, school_group: create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil)) }
 
       before do
         service.perform
@@ -383,7 +383,7 @@ describe Mailchimp::CsvExporter do
   end
 
   context 'when there is a mixture of user types' do
-    let!(:school_group) { create(:school_group, :with_default_scoreboard) }
+    let!(:school_group) { create(:school_group, :with_default_scoreboard, default_issues_admin_user: nil) }
     let!(:school) { create(:school, :with_scoreboard, :with_local_authority, region: :east_midlands, percentage_free_school_meals: 35, school_group: school_group) }
     let!(:school_admin) { create(:school_admin, school: school) }
     let!(:group_admin) { create(:group_admin, school_group: school_group) }

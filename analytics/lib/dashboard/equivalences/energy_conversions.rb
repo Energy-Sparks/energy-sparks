@@ -40,13 +40,13 @@ class EnergyConversions
     {
       equivalence:                  equivalence,
       formatted_equivalence:        formatted_equivalence,
-      old_formatted_equivalence:    FormatEnergyUnit.format(units_of_equivalance, equivalence),
+      old_formatted_equivalence:    FormatUnit.format(units_of_equivalance, equivalence),
       units_of_equivalance:         units_of_equivalance,
       show_equivalence:             show_equivalence(units_of_equivalance, equivalence),
       kwh:                          kwh,
-      formatted_kwh:                FormatEnergyUnit.format(:kwh, kwh),
+      formatted_kwh:                FormatUnit.format(:kwh, kwh),
       value_in_via_units:           value, # in kWh, CO2 or £
-      formatted_via_units_value:    FormatEnergyUnit.format(kwh_co2_or_£, value),
+      formatted_via_units_value:    FormatUnit.format(kwh_co2_or_£, value),
       conversion:                   conversion,
       conversion_factor:            kwh == 0.0 ? nil : (value / kwh),
       via:                          kwh_co2_or_£,
@@ -61,7 +61,7 @@ class EnergyConversions
     if %i[electricity storage_heaters].include?(meter_type)
       CalculateAggregateValues.new(@meter_collection).uk_electricity_grid_carbon_intensity_for_period_kg_per_kwh(time_scale)
     else
-      EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH # default for cashing purposes if not electricity
+      EnergyEquivalences.co2_kg_kwh(:electricity) # default for cashing purposes if not electricity
     end
   end
 
@@ -71,7 +71,8 @@ class EnergyConversions
 
   private def calculation_description(kwh, fuel_type, equiv_type, kwh_co2_or_£, grid_intensity)
     fuel_type = :electricity if fuel_type == :allelectricity_unmodified
-    _val, _equ, calc, in_text, out_text = EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, kwh_co2_or_£, grid_intensity)
+    _val, _equ, calc, in_text, out_text = \
+      EnergyEquivalences.convert(kwh, :kwh, fuel_type, equiv_type, equiv_type, kwh_co2_or_£)
     in_text + out_text + calc
   end
 
@@ -90,7 +91,7 @@ class EnergyConversions
   private def scaled_results(conversion, time_period, unscaled_results)
     scale = scale_conversion_period(time_period, conversion[:equivalence_timescale])
     scaled_equivalence = unscaled_results[:equivalence] * scale
-    old_formatted_equivalence = FormatEnergyUnit.format(conversion[:timescale_units], scaled_equivalence)
+    old_formatted_equivalence = FormatUnit.format(conversion[:timescale_units], scaled_equivalence)
     formatted_equivalence = format_equivalance_for_front_end(conversion[:timescale_units], scaled_equivalence)
     {
       equivalence_scaled_to_time_period:        scaled_equivalence,
@@ -105,12 +106,12 @@ class EnergyConversions
 
   # temporary/short term adjustment to meet front end requirements
   private def format_equivalance_for_front_end(units_of_equivalance, equivalence)
-    return FormatEnergyUnit.format(units_of_equivalance, equivalence) if %i[kwh kg £ km].include?(units_of_equivalance)
-    return FormatEnergyUnit.format(:kg, equivalence) if units_of_equivalance == :co2
+    return FormatUnit.format(units_of_equivalance, equivalence) if %i[kwh kg £ km].include?(units_of_equivalance)
+    return FormatUnit.format(:kg, equivalence) if units_of_equivalance == :co2
     if %i[onshore_wind_turbine_hours offshore_wind_turbine_hours hour].include?(units_of_equivalance)
-      return FormatEnergyUnit.format(:years, equivalence / 24.0 / 365.0)
+      return FormatUnit.format(:years, equivalence / 24.0 / 365.0)
     else
-      return FormatEnergyUnit.format(Float, equivalence)
+      return FormatUnit.format(Float, equivalence)
     end
   end
 
@@ -150,10 +151,10 @@ class EnergyConversions
   end
 
   # converts energy_equivalence_conversions ENERGY_EQUIVALENCES to form flattened choice of conversions for the from end
-  def self.generate_conversion_list(grid_intensity = EnergyEquivalences::UK_ELECTRIC_GRID_CO2_KG_KWH)
+  def self.generate_conversion_list
     conversions = {}
     EnergyEquivalences.equivalence_types.each do |conversion_key|
-      conversion_data = EnergyEquivalences.equivalence_configuration(conversion_key, grid_intensity)
+      conversion_data = EnergyEquivalences.equivalence_configuration(conversion_key)
       next unless conversion_data.key?(:convert_to)
       conversion_data[:conversions].each do |via, via_data|
         next unless via_data.key?(:front_end_description)
@@ -209,10 +210,8 @@ end
 
 class EnergyConversionsOutOfHours < EnergyConversions
   def self.random_out_of_hours_to_exemplar_percent_improvement(school, fuel_type, exemplar_percent)
-    equivalence = EnergyConversionsOutOfHours.new(school)
-    equivalences = generate_conversion_list
-    random_index = Random.rand(generate_conversion_list.length)
-    equivalence.front_end_convert(EnergyConversionsOutOfHours.generate_conversion_list.keys[random_index], { year: 0}, fuel_type, exemplar_percent)
+    equivalence = new(school)
+    equivalence.front_end_convert(generate_conversion_list.keys.sample, { year: 0}, fuel_type, exemplar_percent)
   end
 
   def front_end_convert(convert_to, time_period, meter_type, exemplar_percent)

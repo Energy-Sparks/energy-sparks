@@ -28,18 +28,6 @@ RSpec.shared_examples 'admin school group onboardings' do
           it { expect(onboarding.school).not_to be_visible }
           it { expect(onboarding).to be_incomplete }
 
-          context 'without consents' do
-            before do
-              @back = current_path
-              click_button 'Make selected visible'
-            end
-
-            it { expect(page).to have_current_path(@back) }
-            it { expect(page).to have_content('School cannot be made visible as we dont have a record of consent') }
-            it { expect(page).to have_no_content('schools made visible') }
-            it { expect(onboarding.reload.school).not_to be_visible }
-          end
-
           context 'with consent' do
             before do
               Wisper.clear
@@ -135,20 +123,51 @@ RSpec.shared_examples 'admin school group onboardings' do
   context 'when linking to issues' do
     context 'when there is an associated school' do
       let(:setup_data) { create(:school_onboarding, :with_school, school_group:) }
+      let(:onboarding) { setup_data }
 
       it 'has a school issues link' do
         within 'table' do
-          expect(page).to have_link('Issues', href: admin_school_issues_path(setup_data.school))
+          expect(page).to have_link('Issues', href: admin_school_issues_path(onboarding.school))
+        end
+      end
+
+      describe 'when trying to complete onboarding' do
+        before do
+          check "school_group_school_onboarding_ids_#{onboarding.id}"
+        end
+
+        describe 'it does not make visible' do
+          before do
+            click_button 'Make selected visible'
+          end
+
+          it { expect(onboarding).to be_incomplete }
         end
       end
     end
 
     context 'when without an associated school' do
       let(:setup_data) { create(:school_onboarding, school_group:) }
+      let(:onboarding) { setup_data }
 
       it 'has a onboarding issues link' do
         within 'table' do
-          expect(page).to have_link('Issues', href: admin_school_onboarding_issues_path(setup_data))
+          expect(page).to have_link('Issues', href: admin_school_onboarding_issues_path(onboarding))
+        end
+      end
+
+      describe 'when trying to complete onboarding' do
+        before do
+          check "school_group_school_onboarding_ids_#{onboarding.id}"
+        end
+
+        describe 'it does not make visible' do
+          before do
+            click_button 'Make selected visible'
+          end
+
+          it { expect(onboarding.school).to be_nil }
+          it { expect(onboarding).to be_incomplete }
         end
       end
     end

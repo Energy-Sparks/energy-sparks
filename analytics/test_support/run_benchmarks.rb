@@ -189,7 +189,7 @@ class RunBenchmarks
     column_units = column_definitions.map{ |column_definition| column_definition[:units] }
     formatted_rows = rows.map do |row|
       row.each_with_index.map do |value, index|
-        column_units[index] == String ? value : FormatEnergyUnit.format(column_units[index], value, :html, false, true, :ks2)
+        column_units[index] == String ? value : FormatUnit.format(column_units[index], value, :html, false, true, :ks2)
       end
     end
   end

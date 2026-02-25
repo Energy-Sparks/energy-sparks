@@ -1,4 +1,4 @@
-<div>
+<%= tag.div id: id, class: classes do %>
   <div class="modal fade" id="<%= @modal_id %>" tabindex="-1" role="dialog" aria-labelledby="#<%= @modal_id %>-title" aria-hidden="true">
     <div class="modal-dialog <%= @modal_dialog_classes %>" role="document">
       <div class="modal-content">
@@ -17,4 +17,4 @@
       </div>
     </div>
   </div>
-</div>
+<% end %>

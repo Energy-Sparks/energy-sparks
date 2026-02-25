@@ -6,6 +6,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   let(:user) {}
 
   before do
+    Flipper.enable :support_pages
     sign_in(user) if user
     visit root_path(locale: locale)
   end
@@ -40,12 +41,9 @@ RSpec.describe 'Navigation -> top nav', type: :system do
     let(:our_services) { nav.find(:css, '#our-services') }
 
     it 'has all menu options' do
-      expect(our_services).to have_link('For Schools')
-      expect(our_services).to have_link('For Multi-Academy Trusts')
-      expect(our_services).to have_link('For Local Authorities')
+      expect(our_services).to have_link('Energy management tool')
       expect(our_services).to have_link('Energy audits')
       expect(our_services).to have_link('Education workshops')
-      expect(our_services).to have_link('Pricing')
       expect(our_services).to have_link('Training')
       expect(our_services).to have_link('Case studies')
       expect(our_services).to have_link('Newsletters')
@@ -65,16 +63,13 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       expect(about_us).to have_link('Team')
       expect(about_us).to have_link('Blog')
       expect(about_us).to have_link('Our funders')
+      expect(about_us).to have_link('Support us', href: support_us_path)
       expect(about_us).to have_link('Jobs')
       expect(about_us).to have_link('Terms and conditions')
       expect(about_us).to have_link('Privacy policy')
       expect(about_us).to have_link('Child safeguarding')
       expect(about_us).to have_link('School statistics')
     end
-  end
-
-  it 'links to support us' do
-    expect(nav).to have_link 'Support us', href: support_us_path
   end
 
   it 'does not link to manage menu' do

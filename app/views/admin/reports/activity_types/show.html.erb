@@ -75,40 +75,7 @@
       images provided by the user
     </p>
 
-    <table class="table table-sm table-sorted">
-      <thead>
-        <tr>
-          <th>Recorded</th>
-          <th>Happened</th>
-          <th>School</th>
-          <th>Score</th>
-          <th>Title</th>
-          <th>Images?</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @activities.each do |activity| %>
-          <tr>
-            <td><%= nice_dates(activity.created_at) %></td>
-            <td><%= nice_dates(activity.happened_on) %></td>
-            <td><%= link_to activity.school.name, school_timeline_path(activity.school) %></td>
-            <td><%= activity.observations.any? ? activity.points : '-' %></td>
-            <td>
-              <%= link_to school_activity_path(activity.school, activity) do %>
-                <% if activity.title.present? %>
-                  <span class="text-success"><%= activity.title %></span>
-                <% else %>
-                  <span class="text-muted"><%= activity.activity_type.name %></span>
-                <% end %>
-              <% end %>
-            </td>
-            <td>
-              <%= fa_icon('check-circle text-success') if activity.description_includes_images? %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <%= render 'shared/activities', activities: @activities %>
   </div>
 </div>
 

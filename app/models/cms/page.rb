@@ -38,7 +38,6 @@ module Cms
     enum(:audience, %w[anyone school_users school_admins group_admins].to_h { |v| [v, v] })
 
     validates_presence_of :title, :description
-    validate :change_publication_status?, on: :update
 
     belongs_to :category, class_name: 'Cms::Category'
     has_many :sections, class_name: 'Cms::Section', dependent: :nullify
@@ -46,6 +45,10 @@ module Cms
     scope :by_category_and_title, -> { i18n.order(category_id: :asc, title: :asc) }
 
     accepts_nested_attributes_for :sections
+
+    def self.publishable_error_without
+      'without any published sections'
+    end
 
     def publishable?
       sections.published.any?

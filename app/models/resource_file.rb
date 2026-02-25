@@ -27,6 +27,6 @@ class ResourceFile < ApplicationRecord
   def self.user_guide_download_path
     user_guide = find_by(title: 'Energy Sparks User Guide')
     return Rails.application.routes.url_helpers.resources_path unless user_guide
-    Rails.application.routes.url_helpers.serve_resource_path(user_guide, :download)
+    Rails.application.routes.url_helpers.resource_file_download_path(user_guide, :download)
   end
 end

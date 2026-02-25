@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'manage school', type: :system do
+RSpec.describe 'manage school' do
   let(:school) { create(:school, :with_school_group) }
-  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true)}
+  let!(:fuel_configuration) { Schools::FuelConfiguration.new(has_electricity: true, has_gas: true, has_storage_heaters: true) }
 
   before do
+    Flipper.enable(:manual_readings)
+    create(:manual_reading, school:, electricity: 1)
     # Update the configuration rather than creating one, as the school factory builds one
     # and so if we call create(:configuration, school: school) we end up with 2 records for the has_one
     # relationship
@@ -18,28 +22,18 @@ RSpec.describe 'manage school', type: :system do
 
     it 'does not have a manage menu' do
       visit school_path(school)
-      expect(page).not_to have_css('#manage_school')
+      expect(page).to have_no_css('#manage_school')
     end
   end
 
-  context 'as pupil' do
-    let(:user) { create(:pupil, school: school) }
+  %i[pupil student staff].each do |role|
+    context "as #{role}" do
+      let(:user) { create(role, school: school) }
 
-    it 'does not have my school menu' do
-      visit school_path(school, switch: true)
-      expect(page).not_to have_css('#manage_school')
-    end
-  end
-
-  context 'as staff' do
-    let(:user) { create(:staff, school: school) }
-
-    before do
-      visit school_path(school)
-    end
-
-    it 'does not have a manage menu' do
-      expect(page).not_to have_css('#manage_school')
+      it 'does not have my school menu' do
+        visit school_path(school, switch: true)
+        expect(page).to have_no_css('#manage_school')
+      end
     end
   end
 
@@ -54,6 +48,7 @@ RSpec.describe 'manage school', type: :system do
         expect(page).to have_link('Manage alert contacts')
         expect(page).to have_link('Manage meters')
         expect(page).to have_link('Digital signage')
+        expect(page).to have_link('Supply historical manual readings', href: "/schools/#{school.slug}/manual_readings")
       end
     end
   end
@@ -65,14 +60,12 @@ RSpec.describe 'manage school', type: :system do
         expect(page).to have_link('Review school setup')
         expect(page).to have_link('School configuration')
         expect(page).to have_link('Meter attributes')
-        expect(page).to have_link('Manage CADs')
         expect(page).to have_link('Manage school group')
         expect(page).to have_link('Manage issues')
-        expect(page).to have_link('Manage partners')
         expect(page).to have_link('Batch reports')
-        expect(page).to have_link('Review targets')
         expect(page).to have_link('Expert analysis')
         expect(page).to have_link('Remove school')
+        expect(page).to have_link(I18n.t('components.manage_school_navigation.settings'))
       end
     end
   end
@@ -81,17 +74,15 @@ RSpec.describe 'manage school', type: :system do
     it 'does not shows extra manage menu items' do
       expect(page).to have_css('#manage_school')
       within '#manage_school_menu' do
-        expect(page).not_to have_link('Review school setup')
-        expect(page).not_to have_link('School configuration')
-        expect(page).not_to have_link('Meter attributes')
-        expect(page).not_to have_link('Manage CADs')
-        expect(page).not_to have_link('Manage school group')
-        expect(page).not_to have_link('Manage issues')
-        expect(page).not_to have_link('Manage partners')
-        expect(page).not_to have_link('Batch reports')
-        expect(page).not_to have_link('Review targets')
-        expect(page).not_to have_link('Expert analysis')
-        expect(page).not_to have_link('Remove school')
+        expect(page).to have_no_link('Review school setup')
+        expect(page).to have_no_link('School configuration')
+        expect(page).to have_no_link('Meter attributes')
+        expect(page).to have_no_link('Manage school group')
+        expect(page).to have_no_link('Manage issues')
+        expect(page).to have_no_link('Batch reports')
+        expect(page).to have_no_link('Expert analysis')
+        expect(page).to have_no_link('Remove school')
+        expect(page).to have_link(I18n.t('components.manage_school_navigation.settings'))
       end
     end
   end
@@ -132,7 +123,7 @@ RSpec.describe 'manage school', type: :system do
       expect(page).to have_link('Email and SMS reports')
     end
 
-    context 'with status toggles' do
+    context 'with status toggles', with_feature: :new_manage_school_pages do
       it 'links to the configuration page for data access settings' do
         visit school_path(school)
         click_on('Public')
@@ -148,8 +139,7 @@ RSpec.describe 'manage school', type: :system do
         expect(school.data_sharing_within_group?).to be true
       end
 
-      it 'allows toggling visibility if consent granted' do
-        create :consent_grant, school: school
+      it 'allows toggling visibility' do
         visit school_path(school)
         click_on('Visible')
         school.reload
@@ -159,31 +149,19 @@ RSpec.describe 'manage school', type: :system do
         expect(school).to be_visible
       end
 
-      it 'disallows toggling visibility if no consent' do
-        expect(school.consent_up_to_date?).to be false
-        visit school_path(school)
-        click_on('Visible')
-        school.reload
-        expect(school).not_to be_visible
-        click_on('Visible')
-        expect(page).to have_content('School cannot be made visible as we dont have a record of consent')
-        school.reload
-        expect(school).not_to be_visible
-      end
-
       it 'allows toggling of data processing' do
         create(:gas_meter, :with_unvalidated_readings, school: school)
         school.update(process_data: false)
         visit school_path(school)
-        expect(page).not_to have_link(href: school_batch_runs_path(school))
+        expect(page).to have_no_link(href: school_batch_runs_path(school))
         click_on('Process data')
         expect(page).to have_content "#{school.name} will now process data"
         expect(page).to have_link(href: school_batch_runs_path(school))
         school.reload
-        expect(school.process_data).to eq(true)
+        expect(school.process_data).to be(true)
         click_on('Process data')
         school.reload
-        expect(school.process_data).to eq(false)
+        expect(school.process_data).to be(false)
       end
 
       it 'disallows toggling of data processing if the school has no meter readings' do
@@ -192,10 +170,11 @@ RSpec.describe 'manage school', type: :system do
         click_on('Process data')
         expect(page).to have_content "#{school.name} cannot process data as it has no meter readings"
         school.reload
-        expect(school.process_data).to eq(false)
+        expect(school.process_data).to be(false)
       end
 
       it 'allows toggling of data enabled via the review page' do
+        create(:consent_grant, school: school)
         visit school_path(school)
         click_on('Data visible')
         school.reload

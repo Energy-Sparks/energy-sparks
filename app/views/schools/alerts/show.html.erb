@@ -1,9 +1,7 @@
-<% content_for :page_title do %>Alert for <%= @school.name %><% end %>
-<div class="row padded-row">
-  <div class="col-md-12">
-    <h1 property="name"><%= link_to @school.name, @school %></h1>
-  </div>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Alert" do %>
 
+<div class="row padded-row">
   <div class="col-md-12">
     <div class="card mb-3">
       <div class="card-header text-white <%= class_for_alert_rating(@alert.rating) %>">
@@ -33,3 +31,5 @@
     </div>
   </div>
 </div>
+
+<% end %>

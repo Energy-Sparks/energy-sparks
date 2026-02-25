@@ -17,7 +17,7 @@
 class AdvicePage < ApplicationRecord
   extend Mobility
   include TransifexSerialisable
-  include EnumFuelType
+  include Enums::FuelType
 
   translates :learn_more, backend: :action_text
 

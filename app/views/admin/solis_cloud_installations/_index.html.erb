@@ -1,0 +1,35 @@
+<table class="table table-sorted">
+  <thead>
+    <tr>
+      <th>API ID</th>
+      <th>Schools</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @resources.order(:api_id).each do |installation| %>
+      <tr>
+        <td><%= link_to installation.api_id, edit_admin_solis_cloud_installation_path(installation) %></td>
+        <td><%= installation.meters.map { |meter| meter.school.name }.uniq.join(', ') %>
+        <td>
+          <div class='btn-group'>
+            <%= link_to 'Edit', edit_admin_solis_cloud_installation_path(installation), class: 'btn' %>
+            <%= link_to "#{fa_icon('circle-question')} Check API".html_safe,
+                        check_admin_solis_cloud_installation_path(installation),
+                        id: "check-button-#{installation.id}", method: :post, remote: true,
+                        class: 'btn check-button' %>
+            <%= form_tag submit_job_admin_solis_cloud_installation_path(installation), method: :post do %>
+              <%= button_tag(type: 'submit', class: 'btn') do %>
+                <%= fa_icon('upload') %> Run Loader
+              <% end %>
+            <% end %>
+            <%= link_to 'Delete', admin_solis_cloud_installation_path(installation),
+                        method: :delete,
+                        data: { confirm: 'Are you sure? This will also delete all its meters' },
+                        class: 'btn btn-danger' %>
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

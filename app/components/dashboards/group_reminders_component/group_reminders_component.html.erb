@@ -1,0 +1,69 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render PromptListComponent.new do |list| %>
+    <% if title? %>
+      <% list.with_title(level: 2) do %>
+        <%= title %>
+      <% end %>
+    <% end %>
+
+    <% add_prompt(id: 'school-group_dashboard_message',
+                  check: prompt_for_dashboard_message?,
+                  list: list,
+                  status: :negative,
+                  icon: 'info-circle') do %>
+      <%= school_group.dashboard_message&.message %>
+    <% end %>
+
+    <%# i18n-tasks-use t("schools.show.find_training") %>
+    <% add_prompt(id: :training,
+                  check: prompt_for_training?,
+                  list: list,
+                  status: :neutral,
+                  icon: 'info-circle',
+                  link: 'schools.show.find_training',
+                  path: training_path) do %>
+      <p>
+        <%= t('schools.show.online_training_signup') %>
+      </p>
+    <% end %>
+
+    <%# i18n-tasks-use t('components.dashboards.group_reminders.review_tariffs.link') %>
+    <% add_prompt(id: :review_tariffs,
+                  check: prompt_for_tariff_review?,
+                  list: list,
+                  status: :neutral,
+                  icon: 'file-invoice',
+                  link: 'components.dashboards.group_reminders.review_tariffs.link',
+                  path: school_group_energy_tariffs_path(school_group)) do %>
+      <p>
+        <%= t('components.dashboards.group_reminders.review_tariffs.note') %>
+      </p>
+    <% end %>
+
+    <%# i18n-tasks-use t('components.dashboards.group_reminders.onboarding.link') %>
+    <% add_prompt(id: :onboarding,
+                  check: prompt_for_onboarding?,
+                  list: list,
+                  status: :neutral,
+                  link: 'components.dashboards.group_reminders.onboarding.link',
+                  icon: 'address-card',
+                  path: school_group_status_index_path(school_group)) do %>
+      <p>
+        <%= t('components.dashboards.group_reminders.onboarding.note') %>
+      </p>
+    <% end %>
+
+    <%# i18n-tasks-use t('components.dashboards.group_reminders.clusters.link') %>
+    <% add_prompt(id: :clusters,
+                  check: prompt_for_clusters?,
+                  list: list,
+                  status: :neutral,
+                  icon: 'sitemap',
+                  link: 'components.dashboards.group_reminders.clusters.link',
+                  path: school_group_clusters_path(school_group)) do %>
+      <p>
+        <%= t('components.dashboards.group_reminders.clusters.note') %>
+      </p>
+    <% end %>
+  <% end %>
+<% end %>

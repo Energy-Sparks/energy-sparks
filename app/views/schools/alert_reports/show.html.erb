@@ -1,26 +1,29 @@
-<table class="table table-sm">
-  <thead>
-    <tr>
-      <th>Fuel Type</th>
-      <th>Alert Type</th>
-      <th>Displayable?</th>
-      <th>Rating</th>
-      <th>Valid?</th>
-      <th>Enough data?</th>
-      <th>Relevant?</th>
-      <th>Using data up to</th>
-      <th>Run on</th>
-    </tr>
-  </thead>
-  <%= render 'table', alerts: @analytics_alerts, school: @school, title: 'Standard alerts' %>
-  <%= render 'table', alerts: @system_alerts, school: @school, title: 'System alerts' %>
-  <%= render 'table', alerts: @analysis_alerts, school: @school, title: 'Analysis page alerts' %>
-</table>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Alert report" do %>
 
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Fuel Type</th>
+        <th>Alert Type</th>
+        <th>Displayable?</th>
+        <th>Rating</th>
+        <th>Valid?</th>
+        <th>Enough data?</th>
+        <th>Relevant?</th>
+        <th>Using data up to</th>
+        <th>Run on</th>
+      </tr>
+    </thead>
+    <%= render 'table', alerts: @analytics_alerts, school: @school, title: 'Standard alerts' %>
+    <%= render 'table', alerts: @system_alerts, school: @school, title: 'System alerts' %>
+    <%= render 'table', alerts: @analysis_alerts, school: @school, title: 'Analysis page alerts' %>
+  </table>
 
-<% if @errors.any? %>
-  <h2>Errors</h2>
-  <%= render 'errors', errors: @errors, school: @school %>
-<% else %>
-  <p>No alerts</p>
+  <% if @errors.any? %>
+    <h2>Errors</h2>
+    <%= render 'errors', errors: @errors, school: @school %>
+  <% else %>
+    <p>No alerts</p>
+  <% end %>
 <% end %>

@@ -1,6 +1,5 @@
-<% content_for :page_title do %>Alert reports for <%= @school.name %><% end %>
-
-<h1>Alert runs</h1>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Alert reports" do %>
 
 <table class="table">
   <thead>
@@ -22,3 +21,5 @@
     <% end %>
   </tbody>
 </table>
+
+<% end %>

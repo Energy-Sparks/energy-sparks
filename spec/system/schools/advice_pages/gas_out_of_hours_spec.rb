@@ -162,6 +162,11 @@ RSpec.describe 'gas out of hours advice page', type: :system do
           expect(page).not_to have_css('#chart_wrapper_gas_heating_season_intraday_up_to_1_year')
         end
 
+        # 8 weekend days, usage from factorybot is 0.5 kWh per half-hour. So 8 * 48 * 0.5 = 192 kWh
+        it 'has potential savings figures in by day section' do
+          expect(page).to have_content('By eliminating weekend gas consumption at your school you could save up to £19 (190kWh) per year.')
+        end
+
         it 'does not have a holiday usage section' do
           expect(page).not_to have_content(I18n.t('advice_pages.gas_out_of_hours.analysis.holiday_usage.title'))
           expect(page).not_to have_css('#chart_wrapper_management_dashboard_group_by_week_gas')

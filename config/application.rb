@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module EnergySparks
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.0
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
@@ -39,6 +39,7 @@ module EnergySparks
     config.session_store :cookie_store, key: '_energy-sparks_session'
     config.after_initialize do
       if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
+        require 'dashboard/alerts/common/benchmark_metrics'
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
 
@@ -62,14 +63,19 @@ module EnergySparks
     config.i18n.enforce_available_locales = true
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
-    config.view_component.show_previews = true
-    config.view_component.preview_paths << "#{Rails.root}/spec/components/previews"
-    config.view_component.preview_route = "/admin/components/previews"
-    config.view_component.default_preview_layout = "component_preview"
-    config.view_component.preview_controller = "Admin::ComponentPreviewsController"
+    config.view_component.previews.enabled = true
+    config.view_component.previews.paths << "#{Rails.root}/spec/components/previews"
+    config.view_component.previews.route = "/admin/components/previews"
+    config.view_component.previews.default_layout = "component_preview"
+    config.view_component.previews.controller = "Admin::ComponentPreviewsController"
     config.active_record.encryption.primary_key = '0UmFz7KnehkidvKKhMWrnvStuFFzM0oK'
     config.active_record.encryption.deterministic_key = 'eo84dBizRt6e4I68aD8IUrCBjuzTt7c7'
     config.active_record.encryption.key_derivation_salt = 'IXTWKMlViWaALgj3k2UNhIouWdOyXAwm'
     config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+    config.active_storage.variant_processor = :mini_magick # keep old default for now, breaks validation
+    # devise not supporting new default very well yet - https://github.com/heartcombo/devise/pull/5462
+    # should be resolved by rails 8.1 having config.action_controller.allowed_redirect_hosts
+    #   https://github.com/rails/rails/pull/55420
+    config.action_controller.raise_on_open_redirects = false
   end
 end

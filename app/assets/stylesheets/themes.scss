@@ -29,7 +29,7 @@
     }
   }
 
-  &.theme-light, &.theme-accent {
+  &.theme-light, &.theme-accent, &.theme-pale {
     h1, h2, h3, h4, h5, h6, .text-main {
       color: $blue-very-dark;
     }
@@ -49,10 +49,10 @@
 
     .badge {
       background-color: $yellow-light;
+      color: $blue-dark;
     }
 
     .btn-secondary {
-      background-color: transparent;
       @include button-outline-variant($blue-very-dark, $blue-very-dark, $blue-pale);
     }
   }
@@ -60,9 +60,16 @@
   &.theme-accent {
     background-color: $yellow-pale;
 
+    .badge {
+      background-color: $yellow-medium; // This is not in the design (open to other options!)
+    }
+
     .btn-secondary {
-      background-color: transparent;
       @include button-outline-variant($blue-very-dark, $blue-very-dark, $yellow-light);
     }
+  }
+
+  &.theme-pale {
+    background-color: $blue-pale;
   }
 }

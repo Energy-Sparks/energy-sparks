@@ -19,12 +19,10 @@ cy:
                 trydan yn y dyfodol agos?
               </p>
         comparison:
-          title: Cymhariaeth cost ar gyfer y 2 flynedd ddiwethaf
+          title: Cymhariaeth cost ar gyfer y 2 flynedd academaidd ddiwethaf
         cost_breakdown_by_charge:
           title: Dadansoddiad cost yn ôl tâl am y %{period} diwethaf
         cost_breakdown_by_meter:
-          intro: Mae'r tabl canlynol yn crynhoi cyfanswm y gost sy'n gysylltiedig â phob metr am y %{period} diwethaf rhwng %{start_date} a %{end_date}
-          title: Cyfanswm y gost am y %{period} diwethaf
           whole_school: Rydym yn amcangyfrif cyfanswm eich cost trydan dros y %{period} diwethaf i fod yn %{cost}.
         meter_breakdown:
           select: Dewiswch opsiwn i weld costau ar gyfer yr ysgol gyfan neu fesurydd penodol
@@ -51,9 +49,9 @@ cy:
           subtitle_html: Mae'r siart hwn yn dangos y cydrannau bil am y cyfnod sy'n dod i ben ar <span class='end-date'>%{end_date}</span> ar gyfer yr ysgol gyfan
           title: Cydrannau cost trydan ar gyfer yr ychydig wythnosnau diwethaf
         cost_comparison_last_2_years_accounting:
-          meter_title: Cymhariaeth costau trydan ar gyfer y 2 flynedd ddiwethaf ar gyfer %{meter}
-          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y 12 mis yn diweddu ar <span class='end-date'>%{end_date}</span> a'r 12 mis blaenorol
-          title: Cymhariaeth costau trydan am y 2 flynedd ddiwethaf
+          meter_title: Cymhariaeth costau trydan ar gyfer y 2 flynedd academaidd ddiwethaf ar gyfer %{meter}
+          subtitle_html: Mae'r siart hwn yn cymharu eich defnydd misol am y flwyddyn academaidd yn diweddu ar <span class='end-date'>%{end_date}</span> â'r flwyddyn academaidd blaenorol
+          title: Cymhariaeth costau trydan am y 2 flynedd academaidd ddiwethaf
       insights:
         current_costs:
           title: Eich costau presennol
@@ -66,10 +64,3 @@ cy:
         link: Dysgu rhagor
         next_steps_html: I gael amcangyfrif gwell o'ch costau, <a href="%{link}">diweddarwch eich gwybodaeth tariff</a>
       page_title: Dadansoddiad cost trydan
-      tables:
-        columns:
-          cost: Cost (£)
-          meter: Mesurydd
-          name: Enw
-        labels:
-          total: Cyfanswm

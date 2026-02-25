@@ -59,14 +59,15 @@ class Meter < ApplicationRecord
   belongs_to :admin_meter_status, foreign_key: 'admin_meter_statuses_id', optional: true
 
   has_one :rtone_variant_installation, required: false
+  has_one :school_group, through: :school
 
   has_many :amr_data_feed_readings,     inverse_of: :meter
   has_many :amr_validated_readings,     inverse_of: :meter, dependent: :destroy
   has_many :meter_attributes
   has_many :issue_meters, dependent: :destroy
   has_many :issues, through: :issue_meters
+  has_many :meter_monthly_summaries
 
-  has_one :school_group, through: :school
   has_and_belongs_to_many :energy_tariffs, inverse_of: :meters
 
   CREATABLE_METER_TYPES = %i[electricity gas solar_pv exported_solar_pv].freeze
@@ -90,7 +91,8 @@ class Meter < ApplicationRecord
   scope :dcc, -> { where(dcc_meter: %i[smets2 other]) }
   scope :consented, -> { dcc.where(consent_granted: true) }
   scope :not_recently_checked, -> { where('dcc_checked_at is NULL OR dcc_checked_at < ?', 7.days.ago) }
-  scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked }
+  scope :meters_to_check_against_dcc, -> { main_meter.not_dcc.not_recently_checked.joins(:school).merge(School.active) }
+
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
@@ -109,6 +111,12 @@ class Meter < ApplicationRecord
   scope :with_active_meter_attributes, ->(attribute_types) {
     joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
   }
+
+  scope :with_school_and_group, -> { includes(:school, school: :school_group) }
+
+  scope :for_school_group, ->(school_group) { where(school: { school_group: school_group }) }
+
+  scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
 
   # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
@@ -147,7 +155,7 @@ class Meter < ApplicationRecord
 
   def admin_meter_status_label
     for_fuel_type = (fuel_type == :exported_solar_pv ? :solar_pv : fuel_type)
-    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || ''
+    admin_meter_status&.label || school&.school_group&.send(:"admin_meter_status_#{for_fuel_type}")&.label || nil
   end
 
   def fuel_type

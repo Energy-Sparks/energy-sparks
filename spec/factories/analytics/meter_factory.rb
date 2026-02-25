@@ -4,7 +4,9 @@ FactoryBot.define do
   factory :meter, class: 'Dashboard::Meter' do
     transient do
       meter_collection        { nil }
-      amr_data                { build(:amr_data, :with_days, day_count: 30) }
+      kwh_data_x48            { nil }
+      day_count               { 30 }
+      amr_data                { build(:amr_data, :with_days, day_count:, kwh_data_x48:) }
       type                    { :gas }
       sequence(:identifier)   { |n| n }
       sequence(:name)         { |n| "Meter #{n}" }
@@ -17,18 +19,13 @@ FactoryBot.define do
     end
 
     initialize_with do
-      new(meter_collection: meter_collection,
-          amr_data: amr_data, type: type, identifier: identifier,
-          name: name, floor_area: floor_area, number_of_pupils: number_of_pupils,
-          solar_pv_installation: solar_pv_installation,
-          external_meter_id: external_meter_id,
-          dcc_meter: dcc_meter,
-          meter_attributes: meter_attributes)
+      new(meter_collection:, amr_data:, type:, identifier:, name:, floor_area:, number_of_pupils:,
+          solar_pv_installation:, external_meter_id:, dcc_meter:, meter_attributes:)
     end
 
     trait :with_flat_rate_tariffs do
       transient do
-        rates { create_flat_rate(rate: 0.10, standing_charge: 1.0) }
+        rates { nil }
         tariff_start_date { nil }
         tariff_end_date   { nil }
       end
@@ -37,7 +34,7 @@ FactoryBot.define do
         accounting_tariff = create_accounting_tariff_generic(
           start_date: tariff_start_date,
           end_date: tariff_end_date,
-          rates: rates
+          rates: rates || create_flat_rate(rate: 0.1, standing_charge: 1.0)
         )
         new(meter_collection: meter_collection,
             amr_data: amr_data, type: type, identifier: identifier,
@@ -104,6 +101,19 @@ FactoryBot.define do
               meter_collection: meter_collection,
               type: :electricity, meter_attributes: meter_attributes,
               amr_data: amr_data)
+      end
+    end
+
+    trait :aggregate_meter do
+      transient do
+        start_date { Date.yesterday - 7 }
+        end_date { Date.yesterday }
+        kwh_data_x48 { nil }
+        amr_data { build(:amr_data, :with_date_range, start_date:, end_date:, kwh_data_x48:) }
+      end
+
+      after(:build) do |meter, evaluator|
+        evaluator.meter_collection.set_aggregate_meter(evaluator.type, meter)
       end
     end
   end

@@ -1,0 +1,39 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: @funder.name %>
+  <% header_nav.with_button 'All funders', admin_funders_path %>
+<% end %>
+
+<h2>Funder allocations (current model)</h2>
+
+<table class="table table-sm">
+  <thead>
+    <th>Category</th>
+    <th>Schools</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Visible not data enabled</td>
+      <td><%= @funder.schools.visible.where(data_enabled: false).count %></td>
+    </tr>
+    <tr>
+      <td>Visible and data enabled</td>
+      <td><%= @funder.schools.visible.data_enabled.count %></td>
+    </tr>
+    <tr>
+      <td>Onboarding</td>
+      <td>
+        <%= @funder.school_onboardings.where(school_id: nil).count %>
+      </td>
+    </tr>
+    <tr>
+      <td>Total</td>
+      <td><%= @funder.schools.visible.count + @funder.school_onboardings.where(school_id: nil).count %></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col">
+    <%= render(Commercial::ContractsComponent.new(holder: @funder)) %>
+  </div>
+</div>

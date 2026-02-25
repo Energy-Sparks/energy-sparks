@@ -73,7 +73,6 @@ cy:
         gas_out_of_hours: Sut mae defnydd nwy eich ysgolion y tu allan i oriau ysgol yn cymharu ag ysgolion eraill ar Sbarcynni, sydd ag arwynebedd llawr tebyg?
         heating_control: Sut mae dadansoddiad rheoli gwres eich ysgolion yn cymharu ag ysgolion eraill ar Sbarcynni, sydd ag arwynebedd llawr tebyg?
         thermostatic_control: Sut mae dadansoddiad rheolaeth thermostatig eich ysgolion yn cymharu ag ysgolion eraill ar Sbarcynni, sydd ag arwynebedd llawr tebyg?
-      introduction_html: Gweld cymhariaeth o ddefnydd %{fuel_types} ar draws nifer o feincnodau allweddol. Neu <a href="%{link}">archwiliwch yr holl feincnodau cymharu ysgolion ar gyfer y grŵp hwn</a>.
       modal_subtitle_html: "<p>Mae ysgolion yn cael eu meincnodi fel ysgolion cymaradwy yn seiliedig ar y nodweddion allweddol gan gynnwys \n</p>arwynebedd llawr, lleoliad, niferoedd disgyblion a math.\n<p>Mae ysgolion \"<span class=\"txt-exemplar_school\">enghreifftiol</span>\" yn cynrychioli'r 17.5% uchaf o ysgolion Sbarcynni</p>\n<p>\"Maeysgolion <span class=\"txt-benchmark_school\">\"a reolir yn dda\"</span> yn cynrychioli'r 30% uchaf o ysgolion Sbarcynni</p>\n<p>Mae'r ysgolion hyn wedi'u meincnodi fel <span class=\"txt-%{category_id}\">%{category}</span>.</p>"
       view_detailed_comparison: Gweld cymhariaeth fanwl
     current_scores:
@@ -82,7 +81,6 @@ cy:
       view_current_scores: Gweld y sgorau cyfredol
     download_as_csv: Lawrlwytho fel CSV
     header:
-      view_group: Gweld y dangosfwrdd
       view_map: Gweld y map
     labels:
       floor_area: Arwynebedd llawr (m2)
@@ -194,44 +192,17 @@ cy:
         co2: CO2 (kg)
         cost: Cost (£)
         usage: Defnyddio (kWh)
-      recent_usage_intro:
-        general: Crynodeb o'r defnydd diweddar o ynni ar draws ysgolion yn y grŵp hwn.
-        local_authority: Crynodeb o’r defnydd diweddar o ynni ar draws ysgolion yn yr awdurdod lleol hwn.
-        multi_academy_trust: Crynodeb o’r defnydd diweddar o ynni ar draws ysgolion yn yr ymddiriedolaeth aml-academi hon.
       we_are_working_with:
-        general:
-          in_partnership_with_html:
-            one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
-            two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
-            many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
-            other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
-          no_partnership:
-            one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn
-            two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn
-            many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
-            other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
-        local_authority:
-          in_partnership_with_html:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
-            many: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
-            other: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn mewn partneriaeth â %{partners}
-          no_partnership:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr awdurdod lleol hwn
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr awdurdod lleol hwn
-            many: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn
-            other: Rydym yn gweithio gyda %{count} o ysgolion yn yr awdurdod lleol hwn
-        multi_academy_trust:
-          in_partnership_with_html:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
-            many: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
-            other: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon mewn partneriaeth â %{partners}
-          no_partnership:
-            one: Rydym yn gweithio gydag 1 ysgol yn yr ymddiriedolaeth aml-academi hon
-            two: Rydym yn gweithio gyda %{count} ysgol yn yr ymddiriedolaeth aml-academi hon
-            many: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon
-            other: Rydym yn gweithio gyda %{count} o ysgolion yn yr ymddiriedolaeth aml-academi hon
+        in_partnership_with_html:
+          one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
+          two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn mewn partneriaeth â %{partners}
+          many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
+          other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn mewn partneriaeth â %{partners}
+        no_partnership:
+          one: Rydym yn gweithio gydag 1 ysgol yn y grŵp hwn
+          two: Rydym yn gweithio gyda %{count} ysgol yn y grŵp hwn
+          many: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
+          other: Rydym yn gweithio gyda %{count} o ysgolion yn y grŵp hwn
     sub_nav:
       chart_settings: Gosodiadau siart
       clusters: Rheoli clystyrau

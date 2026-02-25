@@ -67,26 +67,8 @@
       The <%= fa_icon('check-circle text-success') %> icon in the images column indicates that the intervention includes
       images provided by the user
     </p>
-    <table class="table table-sm table-sorted">
-      <thead>
-        <tr>
-          <th>Recorded</th>
-          <th>Happened</th>
-          <th>School</th>
-          <th>Images?</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @observations.each do |observation| %>
-          <tr>
-            <td><%= nice_dates(observation.created_at) %></td>
-            <td><%= nice_dates(observation.at) %></td>
-            <td><%= link_to observation.school.name, school_intervention_path(observation.school, observation) %></td>
-            <td><%= fa_icon('check-circle text-success') if observation.description_includes_images? %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+
+    <%= render 'shared/observations', observations: @observations %>
   </div>
 </div>
 

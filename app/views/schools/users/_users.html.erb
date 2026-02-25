@@ -50,7 +50,7 @@
                                     class: 'btn btn-warning btn-sm' %>
                       <% end %>
                 <% end %>
-                <%= if can?(:edit, user) && !user.school_admin?
+                <%= if can?(:edit, user) && user.can_be_made_school_admin?
                       link_to(t('schools.users.index.make_school_admin'),
                               make_school_admin_school_user_path(@school, user),
                               method: :post,

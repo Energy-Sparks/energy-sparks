@@ -24,46 +24,46 @@ describe SchoolGroupsHelper do
   describe '#radio_button_checked_for' do
     it 'returns if a metric radio button (e.g. change, co2, cost, usage) should be checked or not' do
       controller.params = {}
-      expect(helper.radio_button_checked_for('change')).to eq(true)
-      expect(helper.radio_button_checked_for('co2')).to eq(false)
-      expect(helper.radio_button_checked_for('cost')).to eq(false)
-      expect(helper.radio_button_checked_for('usage')).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(true)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(false)
 
       controller.params = { 'metric' => '' }
-      expect(helper.radio_button_checked_for('change')).to eq(true)
-      expect(helper.radio_button_checked_for('co2')).to eq(false)
-      expect(helper.radio_button_checked_for('cost')).to eq(false)
-      expect(helper.radio_button_checked_for('usage')).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(true)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(false)
 
-      controller.params = { 'metric' => 'change' }
-      expect(helper.radio_button_checked_for('change')).to eq(true)
-      expect(helper.radio_button_checked_for('co2')).to eq(false)
-      expect(helper.radio_button_checked_for('cost')).to eq(false)
-      expect(helper.radio_button_checked_for('usage')).to eq(false)
+      controller.params = { 'metric' => :change }
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(true)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(false)
 
-      controller.params = { 'metric' => 'co2' }
-      expect(helper.radio_button_checked_for('change')).to eq(false)
-      expect(helper.radio_button_checked_for('co2')).to eq(true)
-      expect(helper.radio_button_checked_for('cost')).to eq(false)
-      expect(helper.radio_button_checked_for('usage')).to eq(false)
+      controller.params = { 'metric' => :co2 }
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(true)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(false)
 
-      controller.params = { 'metric' => 'cost' }
-      expect(helper.radio_button_checked_for('change')).to eq(false)
-      expect(helper.radio_button_checked_for('co2')).to eq(false)
-      expect(helper.radio_button_checked_for('cost')).to eq(true)
-      expect(helper.radio_button_checked_for('usage')).to eq(false)
+      controller.params = { 'metric' => :cost }
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(true)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(false)
 
-      controller.params = { 'metric' => 'usage' }
-      expect(helper.radio_button_checked_for('change')).to eq(false)
-      expect(helper.radio_button_checked_for('co2')).to eq(false)
-      expect(helper.radio_button_checked_for('cost')).to eq(false)
-      expect(helper.radio_button_checked_for('usage')).to eq(true)
+      controller.params = { 'metric' => :usage }
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(true)
 
       controller.params = { 'metric' => 'something else' }
-      expect(helper.radio_button_checked_for('change')).to eq(true)
-      expect(helper.radio_button_checked_for('co2')).to eq(false)
-      expect(helper.radio_button_checked_for('cost')).to eq(false)
-      expect(helper.radio_button_checked_for('usage')).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :change)).to eq(true)
+      expect(helper.radio_button_checked_for(params['metric'], :co2)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :cost)).to eq(false)
+      expect(helper.radio_button_checked_for(params['metric'], :usage)).to eq(false)
     end
   end
 end

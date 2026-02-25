@@ -8,11 +8,9 @@ FactoryBot.define do
       school                  { build(:analytics_school) }
       holidays                { build(:holidays, :with_calendar_year) }
       random_generator        { nil }
-      temperatures do
-        build(:temperatures, :with_days, start_date: start_date, end_date: end_date, random_generator: random_generator)
-      end
-      solar_pv                { build(:solar_pv, :with_days, start_date: start_date, end_date: end_date) }
-      grid_carbon_intensity   { build(:grid_carbon_intensity, :with_days, start_date: start_date, end_date: end_date) }
+      temperatures            { build(:temperatures, :with_days, start_date:, end_date:, random_generator:) }
+      solar_pv                { build(:solar_pv, :with_days, start_date:, end_date:, random_generator:) }
+      grid_carbon_intensity   { build(:grid_carbon_intensity, :with_days, start_date:, end_date:, random_generator:) }
       pseudo_meter_attributes { {} }
       solar_irradiation       { nil }
     end
@@ -29,12 +27,18 @@ FactoryBot.define do
     trait :with_electricity_meter do
       transient do
         kwh_data_x48 { nil }
+        dcc_meter { false }
       end
 
       after(:build) do |meter_collection, evaluator|
         amr_data = build(:amr_data, :with_date_range, start_date: evaluator.start_date, end_date: evaluator.end_date,
                                                       kwh_data_x48: evaluator.kwh_data_x48)
-        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :electricity, amr_data: amr_data, tariff_start_date: evaluator.start_date, tariff_end_date: evaluator.end_date)
+        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection,
+                                                       type: :electricity,
+                                                       amr_data: amr_data,
+                                                       tariff_start_date: evaluator.start_date,
+                                                       tariff_end_date: evaluator.end_date,
+                                                       dcc_meter: evaluator.dcc_meter)
         meter_collection.add_electricity_meter(meter)
       end
     end
@@ -43,7 +47,9 @@ FactoryBot.define do
     trait :with_gas_meter do
       after(:build) do |meter_collection, evaluator|
         amr_data = build(:amr_data, :with_date_range, start_date: evaluator.start_date, end_date: evaluator.end_date)
-        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :gas, amr_data: amr_data, tariff_start_date: evaluator.start_date, tariff_end_date: evaluator.end_date)
+        meter = build(:meter, :with_flat_rate_tariffs, meter_collection: meter_collection, type: :gas,
+                                                       amr_data: amr_data, tariff_start_date: evaluator.start_date,
+                                                       tariff_end_date: evaluator.end_date)
         meter_collection.add_heat_meter(meter)
       end
     end
@@ -66,13 +72,45 @@ FactoryBot.define do
       end
     end
 
+    # Meter collection with an aggregate meter of configurable fuel type
+    # Does not invoke the normal validation/aggregation process
+    trait :with_aggregate_meter do
+      transient do
+        fuel_type { :electricity }
+        kwh_data_x48 { nil }
+        meter_attributes { {} }
+      end
+
+      after(:build) do |meter_collection, evaluator|
+        build(:meter, :aggregate_meter, meter_collection:, type: evaluator.fuel_type,
+                                        meter_attributes: evaluator.meter_attributes,
+                                        start_date: evaluator.start_date, end_date: evaluator.end_date,
+                                        kwh_data_x48: evaluator.kwh_data_x48)
+      end
+    end
+
+    # Meter collection with an aggregate meter of configurable fuel type, with configurable sub_meter relationships
+    # Does not invoke the normal validation/aggregation process
+    trait :with_sub_meters do
+      with_aggregate_meter
+
+      transient do
+        sub_meters { {} }
+      end
+      after(:build) do |meter_collection, evaluator|
+        aggregate_meter = meter_collection.aggregate_meter(evaluator.fuel_type)
+        aggregate_meter.sub_meters.merge!(evaluator.sub_meters)
+      end
+    end
+
     # Meter collection with a single meter, of configurable fuel type.
     # Invokes the validation and aggregation process
-    trait :with_fuel_and_aggregate_meters do
-      fuel_type { :electricity }
+    trait :with_aggregated_aggregate_meter do
       transient do
+        fuel_type { :electricity }
         storage_heaters { false }
         kwh_data_x48 { Array.new(48, 1) }
+        rates { nil }
       end
       with_aggregate_meter
 
@@ -91,36 +129,10 @@ FactoryBot.define do
                                       type: evaluator.fuel_type,
                                       start_date: evaluator.start_date,
                                       end_date: evaluator.end_date,
-                                      kwh_data_x48: evaluator.kwh_data_x48))
+                                      kwh_data_x48: evaluator.kwh_data_x48),
+                      rates: evaluator.rates)
         meter_collection.send(evaluator.fuel_type == :electricity ? :add_electricity_meter : :add_heat_meter, meter)
         AggregateDataService.new(meter_collection).aggregate_heat_and_electricity_meters
-      end
-    end
-
-    # Meter collection with an aggregate meter of configurable fuel type
-    # Does not invoke the normal validation/aggregation process
-    trait :with_aggregate_meter do
-      transient do
-        fuel_type { :electricity }
-      end
-      after(:build) do |meter_collection, evaluator|
-        amr_data = build(:amr_data, :with_date_range, start_date: evaluator.start_date, end_date: evaluator.end_date)
-        meter = build(:meter, meter_collection: meter_collection, type: evaluator.fuel_type, amr_data: amr_data)
-        meter_collection.set_aggregate_meter(evaluator.fuel_type, meter)
-      end
-    end
-
-    # Meter collection with an aggregate meter of configurable fuel type, with configurable sub_meter relationships
-    # Does not invoke the normal validation/aggregation process
-    trait :with_sub_meters do
-      with_aggregate_meter
-
-      transient do
-        sub_meters { {} }
-      end
-      after(:build) do |meter_collection, evaluator|
-        aggregate_meter = meter_collection.aggregate_meter(evaluator.fuel_type)
-        aggregate_meter.sub_meters.merge!(evaluator.sub_meters)
       end
     end
   end

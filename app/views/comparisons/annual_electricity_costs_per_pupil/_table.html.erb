@@ -5,9 +5,15 @@
   <% @results.each do |result| %>
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.electricity_economic_tariff_changed_this_year %>
+      <% r.with_var val: result.last_year_kwh, unit: :kwh %>
+      <% r.with_var val: result.last_year_gbp, unit: :£_0dp %>
+      <% r.with_var val: result.last_year_co2, unit: :co2 %>
+      <% r.with_var val: result.one_year_electricity_per_pupil_kwh, unit: :kwh %>
       <% r.with_var val: result.one_year_electricity_per_pupil_gbp, unit: :£_0dp %>
-      <% r.with_var val: result.last_year_gbp, unit: :£ %>
-      <% r.with_var val: result.one_year_saving_versus_exemplar_gbpcurrent, unit: :£ %>
+      <% r.with_var val: result.one_year_electricity_per_pupil_co2, unit: :co2 %>
+      <% r.with_var val: result.saving_or_nil(:one_year_saving_versus_exemplar_gbpcurrent), unit: :£ %>
     <% end %>
   <% end %>
   <% c.with_note do %>

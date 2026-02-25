@@ -1,0 +1,60 @@
+<%= render 'schools/advice/section_title',
+           section_id: 'current',
+           section_title: t("advice_pages.#{fuel_type}_long_term.insights.current_usage.title") %>
+<%= render AlertsComponent.new(school:, dashboard_alerts:,
+                               alert_types: alert_types_for_class({ electricity: AlertElectricityAnnualVersusBenchmark,
+                                                                    gas: AlertGasAnnualVersusBenchmark }[fuel_type]),
+                               show_links: false) %>
+<%= render 'manual_readings_prompt', school:, consumption_by_month: %>
+<table class="table table-sm advice-table">
+  <thead class="thead-dark">
+    <tr>
+      <th><%= t('advice_pages.tables.columns.period') %></th>
+      <th><%= t('charts.timescale_name.daterange').titleize %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_kwh') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_co2') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.usage_gbp') %></th>
+      <th class="text-right"><%= t('advice_pages.electricity_long_term.tables.columns.change') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% additional_notice_text = nil %>
+    <% %i[this_year last_month].each do |period| %>
+      <tr>
+        <td>
+          <% if period == :this_year %>
+            <%= t('advice_pages.electricity_long_term.insights.current_usage.last_year') %>
+          <% else %>
+            <%= t('advice_pages.electricity_long_term.insights.current_usage.last_full_month') %>
+          <% end %>
+        </td>
+        <% if period == :last_month
+             month, usage =
+               consumption_by_month.reject { |_date, consumption| consumption[:current][:missing] }.to_a.last
+             date_range = [month, month.end_of_month]
+           else
+             usage = usage_service.usage(period:)
+             usage = { current: %i[kwh co2 gbp].index_with { |type| usage.public_send(type) },
+                       change: { kwh: usage_service.usage_change_since_last_period(period)&.percent } }
+             date_range = usage_service.dates_for_period(period)
+           end %>
+        <td><%= format_date_range(date_range) %></td>
+        <% %i[kwh co2 gbp].each do |type| %>
+          <td class="text-right">
+            <%= format_unit(usage.dig(:current, type), type, dash_if_nil: true, numeric_level: :target) %>
+            <% if usage.dig(:current, :manual) && usage.dig(:current, type).present? %>
+              <% additional_notice_text =
+                   "#{t('advice_pages.electricity_long_term.analysis.consumption_by_month.manual_html')}<br>" %>
+              <sup>m</sup>
+            <% end %>
+        <% end %>
+        <td class="text-right">
+          <%= format_percent(usage.dig(:change, :kwh)) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render 'schools/advice/how_have_we_analysed_your_data_table_caption', additional_notice_text: %>
+<p><a href="<%= polymorphic_path([:analysis_school_advice, fuel_type, :long_term]) %>">
+<%= t('advice_pages.electricity_long_term.insights.current_usage.review_our_analysis') %></a></p>

@@ -2,6 +2,14 @@
 en:
   components:
     search_results:
+      areas:
+        subtitle:
+          one: 1 local authority
+          other: "%{count} local authorities"
+      diocese:
+        subtitle:
+          one: 1 diocese
+          other: "%{count} diocese"
       keyword:
         title: Results
       school_groups:

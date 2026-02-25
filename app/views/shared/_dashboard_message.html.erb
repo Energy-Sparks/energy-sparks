@@ -1,0 +1,3 @@
+<%= render PromptComponent.new(icon: 'info-circle', style: :compact, status: :negative) do |p| %>
+  <%= messageable.dashboard_message.message %>
+<% end if messageable.dashboard_message %>

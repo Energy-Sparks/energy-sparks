@@ -1,5 +1,6 @@
 module ApplicationHelper
   include Pagy::Frontend
+  include ActionView::Helpers::TagHelper
 
   def nice_date_times(datetime, options = {})
     return '' if datetime.nil?
@@ -17,12 +18,14 @@ module ApplicationHelper
     date ? date.to_fs(:es_full) : ''
   end
 
-  def short_dates(date)
+  def short_dates(date, humanise: false)
+    return '' unless date
+    return t('application_helper.short_dates.today') if humanise && date.today?
     date ? date.to_fs(:es_short) : ''
   end
 
   def nice_date_times_today(datetime)
-    datetime.today? ? nice_times_only(datetime) : short_dates(datetime)
+    datetime.today? ? "#{nice_times_only(datetime)} today" : short_dates(datetime)
   end
 
   def human_counts(collection)
@@ -179,6 +182,7 @@ module ApplicationHelper
   end
 
   def fuel_type_icon(fuel_type)
+    return nil unless fuel_type
     case fuel_type.to_sym
     when :electricity
       'bolt'
@@ -349,7 +353,7 @@ module ApplicationHelper
   end
 
   def format_target(value, units)
-    FormatEnergyUnit.format(units, value, :html, false, true, :target).html_safe
+    FormatUnit.format(units, value, :html, false, true, :target).html_safe
   end
 
   def progress_as_percent(completed, total)
@@ -372,14 +376,6 @@ module ApplicationHelper
       utm_source: source,
       utm_medium: 'email',
       utm_campaign: campaign
-    }
-  end
-
-  def utm_params_for_redirect
-    {
-      utm_source: params[:utm_source],
-      utm_medium: params[:utm_medium],
-      utm_campaign: params[:utm_campaign]
     }
   end
 
@@ -430,6 +426,10 @@ module ApplicationHelper
 
   def i18n_key_from(str)
     str.gsub('+', ' And ').delete(' ').underscore
+  end
+
+  def redirect_back_path(params)
+    params[:redirect_back].blank? ? request.fullpath : params[:redirect_back]
   end
 
   def redirect_back_url(params)
@@ -488,11 +488,6 @@ module ApplicationHelper
 
   def live_data_path
     ActivityCategory.live_data.any? ? activity_category_path(ActivityCategory.live_data.last) : activity_categories_path
-  end
-
-  def case_study_link(case_study, serve: :link)
-    download_locale = I18n.locale.to_sym == :cy && case_study.t_attached(:file, :cy).present? ? :cy : :en
-    url_for(controller: :case_studies, action: :download, serve: serve, id: case_study.id, :locale => download_locale)
   end
 
   # Round down to nearest hundred
@@ -556,11 +551,32 @@ module ApplicationHelper
   end
 
   def home_class
-    if Flipper.enabled?(:new_home_page, current_user) &&
-       controller_name == 'home' && %w[index show].include?(action_name)
-      'home'
-    else
-      'home-page'
-    end
+    return '' unless controller_name == 'home'
+    %w[index show].include?(action_name) ? ' home' : ' home-page'
+  end
+
+  def admin_user_label(school_group)
+    name = school_group.default_issues_admin_user == current_user ? 'You' : school_group.default_issues_admin_user.display_name
+    "Admin • #{name}"
+  end
+
+  def schools_count
+    number_with_delimiter(School.active.visible.count)
+  end
+
+  # 'wide': container-fluid
+  # 'normal': or not specified: container
+  # 'none' or anything else: no container class
+  def container_class
+    return 'container' if !content_for?(:container_size) || content_for(:container_size) == 'normal'
+    content_for(:container_size) == 'wide' ? 'container-fluid' : ''
+  end
+
+  def label_count(label, count)
+    "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
+  end
+
+  def collection_from_enum(enum)
+    enum.transform_keys(&:humanize).sort.to_h
   end
 end

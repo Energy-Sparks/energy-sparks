@@ -3,7 +3,7 @@
 module Schools
   class LowCarbonHubInstallationsController < BaseInstallationsController
     ID_PREFIX = 'low-carbon-hub'
-    NAME = 'Rtone'
+    NAME = 'Rtone API feed'
     JOB_CLASS = Solar::LowCarbonHubLoaderJob
 
     def create

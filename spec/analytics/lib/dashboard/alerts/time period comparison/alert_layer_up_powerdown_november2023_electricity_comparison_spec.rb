@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe AlertLayerUpPowerdownNovember2023ElectricityComparison do
   subject(:alert) do
-    meter_collection = build(:meter_collection, :with_fuel_and_aggregate_meters,
+    meter_collection = build(:meter_collection, :with_aggregated_aggregate_meter,
                              start_date: Date.new(2021, 11, 30), end_date: Date.new(2023, 11, 30))
     described_class.new(meter_collection)
   end

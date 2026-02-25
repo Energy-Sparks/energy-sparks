@@ -8,6 +8,8 @@ class BlogService
     backoff_factor: 2
   }.freeze
 
+  IGNORE_TAG = 'Time sensitive'.freeze
+
   attr_reader :url, :retries, :key
 
   def initialize(url: 'https://blog.energysparks.uk/feed/', retries: 2)
@@ -27,8 +29,6 @@ class BlogService
 
   # To be run from cron
   def update_cache!
-    return unless Flipper.enabled?(:new_home_page)
-
     items = fetch_items
     if items&.any?
       Rails.cache.write(@key, items)
@@ -59,10 +59,17 @@ class BlogService
   end
 
   def extract_items(body)
-    feed = RSS::Parser.parse(body, false)
+    feed = begin
+      RSS::Parser.parse(body, false)
+    rescue RSS::NotWellFormedError
+      nil
+    end
     items = []
     if feed&.items
       items = feed.items.collect do |item|
+        # ignore items with this tag
+        next if item.categories.any? { |cat| cat.content.strip.downcase == IGNORE_TAG.downcase }
+
         { title: item.title,
           image: item.enclosure&.url,
           description: clean(item.description),
@@ -71,7 +78,7 @@ class BlogService
           categories: item.categories.collect(&:content),
           author: item.dc_creator,
           author_link: "#{feed.channel.link}/author/#{item.dc_creator.parameterize}" }
-      end
+      end.compact
     end
     Rollbar.error("No items extracted from blog feed: #{url}") if items.empty?
     items

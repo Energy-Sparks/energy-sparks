@@ -1,0 +1,44 @@
+<%= tag.div id: id, class: classes do %>
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <div class="row">
+        <div class="col">
+          <% if title.present? %>
+            <h2 id="scoreboard-update" class="scrollable-title"><%= title %></h2>
+          <% end %>
+        </div>
+      </div>
+      <%= description %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= render Scoreboards::PodiumComponent.new(podium: podium,
+                                                  user: user,
+                                                  classes: 'bg-white rounded p-4',
+                                                  **podium_opts) %>
+    </div>
+  </div>
+  <% if show_recent_activity? %>
+    <%= render TitledSectionComponent.new(id: 'scoreboard-recent-activity', classes: 'mt-4') do |section| %>
+      <% section.with_title do %>
+        <h2><%= recent_activity_title %></h2>
+      <% end %>
+      <% section.with_intro do %>
+        <%= recent_activity_description %>
+      <% end %>
+      <% if other_schools? %>
+        <% section.with_link do %>
+          <%= recent_activity_link %>
+        <% end %>
+      <% end %>
+      <% section.with_body do %>
+        <%= render Scoreboards::ActivityTableComponent.new(
+              podium: podium,
+              observations: observations,
+              show_school: true,
+              show_positions: other_schools?,
+              classes: 'bg-white rounded p-4'
+            ) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

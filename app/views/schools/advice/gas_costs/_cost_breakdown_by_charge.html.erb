@@ -19,7 +19,7 @@
       chart_config: create_chart_config(
         school,
         one_year_breakdown_chart,
-        aggregate_meter_mpan_mprn
+        @aggregate_meter_mpan_mprn
       )
     ) do |c| %>
   <% c.with_title { advice_t("gas_costs.charts.#{one_year_breakdown_chart_key}.title") } %>

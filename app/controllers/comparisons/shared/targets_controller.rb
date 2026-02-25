@@ -22,7 +22,7 @@ module Comparisons
 
       def create_charts(results)
         # i18n-tasks-use t('analytics.benchmarking.configuration.column_headings.percent_above_or_below_target_since_target_set')
-        create_single_number_chart(results, :current_year_percent_of_target_relative, 100.0, :percent_above_or_below_target_since_target_set, :percent)
+        create_single_number_chart(results, :previous_to_current_year_change, 100.0, :percent_above_or_below_target_since_target_set, :percent)
       end
     end
   end

@@ -1,11 +1,10 @@
-<% content_for :page_title, "Email and SMS for #{@school.name}" %>
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Emails and SMS" do %>
 
 <div class="row padded-row">
   <div class="col-md-12">
-    <h1>Messages sent</h1>
-    <h2><%= link_to @school.name, @school %></h2>
-    <p>These are all the actions taken by Energy Sparks for your alert subscriptions</p>
-    <p><%= link_to 'Alert Contacts', school_contacts_path(@school), class: 'btn btn-primary' %></p>
+    <p>Messages sent on <%= nice_date_times(@subscription_generation_run.created_at) %></p>
+    <%= link_to 'All alert runs', school_subscription_generation_runs_path(@school) %>
   </div>
 </div>
 
@@ -23,9 +22,11 @@
         <th></th>
       </tr>
     </thead>
-    <%= render 'table', school: @school, alert_subscription_events: @sent_emails, name: 'Sent emails'%>
+    <%= render 'table', school: @school, alert_subscription_events: @sent_emails, name: 'Sent emails' %>
     <%= render 'table', school: @school, alert_subscription_events: @sent_sms, name: 'Sent SMS' %>
     <%= render 'table', school: @school, alert_subscription_events: @pending_emails, name: 'Pending emails' %>
-    <%= render 'table', school: @school, alert_subscription_events: @pending_sms, name: 'Pending SMS'%>
+    <%= render 'table', school: @school, alert_subscription_events: @pending_sms, name: 'Pending SMS' %>
   </table>
 </div>
+
+<% end %>

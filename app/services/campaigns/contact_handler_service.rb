@@ -34,7 +34,7 @@ module Campaigns
         { name: 'Campaign' },
         { name: @request_type.to_s.humanize }
       ]
-      tags = tags + @contact[:org_type].map { |t| { name: t.to_s.humanize } }
+      tags = tags + [{ name: @contact[:org_type]&.to_s&.humanize }]
       {
         party: {
           type: :person,
@@ -87,8 +87,13 @@ module Campaigns
     end
 
     def email_user
-      return unless @request_type == :more_information
-      CampaignMailer.with(contact: @contact).send_information.deliver_now
+      if @request_type == :school_info
+        CampaignMailer.with(contact: @contact).send_information_school.deliver_now
+      elsif @request_type == :group_info
+        CampaignMailer.with(contact: @contact).send_information_group.deliver_now
+      elsif @request_type == :school_demo
+        CampaignMailer.with(contact: @contact).school_demo.deliver_now
+      end
     end
 
     # Attempt Capsule integration in dev/test to allow mocking in specs

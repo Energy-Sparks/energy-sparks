@@ -7,7 +7,7 @@
           <div class="col">
             <h4>
               <span class="<%= fuel_type_class(meter_type) %>">
-                <%= render IconComponent.new(fuel_type: meter_type) %>
+                <%= render Elements::IconComponent.new(fuel_type: meter_type) %>
               </span>
               <%= t("schools.user_tariffs.index.#{meter_type}.header") %>
             </h4>

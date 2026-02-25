@@ -1,22 +1,22 @@
 <%= tag.div id: id, class: class_names(classes, 'mt-4') do %>
-  <ul class="nav nav-tabs" id="search-tabs" role="tablist">
-    <% TABS.each do |tab| %>
+  <ul class="nav nav-tabs url-aware locales" id="search-tabs" role="tablist">
+    <% all_tabs.each do |tab| %>
       <li class="nav-item">
         <a class="nav-link <%= 'active' if tab_active?(tab) %>" id="<%= label(tab, 'tab') %>"
-           data-toggle="tab" href="#<%= label(tab, 'content') %>" role="tab" aria-controls="<%= label(tab, 'content') %>">
+           data-toggle="tab" href="#<%= label(tab) %>" role="tab" aria-controls="<%= label(tab) %>">
            <%= t("components.school_search.#{tab}.tab") %>
          </a>
       </li>
     <% end %>
-    <li class="nav-item ml-auto">
+    <li class="nav-item ms-auto">
       <h6><%= t(schools_total_key, count: schools_count) %></h6>
     </li>
   </ul>
 
   <div class="tab-content" id="search-tabs-content">
-    <% TABS.each do |tab| %>
+    <% all_tabs.each do |tab| %>
       <div class="tab-pane fade <%= 'show active' if tab_active?(tab) %>"
-           id="<%= label(tab, 'content') %>"
+           id="<%= label(tab) %>"
            role="tabpanel"
            aria-labelledby="<%= label(tab, 'tab') %>">
         <div class="row mt-4">
@@ -28,11 +28,9 @@
 
             <div class="input-group mb-3">
               <%= text_field_tag :keyword, keyword, id: label(tab, 'keyword'), class: 'form-control', autocomplete: :off %>
-              <div class="input-group-append">
-                <button type="submit" id="<%= label(tab, 'search-submit') %>" class="school-search-component-button">
-                  <%= fa_icon('search') %>
-                </button>
-              </div>
+              <button type="submit" id="<%= label(tab, 'search-submit') %>" class="school-search-component-button">
+                <%= fa_icon('search') %>
+              </button>
             </div>
 
             <%= hidden_field_tag :scope, tab %>
@@ -41,8 +39,8 @@
           <div class="col-12 col-md-10">
             <nav aria-label="<%= t("components.school_search.#{tab}.pagination") %>">
               <ul class=" pagination justify-content-start justify-content-md-end flex-wrap ">
-                <% ('A'..'Z').each do |letter| %>
-                  <li class=" page-item mr-1 letter <%= letter_status(tab, letter) %> ">
+                <% (('A'..'Z').to_a + ['#']).each do |letter| %>
+                  <li class=" page-item ms-1 letter <%= letter_status(tab, letter) %> ">
                     <%= link_to letter,
                                 schools_path(letter: letter, scope: tab),
                                 class: 'page-link',

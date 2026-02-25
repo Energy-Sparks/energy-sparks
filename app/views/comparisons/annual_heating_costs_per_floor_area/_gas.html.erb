@@ -1,0 +1,24 @@
+<%= render ComparisonTableComponent.new(
+      report: report, advice_page: advice_page, table_name: table_name, index_params: index_params,
+      headers: headers, colgroups: colgroups, advice_page_tab: advice_page_tab
+    ) do |c| %>
+  <% @results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <% r.with_reference key: 'tariff_changed_last_year',
+                          if: result.gas_economic_tariff_changed_this_year %>
+
+      <% r.with_var val: result.gas_last_year_kwh, unit: :kwh %>
+      <% r.with_var val: result.gas_last_year_gbp, unit: :£_0dp %>
+      <% r.with_var val: result.gas_last_year_co2, unit: :co2 %>
+      <% r.with_var val: result.one_year_gas_per_floor_area_kwh, unit: :kwh %>
+      <% r.with_var val: result.one_year_gas_per_floor_area_gbp, unit: :£_0dp %>
+      <% r.with_var val: result.one_year_gas_per_floor_area_co2, unit: :co2 %>
+
+      <% r.with_var val: result.saving_or_nil(:one_year_gas_saving_versus_exemplar_gbpcurrent), unit: :£ %>
+    <% end %>
+  <% end %>
+  <% c.with_note do %>
+    <%= t('analytics.benchmarking.configuration.column_heading_explanation.last_year_definition_html') %>
+  <% end %>
+<% end %>

@@ -35,6 +35,7 @@ class DataSource < ApplicationRecord
       meters.from_active_schools.order(:created_at).each do |meter|
         csv << ([
           meter&.school&.school_group&.name,
+          meter&.school&.school_group&.default_issues_admin_user&.name,
           meter&.school&.name,
           meter&.mpan_mprn,
           meter&.meter_type&.humanize,
@@ -52,7 +53,7 @@ class DataSource < ApplicationRecord
   private
 
   def csv_headers
-    ['School group', 'School', 'MPAN/MPRN', 'Meter type', 'Active', 'Half-Hourly', 'First validated meter reading',
+    ['School group', 'Admin', 'School', 'MPAN/MPRN', 'Meter type', 'Active', 'Half-Hourly', 'First validated meter reading',
      'Last validated meter reading', 'Admin Meter Status', 'Open issues count', 'Open issues']
   end
 end

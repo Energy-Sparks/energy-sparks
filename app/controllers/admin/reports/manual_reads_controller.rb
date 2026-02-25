@@ -2,30 +2,17 @@
 
 module Admin
   module Reports
-    class ManualReadsController < AdminController
-      include Columns
-      include ActionView::Helpers::UrlHelper
-      include ApplicationHelper
+    class ManualReadsController < BaseMeterReportsController
+      private
 
-      def index
-        columns = [
-          Column.new(:group_name,
-                     ->(meter) { meter.school.school_group&.name },
-                     ->(meter, csv) { csv && link_to(csv, school_group_url(meter.school.school_group)) }),
-          Column.new(:school_name,
-                     ->(meter) { meter.school.name },
-                     ->(meter, csv) { link_to(csv, school_url(meter.school)) }),
-          Column.new(:group_owner,
-                     ->(meter) { meter.school.school_group&.default_issues_admin_user&.name }),
-          Column.new(:MPAN,
-                     ->(meter) { meter.mpan_mprn },
-                     ->(meter, csv) { link_to(csv, school_meter_url(meter.school, meter)) }),
+      def columns
+        super + [
           Column.new(:meter_type,
                      ->(meter) { meter.meter_type.to_s }),
           Column.new(:data_source,
                      ->(meter) { meter.data_source&.name }),
           Column.new(:last_validated_date,
-                     ->(meter) { meter.last_validated_reading&.strftime('%d/%m/%Y') },
+                     ->(meter) { meter.last_validated_reading&.iso8601 },
                      ->(meter) { nice_dates(meter.last_validated_reading) }),
           Column.new(:'issues_&_notes',
                      nil,
@@ -38,14 +25,21 @@ module Admin
                      ->(meter) { meter.issues.note.count },
                      display: :csv)
         ]
-        @html_columns = columns.filter(&:display_html)
-        @meters = Meter.active.where(manual_reads: true)
-        respond_to do |format|
-          format.html
-          format.csv do
-            send_data csv_report(columns, @meters), filename: EnergySparks::Filenames.csv('manual-reads-report')
-          end
-        end
+      end
+
+      def results
+        results = Meter.active.where(manual_reads: true).with_school_and_group
+        results = results.for_school_group(SchoolGroup.find(params[:school_group])) if params[:school_group].present?
+        results = results.for_admin(User.admin.find(params[:user])) if params[:user].present?
+        results
+      end
+
+      def description
+        'List of meters configured as needing manual reads'
+      end
+
+      def title
+        'Manually read meters'
       end
     end
   end
