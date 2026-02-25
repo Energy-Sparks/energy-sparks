@@ -157,8 +157,7 @@ cy:
       step_2: Casglu gwybodaeth am eich ysgol
       step_3: Cael eich caniatâd i gasglu, storio, dadansoddi a chyhoeddi data ynni eich ysgol
       step_4: Ychwanegu unrhyw gyfrifon staff neu weinyddwyr ysgol ychwanegol
-      step_5: Creu cyfrif disgybl
-      step_6: Adolygiad olaf
+      step_5: Adolygiad olaf
       thanks_for_enrolling_html: Diolch am gofrestru <strong>%{school_name}</strong> gyda Sbarcynni!
       time_to_complete: Dylai'r broses sefydlu gymryd llai na 10 munud
       title: Sefydlwch eich ysgol ar Sbarcynni

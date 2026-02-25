@@ -158,8 +158,7 @@ en:
       step_2: Gather some information about your school
       step_3: Get your permission to collect, store, analyse and publish your school's energy data
       step_4: Add any additional staff or school administrator accounts
-      step_5: Create a pupil account
-      step_6: Final review
+      step_5: Final review
       thanks_for_enrolling_html: Thank you for enrolling <strong>%{school_name}</strong> with Energy Sparks!
       time_to_complete: The setup process should take less than 10 minutes
       title: Set up your school on Energy Sparks
