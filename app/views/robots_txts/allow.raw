@@ -17,6 +17,8 @@ Disallow: /schools/*/usage
 Disallow: /schools/*/advice
 Disallow: /schools/*/advice/*
 Disallow: /schools/*/school_targets
+Disallow: /school_groups/*/advice
+Disallow: /school_groups/*/advice/*
 Disallow: /pupils/schools/*/analysis
 Disallow: /pupils/schools/*/digital-signage
 Disallow: /benchmark

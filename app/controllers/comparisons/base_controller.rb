@@ -43,7 +43,11 @@ module Comparisons
 
     def unlisted
       @unlisted = School.where(id: (@schools - load_data.pluck(:school_id))).order(:name)
-      respond_to(&:js)
+
+      respond_to do |format|
+        format.js # always render unlisted.js.erb
+        format.any { head :not_acceptable }
+      end
     end
 
     private
