@@ -64,14 +64,6 @@ class ApplicationController < ActionController::Base
     params.permit(:utm_source, :utm_medium, :utm_campaign).to_h.symbolize_keys
   end
 
-  def bootstrap_5_switcher
-    @bs5 = Flipper.enabled?(:bootstrap_switcher) && params[:bs5] == 'true'
-  end
-
-  def bootstrap_5
-    @bs5 = true unless Flipper.enabled?(:bootstrap_switcher) && params[:bs5]
-  end
-
   private
 
   def podium_for(school)
@@ -114,5 +106,13 @@ class ApplicationController < ActionController::Base
 
   def handle_head_request
     head :ok if request.head?
+  end
+
+  def bootstrap_5_switcher
+    @bs5 = Flipper.enabled?(:bootstrap_switcher) && params[:bs5] == 'true'
+  end
+
+  def enable_bootstrap_5
+    @bs5 = true unless Flipper.enabled?(:bootstrap_switcher) && params[:bs5]
   end
 end
