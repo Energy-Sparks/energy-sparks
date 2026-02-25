@@ -8,9 +8,11 @@ module Commercial
     def calculate(number_of_pupils:, number_of_meters:, product: nil, contract: nil, private_account: false)
       raise unless product || contract
       contracted_product = contract&.product || product
-      return base_price(product: contracted_product, contract:, number_of_pupils:) +
-             metering_fee(product: contracted_product, number_of_meters:) +
-             private_account_fee(product: contracted_product, private_account:)
+      return Price.new(
+        base_price: base_price(product: contracted_product, contract:, number_of_pupils:),
+        metering_fee: metering_fee(product: contracted_product, number_of_meters:),
+        private_account_fee: private_account_fee(product: contracted_product, private_account:)
+      )
     end
 
     # Calculates a price for a school if added to a current contract. Does not
@@ -37,13 +39,13 @@ module Commercial
                                 contract: licence.contract,
                                 number_of_pupils: school.number_of_pupils)
 
-      return 0.0 if base_price == 0.0
+      return Price::FREE if base_price == 0.0
 
-      return base_price +
-             metering_fee(product: licence.contract.product,
-                          number_of_meters: school.meters.main_meter.active.count) +
-             private_account_fee(product: licence.contract.product,
-                                 private_account: school.data_sharing_private?)
+      return Price.new(
+        base_price:,
+        metering_fee: metering_fee(product: licence.contract.product, number_of_meters: school.meters.main_meter.active.count),
+        private_account_fee: private_account_fee(product: licence.contract.product, private_account: school.data_sharing_private?)
+      )
     end
 
     private
