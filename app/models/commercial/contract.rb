@@ -2,24 +2,25 @@
 #
 # Table name: commercial_contracts
 #
-#  agreed_school_price  :decimal(10, 2)
-#  comments             :text
-#  contract_holder_id   :bigint(8)        not null
-#  contract_holder_type :string           not null
-#  created_at           :datetime         not null
-#  created_by_id        :bigint(8)
-#  end_date             :date             not null
-#  id                   :bigint(8)        not null, primary key
-#  invoice_terms        :enum             default("pro_rata"), not null
-#  licence_period       :enum             default("contract"), not null
-#  licence_years        :decimal(4, 2)
-#  name                 :string           not null
-#  number_of_schools    :integer          not null
-#  product_id           :bigint(8)        not null
-#  start_date           :date             not null
-#  status               :enum             default("provisional"), not null
-#  updated_at           :datetime         not null
-#  updated_by_id        :bigint(8)
+#  agreed_school_price   :decimal(10, 2)
+#  comments              :text
+#  contract_holder_id    :bigint(8)        not null
+#  contract_holder_type  :string           not null
+#  created_at            :datetime         not null
+#  created_by_id         :bigint(8)
+#  end_date              :date             not null
+#  id                    :bigint(8)        not null, primary key
+#  invoice_terms         :enum             default("pro_rata"), not null
+#  licence_period        :enum             default("contract"), not null
+#  licence_years         :decimal(4, 2)
+#  name                  :string           not null
+#  number_of_schools     :integer          not null
+#  product_id            :bigint(8)        not null
+#  purchase_order_number :string
+#  start_date            :date             not null
+#  status                :enum             default("provisional"), not null
+#  updated_at            :datetime         not null
+#  updated_by_id         :bigint(8)
 #
 # Indexes
 #
