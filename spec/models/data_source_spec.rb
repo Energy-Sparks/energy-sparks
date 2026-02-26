@@ -6,6 +6,7 @@ RSpec.describe DataSource, type: :model do
 
     it { is_expected.to be_valid }
     it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_numericality_of(:alert_percentage_threshold).is_in(0..100) }
   end
 
   describe 'enums' do

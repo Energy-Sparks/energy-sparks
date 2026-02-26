@@ -96,6 +96,7 @@ class Meter < ApplicationRecord
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
+  scope :active_for_active_schools, -> { active.from_active_schools }
 
   scope :with_zero_reading_days_and_dates, lambda {
     left_outer_joins(:amr_validated_readings)
@@ -106,6 +107,21 @@ class Meter < ApplicationRecord
            MAX(amr_validated_readings.reading_date) AS last_validated_reading_date,
            COUNT(1) FILTER (WHERE one_day_kwh = 0.0) AS zero_reading_days_count"
       )
+  }
+
+  scope :with_stale_readings, -> {
+    left_outer_joins(:data_source)
+    .merge(Meter.active_for_active_schools)
+    .joins(<<~SQL.squish)
+      JOIN LATERAL (
+        SELECT id, reading_date
+        FROM amr_validated_readings
+        WHERE amr_validated_readings.meter_id = meters.id
+        ORDER BY reading_date DESC
+        LIMIT 1
+      ) AS max_reading ON true
+    SQL
+    .where("reading_date < CURRENT_DATE - (data_sources.import_warning_days * INTERVAL '1 day')")
   }
 
   scope :with_active_meter_attributes, ->(attribute_types) {
