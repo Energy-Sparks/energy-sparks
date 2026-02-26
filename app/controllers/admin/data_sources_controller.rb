@@ -48,7 +48,7 @@ module Admin
       if total_active_meters_for_active_schools == 0
         0
       else
-        (total_lagging_meters / total_active_meters_for_active_schools.to_f * 100).round(2)
+        (total_lagging_meters / total_active_meters_for_active_schools * 100)
       end
     end
 
