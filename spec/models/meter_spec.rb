@@ -148,19 +148,9 @@ describe 'Meter', :meters do
     end
 
     context 'when finding meters for schools' do
-      let(:inactive_meters) do
-        [create(:electricity_meter, school: create(:school, active: false, removal_date: 1.month.ago)),
-         create(:electricity_meter, active: false, school: create(:school, active: false, removal_date: 1.month.ago)),
-         create(:electricity_meter, active: false, school: create(:school))]
-      end
-
       it 'returns active meters from active schools' do
         active_meter = create(:electricity_meter, school: create(:school))
-        expect(Meter.active_for_active_schools.first).to eq(active_meter)
-      end
-
-      it 'does not return meters which are inactive or from inactive schools' do
-        expect(Meter.active_for_active_schools).not_to include(inactive_meters)
+        expect(Meter.active_for_active_schools).to contain_exactly(active_meter)
       end
     end
 
@@ -170,7 +160,7 @@ describe 'Meter', :meters do
         create(:gas_meter_with_validated_reading_dates, active: false, data_source:, school: create(:school, active: true))
         stale_meter = create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, data_source:, school: create(:school, active: true))
         create(:gas_meter_with_validated_reading_dates, end_date: 2.days.ago, data_source:, school: create(:school, active: true))
-        expect(Meter.with_stale_readings.first).to eq(stale_meter)
+        expect(Meter.with_stale_readings).to contain_exactly(stale_meter)
       end
     end
   end
