@@ -12,7 +12,7 @@
       <th>Owned by</th>
       <th>Active meters</th>
       <th>Lagging meters</th>
-      <th>Lagging as percentage of active</th>
+      <th>Lagging as % of active</th>
       <th class="no-sort text-end">Actions</th>
     </tr>
   </thead>
@@ -21,10 +21,10 @@
       <tr>
         <td class="nowrap"><%= link_to data_source.name, admin_data_source_path(data_source) %></td>
         <td><span class="badge bg-info"><%= data_source.organisation_type.try(:humanize) %></span></td>
-        <td>me</td>
-        <td>wa</td>
-        <td>lag</td>
-        <td>percent</td>
+        <td><%= data_source.owned_by %></td>
+        <td><%= data_source.meters.active_for_active_schools.count %></td>
+        <td><%= data_source.meters.with_stale_readings.count %></td>
+        <td><%= data_source.percentage_of_lagging_meters %></td>
         <td class='nowrap text-end'>
           <%= link_to 'Edit', edit_admin_data_source_path(data_source), class: 'btn btn-sm' %>
         </td>
