@@ -157,6 +157,8 @@
     <p>
       <%= link_to 'New licence', new_admin_commercial_licence_path(contract_id: @contract.id),
                   class: 'btn btn-primary btn-sm' %>
+      <%= link_to 'Calculate price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
+                  class: 'btn btn-primary btn-sm' %>
     </p>
   </div>
 </div>
