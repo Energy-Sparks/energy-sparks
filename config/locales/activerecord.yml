@@ -89,6 +89,7 @@ en:
         image: Image
         name: Name
       user:
+        climate_action_lead: Climate action lead
         email: Email
         password: Password
         password_confirmation: Password confirmation
