@@ -46,8 +46,8 @@ class DataSource < ApplicationRecord
 
   def percentage_of_lagging_meters
     active = meters.active_for_active_schools
-    if active = 0
-      0
+    if active == 0
+      active
     else
       meters.with_stale_readings / active * 100
     end
