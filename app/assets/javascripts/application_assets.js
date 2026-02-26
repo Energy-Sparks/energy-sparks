@@ -20,7 +20,6 @@
 //= require highcharts-modules/bullet
 //= require highcharts-modules/solid-gauge
 
-// This is used (handlebars) but slight overkill I think
 //= require handlebars
 //= require_tree ./templates
 
