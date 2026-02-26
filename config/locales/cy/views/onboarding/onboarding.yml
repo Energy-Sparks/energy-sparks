@@ -47,7 +47,7 @@ cy:
           edit_pupil_account: Golygu cyfrif disgybl
           pupil_account_name: Enw cyfrif disgybl
           pupil_password: Cyfrinair disgybl
-          title: 5. Cyfrif disgybl
+          title: Cyfrif disgybl
         review_and_update_your_answers: Adolygwch a diweddarwch eich atebion cyn cwblhau'r gosodiad
         role: Rôl
         school_details_section:
@@ -135,7 +135,7 @@ cy:
       pupil_password: Cyfrinair disgybl
       pupil_password_hint: Gwnewch ef yn gofiadwy ac yn hawdd i ddisgyblion ei deipio
       pupil_password_placeholder: e.e. arbedwyrynniarbennig
-      title: 'Cam 5: Creu eich cyfrif disgybl'
+      title: Creu eich cyfrif disgybl
       title_for_update: Diweddaru eich cyfrif disgybl
       update: Diweddaru cyfrif disgybl
     school_details:
@@ -157,8 +157,7 @@ cy:
       step_2: Casglu gwybodaeth am eich ysgol
       step_3: Cael eich caniatâd i gasglu, storio, dadansoddi a chyhoeddi data ynni eich ysgol
       step_4: Ychwanegu unrhyw gyfrifon staff neu weinyddwyr ysgol ychwanegol
-      step_5: Creu cyfrif disgybl
-      step_6: Adolygiad olaf
+      step_5: Adolygiad olaf
       thanks_for_enrolling_html: Diolch am gofrestru <strong>%{school_name}</strong> gyda Sbarcynni!
       time_to_complete: Dylai'r broses sefydlu gymryd llai na 10 munud
       title: Sefydlwch eich ysgol ar Sbarcynni
