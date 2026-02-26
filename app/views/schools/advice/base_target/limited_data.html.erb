@@ -2,13 +2,10 @@
   <%= t('advice_pages.target.limited_data.text_html') %>
   <% if @fuel_type != :storage_heater %>
     <% if can?(:manage, Schools::ManualReading) %>
-      <p><%= t('advice_pages.target.limited_data.manual_reading_html',
-               path: school_manual_readings_path(@school)) %></p>
+      <%= t('advice_pages.target.limited_data.manual_reading_html', path: school_manual_readings_path(@school)) %>
     <% end %>
-    <p>
-      <%= t('advice_pages.target.limited_data.meantime_html',
-            fuel_type: @advice_page.t_fuel_type, path: polymorphic_path([@school, :advice, @fuel_type, :long_term])) %>
-    </p>
+    <%= t('advice_pages.target.limited_data.long_term_advice_html',
+          fuel_type: @advice_page.t_fuel_type, path: polymorphic_path([@school, :advice, @fuel_type, :long_term])) %>
   <% else %>
     <p><%= t('advice_pages.not_enough_data.learn_more_html', learn_more_link: 'learn_more') %></p>
   <% end %>
