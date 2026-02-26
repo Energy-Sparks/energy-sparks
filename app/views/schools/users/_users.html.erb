@@ -21,7 +21,8 @@
                 <%= email_with_wbr(user.name) %>
               <% end %>
               <% if user.climate_action_lead %>
-                <%= fa_icon 'leaf', title: I18n.t('activerecord.attributes.user.climate_action_lead') %>
+                <%= fa_icon 'leaf', title: I18n.t('activerecord.attributes.user.climate_action_lead'),
+                                    class: 'text-success' %>
               <% end %>
             </td>
             <td><%= email_with_wbr(user.email) %></td>
