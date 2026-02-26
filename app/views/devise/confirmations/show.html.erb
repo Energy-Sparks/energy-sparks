@@ -28,7 +28,7 @@
                         label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
                         as: :boolean,
                         class: 'custom-checkbox pb-3',
-                        wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
+                        wrapper_html: { class: 'custom-checkbox pb-3' },
                         label_html: { class: 'custom-control-label' },
                         input_html: {
                           class: 'custom-control-input',
@@ -59,7 +59,7 @@
 
     <% end %>
 
-    <div class="custom-control custom-checkbox agreements">
+    <div class="form-check custom-checkbox agreements">
       <%= f.check_box :terms_accepted,
                       { class:
                          class_names('custom-control-input multi-select', 'must-check': !resource.terms_accepted) },

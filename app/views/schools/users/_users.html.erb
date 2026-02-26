@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-condensed">
+  <table class="table table-sm">
     <thead>
       <tr>
         <th><%= t('schools.users.index.name') %></th>
@@ -19,6 +19,9 @@
                 <%= link_to email_with_wbr(user.name), user_path(user) %>
               <% else %>
                 <%= email_with_wbr(user.name) %>
+              <% end %>
+              <% if user.climate_action_lead %>
+                <%= fa_icon 'leaf', title: I18n.t('activerecord.attributes.user.climate_action_lead') %>
               <% end %>
             </td>
             <td><%= email_with_wbr(user.email) %></td>
