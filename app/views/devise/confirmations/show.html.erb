@@ -59,10 +59,10 @@
 
     <% end %>
 
-    <div class="form-check custom-checkbox agreements">
+    <div class="form-check agreements">
       <%= f.check_box :terms_accepted,
                       { class:
-                         class_names('custom-control-input multi-select', 'must-check': !resource.terms_accepted) },
+                         class_names('form-check-input multi-select', 'must-check': !resource.terms_accepted) },
                       '1',
                       '0' %>
       <%= f.label :terms_accepted, t('terms_and_conditions.message_html',
@@ -73,7 +73,7 @@
                                                                   privacy_and_cookie_policy_path,
                                                                   target: '_blank',
                                                                   rel: 'noopener')),
-                  class: 'custom-control-label' %>
+                  class: 'form-check-label' %>
     </div>
 
     <div class="form-group">
