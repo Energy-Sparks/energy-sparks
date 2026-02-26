@@ -45,11 +45,11 @@ class DataSource < ApplicationRecord
   has_many :schools, -> { distinct }, through: :meters
 
   def percentage_of_lagging_meters
-    active = meters.active_for_active_schools
+    active = meters.active_for_active_schools.count
     if active == 0
       active
     else
-      meters.with_stale_readings / active * 100
+      meters.with_stale_readings.count / active * 100
     end
   end
 
