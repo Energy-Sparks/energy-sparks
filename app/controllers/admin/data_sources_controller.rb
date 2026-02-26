@@ -32,6 +32,26 @@ module Admin
       redirect_to admin_data_sources_path, notice: 'Data source was successfully deleted.'
     end
 
+    def index
+      @data_sources = DataSource.order(:name)
+    end
+
+    def total_active_meters_for_active_schools
+      DataSource.meters.active_for_active_schools.count
+    end
+
+    def total_lagging_meters
+      DataSource.meters.with_stale_readings.count
+    end
+
+    def percentage_lagging_meters
+      if total_active_meters_for_active_schools == 0
+        0
+      else
+        (total_lagging_meters / total_active_meters_for_active_schools.to_f * 100).round(2)
+      end
+    end
+
     private
 
     def data_source_params
