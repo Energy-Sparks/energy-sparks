@@ -76,7 +76,7 @@ describe 'pricing calculator' do
   end
 
   context 'when calculating a school price' do
-    let!(:school) { create(:school) }
+    let!(:school) { create(:school, number_of_pupils: 10) }
     let!(:licence) { create(:commercial_licence, school:, school_specific_price: 1000) }
     let(:contract) { licence.contract }
 
