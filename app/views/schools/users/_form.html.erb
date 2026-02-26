@@ -14,3 +14,7 @@
             collection: I18n.available_locales.map { |locale| [I18n.t("languages.#{locale}"), locale] },
             prompt: '',
             hint: t('schools.users.form.preferred_locale_hint') %>
+<% unless @user.student? %>
+  <%= f.input :climate_action_lead, label_html: { class: 'form-check-label' },
+                                    input_html: { class: 'form-check-input' } %>
+<% end %>
