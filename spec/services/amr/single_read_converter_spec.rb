@@ -51,7 +51,7 @@ module Amr
           end
         end
         let(:expected_output) do
-          [create_reading(config, mpan_mprn, Date.parse(reading_date), 48.times.collect { |i| (i + 1) })]
+          [create_reading(config, mpan_mprn, Date.parse(reading_date), 48.times.collect { |i| i + 1 })]
         end
 
         it 'converts correctly' do
@@ -128,7 +128,7 @@ module Amr
       let(:reading_date) { '26 Aug 2019' }
 
       let(:expected_output) do
-        [create_reading(config, mpan_mprn, Date.parse(reading_date), 48.times.collect { |i| (i + 1) })]
+        [create_reading(config, mpan_mprn, Date.parse(reading_date), 48.times.collect { |i| i + 1 })]
       end
 
       context 'with times formatted as %H:%M' do
