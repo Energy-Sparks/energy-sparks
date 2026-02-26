@@ -1,0 +1,84 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Recent Image Feed' %>
+  <% header_nav.with_button 'All reports', admin_reports_path %>
+<% end %>
+
+<div class="clearfix bg-light py-2 px-2 my-2 border rounded">
+  <%= form_tag url_for(controller: controller_path, action: :index, only_path: true), method: :get do |f| %>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="">
+        <span class="nowrap">
+          <%= label_tag :type, nil, class: 'small' %>
+          <%= select_tag :type,
+                         options_for_select([['Activities', :activity], ['Actions', :observation]], params[:type]),
+                         include_blank: false,
+                         class: 'form-control-sm' %>
+        </span>
+        <span class="nowrap">
+          <%= label_tag :school_group, nil, class: 'small' %>
+          <%= select_tag :school_group,
+                         options_from_collection_for_select(SchoolGroup.with_active_schools.by_name,
+                                                            :id,
+                                                            :name,
+                                                            params[:school_group]),
+                         include_blank: 'Any School Group',
+                         class: 'form-control-sm' %>
+        </span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <%= submit_tag 'Filter', class: 'btn btn-sm' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<% if @records.any? %>
+  <div class="row d-flex justify-content-center pt-4">
+    <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+  </div>
+
+  <div class="row g-4">
+    <% @records.each do |item| %>
+      <% images = item.description.embeds.select(&:image?) %>
+
+      <% images.each do |blob| %>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="border rounded h-100 overflow-hidden">
+            <%= link_to item_path(item) do %>
+              <%= image_tag(
+                    blob.variant(resize_to_limit: [600, 600]),
+                    class: 'img-fluid w-100'
+                  ) %>
+            <% end %>
+
+            <div class="p-3">
+              <h4 class="mb-1"><%= item.school.name %></h4>
+
+              <p>
+                <%= item.class.name %> #<%= item.id %>
+              </p>
+
+              <p>
+                Posted <%= item.created_at.to_date %>
+              </p>
+
+              <% if item.updated_at.to_date != item.created_at.to_date %>
+                <p>
+                  Updated <%= item.updated_at.to_date %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="row d-flex justify-content-center pt-4">
+    <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+  </div>
+<% else %>
+  <div class="row d-flex justify-content-center pt-4">
+    <p>No results</p>
+  </div>
+<% end %>

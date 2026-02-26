@@ -17,9 +17,7 @@
         <td><%= y_n(school.archived?) %></td>
         <td data-order="<%= school.archived_date&.iso8601 || 'last' %>"><%= nice_dates(school.archived_date) %></td>
         <td data-order="<%= school.removal_date&.iso8601 || 'last' %>"><%= nice_dates(school.removal_date) %></td>
-        <td class="nowrap text-right">
-          <%= link_to issue_type_icons(school.issues, label: 'Issues'),
-                      admin_school_issues_path(school), class: 'btn btn-sm' %>
+        <td class="nowrap text-end">
           <%= link_to 'Meters', school_meters_path(school), class: 'btn btn-sm' %>
         </td>
       </tr>

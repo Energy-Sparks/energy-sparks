@@ -1,7 +1,7 @@
 class ChangeMeterDccMeterToEnum < ActiveRecord::Migration[7.1]
   def up
     create_enum :dcc_meter, %w[no smets2 other]
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       ALTER TABLE meters
         ALTER COLUMN dcc_meter DROP DEFAULT,
         ALTER COLUMN dcc_meter TYPE dcc_meter USING (
@@ -16,7 +16,7 @@ class ChangeMeterDccMeterToEnum < ActiveRecord::Migration[7.1]
   end
 
   def down
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       ALTER TABLE meters
         ALTER COLUMN dcc_meter DROP DEFAULT,
         ALTER COLUMN dcc_meter TYPE boolean USING (

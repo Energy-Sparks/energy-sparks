@@ -46,7 +46,14 @@
   <h4>Less than 30 days of data</h4>
 
   <%= render 'school_dates_table',
-             schools_and_dates: with_limited_data(scenario: :less_than_x_days, fuel_type: fuel_type, days_of_data: 30,
+             schools_and_dates: with_limited_data(scenario: :less_than_x_days, fuel_type: fuel_type,
+                                                  max_days_of_data: 30, recent_data: true).to_a.take(@limit) %>
+
+  <h4>Less than 1 year of data</h4>
+
+  <%= render 'school_dates_table',
+             schools_and_dates: with_limited_data(scenario: :less_than_x_days, fuel_type: fuel_type,
+                                                  min_days_of_data: 30, max_days_of_data: 365,
                                                   recent_data: true).to_a.take(@limit) %>
 
   <h4>Between 1 and 2 years of data</h4>

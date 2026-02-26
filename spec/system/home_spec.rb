@@ -159,6 +159,7 @@ RSpec.describe 'home', type: :system do
 
   describe 'Product page' do
     before do
+      create(:commercial_product, default_product: true)
       visit root_path
       within('#services') do
         click_on('Energy management tool')

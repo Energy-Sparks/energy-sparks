@@ -16,6 +16,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <%= render 'admin/issues/new_issues_links', issueable: @meter.school, meter_ids: [@meter.id] unless local_assigns[:view_mode] %>
+  <%= render 'admin/issues/issues_links', issueable: @meter.school, meter_ids: [@meter.id] unless local_assigns[:view_mode] %>
   <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><%= t('common.labels.close') %></button>
 </div>

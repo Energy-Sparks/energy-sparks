@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 3.2.2'
+ruby '~> 3.4.8'
 
 gem 'rails', '~> 7.2.2'
 
@@ -67,7 +67,7 @@ gem 'twilio-ruby' # For SMS notifications
 gem 'bootstrap-email'
 
 # Frontend
-gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 5.3'
 gem 'cocoon' # nested forms
 gem 'simple_form'
 gem 'sortablejs-rails'

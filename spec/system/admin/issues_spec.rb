@@ -41,14 +41,13 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 click_link text: /New #{issue_type.capitalize}/
               end
 
-              it { expect(page).to have_current_path(new_polymorphic_path([:admin, issueable, Issue], issue_type: issue_type)) }
               it { expect(page).to have_content("New #{issue_type.capitalize} for #{issueable.name}")}
 
               it 'has default values' do
                 expect(find_field('Title').text).to be_blank
                 expect(find('trix-editor#issue_description')).to have_text('')
                 expect(page).to have_select('Fuel type', selected: [])
-                expect(page).to have_select('Status', selected: 'Open') if issue_type == 'issue'
+                expect(page).to have_select('Status', selected: 'Open')
                 assigned_to = issueable.is_a?(DataSource) ? [] : issueable.default_issues_admin_user.display_name
                 expect(page).to have_select('Assigned to', selected: assigned_to)
                 expect(find_field('Next review date').value).to be_blank
@@ -132,7 +131,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 expect(page).to have_field('Title', with: issue.title)
                 expect(find_field('issue[description]', type: :hidden).value).to eq(issue.description.to_plain_text)
                 expect(page).to have_select('Fuel type', selected: issue.fuel_type.capitalize)
-                expect(page).to have_select('Status', selected: issue.status.capitalize) if issue_type == 'issue'
+                expect(page).to have_select('Status', selected: issue.status.capitalize)
                 expect(page).to have_select('Issue type', selected: issue.issue_type.capitalize)
                 expect(page).to have_select('Assigned to', selected: school_group_issues_admin.display_name)
                 expect(page).to have_field('Next review date', with: date.strftime('%d/%m/%Y'))
@@ -152,7 +151,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   fill_in 'Title', with: "#{issue_type} title"
                   fill_in_trix 'trix-editor#issue_description', with: "#{issue_type} desc"
                   select 'Gas', from: 'Fuel type'
-                  select 'Closed', from: 'Status' if issue_type == 'issue'
+                  select 'Closed', from: 'Status'
                   select new_issue_type, from: 'Issue type'
                   select 'Other Issues Admin', from: 'Assigned to'
                   fill_in 'Next review date', with: (frozen_time + 7.days).strftime('%d/%m/%Y')
@@ -169,11 +168,11 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                   expect(page).to have_content "#{issue_type} title"
                   expect(page).to have_content "#{issue_type} desc"
                   expect(page).to have_content 'Gas'
-                  expect(page).to have_content 'Closed' if new_issue_type == 'issue'
+                  expect(page).to have_content 'Closed'
                   expect(page).to have_content 'Other Issues Admin'
                   expect(page).to have_content "Updated • #{user.display_name} • #{nice_date_times_today(frozen_time)}"
                   expect(page).to have_content "Created • #{user.display_name} • #{nice_date_times_today(issue.created_at)}"
-                  expect(page).to have_content "Next review • #{nice_date_times_today(frozen_time + 7.days)}"
+                  expect(page).to have_content 'Next review • No date set'
                   expect(page).not_to have_css("i[class*='fa-thumbtack']")
                   if issueable.is_a? School
                     expect(page).to have_content gas_meter.mpan_mprn
@@ -237,6 +236,59 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
                 end
               end
             end
+
+            context 'when bulk editing issues' do
+              let!(:issue1) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+              let!(:issue2) { create(:issue, issueable: issueable, issue_type: issue_type, owned_by: school_group_issues_admin) }
+
+              before do
+                visit url_for([:admin, issueable, Issue])
+                click_on 'Bulk update'
+              end
+
+              context 'with missing fields' do
+                before do
+                  click_on 'Update all'
+                end
+
+                it 'shows error messages' do
+                  expect(page).to have_content 'Both current and new admin users are required'
+                  expect(page).not_to have_content "Current and new admin users can't be the same"
+                end
+              end
+
+              context 'when to and from are the same' do
+                before do
+                  select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
+                  select school_group_issues_admin.display_name, from: 'user_to'
+                  click_on 'Update all'
+                end
+
+                it 'shows error messages' do
+                  expect(page).to have_content "Current and new admin users can't be the same"
+                end
+              end
+
+              context 'with required fields' do
+                before do
+                  select "#{school_group_issues_admin.display_name} (2 issues)", from: 'user_from'
+                  select other_issues_admin.display_name, from: 'user_to'
+                  click_on 'Update all'
+                end
+
+                it { expect(page).to have_current_path(url_for([:admin, issueable, :issues])) }
+
+                it 'updates issues to new admin' do
+                  expect(page).to have_content '2 issues updated'
+                  within('div#issues-list') do
+                    expect(page).to have_content(other_issues_admin.display_name, count: 2)
+                    [issue1, issue2].each do |issue|
+                      expect(page).to have_content issue.title
+                    end
+                  end
+                end
+              end
+            end
           end
         end
       end
@@ -293,7 +345,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         let(:closed_issue) { create :issue, status: :closed }
         let(:issue_issue) { create :issue }
         let(:note_issue) { create :issue, issue_type: :note, pinned: true}
-        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue]}
+        let(:inactive_school_issue) { create :issue, issueable: create(:school, active: false) }
+
+        let(:setup_data) { [open_issue, closed_issue, issue_issue, note_issue, inactive_school_issue]}
 
         it_behaves_like 'a displayed list issue' do
           let(:issue) { open_issue }
@@ -306,6 +360,9 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
         end
         it_behaves_like 'a displayed list issue' do
           let(:issue) { note_issue }
+        end
+        it "doesn't show issues for inactive schools" do
+          expect(page).not_to have_content inactive_school_issue.title
         end
 
         context 'and deselecting notes' do

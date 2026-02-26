@@ -111,7 +111,7 @@
     <table class="table footer download-icons">
       <% %i[linkedin x-twitter instagram facebook-square github].each do |name| %>
         <tr>
-          <% args = { icon_set: 'fab', name: name, style: :circle } %>
+          <% args = { icon_set: 'fab', name:, style: :circle } %>
           <td><code><%= args.inspect %></code></td>
           <td><%= render Elements::IconComponent.new(**args) %></td>
         </tr>
@@ -127,7 +127,7 @@
       <% [%i[electricity bolt], %i[gas fire], [nil, :'calendar-alt'], %i[solar_pv sun],
           %i[storage_heater fire-alt], %i[exported_solar_pv arrow-right]].each do |fuel_type, name| %>
         <tr>
-          <% args = { fuel_type: fuel_type, name: name, style: :circle, size: 'f5' } %>
+          <% args = { fuel_type:, name:, style: :circle, size: 'f5' } %>
           <td><code><%= args.inspect %></code></td>
           <td><%= render Elements::IconComponent.new(**args) %></td>
         </tr>
@@ -136,11 +136,24 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col">
+    <h2>Email Icons</h2>
+    <table class="table download-icons">
+      <tr>
+        <% args = { name: 'check-circle', classes: 'text-success', size: :f5 } %>
+        <td><code><%= args.inspect %></code></td>
+        <td><span class="fa-stack"><%= render Elements::IconComponent.new(**args) %></span></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
 <style>
   .footer .fa-stack { color: <%= Colours.dark %>; }
 </style>
-<script src="https://unpkg.com/modern-screenshot"></script>
-<script>
+<script type="module"> <%# erb_lint:disable AllowedScriptType %>
+  import * as modernScreenshot from "https://unpkg.com/modern-screenshot"
   document.querySelectorAll('table.download-icons .fa-stack').forEach(element => {
     element.onclick = event => {
       event.preventDefault()

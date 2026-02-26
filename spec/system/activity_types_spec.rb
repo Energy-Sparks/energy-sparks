@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'activity types', type: :system do
-  context 'activity types search page' do
-    let!(:activity_type_1) { create(:activity_type, name: 'foo', description: 'activity') }
-    let!(:activity_type_2) { create(:activity_type, name: 'bar', description: 'second activity') }
+describe 'activity types' do
+  describe 'search' do
+    let!(:activity_types) do
+      [create(:activity_type, name: 'foo', description: 'activity'),
+       create(:activity_type, name: 'bar', description: 'second activity')]
+    end
 
     context 'when visiting search page' do
       before do
@@ -13,7 +17,7 @@ describe 'activity types', type: :system do
 
       it 'shows empty page' do
         expect(page).to have_content('Find pupil activities')
-        expect(page).not_to have_content('No results found')
+        expect(page).to have_no_content('No results found')
       end
     end
 
@@ -36,7 +40,7 @@ describe 'activity types', type: :system do
       fill_in 'query', with: 'foo'
       click_on 'Search'
 
-      expect(page).to have_content(activity_type_1.name)
+      expect(page).to have_content(activity_types[0].name)
     end
 
     it 'shows no results' do
@@ -62,24 +66,27 @@ describe 'activity types', type: :system do
         # possibly flickering as ordering might be different?
         # test could instead assert whether there is expect number of
         # result rows, check for navigation, etc.
-        expect(page).to have_content(activity_type_1.name)
-        expect(page).not_to have_content(activity_type_2.name)
+        expect(page).to have_content(activity_types[0].name)
+        expect(page).to have_no_content(activity_types[1].name)
 
         click_on 'Next'
-        expect(page).not_to have_content(activity_type_1.name)
-        expect(page).to have_content(activity_type_2.name)
+        expect(page).to have_no_content(activity_types[0].name)
+        expect(page).to have_content(activity_types[1].name)
       end
     end
 
     context 'when filtering' do
-      let!(:key_stage_1) { create(:key_stage, name: 'KS1') }
-      let!(:key_stage_2) { create(:key_stage, name: 'KS2') }
-      let!(:subject_1) { create(:subject, name: 'Citizenship') }
-      let!(:subject_2) { create(:subject, name: 'Science and Technology') }
-      let!(:activity_type_1) { create(:activity_type, name: 'baz one', key_stages: [key_stage_1], subjects: [subject_1]) }
-      let!(:activity_type_2) { create(:activity_type, name: 'baz two', key_stages: [key_stage_2], subjects: [subject_2]) }
+      let(:key_stages) { [create(:key_stage, name: 'KS1'), create(:key_stage, name: 'KS2')] }
+      let(:subjects) do
+        [create(:subject, name: 'Citizenship'),
+         create(:subject, name: 'Languages, Literacy and Communication')]
+      end
+      let!(:activity_types) do
+        [create(:activity_type, name: 'baz one', key_stages: [key_stages[0]], subjects: [subjects[0]]),
+         create(:activity_type, name: 'baz two', key_stages: [key_stages[1]], subjects: [subjects[1]])]
+      end
 
-      context 'visiting the search page' do
+      context 'when visiting the search page' do
         before do
           visit search_activity_types_path
         end
@@ -101,44 +108,60 @@ describe 'activity types', type: :system do
         it 'finds result with key stage filter' do
           fill_in 'query', with: 'baz'
           click_on 'Search'
-          click_on key_stage_1.name
+          click_on key_stages[0].name
           expect(page).to have_content('baz one')
-          expect(page).not_to have_content('baz two')
+          expect(page).to have_no_content('baz two')
         end
 
         it 'keeps filters for next search' do
           fill_in 'query', with: 'baz'
           click_on 'Search'
-          click_on key_stage_1.name
+          click_on key_stages[0].name
           expect(page).to have_content('baz one')
-          expect(page).not_to have_content('baz two')
+          expect(page).to have_no_content('baz two')
           fill_in 'query', with: 'baz'
           click_on 'Search'
           expect(page).to have_content('baz one')
-          expect(page).not_to have_content('baz two')
+          expect(page).to have_no_content('baz two')
         end
 
-        it 'shows result count' do
+        it 'shows filtered result count' do
           fill_in 'query', with: 'baz'
           click_on 'Search'
-          click_on key_stage_1.name
+          click_on key_stages[0].name
           expect(page).to have_content('1 result found')
         end
 
-        it 'finds result with subject filter' do
+        it 'finds result with subject 1 filter' do
           fill_in 'query', with: 'baz'
           click_on 'Search'
-          click_on subject_1.name
+          click_on subjects[0].name
           expect(page).to have_content('baz one')
-          expect(page).not_to have_content('baz two')
+          expect(page).to have_no_content('baz two')
+        end
+
+        it 'finds result with subject 2 filter' do
+          fill_in 'query', with: 'baz'
+          click_on 'Search'
+          click_on subjects[1].name
+          expect(page).to have_no_content('baz one')
+          expect(page).to have_content('baz two')
         end
 
         it 'finds none if key stage and subject filtered' do
           fill_in 'query', with: 'baz'
           click_on 'Search'
-          click_on key_stage_1.name
-          click_on subject_2.name
+          click_on key_stages[0].name
+          click_on subjects[1].name
           expect(page).to have_content('No results found')
+        end
+
+        it 'toggles selected filter highlight' do
+          expect(page).to have_css('a.badge-light', text: subjects[1].name)
+          click_on subjects[1].name
+          expect(page).to have_css('a.badge-dark', text: subjects[1].name)
+          click_on subjects[1].name
+          expect(page).to have_css('a.badge-light', text: subjects[1].name)
         end
       end
     end

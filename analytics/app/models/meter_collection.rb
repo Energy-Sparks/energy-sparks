@@ -6,9 +6,6 @@
 class MeterCollection
   include Logging
 
-  attr_reader :heat_meters, :electricity_meters, :storage_heater_meters
-  attr_reader :school, :model_cache
-
   # These are things which will be populated
   attr_accessor :aggregated_heat_meters, :aggregated_electricity_meters,
                 :electricity_simulation_meter, :storage_heater_meter,
@@ -20,16 +17,21 @@ class MeterCollection
 
   # For community use calculations
   attr_accessor :aggregated_electricity_meter_without_community_usage
-  attr_accessor :aggregated_heat_meters_without_community_usage
-  attr_accessor :storage_heater_meter_without_community_usage
-  attr_accessor :community_disaggregator
+  attr_accessor :aggregated_heat_meters_without_community_usage, :storage_heater_meter_without_community_usage,
+                :community_disaggregator
 
-  def initialize(school, holidays:, temperatures:, solar_irradiation: nil, solar_pv:, grid_carbon_intensity:, pseudo_meter_attributes: {})
+  def initialize(school, holidays:, temperatures:, solar_pv:, grid_carbon_intensity:, solar_irradiation: nil,
+                 pseudo_meter_attributes: {})
     @school = school
     @holidays = holidays
     @temperatures = temperatures
     @solar_pv = solar_pv
-    @solar_irradiation = solar_irradiation.nil? ? SolarIrradianceFromPV.new('solar irradiance from pv', solar_pv_data: solar_pv) : solar_irradiation
+    @solar_irradiation = if solar_irradiation.nil?
+                           SolarIrradianceFromPV.new('solar irradiance from pv',
+                                                     solar_pv_data: solar_pv)
+                         else
+                           solar_irradiation
+                         end
     @grid_carbon_intensity = grid_carbon_intensity
 
     @heat_meters = []
@@ -41,32 +43,21 @@ class MeterCollection
     @pseudo_meter_attributes = pseudo_meter_attributes
     @cached_open_time = TimeOfDay.new(7, 0) # for speed
     @cached_close_time = TimeOfDay.new(16, 30) # for speed
-    @open_close_times = OpenCloseTimes.convert_frontend_times(@school.school_times, @school.community_use_times, @holidays)
+    @open_close_times = OpenCloseTimes.convert_frontend_times(@school.school_times, @school.community_use_times,
+                                                              @holidays)
   end
 
-  def name
-    @school.name
-  end
+  delegate :name, to: :@school
 
-  def postcode
-    @school.postcode
-  end
+  delegate :postcode, to: :@school
 
-  def country
-    @school.country
-  end
+  delegate :country, to: :@school
 
-  def funding_status
-    @school.funding_status
-  end
+  delegate :funding_status, to: :@school
 
-  def urn
-    @school.urn
-  end
+  delegate :urn, to: :@school
 
-  def area_name
-    @school.area_name
-  end
+  delegate :area_name, to: :@school
 
   def default_energy_purchaser
     # use the area name for the moment
@@ -79,10 +70,6 @@ class MeterCollection
 
   def delete_pseudo_meter_attribute(pseudo_meter_key, attribute_key)
     @pseudo_meter_attributes[pseudo_meter_key]&.delete(attribute_key)
-  end
-
-  def target_school?
-    false
   end
 
   # Factory method to create a new meter in this meter collection,
@@ -169,19 +156,20 @@ class MeterCollection
   end
 
   def calculate_floor_area_number_of_pupils
-    @calculated_floor_area_pupil_numbers ||= FloorAreaPupilNumbers.new(@school.floor_area, @school.number_of_pupils, pseudo_meter_attributes(:school_level_data))
+    @calculated_floor_area_pupil_numbers ||= FloorAreaPupilNumbers.new(@school.floor_area, @school.number_of_pupils,
+                                                                       pseudo_meter_attributes(:school_level_data))
   end
 
   def earliest_meter_date
-    all_meters.map{|meter| meter.amr_data.start_date }.min
+    all_meters.map { |meter| meter.amr_data.start_date }.min
   end
 
   def last_combined_meter_date
-    all_aggregate_meters.map{ |meter| meter.amr_data.end_date }.min
+    all_aggregate_meters.map { |meter| meter.amr_data.end_date }.min
   end
 
   def inspect
-    "Meter Collection (name: '#{@school.name}', object_id: #{"0x00%x" % (object_id << 1)})"
+    "Meter Collection (name: '#{@school.name}', object_id: #{format('0x00%x', object_id << 1)})"
   end
 
   def to_s
@@ -212,16 +200,13 @@ class MeterCollection
     nil
   end
 
-  def latitude
-    @school.latitude
-  end
+  delegate :latitude, to: :@school
 
-  def longitude
-    @school.longitude
-  end
+  delegate :longitude, to: :@school
 
   private def search_meter_list_for_identifier(meter_list, identifier)
     return nil if identifier.nil?
+
     meter_list.each do |meter|
       next if meter.id.nil?
       return meter if meter.id.to_s == identifier.to_s
@@ -243,12 +228,12 @@ class MeterCollection
 
     meter_list.flatten!
 
-    meter_list.uniq!{ |meter| meter.mpan_mprn } if ensure_unique
+    meter_list.uniq! { |meter| meter.mpan_mprn } if ensure_unique
 
     meter_list
   end
 
-  #TODO remove reference in front-end
+  # TODO: remove reference in front-end
   def real_meters2
     real_meters
   end
@@ -265,9 +250,9 @@ class MeterCollection
       @storage_heater_meters
     ].compact.flatten
 
-    meters = meter_list.map{ |m| m.sub_meters.fetch(:mains_consume, m) }
+    meters = meter_list.map { |m| m.sub_meters.fetch(:mains_consume, m) }
 
-    meters.uniq{ |meter| meter.mpxn }
+    meters.uniq { |meter| meter.mpxn }
   end
 
   def underlying_meters(fuel_type)
@@ -285,19 +270,17 @@ class MeterCollection
 
   def report_group
     if !aggregated_heat_meters.nil?
-      if !aggregated_electricity_meters.nil?
-        solar_pv_panels? ? :electric_and_gas_and_solar_pv : :electric_and_gas
-      else
+      if aggregated_electricity_meters.nil?
         :gas_only
-      end
-    else
-      if solar_pv_panels?
-        :electric_and_solar_pv
-      elsif storage_heaters?
-        :electric_and_storage_heaters
       else
-        :electric_only
+        solar_pv_panels? ? :electric_and_gas_and_solar_pv : :electric_and_gas
       end
+    elsif solar_pv_panels?
+      :electric_and_solar_pv
+    elsif storage_heaters?
+      :electric_and_storage_heaters
+    else
+      :electric_only
     end
   end
 
@@ -330,19 +313,19 @@ class MeterCollection
   end
 
   def storage_heaters?
-    @has_storage_heaters ||= all_meters.any?{ |meter| meter.storage_heater? }
+    @has_storage_heaters ||= all_meters.any? { |meter| meter.storage_heater? }
   end
 
   def solar_pv_panels?
-    @solar_pv_panels ||= all_meters.any?{ |meter| meter.solar_pv_panels? }
+    @solar_pv_panels ||= all_meters.any? { |meter| meter.solar_pv_panels? }
   end
 
   def sheffield_simulated_solar_pv_panels?
-    @sheffield_simulated_solar_pv_panels ||= all_meters.any?{ |meter| meter.sheffield_simulated_solar_pv_panels? }
+    @sheffield_simulated_solar_pv_panels ||= all_meters.any? { |meter| meter.sheffield_simulated_solar_pv_panels? }
   end
 
   def solar_pv_real_metering?
-    @solar_pv_real_metering ||= all_meters.any?{ |meter| meter.solar_pv_real_metering? }
+    @solar_pv_real_metering ||= all_meters.any? { |meter| meter.solar_pv_real_metering? }
   end
 
   def solar_pv_and_or_storage_heaters?
@@ -357,9 +340,7 @@ class MeterCollection
     ].compact
   end
 
-  def community_usage?
-    open_close_times.community_usage?
-  end
+  delegate :community_usage?, to: :open_close_times
 
   def fuel_types(exclude_storage_heaters = true, exclude_solar_pv = true)
     types = []
@@ -378,13 +359,9 @@ class MeterCollection
     @school.activation_date || @school.creation_date
   end
 
-  def activation_date
-    @school.activation_date
-  end
+  delegate :activation_date, to: :@school
 
-  def creation_date
-    @school.creation_date
-  end
+  delegate :creation_date, to: :@school
 
   def add_heat_meter(meter)
     @heat_meters.push(meter)
@@ -414,26 +391,15 @@ class MeterCollection
     @cached_close_time
   end
 
-  def open_close_times
-    @open_close_times
-  end
-
-  def target_school(type = :day)
-    @target_school ||= {}
-    @target_school[type] ||= TargetSchool.new(self, type)
-  end
+  attr_reader :heat_meters, :electricity_meters, :storage_heater_meters, :school, :model_cache, :open_close_times
 
   def benchmark_school(benchmark_type = :benchmark)
     @benchmark_school ||= {}
     @benchmark_school[benchmark_type] ||= BenchmarkSchool.new(self, benchmark_type: benchmark_type)
   end
 
-  def reset_target_school_for_testing(type = :day)
-    @target_school.delete(type) unless @target_school.nil?
-  end
-
   def pseudo_meter_attributes(type)
-    @pseudo_meter_attributes.fetch(type){ {} }
+    @pseudo_meter_attributes.fetch(type) { {} }
   end
 
   def pseudo_meter_attributes_private
@@ -475,44 +441,49 @@ class MeterCollection
   # Intended to help with debugging any aggregation issues or just reviewing state of the
   # collection.
   def print_meter_setup
-    puts "Aggregated Data"
+    puts 'Aggregated Data'
     puts '-' * 35
-    [:aggregated_electricity_meters, :aggregated_heat_meters, :storage_heater_meter].each do |method|
+    %i[aggregated_electricity_meters aggregated_heat_meters storage_heater_meter].each do |method|
       meter = send(method)
-      if meter.present?
-        puts "#{format('%-35s', method)} #{meter.inspect}"
-        meter.sub_meters.each do |key, sub_meter|
-          puts "  - #{format('%-31s', key)} #{sub_meter.inspect}"
-        end
+      next unless meter.present?
+
+      puts "#{format('%-35s', method)} #{meter.inspect}"
+      meter.sub_meters.each do |key, sub_meter|
+        puts "  - #{format('%-31s', key)} #{sub_meter.inspect}"
       end
     end
-    [:electricity, :heat, :storage_heater].each do |method|
+    %i[electricity heat storage_heater].each do |method|
       meters = send("#{method}_meters")
-      if meters.any?
-        puts "\n#{method.to_s.humanize } Meters"
-        puts '-' * 35
-        meters.each.with_index(1) do |meter, index|
-          puts "  #{format('%-33s', index)} #{meter.inspect}"
-          meter.sub_meters.each do |key, sub_meter|
-            puts "    - #{format('%-29s', key)} #{sub_meter.inspect}"
-          end
+      next unless meters.any?
+
+      puts "\n#{method.to_s.humanize} Meters"
+      puts '-' * 35
+      meters.each.with_index(1) do |meter, index|
+        puts "  #{format('%-33s', index)} #{meter.inspect}"
+        meter.sub_meters.each do |key, sub_meter|
+          puts "    - #{format('%-29s', key)} #{sub_meter.inspect}"
         end
       end
     end
     puts '-' * 35
   end
 
-  #Clip the schedule data to the earliest date that we need for charting or
-  #subsequent analysis.
-  private def clean_up_schedule_data!
+  private
+
+  TARGET_TEMPERATURE_DAYS_EITHER_SIDE = 4
+  private_constant :TARGET_TEMPERATURE_DAYS_EITHER_SIDE
+
+  # Clip the schedule data to the earliest date that we need for charting or
+  # subsequent analysis.
+  def clean_up_schedule_data!
     earliest_date = earliest_meter_date
     return if earliest_date.nil?
 
     grid_carbon_intensity.set_start_date(earliest_date)
 
-    #we need a bit more temperature and solar data for calculating targets and annual estimates,
-    #so adjust date by one year for solar and
-    earliest_date = earliest_date - (365 + TargetMeterTemperatureCompensatedDailyDayTypeBase::TARGET_TEMPERATURE_DAYS_EITHER_SIDE)
+    # we need a bit more temperature and solar data for calculating targets and annual estimates,
+    # so adjust date by one year for solar and
+    earliest_date -= (365 + TARGET_TEMPERATURE_DAYS_EITHER_SIDE)
     solar_pv.set_start_date(earliest_date)
     solar_irradiation.set_start_date(earliest_date)
     temperatures.set_start_date(earliest_date)

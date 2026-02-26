@@ -135,6 +135,7 @@ describe 'landing pages', type: :system do
     let(:expected_utm_params) { {} }
 
     before do
+      create(:commercial_product, default_product: true)
       visit product_path(expected_utm_params)
       click_link('Request more information', :match => :first)
     end
@@ -194,6 +195,7 @@ describe 'landing pages', type: :system do
     let(:expected_utm_params) { {} }
 
     before do
+      create(:commercial_product, default_product: true)
       visit product_path(expected_utm_params)
       click_link('Watch a demo', :match => :first)
     end

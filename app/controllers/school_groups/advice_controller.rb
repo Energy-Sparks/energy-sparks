@@ -7,7 +7,7 @@ module SchoolGroups
     include Promptable
 
     def show
-      build_breadcrumbs([name: I18n.t('advice_pages.breadcrumbs.root')])
+      build_breadcrumbs([{ name: I18n.t('advice_pages.breadcrumbs.root') }])
 
       respond_to do |format|
         format.html {}
@@ -21,7 +21,7 @@ module SchoolGroups
     end
 
     def priorities
-      build_breadcrumbs([name: I18n.t('advice_pages.index.priorities.title')])
+      build_breadcrumbs([{ name: I18n.t('advice_pages.index.priorities.title') }])
       respond_to do |format|
         format.html do
           service = SchoolGroups::PriorityActions.new(@schools)
@@ -35,11 +35,11 @@ module SchoolGroups
     end
 
     def alerts
-      build_breadcrumbs([name: I18n.t('advice_pages.index.alerts.title')])
+      build_breadcrumbs([{ name: I18n.t('advice_pages.index.alerts.title') }])
     end
 
     def scores
-      build_breadcrumbs([name: I18n.t('school_groups.titles.current_scores')])
+      build_breadcrumbs([{ name: I18n.t('school_groups.titles.current_scores') }])
       setup_scores_and_years(@school_group)
       respond_to do |format|
         format.html {}
@@ -53,11 +53,11 @@ module SchoolGroups
     end
 
     def comparison_reports
-      build_breadcrumbs([name: I18n.t('school_groups.titles.comparisons')])
+      build_breadcrumbs([{ name: I18n.t('school_groups.titles.comparisons') }])
     end
 
     def charts
-      build_breadcrumbs([name: I18n.t('school_groups.titles.charts')])
+      build_breadcrumbs([{ name: I18n.t('school_groups.titles.charts') }])
       @charts = SchoolGroups::Charts.new.safe_charts
       @default_school = params[:school].present? ? School.find_by(slug: params[:school]) : nil
       @default_chart_type = params[:chart_type]&.to_sym

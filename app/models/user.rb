@@ -78,10 +78,15 @@ class User < ApplicationRecord
   has_many :school_onboardings, inverse_of: :created_user, foreign_key: :created_user_id
   has_many :issues_admin_for, class_name: 'SchoolGroup', inverse_of: :default_issues_admin_user,
                               foreign_key: :default_issues_admin_user_id, dependent: :nullify
+  has_many :owned_issues, class_name: 'Issue', foreign_key: :owned_by_id, inverse_of: :owned_by
 
   actor_associations_for \
     Activity: [:created, :updated],
     CaseStudy: [:created, :updated],
+    'Commercial::Contract': [:created, :updated],
+    'Commercial::ContractContact': [:created, :updated],
+    'Commercial::Licence': [:created, :updated],
+    'Commercial::Product': [:created, :updated],
     'Cms::Category': [:created, :updated],
     'Cms::Page': [:created, :updated],
     'Cms::Section': [:created, :updated],
@@ -138,6 +143,14 @@ class User < ApplicationRecord
   }
 
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
+
+  scope :with_owned_issue_count, ->(issueable: nil) do
+    users = left_joins(:owned_issues)
+    users = users.merge(Issue.for_issueable(issueable)) if issueable
+
+    users.group('id').select('users.*', 'COUNT(issues.id) AS issues_count')
+  end
+
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   validates :pupil_password, presence: true, if: :pupil?

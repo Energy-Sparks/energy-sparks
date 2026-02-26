@@ -78,12 +78,14 @@ FactoryBot.define do
       transient do
         fuel_type { :electricity }
         kwh_data_x48 { nil }
+        meter_attributes { {} }
       end
+
       after(:build) do |meter_collection, evaluator|
-        amr_data = build(:amr_data, :with_date_range, start_date: evaluator.start_date, end_date: evaluator.end_date,
-                                                      kwh_data_x48: evaluator.kwh_data_x48)
-        meter = build(:meter, meter_collection: meter_collection, type: evaluator.fuel_type, amr_data: amr_data)
-        meter_collection.set_aggregate_meter(evaluator.fuel_type, meter)
+        build(:meter, :aggregate_meter, meter_collection:, type: evaluator.fuel_type,
+                                        meter_attributes: evaluator.meter_attributes,
+                                        start_date: evaluator.start_date, end_date: evaluator.end_date,
+                                        kwh_data_x48: evaluator.kwh_data_x48)
       end
     end
 

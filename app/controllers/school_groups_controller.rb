@@ -13,8 +13,8 @@ class SchoolGroupsController < ApplicationController
   load_resource
 
   before_action :find_partners
-  before_action :load_schools, except: [:map, :settings]
-  before_action :redirect_unless_authorised, except: [:map, :settings]
+  before_action :load_schools, except: %i[map settings]
+  before_action :redirect_unless_authorised, except: %i[map settings]
   before_action :breadcrumbs
   before_action :find_school_group_fuel_types
   before_action :set_show_school_group_message
@@ -78,7 +78,7 @@ class SchoolGroupsController < ApplicationController
   end
 
   def breadcrumbs
-    build_breadcrumbs([name: I18n.t("school_groups.titles.#{action_name}")])
+    build_breadcrumbs([{ name: I18n.t("school_groups.titles.#{action_name}") }])
   end
 
   def find_partners

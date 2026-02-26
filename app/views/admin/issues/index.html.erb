@@ -5,16 +5,14 @@
     <%= header_nav_link "#{@issueable.name} #{@issueable.model_name.human.downcase}", [:admin, @issueable] %>
   <% end %>
 <% end %>
-<% if @issueable %>
-  <div class="d-flex">
-    <div>
-      <%= link_to 'Issues & Notes', admin_issues_path %>&nbsp;>
-      <%= @issueable.model_name.human.capitalize %> >
-      <%= @issueable.try(:name) %>
+<div class="d-flex align-items-center">
+  <%= render 'breadcrumbs' %>
+  <% if @issueable %>
+    <div class="ms-auto">
+      <%= render 'issues_links', issueable: @issueable %>
     </div>
-    <div class="ms-auto"><%= render 'new_issues_links', issueable: @issueable %></div>
-  </div>
-<% end %>
+  <% end %>
+</div>
 <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
   <%= form_tag polymorphic_path(
         @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
@@ -80,17 +78,19 @@
   <% end %>
 </div>
 
-<% if @issues.any? %>
-  <% if @issueable %>
-    <div class="container">
-      <% @issues.each do |issue| %>
-        <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
-      <% end %>
-    </div>
+<div id='issues-list'>
+  <% if @issues.any? %>
+    <% if @issueable %>
+      <div class="container">
+        <% @issues.each do |issue| %>
+          <%= render 'issue', issue: issue, single: false, issueable: @issueable %>
+        <% end %>
+      </div>
+    <% else %>
+      <%= render 'issues_list', issues: @issues %>
+    <% end %>
+    <%= render 'shared/pagy_footer' %>
   <% else %>
-    <%= render 'issues_list', issues: @issues %>
+    <p>No issues or notes to display.</p>
   <% end %>
-  <%= render 'shared/pagy_footer' %>
-<% else %>
-  <p>No issues or notes to display.</p>
-<% end %>
+</div>

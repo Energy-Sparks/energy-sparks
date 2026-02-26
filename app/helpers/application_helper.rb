@@ -379,23 +379,6 @@ module ApplicationHelper
     }
   end
 
-  def add_or_remove(list, item)
-    arr = list ? list.split(',').map(&:strip) : []
-    arr.include?(item) ? arr.delete(item) : arr.append(item)
-    arr.join(',')
-  end
-
-  def activity_types_search_link(params, key_stage, subject)
-    query = params[:query]
-    key_stages = params[:key_stages]
-    subjects = params[:subjects]
-    search_activity_types_path(query: query, key_stages: add_or_remove(key_stages, key_stage), subjects: add_or_remove(subjects, subject))
-  end
-
-  def activity_types_badge_class(list, item, color = 'info')
-    list && list.include?(item) ? "badge badge-#{color}" : 'badge badge-light outline'
-  end
-
   def file_type_icon(type)
     icon = if type.match?(/spreadsheet/)
              fa_icon('file-excel')
@@ -426,6 +409,10 @@ module ApplicationHelper
 
   def i18n_key_from(str)
     str.gsub('+', ' And ').delete(' ').underscore
+  end
+
+  def redirect_back_path(params)
+    params[:redirect_back].blank? ? request.fullpath : params[:redirect_back]
   end
 
   def redirect_back_url(params)
@@ -570,5 +557,9 @@ module ApplicationHelper
 
   def label_count(label, count)
     "#{label} #{content_tag(:span, count, class: %w[badge text-bg-secondary])}".html_safe
+  end
+
+  def collection_from_enum(enum)
+    enum.transform_keys(&:humanize).sort.to_h
   end
 end

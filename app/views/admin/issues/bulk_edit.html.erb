@@ -1,0 +1,49 @@
+<%= render 'header', title: 'Issues & Notes - bulk update' do %>
+  <% if @issueable.try(:school_group) %>
+    <%= header_nav_link "#{@issueable.school_group.name} school group", admin_school_group_path(@issueable.school_group) %>
+  <% elsif @issueable %>
+    <%= header_nav_link "#{@issueable.name} #{@issueable.model_name.human.downcase}", [:admin, @issueable] %>
+  <% end %>
+<% end %>
+
+<div class="bg-light pb-3 px-3 border rounded-2">
+  <h4>Update all issues and notes<%= " for <strong>#{@issueable.name}</strong>".html_safe if @issueable %>:</h4>
+  <%= form_tag polymorphic_path([:bulk_update, :admin, @issueable, Issue].compact),
+               method: :post do %>
+    <%= redirect_back_tag params %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= label_tag :user_from, 'Currently owned by:' %>
+        <%= select_tag :user_from,
+                       options_for_select(
+                         User.with_owned_issue_count(issueable: @issueable).map { |u|
+                           ["#{u.display_name} (#{u.issues_count} issues)", u.id]
+                         },
+                         params[:user_from]
+                       ),
+                       include_blank: 'Please select',
+                       class: 'form-control mb-3' %>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <%= label_tag :user_to, 'Change owner to:' %>
+        <%= select_tag :user_to,
+                       options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user_to]),
+                       include_blank: 'Please select',
+                       class: 'form-control mb-3' %>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <%= button_tag 'Update all',
+                       type: 'submit',
+                       class: 'btn btn-sm',
+                       data: { confirm: 'Are you sure?' } %>
+
+      </div>
+    </div>
+  <% end %>
+</div>

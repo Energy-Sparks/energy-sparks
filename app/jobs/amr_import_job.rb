@@ -19,7 +19,7 @@ class AmrImportJob < ApplicationJob
     s3_client = Aws::S3::Client.new
     Rails.logger.info "Download all from S3 key pattern: #{config.identifier}"
     objects = s3_client.list_objects_v2(bucket:, prefix: "#{config.identifier}/").contents
-                       # need to ignore application/x-directory objects ending with /
+                       # seeing application/x-directory objects ending with /
                        .reject { |object| object.key.end_with?('/') }
     perform_later(config, bucket, objects.map(&:key)) unless objects.empty?
   end
@@ -46,7 +46,7 @@ class AmrImportJob < ApplicationJob
 
   def archive_file(s3_client, config, bucket, key, key_without_parent)
     archived_key = "#{config.s3_archive_folder}/#{key_without_parent}"
-    s3_client.copy_object(bucket:, copy_source: "#{bucket}/#{key}", key: archived_key)
+    s3_client.copy_object(bucket:, copy_source: Rack::Utils.escape_path("#{bucket}/#{key}"), key: archived_key)
     s3_client.delete_object(bucket:, key:)
     Rails.logger.info "Archived #{key} to #{archived_key} and removed local file"
   end

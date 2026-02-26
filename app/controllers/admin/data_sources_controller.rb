@@ -13,7 +13,7 @@ module Admin
 
     def create
       if @data_source.save
-        redirect_to params[:redirect_back], notice: 'Data source was successfully created.'
+        redirect_to admin_data_sources_path, notice: 'Data source was successfully created.'
       else
         render :new
       end
@@ -21,7 +21,7 @@ module Admin
 
     def update
       if @data_source.update(data_source_params)
-        redirect_to params[:redirect_back], notice: 'Data source was successfully updated.'
+        redirect_to admin_data_source_path(@data_source), notice: 'Data source was successfully updated.'
       else
         render :edit
       end

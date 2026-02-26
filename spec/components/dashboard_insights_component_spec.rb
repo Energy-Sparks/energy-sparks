@@ -87,12 +87,12 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
     end
   end
 
+  def div_text
+    html.css('div').last.text.strip.gsub(/  +/, '')
+  end
+
   context 'with a target monthly summary' do
     let(:school) { create(:school, :with_fuel_configuration, :with_meter_dates) }
-
-    def div_text
-      html.css('div').last.text.strip.gsub(/  +/, '')
-    end
 
     context 'when electricity target failing' do
       before { create(:school_target, :with_monthly_consumption, school:) }
@@ -126,6 +126,32 @@ RSpec.describe DashboardInsightsComponent, :include_url_helpers, type: :componen
           'Review progress'
         )
         expect(html).to have_link('Review progress', href: "/schools/#{school.slug}/advice/gas_target")
+      end
+    end
+  end
+
+  context 'with manual readings' do
+    before do
+      Flipper.enable(:manual_readings)
+      create(:school_target, :with_monthly_consumption, school:, gas: nil, storage_heaters: nil,
+                                                        previous_missing: missing)
+    end
+
+    context 'when some readings missing' do
+      let(:missing) { true }
+
+      it 'shows the prompt' do
+        expect(div_text).to eq('We have limited energy data for your school. You can enter monthly consumption data ' \
+                               'to show progress against any targets set or observe changes in consumption over a ' \
+                               "longer period of time.\n\n\nSupply historical manual readings")
+      end
+    end
+
+    context 'when complete' do
+      let(:missing) { false }
+
+      it 'shows nothing' do
+        expect(div_text).to eq('')
       end
     end
   end

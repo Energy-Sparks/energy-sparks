@@ -56,8 +56,7 @@ Rails.application.routes.draw do
   get 'cms/youtube_embed/:id', to: 'cms/youtube_embed#show'
 
   get '/r/school(/*path)', to: 'redirects#school_page_redirect', as: :school_page_redirect, constraints: { path: /.*/ }
-  # Add the following route once group page redirects are implemented:
-  # get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
+  get '/r/group(/*path)', to: 'redirects#group_page_redirect', as: :group_page_redirect, constraints: { path: /.*/ }
 
   direct :cdn_link do |model, options|
     expires_in = options.delete(:expires_in) { ActiveStorage.urls_expire_in }
@@ -563,6 +562,10 @@ Rails.application.routes.draw do
       member do
         post :resolve
       end
+      collection do
+        get :bulk_edit
+        post :bulk_update
+      end
     end
   end
   concern :messageable do
@@ -596,6 +599,14 @@ Rails.application.routes.draw do
       end
     end
 
+    namespace :commercial do
+      resources :contracts do
+        get :contract_holder_options, on: :collection
+      end
+      resources :licences
+      resources :products
+    end
+
     namespace :comparisons do
       resources :footnotes, except: [:show]
       resources :reports, except: [:show]
@@ -622,7 +633,7 @@ Rails.application.routes.draw do
     resources :consent_grants, only: %i[index show]
     resources :find_school_by_mpxn, only: :index
     resources :find_school_by_urn, only: :index
-    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues'
+    get 'issues/meter_issues/:meter_id', to: 'issues#meter_issues', as: :meter_issues
 
     resources :consent_statements
     post 'consent_statements/:id/publish', to: 'consent_statements#publish', as: :publish_consent_statement
@@ -776,6 +787,7 @@ Rails.application.routes.draw do
       resources :community_use, only: [:index]
       resources :data_loads, only: :index
       resources :dcc_status, only: [:index]
+      resources :images, only: :index
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
@@ -841,7 +853,6 @@ Rails.application.routes.draw do
             post :clear
           end
         end
-        resource :target_data, only: :show
       end
       member do
         post :archive

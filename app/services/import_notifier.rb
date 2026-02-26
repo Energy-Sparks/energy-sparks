@@ -49,7 +49,7 @@ class ImportNotifier
     outdated_meter_ids = Meter
       .joins('LEFT JOIN data_sources ON data_sources.id = meters.data_source_id')
       .joins(:school)
-      .joins(<<-SQL.squish)
+      .joins(<<~SQL.squish)
         JOIN LATERAL (
           SELECT id, reading_date
           FROM amr_validated_readings
@@ -59,7 +59,7 @@ class ImportNotifier
         ) AS max_reading ON true
       SQL
       .where(active: true, schools: { active: true })
-      .where(<<-SQL.squish)
+      .where(<<~SQL.squish)
         max_reading.reading_date <
           NOW() - COALESCE(
             data_sources.import_warning_days,
