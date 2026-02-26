@@ -1,28 +1,26 @@
 <table id="<%= id %>" class="table">
   <thead>
     <tr>
-      <td><td>
-      <td>Cost</td>
+      <th></th>
+      <th>Cost</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>Base Price<td>
+      <td>Base Price</td>
       <td><%= format_unit(price.base_price, :£) %></td>
     </tr>
     <tr>
-      <td>Metering Fee<td>
+      <td>Metering Fee</td>
       <td><%= format_unit(price.metering_fee, :£) %></td>
     </tr>
     <tr>
-      <td>Private Account Fee<td>
+      <td>Private Account Fee</td>
       <td><%= format_unit(price.private_account_fee, :£) %></td>
     </tr>
-  </tbody>
-  <tfooter>
     <tr>
-      <td>Total Price<td>
+      <td>Total Price</td>
       <td><%= format_unit(price.total, :£) %></td>
     </tr>
-  </tfooter>
+  </tbody>
 </table>

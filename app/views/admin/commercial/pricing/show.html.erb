@@ -76,11 +76,11 @@
       <h3>Price breakdown</h3>
       <p>Calculation based on pricing specified in <%= link_to @product.name, admin_commercial_product_path(@product) %></p>
     <% end %>
-    <%= render 'price_table', id: 'contract-pricing', price: @price %>
+    <%= render 'price_table', id: 'pricing', price: @price %>
   </div>
 </div>
 
-<% if @school && @school_specific_price %>
+<% if @school_specific_price %>
   <div class="row">
     <div class="col">
       <h3>Existing school pricing</h3>

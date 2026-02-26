@@ -1,22 +1,20 @@
 module Admin::Commercial
   class PricingController < AdminController
     def show
-      pricing = params.fetch(:pricing, {})
-
-      @school = find_school(pricing[:school_id])
+      @school = find_school(pricing_params[:school_id])
 
       if @school && @school.licences.any?
         @licence = @school.licences.by_end_date.first
         @contract = @licence.contract
         @product = @licence.product
       else
-        @product  = find_product(pricing[:product_id])
-        @contract = find_contract(pricing[:contract_id])
+        @product  = find_product(pricing_params[:product_id])
+        @contract = find_contract(pricing_params[:contract_id])
       end
 
-      @number_of_pupils = param_or_default(pricing[:number_of_pupils], default: default_pupils)
-      @number_of_meters = param_or_default(pricing[:number_of_meters], default: default_meters)
-      @private_account  = boolean_param(pricing[:private_account])
+      @number_of_pupils = param_or_default(pricing_params[:number_of_pupils], default: default_pupils)
+      @number_of_meters = param_or_default(pricing_params[:number_of_meters], default: default_meters)
+      @private_account  = boolean_param(pricing_params[:private_account])
 
       @price = Commercial::PriceCalculator.new.calculate(
         product: @product,
@@ -26,12 +24,14 @@ module Admin::Commercial
         private_account: @private_account
       )
 
-      if @school
-        @school_specific_price = Commercial::PriceCalculator.new.for_school_renewal(school: @school)
-      end
+      @school_specific_price = Commercial::PriceCalculator.new.for_school_renewal(school: @school) if @school
     end
 
     private
+
+    def pricing_params
+      params.fetch(:pricing, {})
+    end
 
     def find_product(id)
       return Commercial::Product.default_product if id.blank?
