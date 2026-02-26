@@ -3,7 +3,7 @@
 # Table name: data_sources
 #
 #  add_existing_data_feed      :text
-#  alert_percentage_threshold  :integer
+#  alert_percentage_threshold  :integer          default(25)
 #  alerts_on                   :boolean          default(TRUE)
 #  comments                    :text
 #  contact_email               :string
