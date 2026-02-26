@@ -15,7 +15,6 @@
             prompt: '',
             hint: t('schools.users.form.preferred_locale_hint') %>
 <% unless @user.student? %>
-  <%= f.input :climate_action_lead, wrapper_html: { class: 'custom-checkbox' },
-                                    label_html: { class: 'custom-control-label' },
-                                    input_html: { class: 'custom-control-input' } %>
+  <%= f.input :climate_action_lead, label_html: { class: 'form-check-label' },
+                                    input_html: { class: 'form-check-input' } %>
 <% end %>

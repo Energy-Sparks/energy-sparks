@@ -21,30 +21,8 @@
 
     <% if @allow_alerts %>
       <hr>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <%= simple_fields_for :contact do |n| %>
-            <%= n.input :auto_create_alert_contact,
-                        label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
-                        as: :boolean,
-                        class: 'custom-checkbox pb-3',
-                        wrapper_html: { class: 'custom-checkbox pb-3' },
-                        label_html: { class: 'custom-control-label' },
-                        input_html: {
-                          class: 'custom-control-input',
-                          checked: params[:contact].present? ? subscribe_to_alerts? : true
-                        } %>
-          <% end %>
-        </div>
-        <div class="col-sm-8">
-          <p><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts') %>:</p>
-          <ul>
-            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_1') %></li>
-            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_2') %></li>
-            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_3') %></li>
-          </ul>
-        </div>
-      </div>
+      <%= render 'schools/users/auto_create_alert_contact',
+                 checked: params[:contact].present? ? subscribe_to_alerts? : true %>
     <% end %>
 
     <% if @can_subscribe_newsletter %>
