@@ -95,6 +95,8 @@ describe Targets::TargetDates do
   end
 
   describe '#enough_holidays?' do
+    before { travel_to(Date.new(2026, 2, 9)) }
+
     context 'with limited data' do
       let(:aggregate_meter) { build(:meter_collection, :with_aggregate_meter).aggregated_electricity_meters }
 

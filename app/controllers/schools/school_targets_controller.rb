@@ -56,9 +56,9 @@ module Schools
     def create
       authorize! :create, @school_target
       if @school_target.save
+        previous_changes = @school_target.previous_changes.keys
         update_monthly_consumption
-        redirect_to school_school_targets_path(@school),
-                    notice: t('schools.school_targets.successfully_created')
+        redirect_to redirect_path(previous_changes), notice: t('schools.school_targets.successfully_created')
       elsif @school.has_target?
         render :new
       else
@@ -69,10 +69,10 @@ module Schools
     def update
       authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
+        previous_changes = @school_target.previous_changes.keys
         update_monthly_consumption
         AggregateSchoolService.new(@school).invalidate_cache
-        redirect_to edit_school_school_target_path(@school, @school_target),
-                    notice: t('schools.school_targets.successfully_updated')
+        redirect_to redirect_path(previous_changes), notice: t('schools.school_targets.successfully_updated')
       else
         target_service
         render :edit, layout: 'dashboards'
@@ -101,6 +101,20 @@ module Schools
 
     def update_monthly_consumption
       Targets::GenerateProgressService.new(@school, aggregate_school).update_monthly_consumption(@school_target)
+    end
+
+    def redirect_path(previous_changes)
+      fuel_changes = previous_changes & %w[electricity gas storage_heaters]
+      case fuel_changes
+      when %w[electricity]
+        school_advice_electricity_target_path(@school)
+      when %w[gas]
+        school_advice_gas_target_path(@school)
+      when %w[storage_heaters]
+        school_advice_storage_heater_target_path(@school)
+      else
+        school_advice_path(@school)
+      end
     end
 
     def school_target_params

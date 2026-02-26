@@ -4,13 +4,25 @@ module Schools
   module Advice
     module ConsumptionByMonthService
       def self.consumption_by_month(aggregate_school, school, fuel_type)
-        amr_data = aggregate_school.aggregate_meter(fuel_type)&.amr_data
-        end_date = amr_data&.end_date || Date.current
+        amr_data = amr_data_for(aggregate_school, fuel_type)
+        end_date = end_date_for_with_amr_data(amr_data)
         DateService.start_of_months(end_date.prev_year.next_month, end_date).to_h do |date|
           current = calculate_month_consumption(amr_data, fuel_type, school, date)
           previous = calculate_month_consumption(amr_data, fuel_type, school, date.prev_year)
           [date, { current:, previous:, change: calculate_change(current, previous) }]
         end
+      end
+
+      def self.end_date_for(aggregate_school, fuel_type)
+        end_date_for_with_amr_data(amr_data_for(aggregate_school, fuel_type))
+      end
+
+      private_class_method def self.end_date_for_with_amr_data(amr_data)
+        amr_data&.end_date || Date.current
+      end
+
+      private_class_method def self.amr_data_for(aggregate_school, fuel_type)
+        aggregate_school.aggregate_meter(fuel_type)&.amr_data
       end
 
       private_class_method def self.sum_or_nil(array)

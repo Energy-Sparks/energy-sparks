@@ -1,11 +1,11 @@
 <% if can?(:manage, Schools::ManualReading) && Flipper.enabled?(:manual_readings, current_user) &&
-        consumption_by_month
-          .values
-          .flat_map { |consumption| %i[previous current].map{ |period| consumption[period][:missing] } }
-          # ignore latest month which is probably incomplete
-          .[](..-2)
-          .any? %>
+      consumption_by_month.values
+                          .flat_map { |consumption| %i[previous current].map{ |period| consumption[period][:missing] } }
+                          # ignore latest month which is probably incomplete
+                          .[](..-2)
+                          .any? %>
   <%= render PromptComponent.new(status: :negative, icon: :circle_exclamation) do %>
-    <%= t('advice_pages.electricity_long_term.manual_readings_prompt_html', path: school_manual_readings_path(school)) %>
+    <%= t('advice_pages.electricity_long_term.manual_readings_prompt') %>
+    <%= t('schools.school_targets.manual_readings_prompt.enter_html', path: school_manual_readings_path(school)) %>
   <% end %>
 <% end %>

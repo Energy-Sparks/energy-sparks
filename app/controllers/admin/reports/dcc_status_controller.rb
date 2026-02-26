@@ -15,8 +15,8 @@ module Admin
                                    hash[meter_id] =
                                      ActiveSupport::OrderedOptions.new.merge(id: meter_id, issues: Hash.new(0))
                                  end) do |(k, v), h|
-            meter_id, issue_type = k
-            h[meter_id].issues[issue_type] = v
+                 meter_id, issue_type = k
+                 h[meter_id].issues[issue_type] = v
           end
         @columns = [
           Column.new(:school_name,

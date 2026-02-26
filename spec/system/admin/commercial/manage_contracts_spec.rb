@@ -27,11 +27,15 @@ describe 'manage contracts' do
         select funder.name, from: 'Contract holder'
 
         fill_in 'Number of schools', with: 100
+        fill_in 'Purchase order number', with: 'PO123'
 
         set_date('#contract_start_date', '01/01/2026')
         set_date('#contract_end_date', '31/12/2026')
 
         fill_in 'Agreed school price', with: 525
+        select 'Custom', from: 'Licence period'
+        fill_in 'Licence years', with: 1.0
+
         click_on 'Save'
       end
 
@@ -42,7 +46,10 @@ describe 'manage contracts' do
           comments: 'Some notes',
           product: product,
           contract_holder: funder,
+          licence_period: 'custom',
+          licence_years: 1.0,
           number_of_schools: 100,
+          purchase_order_number: 'PO123',
           start_date: Date.new(2026, 1, 1),
           end_date: Date.new(2026, 12, 31),
           agreed_school_price: BigDecimal(525),
@@ -154,6 +161,7 @@ describe 'manage contracts' do
       it { expect(page).to have_content(contract.status.humanize) }
       it { expect(page).to have_content(contract.invoice_terms.humanize) }
       it { expect(page).to have_content(contract.licence_period.humanize) }
+      it { expect(page).to have_content(contract.licence_years) }
       it { expect(page).to have_content(contract.number_of_schools) }
       it { expect(page).to have_content(FormatUnit.format(:£, contract.agreed_school_price)) }
       it { expect(page).to have_content(contract.comments) }
