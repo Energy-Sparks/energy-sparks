@@ -58,29 +58,6 @@
       "note": ""
     },
     {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "36e0fbf4927660db93a8c25a75a26c216cb325ddf8d5b2387a678d5e37a0a3cc",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/controllers/admin/alert_types/ratings/preview_controller.rb",
-      "line": 13,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => template_path(params[:template]), { :layout => nil })",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::AlertTypes::Ratings::PreviewController",
-        "method": "create"
-      },
-      "user_input": "params[:template]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
-    },
-    {
       "warning_type": "SQL Injection",
       "warning_code": 0,
       "fingerprint": "43cf96088c6bfa6a597275fa5934d96169413ee60d19e8c7b99f506c0a931ef8",
@@ -102,29 +79,6 @@
         89
       ],
       "note": "ignore_prefix is not user input"
-    },
-    {
-      "warning_type": "Mass Assignment",
-      "warning_code": 105,
-      "fingerprint": "4933407d9c06e0623f89d7b3a28741f6b0b984362a6d9ea451b3a0b5f15c7c6f",
-      "check_name": "PermitAttributes",
-      "message": "Potentially dangerous key allowed for mass assignment",
-      "file": "app/controllers/schools/users_controller.rb",
-      "line": 143,
-      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Schools::UsersController",
-        "method": "user_params"
-      },
-      "user_input": ":role",
-      "confidence": "Medium",
-      "cwe_id": [
-        915
-      ],
-      "note": ""
     },
     {
       "warning_type": "SQL Injection",
@@ -150,6 +104,29 @@
       "note": "table names only come from code so isn't really an issue"
     },
     {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "5d3a2eb3f321d9527cf40585b87c0764f09bce9d9b6e61c02cb78ef204c265f0",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/admin/users_controller.rb",
+      "line": 114,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :climate_action_lead, :cluster_school_ids => ([]))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Admin::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "intentional for user controller"
+    },
+    {
       "warning_type": "Redirect",
       "warning_code": 18,
       "fingerprint": "6875b4a807a2d988126d5685fd4a7e65a0fefaf99fa6e709c3661cf855c491f3",
@@ -169,29 +146,6 @@
       "confidence": "High",
       "cwe_id": [
         601
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Mass Assignment",
-      "warning_code": 105,
-      "fingerprint": "72f136fe8dd07e8b2c352becf102c591c7202541e5f418ba73fa6f159435918d",
-      "check_name": "PermitAttributes",
-      "message": "Potentially dangerous key allowed for mass assignment",
-      "file": "app/controllers/admin/users_controller.rb",
-      "line": 114,
-      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :cluster_school_ids => ([]))",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::UsersController",
-        "method": "user_params"
-      },
-      "user_input": ":role",
-      "confidence": "Medium",
-      "cwe_id": [
-        915
       ],
       "note": ""
     },
@@ -378,6 +332,29 @@
       "note": ""
     },
     {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "e1d2addc6107c25df66fae464b0c4885ed87e06e83a9ac3aa38c2b2cc13df9aa",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/schools/users_controller.rb",
+      "line": 144,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale, :climate_action_lead)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Schools::UsersController",
+        "method": "user_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": "intentional for user controller"
+    },
+    {
       "warning_type": "Remote Code Execution",
       "warning_code": 25,
       "fingerprint": "e6e8650219ff5834b805228ae5d5f4620c6dcaaf0fd80f14f6343d55a656c93d",
@@ -401,5 +378,5 @@
       "note": ""
     }
   ],
-  "brakeman_version": "7.1.1"
+  "brakeman_version": "8.0.2"
 }

@@ -22,7 +22,8 @@
   input.badge-toggle-#{$color}:checked + label,
   input.badge-pill-toggle-#{$color} + label:active,
   input.badge-pill-toggle-#{$color}:checked + label {
-    @include badge-variant($value);
+    @extend .badge;
+    @extend .text-bg-#{$color};
     border: 1px solid transparent;
   }
 }

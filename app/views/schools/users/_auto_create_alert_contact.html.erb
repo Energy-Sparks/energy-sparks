@@ -4,10 +4,8 @@
       <%= n.input :auto_create_alert_contact,
                   label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
                   as: :boolean,
-                  class: 'custom-checkbox pb-3',
-                  wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
-                  label_html: { class: 'custom-control-label' },
-                  input_html: { class: 'custom-control-input', checked: checked } %>
+                  label_html: { class: 'form-check-label' },
+                  input_html: { class: 'form-check-input', checked: checked } %>
     <% end %>
   </div>
   <div class="col-sm-8">

@@ -1,6 +1,8 @@
 <li class="nav-item dropdown" id="our-services">
   <a class="nav-link dropdown-toggle" href="#" id="ourServicesDropDown"
-      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%= t('our_services_menu.our_services') %></a>
+      data-toggle="dropdown"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false"><%= t('our_services_menu.our_services') %></a>
   <div class="dropdown-menu scrollable" aria-labelledby="ourServicesDropDown">
     <%= link_to t('our_services_menu.energy_management_tool'), product_path, class: 'dropdown-item' %>
     <%= link_to t('our_services_menu.energy_audits'), energy_audits_path, class: 'dropdown-item' %>

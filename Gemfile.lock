@@ -144,8 +144,6 @@ GEM
     ast (2.4.3)
     auto_strip_attributes (2.6.0)
       activerecord (>= 4.0)
-    autoprefixer-rails (10.4.19.0)
-      execjs (~> 2)
     aws-eventstream (1.4.0)
     aws-partitions (1.1212.0)
     aws-sdk-core (3.242.0)
@@ -187,9 +185,8 @@ GEM
       debug_inspector (>= 1.2.0)
     bootsnap (1.23.0)
       msgpack (~> 1.2)
-    bootstrap (4.6.2.1)
-      autoprefixer-rails (>= 9.1.0)
-      popper_js (>= 1.16.1, < 2)
+    bootstrap (5.3.8)
+      popper_js (>= 2.11.8, < 3)
     bootstrap-email (1.8.1)
       htmlbeautifier (~> 1.3)
       nokogiri (~> 1.6)
@@ -248,7 +245,7 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     debug_inspector (1.2.0)
-    devise (5.0.1)
+    devise (5.0.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 7.0)
@@ -264,7 +261,7 @@ GEM
       dotenv (= 3.2.0)
       railties (>= 6.1)
     drb (2.2.3)
-    erb (6.0.1)
+    erb (6.0.2)
     erb_lint (0.9.0)
       activesupport
       better_html (>= 2.0.1)
@@ -334,7 +331,7 @@ GEM
       csv (>= 3.0.0)
     globalid (1.3.0)
       activesupport (>= 6.1)
-    good_job (4.13.2)
+    good_job (4.13.3)
       activejob (>= 6.1.0)
       activerecord (>= 6.1.0)
       concurrent-ruby (>= 1.3.1)
@@ -499,7 +496,8 @@ GEM
     mini_portile2 (2.8.9)
     minimization (0.2.5)
       text-table (~> 1.2)
-    minitest (6.0.1)
+    minitest (6.0.2)
+      drb (~> 2.0)
       prism (~> 1.5)
     mobility (1.3.2)
       i18n (>= 0.6.10, < 2)
@@ -571,7 +569,7 @@ GEM
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
-    popper_js (1.16.1)
+    popper_js (2.11.8)
     pp (0.6.3)
       prettyprint
     premailer (1.27.0)
@@ -696,16 +694,16 @@ GEM
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
       rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.5)
+    rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-json_expectations (2.2.0)
-    rspec-mocks (3.13.5)
+    rspec-mocks (3.13.7)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (8.0.2)
+    rspec-rails (8.0.3)
       actionpack (>= 7.2)
       activesupport (>= 7.2)
       railties (>= 7.2)
@@ -713,7 +711,7 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-support (3.13.4)
+    rspec-support (3.13.7)
     rss (0.3.2)
       rexml
     rubocop (1.84.2)
@@ -755,7 +753,7 @@ GEM
       rubocop-rspec (~> 3.5)
     ruby-limiter (2.3.0)
     ruby-ole (1.2.13.1)
-    ruby-prof (2.0.1)
+    ruby-prof (2.0.2)
       base64
       ostruct
     ruby-progressbar (1.13.0)
@@ -797,10 +795,10 @@ GEM
     scenic (1.9.0)
       activerecord (>= 4.0.0)
       railties (>= 4.0.0)
-    scout_apm (6.1.0)
+    scout_apm (6.1.1)
       parser
     securerandom (0.4.1)
-    selenium-webdriver (4.40.0)
+    selenium-webdriver (4.41.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -901,7 +899,7 @@ GEM
     xpath (3.2.0)
       nokogiri (~> 1.8)
     yard (0.9.38)
-    zeitwerk (2.7.4)
+    zeitwerk (2.7.5)
 
 PLATFORMS
   aarch64-linux
@@ -923,7 +921,7 @@ DEPENDENCIES
   better_html
   binding_of_caller
   bootsnap
-  bootstrap (~> 4)
+  bootstrap (~> 5.3)
   bootstrap-email
   bootstrap4-datetime-picker-rails
   brakeman

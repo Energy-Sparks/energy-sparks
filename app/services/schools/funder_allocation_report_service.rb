@@ -5,9 +5,11 @@ module Schools
         [
           'School group',
           'School name',
+          'URN',
           'School type',
           'Archived?',
           'Data visible?',
+          'Data sharing',
           'Onboarding date',
           'Date enabled date', # (see “Recently onboarded” report)
           'Funder',
@@ -75,9 +77,11 @@ module Schools
           csv << [
             school.school_group.name,
             school.name,
+            school.urn,
             school.school_type.humanize,
             school.archived?,
             school.data_enabled,
+            school.data_sharing.humanize,
             onboarding_completed(school),
             first_made_data_enabled(school),
             school&.funder&.name,

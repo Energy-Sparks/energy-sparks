@@ -1,15 +1,16 @@
-<h2><%= t('onboarding.completion.new.optional_steps_section.optional_steps') %></h2>
-<p><%= t('onboarding.completion.new.optional_steps_section.optional_steps_message') %><p>
-<div id="accordion-optional-steps">
   <div class="card mb-3" id="meters">
     <div class="card-header">
       <h4>
         <%= t('onboarding.completion.new.optional_steps_section.configure_energy_meters') %>
-        <span class="float-right"><button class="btn" data-toggle="collapse" data-target="#collapse-meters"
-          aria-expanded="<%= params[:show]=='meters' ? 'true' : 'false' %>" aria-controls="collapse-meters"><%= t('common.labels.view') %></button></span>
+        <span class="float-end">
+          <button class="btn" data-toggle="collapse" data-target="#collapse-meters"
+                  aria-expanded="<%= params[:show] == 'meters' ? 'true' : 'false' %>" aria-controls="collapse-meters">
+            <%= t('common.labels.view') %>
+          </button>
+        </span>
       </h4>
     </div>
-    <div id="collapse-meters" class="collapse <%= 'show' if params[:show]=='meters' %>">
+    <div id="collapse-meters" class="collapse <%= 'show' if params[:show] == 'meters' %>">
       <div class="card-body">
         <% if @school.meters.empty? %>
           <p>
@@ -25,13 +26,15 @@
                 <th><%= t('onboarding.completion.new.optional_steps_section.actions') %></th>
               </tr>
             </thead>
-            <% @school.meters.each do |meter|%>
+            <% @school.meters.each do |meter| %>
               <tr>
                 <td><%= meter.meter_type.humanize %></td>
                 <td><%= meter.mpan_mprn %></td>
                 <td><%= meter.name %></td>
                 <td>
-                  <%= link_to t('common.labels.edit'), edit_onboarding_meter_path(@school_onboarding, meter), class: 'btn btn-sm btn-warning' %>
+                  <%= link_to t('common.labels.edit'),
+                              edit_onboarding_meter_path(@school_onboarding, meter),
+                              class: 'btn btn-sm btn-warning' %>
                 </td>
               </tr>
             <% end %>
@@ -39,7 +42,9 @@
             </tbody>
           </table>
         <% end %>
-        <%= link_to t('onboarding.completion.new.optional_steps_section.add_a_meter'), new_onboarding_meter_path(@school_onboarding), class: 'btn btn-primary' %>
+        <%= link_to t('onboarding.completion.new.optional_steps_section.add_a_meter'),
+                    new_onboarding_meter_path(@school_onboarding),
+                    class: 'btn btn-primary' %>
       </div>
     </div>
   </div>

@@ -385,7 +385,9 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it 'has expected content' do
       lines = CSV.parse(page.body)
-      expect(lines[0]).to eq(['School Group', 'School', 'School type', 'School active', 'School data enabled', 'Funder', 'Region', 'Name', 'Email', 'Role', 'Staff Role', 'Confirmed', 'Last signed in', 'Alerts', 'Language', 'Locked'])
+      expect(lines[0]).to eq(['School Group', 'School', 'School type', 'School active', 'School data enabled', 'Funder',
+                              'Region', 'Name', 'Email', 'Role', 'Staff Role', 'Confirmed', 'Last signed in', 'Alerts',
+                              'Language', 'Locked', 'Climate Action Lead'])
       expect(lines.length).to eq(2)
     end
   end

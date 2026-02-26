@@ -1,6 +1,6 @@
 // Bootstrap overrides
-// For a complete list of variables that can be overridden in Bootstrap 4.6,
-// see here: https://github.com/twbs/bootstrap/blob/v4.6.2/scss/_variables.scss
+// For a complete list of variables that can be overridden in Bootstrap 5.3.8,
+// see here: https://github.com/twbs/bootstrap-rubygem/blob/v5.3.8/assets/stylesheets/bootstrap/_variables.scss
 
 $headings-color: $blue-very-dark;
 $body-color: $blue-dark;
@@ -14,8 +14,13 @@ $btn-font-weight: $font-weight-semibold;
 $btn-border-radius: 10rem;
 $btn-border-radius-sm: $btn-border-radius;
 $btn-border-radius-lg: $btn-border-radius;
+$min-contrast-ratio: 2; // So we can have white text for danger and info
 
-$custom-control-indicator-checked-bg: darken($teal-dark, 5%); // darkened slightly to match input accent color (base.scss)
+$form-check-input-checked-bg-color: darken($teal-dark, 5%); // darkened slightly to match input accent color (base.scss)
+
+// To match our BS4 badges. Leave out for now. Prefer new BS5 settings
+// $badge-padding-y: .25em; // BS5 default is .35em
+// $badge-padding-x: .6em; // BS5 default is .65em
 
 // These values correspond to the minimum width at which the breakpoint applies:
 $grid-breakpoints: (

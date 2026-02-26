@@ -10,8 +10,8 @@ module Schools
 
     def index
       authorize! :manage_users, @school
-      @users = @school.users
-      @school_admins = @school.all_school_admins.uniq
+      @users = @school.users.order(:name)
+      @school_admins = @school.all_school_admins.order(:name).uniq
       @staff = @users.staff
       @students = @users.student
       @pupils = @users.pupil
@@ -141,7 +141,7 @@ module Schools
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale)
+      params.require(:user).permit(:name, :email, :staff_role_id, :role, :preferred_locale, :climate_action_lead)
     end
   end
 end
