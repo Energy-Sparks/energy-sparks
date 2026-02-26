@@ -148,6 +148,12 @@ describe 'Meter', :meters do
     end
 
     context 'when finding meters for schools' do
+      before do
+        [create(:electricity_meter, school: create(:school, active: false, removal_date: 1.month.ago)),
+         create(:electricity_meter, active: false, school: create(:school, active: false, removal_date: 1.month.ago)),
+         create(:electricity_meter, active: false, school: create(:school))]
+      end
+
       it 'returns active meters from active schools' do
         active_meter = create(:electricity_meter, school: create(:school))
         expect(Meter.active_for_active_schools).to contain_exactly(active_meter)
