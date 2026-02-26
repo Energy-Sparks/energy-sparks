@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_23_095759) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -952,7 +952,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_23_095759) do
     t.boolean "load_tariffs", default: true, null: false
     t.bigint "owned_by_id"
     t.boolean "alerts_on", default: true
-    t.integer "alert_percentage_threshold"
+    t.integer "alert_percentage_threshold", default: 25
     t.index ["owned_by_id"], name: "index_data_sources_on_owned_by_id"
   end
 
