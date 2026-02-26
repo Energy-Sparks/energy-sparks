@@ -36,10 +36,6 @@ module Admin
       @data_sources = DataSource.order(:name)
     end
 
-    def total_active_for_active_schools
-      DataSource.meters.active_for_active_schools.count
-    end
-
     def total_inactive_for_active_schools
       DataSource.meters.from_active_schools.inactive.count
     end
