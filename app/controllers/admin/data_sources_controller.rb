@@ -36,22 +36,6 @@ module Admin
       @data_sources = DataSource.order(:name)
     end
 
-    def total_inactive_for_active_schools
-      DataSource.meters.from_active_schools.inactive.count
-    end
-
-    def total_lagging_meters
-      DataSource.meters.with_stale_readings.count
-    end
-
-    def percentage_lagging_meters
-      if total_active_meters_for_active_schools == 0
-        0
-      else
-        (total_lagging_meters / total_active_meters_for_active_schools * 100)
-      end
-    end
-
     private
 
     def data_source_params
