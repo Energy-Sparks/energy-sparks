@@ -44,6 +44,15 @@ class DataSource < ApplicationRecord
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :schools, -> { distinct }, through: :meters
 
+  def percentage_of_lagging_meters
+    active = meters.active_for_active_schools
+    if active = 0
+      0
+    else
+      meters.with_stale_readings / active * 100
+    end
+  end
+
   def to_csv
     CSV.generate(headers: true) do |csv|
       csv << csv_headers
