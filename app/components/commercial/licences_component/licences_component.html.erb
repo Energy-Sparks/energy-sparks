@@ -1,7 +1,8 @@
 <%= tag.div id: id, class: classes do %>
-  <h2><%= @range.to_s.humanize %> Licences</h2>
-
-  <table id="<%= @range.to_s %>-licences-table" class="table table-paged table-sm">
+  <% if header? %>
+    <%= header %>
+  <% end %>
+  <table id="licences-table" class="table table-paged table-sm">
     <thead>
       <tr>
         <th>ID</th>
@@ -20,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <% associations.each do |licence| %>
+      <% @licences.each do |licence| %>
         <tr>
           <td>
             <%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %>

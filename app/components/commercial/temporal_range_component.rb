@@ -1,13 +1,14 @@
 module Commercial
   class TemporalRangeComponent < ApplicationComponent
-    RANGES = %i[all current historical future].freeze
+    RANGES = %i[all current historical future expiring].freeze
 
-    def initialize(holder:, association_name:, range: :all, show_actions: true, **kwargs)
+    def initialize(holder:, association_name:, range: :all, show_actions: true, range_param: nil, **kwargs)
       super(**kwargs)
       @holder = holder
       @association_name = association_name.to_sym
       @range = normalize_range(range)
       @show_actions = show_actions
+      @range_param = range_param
     end
 
     def render?
@@ -15,7 +16,11 @@ module Commercial
     end
 
     def associations
-      scoped_source.public_send(@range).by_start_date
+      if @range_param
+        scoped_source.public_send(@range, @range_param).by_start_date
+      else
+        scoped_source.public_send(@range).by_start_date
+      end
     end
 
     private

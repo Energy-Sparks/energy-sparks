@@ -17,6 +17,10 @@ module TemporalRange
     scope :future, ->(today = Time.zone.today) {
       where('start_date > ?', today)
     }
+
+    scope :expiring, ->(end_date = (Time.zone.today + 1.month).end_of_month) {
+      where('end_date <= ?', end_date)
+    }
   end
 
   def current?(today = Time.zone.today)

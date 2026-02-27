@@ -169,7 +169,12 @@
 
 <div class="row">
   <div class="col-12">
-    <%= render Commercial::LicencesComponent.new(id: 'licences', holder: @contract, show_contract: false) %>
+    <%= render Commercial::LicencesComponent.new(id: 'licences',
+                                                 licences: @contract.licences.current,
+                                                 show_contract: false,
+                                                 show_actions: true) do |c| %>
+      <% c.with_header { 'Current Licences' } %>
+    <% end %>
   </div>
 </div>
 
