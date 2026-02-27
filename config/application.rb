@@ -75,6 +75,6 @@ module EnergySparks
     # devise not supporting new default very well yet - https://github.com/heartcombo/devise/pull/5462
     # should be resolved by rails 8.1 having config.action_controller.allowed_redirect_hosts
     #   https://github.com/rails/rails/pull/55420
-    config.action_controller.raise_on_open_redirects = false
+    config.action_controller.action_on_open_redirect = :log
   end
 end
