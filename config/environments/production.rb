@@ -98,8 +98,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
   config.assets.prefix = "/static-assets"
-  config.public_file_server.headers = { 'Access-Control-Allow-Origin' => "https://#{ENV['APPLICATION_HOST']}",
-                                        'cache-control' => "public, max-age=#{1.year.to_i}"  }
+  config.public_file_server.headers['access-control-allow-origin'] = "https://#{ENV['APPLICATION_HOST']}"
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser
   config.action_controller.asset_host = ENV['ASSET_HOST'] if ENV['ASSET_HOST'].present?
