@@ -42,7 +42,6 @@ module EnergySparks
         require 'dashboard/alerts/common/benchmark_metrics'
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
-
       # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
       ActionText::ContentHelper.allowed_attributes =
         Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
