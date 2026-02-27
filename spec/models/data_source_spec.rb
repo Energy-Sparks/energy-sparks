@@ -13,6 +13,20 @@ RSpec.describe DataSource, type: :model do
     it { is_expected.to define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
   end
 
+  describe '.percentage_of_lagging_meters' do
+    let(:data_source) { create(:data_source) }
+    subject { data_source.percentage_of_lagging_meters }
+
+    let!(:meters) do
+      [create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source:),
+       create(:gas_meter, active: true, data_source:)]
+    end
+
+    it 'calculates the correct percentage' do
+      expect(subject).to eq 50
+    end
+  end
+
   describe '.to_csv' do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
