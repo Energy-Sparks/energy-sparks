@@ -69,7 +69,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
   end
 
   describe 'Authorized access' do
-    let!(:user) { create(:admin) }
+    let!(:user) { create(:admin, name: 'admin_user') }
 
     before do
       visit root_path
@@ -83,38 +83,50 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
       end
 
       context 'when there is a data source' do
-        let(:existing_data_source) { create(:data_source) }
-        let(:setup_data) { existing_data_source }
+        let(:existing_data_source) { create(:data_source, owned_by_id: user.id) }
 
-        it { expect(page).to have_content(existing_data_source.name) }
+        let(:school) { create(:school) }
+        let(:inactive_school) { create(:school, active: false) }
+
+        let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
+        let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source, school: school) } }
+        let(:active_stale_meter) { create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source: existing_data_source, school: school) }
+        let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
+
+        let(:setup_data) { [existing_data_source, active_meters, inactive_meters, active_stale_meter, active_meter_for_archived_school] }
+
         it { expect(page).to have_content(existing_data_source.organisation_type.humanize) }
+        it { expect(page).to have_content(user.name) }
+        it { expect(page).to have_content('5') }
+        it { expect(page).to have_content('2') }
+        it { expect(page).to have_content('1') }
+        it { expect(page).to have_content('20') }
 
-        it 'has a link to manage data source' do
+        it 'has a link to edit data source' do
           within('table') do
-            expect(page).to have_link('Manage')
+            expect(page).to have_link('Edit')
+          end
+        end
+
+        it 'has a link from the name to manage data source' do
+          within('table') do
+            expect(page).to have_link(existing_data_source.name)
           end
         end
 
         describe 'Managing a data source' do
           before do
             within('table') do
-              click_on 'Manage'
+              click_on existing_data_source.name
             end
           end
 
           context 'Summary panel' do
-            let(:school) { create(:school) }
-
-            let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
-            let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source) } }
-            let(:inactive_school) { create(:school, active: false) }
-            let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
-
-            let(:setup_data) { [active_meters, inactive_meters, active_meter_for_archived_school] }
-
             it { expect(page).to have_content('Active meters 5') }
             it { expect(page).to have_content('Inactive meters 2') }
-            it { expect(page).to have_content('Associated schools 3') }
+            it { expect(page).to have_content('Lagging meters 1') }
+            it { expect(page).to have_content('Lagging as % of active 20') }
+            it { expect(page).to have_content('Associated schools 1') }
           end
 
           it_behaves_like 'a displayed data source' do
@@ -213,10 +225,10 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
         it { expect(page).to have_content(existing_data_source.name) }
 
-        context 'clicking manage' do
+        context 'clicking data source name' do
           before do
             within('table') do
-              click_on 'Manage'
+              click_on existing_data_source.name
             end
           end
 
@@ -260,7 +272,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           context 'and viewing new data source' do
             before do
               within('table') do
-                click_on 'Manage'
+                click_on new_data_source.name
               end
             end
 

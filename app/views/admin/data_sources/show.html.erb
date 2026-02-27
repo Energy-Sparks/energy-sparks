@@ -12,8 +12,8 @@
         <%= @data_source.meters.from_active_schools.inactive.count %></span></div>
         <div>Lagging meters <span class="float-end badge text-bg-danger">
         <%= @data_source.meters.with_stale_readings.count %></span></div>
-        <div>Laggin as % of active <span class="float-end badge text-bg-secondary">
-        <%= @data_source.percentage_of_lagging_meters %></span></div>
+        <div>Lagging as % of active <span class="float-end badge text-bg-danger">
+        <%= @data_source.percentage_of_lagging_meters %>%</span></div>
       </div>
     </div>
   </div>

@@ -21,7 +21,11 @@
       <tr>
         <td class="nowrap"><%= link_to data_source.name, admin_data_source_path(data_source) %></td>
         <td><span class="badge bg-info"><%= data_source.organisation_type.try(:humanize) %></span></td>
-        <td><%= data_source.owned_by %></td>
+        <% if data_source.owned_by %>
+        <td><%= data_source.owned_by.name %></td>
+        <% else %>
+        <td> </td>
+        <% end %>
         <td><%= data_source.meters.active_for_active_schools.count %></td>
         <td><%= data_source.meters.with_stale_readings.count %></td>
         <td><%= data_source.percentage_of_lagging_meters %></td>
