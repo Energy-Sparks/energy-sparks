@@ -11,7 +11,7 @@ class OnboardedEmailSender
     users = @school.activation_users
     return unless users.any?
 
-    OnboardingMailer.mailer.with_user_locales(users:, school: @school) { |mailer| mailer.onboarded_email.deliver_now }
+    OnboardingMailer.with_user_locales(users:, school: @school) { |mailer| mailer.onboarded_email.deliver_now }
     onboarding_service.record_event(@school.school_onboarding, :onboarded_email_sent)
   end
 
