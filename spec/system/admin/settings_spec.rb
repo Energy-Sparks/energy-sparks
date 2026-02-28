@@ -11,10 +11,8 @@ describe 'site-wide settings' do
 
   context 'with pricing feature flag enabled' do
     around do |example|
-      ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'true' do
-        example.run
-        BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
-      end
+      example.run
+      BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
     end
 
     context 'with no existing site settings' do
@@ -71,34 +69,6 @@ describe 'site-wide settings' do
           expect(SiteSettings.current.energy_tariffs.first).to eq tariff
         end
       end
-    end
-  end
-
-  context 'with pricing feature flag disabled' do
-    around do |example|
-      ClimateControl.modify FEATURE_FLAG_USE_SITE_SETTINGS_CURRENT_PRICES: 'false' do
-        example.run
-      end
-    end
-
-    it 'allows admins to update site settings but no prices' do
-      BenchmarkMetrics.set_current_prices(prices: BenchmarkMetrics.default_prices)
-      expect(SiteSettings.current.electricity_price).to eq(nil)
-      click_on 'Site Settings'
-      uncheck 'Message for no contacts'
-      uncheck 'October'
-      check 'May'
-      expect(page).not_to have_content('Electricity price')
-      expect(page).not_to have_content('Solar export price')
-      expect(page).not_to have_content('Gas price')
-      expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
-      click_on 'Update settings'
-      expect(SiteSettings.current.message_for_no_contacts).to eq(false)
-      expect(SiteSettings.current.temperature_recording_month_numbers).to match_array([11, 12, 1, 2, 3, 4, 5])
-      expect(SiteSettings.current.electricity_price).to eq(nil)
-      expect(SiteSettings.current.solar_export_price).to eq(nil)
-      expect(SiteSettings.current.gas_price).to eq(nil)
-      expect(BenchmarkMetrics.pricing).to eq(BenchmarkMetrics.default_prices)
     end
   end
 end
