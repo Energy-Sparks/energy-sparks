@@ -62,9 +62,11 @@ module Admin::Commercial
         :end_date,
         :invoice_terms,
         :licence_period,
+        :licence_years,
         :name,
         :number_of_schools,
         :product_id,
+        :purchase_order_number,
         :start_date,
         :status
       )

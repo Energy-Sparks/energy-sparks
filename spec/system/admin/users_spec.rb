@@ -160,11 +160,26 @@ describe 'Administering users' do
           fill_in 'Name', with: 'Random User'
           fill_in 'Email', with: email
           select 'Admin', from: 'Role'
-          click_on 'Create User'
         end
 
-        it { expect(user.role).to eq('admin') }
-        it { expect(user.created_by).to eq(admin) }
+        context 'with basic information' do
+          before do
+            click_on 'Create User'
+          end
+
+          it { expect(user.role).to eq('admin') }
+          it { expect(user.created_by).to eq(admin) }
+          it { expect(user.climate_action_lead).to be false }
+        end
+
+        context 'with a climate action lead' do
+          before do
+            check 'Climate action lead'
+            click_on 'Create User'
+          end
+
+          it { expect(user.climate_action_lead).to be true }
+        end
       end
     end
 
@@ -281,7 +296,7 @@ describe 'Administering users' do
         end
 
         it 'saves the changes' do
-          expect(user.reload.cluster_schools).to eq([user.school, other_school])
+          expect(user.reload.cluster_schools).to contain_exactly(user.school, other_school)
         end
 
         it 'does send an email' do

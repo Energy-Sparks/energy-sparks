@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   create_enum "audience", ["anyone", "school_users", "school_admins", "group_admins"]
   create_enum "contract_contact_type", ["procurement", "invoicing", "loa", "renewals"]
   create_enum "contract_invoice_terms", ["pro_rata", "full"]
-  create_enum "contract_licence_period", ["contract", "one_year"]
+  create_enum "contract_licence_period", ["contract", "custom"]
   create_enum "contract_status", ["provisional", "confirmed"]
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
@@ -721,6 +721,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "licence_years", precision: 4, scale: 2
+    t.string "purchase_order_number"
     t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contracts_on_contract_holder"
     t.index ["created_by_id"], name: "index_commercial_contracts_on_created_by_id"
     t.index ["name"], name: "index_commercial_contracts_on_name", unique: true
@@ -739,6 +741,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.bigint "updated_by_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "comments"
+    t.decimal "school_specific_price", precision: 10, scale: 2
     t.index ["contract_id"], name: "index_commercial_licences_on_contract_id"
     t.index ["created_by_id"], name: "index_commercial_licences_on_created_by_id"
     t.index ["school_id"], name: "index_commercial_licences_on_school_id"
@@ -944,8 +948,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "import_warning_days"
+    t.integer "import_warning_days", default: 7
     t.boolean "load_tariffs", default: true, null: false
+    t.bigint "owned_by_id"
+    t.boolean "alerts_on", default: true
+    t.integer "alert_percentage_threshold", default: 25
+    t.index ["owned_by_id"], name: "index_data_sources_on_owned_by_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -1081,6 +1089,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   create_table "funders", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "mailchimp_fields_changed_at"
+    t.boolean "invoiced", default: true, null: false
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|
@@ -2295,6 +2304,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
     t.enum "mailchimp_status", enum_type: "mailchimp_status"
     t.boolean "active", default: true, null: false
     t.boolean "terms_accepted", default: false
+    t.boolean "climate_action_lead", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -2431,6 +2441,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_14_133438) do
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
+  add_foreign_key "data_sources", "users", column: "owned_by_id"
   add_foreign_key "emails", "contacts", on_delete: :cascade
   add_foreign_key "energy_tariffs", "users", column: "created_by_id"
   add_foreign_key "energy_tariffs", "users", column: "updated_by_id"

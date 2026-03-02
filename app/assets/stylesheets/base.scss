@@ -211,3 +211,10 @@ input, progress {
 table.dataTable.table-sorted td.offset {
   padding-right: 30px !important;
 }
+
+a.badge:hover,
+a.badge:focus,
+.badge[href]:hover,
+.badge[href]:focus {
+  filter: brightness(0.8);
+}

@@ -42,7 +42,7 @@ module Admin
     private
 
     def funder_params
-      params.require(:funder).permit(:name)
+      params.require(:funder).permit(:name, :invoiced)
     end
   end
 end

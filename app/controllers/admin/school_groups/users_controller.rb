@@ -50,7 +50,8 @@ module Admin
             'Last signed in',
             'Alerts',
             'Language',
-            'Locked'
+            'Locked',
+            'Climate Action Lead'
           ]
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
@@ -68,16 +69,8 @@ module Admin
           school_group.name,
           school&.name || '',
           school&.school_type&.humanize || '',
-          if school
-            school&.active? ? 'Yes' : 'No'
-          else
-            ''
-          end,
-          if school
-            school&.data_enabled? ? 'Yes' : 'No'
-          else
-            ''
-          end,
+          school ? y_n(school&.active?) : '',
+          school ? y_n(school&.data_enabled?) : '',
           school&.funder&.name || '',
           school&.region&.to_s&.titleize || '',
           user.name,
@@ -88,7 +81,8 @@ module Admin
           display_last_signed_in_as(user),
           user.group_user? ? 'N/A' : y_n(user.contact_for_school),
           I18n.t("languages.#{user.preferred_locale}"),
-          y_n(user.access_locked?)
+          y_n(user.access_locked?),
+          y_n(user.climate_action_lead)
         ]
       end
     end

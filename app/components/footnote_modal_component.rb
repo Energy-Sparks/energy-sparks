@@ -22,7 +22,11 @@ class FootnoteModalComponent < ApplicationComponent
     end
 
     def call
-      args = { title: title, 'data-toggle': 'modal', 'data-target': "##{modal_id}", 'data-remote': remote.to_s, class: classes }
+      args = { title: title,
+        'data-toggle': 'modal', 'data-bs-toggle': 'modal',
+        'data-target': "##{modal_id}", 'data-bs-target': "##{modal_id}",
+        'data-remote': remote.to_s, 'data-bs-remote': remote.to_s,
+        class: classes }
 
       link_to(content, href, args)
     end

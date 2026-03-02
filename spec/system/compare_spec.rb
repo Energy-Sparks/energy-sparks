@@ -580,6 +580,20 @@ describe 'compare pages', :compare, type: :system do
     end
   end
 
+  describe 'when directly requesting the unlisted schools list' do
+    let!(:school) { create(:school, name: 'Included school') }
+    let!(:unlisted_schools) { [create(:school, name: 'Excluded 1')] }
+
+    include_context 'index page context'
+    include_context 'results page context'
+
+    before { visit unlisted_comparisons_baseload_per_pupil_index_path(format: :html) }
+
+    it 'returns a Not Acceptable response' do
+      expect(page).to have_http_status(406)
+    end
+  end
+
   describe 'when redirecting from the old implementation' do
     context 'when user is requesting an old report', type: :request do
       before do

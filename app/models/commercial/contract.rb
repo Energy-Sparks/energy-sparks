@@ -2,23 +2,25 @@
 #
 # Table name: commercial_contracts
 #
-#  agreed_school_price  :decimal(10, 2)
-#  comments             :text
-#  contract_holder_id   :bigint(8)        not null
-#  contract_holder_type :string           not null
-#  created_at           :datetime         not null
-#  created_by_id        :bigint(8)
-#  end_date             :date             not null
-#  id                   :bigint(8)        not null, primary key
-#  invoice_terms        :enum             default("pro_rata"), not null
-#  licence_period       :enum             default("contract"), not null
-#  name                 :string           not null
-#  number_of_schools    :integer          not null
-#  product_id           :bigint(8)        not null
-#  start_date           :date             not null
-#  status               :enum             default("provisional"), not null
-#  updated_at           :datetime         not null
-#  updated_by_id        :bigint(8)
+#  agreed_school_price   :decimal(10, 2)
+#  comments              :text
+#  contract_holder_id    :bigint(8)        not null
+#  contract_holder_type  :string           not null
+#  created_at            :datetime         not null
+#  created_by_id         :bigint(8)
+#  end_date              :date             not null
+#  id                    :bigint(8)        not null, primary key
+#  invoice_terms         :enum             default("pro_rata"), not null
+#  licence_period        :enum             default("contract"), not null
+#  licence_years         :decimal(4, 2)
+#  name                  :string           not null
+#  number_of_schools     :integer          not null
+#  product_id            :bigint(8)        not null
+#  purchase_order_number :string
+#  start_date            :date             not null
+#  status                :enum             default("provisional"), not null
+#  updated_at            :datetime         not null
+#  updated_by_id         :bigint(8)
 #
 # Indexes
 #
@@ -42,6 +44,8 @@ module Commercial
 
     self.table_name = 'commercial_contracts'
 
+    scope :by_name, -> { order(name: :asc) }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 
@@ -57,7 +61,7 @@ module Commercial
 
     CONTRACT_LICENCE_PERIOD = {
       contract: 'contract',
-      one_year: 'one_year',
+      custom: 'custom',
     }.freeze
 
     CONTRACT_INVOICE_TERMS = {
@@ -72,6 +76,7 @@ module Commercial
     validates_presence_of :name, :start_date, :end_date
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
+    validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 

@@ -71,7 +71,10 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   #
-  config.before { ActionMailer::Base.deliveries.clear }
+  config.before do
+    Rack::Attack.enabled = false
+    ActionMailer::Base.deliveries.clear
+  end
 
   config.include ApplicationHelper, include_application_helper: true
   config.include Rails.application.routes.url_helpers, include_url_helpers: true

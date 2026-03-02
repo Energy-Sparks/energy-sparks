@@ -5,7 +5,7 @@
   .lh-md { line-height: 1.75; }
 </style>
 <% target_consumptions = SchoolTarget::FUEL_TYPES.filter_map do |fuel_type|
-     meeting_target = school.current_target&.monthly_consumption_status(fuel_type)&.meeting_target
+     meeting_target = Targets::MonthlyConsumptionService.new(school.current_target, fuel_type).meeting_target
      [fuel_type, meeting_target] unless meeting_target.nil?
    end %>
 <% dashboard_alert_groups(alert_contents, filter: false).each do |group, alerts|

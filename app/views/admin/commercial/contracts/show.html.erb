@@ -64,6 +64,12 @@
               <%= @contract.licence_period.humanize %>
             </dd>
             <dt class="col-5">
+              Licence years
+            </dt>
+            <dd class="col-7">
+              <%= @contract.licence_years %>
+            </dd>
+            <dt class="col-5">
               Number of schools
             </dt>
             <dd class="col-7">
@@ -74,6 +80,12 @@
             </dt>
             <dd class="col-7">
               <%= format_unit(@contract.agreed_school_price, :£) %>
+            </dd>
+            <dt class="col-5">
+              Purchase order number
+            </dt>
+            <dd class="col-7">
+              <%= @contract.purchase_order_number %>
             </dd>
             <dt class="col-5">
               Comments
@@ -157,7 +169,7 @@
 
 <div class="row">
   <div class="col-12">
-    <%= render Commercial::LicencesComponent.new(id: 'licences', holder: @contract) %>
+    <%= render Commercial::LicencesComponent.new(id: 'licences', holder: @contract, show_contract: false) %>
   </div>
 </div>
 

@@ -32,7 +32,7 @@ describe CapsuleCrm::Client do
       let(:message) { 'Expected message' }
       let(:response) do
         {
-          'message': message
+          message: message
         }
       end
       let(:url) { 'https://api.capsulecrm.com/api/v2/parties' }
@@ -85,11 +85,11 @@ describe CapsuleCrm::Client do
       context 'with validation failure' do
         let(:response) do
           {
-            'message': message,
-            'errors': [
-              'message': 'name is required',
-              'resource': 'party',
-              'field': 'name'
+            message: message,
+            errors: [
+              { message: 'name is required',
+                resource: 'party',
+                field: 'name' }
             ]
           }
         end

@@ -16,7 +16,7 @@ module NavHelper
   end
 
   def order_expand_class
-    "order-#{expand_class}-12"
+    "order-#{expand_class}-last"
   end
 
   def navbar_hide_class

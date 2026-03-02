@@ -48,7 +48,8 @@ module Admin::Commercial
         :invoice_reference,
         :end_date,
         :start_date,
-        :status
+        :status,
+        :comments
       )
     end
   end
