@@ -1,5 +1,6 @@
-<h1>Lagging meter</h1>
-<p>The following data_sources have a notably high quantity of lagging meters.<p>
+<h1>Lagging meters</h1>
+<p>The following data_sources have a high percentage of lagging meters according to their alert threshold.<p>
+<p>See the <%= link_to('Data Sources', admin_data_sources_path) %> for further information.</p>
 <table>
     <thead>
         <tr>
@@ -7,11 +8,18 @@
             <th>Active meters</th>
             <th>Lagging Meters</th>
             <th>Percentage of lagging meters</th>
-            <th>Alert threshold</th>
+            <th>Alert threshold %</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            blank
-        </tr>
+        <% @lagging.each do |data_source| %>
+            <tr>
+                <td><%= link_to data_source.name, admin_data_source_path(data_source) %></td>
+                <td> data_source.meters.active_for_active_schools </td>
+                <td> data_source.meters.with_stale_readings </td>
+                <td> % </td>
+                <td> data_source.alert_percentage_threshold % </td>
+            </tr>
+        <% end %>
     </tbody>
+</table>
