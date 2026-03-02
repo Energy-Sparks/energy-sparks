@@ -7,8 +7,6 @@ module EnergySparksDataHelpers
       school_creator.process_new_school!
       school_creator.process_new_configuration!
       school_creator.make_visible!
-
-      school.reload
     end
   end
 
