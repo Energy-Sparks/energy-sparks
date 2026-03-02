@@ -1,13 +1,14 @@
 module EnergySparksDataHelpers
-  def create_active_school(*args)
-    create(:school, *args).tap do |school|
-      template_calendar = create(:regional_calendar)
-      school.template_calendar = template_calendar
+  def create_active_school(**args)
+    create(:school, **args).tap do |school|
+      school.template_calendar ||= create(:regional_calendar)
       create :consent_grant, school: school
       school_creator = SchoolCreator.new(school)
       school_creator.process_new_school!
       school_creator.process_new_configuration!
       school_creator.make_visible!
+
+      school.reload
     end
   end
 
