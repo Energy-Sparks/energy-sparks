@@ -3,9 +3,8 @@ module TemporalRange
 
   include DateRanged
 
+  # FIXME table names
   included do
-    scope :by_start_date, -> { order(start_date: :asc) }
-
     scope :historical, ->(today = Time.zone.today) {
       where('end_date < ?', today)
     }
@@ -19,7 +18,19 @@ module TemporalRange
     }
 
     scope :expiring, ->(end_date = (Time.zone.today + 1.month).end_of_month) {
+      where("#{table_name}.end_date <= ?", end_date)
+    }
+
+    scope :recently_expired, ->(end_date = (Time.zone.today - 1.month).beginning_of_month) {
       where('end_date <= ?', end_date)
+    }
+
+    scope :recent, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
+      where('created_at >= ?', updated_at)
+    }
+
+    scope :recently_updated, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
+      where('updated_at >= ? AND updated_at > created_at', updated_at)
     }
   end
 

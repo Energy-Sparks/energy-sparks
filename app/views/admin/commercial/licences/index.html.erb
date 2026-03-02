@@ -4,6 +4,53 @@
 
 <div class="row">
   <div class="col-12">
-    <%= render Commercial::LicencesComponent.new(licences: Commercial::Licence.all) %>
+    <%= render TabsComponent.new do |component| %>
+      <% component.with_tab(name: 'expiring', label: 'Expiring') do %>
+
+        <%= simple_form_for :filters, url: admin_commercial_licences_path, method: 'GET', html: { class: 'form-inline' } do |f| %>
+        <%= f.input :school_group_id,
+                    collection: @expiring_licences
+                                .filter_map { |lic| lic.school&.school_group }
+                                .uniq(&:id)
+                                .sort_by(&:name),
+                    value_method: :id,
+                    label_method: :name,
+                    selected: @school_group_id,
+                    include_blank: 'Select a school group',
+                    label_html: { class: 'd-block mr-2' },
+                    required: false %>
+
+          <%= f.input :expiry_date,
+                      as: :tempus_dominus_date,
+                      default_date: @expiry_date,
+                      label: 'Show licences expiring by',
+                      label_html: { class: 'd-block ml-2 mr-2' },
+                      required: false %>
+          <%= f.submit 'Filter', class: 'btn btn-primary ml-auto' %>
+        <% end %>
+
+        <hr>
+
+        <%= render Commercial::LicencesComponent.new(licences: @expiring_licences) %>
+      <% end %>
+      <% component.with_tab(name: 'recently-expired', label: 'Recently Expired') do %>
+        <p>
+          Licences that have expired since <%= (Time.zone.today - 1.month).beginning_of_month %>
+        </p>
+        <%= render Commercial::LicencesComponent.new(licences: @recently_expired_licences) %>
+      <% end %>
+      <% component.with_tab(name: 'recent', label: 'Recently Added') do %>
+        <p>
+          Licences that have been created <%= (Time.zone.today - 1.month).beginning_of_month %>
+        </p>
+        <%= render Commercial::LicencesComponent.new(licences: @recent_licences) %>
+      <% end %>
+      <% component.with_tab(name: 'recently-updated', label: 'Recently Updated') do %>
+        <p>
+          Licences that have been updated since <%= (Time.zone.today - 1.month).beginning_of_month %>
+        </p>
+        <%= render Commercial::LicencesComponent.new(licences: @recently_updated_licences) %>
+      <% end %>
+    <% end %>
   </div>
 </div>

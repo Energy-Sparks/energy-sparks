@@ -3,7 +3,15 @@ module Admin::Commercial
     load_and_authorize_resource :licence, class: 'Commercial::Licence'
 
     def index
-      @licences = Commercial::Licence.all
+      @expiry_date = filter_params[:expiry_date]
+      @last_month = filter_params[:last_month]
+      @school_group_id = filter_params[:school_group_id]
+
+      # FIXME filters.
+      @expiring_licences = filter(:expiring, @expiry_date, @school_group_id)
+      @recently_expired_licences = filter(:recently_expired, @last_month)
+      @recent_licences = filter(:recent, @last_month)
+      @recently_updated_licences = filter(:recently_updated, @last_month)
     end
 
     def new
@@ -40,6 +48,20 @@ module Admin::Commercial
     end
 
     private
+
+    def filter(scope, date, school_group_id = nil)
+      scope = Commercial::Licence.public_send(scope, date)
+      scope = scope.joins(school: :school_group).where(school_groups: { id: school_group_id }) if school_group_id
+      scope.includes(:contract, :school, school: :school_group, contract: :product).by_start_date
+    end
+
+    def filter_params
+      params.fetch(:filters, {}).with_defaults(
+        expiry_date: (Time.zone.today + 1.month).end_of_month,
+        last_month: (Time.zone.today - 1.month).beginning_of_month,
+        school_group_id: nil
+      )
+    end
 
     def licence_params
       params.require(:licence).permit(
