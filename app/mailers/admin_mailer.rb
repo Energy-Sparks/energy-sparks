@@ -97,8 +97,8 @@ class AdminMailer < ApplicationMailer
   end
 
   def lagging_meters
-    @lagging = params[]
-    mail(subject: subject('Lagging meters'))
+    @lagging = params[:lagging]
+    mail(to: params[:to], subject: subject('Lagging meters'))
   end
 
   private
