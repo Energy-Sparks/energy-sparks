@@ -76,7 +76,7 @@ gem 'view_component'
 # JS Templating
 gem 'handlebars_assets'
 # Template variables
-gem 'mustache', '~> 1.0'
+gem 'mustache', '~> 1.1'
 
 # Auth & Users
 gem 'cancancan', '~> 3' # Use cancancan for authorization
