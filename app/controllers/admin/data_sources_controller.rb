@@ -33,7 +33,7 @@ module Admin
     end
 
     def index
-      @data_sources = DataSource.order(:name)
+      @data_sources = @data_sources.order(:name)
     end
 
     private
