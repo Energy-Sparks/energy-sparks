@@ -20,7 +20,7 @@
     <% @data_sources.each do |data_source| %>
       <tr>
         <td class="nowrap"><%= link_to data_source.name, admin_data_source_path(data_source) %></td>
-        <td><span class="badge bg-info"><%= data_source.organisation_type.try(:humanize) %></span></td>
+        <td><span class="badge text-bg-info"><%= data_source.organisation_type.try(:humanize) %></span></td>
         <td><%= data_source.owned_by&.name %></td>
         <td><%= data_source.meters.active_for_active_schools.count %></td>
         <td><%= data_source.meters.with_stale_readings.count %></td>
