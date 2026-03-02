@@ -69,7 +69,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
   end
 
   describe 'Authorized access' do
-    let!(:user) { create(:admin, name: 'admin_user') }
+    let!(:user) { create(:admin) }
 
     before do
       visit root_path
