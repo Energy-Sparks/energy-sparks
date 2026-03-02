@@ -96,6 +96,11 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:to], subject: subject('Stopped data feeds'))
   end
 
+  def lagging_meters
+    @lagging = params[]
+    mail(subject: subject('Lagging meters'))
+  end
+
   private
 
   def build_issues_csv_for(issues)
