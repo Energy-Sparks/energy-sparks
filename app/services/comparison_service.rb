@@ -17,7 +17,7 @@ class ComparisonService
   def list_school_groups
     groups = SchoolGroup.organisation_groups
     groups = @user&.admin? ? groups.or(SchoolGroup.project_groups) : groups.is_public
-    groups = groups.with_active_schools.order(:name).to_a
+    groups = groups.with_active_schools.to_a
     groups << @user.school.school_group if @user&.school&.school_group.present?
     groups.uniq.sort_by!(&:name)
   end
