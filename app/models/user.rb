@@ -316,7 +316,8 @@ class User < ApplicationRecord
     new(
       attributes.merge(
         role: :school_onboarding,
-        confirmed_at: Time.zone.now
+        confirmed_at: Time.zone.now,
+        terms_accepted: true
       )
     )
   end

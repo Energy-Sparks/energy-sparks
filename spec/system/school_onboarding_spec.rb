@@ -122,109 +122,113 @@ describe 'onboarding', :schools do
         expect(page).to have_content('Set up your school on Energy Sparks')
       end
 
-      it 'allows a new account to be created' do
-        click_on 'Start'
-        expect(page).to have_field('Email', with: onboarding.contact_email)
-        expect(page).to have_content('I confirm agreement with the Energy Sparks')
-        fill_in 'Your name', with: 'A Teacher'
-        select 'Headteacher', from: 'Role'
-        password = 'testtesttest1'
-        fill_in 'Password', with: password, match: :prefer_exact
-        fill_in 'Password confirmation', with: password
-
-        check :privacy
-        click_on 'Create my account'
-
-        onboarding.reload
-        expect(onboarding).to have_event(:onboarding_user_created)
-        expect(onboarding).to have_event(:privacy_policy_agreed)
-        expect(onboarding.created_user.name).to eq('A Teacher')
-        expect(onboarding.created_user.role).to eq('school_onboarding')
-      end
-
-      context 'and user already has an account' do
-        let(:existing_user) { nil }
-        let(:school_group) { create(:school_group) }
-
-        before do
-          onboarding.update!(school_group: school_group)
-          click_on 'Start'
-          click_on 'Use an existing account'
-          fill_in 'Email', with: existing_user.email
-          fill_in 'Password', with: existing_user.password
-          within '#staff' do
-            click_on 'Sign in'
-          end
-        end
-
-        context 'as a school admin' do
-          let(:other_school)    { create(:school) }
-          let(:existing_user)   { create(:school_admin, school: other_school) }
-
-          it 'allows them to sign in' do
-            expect(page).to have_content('Step 1: Confirm your administrator account')
-            expect(page).to have_content('Do you want to use this user as your administrator account')
-          end
-
-          it 'allows them to complete onboarding' do
-            click_on 'Yes, use this account'
-
-            complete_school_details
-
-            # Consent
-            fill_in 'Name', with: 'Boss user'
-            fill_in 'Job title', with: 'Boss'
-            fill_in 'School name', with: 'Boss school'
-            click_on 'Grant consent'
-
-            # Additional school accounts
-            click_on 'Skip for now'
-
-            # Completion
-            click_on 'Complete setup', match: :first
-            expect(page).to have_content('Your school is now active')
-          end
-        end
-
-        context 'when a group admin' do
-          let(:existing_user) { create(:group_admin, school_group: school_group) }
-
-          it 'allows them to sign in' do
-            expect(page).to have_content('Step 1: Confirm your administrator account')
-            expect(page).to have_content('Do you want to complete onboarding for Oldfield Park Infants using this ' \
-                                         'school group admin account?')
-          end
-
-          it 'allows them to complete onboarding' do
-            click_on 'Yes, use this account'
-
-            # School details
-            complete_school_details
-
-            # Consent
-            fill_in 'Name', with: 'Boss user'
-            fill_in 'Job title', with: 'Boss'
-            fill_in 'School name', with: 'Boss school'
-            check :privacy, allow_label_click: true
-            click_on 'Grant consent'
-
-            # #Additional school accounts
-            click_on 'Add new account'
-            fill_in 'Name', with: 'Extra user'
-            fill_in 'Email', with: 'extra+user@example.org'
-            select 'Staff', from: 'Type'
+      context 'when filling in the registration page' do
+        context 'with a new user account' do
+          before do
+            click_on 'Start'
+            fill_in 'Your name', with: 'A Teacher'
             select 'Headteacher', from: 'Role'
-            click_on 'Create account'
+            password = 'testtesttest1'
+            fill_in 'Password', with: password, match: :prefer_exact
+            fill_in 'Password confirmation', with: password
+            check :privacy
+            click_on 'Create my account'
+            onboarding.reload
+          end
 
-            expect(page).to have_content('extra+user@example.org')
-            expect(page).to have_content('Headteacher')
-            expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
+          it 'creates a new account' do
+            expect(onboarding).to have_event(:onboarding_user_created)
+            expect(onboarding).to have_event(:privacy_policy_agreed)
+            expect(onboarding.created_user.name).to eq('A Teacher')
+            expect(onboarding.created_user.role).to eq('school_onboarding')
+            expect(onboarding.created_user.terms_accepted).to be(true)
+          end
+        end
 
-            click_on 'Continue'
+        context 'and user already has an account' do
+          let(:existing_user) { nil }
+          let(:school_group) { create(:school_group) }
 
-            # Completion
-            click_on 'Complete setup', match: :first
-            expect(page).to have_content('Your school is now active')
+          before do
+            onboarding.update!(school_group: school_group)
+            click_on 'Start'
+            click_on 'Use an existing account'
+            fill_in 'Email', with: existing_user.email
+            fill_in 'Password', with: existing_user.password
+            within '#staff' do
+              click_on 'Sign in'
+            end
+          end
+
+          context 'as a school admin' do
+            let(:other_school)    { create(:school) }
+            let(:existing_user)   { create(:school_admin, school: other_school) }
+
+            it 'allows them to sign in' do
+              expect(page).to have_content('Step 1: Confirm your administrator account')
+              expect(page).to have_content('Do you want to use this user as your administrator account')
+            end
+
+            it 'allows them to complete onboarding' do
+              click_on 'Yes, use this account'
+
+              complete_school_details
+
+              # Consent
+              fill_in 'Name', with: 'Boss user'
+              fill_in 'Job title', with: 'Boss'
+              fill_in 'School name', with: 'Boss school'
+              click_on 'Grant consent'
+
+              # Additional school accounts
+              click_on 'Skip for now'
+
+              # Completion
+              click_on 'Complete setup', match: :first
+              expect(page).to have_content('Your school is now active')
+            end
+          end
+
+          context 'when a group admin' do
+            let(:existing_user) { create(:group_admin, school_group: school_group) }
+
+            it 'allows them to sign in' do
+              expect(page).to have_content('Step 1: Confirm your administrator account')
+              expect(page).to have_content('Do you want to complete onboarding for Oldfield Park Infants using this ' \
+                                           'school group admin account?')
+            end
+
+            it 'allows them to complete onboarding' do
+              click_on 'Yes, use this account'
+
+              # School details
+              complete_school_details
+
+              # Consent
+              fill_in 'Name', with: 'Boss user'
+              fill_in 'Job title', with: 'Boss'
+              fill_in 'School name', with: 'Boss school'
+              check :privacy, allow_label_click: true
+              click_on 'Grant consent'
+
+              # #Additional school accounts
+              click_on 'Add new account'
+              fill_in 'Name', with: 'Extra user'
+              fill_in 'Email', with: 'extra+user@example.org'
+              select 'Staff', from: 'Type'
+              select 'Headteacher', from: 'Role'
+              click_on 'Create account'
+
+              expect(page).to have_content('extra+user@example.org')
+              expect(page).to have_content('Headteacher')
+              expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
+
+              click_on 'Continue'
+
+              # Completion
+              click_on 'Complete setup', match: :first
+              expect(page).to have_content('Your school is now active')
+            end
           end
         end
       end
