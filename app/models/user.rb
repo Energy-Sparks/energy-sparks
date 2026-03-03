@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  active                      :boolean          default(TRUE), not null
+#  climate_action_lead         :boolean          default(FALSE), not null
 #  confirmation_sent_at        :datetime
 #  confirmation_token          :string
 #  confirmed_at                :datetime
@@ -327,7 +328,7 @@ class User < ApplicationRecord
   def after_confirmation
     return unless school&.visible
 
-    OnboardingMailer.mailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
+    OnboardingMailer.with(user: self, school:, locale: preferred_locale).welcome_email.deliver_later
   end
 
   def self.admin_user_export_csv

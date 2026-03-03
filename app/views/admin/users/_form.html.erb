@@ -15,5 +15,6 @@
   <%= f.input :staff_role_id, label: 'Staff role', collection: StaffRole.order(:title), label_method: :title,
                               hint: 'For school admins and staff' %>
   <%= f.input :active %>
+  <%= f.input :climate_action_lead %>
   <%= f.submit class: 'btn btn-primary' %>
 <% end %>

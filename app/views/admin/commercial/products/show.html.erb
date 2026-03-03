@@ -122,6 +122,15 @@
 
 <div class="row">
   <div class="col">
+    <p>
+      <%= link_to 'Calculate price', admin_commercial_pricing_path(pricing: { product_id: @product.id }),
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
     <%= render(Commercial::ContractsComponent.new(holder: @product)) %>
   </div>
 </div>

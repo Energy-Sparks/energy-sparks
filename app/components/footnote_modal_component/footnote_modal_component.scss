@@ -1,11 +1,25 @@
-.footnote-modal-header {
-  background: $header-dark !important;
+.footnote-modal-component {
+  .modal-header {
+    background: $header-dark !important;
+    align-items: center;
+  }
+
+  h3 {
+    color: $white;
+  }
 }
 
-.footnote-modal-header h3 {
-  color: $white;
+.bs5 .footnote-modal-component {
+  .btn-close span {
+    display: none;
+  }
 }
 
-.footnote-modal-close-button {
-  color: $white;
+.bs4 .footnote-modal-component {
+  button.btn-close span {
+    @include font(f3);
+    color: $white;
+    margin: 0;
+    padding: 0;
+  }
 }

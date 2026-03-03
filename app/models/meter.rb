@@ -98,6 +98,7 @@ class Meter < ApplicationRecord
   scope :data_source_known, -> { where.not(data_source: nil) }
   scope :procurement_route_known, -> { where.not(procurement_route: nil) }
   scope :from_active_schools, -> { joins(:school).where('schools.active = TRUE') }
+  scope :active_for_active_schools, -> { active.from_active_schools }
 
   scope :with_zero_reading_days_and_dates, lambda {
     left_outer_joins(:amr_validated_readings)
@@ -110,8 +111,23 @@ class Meter < ApplicationRecord
       )
   }
 
-  scope :with_active_meter_attributes, lambda { |attribute_types|
-    joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: attribute_types } })
+  scope :with_stale_readings, lambda {
+    left_outer_joins(:data_source)
+      .merge(Meter.active_for_active_schools)
+      .joins(<<~SQL.squish)
+        JOIN LATERAL (
+          SELECT id, reading_date
+          FROM amr_validated_readings
+          WHERE amr_validated_readings.meter_id = meters.id
+          ORDER BY reading_date DESC
+          LIMIT 1
+        ) AS max_reading ON true
+      SQL
+      .where("reading_date < CURRENT_DATE - (data_sources.import_warning_days * INTERVAL '1 day')")
+  }
+
+  scope :with_active_meter_attributes, lambda { |attribute_type|
+    joins(:meter_attributes).where({ meter_attributes: { deleted_by_id: nil, replaced_by_id: nil, attribute_type: } })
   }
 
   scope :with_school_and_group, -> { includes(:school, school: :school_group) }
