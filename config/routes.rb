@@ -605,6 +605,8 @@ Rails.application.routes.draw do
       end
       resources :licences
       resources :products
+
+      get 'pricing', to: 'pricing#show'
     end
 
     namespace :comparisons do
