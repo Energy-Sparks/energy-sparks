@@ -460,7 +460,7 @@ describe 'onboarding', :schools do
     end
   end
 
-  context 'when at the final stage' do
+  context 'when the initial forms have been completed' do
     let(:user) { create(:onboarding_user) }
     let(:school) { build(:school) }
 
@@ -470,132 +470,210 @@ describe 'onboarding', :schools do
       sign_in(user)
     end
 
-    it 'adds a pupil account' do
-      visit new_onboarding_completion_path(onboarding)
-      find_by_id('accordion-optional-steps').click_on('Create pupil account')
-      fill_in 'Name', with: 'The energy savers'
-      fill_in 'Pupil password', with: 'theenergysavers'
-      click_on 'Create pupil account'
-      expect(onboarding.school.users.pupil.pluck(:name, :pupil_password)).to \
-        eq([['The energy savers', 'theenergysavers']])
-    end
+    context 'when managing pupil logins' do
+      context 'when adding a new login' do
+        before do
+          visit new_onboarding_completion_path(onboarding)
+          find_by_id('accordion-optional-steps').click_on('Create pupil account')
+          fill_in 'Name', with: 'The energy savers'
+          fill_in 'Pupil password', with: 'theenergysavers'
+          click_on 'Create pupil account'
+        end
 
-    it 'pupil details can be edited' do
-      pupil = create(:pupil, school: school)
-      visit new_onboarding_completion_path(onboarding)
-
-      click_on 'Edit pupil account'
-      password = 'a valid password'
-      fill_in 'Pupil password', with: password
-      click_on 'Update pupil account'
-      pupil.reload
-      expect(pupil.pupil_password).to eq(password)
-    end
-
-    it 'meters can be added' do
-      visit new_onboarding_completion_path(onboarding)
-      expect(page).to have_content('Configure energy meters')
-      click_on 'Add a meter'
-      fill_in 'Meter Point Number', with: '123543'
-      fill_in 'Meter Name', with: 'Gas'
-      choose 'Gas'
-      click_on 'Create Meter'
-      expect(page).to have_content('123543')
-    end
-
-    it 'opening times can be added' do
-      visit new_onboarding_completion_path(onboarding)
-      expect(page).to have_content('Set your school opening times')
-      expect(page).to have_content('Monday 08:50 - 15:20')
-      click_on 'Set opening times'
-      fill_in 'monday-opening_time', with: '900'
-      click_on 'Update school times'
-      expect(page).to have_content('Monday 09:00 - 15:20')
-    end
-
-    it 'inset days can be added' do
-      create(:calendar_event_type, title: 'In school Inset Day', description: 'Training day in school',
-                                   inset_day: true)
-      create(:academic_year, start_date: Date.new(2018, 9, 1), end_date: Date.new(2019, 8, 31),
-                             calendar: template_calendar)
-      visit new_onboarding_completion_path(onboarding)
-
-      # Inset days
-      expect(page).to have_content('Configure inset days')
-      click_on 'Add an inset day'
-      select 'Training day in school', from: 'Type'
-      # Grr, actual input hidden for JS datepicker
-      fill_in 'Date', with: '2019-01-09'
-      expect(page).to have_field('Date', with: '2019-01-09')
-
-      expect { click_on 'Add inset day' }.to change(CalendarEvent, :count).by(1)
-      expect(page).to have_content('2019-01-09')
-    end
-
-    it 'account details can be edited' do
-      visit new_onboarding_completion_path(onboarding)
-      click_on 'Edit your account'
-
-      fill_in 'Your name', with: 'Better name'
-      click_on 'Update my account'
-      user.reload
-      expect(user.name).to eq('Better name')
-    end
-
-    it 'school details can be edited' do
-      visit new_onboarding_completion_path(onboarding)
-
-      within '#accordion' do
-        click_on 'Edit school details'
+        it 'adds the account' do
+          expect(onboarding.school.users.pupil.pluck(:name, :pupil_password)).to \
+            eq([['The energy savers', 'theenergysavers']])
+        end
       end
-      fill_in 'School name', with: 'Correct school'
-      click_on 'Update school details'
-      school.reload
-      expect(school.name).to eq('Correct school')
+
+      context 'when editing an existing login' do
+        let!(:pupil) { create(:pupil, school: school) }
+
+        let(:password) { 'a valid password' }
+
+        before do
+          visit new_onboarding_completion_path(onboarding)
+          click_on 'Edit pupil account'
+          fill_in 'Pupil password', with: password
+          click_on 'Update pupil account'
+        end
+
+        it 'updates the account' do
+          expect(pupil.reload.pupil_password).to eq(password)
+        end
+      end
     end
 
-    it 'additional accounts can be added and edited' do
-      onboarding.events.create!(event: :pupil_account_created)
+    context 'when managing meters' do
+      before { visit new_onboarding_completion_path(onboarding) }
 
-      visit new_onboarding_completion_path(onboarding)
-      expect(page).to have_content('You have not added any additional school accounts')
-      within '#collapse-school-users' do
-        click_on 'Manage users'
+      it { expect(page).to have_content('Configure energy meters') }
+
+      context 'when adding a meter' do
+        before do
+          click_on 'Add a meter'
+          fill_in 'Meter Point Number', with: '123543'
+          fill_in 'Meter Name', with: 'Gas'
+          choose 'Gas'
+          click_on 'Create Meter'
+        end
+
+        it 'adds the meter' do
+          expect(school.reload.meters.first.mpan_mprn).to eq(123543)
+        end
+
+        it 'shows the meter on the page' do
+          expect(page).to have_content('123543')
+        end
       end
-      expect(page).to have_content('Manage your school accounts')
-      click_on 'Add new account'
+    end
 
-      fill_in 'Name', with: 'Extra user'
-      fill_in 'Email', with: 'extra+user@example.org'
-      select 'Staff', from: 'Type'
-      select 'Headteacher', from: 'Role'
+    context 'when managing opening times' do
+      before { visit new_onboarding_completion_path(onboarding) }
 
-      click_on 'Create account'
+      it 'shows the default times' do
+        expect(page).to have_content('Set your school opening times')
+        expect(page).to have_content('Monday 08:50 - 15:20')
+      end
 
-      expect(page).to have_content('extra+user@example.org')
-      expect(page).to have_content('Headteacher')
-      expect(page).to have_content('Manage your school accounts')
+      context 'when editing the opening times' do
+        before do
+          click_on 'Set opening times'
+          fill_in 'monday-opening_time', with: '900'
+          click_on 'Update school times'
+        end
 
-      click_on 'Edit'
+        it 'updates the times' do
+          expect(school.reload.school_times.where(day: 'monday').first.opening_time).to eq(900)
+        end
 
-      fill_in 'Name', with: 'user name'
-      fill_in 'Email', with: 'user+updated@example.org'
-      select 'Governor', from: 'Role'
+        it 'summarises the times on the page' do
+          expect(page).to have_content('Monday 09:00 - 15:20')
+        end
+      end
+    end
 
-      click_on 'Update account'
+    context 'when managing inset days' do
+      before do
+        create(:calendar_event_type, title: 'In school Inset Day', description: 'Training day in school',
+                                     inset_day: true)
+        create(:academic_year, start_date: Date.new(2018, 9, 1), end_date: Date.new(2019, 8, 31),
+                               calendar: template_calendar)
+        visit new_onboarding_completion_path(onboarding)
+      end
 
-      expect(page).to have_content('Manage your school accounts')
-      expect(page).to have_content('user name')
-      expect(page).to have_content('user+updated@example.org')
-      expect(page).to have_content('Governor')
+      it { expect(page).to have_content('Configure inset days') }
 
-      click_on 'Continue'
-      expect(page).to have_content('Final step: review your answers')
-      expect(page).to have_content('user+updated@example.org')
+      context 'when adding an inset day' do
+        before do
+          click_on 'Add an inset day'
+          select 'Training day in school', from: 'Type'
+          # Grr, actual input hidden for JS datepicker
+          fill_in 'Date', with: '2019-01-09'
+        end
 
-      expect(onboarding.school.users.count).to be 2
-      expect(onboarding.school.users.first).to be_confirmed
-      expect(onboarding.school.users.last).not_to be_confirmed
+        it 'inset days can be added' do
+          expect { click_on 'Add inset day' }.to change(CalendarEvent, :count).by(1)
+          expect(page).to have_content('2019-01-09')
+        end
+      end
+    end
+
+    context 'when managing the onboarding users account' do
+      before do
+        visit new_onboarding_completion_path(onboarding)
+        click_on 'Edit your account'
+
+        fill_in 'Your name', with: 'Better name'
+        click_on 'Update my account'
+      end
+
+      it 'updates the account' do
+        expect(user.reload.name).to eq('Better name')
+      end
+    end
+
+    context 'when managing the school details' do
+      before do
+        visit new_onboarding_completion_path(onboarding)
+
+        within '#accordion' do
+          click_on 'Edit school details'
+        end
+        fill_in 'School name', with: 'Correct school'
+        click_on 'Update school details'
+      end
+
+      it 'updates the details' do
+        expect(school.reload.name).to eq('Correct school')
+      end
+    end
+
+    context 'when managing additional accounts' do
+      before do
+        onboarding.events.create!(event: :pupil_account_created)
+        visit new_onboarding_completion_path(onboarding)
+      end
+
+      it { expect(page).to have_content('You have not added any additional school accounts') }
+
+      context 'when adding an account' do
+        before do
+          within '#collapse-school-users' do
+            click_on 'Manage users'
+          end
+          click_on 'Add new account'
+          fill_in 'Name', with: 'Extra user'
+          fill_in 'Email', with: 'extra+user@example.org'
+          select 'Staff', from: 'Type'
+          select 'Headteacher', from: 'Role'
+
+          click_on 'Create account'
+        end
+
+        it { expect(page).to have_content('Manage your school accounts') }
+
+        it 'lists the account on the form' do
+          expect(page).to have_content('extra+user@example.org')
+          expect(page).to have_content('Headteacher')
+        end
+
+        it 'has created the accounts' do
+          expect(onboarding.school.users.count).to be 2
+          expect(onboarding.school.users.first).to be_confirmed
+          expect(onboarding.school.users.last).not_to be_confirmed
+        end
+
+        context 'when editing the account' do
+          before do
+            click_on 'Edit'
+            fill_in 'Name', with: 'user name'
+            fill_in 'Email', with: 'user+updated@example.org'
+            select 'Governor', from: 'Role'
+            click_on 'Update account'
+          end
+
+          it { expect(page).to have_content('Manage your school accounts') }
+
+          it 'shows the updates on the form' do
+            expect(page).to have_content('Manage your school accounts')
+            expect(page).to have_content('user name')
+            expect(page).to have_content('user+updated@example.org')
+            expect(page).to have_content('Governor')
+          end
+
+          context 'when returning to final page' do
+            before do
+              click_on 'Continue'
+            end
+
+            it 'summarises the account details' do
+              expect(page).to have_content('Final step: review your answers')
+              expect(page).to have_content('user+updated@example.org')
+            end
+          end
+        end
+      end
     end
   end
 end
