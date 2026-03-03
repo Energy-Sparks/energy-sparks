@@ -70,7 +70,7 @@ describe 'Activity' do
 
       context 'when updating description to have an image' do
         before do
-          add_attachment(activity)
+          activity.description = content_with_attachment
           activity.save
         end
 
@@ -85,7 +85,7 @@ describe 'Activity' do
       let(:activity) { create(:activity, description:) } # also creates observation
 
       before do
-        add_attachment(activity)
+        activity.description = content_with_attachment
         activity.save
       end
 
