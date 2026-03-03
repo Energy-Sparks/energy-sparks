@@ -149,11 +149,12 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'and saving new data' do
-              let(:new_data_source) { build(:data_source, organisation_type: :council) }
+              let(:new_data_source) { build(:data_source, organisation_type: :council, owned_by_id: user.id) }
 
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
                 check 'Load tariffs for SMETS meters'
+                check 'Turn on email alerts for lagging meters?'
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_data_source[text_field]
                 end
