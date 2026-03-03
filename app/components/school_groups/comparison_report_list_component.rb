@@ -6,35 +6,31 @@ module SchoolGroups
       link: {
         renders: lambda do |*args, **kwargs, &block|
           Item.new(*args,
-                                                                **kwargs.merge(fuel_types: @fuel_types,
-                                                                               school_group: @school_group,
-                                                                               public: @public),
-                                                                &block)
+                   **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group, public: @public),
+                   &block)
         end,
         as: :link
       },
       named_sublist: {
         renders: lambda do |*args, **kwargs, &block|
-          SchoolGroups::ComparisonReportListComponent::NamedSubList.new(*args,
-                                                                        **kwargs.merge(fuel_types: @fuel_types,
-                                                                                       school_group: @school_group),
-                                                                        &block)
+          NamedSubList.new(*args,
+                           **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
+                           &block)
         end,
         as: :named
       },
       fuel_type_sublist: {
         renders: lambda do |*args, **kwargs, &block|
-          SchoolGroups::ComparisonReportListComponent::FuelSubList.new(*args,
-                                                                       **kwargs.merge(fuel_types: @fuel_types,
-                                                                                      school_group: @school_group),
-                                                                       &block)
+          FuelSubList.new(*args,
+                          **kwargs.merge(fuel_types: @fuel_types, school_group: @school_group),
+                          &block)
         end,
         as: :fuel_types
       }
     }
 
     def initialize(school_group:, fuel_types:, public: true, **_kwargs)
-      super
+      super()
       @school_group = school_group
       @fuel_types = fuel_types
       @public = public
@@ -50,10 +46,10 @@ module SchoolGroups
 
     class BaseItem < ViewComponent::Base
       def initialize(link_text, fuel_types:, school_group:, fuel_type: nil, public: true, **_kwargs)
-        super
+        super()
+        @link_text = link_text
         @fuel_types = fuel_types
         @school_group = school_group
-        @link_text = link_text
         @fuel_type = fuel_type
         @public = public
       end
@@ -69,7 +65,7 @@ module SchoolGroups
       end
 
       def report_path(report = @report)
-        helpers.compare_path(group: true, benchmark: report, school_group_ids: [@school_group.id])
+        helpers.comparisons_configurable_period_path(key: report, group: true, school_group_ids: [@school_group.id])
       end
     end
 
