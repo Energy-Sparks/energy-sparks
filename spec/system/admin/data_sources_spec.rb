@@ -3,8 +3,12 @@ require 'rails_helper'
 shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || '')
+    expect(page).to have_content(data_source.owned_by.presence || '')
     text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
+    end
+    numeric_attributes.each_key do |numeric_field|
+      expect(page).to have_content(data_source[numeric_field])
     end
   end
 end
@@ -32,19 +36,26 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
   let!(:text_attributes) do
     {
-    name: 'Organisation name',
-    contact_name: 'Contact name',
-    contact_email: 'Contact email',
-    loa_contact_details: 'Who to send LOA to',
-    data_prerequisites: 'Data prerequisites',
-    data_feed_type: 'Type of data feed',
-    new_area_data_feed: 'How to setup data feed for a new area',
-    add_existing_data_feed: 'How to add to an existing data feed',
-    data_issues_contact_details: 'Who to contact about data issues',
-    historic_data: 'Historic data',
-    loa_expiry_procedure: 'What to do when LOA is about expire',
-    comments: 'Comments'
-  }
+      name: 'Organisation name',
+      contact_name: 'Contact name',
+      contact_email: 'Contact email',
+      loa_contact_details: 'Who to send LOA to',
+      data_prerequisites: 'Data prerequisites',
+      data_feed_type: 'Type of data feed',
+      new_area_data_feed: 'How to setup data feed for a new area',
+      add_existing_data_feed: 'How to add to an existing data feed',
+      data_issues_contact_details: 'Who to contact about data issues',
+      historic_data: 'Historic data',
+      loa_expiry_procedure: 'What to do when LOA is about expire',
+      comments: 'Comments'
+    }
+  end
+
+  let!(:numeric_attributes) do
+    {
+      import_warning_days: 'Days after which a meter for this data source should be considered lagging (default 7)',
+      alert_percentage_threshold: 'Percentage of meters required to be lagging to generate an alert (default 25)'
+    }
   end
 
   before do
@@ -149,14 +160,18 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'and saving new data' do
-              let(:new_data_source) { build(:data_source, organisation_type: :council, owned_by_id: user.id) }
+              let(:new_data_source) { build(:data_source, organisation_type: :council) }
 
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
+                select user.name, from: 'Owned by'
                 check 'Load tariffs for SMETS meters'
                 check 'Turn on email alerts for lagging meters?'
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_data_source[text_field]
+                end
+                numeric_attributes.each do |numeric_field, label|
+                  fill_in label, with: new_data_source[numeric_field]
                 end
                 click_button 'Save'
               end

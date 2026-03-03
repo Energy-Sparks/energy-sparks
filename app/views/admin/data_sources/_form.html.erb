@@ -14,7 +14,7 @@
       lagging (default 7)' %>
       <%= f.input :alerts_on, label: 'Turn on email alerts for lagging meters?' %>
       <%= f.input :alert_percentage_threshold, label: 'Percentage of meters required to be lagging to generate an alert
-      (default 25)' %>
+      (default 25)', input_html: { value: 25 } %>
       <%= f.input :data_prerequisites %>
       <%= f.input :data_feed_type, label: 'Type of data feed' %>
       <%= f.input :new_area_data_feed, label: 'How to setup data feed for a new area' %>
