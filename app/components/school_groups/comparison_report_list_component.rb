@@ -45,7 +45,7 @@ module SchoolGroups
     ERB
 
     class BaseItem < ViewComponent::Base
-      def initialize(link_text, fuel_types:, school_group:, fuel_type: nil, public: true, **_kwargs)
+      def initialize(link_text, fuel_types:, school_group:, fuel_type: nil, public: true)
         super()
         @link_text = link_text
         @fuel_types = fuel_types
@@ -70,8 +70,8 @@ module SchoolGroups
     end
 
     class Item < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, report:, fuel_type: nil, public: true)
-        super
+      def initialize(link_text, report:, **)
+        super(link_text, **)
         @report = report
       end
 
@@ -88,8 +88,8 @@ module SchoolGroups
     # Reports are keyed on report name, value is link text
     # e.g. { weekday_baseload_variation: 'Weekday variation' }
     class NamedSubList < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, reports:, fuel_type: nil)
-        super
+      def initialize(link_text, reports:, **)
+        super(link_text, **)
         @reports = reports
       end
 
@@ -122,8 +122,8 @@ module SchoolGroups
     # OR, to allow overriding of labels:
     # e.g. { electricity: { report: :annual_electricity_use, label: 'Some label'} }
     class FuelSubList < BaseItem
-      def initialize(link_text, fuel_types:, school_group:, reports:)
-        super
+      def initialize(link_text, reports:, **)
+        super(link_text, **)
         @reports = reports
       end
 

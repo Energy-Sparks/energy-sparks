@@ -152,6 +152,6 @@
           <% list.with_link report.title, report: report.key %>
         <% end %>
       <% end %>
-    <% end if current_user.admin? %>
+    <% end if current_user&.admin? %>
   <% end %>
 <% end %>
