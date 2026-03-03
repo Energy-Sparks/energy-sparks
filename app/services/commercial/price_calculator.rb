@@ -35,9 +35,10 @@ module Commercial
       licence = school.licences.by_end_date.first
       return nil unless licence
 
-      base_price = licence.school_specific_price || base_price(product: licence.contract.product,
-                                contract: licence.contract,
-                                number_of_pupils: school.number_of_pupils)
+      base_price = licence.school_specific_price ||
+                   base_price(product: licence.contract.product,
+                              contract: licence.contract,
+                              number_of_pupils: school.number_of_pupils)
 
       return Price::FREE if base_price == 0.0
 
