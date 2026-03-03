@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Amr
   class SingleReadConverter
     class InvalidTimeStringError < StandardError; end
@@ -48,7 +50,8 @@ module Amr
         else
           readings = Array.new(48)
           readings[reading_index] = kwh
-          new_record = { reading_date:, readings:, mpan_mprn: reading[:mpan_mprn], amr_data_feed_config_id: reading[:amr_data_feed_config_id], meter_id: reading[:meter_id] }
+          new_record = { reading_date:, readings:, mpan_mprn: reading[:mpan_mprn],
+                         amr_data_feed_config_id: reading[:amr_data_feed_config_id], meter_id: reading[:meter_id] }
           @results_array << new_record
         end
       end
@@ -57,8 +60,14 @@ module Amr
       reject_any_low_reading_days
     end
 
-    def self.convert_time_string_to_usable_time(time_string)
-      raise Amr::SingleReadConverter::InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}" unless time_string.is_a?(String)
+    private
+
+    def convert_time_string_to_usable_time(time_string)
+      unless time_string.is_a?(String)
+        raise InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}"
+      end
+
+      time_string = time_string.split.first
       return time_string if valid_time_string?(time_string)
 
       # Returns time_string right justified and padded with '0'
@@ -68,21 +77,18 @@ module Amr
       # e.g. '0130' is converted to '01:30' and '2330' is converted to '23:30'
       time_string.insert(-3, ':')
 
-      if valid_time_string?(time_string)
-        time_string
-      else
-        raise Amr::SingleReadConverter::InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}"
+      unless valid_time_string?(time_string)
+        raise InvalidTimeStringError, "Invalid time string: #{time_string} is a #{time_string.class}"
       end
+
+      time_string
     end
 
-    def self.valid_time_string?(time_string)
-      return false unless time_string.is_a?(String)
+    def valid_time_string?(time_string)
       # Regex matches time formats with and without leading zero (e.g. '1:30' & '01:30') from '0:00' to '23:59'
       # As well as with optional secs, e.g. '00:30:00'
       time_string.match?(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:00)?$/)
     end
-
-    private
 
     def truncate_too_many_readings
       @results_array.each { |result| result[:readings] = result[:readings].take(48) if result[:readings].count > 48 }
@@ -90,6 +96,7 @@ module Amr
 
     def reject_any_low_reading_days
       return @results_array if @amr_data_feed_config.allow_merging
+
       @results_array.reject { |result| result[:readings].count(&:blank?) > @amr_data_feed_config.blank_threshold }
     end
 
@@ -104,7 +111,8 @@ module Amr
         Date.parse(reading[:reading_date])
       else
         reading_day_time = Time.zone.parse(reading[:reading_date])
-        raise Date::Error.new(reading[:reading_date]) if reading_day_time.nil?
+        raise Date::Error, reading[:reading_date] if reading_day_time.nil?
+
         # roll the date backward for last reading of day
         reading_day_time == reading_day_time.midnight ? (reading_day_time - 1.day).to_date : reading_day_time.to_date
       end
@@ -112,6 +120,7 @@ module Amr
 
     # Find array index for this reading
     def reading_index_of_record(reading)
+      # debugger
       if indexed_with_period?
         index_from_period(reading)
       elsif indexed_by_time?
@@ -142,7 +151,7 @@ module Amr
 
     # Reformat the reading time into %H:%M format and calculate index
     def index_from_time_field(reading)
-      time_string = SingleReadConverter.convert_time_string_to_usable_time(reading[:reading_time])
+      time_string = convert_time_string_to_usable_time(reading[:reading_time])
       TimeOfDay.parse(time_string).to_halfhour_index
     end
 
