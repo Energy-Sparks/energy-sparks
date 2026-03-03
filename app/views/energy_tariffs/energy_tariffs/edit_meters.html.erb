@@ -1,11 +1,9 @@
+<% content_for :header_title, t('schools.user_tariffs.choose_meters.title') %>
+
 <%= render EnergyTariffFormTitleComponent.new(
       energy_tariff: @energy_tariff,
       skip_fields: %i[name dates]
-    ) do |c| %>
-  <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariffs.choose_meters.title') %></h1>
-  <% end %>
-<% end %>
+    ) %>
 
 <div class="row mt-4">
   <div class="col-md-12">

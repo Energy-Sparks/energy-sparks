@@ -1,17 +1,17 @@
+<% content_for :header_title,
+               t('schools.user_tariff_differential_prices.index.title',
+                 fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %>
+
 <%= render EnergyTariffFormTitleComponent.new(
       energy_tariff: @energy_tariff
-    ) do |c| %>
-  <% c.with_page_title do %>
-    <h1><%= t('schools.user_tariff_differential_prices.index.title',
-              fuel_type: t("common.#{@energy_tariff.meter_type}").downcase) %></h1>
-  <% end %>
-<% end %>
+    ) %>
 
 <div class="row mt-4">
   <div class="col-md-12">
     <div class="energy_tariff">
       <p>
-        <%= t("schools.user_tariff_differential_prices.index.introduction_#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
+        <%= t('schools.user_tariff_differential_prices.index.introduction_' \
+              "#{@energy_tariff.tariff_holder.tariff_holder_i18n_key}") %>.
       </p>
       <br>
 
@@ -49,7 +49,8 @@
       <br>
       <table class="table table-charges">
         <tbody>
-          <%= render 'energy_tariffs/energy_tariffs/rates_table', energy_tariff: @energy_tariff, allow_edits: true %>
+          <%= render 'energy_tariffs/energy_tariffs/rates_table',
+                     energy_tariff: @energy_tariff, allow_edits: true %>
         </tbody>
       </table>
 

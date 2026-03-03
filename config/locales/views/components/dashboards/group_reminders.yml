@@ -6,10 +6,8 @@ en:
         clusters:
           link: Manage clusters
           note: Group your schools into clusters to more easily compare related schools
-        engagement:
-          link: View engagement report
-          note: Less than half of your schools are engaging with the full range of features offered by Energy Sparks
         onboarding:
+          link: View school status page
           note: Some of the schools in your group have not yet finished onboarding
         review_tariffs:
           link: Manage tariffs

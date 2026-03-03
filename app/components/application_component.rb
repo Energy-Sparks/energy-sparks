@@ -2,7 +2,7 @@ class ApplicationComponent < ViewComponent::Base
   include ApplicationHelper
   include LocaleHelper
 
-  attr_reader :id, :classes
+  attr_reader :id, :classes, :current_user
 
   # Structuring the initialize method in this manner offers flexibility for future enhancements
   # It allows the addition of new parameters without necessitating changes to other subclasses and also
@@ -16,11 +16,11 @@ class ApplicationComponent < ViewComponent::Base
   #   end
   # end
 
-  def initialize(*_args, id: nil, classes: '', **_kwargs)
+  def initialize(*_args, id: nil, classes: '', current_user: nil, **_kwargs)
     super()
     @id = id
     @classes = class_names(classes)
-
+    @current_user = current_user
     add_classes(self.class.name.underscore.dasherize.parameterize)
   end
 
@@ -31,5 +31,19 @@ class ApplicationComponent < ViewComponent::Base
   def merge_classes(classes, kwargs)
     kwargs[:classes] = class_names(classes, kwargs[:classes])
     kwargs
+  end
+
+  class << self
+    def colour_variants
+      [:primary, :secondary, :success, :info, :warning, :danger, :light, :dark]
+    end
+
+    def raise_unknown_variant_error(**pair)
+      key, value = pair.first
+
+      unless colour_variants.include?(value)
+        raise ArgumentError, "Unknown #{key} variant: #{value}. Valid values are: #{colour_variants.join(', ')}"
+      end
+    end
   end
 end

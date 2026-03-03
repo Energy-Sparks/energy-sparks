@@ -6,7 +6,7 @@ describe 'viewing and recording action' do
   before do
     SiteSettings.create!(audit_activities_bonus_points: 50)
     SiteSettings.current.update(photo_bonus_points:)
-    create(:national_calendar, title: 'England and Wales')
+    create(:national_calendar, :with_academic_years, title: 'England and Wales')
   end
 
   let(:title)       { 'Changed boiler' }
@@ -16,8 +16,10 @@ describe 'viewing and recording action' do
   let!(:intervention_type) { create(:intervention_type, name: title, summary:, description:) }
   let!(:programme) {}
 
-  let(:scoreboard) { create(:scoreboard) }
-  let(:school) { create_active_school(scoreboard:) }
+  let(:calendar) { create(:calendar, :with_previous_and_next_academic_years) }
+  let!(:scoreboard) { create(:scoreboard, academic_year_calendar: calendar) }
+  let(:school) { create_active_school(scoreboard:, template_calendar: calendar) }
+
   let!(:setup_data) {}
 
   context 'as a public user' do
@@ -78,13 +80,9 @@ describe 'viewing and recording action' do
     end
   end
 
-  context 'as a group admin' do
-    let!(:group_admin)    { create(:group_admin) }
-    let!(:other_school)   { create(:school, name: 'Other School', school_group: group_admin.school_group) }
-
+  shared_examples 'a group user recording actions' do
     before do
-      school.update(school_group: group_admin.school_group)
-      sign_in(group_admin)
+      sign_in(group_user)
       visit intervention_type_path(intervention_type)
     end
 
@@ -103,15 +101,18 @@ describe 'viewing and recording action' do
     end
 
     context 'recording an intervention' do
-      it 'associates intervention with correct school from group' do
+      before do
         select other_school.name, from: :school_id
         click_on 'Record this action'
         fill_in :observation_at, with: Time.zone.today.strftime('%d/%m/%Y')
         click_on 'Record action'
+      end
+
+      it 'associates intervention with correct school from group' do
         expect(page).to have_content('Congratulations!')
         expect(other_school.observations.count).to eq(1)
         expect(other_school.observations.first.at).to eq(Time.zone.today)
-        expect(other_school.observations.first.created_by).to eq(group_admin)
+        expect(other_school.observations.first.created_by).to eq(group_user)
       end
     end
 
@@ -124,6 +125,22 @@ describe 'viewing and recording action' do
         expect(page).to have_no_button('Record action')
       end
     end
+  end
+
+  context 'as a group admin' do
+    let!(:group_user) { create(:group_admin) }
+    let!(:school) { create(:school, school_group: group_user.school_group) }
+    let!(:other_school) { create(:school, school_group: group_user.school_group) }
+
+    it_behaves_like 'a group user recording actions'
+  end
+
+  context 'as a group manager' do
+    let!(:group_user) { create(:group_manager) }
+    let!(:school) { create(:school, :with_school_group, :with_project, scoreboard:, group: group_user.school_group) }
+    let!(:other_school) { create(:school, :with_school_group, :with_project, group: group_user.school_group) }
+
+    it_behaves_like 'a group user recording actions'
   end
 
   context 'as an admin' do
@@ -185,6 +202,29 @@ describe 'viewing and recording action' do
       it 'links to the intervention' do
         expect(page).to have_link(href: school_intervention_path(school, observation))
       end
+
+      context 'when there is no description' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, description: '') }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it 'shows prompt to add detail' do
+          expect(page).to have_content(I18n.t('activities.form.tell_us_more_label'))
+          expect(page).to have_link(I18n.t('activities.actions.edit'), href: edit_school_intervention_path(school, observation))
+        end
+      end
+
+      context 'when there is a pupil count' do
+        let!(:observation) { create(:observation, :intervention, intervention_type:, school:, pupil_count: 27) }
+
+        before do
+          visit school_intervention_path(school, observation)
+        end
+
+        it { expect(page).to have_content(I18n.t('common.pupil_count', count: observation.pupil_count)) }
+      end
     end
 
     context 'when requesting an incorrect url' do
@@ -215,8 +255,8 @@ describe 'viewing and recording action' do
         it { expect(page).to have_content("can't be blank") }
       end
 
-      context without_feature: :todos do
-        let!(:audit) { create(:audit, :with_activity_and_intervention_types, school:) }
+      context with_feature: :todos do
+        let!(:audit) { create(:audit, :with_todos, school:) }
 
         context 'when time is in previous academic year' do
           before do
@@ -227,10 +267,29 @@ describe 'viewing and recording action' do
 
           it 'observation has 0 points' do
             observation = school.observations.intervention.first
-            expect(observation.points).to be_nil
+            expect(observation.points).to be_zero
           end
 
           it_behaves_like 'a task completed page', points: 0, task_type: :action
+          it_behaves_like 'a task completed page with programme complete message', task_type: :action
+        end
+
+        context 'when time is in a future academic year' do
+          let(:next_academic_year) { school.current_academic_year.next_year }
+          let(:future_date) { next_academic_year.start_date + 1.day }
+
+          before do
+            school.update(calendar: create(:calendar, :with_previous_and_next_academic_years))
+            refresh
+
+            fill_in 'observation_at', with: future_date.strftime('%d/%m/%Y')
+            fill_in_trix with: 'We changed to a more efficient boiler'
+            click_on 'Record action'
+          end
+
+          it_behaves_like 'a task completed page', points: 30, task_type: :action do
+            let(:future_academic_year) { next_academic_year.title }
+          end
         end
 
         context 'when time is this academic year' do
@@ -250,56 +309,7 @@ describe 'viewing and recording action' do
           end
 
           it_behaves_like 'a task completed page', points: 30, task_type: :action
-
-          context 'when viewing action' do
-            before do
-              click_on 'View your action'
-            end
-
-            it 'displays action' do
-              expect(page).to have_content('We changed to a more efficient boiler')
-            end
-          end
-        end
-      end
-
-      context with_feature: :todos do
-        let!(:audit) { create(:audit, :with_todos, school:) }
-
-        context 'when time is in previous academic year' do
-          before do
-            fill_in 'observation_at', with: 2.years.ago # points are not scored for actions in previous aademic year
-            fill_in_trix with: 'We changed to a more efficient boiler'
-            click_on 'Record action'
-          end
-
-          it 'observation has 0 points' do
-            observation = school.observations.intervention.first
-            expect(observation.points).to be_nil
-          end
-
-          it_behaves_like 'a task completed page', points: 0, task_type: :action, with_todos: true
-          it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
-        end
-
-        context 'when time is this academic year' do
-          before do
-            fill_in 'observation_at', with: today.strftime('%d/%m/%Y')
-            fill_in_trix with: 'We changed to a more efficient boiler'
-            fill_in 'How many pupils were involved in this activity?', with: 3
-            click_on 'Record action'
-          end
-
-          it 'creates observation' do
-            observation = school.observations.intervention.first
-            expect(observation.intervention_type).to eq(intervention_type)
-            expect(observation.points).to eq(intervention_type.score)
-            expect(observation.at.to_date).to eq(today)
-            expect(observation.created_by).to eq(school_admin)
-          end
-
-          it_behaves_like 'a task completed page', points: 30, task_type: :action, with_todos: true
-          it_behaves_like 'a task completed page with programme complete message', task_type: :action, with_todos: true
+          it_behaves_like 'a task completed page with programme complete message', task_type: :action
 
           context 'when viewing action' do
             before do
@@ -405,12 +415,15 @@ describe 'viewing and recording action' do
           click_on 'Edit'
         end
 
+        new_date = Time.zone.today - 1.day
+
         fill_in_trix with: 'We changed to a more efficient boiler'
-        fill_in 'observation_at', with: '20/06/2019', visible: false
+        fill_in 'observation_at', with: new_date.strftime('%d/%m/%Y'), visible: false
+
         click_on 'Update action'
 
         observation.reload
-        expect(observation.at.to_date).to eq(Date.new(2019, 6, 20))
+        expect(observation.at.to_date).to eq(new_date)
         expect(observation.updated_by).to eq(school_admin)
 
         click_on 'Changed boiler'

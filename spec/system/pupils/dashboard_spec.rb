@@ -142,10 +142,6 @@ describe 'Pupil dashboard' do
   end
 
   context 'with new dashboard enabled' do
-    before do
-      Flipper.enable :new_dashboards_2024
-    end
-
     context 'when viewing as guest user' do
       it_behaves_like 'a pupil dashboard viewed when logged out'
       it_behaves_like 'a data enabled pupil dashboard'

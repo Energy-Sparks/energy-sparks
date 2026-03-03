@@ -35,10 +35,6 @@
   <div class="other-actions mb-3">
     <%= link_to t('schools.downloads.index.unvalidated_meter_data'),
                 admin_school_unvalidated_amr_data_path(@school, format: :yaml), class: 'btn' %>
-    <%= link_to t('schools.downloads.index.validated_meter_data'),
-                admin_school_validated_amr_data_path(@school, format: :yaml), class: 'btn' %>
-    <%= link_to t('schools.downloads.index.aggregated_meter_collection'),
-                admin_school_aggregated_meter_collection_path(@school, format: :yaml), class: 'btn' %>
   </div>
   <hr>
 

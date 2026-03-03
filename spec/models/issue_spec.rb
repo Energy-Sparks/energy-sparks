@@ -13,7 +13,7 @@ RSpec.describe Issue, type: :model do
 
   describe '#issue_type' do
     it 'is issue by default' do
-      expect(Issue.new(issue_type: nil).issue_type).to eq('issue')
+      expect(Issue.new.issue_type).to eq('issue')
     end
 
     it 'can be set' do
@@ -23,7 +23,7 @@ RSpec.describe Issue, type: :model do
 
   describe '#status' do
     it 'is open by default' do
-      expect(Issue.new(status: nil).status).to eq('open')
+      expect(Issue.new.status).to eq('open')
     end
 
     it 'can be set' do
@@ -46,32 +46,16 @@ RSpec.describe Issue, type: :model do
       it { expect(status_summary).to eq('open issue') }
     end
 
-    context 'note' do
+    context 'closed note' do
+      let(:issue) { build(:issue, issue_type: :note, status: :closed) }
+
+      it { expect(status_summary).to eq('closed note') }
+    end
+
+    context 'open note' do
       let(:issue) { build(:issue, issue_type: :note, status: :open) }
 
-      it { expect(status_summary).to eq('note') }
-    end
-  end
-
-  describe 'before_save :set_note_status' do
-    before do
-      issue.save
-    end
-
-    context 'issue is a note' do
-      subject(:issue) { build(:issue, issue_type: :note, status: :closed) }
-
-      it 'is sets status to open when saved' do
-        expect(issue).to be_status_open
-      end
-    end
-
-    context 'issue is an issue' do
-      subject(:issue) { build(:issue, issue_type: :issue, status: :closed) }
-
-      it 'is does not change status' do
-        expect(issue).to be_status_closed
-      end
+      it { expect(status_summary).to eq('open note') }
     end
   end
 
@@ -107,32 +91,58 @@ RSpec.describe Issue, type: :model do
   describe '#resolve!' do
     let!(:user) { create(:admin) }
 
-    context 'when issue is of type note' do
-      subject(:issue) { create(:issue, issue_type: :note) }
+    Issue.issue_types.each_key do |issue_type|
+      context "when issue is of type #{issue_type}" do
+        subject(:issue) { create(:issue, issue_type: issue_type, review_date: 2.days.from_now) }
 
+        before do
+          issue.resolve!(updated_by: user)
+        end
+
+        it 'closes issue' do
+          expect(issue).to be_status_closed
+        end
+
+        it 'updates updated_by' do
+          expect(issue.updated_by).to eq(user)
+        end
+
+        it 'removes review date' do
+          expect(issue.review_date).to be_nil
+        end
+      end
+    end
+  end
+
+  describe 'before_save remove_review_date' do
+    let(:issue) { create(:issue, status: :open, review_date: 2.days.from_now) }
+
+    before { freeze_time }
+
+    context 'when status changed to closed' do
       before do
-        issue.resolve!(updated_by: user)
+        issue.status = :closed
+        issue.save
       end
 
-      it { expect(issue.resolve!(updated_by: user)).to be_falsey }
-
-
-      it { expect(issue).to be_status_open }
-      it { expect(issue.updated_by).to eq(user) }
+      it 'removes review date' do
+        expect(issue.review_date).to be_nil
+      end
     end
 
-    context 'when issue is of type issue' do
-      subject(:issue) { create(:issue, issue_type: :issue) }
-
+    context 'when status is not changed' do
       before do
-        issue.resolve!(updated_by: user)
+        issue.title = 'Updated title'
+        issue.save
       end
 
-      it { expect(issue.resolve!(updated_by: user)).to be_truthy }
+      it 'updates the title' do
+        expect(issue.title).to eq('Updated title')
+      end
 
-
-      it { expect(issue).to be_status_closed }
-      it { expect(issue.updated_by).to eq(user) }
+      it 'review date should still be present' do
+        expect(issue.review_date).to eq(2.days.from_now.to_date)
+      end
     end
   end
 
@@ -163,6 +173,17 @@ RSpec.describe Issue, type: :model do
         it { expect(issues).not_to include(different_school_group_school_issue) }
       end
     end
+  end
+
+  describe '.active' do
+    let!(:active_school_issue) { create(:issue, issueable: create(:school, active: true)) }
+    let!(:school_group_issue) { create(:issue, issueable: create(:school_group)) }
+    let!(:inactive_school_issue) { create(:issue, issueable: create(:school, active: false)) }
+
+    subject(:issues) { Issue.active }
+
+    it { expect(issues).to contain_exactly(active_school_issue, school_group_issue) }
+    it { expect(issues).not_to include(inactive_school_issue) }
   end
 
   describe '#data_source_names' do

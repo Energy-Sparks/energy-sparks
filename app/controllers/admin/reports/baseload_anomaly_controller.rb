@@ -13,11 +13,11 @@ module Admin
       def columns
         super + [
           Column.new(:previous_baseload,
-                     ->(row) {  FormatEnergyUnit.format(:kw, row.previous_day_baseload.to_f, :html, false, true, :benchmark) },
-                     ->(row) {  FormatEnergyUnit.format(:kw, row.previous_day_baseload.to_f, :text, false, true, :benchmark) }),
+                     ->(row) {  FormatUnit.format(:kw, row.previous_day_baseload.to_f, :html, false, true, :benchmark) },
+                     ->(row) {  FormatUnit.format(:kw, row.previous_day_baseload.to_f, :text, false, true, :benchmark) }),
           Column.new(:baseload,
-                     ->(row) {  FormatEnergyUnit.format(:kw, row.today_baseload.to_f, :html, false, true, :benchmark) },
-                     ->(row) {  FormatEnergyUnit.format(:kw, row.today_baseload.to_f, :text, false, true, :benchmark) }),
+                     ->(row) {  FormatUnit.format(:kw, row.today_baseload.to_f, :html, false, true, :benchmark) },
+                     ->(row) {  FormatUnit.format(:kw, row.today_baseload.to_f, :text, false, true, :benchmark) }),
           Column.new(:chart,
                      ->(row) { analysis_school_advice_baseload_url(row.meter.school) },
                      ->(row) { link_to('Chart', analysis_school_advice_baseload_path(row.meter.school))},

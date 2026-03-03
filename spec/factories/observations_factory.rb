@@ -23,6 +23,24 @@ FactoryBot.define do
       intervention_type
     end
 
+    trait :intervention_with_image_in_description do
+      intervention
+      description { 'default description' }
+
+      after(:build) do |observation|
+        file = Rails.root.join('spec/fixtures/images/placeholder.png')
+
+        blob = ActiveStorage::Blob.create_and_upload!(
+          io: File.open(file),
+          filename: 'placeholder.png',
+          content_type: 'image/png'
+        )
+
+        attachment_html = ActionText::Attachment.from_attachable(blob).to_html
+        observation.description = ActionText::Content.new("<div>#{attachment_html}</div>")
+      end
+    end
+
     trait :programme do
       observation_type { :programme }
       association :observable, factory: :programme
@@ -41,6 +59,11 @@ FactoryBot.define do
     trait :school_target do
       observation_type { :school_target }
       association :observable, factory: :school_target
+    end
+
+    trait :with_contributors do
+      created_by { association :user }
+      updated_by { association :user }
     end
 
     factory :observation_with_temperature_recording_and_location do

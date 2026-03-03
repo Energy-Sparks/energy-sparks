@@ -185,7 +185,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
                   expect(page).to have_content issue.issueable.name
                   expect(page).to have_content issue.fuel_type.capitalize
                   expect(page).to have_content nice_date_times_today(issue.updated_at)
-                  expect(page).to have_link('View', href: polymorphic_path([:admin, existing_data_source, issue]))
+                  expect(page).to have_link(issue.title, href: polymorphic_path([:admin, existing_data_source, issue]))
                   expect(page).to have_css("i[class*='fa-thumbtack']")
                 end
               end

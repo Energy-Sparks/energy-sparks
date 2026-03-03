@@ -27,8 +27,8 @@ RSpec.describe EnergySummaryTableComponent, :include_application_helper, :includ
   let(:management_data) do
     Tables::SummaryTableData.new({
       electricity: {
-        year: { kwh: 1000, £: 2000, co2: 500, savings_£: 330, :percent_change => 0.11050 },
-        workweek: { kwh: 100, £: 200, co2: 50, savings_£: 33, :percent_change => -0.0923132131 }
+        year: { kwh: 1000, gbp: 2000, co2: 500, savings_gbp: 330, :percent_change => 0.11050 },
+        workweek: { kwh: 100, gbp: 200, co2: 50, savings_gbp: 33, :percent_change => -0.0923132131 }
       }
     })
   end

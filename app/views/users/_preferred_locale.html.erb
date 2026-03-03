@@ -1,0 +1,9 @@
+<div class="form-group">
+  <%= form.label :preferred_locale, t('schools.users.form.preferred_locale'), class: 'col-form-label' %>
+  <%= form.select :preferred_locale,
+                  options_for_select(I18n.available_locales.map { |locale|
+                    [I18n.t("languages.#{locale}"), locale]
+                  }, resource.preferred_locale),
+                  { include_blank: false },
+                  { class: 'form-control' } %>
+</div>

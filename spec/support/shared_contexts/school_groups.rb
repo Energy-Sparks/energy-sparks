@@ -10,7 +10,9 @@ RSpec.shared_context 'school group recent usage' do
       usage_text: '910',
       cost_text: '137',
       co2_text: '8,540',
-      has_data: true
+      has_data: true,
+      start_date: '2024-01-01',
+      end_date: '2024-12-31'
     )
     gas_changes = OpenStruct.new(
       change: '-5%',
@@ -21,7 +23,9 @@ RSpec.shared_context 'school group recent usage' do
       usage_text: '500',
       cost_text: '200',
       co2_text: '4,000',
-      has_data: true
+      has_data: true,
+      start_date: '2024-01-01',
+      end_date: '2024-12-31'
     )
     storage_heater_changes = OpenStruct.new(
       change: '-12%',
@@ -32,13 +36,15 @@ RSpec.shared_context 'school group recent usage' do
       usage_text: '312',
       cost_text: '111',
       co2_text: '1,111',
-      has_data: true
+      has_data: true,
+      start_date: '2024-01-01',
+      end_date: '2024-12-31'
     )
     allow_any_instance_of(School).to receive(:recent_usage) do
       OpenStruct.new(
-        electricity: OpenStruct.new(week: electricity_changes, year: electricity_changes),
-        gas: OpenStruct.new(week: gas_changes, year: gas_changes),
-        storage_heaters: OpenStruct.new(week: storage_heater_changes, year: storage_heater_changes)
+        electricity: OpenStruct.new(week: electricity_changes, month: electricity_changes, year: electricity_changes),
+        gas: OpenStruct.new(week: gas_changes, month: gas_changes, year: gas_changes),
+        storage_heaters: OpenStruct.new(week: storage_heater_changes, month: storage_heater_changes, year: storage_heater_changes)
       )
     end
   end
@@ -94,193 +100,6 @@ RSpec.shared_context 'school group priority actions' do
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:priority_actions).and_return(priority_actions)
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:total_savings).and_return(total_savings)
     allow_any_instance_of(SchoolGroups::PriorityActions).to receive(:total_savings_by_average_one_year_saving).and_return(total_savings)
-  end
-end
-
-RSpec.shared_context 'school group comparisons' do
-  before do
-    allow_any_instance_of(SchoolGroups::CategoriseSchools).to receive(:categorise_schools).and_return({
-        electricity: {
-          baseload: {
-            other_school: [
-              {
-                'school_id' => 1,
-                'school_slug' => 'school-1',
-                'school_name' => 'School 1',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 2,
-                'school_slug' => 'school-2',
-                'school_name' => 'School 2',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            benchmark_school: [
-              {
-                'school_id' => 3,
-                'school_slug' => 'school-3',
-                'school_name' => 'School 3',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 4,
-                'school_slug' => 'school-4',
-                'school_name' => 'School 4',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            exemplar_school: [
-              {
-                'school_id' => 5,
-                'school_slug' => 'school-5',
-                'school_name' => 'School 5',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 6,
-                'school_slug' => 'school-6',
-                'school_name' => 'School 6',
-                'cluster_name' => 'My Cluster'
-              }
-            ]
-          },
-          electricity_long_term: {
-            other_school: [
-              {
-                'school_id' => 1,
-                'school_slug' => 'school-1',
-                'school_name' => 'School 1',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 2,
-                'school_slug' => 'school-2',
-                'school_name' => 'School 2',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            benchmark_school: [
-              {
-                'school_id' => 3,
-                'school_slug' => 'school-3',
-                'school_name' => 'School 3',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 4,
-                'school_slug' => 'school-4',
-                'school_name' => 'School 4',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            exemplar_school: [
-              {
-                'school_id' => 5,
-                'school_slug' => 'school-5',
-                'school_name' => 'School 5',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 6,
-                'school_slug' => 'school-6',
-                'school_name' => 'School 6',
-                'cluster_name' => 'My Cluster'
-              }
-            ]
-          }
-        },
-        gas: {
-          gas_long_term: {
-            other_school: [
-              {
-                'school_id' => 1,
-                'school_slug' => 'school-1',
-                'school_name' => 'School 1',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 2,
-                'school_slug' => 'school-2',
-                'school_name' => 'School 2',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            benchmark_school: [
-              {
-                'school_id' => 3,
-                'school_slug' => 'school-3',
-                'school_name' => 'School 3',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 4,
-                'school_slug' => 'school-4',
-                'school_name' => 'School 4',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            exemplar_school: [
-              {
-                'school_id' => 5,
-                'school_slug' => 'school-5',
-                'school_name' => 'School 5',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 6,
-                'school_slug' => 'school-6',
-                'school_name' => 'School 6',
-                'cluster_name' => 'My Cluster'
-              }
-            ]
-          },
-          gas_out_of_hours: {
-            other_school: [
-              {
-                'school_id' => 1,
-                'school_slug' => 'school-1',
-                'school_name' => 'School 1',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 2,
-                'school_slug' => 'school-2',
-                'school_name' => 'School 2',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            benchmark_school: [
-              {
-                'school_id' => 3,
-                'school_slug' => 'school-3',
-                'school_name' => 'School 3',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 4,
-                'school_slug' => 'school-4',
-                'school_name' => 'School 4',
-                'cluster_name' => 'My Cluster'
-              }
-            ],
-            exemplar_school: [
-              {
-                'school_id' => 5,
-                'school_slug' => 'school-5',
-                'school_name' => 'School 5',
-                'cluster_name' => 'My Cluster'
-              },
-              {
-                'school_id' => 6,
-                'school_slug' => 'school-6',
-                'school_name' => 'School 6',
-                'cluster_name' => nil
-              }
-            ]
-          }
-        }
-      })
   end
 end
 

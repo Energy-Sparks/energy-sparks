@@ -86,5 +86,42 @@ module Lists
         expect(est_current.current_establishment).to eq(est_current)
       end
     end
+
+    describe '.sync_local_authority_groups' do
+      context 'when creating a group' do
+        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Leeds')}
+        let(:school_group) { SchoolGroup.find_by_dfe_code('383') }
+
+        before do
+          described_class.sync_local_authority_groups
+        end
+
+        it { expect(school_group.group_type).to eq('local_authority_area')}
+        it { expect(school_group.name).to eq('Leeds Local Authority') }
+      end
+
+      context 'when normalising names' do
+        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of')}
+        let(:school_group) { SchoolGroup.find_by_dfe_code('383') }
+
+        before do
+          described_class.sync_local_authority_groups
+        end
+
+        it { expect(school_group.group_type).to eq('local_authority_area')}
+        it { expect(school_group.name).to eq('City of Bristol Local Authority') }
+      end
+
+      context 'when group_exists' do
+        let!(:establishment) { create(:establishment, la_code: 383, la_name: 'Bristol, City of')}
+        let!(:school_group) { create(:school_group, group_type: :local_authority_area, dfe_code: '383', name: 'Old name') }
+
+        before do
+          described_class.sync_local_authority_groups
+        end
+
+        it { expect(school_group.reload.name).to eq('City of Bristol Local Authority') }
+      end
+    end
   end
 end

@@ -7,10 +7,6 @@ RSpec.describe 'Schools page' do
   let!(:a_school) { create(:school, active: true, visible: true, name: 'A School Academy', school_group: a_school_group) }
   let!(:b_school) { create(:school, active: true, visible: true, name: 'B School Primary', school_group: b_school_group) }
 
-  before do
-    Flipper.enable(:new_schools_page)
-  end
-
   shared_examples 'a letter browse view' do
     it 'shows the right page state', :js do
       expect(page).to have_css('li.letter.active', text: 'B')
@@ -189,7 +185,7 @@ RSpec.describe 'Schools page' do
 
     context 'when browsing by letter' do
       before do
-        within('#school-groups-content') do
+        within('#school-groups') do
           click_on('B')
         end
       end

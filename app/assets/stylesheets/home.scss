@@ -20,20 +20,6 @@
     margin: 0 auto 0px;
   }
 
-  .masthead {
-    background-image: image-url('background-image.jpg');
-    padding: 0 10px 0 0;
-    color: $white;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 650px;
-  }
-
-  .rounded-25 {
-    border-radius: 25px;
-  }
-
   .carousel-item {
     h1 {
       @include font(f2);
@@ -157,45 +143,6 @@
         line-height: 140px;
       }
     }
-  }
-
-  .home-block {
-    margin-top: 53px;
-    padding-bottom: 30px;
-  }
-
-  .funnels {
-    background-image: linear-gradient($grey-pale, $white);
-
-    .card-footer {
-      padding: 0.75rem 1.25rem;
-      background-color: $white;
-      border-top: 0;
-    }
-
-    .card {
-      border: 2px solid $grey-medium;
-      border-radius: 0.7rem 0.7rem 0.3rem 0.3rem;
-    }
-
-    .card-image {
-      overflow: hidden;
-      height: 200px;
-    }
-
-    .card-body {
-      padding-top: 0px;
-      margin-top: 0px;
-    }
-
-    img {
-      background-size: contain;
-      mask-image: linear-gradient(to bottom, rgba($black,1), rgba($black,1), rgba($black,1), rgba($black,0), rgba($black,0));
-    }
-  }
-
-  .funnel-image {
-    border-radius: 0.5rem 0.5rem;
   }
 
   .quotes:before, .quotes:after {

@@ -4,7 +4,6 @@
       <%= header_nav_link 'All procurement routes', admin_procurement_routes_url %>
     <% end %>
     <%= simple_form_for [:admin, procurement_route] do |f| %>
-      <%= redirect_back_tag params %>
       <%= f.input :organisation_name, label: "Organisation name" %>
       <%= f.input :contact_name %>
       <%= f.input :contact_email %>

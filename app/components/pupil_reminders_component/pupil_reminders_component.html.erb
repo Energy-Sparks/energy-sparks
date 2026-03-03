@@ -1,6 +1,6 @@
 <%= render PromptListComponent.new id: id, classes: classes do |list| %>
   <% if title? %>
-    <% list.with_title do %>
+    <% list.with_title(level: 2) do %>
       <%= title %>
     <% end %>
   <% end %>

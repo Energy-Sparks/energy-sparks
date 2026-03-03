@@ -27,9 +27,9 @@
           <%# if showing the row for "Last week" show the fuel icon and name. Reduces clutter %>
           <% if row_for_last_week?(data) %>
             <td rowspan="2" class="align-middle icon <%= fuel_type_class(data.fuel_type) %>">
-              <%= render IconComponent.new(fuel_type: data.fuel_type) %>
+              <%= render Elements::IconComponent.new(fuel_type: data.fuel_type) %>
               <% if data.fuel_type == :electricity && @school.has_solar_pv? %>
-                <%= render IconComponent.new(fuel_type: :solar_pv) %>
+                <%= render Elements::IconComponent.new(fuel_type: :solar_pv) %>
               <% end %>
             </td>
             <td rowspan="2" class="align-middle text-left">

@@ -7,6 +7,15 @@ describe Cms::Section do
     let(:query) { 'Lorem ipsum' }
     let(:show_all) { false }
 
+    context 'when escaping the query' do
+      let(:query) { 'Lorem ipsum?' }
+
+      it 'finds results in title' do
+        section = create(:section, title: query, published: true)
+        expect(results.first).to eq(section)
+      end
+    end
+
     it 'finds results in title' do
       section = create(:section, title: query, published: true)
       expect(results.first).to eq(section)

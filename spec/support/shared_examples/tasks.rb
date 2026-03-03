@@ -1,8 +1,12 @@
-RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: '1st', with_todos: false|
+RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: '1st'|
   it { expect(page).to have_content 'Congratulations!' }
 
   it 'displays points score', if: points > 0 do
-    expect(page).to have_content "You've just scored #{points} points"
+    if defined? future_academic_year
+      expect(page).to have_content "You've just scored #{points} points for the #{future_academic_year} academic year"
+    else
+      expect(page).to have_content "You've just scored #{points} points"
+    end
   end
 
   it 'has no points action text', if: task_type == :action && points == 0 do
@@ -15,7 +19,7 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
 
   it 'has scoreboard summary component' do # not checking functionality here as this is done in the component
     within 'div.scoreboards-podium-component' do
-      if points > 0
+      if !defined?(future_academic_year) && points > 0
         expect(page).to have_content("You are in #{ordinal} place")
       else
         expect(page).to have_content("Your school hasn't scored any points yet this school year")
@@ -25,7 +29,6 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
   end
 
   it { expect(page).to have_content('What do you want to do next?') }
-
   it { expect(page).to have_content('Share what you’ve done with others in the school community') }
   it { expect(page).to have_link("View your #{task_type}") }
 
@@ -34,11 +37,7 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
 
   it_behaves_like 'a join programme prompt', programme: 'Other programme!', task_count: 1 do
     let(:setup_data) do
-      if with_todos
-        activity_type = create(:programme_type, :with_todos, title: 'Other programme!').activity_type_tasks.first
-      else
-        activity_type = create(:programme_type_with_activity_types, title: 'Other programme!').activity_types.first
-      end
+      activity_type = create(:programme_type, :with_todos, title: 'Other programme!').activity_type_tasks.first
       school.activities.create!(activity_type: activity_type, activity_category: activity_type.activity_category, happened_on: Time.zone.now)
     end
   end
@@ -46,17 +45,13 @@ RSpec.shared_examples 'a task completed page' do |points:, task_type:, ordinal: 
   it_behaves_like 'a recommended prompt'
 end
 
-RSpec.shared_examples 'a task completed page with programme complete message' do |with_todos: false, task_type:|
+RSpec.shared_examples 'a task completed page with programme complete message' do |task_type:|
   context 'when there is a programme type that contains task' do
     let(:activity_types) { [] }
     let(:intervention_types) { [] }
     let(:bonus_score) { 30 }
     let(:programme_type) do
-      if with_todos
-        create(:programme_type, title: 'Super programme!', activity_type_tasks: activity_types, intervention_type_tasks: intervention_types, bonus_score: bonus_score)
-      else
-        create(:programme_type, title: 'Super programme!', activity_types: activity_types, bonus_score: bonus_score)
-      end
+      create(:programme_type, title: 'Super programme!', activity_type_tasks: activity_types, intervention_type_tasks: intervention_types, bonus_score: bonus_score)
     end
     let(:programme) { create(:programme, school: school, programme_type: programme_type) }
 

@@ -1,0 +1,33 @@
+<p>
+  This report will include meters that match the following criteria:
+</p>
+
+<ul>
+  <li><strong>Currently inactive</strong> but where the school is <strong>Active</strong></li>
+  <li><strong>Meter status</strong> is not one of <i>
+    <%= AdminMeterStatus.ignore_in_inactive_meter_report.order(:label).map(&:label).join(', ') %></i>
+  </li>
+  <li><strong>New unvalidated readings exist</strong> - at least one new reading has been loaded in the last 30 days</li>
+</ul>
+
+<p>
+  Change the <%= link_to 'list of included meter statuses here', admin_meter_statuses_path %>.
+</p>
+
+<h4>Solar meters</h4>
+<p>
+  For schools with solar we often have the following situations:
+</p>
+
+<ul>
+  <li>Electricity data is available from both the supplier and the solar monitoring system. So one of these meters will be
+    inactive</li>
+  <li>The solar monitoring system returns data for export or self-consumption even though these are not metered. These meters
+    are usually made inactive so we use modelled data instead</li>
+</ul>
+
+<p>
+  This is because the solar data import will
+  (at the moment) continue to load readings into the system. The meters can be excluded from the report if a
+  suitable meter status is set. The filtering options also allow the list to be narrowed down.
+</p>

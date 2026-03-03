@@ -1,7 +1,7 @@
 <h2><%= t('schools.users.index.title') %></h2>
 <p><%= t('schools.users.index.introduction') %></p>
 
-<div class="school_admin">
+<div id="school_admin">
   <% if @school_admins.any? %>
     <%= render 'users', users: @school_admins %>
   <% else %>
@@ -12,19 +12,9 @@
 <%= link_to t('schools.users.index.new_school_admin_account'), new_school_user_path(@school, role: :school_admin),
             class: 'btn btn-primary' %>
 
-<h2 class="mt-4"><%= t('schools.users.index.staff_accounts') %></h2>
-<p><%= t('schools.users.index.staff_accounts_have_access_message') %></p>
+<%= render 'role', role: :staff, users: @staff %>
 
-<div class="staff">
-  <% if @staff.any? %>
-    <%= render 'users', users: @staff %>
-  <% else %>
-    <p><%= t('schools.users.index.no_staff_accounts') %>.</p>
-  <% end %>
-</div>
-
-<%= link_to t('schools.users.index.new_staff_account'), new_school_user_path(@school, role: :staff),
-            class: 'btn btn-primary' %>
+<%= render 'role', role: :student, users: @students %>
 
 <h2 class="mt-4"><%= t('schools.users.index.pupil_accounts') %></h2>
 
@@ -34,7 +24,7 @@
 </p>
 
 <% if @pupils.any? %>
-  <table class="table table-condensed pupils">
+  <table id="pupil" class="table table-condensed">
     <thead>
       <tr>
         <th><%= t('schools.users.index.name') %></th>

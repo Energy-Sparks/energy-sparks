@@ -1,12 +1,15 @@
 module SchoolGroups
   class ClustersController < BaseController
+    layout 'group_settings'
+
     before_action :redirect_unless_authorised
     load_and_authorize_resource :cluster, class: 'SchoolGroupCluster', through: :school_group
 
     before_action :breadcrumbs
 
-    def index
-    end
+    def index; end
+
+    def edit; end
 
     def create
       @cluster = @school_group.clusters.build(cluster_params)
@@ -15,9 +18,6 @@ module SchoolGroups
       else
         render :new
       end
-    end
-
-    def edit
     end
 
     def update
@@ -31,7 +31,8 @@ module SchoolGroups
     def assign
       if @cluster
         @cluster.school_ids += cluster_params['school_ids']
-        notice = I18n.t('school_groups.clusters.messages.assigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
+        notice = I18n.t('school_groups.clusters.messages.assigned', cluster: @cluster.name,
+                                                                    count: cluster_params[:school_ids].count)
       else
         notice = I18n.t('school_groups.clusters.messages.select_cluster')
       end
@@ -40,7 +41,9 @@ module SchoolGroups
 
     def unassign
       @cluster.school_ids -= cluster_params['school_ids'].map!(&:to_i)
-      redirect_to school_group_clusters_path(@school_group), notice: I18n.t('school_groups.clusters.messages.unassigned', cluster: @cluster.name, count: cluster_params[:school_ids].count)
+      redirect_to school_group_clusters_path(@school_group),
+                  notice: I18n.t('school_groups.clusters.messages.unassigned', cluster: @cluster.name,
+                                                                               count: cluster_params[:school_ids].count)
     end
 
     def destroy
@@ -50,18 +53,21 @@ module SchoolGroups
 
     private
 
-    def redirect_unless_authorised
-      redirect_to school_group_path(@school_group) and return unless can?(:update_settings, @school_group)
+    def required_permission
+      :manage_clusters
     end
 
     def cluster_params
       params.fetch(:school_group_cluster, {}).permit(:name, school_ids: [])
-        .with_defaults(school_ids: [])
+            .with_defaults(school_ids: [])
     end
 
     def breadcrumbs
-      build_breadcrumbs([name: t('school_groups.clusters.index.title').capitalize, href: school_group_clusters_path(@school_group)])
-      @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name } if @cluster
+      build_breadcrumbs([{ name: t('school_groups.clusters.index.title').capitalize,
+                           href: school_group_clusters_path(@school_group) }])
+      return unless @cluster
+
+      @breadcrumbs << { name: @cluster.new_record? ? I18n.t('school_groups.clusters.labels.new') : @cluster.name }
     end
   end
 end

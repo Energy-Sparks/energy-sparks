@@ -1,0 +1,22 @@
+<%= render 'limited_advice_page', title: t('advice_pages.target.limited_data.title') do %>
+  <% if @fuel_type == :storage_heater %>
+    <p><%= t('advice_pages.target.limited_data.limited_data') %><p>
+    <p><%= t('advice_pages.target.limited_data.automatically_available') %></p>
+    <p><%= t('advice_pages.not_enough_data.learn_more_html', learn_more_link: 'learn_more') %></p>
+  <% else %>
+    <p><b><%= t('advice_pages.target.limited_data.manually_add') %></b><p>
+    <p><%= t('advice_pages.target.limited_data.limited_data') %><p>
+    <p>
+      <% if can?(:manage, Schools::ManualReading) %>
+        <%= t('advice_pages.target.limited_data.manual_reading_html', path: school_manual_readings_path(@school)) %>
+      <% else %>
+        <%= t('advice_pages.target.limited_data.automatically_available') %>
+      <% end %>
+    </p>
+    <p>
+      <%= t('advice_pages.target.limited_data.long_term_advice_html',
+            fuel_type: @advice_page.t_fuel_type, path: polymorphic_path([@school, :advice, @fuel_type, :long_term])) %>
+    </p>
+  <% end %>
+  </p>
+<% end %>

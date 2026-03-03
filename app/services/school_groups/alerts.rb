@@ -1,13 +1,13 @@
 module SchoolGroups
   class Alerts
     def initialize(schools)
-      @schools = schools
+      @schools = schools.data_enabled
     end
 
     # Summarise alerts being shown across schools in the group, exclude any that aren't
     # curerntly relevant for the group dashboard
     def summarise
-      summarised_alerts.reject do |alert|
+      @summarise ||= summarised_alerts.reject do |alert|
         content = alert.alert_type_rating.current_content
 
         !content.meets_timings?(scope: :group_dashboard_alert, today: Time.zone.today) ||
@@ -19,6 +19,7 @@ module SchoolGroups
 
     # Find the most recent alerts for a specific alert type
     def alerts(alert_type)
+      return {} unless @schools.any?
       alerts = Alert.latest_for_alert_type(schools: @schools, alert_type: alert_type).filter_map do |alert|
         [alert.school, alert]
       end
@@ -33,6 +34,7 @@ module SchoolGroups
     # Could refine this, e.g. if there is a small number of outliers, then include that alert as well to promote
     # investigation.
     def summarised_alerts
+      return {} unless @schools.any?
       Alert.summarised_alerts(schools: @schools)
            .group_by(&:alert_type)
            .map { |_, alerts| alerts.max_by(&:number_of_schools) }.to_a

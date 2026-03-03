@@ -23,7 +23,7 @@ class AdultRemindersComponent < DashboardRemindersComponent
   end
 
   def prompt_for_pupils?
-    site_settings.message_for_no_pupil_accounts && @school.users.pupil.empty? && ability.can?(:manage_users, @school)
+    site_settings.message_for_no_pupil_accounts && @school.users.where(role: [:pupil, :student]).empty? && ability.can?(:manage_users, @school)
   end
 
   def last_audit

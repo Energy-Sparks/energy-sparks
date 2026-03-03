@@ -1,0 +1,55 @@
+<%= tag.div id: id, class: classes do %>
+  <table id="<%= "school-group-recent-usage-#{fuel_type}" %>"
+         width="100%"
+         class="table table-sm advice-table <%= table_class %>">
+    <thead>
+      <tr>
+        <th colspan="1"><%= t('common.school') %></th>
+        <% if show_clusters? %>
+          <th><%= t('school_groups.clusters.labels.cluster') %></th>
+        <% end %>
+        <th><%= t('common.labels.start_date') %></th>
+        <th><%= t('common.labels.end_date') %></th>
+        <% periods.each do |period| %>
+          <th class="text-right">
+            <%= period_label(period) %>
+          </th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% schools.data_enabled.order(:name).each do |school| %>
+        <% if school.configuration.fuel_configuration.fuel_types.include?(fuel_type) %>
+          <tr>
+            <td>
+              <%= link_to school.name, school_path(school) %>
+            </td>
+            <% if show_clusters? %>
+              <td>
+                <%= school.school_group_cluster_name %>
+              </td>
+            <% end %>
+            <% recent_usage = school.recent_usage %>
+            <td data-order="<%= start_date(recent_usage, fuel_type) %>">
+              <%= format_date(start_date(recent_usage, fuel_type)) %>
+            </td>
+            <td data-order="<%= end_date(recent_usage, fuel_type) %>">
+              <%= format_date(end_date(recent_usage, fuel_type)) %>
+            </td>
+            <% periods.each do |period| %>
+              <% period_data = recent_usage.dig(fuel_type, period) %>
+              <% if period_data&.has_data %>
+                <td class="<%= class_names('text-right', period_data&.message_class) %>"
+                    data-order="<%= value_for(period_data, formatted: false) %>">
+                  <%= up_downify(value_for(period_data, formatted: true)) %>
+                </td>
+              <% else %>
+                <td class="text-right" data-order="0">-</td>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

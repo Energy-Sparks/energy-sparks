@@ -1,0 +1,9 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Licences' %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Commercial::LicencesComponent.new %>
+  </div>
+</div>

@@ -17,13 +17,13 @@
        class="table table-borderless advice-table advice-priority-table" style="width: 100%;">
   <thead>
     <tr>
-      <th colspan="<%= can?(:update_settings, school_group) ? '2' : '1' %>"></th>
+      <th colspan="<%= include_clusters?(school_group) ? '2' : '1' %>"></th>
       <th class="text-center" colspan="3"><%= t('advice_pages.index.priorities.table.columns.savings') %></th>
       <th class="" colspan="1"></th>
     </tr>
     <tr>
       <th><%= t('common.school') %></th>
-      <% if can?(:update_settings, school_group) %>
+      <% if include_clusters?(school_group) %>
         <th class="text-right"><%= t('school_groups.clusters.labels.cluster') %></th>
       <% end %>
       <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
@@ -38,7 +38,7 @@
         <td>
           <%= link_to saving.school.name, school_path(saving.school) %>
         </td>
-        <% if can?(:update_settings, school_group) %>
+        <% if include_clusters?(school_group) %>
           <td class="text-right">
             <%= saving.school.school_group_cluster_name %>
           </td>

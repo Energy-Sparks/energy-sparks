@@ -384,6 +384,8 @@ RSpec/ItBehavesLike:
   EnforcedStyle: 'it_behaves_like' # rather than 'it_should_behave_like'
 RSpec/MultipleExpectations:
   Max: 12 # max expectations per test
+RSpec/MultipleMemoizedHelpers:
+  Max: 10 # default 5
 RSpec/AnyInstance:
   Enabled: false
 RSpec/LetSetup:

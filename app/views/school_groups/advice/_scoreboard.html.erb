@@ -34,7 +34,7 @@
     <tr>
       <th><%= t('scoreboard.position') %></th>
       <th><%= t('common.school') %></th>
-      <% if can?(:update_settings, school_group) %>
+      <% if include_clusters?(school_group) %>
         <th><%= t('school_groups.clusters.labels.cluster') %></th>
       <% end %>
       <th><%= t('scoreboard.score') %></th>
@@ -48,7 +48,7 @@
             <span class="badge badge-primary"><%= '=' if schools.size > 1 %><%= position %></span>
           </td>
           <td><%= link_to school.name, school_path(school) %></td>
-          <% if can?(:update_settings, school_group) %>
+          <% if include_clusters?(school_group) %>
             <td><%= school.school_group_cluster_name %></td>
           <% end %>
           <td>
@@ -66,7 +66,7 @@
       <tr>
         <td><span class="badge badge-secondary">-</span></td>
         <td><%= link_to school.name, school_path(school) %></td>
-        <% if can?(:update_settings, school_group) %>
+        <% if include_clusters?(school_group) %>
           <td><%= school.school_group_cluster_name %></td>
         <% end %>
         <td><span class="badge badge-secondary">0</span></td>

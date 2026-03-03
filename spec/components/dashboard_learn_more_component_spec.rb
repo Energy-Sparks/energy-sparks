@@ -29,7 +29,7 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
     it { expect(html).to have_content(I18n.t('components.dashboard_learn_more.adult.intro'))}
 
     it 'links to the analysis' do
-      expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+      expect(html).to have_link(I18n.t('common.explore_energy_data'),
                                 href: school_advice_path(school))
       expect(html).to have_link(I18n.t('components.dashboard_learn_more.adult.opportunities'),
                                 href: priorities_school_advice_path(school))
@@ -54,7 +54,7 @@ RSpec.describe DashboardLearnMoreComponent, :include_url_helpers, type: :compone
     it { expect(html).to have_content(I18n.t('schools.show.configuring_data_access'))}
 
     it 'does not link to the analysis' do
-      expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.explore'),
+      expect(html).not_to have_link(I18n.t('common.explore_energy_data'),
                                     href: school_advice_path(school))
       expect(html).not_to have_link(I18n.t('components.dashboard_learn_more.adult.opportunities'),
                                     href: priorities_school_advice_path(school))

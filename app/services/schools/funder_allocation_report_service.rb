@@ -5,9 +5,11 @@ module Schools
         [
           'School group',
           'School name',
+          'URN',
           'School type',
           'Archived?',
           'Data visible?',
+          'Data sharing',
           'Onboarding date',
           'Date enabled date', # (see “Recently onboarded” report)
           'Funder',
@@ -17,8 +19,10 @@ module Schools
           'Pupils',
           '% FSM',
           'Adult Users',
-          'Local Authority Name', # (LAD22NM code)
-          'Region name', # (RGN22NM)
+          'Local Authority Name',
+          'Region name',
+          'Diocese',
+          'Projects',
           'Activities this year', # Number of activities recorded this academic year
           'Actions this year', # Number of actions recorded this academic year
           'Electricity Data Source 1',
@@ -38,7 +42,14 @@ module Schools
           'Solar Data Source 3',
           'Solar Procurement Route 1',
           'Solar Procurement Route 2',
-          'Solar Procurement Route 3'
+          'Solar Procurement Route 3',
+          'Current Contract Holder',
+          'Default Contract Holder',
+          'Current Contract Start Date',
+          'Current Contract End Date',
+          'Licence Start Date',
+          'Licence End Date',
+          'Product'
         ]
       end
     end
@@ -60,12 +71,17 @@ module Schools
           gas_routes = school.all_procurement_routes(:gas)
           solar_routes = school.all_procurement_routes([:solar_pv, :exported_solar_pv])
 
+          current_licence = school.licences.current.by_start_date.first
+          current_contract = school.licences.current.by_start_date.first&.contract
+
           csv << [
             school.school_group.name,
             school.name,
+            school.urn,
             school.school_type.humanize,
             school.archived?,
             school.data_enabled,
+            school.data_sharing.humanize,
             onboarding_completed(school),
             first_made_data_enabled(school),
             school&.funder&.name,
@@ -77,6 +93,8 @@ module Schools
             school.all_adult_school_users.count,
             local_authority_area(school),
             region(school),
+            school&.diocese&.name,
+            project_names(school),
             activities_this_academic_year(school),
             actions_this_academic_year(school),
             electricity_data_sources[0],
@@ -96,7 +114,14 @@ module Schools
             solar_data_sources[2],
             solar_routes[0],
             solar_routes[1],
-            solar_routes[2]
+            solar_routes[2],
+            current_contract&.contract_holder&.name,
+            school.default_contract_holder&.name,
+            current_contract&.start_date,
+            current_contract&.end_date,
+            current_licence&.start_date,
+            current_licence&.end_date,
+            current_contract&.product&.name
           ]
         end
       end
@@ -117,11 +142,15 @@ module Schools
     end
 
     def local_authority_area(school)
-      school.local_authority_area.present? ? school.local_authority_area.name : nil
+      school.local_authority_area_group.present? ? school.local_authority_area_group.name : nil
     end
 
     def onboarding_completed(school)
       school.school_onboarding.present? ? format_time(school.school_onboarding.onboarding_completed_on) : nil
+    end
+
+    def project_names(school)
+      school.project_groups.order(:name).pluck(:name).join('|').presence
     end
 
     def first_made_data_enabled(school)

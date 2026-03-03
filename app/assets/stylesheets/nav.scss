@@ -24,7 +24,7 @@ $togglers: (
     color:  map-get($colour, "colour");
     border-color: map-get($colour, "border");
     padding: 4px;
-    border-radius: .375rem;
+    border-radius: $border-radius;
   }
 }
 

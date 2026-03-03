@@ -17,11 +17,12 @@ module SchoolGroups
                                         .group_by { |school_result| SchoolResult.new(school_result).benchmarked_as }
     end
 
-    def school_categories(advice_page)
-      find_advice_page_school_benchmarks.filter_map do |school_result|
+    def categorise_savings(advice_page, alerts)
+      school_benchmarks = find_advice_page_school_benchmarks.filter_map do |school_result|
         next unless school_result['advice_page_key'] == advice_page.key
         [school_result['school_id'], SchoolResult.new(school_result).benchmarked_as]
       end.to_h
+      alerts.group_by { |school, _alert| school_benchmarks[school.id] }
     end
 
     private
@@ -32,7 +33,7 @@ module SchoolGroups
     end
 
     def query
-      <<-SQL.squish
+      <<~SQL.squish
         SELECT
         advice_pages.key AS advice_page_key,
         advice_pages.fuel_type AS fuel_type,

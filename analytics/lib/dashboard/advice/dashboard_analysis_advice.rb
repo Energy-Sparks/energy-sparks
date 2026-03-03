@@ -118,7 +118,7 @@ class DashboardChartAdviceBase
 
   def kwh_to_pounds_and_kwh(kwh, fuel_type_sym, data_units = @chart_definition[:yaxis_units], £_datatype = :£)
     pounds = YAxisScaling.new.scale(data_units, £_datatype, kwh, fuel_type, @school)
-    '&pound;' + FormatEnergyUnit.scale_num(pounds) + ' (' + FormatEnergyUnit.scale_num(kwh) + 'kWh)'
+    '&pound;' + FormatUnit.scale_num(pounds) + ' (' + FormatUnit.scale_num(kwh) + 'kWh)'
   end
 
   def benchmark_data_deprecated(fuel_type, benchmark_type, datatype)
@@ -183,7 +183,7 @@ class DashboardChartAdviceBase
   end
 
   def annual_£current_cost_of_1_kw_html
-    FormatEnergyUnit.format(:£current, annual_£current_cost_of_1_kw, :html)
+    FormatUnit.format(:£current, annual_£current_cost_of_1_kw, :html)
   end
 
   def annual_£current_cost_of_1_kw
@@ -191,7 +191,7 @@ class DashboardChartAdviceBase
   end
 
   def blended_rate_£current_per_kwh_html
-    FormatEnergyUnit.format(:£_per_kwh, blended_rate_£current_per_kwh, :html)
+    FormatUnit.format(:£_per_kwh, blended_rate_£current_per_kwh, :html)
   end
 
   def blended_rate_£current_per_kwh
@@ -199,7 +199,7 @@ class DashboardChartAdviceBase
   end
 
   def annualx5_£current_cost_of_1_kw_html
-    FormatEnergyUnit.format(:£current, 5.0 * annual_£current_cost_of_1_kw, :html)
+    FormatUnit.format(:£current, 5.0 * annual_£current_cost_of_1_kw, :html)
   end
 
   def last_chart_end_date

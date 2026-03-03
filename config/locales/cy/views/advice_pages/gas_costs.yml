@@ -8,9 +8,6 @@ cy:
           intro: Mae'r tabl canlynol yn crynhoi cyfanswm y gost sy'n gysylltiedig â phob metr am y %{period} diwethaf rhwng %{start_date} a %{end_date}
           title: Cyfanswm y gost am y %{period} diwethaf
           whole_school: Rydym yn amcangyfrif cyfanswm eich cost nwy dros y %{period} diwethaf fel %{cost}.
-        meter_breakdown:
-          select: Dewiswch opsiwn i weld costau ar gyfer yr ysgol gyfan neu fesurydd penodol
-          title: Dadansoddiad cost
         summary: Mae'r adrannau canlynol yn dangos fwy o gefndir a dadansoddiad ar eich costau nwy
         tariff_note:
           good_estimate: Mae'r wybodaeth isod yn rhoi amcangyfrif da o'ch costau blynyddol ar gyfer y mesurydd hwn yn seiliedig ar wybodaeth tariff mesurydd a ddarparwyd i Sbarcynni.

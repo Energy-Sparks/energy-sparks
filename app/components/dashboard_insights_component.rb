@@ -6,12 +6,12 @@ class DashboardInsightsComponent < ApplicationComponent
 
   attr_reader :school, :progress_summary, :user, :audience
 
-  def initialize(school:, audience: :adult, progress_summary: nil, user: nil, id: nil, classes: '')
+  def initialize(school:, audience: :adult, user: nil, id: nil, classes: '')
     super(id: id, classes: classes)
     @school = school
     @audience = audience
     @user = user
-    @progress_summary = progress_summary
+    @target = school.most_recent_target
   end
 
   def alerts
@@ -29,19 +29,18 @@ class DashboardInsightsComponent < ApplicationComponent
 
   def data_enabled?
     return true if user.present? && user.admin?
+
     @school.data_enabled?
   end
 
   # display the alert column if the the school is data enabled and we have any content for that column
   def displaying_alerts?
-    data_enabled? && (alerts.any? || any_passing_targets? || any_failing_targets?)
+    data_enabled? && (alerts.any? || any_targets?)
   end
 
-  def any_passing_targets?
-    reportable_progress?(@progress_summary) && @progress_summary.any_passing_targets?
-  end
-
-  def any_failing_targets?
-    reportable_progress?(@progress_summary) && @progress_summary.any_failing_targets?
+  def any_targets?
+    [@target&.electricity_monthly_consumption,
+     @target&.gas_monthly_consumption,
+     @target&.storage_heater_monthly_consumption].any?
   end
 end

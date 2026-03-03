@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-condensed">
+  <table class="table table-sm">
     <thead>
       <tr>
         <th><%= t('schools.users.index.name') %></th>
@@ -19,6 +19,10 @@
                 <%= link_to email_with_wbr(user.name), user_path(user) %>
               <% else %>
                 <%= email_with_wbr(user.name) %>
+              <% end %>
+              <% if user.climate_action_lead %>
+                <%= fa_icon 'leaf', title: I18n.t('activerecord.attributes.user.climate_action_lead'),
+                                    class: 'text-success' %>
               <% end %>
             </td>
             <td><%= email_with_wbr(user.email) %></td>
@@ -50,7 +54,7 @@
                                     class: 'btn btn-warning btn-sm' %>
                       <% end %>
                 <% end %>
-                <%= if can?(:edit, user) && !user.school_admin?
+                <%= if can?(:edit, user) && user.can_be_made_school_admin?
                       link_to(t('schools.users.index.make_school_admin'),
                               make_school_admin_school_user_path(@school, user),
                               method: :post,

@@ -4,23 +4,23 @@
 #
 # Table name: school_targets
 #
-#  created_at               :datetime         not null
-#  electricity              :float
-#  electricity_progress     :json
-#  electricity_report       :jsonb
-#  gas                      :float
-#  gas_progress             :json
-#  gas_report               :jsonb
-#  id                       :bigint(8)        not null, primary key
-#  report_last_generated    :datetime
-#  revised_fuel_types       :string           default([]), not null, is an Array
-#  school_id                :bigint(8)        not null
-#  start_date               :date
-#  storage_heaters          :float
-#  storage_heaters_progress :json
-#  storage_heaters_report   :jsonb
-#  target_date              :date
-#  updated_at               :datetime         not null
+#  created_at                          :datetime         not null
+#  electricity                         :float
+#  electricity_monthly_consumption     :jsonb
+#  electricity_progress                :json
+#  gas                                 :float
+#  gas_monthly_consumption             :jsonb
+#  gas_progress                        :json
+#  id                                  :bigint(8)        not null, primary key
+#  report_last_generated               :datetime
+#  revised_fuel_types                  :string           default([]), not null, is an Array
+#  school_id                           :bigint(8)        not null
+#  start_date                          :date
+#  storage_heaters                     :float
+#  storage_heaters_monthly_consumption :jsonb
+#  storage_heaters_progress            :json
+#  target_date                         :date
+#  updated_at                          :datetime         not null
 #
 # Indexes
 #
@@ -50,6 +50,12 @@ class SchoolTarget < ApplicationRecord
   before_save :adjust_target_date
   after_update :ensure_observation_date_is_correct
   after_save :add_observation
+
+  alias_attribute :storage_heater, :storage_heaters
+  alias_attribute :storage_heater_monthly_consumption, :storage_heaters_monthly_consumption
+  alias_attribute :storage_heater_progress, :storage_heaters_progress
+
+  FUEL_TYPES = %i[electricity gas storage_heater].freeze
 
   def current?
     Time.zone.now >= start_date && Time.zone.now <= target_date
@@ -83,35 +89,23 @@ class SchoolTarget < ApplicationRecord
     revised_fuel_types.any?
   end
 
-  def to_progress_summary
-    Targets::ProgressSummary.new(
-      school_target: self,
-      electricity: electricity_progress.any? ? Targets::FuelProgress.new(**electricity_progress.symbolize_keys!) : nil,
-      gas: gas_progress.any? ? Targets::FuelProgress.new(**gas_progress.symbolize_keys!) : nil,
-      storage_heater: storage_heaters_progress.any? ? Targets::FuelProgress.new(**storage_heaters_progress.symbolize_keys!) : nil
-    )
+  MONTHLY_CONSUMPTION_FIELDS =
+    %i[year month current_consumption previous_consumption target_consumption current_missing previous_missing manual]
+    .each_with_index.to_h
+
+  def monthly_consumption(fuel_type)
+    self["#{fuel_type}_monthly_consumption"]&.map do |month|
+      consumption = MONTHLY_CONSUMPTION_FIELDS.keys.zip(month).to_h
+      consumption[:missing] = consumption[:current_missing] || consumption[:previous_missing]
+      consumption
+    end
   end
 
-  def saved_progress_report_for(fuel_type)
-    fuel_type = :storage_heaters if fuel_type == :storage_heater
-    raise 'Invalid fuel type' unless %i[electricity gas storage_heaters].include?(fuel_type)
-
-    report = self[:"#{fuel_type}_report"]
-    return nil unless report&.any?
-
-    TargetsProgress.new(**reformat_saved_report(report))
+  def target(fuel_type)
+    self[fuel_type]
   end
 
   private
-
-  # ensure TargetsProgress is round-tripped properly
-  def reformat_saved_report(report)
-    report.symbolize_keys!
-    report[:fuel_type] = report[:fuel_type].to_sym
-    # reparse to Dates from yyyy-mm-dd format
-    report[:months].map! { |m| Date.strptime(m, '%Y-%m-%d') }
-    report
-  end
 
   def target_to_hash(target)
     {

@@ -1,4 +1,4 @@
-<h1><%= t('schools.user_tariffs.applies_to.title') %></h1>
+<% content_for :header_title, t('schools.user_tariffs.applies_to.title') %>
 
 <%= simple_form_for @energy_tariff, url: energy_tariffs_path(@energy_tariff, [], { action: :update_applies_to }),
                                     method: :post do |f| %>

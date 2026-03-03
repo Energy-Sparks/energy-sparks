@@ -28,7 +28,7 @@
            section_title: t('advice_pages.electricity_intraday.insights.how_do_you_compare.title') %>
 
 <%= t('advice_pages.electricity_intraday.insights.how_do_you_compare.summary',
-      school_type: @school.school_type.downcase) %>
+      school_type: t("common.school_types.#{@school.school_type}").downcase) %>
 
   <div class="col">
     <%= render SchoolComparisonComponent.new(id: 'comparison-electricity-out-of-hours', comparison: @benchmarked_usage) do |c| %>

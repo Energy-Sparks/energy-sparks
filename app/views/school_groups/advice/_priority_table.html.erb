@@ -6,7 +6,7 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class='text-right'>
+    <div class='text-end'>
       <%= link_to t('school_groups.download_as_csv'),
                   polymorphic_path(path, params: { format: :csv }),
                   class: 'btn btn-sm btn-default',
@@ -14,7 +14,7 @@
     </div>
 
     <table id="school-group-priorities"
-           class="table table-borderless table-sorted advice-table advice-priority-table">
+           class="table table-sm table-borderless table-sorted advice-table advice-priority-table">
       <thead>
         <tr>
           <th colspan="3"></th>
@@ -23,10 +23,10 @@
         <tr>
           <th><%= t('advice_pages.index.priorities.table.columns.fuel_type') %></th>
           <th data-orderable="false"></th>
-          <th class="text-right"><%= t('components.breadcrumbs.schools') %></th>
-          <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
-          <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
-          <th class="text-right"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
+          <th class="text-end"><%= t('components.breadcrumbs.schools') %></th>
+          <th class="text-end sort-desc"><%= t('advice_pages.index.priorities.table.columns.kwh_saving') %></th>
+          <th class="text-end sort-desc"><%= t('advice_pages.index.priorities.table.columns.cost_saving') %></th>
+          <th class="text-end sort-desc"><%= t('advice_pages.index.priorities.table.columns.co2_reduction') %></th>
         </tr>
       </thead>
       <tbody>
@@ -56,16 +56,16 @@
                 <% end %>
               <% end %>
             </td>
-            <td class="text-right">
+            <td class="text-end">
                 <%= savings.schools.length %>
             </td>
-            <td class="text-right" data-order="<%= savings.one_year_saving_kwh %>">
+            <td class="text-end" data-order="<%= savings.one_year_saving_kwh %>">
                 <%= format_unit(savings.one_year_saving_kwh, :kwh) %>
             </td>
-            <td class="text-right" data-order="<%= savings.average_one_year_saving_gbp %>">
+            <td class="text-end" data-order="<%= savings.average_one_year_saving_gbp %>">
                 <%= format_unit(savings.average_one_year_saving_gbp, :£) %>
             </td>
-            <td class="text-right" data-order="<%= savings.one_year_saving_co2 %>">
+            <td class="text-end" data-order="<%= savings.one_year_saving_co2 %>">
                 <%= format_unit(savings.one_year_saving_co2, :co2) %>
             </td>
           </tr>

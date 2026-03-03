@@ -114,7 +114,7 @@
     alias_method :sun_true_long_deg, :m2
 
     def q2
-      @q2 ||= 23+(26+((21.448-g2*(46.815+g2*(0.00059-g2*0.001813))))/60)/60
+      @q2 ||= 23+(26+(21.448-g2*(46.815+g2*(0.00059-g2*0.001813)))/60)/60
     end
     alias_method :mean_obliq_ecliptic_deg, :q2
 

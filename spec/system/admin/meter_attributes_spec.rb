@@ -21,7 +21,7 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
         create(:meter_attribute, meter: gas_meter)
         visit school_path(school)
         click_on 'Meter attributes'
-        expect(page).to have_content('Meter attributes: Oldfield Park Infants')
+        expect(page).to have_content('Meter attributes for Oldfield Park Infants')
         expect(page).to have_content('There was an error')
       end
 
@@ -247,19 +247,6 @@ RSpec.describe 'meter attribute management', :meters, type: :system do
       expect(school_group.meter_attributes.active.size).to eq(0)
       new_attribute.reload
       expect(new_attribute.deleted_by).to eq(admin)
-    end
-
-    it 'allow the admin to download all meter attributes' do
-      meter_attribute = create(:meter_attribute)
-      visit root_path
-      click_on 'Manage'
-      click_on 'Reports'
-
-      click_on 'Download meter attributes'
-
-      header = page.response_headers['Content-Disposition']
-      expect(header).to match(/^attachment/)
-      expect(YAML.load(page.source)[meter_attribute.meter.school.urn][:meter_attributes][meter_attribute.meter.mpan_mprn][:function]).to eq([:heating_only])
     end
 
     it 'allow the admin to manage global meter attributes' do

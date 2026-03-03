@@ -48,7 +48,7 @@ RSpec.describe Schools::Advice::HeatingControlService, type: :service do
     before { travel_to(Date.new(2024, 11, 1)) }
 
     let(:meter_collection) do
-      build(:meter_collection, :with_fuel_and_aggregate_meters, fuel_type: :gas,
+      build(:meter_collection, :with_aggregated_aggregate_meter, fuel_type: :gas,
                                                                 start_date: 1.year.ago.to_date,
                                                                 kwh_data_x48: ([1] * 10) + ([2] * 20) + ([1] * 18))
     end

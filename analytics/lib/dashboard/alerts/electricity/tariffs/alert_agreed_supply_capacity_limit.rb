@@ -116,9 +116,9 @@ class AlertMeterASCLimit < AlertElectricityOnlyBase
   private def text_for_one_meter(mpan, asc_info)
     I18n.t("#{i18n_prefix}.peak_power_consumption",
       mpan: mpan,
-      asc_limit: FormatEnergyUnit.format(:kw, asc_info[:asc_limit_kw]),
-      peak_kw: FormatEnergyUnit.format(:kw, asc_info[:peak_kw])) + " " +
-    text_for_opportunity_or_risk(asc_info)
+      asc_limit: FormatUnit.format(:kw, asc_info[:asc_limit_kw]),
+      peak_kw: FormatUnit.format(:kw, asc_info[:peak_kw])) + " " +
+      text_for_opportunity_or_risk(asc_info)
   end
 
   private def text_for_opportunity_or_risk(asc_info)
@@ -126,8 +126,8 @@ class AlertMeterASCLimit < AlertElectricityOnlyBase
       I18n.t("#{i18n_prefix}.close_to_margin")
     else
       I18n.t("#{i18n_prefix}.opportunity",
-        annual_saving: FormatEnergyUnit.format(:£, asc_info[:annual_saving_£]),
-        ten_year_saving: FormatEnergyUnit.format(:£, asc_info[:annual_saving_£] * 10.0))
+        annual_saving: FormatUnit.format(:£, asc_info[:annual_saving_£]),
+        ten_year_saving: FormatUnit.format(:£, asc_info[:annual_saving_£] * 10.0))
     end
   end
 

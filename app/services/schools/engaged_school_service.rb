@@ -23,7 +23,7 @@ module Schools
                    end
       schools = School.joins(:school_group)
       schools = schools.data_enabled if only_data_enabled
-      schools = schools.where(school_group_id: school_group_id) if school_group_id.present?
+      schools = schools.joins(:school_groupings).where(school_groupings: { school_group_id: school_group_id }) if school_group_id.present?
       schools.order('school_groups.name asc, name asc').map do |school|
         EngagedSchoolService.new(school, date_range)
       end

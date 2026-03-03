@@ -1,20 +1,21 @@
 <%= render PageNavComponent.new(name: t('advice_pages.nav.overview'),
                                 icon: nil, href: school_group_advice_path(school_group),
                                 options: { match_controller: true }) do |c| %>
+
   <% c.with_section id: 'nav-section-alerts',
                     toggler: false,
-                    visible: @alert_count.positive?,
+                    visible: @alerts_service.summarise.count.positive?,
                     options: { match_controller: false } do |s| %>
     <% s.with_item(name: t('advice_pages.index.alerts.title'),
-                   note: "(#{@alert_count})",
+                   note: "(#{@alerts_service.summarise.count})",
                    href: alerts_school_group_advice_path(school_group), classes: 'section-link') %>
   <% end %>
   <% c.with_section id: 'nav-section-priorities',
                     toggler: false,
-                    visible: @priority_action_count.positive?,
+                    visible: @priority_actions_service.priority_action_count.positive?,
                     options: { match_controller: false }  do |s| %>
     <% s.with_item(name: t('advice_pages.index.priorities.title'),
-                   note: "(#{@priority_action_count})",
+                   note: "(#{@priority_actions_service.priority_action_count})",
                    href: priorities_school_group_advice_path(school_group),
                    classes: 'section-link') %>
   <% end %>
@@ -26,6 +27,20 @@
                    href: scores_school_group_advice_path(school_group),
                    classes: 'section-link') %>
   <% end %>
+  <% c.with_section(name: t('school_groups.titles.reports'),
+                    icon: 'magnifying-glass-chart',
+                    options: { match_controller: false }) do |s| %>
+    <% s.with_item(name: t('school_groups.titles.comparisons'),
+                   href: comparison_reports_school_group_advice_path(school_group),
+                   classes: 'small') %>
+    <% s.with_item(name: t('school_groups.titles.charts'),
+                   href: charts_school_group_advice_path(school_group),
+                   classes: 'small') %>
+    <% s.with_item(name: t('school_groups.titles.secr'),
+                   href: school_group_secr_index_path(school_group),
+                   classes: 'small',
+                   visible: school_group.organisation? && can?(:view_secr_report, school_group)) %>
+  <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.electricity'),
                     icon: fuel_type_icon(:electricity), classes: 'electric-section',
                     visible: @fuel_types.include?(:electricity)) do |s| %>
@@ -35,12 +50,21 @@
     <% s.with_item(name: I18n.t('advice_pages.nav.pages.electricity_out_of_hours'),
                    href: school_group_advice_electricity_out_of_hours_path(school_group),
                    classes: 'small electric-item') %>
+    <% s.with_item(name: I18n.t('advice_pages.nav.pages.electricity_long_term'),
+                   href: school_group_advice_electricity_long_term_path(school_group),
+                   classes: 'small electric-item') %>
   <% end %>
   <% c.with_section(name: t('advice_pages.nav.sections.gas'),
                     icon: fuel_type_icon(:gas), classes: 'gas-section',
                     visible: @fuel_types.include?(:gas)) do |s| %>
+    <% s.with_item(name: I18n.t('advice_pages.nav.pages.heating_control'),
+                   href: school_group_advice_heating_control_path(school_group),
+                   classes: 'small gas-item') %>
     <% s.with_item(name: I18n.t('advice_pages.nav.pages.gas_out_of_hours'),
                    href: school_group_advice_gas_out_of_hours_path(school_group),
+                   classes: 'small gas-item') %>
+    <% s.with_item(name: I18n.t('advice_pages.nav.pages.gas_long_term'),
+                   href: school_group_advice_gas_long_term_path(school_group),
                    classes: 'small gas-item') %>
   <% end %>
 <% end %>

@@ -1,7 +1,7 @@
 class ChangeConvertToKwhToEnumInAmrDataFeedConfigs < ActiveRecord::Migration[7.2]
   def up
     create_enum :amr_data_feed_config_convert_to_kwh, %w[no m3 meter]
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       ALTER TABLE amr_data_feed_configs
         ALTER COLUMN convert_to_kwh DROP DEFAULT,
         ALTER COLUMN convert_to_kwh TYPE amr_data_feed_config_convert_to_kwh USING (
@@ -15,7 +15,7 @@ class ChangeConvertToKwhToEnumInAmrDataFeedConfigs < ActiveRecord::Migration[7.2
   end
 
   def down
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       ALTER TABLE amr_data_feed_configs
         ALTER COLUMN convert_to_kwh DROP DEFAULT,
         ALTER COLUMN convert_to_kwh TYPE boolean USING (

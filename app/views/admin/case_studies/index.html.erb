@@ -26,17 +26,17 @@
             <span class='ml-auto pb-2'>
               <small>
                 <% if case_study.image.attached? %>
-                  <span title='has image' data-toggle='tooltip'><%= render IconComponent.new(name: 'image') %></span>
+                  <span title='has image' data-toggle='tooltip'><%= render Elements::IconComponent.new(name: 'image') %></span>
                 <% else %>
                   <span title='no image' data-toggle='tooltip'>
-                    <%= render IconComponent.new(name: 'triangle-exclamation') %>
+                    <%= render Elements::IconComponent.new(name: 'triangle-exclamation') %>
                   </span>
                 <% end %>
                  <% if case_study.published %>
-                  <span title='published' data-toggle='tooltip'><%= render IconComponent.new(name: 'eye') %></span>
+                  <span title='published' data-toggle='tooltip'><%= render Elements::IconComponent.new(name: 'eye') %></span>
                 <% else %>
                   <span title='hidden' data-toggle='tooltip'>
-                    <%= render IconComponent.new(name: 'eye-slash') %>
+                    <%= render Elements::IconComponent.new(name: 'eye-slash') %>
                   </span>
                 <% end %>
               </small>

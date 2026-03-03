@@ -163,7 +163,7 @@ div.popover {
 .highcharts-tooltip>span {
     background: $white;
     border: 1px solid $grey-medium;
-    border-radius: 3px;
+    border-radius: $border-radius-sm;
     box-shadow: 1px 1px 2px $grey-dark;
     padding: 8px;
     z-index: 1;

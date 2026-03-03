@@ -14,6 +14,7 @@ describe 'School group engagement' do
 
   context 'when signed in' do
     before do
+      travel_to(Date.new(2025, 11))
       sign_in(create(:admin))
       create(:school, data_enabled: false, school_group: school.school_group)
       create(:user, school:, last_sign_in_at: Date.new(2025, 5, 1))
@@ -41,7 +42,7 @@ describe 'School group engagement' do
       expect(body).to \
         eq('School,School type,Activities,Actions,Programmes,Energy saving target,Completed transport survey,' \
            "Recorded temperatures,Received an audit,Active users,Last visit\n" \
-           "#{school.name},Primary,0,0,0,No,No,No,No,1,01/05/2025\n")
+           "#{school.name},Primary,0,0,0,No,No,No,No,1,2025-05-01\n")
     end
   end
 end

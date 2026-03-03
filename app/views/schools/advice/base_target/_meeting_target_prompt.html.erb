@@ -1,0 +1,13 @@
+<% unless @consumption.current_consumption.nil? || @consumption.target_consumption.nil? %>
+  <% text, status = if @target.start_date > Date.current
+                      [t('advice_pages.target.future_target_date'), :positive]
+                    elsif !@consumption.meeting_target.nil?
+                      [meeting_target_text(@consumption.meeting_target, @fuel_type),
+                       @consumption.meeting_target ? :positive : :negative]
+                    end %>
+  <% if text %>
+    <%= render PromptComponent.new(status:, icon: :circle_exclamation) do |c| %>
+      <% text %>
+    <% end %>
+  <% end %>
+<% end %>

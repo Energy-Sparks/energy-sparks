@@ -29,7 +29,7 @@
                         classes: "p-4 rounded-bottom-xl #{'rounded-top-xl' unless event.image_url && @show_images}"
                       ) do |feature| %>
                     <%= feature.with_tag(event.sold_out? ? t('training.sold_out') : t('training.spaces_available')) %>
-                    <%= feature.with_header(title: event.name) %>
+                    <%= feature.with_header(title: event.name.html_safe) %>
                     <%= feature.with_datetime(event.date) %>
                     <%= feature.with_description { event.summary } %>
                     <%= feature.with_link(

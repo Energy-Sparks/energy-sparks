@@ -1,5 +1,11 @@
-<h1>Meter attributes: <%= @school.name %></h1>
-<p><%= link_to 'School meter managment', school_meters_path(@school) %></p>
+<div class="d-flex justify-content-between align-items-center">
+  <h1>Meter attributes for <%= @school.name %></h1>
+
+  <div class="h5">
+    <%= link_to t('schools.meters.show.school_meter_management'), school_meters_path(@school),
+                class: 'btn btn-default' %>
+  </div>
+</div>
 
 <ul class="nav nav-tabs" id="top-level-meter-attribute-tabs">
   <li class="nav-item">
@@ -9,7 +15,6 @@
     <a class="nav-link active" id="group-meter-attributes-tab" href="<%= admin_school_school_attributes_path(@school) %>" role="tab" aria-selected="true">School-wide attributes</a>
   </li>
 </ul>
-
 
 <ul class="nav nav-tabs mt-3" id="group-meter-attribute-tabs" role="tablist">
   <li class="nav-item">
@@ -22,26 +27,36 @@
 
 <div class="tab-content" id="group-meter-attributes-tabs-content">
   <div class="tab-pane fade show active pt-4" id="database-group-meter-attributes-content" role="tabpanel" aria-labelledby="database-group-meter-attributes-tab">
-    <p>Attributes created for meters in the database (e.g. gas meters, electricity meters, solar_pv meters etc.) will be assigned to <strong>ALL</strong> <%= @school.name %> meters of that type. If you only require the attributes on a single gas meter, for example, create the attribute directly on the meter.</p>
-    <p>Attributes for pseudo-meter types (e.g. for aggregation) will be passed to the analytics to be picked up when those meters are created internally.</p>
-    <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes, create_path: new_admin_school_school_attribute_path(@school) %>
+    <p>
+      Attributes created for meters in the database (e.g. gas meters, electricity meters, solar_pv meters etc.)
+      will be assigned to <strong>ALL</strong> <%= @school.name %> meters of that type. If you only require the
+      attributes on a single gas meter, for example, create the attribute directly on the meter.
+    </p>
+    <p>
+      Attributes for pseudo-meter types (e.g. for aggregation) will be passed to the analytics to be picked up when
+      those meters are created internally.
+    </p>
+    <%= render 'shared/meter_attributes/new_select', available_meter_attributes: @available_meter_attributes,
+                                                     create_path: new_admin_school_school_attribute_path(@school) %>
 
     <table class="table mt-3">
       <% @global_meter_attributes.each do |meter_attribute| %>
         <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
-          <div class="alert alert-info">from <%= link_to "Global attributes", admin_global_meter_attributes_path %></div>
+          <div class="alert alert-info">from <%= link_to 'Global attributes', admin_global_meter_attributes_path %></div>
         <% end %>
       <% end %>
       <% @group_meter_attributes.each do |meter_attribute| %>
         <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
-          <div class="alert alert-info">from <%= link_to "#{@school.school_group.name} attributes", admin_school_group_meter_attributes_path(@school.school_group)%></div>
+          <div class="alert alert-info">from <%= link_to "#{@school.school_group.name} attributes",
+                                                         admin_school_group_meter_attributes_path(@school.school_group) %></div>
         <% end %>
       <% end %>
       <% @meter_attributes.each do |meter_attribute| %>
         <%= render 'meter_attribute', meter_attribute: meter_attribute do %>
           <div class="btn-group">
             <%= link_to 'Edit', edit_admin_school_school_attribute_path(@school, meter_attribute), class: 'btn btn-sm' %>
-            <%= button_to 'Delete', admin_school_school_attribute_path(@school, meter_attribute), method: :delete, class: 'btn btn-sm' %>
+            <%= button_to 'Delete', admin_school_school_attribute_path(@school, meter_attribute), method: :delete,
+                                                                                                  class: 'btn btn-sm' %>
             <%= link_to 'History', admin_school_school_attribute_path(@school, meter_attribute), class: 'btn btn-sm' %>
           </div>
         <% end %>

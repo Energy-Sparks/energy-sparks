@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AlertElectricityUsageDuringCurrentHoliday < AlertUsageDuringCurrentHolidayBase
+class AlertElectricityUsageDuringCurrentHoliday < Alerts::UsageDuringCurrentHolidayBase
   def initialize(school)
     super(school, :holiday_electricity_usage_to_date)
   end

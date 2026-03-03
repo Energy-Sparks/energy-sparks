@@ -10,10 +10,10 @@
             <span class='float-right pb-2'>
               <small>
                 <% if testimonial.active %>
-                  <span title='active' data-toggle='tooltip'><%= render IconComponent.new(name: 'eye') %></span>
+                  <span title='active' data-toggle='tooltip'><%= render Elements::IconComponent.new(name: 'eye') %></span>
                 <% else %>
                   <span title='inactive' data-toggle='tooltip'>
-                    <%= render IconComponent.new(name: 'eye-slash') %>
+                    <%= render Elements::IconComponent.new(name: 'eye-slash') %>
                   </span>
                 <% end %>
               </small>

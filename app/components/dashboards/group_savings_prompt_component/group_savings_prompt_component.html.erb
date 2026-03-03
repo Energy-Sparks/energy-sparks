@@ -1,34 +1,27 @@
-<%= tag.div id: id, class: class_names(classes, 'row p-4 d-flex flex-wrap align-items-center justify-content-between') do %>
-  <div>
-    <div class="row">
-      <div class="col">
-        <h2 id='prompt-title'>
-          <%= title %>
-        </h2>
-      </div>
-    </div>
-    <div class="row">
-      <div id="prompt-body" class="col">
-        <p>
-          <%= t("#{metric}_prompt_html",
-                scope: 'components.dashboards.group_savings_prompt',
-                schools: school_count,
-                fuel_type: fuel_type,
-                saving: saving) %>
-        </p>
-        <p>
-          <%= t('components.dashboards.group_savings_prompt.note') %>
-        </p>
-      </div>
-    </div>
-  </div>
-  <div>
-    <div class="row">
-      <div class="col d-flex justify-content-center align-items-center">
-        <%= link_to t('components.dashboards.group_savings_prompt.view_all_savings'),
+<%= tag.div id: id,
+            class: class_names(classes,
+                               'p-4 rounded-lg') do %>
+
+  <div class="mb-md-0">
+    <h2 id="prompt-title"><%= title %></h2>
+    <p>
+      <%= t("#{metric}_prompt_html",
+            scope: 'components.dashboards.group_savings_prompt',
+            schools: school_count,
+            fuel_type: fuel_type,
+            saving: saving) %>
+    </p>
+
+    <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center align-items-md-left">
+      <p class="mb-xl-0">
+        <%= t('components.dashboards.group_savings_prompt.note') %>
+      </p>
+      <div class='flex-shrink-0 align-self-xl-end'>
+        <%= link_to t('components.dashboards.group_savings_prompt.view_all_potential_savings'),
                     priorities_school_group_advice_path(school_group),
-                    class: 'btn btn-primary mr-2' %>
+                    class: 'btn btn-primary' %>
       </div>
     </div>
   </div>
+
 <% end %>

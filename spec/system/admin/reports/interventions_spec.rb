@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Interventions report', type: :system do
   let!(:admin)          { create(:admin) }
-  let!(:intervention)   { create(:observation, :intervention) }
+  let!(:intervention)   { create(:observation, :intervention, school: create(:school, :with_school_group)) }
 
   context 'as an admin' do
     before do

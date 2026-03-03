@@ -29,12 +29,7 @@ en:
                 The following table summarises how we have benchmarked each school in your group according to its
                 out of hours gas use.</p>
                 <p>
-                "Exemplar" schools are in the top 17.5% on Energy Sparks. "Well managed" schools are in the top
-                30% of schools.
-                </p>
-                <p>
-                The savings for each school are based on reducing their use to match those of an Exemplar school
-                with similar characteristics.
+                The savings for each school are based on reducing their use to match those of <a data-toggle="modal" data-target="#%{modal_id}" data-remote="false" href="#">an Exemplar school with similar characteristics</a>.
                 </p>
             title: Potential savings
           summary: This page provides an overview of the gas used outside of school hours across the schools in your group

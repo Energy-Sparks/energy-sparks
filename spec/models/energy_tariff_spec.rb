@@ -500,4 +500,8 @@ describe EnergyTariff do
       expect(tariffs).to eq([energy_tariff_open_start, energy_tariff, energy_tariff_open_end])
     end
   end
+
+  it_behaves_like 'restricted school group association' do
+    subject { build(:energy_tariff, tariff_holder: restricted_group) }
+  end
 end

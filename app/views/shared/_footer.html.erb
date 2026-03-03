@@ -1,8 +1,0 @@
-<footer>
-  <%= render 'shared/footer/top' %>
-  <%= render 'shared/footer/second' %>
-</footer>
-
-<%= if Rails.env.production? && @analytics_code.present?
-      render 'shared/google_analytics', analytics_code: @analytics_code
-    end %>

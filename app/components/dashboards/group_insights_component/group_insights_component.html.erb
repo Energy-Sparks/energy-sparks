@@ -1,26 +1,18 @@
-<%= tag.div id: id, class: classes do %>
+<%= tag.div id: id, class: class_names(classes, 'scrollable-title')  do %>
   <div class="row">
-    <div class="col-12">
-      <h2 id="<%= id %>" class="scrollable-title"><%= t('components.dashboard_insights.title') %></h2>
-    </div>
-  </div>
-
-  <div class="row">
-    <%# split to 2 column view on larger screens if we are displaying alerts %>
-    <div class="<%= class_names('col-12', { 'col-lg-6': showing_alerts? }) %>">
-      <%= render Dashboards::GroupRemindersComponent.new(
-            school_group: school_group,
-            user: user,
-            id: 'group-reminders'
-          ) do |c| %>
-        <% c.with_title { t('components.dashboard_insights.reminders.title') } %>
-      <% end %>
-    </div>
-
+    <% if showing_reminders? %>
+      <%# split to 2 column view on larger screens if we are also displaying alerts %>
+      <div class="<%= class_names('col-12', { 'col-lg-6': showing_alerts? }) %>">
+        <%= render reminders_component do |c| %>
+          <% c.with_title { t('components.dashboard_insights.reminders.title') } %>
+        <% end %>
+      </div>
+    <% end %>
     <% if showing_alerts? %>
-      <div class="col-12 col-lg-6">
+      <%# split to 2 column view on larger screens if we are also displaying reminders %>
+      <div class="<%= class_names('col-12', { 'col-lg-6': showing_reminders? }) %>">
         <%= render alerts_component do |c| %>
-            <% c.with_title { t('advice_pages.index.alerts.title') } %>
+            <% c.with_title(level: 2) { t('advice_pages.index.alerts.title') } %>
             <% c.with_link do %>
               <%= link_to t('schools.show.view_more_alerts'), alerts_school_group_advice_path(school_group) %>
             <% end %>

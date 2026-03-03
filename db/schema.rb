@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -21,14 +21,21 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "amr_data_feed_config_convert_to_kwh", ["no", "m3", "meter"]
   create_enum "audience", ["anyone", "school_users", "school_admins", "group_admins"]
+  create_enum "contract_contact_type", ["procurement", "invoicing", "loa", "renewals"]
+  create_enum "contract_invoice_terms", ["pro_rata", "full"]
+  create_enum "contract_licence_period", ["contract", "custom"]
+  create_enum "contract_status", ["provisional", "confirmed"]
   create_enum "data_sharing", ["public", "within_group", "private"]
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
+  create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
   create_enum "meter_monthly_summary_type", ["consumption", "generation", "self_consume", "export"]
   create_enum "meter_perse_api", ["half_hourly"]
+  create_enum "renewal_behaviour", ["renew", "archive", "waitlist"]
+  create_enum "school_grouping_role", ["organisation", "area", "project", "diocese"]
 
   create_table "academic_years", force: :cascade do |t|
     t.date "start_date"
@@ -86,8 +93,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.bigint "activity_category_id"
     t.integer "pupil_count"
     t.bigint "updated_by_id"
+    t.bigint "created_by_id"
     t.index ["activity_category_id"], name: "index_activities_on_activity_category_id"
     t.index ["activity_type_id"], name: "index_activities_on_activity_type_id"
+    t.index ["created_by_id"], name: "index_activities_on_created_by_id"
     t.index ["school_id"], name: "index_activities_on_school_id"
     t.index ["updated_by_id"], name: "index_activities_on_updated_by_id"
   end
@@ -177,6 +186,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.string "label"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "ignore_in_inactive_meter_report", default: false
   end
 
   create_table "advice_page_activity_types", force: :cascade do |t|
@@ -470,6 +480,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.text "reading_time"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_config_id"
     t.index ["amr_data_feed_import_log_id"], name: "index_amr_data_feed_readings_on_amr_data_feed_import_log_id"
+    t.index ["created_at", "meter_id"], name: "index_amr_data_feed_readings_on_created_at_and_meter_id"
     t.index ["meter_id", "amr_data_feed_config_id"], name: "adfr_meter_id_config_id"
     t.index ["meter_id"], name: "index_amr_data_feed_readings_on_meter_id"
     t.index ["mpan_mprn"], name: "index_amr_data_feed_readings_on_mpan_mprn"
@@ -675,6 +686,89 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.index ["updated_by_id"], name: "index_cms_sections_on_updated_by_id"
   end
 
+  create_table "commercial_contract_contacts", force: :cascade do |t|
+    t.string "contract_holder_type", null: false
+    t.bigint "contract_holder_id", null: false
+    t.bigint "user_id"
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "comments"
+    t.enum "contact_type", null: false, enum_type: "contract_contact_type"
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contract_contacts_on_contract_holder"
+    t.index ["created_by_id"], name: "index_commercial_contract_contacts_on_created_by_id"
+    t.index ["updated_by_id"], name: "index_commercial_contract_contacts_on_updated_by_id"
+    t.index ["user_id"], name: "index_commercial_contract_contacts_on_user_id"
+  end
+
+  create_table "commercial_contracts", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "contract_holder_type", null: false
+    t.bigint "contract_holder_id", null: false
+    t.string "name", null: false
+    t.text "comments"
+    t.enum "status", default: "provisional", null: false, enum_type: "contract_status"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "number_of_schools", null: false
+    t.enum "licence_period", default: "contract", null: false, enum_type: "contract_licence_period"
+    t.enum "invoice_terms", default: "pro_rata", null: false, enum_type: "contract_invoice_terms"
+    t.decimal "agreed_school_price", precision: 10, scale: 2
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "licence_years", precision: 4, scale: 2
+    t.string "purchase_order_number"
+    t.index ["contract_holder_type", "contract_holder_id"], name: "index_commercial_contracts_on_contract_holder"
+    t.index ["created_by_id"], name: "index_commercial_contracts_on_created_by_id"
+    t.index ["name"], name: "index_commercial_contracts_on_name", unique: true
+    t.index ["product_id"], name: "index_commercial_contracts_on_product_id"
+    t.index ["updated_by_id"], name: "index_commercial_contracts_on_updated_by_id"
+  end
+
+  create_table "commercial_licences", force: :cascade do |t|
+    t.bigint "contract_id", null: false
+    t.bigint "school_id", null: false
+    t.enum "status", default: "provisional", null: false, enum_type: "licence_status"
+    t.string "invoice_reference"
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comments"
+    t.decimal "school_specific_price", precision: 10, scale: 2
+    t.index ["contract_id"], name: "index_commercial_licences_on_contract_id"
+    t.index ["created_by_id"], name: "index_commercial_licences_on_created_by_id"
+    t.index ["school_id"], name: "index_commercial_licences_on_school_id"
+    t.index ["updated_by_id"], name: "index_commercial_licences_on_updated_by_id"
+  end
+
+  create_table "commercial_products", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "comments"
+    t.boolean "default_product", default: false, null: false
+    t.decimal "small_school_price", precision: 10, scale: 2
+    t.decimal "large_school_price", precision: 10, scale: 2
+    t.integer "size_threshold"
+    t.decimal "mat_price", precision: 10, scale: 2
+    t.decimal "private_account_fee", precision: 10, scale: 2
+    t.decimal "metering_fee", precision: 10, scale: 2
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by_id"], name: "index_commercial_products_on_created_by_id"
+    t.index ["default_product"], name: "index_commercial_products_on_default_product", unique: true, where: "(default_product = true)"
+    t.index ["name"], name: "index_commercial_products_on_name", unique: true
+    t.index ["updated_by_id"], name: "index_commercial_products_on_updated_by_id"
+  end
+
   create_table "comparison_custom_periods", force: :cascade do |t|
     t.string "current_label", null: false
     t.date "current_start_date", null: false
@@ -712,6 +806,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.datetime "updated_at", null: false
     t.bigint "report_group_id"
     t.boolean "disabled", default: false, null: false
+    t.integer "fuel_type"
     t.index ["custom_period_id"], name: "index_comparison_reports_on_custom_period_id"
     t.index ["key"], name: "index_comparison_reports_on_key", unique: true
     t.index ["report_group_id"], name: "index_comparison_reports_on_report_group_id"
@@ -853,8 +948,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "import_warning_days"
+    t.integer "import_warning_days", default: 7
     t.boolean "load_tariffs", default: true, null: false
+    t.bigint "owned_by_id"
+    t.boolean "alerts_on", default: true
+    t.integer "alert_percentage_threshold", default: 25
+    t.index ["owned_by_id"], name: "index_data_sources_on_owned_by_id"
   end
 
   create_table "emails", force: :cascade do |t|
@@ -948,17 +1047,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.index ["school_id"], name: "index_equivalences_on_school_id"
   end
 
-  create_table "estimated_annual_consumptions", force: :cascade do |t|
-    t.integer "year", null: false
-    t.float "electricity"
-    t.float "storage_heaters"
-    t.float "gas"
-    t.bigint "school_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["school_id"], name: "index_estimated_annual_consumptions_on_school_id"
-  end
-
   create_table "find_out_mores", force: :cascade do |t|
     t.bigint "alert_type_rating_content_version_id", null: false
     t.bigint "alert_id", null: false
@@ -1001,6 +1089,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   create_table "funders", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "mailchimp_fields_changed_at"
+    t.boolean "invoiced", default: true, null: false
   end
 
   create_table "global_meter_attributes", force: :cascade do |t|
@@ -1179,6 +1268,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.boolean "pinned", default: false
     t.string "issueable_type"
     t.bigint "issueable_id"
+    t.date "review_date"
     t.index ["created_by_id"], name: "index_issues_on_created_by_id"
     t.index ["issueable_type", "issueable_id"], name: "index_issues_on_issueable_type_and_issueable_id"
     t.index ["owned_by_id"], name: "index_issues_on_owned_by_id"
@@ -1266,6 +1356,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.integer "fsm"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "la_name"
   end
 
   create_table "local_authority_areas", force: :cascade do |t|
@@ -1398,6 +1489,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.bigint "consent_grant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "disabled", default: false, null: false
     t.index ["consent_grant_id"], name: "index_meter_reviews_on_consent_grant_id"
     t.index ["school_id"], name: "index_meter_reviews_on_school_id"
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"
@@ -1660,6 +1752,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.index ["school_group_id"], name: "index_school_group_partners_on_school_group_id"
   end
 
+  create_table "school_groupings", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.bigint "school_group_id", null: false
+    t.enum "role", null: false, enum_type: "school_grouping_role"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_group_id"], name: "index_school_groupings_on_school_group_id"
+    t.index ["school_id", "role"], name: "index_school_groupings_on_school_id_and_organisation_role", unique: true, where: "(role = 'organisation'::school_grouping_role)"
+    t.index ["school_id"], name: "index_school_groupings_on_school_id"
+  end
+
   create_table "school_groups", force: :cascade do |t|
     t.string "name", null: false
     t.string "description"
@@ -1685,6 +1788,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.bigint "default_procurement_route_solar_pv_id"
     t.integer "group_type", default: 0
     t.datetime "mailchimp_fields_changed_at"
+    t.string "dfe_code"
     t.index ["default_issues_admin_user_id"], name: "index_school_groups_on_default_issues_admin_user_id"
     t.index ["default_scoreboard_id"], name: "index_school_groups_on_default_scoreboard_id"
     t.index ["default_template_calendar_id"], name: "index_school_groups_on_default_template_calendar_id"
@@ -1741,9 +1845,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.enum "data_sharing", default: "public", null: false, enum_type: "data_sharing"
     t.integer "urn"
     t.boolean "full_school", default: true
+    t.bigint "project_group_id"
+    t.bigint "diocese_id"
+    t.bigint "local_authority_area_id"
+    t.bigint "contract_id"
+    t.index ["contract_id"], name: "index_school_onboardings_on_contract_id"
     t.index ["created_by_id"], name: "index_school_onboardings_on_created_by_id"
     t.index ["created_user_id"], name: "index_school_onboardings_on_created_user_id"
+    t.index ["diocese_id"], name: "index_school_onboardings_on_diocese_id"
     t.index ["funder_id"], name: "index_school_onboardings_on_funder_id"
+    t.index ["local_authority_area_id"], name: "index_school_onboardings_on_local_authority_area_id"
+    t.index ["project_group_id"], name: "index_school_onboardings_on_project_group_id"
     t.index ["school_group_id"], name: "index_school_onboardings_on_school_group_id"
     t.index ["school_id"], name: "index_school_onboardings_on_school_id"
     t.index ["scoreboard_id"], name: "index_school_onboardings_on_scoreboard_id"
@@ -1783,9 +1895,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.json "electricity_progress", default: {}
     t.json "gas_progress", default: {}
     t.json "storage_heaters_progress", default: {}
-    t.jsonb "electricity_report", default: {}
-    t.jsonb "gas_report", default: {}
-    t.jsonb "storage_heaters_report", default: {}
+    t.jsonb "electricity_monthly_consumption"
+    t.jsonb "gas_monthly_consumption"
+    t.jsonb "storage_heaters_monthly_consumption"
     t.index ["school_id"], name: "index_school_targets_on_school_id"
   end
 
@@ -1888,7 +2000,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.bigint "local_distribution_zone_id"
     t.bigint "establishment_id"
     t.boolean "full_school", default: true
+    t.string "default_contract_holder_type"
+    t.bigint "default_contract_holder_id"
+    t.enum "renewal_behaviour", default: "renew", null: false, enum_type: "renewal_behaviour"
     t.index ["calendar_id"], name: "index_schools_on_calendar_id"
+    t.index ["default_contract_holder_type", "default_contract_holder_id"], name: "index_schools_on_default_contract_holder"
     t.index ["establishment_id"], name: "index_schools_on_establishment_id"
     t.index ["latitude", "longitude"], name: "index_schools_on_latitude_and_longitude"
     t.index ["local_authority_area_id"], name: "index_schools_on_local_authority_area_id"
@@ -1897,6 +2013,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.index ["school_group_id"], name: "index_schools_on_school_group_id"
     t.index ["scoreboard_id"], name: "index_schools_on_scoreboard_id"
     t.index ["urn"], name: "index_schools_on_urn", unique: true
+  end
+
+  create_table "schools_manual_readings", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.date "month", null: false
+    t.float "electricity"
+    t.float "gas"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id", "month"], name: "index_schools_manual_readings_on_school_id_and_month", unique: true
+    t.index ["school_id"], name: "index_schools_manual_readings_on_school_id"
   end
 
   create_table "scoreboards", force: :cascade do |t|
@@ -2177,6 +2304,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
     t.datetime "mailchimp_updated_at"
     t.enum "mailchimp_status", enum_type: "mailchimp_status"
     t.boolean "active", default: true, null: false
+    t.boolean "terms_accepted", default: false
+    t.boolean "climate_action_lead", default: false, null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -2224,6 +2353,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "activities", "activity_categories", on_delete: :restrict
   add_foreign_key "activities", "activity_types", on_delete: :restrict
   add_foreign_key "activities", "schools", on_delete: :cascade
+  add_foreign_key "activities", "users", column: "created_by_id"
   add_foreign_key "activities", "users", column: "updated_by_id"
   add_foreign_key "activity_type_impacts", "activity_types", on_delete: :cascade
   add_foreign_key "activity_type_impacts", "impacts", on_delete: :restrict
@@ -2287,6 +2417,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "cms_sections", "cms_pages", column: "page_id"
   add_foreign_key "cms_sections", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "cms_sections", "users", column: "updated_by_id", on_delete: :nullify
+  add_foreign_key "commercial_contract_contacts", "users", column: "created_by_id"
+  add_foreign_key "commercial_contract_contacts", "users", column: "updated_by_id"
+  add_foreign_key "commercial_contracts", "commercial_products", column: "product_id"
+  add_foreign_key "commercial_contracts", "users", column: "created_by_id"
+  add_foreign_key "commercial_contracts", "users", column: "updated_by_id"
+  add_foreign_key "commercial_licences", "commercial_contracts", column: "contract_id"
+  add_foreign_key "commercial_licences", "users", column: "created_by_id"
+  add_foreign_key "commercial_licences", "users", column: "updated_by_id"
+  add_foreign_key "commercial_products", "users", column: "created_by_id"
+  add_foreign_key "commercial_products", "users", column: "updated_by_id"
   add_foreign_key "comparison_reports", "comparison_custom_periods", column: "custom_period_id"
   add_foreign_key "comparison_reports", "comparison_report_groups", column: "report_group_id"
   add_foreign_key "configurations", "schools", on_delete: :cascade
@@ -2302,6 +2442,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "dashboard_alerts", "alerts", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "content_generation_runs", on_delete: :cascade
   add_foreign_key "dashboard_alerts", "find_out_mores", on_delete: :nullify
+  add_foreign_key "data_sources", "users", column: "owned_by_id"
   add_foreign_key "emails", "contacts", on_delete: :cascade
   add_foreign_key "energy_tariffs", "users", column: "created_by_id"
   add_foreign_key "energy_tariffs", "users", column: "updated_by_id"
@@ -2309,7 +2450,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "equivalence_type_content_versions", "equivalence_types", on_delete: :cascade
   add_foreign_key "equivalences", "equivalence_type_content_versions", on_delete: :cascade
   add_foreign_key "equivalences", "schools", on_delete: :cascade
-  add_foreign_key "estimated_annual_consumptions", "schools"
   add_foreign_key "find_out_mores", "alert_type_rating_content_versions", on_delete: :cascade
   add_foreign_key "find_out_mores", "alerts", on_delete: :cascade
   add_foreign_key "find_out_mores", "content_generation_runs", on_delete: :cascade
@@ -2373,6 +2513,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "school_group_meter_attributes", "school_groups", on_delete: :cascade
   add_foreign_key "school_group_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "school_group_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
+  add_foreign_key "school_groupings", "school_groups"
+  add_foreign_key "school_groupings", "schools"
   add_foreign_key "school_groups", "calendars", column: "default_template_calendar_id", on_delete: :nullify
   add_foreign_key "school_groups", "scoreboards", column: "default_scoreboard_id"
   add_foreign_key "school_groups", "users", column: "default_issues_admin_user_id", on_delete: :nullify
@@ -2384,6 +2526,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "school_meter_attributes", "users", column: "deleted_by_id", on_delete: :nullify
   add_foreign_key "school_onboarding_events", "school_onboardings", on_delete: :cascade
   add_foreign_key "school_onboardings", "calendars", column: "template_calendar_id", on_delete: :nullify
+  add_foreign_key "school_onboardings", "commercial_contracts", column: "contract_id"
+  add_foreign_key "school_onboardings", "school_groups", column: "diocese_id"
+  add_foreign_key "school_onboardings", "school_groups", column: "local_authority_area_id"
+  add_foreign_key "school_onboardings", "school_groups", column: "project_group_id"
   add_foreign_key "school_onboardings", "school_groups", on_delete: :restrict
   add_foreign_key "school_onboardings", "schools", on_delete: :cascade
   add_foreign_key "school_onboardings", "scoreboards", on_delete: :nullify
@@ -2396,6 +2542,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_foreign_key "schools", "school_group_clusters", on_delete: :nullify
   add_foreign_key "schools", "school_groups", on_delete: :restrict
   add_foreign_key "schools", "scoreboards", on_delete: :nullify
+  add_foreign_key "schools_manual_readings", "schools", on_delete: :cascade
   add_foreign_key "scoreboards", "calendars", column: "academic_year_calendar_id", on_delete: :nullify
   add_foreign_key "sms_records", "alert_subscription_events", on_delete: :cascade
   add_foreign_key "solar_edge_installations", "amr_data_feed_configs", on_delete: :cascade
@@ -2548,21 +2695,37 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
       data.alert_generation_run_id,
       data.school_id,
       data.one_year_electricity_per_pupil_gbp,
+      data.one_year_electricity_per_pupil_kwh,
+      data.one_year_electricity_per_pupil_co2,
       data.last_year_gbp,
-      data.one_year_saving_versus_exemplar_gbpcurrent
+      data.last_year_kwh,
+      data.last_year_co2,
+      data.one_year_saving_versus_exemplar_gbpcurrent,
+      additional.electricity_economic_tariff_changed_this_year
      FROM ( SELECT alerts.alert_generation_run_id,
               alerts.school_id,
               data_1.one_year_electricity_per_pupil_gbp,
+              data_1.one_year_electricity_per_pupil_kwh,
+              data_1.one_year_electricity_per_pupil_co2,
               data_1.last_year_gbp,
+              data_1.last_year_kwh,
+              data_1.last_year_co2,
               data_1.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
+              LATERAL jsonb_to_record(alerts.variables) data_1(one_year_electricity_per_pupil_gbp double precision, one_year_electricity_per_pupil_kwh double precision, one_year_electricity_per_pupil_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityAnnualVersusBenchmark'::text))) data,
+      ( SELECT alerts.alert_generation_run_id,
+              alerts.school_id,
+              data_1.electricity_economic_tariff_changed_this_year
+             FROM alerts,
+              alert_types,
+              LATERAL jsonb_to_record(alerts.variables) data_1(electricity_economic_tariff_changed_this_year boolean)
+            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))) additional,
       ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
              FROM alert_generation_runs
             ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+    WHERE ((data.alert_generation_run_id = latest_runs.id) AND (additional.alert_generation_run_id = latest_runs.id));
   SQL
   add_index "comparison_annual_electricity_costs_per_pupils", ["school_id"], name: "idx_on_school_id_1d369f6529", unique: true
 
@@ -2873,33 +3036,38 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   create_view "comparison_annual_heating_costs_per_floor_areas", materialized: true, sql_definition: <<-SQL
       WITH gas AS (
            SELECT alerts.alert_generation_run_id,
-              data.one_year_gas_per_floor_area_normalised_gbp,
+              data.one_year_gas_per_floor_area_gbp,
+              data.one_year_gas_per_floor_area_kwh,
+              data.one_year_gas_per_floor_area_co2,
               data.last_year_gbp,
-              data.one_year_saving_versus_exemplar_gbpcurrent,
               data.last_year_kwh,
-              data.last_year_co2
+              data.last_year_co2,
+              data.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_normalised_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision, last_year_kwh double precision, last_year_co2 double precision)
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_gbp double precision, one_year_gas_per_floor_area_kwh double precision, one_year_gas_per_floor_area_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasAnnualVersusBenchmark'::text))
           ), storage_heaters AS (
            SELECT alerts.alert_generation_run_id,
-              data.one_year_gas_per_floor_area_normalised_gbp,
+              data.one_year_gas_per_floor_area_gbp,
+              data.one_year_gas_per_floor_area_kwh,
+              data.one_year_gas_per_floor_area_co2,
               data.last_year_gbp,
-              data.one_year_saving_versus_exemplar_gbpcurrent,
               data.last_year_kwh,
-              data.last_year_co2
+              data.last_year_co2,
+              data.one_year_saving_versus_exemplar_gbpcurrent
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_normalised_gbp double precision, last_year_gbp double precision, one_year_saving_versus_exemplar_gbpcurrent double precision, last_year_kwh double precision, last_year_co2 double precision)
+              LATERAL jsonb_to_record(alerts.variables) data(one_year_gas_per_floor_area_gbp double precision, one_year_gas_per_floor_area_kwh double precision, one_year_gas_per_floor_area_co2 double precision, last_year_gbp double precision, last_year_kwh double precision, last_year_co2 double precision, one_year_saving_versus_exemplar_gbpcurrent double precision)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterAnnualVersusBenchmark'::text))
           ), additional AS (
            SELECT alerts.alert_generation_run_id,
               alerts.school_id,
-              data.gas_economic_tariff_changed_this_year
+              data.gas_economic_tariff_changed_this_year,
+              data.electricity_economic_tariff_changed_this_year
              FROM alerts,
               alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean)
+              LATERAL jsonb_to_record(alerts.variables) data(gas_economic_tariff_changed_this_year boolean, electricity_economic_tariff_changed_this_year boolean)
             WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertAdditionalPrioritisationData'::text))
           ), latest_runs AS (
            SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
@@ -2908,13 +3076,22 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
           )
    SELECT latest_runs.id,
       additional.school_id,
-      (COALESCE(gas.one_year_gas_per_floor_area_normalised_gbp, (0)::double precision) + COALESCE(storage_heaters.one_year_gas_per_floor_area_normalised_gbp, (0)::double precision)) AS one_year_gas_per_floor_area_normalised_gbp,
-      (COALESCE(gas.last_year_gbp, (0)::double precision) + COALESCE(storage_heaters.last_year_gbp, (0)::double precision)) AS last_year_gbp,
-      (COALESCE(gas.one_year_saving_versus_exemplar_gbpcurrent, (0)::double precision) + COALESCE(storage_heaters.one_year_saving_versus_exemplar_gbpcurrent, (0)::double precision)) AS one_year_saving_versus_exemplar_gbpcurrent,
-      (COALESCE(gas.last_year_kwh, (0)::double precision) + COALESCE(storage_heaters.last_year_kwh, (0)::double precision)) AS last_year_kwh,
-      (COALESCE(gas.last_year_co2, (0)::double precision) + COALESCE(storage_heaters.last_year_co2, (0)::double precision)) AS last_year_co2,
+      gas.last_year_gbp AS gas_last_year_gbp,
+      gas.last_year_kwh AS gas_last_year_kwh,
       gas.last_year_co2 AS gas_last_year_co2,
-      additional.gas_economic_tariff_changed_this_year
+      gas.one_year_gas_per_floor_area_gbp,
+      gas.one_year_gas_per_floor_area_kwh,
+      gas.one_year_gas_per_floor_area_co2,
+      storage_heaters.last_year_gbp AS storage_heaters_last_year_gbp,
+      storage_heaters.last_year_kwh AS storage_heaters_last_year_kwh,
+      storage_heaters.last_year_co2 AS storage_heaters_last_year_co2,
+      storage_heaters.one_year_gas_per_floor_area_gbp AS one_year_storage_heaters_per_floor_area_gbp,
+      storage_heaters.one_year_gas_per_floor_area_kwh AS one_year_storage_heaters_per_floor_area_kwh,
+      storage_heaters.one_year_gas_per_floor_area_co2 AS one_year_storage_heaters_per_floor_area_co2,
+      gas.one_year_saving_versus_exemplar_gbpcurrent AS one_year_gas_saving_versus_exemplar_gbpcurrent,
+      storage_heaters.one_year_saving_versus_exemplar_gbpcurrent AS one_year_storage_heaters_saving_versus_exemplar_gbpcurrent,
+      additional.gas_economic_tariff_changed_this_year,
+      additional.electricity_economic_tariff_changed_this_year
      FROM (((latest_runs
        JOIN additional ON ((latest_runs.id = additional.alert_generation_run_id)))
        LEFT JOIN gas ON ((latest_runs.id = gas.alert_generation_run_id)))
@@ -3534,29 +3711,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_index "comparison_configurable_periods", ["school_id", "comparison_report_id"], name: "idx_on_school_id_comparison_report_id_7e281be411", unique: true
 
   create_view "comparison_electricity_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
+      SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+      alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
       data.holiday_start_date,
       data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+     FROM (((alert_generation_runs
+       JOIN alerts ON ((alerts.alert_generation_run_id = alert_generation_runs.id)))
+       JOIN alert_types ON ((alert_types.id = alerts.alert_type_id)))
+       CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+    WHERE (((alert_types.class_name = 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertElectricityUsageDuringCurrentHoliday'::text))
+    ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
+          CASE
+              WHEN (alert_types.class_name = 'Alerts::Electricity::UsageDuringCurrentHolidayWithCommunityUse'::text) THEN 0
+              ELSE 1
+          END;
   SQL
   add_index "comparison_electricity_consumption_during_holidays", ["school_id"], name: "idx_on_school_id_f87dfdb857", unique: true
 
@@ -3593,79 +3764,93 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_index "comparison_electricity_peak_kw_per_pupils", ["school_id"], name: "index_comparison_electricity_peak_kw_per_pupils_on_school_id", unique: true
 
   create_view "comparison_electricity_targets", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertElectricityTargetAnnual'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+      WITH current_targets AS (
+           SELECT ranked.id
+             FROM ( SELECT school_targets_1.id,
+                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                     FROM school_targets school_targets_1
+                    WHERE (school_targets_1.start_date < now())) ranked
+            WHERE (ranked.rank = 1)
+          ), totals AS (
+           SELECT school_targets_1.id,
+              sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
+              sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh,
+              bool_or(((consumption.value ->> 7))::boolean) AS manual_readings
+             FROM school_targets school_targets_1,
+              LATERAL jsonb_array_elements(school_targets_1.electricity_monthly_consumption) consumption(value)
+            WHERE (((NOT ((consumption.value ->> 5))::boolean) AND (NOT ((consumption.value ->> 6))::boolean)) OR ((consumption.value ->> 7))::boolean)
+            GROUP BY school_targets_1.id
+          )
+   SELECT school_targets.school_id,
+      (- school_targets.electricity) AS current_target,
+      school_targets.start_date AS tracking_start_date,
+      totals.id,
+      totals.current_year_kwh,
+      totals.previous_year_kwh,
+      totals.current_year_target_kwh,
+      totals.manual_readings,
+      ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
+     FROM ((school_targets
+       JOIN totals ON ((totals.id = school_targets.id)))
+       JOIN current_targets ON ((current_targets.id = school_targets.id)))
+    WHERE (totals.previous_year_kwh > (0)::double precision);
   SQL
   add_index "comparison_electricity_targets", ["school_id"], name: "index_comparison_electricity_targets_on_school_id", unique: true
 
   create_view "comparison_gas_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
+      SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+      alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
       data.holiday_start_date,
       data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+     FROM (((alert_generation_runs
+       JOIN alerts ON ((alerts.alert_generation_run_id = alert_generation_runs.id)))
+       JOIN alert_types ON ((alert_types.id = alerts.alert_type_id)))
+       CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+    WHERE (((alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertGasHeatingHotWaterOnDuringHoliday'::text))
+    ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
+          CASE
+              WHEN (alert_types.class_name = 'Alerts::Gas::HeatingHotWaterOnDuringHolidayWithCommunityUse'::text) THEN 0
+              ELSE 1
+          END;
   SQL
   add_index "comparison_gas_consumption_during_holidays", ["school_id"], name: "index_comparison_gas_consumption_during_holidays_on_school_id", unique: true
 
   create_view "comparison_gas_targets", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
-      data.current_year_percent_of_target_relative,
-      data.current_year_kwh,
-      data.current_year_target_kwh,
-      data.tracking_start_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.current_year_percent_of_target_relative,
-              data_1.current_year_kwh,
-              data_1.current_year_target_kwh,
-              data_1.tracking_start_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(current_year_percent_of_target_relative double precision, current_year_kwh double precision, current_year_target_kwh double precision, tracking_start_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertGasTargetAnnual'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+      WITH current_targets AS (
+           SELECT ranked.id
+             FROM ( SELECT school_targets_1.id,
+                      row_number() OVER (PARTITION BY school_targets_1.school_id ORDER BY school_targets_1.start_date DESC) AS rank
+                     FROM school_targets school_targets_1
+                    WHERE (school_targets_1.start_date < now())) ranked
+            WHERE (ranked.rank = 1)
+          ), totals AS (
+           SELECT school_targets_1.id,
+              sum(((consumption.value ->> 2))::double precision) AS current_year_kwh,
+              sum(((consumption.value ->> 3))::double precision) AS previous_year_kwh,
+              sum(((consumption.value ->> 4))::double precision) AS current_year_target_kwh,
+              bool_or(((consumption.value ->> 7))::boolean) AS manual_readings
+             FROM school_targets school_targets_1,
+              LATERAL jsonb_array_elements(school_targets_1.gas_monthly_consumption) consumption(value)
+            WHERE (((NOT ((consumption.value ->> 5))::boolean) AND (NOT ((consumption.value ->> 6))::boolean)) OR ((consumption.value ->> 7))::boolean)
+            GROUP BY school_targets_1.id
+          )
+   SELECT school_targets.school_id,
+      (- school_targets.gas) AS current_target,
+      school_targets.start_date AS tracking_start_date,
+      totals.id,
+      totals.current_year_kwh,
+      totals.previous_year_kwh,
+      totals.current_year_target_kwh,
+      totals.manual_readings,
+      ((totals.current_year_kwh - totals.previous_year_kwh) / totals.previous_year_kwh) AS previous_to_current_year_change
+     FROM ((school_targets
+       JOIN totals ON ((totals.id = school_targets.id)))
+       JOIN current_targets ON ((current_targets.id = school_targets.id)))
+    WHERE (totals.previous_year_kwh > (0)::double precision);
   SQL
   add_index "comparison_gas_targets", ["school_id"], name: "index_comparison_gas_targets_on_school_id", unique: true
 
@@ -4108,29 +4293,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_29_135916) do
   add_index "comparison_solar_pv_benefit_estimates", ["school_id"], name: "index_comparison_solar_pv_benefit_estimates_on_school_id", unique: true
 
   create_view "comparison_storage_heater_consumption_during_holidays", materialized: true, sql_definition: <<-SQL
-      SELECT latest_runs.id,
-      data.alert_generation_run_id,
-      data.school_id,
+      SELECT DISTINCT ON (alert_generation_runs.school_id) alerts.school_id,
+      alert_generation_runs.id,
       data.holiday_projected_usage_gbp,
       data.holiday_usage_to_date_gbp,
       data.holiday_type,
       data.holiday_start_date,
       data.holiday_end_date
-     FROM ( SELECT alerts.alert_generation_run_id,
-              alerts.school_id,
-              data_1.holiday_projected_usage_gbp,
-              data_1.holiday_usage_to_date_gbp,
-              data_1.holiday_type,
-              data_1.holiday_start_date,
-              data_1.holiday_end_date
-             FROM alerts,
-              alert_types,
-              LATERAL jsonb_to_record(alerts.variables) data_1(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date)
-            WHERE ((alerts.alert_type_id = alert_types.id) AND (alert_types.class_name = 'AlertStorageHeaterHeatingOnDuringHoliday'::text))) data,
-      ( SELECT DISTINCT ON (alert_generation_runs.school_id) alert_generation_runs.id
-             FROM alert_generation_runs
-            ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC) latest_runs
-    WHERE (data.alert_generation_run_id = latest_runs.id);
+     FROM (((alert_generation_runs
+       JOIN alerts ON ((alerts.alert_generation_run_id = alert_generation_runs.id)))
+       JOIN alert_types ON ((alert_types.id = alerts.alert_type_id)))
+       CROSS JOIN LATERAL jsonb_to_record(alerts.variables) data(holiday_projected_usage_gbp double precision, holiday_usage_to_date_gbp double precision, holiday_type text, holiday_start_date date, holiday_end_date date))
+    WHERE (((alert_types.class_name = 'Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse'::text) AND (alerts.enough_data = 1)) OR (alert_types.class_name = 'AlertStorageHeaterHeatingOnDuringHoliday'::text))
+    ORDER BY alert_generation_runs.school_id, alert_generation_runs.created_at DESC,
+          CASE
+              WHEN (alert_types.class_name = 'Alerts::StorageHeater::HeatingOnDuringHolidayWithCommunityUse'::text) THEN 0
+              ELSE 1
+          END;
   SQL
   add_index "comparison_storage_heater_consumption_during_holidays", ["school_id"], name: "idx_on_school_id_43b0326934", unique: true
 

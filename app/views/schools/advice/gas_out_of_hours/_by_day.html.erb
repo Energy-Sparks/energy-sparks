@@ -5,21 +5,28 @@
 
 <p><%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.subtitle') %></p>
 
-<%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
+<% i18n_prefix = 'advice_pages.gas_out_of_hours.analysis' %>
+<%# i18n-tasks-use t('usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title', scope: i18n_prefix) %>
 <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html') %>
 <%= render MeterSelectionChartComponent.new(
       meter_selection: meter_selection,
       chart_type: :gas_by_day_of_week_tolerant,
-      chart_subtitle_key: 'advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html'
+      chart_subtitle_key: 'advice_pages.gas_out_of_hours.'\
+                          'analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.subtitle_html'
     ) do |c| %>
    <% c.with_title do %>
-     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title') %>
+     <%= t('usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.title', scope: i18n_prefix) %>
    <% end %>
    <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html') %>
+   <%# i18n-tasks-use t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_savings_html') %>
    <% c.with_footer do %>
-     <%= t('advice_pages.gas_out_of_hours.analysis.usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html',
-           savings_kwh: format_unit((annual_usage_breakdown.total.kwh - annual_usage_breakdown.out_of_hours.kwh), :kwh),
-           savings_gbp: format_unit((annual_usage_breakdown.total.£ - annual_usage_breakdown.out_of_hours.£), :£)) %>
+     <%= t('usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_html', scope: i18n_prefix) %>
+     <% if annual_usage_breakdown.weekend.kwh > 0.0 %>
+       <%= t('usage_by_day_of_week.gas_by_day_of_week_tolerant_chart.footer_savings_html',
+             scope: i18n_prefix,
+             savings_kwh: format_unit(annual_usage_breakdown.weekend.kwh, :kwh),
+             savings_gbp: format_unit(annual_usage_breakdown.weekend.£, :£)) %>
+     <% end %>
    <% end %>
 <% end %>
 

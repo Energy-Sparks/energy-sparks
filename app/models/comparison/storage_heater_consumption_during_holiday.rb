@@ -2,7 +2,6 @@
 #
 # Table name: comparison_storage_heater_consumption_during_holidays
 #
-#  alert_generation_run_id     :bigint(8)
 #  holiday_end_date            :date
 #  holiday_projected_usage_gbp :float
 #  holiday_start_date          :date

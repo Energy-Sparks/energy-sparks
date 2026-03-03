@@ -9,16 +9,24 @@
       <%= render 'school_details_section' %>
       <%= render 'consent_section' %>
       <%= render 'school_users_section' %>
-      <%= render 'pupil_password_section' if @pupil %>
     </div>
 
-    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary' %>
+    <%= button_to t('onboarding.completion.new.complete_setup'),
+                  onboarding_completion_path(@school_onboarding),
+                  method: :post, class: 'btn btn-primary' %>
     <hr>
 
-    <%= render 'optional_steps_section' %>
-    <%= render 'opening_times_section' %>
-    <%= render 'inset_days_section' if @inset_days %>
+    <h2><%= t('onboarding.completion.new.optional_steps_section.optional_steps') %></h2>
+    <p><%= t('onboarding.completion.new.optional_steps_section.optional_steps_message') %><p>
+    <div id="accordion-optional-steps">
+      <%= render 'pupil_password_section' %>
+      <%= render 'meters_section' %>
+      <%= render 'opening_times_section' %>
+      <%= render 'inset_days_section' if @inset_days %>
+    </div>
 
-    <%= button_to t('onboarding.completion.new.complete_setup'), onboarding_completion_path(@school_onboarding), method: :post, class: 'btn btn-primary' %>
+    <%= button_to t('onboarding.completion.new.complete_setup'),
+                  onboarding_completion_path(@school_onboarding),
+                  method: :post, class: 'btn btn-primary' %>
   </div>
 </div>

@@ -4,9 +4,10 @@ module Charts
 
     renders_one :title
     renders_one :intro
+    renders_one :extra_note
 
     def initialize(school_group:,
-                   comparisons: [:annual_energy_use, :annual_energy_costs_per_pupil, :annual_energy_costs_per_floor_area],
+                   comparisons: [:annual_electricity_costs_per_pupil, :annual_heating_costs_per_floor_area],
                    **_kwargs)
       super
       @school_group = school_group
@@ -14,7 +15,7 @@ module Charts
     end
 
     def render?
-      reports&.any? && school_group.visible_schools_count.positive?
+      reports&.any? && school_group.assigned_schools.data_visible.count > 1
     end
   end
 end

@@ -86,11 +86,11 @@
     <div class='pb-4 mb-4 text-center' id='buttons'>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.our_tool'),
-            product_path, style: :primary, classes: 'mb-4 mr-2'
+            product_path, style: :primary, classes: 'mb-2 me-2'
           ) %>
       <%= render Elements::ButtonComponent.new(
             t('home.buttons.watch_a_demo'),
-            watch_demo_campaigns_path, style: :secondary, classes: 'mb-4'
+            watch_demo_campaigns_path, style: :secondary, classes: 'mb-2'
           ) %>
     </div>
 
@@ -161,9 +161,9 @@
         <%= section_header.with_header title: t('home.blog.header') %>
         <%= section_header.with_description { t('home.blog.description') } %>
         <%= section_header.with_button t('home.buttons.newsletter_signup'),
-                                       new_mailchimp_signup_path, style: :success %>
+                                       new_mailchimp_signup_path, style: :success, classes: 'mb-2' %>
         <%= section_header.with_button t('home.buttons.view_blog'),
-                                       'http://blog.energysparks.uk', style: :secondary %>
+                                       'http://blog.energysparks.uk', style: :secondary, classes: 'mb-2' %>
       <% end %>
 
       <%= render Layout::GridComponent.new(

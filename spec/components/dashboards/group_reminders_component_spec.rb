@@ -83,6 +83,12 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
       it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.clusters.note')) }
     end
 
+    context 'with a project group' do
+      let(:school_group) { create(:school_group, group_type: :project) }
+
+      it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.clusters.note')) }
+    end
+
     context 'with clusters' do
       before do
         create(:school_group_cluster, school_group: school_group)
@@ -113,6 +119,12 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
 
         it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.review_tariffs.note')) }
       end
+
+      context 'with a project group' do
+        let(:school_group) { create(:school_group, group_type: :project) }
+
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.review_tariffs.note')) }
+      end
     end
 
     context 'when not in reminder period' do
@@ -128,54 +140,34 @@ RSpec.describe Dashboards::GroupRemindersComponent, :include_application_helper,
     end
   end
 
-  describe '#prompt_for_engagement?' do
-    context 'with the group admin' do
-      let(:user) { create(:group_admin, school_group: school_group) }
-
-      it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.engagement.note')) }
-    end
-
-    context 'when there are active, unengaged schools' do
-      let(:school_group) { create(:school_group, :with_active_schools) }
-
-      context 'with the group admin' do
-        let(:user) { create(:group_admin, school_group: school_group) }
-
-        it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.engagement.note')) }
-      end
-    end
-
-    context 'when there are active engaged schools' do
-      let(:school_group) { create(:school_group, :with_active_schools, count: 3) }
-
-      before do
-        create(:observation, :activity, school: school_group.schools.first)
-      end
-
-      context 'with the group admin' do
-        let(:user) { create(:group_admin, school_group: school_group) }
-
-        it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.engagement.note')) }
-      end
-    end
-  end
-
   describe '#prompt_for_onboarding?' do
-    context 'with the group admin' do
+    context 'when user is a group admin' do
       let(:user) { create(:group_admin, school_group: school_group) }
 
-      it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
-    end
-
-    context 'with incomplete onboarding' do
-      before do
-        create(:school_onboarding, school_group: school_group)
+      context 'with no onboardings' do
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
       end
 
-      context 'with the group admin' do
-        let(:user) { create(:group_admin, school_group: school_group) }
+      context 'with incomplete school onboardings' do
+        before do
+          create(:school_onboarding, school_group: school_group)
+        end
 
         it { expect(html).to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
+      end
+    end
+
+    context 'when user is not a group admin' do
+      let(:user) { create(:school_admin) }
+
+      context 'with incomplete project onboardings' do
+        let(:school_group) { create(:school_group, :project_group)}
+
+        before do
+          create(:school_onboarding, project_group: school_group)
+        end
+
+        it { expect(html).not_to have_content(I18n.t('components.dashboards.group_reminders.onboarding.note')) }
       end
     end
   end

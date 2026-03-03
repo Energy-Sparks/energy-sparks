@@ -5,7 +5,7 @@ module Layout
         CalloutComponent.new(title:, **merge_classes('px-3 py-2 rounded', kwargs))
       end
 
-      def initialize(title:, subtitle: nil, theme: :pale, **_kwargs)
+      def initialize(title:, subtitle: nil, theme: :white, **_kwargs)
         super
         @title = title
         @subtitle = subtitle
@@ -14,7 +14,7 @@ module Layout
       class CalloutComponent < LayoutComponent
         renders_many :rows
 
-        def initialize(title: nil, classes: nil, theme: :pale, **_kwargs)
+        def initialize(title: nil, classes: nil, theme: :white, **_kwargs)
           super
           @title = title
         end

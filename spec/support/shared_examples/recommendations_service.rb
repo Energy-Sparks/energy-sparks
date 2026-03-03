@@ -147,7 +147,8 @@ RSpec.shared_examples 'a service making recommendations based on energy use' do 
     end
 
     it 'includes ratings suggestions alternating by fuel type' do
-      expect(energy_use).to eq([one_gas[0], elec[0], gas[0], elec[1], gas[1]])
+      expect(energy_use.map { |task| task.name.include?('gas') ? :gas : :electricity }).to \
+        eq(%i[gas electricity gas electricity gas])
     end
   end
 

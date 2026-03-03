@@ -1,0 +1,25 @@
+<%= render ComparisonTableComponent.new(
+      advice_page: advice_page, advice_page_tab: advice_page_tab,
+      colgroups: colgroups, headers: headers, index_params: index_params,
+      report: report, table_name: :table, table_classes: comparison_table_class(results)
+    ) do |c| %>
+  <% results.each do |result| %>
+    <% c.with_row do |r| %>
+      <% r.with_school school: result.school %>
+      <%= r.with_var val: result.current_year_kwh, unit: :kwh %>
+      <%= r.with_var change: true,
+                     val: percent_change(result.previous_year_kwh, result.current_year_kwh),
+                     unit: :relative_percent_0dp %>
+
+      <%= r.with_var val: result.current_year_co2, unit: :co2 %>
+      <%= r.with_var change: true,
+                     val: percent_change(result.previous_year_co2, result.current_year_co2),
+                     unit: :relative_percent_0dp %>
+
+      <%= r.with_var val: result.current_year_gbp, unit: :£ %>
+      <%= r.with_var change: true,
+                     val: percent_change(result.previous_year_gbp, result.current_year_gbp),
+                     unit: :relative_percent_0dp %>
+    <% end %>
+  <% end %>
+<% end %>

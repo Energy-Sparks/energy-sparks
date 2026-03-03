@@ -9,9 +9,6 @@ en:
           intro: The following table summarises the total cost associated with each meter for the last %{period} between %{start_date} and %{end_date}
           title: Total cost for the last %{period}
           whole_school: We estimate your total gas cost over the last %{period} to be %{cost}.
-        meter_breakdown:
-          select: Select an option to view costs for the whole school or a specific meter
-          title: Cost breakdown
         summary: The following sections provide more background and analysis on your gas costs
         tariff_note:
           good_estimate: The information below provides a good estimate of your annual costs for this meter based on meter tariff information which has been provided to Energy Sparks.

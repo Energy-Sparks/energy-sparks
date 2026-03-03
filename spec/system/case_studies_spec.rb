@@ -20,7 +20,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
 
     it 'shows the expected link' do
-      expect(page).to have_link(I18n.t('case_studies.download'), href: case_study_download_path(case_study, locale: :en))
+      expect(page).to have_link(I18n.t('common.labels.download'), href: case_study_download_path(case_study, locale: :en))
     end
 
     it 'serves the file' do
@@ -34,7 +34,7 @@ RSpec.describe 'case_studies', :include_application_helper do
       end
 
       it 'the link is to the english download' do
-        expect(page).to have_link(I18n.t('case_studies.download', locale: :cy), href: case_study_download_path(case_study, locale: :en))
+        expect(page).to have_link(I18n.t('common.labels.download', locale: :cy), href: case_study_download_path(case_study, locale: :en))
       end
     end
   end
@@ -51,7 +51,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
 
     it 'shows the welsh link' do
-      expect(page).to have_link(I18n.t('case_studies.download', locale: :cy), href: case_study_download_path(case_study, locale: :cy))
+      expect(page).to have_link(I18n.t('common.labels.download', locale: :cy), href: case_study_download_path(case_study, locale: :cy))
     end
 
     it 'serves the file' do
@@ -109,7 +109,7 @@ RSpec.describe 'case_studies', :include_application_helper do
     end
 
     it 'shows the download link' do
-      expect(page).to have_link(I18n.t('case_studies.download'), href: case_study_download_path(case_study, locale: :en))
+      expect(page).to have_link(I18n.t('common.labels.download'), href: case_study_download_path(case_study, locale: :en))
     end
 
     context 'when some case studies do not have images' do

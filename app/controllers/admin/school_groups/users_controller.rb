@@ -26,7 +26,7 @@ module Admin
 
       def school_users
         users = {}
-        @school_group.schools.each do |school|
+        @school_group.assigned_schools.each do |school|
           users[school] = (school.users + school.cluster_users).uniq.sort_by(&:email)
         end
         users
@@ -50,12 +50,13 @@ module Admin
             'Last signed in',
             'Alerts',
             'Language',
-            'Locked'
+            'Locked',
+            'Climate Action Lead'
           ]
           group_admins.each do |user|
             add_user_to_csv(csv, school_group, nil, user)
           end
-          school_group.schools.by_name.each do |school|
+          school_group.assigned_schools.by_name.each do |school|
             school_users[school].each do |user|
               add_user_to_csv(csv, school_group, school, user)
             end
@@ -68,27 +69,20 @@ module Admin
           school_group.name,
           school&.name || '',
           school&.school_type&.humanize || '',
-          if school
-            school&.active? ? 'Yes' : 'No'
-          else
-            ''
-          end,
-          if school
-            school&.data_enabled? ? 'Yes' : 'No'
-          else
-            ''
-          end,
+          school ? y_n(school&.active?) : '',
+          school ? y_n(school&.data_enabled?) : '',
           school&.funder&.name || '',
           school&.region&.to_s&.titleize || '',
           user.name,
           user.pupil? ? 'N/A' : user.email,
           user.role.titleize,
-          user.group_admin? ? 'N/A' : user.staff_role&.title,
+          user.group_user? ? 'N/A' : user.staff_role&.title,
           y_n(user.confirmed?),
           display_last_signed_in_as(user),
-          user.group_admin? ? 'N/A' : y_n(user.contact_for_school),
+          user.group_user? ? 'N/A' : y_n(user.contact_for_school),
           I18n.t("languages.#{user.preferred_locale}"),
-          y_n(user.access_locked?)
+          y_n(user.access_locked?),
+          y_n(user.climate_action_lead)
         ]
       end
     end

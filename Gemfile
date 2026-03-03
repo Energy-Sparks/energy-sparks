@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '~> 3.2.2'
+ruby '~> 3.4.8'
 
 gem 'rails', '~> 7.2.2'
 
@@ -67,7 +67,7 @@ gem 'twilio-ruby' # For SMS notifications
 gem 'bootstrap-email'
 
 # Frontend
-gem 'bootstrap', '~> 4' # Use bootstrap for responsive layout
+gem 'bootstrap', '~> 5.3'
 gem 'cocoon' # nested forms
 gem 'simple_form'
 gem 'sortablejs-rails'
@@ -76,7 +76,7 @@ gem 'view_component'
 # JS Templating
 gem 'handlebars_assets'
 # Template variables
-gem 'mustache', '~> 1.0'
+gem 'mustache', '~> 1.1'
 
 # Auth & Users
 gem 'cancancan', '~> 3' # Use cancancan for authorization
@@ -101,7 +101,7 @@ gem 'oj'
 gem 'rollbar'
 
 # Internationalisation
-gem 'i18n-tasks', '~> 1.0.15'
+gem 'i18n-tasks', '~> 1.1.2'
 gem 'mobility', '~> 1.3.2'
 gem 'mobility-actiontext', '~> 1.1.1'
 
@@ -118,6 +118,7 @@ gem 'premailer-rails'
 
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-active_support_cache_store'
 gem 'flipper-ui', '~> 1.3'
 
 gem 'net-sftp'

@@ -1,12 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe AnalysisPageFinderController, type: :controller do
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_REPLACE_ANALYSIS_PAGES: feature_flag do
-      example.run
-    end
-  end
-
   describe 'GET #show' do
     context 'when redirecting to advice pages' do
       let(:feature_flag) { 'true' }

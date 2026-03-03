@@ -1,0 +1,24 @@
+<table class="table advice-table table-sm table-sorted">
+  <thead>
+    <th>School</th>
+    <th>School Group</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Days</th>
+    <th>Months</th>
+    <th>Recent data?</th>
+  </thead>
+  <tbody>
+    <% schools_and_dates.each do |school, dates| %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
+        <td><%= dates.analysis_start_date %></td>
+        <td><%= dates.analysis_end_date %></td>
+        <td><%= dates.days_of_data.to_i %></td>
+        <td><%= dates.months_of_data %></td>
+        <td><%= dates.recent_data %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,11 +1,13 @@
 module SchoolGroups
   class AdviceController < SchoolGroups::Advice::BaseController
+    MODAL_ID = 'analysis-footnotes'.freeze
+    CACHE_TIME = 1.hour
+
     include Scoring
     include Promptable
 
     def show
-      build_breadcrumbs([name: I18n.t('advice_pages.breadcrumbs.root')])
-      @fuel_types = @school_group.fuel_types
+      build_breadcrumbs([{ name: I18n.t('advice_pages.breadcrumbs.root') }])
 
       respond_to do |format|
         format.html {}
@@ -19,7 +21,7 @@ module SchoolGroups
     end
 
     def priorities
-      build_breadcrumbs([name: I18n.t('advice_pages.index.priorities.title')])
+      build_breadcrumbs([{ name: I18n.t('advice_pages.index.priorities.title') }])
       respond_to do |format|
         format.html do
           service = SchoolGroups::PriorityActions.new(@schools)
@@ -33,11 +35,11 @@ module SchoolGroups
     end
 
     def alerts
-      build_breadcrumbs([name: I18n.t('advice_pages.index.alerts.title')])
+      build_breadcrumbs([{ name: I18n.t('advice_pages.index.alerts.title') }])
     end
 
     def scores
-      build_breadcrumbs([name: I18n.t('school_groups.titles.current_scores')])
+      build_breadcrumbs([{ name: I18n.t('school_groups.titles.current_scores') }])
       setup_scores_and_years(@school_group)
       respond_to do |format|
         format.html {}
@@ -48,6 +50,18 @@ module SchoolGroups
                     filename: csv_filename_for(params[:previous_year].present? ? 'previous_scores' : 'current_scores')
         end
       end
+    end
+
+    def comparison_reports
+      build_breadcrumbs([{ name: I18n.t('school_groups.titles.comparisons') }])
+    end
+
+    def charts
+      build_breadcrumbs([{ name: I18n.t('school_groups.titles.charts') }])
+      @charts = SchoolGroups::Charts.new.safe_charts
+      @default_school = params[:school].present? ? School.find_by(slug: params[:school]) : nil
+      @default_chart_type = params[:chart_type]&.to_sym
+      @default_fuel_type = params[:fuel_type]&.to_sym
     end
 
     private
@@ -64,7 +78,7 @@ module SchoolGroups
     end
 
     def include_cluster
-      can?(:update_settings, @school_group)
+      helpers.include_clusters?(@school_group)
     end
 
     def priority_actions_csv

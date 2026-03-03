@@ -9,16 +9,6 @@ RSpec.describe 'school adult dashboard', type: :system do
     let!(:school_invisible)       { create(:school, name: 'Invisible School', visible: false, school_group: school_group)}
 
     context 'as guest user' do
-      it 'does not show invisible school or the group' do
-        visit root_path
-        within('#our-schools') do
-          click_on('View schools')
-        end
-        expect(page.has_content?(school_name)).to be true
-        expect(page.has_content?('Invisible School')).not_to be true
-        expect(page.has_content?('School Group')).not_to be true
-      end
-
       it 'prompts user to login when viewing' do
         visit school_path(school_invisible)
         expect(page.has_content?('You are not authorized to access this page')).to be true
@@ -44,13 +34,6 @@ RSpec.describe 'school adult dashboard', type: :system do
         end
       end
 
-      it 'does show invisible school, but not the group' do
-        expect(page.has_content?(school_name)).to be true
-        expect(page.has_content?('Not visible schools')).to be true
-        expect(page.has_content?('Invisible School')).to be true
-        expect(page.has_content?('School Group')).not_to be true
-      end
-
       it 'shows school' do
         visit school_path(school_invisible)
         expect(page.has_link?('Pupil dashboard')).to be true
@@ -64,13 +47,8 @@ RSpec.describe 'school adult dashboard', type: :system do
 
     context 'as a guest user' do
       it 'is listed on school page' do
-        visit root_path
-        within('#our-schools') do
-          click_on('View schools')
-        end
-
+        visit schools_path(letter: non_public_school.name.first.upcase)
         expect(page.has_content?(non_public_school.name)).to be true
-        expect(page.has_content?('School Group')).to be true
       end
 
       it 'prompts user to login when viewing' do

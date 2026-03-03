@@ -11,7 +11,7 @@ class DataEnabledEmailSender
     users.partition(&:staff?).zip([true, false]).each do |users, staff|
       next unless users.any?
 
-      OnboardingMailer.mailer.with_user_locales(users:, school: @school, target_prompt:, staff:) do |mailer|
+      OnboardingMailer.with_user_locales(users:, school: @school, target_prompt:, staff:) do |mailer|
         mailer.data_enabled_email.deliver_now
       end
     end

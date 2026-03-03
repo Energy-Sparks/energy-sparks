@@ -26,6 +26,7 @@
 #  adfr_meter_id_config_id                                      (meter_id,amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_config_id      (amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_import_log_id  (amr_data_feed_import_log_id)
+#  index_amr_data_feed_readings_on_created_at_and_meter_id      (created_at,meter_id)
 #  index_amr_data_feed_readings_on_meter_id                     (meter_id)
 #  index_amr_data_feed_readings_on_mpan_mprn                    (mpan_mprn)
 #  unique_meter_readings                                        (mpan_mprn,reading_date) UNIQUE

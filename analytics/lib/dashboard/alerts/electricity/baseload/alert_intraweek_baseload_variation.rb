@@ -109,7 +109,7 @@ class AlertIntraweekBaseloadVariation < AlertBaseloadBase
                 and your lowest on <%= min_day_str %> of <%= format_kw(min_day_kw) %>.
               <% else %>
                 Your usage between days of the week is inconsistent and could be improved,
-                doing this would save <%= FormatEnergyUnit.format(:£, @average_one_year_saving_£, :html) %>.
+                doing this would save <%= FormatUnit.format(:£, @average_one_year_saving_£, :html) %>.
                 On <%= max_day_str %> your average baseload was <%= format_kw(max_day_kw) %>
                 but on <%= min_day_str %> it was <%= format_kw(min_day_kw) %>.
                 The chart below shows the average baseload over the last year by day of the week.

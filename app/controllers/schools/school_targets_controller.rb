@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Schools
   class SchoolTargetsController < ApplicationController
     load_and_authorize_resource :school
@@ -7,46 +9,27 @@ module Schools
     include SchoolProgress
     include DashboardTimeline
 
-    skip_before_action :authenticate_user!, only: [:index, :show]
-
     before_action :redirect_if_disabled
     before_action :load_advice_pages
     before_action :set_breadcrumbs
 
     def index
-      if @school.has_target?
-        redirect_to school_school_target_path(@school, @school.most_recent_target)
+      if @school.has_target? && !@school.most_recent_target.expired?
+        @school_target = @school.most_recent_target
+        edit
       else
-        redirect_to new_school_school_target_path(@school)
+        new
       end
     end
 
     def show
-      authorize! :show, @school_target
-
-      unless @school_target.report_last_generated.nil?
-        @progress_summary = @school_target.to_progress_summary
-        @overview_data = Schools::ManagementTableService.new(@school).management_data
-      end
-
-      if @school_target.current?
-        @activities = Recommendations::Activities.new(@school).based_on_energy_use
-        @actions = Recommendations::Actions.new(@school).based_on_energy_use
-        # list of fuel types to suggest estimates
-        @suggest_estimates_for_fuel_types = suggest_estimates_for_fuel_types(check_data: true)
-        @prompt_to_review_target = prompt_to_review_target?
-        @fuel_types_changed = fuel_types_changed
-        render :current, layout: 'dashboards'
-      else
-        @observations = setup_target_timeline(@school_target)
-        render :expired, layout: 'dashboards'
-      end
+      edit
     end
 
     # create first or new target if current has expired
     def new
       if @school.has_current_target?
-        redirect_to school_school_target_path(@school, @school.current_target)
+        redirect_to school_school_targets_path(@school)
       elsif @school.school_targets.any?(&:persisted?)
         @previous_school_target = @school.most_recent_target
         @school_target = target_service.build_target
@@ -57,21 +40,11 @@ module Schools
       end
     end
 
-    def create
-      authorize! :create, @school_target
-      if @school_target.save
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully created'
-      elsif @school.has_target?
-        render :new
-      else
-        render :first
-      end
-    end
-
     def edit
       authorize! :edit, @school_target
       if @school_target.expired?
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Cannot edit an expired target'
+        redirect_to new_school_school_target_path(@school),
+                    notice: t('schools.school_targets.edit.cannot_update_expired')
       else
         target_service.refresh_target(@school_target)
         @prompt_to_review_target = prompt_to_review_target?
@@ -80,11 +53,26 @@ module Schools
       end
     end
 
+    def create
+      authorize! :create, @school_target
+      if @school_target.save
+        previous_changes = @school_target.previous_changes.keys
+        update_monthly_consumption
+        redirect_to redirect_path(previous_changes), notice: t('schools.school_targets.successfully_created')
+      elsif @school.has_target?
+        render :new
+      else
+        render :first
+      end
+    end
+
     def update
       authorize! :update, @school_target
       if @school_target.update(school_target_params.merge({ revised_fuel_types: [] }))
+        previous_changes = @school_target.previous_changes.keys
+        update_monthly_consumption
         AggregateSchoolService.new(@school).invalidate_cache
-        redirect_to school_school_target_path(@school, @school_target), notice: 'Target successfully updated'
+        redirect_to redirect_path(previous_changes), notice: t('schools.school_targets.successfully_updated')
       else
         target_service
         render :edit, layout: 'dashboards'
@@ -97,18 +85,40 @@ module Schools
       redirect_to school_path(@school), notice: 'Target successfully removed'
     end
 
+    def self.breadcrumb(_current_user)
+      I18n.t('advice_pages.nav.manage_targets')
+    end
+
     private
 
     def set_breadcrumbs
-      @breadcrumbs = [{ name: I18n.t('manage_school_menu.review_targets') }]
+      @breadcrumbs = [{ name: self.class.breadcrumb(current_user) }]
     end
 
     def load_advice_pages
       @advice_pages = AdvicePage.all
     end
 
+    def update_monthly_consumption
+      Targets::GenerateProgressService.new(@school, aggregate_school).update_monthly_consumption(@school_target)
+    end
+
+    def redirect_path(previous_changes)
+      fuel_changes = previous_changes & %w[electricity gas storage_heaters]
+      case fuel_changes
+      when %w[electricity]
+        school_advice_electricity_target_path(@school)
+      when %w[gas]
+        school_advice_gas_target_path(@school)
+      when %w[storage_heaters]
+        school_advice_storage_heater_target_path(@school)
+      else
+        school_advice_path(@school)
+      end
+    end
+
     def school_target_params
-      params.require(:school_target).permit(:electricity, :gas, :storage_heaters, :start_date, :target_date, :school_id)
+      params.require(:school_target).permit(:electricity, :gas, :storage_heater, :start_date, :target_date, :school_id)
     end
   end
 end

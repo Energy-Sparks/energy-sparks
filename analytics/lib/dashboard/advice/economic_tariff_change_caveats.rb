@@ -47,9 +47,9 @@ class EconomicTariffsChangeCaveats
 
   def format_economic_tariff_changed_text(info, fuel_type, also_clause)
     date = info[:last_change_date].strftime('%A %d %b %Y')
-    rate_before   = FormatEnergyUnit.format(:£_per_kwh, info[:rate_before_£_per_kwh])
-    rate_after    = FormatEnergyUnit.format(:£_per_kwh, info[:rate_after_£_per_kwh])
-    pct           = FormatEnergyUnit.format(:percent,   info[:percent_change].magnitude)
+    rate_before   = FormatUnit.format(:£_per_kwh, info[:rate_before_£_per_kwh])
+    rate_after    = FormatUnit.format(:£_per_kwh, info[:rate_after_£_per_kwh])
+    pct           = FormatUnit.format(:percent,   info[:percent_change].magnitude)
     pct_adjective = percent_change_adjective(info[:percent_change])
     also_text = also_clause ? 'also' : ''
 

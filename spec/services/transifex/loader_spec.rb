@@ -6,12 +6,6 @@ describe Transifex::Loader, type: :service do
   let(:full_sync)   { true }
   let(:service)     { Transifex::Loader.new(locale, logger, full_sync) }
 
-  around do |example|
-    ClimateControl.modify FEATURE_FLAG_SYNC_ADVICE_PAGE_TRANSLATIONS: 'false' do
-      example.run
-    end
-  end
-
   it 'creates a transifex load record' do
     expect { service.perform }.to change(TransifexLoad, :count).by(1)
   end

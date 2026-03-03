@@ -11,11 +11,18 @@ updates:
       interval: "weekly"
       day: "tuesday"
     ignore:
-      # seems like once dependabot has opened a PR for a new minor version it won't do others even if they're security
-      # updates - so ignore new minor versions (they need manual intervention anyway)
+      # ignore non patch updates as others require manual intervention
       - dependency-name: "rails"
-        update-types: ["version-update:semver-minor"]
-      # upgrading to bootstrap 5 will be a bigger manual job
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+      # upgrading bootstrap major version will be a bigger manual job
       - dependency-name: "bootstrap"
         update-types: ["version-update:semver-major"]
     open-pull-requests-limit: 20 # default 5
+  - package-ecosystem: "bundler"
+    directory: "/analytics"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

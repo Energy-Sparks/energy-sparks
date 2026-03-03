@@ -42,7 +42,7 @@ en:
                 <li>lack a 7 day timer so it is not possible to turn the heating off at weekends</li>
                 <li>incorrect boiler settings</li>
               </ul>
-              <p>By eliminating weekend gas consumption at your school you could save up to %{savings_gbp} (%{savings_kwh}kWh) per year.</p>
+            footer_savings_html: "<p>By eliminating weekend gas consumption at your school you could save up to %{savings_gbp} (%{savings_kwh}kWh) per year.</p>"
             subtitle_html: This chart shows the total amount of gas used by <span class="meter">%{meter}</span> between <span class="start-date">%{start_date}</span> and <span class="end-date">%{end_date}</span>, broken down by day of the week and time of use
             title: Gas use by day of the week
           subtitle: To understand why your school is using too much gas outside of school hours, first look at gas use by day of the week.

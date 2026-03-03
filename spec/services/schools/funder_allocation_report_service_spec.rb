@@ -48,15 +48,23 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
     let!(:school_1) do
       school = create(:school,
                       visible: true,
+                      data_sharing: :within_group,
                       school_onboarding: school_onboarding,
                       school_group: school_group,
                       calendar: calendar,
                       country: :england,
                       region: :east_of_england,
+                      diocese: create(:school_group, :diocese),
+                      local_authority_area_group: create(:school_group, :local_authority_area),
                       local_authority_area: local_authority_area,
                       percentage_free_school_meals: 50,
                       funder: funder,
-                      removal_date: nil)
+                      removal_date: nil,
+                      default_contract_holder: school_group)
+      school.project_groups << create(:school_group, :project)
+      school.organisation_group = school_group
+      contract = create(:commercial_contract, contract_holder: school_group)
+      create(:commercial_licence, contract:, school:)
       create(:staff, school:)
       school
     end
@@ -101,12 +109,16 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
       expect(school_1.archived?).to be(false)
       expect(school_2.archived?).to be(true)
 
+      current_licence = school_1.licences.current.by_start_date.first
+
       expect(csv.lines[1].chomp).to eq [
         school_1.school_group.name,
         school_1.name,
+        school_1.urn,
         'Primary',
         'false',
         'true',
+        school_1.data_sharing.humanize,
         school_1.school_onboarding.onboarding_completed_on.iso8601,
         school_1.school_onboarding.first_made_data_enabled.iso8601,
         funder.name,
@@ -116,8 +128,10 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         school_1.number_of_pupils,
         school_1.percentage_free_school_meals,
         1,
-        school_1.local_authority_area.name,
+        school_1.local_authority_area_group.name,
         school_1.region.humanize,
+        school_1.diocese.name,
+        school_1.project_groups.map(&:name).join('|'),
         5,
         3,
         electricity_meter.data_source.name,
@@ -137,14 +151,23 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         solar_meter.procurement_route.organisation_name,
         nil,
-        nil
+        nil,
+        current_licence.contract.contract_holder.name,
+        school_1.default_contract_holder.name,
+        current_licence.contract.start_date,
+        current_licence.contract.end_date,
+        current_licence.start_date,
+        current_licence.end_date,
+        current_licence.contract.product.name,
       ].join(',')
       expect(csv.lines[2].chomp).to eq [
         school_2.school_group.name,
         school_2.name,
+        school_2.urn,
         'Primary',
         'true',
         'true',
+        school_2.data_sharing.humanize,
         nil,
         nil,
         school_2.funder.name,
@@ -156,6 +179,8 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         0,
         nil,
         nil,
+        nil,
+        nil,
         0,
         0,
         nil,
@@ -170,6 +195,13 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         nil,
         nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil,
+        nil, # Current Contract Holder
         nil,
         nil,
         nil,

@@ -1,7 +1,5 @@
 module DataFeeds
   class WeatherObservationsController < GenericController
-    include CsvDownloader
-
     load_and_authorize_resource
 
     def show
@@ -14,7 +12,7 @@ module DataFeeds
       respond_to do |format|
         format.html { render 'data_feeds/generic/show_temperatures' }
         format.json { render 'data_feeds/generic/show_temperatures' }
-        format.csv  { send_data readings_to_csv(WeatherObservation.download_for_area_id(@weather_station.id), WeatherObservation::CSV_HEADER), filename: "#{@weather_station.id}-readings.csv" }
+        format.csv  { send_data CsvDownloader.readings_to_csv(WeatherObservation.download_for_area_id(@weather_station.id), WeatherObservation::CSV_HEADER), filename: "#{@weather_station.id}-readings.csv" }
       end
     end
   end

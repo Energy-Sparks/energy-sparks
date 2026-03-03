@@ -3,6 +3,8 @@
 # Table name: data_sources
 #
 #  add_existing_data_feed      :text
+#  alert_percentage_threshold  :integer          default(25)
+#  alerts_on                   :boolean          default(TRUE)
 #  comments                    :text
 #  contact_email               :string
 #  contact_name                :string
@@ -12,18 +14,31 @@
 #  data_prerequisites          :text
 #  historic_data               :text
 #  id                          :bigint(8)        not null, primary key
-#  import_warning_days         :integer
+#  import_warning_days         :integer          default(7)
 #  loa_contact_details         :text
 #  loa_expiry_procedure        :text
 #  load_tariffs                :boolean          default(TRUE), not null
 #  name                        :string           not null
 #  new_area_data_feed          :text
 #  organisation_type           :integer
+#  owned_by_id                 :bigint(8)
 #  updated_at                  :datetime         not null
+#
+# Indexes
+#
+#  index_data_sources_on_owned_by_id  (owned_by_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (owned_by_id => users.id)
 #
 class DataSource < ApplicationRecord
   enum :organisation_type, { energy_supplier: 0, procurement_organisation: 1, meter_operator: 2, council: 3,
                              solar_monitoring_provider: 4 }
+
+  belongs_to :owned_by, class_name: :User, optional: true
+
+  validates :alert_percentage_threshold, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
   validates :name, presence: true, uniqueness: true
   has_many :meters
   has_many :issues, as: :issueable, dependent: :destroy

@@ -4,7 +4,7 @@ module Layout
 
     renders_many :cells, types: types(
       type(:block, Elements::BlockComponent),
-      type(:icon, IconComponent),
+      type(:icon, Elements::IconComponent),
       type(:image, Elements::ImageComponent),
       type(:iframe, Elements::IframeComponent),
       type(:paragraph, Elements::TagComponent, :p),

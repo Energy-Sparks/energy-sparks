@@ -61,7 +61,7 @@ module Amr
         returning: false)
       # Calling private method here, but means we can piggy-back off all the SQL creation
       insert = insert_all.send(:to_sql)
-      where = <<-SQL.squish
+      where = <<~SQL.squish
         WHERE
           amr_validated_readings.kwh_data_x48 IS DISTINCT FROM excluded.kwh_data_x48 OR
           amr_validated_readings.one_day_kwh IS DISTINCT FROM excluded.one_day_kwh OR

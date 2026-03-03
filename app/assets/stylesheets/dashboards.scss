@@ -46,7 +46,7 @@ div#management-energy-overview-tabs {
 }
 
 .info-bar {
-  border-radius: 0.75rem;
+  border-radius: $border-radius-xl;
   padding: 1.1rem 1.25rem;
 }
 
@@ -123,13 +123,13 @@ table.management-priorities {
     }
     td:first-child{
       border-left: 1px $grey-medium solid;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
+      border-top-left-radius: $border-radius-xl;
+      border-bottom-left-radius: $border-radius-xl;
     }
     td:last-child{
       border-right: 1px $grey-medium solid;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
+      border-top-right-radius: $border-radius-xl;
+      border-bottom-right-radius: $border-radius-xl;
     }
   }
 
@@ -237,5 +237,5 @@ table {
   transform: translate(-50%, -50%);
   background: $grey-medium;
   color: $body-color;
-  border-radius: 0.75rem;
+  border-radius: $border-radius-xl;
 }

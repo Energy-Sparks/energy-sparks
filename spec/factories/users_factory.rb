@@ -38,6 +38,12 @@ FactoryBot.define do
       school
     end
 
+    factory :student do
+      name { 'A Student' }
+      role { :student }
+      school
+    end
+
     factory :onboarding_user do
       name { 'A Teacher' }
       role { :school_onboarding }
@@ -62,6 +68,12 @@ FactoryBot.define do
       name { 'Group admin'}
       role { :group_admin }
       school_group
+    end
+
+    factory :group_manager do
+      name { 'Group manager'}
+      role { :group_manager }
+      school_group { association :school_group, :project_group }
     end
 
     trait :has_school_assigned do

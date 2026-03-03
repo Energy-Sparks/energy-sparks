@@ -7,4 +7,4 @@ en:
         gbp_prompt_html: Take action in <strong>%{schools}</strong> to decrease your %{fuel_type} costs over the next year by <strong>%{saving}</strong>.
         kwh_prompt_html: Take action in <strong>%{schools}</strong> to decrease your %{fuel_type} use over the next year by <strong>%{saving}</strong>.
         note: This is just one example of the potential savings we have identified across schools in this group
-        view_all_savings: View all savings
+        view_all_potential_savings: View all potential savings

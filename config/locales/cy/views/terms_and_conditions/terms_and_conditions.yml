@@ -2,7 +2,7 @@ cy:
   terms_and_conditions:
     content_html: |-
       <h1 class="pt-3">Telerau ac Amodau Energy Sparks/Sbarcynni ar gyfer ysgolion a defnyddwyr sy'n cymryd rhan</h1>
-      <p>Dyddiad adolygu&#58; 8 Tachwedd 2024</p>
+      <p>Dyddiad adolygu&#58; 10 Tachwedd 2025</p>
       <h2> 1. Rydym yn Energy Sparks/Sbarcynni, elusen gofrestredig yng Nghymru a Lloegr, cofrestriad 1189273. </h2>
       <h2> 2. Rydych chi'n ysgol sy'n cymryd rhan neu'n sefydliad addysgol tebyg neu'n ddefnyddiwr safle Sbarcynni. </h2>
       <h2> 3. Darpariaeth gwasanaeth Sbarcynni i ysgolion </h2>
@@ -57,7 +57,7 @@ cy:
         </li>
         <li>6.5 Cyfeirir defnyddwyr at bolisi preifatrwydd a chwcis Sbarcynni yn <a href=%{privacy_and_cookie_policy_url}>%{privacy_and_cookie_policy_url}</a> </li>
         <li>6.6 Os bydd ysgol neu ddefnyddiwr ysgol sy’n cymryd rhan yn dewis cyflwyno delweddau, fideos neu ddyfyniadau priodol o ddisgyblion i wefan Sbarcynni, bydd defnyddiwr yr ysgol yn sicrhau bod gan yr ysgol y caniatâd rhieni angenrheidiol i ddelwedd neu enw’r disgybl gael ei rannu.</li>
-        <li>6.7 Os bydd ysgol yn rhoi'r gorau i ddefnyddio gwasanaethau Sbarcynni, gellir archifo neu ddileu eu cyfrif Energy Sparks. Gellir archifo cyfrif os oes tebygolrwydd rhesymol y bydd cyfrif yr ysgol yn cael ei ailysgogi yn y 18 mis nesaf. Mae hyn yn cynnwys pan nad yw’r ysgol bellach yn gymwys ar gyfer cyfrif wedi’i ariannu ond mae eisiau aros ar y rhestr aros pe bai cyllid pellach ar gael yn y dyfodol. Gellir hefyd archifo cyfrif os nad oes gan yr ysgol y capasiti i ymgysylltu â Sbarcynni ar hyn o bryd, ond ei bod yn gobeithio ailgysylltu o fewn y 18 mis nesaf. Bydd Sbarcynni hefyd yn archifo cyfrif ysgol pe bai eu mynediad wedi’i ariannu yn dod i ben ac nid yw’r ysgol yn darparu unrhyw gyfarwyddiadau pellach ynghylch a ydynt yn dymuno talu am eu cyfrif.  Bydd cyfrifon yn cael eu dileu yn llawn ar gais gan ysgol neu ar ôl iddynt gael eu harchifo am fwy na 18 mis.</li>
+        <li>6.7 Os bydd ysgol yn rhoi'r gorau i ddefnyddio gwasanaethau Sbarcynni, gellir archifo neu ddileu eu cyfrif Energy Sparks. Gellir archifo cyfrif os oes tebygolrwydd rhesymol y bydd cyfrif yr ysgol yn cael ei ailysgogi yn y 18 mis nesaf. Mae hyn yn cynnwys pan nad yw’r ysgol bellach yn gymwys ar gyfer cyfrif wedi’i ariannu ond mae eisiau aros ar y rhestr aros pe bai cyllid pellach ar gael yn y dyfodol. Gellir hefyd archifo cyfrif os nad oes gan yr ysgol y capasiti i ymgysylltu â Sbarcynni ar hyn o bryd, ond ei bod yn gobeithio ailgysylltu o fewn y 18 mis nesaf. Bydd Sbarcynni hefyd yn archifo cyfrif ysgol pe bai eu mynediad wedi’i ariannu yn dod i ben ac nid yw’r ysgol yn darparu unrhyw gyfarwyddiadau pellach ynghylch a ydynt yn dymuno talu am eu cyfrif.  Bydd cyfrifon yn cael eu dileu yn llawn ar gais gan ysgol neu ar ôl iddynt gael eu harchifo am fwy na tair blynedd.</li>
         <li>Ni fydd cyfrif ysgol wedi’i archifo yn weladwy nac yn weladwy i ddefnyddwyr ysgol sydd wedi mewngofnodi, ond bydd Sbarcynni yn cadw manylion cyfrif yr ysgol gan gynnwys rhifau mesuryddion, data hanesyddol a manylion defnyddwyr a gadarnhawyd. Bydd unrhyw wahoddiadau defnyddiwr heb eu cadarnhau yn cael eu dileu o gofnodion yr ysgol pan fydd y cyfrif yn cael ei archifo. Bydd cyfrif ysgol wedi’i ddileu yn dileu rhifau mesuryddion, data hanesyddol a gwybodaeth defnyddwyr yr ysgol.</li>
       </ul>
       <h2>7. Casglu, prosesu a rheoli data ynni a data cysylltiedig</h2>
@@ -68,7 +68,7 @@ cy:
         <li>7.4 Bydd Sbarcynni yn defnyddio’r data defnydd, cynhyrchu ac allforio hwn a gesglir i gefnogi offeryn rheoli ynni ar-lein Sbarcynni i alluogi defnyddwyr i weld defnydd ynni’r ysgol, cynhyrchu ynni solar ac allforio, a derbyn rhybuddion ac argymhellion arbed ynni.</li>
         <li>7.5 Bydd Sbarcynni yn casglu ac yn defnyddio data defnydd, cynhyrchu ac allforio cyhyd ag y bydd data ynni’r ysgol yn parhau i gael ei arddangos ar wefan Sbarcynni&#58; www.energysparks.uk.</li>
         <li>7.6 Mae Sbarcynni yn cyhoeddi’r rhan fwyaf o ddata ynni i’w wefan o dan drwydded agored a fydd yn caniatáu iddo gael ei gyrchu, ei ddefnyddio a’i rannu gan unrhyw un. Gall ysgolion annibynnol optio i mewn i fersiwn breifat o'r offeryn Sbarcynni sy'n golygu mai dim ond i ddefnyddwyr sydd wedi mewngofnodi y mae eu data ynni yn weladwy. Mae'r gwasanaeth hwn ar gael am gost ychwanegol gyda'r prisiau cyfredol ar gael yn <a href=%{pricing_url}>%{pricing_url}</a>.</li>
-        <li>7.7 Mae gan ysgolion sy'n cymryd rhan yr hawl i dynnu caniatâd i gyhoeddi eu data i Sbarcynni yn ôl a chael eu cyfrif yn cael ei ddileu unrhyw bryd. Gallwch ofyn i’ch cyfrif gael ei ddileu drwy e-bostio support@energysparks.uk. Bydd Sbarcynni wedyn yn tynnu gwybodaeth mesurydd yr ysgol, data ynni parhaus a hanesyddol a manylion defnyddwyr oddi ar wefan Sbarcynni o fewn mis. Bydd unrhyw gyfrifon Sbarcynni sydd wedi'u harchifo hefyd yn cael eu dileu os ydynt wedi'u harchifo am fwy na 18 mis.</li>
+        <li>7.7 Mae gan ysgolion sy'n cymryd rhan yr hawl i dynnu caniatâd i gyhoeddi eu data i Sbarcynni yn ôl a chael eu cyfrif yn cael ei ddileu unrhyw bryd. Gallwch ofyn i’ch cyfrif gael ei ddileu drwy e-bostio support@energysparks.uk. Bydd Sbarcynni wedyn yn tynnu gwybodaeth mesurydd yr ysgol, data ynni parhaus a hanesyddol a manylion defnyddwyr oddi ar wefan Sbarcynni o fewn mis. Bydd unrhyw gyfrifon Sbarcynni sydd wedi'u harchifo hefyd yn cael eu dileu os ydynt wedi'u harchifo am fwy na tair blynedd.</li>
       </ul>
       <h2>8. Darparwyr gwasanaeth trydydd parti</h2>
       <ul>
@@ -102,7 +102,7 @@ cy:
         <li>11.3 Nid yw Sbarcynni yn derbyn unrhyw atebolrwydd am unrhyw darfu neu ddiffyg argaeledd ein gwefan a’n hofferyn ar-lein.</li>
         <li>11.4 Mae Sbarcynni yn cadw’r hawl i newid, atal neu derfynu unrhyw ran (neu’r cyfan) o’i wefan gan gynnwys, ond heb fod yn gyfyngedig i, unrhyw gynnyrch a/neu wasanaethau sydd ar gael. Bydd y telerau ac amodau hyn yn parhau i fod yn berthnasol i unrhyw fersiwn addasedig o’r wefan oni bai y nodir yn benodol fel arall.</li>
         <li>11.5 Ein nod yw datrys pob problem neu anghydfod yn anffurfiol lle bo modd. Cysylltwch â ni ar support@energysparks.uk os gwelwch broblem gyda chyflwyniad data eich ysgol neu gyda’ch defnydd o’r gwasanaeth Sbarcynni.</li>
-        <li>11.6 Mae gan Sbarcynni £5 miliwn o yswiriant atebolrwydd cyhoeddus a £500,000 o yswiriant indemniad proffesiynol gan yswiriwr ag enw da. Mae tystysgrif yswiriant ar gael ar gais.</li>
+        <li>11.6 Mae gan Sbarcynni £5 miliwn o yswiriant atebolrwydd cyhoeddus a £1 miliwn o yswiriant indemniad proffesiynol gan yswiriwr ag enw da. Mae tystysgrif yswiriant ar gael ar gais.</li>
       </ul>
       <h2>12. Cyfyngu ar atebolrwydd</h2>
       <ul>

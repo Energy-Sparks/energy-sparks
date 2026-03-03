@@ -12,6 +12,7 @@ class SchoolCreator
   def onboard_school!(onboarding)
     @school.assign_attributes(
       onboarding.slice(:school_group, :template_calendar, :dark_sky_area, :scoreboard, :weather_station, :funder)
+                .merge(default_contract_holder: onboarding.school_group)
     )
     if @school.valid?
       @school.transaction do
@@ -23,6 +24,7 @@ class SchoolCreator
           process_new_school!
         end
         create_default_contact(onboarding)
+        Commercial::LicenceManager.new(@school).school_onboarded(onboarding.contract)
         process_new_configuration!
         onboarding_service.record_event(onboarding, :school_calendar_created) if @school.calendar
         onboarding_service.record_event(onboarding, :school_details_created) do
@@ -46,6 +48,7 @@ class SchoolCreator
       onboarding_service.complete_onboarding(@school.school_onboarding, users)
     end
     self.class.expire_login_cache!
+    @school&.school_group&.touch
     broadcast(:school_made_visible, @school)
   end
 
@@ -55,6 +58,8 @@ class SchoolCreator
     @school.update!(data_enabled: true)
     @school.update!(activation_date: Time.zone.today) unless @school.activation_date.present?
     onboarding_service.record_event(@school.school_onboarding, :onboarding_data_enabled)
+    Commercial::LicenceManager.new(@school).school_made_data_enabled
+    @school&.school_group&.touch
     broadcast(:school_made_data_enabled, @school)
   end
 
@@ -81,7 +86,7 @@ class SchoolCreator
 private
 
   def add_school(user, school)
-    return if user.group_admin? || user.admin?
+    return if user.group_user? || user.admin?
 
     user.add_cluster_school(school)
     user.update!(school: school, role: :school_admin) unless user.school
@@ -93,11 +98,14 @@ private
       public: onboarding.school_will_be_public,
       chart_preference: onboarding.default_chart_preference
     )
+    @school.project_groups << onboarding.project_group if onboarding.project_group
+    @school.diocese = onboarding.diocese
+    @school.local_authority_area_group = onboarding.local_authority_area
     Solar::SolarAreaLookupService.new(@school).assign
   end
 
   def create_default_contact(onboarding)
-    return if onboarding.created_user.group_admin?
+    return if onboarding.created_user.group_user?
     onboarding_service.record_event(onboarding, :alert_contact_created) do
       @school.contacts.create!(
         user: onboarding.created_user,

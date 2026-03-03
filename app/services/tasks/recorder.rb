@@ -63,6 +63,7 @@ class Tasks::Recorder
 
     def after_initialize
       activity.activity_category = activity.activity_type&.activity_category
+      activity.created_by = @user
     end
 
     def after_save

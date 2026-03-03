@@ -53,7 +53,7 @@ describe 'baseload_per_pupil' do
       let(:advice_page_path) { insights_school_advice_baseload_path(expected_school) }
       let(:headers) do
         ['School', 'Baseload per pupil (W)', 'Last year cost of baseload', 'Average baseload kW',
-         'Baseload as a percent of total usage', 'Saving if matched exemplar school (using latest tariff)']
+         'Baseload as a percent of total usage', 'Potential savings']
       end
       let(:expected_table) do
         [headers,

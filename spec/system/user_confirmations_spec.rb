@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'User confirmations', :schools, type: :system do
+RSpec.describe 'User confirmation and registration', :schools, type: :system do
   let(:confirmation_token) { 'abc123' }
   let(:valid_password) { 'valid password' }
 
@@ -10,123 +10,253 @@ RSpec.describe 'User confirmations', :schools, type: :system do
     allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
   end
 
-  context 'when confirming new user without school' do
-    let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, email: 'foo@bar.com', name: 'Foo Bar') }
+  def fill_in_password(password, confirmation)
+    fill_in I18n.t('devise.passwords.edit.new_password'), with: password
+    fill_in I18n.t('devise.passwords.edit.confirm_new_password'), with: confirmation
+  end
+
+  def fill_in_password_and_register(password, confirmation)
+    fill_in_password(password, confirmation)
+    check 'user_terms_accepted'
+    click_button 'Complete registration'
+  end
+
+  shared_examples 'a user registering without alert options' do
+    before do
+      visit user_confirmation_path(confirmation_token: confirmation_token)
+    end
+
+    it 'shows newsletter options' do
+      expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+    end
 
     it 'does not show alert subscription options' do
-      visit user_confirmation_path(confirmation_token: confirmation_token)
-      expect(page).to have_content('Your email address has been successfully confirmed')
       expect(page).not_to have_content('Energy Sparks alerts:')
     end
   end
 
-  context 'when confirming new user without school but with school group' do
-    let(:school_group)  { create(:school_group, name: 'some MAT') }
-    let!(:user)         { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil, school_group: school_group, email: 'foo@bar.com', name: 'Foo Bar') }
-
-    it 'shows newsletter but not alert subscription options' do
-      visit user_confirmation_path(confirmation_token: confirmation_token)
-      expect(page).to have_content('Your email address has been successfully confirmed')
-      expect(page).not_to have_content('Energy Sparks alerts:')
-      expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
-    end
-  end
-
-  context 'when confirming new user with school' do
-    let(:school)  { create(:school) }
-    let!(:user)   { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: school, email: 'foo@bar.com', name: 'Foo Bar') }
-
-    before do
-      visit user_confirmation_path(confirmation_token: confirmation_token)
-    end
-
-    it 'confirms email address' do
-      expect(page).to have_content('Your email address has been successfully confirmed')
-    end
-
-    it 'does not allow blank passwords' do
-      click_button 'Complete registration'
-      expect(page).to have_content("Password can't be blank")
-    end
-
-    it 'allows newsletter to be subscribed (the default)' do
-      expect(audience_manager).to receive(:subscribe_or_update_contact)
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      check 'privacy'
-      click_button 'Complete registration'
-      expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
-    end
-
-    it 'allows newsletter to be unsubscribed, but still adds user to Mailchimp' do
-      expect(audience_manager).to receive(:subscribe_or_update_contact) do |contact, kwargs|
-        expect(contact.interests.values.any?).to be(false)
-        expect(kwargs[:status]).to eq('subscribed')
+  shared_examples 'can set alert preferences' do
+    context 'with valid password and terms accepted' do
+      before do
+        fill_in_password(valid_password, valid_password)
+        check 'user_terms_accepted'
       end
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      check 'privacy'
-      all('input[type=checkbox]').each do |checkbox|
-        if checkbox.checked?
-          checkbox.click
+
+      context 'with default options' do
+        before { click_button 'Complete registration' }
+
+        it { expect(user.reload.confirmed?).to be(true) }
+
+        it 'creates alert contact' do
+          expect(user.contacts.count).to eq(1)
+          expect(school.contacts.last.email_address).to eq(user.email)
         end
       end
-      click_button 'Complete registration'
-      expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
-    end
 
-    it 'allows alert to be subscribed (the default)' do
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      check 'privacy'
-      click_button 'Complete registration'
-      expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
-      expect(user.contacts.count).to eq(1)
-      expect(school.contacts.last.email_address).to eq('foo@bar.com')
-    end
+      context 'when opting out of alerts' do
+        before do
+          uncheck 'Subscribe to school alerts'
+          click_button 'Complete registration'
+        end
 
-    it 'allows alert to be unsubscribed' do
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      check 'privacy'
-      uncheck 'Subscribe to school alerts'
-      click_button 'Complete registration'
-      expect(page).to have_content('Your password has been changed successfully. You are now signed in.')
-      expect(user.contacts.count).to eq(0)
-    end
+        it { expect(user.reload.confirmed?).to be(true) }
 
-    it 'reshows subscription check boxes after failed validation' do
-      check 'privacy'
-      fill_in :user_password, with: valid_password
-      uncheck 'Subscribe to school alerts'
-      uncheck 'Getting the most out of Energy Sparks'
-      click_button 'Complete registration'
-      expect(page).to have_content("Password confirmation doesn't match Password")
-      expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+        it 'does not create alert contact' do
+          expect(user.contacts).to be_empty
+        end
+      end
     end
   end
 
-  context 'when resetting password for existing user' do
-    let(:school)  { create(:school) }
-    let(:user)    { create(:user, email: 'a@b.com', school: school) }
+  context 'when confirming new user without school' do
+    let!(:user) { create(:user, confirmation_token: confirmation_token, confirmed_at: nil, school: nil) }
+
+    it_behaves_like 'a user registering without alert options'
+  end
+
+  context 'when confirming new school group user' do
+    let!(:user) { create(:group_admin, confirmation_token: confirmation_token, confirmed_at: nil) }
 
     before do
-      token = user.send(:set_reset_password_token)
-      visit edit_user_password_path(user, reset_password_token: token)
+      visit user_confirmation_path(confirmation_token: confirmation_token)
     end
 
-    it 'allows password to be set' do
-      expect(page).to have_content('Set your password')
-      fill_in :user_password, with: valid_password
-      fill_in :user_password_confirmation, with: valid_password
-      click_button 'Set my password'
-      expect(page).to have_content('Your password has been changed successfully')
+    it_behaves_like 'a user registering without alert options'
+  end
+
+  context 'when confirming new school user' do
+    let(:school)  { create(:school) }
+    let!(:user)   { create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, school: school) }
+
+    before do
+      visit user_confirmation_path(confirmation_token: confirmation_token)
     end
 
-    it 'does not show checkboxes for subscriptions' do
-      expect(page).to have_content('Set your password')
-      expect(page).not_to have_content('Energy Sparks alerts:')
-      expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+    it { expect(page).to have_title(I18n.t('devise.passwords.edit.complete_your_registration')) }
+    it { expect(page).to have_checked_field('Subscribe to school alerts') }
+    it { expect(page).to have_checked_field('Getting the most out of Energy Sparks') }
+    it { expect(page).to have_css('input.must-check') } # must select terms
+
+    context 'when validating passwords' do
+      context 'with blank password' do
+        before do
+          fill_in_password_and_register('', '')
+        end
+
+        it { expect(page).to have_content("Password can't be blank") }
+      end
+
+      context 'with invalid password' do
+        before do
+          fill_in_password_and_register('password', 'password')
+        end
+
+        it { expect(page).to have_content('Password is too short') }
+      end
+
+      context 'with mismatched passwords' do
+        before do
+          fill_in_password_and_register('thisismynewpassword!', 'invalid')
+        end
+
+        it { expect(page).to have_content("Password confirmation doesn't match") }
+      end
+    end
+
+    context 'when unsuccessfully registering' do
+      before do
+        uncheck 'Subscribe to school alerts'
+        uncheck 'Getting the most out of Energy Sparks'
+        fill_in_password_and_register('', '')
+      end
+
+      it { expect(page).not_to have_css('input.must-check') } # terms already pre-selected
+      it { expect(page).to have_unchecked_field('Subscribe to school alerts') }
+      it { expect(page).to have_unchecked_field('Getting the most out of Energy Sparks') }
+    end
+
+    context 'when successfully registering' do
+      context 'with default options' do
+        before do
+          fill_in_password_and_register(valid_password, valid_password)
+        end
+
+        it { expect(page).to have_content(I18n.t('devise.confirmations.confirmed')) }
+        it { expect(page).to have_current_path(school_path(school)) }
+        it { expect(user.reload.confirmed?).to be(true) }
+        it { expect(user.reload.terms_accepted?).to be(true) }
+      end
+
+      context 'with newsletter' do
+        it 'subscribes user with default options' do
+          expect(audience_manager).to receive(:subscribe_or_update_contact) do |contact, kwargs|
+            expect(contact.interests.values.any?).to be(true)
+            expect(kwargs[:status]).to eq('subscribed')
+          end
+          fill_in_password_and_register(valid_password, valid_password)
+          expect(user.reload.confirmed?).to be(true)
+        end
+
+        it 'allows user to opt-out but still adds them to Mailchimp' do
+          expect(audience_manager).to receive(:subscribe_or_update_contact) do |contact, kwargs|
+            expect(contact.interests.values.all?).to be(false)
+            expect(kwargs[:status]).to eq('subscribed')
+          end
+          fill_in_password_and_register(valid_password, valid_password)
+          expect(user.reload.confirmed?).to be(true)
+        end
+      end
+
+      it_behaves_like 'can set alert preferences'
+    end
+
+    context 'when user is a student' do
+      let(:school) { create(:school) }
+      let!(:user) do
+        create(:student, confirmation_token: confirmation_token, confirmed_at: nil, school: school)
+      end
+
+      it 'does not show newsletter options' do
+        expect(page).not_to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+      end
+
+      context 'when successfully registering' do
+        context 'with newsletter' do
+          it 'does not add to mailchimp' do
+            expect(audience_manager).not_to receive(:subscribe_or_update_contact)
+            fill_in_password_and_register(valid_password, valid_password)
+            expect(page).to have_current_path(pupils_school_path(school))
+            expect(user.reload.confirmed?).to be(true)
+          end
+        end
+
+        it_behaves_like 'can set alert preferences'
+      end
+    end
+  end
+
+  context 'when following an emailed confirmation link' do
+    let!(:user) { create(:staff, confirmation_token: confirmation_token, confirmed_at: nil, email: 'unconfirmed@test.com') }
+
+    before do
+      open_email 'unconfirmed@test.com'
+      current_email.click_link 'Confirm my account'
+      fill_in_password_and_register(valid_password, valid_password)
+    end
+
+    it 'logs me in and confirms my account' do
+      expect(page).to have_content('Sign Out')
+      expect(user.reload.confirmed?).to be(true)
+    end
+  end
+
+  context 'with an unknown token' do
+    let!(:user) do
+      create(:group_admin,
+             confirmation_token: confirmation_token,
+             school_group: create(:school_group, :with_active_schools))
+    end
+
+    before do
+      visit user_confirmation_path(confirmation_token: 'unknown')
+    end
+
+    it 'redirects to confirmation form' do
+      expect(page).to have_current_path(new_user_confirmation_path)
+    end
+  end
+
+  context 'when confirming a user that is already confirmed' do
+    # Devise doesn't remove token when confirming, so ensure one is set that we can follow
+    let!(:user) do
+      create(:group_admin,
+             confirmation_token: confirmation_token,
+             school_group: create(:school_group, :with_active_schools))
+    end
+
+    context 'when user not logged in' do
+      before do
+        visit user_confirmation_path(confirmation_token: confirmation_token)
+      end
+
+      it { expect(page).to have_content(I18n.t('errors.messages.already_confirmed')) }
+
+      it 'prompts for login' do
+        expect(page).to have_content(I18n.t('devise.sessions.new.title'))
+      end
+    end
+
+    context 'when user logged in' do
+      before do
+        sign_in(user)
+        visit user_confirmation_path(confirmation_token: confirmation_token)
+      end
+
+      it { expect(page).to have_content(I18n.t('devise.failure.already_authenticated')) }
+
+      it 'redirects' do
+        expect(page).to have_current_path(school_group_path(user.school_group))
+      end
     end
   end
 end

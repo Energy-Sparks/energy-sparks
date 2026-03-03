@@ -16,7 +16,7 @@ module Charts
     private
 
     def school_group(slug)
-      return SchoolGroup.with_visible_schools.sample unless slug.present?
+      return SchoolGroup.organisation_groups.with_visible_schools.sample unless slug.present?
       SchoolGroup.find(slug)
     end
   end
