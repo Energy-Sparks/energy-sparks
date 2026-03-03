@@ -94,32 +94,34 @@ describe 'onboarding', :schools do
       expect(page).to have_content('Your school is now active!')
     end
 
-    it 'shows an error message for an invalid postcode' do
-      # NOTE: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
-      complete_onboarding(postcode: 'AB 2CD')
-      expect(page).to have_content('Step 2: Tell us about your school')
-      expect(page).to have_content('is invalid and not found')
-      fill_in 'Postcode', with: 'AB2 2CD'
-      click_on 'Save school details'
-      expect(page).to have_content('Step 2: Tell us about your school')
-      expect(page).to have_content('not found')
-      fill_in 'Postcode', with: 'AB1 2CD'
-      click_on 'Save school details'
-      expect(page).to have_content('Step 3: Grant consent')
-    end
-
-    it 'shows an error message for an invalid URN' do
-      complete_onboarding(urn: '9876543210')
-      expect(page).to have_content('Step 2: Tell us about your school')
-      expect(page).to have_content("Unique Reference Number *\n" \
-                                   'the URN or SEED you have supplied appears to be invalid')
-      fill_in 'Unique Reference Number', with: '987654321'
-      click_on 'Save school details'
-      expect(page).to have_content('Step 3: Grant consent')
-    end
-
     it 'starts at the welcome page' do
       expect(page).to have_content('Set up your school on Energy Sparks')
+    end
+
+    context 'when editing schools details' do
+      it 'shows an error message for an invalid postcode' do
+        # NOTE: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
+        complete_onboarding(postcode: 'AB 2CD')
+        expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_content('is invalid and not found')
+        fill_in 'Postcode', with: 'AB2 2CD'
+        click_on 'Save school details'
+        expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_content('not found')
+        fill_in 'Postcode', with: 'AB1 2CD'
+        click_on 'Save school details'
+        expect(page).to have_content('Step 3: Grant consent')
+      end
+
+      it 'shows an error message for an invalid URN' do
+        complete_onboarding(urn: '9876543210')
+        expect(page).to have_content('Step 2: Tell us about your school')
+        expect(page).to have_content("Unique Reference Number *\n" \
+                                     'the URN or SEED you have supplied appears to be invalid')
+        fill_in 'Unique Reference Number', with: '987654321'
+        click_on 'Save school details'
+        expect(page).to have_content('Step 3: Grant consent')
+      end
     end
 
     context 'when filling in the registration page' do
@@ -163,91 +165,91 @@ describe 'onboarding', :schools do
           end
         end
       end
+    end
 
-      context 'and user already has an account' do
-        let(:existing_user) { nil }
-        let(:school_group) { create(:school_group) }
+    context 'when completing onboarding with an existing user' do
+      let(:existing_user) { nil }
+      let(:school_group) { create(:school_group) }
 
-        before do
-          onboarding.update!(school_group: school_group)
-          click_on 'Start'
-          click_on 'Use an existing account'
-          fill_in 'Email', with: existing_user.email
-          fill_in 'Password', with: existing_user.password
-          within '#staff' do
-            click_on 'Sign in'
-          end
+      before do
+        onboarding.update!(school_group: school_group)
+        click_on 'Start'
+        click_on 'Use an existing account'
+        fill_in 'Email', with: existing_user.email
+        fill_in 'Password', with: existing_user.password
+        within '#staff' do
+          click_on 'Sign in'
+        end
+      end
+
+      context 'with a school admin' do
+        let(:other_school)    { create(:school) }
+        let(:existing_user)   { create(:school_admin, school: other_school) }
+
+        it 'allows them to sign in' do
+          expect(page).to have_content('Step 1: Confirm your administrator account')
+          expect(page).to have_content('Do you want to use this user as your administrator account')
         end
 
-        context 'as a school admin' do
-          let(:other_school)    { create(:school) }
-          let(:existing_user)   { create(:school_admin, school: other_school) }
+        it 'allows them to complete onboarding' do
+          click_on 'Yes, use this account'
 
-          it 'allows them to sign in' do
-            expect(page).to have_content('Step 1: Confirm your administrator account')
-            expect(page).to have_content('Do you want to use this user as your administrator account')
-          end
+          complete_school_details
 
-          it 'allows them to complete onboarding' do
-            click_on 'Yes, use this account'
+          # Consent
+          fill_in 'Name', with: 'Boss user'
+          fill_in 'Job title', with: 'Boss'
+          fill_in 'School name', with: 'Boss school'
+          click_on 'Grant consent'
 
-            complete_school_details
+          # Additional school accounts
+          click_on 'Skip for now'
 
-            # Consent
-            fill_in 'Name', with: 'Boss user'
-            fill_in 'Job title', with: 'Boss'
-            fill_in 'School name', with: 'Boss school'
-            click_on 'Grant consent'
+          # Completion
+          click_on 'Complete setup', match: :first
+          expect(page).to have_content('Your school is now active')
+        end
+      end
 
-            # Additional school accounts
-            click_on 'Skip for now'
+      context 'with a group admin' do
+        let(:existing_user) { create(:group_admin, school_group: school_group) }
 
-            # Completion
-            click_on 'Complete setup', match: :first
-            expect(page).to have_content('Your school is now active')
-          end
+        it 'allows them to sign in' do
+          expect(page).to have_content('Step 1: Confirm your administrator account')
+          expect(page).to have_content("Do you want to complete onboarding for #{onboarding.school_name} using this " \
+                                       'school group admin account?')
         end
 
-        context 'when a group admin' do
-          let(:existing_user) { create(:group_admin, school_group: school_group) }
+        it 'allows them to complete onboarding' do
+          click_on 'Yes, use this account'
 
-          it 'allows them to sign in' do
-            expect(page).to have_content('Step 1: Confirm your administrator account')
-            expect(page).to have_content("Do you want to complete onboarding for #{onboarding.school_name} using this " \
-                                         'school group admin account?')
-          end
+          # School details
+          complete_school_details
 
-          it 'allows them to complete onboarding' do
-            click_on 'Yes, use this account'
+          # Consent
+          fill_in 'Name', with: 'Boss user'
+          fill_in 'Job title', with: 'Boss'
+          fill_in 'School name', with: 'Boss school'
+          check :privacy, allow_label_click: true
+          click_on 'Grant consent'
 
-            # School details
-            complete_school_details
+          # #Additional school accounts
+          click_on 'Add new account'
+          fill_in 'Name', with: 'Extra user'
+          fill_in 'Email', with: 'extra+user@example.org'
+          select 'Staff', from: 'Type'
+          select 'Headteacher', from: 'Role'
+          click_on 'Create account'
 
-            # Consent
-            fill_in 'Name', with: 'Boss user'
-            fill_in 'Job title', with: 'Boss'
-            fill_in 'School name', with: 'Boss school'
-            check :privacy, allow_label_click: true
-            click_on 'Grant consent'
+          expect(page).to have_content('extra+user@example.org')
+          expect(page).to have_content('Headteacher')
+          expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
 
-            # #Additional school accounts
-            click_on 'Add new account'
-            fill_in 'Name', with: 'Extra user'
-            fill_in 'Email', with: 'extra+user@example.org'
-            select 'Staff', from: 'Type'
-            select 'Headteacher', from: 'Role'
-            click_on 'Create account'
+          click_on 'Continue'
 
-            expect(page).to have_content('extra+user@example.org')
-            expect(page).to have_content('Headteacher')
-            expect(User.find_by(email: 'extra+user@example.org').created_by).to eq(existing_user)
-
-            click_on 'Continue'
-
-            # Completion
-            click_on 'Complete setup', match: :first
-            expect(page).to have_content('Your school is now active')
-          end
+          # Completion
+          click_on 'Complete setup', match: :first
+          expect(page).to have_content('Your school is now active')
         end
       end
     end
@@ -260,17 +262,23 @@ describe 'onboarding', :schools do
         onboarding.update!(created_user: user)
         onboarding.events.create!(event: :onboarding_user_created)
         SchoolCreator.new(school).onboard_school!(onboarding)
+        visit onboarding_path(onboarding)
       end
 
-      it 'shows login page' do
-        visit onboarding_path(onboarding)
-        expect(page).to have_content('You must sign in to resume the onboarding process')
-        fill_in 'Email', with: user.email
-        fill_in 'Password', with: user.password
-        within '#staff' do
-          click_on 'Sign in'
+      context 'when not logged in' do
+        it { expect(page).to have_content('You must sign in to resume the onboarding process') }
+
+        context 'with a successful login' do
+          before do
+            fill_in 'Email', with: user.email
+            fill_in 'Password', with: user.password
+            within '#staff' do
+              click_on 'Sign in'
+            end
+          end
+
+          it { expect(page).to have_content('You have a few more steps to complete before we can setup your school.') }
         end
-        expect(page).to have_content('You have a few more steps to complete before we can setup your school.')
       end
     end
 
