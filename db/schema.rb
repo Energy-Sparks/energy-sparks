@@ -1489,6 +1489,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
     t.bigint "consent_grant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "disabled", default: false, null: false
     t.index ["consent_grant_id"], name: "index_meter_reviews_on_consent_grant_id"
     t.index ["school_id"], name: "index_meter_reviews_on_school_id"
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"
