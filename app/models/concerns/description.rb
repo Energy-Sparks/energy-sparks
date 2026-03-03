@@ -14,15 +14,10 @@ module Description
   def description_includes_images?
     return false unless description&.body
 
-    fragment = Nokogiri::HTML.fragment(description.body.to_html)
-    fragment.css('action-text-attachment').any? do |node|
-      node['content-type']&.start_with?('image/')
-    end
+    html = description.body.to_html
+    html.include?('<action-text-attachment') && html.include?('content-type="image/')
 
-    # If we just want to check for attachments without checking content type, we could use:
-    # description.body.to_html.include?("action-text-attachment")
-
-    ## Alternative approach using embeds, but may not work if description is not saved yet and embeds are not associated
+    ## Alternative approach using embeds, but does not always work if description is not saved and embeds are not associated
     # description.embeds.any? do |embed|
     #  embed.blob&.content_type&.start_with?('image/')
     # end
