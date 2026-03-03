@@ -480,7 +480,7 @@ en:
         you_are_currently_aiming_to_achieve_your_target_by_html: You are currently aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
-        where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
+        where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we don't have enough data, you will be prompted to add monthly readings manually.
       manual_readings_prompt:
         enough: We don't have enough data to calculate target progress.
         enter_html: You can enter <a href="%{path}">readings manually</a> to complete the year.
