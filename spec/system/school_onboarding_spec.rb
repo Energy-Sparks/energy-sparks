@@ -3,13 +3,16 @@
 require 'rails_helper'
 
 describe 'onboarding', :schools do
-  let(:admin) { create(:admin) }
-  let(:school_name) { 'Oldfield Park Infants' }
+  include_context 'with a stubbed audience manager'
 
   # This calendar is there to allow for the calendar area selection
   let(:template_calendar) { create(:regional_calendar, :with_terms, title: 'BANES calendar') }
   let!(:consent_statement) do
     ConsentStatement.create!(title: 'Some consent statement', content: 'Some consent text', current: true)
+  end
+
+  before do
+    allow(audience_manager).to receive(:subscribe_or_update_contact).and_return(OpenStruct.new(id: 123))
   end
 
   context 'as a user' do
@@ -22,9 +25,8 @@ describe 'onboarding', :schools do
       create(
         :school_onboarding, :with_events,
         event_names: [:email_sent],
-        school_name: school_name,
         template_calendar: template_calendar,
-        created_by: admin,
+        created_by: create(:admin),
         urn: 100_000
       )
     end
@@ -124,24 +126,43 @@ describe 'onboarding', :schools do
 
       context 'when filling in the registration page' do
         context 'with a new user account' do
-          before do
-            click_on 'Start'
-            fill_in 'Your name', with: 'A Teacher'
-            select 'Headteacher', from: 'Role'
-            password = 'testtesttest1'
-            fill_in 'Password', with: password, match: :prefer_exact
-            fill_in 'Password confirmation', with: password
-            check :privacy
-            click_on 'Create my account'
-            onboarding.reload
+          before { click_on 'Start' }
+
+          it 'shows newsletter options' do
+            expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
           end
 
-          it 'creates a new account' do
-            expect(onboarding).to have_event(:onboarding_user_created)
-            expect(onboarding).to have_event(:privacy_policy_agreed)
-            expect(onboarding.created_user.name).to eq('A Teacher')
-            expect(onboarding.created_user.role).to eq('school_onboarding')
-            expect(onboarding.created_user.terms_accepted).to be(true)
+          it { expect(page).to have_checked_field('Getting the most out of Energy Sparks') }
+
+          context 'when completing the form with valid parameters' do
+            before do
+              fill_in 'Your name', with: 'A Teacher'
+              select 'Headteacher', from: 'Role'
+              password = 'testtesttest1'
+              fill_in 'Password', with: password, match: :prefer_exact
+              fill_in 'Password confirmation', with: password
+              check :privacy
+            end
+
+            it 'subscribes user to newsletter with default options' do
+              uncheck('Getting the most out of Energy Sparks')
+              click_on 'Create my account'
+              expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
+                expect(contact.interests.values).to eq([false, true, true, false, false])
+                expect(kwargs[:status]).to eq('subscribed')
+              end
+              expect(onboarding.reload.created_user).not_to be_nil
+            end
+
+            it 'creates a new account' do
+              click_on 'Create my account'
+              onboarding.reload
+              expect(onboarding).to have_event(:onboarding_user_created)
+              expect(onboarding).to have_event(:privacy_policy_agreed)
+              expect(onboarding.created_user.name).to eq('A Teacher')
+              expect(onboarding.created_user.role).to eq('school_onboarding')
+              expect(onboarding.created_user.terms_accepted).to be(true)
+            end
           end
         end
 
@@ -194,7 +215,7 @@ describe 'onboarding', :schools do
 
             it 'allows them to sign in' do
               expect(page).to have_content('Step 1: Confirm your administrator account')
-              expect(page).to have_content('Do you want to complete onboarding for Oldfield Park Infants using this ' \
+              expect(page).to have_content("Do you want to complete onboarding for #{onboarding.school_name} using this " \
                                            'school group admin account?')
             end
 
@@ -364,7 +385,7 @@ describe 'onboarding', :schools do
 
       context 'when finished the initial steps' do
         let(:user) { create(:onboarding_user) }
-        let(:school) { build(:school, visible: false, name: school_name) }
+        let(:school) { build(:school, visible: false) }
 
         before do
           onboarding.update!(created_user: user)
@@ -389,7 +410,7 @@ describe 'onboarding', :schools do
         it 'sends an email after completion' do
           click_on 'Complete setup', match: :first
           email = ActionMailer::Base.deliveries.last
-          expect(email.subject).to include("#{school_name} is now live on Energy Sparks")
+          expect(email.subject).to include("#{school.name} is now live on Energy Sparks")
           expect(email.to).to include(school.users.first.email)
         end
 
@@ -417,7 +438,7 @@ describe 'onboarding', :schools do
           it 'sends an email after completion' do
             click_on 'Complete setup', match: :first
             email = ActionMailer::Base.deliveries.first
-            expect(email.subject).to include("#{school_name} (#{school.area_name}) has completed the onboarding process")
+            expect(email.subject).to include("#{onboarding.school_name} (#{school.area_name}) has completed the onboarding process")
             expect(email.to).to include('operations@energysparks.uk')
           end
 

@@ -7,7 +7,8 @@
     <p><%= t('onboarding.account.message_2') %>:</p>
 
     <p>
-      <%= link_to t('onboarding.account.use_existing_account'), new_onboarding_sessions_path(@school_onboarding), class: :btn %>
+      <%= link_to t('onboarding.account.use_existing_account'), new_onboarding_sessions_path(@school_onboarding),
+                  class: :btn %>
     </p>
 
     <p><%= t('onboarding.account.message_3') %>:</p>
@@ -17,10 +18,21 @@
       <%= f.input :email %>
       <%= f.input :password, required: true %>
       <%= f.input :password_confirmation, required: true %>
-      <%= f.input :staff_role_id, required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
+      <%= f.input :staff_role_id, required: true, collection: StaffRole.order(:title),
+                                  label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
+
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>
+        </div>
+      </div>
+      <%= render 'users/emails/mailchimp_interest_fields',
+                 email_types: @email_types,
+                 interests: @interests %>
 
       <%= render 'shared/agree_terms_checkbox' %>
       <%= f.button :submit, t('onboarding.account.create') %>
     <% end %>
+
   </div>
 </div>
