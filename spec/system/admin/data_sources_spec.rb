@@ -4,8 +4,8 @@ shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || '')
     expect(page).to have_content(data_source.owned_by.try(:name).presence || '')
-    expect(page).to have_content(data_source.load_tariffs ? 'Y' : 'N')
-    expect(page).to have_content(data_source.alerts_on ? 'Y' : 'N')
+    expect(page).to have_content("Load tariffs\n#{y_n(data_source.load_tariffs)}")
+    expect(page).to have_content("Alerts on\n#{y_n(data_source.alerts_on)}")
     text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
     end
@@ -50,7 +50,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
       loa_expiry_procedure: 'What to do when LOA is about expire',
       comments: 'Comments',
       alert_percentage_threshold: 'Percentage of meters required to be lagging to generate an alert (default 25)',
-        import_warning_days: 'Days after which a meter for this data source should be considered lagging (default 7)'
+      import_warning_days: 'Days after which a meter for this data source should be considered lagging (default 7)'
     }
   end
 
