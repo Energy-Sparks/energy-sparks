@@ -30,7 +30,7 @@
                  email_types: @email_types,
                  interests: @interests %>
 
-      <%= render 'shared/agree_terms_checkbox' %>
+      <%= render 'shared/agree_terms_checkbox', f: f, resource: @user %>
       <%= f.button :submit, t('onboarding.account.create') %>
     <% end %>
 

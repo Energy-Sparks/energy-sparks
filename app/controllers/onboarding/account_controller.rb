@@ -18,7 +18,7 @@ module Onboarding
 
     def create
       @user = User.new_school_onboarding(user_params)
-      if @user.save
+      if @user.terms_accepted && @user.save
         @school_onboarding.update!(created_user: @user)
         @school_onboarding.events.create!(event: :onboarding_user_created)
         @school_onboarding.events.create!(event: :privacy_policy_agreed)
@@ -72,7 +72,7 @@ module Onboarding
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id, :terms_accepted)
     end
   end
 end

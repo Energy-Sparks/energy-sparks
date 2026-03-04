@@ -174,44 +174,77 @@ describe 'onboarding', :schools do
     end
 
     context 'when filling in the registration page' do
-      context 'with a new user account' do
-        before { click_on 'Start' }
+      before { click_on 'Start' }
 
-        it 'shows newsletter options' do
-          expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+      it { expect(page).to have_content('Step 1: Create your school administrator account') }
+      it { expect(page).to have_field('Email', with: onboarding.contact_email) }
+
+      it 'shows newsletter options' do
+        expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+        expect(page).to have_checked_field('Getting the most out of Energy Sparks')
+      end
+
+      context 'when terms have not been agreed' do
+        before do
+          fill_in 'Your name', with: 'A Teacher'
+          select 'Headteacher', from: 'Role'
+          password = 'testtesttest1'
+          fill_in 'Password', with: password, match: :prefer_exact
+          fill_in 'Password confirmation', with: password
+          click_on 'Create my account'
         end
 
-        it { expect(page).to have_checked_field('Getting the most out of Energy Sparks') }
+        it { expect(onboarding.reload.created_user).to be_nil }
 
-        context 'when completing the form with valid parameters' do
-          before do
-            fill_in 'Your name', with: 'A Teacher'
-            select 'Headteacher', from: 'Role'
-            password = 'testtesttest1'
-            fill_in 'Password', with: password, match: :prefer_exact
-            fill_in 'Password confirmation', with: password
-            check :privacy
-          end
+        it 'does not record events' do
+          expect(onboarding).not_to have_event(:onboarding_user_created)
+          expect(onboarding).not_to have_event(:privacy_policy_agreed)
+        end
 
-          it 'subscribes user to newsletter with default options' do
-            uncheck('Getting the most out of Energy Sparks')
-            click_on 'Create my account'
-            expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
-              expect(contact.interests.values).to eq([false, true, true, false, false])
-              expect(kwargs[:status]).to eq('subscribed')
-            end
-            expect(onboarding.reload.created_user).not_to be_nil
-          end
+        it { expect(page).to have_content('Step 1: Create your school administrator account') }
+      end
 
-          it 'creates a new account' do
-            click_on 'Create my account'
-            onboarding.reload
-            expect(onboarding).to have_event(:onboarding_user_created)
-            expect(onboarding).to have_event(:privacy_policy_agreed)
-            expect(onboarding.created_user.name).to eq('A Teacher')
-            expect(onboarding.created_user.role).to eq('school_onboarding')
-            expect(onboarding.created_user.terms_accepted).to be(true)
+      context 'when filling in the form with valid parameters' do
+        before do
+          fill_in 'Your name', with: 'A Teacher'
+          select 'Headteacher', from: 'Role'
+          password = 'testtesttest1'
+          fill_in 'Password', with: password, match: :prefer_exact
+          fill_in 'Password confirmation', with: password
+          check :privacy
+        end
+
+        it 'subscribes user to newsletter' do
+          click_on 'Create my account'
+          expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
+            expect(contact.interests.values).to eq([true, true, true, false, false])
+            expect(kwargs[:status]).to eq('subscribed')
           end
+          expect(onboarding.reload.created_user).not_to be_nil
+        end
+
+        it 'allows user to opt out of newsletters but is still added to Mailchimp' do
+          uncheck('Getting the most out of Energy Sparks')
+          uncheck('Engaging pupils in energy saving and climate')
+          uncheck('Energy saving leadership')
+          click_on 'Create my account'
+          expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
+            expect(contact.interests.values).to eq([false, false, false, false, false])
+            expect(kwargs[:status]).to eq('subscribed')
+          end
+          expect(onboarding.reload.created_user).not_to be_nil
+        end
+
+        it 'creates a new account' do
+          click_on 'Create my account'
+          onboarding.reload
+          expect(onboarding).to have_event(:onboarding_user_created)
+          expect(onboarding).to have_event(:privacy_policy_agreed)
+          expect(onboarding.created_user).to have_attributes({
+            name: 'A Teacher',
+            role: 'school_onboarding',
+            terms_accepted: true
+          })
         end
       end
     end
