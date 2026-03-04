@@ -4,7 +4,7 @@ shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || '')
     expect(page).to have_content(data_source.owned_by.try(:name).presence || '')
-    expect(page).to have_content("Load tariffs\n#{y_n(data_source.load_tariffs)}")
+    expect(page).to have_content("Load tariffs for SMETS meters\n#{y_n(data_source.load_tariffs)}")
     expect(page).to have_content("Alerts on\n#{y_n(data_source.alerts_on)}")
     text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
@@ -156,22 +156,24 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'and saving new data' do
+              let(:new_admin) { create(:admin) }
+
               let(:new_data_source) do
                 build(:data_source,
                  organisation_type: :council,
                  alert_percentage_threshold: 3,
                  import_warning_days: 9,
-                 load_tariffs: true,
-                 alerts_on: true,
-                 owned_by: user
+                 load_tariffs: false,
+                 alerts_on: false,
+                 owned_by: new_admin
                  )
               end
 
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
                 select user.name, from: 'Owned by'
-                check 'Load tariffs for SMETS meters'
-                check 'Turn on email alerts for lagging meters?'
+                uncheck 'Load tariffs for SMETS meters'
+                uncheck 'Turn on email alerts for lagging meters?'
 
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_data_source[text_field]
