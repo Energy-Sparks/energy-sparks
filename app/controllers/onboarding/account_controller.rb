@@ -32,7 +32,7 @@ module Onboarding
 
     def edit
       audience_manager.list # load to ensure config is set
-      @interests = user_interests
+      @interests = user_interests(current_user)
     end
 
     def update
@@ -42,6 +42,7 @@ module Onboarding
         bypass_sign_in(current_user)
         redirect_to new_onboarding_completion_path(@school_onboarding)
       else
+        @interests = user_interests(current_user)
         render :edit
       end
     end
@@ -52,24 +53,6 @@ module Onboarding
       if user_signed_in? && @school_onboarding.created_user.blank?
         redirect_to new_onboarding_clustering_path(@school_onboarding)
       end
-    end
-
-    def interests_from_params
-      params.permit(interests: {}).to_h['interests'].transform_values { |v| v == 'true' }
-    end
-
-    def user_interests
-      mailchimp_contact = audience_manager.get_list_member(current_user.email)
-      if mailchimp_contact
-        mailchimp_contact[:interests] # Hash of id -> status
-      else
-        default_interests(current_user)
-      end
-    end
-
-    def subscribe_newsletter(user, sign_up_params)
-      contact = create_contact_from_user(user, sign_up_params)
-      subscribe_contact(contact, user, show_errors: false)
     end
 
     def user_params

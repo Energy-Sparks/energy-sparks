@@ -1,7 +1,7 @@
 <div class="form-check agreements">
   <%= f.check_box :terms_accepted,
                   { class:
-                     class_names('form-check-input multi-select', 'must-check': !resource.terms_accepted) },
+                     class_names('form-check-input multi-select', 'must-check': !user.terms_accepted) },
                   '1',
                   '0' %>
   <%= f.label :terms_accepted, t('terms_and_conditions.message_html',

@@ -17,7 +17,7 @@
                form: f,
                minimum_password_length: @minimum_password_length %>
 
-    <%= render 'users/preferred_locale', resource:, form: f %>
+    <%= render 'users/preferred_locale', user: resource, f: f %>
 
     <% if @allow_alerts %>
       <hr>
@@ -37,7 +37,7 @@
 
     <% end %>
 
-    <%= render 'shared/agree_terms_checkbox', f:, resource: %>
+    <%= render 'shared/agree_terms_checkbox', f:, user: resource %>
 
     <div class="form-group">
       <%= f.submit t('devise.passwords.edit.complete_registration'), class: 'btn btn-primary' %>
