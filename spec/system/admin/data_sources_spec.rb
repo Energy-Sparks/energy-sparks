@@ -3,12 +3,11 @@ require 'rails_helper'
 shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || '')
-    expect(page).to have_content(data_source.owned_by.presence || '')
+    expect(page).to have_content(data_source.owned_by.try(:name).presence || '')
+    expect(page).to have_content(data_source.load_tariffs ? 'Y' : 'N')
+    expect(page).to have_content(data_source.alerts_on ? 'Y' : 'N')
     text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
-    end
-    numeric_attributes.each_key do |numeric_field|
-      expect(page).to have_content(data_source[numeric_field])
     end
   end
 end
@@ -16,7 +15,9 @@ end
 shared_examples_for 'a data source form' do
   it 'shows prefilled form' do
     expect(page).to have_select('Organisation type', selected: data_source.organisation_type.try(:humanize).presence || [])
+    expect(page).to have_select('Owned by', selected: data_source.owned_by.try(:name).presence || [])
     expect(page).to have_field('Load tariffs for SMETS meters')
+    expect(page).to have_field('Turn on email alerts for lagging meters?')
 
     text_attributes.each do |text_field, label|
       if data_source[text_field]
@@ -47,14 +48,9 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
       data_issues_contact_details: 'Who to contact about data issues',
       historic_data: 'Historic data',
       loa_expiry_procedure: 'What to do when LOA is about expire',
-      comments: 'Comments'
-    }
-  end
-
-  let!(:numeric_attributes) do
-    {
-      import_warning_days: 'Days after which a meter for this data source should be considered lagging (default 7)',
-      alert_percentage_threshold: 'Percentage of meters required to be lagging to generate an alert (default 25)'
+      comments: 'Comments',
+      alert_percentage_threshold: 'Percentage of meters required to be lagging to generate an alert (default 25)',
+        import_warning_days: 'Days after which a meter for this data source should be considered lagging (default 7)'
     }
   end
 
@@ -160,18 +156,25 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'and saving new data' do
-              let(:new_data_source) { build(:data_source, organisation_type: :council) }
+              let(:new_data_source) do
+                build(:data_source,
+                 organisation_type: :council,
+                 alert_percentage_threshold: 3,
+                 import_warning_days: 9,
+                 load_tariffs: true,
+                 alerts_on: true,
+                 owned_by: user
+                 )
+              end
 
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
                 select user.name, from: 'Owned by'
                 check 'Load tariffs for SMETS meters'
                 check 'Turn on email alerts for lagging meters?'
+
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_data_source[text_field]
-                end
-                numeric_attributes.each do |numeric_field, label|
-                  fill_in label, with: new_data_source[numeric_field]
                 end
                 click_button 'Save'
               end
@@ -259,11 +262,12 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           click_on 'New data source'
         end
 
-        it { expect(page).to have_content('New data source')}
+        it { expect(page).to have_content('New data source') }
 
         it_behaves_like 'a data source form' do
           let(:data_source) { DataSource.new }
         end
+
         context 'with invalid attributes' do
           before do
             click_on 'Save'
@@ -273,10 +277,21 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
         end
 
         context 'with new valid attributes' do
-          let(:new_data_source) { build(:data_source, organisation_type: :council) }
+          let(:new_data_source) do
+            build(:data_source,
+            organisation_type: :council,
+            load_tariffs: true,
+            alerts_on: true,
+            owned_by: user
+            )
+          end
 
           before do
             select new_data_source.organisation_type.humanize, from: 'Organisation type'
+            select user.name, from: 'Owned by'
+            check 'Load tariffs for SMETS meters'
+            check 'Turn on email alerts for lagging meters?'
+
             text_attributes.each do |text_field, label|
               fill_in label, with: new_data_source[text_field]
             end
