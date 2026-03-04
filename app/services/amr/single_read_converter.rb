@@ -15,14 +15,19 @@ module Amr
     # Reading will be in one of the following formats:
     #
     # * With timestamps, which may be based on labelling either the start or the end of the half-hourly period
-    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :readings=>["14.4"]
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00",
+    #      :readings=>["14.4"]
     #
-    # * With `indexed: true` and reading date and reading time split to 2 fields with timestamps starting at 00:00:00 or 00:30:00 e.g.:
-    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00", :reading_time=>'12:30', :readings=>["14.4"]
+    # * With `indexed: true` and reading date and reading time split to 2 fields with timestamps starting at 00:00:00 or
+    #   00:30:00 e.g.:
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019 00:30:00",
+    #      :reading_time=>'12:30', :readings=>["14.4"]
     #
     # * With `indexed: true`, with a named period number field e.g.:
-    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=>1, :readings=>["14.4"]
-    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=>2, :readings=>["14.4"]
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=>1,
+    #      :readings=>["14.4"]
+    #     {:amr_data_feed_config_id=>6, :mpan_mprn=>"1710035168313", :reading_date=>"26 Aug 2019", :period=>2,
+    #      :readings=>["14.4"]
     #
     # ...where each consecutive reading is a new HH period
     #
@@ -30,7 +35,8 @@ module Amr
     # ensuring the right array indexes are used based on correctly interpreting the above. Internally we label
     # HH periods from the start of the half hour.
     #
-    # Mapping from numbers periods is simple, for the others formats we have to interpret the time or timestamps correctly
+    # Mapping from numbers periods is simple, for the others formats we have to interpret the time or timestamps
+    # correctly
     def perform
       @single_reading_array.each do |reading|
         # ignore rows that dont have necessary information
@@ -164,7 +170,11 @@ module Amr
 
     def index_from_timestamps_at_end_of_half_hour(reading)
       reading_day_time = Time.zone.parse(reading[:reading_date])
-      time_string = reading_day_time == reading_day_time.midnight ? '23:30' : reading_day_time.advance(minutes: -30).strftime('%H:%M')
+      time_string = if reading_day_time == reading_day_time.midnight
+                      '23:30'
+                    else
+                      reading_day_time.advance(minutes: -30).strftime('%H:%M')
+                    end
       TimeOfDay.parse(time_string).to_halfhour_index
     end
   end
