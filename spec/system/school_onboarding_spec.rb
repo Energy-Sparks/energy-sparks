@@ -98,7 +98,7 @@ describe 'onboarding', :schools do
       expect(page).to have_content('Set up your school on Energy Sparks')
     end
 
-    context 'when editing schools details' do
+    context 'when adding school details' do
       it 'shows an error message for an invalid postcode' do
         # NOTE: stubbed valid postcodes (e.g. AB1 2CD) are defined in config/initializers/geocoder.rb
         complete_onboarding(postcode: 'AB 2CD')
@@ -121,6 +121,55 @@ describe 'onboarding', :schools do
         fill_in 'Unique Reference Number', with: '987654321'
         click_on 'Save school details'
         expect(page).to have_content('Step 3: Grant consent')
+      end
+
+      context 'when already registered and signed-in' do
+        let(:user) { create(:onboarding_user) }
+
+        before do
+          onboarding.update!(created_user: user)
+          sign_in(user)
+          visit new_onboarding_school_details_path(onboarding)
+        end
+
+        it { expect(page).to have_content('Step 2: Tell us about your school') }
+
+        it 'has prefilled fields from the Establishment' do
+          expect(page).to have_field('Number of pupils', with: '321')
+          expect(page).to have_field('Unique Reference Number', with: '100000')
+        end
+
+        context 'when filling in the school details' do
+          before do
+            fill_in 'Address', with: '1 Station Road'
+            fill_in 'Postcode', with: 'AB1 2CD'
+            fill_in 'Website', with: 'http://oldfield.sch.uk'
+            choose('Primary')
+            fill_in 'Number of pupils', with: 300
+            fill_in 'Floor area in square metres', with: 400
+            fill_in 'Percentage of pupils eligible for free school meals at any time during the past 6 years', with: 16
+            check 'Our school has solar PV panels'
+            check 'Our school has night storage heaters'
+            uncheck 'Our school has its own swimming pool'
+            check 'Our school serves school dinners on site'
+            check 'Dinners are cooked on site'
+            check 'The kitchen cooks dinners for other schools'
+            fill_in 'How many schools does your school cook dinners for?', with: '5'
+            click_on 'Save school details'
+          end
+
+          it { expect(onboarding.reload).to have_event(:school_details_created) }
+          it { expect(onboarding.reload.school.data_enabled).to be_falsy }
+
+          it 'saves the data' do
+            onboarding.reload
+            expect(onboarding.school.indicated_has_solar_panels?).to be(true)
+            expect(onboarding.school.indicated_has_storage_heaters?).to be(true)
+            expect(onboarding.school.has_swimming_pool?).to be(false)
+            expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
+            expect(onboarding.school.percentage_free_school_meals).to eq(16)
+          end
+        end
       end
     end
 
@@ -282,41 +331,7 @@ describe 'onboarding', :schools do
       end
     end
 
-    context 'when the created user' do
-      let(:user) { create(:onboarding_user) }
-
-      before do
-        onboarding.update!(created_user: user)
-        sign_in(user)
-        visit new_onboarding_school_details_path(onboarding)
-      end
-
-      it 'prompts for school details' do
-        complete_school_details(save: false)
-        fill_in 'Number of pupils', with: 300
-        fill_in 'Floor area in square metres', with: 400
-        fill_in 'Percentage of pupils eligible for free school meals at any time during the past 6 years', with: 16
-        check 'Our school has solar PV panels'
-        check 'Our school has night storage heaters'
-        uncheck 'Our school has its own swimming pool'
-        check 'Our school serves school dinners on site'
-        check 'Dinners are cooked on site'
-        check 'The kitchen cooks dinners for other schools'
-        fill_in 'How many schools does your school cook dinners for?', with: '5'
-        click_on 'Save school details'
-
-        onboarding.reload
-        expect(onboarding).to have_event(:school_details_created)
-        expect(onboarding.school.indicated_has_solar_panels?).to be(true)
-        expect(onboarding.school.indicated_has_storage_heaters?).to be(true)
-        expect(onboarding.school.has_swimming_pool?).to be(false)
-        expect(onboarding.school.cooks_dinners_for_other_schools_count).to eq(5)
-        expect(onboarding.school.percentage_free_school_meals).to eq(16)
-        expect(onboarding.school.data_enabled).to be_falsy
-      end
-    end
-
-    context 'with provided school details' do
+    context 'when school details have been provided' do
       let(:user) { create(:onboarding_user) }
       let(:school) { build(:school) }
 
@@ -325,36 +340,38 @@ describe 'onboarding', :schools do
         onboarding.events.create!(event: :onboarding_user_created)
         SchoolCreator.new(school).onboard_school!(onboarding)
         sign_in(user)
-        visit onboarding_consent_path(onboarding)
-      end
-
-      it 'reminds me where I am on resume' do
         visit onboarding_path(onboarding)
-        expect(page).to have_content('You have a few more steps to complete before we can setup your school.')
-        click_on 'Continue'
-        expect(page).to have_content(consent_statement.content.to_plain_text)
       end
 
-      it 'prompts for consent' do
-        expect(page).to have_content(consent_statement.content.to_plain_text)
-        expect(page).to have_content('I give permission and confirm full agreement with')
+      it { expect(page).to have_content('You have a few more steps to complete before we can setup your school.') }
 
-        fill_in 'Name', with: 'Boss user'
-        fill_in 'Job title', with: 'Boss'
-        fill_in 'School name', with: 'Boss school'
+      context 'when resuming it prompts for consent' do
+        before { click_on 'Continue'}
 
-        click_on 'Grant consent'
+        it { expect(page).to have_content(consent_statement.content.to_plain_text) }
+        it { expect(page).to have_content('I give permission and confirm full agreement with') }
 
-        onboarding.reload
-        expect(onboarding).to have_event(:permission_given)
+        context 'with consent given' do
+          let(:consent_grant) { onboarding.reload.school.consent_grants.last }
 
-        consent_grant = onboarding.school.consent_grants.last
-        expect(consent_grant.name).to eq('Boss user')
-        expect(consent_grant.job_title).to eq('Boss')
-        expect(consent_grant.school_name).to eq('Boss school')
-        expect(consent_grant.user).to eq(onboarding.created_user)
-        expect(consent_grant.school).to eq(onboarding.school)
-        expect(consent_grant.ip_address).not_to be_nil
+          before do
+            fill_in 'Name', with: 'Boss user'
+            fill_in 'Job title', with: 'Boss'
+            fill_in 'School name', with: 'Boss school'
+            click_on 'Grant consent'
+          end
+
+          it { expect(onboarding.reload).to have_event(:permission_given) }
+
+          it 'records the grant of consent' do
+            expect(consent_grant.name).to eq('Boss user')
+            expect(consent_grant.job_title).to eq('Boss')
+            expect(consent_grant.school_name).to eq('Boss school')
+            expect(consent_grant.user).to eq(onboarding.created_user)
+            expect(consent_grant.school).to eq(onboarding.school)
+            expect(consent_grant.ip_address).not_to be_nil
+          end
+        end
       end
     end
 
@@ -468,7 +485,7 @@ describe 'onboarding', :schools do
     end
   end
 
-  context 'when the initial forms have been completed' do
+  context 'when on the final review page' do
     let(:user) { create(:onboarding_user) }
     let(:school) { build(:school) }
 
