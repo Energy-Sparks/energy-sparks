@@ -653,7 +653,8 @@ describe 'onboarding', :schools do
 
         it 'shows newsletter options' do
           expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
-          # These correspond to settings in mailchimp/contact.yml
+          # These settings correspond to the data in mailchimp/contact.yml, returned by
+          # stubbed audience_manager
           expect(page).to have_checked_field('Getting the most out of Energy Sparks')
           expect(page).not_to have_checked_field('Engaging pupils in energy saving and climate')
         end
@@ -661,15 +662,14 @@ describe 'onboarding', :schools do
         context 'when the account is updated' do
           before do
             fill_in 'Your name', with: 'Better name'
+            click_on 'Update my account'
           end
 
           it 'saves the user changes' do
-            click_on 'Update my account'
             expect(user.reload.name).to eq('Better name')
           end
 
           it 'saves the newsletter options' do
-            click_on 'Update my account'
             expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
               expect(contact.interests.values).to eq([true, false, false, false, false])
               expect(kwargs[:status]).to eq('subscribed')
@@ -681,10 +681,10 @@ describe 'onboarding', :schools do
           before do
             uncheck('Getting the most out of Energy Sparks')
             check('Engaging pupils in energy saving and climate')
+            click_on 'Update my account'
           end
 
           it 'saves the updated options' do
-            click_on 'Create my account'
             expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
               expect(contact.interests.values).to eq([false, true, false, false, false])
               expect(kwargs[:status]).to eq('subscribed')
