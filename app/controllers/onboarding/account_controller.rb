@@ -73,7 +73,14 @@ module Onboarding
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :password_confirmation, :staff_role_id, :terms_accepted)
+      params.require(:user).permit(
+        :email,
+        :name,
+        :password,
+        :password_confirmation,
+        :preferred_locale,
+        :staff_role_id,
+        :terms_accepted)
     end
   end
 end

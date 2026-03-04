@@ -21,6 +21,8 @@
       <%= f.input :staff_role_id, required: true, collection: StaffRole.order(:title),
                                   label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
 
+      <%= render 'users/preferred_locale', resource: @user, form: f %>
+
       <div class="row mt-4">
         <div class="col-md-12">
           <%= label_tag :school, t('mailchimp_signups.mailchimp_form.email_preferences') %>

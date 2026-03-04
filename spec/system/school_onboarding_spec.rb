@@ -211,6 +211,7 @@ describe 'onboarding', :schools do
           password = 'testtesttest1'
           fill_in 'Password', with: password, match: :prefer_exact
           fill_in 'Password confirmation', with: password
+          select 'Welsh', from: 'Preferred language'
           check :privacy
         end
 
@@ -243,6 +244,7 @@ describe 'onboarding', :schools do
           expect(onboarding.created_user).to have_attributes({
             name: 'A Teacher',
             role: 'school_onboarding',
+            preferred_locale: 'cy',
             terms_accepted: true
           })
         end
@@ -662,11 +664,15 @@ describe 'onboarding', :schools do
         context 'when the account is updated' do
           before do
             fill_in 'Your name', with: 'Better name'
+            select 'Welsh', from: 'Preferred language'
             click_on 'Update my account'
           end
 
           it 'saves the user changes' do
-            expect(user.reload.name).to eq('Better name')
+            expect(user.reload).to have_attributes({
+              name: 'Better name',
+              preferred_locale: 'cy'
+            })
           end
 
           it 'saves the newsletter options' do
