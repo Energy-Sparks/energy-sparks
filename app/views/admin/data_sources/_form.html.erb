@@ -9,12 +9,12 @@
       <%= f.input :owned_by_id, collection: User.where(role: :admin).to_a %>
       <%= f.input :contact_name %>
       <%= f.input :contact_email %>
-      <%= f.input :loa_contact_details, label: 'Who to send LOA to' %>
       <%= f.input :import_warning_days, label: 'Days after which a meter for this data source should be considered
       lagging (default 7)' %>
       <%= f.input :alerts_on, label: 'Turn on email alerts for lagging meters?' %>
       <%= f.input :alert_percentage_threshold, label: 'Percentage of meters required to be lagging to generate an alert
       (default 25)', input_html: { value: 25 } %>
+      <%= f.input :loa_contact_details, label: 'Who to send LOA to' %>
       <%= f.input :data_prerequisites %>
       <%= f.input :data_feed_type, label: 'Type of data feed' %>
       <%= f.input :new_area_data_feed, label: 'How to setup data feed for a new area' %>
