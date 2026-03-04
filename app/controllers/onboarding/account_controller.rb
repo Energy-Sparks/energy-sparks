@@ -10,7 +10,6 @@ module Onboarding
       redirect_if_event(:onboarding_user_created, new_onboarding_school_details_path(@school_onboarding))
     end
 
-
     def new
       @user = User.new(email: @school_onboarding.contact_email)
       @interests = default_interests(@user)
@@ -32,12 +31,14 @@ module Onboarding
     end
 
     def edit
+      audience_manager.list # load to ensure config is set
       @interests = user_interests
     end
 
     def update
       if current_user.update(user_params.reject {|key, value| key =~ /password/ && value.blank?})
         @school_onboarding.events.create!(event: :onboarding_user_updated)
+        subscribe_newsletter(current_user, params.permit(interests: {}))
         bypass_sign_in(current_user)
         redirect_to new_onboarding_completion_path(@school_onboarding)
       else

@@ -336,7 +336,7 @@ describe 'onboarding', :schools do
       end
     end
 
-    context 'when resuming onboarding' do
+    context 'when resuming onboarding afer creating a user' do
       let(:user) { create(:onboarding_user) }
       let(:school) { build(:school) }
 
@@ -360,6 +360,7 @@ describe 'onboarding', :schools do
           end
 
           it { expect(page).to have_content('You have a few more steps to complete before we can setup your school.') }
+          it { expect(page).to have_link('Continue') }
         end
       end
     end
@@ -637,17 +638,59 @@ describe 'onboarding', :schools do
       end
     end
 
-    context 'when managing the onboarding users account' do
+    context 'when managing the onboarding user account' do
       before do
         visit new_onboarding_completion_path(onboarding)
-        click_on 'Edit your account'
-
-        fill_in 'Your name', with: 'Better name'
-        click_on 'Update my account'
       end
 
-      it 'updates the account' do
-        expect(user.reload.name).to eq('Better name')
+      it { expect(page).to have_content('Final step: review your answers') }
+      it { expect(page).to have_content(user.email) }
+      it { expect(page).to have_content(user.name) }
+      it { expect(page).to have_content(user.staff_role.title) }
+
+      context 'when the form is viewed' do
+        before { click_on 'Edit your account' }
+
+        it 'shows newsletter options' do
+          expect(page).to have_content(I18n.t('mailchimp_signups.mailchimp_form.email_preferences'))
+          # These correspond to settings in mailchimp/contact.yml
+          expect(page).to have_checked_field('Getting the most out of Energy Sparks')
+          expect(page).not_to have_checked_field('Engaging pupils in energy saving and climate')
+        end
+
+        context 'when the account is updated' do
+          before do
+            fill_in 'Your name', with: 'Better name'
+          end
+
+          it 'saves the user changes' do
+            click_on 'Update my account'
+            expect(user.reload.name).to eq('Better name')
+          end
+
+          it 'saves the newsletter options' do
+            click_on 'Update my account'
+            expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
+              expect(contact.interests.values).to eq([true, false, false, false, false])
+              expect(kwargs[:status]).to eq('subscribed')
+            end
+          end
+        end
+
+        context 'when the newsletter options are changed' do
+          before do
+            uncheck('Getting the most out of Energy Sparks')
+            check('Engaging pupils in energy saving and climate')
+          end
+
+          it 'saves the updated options' do
+            click_on 'Create my account'
+            expect(audience_manager).to have_received(:subscribe_or_update_contact) do |contact, kwargs|
+              expect(contact.interests.values).to eq([false, true, false, false, false])
+              expect(kwargs[:status]).to eq('subscribed')
+            end
+          end
+        end
       end
     end
 
