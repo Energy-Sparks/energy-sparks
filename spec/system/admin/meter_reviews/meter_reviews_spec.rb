@@ -1,19 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'meter_reviews', type: :system do
-  let!(:school)                { create(:school) }
-  let!(:reviewed_school)       { create(:school) }
-  let!(:other_school)          { create(:school) }
-  let!(:dcc_meter)             { create(:electricity_meter, school: school, dcc_meter: :smets2, consent_granted: false) }
-  let!(:dcc_meter_granted)     { create(:electricity_meter, school: reviewed_school, dcc_meter: :smets2, consent_granted: true) }
-  let!(:electricity_meter)     { create(:electricity_meter, school: other_school) }
+RSpec.describe 'meter_reviews' do
+  let!(:school) { create(:school) }
+  let!(:reviewed_school) { create(:school) }
+  let!(:other_school) { create(:school) }
+  let!(:dcc_meter) { create(:electricity_meter, school:, dcc_meter: :smets2, consent_granted: false) }
+  let!(:dcc_meter_granted) do
+    create(:electricity_meter, school: reviewed_school, dcc_meter: :smets2, consent_granted: true)
+  end
+  let!(:electricity_meter) { create(:electricity_meter, school: other_school) }
 
-  let!(:admin)                 { create(:admin) }
+  let!(:admin) { create(:admin) }
 
   context 'with no completed reviews' do
     it 'has no link to the list of completed reviews' do
       visit school_meters_path(other_school)
-      expect(page).not_to have_link('Completed DCC meter reviews', href: admin_school_meter_reviews_path(school))
+      expect(page).to have_no_link('Completed DCC meter reviews', href: admin_school_meter_reviews_path(school))
     end
   end
 
@@ -28,8 +32,8 @@ RSpec.describe 'meter_reviews', type: :system do
       click_on 'Meter Reviews'
       expect(page).to have_title 'Meter Reviews'
       expect(page).to have_content school.name
-      expect(page).not_to have_content reviewed_school.name
-      expect(page).not_to have_content other_school
+      expect(page).to have_no_content reviewed_school.name
+      expect(page).to have_no_content other_school
     end
 
     it 'has link to school consent documents' do
@@ -43,8 +47,8 @@ RSpec.describe 'meter_reviews', type: :system do
     end
 
     context 'with current consent' do
-      let!(:consent_statement)      {   create(:consent_statement, current: true) }
-      let!(:consent_grant)          {   create(:consent_grant, consent_statement: consent_statement, school: school) }
+      let!(:consent_statement) {   create(:consent_statement, current: true) }
+      let!(:consent_grant) {   create(:consent_grant, consent_statement: consent_statement, school:) }
 
       before do
         click_on 'Meter Reviews'
@@ -55,7 +59,7 @@ RSpec.describe 'meter_reviews', type: :system do
       end
 
       it 'does not offer option to request consent' do
-        expect(page).not_to have_link('Request consent')
+        expect(page).to have_no_link('Request consent')
       end
 
       it 'offers option to complete review' do
@@ -77,12 +81,12 @@ RSpec.describe 'meter_reviews', type: :system do
       end
 
       it 'does not offer to complete review' do
-        expect(page).not_to have_link('Perform review')
+        expect(page).to have_no_link('Perform review')
       end
     end
 
     context 'with bills' do
-      let!(:consent_document) { create(:consent_document, school: school) }
+      let!(:consent_document) { create(:consent_document, school:) }
 
       before do
         click_on 'Meter Reviews'
@@ -124,14 +128,14 @@ RSpec.describe 'meter_reviews', type: :system do
     context 'and consent is not current' do
       it 'does not allow completion' do
         click_on 'Meter Reviews'
-        expect(page).not_to have_link('Complete review')
+        expect(page).to have_no_link('Complete review')
         expect(page).to have_link('Request consent')
       end
     end
 
     context 'when consent is current' do
-      let!(:consent_statement)      {   create(:consent_statement, current: true) }
-      let!(:consent_grant)          {   create(:consent_grant, consent_statement: consent_statement, school: school) }
+      let!(:consent_statement) { create(:consent_statement, current: true) }
+      let!(:consent_grant) { create(:consent_grant, consent_statement:, school:) }
 
       before do
         click_on 'Meter Reviews'
@@ -168,7 +172,7 @@ RSpec.describe 'meter_reviews', type: :system do
       end
 
       context 'and documents are available' do
-        let!(:consent_document) { create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill') }
+        let!(:consent_document) { create(:consent_document, school:, description: 'Proof!', title: 'Our Energy Bill') }
 
         before do
           click_on 'Perform review'
@@ -194,8 +198,8 @@ RSpec.describe 'meter_reviews', type: :system do
   end
 
   context 'when showing a review' do
-    let!(:meter_review)           { create(:meter_review, school: school, user: admin) }
-    let!(:consent_document) { create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill') }
+    let!(:meter_review) { create(:meter_review, school:, user: admin) }
+    let!(:consent_document) { create(:consent_document, school:, description: 'Proof!', title: 'Our Energy Bill') }
 
     before do
       meter_review.meters << dcc_meter
@@ -218,14 +222,34 @@ RSpec.describe 'meter_reviews', type: :system do
       expect(page.has_link?(consent_document.title)).to be true
     end
 
-    context 'when viewing meters' do
-      let(:meter_review) { create(:meter_review) }
-      let(:electricity_meter_reviewed) { create(:electricity_meter, dcc_meter: :smets2, meter_review: meter_review, mpan_mprn: 1234567890111, school: school) }
+    it 'allows the review to be disabled' do
+      click_on 'Disable'
+      expect(page).to have_content('Review disabled')
+      expect(meter_review.reload.disabled).to be true
+    end
 
-      it 'provides a link to meter reviews' do
-        visit school_meters_path(school)
-        expect(page).to have_link('Completed DCC meter reviews', href: admin_school_meter_reviews_path(school))
+    context 'when disabled' do
+      let(:meter_review) { create(:meter_review, school:, disabled: true) }
+
+      it 'allows the review to be enabled' do
+        click_on 'Enable'
+        expect(page).to have_content('Review enabled')
+        expect(meter_review.reload.disabled).to be false
       end
+    end
+  end
+
+  context 'when viewing meters' do
+    let(:meter_review) { create(:meter_review) }
+
+    before do
+      create(:electricity_meter, dcc_meter: :smets2, meter_review:, mpan_mprn: 1_234_567_890_111, school:)
+      login_as(admin)
+      visit school_meters_path(school)
+    end
+
+    it 'provides a link to meter reviews' do
+      expect(page).to have_link('Completed DCC meter reviews', href: admin_school_meter_reviews_path(school))
     end
   end
 end

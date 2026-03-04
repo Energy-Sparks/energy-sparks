@@ -7,6 +7,7 @@
         <th>Date completed</th>
         <th>Number of meters</th>
         <th>Reviewer</th>
+        <th>Disabled</th>
       </tr>
     </thead>
     <tbody>
@@ -15,6 +16,7 @@
           <td><%= link_to nice_date_times(review.created_at), admin_school_meter_review_path(@school, review) %></td>
           <td><%= review.meters.count %></td>
           <td><%= review.user.name %></td>
+          <td><%= y_n(review.disabled) %></td>
         </tr>
       <% end %>
     </tbody>

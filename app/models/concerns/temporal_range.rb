@@ -3,7 +3,7 @@ module TemporalRange
 
   include DateRanged
 
-  # FIXME table names
+  # FIXME table names, scopes on DateRanged?
   included do
     scope :historical, ->(today = Time.zone.today) {
       where('end_date < ?', today)

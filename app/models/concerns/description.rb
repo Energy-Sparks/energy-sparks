@@ -12,6 +12,9 @@ module Description
   end
 
   def description_includes_images?
-    description&.body&.to_trix_html&.include?('figure')
+    return false unless description&.body
+
+    html = description.body.to_html
+    html.include?('<action-text-attachment') && html.include?('content-type="image/')
   end
 end
