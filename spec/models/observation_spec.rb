@@ -244,7 +244,7 @@ describe Observation do
         end
 
         context 'when description has images' do
-          before { observation.description = '<div><figure><img src="image1.jpg"/></figure></div>' }
+          before { observation.description = content_with_attachment }
 
           it 'returns the photo bonus points' do
             expect(observation.available_bonus_points).to eq(5)
