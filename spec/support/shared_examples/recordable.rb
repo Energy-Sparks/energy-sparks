@@ -41,8 +41,8 @@ RSpec.shared_examples 'a recordable' do
     end
   end
 
-  let(:description_without_image) { '<div>No images here</div>' }
   let(:description_with_image) { content_with_attachment }
+  let(:description_without_image) { '<div>No images here</div>' }
 
   context 'when creating a new recording' do
     let(:recording) do

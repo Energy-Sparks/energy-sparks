@@ -70,8 +70,7 @@ describe 'Activity' do
 
       context 'when updating description to have an image' do
         before do
-          activity.description = content_with_attachment
-          activity.save
+          activity.update(description: content_with_attachment)
         end
 
         it 'updates associated observation points' do
@@ -85,8 +84,7 @@ describe 'Activity' do
       let(:activity) { create(:activity, description:) } # also creates observation
 
       before do
-        activity.description = content_with_attachment
-        activity.save
+        activity.update(description: content_with_attachment)
       end
 
       it { expect(observation.points).to eq(activity.activity_type.score + SiteSettings.current.photo_bonus_points) }
