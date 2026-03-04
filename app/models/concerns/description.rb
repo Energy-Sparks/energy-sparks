@@ -16,10 +16,5 @@ module Description
 
     html = description.body.to_html
     html.include?('<action-text-attachment') && html.include?('content-type="image/')
-
-    ## Alternative approach using embeds, but does not always work if description is not saved and embeds are not associated
-    # description.embeds.any? do |embed|
-    #  embed.blob&.content_type&.start_with?('image/')
-    # end
   end
 end
