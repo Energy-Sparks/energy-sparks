@@ -3,7 +3,7 @@
     <h1><%= t('onboarding.account.title_for_update') %></h1>
 
     <%= simple_form_for(current_user, url: onboarding_account_path(@school_onboarding)) do |f| %>
-      <%= render 'form', f: f,
+      <%= render 'form', f:,
                          user: current_user,
                          email_types: @email_types,
                          interests: @interests %>

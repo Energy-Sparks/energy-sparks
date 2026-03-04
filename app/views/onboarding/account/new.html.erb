@@ -15,7 +15,7 @@
 
     <%= simple_form_for(@user, url: onboarding_account_path(@school_onboarding)) do |f| %>
 
-      <%= render 'form', f: f,
+      <%= render 'form', f:,
                          user: @user,
                          email_types: @email_types,
                          interests: @interests %>

@@ -17,7 +17,7 @@
                form: f,
                minimum_password_length: @minimum_password_length %>
 
-    <%= render 'users/preferred_locale', user: resource, f: f %>
+    <%= render 'users/preferred_locale', f:, user: resource %>
 
     <% if @allow_alerts %>
       <hr>
