@@ -17,34 +17,12 @@
                form: f,
                minimum_password_length: @minimum_password_length %>
 
-    <%= render 'users/preferred_locale', resource:, form: f %>
+    <%= render 'users/preferred_locale', f:, user: resource %>
 
     <% if @allow_alerts %>
       <hr>
-      <div class="form-group row">
-        <div class="col-sm-4">
-          <%= simple_fields_for :contact do |n| %>
-            <%= n.input :auto_create_alert_contact,
-                        label: t('schools.users.auto_create_alert_contact.subscribe_to_school_alerts'),
-                        as: :boolean,
-                        class: 'custom-checkbox pb-3',
-                        wrapper_html: { id: 'test', class: 'custom-checkbox pb-3' },
-                        label_html: { class: 'custom-control-label' },
-                        input_html: {
-                          class: 'custom-control-input',
-                          checked: params[:contact].present? ? subscribe_to_alerts? : true
-                        } %>
-          <% end %>
-        </div>
-        <div class="col-sm-8">
-          <p><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts') %>:</p>
-          <ul>
-            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_1') %></li>
-            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_2') %></li>
-            <li><%= t('schools.users.auto_create_alert_contact.energy_sparks_alerts_list_item_3') %></li>
-          </ul>
-        </div>
-      </div>
+      <%= render 'schools/users/auto_create_alert_contact',
+                 checked: params[:contact].present? ? subscribe_to_alerts? : true %>
     <% end %>
 
     <% if @can_subscribe_newsletter %>
@@ -59,22 +37,7 @@
 
     <% end %>
 
-    <div class="custom-control custom-checkbox agreements">
-      <%= f.check_box :terms_accepted,
-                      { class:
-                         class_names('custom-control-input multi-select', 'must-check': !resource.terms_accepted) },
-                      '1',
-                      '0' %>
-      <%= f.label :terms_accepted, t('terms_and_conditions.message_html',
-                                     terms_and_conditions_link: link_to(t('common.terms_and_conditions'),
-                                                                        terms_and_conditions_path,
-                                                                        target: '_blank', rel: 'noopener'),
-                                     privacy_policy_link: link_to(t('common.privacy_policy'),
-                                                                  privacy_and_cookie_policy_path,
-                                                                  target: '_blank',
-                                                                  rel: 'noopener')),
-                  class: 'custom-control-label' %>
-    </div>
+    <%= render 'shared/agree_terms_checkbox', f:, user: resource %>
 
     <div class="form-group">
       <%= f.submit t('devise.passwords.edit.complete_registration'), class: 'btn btn-primary' %>

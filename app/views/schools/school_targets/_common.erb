@@ -20,7 +20,7 @@
         <div class="col-md-8">
           <h3><%= subheading %></h3>
           <%= yield :after_subheading %>
-          <%= render 'fuel_type_note' %>
+          <p><%= t('schools.school_targets.fuel_type_note.where_we_have_enough_data_note') %></p>
           <% if defined? form_intro %>
             <p><%= form_intro %></p>
           <% end %>

@@ -3,6 +3,14 @@
 class AmrImportJob < ApplicationJob
   queue_as :regeneration
 
+  include GoodJob::ActiveJobExtensions::Concurrency
+
+  # in case the job is still running by the time it is scheduled again
+  good_job_control_concurrency_with(
+    total_limit: 1,
+    key: -> { "#{self.class.name}-#{arguments.first.identifier}" } # AmrImportJob-config.identifier
+  )
+
   # initially this import was sequential in the rake task
   # it was then changed to create a job for each file
   # now changing to a job for each config to lower database load

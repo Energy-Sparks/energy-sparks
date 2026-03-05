@@ -240,7 +240,8 @@ RSpec.describe 'onboarding', :schools do
 
         email = ActionMailer::Base.deliveries.last
         expect(email.to).to include(school_onboarding.created_user.email)
-        expect(email.subject).to eq("#{school_onboarding.school.name} energy data is now available on Energy Sparks")
+        expect(email.subject).to \
+          eq("Energy data is now available on Energy Sparks for #{school_onboarding.school.name}")
       end
     end
 

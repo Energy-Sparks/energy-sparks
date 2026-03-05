@@ -52,18 +52,29 @@ RSpec.shared_examples 'target advice page' do
     find("##{fuel_type}_target-#{name.downcase}").text.gsub(/^How have we analysed your data?.*/m, '')
   end
 
-  def limited_data_content
+  def limited_data_we_have
+    'We have limited historical data for your school so are unable to calculate a progress report to help you track ' \
+      'progress towards completing your target.'
+  end
+
+  def limited_data_storage_heater_content
     <<~CONTENT.chomp
       Limited historical data
-      We have limited historical data for your school so are unable to calculate a progress report to help you track progress towards completing your target.
+      #{limited_data_we_have}
       If we are able to access historical data for your school then a report will automatically become available.
-      #{if fuel_type == :storage_heater
-          'In the meantime you can learn more about this topic.'
-        else
-          "Alternatively you can manually add monthly readings from your bill or supplier portal.\n" \
-            'In the meantime you can monitor your usage using the charts on the ' \
-            "long term #{fuel_type} usage advice page"
-        end}
+      In the meantime you can learn more about this topic.
+    CONTENT
+  end
+
+  def limited_data_content
+    return limited_data_storage_heater_content if fuel_type == :storage_heater
+
+    <<~CONTENT.chomp
+      Limited historical data
+      Manually add monthly meter readings to access this feature
+      #{limited_data_we_have}
+      You can manually add monthly readings from your bill or supplier portal to access this feature. Or, if we are able to access historical data for your school then a report will automatically become available.
+      You can also monitor your usage using the tables and charts on the long term #{fuel_type} usage advice page.
     CONTENT
   end
 
