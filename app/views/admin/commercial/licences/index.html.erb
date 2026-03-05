@@ -9,6 +9,7 @@
         <%= render 'filters', tab: 'expiring',
                               school_group_id: @school_group_id,
                               date_label: 'Show licences expiring by',
+                              field_name: :expiry_date,
                               date: @expiry_date %>
 
         <%= render Commercial::LicencesComponent.new(licences: @expiring_licences, show_renewal_data: true) %>
@@ -17,7 +18,8 @@
         <%= render 'filters', tab: 'recently-expired',
                               school_group_id: @school_group_id,
                               date_label: 'Show licences that have expired since',
-                              date: @last_month %>
+                              field_name: :expired_date,
+                              date: @expired_date %>
 
         <%= render Commercial::LicencesComponent.new(licences: @recently_expired_licences) %>
       <% end %>
@@ -25,7 +27,8 @@
         <%= render 'filters', tab: 'recent',
                               school_group_id: @school_group_id,
                               date_label: 'Show licences created since',
-                              date: @today %>
+                              field_name: :recently_added_date,
+                              date: @recently_added_date %>
 
         <%= render Commercial::LicencesComponent.new(licences: @recent_licences) %>
       <% end %>
@@ -33,7 +36,8 @@
         <%= render 'filters', tab: 'recently-updated',
                               school_group_id: @school_group_id,
                               date_label: 'Show licences updated since',
-                              date: @last_month %>
+                              field_name: :recently_updated_date,
+                              date: @recently_updated_date %>
 
         <%= render Commercial::LicencesComponent.new(licences: @recently_updated_licences) %>
       <% end %>
