@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_04_124108) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1661,6 +1661,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
     t.index ["school_id"], name: "index_programmes_on_school_id"
   end
 
+  create_table "regeneration_errors", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.text "message"
+    t.datetime "raised_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_regeneration_errors_on_school_id"
+  end
+
   create_table "resource_file_types", force: :cascade do |t|
     t.string "title", null: false
     t.integer "position", null: false
@@ -2499,6 +2508,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
   add_foreign_key "observations", "users", column: "updated_by_id"
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
+  add_foreign_key "regeneration_errors", "schools"
   add_foreign_key "resource_files", "resource_file_types", on_delete: :restrict
   add_foreign_key "rtone_variant_installations", "amr_data_feed_configs"
   add_foreign_key "rtone_variant_installations", "meters"

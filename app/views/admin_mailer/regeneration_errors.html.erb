@@ -1,0 +1,23 @@
+<h1>Regeneration Errors</h1>
+<table>
+  <thead>
+    <tr>
+      <th>School</th>
+      <th>School Group</th>
+      <th>Error</th>
+      <th>Time of Failure</th>
+      <th>Default Issues Admin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @errors.sort_by { |e| e.school.name }.each do |error| %>
+      <tr>
+        <td><%= error.school.name %></td>
+        <td><%= error.school.school_group.name %></td>
+        <td><%= error.message %></td>
+        <td><%= error.raised_at %></td>
+        <td><%= error.school.default_issues_admin_user.name %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
