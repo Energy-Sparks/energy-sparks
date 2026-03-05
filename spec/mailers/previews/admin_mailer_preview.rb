@@ -11,8 +11,8 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def lagging_meters
-    data_source = DataSource.where(percentage_lagging > alert_percentage_threshold).first
-    lagging = [[data_source, data_source.percentage_lagging]]
+    data_source = DataSource.first
+    lagging = [data_source]
     AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_meters
   end
 
