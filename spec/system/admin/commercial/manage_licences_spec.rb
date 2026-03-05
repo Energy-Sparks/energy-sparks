@@ -162,6 +162,7 @@ describe 'manage licences' do
       before do
         within('#expiring') do
           select(school_group.name, from: 'School group')
+          fill_in(:filters_expiry_date, with: (Time.zone.today + 30.days).iso8601)
           click_on('Filter')
         end
       end
@@ -174,7 +175,7 @@ describe 'manage licences' do
       end
     end
 
-    context 'when filtering by date' do
+    context 'when filtering by just date' do
       before do
         within('#expiring') do
           fill_in(:filters_expiry_date, with: (Time.zone.today + 10.days).iso8601)
