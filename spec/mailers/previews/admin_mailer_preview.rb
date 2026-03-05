@@ -10,6 +10,12 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.with(to: 'operations@energysparks.uk', missing:).stopped_data_feeds
   end
 
+  def lagging_meters
+    data_source = DataSource.where(percentage_lagging > alert_percentage_threshold).first
+    lagging = [[data_source, data_source.percentage_lagging]]
+    AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_meters
+  end
+
   def self.school_group_meter_data_export_params
     { school_group_id: SchoolGroup.organisation_groups.sample&.id }
   end
