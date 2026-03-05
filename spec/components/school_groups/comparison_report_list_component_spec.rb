@@ -14,7 +14,7 @@ RSpec.describe SchoolGroups::ComparisonReportListComponent, :include_url_helpers
   let!(:school_group) { create(:school_group) }
 
   def expected_compare_path(school_group, benchmark)
-    compare_path(group: true, benchmark: benchmark, school_group_ids: [school_group.id])
+    comparisons_configurable_period_path(group: true, key: benchmark, school_group_ids: [school_group.id])
   end
 
   context 'with a simple list' do

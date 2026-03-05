@@ -3,6 +3,9 @@ require 'rails_helper'
 shared_examples_for 'a displayed data source' do
   it 'displays data source fields' do
     expect(page).to have_content(data_source.organisation_type.try(:humanize).presence || '')
+    expect(page).to have_content(data_source.owned_by.try(:name).presence || '')
+    expect(page).to have_content("Load tariffs for SMETS meters\n#{y_n(data_source.load_tariffs)}")
+    expect(page).to have_content("Alerts on\n#{y_n(data_source.alerts_on)}")
     text_attributes.each_key do |text_field|
       expect(page).to have_content(data_source[text_field])
     end
@@ -12,7 +15,9 @@ end
 shared_examples_for 'a data source form' do
   it 'shows prefilled form' do
     expect(page).to have_select('Organisation type', selected: data_source.organisation_type.try(:humanize).presence || [])
+    expect(page).to have_select('Owned by', selected: data_source.owned_by.try(:name).presence || [])
     expect(page).to have_field('Load tariffs for SMETS meters')
+    expect(page).to have_field('Turn on email alerts for lagging meters?')
 
     text_attributes.each do |text_field, label|
       if data_source[text_field]
@@ -32,19 +37,21 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
   let!(:text_attributes) do
     {
-    name: 'Organisation name',
-    contact_name: 'Contact name',
-    contact_email: 'Contact email',
-    loa_contact_details: 'Who to send LOA to',
-    data_prerequisites: 'Data prerequisites',
-    data_feed_type: 'Type of data feed',
-    new_area_data_feed: 'How to setup data feed for a new area',
-    add_existing_data_feed: 'How to add to an existing data feed',
-    data_issues_contact_details: 'Who to contact about data issues',
-    historic_data: 'Historic data',
-    loa_expiry_procedure: 'What to do when LOA is about expire',
-    comments: 'Comments'
-  }
+      name: 'Organisation name',
+      contact_name: 'Contact name',
+      contact_email: 'Contact email',
+      loa_contact_details: 'Who to send LOA to',
+      data_prerequisites: 'Data prerequisites',
+      data_feed_type: 'Type of data feed',
+      new_area_data_feed: 'How to setup data feed for a new area',
+      add_existing_data_feed: 'How to add to an existing data feed',
+      data_issues_contact_details: 'Who to contact about data issues',
+      historic_data: 'Historic data',
+      loa_expiry_procedure: 'What to do when LOA is about expire',
+      comments: 'Comments',
+      alert_percentage_threshold: 'Percentage of meters required to be lagging to generate an alert (default 25)',
+      import_warning_days: 'Days after which a meter for this data source should be considered lagging (default 7)'
+    }
   end
 
   before do
@@ -84,37 +91,49 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
       context 'when there is a data source' do
         let(:existing_data_source) { create(:data_source) }
-        let(:setup_data) { existing_data_source }
 
-        it { expect(page).to have_content(existing_data_source.name) }
+        let(:school) { create(:school) }
+        let(:inactive_school) { create(:school, active: false) }
+
+        let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
+        let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source, school: school) } }
+        let(:active_stale_meter) { create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source: existing_data_source, school: school) }
+        let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
+
+        let(:setup_data) { [existing_data_source, active_meters, inactive_meters, active_stale_meter, active_meter_for_archived_school] }
+
         it { expect(page).to have_content(existing_data_source.organisation_type.humanize) }
+        it { expect(page).to have_content(user.name) }
+        it { expect(page).to have_content('5') }
+        it { expect(page).to have_content('2') }
+        it { expect(page).to have_content('1') }
+        it { expect(page).to have_content('20') }
 
-        it 'has a link to manage data source' do
+        it 'has a link to edit data source' do
           within('table') do
-            expect(page).to have_link('Manage')
+            expect(page).to have_link('Edit')
+          end
+        end
+
+        it 'has a link from the name to manage data source' do
+          within('table') do
+            expect(page).to have_link(existing_data_source.name)
           end
         end
 
         describe 'Managing a data source' do
           before do
             within('table') do
-              click_on 'Manage'
+              click_on existing_data_source.name
             end
           end
 
           context 'Summary panel' do
-            let(:school) { create(:school) }
-
-            let(:active_meters) { 4.times { create(:gas_meter, active: true, data_source: existing_data_source, school: school) } }
-            let(:inactive_meters) { 2.times { create(:gas_meter, active: false, data_source: existing_data_source) } }
-            let(:inactive_school) { create(:school, active: false) }
-            let(:active_meter_for_archived_school) { create(:gas_meter, active: true, data_source: existing_data_source, school: inactive_school) }
-
-            let(:setup_data) { [active_meters, inactive_meters, active_meter_for_archived_school] }
-
             it { expect(page).to have_content('Active meters 5') }
             it { expect(page).to have_content('Inactive meters 2') }
-            it { expect(page).to have_content('Associated schools 3') }
+            it { expect(page).to have_content('Lagging meters 1') }
+            it { expect(page).to have_content('Lagging as % of active 20') }
+            it { expect(page).to have_content('Associated schools 1') }
           end
 
           it_behaves_like 'a displayed data source' do
@@ -137,11 +156,23 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'and saving new data' do
-              let(:new_data_source) { build(:data_source, organisation_type: :council) }
+              let(:new_data_source) do
+                build(:data_source,
+                 organisation_type: :council,
+                 alert_percentage_threshold: 3,
+                 import_warning_days: 9,
+                 load_tariffs: false,
+                 alerts_on: false,
+                 owned_by: user
+                 )
+              end
 
               before do
                 select new_data_source.organisation_type.humanize, from: 'Organisation type'
-                check 'Load tariffs for SMETS meters'
+                select user.name, from: 'Owned by'
+                uncheck 'Load tariffs for SMETS meters'
+                uncheck 'Turn on email alerts for lagging meters?'
+
                 text_attributes.each do |text_field, label|
                   fill_in label, with: new_data_source[text_field]
                 end
@@ -213,10 +244,10 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
         it { expect(page).to have_content(existing_data_source.name) }
 
-        context 'clicking manage' do
+        context 'clicking data source name' do
           before do
             within('table') do
-              click_on 'Manage'
+              click_on existing_data_source.name
             end
           end
 
@@ -231,11 +262,12 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           click_on 'New data source'
         end
 
-        it { expect(page).to have_content('New data source')}
+        it { expect(page).to have_content('New data source') }
 
         it_behaves_like 'a data source form' do
           let(:data_source) { DataSource.new }
         end
+
         context 'with invalid attributes' do
           before do
             click_on 'Save'
@@ -245,10 +277,21 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
         end
 
         context 'with new valid attributes' do
-          let(:new_data_source) { build(:data_source, organisation_type: :council) }
+          let(:new_data_source) do
+            build(:data_source,
+            organisation_type: :council,
+            load_tariffs: true,
+            alerts_on: true,
+            owned_by: user
+            )
+          end
 
           before do
             select new_data_source.organisation_type.humanize, from: 'Organisation type'
+            select user.name, from: 'Owned by'
+            check 'Load tariffs for SMETS meters'
+            check 'Turn on email alerts for lagging meters?'
+
             text_attributes.each do |text_field, label|
               fill_in label, with: new_data_source[text_field]
             end
@@ -260,7 +303,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           context 'and viewing new data source' do
             before do
               within('table') do
-                click_on 'Manage'
+                click_on new_data_source.name
               end
             end
 
