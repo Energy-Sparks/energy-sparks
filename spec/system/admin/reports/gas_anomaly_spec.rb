@@ -10,7 +10,7 @@ describe 'Gas anomaly report' do
     create(:gas_meter, school: school)
   end
 
-  let(:anomaly) { Report::GasAnomaly.first }
+  let(:anomaly) { Report::GasAnomaly.order(:id).first }
 
   before do
     current_day = Date.yesterday
@@ -63,8 +63,8 @@ describe 'Gas anomaly report' do
 
   it 'allows csv download' do
     click_on 'CSV'
-    today_temp = FormatUnit.format(:temperature, Report::GasAnomaly.first.today_temperature.to_f, :html, false, true, :benchmark)
-    prev_temp = FormatUnit.format(:temperature, Report::GasAnomaly.first.previous_temperature.to_f, :html, false, true, :benchmark)
+    today_temp = FormatUnit.format(:temperature, anomaly.today_temperature.to_f, :html, false, true, :benchmark)
+    prev_temp = FormatUnit.format(:temperature, anomaly.previous_temperature.to_f, :html, false, true, :benchmark)
 
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \

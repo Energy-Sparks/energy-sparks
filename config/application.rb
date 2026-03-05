@@ -42,7 +42,6 @@ module EnergySparks
         require 'dashboard/alerts/common/benchmark_metrics'
         BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       end
-
       # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
       ActionText::ContentHelper.allowed_attributes =
         Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
@@ -76,6 +75,6 @@ module EnergySparks
     # devise not supporting new default very well yet - https://github.com/heartcombo/devise/pull/5462
     # should be resolved by rails 8.1 having config.action_controller.allowed_redirect_hosts
     #   https://github.com/rails/rails/pull/55420
-    config.action_controller.raise_on_open_redirects = false
+    config.action_controller.action_on_open_redirect = :log
   end
 end
