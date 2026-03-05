@@ -20,7 +20,7 @@ module Amr
       meters
     end
 
-  private
+    private
 
     # load just the data we need to convert data formats and enforce missing readings limit
     def load_configs
@@ -28,9 +28,10 @@ module Amr
     end
 
     def build_meter_data(active_record_meter)
-      readings = AmrDataFeedReading.order(created_at: :asc)
-        .where(meter_id: active_record_meter.id)
-        .pluck(:amr_data_feed_config_id, :reading_date, :created_at, :readings).map do |reading|
+      readings = AmrDataFeedReading.where(meter_id: active_record_meter.id)
+                                   .pluck(:amr_data_feed_config_id, :reading_date, :created_at, :readings)
+                                   .sort_by { |reading| reading[2] }
+                                   .map do |reading|
         reading_if_valid(active_record_meter.mpan_mprn, reading)
       end
 
@@ -39,8 +40,10 @@ module Amr
 
     def reading_if_valid(meter_id, reading)
       return if reading_invalid?(reading)
-      reading_date = date_from_string_using_date_format(reading,)
+
+      reading_date = date_from_string_using_date_format(reading)
       return if reading_date.nil?
+
       OneDayAMRReading.new(
         meter_id,
         reading_date,
