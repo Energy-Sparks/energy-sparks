@@ -3,14 +3,15 @@
     <h1><%= t('onboarding.account.title_for_update') %></h1>
 
     <%= simple_form_for(current_user, url: onboarding_account_path(@school_onboarding)) do |f| %>
-      <%= f.input :name, label: t('onboarding.account.your_name') %>
-      <%= f.input :email %>
-      <%= f.input :password %>
-      <%= f.input :password_confirmation %>
-      <%= f.input :staff_role_id, required: :true, collection: StaffRole.order(:title), label_method: :translated_title, hint: t('onboarding.account.role_hint') %>
+      <%= render 'form', f:,
+                         user: current_user,
+                         email_types: @email_types,
+                         interests: @interests %>
 
       <%= f.button :submit, t('onboarding.account.update') %>
-      <%= link_to t('common.labels.back'), new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'), class: 'btn' %>
+      <%= link_to t('common.labels.back'),
+                  new_onboarding_completion_path(@school_onboarding, anchor: 'your-account', show: 'account'),
+                  class: 'btn' %>
     <% end %>
   </div>
 </div>
