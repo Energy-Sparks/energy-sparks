@@ -246,4 +246,20 @@ RSpec.describe AdminMailer, include_application_helper: true do
       end
     end
   end
+
+  describe '#lagging_meters' do
+    let(:data_source) { create(:data_source, alert_percentage_threshold: 50) }
+    let(:school) { create(:school) }
+
+    let(:active_meter) {create(:gas_meter, active: true, data_source:, school: school)}
+    let(:active_stale_meters) { 3.times { create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source:, school: school) } }
+
+    context 'showing a data source which has exceeded the threshold' do
+      it { expect(body).to have_content(data_source.name) }
+      it { expect(body).to have_content('4') }
+      it { expect(body).to have_content('3') }
+      it { expect(body).to have_content('75') }
+      it { expect(body).to have_content('50') }
+    end
+  end
 end

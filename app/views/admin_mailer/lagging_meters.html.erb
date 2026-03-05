@@ -12,12 +12,12 @@
         </tr>
     </thead>
     <tbody>
-        <% @lagging.each do |data_source| %>
+        <% @lagging.each do |data_source, percentage_lagging| %>
             <tr>
                 <td><%= link_to data_source.name, admin_data_source_path(data_source) %></td>
                 <td> data_source.meters.active_for_active_schools </td>
                 <td> data_source.meters.with_stale_readings </td>
-                <td> % </td>
+                <td> percentage_lagging % </td>
                 <td> data_source.alert_percentage_threshold % </td>
             </tr>
         <% end %>
