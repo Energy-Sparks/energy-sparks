@@ -90,7 +90,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
       end
 
       context 'when there is a data source' do
-        let(:existing_data_source) { create(:data_source, owned_by_id: user.id) }
+        let(:existing_data_source) { create(:data_source) }
 
         let(:school) { create(:school) }
         let(:inactive_school) { create(:school, active: false) }
@@ -156,8 +156,6 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
             end
 
             context 'and saving new data' do
-              let(:new_admin) { create(:admin) }
-
               let(:new_data_source) do
                 build(:data_source,
                  organisation_type: :council,
@@ -165,7 +163,7 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
                  import_warning_days: 9,
                  load_tariffs: false,
                  alerts_on: false,
-                 owned_by: new_admin
+                 owned_by: user
                  )
               end
 
