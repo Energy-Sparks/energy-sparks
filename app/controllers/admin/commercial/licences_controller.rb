@@ -5,6 +5,7 @@ module Admin::Commercial
     def index
       @expiry_date = filter_params[:expiry_date]
       @last_month = filter_params[:last_month]
+      @today = filter_params[:today]
       @school_group_id = filter_params[:school_group_id]
       @tab = filter_params[:tab]
 

@@ -25,7 +25,7 @@
         <%= render 'filters', tab: 'recent',
                               school_group_id: @school_group_id,
                               date_label: 'Show licences created since',
-                              date: @last_month %>
+                              date: @today %>
 
         <%= render Commercial::LicencesComponent.new(licences: @recent_licences) %>
       <% end %>

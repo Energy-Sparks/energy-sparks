@@ -119,4 +119,75 @@ describe 'manage licences' do
     it { expect(page).to have_content(licence.end_date.iso8601) }
     it { expect(page).to have_content(licence.comments) }
   end
+
+  context 'when viewing licence index' do
+    let!(:school_group) { create(:school_group) }
+    let!(:school) { create(:school, :with_school_grouping, group: school_group) }
+
+    let!(:expiring_in_a_week) { create(:commercial_licence, end_date: Time.zone.today + 7, school: school) }
+    let!(:expiring_in_a_month) { create(:commercial_licence, created_at: Time.zone.yesterday, updated_at: Time.zone.today, end_date: Time.zone.today + 30) }
+    let!(:expired) { create(:commercial_licence, :historical) }
+
+    before { click_on('Licences') }
+
+    it { expect(page).to have_content('Expiring') }
+
+    it 'shows expiring licences' do
+      within('#expiring') do
+        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
+        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+      end
+    end
+
+    it 'shows recent licences' do
+      within('#recent') do
+        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
+        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+      end
+    end
+
+    it 'shows expired licences' do
+      within('#recently-expired') do
+        expect(page).to have_link(href: admin_commercial_licence_path(expired.id))
+      end
+    end
+
+    it 'shows recedntly updated licences' do
+      within('#recently-updated') do
+        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+      end
+    end
+
+    context 'when filtering by school group' do
+      before do
+        within('#expiring') do
+          select(school_group.name, from: 'School group')
+          click_on('Filter')
+        end
+      end
+
+      it 'shows the filtered expiring licences' do
+        within('#expiring') do
+          expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
+          expect(page).not_to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+        end
+      end
+    end
+
+    context 'when filtering by date' do
+      before do
+        within('#expiring') do
+          fill_in(:filters_expiry_date, with: (Time.zone.today + 10.days).strftime('%d/%m/%Y'))
+          click_on('Filter')
+        end
+      end
+
+      it 'shows the filtered expiring licences' do
+        within('#expiring') do
+          expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
+          expect(page).not_to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+        end
+      end
+    end
+  end
 end

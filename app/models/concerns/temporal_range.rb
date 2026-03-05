@@ -21,7 +21,7 @@ module TemporalRange
     }
 
     scope :recently_expired, ->(end_date = (Time.zone.today - 1.month).beginning_of_month) {
-      where("#{table_name}.end_date <= ?", end_date)
+      where("#{table_name}.end_date >= ? and #{table_name}.end_date < ?", end_date, Time.zone.today)
     }
 
     scope :recent, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
