@@ -48,7 +48,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
       end
     end
 
-    context 'when now showing contract information' do
+    context 'when not showing contract information' do
       before do
         render_inline(described_class.new(
                         licences: Commercial::Licence.current,
@@ -75,6 +75,42 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
               licence.start_date.iso8601,
               licence.end_date.iso8601,
               licence.status.to_s.humanize
+            ]
+          ]
+        end
+      end
+    end
+
+    context 'when showing renewal information' do
+      before do
+        render_inline(described_class.new(
+                        licences: Commercial::Licence.current,
+                        id: 'custom-id',
+                        classes: 'extra-classes',
+                        show_actions: false,
+                        show_renewal_data: true
+        ))
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#licences-table' }
+        let(:expected_header) do
+          [
+            ['ID', 'School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status', 'Future Funding Source']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              "##{licence.id}",
+              licence.school.school_group.name,
+              licence.school.name,
+              licence.contract.product.name,
+              licence.contract.name,
+              licence.start_date.iso8601,
+              licence.end_date.iso8601,
+              licence.status.to_s.humanize,
+              'MAT funded'
             ]
           ]
         end

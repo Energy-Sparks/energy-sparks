@@ -3,18 +3,17 @@ module TemporalRange
 
   include DateRanged
 
-  # FIXME table names, scopes on DateRanged?
   included do
     scope :historical, ->(today = Time.zone.today) {
-      where('end_date < ?', today)
+      where("#{table_name}.end_date < ?", today)
     }
 
     scope :current, ->(today = Time.zone.today) {
-      where('start_date <= ? AND end_date >= ?', today, today)
+      where("#{table_name}.start_date <= ? AND #{table_name}.end_date >= ?", today, today)
     }
 
     scope :future, ->(today = Time.zone.today) {
-      where('start_date > ?', today)
+      where("#{table_name}.start_date > ?", today)
     }
 
     scope :expiring, ->(end_date = (Time.zone.today + 1.month).end_of_month) {
@@ -22,15 +21,15 @@ module TemporalRange
     }
 
     scope :recently_expired, ->(end_date = (Time.zone.today - 1.month).beginning_of_month) {
-      where('end_date <= ?', end_date)
+      where("#{table_name}.end_date <= ?", end_date)
     }
 
     scope :recent, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
-      where('created_at >= ?', updated_at)
+      where("#{table_name}.created_at >= ?", updated_at)
     }
 
     scope :recently_updated, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
-      where('updated_at >= ? AND updated_at > created_at', updated_at)
+      where("#{table_name}.updated_at >= ? AND #{table_name}.updated_at > #{table_name}.created_at", updated_at)
     }
   end
 

@@ -8,13 +8,16 @@
         <th>ID</th>
         <th>School Group</th>
         <th>School</th>
-        <% if @show_contract %>
+        <% if @show_contract || @show_renewal_data %>
           <th>Product</th>
           <th>Contract</th>
         <% end %>
         <th>Start date</th>
         <th>End date</th>
         <th>Status</th>
+        <% if @show_renewal_data %>
+          <th>Future Funding Source</th>
+        <% end %>
         <% if @show_actions %>
           <th class="text-end no-sort">Actions</th>
         <% end %>
@@ -34,7 +37,7 @@
           <td class="col-2">
             <%= link_to licence.school.name, school_path(licence.school) %>
           </td>
-          <% if @show_contract %>
+          <% if @show_contract || @show_renewal_data %>
             <td>
               <%= link_to licence.contract.product.name, admin_commercial_product_path(licence.contract.product) %>
             </td>
@@ -54,6 +57,16 @@
                          colour: licence.status_colour
                        )) %>
           </td>
+          <% if @show_renewal_data %>
+            <td>
+              <% if licence.school.default_contract_holder_id == licence.school.id %>
+                Self funding
+              <% else %>
+                MAT funded
+              <% end %>
+            </td>
+          <% end %>
+
           <% if @show_actions %>
             <td class="text-end">
               <div class="btn-group">
