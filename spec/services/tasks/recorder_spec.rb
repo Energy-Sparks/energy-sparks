@@ -73,7 +73,7 @@ describe Tasks::Recorder do
       end
 
       context 'with an image' do
-        let(:description) { '<div><figure></figure></div>' }
+        let(:description) { content_with_attachment }
 
         it 'sets the points to the activity score plus bonus' do
           expect(observation.points).to eq(36)
@@ -117,7 +117,7 @@ describe Tasks::Recorder do
       end
 
       context 'with an image' do
-        let(:description) { '<div><figure></figure></div>' }
+        let(:description) { content_with_attachment }
 
         it 'sets the points to the activity score plus bonus' do
           expect(observation.points).to eq(36)

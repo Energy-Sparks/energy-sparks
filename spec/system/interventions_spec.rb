@@ -348,7 +348,7 @@ describe 'viewing and recording action' do
 
         it 'adds photo bonus' do
           fill_in 'observation_at', with: today
-          fill_in_trix with: 'We changed to a more efficient boiler<figure></figure>'
+          fill_in_trix with: content_with_attachment
           click_on 'Record action'
           expect(page).to have_content("You've just scored #{intervention_type.score + photo_bonus_points} points")
         end
