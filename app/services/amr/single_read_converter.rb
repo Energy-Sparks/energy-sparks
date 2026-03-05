@@ -126,7 +126,6 @@ module Amr
 
     # Find array index for this reading
     def reading_index_of_record(reading)
-      # debugger
       if indexed_with_period?
         index_from_period(reading)
       elsif indexed_by_time?
