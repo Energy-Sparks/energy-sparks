@@ -5,6 +5,7 @@ module TemporalRange
 
   included do
     scope :by_start_date, -> { order(start_date: :asc) }
+    scope :by_end_date, -> { order(start_date: :desc) }
 
     scope :historical, ->(today = Time.zone.today) {
       where('end_date < ?', today)
