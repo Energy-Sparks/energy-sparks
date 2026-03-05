@@ -8,17 +8,17 @@
             <th>Active meters</th>
             <th>Lagging Meters</th>
             <th>Percentage of lagging meters</th>
-            <th>Alert threshold %</th>
+            <th>Alert Percentage Threshold</th>
         </tr>
     </thead>
     <tbody>
         <% @lagging.each do |data_source| %>
             <tr>
-                <td><% data_source.name %></td>
-                <td><% data_source.meters.active_for_active_schools %></td>
-                <td><% data_source.meters.with_stale_readings %></td>
-                <td><% data_source.percentage_of_lagging_meters %>%</td>
-                <td><% data_source.alert_percentage_threshold %>%</td>
+                <td><%= data_source.name %></td>
+                <td><%= data_source.meters.all ? data_source.meters.active_for_active_schools : 'None' %></td>
+                <td><%= data_source.meters.all ? data_source.meters.with_stale_readings : 'None' %></td>
+                <td><%= data_source.percentage_of_lagging_meters %>%</td>
+                <td><%= data_source.alert_percentage_threshold || 0 %>%</td>
             </tr>
         <% end %>
     </tbody>

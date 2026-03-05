@@ -6,7 +6,7 @@ namespace :data_sources do
     # Note that percentage_lagging_readings doesn't exist on this branch yet
     lagging = DataSource.all.find_each.filter_map do |data_source|
       percentage_lagging = data_source.percentage_of_lagging_meters
-      { data_source:, percentage_lagging: } if percentage_lagging >= data_source.alert_percentage_threshold
+      { data_source:, percentage_lagging: } if percentage_lagging > data_source.alert_percentage_threshold
     end
     AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_meters.deliver if lagging.present?
   end
