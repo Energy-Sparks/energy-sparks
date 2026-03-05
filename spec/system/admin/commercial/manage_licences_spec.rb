@@ -177,7 +177,7 @@ describe 'manage licences' do
     context 'when filtering by date' do
       before do
         within('#expiring') do
-          fill_in(:filters_expiry_date, with: (Time.zone.today + 10.days).strftime('%d/%m/%Y'))
+          fill_in(:filters_expiry_date, with: (Time.zone.today + 10.days).iso8601)
           click_on('Filter')
         end
       end
