@@ -144,5 +144,14 @@
                           report: :change_in_solar_pv_since_last_year %>
       <% end %>
     <% end if @fuel_types.include?(:solar_pv) %>
+    <% grid.with_block do %>
+      <h4>Non public reports</h4>
+      <%= render SchoolGroups::ComparisonReportListComponent
+            .new(school_group: @school_group, fuel_types: nil, public: false) do |list| %>
+        <% Comparison::Report.by_key.where(public: false, disabled: false).to_a.each do |report| %>
+          <% list.with_link report.title, report: report.key %>
+        <% end %>
+      <% end %>
+    <% end if current_user&.admin? %>
   <% end %>
 <% end %>

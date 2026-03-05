@@ -18,7 +18,7 @@
                       prompt: '' %>
         <% end %>
 
-        <%= render 'preferred_locale', resource: @user, form: f %>
+        <%= render 'preferred_locale', user: @user, f: f %>
 
         <%= f.submit t('common.labels.update'), class: 'btn btn-primary' %>
         <%= link_to t('common.labels.cancel'), user_path(@user), class: 'btn btn-secondary' %>

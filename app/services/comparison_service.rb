@@ -15,14 +15,11 @@ class ComparisonService
   end
 
   def list_school_groups
-    if @user.present? && @user.admin?
-      return SchoolGroup.organisation_groups.with_active_schools.order(:name).to_a
-    end
-    groups = SchoolGroup.organisation_groups.with_active_schools.is_public.order(:name).to_a
-    if @user.present? && @user.school.present? && @user.school.school_group.present?
-      groups << @user.school.school_group
-    end
-    groups.uniq.sort_by(&:name)
+    groups = SchoolGroup.organisation_groups
+    groups = @user&.admin? ? groups.or(SchoolGroup.project_groups) : groups.is_public
+    groups = groups.with_active_schools.to_a
+    groups << @user.school.school_group if @user&.school&.school_group.present?
+    groups.uniq.sort_by!(&:name)
   end
 
   def list_school_types
