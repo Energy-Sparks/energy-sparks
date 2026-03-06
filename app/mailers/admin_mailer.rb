@@ -96,9 +96,9 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:to], subject: subject('Stopped data feeds'))
   end
 
-  def lagging_meters
+  def lagging_data_sources
     @lagging = params[:lagging]
-    mail(to: params[:to], subject: subject('Lagging meters'))
+    mail(to: params[:to], subject: subject('Lagging Data Sources'))
   end
 
   private
