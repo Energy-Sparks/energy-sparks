@@ -96,6 +96,11 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:to], subject: subject('Stopped data feeds'))
   end
 
+  def regeneration_errors(errors)
+    @errors = errors
+    mail(to: 'operations@energysparks.uk', subject: subject('Regeneration Errors'))
+  end
+
   private
 
   def build_issues_csv_for(issues)

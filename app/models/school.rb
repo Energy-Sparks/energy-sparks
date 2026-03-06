@@ -224,7 +224,7 @@ class School < ApplicationRecord
                                   attributes[:gas].blank? && attributes[:electricity].blank?
                                 },
                                 allow_destroy: true
-
+  has_many :regeneration_errors, dependent: :destroy
 
   belongs_to :calendar, optional: true
   belongs_to :template_calendar, optional: true, class_name: 'Calendar'
