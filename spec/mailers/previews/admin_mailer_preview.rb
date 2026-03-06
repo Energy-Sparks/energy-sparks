@@ -10,7 +10,7 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.with(to: 'operations@energysparks.uk', missing:).stopped_data_feeds
   end
 
-  def lagging_meters
+  def lagging_data_sources
     # lagging = [DataSource.order(import_warning_days: :desc).first]
     lagging = [DataSource.first]
     DataSource.find_each do |data_source|
@@ -20,7 +20,7 @@ class AdminMailerPreview < ActionMailer::Preview
         break
       end
     end
-    AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_meters
+    AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_data_sources
   end
 
   def self.school_group_meter_data_export_params
