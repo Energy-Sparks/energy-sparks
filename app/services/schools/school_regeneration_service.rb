@@ -21,6 +21,8 @@ module Schools
       end
     end
 
+    private
+
     def validate_and_persist_readings
       total_amr_readings_before = @school.amr_validated_readings.count
       meter_collection = Amr::ValidateAndPersistReadingsService.new(@school, @logger).perform
@@ -44,8 +46,7 @@ module Schools
     end
 
     def regenerate_school_metrics(meter_collection)
-      Schools::SchoolMetricsGeneratorService.new(school: @school, meter_collection: meter_collection,
-                                                 logger: @logger).perform
+      Schools::SchoolMetricsGeneratorService.new(school: @school, meter_collection:, logger: @logger).perform
     rescue StandardError => e
       log_error('Failed to regenerate school metrics', e)
     end
@@ -62,12 +63,10 @@ module Schools
       log_error('Failed to cache school', e)
     end
 
-    private
-
     def log_error(message, exception)
       case exception
       when EnergySparksUnexpectedStateException
-        school.regeneration_errors.create(raised_at: Time.current, message: exception.message)
+        @school.regeneration_errors.create(raised_at: Time.current, message: exception.message)
       else
         @logger.error "Exception: #{message} #{@school.name}: #{exception.class} #{exception.message}"
         @logger.error exception.backtrace.join("\n")
