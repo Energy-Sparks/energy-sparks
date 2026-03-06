@@ -262,14 +262,14 @@ RSpec.describe AdminMailer, include_application_helper: true do
     it { expect(email.subject).to eq '[energy-sparks-unknown] Energy Sparks - Lagging Data Sources' }
 
     context 'showing only data sources which have exceeded the threshold' do
-      it { expect(email.body).to have_link('Data Sources', href: admin_data_sources_url) }
-      it { expect(email.body).to have_link('Lagging Source', href: admin_data_source_url(data_source)) }
+      it { expect(email).to have_link('Data Sources', href: admin_data_sources_url) }
+      it { expect(email).to have_link('Lagging Source', href: admin_data_source_url(data_source)) }
 
       it 'shows table' do
-        expect(email.body).to have_content('4')
-        expect(email.body).to have_content('3')
-        expect(email.body).to have_content('75')
-        expect(email.body).to have_content('50')
+        expect(email).to have_content('4')
+        expect(email).to have_content('3')
+        expect(email).to have_content('75')
+        expect(email).to have_content('50')
       end
     end
   end
