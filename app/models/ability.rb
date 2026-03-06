@@ -101,6 +101,7 @@
 # :compare - can compare schools in this group. Used to add/remove links to compare functionality
 # :manage_settings - see manage group menu
 # access to viewing clusters on school group dashboard. Used to control access to SECR report page too
+# :view_impact_report - can view impact report for a school group
 #
 # METERS
 #

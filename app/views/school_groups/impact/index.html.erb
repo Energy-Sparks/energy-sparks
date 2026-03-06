@@ -1,7 +1,7 @@
 <%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
 
 <% content_for :header do %>
-  <%= render Layout::GridComponent.new(cols: 2, classes: 'container', cell_classes: '', id: 'header') do |grid| %>
+  <%= render Layout::GridComponent.new(cols: 2, classes: 'container', cell_classes: '', id: 'header-section') do |grid| %>
     <%= grid.with_image rounded: false, fit: false, width: '350px', classes: 'd-block mx-auto',
                         src: 'actions/podium.png' %>
     <% grid.with_feature_card size: :xl do |feature| %>
@@ -17,7 +17,7 @@
       <% end %>
       <%= feature.with_block(classes: 'pt-2') do %>
         <%= render Admin::PlaceholderComponent.new('replace link') do %>
-          <%= t('school_groups.impact.feature.read_more_html', href: '/placeholder') %>
+          <%= t('school_groups.impact.feature.read_more_html', href: '/') %>
         <% end %>
       <% end %>
     <% end %>
