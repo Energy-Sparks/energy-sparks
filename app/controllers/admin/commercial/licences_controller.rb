@@ -3,7 +3,18 @@ module Admin::Commercial
     load_and_authorize_resource :licence, class: 'Commercial::Licence'
 
     def index
-      @licences = Commercial::Licence.all
+      @expiry_date = filter_params[:expiry_date]
+      @expired_date = filter_params[:expired_date]
+      @recently_added_date = filter_params[:recently_added_date]
+      @recently_updated_date = filter_params[:recently_updated_date]
+
+      @school_group_id = filter_params[:school_group_id]
+      @tab = filter_params[:tab]
+
+      @expiring_licences = Commercial::Licence.filtered(:expiring, @expiry_date, @school_group_id)
+      @recently_expired_licences = Commercial::Licence.filtered(:recently_expired, @expired_date, @school_group_id)
+      @recent_licences = Commercial::Licence.filtered(:recent, @recently_added_date, @school_group_id)
+      @recently_updated_licences = Commercial::Licence.filtered(:recently_updated, @recently_updated_date, @school_group_id)
     end
 
     def new
@@ -40,6 +51,18 @@ module Admin::Commercial
     end
 
     private
+
+    def filter_params
+      last_month = (Time.zone.today - 1.month).beginning_of_month
+      params.fetch(:filters, {}).with_defaults(
+        expiry_date: (Time.zone.today + 1.month).end_of_month,
+        expired_date: last_month,
+        recently_added_date: last_month,
+        recently_updated_date: last_month,
+        school_group_id: nil,
+        tab: 'expiring'
+      )
+    end
 
     def licence_params
       params.require(:licence).permit(

@@ -9,18 +9,20 @@ class TabsComponent < ApplicationComponent
   end
 
   def before_render
-    tabs.first.active = true
+    unless tabs.any?(&:active)
+      tabs.first.active = true
+    end
   end
 
   class TabComponent < ApplicationComponent
     attr_reader :name, :label
     attr_accessor :active
 
-    def initialize(name:, label:, **_kwargs)
+    def initialize(name:, label:, active: false, **_kwargs)
       super
       @name = name
       @label = label
-      @active = false
+      @active = active
     end
 
     def link_id
