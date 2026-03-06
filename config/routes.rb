@@ -602,6 +602,10 @@ Rails.application.routes.draw do
     namespace :commercial do
       resources :contracts do
         get :contract_holder_options, on: :collection
+        resources :licences, controller: "contracts/licences" do
+          get :edit, on: :collection
+          put :update, on: :collection
+        end
       end
       resources :licences
       resources :products
