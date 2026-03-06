@@ -6,8 +6,8 @@
 #
 #  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
-#  message    :text
-#  raised_at  :datetime
+#  message    :text             not null
+#  raised_at  :datetime         not null
 #  school_id  :bigint(8)        not null
 #  updated_at :datetime         not null
 #

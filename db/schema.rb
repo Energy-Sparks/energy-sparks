@@ -1663,8 +1663,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_04_124108) do
 
   create_table "regeneration_errors", force: :cascade do |t|
     t.bigint "school_id", null: false
-    t.text "message"
-    t.datetime "raised_at"
+    t.text "message", null: false
+    t.datetime "raised_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_id"], name: "index_regeneration_errors_on_school_id"
