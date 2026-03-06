@@ -6,7 +6,7 @@
     <%= simple_form_for [:admin, data_source] do |f| %>
       <%= f.input :name, label: 'Organisation name' %>
       <%= f.input :organisation_type, collection: DataSource.organisation_types.keys, label_method: :humanize %>
-      <%= f.input :owned_by_id, collection: User.where(role: :admin).to_a %>
+      <%= f.input :owned_by_id, collection: User.where(role: :admin).order(:name), label_method: :display_name %>
       <%= f.input :contact_name %>
       <%= f.input :contact_email %>
       <%= f.input :import_warning_days, label: 'Days after which a meter for this data source should be considered
