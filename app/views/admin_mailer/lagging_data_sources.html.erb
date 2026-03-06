@@ -1,0 +1,25 @@
+<h1>Lagging Data Sources</h1>
+<p>The following data_sources have a high percentage of lagging meters and have exceeded their alert threshold.<p>
+<p>See the <%= link_to('Data Sources', admin_data_sources_url) %> summary page for a detailed breakdown.</p>
+<table>
+    <thead>
+        <tr>
+            <th>Data Source Name</th>
+            <th>Active meters</th>
+            <th>Lagging Meters</th>
+            <th>Percentage of lagging meters</th>
+            <th>Alert Threshold</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @lagging.each do |ds| %>
+            <tr>
+                <td><%= link_to(ds.name, admin_data_source_url(ds)) %></td>
+                <td><%= ds.meters.all ? ds.meters.active_for_active_schools.count : 'None' %></td>
+                <td><%= ds.meters.all ? ds.meters.with_stale_readings.count : 'None' %></td>
+                <td><%= ds.percentage_of_lagging_meters %>%</td>
+                <td><%= ds.alert_percentage_threshold || 0 %>%</td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

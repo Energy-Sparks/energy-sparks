@@ -246,4 +246,31 @@ RSpec.describe AdminMailer, include_application_helper: true do
       end
     end
   end
+
+  describe '#lagging_data_sources' do
+    let(:admin) { create(:admin) }
+    let(:data_source) { create(:data_source, alert_percentage_threshold: 50, name: 'Lagging Source') }
+    let(:school) { create(:school) }
+
+    let!(:non_lagging_meter) { create(:gas_meter, active: true, data_source:) }
+    let!(:lagging_meters) { 3.times { create(:gas_meter_with_validated_reading_dates, end_date: 8.days.ago, active: true, data_source:, school: school) } }
+
+    before do
+      AdminMailer.with(to: :admin, lagging: [data_source]).lagging_data_sources.deliver
+    end
+
+    it { expect(email.subject).to eq '[energy-sparks-unknown] Energy Sparks - Lagging Data Sources' }
+
+    context 'showing only data sources which have exceeded the threshold' do
+      it { expect(email).to have_link('Data Sources', href: admin_data_sources_url) }
+      it { expect(email).to have_link('Lagging Source', href: admin_data_source_url(data_source)) }
+
+      it 'shows table' do
+        expect(email).to have_content('4')
+        expect(email).to have_content('3')
+        expect(email).to have_content('75')
+        expect(email).to have_content('50')
+      end
+    end
+  end
 end
