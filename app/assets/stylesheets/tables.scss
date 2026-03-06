@@ -34,3 +34,41 @@
     }
   }
 }
+
+/* Remove borders from main row */
+.licence-table tr.no-border > td {
+  border-top: none !important;
+  border-bottom: none !important;
+}
+
+/* Remove top border on comments row */
+.licence-table tr.comments-row > td {
+  border-top: none !important;
+}
+
+/* Stripe each licence block (2 rows together) */
+.licence-table tbody.licence-block:nth-of-type(odd) {
+  background-color: #f8f9fa; /* Bootstrap light gray */
+}
+
+.licence-table thead th {
+  background-color: $header-dark !important;
+  color: $white !important;
+  border-bottom: 0;
+  border-top: 0;
+}
+.licence-table thead tr {
+  background-color: $header-dark !important;
+}
+
+.table-scroll {
+  max-height: 70vh;     /* or whatever height you want */
+  overflow-y: auto;
+}
+
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;     /* required so text isn't transparent */
+  z-index: 2;           /* ensure it stays above table cells */
+}

@@ -1,0 +1,66 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: "#{@contract.name} Licence Editor" %>
+<% end %>
+
+<%= simple_form_for(
+      @contract,
+      url: admin_commercial_contract_licences_path(@contract),
+      method: :put
+    ) do |f| %>
+
+<div class="table-scroll">
+    <table class="table table-sm align-middle licence-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>School</th>
+          <th>Start</th>
+          <th>End</th>
+          <th>Status</th>
+          <th>Price</th>
+          <th>Invoice Ref</th>
+        </tr>
+      </thead>
+
+      <% @licences.each do |licence| %>
+        <tbody class="licence-block">
+          <%= f.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
+
+            <tr class="main-row no-border">
+              <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
+              <td><%= link_to licence.school.name, school_path(licence.school) %></td>
+
+              <td class="col-2"><%= lf.input :start_date, as: :tempus_dominus_date, label: false %></td>
+              <td class="col-2"><%= lf.input :end_date, as: :tempus_dominus_date, label: false %></td>
+
+              <td class="col-2"><%= lf.input :status,
+                                             collection: collection_from_enum(Commercial::Licence.statuses),
+                                             include_blank: false,
+                                             label: false %></td>
+
+              <td class="col-1"><%= lf.input :school_specific_price,
+                                             as: :decimal,
+                                             input_html: { step: '0.01' },
+                                             label: false %></td>
+
+              <td class="col-2"><%= lf.input :invoice_reference, label: false %></td>
+            </tr>
+
+            <tr class="comments-row">
+              <td colspan="2"></td>
+              <td colspan="5">
+                <%= lf.input :comments,
+                             as: :text,
+                             input_html: { rows: 2 },
+                             label: false,
+                             placeholder: 'Comments' %>
+              </td>
+            </tr>
+
+          <% end %>
+        </tbody>
+      <% end %>
+    </table>
+</div>
+  <%= f.submit 'Save changes', class: 'btn btn-primary' %>
+<% end %>

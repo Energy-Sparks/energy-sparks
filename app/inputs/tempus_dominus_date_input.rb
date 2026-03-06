@@ -63,6 +63,16 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def wrapper_id
-    "#{object_name.to_s.gsub(/[^_a-z]/, '_')}_#{attribute_name.to_s.gsub(/[^_a-z]/, '_')}_dominus"
+    # Extract nested index if present (e.g. 345 from [345])
+    index = object_name.to_s[/\[(\d+)\]/, 1]
+
+    if index
+      # Preserve index when there are nested attributes so IDs stay unique
+      safe_object = object_name.to_s.gsub(/[^a-z0-9_]/i, '_')
+      safe_attr   = attribute_name.to_s.gsub(/[^_a-z]/, '_')
+      "#{safe_object}_#{index}_#{safe_attr}_dominus"
+    else
+      "#{object_name.to_s.gsub(/[^_a-z]/, '_')}_#{attribute_name.to_s.gsub(/[^_a-z]/, '_')}_dominus"
+    end
   end
 end

@@ -80,6 +80,8 @@ module Commercial
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 
+    accepts_nested_attributes_for :licences
+
     def status_colour
       STATUS_COLOUR[status.to_sym]
     end
