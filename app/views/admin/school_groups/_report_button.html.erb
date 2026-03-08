@@ -3,8 +3,8 @@
    label_id = "#{id}-label" %>
 <button type="button"
         class="<%= local_assigns[:class] %>"
-        data-toggle="modal"
-        data-target="#<%= modal_id %>">
+        data-toggle="modal" data-bs-toggle="modal"
+        data-target="#<%= modal_id %>" data-bs-target="#<%= modal_id %>">
   <%= local_assigns[:button] || name.capitalize %>
 </button>
 <div class="modal fade"
@@ -16,7 +16,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="<%= label_id %>"><%= title %></h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -24,7 +24,7 @@
         <div class="modal-body">
           <div>
             <strong>To: </strong>
-            <span class="badge border text-dark rounded-pill border-secondary font-weight-normal">
+            <span class="badge border text-dark rounded-pill border-secondary fw-normal">
               <%= current_user.email %>
             </span>
           </div>
@@ -35,12 +35,12 @@
         <div class="modal-footer">
           <%= button_tag(
                 type: 'submit',
-                class: 'btn btn-sm',
+                class: 'btn btn-secondary btn-sm',
                 data: { confirm: "Are you sure you want to send the #{name} to #{current_user.email}?" }
               ) do %>
             <%= fa_icon('envelope') %> Email <%= name %>
           <% end %>
-          <button type="button" class="btn btn-sm" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" data-bs-dismiss="modal">Close</button>
         </div>
       <% end %>
     </div>
