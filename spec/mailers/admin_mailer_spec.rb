@@ -266,6 +266,7 @@ RSpec.describe AdminMailer, include_application_helper: true do
       it { expect(email).to have_link('Lagging Source', href: admin_data_source_url(data_source)) }
 
       it 'shows table' do
+        puts email.html_part
         expect(email).to have_content('4')
         expect(email).to have_content('3')
         expect(email).to have_content('75')

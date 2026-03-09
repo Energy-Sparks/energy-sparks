@@ -11,7 +11,6 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def lagging_data_sources
-    # lagging = [DataSource.order(import_warning_days: :desc).first]
     lagging = [DataSource.first]
     DataSource.find_each do |data_source|
       percentage_lagging = data_source.percentage_of_lagging_meters

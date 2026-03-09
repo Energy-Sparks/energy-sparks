@@ -15,8 +15,8 @@
         <% @lagging.each do |ds| %>
             <tr>
                 <td><%= link_to(ds.name, admin_data_source_url(ds)) %></td>
-                <td><%= ds.meters.all ? ds.meters.active_for_active_schools.count : 'None' %></td>
-                <td><%= ds.meters.all ? ds.meters.with_stale_readings.count : 'None' %></td>
+                <td><%= ds.meters.active_for_active_schools.count %></td>
+                <td><%= ds.meters.with_stale_readings.count %></td>
                 <td><%= ds.percentage_of_lagging_meters %>%</td>
                 <td><%= ds.alert_percentage_threshold || 0 %>%</td>
             </tr>
