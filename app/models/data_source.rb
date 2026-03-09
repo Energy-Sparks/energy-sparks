@@ -50,7 +50,7 @@ class DataSource < ApplicationRecord
   end
 
   def exceeded_alert_threshold?
-    percentage_of_lagging_meters > alert_percentage_threshold if alerts_on
+    alerts_on ? percentage_of_lagging_meters > alert_percentage_threshold : false
   end
 
   def to_csv
