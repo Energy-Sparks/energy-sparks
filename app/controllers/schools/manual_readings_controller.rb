@@ -70,5 +70,12 @@ module Schools
         (@meter_start_dates[fuel_type].nil? || month < @meter_start_dates[fuel_type])
     end
     helper_method :show_fuel_input
+
+    def t_fuel_types(path)
+      @readings.fuel_types.map do |fuel_type|
+        helpers.link_to(I18n.t("analytics.common.#{fuel_type}"), polymorphic_path([@school, :advice, fuel_type, path]))
+      end.to_sentence.html_safe
+    end
+    helper_method :t_fuel_types
   end
 end
