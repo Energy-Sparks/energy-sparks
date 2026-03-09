@@ -14,6 +14,11 @@ module SchoolGroups
     skip_before_action :authenticate_user!
 
     def index
+      # Eventually this will be replaced with an active record object or similar
+      @impact_report = OpenStruct.new(
+        schools_count: @school_group.assigned_schools.visible.count,
+        generated_at: Time.zone.now
+      )
     end
 
     private

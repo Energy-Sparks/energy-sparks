@@ -28,7 +28,7 @@ RSpec.describe Elements::TooltipComponent, :include_application_helper, type: :c
   context 'with text and content' do
     it do
       expect(html).to have_css(
-        'span[data-bs-toggle="tooltip"][data-bs-title="text"]',
+        'span[data-bs-toggle="tooltip"][data-toggle="tooltip"][title="text"]',
         text: 'Content'
       )
     end
