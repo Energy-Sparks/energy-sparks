@@ -17,9 +17,9 @@ class DailyRegenerationOnFinishJob < ApplicationJob
   private
 
   def send_regeneration_errors_mail
-    errors = RegenerationError.all
-    AdminMailer.regeneration_errors(errors.to_a).deliver
-    errors.destroy_all
+    errors = RegenerationError.all.to_a
+    AdminMailer.regeneration_errors(errors).deliver unless errors.empty?
+    RegenerationError.where(id: errors.pluck(:id)).destroy_all
   end
 
   def refresh_views

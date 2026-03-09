@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe DailyRegenerationOnFinishJob do
   include EmailHelpers
+
   subject(:job) { described_class.new }
 
   describe '#priority' do
@@ -9,20 +12,19 @@ describe DailyRegenerationOnFinishJob do
   end
 
   describe '#perform' do
+    let!(:errors) { [] }
+
+    before { job.perform }
+
     context 'with errors' do
-      let(:email) { last_email }
-      let!(:errors) do
+      let(:errors) do
         raised_at = Date.new(2026)
         [RegenerationError.create!(school: create(:school), raised_at:, message: '1'),
          RegenerationError.create!(school: create(:school, :with_school_group), raised_at:, message: '2')]
       end
-
-      before do
-        job.perform
-      end
+      let(:email) { last_email }
 
       it 'emails a report' do
-        email
         expect(email.to).to eq(['operations@energysparks.uk'])
         expect(email.subject).to eq('[energy-sparks-unknown] Energy Sparks - Regeneration Errors')
         expect(html_email_as_markdown(email)).to eq(<<~EMAIL)
@@ -36,8 +38,8 @@ describe DailyRegenerationOnFinishJob do
         EMAIL
       end
 
-      it 'all previous errors are deleted' do
-        expect(RegenerationError.all.count).to eq(0)
+      it 'deletes all previous errors' do
+        expect(RegenerationError.count).to eq(0)
       end
     end
 
