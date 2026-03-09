@@ -11,14 +11,16 @@ class AdminMailerPreview < ActionMailer::Preview
   end
 
   def lagging_data_sources
-    lagging = [DataSource.first]
-    DataSource.find_each do |data_source|
-      percentage_lagging = data_source.percentage_of_lagging_meters
-      if percentage_lagging > data_source.alert_percentage_threshold && data_source.alerts_on
-        lagging = [data_source]
-        break
-      end
-    end
+    # lagging = [DataSource.first]
+    # DataSource.find_each do |data_source|
+    #   percentage_lagging = data_source.percentage_of_lagging_meters
+    #   if percentage_lagging > data_source.alert_percentage_threshold && data_source.alerts_on
+    #     lagging = [data_source]
+    #     break
+    #   end
+    # end
+    lagging = [DataSource.all.find_each.filter(&:exceeded_alert_threshold?).first]
+
     AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_data_sources
   end
 

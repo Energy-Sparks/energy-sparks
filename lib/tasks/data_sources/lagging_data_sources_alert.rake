@@ -3,7 +3,7 @@ namespace :data_sources do
   task lagging_data_sources_alert: :environment do
     next unless ENV['SEND_AUTOMATED_EMAILS'] == 'true'
 
-    lagging = DataSource.all_find_each.filter_map(&:exceeded_alert_threshold?)
+    lagging = DataSource.all.find_each.filter(&:exceeded_alert_threshold?)
 
     AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_data_sources.deliver if lagging.present?
   end
