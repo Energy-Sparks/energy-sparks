@@ -49,6 +49,10 @@ class DataSource < ApplicationRecord
     active.zero? ? 0 : (meters.with_stale_readings.count.to_f / active * 100).to_i
   end
 
+  def exceeded_alert_threshold?
+    alerts_on && percentage_of_lagging_meters > alert_percentage_threshold
+  end
+
   def to_csv
     CSV.generate(headers: true) do |csv|
       csv << csv_headers
