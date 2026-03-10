@@ -1,0 +1,25 @@
+<%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
+
+<% content_for :header do %>
+  <%= render Layout::GridComponent.new(cols: 2, classes: 'container', cell_classes: '', id: 'header-section') do |grid| %>
+    <%= grid.with_image rounded: false, fit: false, width: '350px', classes: 'd-block mx-auto',
+                        src: 'actions/podium.png' %>
+    <% grid.with_feature_card size: :xl do |feature| %>
+      <%= feature.with_header title: t('school_groups.impact.feature.title', school_group: @school_group.name) %>
+      <%= feature.with_description do %>
+        <%= t('school_groups.impact.feature.description_html',
+              count: @impact_report.schools_count,
+              group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')) %>
+      <% end %>
+      <%= feature.with_block do %>
+        <%= t('common.last_updated_on_html',
+              date: @impact_report.generated_at.to_date.to_fs(:es_long)) %>
+      <% end %>
+      <%= feature.with_block(classes: 'pt-2') do %>
+        <%= render Admin::PlaceholderComponent.new('replace link. Does this need to be a modal or page?') do %>
+          <%= t('school_groups.impact.feature.read_more_html', href: '/') %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
