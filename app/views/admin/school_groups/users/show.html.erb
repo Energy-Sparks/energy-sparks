@@ -8,7 +8,9 @@
 
 <div class="row mb-2">
   <div class="col">
-    <%= link_to 'Download as CSV', admin_school_group_users_path(@school_group, format: :csv), class: 'btn btn-sm' %>
+    <%= link_to 'Download as CSV',
+                admin_school_group_users_path(@school_group, format: :csv),
+                class: 'btn btn-default btn-sm' %>
   </div>
 </div>
 
@@ -18,8 +20,9 @@
       <h2>Group Admins</h2>
     </div>
     <div>
-      <%= link_to 'Lock all group users', lock_all_admin_school_group_users_path, class: 'btn btn-warning btn-sm',
-                                                                                  data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Lock all group users', lock_all_admin_school_group_users_path,
+                  class: 'btn btn-warning btn-sm',
+                  data: { confirm: 'Are you sure?' } %>
     </div>
   </div>
 

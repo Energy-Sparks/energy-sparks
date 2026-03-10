@@ -2,6 +2,6 @@
   <span>
     <%= link_to admin_user_label(school_group),
                 polymorphic_path([:admin, Issue], user: school_group.default_issues_admin_user),
-                class: 'btn btn-sm text-decoration-none' %>
+                class: 'btn btn-default btn-sm text-decoration-none' %>
   </span>
 <% end %>

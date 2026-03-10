@@ -6,7 +6,7 @@
   </head>
   <body vocab="http://schema.org/">
     <%= render 'shared/page/navigation' %>
-    <div class="navigation-margin <%= @bs5 ? 'bs5' : 'bs4' %>">
+    <div class="navigation-margin bs<%= bootstrap_version %>">
       <%= content_for?(:page) ? yield(:page) : yield %>
     </div>
     <% if show_partner_footer? %>
