@@ -4,19 +4,32 @@ module TemporalRange
   include DateRanged
 
   included do
-    scope :by_start_date, -> { order(start_date: :asc) }
-    scope :by_end_date, -> { order(start_date: :desc) }
-
     scope :historical, ->(today = Time.zone.today) {
-      where('end_date < ?', today)
+      where("#{table_name}.end_date < ?", today)
     }
 
     scope :current, ->(today = Time.zone.today) {
-      where('start_date <= ? AND end_date >= ?', today, today)
+      where("#{table_name}.start_date <= ? AND #{table_name}.end_date >= ?", today, today)
     }
 
     scope :future, ->(today = Time.zone.today) {
-      where('start_date > ?', today)
+      where("#{table_name}.start_date > ?", today)
+    }
+
+    scope :expiring, ->(end_date = (Time.zone.today + 1.month).end_of_month) {
+      where("#{table_name}.end_date <= ?", end_date)
+    }
+
+    scope :recently_expired, ->(end_date = (Time.zone.today - 1.month).beginning_of_month) {
+      where("#{table_name}.end_date >= ? and #{table_name}.end_date < ?", end_date, Time.zone.today)
+    }
+
+    scope :recent, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
+      where("#{table_name}.created_at >= ?", updated_at)
+    }
+
+    scope :recently_updated, ->(updated_at = (Time.zone.today - 1.month).beginning_of_month) {
+      where("#{table_name}.updated_at >= ? AND #{table_name}.updated_at > #{table_name}.created_at", updated_at)
     }
   end
 
