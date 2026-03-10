@@ -13,10 +13,10 @@
       <% end %>
       <%= feature.with_block do %>
         <%= t('common.last_updated_on_html',
-              date: "#{@impact_report.generated_at.day.ordinalize} #{l(@impact_report.generated_at, format: '%B %Y')}") %>
+              date: @impact_report.generated_at.to_date.to_fs(:es_long)) %>
       <% end %>
       <%= feature.with_block(classes: 'pt-2') do %>
-        <%= render Admin::PlaceholderComponent.new('replace link') do %>
+        <%= render Admin::PlaceholderComponent.new('replace link. Does this need to be a modal or page?') do %>
           <%= t('school_groups.impact.feature.read_more_html', href: '/') %>
         <% end %>
       <% end %>

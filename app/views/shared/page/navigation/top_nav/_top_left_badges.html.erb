@@ -1,8 +1,10 @@
 <div class="fixed-top ms-1 d-flex flex-column align-items-start">
+  <%# Test server indicator %>
   <% if on_test? %>
     <%= link_to 'Test', '/', class: 'p-1 mt-1 badge text-bg-warning' %>
   <% end %>
 
+  <%# Switch between Bootstrap 4 and 5 %>
   <% if Flipper.enabled?(:bootstrap_switcher) %>
     <div class='p-1 mt-1 badge <%= @bs5 ? 'text-bg-success' : 'text-bg-danger' %>'>
       Bootstrap <%= @bs5 ? 5 : 4 %>:
@@ -11,6 +13,7 @@
     </div>
   <% end %>
 
+  <%# Prototype page indicator %>
   <% if @prototype_page %>
     <div class='p-1 mt-1 badge text-bg-info'
          data-bs-toggle="tooltip"

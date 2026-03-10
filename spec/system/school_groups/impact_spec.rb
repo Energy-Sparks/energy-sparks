@@ -7,8 +7,9 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
   let!(:school_group) { create(:school_group, :with_active_schools, public: true) }
 
-  # NB: Also need to test page access control
-  # What if there are 0 schools in the group?
+  # TODO: Test page access control - currently uses SchoolGroupAccessControl
+  # Question: What if there are 0 schools in the group? redirect away?
+  # Not even generate report data record in the first place?
 
   context with_feature: :impact_reporting do
     before do
@@ -27,14 +28,13 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
         expect(header).to have_content(strip_tags(I18n.t('school_groups.impact.feature.description_html', count: 1, group_type: group_type)))
       end
 
-      # it 'has the report generation date' do
-      ## Need to sort out ordinals
-      # expect(header).to have_content(I18n.t('common.last_updated_on', date: Time.zone.today.to_s(:long)))
-      # end
+      it 'has the report generation date' do
+        expect(header).to have_content(strip_tags(I18n.t('common.last_updated_on_html', date: Time.zone.today.to_date.to_fs(:es_long))))
+      end
 
       it 'has the read more link' do
         expect(header).to have_content(strip_tags(I18n.t('school_groups.impact.feature.read_more_html', href: '/')))
-        expect(header).to have_link('Read more', href: '/') # LINK NEEDS UPDATING
+        expect(header).to have_link('Read more', href: '/') # TODO: LINK NEEDS UPDATING
       end
     end
   end
