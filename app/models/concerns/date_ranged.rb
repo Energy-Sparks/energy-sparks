@@ -3,6 +3,7 @@ module DateRanged
 
   included do
     scope :by_start_date, -> { order(start_date: :asc, end_date: :asc) }
+    scope :by_end_date, -> { order(start_date: :desc) }
 
     validate :validate_date_range
   end
