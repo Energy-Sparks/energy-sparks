@@ -10,16 +10,21 @@
             start_date_month: @readings.target.start_date.prev_year.to_fs(:es_month)) %>
     <% end %>
   </p>
-  <%= render PromptComponent.new(icon: :lightbulb, status: :positive, classes: 'mb-2') do |prompt| %>
-    <% prompt.with_title do %>
-      <%= t('schools.manual_readings.saved.title') %>
-    <% end %>
-    <%= t('schools.manual_readings.saved.long_term_html', fuel_types: t_fuel_types(:long_term)) %>
-    <% if @readings.target %>
-      <%= t('schools.manual_readings.saved.target_html', fuel_types: t_fuel_types(:target)) %>
+  <%= t('schools.manual_readings.details_html') %>
+  <% if @school.manual_readings.select(&:persisted?).any? %>
+    <%= render PromptComponent.new(icon: :lightbulb, status: :positive, classes: 'mb-2') do |prompt| %>
+      <% prompt.with_title do %>
+        <%= t('schools.manual_readings.saved.title') %>
+      <% end %>
+      <p><%= t('schools.manual_readings.saved.long_term_html',
+               fuel_types: t_fuel_types([:analysis, @school, :advice, :fuel_type, :long_term],
+                                        anchor: 'consumption-by-month')) %></p>
+      <% if @readings.target %>
+        <p><%= t('schools.manual_readings.saved.target_html',
+                 fuel_types: t_fuel_types([:analysis, @school, :advice, :fuel_type, :target])) %></p>
+      <% end %>
     <% end %>
   <% end %>
-  <%= t('schools.manual_readings.details_html') %>
   <%= simple_form_for @school, url: [@school, :manual_readings] do |f| %>
     <div class="row mb-2">
       <div class="col-md-2"><strong><%= t('common.labels.date') %></strong></div>

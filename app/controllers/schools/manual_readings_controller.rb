@@ -71,9 +71,10 @@ module Schools
     end
     helper_method :show_fuel_input
 
-    def t_fuel_types(path)
+    def t_fuel_types(path, path_opts = {})
       @readings.fuel_types.map do |fuel_type|
-        helpers.link_to(I18n.t("analytics.common.#{fuel_type}"), polymorphic_path([@school, :advice, fuel_type, path]))
+        helpers.link_to(I18n.t("analytics.common.#{fuel_type}"),
+                        polymorphic_path(path.map { |item| item == :fuel_type ? fuel_type : item }, path_opts))
       end.to_sentence.html_safe
     end
     helper_method :t_fuel_types

@@ -1,5 +1,7 @@
-<h4><%= t('advice_pages.electricity_long_term.analysis.consumption_by_month.title',
-          fuel_type: t("common.#{fuel_type}")) %></h4>
+<h4 id="consumption-by-month">
+  <%= t('advice_pages.electricity_long_term.analysis.consumption_by_month.title',
+        fuel_type: t("common.#{fuel_type}")) %>
+</h4>
 <%= render 'manual_readings_prompt', consumption_by_month:, school: %>
 <table class="table table-sm advice-table">
   <thead class="thead-dark">
@@ -10,13 +12,13 @@
       <th colspan="3"><%= t('advice_pages.electricity_long_term.tables.columns.usage_co2') %></th>
     </tr>
     <tr>
-      <th class="text-right"><%= t('schools.school_targets.progress.current.month') %></th>
+      <th class="text-end"><%= t('schools.school_targets.progress.current.month') %></th>
       <% 3.times do %>
-        <th class="text-right">
+        <th class="text-end">
           <%= t('advice_pages.electricity_long_term.analysis.consumption_by_month.previous_year') %></th>
-        <th class="text-right">
+        <th class="text-end">
           <%= t('advice_pages.electricity_long_term.analysis.consumption_by_month.this_year') %></th>
-        <th class="text-right">
+        <th class="text-end">
           <%= t('advice_pages.electricity_long_term.analysis.consumption_by_month.change') %></th>
       <% end %>
     </tr>
@@ -28,7 +30,7 @@
         <td><%= t_month(month.month) %></td>
         <% %i[kwh gbp co2].each do |type| %>
           <% %i[previous current].each do |period| %>
-            <td class="text-right">
+            <td class="text-end">
               <%= format_unit(consumption[period][type], type, dash_if_nil: true, numeric_level: :target) %>
               <% if consumption[period][type].present? %>
                 <% if consumption[period][:missing] %>
@@ -42,7 +44,7 @@
               <% end %>
             </td>
           <% end %>
-          <td class="text-right"><%= format_percent(consumption[:change][type]) %></td>
+          <td class="text-end"><%= format_percent(consumption[:change][type]) %></td>
         <% end %>
       </tr>
     <% end %>
@@ -51,7 +53,7 @@
 <%= render 'schools/advice/how_have_we_analysed_your_data_table_caption',
            additional_notice_text:
              [(:missing_html if missing_footnote), (:manual_html if manual_footnote)]
-               .compact
-               .map { |key| t("advice_pages.electricity_long_term.analysis.consumption_by_month.#{key}") }
-               .push('')
-               .join('<br>') %>
+             .compact
+             .map { |key| t("advice_pages.electricity_long_term.analysis.consumption_by_month.#{key}") }
+             .push('')
+             .join('<br>') %>
