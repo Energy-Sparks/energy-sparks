@@ -28,7 +28,7 @@ describe ApplicationHelper do
     end
 
     context 'with sanitize set to true (default)' do
-      it { expect(helper.up_downify('10.1&percnt;')).to eq('10.1&amp;percnt; ') } # we don't want this!
+      it { expect(helper.up_downify('10.1&percnt;')).to eq('10.1% ') }
       it { expect(helper.up_downify('10.1%')).to eq('10.1% ') }
     end
 
