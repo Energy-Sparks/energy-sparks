@@ -5,8 +5,6 @@ module Admin
         load_and_authorize_resource :contract,
           class: 'Commercial::Contract'
 
-        before_action :set_licences, only: [:edit, :update]
-
         def edit
         end
 
@@ -19,10 +17,6 @@ module Admin
         end
 
         private
-
-        def set_licences
-          @licences = @contract.licences.joins(:school).order(school: { name: :asc })
-        end
 
         def contract_params
           params.require(:commercial_contract).permit(

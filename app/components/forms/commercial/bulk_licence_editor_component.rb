@@ -5,8 +5,6 @@ module Forms
       # FIXME: specify whether to allow adding extra schools
       # FIXME: specify path for adding extra schools?
       # FIXME: bulk edit options? invoice ref, status, add all missing
-      # FIXME: always all licences?
-      # FIXME: consistent sort order
       def initialize(contract:, form_path: nil, **kwargs)
         super
         @contract = contract
@@ -18,7 +16,7 @@ module Forms
       end
 
       def licences
-        @contract.licences
+        @contract.licences.current.joins(:school).order(school: { name: :asc })
       end
     end
   end
