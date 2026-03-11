@@ -23,4 +23,12 @@ class AdminMailerPreview < ActionMailer::Preview
   def school_group_meter_data_export
     AdminMailer.school_group_meter_data_export(SchoolGroup.find(params[:school_group_id]), 'test@example.com')
   end
+
+  def regeneration_errors
+    AdminMailer.regeneration_errors((0..5).map do
+      RegenerationError.new(school: School.active.sample, raised_at: Time.current,
+                            message: 'Invalid AMR date range. Minimum date (2026-02-19) after maximum date ' \
+                                     '(2025-10-01) unable to aggregate data')
+    end)
+  end
 end
