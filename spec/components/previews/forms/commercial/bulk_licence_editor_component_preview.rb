@@ -2,9 +2,11 @@ module Forms
   module Commercial
     class BulkLicenceEditorComponentPreview < ViewComponent::Preview
       # @param contract_id select :contract_options
-      def example(contract_id: nil)
+      # @param hide_fields "Comma separated list of Licence model attributes"
+      def example(contract_id: nil, hide_fields: '')
         contract = contract_id.nil? ? ::Commercial::Contract.all.sample : ::Commercial::Contract.find(contract_id)
-        render Forms::Commercial::BulkLicenceEditorComponent.new(contract:, form_path: '')
+        exclude_fields = hide_fields.present? ? hide_fields.split(',').map(&:strip).map(&:to_sym) : []
+        render Forms::Commercial::BulkLicenceEditorComponent.new(contract:, form_path: '', exclude_fields:)
       end
 
       private
