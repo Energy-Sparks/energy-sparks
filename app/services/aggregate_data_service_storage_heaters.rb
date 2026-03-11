@@ -115,10 +115,10 @@ class AggregateDataServiceStorageHeaters
     map[:original] = meter
 
     # Create new AMRData instances one for the storage heater use and one for the rest of the consumption
-    electric_only_amr, storage_heater_amr = meter.storage_heater_setup.disaggregate_amr_data(meter.amr_data,
-                                                                                             meter.mpan_mprn)
+    electric_only_amr, storage_heater_amr =
+      meter.storage_heater_setup.disaggregate_amr_data(meter.amr_data, meter.mpan_mprn)
 
-    map[:storage_heater]    =
+    map[:storage_heater] =
       create_meter(meter, storage_heater_amr, :storage_heater_disaggregated_storage_heater, :storage_heater)
     map[:ex_storage_heater] = create_meter(meter, electric_only_amr, :storage_heater_disaggregated_electricity)
     map
@@ -126,11 +126,10 @@ class AggregateDataServiceStorageHeaters
 
   def summarise_aggregated_meter
     logger.debug { 'Aggregated Meter Setup' }
-    logger.debug { "    appliance: #{aggregate_meter_description(@meter_collection.aggregated_electricity_meters)}" }
+    meters = @meter_collection.aggregated_electricity_meters
+    logger.debug { "    appliance: #{aggregate_meter_description(meters)}" }
     logger.debug { "    storage:   #{aggregate_meter_description(@meter_collection.storage_heater_meter)}" }
-    logger.debug do
-      "    original:  #{aggregate_meter_description(@meter_collection.aggregated_electricity_meters.sub_meters[:mains_consume])}"
-    end
+    logger.debug { "    original:  #{aggregate_meter_description(meters.sub_meters[:mains_consume])}" }
   end
 
   def aggregate_meter_description(meter)
@@ -143,10 +142,10 @@ class AggregateDataServiceStorageHeaters
       logger.debug { "    Meter #{i}" }
       logger.debug { format('        %-18.18s %s', 'ex storage heater', meter_description(meter)) }
       logger.debug do
-        format('        %-18.18s %s', 'original',          meter_description(meter.sub_meters[:mains_consume]))
+        format('        %-18.18s %s', 'original', meter_description(meter.sub_meters[:mains_consume]))
       end
       logger.debug do
-        format('        %-18.18s %s', 'storage heaters',   meter_description(meter.sub_meters[:storage_heaters]))
+        format('        %-18.18s %s', 'storage heaters', meter_description(meter.sub_meters[:storage_heaters]))
       end
     end
   end
@@ -168,7 +167,8 @@ class AggregateDataServiceStorageHeaters
     # aggregation, then its AMR data will correspond to main_consume + self_consume.
     # In this case we should use its original mains consumption meter and not the
     # meter created in the solar aggregation step
-    map[:ex_storage_heater].sub_meters[:mains_consume] = if map[:original].sub_meters.key?(:self_consume) && map[:original].sub_meters.key?(:mains_consume)
+    map[:ex_storage_heater].sub_meters[:mains_consume] = if map[:original].sub_meters.key?(:self_consume) &&
+                                                            map[:original].sub_meters.key?(:mains_consume)
                                                            map[:original].sub_meters[:mains_consume]
                                                          else
                                                            map[:original]

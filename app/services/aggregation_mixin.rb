@@ -108,7 +108,8 @@ module AggregationMixin
     end
     min_date, max_date = combined_amr_data_date_range(meters, ignore_rules)
 
-    # If all meters have an ignore_start_date or ignore_end_date attribute we end up with null dates, so check and throw exception
+    # If all meters have an ignore_start_date or ignore_end_date attribute we end up with null dates, so check and
+    # throw exception
     if min_date.nil?
       raise EnergySparksUnexpectedStateException, 'Invalid AMR date range. Cannot calculate start date. Ensure at ' \
                                                   'least one meter does not have ignore_start_date attribute'

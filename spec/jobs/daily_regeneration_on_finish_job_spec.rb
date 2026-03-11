@@ -30,10 +30,12 @@ describe DailyRegenerationOnFinishJob do
         expect(html_email_as_markdown(email)).to eq(<<~EMAIL)
           # Regeneration Errors
 
-          | School | School Group | Error | Time of Failure | Default Issues Admin |
+          The following schools have failed to properly regenerate as part of the automated overnight processing. This means the latest data will not be available on the website and other content, e.g. dashboard alerts, will be out of date. Review the school configuration and try manually regenerating to see the detailed errors.
+
+          | School | Owned by | School Group | Error | Time of Failure |
           | --- | --- | --- | --- | --- |
-          | #{errors[0].school.name} | | 1 | 2026-01-01 00:00:00 UTC | |
-          | #{errors[1].school.name} | #{errors[1].school.school_group.name} | 2 | 2026-01-01 00:00:00 UTC | Admin |
+          | #{errors[0].school.name} | | | 1 | 2026-01-01 00:00:00 UTC |
+          | #{errors[1].school.name} | Admin | #{errors[1].school.school_group.name} | 2 | 2026-01-01 00:00:00 UTC |
 
         EMAIL
       end
