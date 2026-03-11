@@ -276,6 +276,9 @@ Rails.application.routes.draw do
           get :charts
         end
       end
+
+      resources :impact, only: [:index]
+
       resources :clusters do
         member do
           post :unassign

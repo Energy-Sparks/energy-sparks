@@ -246,4 +246,51 @@ RSpec.describe AdminMailer, include_application_helper: true do
       end
     end
   end
+
+  describe '#lagging_data_sources' do
+    let(:admin) { create(:admin) }
+    let(:data_source) { create(:data_source, alert_percentage_threshold: 50, name: 'Lagging Source') }
+    let(:school) { create(:school) }
+    let(:lagging) { data_source.exceeded_alert_threshold? ? [data_source] : [] }
+
+    context 'showing data sources which have exceeded their threshold' do
+      before do
+        [create(:gas_meter, active: true, data_source:, school:),
+         create_list(:gas_meter_with_validated_reading_dates, 3, end_date: 11.days.ago, active: true, data_source:, school:)]
+      end
+
+      before do
+        AdminMailer.with(to: :admin, lagging:).lagging_data_sources.deliver if lagging.present?
+      end
+
+      it { expect(email.subject).to eq '[energy-sparks-unknown] Energy Sparks - Lagging Data Sources' }
+      it { expect(email).to have_link('Data Sources', href: admin_data_sources_url) }
+
+      it 'shows table with data' do
+        expect(email).to have_link('Lagging Source', href: admin_data_source_url(data_source))
+        expect(email).to have_content('4')
+        expect(email).to have_content('3')
+        expect(email).to have_content('75')
+        expect(email).to have_content('50')
+      end
+    end
+
+    context 'when there are no lagging data sources' do
+      before do
+        AdminMailer.with(to: :admin, lagging:).lagging_data_sources.deliver if lagging.present?
+      end
+
+      it 'does not send email' do
+        expect(email).to be_nil
+      end
+    end
+
+    context 'when there are only inactive lagging meters' do
+      let(:inactive_lagging_meter) { 2.times { create(:gas_meter_with_validated_reading_dates, end_date: 11.days.ago, active: false, data_source:, school: school) } }
+
+      it 'does not send an email' do
+        expect(email).to be_nil
+      end
+    end
+  end
 end

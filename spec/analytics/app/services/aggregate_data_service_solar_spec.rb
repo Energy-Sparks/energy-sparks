@@ -125,7 +125,6 @@ describe AggregateDataServiceSolar do
         end
 
         it 'overrides the export' do
-          # debugger
           expect(sub_meters[:export].amr_data[Date.new(2025, 5, 9)]).to have_attributes(type: 'SOLE', one_day_kwh: 0)
           expect(sub_meters[:export].amr_data[Date.new(2025, 5, 10)]).to have_attributes(type: 'SOLE', one_day_kwh: -96)
         end

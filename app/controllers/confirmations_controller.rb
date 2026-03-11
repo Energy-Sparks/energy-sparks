@@ -66,10 +66,6 @@ class ConfirmationsController < Devise::ConfirmationsController
     end
   end
 
-  def interests_from_params
-    params.permit(interests: {}).to_h['interests'].transform_values { |v| v == 'true' }
-  end
-
   def subscribe_to_emails(resource)
     create_or_update_alert_contact(resource.school, resource) if subscribe_to_alerts?
     subscribe_newsletter(resource, params.permit(interests: {})) if can_subscribe_newsletter?(resource)
@@ -91,10 +87,5 @@ class ConfirmationsController < Devise::ConfirmationsController
 
   def can_subscribe_newsletter?(resource)
     !resource&.student_user?
-  end
-
-  def subscribe_newsletter(resource, sign_up_params)
-    contact = create_contact_from_user(resource, sign_up_params)
-    subscribe_contact(contact, resource, show_errors: false)
   end
 end

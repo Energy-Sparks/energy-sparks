@@ -152,7 +152,7 @@ describe 'manage licences' do
       end
     end
 
-    it 'shows recedntly updated licences' do
+    it 'shows recently updated licences' do
       within('#recently-updated') do
         expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
       end

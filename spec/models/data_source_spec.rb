@@ -13,6 +13,78 @@ RSpec.describe DataSource, type: :model do
     it { is_expected.to define_enum_for(:organisation_type).with_values([:energy_supplier, :procurement_organisation, :meter_operator, :council, :solar_monitoring_provider]) }
   end
 
+  describe '.percentage_of_lagging_meters' do
+    subject(:percentage_of_lagging_meters) { data_source.percentage_of_lagging_meters }
+
+    let(:data_source) { create(:data_source) }
+
+    let(:lagging_date) { 11.days.ago }
+    let(:non_lagging_date) { 1.day.ago }
+
+    context 'when there are no active meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: lagging_date, active: false, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 0 }
+    end
+
+    context 'when all meters are lagging' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: lagging_date, active: true, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 100 }
+    end
+
+    context 'when half the meters are lagging' do
+      before do
+        create(:gas_meter_with_validated_reading_dates, end_date: non_lagging_date, active: true, data_source:)
+        create(:gas_meter_with_validated_reading_dates, end_date: lagging_date, active: true, data_source:)
+      end
+
+      it { expect(percentage_of_lagging_meters).to eq 50 }
+    end
+
+    context 'when no meters are lagging' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: non_lagging_date, active: true, data_source:)
+      end
+
+      it {expect(percentage_of_lagging_meters).to eq 0}
+    end
+  end
+
+  describe '.exceeded_alert_threshold?' do
+    subject(:exceeded_alert_threshold) { data_source.exceeded_alert_threshold? }
+
+    let(:data_source) { create(:data_source) }
+
+    context 'when data source has more lagging meters than its threshold' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 11.days.ago, data_source:, active: true)
+      end
+
+      it { expect(exceeded_alert_threshold).to be true }
+    end
+
+    context 'when data source has no lagging meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 1.day.ago, data_source:, active: true)
+      end
+
+      it { expect(exceeded_alert_threshold).to be false }
+    end
+
+    context 'when the data source has no active meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 11.days.ago, data_source:, active: false)
+      end
+
+      it { expect(exceeded_alert_threshold).to be false }
+    end
+  end
+
   describe '.to_csv' do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
