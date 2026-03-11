@@ -1,22 +1,27 @@
 <h1>Regeneration Errors</h1>
+<p>
+  The following schools have failed to properly regenerate as part of the automated overnight processing.
+  This means the latest data will not be available on the website and other content, e.g. dashboard alerts,
+  will be out of date. Review the school configuration and try manually regenerating to see the detailed errors.
+</p>
 <table>
   <thead>
     <tr>
       <th>School</th>
+      <th>Owned by</th>
       <th>School Group</th>
       <th>Error</th>
       <th>Time of Failure</th>
-      <th>Default Issues Admin</th>
     </tr>
   </thead>
   <tbody>
     <% @errors.sort_by { |e| e.school.name }.each do |error| %>
       <tr>
         <td><%= error.school.name %></td>
+        <td><%= error.school&.school_group&.default_issues_admin_user&.name %>
         <td><%= error.school&.school_group&.name %></td>
         <td><%= error.message %></td>
         <td><%= error.raised_at %></td>
-        <td><%= error.school&.school_group&.default_issues_admin_user&.name %>
       </tr>
     <% end %>
   </tbody>
