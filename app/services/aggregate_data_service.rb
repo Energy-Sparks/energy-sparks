@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'aggregation_mixin'
 require 'benchmark/memory'
 
 # Service responsible for carrying out the data "validation" and "aggregation" processes
@@ -92,7 +91,9 @@ class AggregateDataService
       @meter_collection.notify_aggregation_complete!
     end
 
-    logger.debug { "Calculated meter aggregation for |#{format('%-35.35s', @meter_collection.name)}| in |#{bm.round(3)}| seconds" }
+    logger.debug do
+      "Calculated meter aggregation for |#{format('%-35.35s', @meter_collection.name)}| in |#{bm.round(3)}| seconds"
+    end
   end
 
   private
@@ -177,21 +178,19 @@ class AggregateDataService
   #
   # This is only called for schools that have solar and multiple electricity meters.
   def aggregate_sub_meters_by_type(combined_meter, meters)
-    log "Aggregating sub meters for combined meter #{combined_meter} and main electricity meters #{meters.map(&:to_s).join(' ')}"
+    log "Aggregating sub meters for combined meter #{combined_meter} and main electricity meters #{meters.join(' ')}"
     sub_meter_types = meters.map { |m| m.sub_meters.keys }.flatten.compact.uniq
     log "Aggregating these types of sub meters: #{sub_meter_types}"
 
-    sub_meters_grouped_by_type = sub_meter_types.map do |sub_meter_type|
-      [
-        sub_meter_type,
-        meters.map { |m| m.sub_meters[sub_meter_type] }.compact
-      ]
-    end.to_h
+    sub_meters_grouped_by_type = sub_meter_types.index_with do |sub_meter_type|
+      meters.filter_map { |m| m.sub_meters[sub_meter_type] }
+    end
 
     sub_meters_grouped_by_type.each do |sub_meter_type, sub_meters|
       log '---------sub meter aggregation----------' * 2
-      log "    Combining type #{sub_meter_type} for #{sub_meters.map(&:to_s).join(' ')}"
-      AggregateDataServiceSolar.new(@meter_collection).backfill_meters_with_zeros(sub_meters, combined_meter.amr_data.start_date)
+      log "    Combining type #{sub_meter_type} for #{sub_meters.join(' ')}"
+      AggregateDataServiceSolar.new(@meter_collection).backfill_meters_with_zeros(sub_meters,
+                                                                                  combined_meter.amr_data.start_date)
       combined_sub_meter = aggregate_meters(nil, sub_meters, sub_meters[0].fuel_type)
       combined_sub_meter.name = if sub_meter_type == :mains_consume
                                   SolarPVPanels::ELECTRIC_CONSUMED_FROM_MAINS_METER_NAME
@@ -210,14 +209,16 @@ class AggregateDataService
   # creation of the aggregate heat meter.
   def aggregate_heat_meters
     calculate_meters_carbon_emissions_and_costs(@heat_meters, :gas)
-    @meter_collection.aggregated_heat_meters = aggregate_main_meters(@meter_collection.aggregated_heat_meters, @heat_meters, :gas)
+    @meter_collection.aggregated_heat_meters = aggregate_main_meters(@meter_collection.aggregated_heat_meters,
+                                                                     @heat_meters, :gas)
   end
 
   def aggregate_electricity_meters
     log '=' * 80
     log 'Aggregating electricity meters'
     calculate_meters_carbon_emissions_and_costs(@electricity_meters, :electricity)
-    @meter_collection.aggregated_electricity_meters = aggregate_main_meters(@meter_collection.aggregated_electricity_meters, @electricity_meters, :electricity)
+    @meter_collection.aggregated_electricity_meters =
+      aggregate_main_meters(@meter_collection.aggregated_electricity_meters, @electricity_meters, :electricity)
   end
 
   # Creates a name, id, total floor area and total number of pupils based on
@@ -257,7 +258,7 @@ class AggregateDataService
   # @param Array list_of_meters the list of meters to aggregate
   # @param Symbol type the fuel type being aggregated
   def aggregate_main_meters(combined_meter, list_of_meters, type)
-    log "Aggregating #{list_of_meters.length} meters and #{list_of_meters.map { |sm| sm.sub_meters.length }.sum} sub meters"
+    log "Aggregating #{list_of_meters.length} meters and #{list_of_meters.sum { |sm| sm.sub_meters.length }} sub meters"
     aggregate_meters(combined_meter, list_of_meters, type)
   end
 
@@ -278,7 +279,7 @@ class AggregateDataService
   # @return nil if list of meters is nil or empty, a Dashboard::Meter if list contains single entry, the existing combined meter,
   # or a new +Dashboard::AggregateMeter+
   def aggregate_meters(combined_meter, list_of_meters, fuel_type)
-    return nil if list_of_meters.nil? || list_of_meters.empty?
+    return nil if list_of_meters.blank?
 
     if list_of_meters.length == 1
       meter = list_of_meters.first
@@ -297,7 +298,9 @@ class AggregateDataService
 
     # As there is no existing aggregate meter, create a new one
     if combined_meter.nil?
-      mpan_mprn = Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, fuel_type) unless @meter_collection.urn.nil?
+      unless @meter_collection.urn.nil?
+        mpan_mprn = Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(@meter_collection.urn, fuel_type)
+      end
 
       combined_meter = Dashboard::AggregateMeter.new(
         meter_collection: @meter_collection,
@@ -312,8 +315,12 @@ class AggregateDataService
       )
     else
       log "Combined meter #{combined_meter.mpan_mprn} already created"
-      combined_meter.floor_area = combined_floor_area if combined_meter.floor_area.nil? || combined_meter.floor_area.zero?
-      combined_meter.number_of_pupils = combined_pupils if combined_meter.number_of_pupils.nil? || combined_meter.number_of_pupils.zero?
+      if combined_meter.floor_area.nil? || combined_meter.floor_area.zero?
+        combined_meter.floor_area = combined_floor_area
+      end
+      if combined_meter.number_of_pupils.nil? || combined_meter.number_of_pupils.zero?
+        combined_meter.number_of_pupils = combined_pupils
+      end
       combined_meter.amr_data = combined_amr_data
     end
 
@@ -327,7 +334,8 @@ class AggregateDataService
 
     log "Aggregation test for non-parameterised aggregation: has differential meters = #{has_differential_meter} differing economic tariffs = #{economic_tariffs_differ}"
 
-    set_costs_for_combined_meter(combined_meter, list_of_meters, has_differential_meter || economic_tariffs_differ, has_time_variant_economic_tariffs)
+    set_costs_for_combined_meter(combined_meter, list_of_meters, has_differential_meter || economic_tariffs_differ,
+                                 has_time_variant_economic_tariffs)
 
     log "Creating combined meter data #{combined_amr_data.start_date} to #{combined_amr_data.end_date}"
     log "with floor area #{combined_floor_area} and #{combined_pupils} pupils"
@@ -376,7 +384,8 @@ class AggregateDataService
   # @param Array list_of_meters the underlying meters whose costs will be used to calculate tariffs
   # @param boolean has_differing_tariffs whether there are any differential tariffs, or different economic tariffs for the meters
   # @param boolean whether any of the meters has economic tariffs that vary over time
-  def set_costs_for_combined_meter(combined_meter, list_of_meters, has_differing_tariffs, has_time_variant_economic_tariffs)
+  def set_costs_for_combined_meter(combined_meter, list_of_meters, has_differing_tariffs,
+                                   has_time_variant_economic_tariffs)
     mpan_mprn = combined_meter.mpan_mprn
     start_date = combined_meter.amr_data.start_date # use combined meter start and end dates to conform with (deprecated) meter aggregation rules
     end_date = combined_meter.amr_data.end_date
@@ -384,9 +393,11 @@ class AggregateDataService
     log "Creating economic & accounting cost schedules for combined meter #{mpan_mprn} fuel #{combined_meter.fuel_type} with #{list_of_meters.length} meters from #{start_date} to #{end_date}"
 
     set_economic_costs(combined_meter, list_of_meters, start_date, end_date, has_differing_tariffs)
-    set_current_economic_costs(combined_meter, list_of_meters, start_date, end_date, has_differing_tariffs, has_time_variant_economic_tariffs)
+    set_current_economic_costs(combined_meter, list_of_meters, start_date, end_date, has_differing_tariffs,
+                               has_time_variant_economic_tariffs)
 
-    accounting_costs = AccountingCosts.combine_accounting_costs_from_multiple_meters(combined_meter, list_of_meters, start_date, end_date)
+    accounting_costs = AccountingCosts.combine_accounting_costs_from_multiple_meters(combined_meter, list_of_meters,
+                                                                                     start_date, end_date)
     combined_meter.amr_data.set_accounting_tariff_schedule(accounting_costs)
   end
 
@@ -394,23 +405,28 @@ class AggregateDataService
     combined_meter.mpan_mprn
     if has_differing_tariffs # so need pre aggregated economic costs as kwh to £ no longer additive
       log 'Combining multiple economic costs for a differential tariff meter'
-      economic_costs = EconomicCosts.combine_economic_costs_from_multiple_meters(combined_meter, list_of_meters, start_date, end_date)
+      economic_costs = EconomicCosts.combine_economic_costs_from_multiple_meters(combined_meter, list_of_meters,
+                                                                                 start_date, end_date)
     else
       log 'Creating a caching economic cost schedule for meter'
-      economic_costs = CachingEconomicCosts.new(combined_meter.meter_tariffs, combined_meter.amr_data, combined_meter.fuel_type)
+      economic_costs = CachingEconomicCosts.new(combined_meter.meter_tariffs, combined_meter.amr_data,
+                                                combined_meter.fuel_type)
     end
     combined_meter.amr_data.set_economic_tariff_schedule(economic_costs)
   end
 
-  def set_current_economic_costs(combined_meter, list_of_meters, start_date, end_date, has_differing_tariffs, has_time_variant_economic_tariffs)
+  def set_current_economic_costs(combined_meter, list_of_meters, start_date, end_date, has_differing_tariffs,
+                                 has_time_variant_economic_tariffs)
     if has_time_variant_economic_tariffs
       combined_meter.mpan_mprn
       if has_differing_tariffs # so need pre aggregated economic costs as kwh to £ no longer additive
         log "Combining multiple current economic costs for meter #{combined_meter.fuel_type}"
-        economic_costs = EconomicCosts.combine_current_economic_costs_from_multiple_meters(combined_meter, list_of_meters, start_date, end_date)
+        economic_costs = EconomicCosts.combine_current_economic_costs_from_multiple_meters(combined_meter,
+                                                                                           list_of_meters, start_date, end_date)
       else
         log 'Creating a caching current economic cost schedule for meter'
-        economic_costs = CachingCurrentEconomicCosts.new(combined_meter.meter_tariffs, combined_meter.amr_data, combined_meter.fuel_type)
+        economic_costs = CachingCurrentEconomicCosts.new(combined_meter.meter_tariffs, combined_meter.amr_data,
+                                                         combined_meter.fuel_type)
       end
       combined_meter.amr_data.set_current_economic_tariff_schedule(economic_costs)
     else
@@ -421,7 +437,8 @@ class AggregateDataService
   def log_meter_dates(list_of_meters)
     log 'Combining the following meters'
     list_of_meters.each do |meter|
-      log format('%-24.24s %-18.18s %s to %s', meter.display_name, meter.id, meter.amr_data.start_date.to_s, meter.amr_data.end_date)
+      log format('%-24.24s %-18.18s %s to %s', meter.display_name, meter.id, meter.amr_data.start_date.to_s,
+                 meter.amr_data.end_date)
       aggregation_rules = meter.attributes(:aggregation)
       log "                Meter has aggregation rules #{aggregation_rules}" unless aggregation_rules.nil?
     end
