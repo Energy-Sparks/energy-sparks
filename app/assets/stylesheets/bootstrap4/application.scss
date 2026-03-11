@@ -63,4 +63,5 @@
 @import "palette";
 @import "tables";
 
-@import "../../../components/**/*"; // loaded here so bootstrap SASS variables are available
+// @import "../../../components/**/*"; // loaded here so bootstrap SASS variables are available
+@import "../../components";

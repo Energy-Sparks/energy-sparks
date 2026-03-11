@@ -1,8 +1,3 @@
-/*
- *
- *= require trix
- */
-
 @import "colours";
 @import "fonts";
 @import "bootstrap-overrides";
@@ -62,4 +57,5 @@
 @import "palette";
 @import "tables";
 
-@import "../../components/**/*"; // loaded here so bootstrap SASS variables are available
+// loaded here so bootstrap SASS variables are available
+@import "../../components";
