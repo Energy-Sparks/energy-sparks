@@ -3,6 +3,8 @@
 # Collection of helper methods that are used across code that aggregates
 # and disaggregates meter data
 module AggregationMixin
+  class MeterDateRangeException < EnergySparksUnexpectedStateException; end
+
   # Sums the half-hourly meter readings within a specified time period
   #
   # If a meter doesn't have a reading within the specified period, then it is ignored
@@ -107,17 +109,29 @@ module AggregationMixin
     min_date, max_date = combined_amr_data_date_range(meters, ignore_rules)
 
     # If all meters have an ignore_start_date or ignore_end_date attribute we end up with null dates, so check and throw exception
-    raise EnergySparksUnexpectedStateException, 'Invalid AMR date range. Cannot calculate start date. Ensure at least one meter does not have ignore_start_date attribute' if min_date.nil?
-    raise EnergySparksUnexpectedStateException, 'Invalid AMR date range. Cannot calculate end date. Ensure at least one meter does not have ignore_end_date attribute' if max_date.nil?
+    if min_date.nil?
+      raise EnergySparksUnexpectedStateException, 'Invalid AMR date range. Cannot calculate start date. Ensure at ' \
+                                                  'least one meter does not have ignore_start_date attribute'
+    end
+    if max_date.nil?
+      raise EnergySparksUnexpectedStateException, 'Invalid AMR date range. Cannot calculate end date. Ensure at ' \
+                                                  'least one meter does not have ignore_end_date attribute'
+    end
     # This can happen if there are 2 meter, with non-overlapping date ranges
     # Without a check, the renaming code is run but we end up with an aggregate meter that
     # contains no readings and has default dates from HalfHourlyData.new. This can cause errors elsewhere as other
     # code does not check for the dates or if there are no readings.
-    raise EnergySparksUnexpectedStateException, "Invalid AMR date range. Minimum date (#{min_date}) after maximum date (#{max_date}) unable to aggregate data" if min_date > max_date
+    if min_date > max_date
+      raise MeterDateRangeException, "Invalid AMR date range. Minimum date (#{min_date}) after maximum date " \
+                                     "(#{max_date}) unable to aggregate data"
+    end
 
     logger.info "Aggregating data between #{min_date} and #{max_date}"
 
-    mpan_mprn = Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn, meters[0].fuel_type) unless meter_collection.urn.nil?
+    unless meter_collection.urn.nil?
+      mpan_mprn = Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn,
+                                                                               meters[0].fuel_type)
+    end
 
     aggregate_amr_data_between_dates(meters, type, min_date, max_date, mpan_mprn, zero_negative: zero_negative)
   end
@@ -128,7 +142,8 @@ module AggregationMixin
   # If this is not called, then the +AmrData+ object will not be able to correctly return
   # co2 values for a given day or period
   def calculate_carbon_emissions_for_meter(meter, fuel_type)
-    if %i[electricity aggregated_electricity].include?(fuel_type) # TODO(PH, 6Apr19) remove : aggregated_electricity once analytics meter meta data loading changed
+    # TODO(PH, 6Apr19) remove : aggregated_electricity once analytics meter meta data loading changed
+    if %i[electricity aggregated_electricity].include?(fuel_type)
       meter.amr_data.set_carbon_emissions(meter.id, nil, meter_collection.grid_carbon_intensity)
     else
       meter.amr_data.set_carbon_emissions(meter.id, EnergyEquivalences.co2_kg_kwh(:gas), nil)
@@ -141,7 +156,8 @@ module AggregationMixin
   # If this is not called, then the +AmrData+ object will not be able to correctly return
   # cost values for a given day or period
   def calculate_costs_for_meter(meter)
-    logger.info "Creating economic & accounting costs for #{meter.mpan_mprn} fuel #{meter.fuel_type} from #{meter.amr_data.start_date} to #{meter.amr_data.end_date}"
+    logger.info "Creating economic & accounting costs for #{meter.mpan_mprn} fuel #{meter.fuel_type} " \
+                "from #{meter.amr_data.start_date} to #{meter.amr_data.end_date}"
     meter.set_tariffs
   end
 

@@ -9,7 +9,7 @@ class DailyRegenerationJob < ApplicationJob
 
   def perform(school:)
     GoodJob.logger.info("#{DateTime.now.utc} Regeneration for school #{school.name} start")
-    Schools::SchoolRegenerationService.new(school: school, logger: GoodJob.logger).perform
+    Schools::SchoolRegenerationService.new(school:, logger: GoodJob.logger, regeneration_errors: true).perform
     GoodJob.logger.info("#{DateTime.now.utc} Regeneration for school #{school.name} end")
   rescue StandardError => e
     GoodJob.logger.error "Uncaught exception running regeneration for #{school.name}: #{e.class} #{e.message}"

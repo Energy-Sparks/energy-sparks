@@ -9,13 +9,14 @@
 # where there are multiple electricity meters, the sh meter, the appliance meter and the original meter
 # are then aggregated seperately, so there are aggregate versions of each
 #
-class StorageHeaterMap < RestrictedKeyHash
-  def self.unique_keys
-    %i[original storage_heater ex_storage_heater]
-  end
-end
 
 class AggregateDataServiceStorageHeaters
+  class StorageHeaterMap < RestrictedKeyHash
+    def self.unique_keys
+      %i[original storage_heater ex_storage_heater]
+    end
+  end
+
   include Logging
   include AggregationMixin
 
@@ -33,7 +34,9 @@ class AggregateDataServiceStorageHeaters
   # heater meter
   def disaggregate
     logger.debug { '=' * 100 }
-    logger.debug { "Disaggregating storage heater meters for #{@meter_collection.name}: #{@electricity_meters.length} electricity meters" }
+    logger.debug do
+      "Disaggregating storage heater meters for #{@meter_collection.name}: #{@electricity_meters.length} electricity meters"
+    end
 
     bm = Benchmark.realtime do
       # Separate out the storage heater consumption from other usage across all electricity meters
@@ -61,7 +64,9 @@ class AggregateDataServiceStorageHeaters
     summarise_aggregated_meter
     summarise_component_meters
 
-    logger.debug { "Disaggregation of storage heater meters for #{@meter_collection.name} complete in #{bm.round(3)} seconds" }
+    logger.debug do
+      "Disaggregation of storage heater meters for #{@meter_collection.name} complete in #{bm.round(3)} seconds"
+    end
     logger.debug { '=' * 100 }
   end
 
@@ -110,10 +115,12 @@ class AggregateDataServiceStorageHeaters
     map[:original] = meter
 
     # Create new AMRData instances one for the storage heater use and one for the rest of the consumption
-    electric_only_amr, storage_heater_amr = meter.storage_heater_setup.disaggregate_amr_data(meter.amr_data, meter.mpan_mprn)
+    electric_only_amr, storage_heater_amr = meter.storage_heater_setup.disaggregate_amr_data(meter.amr_data,
+                                                                                             meter.mpan_mprn)
 
-    map[:storage_heater]    = create_meter(meter, storage_heater_amr, :storage_heater_disaggregated_storage_heater, :storage_heater)
-    map[:ex_storage_heater] = create_meter(meter, electric_only_amr,  :storage_heater_disaggregated_electricity)
+    map[:storage_heater]    =
+      create_meter(meter, storage_heater_amr, :storage_heater_disaggregated_storage_heater, :storage_heater)
+    map[:ex_storage_heater] = create_meter(meter, electric_only_amr, :storage_heater_disaggregated_electricity)
     map
   end
 
@@ -121,7 +128,9 @@ class AggregateDataServiceStorageHeaters
     logger.debug { 'Aggregated Meter Setup' }
     logger.debug { "    appliance: #{aggregate_meter_description(@meter_collection.aggregated_electricity_meters)}" }
     logger.debug { "    storage:   #{aggregate_meter_description(@meter_collection.storage_heater_meter)}" }
-    logger.debug { "    original:  #{aggregate_meter_description(@meter_collection.aggregated_electricity_meters.sub_meters[:mains_consume])}" }
+    logger.debug do
+      "    original:  #{aggregate_meter_description(@meter_collection.aggregated_electricity_meters.sub_meters[:mains_consume])}"
+    end
   end
 
   def aggregate_meter_description(meter)
@@ -133,8 +142,12 @@ class AggregateDataServiceStorageHeaters
     @meter_collection.electricity_meters.each.with_index do |meter, i|
       logger.debug { "    Meter #{i}" }
       logger.debug { format('        %-18.18s %s', 'ex storage heater', meter_description(meter)) }
-      logger.debug { format('        %-18.18s %s', 'original',          meter_description(meter.sub_meters[:mains_consume])) }
-      logger.debug { format('        %-18.18s %s', 'storage heaters',   meter_description(meter.sub_meters[:storage_heaters])) }
+      logger.debug do
+        format('        %-18.18s %s', 'original',          meter_description(meter.sub_meters[:mains_consume]))
+      end
+      logger.debug do
+        format('        %-18.18s %s', 'storage heaters',   meter_description(meter.sub_meters[:storage_heaters]))
+      end
     end
   end
 

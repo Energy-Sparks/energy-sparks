@@ -2,9 +2,10 @@
 
 module Schools
   class SchoolRegenerationService
-    def initialize(school:, logger: Rails.logger)
+    def initialize(school:, logger:, regeneration_errors: false)
       @school = school
       @logger = logger
+      @regeneration_errors = regeneration_errors
     end
 
     def perform
@@ -65,8 +66,8 @@ module Schools
 
     def log_error(message, exception)
       case exception
-      when EnergySparksUnexpectedStateException
-        @school.regeneration_errors.create(raised_at: Time.current, message: exception.message)
+      when AggregationMixin::MeterDateRangeException
+        @school.regeneration_errors.create(raised_at: Time.current, message: exception.message) if @regeneration_errors
       else
         @logger.error "Exception: #{message} #{@school.name}: #{exception.class} #{exception.message}"
         @logger.error exception.backtrace.join("\n")

@@ -4,7 +4,9 @@ require 'rails_helper'
 
 describe Schools::SchoolRegenerationService, type: :service do
   subject(:service) do
-    service = described_class.new(school:, logger: instance_double(Logger, info: nil, warn: nil, error: nil))
+    service = described_class.new(school:,
+                                  logger: instance_double(Logger, info: nil, warn: nil, error: nil),
+                                  regeneration_errors: true)
     allow(Amr::ValidateAndPersistReadingsService).to receive(:new).and_return(readings_service)
     allow(AggregateDataService).to receive(:new).and_return(aggregate_data_service)
     allow(Schools::SchoolMetricsGeneratorService).to receive(:new).and_return(school_metrics_generator)
@@ -54,8 +56,8 @@ describe Schools::SchoolRegenerationService, type: :service do
         end
       end
 
-      context 'with EnergySparksUnexpectedStateException' do
-        let(:exception) { EnergySparksUnexpectedStateException.new('test') }
+      context 'with MeterDateRangeException' do
+        let(:exception) { AggregationMixin::MeterDateRangeException.new('test') }
 
         it 'continues and records an error' do
           expect(service.perform).to be true
