@@ -26,9 +26,12 @@ module Admin
                      ->(row, csv) { link_to(csv, school_meter_path(row.meter.school, row.meter)) }),
           Column.new(:meter_name,
                      ->(row) { row.meter&.name }),
+          Column.new(:meter_system,
+                     ->(row) { row.meter&.t_meter_system }),
+          Column.new(:data_source,
+                     ->(row) { row.meter.data_source&.name }),
           Column.new(:reading_date,
-                     ->(row) { row.reading_date })
-
+                     ->(row) { row.reading_date }),
         ]
       end
     end
