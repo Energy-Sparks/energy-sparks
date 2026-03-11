@@ -1,11 +1,11 @@
 .forms-commercial-bulk-licence-editor-component {
   /* adds an internal scroll-bar, rather than require page scrolling */
-  .licence-table-wrapper {
+  .licence-editor-table-wrapper {
     max-height: 70vh;
     overflow-y: auto;
   }
 
-  .licence-table thead th {
+  .licence-editor-table thead th {
     background-color: $header-dark !important;
     border-bottom: 0;
     border-top: 0;
@@ -18,18 +18,18 @@
   }
 
   /* Remove borders from main row */
-  .licence-table tr.main-row > td {
+  .licence-editor-table tr.main-row > td {
     border-top: none !important;
     border-bottom: none !important;
   }
 
   /* Remove top border on comments row */
-  .licence-table tr.comments-row > td {
+  .licence-editor-table tr.comments-row > td {
     border-top: none !important;
   }
 
   /* Stripe each licence block (2 rows together) */
-  .licence-table tbody.licence-block:nth-of-type(odd) {
+  .licence-editor-table tbody.licence-block:nth-of-type(odd) {
     background-color: #f8f9fa; /* Bootstrap light gray */
   }
 }

@@ -4,8 +4,8 @@
         url: form_path,
         method: :put
       ) do |f| %>
-    <div class="licence-table-wrapper">
-      <table class="table table-sm align-middle licence-table">
+    <div class="licence-editor-table-wrapper">
+      <table id="<%= "#{@contract.id}-licence-table" %>" class="table table-sm align-middle licence-editor-table">
         <thead>
           <tr>
             <th>Id</th>
@@ -20,7 +20,7 @@
         <% licences.each do |licence| %>
           <tbody class="licence-block">
             <%= f.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
-              <tr class="main-row">
+              <tr id="<%= "#{licence.id}-main-row" %>" class="main-row">
                 <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
                 <td><%= link_to licence.school.name, school_path(licence.school) %></td>
 
@@ -39,7 +39,7 @@
 
                 <td class="col-2"><%= lf.input :invoice_reference, label: false %></td>
               </tr>
-              <tr class="comments-row">
+              <tr id="#<%= "#{licence.id}-comments-row" %>" class="comments-row">
                 <td colspan="2"></td>
                 <td colspan="5">
                   <%= lf.input :comments,
