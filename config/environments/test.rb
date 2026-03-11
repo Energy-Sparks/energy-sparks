@@ -74,8 +74,6 @@ Rails.application.configure do
   config.action_mailer.show_previews = true
   # Rspec makes rails use spec/mailers/previews as the mail previews path
   config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
-  require_relative '../../lib/mailchimp_marketing/mock_client'
-  config.mailchimp_client = MailchimpMarketing::MockClient.new
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
   routes.default_url_options[:host] = 'localhost'

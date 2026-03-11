@@ -16,4 +16,32 @@ describe Commercial::Licence do
     it { expect(create(:commercial_licence, status: :pending_invoice).status_colour).to eq(:danger) }
     it { expect(create(:commercial_licence, status: :invoiced).status_colour).to eq(:success) }
   end
+
+  describe '#filtered' do
+    let(:school_a) { create(:school, :with_school_grouping, group: create(:school_group)) }
+    let(:school_b) { create(:school, :with_school_grouping, group: create(:school_group)) }
+
+    let(:licence_school_a) { create(:commercial_licence, school: school_a, start_date: Date.yesterday) }
+    let(:licence_school_b) { create(:commercial_licence, school: school_b) }
+
+    context 'with :current' do
+      subject(:licences) { described_class.filtered(:current) }
+
+      it { expect(licences).to contain_exactly(licence_school_a, licence_school_b) }
+
+      context 'with school group' do
+        subject(:licences) { described_class.filtered(:current, Time.zone.today, school_a.organisation_group.id) }
+
+        it { expect(licences).to contain_exactly(licence_school_a) }
+      end
+    end
+
+    context 'with :expiring' do
+      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
+
+      subject(:licences) { described_class.filtered(:expiring, Time.zone.today + 7) }
+
+      it { expect(licences).to contain_exactly(licence_school_a) }
+    end
+  end
 end
