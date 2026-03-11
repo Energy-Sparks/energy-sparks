@@ -124,14 +124,14 @@ module AggregationMixin
     # code does not check for the dates or if there are no readings.
     if min_date > max_date
       raise MeterDateRangeException, "Invalid AMR date range. Minimum date (#{min_date}) after maximum date " \
-                                     "(#{max_date}) unable to aggregate data"
+                                     "(#{max_date}) unable to aggregate data for #{meters[0].fuel_type}"
     end
 
     logger.info "Aggregating data between #{min_date} and #{max_date}"
 
     unless meter_collection.urn.nil?
-      mpan_mprn = Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn,
-                                                                               meters[0].fuel_type)
+      mpan_mprn =
+        Dashboard::Meter.synthetic_combined_meter_mpan_mprn_from_urn(meter_collection.urn, meters[0].fuel_type)
     end
 
     aggregate_amr_data_between_dates(meters, type, min_date, max_date, mpan_mprn, zero_negative: zero_negative)
