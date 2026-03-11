@@ -4,7 +4,7 @@ module Forms
       # @param contract_id select :contract_options
       def example(contract_id: nil)
         contract = contract_id.nil? ? ::Commercial::Contract.all.sample : ::Commercial::Contract.find(contract_id)
-        render Forms::Commercial::BulkLicenceEditorComponent.new(contract:)
+        render Forms::Commercial::BulkLicenceEditorComponent.new(contract:, form_path: '')
       end
 
       private
