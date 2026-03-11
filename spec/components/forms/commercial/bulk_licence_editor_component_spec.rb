@@ -103,9 +103,43 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
         subject(:comments) { page.find("tr##{licence.id}-comments-row") }
 
         it 'renders the comments' do
-          expect(page).to have_field(field_name(licence, :comments),
+          expect(comments).to have_field(field_name(licence, :comments),
                                       with: 'Some comments')
         end
+      end
+    end
+
+    context 'when excluding fields' do
+      before do
+        render_inline described_class.new(
+          contract:,
+          exclude_fields: [:invoice_reference, :comments],
+          id: 'custom-id',
+          classes: 'extra-classes')
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false, rows: false do
+        let(:table_id) { "##{contract.id}-licence-table" }
+        let(:expected_header) do
+          [
+            ['Id', 'School', 'Start', 'End', 'Status', 'Price']
+          ]
+        end
+      end
+
+      context 'when rendering the main row' do
+        subject(:main) { page.find("tr##{licence.id}-main-row") }
+
+        it 'renders the invoice ref' do
+          expect(main).not_to have_field(field_name(licence, :invoice_reference),
+                                      with: 'INV-001')
+        end
+      end
+
+      it 'does not render the comments row' do
+        expect(page).not_to have_css("tr##{licence.id}-comments-row")
+        expect(page).not_to have_field(field_name(licence, :comments),
+                                    with: 'Some comments')
       end
     end
 

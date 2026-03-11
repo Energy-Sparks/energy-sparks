@@ -2,4 +2,5 @@
   <% header_nav.with_header title: "#{@contract.name} Licence Editor" %>
 <% end %>
 
-<%= render Forms::Commercial::BulkLicenceEditorComponent.new(contract: @contract) %>
+<%= render Forms::Commercial::BulkLicenceEditorComponent.new(contract: @contract,
+                                                             exclude_fields: [:invoice_reference]) %>
