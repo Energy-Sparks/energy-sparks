@@ -140,7 +140,7 @@ class SchoolOnboarding < ApplicationRecord
   end
 
   def started_on
-    started? ? events.email_sent.order(:created_at).first&.created_at : nil
+    events.email_sent.order(:created_at).first&.created_at
   end
 
   def onboarding_user_created?
