@@ -10,7 +10,7 @@ module Admin
 
         def update
           if @contract.update(contract_params)
-            redirect_to edit_admin_commercial_contract_licences_path(@contract), notice: 'Updated'
+            redirect_to edit_admin_commercial_contract_licences_path(@contract), notice: 'Licences updated'
           else
             render :edit
           end

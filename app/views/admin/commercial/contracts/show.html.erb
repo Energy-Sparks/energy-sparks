@@ -161,9 +161,11 @@
 <div class="row">
   <div class="col">
     <p>
-      <%= link_to 'New licence', new_admin_commercial_licence_path(contract_id: @contract.id),
+      <%= link_to 'Manage All Licences', edit_admin_commercial_contract_licences_path(@contract),
                   class: 'btn btn-primary btn-sm' %>
-      <%= link_to 'Calculate price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
+      <%= link_to 'Add New Licence', new_admin_commercial_licence_path(contract_id: @contract.id),
+                  class: 'btn btn-primary btn-sm' %>
+      <%= link_to 'Calculate Price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
                   class: 'btn btn-primary btn-sm' %>
     </p>
   </div>
