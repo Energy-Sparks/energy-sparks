@@ -79,6 +79,7 @@ module EnergySparks
     config.action_controller.raise_on_open_redirects = false
     require_relative '../lib/mailchimp_client'
     config.mailchimp_client = MailchimpClient.create
-    config.dartsass.builds['bootstrap4/application.scss'] = 'bootstrap4/application.css'
+    # compiles all public (names don't start with an underscore) Sass files
+    config.dartsass.builds = { '.' => '.' }
   end
 end

@@ -1,9 +1,10 @@
+@use 'font-awesome' with ($fa-font-path: 'font-awesome');
+
 @import "colours";
 @import "fonts";
 @import "bootstrap-overrides";
 @import "bootstrap";
 
-@import "font-awesome";
 @import "base";
 @import "links";
 @import "buttons";
