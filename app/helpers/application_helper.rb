@@ -433,7 +433,8 @@ module ApplicationHelper
     if messageable.dashboard_message
       title = 'Dashboard message is shown for '
       title += who
-      tag.span class: 'badge text-bg-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+      tag.span class: 'badge text-bg-info', data: { toggle: 'tooltip', bs_toggle: 'tooltip' },
+                title: "#{title}: #{messageable.dashboard_message.message}" do
         fa_icon(:info)
       end
     else
