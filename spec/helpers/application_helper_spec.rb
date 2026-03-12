@@ -317,4 +317,22 @@ describe ApplicationHelper do
       expect(helper.user_school_role(user_without_staff_role)).to eq('Group admin')
     end
   end
+
+  describe '#bootstrap_path' do
+    context 'when bs5 is true' do
+      before { helper.instance_variable_set(:@bs5, true) }
+
+      it 'does not change path' do
+        expect(helper.bootstrap_path('application')).to eq('application')
+      end
+    end
+
+    context 'when bs5 is false' do
+      before { helper.instance_variable_set(:@bs5, false) }
+
+      it 'prepends bootstrap4/' do
+        expect(helper.bootstrap_path('application')).to eq('bootstrap4/application')
+      end
+    end
+  end
 end

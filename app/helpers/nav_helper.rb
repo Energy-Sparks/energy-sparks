@@ -92,7 +92,7 @@ module NavHelper
 
   def header_nav_link(link_text, link_path, **kwargs)
     return if current_page?(link_path) # don't show link if already on page
-    nav_class = 'btn '
+    nav_class = 'btn btn-default '
     nav_class += " #{kwargs[:class]}" if kwargs[:class]
     link_to link_text, link_path, class: nav_class
   end

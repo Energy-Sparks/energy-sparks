@@ -9,17 +9,9 @@
   }
 }
 
-.bs5 .footnote-modal-component {
-  .btn-close span {
-    display: none;
-  }
-}
-
 .bs4 .footnote-modal-component {
   button.btn-close span {
     @include font(f3);
     color: $white;
-    margin: 0;
-    padding: 0;
   }
 }
