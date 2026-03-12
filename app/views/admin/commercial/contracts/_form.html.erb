@@ -2,11 +2,16 @@
   <%= javascript_import_module_tag 'commercial/contract_holder' %>
 <% end %>
 
+<% all_contracts_path = if original.present?
+                          polymorphic_path([:admin, original.contract_holder,
+                                            :contracts])
+                        else
+                          admin_commercial_contracts_path
+                        end %>
+
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
   <% header_nav.with_header title: title %>
-  <% header_nav.with_button 'All contracts',
-                            original.present? ? polymorphic_path([:admin, original.contract_holder,
-                                                                  :contracts]) : admin_commercial_contracts_path %>
+  <% header_nav.with_button 'All contracts', all_contracts_path %>
 <% end %>
 
 <% if original %>
@@ -94,7 +99,7 @@
       <% end %>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>
-      <%= link_to 'Cancel', admin_commercial_contracts_path, class: 'btn' %>
+      <%= link_to 'Cancel', all_contracts_path, class: 'btn' %>
     <% end %>
   </div>
 </div>

@@ -20,7 +20,7 @@ module Forms
       end
 
       def licences
-        @contract.licences.current.joins(:school).order(school: { name: :asc })
+        @contract.licences.joins(:school).order(school: { name: :asc })
       end
 
       def show_field?(name)

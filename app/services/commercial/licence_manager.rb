@@ -27,7 +27,8 @@ module Commercial
     def contract_renewed(contract, original_licence)
       create_licence(contract,
                      base_date: contract.start_date,
-                     school_specific_price: original_licence.school_specific_price)
+                     school_specific_price: original_licence.school_specific_price,
+                     comments: original_licence.comments)
     end
 
     private

@@ -31,7 +31,7 @@
           <td class="text-end col-1"><%= contract.start_date %></td>
           <td class="text-end col-1"><%= contract.end_date %></td>
           <td class="text-end"><%= contract.number_of_schools %></td>
-          <td class="text-end"><%= contract.licences.current.count %></td>
+          <td class="text-end"><%= contract.licences.count %></td>
           <td class="text-end">
             <%= render(Elements::BadgeComponent.new(
                          contract.status.humanize,
