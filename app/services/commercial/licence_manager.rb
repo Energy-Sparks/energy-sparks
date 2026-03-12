@@ -33,7 +33,7 @@ module Commercial
 
     private
 
-    def create_licence(contract, base_date: Time.zone.today, school_specific_price: nil)
+    def create_licence(contract, base_date: Time.zone.today, school_specific_price: nil, comments: nil)
       return unless contract
 
       case contract.licence_period
@@ -51,6 +51,7 @@ module Commercial
         start_date:,
         end_date:,
         school_specific_price:,
+        comments:,
         status: contract.confirmed? ? :confirmed : :provisional
       )
     end

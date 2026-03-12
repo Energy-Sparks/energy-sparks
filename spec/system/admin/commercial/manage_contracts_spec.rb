@@ -74,7 +74,7 @@ describe 'manage contracts' do
   end
 
   context 'when updating an existing contract' do
-    let!(:contract) { create(:commercial_contract) }
+    let!(:contract) { create(:commercial_contract, contract_holder: funder) }
     let!(:product) { create(:commercial_product, :default_product)}
     let!(:funder) { create(:funder) }
 
