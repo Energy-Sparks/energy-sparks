@@ -77,6 +77,8 @@ module EnergySparks
     # should be resolved by rails 8.1 having config.action_controller.allowed_redirect_hosts
     #   https://github.com/rails/rails/pull/55420
     config.action_controller.raise_on_open_redirects = false
+    require_relative '../lib/mailchimp_client'
+    config.mailchimp_client = MailchimpClient.create
     config.dartsass.builds['bootstrap4/application.scss'] = 'bootstrap4/application.css'
   end
 end
