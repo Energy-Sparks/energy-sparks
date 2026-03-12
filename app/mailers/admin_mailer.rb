@@ -104,6 +104,7 @@ class AdminMailer < ApplicationMailer
   def regeneration_errors(errors)
     @errors = errors
     mail(to: 'operations@energysparks.uk', subject: subject('Regeneration Errors'))
+    prevent_delivery_from_test
   end
 
   private
