@@ -2,8 +2,8 @@
   <%= javascript_import_module_tag 'commercial/contract_holder' %>
 <% end %>
 
-<% all_contracts_path = if local_assigns[:original].present?
-                          polymorphic_path([:admin, original.contract_holder,
+<% all_contracts_path = if local_assigns[:original].present? || contract.persisted?
+                          polymorphic_path([:admin, contract.contract_holder,
                                             :contracts])
                         else
                           admin_commercial_contracts_path

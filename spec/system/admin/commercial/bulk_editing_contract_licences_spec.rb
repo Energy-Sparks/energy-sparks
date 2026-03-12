@@ -39,9 +39,8 @@ describe 'bulk editing contract licences' do
       click_on('Save changes')
     end
 
-    it { expect(page).to have_content('Licences updated') }
-
     it 'updates the licence' do
+      expect(page).to have_content('Licences updated')
       expect(modified_licence.reload).to have_attributes({
         school_specific_price: 200.0,
         status: 'confirmed',
