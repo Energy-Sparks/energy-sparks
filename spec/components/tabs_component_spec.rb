@@ -15,6 +15,7 @@ RSpec.describe TabsComponent, type: :component do
       { 'aria-controls': name,
         'aria-selected': active.to_s,
         'data-toggle': 'tab',
+        'data-bs-toggle': 'tab',
         class: ['nav-link', active ? 'active' : nil].compact.join(' '),
         href: "##{name}",
         id: "#{name}-tab",
