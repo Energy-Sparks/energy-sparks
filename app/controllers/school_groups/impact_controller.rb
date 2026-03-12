@@ -14,22 +14,11 @@ module SchoolGroups
 
     skip_before_action :authenticate_user!
 
-    def index
-      # Eventually this will be replaced with an active record object or similar
-      @impact_report = OpenStruct.new(
-        schools_count: @school_group.assigned_schools.visible.count,
-        generated_at: Time.zone.now
-      )
-    end
-
     private
 
     def fetch_impact_report
       # Eventually this will be replaced with an active record object or similar
-      @impact_report = OpenStruct.new(
-        schools_count: @school_group.assigned_schools.visible.count,
-        generated_at: Time.zone.now
-      )
+      @impact_report = SchoolGroups::ImpactReport.new(@school_group)
     end
 
     def breadcrumbs
@@ -43,7 +32,7 @@ module SchoolGroups
     end
 
     def redirect_not_enough_data
-      unless @impact_report.schools_count >= 2
+      unless @impact_report.schools >= 2
         redirect_back fallback_location: school_group_path(@school_group), alert: I18n.t('advice_pages.index.show.not_available')
       end
     end

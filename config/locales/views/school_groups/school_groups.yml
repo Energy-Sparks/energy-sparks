@@ -147,6 +147,26 @@ en:
           other: Discover how our energy management tool and education programme have been delivering impact for <strong>%{count}</strong> schools in this <strong>%{group_type}</strong>
         read_more_html: "<a href='%{href}'>Read more</a> about how we generate these impact reports"
         title: "%{school_group} Impact Report"
+      overview:
+        cards:
+          funded_places:
+            header: Funded places
+            subtext: Value of free access to Energy Sparks provided to %{count} schools this year
+          pupils:
+            header: Pupils
+            subtext: Benefitting from access to our educational programme
+          schools:
+            header: Schools
+            subtext:
+              one: Of which %{count} has energy analysis available
+              other: Of which %{count} have energy analysis available
+          users:
+            header: Users
+            subtext:
+              one: Of which %{count} has logged into the tool in the last 3 months
+              other: Of which %{count} have logged into the tool in the last 3 months
+        description: How many schools and users are enrolled in Energy Sparks from this group?
+        header: Overview
     labels:
       floor_area: Floor area (m2)
     login_prompt:

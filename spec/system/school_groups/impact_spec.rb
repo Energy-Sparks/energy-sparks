@@ -28,8 +28,6 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
   describe 'Page layout' do
     before { Flipper.enable(:impact_reporting)}
 
-    let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
-
     before do
       visit school_group_impact_index_path(school_group)
     end
@@ -53,6 +51,12 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
       it 'has the read more link' do
         expect(header).to have_content(strip_tags(I18n.t('school_groups.impact.feature.read_more_html', href: '/')))
         expect(header).to have_link('Read more', href: '/') # TODO: LINK NEEDS UPDATING
+      end
+    end
+
+    describe 'Page body' do
+      it 'renders all the sections' do
+        expect(page).to have_css('#stats-header')
       end
     end
   end

@@ -1,10 +1,18 @@
 class LayoutComponent < ApplicationComponent
   attr_reader :theme
 
+  renders_one :placeholder, ->(*args, **kwargs) do
+    Admin::PlaceholderComponent.new(*args, **{ badge: true }.merge(kwargs))
+  end
+
   def initialize(*_args, theme: nil, component_classes: '', **_kwargs)
     super
     add_theme(theme)
     @component_classes = component_classes
+  end
+
+  def before_render
+    add_classes('position-relative') if placeholder
   end
 
   def add_theme(theme)

@@ -562,4 +562,8 @@ module ApplicationHelper
   def collection_from_enum(enum)
     enum.transform_keys(&:humanize).sort.to_h
   end
+
+  def bs5?
+    !!@bs5
+  end
 end

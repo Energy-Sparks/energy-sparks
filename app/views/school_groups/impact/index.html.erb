@@ -1,14 +1,14 @@
-<%= content_for :page_title, "#{@school_group.name} #{t('school_groups.titles.show')}" %>
+<%= content_for :page_title, t('school_groups.impact.feature.title', school_group: @school_group.name) %>
 
 <% content_for :header do %>
-  <%= render Layout::GridComponent.new(cols: 2, classes: 'container', cell_classes: '', id: 'header-section') do |grid| %>
+  <%= render Layout::GridComponent.new(cols: 2, classes: 'pb-4', id: 'header-section') do |grid| %>
     <%= grid.with_image rounded: false, fit: false, width: '350px', classes: 'd-block mx-auto',
                         src: 'actions/podium.png' %>
     <% grid.with_feature_card size: :xl do |feature| %>
       <%= feature.with_header title: t('school_groups.impact.feature.title', school_group: @school_group.name) %>
       <%= feature.with_description do %>
         <%= t('school_groups.impact.feature.description_html',
-              count: @impact_report.schools_count,
+              count: @impact_report.schools,
               group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')) %>
       <% end %>
       <%= feature.with_block do %>
@@ -16,10 +16,68 @@
               date: @impact_report.generated_at.to_date.to_fs(:es_long)) %>
       <% end %>
       <%= feature.with_block(classes: 'pt-2') do %>
-        <%= render Admin::PlaceholderComponent.new('replace link. Does this need to be a modal or page?') do %>
+        <%= render Admin::PlaceholderComponent.new('Replace link. Modal or link to text at the foot of page') do %>
           <%= t('school_groups.impact.feature.read_more_html', href: '/') %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
+<% end %>
+
+<% render(Admin::PlaceholderComponent.new) do %>
+  <%= format_unit(@impact_report.funded_places_value, :£) %>
+<% end %>
+
+<%= render Layout::Cards::SectionHeaderComponent.new(
+      id: 'stats-header'
+    ) do |section_header| %>
+  <%= section_header.with_header title: t('school_groups.impact.overview.header') %>
+  <%= section_header.with_description { t('school_groups.impact.overview.description') } %>
+<% end %>
+
+<%= render Layout::GridComponent.new(id: 'stats',
+                                     cols: 4, classes: 'mb-4',
+                                     cell_classes: 'mb-4',
+                                     component_classes: 'theme theme-dark') do |grid| %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('school_groups.impact.overview.cards.schools.header') %>
+    <%= card.with_figure number_with_delimiter(@impact_report.schools) %>
+    <%= card.with_subtext do
+          t('school_groups.impact.overview.cards.schools.subtext',
+            count: @impact_report.schools_data_visible)
+        end %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('school_groups.impact.overview.cards.users.header') %>
+    <%= card.with_figure number_with_delimiter(@impact_report.users) %>
+    <%= card.with_subtext do
+          t('school_groups.impact.overview.cards.users.subtext',
+            count: @impact_report.users_logged_in_recently)
+        end %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('school_groups.impact.overview.cards.pupils.header') %>
+    <%= card.with_figure number_with_delimiter(@impact_report.pupils) %>
+    <%= card.with_subtext { t('school_groups.impact.overview.cards.pupils.subtext') } %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('school_groups.impact.overview.cards.funded_places.header') %>
+    <%= card.with_figure format_unit(@impact_report.funded_places_value, :£) %>
+    <%= card.with_subtext do
+          t('school_groups.impact.overview.cards.funded_places.subtext', count: @impact_report.funded_places)
+        end %>
+    <%= card.with_placeholder('Figures contain placeholder data') %>
+  <% end %>
+<% end %>
+
+<%= render Layout::CarouselComponent.new(id: 'testimonials-section',
+                                         show_markers: false,
+                                         theme: :accent,
+                                         classes: 'rounded-xl p-4 mb-4',
+                                         bs5: bs5?,
+                                         show_arrows: :side) do |carousel| %>
+  <% Testimonial.all.active.shuffle.each do |testimonial| %>
+    <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+  <% end %>
+  <%= carousel.with_placeholder('Fix carousel for bootstrap 5. Use school group testimonials') %>
 <% end %>
