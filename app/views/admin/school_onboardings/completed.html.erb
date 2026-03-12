@@ -1,5 +1,8 @@
 <h1>Schools recently onboarded</h1>
 
+<div class="row d-flex justify-content-center pt-4">
+  <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+</div>
 <table class="table table-sorted table-sm">
   <thead>
     <tr>
@@ -15,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @completed_schools.each do |onboarding| %>
+    <% @records.each do |onboarding| %>
       <tr>
         <td><%= onboarding.school.country.presence&.capitalize %></td>
         <td><%= link_to onboarding.school.school_group.name, admin_school_group_path(onboarding.school.school_group) if
@@ -33,3 +36,6 @@
     <% end %>
   </tbody>
 </table>
+<div class="row d-flex justify-content-center pt-4">
+  <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>
+</div>

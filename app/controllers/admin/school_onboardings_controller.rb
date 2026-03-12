@@ -1,6 +1,7 @@
 require 'securerandom'
 module Admin
   class SchoolOnboardingsController < AdminController
+    include Pagy::Backend
     load_and_authorize_resource find_by: :uuid
 
     INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME = 'incomplete-onboarding-schools.csv'.freeze
@@ -17,7 +18,9 @@ module Admin
     end
 
     def completed
-      @completed_schools = @school_onboardings.complete.includes(:school, school: :school_group).order(updated_at: :desc)
+      @pagy, @records = pagy(
+        @completed_schools = @school_onboardings.complete.includes(:school, school: :school_group).order(updated_at: :desc)
+      )
     end
 
     def create
