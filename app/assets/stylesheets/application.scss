@@ -1,4 +1,4 @@
-@use 'font-awesome' with ($fa-font-path: 'font-awesome');
+@use 'font-awesome' with ($fa-font-path: 'font-awesome'); // https://github.com/FortAwesome/font-awesome-sass/issues/222
 
 @import "colours";
 @import "fonts";

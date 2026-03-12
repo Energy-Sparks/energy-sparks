@@ -43,7 +43,7 @@ gem 'font-awesome-sass'
 gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
+gem 'sassc', path: 'sassc' # dummy gem for font-awesome-sass
 gem 'terser'
 
 # Pagination

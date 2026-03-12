@@ -25,14 +25,6 @@ GIT
       rubyvis (~> 0.6)
       spreadsheet (~> 1.1)
 
-GIT
-  remote: https://github.com/tbhi/sassc-ruby.git
-  revision: b5b0b78cfb89b9fd0c6ad16e7668a5d1eb861f18
-  branch: load_error
-  specs:
-    sassc (2.4.0)
-      ffi (~> 1.9)
-
 PATH
   remote: analytics
   specs:
@@ -48,6 +40,11 @@ PATH
       ruby-sun-times
       statsample
       write_xlsx
+
+PATH
+  remote: sassc
+  specs:
+    sassc (2.4.0)
 
 GEM
   remote: https://rubygems.org/
