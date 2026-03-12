@@ -17,7 +17,7 @@ module Admin
     end
 
     def completed
-      @completed_schools = @school_onboardings.complete.order(updated_at: :desc)
+      @completed_schools = @school_onboardings.complete.includes(:school, school: :school_group).order(updated_at: :desc)
     end
 
     def create
