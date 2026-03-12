@@ -15,7 +15,7 @@ describe 'manage licences' do
     before do
       click_on 'Contracts'
       click_on(contract.name)
-      click_on('New licence')
+      click_on('Add New Licence')
     end
 
     context 'with valid data', :js do
