@@ -20,7 +20,12 @@ module Admin::Commercial
     end
 
     def new
-      @contract = Commercial::Contract.new(contract_holder_type: 'Funder')
+      if params[:original_contract_id].present?
+        original = Commercial::Contract.find(params[:original_contract_id])
+        @contract = Commercial::Contract.for_renewal(original)
+      else
+        @contract = Commercial::Contract.new(contract_holder_type: 'Funder')
+      end
     end
 
     def create

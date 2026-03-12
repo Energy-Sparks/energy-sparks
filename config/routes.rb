@@ -586,7 +586,11 @@ Rails.application.routes.draw do
     get 'chart-preview', to: 'chart_previews#show'
 
     concerns :issueable
-    resources :funders
+    resources :funders do
+      scope module: :funders do
+        concerns :contract_holder
+      end
+    end
     resources :users, except: [:show] do
       get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
@@ -705,6 +709,7 @@ Rails.application.routes.draw do
       get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
       scope module: :schools do
         concerns :messageable
+        concerns :contract_holder
       end
     end
 

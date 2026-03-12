@@ -82,6 +82,25 @@ module Commercial
 
     accepts_nested_attributes_for :licences
 
+    def self.for_renewal(original)
+      new(
+        original.slice(
+          :agreed_school_price,
+          :contract_holder_type,
+          :contract_holder_id,
+          :invoice_terms,
+          :licence_period,
+          :licence_years,
+          :number_of_schools,
+          :product
+        ).merge(
+          comments: "Renewed from #{original.name}",
+          end_date:   original.end_date + 1.year,
+          start_date: original.end_date
+        )
+      )
+    end
+
     def status_colour
       STATUS_COLOUR[status.to_sym]
     end

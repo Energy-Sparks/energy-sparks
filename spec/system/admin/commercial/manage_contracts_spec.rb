@@ -68,7 +68,7 @@ describe 'manage contracts' do
     end
   end
 
-  context 'when updating an existing product' do
+  context 'when updating an existing contract' do
     let!(:contract) { create(:commercial_contract) }
     let!(:product) { create(:commercial_product, :default_product)}
     let!(:funder) { create(:funder) }
@@ -135,6 +135,42 @@ describe 'manage contracts' do
     end
   end
 
+  context 'when renewing a contract' do
+    let!(:contract_holder) { create(:school_group) }
+    let!(:product) { create(:commercial_product)}
+    let!(:contract) do
+      create(:commercial_contract,
+             product:,
+             contract_holder:,
+             agreed_school_price: 600.0,
+             invoice_terms: :full,
+             licence_period: :contract,
+             licence_years: 2,
+             number_of_schools: 100)
+    end
+
+    before do
+      create(:funder)
+      create(:commercial_product, :default_product)
+      visit admin_commercial_contract_path(contract)
+      click_on 'All contracts'
+    end
+
+    context 'when visiting the pre-populated form', :js do
+      before { click_on 'Renew' }
+
+      it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
+      it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
+      it { expect(page).to have_select('Contract holder', selected: contract_holder.name) }
+      it { expect(page).to have_select('Invoice terms', selected: 'Full') }
+      it { expect(page).to have_select('Licence period', selected: 'Contract') }
+      it { expect(page).to have_field('Licence years', with: '2.0') }
+      it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
+      it { expect(page).to have_select('Product', selected: product.name) }
+      it { expect(page).to have_select('Status', selected: 'Provisional') }
+    end
+  end
+
   context 'when viewing a contract' do
     let!(:contract) { create(:commercial_contract) }
 
@@ -193,6 +229,35 @@ describe 'manage contracts' do
             ['', 'Confirmed', '0'],
             ['', 'All', '4'],
             ['Historical', 'All', '8']
+          ]
+        end
+      end
+    end
+
+    context 'when navigating to contract holder page' do
+      before { click_on 'All contracts' }
+
+      it { expect(page).to have_content("#{contract.contract_holder.name} Contracts") }
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#contracts-table' }
+        let(:expected_header) do
+          [
+            ['Name', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status', 'Actions']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              contract.name,
+              contract.product.name,
+              contract.start_date.iso8601,
+              contract.end_date.iso8601,
+              contract.number_of_schools.to_s,
+              '0',
+              contract.status.humanize,
+              'Edit Renew Delete'
+            ]
           ]
         end
       end
