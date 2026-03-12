@@ -91,8 +91,6 @@ describe 'manage contracts' do
         fill_in 'Comments', with: 'Some notes'
 
         select product.name, from: 'Product'
-        choose 'Funder'
-        select funder.name, from: 'Contract holder'
 
         fill_in 'Number of schools', with: 100
 

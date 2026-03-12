@@ -2,7 +2,7 @@
   <%= javascript_import_module_tag 'commercial/contract_holder' %>
 <% end %>
 
-<% all_contracts_path = if original.present?
+<% all_contracts_path = if local_assigns[:original].present?
                           polymorphic_path([:admin, original.contract_holder,
                                             :contracts])
                         else
@@ -14,7 +14,7 @@
   <% header_nav.with_button 'All contracts', all_contracts_path %>
 <% end %>
 
-<% if original %>
+<% if local_assigns[:original].present? %>
   <div class="row">
     <div class="col">
       <p>
@@ -47,7 +47,7 @@
                   collection: Commercial::Product.with_default_first,
                   include_blank: false %>
 
-      <% if original %>
+      <% if local_assigns[:original].present? || contract.persisted? %>
         <%= f.input :contract_holder_type, as: :hidden %>
         <%= f.input :contract_holder_id, as: :hidden %>
       <% else %>
@@ -85,7 +85,7 @@
                   include_blank: false %>
       <%= f.input :licence_years %>
 
-      <% if original %>
+      <% if local_assigns[:original].present? %>
         <div class="form-group">
           <div class="form-check">
             <%= hidden_field_tag :original_contract_id, original.id %>
