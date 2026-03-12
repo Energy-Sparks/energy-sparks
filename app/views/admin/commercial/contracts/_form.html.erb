@@ -4,7 +4,26 @@
 
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
   <% header_nav.with_header title: title %>
-  <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
+  <% header_nav.with_button 'All contracts',
+                            original.present? ? polymorphic_path([:admin, original.contract_holder,
+                                                                  :contracts]) : admin_commercial_contracts_path %>
+<% end %>
+
+<% if original %>
+  <div class="row">
+    <div class="col">
+      <p>
+        Creating a new contract for <strong><%= contract.contract_holder.name %></strong> based on
+        <strong><%= original.name %></strong>.
+        The form has been populated using the existing contractual details, including contract terms, length and
+        agreed pricing.
+      </p>
+      <p>
+        Provisional licences for all schools under <strong><%= original.name %></strong> will be added
+        by default (see option below). Additional schools can be added later.
+      </p>
+    </div>
+  </div>
 <% end %>
 
 <div class="row">
@@ -23,19 +42,24 @@
                   collection: Commercial::Product.with_default_first,
                   include_blank: false %>
 
-      <%= f.input :contract_holder_type,
-                  as: :radio_buttons,
-                  collection: HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
-                  include_blank: false,
-                  input_html: { class: 'contract-holder-type' } %>
+      <% if original %>
+        <%= f.input :contract_holder_type, as: :hidden %>
+        <%= f.input :contract_holder_id, as: :hidden %>
+      <% else %>
+        <%= f.input :contract_holder_type,
+                    as: :radio_buttons,
+                    collection: HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
+                    include_blank: false,
+                    input_html: { class: 'contract-holder-type' } %>
 
-      <%= f.input :contract_holder_id,
-                  collection: [],
-                  include_blank: true,
-                  input_html: {
-                    class: 'contract-holder-select',
-                    data: { selected_id: @contract.contract_holder_id }
-                  } %>
+        <%= f.input :contract_holder_id,
+                    collection: [],
+                    include_blank: true,
+                    input_html: {
+                      class: 'contract-holder-select',
+                      data: { selected_id: contract.contract_holder_id }
+                    } %>
+      <% end %>
 
       <%= f.input :number_of_schools %>
       <%= f.input :purchase_order_number %>
@@ -55,6 +79,19 @@
                   collection: collection_from_enum(Commercial::Contract.licence_periods),
                   include_blank: false %>
       <%= f.input :licence_years %>
+
+      <% if original %>
+        <div class="form-group">
+          <div class="form-check">
+            <%= hidden_field_tag :original_contract_id, original.id %>
+            <%= check_box_tag 'renew_licences', '1', true, class: 'form-check-input' %>
+
+            <%= label_tag 'renew_licences',
+                          'Automatically add licences for all schools associated with the original contract?',
+                          class: 'form-check-label' %>
+          </div>
+        </div>
+      <% end %>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>
       <%= link_to 'Cancel', admin_commercial_contracts_path, class: 'btn' %>

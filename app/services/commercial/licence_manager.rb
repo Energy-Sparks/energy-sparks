@@ -6,24 +6,7 @@ module Commercial
     end
 
     def school_onboarded(contract)
-      return unless contract
-
-      case contract.licence_period
-      when 'contract'
-        start_date = contract.start_date
-        end_date = contract.end_date
-      else # custom
-        # these dates will change later, when school is made data visible
-        start_date = Time.zone.today
-        end_date = add_years(start_date, contract.licence_years)
-      end
-      contract.licences.create(
-        contract: contract,
-        school: @school,
-        start_date:,
-        end_date:,
-        status: contract.confirmed? ? :confirmed : :provisional
-      )
+      create_licence(contract)
     end
 
     def school_made_data_enabled
@@ -39,7 +22,37 @@ module Commercial
       licence
     end
 
+    # Create a new licence for the school under a renewed contract, copying over any
+    # school specific pricing from an original
+    def contract_renewed(contract, original_licence)
+      create_licence(contract,
+                     base_date: contract.start_date,
+                     school_specific_price: original_licence.school_specific_price)
+    end
+
     private
+
+    def create_licence(contract, base_date: Time.zone.today, school_specific_price: nil)
+      return unless contract
+
+      case contract.licence_period
+      when 'contract'
+        start_date = contract.start_date
+        end_date = contract.end_date
+      else # custom
+        # these dates will change later, when school is made data visible
+        start_date = base_date
+        end_date = add_years(start_date, contract.licence_years)
+      end
+      contract.licences.create(
+        contract: contract,
+        school: @school,
+        start_date:,
+        end_date:,
+        school_specific_price:,
+        status: contract.confirmed? ? :confirmed : :provisional
+      )
+    end
 
     # Take licence years, which is a float specifying length of licence, e.g. 1.0, 2.0, 1.75 (1 yr, 9 months)
     # and add to a start date.

@@ -56,6 +56,11 @@ describe 'manage contracts' do
           created_by: user
         )
       end
+
+      it 'does not create any licences' do
+        expect(page).to have_content('Contract has been created')
+        expect(Commercial::Contract.last.licences).to be_empty
+      end
     end
 
     context 'with invalid data' do
@@ -113,6 +118,10 @@ describe 'manage contracts' do
           updated_by: user
         )
       end
+
+      it 'does not create any licences' do
+        expect(contract.reload.licences).to be_empty
+      end
     end
   end
 
@@ -136,17 +145,18 @@ describe 'manage contracts' do
   end
 
   context 'when renewing a contract' do
-    let!(:contract_holder) { create(:school_group) }
-    let!(:product) { create(:commercial_product)}
     let!(:contract) do
       create(:commercial_contract,
-             product:,
-             contract_holder:,
+             contract_holder: create(:school_group),
              agreed_school_price: 600.0,
              invoice_terms: :full,
              licence_period: :contract,
              licence_years: 2,
              number_of_schools: 100)
+    end
+
+    let!(:original_licence) do
+      create(:commercial_licence, contract:, school_specific_price: 0.0)
     end
 
     before do
@@ -161,13 +171,59 @@ describe 'manage contracts' do
 
       it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
       it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
-      it { expect(page).to have_select('Contract holder', selected: contract_holder.name) }
       it { expect(page).to have_select('Invoice terms', selected: 'Full') }
       it { expect(page).to have_select('Licence period', selected: 'Contract') }
       it { expect(page).to have_field('Licence years', with: '2.0') }
       it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
-      it { expect(page).to have_select('Product', selected: product.name) }
       it { expect(page).to have_select('Status', selected: 'Provisional') }
+
+      context 'when submitting with defaults' do
+        subject(:renewed_contract) { contract.contract_holder.contracts.by_start_date.last }
+
+        before do
+          fill_in('Name', with: 'Renewed contract')
+          click_on 'Save'
+        end
+
+        it 'creates the contract' do
+          expect(page).to have_content('Contract and provisional licences have been created')
+          expect(renewed_contract).to have_attributes(
+            name: 'Renewed contract',
+            comments: "Renewed from #{contract.name}",
+            product: contract.product,
+            contract_holder: contract.contract_holder,
+            licence_period: contract.licence_period,
+            licence_years: contract.licence_years,
+            number_of_schools: contract.number_of_schools,
+            start_date: contract.end_date,
+            end_date: contract.end_date + 1.year,
+            agreed_school_price: contract.agreed_school_price,
+            created_by: user
+          )
+        end
+
+        it 'creates the licences' do
+          expect(page).to have_content('Contract and provisional licences have been created')
+          expect(renewed_contract.licences.count).to eq(1)
+          expect(renewed_contract.licences.first.school).to eq(original_licence.school)
+          expect(renewed_contract.licences.first.school_specific_price).to eq(original_licence.school_specific_price)
+        end
+      end
+
+      context 'when choosing not to add licences' do
+        subject(:renewed_contract) { contract.contract_holder.contracts.by_start_date.last }
+
+        before do
+          fill_in('Name', with: 'Renewed contract')
+          uncheck('renew_licences')
+          click_on 'Save'
+        end
+
+        it 'does not create the licences' do
+          expect(page).to have_content('Contract has been created')
+          expect(renewed_contract.licences.count).to eq(0)
+        end
+      end
     end
   end
 
