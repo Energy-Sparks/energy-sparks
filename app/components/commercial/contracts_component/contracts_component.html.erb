@@ -1,7 +1,8 @@
 <%= tag.div id: id, class: classes do %>
-  <h2><%= @range.to_s.humanize %> Contracts</h2>
-
-  <table id="<%= @range.to_s %>-contracts-table" class="table table-paged table-sm">
+  <% if header? %>
+    <%= header %>
+  <% end %>
+  <table id="contracts-table" class="table table-paged table-sm">
     <thead>
       <tr>
         <th>Name</th>
@@ -18,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      <% associations.by_start_date.each do |contract| %>
+      <% @contracts.each do |contract| %>
         <tr>
           <td class="col-2"><%= link_to contract.name, admin_commercial_contract_path(contract) %></td>
           <td class="col-2"><%= contract.contract_holder.name %></td>

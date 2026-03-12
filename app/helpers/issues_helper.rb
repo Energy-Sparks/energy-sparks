@@ -15,7 +15,7 @@ module IssuesHelper
       end
     end
     if icons.any?
-      content_tag(:span, title: counts.join(' & '), data: { toggle: 'tooltip' }) do
+      content_tag(:span, title: counts.join(' & '), data: { toggle: 'tooltip', bs_toggle: 'tooltip' }) do
         icons.prepend(label) if label
         icons.join(' ').html_safe
       end
@@ -50,7 +50,7 @@ module IssuesHelper
     end
     text = issue.review_date ? short_dates(issue.review_date, humanise:) : 'No date set'
 
-    content_tag(:div, class: ['badge badge-pill font-weight-normal', colour, classes], title: title, data: { toggle: 'tooltip' }) do
+    content_tag(:div, class: ['badge rounded-pill fw-normal', colour, classes], title: title, data: { toggle: 'tooltip' }) do
       "#{'Next review • ' if label}#{text}".html_safe
     end
   end

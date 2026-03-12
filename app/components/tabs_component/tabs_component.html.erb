@@ -3,8 +3,10 @@
     <% classes = ['nav-link']
        classes << 'active' if tab.active %>
     <li class="nav-item">
-      <%= link_to tab.label, "##{tab.name}", id: tab.link_id, 'aria-controls': tab.name, 'data-toggle': :tab,
-                                             role: :tab, 'aria-selected': tab.active, class: classes %>
+      <%= link_to tab.label, "##{tab.name}",
+                  id: tab.link_id, 'aria-controls': tab.name,
+                  'data-toggle': :tab, 'data-bs-toggle': :tab,
+                  role: :tab, 'aria-selected': tab.active, class: classes %>
     </li>
   <% end %>
 <% end %>
