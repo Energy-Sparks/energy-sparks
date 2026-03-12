@@ -55,7 +55,7 @@ module Admin
           state,
           school_onboarding.contact_email,
           school_onboarding.notes,
-          school_onboarding.started_on.to_fs(:es_short),
+          school_onboarding.started_on&.to_fs(:es_short),
           last_event.event.to_s.humanize,
           last_event.created_at.to_fs(:es_short),
           school_onboarding.school ? helpers.y_n(school_onboarding.school.public) : '',
