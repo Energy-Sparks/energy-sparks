@@ -574,6 +574,9 @@ Rails.application.routes.draw do
   concern :messageable do
     resource :dashboard_message, only: %i[update edit destroy], controller: '/admin/dashboard_messages'
   end
+  concern :contract_holder do
+    resources :contracts, only: %i[index], controller: '/admin/commercial/contract_holder_contracts'
+  end
 
   namespace :admin do
     resources :mailer_previews, only: [:index]
@@ -675,6 +678,7 @@ Rails.application.routes.draw do
         end
         concerns :messageable
         concerns :issueable
+        concerns :contract_holder
       end
     end
 

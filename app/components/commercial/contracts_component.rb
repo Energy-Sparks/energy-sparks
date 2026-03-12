@@ -4,9 +4,10 @@ module Commercial
       Elements::HeaderComponent.new(**{ level: 2 }.merge(kwargs))
     end
 
-    def initialize(contracts:, show_actions: true, **kwargs)
+    def initialize(contracts:, show_contract_holder: true, show_actions: true, **kwargs)
       super(**kwargs)
       @contracts = contracts
+      @show_contract_holder = show_contract_holder
       @show_actions = show_actions
     end
   end
