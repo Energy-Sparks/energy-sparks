@@ -14,7 +14,10 @@ describe DailyRegenerationOnFinishJob do
   describe '#perform' do
     let!(:errors) { [] }
 
-    before { job.perform }
+    before do
+      stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true'))
+      job.perform
+    end
 
     context 'with errors' do
       let(:errors) do
