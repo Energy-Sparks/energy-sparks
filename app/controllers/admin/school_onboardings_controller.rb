@@ -51,12 +51,14 @@ module Admin
 
     def produce_csv
       CSV.generate do |csv|
-        csv << ['School name', 'School Group Name', 'Contact email', 'Notes', 'Last event']
+        csv << ['School name', 'School Group Name', 'Contact email', 'Notes', 'Invite sent', 'Last event', 'Last event date']
 
         @school_onboardings.order(:school_group_id).incomplete.each do |school_onboarding|
+          invite_sent = school_onboarding.started_on&.to_fs(:es_short)
           last_event = school_onboarding.events.order(event: :desc).first
+          last_event_date = last_event ? last_event.created_at.to_fs(:es_short) : nil
           last_event = last_event.event.to_s.humanize if last_event
-          csv << [school_onboarding.school_name, school_onboarding.school_group&.name, school_onboarding.contact_email, school_onboarding.notes, last_event]
+          csv << [school_onboarding.school_name, school_onboarding.school_group&.name, school_onboarding.contact_email, school_onboarding.notes, invite_sent, last_event, last_event_date]
         end
       end
     end
