@@ -79,6 +79,7 @@
     <% end %>
   <% end %>
   <% component.with_tab(name: :onboarding, label: 'Onboarding') do %>
+    <%= link_to 'New School Onboarding', new_admin_school_onboarding_path, class: 'btn' %>
     <% if @school_group.onboardings_for_group.incomplete.any? %>
       <%= render 'onboarding_schools', school_group: @school_group, anchor: 'onboarding' %>
     <% else %>
