@@ -99,3 +99,6 @@ data-pipeline/.env*
 .elasticbeanstalk/config.yml
 
 .terraform*
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

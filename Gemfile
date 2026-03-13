@@ -16,7 +16,7 @@ gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'ruby-limiter'
-gem 'sprockets'
+gem 'sprockets-rails'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'wisper' # publish subscribe for ruby objects
 
@@ -38,12 +38,12 @@ gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 # Assets
 gem 'active_storage_validations'
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
+gem 'dartsass-rails'
 gem 'font-awesome-sass'
 gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
-gem 'sass-rails' # Use SCSS for stylesheets
+gem 'sassc', path: 'sassc' # dummy gem for font-awesome-sass
 gem 'terser'
 
 # Pagination
