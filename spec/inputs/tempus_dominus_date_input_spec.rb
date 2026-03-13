@@ -32,7 +32,7 @@ RSpec.describe TempusDominusDateInput do
 
       it 'includes the nested index in the wrapper_id' do
         expect(input.wrapper_id).to eq(
-          'commercial_contract_licences_attributes_345__345_start_date_dominus'
+          'commercial_contract_licences_attributes__345__345_start_date_dominus'
         )
       end
     end
