@@ -1,10 +1,11 @@
-# frozen_string_literal: true
+# frozen_string_literal: tru
 
 require 'rails_helper'
 
-describe 'onboarding report' do
+describe 'onboarding report', :include_application_helper do
   let(:admin) { create(:admin) }
-  let(:onboarding) do
+
+  let!(:onboarding) do
     create(
       :school_onboarding,
       :with_school,
@@ -31,15 +32,15 @@ describe 'onboarding report' do
       let(:expected_rows) do
         [
           [
-            onboarding.school.country,
-            onboarding.school.school_group,
+            onboarding.school.country.presence&.capitalize,
+            onboarding.school.school_group&.name.to_s,
             onboarding.school.name,
             onboarding.contact_email,
-            onboarding.started_on,
-            onboarding.completed_on,
-            onboarding.school.data_enabled,
-            onboarding.first_made_data_enabled,
-            onboarding.days_until_data_enabled
+            nice_date_times(onboarding.started_on),
+            nice_date_times(onboarding.completed_on),
+            onboarding.school.data_enabled.to_s,
+            onboarding.first_made_data_enabled.to_s,
+            onboarding.days_until_data_enabled.to_s
           ]
         ]
       end
