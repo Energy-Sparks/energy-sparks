@@ -3,9 +3,6 @@ module Forms
     class BulkLicenceEditorComponent < ApplicationComponent
       DEFAULT_FIELDS = [:comments, :end_date, :invoice_reference, :school_specific_price, :start_date, :status].freeze
 
-      # FIXME: specify whether to allow adding extra schools
-      # FIXME: specify path for adding extra schools?
-      # FIXME: bulk edit options? invoice ref, status, add all missing
       def initialize(contract:, form_path: nil, fields: DEFAULT_FIELDS, exclude_fields: [], **kwargs)
         super
         @contract = contract

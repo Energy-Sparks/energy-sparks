@@ -1,6 +1,16 @@
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
-  <% header_nav.with_header title: "#{@contract.name} Licence Editor" %>
+  <% header_nav.with_header title: "#{@contract.name} Bulk Licence Editor" %>
 <% end %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      The form below can be used to quickly make changes to multiple licences associated with the
+      <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> contract, allowing
+      revisions of dates, status, school specific prices and comments.
+    </p>
+  </div>
+</div>
 
 <%= render Forms::Commercial::BulkLicenceEditorComponent.new(contract: @contract,
                                                              exclude_fields: [:invoice_reference]) %>
