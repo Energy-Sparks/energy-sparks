@@ -18,7 +18,12 @@ module Admin::Commercial
     end
 
     def new
-      @licence = Commercial::Licence.new(contract_id: params[:contract_id])
+      if params[:contract_id]
+        @contract = Commercial::Contract.find(params[:contract_id])
+        @licence = Commercial::Licence.new(contract: @contract)
+      else
+        @licence = Commercial::Licence.new
+      end
     end
 
     def create

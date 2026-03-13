@@ -1,6 +1,25 @@
+<% all_licences_path = if local_assigns[:contract].present?
+                         admin_commercial_contract_path(contract)
+                       else
+                         admin_commercial_licences_path
+                       end %>
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
   <% header_nav.with_header title: title %>
-  <% header_nav.with_button 'All licences', admin_commercial_licences_path %>
+  <% header_nav.with_button 'All licences', all_licences_path %>
+<% end %>
+
+<% if local_assigns[:contract].present? && licence.new_record? %>
+  <div class="row">
+    <div class="col">
+      <p>Create a new licence under the <strong><%= contract.name %></strong> contract.</p>
+    </div>
+  </div>
+<% elsif licence.persisted? %>
+  <div class="row">
+    <div class="col">
+      <p>Update the licence for <strong><%= licence.school.name %></strong> under the <strong><%= contract.name %></strong> contract.</p>
+    </div>
+  </div>
 <% end %>
 
 <div class="row">
@@ -12,14 +31,22 @@
              end %>
     <%= simple_form_for(licence, as: :licence, url: url) do |f| %>
       <%= render 'shared/errors', subject: licence, subject_name: 'licence' %>
-      <%= f.input :contract_id,
-                  collection: Commercial::Contract.all.by_name,
-                  include_blank: false,
-                  input_html: { class: 'select2' } %>
-      <%= f.input :school_id,
-                  collection: School.visible.by_name,
-                  include_blank: false,
-                  input_html: { class: 'select2' } %>
+      <% if local_assigns[:contract].present? %>
+        <%= f.input :contract_id, as: :hidden %>
+      <% else %>
+        <%= f.input :contract_id,
+                    collection: Commercial::Contract.all.by_name,
+                    include_blank: false,
+                    input_html: { class: 'select2' } %>
+      <% end %>
+      <% if licence.new_record? %>
+        <%= f.input :school_id,
+                    collection: School.visible.by_name,
+                    include_blank: false,
+                    input_html: { class: 'select2' } %>
+      <% else %>
+        <%= f.input :school_id, as: :hidden %>
+      <% end %>
       <%= f.input :status, collection: collection_from_enum(Commercial::Licence.statuses), include_blank: false %>
 
       <%= f.input :start_date, as: :tempus_dominus_date %>
