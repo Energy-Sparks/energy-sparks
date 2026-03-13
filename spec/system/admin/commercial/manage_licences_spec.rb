@@ -30,7 +30,7 @@ describe 'manage licences' do
         click_on 'Save'
       end
 
-      it 'creates the model' do
+      it 'creates the licence' do
         expect(page).to have_content('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
@@ -46,12 +46,22 @@ describe 'manage licences' do
       end
     end
 
-    context 'with invalid data' do
-      it { expect { click_on 'Save' }.not_to change(Commercial::Contract, :count) }
-
-      it 'displays errors' do
+    context 'with no dates' do
+      before do
+        select contract.name, from: 'Contract'
+        select school.name, from: 'School'
         click_on 'Save'
-        expect(page).to have_content("Start date can't be blank")
+      end
+
+      it 'creates the licence' do
+        expect(page).to have_content('Licence has been created')
+        expect(Commercial::Licence.last).to have_attributes(
+          contract:,
+          school:,
+          start_date: Time.zone.today,
+          end_date: contract.end_date,
+          created_by: user
+        )
       end
     end
   end
@@ -95,12 +105,21 @@ describe 'manage licences' do
       end
     end
 
-    context 'with invalid data' do
-      it { expect { click_on 'Save' }.not_to change(Commercial::Contract, :count) }
-
-      it 'displays errors' do
+    context 'with no dates' do
+      before do
+        select school.name, from: 'School'
         click_on 'Save'
-        expect(page).to have_content("Start date can't be blank")
+      end
+
+      it 'creates the licence' do
+        expect(page).to have_content('Licence has been created')
+        expect(Commercial::Licence.last).to have_attributes(
+          contract:,
+          school:,
+          start_date: Time.zone.today,
+          end_date: contract.end_date,
+          created_by: user
+        )
       end
     end
   end

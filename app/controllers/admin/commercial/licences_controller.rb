@@ -28,6 +28,11 @@ module Admin::Commercial
 
     def create
       @licence = Commercial::Licence.build(licence_params.merge(created_by: current_user))
+      if @licence.start_date.nil? && @licence.end_date.nil?
+        @licence.assign_attributes(
+          Commercial::LicenceManager.new(@licence.school).licence_dates(@licence.contract)
+        )
+      end
       if @licence.save
         redirect_to admin_commercial_contract_path(@licence.contract), notice: 'Licence has been created'
       else
