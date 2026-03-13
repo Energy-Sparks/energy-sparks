@@ -63,6 +63,12 @@ module Commercial
 
     validates_presence_of :start_date, :end_date
 
+    def dates_will_automatically_change?
+      persisted? &&
+        contract.licence_period.to_sym == :custom &&
+        !school.data_enabled?
+    end
+
     def self.filtered(scope_name, date = Time.zone.today, school_group_id = nil)
       scope = public_send(scope_name, date)
 

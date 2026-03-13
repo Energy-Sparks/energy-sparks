@@ -17,6 +17,36 @@ describe Commercial::Licence do
     it { expect(create(:commercial_licence, status: :invoiced).status_colour).to eq(:success) }
   end
 
+  describe '#dates_will_automatically_change?' do
+    let!(:school) { create(:school, :with_school_group, data_enabled: false) }
+    let!(:licence) { create(:commercial_licence, contract:, school:) }
+
+    context 'when licence_period is contract' do
+      let!(:contract) { create(:commercial_contract, licence_period: :contract) }
+
+      it { expect(licence.dates_will_automatically_change?).to be(false) }
+    end
+
+    context 'when licence_period is custom' do
+      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+
+      it { expect(licence.dates_will_automatically_change?).to be(true) }
+
+      context 'with new licence' do
+        it 'returns false' do
+          licence = build(:commercial_licence, contract:, school:)
+          expect(licence.dates_will_automatically_change?).to be(false)
+        end
+      end
+
+      context 'with data enabled school' do
+        let!(:school) { create(:school, :with_school_group, data_enabled: true) }
+
+        it { expect(licence.dates_will_automatically_change?).to be(false) }
+      end
+    end
+  end
+
   describe '#filtered' do
     let(:school_a) { create(:school, :with_school_grouping, group: create(:school_group)) }
     let(:school_b) { create(:school, :with_school_grouping, group: create(:school_group)) }

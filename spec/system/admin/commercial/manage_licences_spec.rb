@@ -119,6 +119,16 @@ describe 'manage licences' do
     it { expect(page).to have_content(licence.contract.name) }
     it { expect(page).to have_content("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")}
 
+    context 'when dates may change' do
+      let!(:school) { create(:school, :with_school_group, data_enabled: false) }
+      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:licence) { create(:commercial_licence, contract:, school:) }
+
+      it 'includes a warning' do
+        expect(page).to have_content('Changes made here will be overwritten')
+      end
+    end
+
     context 'with valid data', :js do
       before do
         select 'Pending invoice', from: 'Status'
