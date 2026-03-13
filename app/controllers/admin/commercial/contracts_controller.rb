@@ -22,7 +22,7 @@ module Admin::Commercial
     def new
       if params[:original_contract_id].present?
         @original = Commercial::Contract.find(params[:original_contract_id])
-        @contract = Commercial::Contract.for_renewal(@original)
+        @contract = Commercial::Contract.as_renewal(@original)
       else
         @contract = Commercial::Contract.new(contract_holder_type: 'Funder')
       end

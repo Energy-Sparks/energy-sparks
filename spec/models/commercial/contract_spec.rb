@@ -20,4 +20,32 @@ describe Commercial::Contract do
     it { expect(create(:commercial_contract, status: :provisional).status_colour).to eq(:warning) }
     it { expect(create(:commercial_contract, status: :confirmed).status_colour).to eq(:success) }
   end
+
+  describe '#as_renewal' do
+    subject(:renewed) { described_class.as_renewal(original) }
+
+    let(:original) do
+      create(:commercial_contract,
+             agreed_school_price: 450.0,
+             invoice_terms: :full,
+             licence_period: :custom,
+             licence_years: 2.0,
+             number_of_schools: 15.0)
+    end
+
+    it 'correctly populates the defaults' do
+      expect(renewed).to have_attributes(
+        agreed_school_price: original.agreed_school_price,
+        comments: "Renewed from #{original.name}",
+        contract_holder: original.contract_holder,
+        invoice_terms: original.invoice_terms,
+        licence_period: original.licence_period,
+        licence_years: original.licence_years,
+        number_of_schools: original.number_of_schools,
+        product: original.product,
+        start_date: original.end_date + 1.day,
+        end_date: original.end_date.next_year
+      )
+    end
+  end
 end

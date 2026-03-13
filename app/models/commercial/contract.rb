@@ -82,7 +82,7 @@ module Commercial
 
     accepts_nested_attributes_for :licences
 
-    def self.for_renewal(original)
+    def self.as_renewal(original)
       new(
         original.slice(
           :agreed_school_price,
@@ -95,8 +95,8 @@ module Commercial
           :product
         ).merge(
           comments: "Renewed from #{original.name}",
-          end_date:   original.end_date + 1.year,
-          start_date: original.end_date
+          end_date:   original.end_date.next_year,
+          start_date: original.end_date + 1.day
         )
       )
     end
