@@ -24,6 +24,7 @@ describe 'manage licences' do
         set_date('#licence_start_date', '01/01/2026')
         set_date('#licence_end_date', '31/12/2026')
         fill_in 'Invoice reference', with: 'INV-001'
+        fill_in 'School specific price', with: '250.0'
         fill_in 'Comments', with: 'my comments'
         click_on 'Save'
       end
@@ -36,6 +37,7 @@ describe 'manage licences' do
           end_date: Date.new(2026, 12, 31),
           status: 'confirmed',
           invoice_reference: 'INV-001',
+          school_specific_price: 250.0,
           comments: 'my comments',
           created_by: user
         )
@@ -71,6 +73,7 @@ describe 'manage licences' do
         set_date('#licence_start_date', '01/01/2026')
         set_date('#licence_end_date', '31/12/2026')
         fill_in 'Invoice reference', with: 'INV-001'
+        fill_in 'School specific price', with: '250.0'
         fill_in 'Comments', with: 'my comments'
         click_on 'Save'
       end
@@ -83,6 +86,7 @@ describe 'manage licences' do
           end_date: Date.new(2026, 12, 31),
           status: 'pending_invoice',
           invoice_reference: 'INV-001',
+          school_specific_price: 250.0,
           comments: 'my comments',
           created_by: licence.created_by,
           updated_by: user

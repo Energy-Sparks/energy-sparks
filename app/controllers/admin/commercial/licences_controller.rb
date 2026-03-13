@@ -66,13 +66,14 @@ module Admin::Commercial
 
     def licence_params
       params.require(:licence).permit(
+        :comments,
         :contract_id,
-        :school_id,
-        :invoice_reference,
         :end_date,
+        :invoice_reference,
+        :school_id,
+        :school_specific_price,
         :start_date,
-        :status,
-        :comments
+        :status
       )
     end
   end
