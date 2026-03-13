@@ -83,6 +83,10 @@ module Commercial
         !school.data_enabled?
     end
 
+    def can_delete?
+      status != LICENCE_STATUS[:invoiced]
+    end
+
     private
 
     def prevent_destroy_if_invoiced
