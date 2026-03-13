@@ -6,6 +6,7 @@
         <th>School</th>
         <th>Funder</th>
         <th>Contact email</th>
+        <th>Invite sent</th>
         <th>Last event</th>
         <th class="no-sort"></th>
       </tr>
@@ -25,6 +26,7 @@
                           edit_admin_school_onboarding_email_path(onboarding), class: '', title: 'Change email address'
                 end %>
           </td>
+          <td class="nowrap" data-order="<%= onboarding.started_on %>"><%= nice_date_times(onboarding.started_on) %></td>
           <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
             <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br>
             <span class="badge text-bg-secondary">
