@@ -63,11 +63,7 @@ module Commercial
 
     validates_presence_of :start_date, :end_date
 
-    def dates_will_automatically_change?
-      persisted? &&
-        contract.licence_period.to_sym == :custom &&
-        !school.data_enabled?
-    end
+    before_destroy :prevent_destroy_if_invoiced
 
     def self.filtered(scope_name, date = Time.zone.today, school_group_id = nil)
       scope = public_send(scope_name, date)
@@ -79,6 +75,21 @@ module Commercial
 
       scope.includes(:contract, :school, school: :school_group, contract: :product)
            .by_start_date
+    end
+
+    def dates_will_automatically_change?
+      persisted? &&
+        contract.licence_period.to_sym == :custom &&
+        !school.data_enabled?
+    end
+
+    private
+
+    def prevent_destroy_if_invoiced
+      return unless status == LICENCE_STATUS[:invoiced]
+
+      errors.add(:base, 'Cannot delete an invoiced licence')
+      throw :abort
     end
   end
 end

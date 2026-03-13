@@ -8,6 +8,25 @@ describe Commercial::Licence do
   describe 'validations' do
     it_behaves_like 'a temporal ranged model'
     it_behaves_like 'a date ranged model'
+
+    describe 'when destroying' do
+      context 'with invoiced status' do
+        it 'does not allow the licence to be destroyed' do
+          licence = create(:commercial_licence, status: :invoiced)
+
+          expect(licence.destroy).to be(false)
+          expect(licence.errors[:base]).to include('Cannot delete an invoiced licence')
+          expect(licence).to be_persisted
+        end
+      end
+
+      context 'when provisional status' do
+        it 'allows the licence to be destroyed' do
+          licence = create(:commercial_licence, status: :provisional)
+          expect { licence.destroy }.to change(Commercial::Licence, :count).by(-1)
+        end
+      end
+    end
   end
 
   describe '#status_colour' do
