@@ -1,6 +1,6 @@
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
   <% header_nav.with_header title: @contract.name %>
-  <% header_nav.with_button 'All contracts', admin_commercial_contracts_path %>
+  <% header_nav.with_button 'All contracts', polymorphic_path([:admin, @contract.contract_holder, :contracts]) %>
 <% end %>
 
 <div class="row">
@@ -161,10 +161,14 @@
 <div class="row">
   <div class="col">
     <p>
-      <%= link_to 'New licence', new_admin_commercial_licence_path(contract_id: @contract.id),
+      <%= link_to 'Manage All Licences', edit_admin_commercial_contract_licences_path(@contract),
                   class: 'btn btn-primary btn-sm' %>
-      <%= link_to 'Calculate price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
+      <%= link_to 'Renew', new_admin_commercial_contract_path(original_contract_id: @contract.id),
                   class: 'btn btn-primary btn-sm' %>
+      <%= link_to 'Add New Licence', new_admin_commercial_licence_path(contract_id: @contract.id),
+                  class: 'btn btn-secondary btn-sm' %>
+      <%= link_to 'Calculate Price', admin_commercial_pricing_path(pricing: { contract_id: @contract.id }),
+                  class: 'btn btn-secondary btn-sm' %>
     </p>
   </div>
 </div>
@@ -172,10 +176,10 @@
 <div class="row">
   <div class="col-12">
     <%= render Commercial::LicencesComponent.new(id: 'licences',
-                                                 licences: @contract.licences.current,
+                                                 licences: @contract.licences,
                                                  show_contract: false,
                                                  show_actions: true) do |c| %>
-      <% c.with_header { 'Current Licences' } %>
+      <% c.with_header { 'All Licences' } %>
     <% end %>
   </div>
 </div>

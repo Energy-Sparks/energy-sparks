@@ -48,5 +48,39 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
         ]
       end
     end
+
+    context 'when not showing contract holder information' do
+      before do
+        render_inline described_class.new(
+          contracts: contract_holder.contracts.current,
+          id: 'custom-id',
+          classes: 'extra-classes',
+          show_actions: false,
+          show_contract_holder: false
+        )
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#contracts-table' }
+        let(:expected_header) do
+          [
+            ['Name', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              contract.name,
+              contract.product.name,
+              contract.start_date.iso8601,
+              contract.end_date.iso8601,
+              contract.number_of_schools.to_s,
+              '0',
+              contract.status.humanize
+            ]
+          ]
+        end
+      end
+    end
   end
 end
