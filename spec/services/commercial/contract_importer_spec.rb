@@ -105,6 +105,21 @@ describe Commercial::ContractImporter do
       let!(:contract_holder) { create(:school, :with_school_group) }
 
       it_behaves_like 'a correctly imported contract'
+
+      it 'updates self-funding status for school' do
+        service.import(
+          product_name: product.name,
+          contract_holder: contract_holder.name,
+          name: 'My Contract',
+          start_date: start_date.iso8601,
+          end_date: end_date.iso8601,
+          licence_period: 'contract',
+          licence_years: 1,
+          invoice_terms: 'pro_rata',
+          agreed_school_price: 600.0
+        )
+        expect(contract_holder.reload.default_contract_holder).to eq(contract_holder)
+      end
     end
 
     context 'when finding contract holder by name' do
