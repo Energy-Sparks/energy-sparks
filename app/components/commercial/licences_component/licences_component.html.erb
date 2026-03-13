@@ -72,10 +72,12 @@
               <div class="btn-group">
                 <%= link_to 'Edit', edit_admin_commercial_licence_path(licence),
                             class: 'btn btn-secondary btn-sm' %>
-                <%= link_to 'Delete', admin_commercial_licence_path(licence),
-                            method: :delete,
-                            data: { confirm: 'Are you sure?' },
-                            class: 'btn btn-danger btn-sm' %>
+                <%= if licence.can_delete?
+                      link_to 'Delete', admin_commercial_licence_path(licence),
+                              method: :delete,
+                              data: { confirm: 'Are you sure?' },
+                              class: 'btn btn-danger btn-sm'
+                    end %>
               </div>
             </td>
           <% end %>

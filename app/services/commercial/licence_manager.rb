@@ -5,23 +5,30 @@ module Commercial
       @school = school
     end
 
-    def school_onboarded(contract)
-      return unless contract
-
+    def licence_dates(contract)
       case contract.licence_period
       when 'contract'
-        start_date = contract.start_date
+        start_date = Time.zone.today # contract.start_date
         end_date = contract.end_date
       else # custom
         # these dates will change later, when school is made data visible
         start_date = Time.zone.today
         end_date = add_years(start_date, contract.licence_years)
       end
+      { start_date:, end_date: }
+    end
+
+    def school_onboarded(contract)
+      return unless contract
+
+      # these dates will change later, when school is made data visible
+      licence_dates = licence_dates(contract)
+
       contract.licences.create(
         contract: contract,
         school: @school,
-        start_date:,
-        end_date:,
+        start_date: licence_dates[:start_date],
+        end_date: licence_dates[:end_date],
         status: contract.confirmed? ? :confirmed : :provisional
       )
     end
