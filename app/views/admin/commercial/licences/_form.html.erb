@@ -54,6 +54,11 @@
           The following dates will be automatically revised once the school becomes data visible to run for
           <%= licence.contract.licence_years %> years from that day. Changes made here will be overwritten.
         </p>
+      <% elsif licence.new_record? %>
+        <p>
+          Leave date fields empty to automatically create a licence starting from today and ending according to the
+          period defined in the contract.
+        </p>
       <% end %>
 
       <%= f.input :start_date, as: :tempus_dominus_date %>

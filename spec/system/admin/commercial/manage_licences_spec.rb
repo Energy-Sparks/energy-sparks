@@ -17,6 +17,8 @@ describe 'manage licences' do
       visit new_admin_commercial_licence_path
     end
 
+    it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
+
     context 'with valid data', :js do
       before do
         select contract.name, from: 'Contract'
@@ -75,6 +77,7 @@ describe 'manage licences' do
       click_on('New licence')
     end
 
+    it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
     it { expect(page).to have_content("Create a new licence under the #{contract.name} contract.")}
 
     context 'with valid data', :js do
