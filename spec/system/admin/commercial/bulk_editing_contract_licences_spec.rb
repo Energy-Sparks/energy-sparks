@@ -19,7 +19,7 @@ describe 'bulk editing contract licences' do
     click_on('Manage All Licences')
   end
 
-  it { expect(page).to have_content("#{contract.name} Licence Editor") }
+  it { expect(page).to have_content("#{contract.name} Bulk Licence Editor") }
 
   def field_name(licence, name)
     "commercial_contract[licences_attributes][#{licence.id}][#{name}]"

@@ -193,8 +193,8 @@ describe 'manage contracts' do
             licence_period: contract.licence_period,
             licence_years: contract.licence_years,
             number_of_schools: contract.number_of_schools,
-            start_date: contract.end_date,
-            end_date: contract.end_date + 1.year,
+            start_date: contract.end_date + 1.day,
+            end_date: contract.end_date.next_year,
             agreed_school_price: contract.agreed_school_price,
             created_by: user
           )

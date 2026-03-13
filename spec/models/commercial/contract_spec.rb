@@ -30,7 +30,7 @@ describe Commercial::Contract do
              invoice_terms: :full,
              licence_period: :custom,
              licence_years: 2.0,
-             number_of_schools: 15.0)
+             number_of_schools: 15)
     end
 
     it 'correctly populates the defaults' do
