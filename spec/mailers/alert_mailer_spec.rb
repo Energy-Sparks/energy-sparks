@@ -59,7 +59,7 @@ RSpec.describe AlertMailer do
       end
     end
 
-    context 'when a single user' do
+    context 'when to a single user' do
       let(:email_address) { 'blah@blah.com' }
 
       before { described_class.with(email_address:, school:, events: [], locale:).alert_email.deliver_now }
