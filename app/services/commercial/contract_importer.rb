@@ -36,6 +36,12 @@ module Commercial
         created_by: contract.created_by || @import_user,
         updated_by: @import_user
       )
+
+      # Self-funding
+      if contract_holder.is_a?(School)
+        contract_holder.update!(default_contract_holder: contract_holder)
+      end
+
       contract
     end
 
