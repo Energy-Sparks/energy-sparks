@@ -80,6 +80,27 @@ module Commercial
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 
+    accepts_nested_attributes_for :licences
+
+    def self.as_renewal(original)
+      new(
+        original.slice(
+          :agreed_school_price,
+          :contract_holder_type,
+          :contract_holder_id,
+          :invoice_terms,
+          :licence_period,
+          :licence_years,
+          :number_of_schools,
+          :product
+        ).merge(
+          comments: "Renewed from #{original.name}",
+          end_date:   original.end_date.next_year,
+          start_date: original.end_date + 1.day
+        )
+      )
+    end
+
     def status_colour
       STATUS_COLOUR[status.to_sym]
     end

@@ -279,7 +279,6 @@ RSpec.describe 'onboarding', :schools do
           header = page.response_headers['Content-Disposition']
           expect(header).to match(/^attachment/)
           expect(header).to match(/filename="#{onboarding.school_group.slug}-onboarding-schools.csv"/)
-
           expect(page.source).to have_content 'Email sent'
           expect(page.source).to have_content 'In progress'
           expect(page.source).to have_content onboarding.school_name
