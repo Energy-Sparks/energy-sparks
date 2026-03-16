@@ -30,6 +30,6 @@
 
   /* Stripe each licence block (2 rows together) */
   .licence-editor-table tbody.licence-block:nth-of-type(odd) {
-    background-color: #f8f9fa; /* Bootstrap light gray */
+    background-color: $gray-100;
   }
 }

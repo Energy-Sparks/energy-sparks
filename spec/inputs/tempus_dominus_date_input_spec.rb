@@ -19,14 +19,13 @@ RSpec.describe TempusDominusDateInput do
     end
 
     context 'with a nested form' do
-      # Simulate Rails nested attributes naming:
-      # e.g. commercial_contract[licences_attributes][345]
+      # Simulate Rails nested attributes naming
       let(:builder) do
         SimpleForm::FormBuilder.new(
           'commercial_contract[licences_attributes][345]',
-        object,
-        template,
-        {}
+          object,
+          template,
+          {}
       )
       end
 
