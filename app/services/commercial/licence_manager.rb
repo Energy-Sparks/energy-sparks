@@ -8,7 +8,7 @@ module Commercial
     def licence_dates(contract)
       case contract.licence_period
       when 'contract'
-        start_date = Time.zone.today # contract.start_date
+        start_date = Time.zone.today
         end_date = contract.end_date
       else # custom
         # these dates will change later, when school is made data visible

@@ -79,18 +79,18 @@ module Commercial
 
     def dates_will_automatically_change?
       persisted? &&
-        contract.licence_period.to_sym == :custom &&
+        contract.custom? &&
         !school.data_enabled?
     end
 
-    def can_delete?
-      status != LICENCE_STATUS[:invoiced]
+    def deletable?
+      !invoiced?
     end
 
     private
 
     def prevent_destroy_if_invoiced
-      return unless status == LICENCE_STATUS[:invoiced]
+      return unless invoiced?
 
       errors.add(:base, 'Cannot delete an invoiced licence')
       throw :abort
