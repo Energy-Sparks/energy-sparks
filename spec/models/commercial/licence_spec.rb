@@ -11,7 +11,7 @@ describe Commercial::Licence do
 
     describe 'when destroying' do
       context 'with invoiced status' do
-        let(:licence) { create(:commercial_licence, status: :invoiced) }
+        let!(:licence) { create(:commercial_licence, status: :invoiced) }
 
         it 'does not allow the licence to be destroyed' do
           expect(licence.destroy).to be(false)
@@ -21,7 +21,7 @@ describe Commercial::Licence do
       end
 
       context 'when provisional status' do
-        let(:licence) { create(:commercial_licence, status: :provisional) }
+        let!(:licence) { create(:commercial_licence, status: :provisional) }
 
         it 'allows the licence to be destroyed' do
           expect { licence.destroy }.to change(Commercial::Licence, :count).by(-1)
