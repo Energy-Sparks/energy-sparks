@@ -8,11 +8,27 @@ class DailyRegenerationOnFinishJob < ApplicationJob
   end
 
   def perform(*)
+    send_regeneration_errors_mail
+    refresh_views
+  rescue StandardError => e
+    EnergySparks::Log.exception(e, job: :daily_regeneration_on_finish)
+  end
+
+  private
+
+  def send_regeneration_errors_mail
+    errors = RegenerationError.all.to_a
+    AdminMailer.regeneration_errors(errors).deliver unless errors.empty?
+    RegenerationError.where(id: errors.pluck(:id)).destroy_all
+  end
+
+  def refresh_views
     views = Comparison::View.descendants + [Report::BaseloadAnomaly, Report::GasAnomaly]
     views.each do |view_class|
       view_class.refresh
     rescue StandardError => e
-      EnergySparks::Log.exception(e, job: :daily_regeneration_on_finish, view_class: view_class.name)
+      e.rollbar_context = { view_class: view_class.name }
+      raise
     end
   end
 end

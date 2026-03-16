@@ -6,6 +6,7 @@
         <th>School</th>
         <th>Funder</th>
         <th>Contact email</th>
+        <th>Invite sent</th>
         <th>Last event</th>
         <th class="no-sort"></th>
       </tr>
@@ -25,14 +26,14 @@
                           edit_admin_school_onboarding_email_path(onboarding), class: '', title: 'Change email address'
                 end %>
           </td>
+          <td class="nowrap" data-order="<%= onboarding.started_on %>"><%= nice_date_times(onboarding.started_on) %></td>
           <td class="nowrap" data-order="<%= onboarding.events.maximum(:created_at) %>">
             <%= nice_date_times(onboarding.events.maximum(:created_at)) %><br>
-            <span class="badge badge-secondary">
+            <span class="badge text-bg-secondary">
               <%= SchoolOnboardingEvent.events.key(onboarding.events.maximum(:event)).try(:humanize) %>
             </span>
           </td>
-          <td class="nowrap text-right">
-
+          <td class="nowrap text-end">
             <% if onboarding.school
                  issues_path = admin_school_issues_path(onboarding.school)
                  issues = onboarding.school.issues
@@ -40,11 +41,14 @@
                  issues_path = admin_school_onboarding_issues_path(onboarding)
                  issues = onboarding.issues
                end %>
-            <%= link_to issue_type_icons(issues, label: 'Issues'), issues_path, class: 'btn btn-sm' %>
+            <%= link_to issue_type_icons(issues, label: 'Issues'), issues_path, class: 'btn btn-default btn-sm' %>
             <%= link_to 'Send reminder email', admin_school_onboarding_reminder_path(onboarding),
-                        class: 'btn btn-sm', method: :post %>
+                        class: 'btn btn-default btn-sm', method: :post %>
             <% if onboarding.school && onboarding.school.consent_grants.any? %>
-              <%= link_to 'Make visible', school_visibility_path(onboarding.school), class: 'btn btn-sm', method: :post %>
+              <%= link_to 'Make visible',
+                          school_visibility_path(onboarding.school),
+                          class: 'btn btn-default btn-sm',
+                          method: :post %>
             <% else %>
               <%= link_to 'Edit', edit_admin_school_onboarding_path(onboarding), class: 'btn btn-primary btn-sm' %>
             <% end %>

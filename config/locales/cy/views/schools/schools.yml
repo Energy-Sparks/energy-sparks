@@ -527,7 +527,6 @@ cy:
       view_link: Gweld
     show:
       add_alert_contacts: Ychwanegu cysylltiadau rhybuddio
-      add_consumption_estimate: Ychwanegwch amcangyfrif o'ch defnydd %{fuels} blynyddol fel y gallwn ddarparu adroddiad cynnydd manylach i'ch helpu i gyrraedd eich targedau
       add_estimate: Ychwanegu amcangyfrif
       coming_soon: Data ynni yn dod yn fuan
       configuring_data_access: Rydym yn ffurfweddu mynediad at eich data ynni a byddwn yn eich hysbysu pan fydd yn barod i'w archwilio.

@@ -53,6 +53,10 @@ RSpec.describe 'manual readings' do
     )
   end
 
+  def saved_prompt_markdown
+    ReverseMarkdown.convert(find('.prompt-component').native.to_html).strip
+  end
+
   context 'with an old target' do
     before do
       create_target(1.year.ago)
@@ -74,7 +78,19 @@ RSpec.describe 'manual readings' do
 
     it 'saves the correct readings' do
       complete_form
+      expect(page).to have_content('Your manual readings have been saved')
       expect(actual_manual_readings).to eq([[Date.new(2023, 8), 5, 5], [Date.new(2024, 9), nil, 5]])
+    end
+
+    it 'displays the saved message' do
+      complete_form
+      expect(saved_prompt_markdown).to eq(<<~PROMPT.chomp)
+        **Your manual readings have been saved**
+
+        The readings you have supplied will now be used on your [electricity](/schools/#{school.slug}/advice/electricity_long_term/analysis#consumption-by-month) long term analysis to show your historical progress to reduce your usage.
+
+        The data will also be used to show progress against your current [electricity](/schools/#{school.slug}/advice/electricity_target/analysis) target.
+      PROMPT
     end
   end
 
@@ -131,6 +147,15 @@ RSpec.describe 'manual readings' do
     it 'saves the correct readings' do
       complete_form
       expect(actual_manual_readings).to eq((0..22).map { |i| [Date.new(2023, 9) + i.months, 5, 5] })
+    end
+
+    it 'displays the saved message' do
+      complete_form
+      expect(saved_prompt_markdown).to eq(<<~PROMPT.chomp)
+        **Your manual readings have been saved**
+
+        The readings you have supplied will now be used on your [electricity](/schools/#{school.slug}/advice/electricity_long_term/analysis#consumption-by-month) and [gas](/schools/#{school.slug}/advice/gas_long_term/analysis#consumption-by-month) long term analysis to show your historical progress to reduce your usage.
+      PROMPT
     end
   end
 

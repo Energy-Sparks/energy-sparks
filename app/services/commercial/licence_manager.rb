@@ -5,6 +5,16 @@ module Commercial
       @school = school
     end
 
+    def licence_dates(contract, base_date: Time.zone.today)
+      case contract.licence_period
+      when 'contract'
+        end_date = contract.end_date
+      else # custom
+        end_date = add_years(base_date, contract.licence_years)
+      end
+      { start_date: base_date, end_date: }
+    end
+
     def school_onboarded(contract)
       create_licence(contract)
     end
@@ -14,8 +24,9 @@ module Commercial
       return unless licence
 
       if licence.contract.licence_period.to_sym == :custom
-        licence.start_date = Time.zone.today
-        licence.end_date = add_years(licence.start_date, licence.contract.licence_years)
+        licence_dates = licence_dates(licence.contract)
+        licence.start_date = licence_dates[:start_date]
+        licence.end_date = licence_dates[:end_date]
       end
       licence.status = :pending_invoice unless licence.status.to_sym != :confirmed
       licence.save
@@ -36,20 +47,14 @@ module Commercial
     def create_licence(contract, base_date: Time.zone.today, school_specific_price: nil, comments: nil)
       return unless contract
 
-      case contract.licence_period
-      when 'contract'
-        start_date = contract.start_date
-        end_date = contract.end_date
-      else # custom
-        # these dates will change later, when school is made data visible
-        start_date = base_date
-        end_date = add_years(start_date, contract.licence_years)
-      end
+      # these dates may change later, when school is made data visible
+      licence_dates = licence_dates(contract, base_date:)
+
       contract.licences.create(
         contract: contract,
         school: @school,
-        start_date:,
-        end_date:,
+        start_date: licence_dates[:start_date],
+        end_date: licence_dates[:end_date],
         school_specific_price:,
         comments:,
         status: contract.confirmed? ? :confirmed : :provisional
