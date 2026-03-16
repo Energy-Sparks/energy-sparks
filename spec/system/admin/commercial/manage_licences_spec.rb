@@ -74,7 +74,7 @@ describe 'manage licences' do
     before do
       click_on 'Contracts'
       click_on(contract.name)
-      click_on('New licence')
+      click_on('Add New Licence')
     end
 
     it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
