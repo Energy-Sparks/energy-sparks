@@ -80,6 +80,10 @@
   <% end %>
   <% component.with_tab(name: :onboarding, label: 'Onboarding') do %>
     <% if @school_group.onboardings_for_group.incomplete.any? %>
+      <div>
+      <%= link_to 'Download as CSV', admin_school_group_school_onboardings_path(@school_group, format: :csv),
+                  class: 'btn btn-secondary' %>
+      </div>
       <%= render 'onboarding_schools', school_group: @school_group, anchor: 'onboarding' %>
     <% else %>
       <div class="bg-light p-2">No schools currently onboarding for <%= @school_group.name %>.</div>

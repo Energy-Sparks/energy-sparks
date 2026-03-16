@@ -18,11 +18,21 @@ module Admin::Commercial
     end
 
     def new
-      @licence = Commercial::Licence.new(contract_id: params[:contract_id])
+      if params[:contract_id]
+        @contract = Commercial::Contract.find(params[:contract_id])
+        @licence = Commercial::Licence.new(contract: @contract)
+      else
+        @licence = Commercial::Licence.new
+      end
     end
 
     def create
       @licence = Commercial::Licence.build(licence_params.merge(created_by: current_user))
+      if @licence.start_date.nil? && @licence.end_date.nil?
+        @licence.assign_attributes(
+          Commercial::LicenceManager.new(@licence.school).licence_dates(@licence.contract)
+        )
+      end
       if @licence.save
         redirect_to admin_commercial_contract_path(@licence.contract), notice: 'Licence has been created'
       else
@@ -66,13 +76,14 @@ module Admin::Commercial
 
     def licence_params
       params.require(:licence).permit(
+        :comments,
         :contract_id,
-        :school_id,
-        :invoice_reference,
         :end_date,
+        :invoice_reference,
+        :school_id,
+        :school_specific_price,
         :start_date,
-        :status,
-        :comments
+        :status
       )
     end
   end
