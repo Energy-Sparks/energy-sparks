@@ -14,7 +14,7 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
     body_rows.each do |tr|
       td_cells = tr.find_all('td')[(aligned == true ? 1 : aligned)..] || []
       td_cells.each do |td|
-        expect(td[:class].to_s.split).to include('text-right')
+        expect(td[:class].to_s.split).to include(/^text-(right|end)$/)
       end
     end
   end

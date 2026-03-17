@@ -92,6 +92,7 @@ en:
       view_results: View results
       welcome: Welcome
       yes_label: 'Yes'
+    last_updated_on_html: Last updated on <strong>%{date}</strong>
     line_graphs: Line graphs
     pie_charts: Pie charts
     points: points

@@ -34,6 +34,8 @@
 
 <div class="row">
   <div class="col">
-    <%= render(Commercial::ContractsComponent.new(holder: @funder)) %>
+    <%= render Commercial::ContractsComponent.new(contracts: @funder.contracts.by_start_date) do |c| %>
+      <% c.with_header { 'All contracts' } %>
+    <% end %>
   </div>
 </div>

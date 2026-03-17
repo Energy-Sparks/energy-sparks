@@ -24,12 +24,22 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def input_value
+    # Attempt to get value from the object associated with the form
     object = @builder.object
-    value = object && object.send(attribute_name).try(:strftime, input_value_format)
-    if value.nil? && options.key?(input_value_key)
-      value = options[input_value_key].try(:strftime, input_value_format)
+    if object.respond_to?(attribute_name)
+      raw = object.send(attribute_name)
+      return raw.strftime(input_value_format) if raw.respond_to?(:strftime)
+      return raw if raw.is_a?(String)
     end
-    value
+
+    # Try the default date if its available
+    if options.key?(input_value_key)
+      raw = options[input_value_key]
+      return raw.strftime(input_value_format) if raw.respond_to?(:strftime)
+      return raw if raw.is_a?(String)
+    end
+
+    nil
   end
 
   def div_button
@@ -53,6 +63,16 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
   end
 
   def wrapper_id
-    "#{object_name.to_s.gsub(/[^_a-z]/, '_')}_#{attribute_name.to_s.gsub(/[^_a-z]/, '_')}_dominus"
+    # Extract nested index if present (e.g. 345 from [345])
+    index = object_name.to_s[/\[(\d+)\]/, 1]
+
+    if index
+      # Preserve index when there are nested attributes so IDs stay unique
+      safe_object = object_name.to_s.gsub(/[^a-z0-9_]/i, '_')
+      safe_attr   = attribute_name.to_s.gsub(/[^_a-z]/, '_')
+      "#{safe_object}_#{index}_#{safe_attr}_dominus"
+    else
+      "#{object_name.to_s.gsub(/[^_a-z]/, '_')}_#{attribute_name.to_s.gsub(/[^_a-z]/, '_')}_dominus"
+    end
   end
 end

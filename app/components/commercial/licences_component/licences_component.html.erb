@@ -1,26 +1,30 @@
 <%= tag.div id: id, class: classes do %>
-  <h2><%= @range.to_s.humanize %> Licences</h2>
-
-  <table id="<%= @range.to_s %>-licences-table" class="table table-paged table-sm">
+  <% if header? %>
+    <%= header %>
+  <% end %>
+  <table id="licences-table" class="table table-paged table-sm">
     <thead>
       <tr>
         <th>ID</th>
         <th>School Group</th>
         <th>School</th>
-        <% if @show_contract %>
+        <% if @show_contract || @show_renewal_data %>
           <th>Product</th>
           <th>Contract</th>
         <% end %>
         <th>Start date</th>
         <th>End date</th>
         <th>Status</th>
+        <% if @show_renewal_data %>
+          <th>Future Funding Source</th>
+        <% end %>
         <% if @show_actions %>
           <th class="text-end no-sort">Actions</th>
         <% end %>
       </tr>
     </thead>
     <tbody>
-      <% associations.each do |licence| %>
+      <% @licences.each do |licence| %>
         <tr>
           <td>
             <%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %>
@@ -33,7 +37,7 @@
           <td class="col-2">
             <%= link_to licence.school.name, school_path(licence.school) %>
           </td>
-          <% if @show_contract %>
+          <% if @show_contract || @show_renewal_data %>
             <td>
               <%= link_to licence.contract.product.name, admin_commercial_product_path(licence.contract.product) %>
             </td>
@@ -53,15 +57,27 @@
                          colour: licence.status_colour
                        )) %>
           </td>
+          <% if @show_renewal_data %>
+            <td>
+              <% if licence.school.default_contract_holder_id == licence.school.id %>
+                Self funding
+              <% else %>
+                MAT funded
+              <% end %>
+            </td>
+          <% end %>
+
           <% if @show_actions %>
             <td class="text-end">
               <div class="btn-group">
                 <%= link_to 'Edit', edit_admin_commercial_licence_path(licence),
                             class: 'btn btn-secondary btn-sm' %>
-                <%= link_to 'Delete', admin_commercial_licence_path(licence),
-                            method: :delete,
-                            data: { confirm: 'Are you sure?' },
-                            class: 'btn btn-danger btn-sm' %>
+                <%= if licence.deletable?
+                      link_to 'Delete', admin_commercial_licence_path(licence),
+                              method: :delete,
+                              data: { confirm: 'Are you sure?' },
+                              class: 'btn btn-danger btn-sm'
+                    end %>
               </div>
             </td>
           <% end %>

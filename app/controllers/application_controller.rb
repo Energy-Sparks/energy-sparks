@@ -115,4 +115,8 @@ class ApplicationController < ActionController::Base
   def enable_bootstrap_5
     @bs5 = true unless Flipper.enabled?(:bootstrap_switcher) && params[:bs5]
   end
+
+  def enable_prototype_page
+    @prototype_page = true
+  end
 end

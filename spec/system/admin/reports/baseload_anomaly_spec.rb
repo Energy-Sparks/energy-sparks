@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'Baseload anomaly report' do
   let(:school_group) { create(:school_group, default_issues_admin_user: create(:admin)) }
-  let(:meter) { create(:electricity_meter, school: create(:school, school_group: school_group)) }
+  let(:meter) { create(:electricity_meter, data_source: create(:data_source), school: create(:school, school_group: school_group)) }
 
   let(:reading_date) { Date.yesterday }
   let(:page_title) { 'Baseload anomalies' }
@@ -27,8 +27,8 @@ describe 'Baseload anomaly report' do
   it 'displays the table' do
     rows = all('tr').map { |tr| tr.all('th, td').map(&:text) }
     expect(rows).to eq([
-                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Reading Date', 'Previous Baseload', 'Baseload', 'Chart'],
-                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, reading_date.iso8601, '20', '0', 'Chart']
+                         ['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter System', 'Data Source', 'Reading Date', 'Previous Baseload', 'Baseload', 'Chart', 'Issues & Notes'],
+                         [meter.school_group.name, meter.school_group&.default_issues_admin_user&.name, meter.school.name, meter.mpan_mprn.to_s, meter.name, meter.t_meter_system, meter.data_source.name, reading_date.iso8601, '20', '0', 'Chart', '']
                        ])
   end
 
@@ -36,7 +36,7 @@ describe 'Baseload anomaly report' do
     click_on 'CSV'
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
-      eq("School Group,Admin,School,Meter,Meter Name,Reading Date,Previous Baseload,Baseload,Chart\n" \
-         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{reading_date},20,0,#{analysis_school_advice_baseload_url(meter.school, host: 'example.com')}\n")
+      eq("School Group,Admin,School,Meter,Meter Name,Meter System,Data Source,Reading Date,Previous Baseload,Baseload,Chart,Issues,Notes\n" \
+         "#{meter.school_group.name},#{meter.school_group&.default_issues_admin_user&.name},#{meter.school.name},#{meter.mpan_mprn},#{meter.name},#{meter.t_meter_system},#{meter.data_source.name},#{reading_date},20,0,#{analysis_school_advice_baseload_url(meter.school, host: 'example.com')},0,0\n")
   end
 end

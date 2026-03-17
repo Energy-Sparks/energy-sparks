@@ -96,6 +96,17 @@ class AdminMailer < ApplicationMailer
     mail(to: params[:to], subject: subject('Stopped data feeds'))
   end
 
+  def lagging_data_sources
+    @lagging = params[:lagging]
+    mail(to: params[:to], subject: subject('Lagging Data Sources'))
+  end
+
+  def regeneration_errors(errors)
+    @errors = errors
+    mail(to: 'operations@energysparks.uk', subject: subject('Regeneration Errors'))
+    prevent_delivery_from_test
+  end
+
   private
 
   def build_issues_csv_for(issues)

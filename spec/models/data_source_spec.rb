@@ -55,6 +55,36 @@ RSpec.describe DataSource, type: :model do
     end
   end
 
+  describe '.exceeded_alert_threshold?' do
+    subject(:exceeded_alert_threshold) { data_source.exceeded_alert_threshold? }
+
+    let(:data_source) { create(:data_source) }
+
+    context 'when data source has more lagging meters than its threshold' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 11.days.ago, data_source:, active: true)
+      end
+
+      it { expect(exceeded_alert_threshold).to be true }
+    end
+
+    context 'when data source has no lagging meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 1.day.ago, data_source:, active: true)
+      end
+
+      it { expect(exceeded_alert_threshold).to be false }
+    end
+
+    context 'when the data source has no active meters' do
+      before do
+        create_list(:gas_meter_with_validated_reading_dates, 2, end_date: 11.days.ago, data_source:, active: false)
+      end
+
+      it { expect(exceeded_alert_threshold).to be false }
+    end
+  end
+
   describe '.to_csv' do
     let(:data_source) { create(:data_source) }
     subject { data_source.to_csv }
