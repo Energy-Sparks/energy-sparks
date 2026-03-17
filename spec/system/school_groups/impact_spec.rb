@@ -29,6 +29,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
     before { Flipper.enable(:impact_reporting)}
 
     before do
+      create(:testimonial)
       visit school_group_impact_index_path(school_group)
     end
 
@@ -56,11 +57,18 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
     describe 'Page body' do
       it 'renders all the sections' do
-        expect(page).to have_css('#stats-header')
-        expect(page).to have_css('#stats-section')
-        expect(page).to have_css('#testimonials-section')
+        expect(page).to have_css('#overview-header')
+        expect(page).to have_css('#overview-cards')
+        expect(page).to have_css('#overview-testimonials')
+
         expect(page).to have_css('#energy-efficiency-header')
-        expect(page).to have_css('#energy-efficiency-section')
+        expect(page).to have_css('#energy-efficiency-cards')
+        expect(page).to have_css('#energy-efficiency-feature')
+        expect(page).to have_css('#energy-efficiency-analysis')
+
+        expect(page).to have_css('#potential-savings-header')
+        expect(page).to have_css('#potential-savings-cards')
+        expect(page).to have_css('#potential-savings-button')
       end
     end
   end

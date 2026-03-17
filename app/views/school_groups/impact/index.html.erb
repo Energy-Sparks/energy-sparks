@@ -26,18 +26,6 @@
 
 <%= render 'overview', impact_report: @impact_report %>
 
-<%= render Layout::CarouselComponent.new(id: 'testimonials-section',
-                                         show_markers: false,
-                                         theme: :accent,
-                                         classes: 'rounded-xl p-4 mb-4',
-                                         bs5: bs5?,
-                                         show_arrows: :side) do |carousel| %>
-  <% Testimonial.all.active.shuffle.each do |testimonial| %>
-    <%= carousel.with_testimonial_card(testimonial: testimonial) %>
-  <% end %>
-  <%= carousel.with_placeholder('Fix carousel to work with bootstrap 5. Use testimonials for school group') %>
-<% end %>
-
 <%= render 'energy_efficiency', impact_report: @impact_report %>
 <%= render 'engagement', impact_report: @impact_report %>
 <%= render 'potential_savings', impact_report: @impact_report %>

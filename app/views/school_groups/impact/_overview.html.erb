@@ -7,7 +7,7 @@
   <%= section_header.with_description { t('description', scope: i18n_scope) } %>
 <% end %>
 
-<%= render Layout::GridComponent.new(id: 'overview-section',
+<%= render Layout::GridComponent.new(id: 'overview-cards',
                                      cols: 4, classes: 'mb-4',
                                      cell_classes: 'mb-4',
                                      component_classes: 'theme theme-dark') do |grid| %>
@@ -55,4 +55,16 @@
     <% end %>
     <%= card.with_placeholder %>
   <% end %>
+<% end %>
+
+<%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
+                                         show_markers: false,
+                                         theme: :accent,
+                                         classes: 'rounded-xl p-4 mb-4',
+                                         bs5: bs5?,
+                                         show_arrows: :side) do |carousel| %>
+  <% Testimonial.all.active.shuffle.each do |testimonial| %>
+    <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+  <% end %>
+  <%= carousel.with_placeholder('Fix carousel to work with bootstrap 5. Use testimonials for school group') %>
 <% end %>
