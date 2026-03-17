@@ -20,13 +20,29 @@ module Admin::Commercial
     end
 
     def new
-      @contract = Commercial::Contract.new(contract_holder_type: 'Funder')
+      if params[:original_contract_id].present?
+        @original = Commercial::Contract.find(params[:original_contract_id])
+        @contract = Commercial::Contract.as_renewal(@original)
+      else
+        @contract = Commercial::Contract.new(contract_holder_type: 'Funder')
+      end
     end
 
     def create
       @contract = Commercial::Contract.build(contract_params.merge(created_by: current_user))
       if @contract.save
-        redirect_to admin_commercial_contracts_path, notice: 'Contract has been created'
+        if params[:renew_licences] == '1'
+          @original = Commercial::Contract.find(params[:original_contract_id])
+          Commercial::Contract.transaction do
+            @original.licences.each do |licence|
+              Commercial::LicenceManager.new(licence.school).contract_renewed(@contract, licence)
+            end
+          end
+          notice = 'Contract and provisional licences have been created'
+        else
+          notice = 'Contract has been created'
+        end
+        redirect_to admin_commercial_contract_path(@contract), notice:
       else
         render :new
       end

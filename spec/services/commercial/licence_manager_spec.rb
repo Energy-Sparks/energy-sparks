@@ -7,6 +7,35 @@ describe Commercial::LicenceManager do
 
   let(:service) { described_class.new(school) }
 
+  describe '#licence_dates' do
+    subject(:dates) { service.licence_dates(contract) }
+
+    context 'when the licence_period is "contract"' do
+      let!(:contract) { create(:commercial_contract, status: :confirmed, licence_period: :contract) }
+
+      it { expect(dates[:start_date]).to eq(Time.zone.today) }
+      it { expect(dates[:end_date]).to eq(contract.end_date) }
+    end
+
+    context 'when the licence_period is "custom"' do
+      let!(:contract) { create(:commercial_contract, status: :confirmed, licence_period: :custom) }
+
+      it { expect(dates[:start_date]).to eq(Time.zone.today) }
+      it { expect(dates[:end_date]).to eq(Time.zone.today.next_year - 1.day) }
+
+      context 'when there is a fractional licence_years period' do
+        let!(:contract) do
+          create(:commercial_contract,
+                 licence_period: :custom,
+                 licence_years: 1.5)
+        end
+
+        it { expect(dates[:start_date]).to eq(Time.zone.today) }
+        it { expect(dates[:end_date]).to eq(Time.zone.today + 18.months - 1.day) }
+      end
+    end
+  end
+
   describe '#school_onboarded' do
     subject(:licence) { service.school_onboarded(contract) }
 
@@ -18,7 +47,7 @@ describe Commercial::LicenceManager do
           contract:,
           school:,
           status: 'confirmed',
-          start_date: contract.start_date,
+          start_date: Time.zone.today,
           end_date: contract.end_date
         })
       end
@@ -161,6 +190,82 @@ describe Commercial::LicenceManager do
             start_date: Time.zone.today,
             end_date: Time.zone.today + 21.months - 1.day
           )
+        end
+      end
+    end
+  end
+
+  describe '#contract_renewed' do
+    subject(:licence) { service.contract_renewed(contract, original_licence) }
+
+    let(:original_licence) { create(:commercial_licence, contract:, school_specific_price: 0.0) }
+
+    context 'when the licence_period is "contract"' do
+      let!(:contract) { create(:commercial_contract, status: :provisional, licence_period: :contract) }
+
+      it 'created a provisional licence' do
+        expect(licence).to have_attributes({
+          contract:,
+          school:,
+          status: 'provisional',
+          start_date: contract.start_date,
+          end_date: contract.end_date
+        })
+      end
+
+      it 'copies over the comments and school price' do
+        expect(licence).to have_attributes({
+          comments: original_licence.comments,
+          school_specific_price: original_licence.school_specific_price
+        })
+      end
+    end
+
+    context 'when the licence period is "custom"' do
+      let!(:contract) do
+        create(:commercial_contract,
+               status: :provisional,
+               start_date: Date.new(2026, 9, 1),
+               end_date: Date.new(2027, 8, 31),
+               licence_period: :custom,
+               licence_years: 1.0)
+      end
+
+      it 'creates the expected licence dates' do
+        expect(licence).to have_attributes({
+          contract:,
+          school:,
+          status: 'provisional',
+          start_date: contract.start_date,
+          end_date: contract.end_date
+        })
+      end
+
+      it 'copies over the comments and school price' do
+        expect(licence).to have_attributes({
+          comments: original_licence.comments,
+          school_specific_price: original_licence.school_specific_price
+        })
+      end
+
+      context 'when there is a fractional licence_years period' do
+        let!(:contract) do
+          create(:commercial_contract,
+                 status: :provisional,
+                 start_date: Date.new(2026, 9, 1),
+                 end_date: Date.new(2027, 8, 31),
+                 licence_period: :custom,
+                 licence_years: 1.5)
+        end
+
+        it 'creates the expected licence dates' do
+          expect(licence).to have_attributes({
+            contract:,
+            school:,
+            status: 'provisional',
+            start_date: Date.new(2026, 9, 1),
+            end_date: Date.new(2026, 9, 1) + 18.months - 1.day
+          })
         end
       end
     end

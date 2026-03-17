@@ -218,3 +218,16 @@ a.badge:focus,
 .badge[href]:focus {
   filter: brightness(0.8);
 }
+
+.bs5 .modal-header {
+  button.btn-close span {
+    display: none;
+  }
+}
+
+.bs4 .modal-header {
+  button.btn-close span {
+    margin: 0;
+    padding: 0;
+  }
+}

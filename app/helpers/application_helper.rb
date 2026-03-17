@@ -433,7 +433,8 @@ module ApplicationHelper
     if messageable.dashboard_message
       title = 'Dashboard message is shown for '
       title += who
-      tag.span class: 'badge badge-info', title: "#{title}: #{messageable.dashboard_message.message}" do
+      tag.span class: 'badge text-bg-info', data: { toggle: 'tooltip', bs_toggle: 'tooltip' },
+                title: "#{title}: #{messageable.dashboard_message.message}" do
         fa_icon(:info)
       end
     else
@@ -507,11 +508,11 @@ module ApplicationHelper
   end
 
   def admin_link(path, to: 'Link', tag: nil, classes: nil)
-    admin_only(path, to: to, tag: tag, classes: classes || 'badge badge-light font-weight-normal')
+    admin_only(path, to: to, tag: tag, classes: classes || 'badge text-bg-light fw-normal')
   end
 
   def admin_button(path, to: 'Edit', tag: nil, classes: nil)
-    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-xs')
+    admin_only(path, to: to, tag: tag, classes: classes || 'btn btn-default btn-xs')
   end
 
   def email_with_wbr(email)
@@ -565,5 +566,13 @@ module ApplicationHelper
 
   def bs5?
     !!@bs5
+  end
+
+  def bootstrap_version
+    @bs5 ? 5 : 4
+  end
+
+  def bootstrap_path(path = '')
+    @bs5 ? path : "bootstrap4/#{path}"
   end
 end

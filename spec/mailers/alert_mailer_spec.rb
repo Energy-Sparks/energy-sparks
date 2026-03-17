@@ -1,97 +1,79 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe AlertMailer do
+  include EmailHelpers
+
   let(:school)                { create(:school) }
-  let(:email_address)         { 'blah@blah.com' }
-  let(:email)                 { ActionMailer::Base.deliveries.last }
+  let(:email)                 { last_email }
   let(:send_automated_emails) { 'true' }
 
-  around do |example|
-    ClimateControl.modify SEND_AUTOMATED_EMAILS: send_automated_emails do
-      example.run
-    end
-  end
+  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => send_automated_emails)) }
 
   describe '#alert_email' do
-    context 'to single user' do
+    shared_examples 'an alert email' do
+      let(:locale) { nil }
+
       it 'sends an email with mailgun tag in header' do
-        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
         expect(ActionMailer::Base.deliveries.count).to be 1
-        expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
+        expect(email.mailgun_headers['X-Mailgun-Tag']).to eq('alerts')
       end
 
       it 'sends an email with a mailgun deliverytime option' do
-        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to be 1
         expect(DateTime.rfc2822(email.mailgun_options[:deliverytime]).in_time_zone).to \
           be_within(1.minute).of(15.minutes.from_now)
       end
 
       it 'specifies a subject' do
-        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
-        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name)
+        expect(email.subject).to eq("#{school.name} weekly alerts")
       end
 
       it 'send to right to address' do
-        AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
-        expect(email.to).to contain_exactly(email_address)
+        expect(email.to).to match_array(email_address)
       end
 
-      context 'when locale is specified' do
-        [:en, :cy].each do |locale|
+      it 'uses the correct body font-size' do
+        expect(html_email(email).at('p')['style'].split(/; */)).to include('font-size: 18px')
+      end
+
+      %i[en cy].each do |locale|
+        context "with #{locale}" do
+          let(:locale) { locale }
+
           it "uses #{locale}" do
-            AlertMailer.with(email_address: email_address, school: school, events: [], locale: locale).alert_email.deliver_now
-            expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale: locale)
+            expect(email.subject).to \
+              eq(I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale:))
           end
         end
       end
 
-      context 'SEND_AUTOMATED_EMAILS env var is false' do
+      context 'when SEND_AUTOMATED_EMAILS env var is false' do
         let(:send_automated_emails) { 'false' }
 
+        before { described_class.with(email_address:, school:, events: []).alert_email.deliver_now }
+
         it 'does not send an email' do
-          AlertMailer.with(email_address: email_address, school: school, events: []).alert_email.deliver_now
           expect(ActionMailer::Base.deliveries.count).to be 0
         end
       end
     end
 
-    context 'to multiple users' do
+    context 'when to a single user' do
+      let(:email_address) { 'blah@blah.com' }
+
+      before { described_class.with(email_address:, school:, events: [], locale:).alert_email.deliver_now }
+
+      it_behaves_like 'an alert email'
+    end
+
+    context 'when to multiple users' do
       let(:users) { create_list(:contact_with_name_email_phone, 2) }
+      let(:email_address) { users.map(&:email_address) }
 
-      it 'sends an email with mailgun tag in header' do
-        AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
-        expect(ActionMailer::Base.deliveries.count).to be 1
-        expect(email.mailgun_headers['X-Mailgun-Tag']).to eql 'alerts'
-      end
+      before { described_class.with(users:, school:, events: [], locale:).alert_email.deliver_now }
 
-      it 'specifies a subject' do
-        AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
-        expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name)
-      end
-
-      it 'send to right addresses' do
-        AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
-        expect(email.to).to match_array(users.map(&:email_address))
-      end
-
-      context 'when locale is specified' do
-        [:en, :cy].each do |locale|
-          it "uses #{locale}" do
-            AlertMailer.with(users: users, school: school, events: [], locale: locale).alert_email.deliver_now
-            expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale: locale)
-          end
-        end
-      end
-
-      context 'SEND_AUTOMATED_EMAILS env var is false' do
-        let(:send_automated_emails) { 'false' }
-
-        it 'does not send an email' do
-          AlertMailer.with(users: users, school: school, events: []).alert_email.deliver_now
-          expect(ActionMailer::Base.deliveries.count).to be 0
-        end
-      end
+      it_behaves_like 'an alert email'
     end
   end
 
@@ -100,8 +82,9 @@ RSpec.describe AlertMailer do
     let(:contact) { create(:contact_with_name_email, school: school, user: user) }
 
     it 'uses locale from contact' do
-      AlertMailer.with_contact_locale(contact: contact, events: []) { |mailer| mailer.alert_email.deliver_now }
-      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name, locale: :cy)
+      described_class.with_contact_locale(contact: contact, events: []) { |mailer| mailer.alert_email.deliver_now }
+      expect(email.subject).to eql I18n.t('alert_mailer.alert_email.subject_2024', school_name: school.name,
+                                                                                   locale: :cy)
     end
   end
 end
