@@ -32,10 +32,12 @@
     <div class="form-group col-md-12">
       <%= f.label :school_group_id, 'School Group' %>
       <%= f.select :school_group_id,
-                   options_from_collection_for_select(SchoolGroup.organisation_groups.order(:name),
-                                                      :id,
-                                                      :name,
-                                                      params[:school_group_id]),
+                   options_from_collection_for_select(
+                     SchoolGroup.organisation_groups.order(:name),
+                     'id',
+                     'name',
+                     params[:school_group_id].nil? ? school_onboarding.school_group_id : params[:school_group_id]
+                   ),
                    { include_blank: true },
                    { class: 'form-control' } %>
     </div>
