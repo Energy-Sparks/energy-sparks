@@ -107,7 +107,7 @@ describe 'manage funders' do
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize,
-              'Edit Delete'
+              'Edit Renew Delete'
             ]
           ]
         end
