@@ -40,6 +40,10 @@ module SchoolGroups
       @engagement ||= Engagement.new(self)
     end
 
+    def potential_savings
+      @potential_savings ||= PotentialSavings.new(self)
+    end
+
     class Base
       attr_reader :impact_report
 
@@ -47,13 +51,10 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
-      delegate :school_group,
-               :visible_schools,
-               :data_visible_schools,
-               to: :impact_report
+      delegate :school_group, :visible_schools, :data_visible_schools, to: :impact_report
     end
 
-    # Might move these out into seperate files at some point
+    # Will move these out into seperate files at some point
     class Overview < Base
       def users
         school_group.users.count
@@ -193,6 +194,28 @@ module SchoolGroups
           .joins(:school)
           .merge(visible_schools)
           .count
+      end
+    end
+
+    class PotentialSavings < Base
+      def electricity_savings
+        12000
+      end
+
+      def solar_panels
+        32000
+      end
+
+      def solar_panels_schools
+        7
+      end
+
+      def gas_savings
+        11000
+      end
+
+      def gas_savings_schools
+        12
       end
     end
   end

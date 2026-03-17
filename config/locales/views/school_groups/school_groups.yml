@@ -215,6 +215,19 @@ en:
             title: Users
         description: How many schools and users are enrolled in Energy Sparks from this group?
         title: Overview
+      potential_savings:
+        cards:
+          electricity_savings:
+            subtext: By reducing out of hours electricity use
+            title: Potential electricity savings
+          gas_savings:
+            subtext: By turning down thermostats by 1C in %{count} schools
+            title: Potential gas savings
+          solar_panels:
+            subtext: Benefits from installing solar on an additional %{count} schools
+            title: Install solar panels
+        description: What additional savings have we identified that can help these schools continue to reduce their energy bills and carbon emissions?
+        title: Potential savings
     labels:
       floor_area: Floor area (m2)
     login_prompt:
