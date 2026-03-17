@@ -905,7 +905,6 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
         before do
           click_on 'Onboarding'
-          puts page.html
         end
 
         it { expect(page).to have_link('Download as CSV') }
