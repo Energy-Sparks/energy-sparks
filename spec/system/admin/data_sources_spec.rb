@@ -151,6 +151,10 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
 
             it { expect(page).to have_content("Edit #{existing_data_source.name}")}
 
+            it 'has a delete button' do
+              expect(page).to have_link('Delete')
+            end
+
             it_behaves_like 'a data source form' do
               let(:data_source) { existing_data_source }
             end
