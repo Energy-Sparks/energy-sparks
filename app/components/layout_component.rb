@@ -2,7 +2,7 @@ class LayoutComponent < ApplicationComponent
   attr_reader :theme
 
   renders_one :placeholder, ->(*args, **kwargs) do
-    Admin::PlaceholderComponent.new(*args, **{ badge: true }.merge(kwargs))
+    Admin::PlaceholderComponent.new(*args, **{}.merge(kwargs))
   end
 
   def initialize(*_args, theme: nil, component_classes: '', **_kwargs)

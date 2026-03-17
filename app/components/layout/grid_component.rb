@@ -19,6 +19,13 @@ module Layout
 
     private
 
+    def before_render
+      super
+      cells.delete_if do |cell|
+        cell.to_s.blank? # this will be blank when :if is false
+      end
+    end
+
     def wrap(klass, *args, **kwargs, &block)
       cell(klass, **kwargs) do
         render(klass.new(*args, **kwargs), &block)
@@ -26,7 +33,18 @@ module Layout
     end
 
     def cell(klass = nil, column_classes: nil, **kwargs, &block)
-      tag.div(class: class_names(column_classes || default_column_classes, kwargs.delete(:cell_classes), @cell_classes, responsive_classes(klass)), &block)
+      condition = kwargs.delete(:if)
+      return if condition == false
+
+      tag.div(
+        class: class_names(
+          column_classes || default_column_classes,
+          kwargs.delete(:cell_classes),
+          @cell_classes,
+          responsive_classes(klass)
+        ),
+        &block
+      )
     end
 
     def responsive_classes(klass)

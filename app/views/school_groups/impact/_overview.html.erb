@@ -1,0 +1,58 @@
+<% i18n_scope = 'school_groups.impact.overview' %>
+
+<%= render Layout::Cards::SectionHeaderComponent.new(
+      id: 'overview-header'
+    ) do |section_header| %>
+  <%= section_header.with_header title: t('title', scope: i18n_scope) %>
+  <%= section_header.with_description { t('description', scope: i18n_scope) } %>
+<% end %>
+
+<%= render Layout::GridComponent.new(id: 'overview-section',
+                                     cols: 4, classes: 'mb-4',
+                                     cell_classes: 'mb-4',
+                                     component_classes: 'theme theme-dark') do |grid| %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.schools.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.schools) %>
+    <%= card.with_subtext do
+          t('cards.schools.subtext', scope: i18n_scope,
+                                     count: impact_report.schools_data_visible)
+        end %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.users.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.overview.users) %>
+    <%= card.with_subtext do
+          t('cards.users.subtext', scope: i18n_scope,
+                                   count: impact_report.overview.users_logged_in_recently)
+        end %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.pupils.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.overview.pupils) %>
+    <%= card.with_subtext { t('cards.pupils.subtext', scope: i18n_scope) } %>
+  <% end %>
+  <% grid.with_stats_card(if: false) do |card| %>
+    <%= card.with_header title: t('cards.funded_places.title', scope: i18n_scope) %>
+    <%= card.with_figure format_unit(impact_report.overview.funded_places_value, :£) %>
+    <%= card.with_subtext do
+          t('cards.funded_places.subtext', scope: i18n_scope, count: impact_report.overview.funded_places)
+        end %>
+    <%= card.with_placeholder %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.enrolling_schools.title', scope: i18n_scope) %>
+    <% if impact_report.overview.enrolling_schools > impact_report.overview.enrolled_schools %>
+      <%= card.with_figure number_with_delimiter(impact_report.overview.enrolling_schools) %>
+      <%= card.with_subtext do
+            t('cards.enrolling_schools.onboarding', scope: i18n_scope)
+          end %>
+    <% else %>
+      <%= card.with_figure number_with_delimiter(impact_report.overview.enrolled_schools) %>
+      <%= card.with_subtext do
+            t('cards.enrolling_schools.onboarded', scope: i18n_scope)
+          end %>
+    <% end %>
+    <%= card.with_placeholder %>
+  <% end %>
+<% end %>

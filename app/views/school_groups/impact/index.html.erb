@@ -24,51 +24,7 @@
   <% end %>
 <% end %>
 
-<% render(Admin::PlaceholderComponent.new) do %>
-  <%= format_unit(@impact_report.funded_places_value, :£) %>
-<% end %>
-
-<%= render Layout::Cards::SectionHeaderComponent.new(
-      id: 'stats-header'
-    ) do |section_header| %>
-  <%= section_header.with_header title: t('school_groups.impact.overview.header') %>
-  <%= section_header.with_description { t('school_groups.impact.overview.description') } %>
-<% end %>
-
-<%= render Layout::GridComponent.new(id: 'stats',
-                                     cols: 4, classes: 'mb-4',
-                                     cell_classes: 'mb-4',
-                                     component_classes: 'theme theme-dark') do |grid| %>
-  <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('school_groups.impact.overview.cards.schools.header') %>
-    <%= card.with_figure number_with_delimiter(@impact_report.schools) %>
-    <%= card.with_subtext do
-          t('school_groups.impact.overview.cards.schools.subtext',
-            count: @impact_report.schools_data_visible)
-        end %>
-  <% end %>
-  <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('school_groups.impact.overview.cards.users.header') %>
-    <%= card.with_figure number_with_delimiter(@impact_report.users) %>
-    <%= card.with_subtext do
-          t('school_groups.impact.overview.cards.users.subtext',
-            count: @impact_report.users_logged_in_recently)
-        end %>
-  <% end %>
-  <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('school_groups.impact.overview.cards.pupils.header') %>
-    <%= card.with_figure number_with_delimiter(@impact_report.pupils) %>
-    <%= card.with_subtext { t('school_groups.impact.overview.cards.pupils.subtext') } %>
-  <% end %>
-  <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('school_groups.impact.overview.cards.funded_places.header') %>
-    <%= card.with_figure format_unit(@impact_report.funded_places_value, :£) %>
-    <%= card.with_subtext do
-          t('school_groups.impact.overview.cards.funded_places.subtext', count: @impact_report.funded_places)
-        end %>
-    <%= card.with_placeholder('Figures contain placeholder data') %>
-  <% end %>
-<% end %>
+<%= render 'overview', impact_report: @impact_report %>
 
 <%= render Layout::CarouselComponent.new(id: 'testimonials-section',
                                          show_markers: false,
@@ -79,5 +35,10 @@
   <% Testimonial.all.active.shuffle.each do |testimonial| %>
     <%= carousel.with_testimonial_card(testimonial: testimonial) %>
   <% end %>
-  <%= carousel.with_placeholder('Fix carousel for bootstrap 5. Use school group testimonials') %>
+  <%= carousel.with_placeholder('Fix carousel to work with bootstrap 5. Use testimonials for school group') %>
 <% end %>
+
+<%= render 'energy_efficiency', impact_report: @impact_report %>
+<%= render 'engagement', impact_report: @impact_report %>
+<%= render 'potential_savings', impact_report: @impact_report %>
+<%= render 'notes', impact_report: @impact_report %>
