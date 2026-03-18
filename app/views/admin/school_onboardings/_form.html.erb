@@ -36,7 +36,7 @@
                      SchoolGroup.organisation_groups.order(:name),
                      'id',
                      'name',
-                     params[:school_group_id].nil? ? school_onboarding.school_group_id : params[:school_group_id]
+                     params[:school_group_id].presence || school_onboarding.school_group_id
                    ),
                    { include_blank: true },
                    { class: 'form-control' } %>

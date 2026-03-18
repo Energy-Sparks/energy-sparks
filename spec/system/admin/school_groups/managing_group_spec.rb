@@ -876,7 +876,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       context 'when using the new onboarding link' do
         before { click_on('New School Onboarding') }
 
-        it 'autofills the school name' do
+        it 'autofills the school group name' do
           expect(page).to have_content(school_group.name)
         end
       end
