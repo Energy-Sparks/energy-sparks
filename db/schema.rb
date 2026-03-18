@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_04_124108) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -428,7 +428,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_04_124108) do
     t.integer "number_of_header_rows", default: 0, null: false
     t.integer "process_type", default: 0, null: false
     t.integer "source_type", default: 0, null: false
-    t.integer "import_warning_days", default: 10
     t.string "expected_units"
     t.integer "missing_readings_limit"
     t.boolean "lookup_by_serial_number", default: false

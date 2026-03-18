@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class AdminMailerPreview < ActionMailer::Preview
+  def school_data_source_report
+    data_source_id = DataSource.where(name: 'Ecotricity').first.id
+    # Used Ecotricity as example because it has inactive and active meters, plus archived and non-archived schools
+    AdminMailer.with(to: 'operations@energysparks.uk', data_source_id:).school_data_source_report
+  end
+
   def issues_report
     AdminMailer.with(email_address: 'test@blah.com', user: User.admin.first).issues_report
   end
@@ -12,7 +18,6 @@ class AdminMailerPreview < ActionMailer::Preview
 
   def lagging_data_sources
     lagging = [DataSource.all.find_each.filter(&:exceeded_alert_threshold?).first]
-
     AdminMailer.with(to: 'operations@energysparks.uk', lagging:).lagging_data_sources
   end
 
