@@ -266,6 +266,8 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           click_on 'New data source'
         end
 
+        it { expect(page).not_to have_link('Delete') }
+
         it { expect(page).to have_content('New data source') }
 
         it_behaves_like 'a data source form' do
