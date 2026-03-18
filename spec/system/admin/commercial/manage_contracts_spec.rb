@@ -190,6 +190,31 @@ describe 'manage contracts' do
       end
     end
 
+    context 'when there are licences' do
+      let!(:licence) { create(:commercial_licence, contract:) }
+
+      before { click_on 'Edit' }
+
+      context 'when making changes to be cascaded', :js do
+        before do
+          select 'Confirmed', from: 'Status'
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+          click_on 'Save'
+        end
+
+        it 'updates the model' do
+          expect(page).to have_content('Contract and licences have been updated')
+          expect(licence.reload).to have_attributes(
+            start_date: Date.new(2026, 1, 1),
+            end_date: Date.new(2026, 12, 31),
+            status: 'confirmed',
+            updated_by: user
+          )
+        end
+      end
+    end
+
     context 'when the contract has invoiced licences' do
       before do
         create(:commercial_licence, contract:, status: :invoiced)

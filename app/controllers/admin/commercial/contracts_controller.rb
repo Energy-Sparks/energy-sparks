@@ -58,21 +58,21 @@ module Admin::Commercial
     def edit
     end
 
-    # What needs cascading:
-    # 1) Status
-    #
-    # Provisional -> Confirmed
-    # Confirmed -> Provisional (unlikely, but possible)
-    #
-    # Update all licences that are in those states, but not those that are pending or invoiced.
-    #
-    # 2) Start/End Dates
-    #
-    # Rewrite the start/end dates for all licences. If Contract
-    # If custom, then they don't cascade as not relevant. This might be a case where you want to tweak them.
     def update
       if @contract.update(contract_params.merge(updated_by: current_user))
-        redirect_to admin_commercial_contracts_path, notice: 'Contract has been updated'
+        if @contract.licences.exists? && (@contract.saved_changes.keys & ['start_date', 'end_date', 'status']).any?
+          Commercial::Contract.transaction do
+            licence_dates = Commercial::LicenceManager.licence_dates(@contract, base_date: @contract.start_date)
+            # update dates for all licences, except those that are invoiced
+            @contract.licences.where.not(status: :invoiced).update_all(licence_dates.merge(updated_by_id: current_user.id))
+            # update status for those that have not already advanced
+            @contract.licences.where.not(status: [:pending_invoice, :invoiced]).update_all(status: @contract.status)
+          end
+          notice = 'Contract and licences have been updated'
+        else
+          notice = 'Contract has been updated'
+        end
+        redirect_to admin_commercial_contract_path(@contract), notice:
       else
         render :edit
       end
