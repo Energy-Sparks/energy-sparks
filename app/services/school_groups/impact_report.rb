@@ -14,11 +14,11 @@ module SchoolGroups
       @data_visible_schools ||= school_group.assigned_schools.data_visible
     end
 
-    def schools
+    def visible_schools_count
       visible_schools.count
     end
 
-    def schools_data_visible
+    def data_visible_schools_count
       data_visible_schools.count
     end
 
@@ -169,8 +169,8 @@ module SchoolGroups
           .sum(:points)
       end
 
-      def school
-        @school ||= School
+      def featured_school
+        @featured_school ||= School
           .joins(:observations)
           .merge(Observation.between(twelve_months_ago, generated_at))
           .merge(visible_schools)
@@ -180,15 +180,15 @@ module SchoolGroups
           .first
       end
 
-      def school_activities
-        school
+      def featured_school_activities
+        featured_school
           .activities
           .between(twelve_months_ago, generated_at)
           .count
       end
 
-      def school_actions
-        school
+      def featured_school_actions
+        featured_school
           .observations
           .intervention
           .between(twelve_months_ago, generated_at)

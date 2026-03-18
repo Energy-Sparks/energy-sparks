@@ -16,7 +16,7 @@
     <%= card.with_figure number_with_delimiter(impact_report.engagement.activities) %>
     <%= card.with_subtext do
           t('cards.activities.subtext', scope: i18n_scope,
-                                        count: impact_report.schools_data_visible)
+                                        count: impact_report.data_visible_schools_count)
         end %>
   <% end %>
   <% grid.with_stats_card do |card| %>
@@ -46,7 +46,7 @@
   <% end %>
 <% end %>
 
-<% if impact_report.engagement.school %>
+<% if impact_report.engagement.featured_school %>
   <%= render Layout::GridComponent.new(
         id: 'featured',
         cols: 2,
@@ -56,20 +56,20 @@
       ) do |grid| %>
     <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
       <%= feature.with_header(title: t('featured.title', scope: i18n_scope,
-                                                         school: impact_report.engagement.school.name)) %>
+                                                         school: impact_report.engagement.featured_school.name)) %>
       <%= feature.with_description do
             t('featured.description',
               scope: i18n_scope,
-              school: impact_report.engagement.school.name,
-              activities: impact_report.engagement.school_activities,
-              actions: impact_report.engagement.school_actions)
+              school: impact_report.engagement.featured_school.name,
+              activities: impact_report.engagement.featured_school_activities,
+              actions: impact_report.engagement.featured_school_actions)
           end %>
       <%= feature.with_button(t('common.view_dashboard'),
-                              school_path(impact_report.engagement.school), style: :secondary) %>
+                              school_path(impact_report.engagement.featured_school), style: :secondary) %>
     <% end %>
     <%= grid.with_block(classes: 'bg-white p-4 rounded-3') do %>
-      <% podium = Podium.create(school: impact_report.engagement.school,
-                                scoreboard: impact_report.engagement.school.scoreboard) %>
+      <% podium = Podium.create(school: impact_report.engagement.featured_school,
+                                scoreboard: impact_report.engagement.featured_school.scoreboard) %>
       <%= render(Scoreboards::PodiumComponent.new(podium: podium)) %>
     <% end %>
   <% end %>

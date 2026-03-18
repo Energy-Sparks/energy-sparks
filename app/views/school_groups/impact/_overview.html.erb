@@ -13,10 +13,10 @@
                                      component_classes: 'theme theme-dark') do |grid| %>
   <% grid.with_stats_card do |card| %>
     <%= card.with_header title: t('cards.schools.title', scope: i18n_scope) %>
-    <%= card.with_figure number_with_delimiter(impact_report.schools) %>
+    <%= card.with_figure number_with_delimiter(impact_report.visible_schools_count) %>
     <%= card.with_subtext do
           t('cards.schools.subtext', scope: i18n_scope,
-                                     count: impact_report.schools_data_visible)
+                                     count: impact_report.data_visible_schools_count)
         end %>
   <% end %>
 

@@ -8,7 +8,7 @@
       <%= feature.with_header title: t('school_groups.impact.feature.title', school_group: @school_group.name) %>
       <%= feature.with_description do %>
         <%= t('school_groups.impact.feature.description_html',
-              count: @impact_report.schools,
+              count: @impact_report.visible_schools_count,
               group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')) %>
       <% end %>
       <%= feature.with_block do %>

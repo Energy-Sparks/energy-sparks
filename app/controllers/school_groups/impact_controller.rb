@@ -32,7 +32,7 @@ module SchoolGroups
     end
 
     def redirect_not_enough_data
-      unless @impact_report.schools >= 2
+      unless @impact_report.visible_schools_count >= 2
         redirect_back fallback_location: school_group_path(@school_group), alert: I18n.t('advice_pages.index.show.not_available')
       end
     end
