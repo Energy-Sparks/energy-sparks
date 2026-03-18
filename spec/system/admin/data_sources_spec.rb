@@ -115,6 +115,12 @@ RSpec.describe 'Data Sources admin', :school_groups, type: :system, include_appl
           end
         end
 
+        it 'has a link to delete data source' do
+          within('table') do
+            expect(page).to have_link('Delete')
+          end
+        end
+
         it 'has a link from the name to manage data source' do
           within('table') do
             expect(page).to have_link(existing_data_source.name)
