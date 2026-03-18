@@ -41,6 +41,7 @@ module Commercial
     include Trackable
     include TemporalRange
     include HasContractHolder
+    include Deletable
 
     self.table_name = 'commercial_contracts'
 
@@ -78,7 +79,7 @@ module Commercial
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
 
-    has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
+    has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
     accepts_nested_attributes_for :licences
 
@@ -103,6 +104,32 @@ module Commercial
 
     def status_colour
       STATUS_COLOUR[status.to_sym]
+    end
+
+    def deletable?
+      !licences.invoiced.exists?
+    end
+
+    def editable_attribute?(name)
+      new_record? || editable_attributes.include?(name)
+    end
+
+    # Some fields of a contract cannot be changed once created, e.g. contract terms.
+    # Some are safe to always be changed, e.g. name
+    # Others cannot be changed once invoicing has started, e.g. agreed_school_price
+    def editable_attributes
+      fields = [:comments, :name, :purchase_order_number, :number_of_schools]
+      fields = fields + [:status] if provisional?
+      unless licences.invoiced.exists?
+        fields = fields + [:agreed_school_price, :start_date, :end_date]
+      end
+      fields
+    end
+
+    private
+
+    def destroy_error_message
+      'Cannot delete a contract with an invoiced licence'
     end
   end
 end

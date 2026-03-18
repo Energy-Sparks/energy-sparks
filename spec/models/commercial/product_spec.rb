@@ -23,5 +23,35 @@ describe Commercial::Product do
         end
       end
     end
+
+    describe 'when destroying' do
+      let!(:product) { create(:commercial_product) }
+
+      it 'allows products to be deleted' do
+        expect { product.destroy }.to change(Commercial::Product, :count).by(-1)
+      end
+
+      context 'when default product' do
+        let!(:product) { create(:commercial_product, default_product: true) }
+
+        it 'does not allow the product to be destroyed' do
+          expect(product.destroy).to be(false)
+          expect(product.errors[:base]).to include('Cannot delete default product')
+          expect(product).to be_persisted
+        end
+      end
+
+      context 'when there are contracts' do
+        before do
+          create(:commercial_contract, product:)
+        end
+
+        it 'does not allow the product to be destroyed' do
+          expect(product.destroy).to be(false)
+          expect(product.errors[:base]).to include('Cannot delete a product with contracts')
+          expect(product).to be_persisted
+        end
+      end
+    end
   end
 end

@@ -14,22 +14,36 @@
   <% header_nav.with_button 'All contracts', all_contracts_path %>
 <% end %>
 
-<% if local_assigns[:original].present? %>
-  <div class="row">
-    <div class="col">
-      <p>
-        Creating a new contract for <strong><%= contract.contract_holder.name %></strong> based on
-        <strong><%= original.name %></strong>.
-        The form has been populated using the existing contractual details, including contract terms, length and
-        agreed pricing.
-      </p>
-      <p>
-        Provisional licences for all schools under <strong><%= original.name %></strong> will be added
-        by default (see option below). Additional schools can be added later.
-      </p>
-    </div>
-  </div>
-<% end %>
+<div class="row">
+  <div class="col">
+  <% if local_assigns[:original].present? %>
+    <p>
+      Creating a new contract for <strong><%= contract.contract_holder.name %></strong> based on
+      <strong><%= original.name %></strong>.
+      The form has been populated using the existing contractual details, including contract terms, length and
+      agreed pricing.
+    </p>
+    <p>
+      Provisional licences for all schools under <strong><%= original.name %></strong> will be added
+      by default (see option below). Additional schools can be added later.
+    </p>
+  <% elsif contract.new_record? && contract.contract_holder.present? %>
+    <p>
+      Create a new contract for <strong><%= contract.contract_holder.name %></strong>.
+    </p>
+  <% elsif contract.persisted? && contract.licences.invoiced.exists? %>
+    <p>
+      One or more licences associated with this contract have already been invoiced. Only limited changes can now
+      be made the contract itself.
+    </p>
+  <% elsif contract.persisted? %>
+    <p>
+      Any changes made to the start and end dates for this contract will be automatically applied to all licences,
+      overwriting any existing licence dates.
+    </p>
+  <% end %>
+</div>
+</div>
 
 <div class="row">
   <div class="col">
@@ -43,14 +57,16 @@
       <%= f.input :name %>
       <%= f.input :comments %>
 
-      <%= f.input :product_id,
-                  collection: Commercial::Product.with_default_first,
-                  include_blank: false %>
+      <% if contract.editable_attribute?(:product) %>
+        <%= f.input :product_id,
+                    collection: Commercial::Product.with_default_first,
+                    include_blank: false %>
+      <% end %>
 
-      <% if local_assigns[:original].present? || contract.persisted? %>
+      <% if contract.contract_holder.present? %>
         <%= f.input :contract_holder_type, as: :hidden %>
         <%= f.input :contract_holder_id, as: :hidden %>
-      <% else %>
+      <% elsif contract.editable_attribute?(:contract_holder) %>
         <%= f.input :contract_holder_type,
                     as: :radio_buttons,
                     collection: HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
@@ -66,24 +82,30 @@
                     } %>
       <% end %>
 
-      <%= f.input :number_of_schools %>
-      <%= f.input :purchase_order_number %>
+      <%= f.input :number_of_schools if contract.editable_attribute?(:number_of_schools) %>
+      <%= f.input :purchase_order_number if contract.editable_attribute?(:purchase_order_number) %>
 
-      <%= f.input :start_date, as: :tempus_dominus_date %>
-      <%= f.input :end_date, as: :tempus_dominus_date %>
+      <%= f.input :start_date, as: :tempus_dominus_date if contract.editable_attribute?(:start_date) %>
+      <%= f.input :end_date, as: :tempus_dominus_date if contract.editable_attribute?(:end_date) %>
 
-      <%= f.input :agreed_school_price %>
+      <%= f.input :agreed_school_price if contract.editable_attribute?(:agreed_school_price) %>
 
-      <%= f.input :status,
-                  collection: collection_from_enum(Commercial::Contract.statuses),
-                  include_blank: false %>
-      <%= f.input :invoice_terms,
-                  collection: collection_from_enum(Commercial::Contract.invoice_terms),
-                  include_blank: false %>
-      <%= f.input :licence_period,
-                  collection: collection_from_enum(Commercial::Contract.licence_periods),
-                  include_blank: false %>
-      <%= f.input :licence_years %>
+      <%= if contract.editable_attribute?(:status)
+            f.input :status,
+                    collection: collection_from_enum(Commercial::Contract.statuses),
+                    include_blank: false
+          end %>
+      <%= if contract.editable_attribute?(:invoice_terms)
+            f.input :invoice_terms,
+                    collection: collection_from_enum(Commercial::Contract.invoice_terms),
+                    include_blank: false
+          end %>
+      <%= if contract.editable_attribute?(:licence_period)
+            f.input :licence_period,
+                    collection: collection_from_enum(Commercial::Contract.licence_periods),
+                    include_blank: false
+          end %>
+      <%= f.input :licence_years if contract.editable_attribute?(:licence_years) %>
 
       <% if local_assigns[:original].present? %>
         <div class="form-group">

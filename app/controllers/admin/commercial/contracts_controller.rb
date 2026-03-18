@@ -23,6 +23,13 @@ module Admin::Commercial
       if params[:original_contract_id].present?
         @original = Commercial::Contract.find(params[:original_contract_id])
         @contract = Commercial::Contract.as_renewal(@original)
+      elsif params[:contract_holder_id].present?
+        contract_holder = case params[:contract_holder_type]
+                          when 'School'      then School.find(params[:contract_holder_id])
+                          when 'SchoolGroup' then SchoolGroup.find(params[:contract_holder_id])
+                          when 'Funder'      then Funder.find(params[:contract_holder_id])
+                          end
+        @contract = Commercial::Contract.new(contract_holder:)
       else
         @contract = Commercial::Contract.new(contract_holder_type: 'Funder')
       end
@@ -51,6 +58,18 @@ module Admin::Commercial
     def edit
     end
 
+    # What needs cascading:
+    # 1) Status
+    #
+    # Provisional -> Confirmed
+    # Confirmed -> Provisional (unlikely, but possible)
+    #
+    # Update all licences that are in those states, but not those that are pending or invoiced.
+    #
+    # 2) Start/End Dates
+    #
+    # Rewrite the start/end dates for all licences. If Contract
+    # If custom, then they don't cascade as not relevant. This might be a case where you want to tweak them.
     def update
       if @contract.update(contract_params.merge(updated_by: current_user))
         redirect_to admin_commercial_contracts_path, notice: 'Contract has been updated'

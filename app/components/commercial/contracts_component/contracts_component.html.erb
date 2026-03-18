@@ -47,10 +47,12 @@
                     link_to 'Renew', new_admin_commercial_contract_path(original_contract_id: contract.id),
                             class: 'btn btn-secondary btn-sm'
                   end %>
-              <%= link_to 'Delete', admin_commercial_contract_path(contract),
-                          method: :delete,
-                          data: { confirm: 'Are you sure?' },
-                          class: 'btn btn-danger btn-sm' %>
+              <%= if contract.deletable?
+                    link_to 'Delete', admin_commercial_contract_path(contract),
+                            method: :delete,
+                            data: { confirm: 'Are you sure?' },
+                            class: 'btn btn-danger btn-sm'
+                  end %>
 
             </div>
           </td>

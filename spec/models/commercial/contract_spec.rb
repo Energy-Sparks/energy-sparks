@@ -14,11 +14,67 @@ describe Commercial::Contract do
     it_behaves_like 'a temporal ranged model'
     it_behaves_like 'a date ranged model'
     it_behaves_like 'has a contract holder'
+
+    context 'when destroying' do
+      let!(:contract) { create(:commercial_contract) }
+
+      it 'allows contracts to be deleted' do
+        expect { contract.destroy }.to change(Commercial::Contract, :count).by(-1)
+      end
+
+      context 'with invoiced licences' do
+        before do
+          create(:commercial_licence, contract:, status: :invoiced)
+        end
+
+        it 'does not allow the contract to be destroyed' do
+          expect(contract.destroy).to be(false)
+          expect(contract.errors[:base]).to include('Cannot delete a contract with an invoiced licence')
+          expect(contract).to be_persisted
+        end
+      end
+
+      context 'with confirmed licences' do
+        before do
+          create(:commercial_licence, contract:, status: :confirmed)
+        end
+
+        it 'allows contract to be deleted' do
+          expect { contract.destroy }.to change(Commercial::Contract, :count).by(-1)
+        end
+      end
+    end
   end
 
   describe '#status_colour' do
     it { expect(create(:commercial_contract, status: :provisional).status_colour).to eq(:warning) }
     it { expect(create(:commercial_contract, status: :confirmed).status_colour).to eq(:success) }
+  end
+
+  describe '#editable_fields' do
+    subject(:contract) { create(:commercial_contract) }
+
+    it 'has the expected fields' do
+      expect(contract.editable_attributes).to contain_exactly(:comments, :name, :purchase_order_number, :agreed_school_price, :number_of_schools, :start_date, :end_date)
+    end
+
+    context 'when confirmed' do
+      subject(:contract) { create(:commercial_contract, status: :confirmed) }
+
+      it 'has the expected fields' do
+        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :purchase_order_number, :agreed_school_price, :number_of_schools, :start_date, :end_date)
+      end
+    end
+
+    context 'with invoiced licences' do
+      before do
+        create(:commercial_licence, contract:, status: :invoiced)
+      end
+
+      it 'has the expected fields' do
+        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :purchase_order_number, :number_of_schools)
+      end
+    end
   end
 
   describe '#as_renewal' do
