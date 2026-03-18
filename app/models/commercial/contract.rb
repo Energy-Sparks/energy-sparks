@@ -133,10 +133,6 @@ module Commercial
       'Cannot delete a contract with an invoiced licence'
     end
 
-    validate :ensure_only_editable_attributes_changed
-
-    private
-
     def ensure_only_editable_attributes_changed
       return if new_record?
 
