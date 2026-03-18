@@ -17,6 +17,9 @@ describe 'manage contracts' do
       click_on 'New contract'
     end
 
+    it { expect(page).to have_field('Contract holder') }
+    it { expect(page).to have_field('Product') }
+
     context 'with valid data', :js do
       before do
         fill_in 'Name', with: 'Custom contract'
@@ -86,6 +89,8 @@ describe 'manage contracts' do
       expect(page).to have_content("Create a new contract for #{contract_holder.name}")
     end
 
+    it { expect(page).not_to have_field('Contract holder') }
+
     context 'with valid data', :js do
       before do
         fill_in 'Name', with: 'Custom contract'
@@ -144,6 +149,12 @@ describe 'manage contracts' do
       it { expect(page).to have_content(contract.name) }
       it { expect(page).to have_content('Any changes made to the start and end dates for this contract will be automatically applied to all licences')}
 
+      it { expect(page).not_to have_field('Contract holder') }
+      it { expect(page).not_to have_field('Product') }
+      it { expect(page).not_to have_select('Invoice terms') }
+      it { expect(page).not_to have_select('Licence period') }
+      it { expect(page).not_to have_field('Licence years') }
+
       context 'with valid data', :js do
         before do
           fill_in 'Name', with: 'Custom contract'
@@ -187,6 +198,12 @@ describe 'manage contracts' do
 
       it { expect(page).to have_content(contract.name) }
       it { expect(page).to have_content('One or more licences associated with this contract have already been invoiced') }
+
+      it { expect(page).not_to have_field('Contract holder') }
+      it { expect(page).not_to have_field('Product') }
+      it { expect(page).not_to have_select('Invoice terms') }
+      it { expect(page).not_to have_select('Licence period') }
+      it { expect(page).not_to have_field('Licence years') }
     end
   end
 
