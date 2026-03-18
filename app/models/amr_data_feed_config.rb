@@ -17,7 +17,6 @@
 #  header_example          :text
 #  id                      :bigint(8)        not null, primary key
 #  identifier              :text             not null
-#  import_warning_days     :integer          default(10)
 #  lookup_by_serial_number :boolean          default(FALSE)
 #  meter_description_field :text
 #  missing_reading_window  :integer          default(5)
