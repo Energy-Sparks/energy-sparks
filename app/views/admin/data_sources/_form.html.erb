@@ -25,9 +25,11 @@
       <%= f.input :comments %>
       <%= f.input :load_tariffs, label: 'Load tariffs for SMETS meters' %>
       <%= f.submit 'Save', class: 'btn btn-primary' %>
-      <%= link_to 'Delete', admin_data_source_path(data_source), method: :delete,
-                                                                 data: { confirm: 'Are you sure?' },
-                                                                 class: 'btn btn-danger' %>
+      <% if title.include?('Edit') %>
+        <%= link_to 'Delete', admin_data_source_path(data_source), method: :delete,
+                                                                   data: { confirm: 'Are you sure?' },
+                                                                   class: 'btn btn-danger' %>
+      <% end %>
     <% end %>
   </div>
 </div>
