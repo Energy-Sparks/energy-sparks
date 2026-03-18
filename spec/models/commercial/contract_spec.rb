@@ -102,14 +102,14 @@ describe Commercial::Contract do
     subject(:contract) { create(:commercial_contract, status: :provisional) }
 
     it 'has the expected fields' do
-      expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name, :number_of_schools, :purchase_order_number, :start_date, :status)
+      expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name, :number_of_schools, :purchase_order_number, :start_date, :status, :updated_by_id)
     end
 
     context 'when confirmed' do
       subject(:contract) { create(:commercial_contract, status: :confirmed) }
 
       it 'has the expected fields' do
-        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name, :number_of_schools, :purchase_order_number, :start_date)
+        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name, :number_of_schools, :purchase_order_number, :start_date, :updated_by_id)
       end
     end
 
@@ -119,7 +119,7 @@ describe Commercial::Contract do
       end
 
       it 'has the expected fields' do
-        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools, :purchase_order_number, :status)
+        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools, :purchase_order_number, :status, :updated_by_id)
       end
     end
   end
