@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_04_124108) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -442,7 +442,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_04_124108) do
     t.boolean "allow_merging", default: false, null: false
     t.integer "missing_reading_window", default: 5
     t.bigint "owned_by_id"
-    t.integer "import_warning_days"
     t.index ["description"], name: "index_amr_data_feed_configs_on_description", unique: true
     t.index ["identifier"], name: "index_amr_data_feed_configs_on_identifier", unique: true
     t.index ["owned_by_id"], name: "index_amr_data_feed_configs_on_owned_by_id"
