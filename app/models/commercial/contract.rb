@@ -78,6 +78,7 @@ module Commercial
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
+    validate :ensure_only_editable_attributes_changed
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
@@ -118,7 +119,7 @@ module Commercial
     # Some are safe to always be changed, e.g. name
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
-      fields = [:comments, :name, :purchase_order_number, :number_of_schools]
+      fields = [:comments, :name, :purchase_order_number, :number_of_schools, :updated_by_id]
       fields = fields + [:status] if provisional?
       unless licences.invoiced.exists?
         fields = fields + [:agreed_school_price, :start_date, :end_date]
@@ -130,6 +131,27 @@ module Commercial
 
     def destroy_error_message
       'Cannot delete a contract with an invoiced licence'
+    end
+
+    validate :ensure_only_editable_attributes_changed
+
+    private
+
+    def ensure_only_editable_attributes_changed
+      return if new_record?
+
+      allowed = editable_attributes.map(&:to_s)
+      # status is editable if previous status was provisional
+      if status_changed? && status_was.to_s == 'provisional'
+        allowed << 'status'
+      end
+
+      changed   = changes_to_save.keys
+      forbidden = changed - allowed
+
+      forbidden.each do |attr|
+        errors.add(attr, 'cannot be changed once the contract is in its current state')
+      end
     end
   end
 end

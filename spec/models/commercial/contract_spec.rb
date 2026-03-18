@@ -44,6 +44,53 @@ describe Commercial::Contract do
         end
       end
     end
+
+    describe 'when validating field changes' do
+      context 'when the contract is provisional' do
+        let(:contract) { create(:commercial_contract, status: :provisional) }
+
+        it 'allows editing fields that are editable when provisional' do
+          contract.status = :confirmed
+          expect(contract).to be_valid
+        end
+
+        it 'prevents editing fields that are never editable' do
+          contract.product = create(:commercial_product)
+          expect(contract).not_to be_valid
+          expect(contract.errors[:product_id]).to include('cannot be changed once the contract is in its current state')
+        end
+      end
+
+      context 'when the contract has no invoiced licences' do
+        let(:contract) { create(:commercial_contract) }
+
+        it 'allows editing fields that are editable before invoicing' do
+          contract.start_date = contract.start_date + 1.day
+          expect(contract).to be_valid
+        end
+      end
+
+      context 'when the contract has invoiced licences' do
+        let(:contract) { create(:commercial_contract, agreed_school_price: 100) }
+
+        before do
+          create(:commercial_licence, contract:, status: :invoiced)
+        end
+
+        it 'prevents editing fields that become locked after invoicing' do
+          contract.agreed_school_price = contract.agreed_school_price + 1
+          expect(contract).not_to be_valid
+          expect(contract.errors[:agreed_school_price]).to include('cannot be changed once the contract is in its current state')
+        end
+      end
+
+      context 'when creating' do
+        it 'allows setting any field' do
+          new_contract = build(:commercial_contract)
+          expect(new_contract).to be_valid
+        end
+      end
+    end
   end
 
   describe '#status_colour' do
