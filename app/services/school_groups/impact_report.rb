@@ -1,7 +1,5 @@
 module SchoolGroups
   class ImpactReport
-    include ActionView::Helpers::NumberHelper
-
     attr_reader :school_group
 
     def initialize(school_group)
@@ -25,7 +23,15 @@ module SchoolGroups
     end
 
     def generated_at
-      Time.zone.now
+      @generated_at ||= Time.zone.now
+    end
+
+    def twelve_months_ago
+      @twelve_months_ago ||= generated_at - 12.months
+    end
+
+    def three_months_ago
+      @three_months_ago ||= generated_at - 3.months
     end
 
     def overview
@@ -51,7 +57,7 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
-      delegate :school_group, :visible_schools, :data_visible_schools, to: :impact_report
+      delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago, :three_months_ago, to: :impact_report
     end
 
     # Will move these out into seperate files at some point
@@ -61,7 +67,7 @@ module SchoolGroups
       end
 
       def users_logged_in_recently
-        school_group.users.recently_logged_in(3.months.ago).count
+        school_group.users.recently_logged_in(three_months_ago).count
       end
 
       def pupils
@@ -76,12 +82,22 @@ module SchoolGroups
         1500
       end
 
-      def enrolling_schools
-        school_group.onboardings_for_group.incomplete.count
+      # schools enrolled in the last 12 months
+      def enrolled_schools
+        school_group
+          .onboardings_for_group
+          .joins(:events)
+          .where(school_onboarding_events: {
+            event: SchoolOnboardingEvent.events[:onboarding_complete]
+          })
+          .where('school_onboarding_events.created_at >= ?', twelve_months_ago)
+          .distinct
+          .count
       end
 
-      def enrolled_schools
-        2
+      # schools still enrolling
+      def enrolling_schools
+        school_group.onboardings_for_group.incomplete.count
       end
     end
 
@@ -130,7 +146,7 @@ module SchoolGroups
     class Engagement < Base
       def activities
         Activity
-          .between(12.months.ago, Time.zone.now)
+          .between(twelve_months_ago, generated_at)
           .joins(:school)
           .merge(visible_schools)
           .count
@@ -139,7 +155,7 @@ module SchoolGroups
       def actions
         Observation
           .intervention
-          .between(12.months.ago, Time.zone.now)
+          .between(twelve_months_ago, generated_at)
           .joins(:school)
           .merge(visible_schools)
           .count
@@ -147,7 +163,7 @@ module SchoolGroups
 
       def points
         Observation
-          .between(12.months.ago, Time.zone.now)
+          .between(twelve_months_ago, generated_at)
           .joins(:school)
           .merge(visible_schools)
           .sum(:points)
@@ -156,7 +172,7 @@ module SchoolGroups
       def school
         @school ||= School
           .joins(:observations)
-          .merge(Observation.between(12.months.ago, Time.zone.now))
+          .merge(Observation.between(twelve_months_ago, generated_at))
           .merge(visible_schools)
           .select('schools.*, SUM(observations.points) AS total_points')
           .group('schools.id')
@@ -167,7 +183,7 @@ module SchoolGroups
       def school_activities
         school
           .activities
-          .between(12.months.ago, Time.zone.now)
+          .between(twelve_months_ago, generated_at)
           .count
       end
 
@@ -175,14 +191,14 @@ module SchoolGroups
         school
           .observations
           .intervention
-          .between(12.months.ago, Time.zone.now)
+          .between(twelve_months_ago, generated_at)
           .count
       end
 
       def programmes
         Programme
           .completed
-          .where(created_at: 12.months.ago..)
+          .where(created_at: twelve_months_ago..)
           .joins(:school)
           .merge(visible_schools)
           .count

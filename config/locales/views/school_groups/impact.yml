@@ -1,0 +1,93 @@
+---
+en:
+  school_groups:
+    impact:
+      energy_efficiency:
+        analysis: Want to explore our latest analysis in more detail?
+        cards:
+          reduced_electricity_emissions:
+            subtext: Reduced emissions by reducing electricity use in %{count} schools in the last 12 months
+            title: Reduced electricity emissions
+          reduced_gas_emissions:
+            subtext: Reduced emissions by reducing gas use in %{count} schools in the last 12 months
+            title: Reduced gas emissions
+          total_electricity_savings:
+            subtext: Cost saving by reducing electricity use in %{count} schools in the last 12 months using current tariffs
+            title: Total electricity savings
+          total_gas_savings:
+            subtext: Cost saving by reducing gas use in %{count} schools in last 12 months using current tariffs
+            title: Total gas savings
+        description: How are schools in this group making progress towards being more energy efficient?
+        featured:
+          description: "%{school} have reduced their annual electricity consumption by %{percentage_reduction}% in the last 12 months"
+          title: Featured energy efficient school
+        title: Energy Efficiency
+      engagement:
+        cards:
+          actions:
+            subtext: Recorded in the last 12 months
+            title: Adult actions
+          activities:
+            subtext: Recorded in the last 12 months
+            title: Pupil activities
+          points:
+            subtext: Points scored in the last 12 months in our energy saving competitions
+            title: Points
+          programmes:
+            subtext: Completed in the last 12 months
+            title: Energy saving programmes
+          targets:
+            subtext: Number of active Energy Saving Targets set by schools in the group
+            title: Current targets
+        description: How are schools in this group engaging with the Energy Sparks education programme?
+        featured:
+          description: "%{school} is currently the most active school in this group, having recorded %{activities} pupil activities and %{actions} adult actions in the last 12 months"
+          title: Featured school
+        looking_for_more_detail: Looking for more detail?
+        title: Engagement
+      feature:
+        description_html:
+          one: Discover how our energy management tool and education programme have been delivering impact for <strong>1</strong> school in this <strong>%{group_type}</strong>
+          other: Discover how our energy management tool and education programme have been delivering impact for <strong>%{count}</strong> schools in this <strong>%{group_type}</strong>
+        read_more_html: "<a href='%{href}'>Read more</a> about how we generate these impact reports"
+        title: "%{school_group} Impact Report"
+      overview:
+        cards:
+          enrolled_schools:
+            subtext: Number of schools onboarded in the last 12 months
+            title: Enrolled schools
+          enrolling_schools:
+            subtext: Number of schools currently going through onboarding
+            title: Enrolling schools
+          funded_places:
+            subtext: Value of free access to Energy Sparks provided to %{count} schools this year
+            title: Funded places
+          pupils:
+            subtext: Benefitting from access to our educational programme
+            title: Pupils
+          schools:
+            subtext:
+              one: Of which %{count} has energy analysis available
+              other: Of which %{count} have energy analysis available
+            title: Schools
+          users:
+            subtext:
+              one: Of which %{count} has logged into the tool in the last 3 months
+              other: Of which %{count} have logged into the tool in the last 3 months
+              zero: Number of group and school users
+            title: Users
+        description: How many schools and users are enrolled in Energy Sparks from this group?
+        title: Overview
+      potential_savings:
+        cards:
+          electricity_savings:
+            subtext: By reducing out of hours electricity use
+            title: Potential electricity savings
+          gas_savings:
+            subtext: By turning down thermostats by 1C in %{count} schools
+            title: Potential gas savings
+          solar_panels:
+            subtext: Benefits from installing solar on an additional %{count} schools
+            title: Install solar panels
+        description: What additional savings have we identified that can help these schools continue to reduce their energy bills and carbon emissions?
+        title: Potential savings

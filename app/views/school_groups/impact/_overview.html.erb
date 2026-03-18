@@ -19,6 +19,7 @@
                                      count: impact_report.schools_data_visible)
         end %>
   <% end %>
+
   <% grid.with_stats_card do |card| %>
     <%= card.with_header title: t('cards.users.title', scope: i18n_scope) %>
     <%= card.with_figure number_with_delimiter(impact_report.overview.users) %>
@@ -27,11 +28,13 @@
                                    count: impact_report.overview.users_logged_in_recently)
         end %>
   <% end %>
+
   <% grid.with_stats_card do |card| %>
     <%= card.with_header title: t('cards.pupils.title', scope: i18n_scope) %>
     <%= card.with_figure number_with_delimiter(impact_report.overview.pupils) %>
     <%= card.with_subtext { t('cards.pupils.subtext', scope: i18n_scope) } %>
   <% end %>
+
   <% grid.with_stats_card(if: false) do |card| %>
     <%= card.with_header title: t('cards.funded_places.title', scope: i18n_scope) %>
     <%= card.with_figure format_unit(impact_report.overview.funded_places_value, :£) %>
@@ -40,31 +43,36 @@
         end %>
     <%= card.with_placeholder %>
   <% end %>
-  <% grid.with_stats_card do |card| %>
+
+  <%= show_enrolling = impact_report.overview.enrolling_schools > impact_report.overview.enrolled_schools %>
+  <% grid.with_stats_card(if: show_enrolling) do |card| %>
     <%= card.with_header title: t('cards.enrolling_schools.title', scope: i18n_scope) %>
-    <% if impact_report.overview.enrolling_schools > impact_report.overview.enrolled_schools %>
-      <%= card.with_figure number_with_delimiter(impact_report.overview.enrolling_schools) %>
-      <%= card.with_subtext do
-            t('cards.enrolling_schools.onboarding', scope: i18n_scope)
-          end %>
-    <% else %>
-      <%= card.with_figure number_with_delimiter(impact_report.overview.enrolled_schools) %>
-      <%= card.with_subtext do
-            t('cards.enrolling_schools.onboarded', scope: i18n_scope)
-          end %>
-    <% end %>
-    <%= card.with_placeholder %>
+    <%= card.with_figure number_with_delimiter(impact_report.overview.enrolling_schools) %>
+    <%= card.with_subtext do
+          t('cards.enrolling_schools.subtext', scope: i18n_scope)
+        end %>
+  <% end %>
+
+  <% grid.with_stats_card(if: !show_enrolling) do |card| %>
+    <%= card.with_header title: t('cards.enrolled_schools.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.overview.enrolled_schools) %>
+    <%= card.with_subtext do
+          t('cards.enrolled_schools.subtext', scope: i18n_scope)
+        end %>
   <% end %>
 <% end %>
 
 <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
                                          show_markers: false,
                                          theme: :accent,
-                                         classes: 'rounded-xl p-4 mb-4',
+                                         classes: 'rounded-3 p-4 mb-4',
                                          bs5: bs5?,
                                          show_arrows: :side) do |carousel| %>
   <% Testimonial.all.active.shuffle.each do |testimonial| %>
     <%= carousel.with_testimonial_card(testimonial: testimonial) %>
   <% end %>
-  <%= carousel.with_placeholder('Fix carousel to work with bootstrap 5. Use testimonials for school group') %>
+  <%= carousel.with_placeholder(
+        'Fix carousel to work with bootstrap 5. Use testimonials for school group',
+        label: 'Note'
+      ) %>
 <% end %>
