@@ -30,7 +30,7 @@ module Admin::Commercial
       @licence = Commercial::Licence.build(licence_params.merge(created_by: current_user))
       if @licence.start_date.nil? && @licence.end_date.nil?
         @licence.assign_attributes(
-          Commercial::LicenceManager.new(@licence.school).licence_dates(@licence.contract)
+          Commercial::LicenceManager.licence_dates(@licence.contract)
         )
       end
       if @licence.save
