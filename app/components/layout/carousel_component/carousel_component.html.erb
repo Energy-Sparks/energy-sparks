@@ -1,5 +1,5 @@
 <%= tag.div id: id, class: class_names(classes, 'carousel slide'),
-            data: { wrap: true, bs_wrap: true, interval: true, bs_interval: true } do %>
+            data: { wrap: true, bs_wrap: true, interval: false, bs_interval: false } do %>
   <div class="carousel-inner">
     <% panels.each do |panel| %>
       <%= panel %>
