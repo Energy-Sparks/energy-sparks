@@ -38,7 +38,7 @@ module Layout
       end
 
       def call
-        tag.a(class: class_names("carousel-control-#{@direction}", classes), href: "##{id}", role: 'button', 'data-slide': @direction, 'data-bs-slide': @direction) do
+        tag.a(class: class_names("carousel-control-#{@direction}", classes), href: "##{id}", type: 'button', 'data-slide': @direction, 'data-bs-slide': @direction) do
           tag.span(class: "carousel-control-#{@direction}-icon", 'aria-hidden': true) +
             tag.span(class: 'visually-hidden') do
               @direction == :next ? t('common.labels.next') : t('common.labels.previous')

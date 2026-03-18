@@ -66,13 +66,12 @@
                                          show_markers: false,
                                          theme: :accent,
                                          classes: 'rounded-3 p-4 mb-4',
-                                         bs5: bs5?,
                                          show_arrows: :side) do |carousel| %>
   <% Testimonial.all.active.shuffle.each do |testimonial| %>
     <%= carousel.with_testimonial_card(testimonial: testimonial) %>
   <% end %>
   <%= carousel.with_placeholder(
-        'Fix carousel to work with bootstrap 5. Use testimonials for school group',
-        label: 'Note'
+        'Allow testimonials to be associated with a school group, then show here',
+        label: 'Todo'
       ) %>
 <% end %>
