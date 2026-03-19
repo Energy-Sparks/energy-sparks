@@ -54,4 +54,4 @@ PreCommit:
       - 'public/error-fonts/*'
   Scss:
     enabled: true
-    command: ['bin/rake', 'scss:colours[check]']
+    command: ['bin/rake', 'scss:colours[check]', 'scss:components[check]']
