@@ -1,36 +1,33 @@
 <%= tag.div id: id, class: classes do %>
-  <%= helpers.simple_form_for(
-        @contract,
-        url: form_path,
-        method: :put
-      ) do |f| %>
-    <div class="licence-editor-table-wrapper">
-      <table id="<%= "#{@contract.id}-licence-table" %>" class="table table-sm align-middle licence-editor-table">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>School</th>
-            <% if show_field?(:start_date) %>
-              <th>Start</th>
-            <% end %>
-            <% if show_field?(:end_date) %>
-              <th>End</th>
-            <% end %>
-            <% if show_field?(:status) %>
-              <th>Status</th>
-            <% end %>
-            <% if show_field?(:school_specific_price) %>
-              <th>Price</th>
-            <% end %>
-            <% if show_field?(:invoice_reference) %>
-              <th>Invoice Ref</th>
-            <% end %>
-          </tr>
-        </thead>
-        <% licences.each do |licence| %>
-          <tbody class="licence-block">
+  <div class="licence-editor-table-wrapper">
+    <table id="<%= "#{@contract.id}-licence-table" %>" class="table table-sm align-middle licence-editor-table">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>School</th>
+          <% if show_field?(:start_date) %>
+            <th>Start</th>
+          <% end %>
+          <% if show_field?(:end_date) %>
+            <th>End</th>
+          <% end %>
+          <% if show_field?(:status) %>
+            <th>Status</th>
+          <% end %>
+          <% if show_field?(:school_specific_price) %>
+            <th>Price</th>
+          <% end %>
+          <% if show_field?(:invoice_reference) %>
+            <th>Invoice Ref</th>
+          <% end %>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="licence-block">
+        <%= helpers.simple_form_for(@contract, url: form_path, method: :put) do |f| %>
+          <% licences.each do |licence| %>
             <%= f.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
-              <tr id="<%= "#{licence.id}-main-row" %>" class="main-row">
+              <tr id="<%= "licence-#{licence.id}-main-row" %>" class="main-row">
                 <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
                 <td><%= link_to licence.school.name, school_path(licence.school) %></td>
 
@@ -56,9 +53,16 @@
                 <% if show_field?(:invoice_reference) %>
                   <td class="col-1"><%= lf.input :invoice_reference, label: false %></td>
                 <% end %>
+                <td>
+                  <%= lf.hidden_field :_destroy, value: '0', class: 'destroy-flag' %>
+                  <%= button_tag 'Delete',
+                                 type: :button,
+                                 data: { target: licence.id },
+                                 class: 'btn btn-sm btn-danger licence-toggle-delete' %>
+                </td>
               </tr>
               <% if show_field?(:comments) %>
-                <tr id="<%= "#{licence.id}-comments-row" %>" class="comments-row">
+                <tr id="<%= "licence-#{licence.id}-comments-row" %>" class="comments-row">
                   <td colspan="2"></td>
                   <td colspan="5">
                     <%= lf.input :comments,
@@ -70,11 +74,11 @@
                 </tr>
               <% end %>
             <% end %>
-          </tbody>
+          <% end %>
         <% end %>
-      </table>
-    </div>
-    <%= f.submit 'Save changes', class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
-  <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= button_tag 'Save changes', form: "edit_commercial_contract_#{@contract.id}", class: 'btn btn-primary' %>
+  <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
 <% end %>

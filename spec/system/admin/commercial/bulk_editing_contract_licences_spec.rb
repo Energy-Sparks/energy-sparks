@@ -29,6 +29,25 @@ describe 'bulk editing contract licences' do
     fill_in(field_name(licence, field), with: value)
   end
 
+  context 'when deleting a licence', :js do
+    before do
+      within("#licence-#{licence.id}-main-row") do
+        click_on 'Delete'
+      end
+    end
+
+    it { expect(page).to have_content('Undo') }
+
+    context 'when the changes are saved' do
+      before { click_on 'Save changes' }
+
+      it 'deletes the licence' do
+        expect(page).to have_content('Licences updated')
+        expect(Commercial::Licence.all).to eq([modified_licence])
+      end
+    end
+  end
+
   context 'when modifying a single licence', :js do
     before do
       fill_in_field(modified_licence, :school_specific_price, '200.0')

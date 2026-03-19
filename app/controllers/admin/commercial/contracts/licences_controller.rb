@@ -21,6 +21,7 @@ module Admin
         def contract_params
           params.require(:commercial_contract).permit(
             licences_attributes: [
+              :_destroy,
               :id, :start_date, :end_date, :status,
               :school_specific_price, :invoice_reference, :comments
             ]

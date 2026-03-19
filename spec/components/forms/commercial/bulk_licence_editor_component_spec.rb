@@ -37,7 +37,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
       let(:table_id) { "##{contract.id}-licence-table" }
       let(:expected_header) do
         [
-          ['Id', 'School', 'Start', 'End', 'Status', 'Price', 'Invoice Ref']
+          ['Id', 'School', 'Start', 'End', 'Status', 'Price', 'Invoice Ref', '']
         ]
       end
     end
@@ -66,7 +66,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
       end
 
       context 'when rendering the main row' do
-        subject(:main) { page.find("tr##{licence.id}-main-row") }
+        subject(:main) { page.find("tr#licence-#{licence.id}-main-row") }
 
         it 'links to licence' do
           expect(main).to have_link("##{licence.id}", href: admin_commercial_licence_path(licence))
@@ -100,7 +100,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
       end
 
       context 'when rendering the comments row' do
-        subject(:comments) { page.find("tr##{licence.id}-comments-row") }
+        subject(:comments) { page.find("tr#licence-#{licence.id}-comments-row") }
 
         it 'renders the comments' do
           expect(comments).to have_field(field_name(licence, :comments),
@@ -122,13 +122,13 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
         let(:table_id) { "##{contract.id}-licence-table" }
         let(:expected_header) do
           [
-            ['Id', 'School', 'Start', 'End', 'Status', 'Price']
+            ['Id', 'School', 'Start', 'End', 'Status', 'Price', '']
           ]
         end
       end
 
       context 'when rendering the main row' do
-        subject(:main) { page.find("tr##{licence.id}-main-row") }
+        subject(:main) { page.find("tr#licence-#{licence.id}-main-row") }
 
         it 'renders the invoice ref' do
           expect(main).not_to have_field(field_name(licence, :invoice_reference),
@@ -137,7 +137,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
       end
 
       it 'does not render the comments row' do
-        expect(page).not_to have_css("tr##{licence.id}-comments-row")
+        expect(page).not_to have_css("tr#licence-#{licence.id}-comments-row")
         expect(page).not_to have_field(field_name(licence, :comments),
                                     with: 'Some comments')
       end

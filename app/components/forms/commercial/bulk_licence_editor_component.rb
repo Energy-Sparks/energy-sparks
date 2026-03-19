@@ -10,6 +10,12 @@ module Forms
         @fields = fields - exclude_fields
       end
 
+      def before_render
+        view_context.content_for(:head) do
+          helpers.javascript_import_module_tag('commercial/licence-toggle-delete')
+        end
+      end
+
       private
 
       def form_path

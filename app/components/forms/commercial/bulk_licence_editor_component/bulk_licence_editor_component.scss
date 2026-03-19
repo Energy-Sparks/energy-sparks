@@ -32,4 +32,9 @@
   .licence-editor-table tbody.licence-block:nth-of-type(odd) {
     background-color: $gray-100;
   }
+
+  .pending-delete {
+    opacity: 0.4;
+    text-decoration: line-through;
+  }
 }

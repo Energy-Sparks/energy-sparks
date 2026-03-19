@@ -80,7 +80,7 @@ module Commercial
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
 
-    accepts_nested_attributes_for :licences
+    accepts_nested_attributes_for :licences, allow_destroy: true
 
     def self.as_renewal(original)
       new(
