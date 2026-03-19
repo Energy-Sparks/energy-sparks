@@ -32,7 +32,7 @@ module Admin
 
       def produce_csv(school_group)
         CSV.generate do |csv|
-          csv << ['School name', 'State', 'Contact email', 'Notes', 'Last event', 'Last event date', 'Public', 'Visible', 'Active']
+          csv << ['School name', 'State', 'Contact email', 'Notes', 'Invite sent', 'Last event', 'Last event date', 'Public', 'Visible', 'Active']
 
           school_group.onboardings_for_group.by_name.incomplete.each do |school_onboarding|
             csv << produce_csv_row_automatic(school_onboarding, 'In progress')
@@ -55,6 +55,7 @@ module Admin
           state,
           school_onboarding.contact_email,
           school_onboarding.notes,
+          school_onboarding.started_on&.to_fs(:es_short),
           last_event.event.to_s.humanize,
           last_event.created_at.to_fs(:es_short),
           school_onboarding.school ? helpers.y_n(school_onboarding.school.public) : '',

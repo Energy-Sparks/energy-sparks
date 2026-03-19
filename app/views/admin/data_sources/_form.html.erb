@@ -13,7 +13,7 @@
       lagging (default 7)' %>
       <%= f.input :alerts_on, label: 'Turn on email alerts for lagging meters?' %>
       <%= f.input :alert_percentage_threshold, label: 'Percentage of meters required to be lagging to generate an alert
-      (default 25)', input_html: { value: 25 } %>
+      (default 25)' %>
       <%= f.input :loa_contact_details, label: 'Who to send LOA to' %>
       <%= f.input :data_prerequisites %>
       <%= f.input :data_feed_type, label: 'Type of data feed' %>
@@ -25,6 +25,11 @@
       <%= f.input :comments %>
       <%= f.input :load_tariffs, label: 'Load tariffs for SMETS meters' %>
       <%= f.submit 'Save', class: 'btn btn-primary' %>
+      <% if data_source.persisted? %>
+        <%= link_to 'Delete', admin_data_source_path(data_source), method: :delete,
+                                                                   data: { confirm: 'Are you sure?' },
+                                                                   class: 'btn btn-danger' %>
+      <% end %>
     <% end %>
   </div>
 </div>

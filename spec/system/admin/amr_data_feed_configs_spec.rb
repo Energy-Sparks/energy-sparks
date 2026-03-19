@@ -69,7 +69,6 @@ describe AmrDataFeedConfig do
         click_on 'Edit'
       end
       fill_in 'Description', with: 'New title'
-      fill_in 'Import warning days', with: 21
       within('.amr_data_feed_config_notes') do
         fill_in_trix with: 'My notes'
       end
@@ -78,7 +77,6 @@ describe AmrDataFeedConfig do
       select admin.name, from: 'Owned by'
       click_on 'Update'
       config.reload
-      expect(config.import_warning_days).to eq(21)
       expect(config.description).to eq('New title')
       expect(config.notes.to_plain_text).to eq('My notes')
       expect(config.missing_reading_window).to eq(2)

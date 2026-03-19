@@ -1,1 +1,4 @@
-<%= render 'form', contract: @contract, title: 'New contract' %>
+<%= render 'form',
+           contract: @contract,
+           original: @original,
+           title: @original.present? ? 'Create renewed contract' : 'Create new contract' %>
