@@ -52,6 +52,11 @@ PreCommit:
       - 'vendor/**/*'
       - 'app/assets/images/**/*'
       - 'public/error-fonts/*'
-  Scss:
+  ScssColours:
     enabled: true
-    command: ['bin/rake', 'scss:colours[check]', 'scss:components[check]']
+    description: 'Check for needed changes in colours scss'
+    command: ['bin/rake', 'scss:colours[check]']
+  ScssComponents:
+    enabled: true
+    description: 'Check for needed changes in components scss index'
+    command: ['bin/rake', 'scss:components[check]']
