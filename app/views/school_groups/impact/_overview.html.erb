@@ -66,7 +66,8 @@
                                          show_markers: false,
                                          theme: :accent,
                                          classes: 'rounded-3 p-4 mb-4',
-                                         show_arrows: :side) do |carousel| %>
+                                         show_arrows: :side,
+                                         bs5: bs5?) do |carousel| %>
   <% Testimonial.all.active.shuffle.each do |testimonial| %>
     <%= carousel.with_testimonial_card(testimonial: testimonial) %>
   <% end %>

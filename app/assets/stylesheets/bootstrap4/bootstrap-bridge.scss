@@ -11,6 +11,12 @@ button.btn-close { @extend button.close !optional; }
 // Use class="row g-0" instead of "row no-gutters"
 .g-0          { @extend .no-gutters !optional; }
 
+// These do not exist in bs4, but do in 5:
+.top-0 { top: 0 !important; }
+.bottom-0 { bottom: 0 !important; }
+.start-0 { left: 0 !important; }
+.end-0 { right: 0 !important; }
+
 // Float direction
 .float-start  { @extend .float-left !optional; }
 .float-end    { @extend .float-right !optional; }
