@@ -15,7 +15,6 @@
 #
 
 gemfile: Gemfile
-verify_signatures: false
 
 PreCommit:
   BundleAudit:
@@ -44,6 +43,8 @@ PreCommit:
     enabled: true
   RuboCop:
     enabled: true
+    env:
+      CI: 'true' # so uses rubocop_todo.yml
   TrailingWhitespace:
     enabled: true
     exclude:
