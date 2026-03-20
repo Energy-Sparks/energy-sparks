@@ -1,0 +1,9 @@
+<% content_for :header_title, 'Admin Index' %>
+
+<div class="container">
+    <ul>
+        <% @ad_users.each do |ad| %>
+            <li><%= link_to ad.display_name, admin_dashboard_path(ad) %></li>
+        <% end %>
+    </ul>
+</div>
