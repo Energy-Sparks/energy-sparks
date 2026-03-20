@@ -1,6 +1,6 @@
 module Layout
   class CarouselComponent < LayoutComponent
-    attr_reader :show_arrows
+    attr_reader :show_arrows, :show_markers
 
     renders_many :panels, types: {
       equivalence: { renders: ->(**kwargs) { EquivalenceComponent.new(**with_classes(**kwargs)) }, as: :equivalence },

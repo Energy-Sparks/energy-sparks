@@ -6,10 +6,11 @@
     <% end %>
   </div>
   <% if panels.length > 1 %>
-      <%= render ArrowComponent.new(id: id, direction: :prev) %>
-      <%= render ArrowComponent.new(id: id, direction: :next) %>
-
-      <% if show_markers? %>
+      <% if show_arrows %>
+        <%= render ArrowComponent.new(id: id, direction: :prev) %>
+        <%= render ArrowComponent.new(id: id, direction: :next) %>
+      <% end %>
+      <% if show_markers %>
         <%= content_tag (bs5? ? :div : :ol), class: 'carousel-indicators pb-4' do %>
           <% panels.size.times do |n| %>
             <% if bs5? %>
