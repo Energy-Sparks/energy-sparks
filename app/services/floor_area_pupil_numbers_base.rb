@@ -6,10 +6,15 @@ class FloorAreaPupilNumbersBase
 
   attr_reader :area_pupils_history
 
-  def initialize(school_attributes, key, add_attribute: false)
+  def initialize(school_attributes, key, default, add_attribute: false)
     @key = key
+    @default = default
     @add_attribute = add_attribute
     @area_pupils_history = process_meter_attributes(school_attributes)
+  end
+
+  def value(start_date = nil, end_date = nil)
+    @area_pupils_history.nil? ? @default : calculate_days_weighted_value(start_date, end_date)
   end
 
   private
@@ -17,7 +22,8 @@ class FloorAreaPupilNumbersBase
   def process_meter_attributes(attributes)
     return nil if attributes.nil?
 
-    attributes.select { |period| period.key?(@key) }.map do |period|
+    attributes.select { |period| period.key?(@key) }
+              .map do |period|
       { start_date: period.fetch(:start_date, DEFAULT_START_DATE),
         end_date: period.fetch(:end_date, DEFAULT_END_DATE),
         value: period[@key] }.merge(@add_attribute ? { attribute: period } : {})

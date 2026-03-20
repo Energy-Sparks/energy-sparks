@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Schools::PupilNumberUpdater do
-  subject(:school) { create(:school, number_of_pupils: 100) }
+  subject(:school) do
+    create(:school, calendar: create(:school_calendar, :with_previous_and_next_academic_years),
+                    number_of_pupils: 100)
+  end
 
   let(:service) { described_class.new(school) }
   let(:pupils) { 200 }
@@ -34,10 +39,10 @@ describe Schools::PupilNumberUpdater do
     school.meter_attributes.order(:created_at).last
   end
 
-  shared_examples 'creates a new attribute' do
+  shared_examples 'it creates a new attribute' do
     it 'creates a new attribute' do
       expect(school.meter_attributes.count).to be >= 1
-      expect(last_attribute.input_data['start_date']).to eq(today)
+      expect(last_attribute.input_data['start_date']).to eq("#{Time.current.year - 2}-09-01")
       expect(last_attribute.input_data['number_of_pupils']).to eq(pupils.to_s)
     end
 
@@ -47,19 +52,19 @@ describe Schools::PupilNumberUpdater do
   end
 
   describe '#update' do
-    context 'when there are no meter attributes' do
+    fcontext 'when there are no meter attributes' do
       before { service.update(pupils) }
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
-    context 'with a meter attribute that ended in the past' do
+    fcontext 'with a meter attribute that ended in the past' do
       before do
         create_meter_attribute(end_date: '01/01/2021')
         service.update(pupils)
       end
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'with a meter attribute that ends in the future' do
@@ -72,7 +77,7 @@ describe Schools::PupilNumberUpdater do
         expect(school.meter_attributes.first.input_data['end_date']).to eq(today)
       end
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'with a current meter attribute with start and end date' do
@@ -81,7 +86,7 @@ describe Schools::PupilNumberUpdater do
         service.update(pupils)
       end
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'with an open-ended meter attribute' do
@@ -94,7 +99,7 @@ describe Schools::PupilNumberUpdater do
         expect(school.meter_attributes.first.input_data['end_date']).to eq(today)
       end
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'with an open-ended meter attribute missing floor area' do
@@ -108,7 +113,7 @@ describe Schools::PupilNumberUpdater do
         expect(last_attribute.input_data['number_of_pupils']).to eq(pupils.to_s)
       end
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'when an attribute ends today' do
@@ -121,7 +126,7 @@ describe Schools::PupilNumberUpdater do
         expect(school.meter_attributes.first.input_data['end_date']).to eq(today)
       end
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'with a deleted meter attribute' do
