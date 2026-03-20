@@ -1,0 +1,7 @@
+<%= render PageNavComponent.new name: 'Overview',
+                                classes: classes,
+                                icon: nil,
+                                href: admin_dashboard_path(current_user),
+                                options: { user: current_user, match_controller: true } do |c| %>
+  <% classes = 'small' %>
+<% end %>
