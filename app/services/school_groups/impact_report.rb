@@ -26,6 +26,10 @@ module SchoolGroups
       @generated_at ||= Time.zone.now
     end
 
+    def last_month
+      generated_at - 1.month
+    end
+
     def twelve_months_ago
       @twelve_months_ago ||= generated_at - 12.months
     end

@@ -68,7 +68,7 @@
 <% end %>
 
 <%= render Layout::GridComponent.new(
-      id: 'energy-efficiency-feature',
+      id: 'energy-efficiency-featured',
       cols: 2,
       theme: :light,
       classes: 'rounded-3 p-4 my-4',
@@ -94,7 +94,7 @@
   <%= grid.with_image(src: 'pupils-jumping.jpg') %>
 <% end %>
 
-<div class='pb-2 text-center' id='energy-efficiency-analysis'>
+<div class='pb-2 text-center' id='energy-efficiency-buttons'>
   <%= render Elements::HeaderComponent.new(
         level: 4,
         title: t('analysis', scope: i18n_scope)

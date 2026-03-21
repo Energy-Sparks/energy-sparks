@@ -7,7 +7,7 @@
   <%= section_header.with_description { t('description', scope: i18n_scope) } %>
 <% end %>
 
-<%= render Layout::GridComponent.new(id: 'engagement-section',
+<%= render Layout::GridComponent.new(id: 'engagement-cards',
                                      cols: 4, classes: 'mb-4',
                                      cell_classes: 'mb-4',
                                      component_classes: 'theme theme-dark') do |grid| %>
@@ -48,7 +48,7 @@
 
 <% if impact_report.engagement.featured_school %>
   <%= render Layout::GridComponent.new(
-        id: 'featured',
+        id: 'engagement-featured',
         cols: 2,
         theme: :accent,
         classes: 'rounded-3 p-4 my-4',
@@ -75,7 +75,7 @@
   <% end %>
 <% end %>
 
-<div class='pb-2 text-center' id='analysis'>
+<div class='pb-2 text-center' id='engagement-buttons'>
   <%= render Elements::HeaderComponent.new(level: 4,
                                            title: t('school_groups.impact.engagement.looking_for_more_detail')) %>
   <%= render Elements::ButtonComponent.new(

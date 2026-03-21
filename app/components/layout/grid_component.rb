@@ -14,6 +14,7 @@ module Layout
       type(:testimonial_card, Cards::TestimonialComponent),
       type(:statement_card, Cards::StatementComponent),
       type(:card, CardComponent),
+      type(:header, Elements::HeaderComponent),
       cell: { renders: ->(**kwargs, &block) { cell(**kwargs) { capture(&block) } }, as: :cell }
     )
 

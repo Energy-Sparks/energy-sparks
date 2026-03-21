@@ -29,6 +29,12 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
     before { Flipper.enable(:impact_reporting)}
 
     before do
+      # so we can show the most engaged school
+      school = school_group.schools.first
+      school.update(scoreboard: create(:scoreboard))
+      create(:activity, school: school)
+
+      # so we can show a testimonial
       create(:testimonial)
       visit school_group_impact_index_path(school_group)
     end
@@ -50,26 +56,32 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
       end
 
       it 'has the read more link' do
-        expect(header).to have_content(strip_tags(I18n.t('school_groups.impact.feature.read_more_html', href: '/')))
-        expect(header).to have_link('Read more', href: '/') # TODO: LINK NEEDS UPDATING
+        expect(header).to have_content(strip_tags(I18n.t('school_groups.impact.feature.read_more_html', href: '#notes')))
+        expect(header).to have_link('Read more', href: '#notes')
       end
     end
 
     describe 'Page body' do
-      it 'renders all the sections' do
-        expect(page).to have_css('#overview-header')
-        expect(page).to have_css('#overview-cards')
-        expect(page).to have_css('#overview-testimonials')
+      it { expect(page).to have_css('#overview-header') }
+      it { expect(page).to have_css('#overview-cards') }
+      it { expect(page).to have_css('#overview-testimonials') }
 
-        expect(page).to have_css('#energy-efficiency-header')
-        expect(page).to have_css('#energy-efficiency-cards')
-        expect(page).to have_css('#energy-efficiency-feature')
-        expect(page).to have_css('#energy-efficiency-analysis')
+      it { expect(page).to have_css('#energy-efficiency-header') }
+      it { expect(page).to have_css('#energy-efficiency-cards') }
+      it { expect(page).to have_css('#energy-efficiency-featured') }
+      it { expect(page).to have_css('#energy-efficiency-buttons') }
 
-        expect(page).to have_css('#potential-savings-header')
-        expect(page).to have_css('#potential-savings-cards')
-        expect(page).to have_css('#potential-savings-button')
-      end
+      it { expect(page).to have_css('#engagement-header') }
+      it { expect(page).to have_css('#engagement-cards') }
+      it { expect(page).to have_css('#engagement-featured') }
+      it { expect(page).to have_css('#engagement-buttons') }
+
+      it { expect(page).to have_css('#potential-savings-header') }
+      it { expect(page).to have_css('#potential-savings-cards') }
+      it { expect(page).to have_css('#potential-savings-button') }
+
+      it { expect(page).to have_css('#notes') }
+      it { expect(page).to have_css('#notes-content') }
     end
   end
 

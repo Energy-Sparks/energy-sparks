@@ -16,9 +16,7 @@
               date: @impact_report.generated_at.to_date.to_fs(:es_long)) %>
       <% end %>
       <%= feature.with_block(classes: 'pt-2') do %>
-        <%= render Admin::PlaceholderComponent.new('Replace link. Modal or link to text at the foot of page') do %>
-          <%= t('school_groups.impact.feature.read_more_html', href: '/') %>
-        <% end %>
+        <%= t('school_groups.impact.feature.read_more_html', href: '#notes') %>
       <% end %>
     <% end %>
   <% end %>
@@ -28,7 +26,7 @@
 <%= render 'energy_efficiency', impact_report: @impact_report %>
 <%= render 'engagement', impact_report: @impact_report %>
 <%= render 'potential_savings', impact_report: @impact_report %>
-<%= render 'notes', impact_report: @impact_report %>
 
 <% content_for :footer do %>
+  <%= render 'notes', impact_report: @impact_report %>
 <% end %>
