@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module Admin
   class PlaceholderComponent < ApplicationComponent
-    BADGE_CLASSES = 'position-absolute top-0 badge text-bg-light fw-light mt-1 z-3'.freeze
-    DEFAULT = 'Contains placeholder data or images'.freeze
+    BADGE_CLASSES = 'position-absolute top-0 badge text-bg-light fw-light mt-1 z-3'
+    DEFAULT = 'Contains placeholder data or images'
 
     def initialize(text = nil, label: 'Placeholder', placement: :left, **_kwargs)
+      super
       @text = text || DEFAULT
       @label = label
       @placement = placement

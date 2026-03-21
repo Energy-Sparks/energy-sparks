@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchoolGroups
   class ImpactReport
     attr_reader :school_group
@@ -14,13 +16,9 @@ module SchoolGroups
       @data_visible_schools ||= school_group.assigned_schools.data_visible
     end
 
-    def visible_schools_count
-      visible_schools.count
-    end
+    delegate :count, to: :visible_schools, prefix: true
 
-    def data_visible_schools_count
-      data_visible_schools.count
-    end
+    delegate :count, to: :data_visible_schools, prefix: true
 
     def generated_at
       @generated_at ||= Time.zone.now
@@ -61,7 +59,8 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
-      delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago, :three_months_ago, to: :impact_report
+      delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago,
+               :three_months_ago, to: :impact_report
     end
 
     # Will move these out into seperate files at some point
@@ -75,7 +74,7 @@ module SchoolGroups
       end
 
       def pupils
-        visible_schools.map(&:number_of_pupils).compact.sum
+        visible_schools.filter_map(&:number_of_pupils).sum
       end
 
       def funded_places
@@ -92,9 +91,9 @@ module SchoolGroups
           .onboardings_for_group
           .joins(:events)
           .where(school_onboarding_events: {
-            event: SchoolOnboardingEvent.events[:onboarding_complete]
-          })
-          .where('school_onboarding_events.created_at >= ?', twelve_months_ago)
+                   event: SchoolOnboardingEvent.events[:onboarding_complete]
+                 })
+          .where(school_onboarding_events: { created_at: twelve_months_ago.. })
           .distinct
           .count
       end
@@ -107,7 +106,7 @@ module SchoolGroups
 
     class EnergyEfficiency < Base
       def total_gas_savings
-        60000
+        60_000
       end
 
       def total_gas_savings_schools
@@ -115,7 +114,7 @@ module SchoolGroups
       end
 
       def total_electricity_savings
-        86000
+        86_000
       end
 
       def total_electricity_savings_schools
@@ -123,7 +122,7 @@ module SchoolGroups
       end
 
       def reduced_gas_emissions
-        40000
+        40_000
       end
 
       def reduced_gas_emissions_schools
@@ -175,13 +174,13 @@ module SchoolGroups
 
       def featured_school
         @featured_school ||= School
-          .joins(:observations)
-          .merge(Observation.between(twelve_months_ago, generated_at))
-          .merge(visible_schools)
-          .select('schools.*, SUM(observations.points) AS total_points')
-          .group('schools.id')
-          .order('total_points DESC')
-          .first
+                             .joins(:observations)
+                             .merge(Observation.between(twelve_months_ago, generated_at))
+                             .merge(visible_schools)
+                             .select('schools.*, SUM(observations.points) AS total_points')
+                             .group('schools.id')
+                             .order(total_points: :desc)
+                             .first
       end
 
       def featured_school_activities
@@ -219,11 +218,11 @@ module SchoolGroups
 
     class PotentialSavings < Base
       def electricity_savings
-        12000
+        12_000
       end
 
       def solar_panels
-        32000
+        32_000
       end
 
       def solar_panels_schools
@@ -231,7 +230,7 @@ module SchoolGroups
       end
 
       def gas_savings
-        11000
+        11_000
       end
 
       def gas_savings_schools
