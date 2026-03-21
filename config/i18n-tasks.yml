@@ -182,6 +182,7 @@ ignore_unused:
   - 'school_groups.impact.energy_efficiency.*'
   - 'school_groups.impact.engagement.*'
   - 'school_groups.impact.potential_savings.*'
+  - 'school_groups.impact.notes.*'
 
 ## Exclude these keys from the `i18n-tasks eq-base' report:
 # ignore_eq_base:
