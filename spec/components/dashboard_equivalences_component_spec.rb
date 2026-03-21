@@ -117,8 +117,8 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
       end
 
       it 'does not have the navigation' do
-        expect(html).not_to have_css('a.carousel-control-prev')
-        expect(html).not_to have_css('a.carousel-control-next')
+        expect(html).not_to have_css('button.carousel-control-prev')
+        expect(html).not_to have_css('button.carousel-control-next')
       end
 
       context 'with multiple equivalences' do
@@ -134,8 +134,8 @@ RSpec.describe DashboardEquivalencesComponent, :include_url_helpers, type: :comp
         end
 
         it 'adds the navigation' do
-          expect(html).to have_css('a.carousel-control-prev')
-          expect(html).to have_css('a.carousel-control-next')
+          expect(html).to have_css('button.carousel-control-prev')
+          expect(html).to have_css('button.carousel-control-next')
         end
       end
     end
