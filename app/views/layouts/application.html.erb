@@ -30,7 +30,7 @@
     <% end %>
   </div>
   <% if content_for?(:footer) %>
-    <div class="container-fluid pt-2 <%= @footer_class || 'bg-dark' %>">
+    <div class="container-fluid py-2 theme <%= @footer_theme || 'theme-dark' %>">
       <div class="container">
         <%= yield :footer %>
       </div>
