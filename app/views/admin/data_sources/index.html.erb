@@ -27,6 +27,9 @@
         <td><%= data_source.percentage_of_lagging_meters %></td>
         <td class='nowrap text-end'>
           <%= link_to 'Edit', edit_admin_data_source_path(data_source), class: 'btn btn-sm' %>
+          <%= link_to 'Delete', admin_data_source_path(data_source), method: :delete,
+                                                                     data: { confirm: 'Are you sure?' },
+                                                                     class: 'btn btn-outline-danger btn-sm' %>
         </td>
       </tr>
     <% end %>
