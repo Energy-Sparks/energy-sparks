@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationComponent < ViewComponent::Base
   include ApplicationHelper
   include LocaleHelper
@@ -16,6 +18,7 @@ class ApplicationComponent < ViewComponent::Base
   #   end
   # end
 
+  # rubocop:disable Metrics/ParameterLists
   def initialize(*_args, id: nil, classes: '', current_user: nil, bs5: false, **_kwargs)
     super()
     @id = id
@@ -24,6 +27,7 @@ class ApplicationComponent < ViewComponent::Base
     @bs5 = bs5 # pass in to make component bootstrap 5 switchable
     add_classes(self.class.name.underscore.dasherize.parameterize)
   end
+  # rubocop:enable Metrics/ParameterLists
 
   def add_classes(classes)
     @classes = class_names(@classes, classes)
@@ -40,15 +44,15 @@ class ApplicationComponent < ViewComponent::Base
 
   class << self
     def colour_variants
-      [:primary, :secondary, :success, :info, :warning, :danger, :light, :dark]
+      %i[primary secondary success info warning danger light dark]
     end
 
     def raise_unknown_variant_error(**pair)
       key, value = pair.first
 
-      unless colour_variants.include?(value)
-        raise ArgumentError, "Unknown #{key} variant: #{value}. Valid values are: #{colour_variants.join(', ')}"
-      end
+      return if colour_variants.include?(value)
+
+      raise ArgumentError, "Unknown #{key} variant: #{value}. Valid values are: #{colour_variants.join(', ')}"
     end
   end
 end

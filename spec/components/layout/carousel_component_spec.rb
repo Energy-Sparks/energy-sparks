@@ -13,7 +13,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
     {
       id: id,
       classes: classes,
-      theme: theme,
+      theme: theme
     }
   end
 
@@ -37,9 +37,9 @@ RSpec.describe Layout::CarouselComponent, type: :component do
 
     it { expect(html).to have_content('Television') }
 
-    it { expect(html).not_to have_css('button.carousel-control-prev') }
-    it { expect(html).not_to have_css('button.carousel-control-next') }
-    it { expect(html).not_to have_css('ol.carousel-indicators li') }
+    it { expect(html).to have_no_button(class: 'carousel-control-prev') }
+    it { expect(html).to have_no_button(class: 'carousel-control-next') }
+    it { expect(html).to have_no_css('ol.carousel-indicators li') }
 
     context 'with multiple equivalences' do
       let(:html) do
@@ -66,8 +66,8 @@ RSpec.describe Layout::CarouselComponent, type: :component do
       context 'with arrows switched off' do
         let(:params) { { id: id, show_arrows: false } }
 
-        it { expect(html).not_to have_css('button.carousel-control-prev') }
-        it { expect(html).not_to have_css('button.carousel-control-next') }
+        it { expect(html).to have_no_button(class: 'carousel-control-prev') }
+        it { expect(html).to have_no_button(class: 'carousel-control-next') }
         it { expect(html).to have_css('ol.carousel-indicators li') }
       end
 
@@ -82,7 +82,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
       context 'with arrows at the bottom' do
         let(:params) { { id: id, show_arrows: :bottom } }
 
-        it { expect(html).not_to have_css('.side') }
+        it { expect(html).to have_no_css('.side') }
         it { expect(html).to have_css('.bottom button.carousel-control-prev') }
         it { expect(html).to have_css('.bottom button.carousel-control-next') }
         it { expect(html).to have_css('.bottom ol.carousel-indicators li') }
@@ -93,7 +93,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
 
         it { expect(html).to have_css('.bottom button.carousel-control-prev') }
         it { expect(html).to have_css('.bottom button.carousel-control-next') }
-        it { expect(html).not_to have_css('ol.carousel-indicators li') }
+        it { expect(html).to have_no_css('ol.carousel-indicators li') }
       end
 
       context 'when using bootstrap 5' do

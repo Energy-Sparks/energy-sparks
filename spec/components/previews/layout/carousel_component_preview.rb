@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Layout
   class CarouselComponentPreview < ViewComponent::Preview
     # @param show_arrows select { choices: [side, bottom, false] }
@@ -64,20 +66,18 @@ module Layout
 
     private
 
-    def render_carousel(show_arrows:, show_markers:, theme:, rounded:, bs5:)
+    def render_carousel(show_arrows:, show_markers:, theme:, rounded:, bs5:, &)
       classes = []
       classes << 'rounded p-4' if rounded
 
-      render Layout::CarouselComponent.new(
-        id: 'preview',
-        show_arrows: show_arrows,
-        show_markers: show_markers,
-        theme: theme&.to_sym,
-        bs5: bs5,
-        classes: classes.join(' ')
-      ) do |carousel|
-        yield carousel
-      end
+      render(Layout::CarouselComponent.new(
+               id: 'preview',
+               show_arrows: show_arrows,
+               show_markers: show_markers,
+               theme: theme&.to_sym,
+               bs5: bs5,
+               classes: classes.join(' ')
+             ), &)
     end
   end
 end

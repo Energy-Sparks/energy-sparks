@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchoolGroups
   class ImpactController < ApplicationController
     include SchoolGroupAccessControl
@@ -9,7 +11,9 @@ module SchoolGroups
     before_action :fetch_impact_report
     before_action :redirect_not_enough_data
     before_action :enable_prototype_page
-    before_action :enable_bootstrap_5
+    # rubocop:disable Naming/VariableNumber
+    before_action :enable_bootstrap_5 # This reads better than enable_bootstrap_five as cop would prefer
+    # rubocop:enable Naming/VariableNumber
     before_action :breadcrumbs
 
     skip_before_action :authenticate_user!
@@ -26,15 +30,16 @@ module SchoolGroups
     end
 
     def redirect_unless_feature_enabled
-      unless Flipper.enabled?(:impact_reporting, current_user)
-        redirect_back fallback_location: school_group_path(@school_group), alert: 'Feature not enabled'
-      end
+      return if Flipper.enabled?(:impact_reporting, current_user)
+
+      redirect_back_or_to(school_group_path(@school_group), alert: 'Feature not enabled')
     end
 
     def redirect_not_enough_data
-      unless @impact_report.visible_schools_count >= 2
-        redirect_back fallback_location: school_group_path(@school_group), alert: I18n.t('advice_pages.index.show.not_available')
-      end
+      return if @impact_report.visible_schools_count >= 2
+
+      redirect_back_or_to(school_group_path(@school_group),
+                          alert: I18n.t('advice_pages.index.show.not_available'))
     end
   end
 end
