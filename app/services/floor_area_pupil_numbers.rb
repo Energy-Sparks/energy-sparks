@@ -1,12 +1,6 @@
 # frozen_string_literal: true
 
 class FloorAreaPupilNumbers < FloorAreaPupilNumbersBase
-  def initialize(school_attributes, key, default)
-    return if school_attributes.nil? || school_attributes[:floor_area_pupil_numbers].nil?
-
-    super(school_attributes[:floor_area_pupil_numbers], key, default)
-  end
-
   private
 
   def process_meter_attributes(attributes)

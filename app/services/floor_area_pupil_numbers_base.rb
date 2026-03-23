@@ -20,14 +20,15 @@ class FloorAreaPupilNumbersBase
   private
 
   def process_meter_attributes(attributes)
-    return nil if attributes.nil?
+    return nil if attributes.blank?
 
-    attributes.select { |period| period.key?(@key) }
-              .map do |period|
+    attributes = attributes.select { |period| period.key?(@key) }
+                           .map do |period|
       { start_date: period.fetch(:start_date, DEFAULT_START_DATE),
         end_date: period.fetch(:end_date, DEFAULT_END_DATE),
         value: period[@key] }.merge(@add_attribute ? { attribute: period } : {})
-    end.sort_by { |period| period[:start_date] }
+    end
+    attributes.sort_by { |period| period[:start_date] }
   end
 
   def calculate_days_weighted_value(start_date, end_date)
@@ -37,16 +38,15 @@ class FloorAreaPupilNumbersBase
 
     return @area_pupils_history[start_index][:value] if start_index == end_index
 
-    weighted_areas = (start_index..end_index).to_a.map do |period_index|
-      sd = [@area_pupils_history[period_index][:start_date], start_date].max
-      ed = [@area_pupils_history[period_index][:end_date],   end_date].min
-      {
-        days: 1 + (ed - sd).to_i,
-        value: @area_pupils_history[period_index][:value]
-      }
+    average(@area_pupils_history[start_index..end_index], start_date, end_date)
+  end
+
+  def average(attributes, start_date, end_date)
+    weighted_areas = attributes.map do |attribute|
+      [1 + ([attribute[:end_date], end_date].min - [attribute[:start_date], start_date].max).to_i,
+       attribute[:value]]
     end
-    # map then sum to avoid statsample bug
-    weighted_areas.sum { |we| we[:days] * we[:value] } / weighted_areas.sum { |we| we[:days] }
+    weighted_areas.sum { |days, value| days * value } / weighted_areas.sum(&:first)
   end
 
   def date_index(arr, date)

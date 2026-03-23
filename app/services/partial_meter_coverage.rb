@@ -15,14 +15,10 @@ class PartialMeterCoverage
   end
 
   private_class_method def self.total(partial_meter_coverage, start_date, end_date, method)
-    partial = to_array(partial_meter_coverage).map do |meter_partial_coverage|
+    partial = Array(partial_meter_coverage).map do |meter_partial_coverage|
       meter_partial_coverage.send(method, start_date, end_date)
     end
     partial.all?(&:nil?) ? 1.0 : partial.compact.sum
-  end
-
-  private_class_method def self.to_array(a)
-    a.is_a?(Array) ? a : [a]
   end
 
   private
