@@ -2,7 +2,7 @@
 
 <div class="container">
     <ul>
-        <% admins.each do |ad| %>
+        <% @admins.each do |ad| %>
             <li><%= link_to ad.display_name, admin_dashboard_path(ad) %></li>
         <% end %>
     </ul>
