@@ -7,11 +7,11 @@ module Admin
     authorize_resource class: false
 
     def index
-      @ad_users = User.where(role: 'admin').order(:name)
+      @admins = User.where(role: 'admin').order(:name)
     end
 
     def show
-      @ad_user = User.where(id: params[:id]).first
+      @admin = User.where(id: params[:id]).first
     end
   end
 end
