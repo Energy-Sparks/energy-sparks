@@ -38,7 +38,7 @@ RSpec.describe 'Admin dashboard' do
       let(:staff_user) { create(:staff) }
 
       it 'displays a list of links to admin users' do
-        expect(page).to have_link(username, href: admin_dashboard_path(user))
+        expect(page).to have_link('username', href: admin_dashboard_path(user))
       end
 
       it 'does not display non-admin users' do
