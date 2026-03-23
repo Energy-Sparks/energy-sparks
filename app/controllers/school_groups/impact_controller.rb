@@ -11,9 +11,7 @@ module SchoolGroups
     before_action :fetch_impact_report
     before_action :redirect_not_enough_data
     before_action :enable_prototype_page
-    # rubocop:disable Naming/VariableNumber
-    before_action :enable_bootstrap_5 # This reads better than enable_bootstrap_five as cop would prefer
-    # rubocop:enable Naming/VariableNumber
+    before_action :enable_bootstrap_5
     before_action :breadcrumbs
 
     skip_before_action :authenticate_user!
