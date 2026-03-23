@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 class FloorAreaPupilNumbers < FloorAreaPupilNumbersBase
+  def initialize(school_attributes, key, default, add_attribute: false)
+    school_attributes = school_attributes[:floor_area_pupil_numbers]
+    super
+  end
+
   private
 
   def process_meter_attributes(attributes)
@@ -22,6 +27,6 @@ class FloorAreaPupilNumbers < FloorAreaPupilNumbersBase
   end
 
   def defaulted_floor_area_pupils(start_date, end_date)
-    { start_date:, end_date:, value: @number_of_pupils }
+    { start_date:, end_date:, value: @default }
   end
 end

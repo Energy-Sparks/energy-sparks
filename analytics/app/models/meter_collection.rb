@@ -152,16 +152,11 @@ class MeterCollection
     @calculated_floor_area.value(start_date, end_date)
   end
 
-  def number_of_pupils(start_date = nil, end_date = nil) #
+  def number_of_pupils(start_date = nil, end_date = nil)
     @calculated_pupil_numbers ||= FloorAreaPupilNumbers.new(pseudo_meter_attributes(:school_level_data),
                                                             :number_of_pupils,
                                                             @school.number_of_pupils)
     @calculated_pupil_numbers.value(start_date, end_date)
-  end
-
-  def calculate_floor_area_number_of_pupils
-    @calculated_floor_area_pupil_numbers ||= FloorAreaPupilNumbers.new(@school.floor_area, @school.number_of_pupils,
-                                                                       pseudo_meter_attributes(:school_level_data))
   end
 
   def earliest_meter_date
