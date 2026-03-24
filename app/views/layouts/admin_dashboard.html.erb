@@ -1,22 +1,22 @@
-<%= content_for(:page) do %>
-  <div class="container-fluid <%= @audience || :adult %> pb-2">
-    <div class="container">
-      <%= render 'admin/shared/breadcrumbs' %>
+<% if content_for(:header_title) %>
+  <% content_for :page_title, yield(:header_title) unless content_for(:page_title) %>
+<% else %>
+  <% content_for :page_title, 'Dashboards' %>
+<% end %>
+
+<%= content_for(:application) do %>
+  <% if @admin %>
+    <% content_for :header do %>
       <%= render(Layout::Cards::PageHeaderComponent.new(
                    title: content_for?(:header_title) ? yield(:header_title) : 'default title'
                  )) %>
-    </div>
-  </div>
-  <div class="application <%= container_class %>">
-    <% if @admin %>
-      <div class="row mt-2">
-        <div id="page-navigation" class="col-md-3 col-lg-3 col-xl-2">
-          <%= render Navigation::AdminDashboardComponent.new(current_user: @admin) %>
-        </div>
-      </div>
-    <% else %>
-      <%= yield %>
     <% end %>
-  </div>
+    <% content_for :page_nav do %>
+      <%= render Navigation::AdminDashboardComponent.new(current_user: @admin) %>
+    <% end %>
+    <%= yield %>
+  <% else %>
+    <%= yield %>
+  <% end %>
 <% end %>
-<%= render template: 'layouts/page' %>
+<%= render template: 'layouts/application' %>
