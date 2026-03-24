@@ -564,11 +564,15 @@ module ApplicationHelper
     enum.transform_keys(&:humanize).sort.to_h
   end
 
+  def bs5?
+    !!@bs5
+  end
+
   def bootstrap_version
-    @bs5 ? 5 : 4
+    bs5? ? 5 : 4
   end
 
   def bootstrap_path(path = '')
-    @bs5 ? path : "bootstrap4/#{path}"
+    bs5? ? path : "bootstrap4/#{path}"
   end
 end

@@ -1,0 +1,89 @@
+<% i18n_scope = 'school_groups.impact.engagement' %>
+
+<%= render Layout::Cards::SectionHeaderComponent.new(
+      id: 'engagement-header'
+    ) do |section_header| %>
+  <%= section_header.with_header title: t('title', scope: i18n_scope) %>
+  <%= section_header.with_description { t('description', scope: i18n_scope) } %>
+<% end %>
+
+<%= render Layout::GridComponent.new(id: 'engagement-cards',
+                                     cols: 4, classes: 'mb-4',
+                                     cell_classes: 'mb-4',
+                                     component_classes: 'theme theme-dark') do |grid| %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.activities.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.engagement.activities) %>
+    <%= card.with_subtext do
+          t('cards.activities.subtext', scope: i18n_scope,
+                                        count: impact_report.data_visible_schools_count)
+        end %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.actions.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.engagement.actions) %>
+    <%= card.with_subtext do
+          t('cards.actions.subtext', scope: i18n_scope,
+                                     count: impact_report.overview.users_logged_in_recently)
+        end %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.points.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.engagement.points) %>
+    <%= card.with_subtext { t('cards.points.subtext', scope: i18n_scope) } %>
+  <% end %>
+  <% grid.with_stats_card do |card| %>
+    <%= card.with_header title: t('cards.targets.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.engagement.targets) %>
+    <%= card.with_subtext { t('cards.targets.subtext', scope: i18n_scope) } %>
+  <% end %>
+  <% grid.with_stats_card(if: false) do |card| %>
+    <%= card.with_header title: t('cards.programmes.title', scope: i18n_scope) %>
+    <%= card.with_figure number_with_delimiter(impact_report.engagement.programmes) %>
+    <%= card.with_subtext do
+          t('cards.programmes.subtext', scope: i18n_scope, count: impact_report.engagement.programmes)
+        end %>
+  <% end %>
+<% end %>
+
+<% if impact_report.engagement.featured_school %>
+  <%= render Layout::GridComponent.new(
+        id: 'engagement-featured',
+        cols: 2,
+        theme: :accent,
+        classes: 'rounded-3 p-4 my-4',
+        cell_classes: 'my-auto'
+      ) do |grid| %>
+    <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
+      <%= feature.with_header(title: t('featured.title', scope: i18n_scope,
+                                                         school: impact_report.engagement.featured_school.name)) %>
+      <%= feature.with_description do
+            t('featured.description',
+              scope: i18n_scope,
+              school: impact_report.engagement.featured_school.name,
+              activities: impact_report.engagement.featured_school_activities,
+              actions: impact_report.engagement.featured_school_actions)
+          end %>
+      <%= feature.with_button(t('common.view_dashboard'),
+                              school_path(impact_report.engagement.featured_school), style: :secondary) %>
+    <% end %>
+    <%= grid.with_block(classes: 'bg-white p-4 rounded-3') do %>
+      <% podium = Podium.create(school: impact_report.engagement.featured_school,
+                                scoreboard: impact_report.engagement.featured_school.scoreboard) %>
+      <%= render(Scoreboards::PodiumComponent.new(podium: podium)) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class='pb-2 text-center' id='engagement-buttons'>
+  <%= render Elements::HeaderComponent.new(level: 4,
+                                           title: t('school_groups.impact.engagement.looking_for_more_detail')) %>
+  <%= render Elements::ButtonComponent.new(
+        t('common.view_timeline'),
+        school_group_timeline_path(impact_report.school_group), style: :primary, classes: 'mb-2 me-2'
+      ) %>
+  <%= render Elements::ButtonComponent.new(
+        t('common.view_scoreboard'),
+        scores_school_group_advice_path(impact_report.school_group), style: :secondary, classes: 'mb-2'
+      ) %>
+</div>

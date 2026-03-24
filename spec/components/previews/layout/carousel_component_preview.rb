@@ -1,22 +1,26 @@
+# frozen_string_literal: true
+
 module Layout
   class CarouselComponentPreview < ViewComponent::Preview
-    def with_single_equivalence
-      render Layout::CarouselComponent.new(id: 'ex1') do |carousel|
-        carousel.with_equivalence(image_name: 'tree') do |e|
-          e.with_title { 'The school consumed XXX kWh' }
-          e.with_equivalence { 'This is equivalent to YYYY trees' }
-          'This is the content'
-        end
-      end
-    end
-
-    def with_two_equivalences_all_navigation
-      render Layout::CarouselComponent.new(id: 'ex2') do |carousel|
+    # @param show_arrows select { choices: [side, bottom, false] }
+    # @param show_markers toggle
+    # @param theme select { choices: [nil, dark, accent, light, pale] }
+    # @param rounded toggle
+    # @param bs5 toggle
+    def with_equivalences(show_arrows: :bottom, show_markers: true, theme: nil, rounded: false, bs5: false)
+      render_carousel(
+        show_arrows: show_arrows,
+        show_markers: show_markers,
+        theme: theme,
+        rounded: rounded,
+        bs5: bs5
+      ) do |carousel|
         carousel.with_equivalence(image_name: 'tree', classes: 'active') do |e|
           e.with_title { 'The school consumed XXX kWh' }
           e.with_equivalence { 'This is equivalent to YYYY trees' }
           'This is the content'
         end
+
         carousel.with_equivalence(image_name: 'television') do |e|
           e.with_title { 'The school consumed XXX kWh' }
           e.with_equivalence { 'This is equivalent to watching TV for YYYY hours' }
@@ -25,61 +29,55 @@ module Layout
       end
     end
 
-    def with_two_equivalences_no_arrows
-      render Layout::CarouselComponent.new(id: 'ex3', show_arrows: false) do |carousel|
-        carousel.with_equivalence(image_name: 'tree') do |e|
-          e.with_title { 'The school consumed XXX kWh' }
-          e.with_equivalence { 'This is equivalent to YYYY trees' }
-          'This is the content'
-        end
-        carousel.with_equivalence(image_name: 'television') do |e|
-          e.with_title { 'The school consumed XXX kWh' }
-          e.with_equivalence { 'This is equivalent to watching TV for YYYY hours' }
-          'This is the content'
-        end
-      end
-    end
-
-    def with_two_equivalences_no_markers
-      render Layout::CarouselComponent.new(id: 'ex4', show_markers: false) do |carousel|
-        carousel.with_equivalence(image_name: 'tree', classes: 'active') do |e|
-          e.with_title { 'The school consumed XXX kWh' }
-          e.with_equivalence { 'This is equivalent to YYYY trees' }
-          'This is the content'
-        end
-        carousel.with_equivalence(image_name: 'television', classes: 'carousel-item') do |e|
-          e.with_title { 'The school consumed XXX kWh' }
-          e.with_equivalence { 'This is equivalent to watching TV for YYYY hours' }
-          'This is the content'
-        end
-      end
-    end
-
-    def with_two_grids_side_arrows
-      render Layout::CarouselComponent.new(id: 'ex5', theme: :accent, classes: 'rounded p-4', show_arrows: :side, show_markers: false) do |carousel|
-        carousel.with_grid(cols: 2, classes: '') do |grid|
+    # @param show_arrows select { choices: [side, bottom, nil, false] }
+    # @param show_markers toggle
+    # @param theme select { choices: [nil, dark, accent, light, pale] }
+    # @param rounded toggle
+    # @param bs5 toggle
+    def with_grid(show_arrows: :side, show_markers: false, theme: :accent, rounded: true, bs5: false)
+      render_carousel(
+        show_arrows: show_arrows,
+        show_markers: show_markers,
+        theme: theme,
+        rounded: rounded,
+        bs5: bs5
+      ) do |carousel|
+        carousel.with_grid(cols: 2) do |grid|
           grid.with_image(src: 'laptop.jpg', classes: 'w-100 rounded')
+
           grid.with_feature_card do |feature|
             feature.with_header(title: 'Laptop header')
-            feature.with_description do
-              'Laptop description'
-            end
-            feature.with_button('primary', '/', style: :primary)
-            feature.with_button('hello', '/', outline_style: :transparent)
+            feature.with_description { 'Laptop description' }
+            feature.with_button('Primary', '/', style: :primary)
           end
         end
+
         carousel.with_grid(cols: 2) do |grid|
           grid.with_feature_card do |feature|
             feature.with_header(title: 'Whiteboard header')
-            feature.with_description do
-              'Whiteboard description'
-            end
-            feature.with_button('primary', '/', style: :primary)
-            feature.with_button('goodbye', '/', outline_style: :transparent)
+            feature.with_description { 'Whiteboard description' }
+            feature.with_button('Primary', '/', style: :primary)
           end
+
           grid.with_image(src: 'whiteboard.jpg', classes: 'w-100 rounded')
         end
       end
+    end
+
+    private
+
+    def render_carousel(show_arrows:, show_markers:, theme:, rounded:, bs5:, &)
+      classes = []
+      classes << 'rounded p-4' if rounded
+
+      render(Layout::CarouselComponent.new(
+               id: 'preview',
+               show_arrows: show_arrows,
+               show_markers: show_markers,
+               theme: theme&.to_sym,
+               bs5: bs5,
+               classes: classes.join(' ')
+             ), &)
     end
   end
 end

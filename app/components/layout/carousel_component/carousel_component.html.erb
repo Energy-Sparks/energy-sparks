@@ -1,33 +1,28 @@
-<%= tag.div id: id, class: class_names(classes, 'carousel slide'), 'data-wrap': true, 'data-interval': false do %>
-
+<%= tag.div id: id, class: class_names(classes, 'carousel slide'),
+            data: { wrap: true, bs_wrap: true, interval: false, bs_interval: false } do %>
   <div class="carousel-inner">
     <% panels.each do |panel| %>
       <%= panel %>
     <% end %>
   </div>
   <% if panels.length > 1 %>
-    <% if show_arrows == :side %>
-      <%= render ArrowComponent.new(id: id, direction: :prev, classes: 'my-auto') %>
-      <%= render ArrowComponent.new(id: id, direction: :next, classes: 'my-auto') %>
-    <% end %>
-    <% if show_arrows == :bottom || show_markers? %>
-      <div class="carousel-controls row pb-3 rounded w-100">
-        <div class="col">
-          <% if show_arrows == :bottom %>
-            <%= render ArrowComponent.new(id: id, direction: :prev) %>
+      <% if show_arrows %>
+        <%= render ArrowComponent.new(id: id, direction: :prev) %>
+        <%= render ArrowComponent.new(id: id, direction: :next) %>
+      <% end %>
+      <% if show_markers %>
+        <%= content_tag (bs5? ? :div : :ol), class: 'carousel-indicators pb-4' do %>
+          <% panels.size.times do |n| %>
+            <% if bs5? %>
+              <%= tag.button type: 'button', data: { bs_target: "##{id}", bs_slide_to: n },
+                             class: ('active' if n.zero?).to_s %>
+            <% else %>
+              <%= tag.li data: { target: "##{id}", slide_to: n },
+                         class: ('active' if n.zero?).to_s %>
+            <% end %>
           <% end %>
-            <ol class="carousel-indicators">
-              <% if show_markers? %>
-                <% panels.size.times do |n| %>
-                  <li data-target="#<%= id %>" data-slide-to="<%= n %>" class="<%= 'active' if n.zero? %>"></li>
-                <% end %>
-              <% end %>
-            </ol>
-          <% if show_arrows == :bottom %>
-            <%= render ArrowComponent.new(id: id, direction: :next) %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+        <% end %>
+      <% end %>
   <% end %>
+  <%= placeholder %>
 <% end %>
