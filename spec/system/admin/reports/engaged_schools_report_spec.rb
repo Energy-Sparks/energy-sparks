@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe 'Engaged Schools Report', :aggregate_failures do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let(:admin) { create(:admin) }
   let!(:school) do
@@ -19,17 +20,32 @@ describe 'Engaged Schools Report', :aggregate_failures do
     visit admin_reports_engaged_schools_path
   end
 
+  def expected_row(activities)
+    {
+      'School Group': school.school_group.name,
+      School: school.name,
+      'School Type': 'Primary',
+      Funder: '',
+      Country: school.country.humanize,
+      Active: 'Y',
+      'Data Visible': 'Y',
+      Admin: 'Admin',
+      Activities: activities.to_s,
+      Actions: '0',
+      Programmes: '0',
+      Target?: 'N',
+      'Transport Survey?': 'N',
+      Temperatures?: 'N',
+      Audit?: 'N',
+      'Active Users': '1',
+      'Last Visit': last_sign_in.iso8601
+    }
+  end
+
   def expect_email_with_report(activities: 1)
-    email = ActionMailer::Base.deliveries.last
-    expect(email.attachments.count).to eq(1)
-    expect(email.attachments.first.body.decoded.split("\r\n").map { |line| line.split(',') }).to eq(
-      [['School Group', 'School', 'School Type', 'Funder', 'Country', 'Active', 'Data Visible', 'Admin',
-        'Activities', 'Actions', 'Programmes', 'Target?', 'Transport Survey?', 'Temperatures?', 'Audit?',
-        'Active Users', 'Last Visit'],
-       [school.school_group.name, school.name, 'Primary', '', school.country.humanize, 'Y', 'Y', 'Admin',
-        activities.to_s, '0', '0', 'N', 'N', 'N', 'N',
-        '1', last_sign_in.iso8601]]
-    )
+    email = last_email
+    row = expected_row(activities)
+    expect(csv_attachment(email).csv).to eq([row.keys.join(','), row.values.join(',')])
     email
   end
 

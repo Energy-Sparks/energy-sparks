@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe ImportNotifier do
+  include EmailHelpers
+
   let(:amr_data_feed_config) { create(:amr_data_feed_config, description: 'Sheffield') }
   let(:amr_data_feed_import_log) do
     create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config, records_imported: 200,
@@ -249,7 +251,7 @@ describe ImportNotifier do
                       school_group: create(:school_group, name: 'Bath', default_issues_admin_user:))
     end
     let(:description)               { nil }
-    let(:email)                     { ActionMailer::Base.deliveries.last }
+    let(:email)                     { last_email }
 
     it 'formats the email properly' do
       notify
@@ -279,14 +281,12 @@ describe ImportNotifier do
       end
 
       it 'has an attachment' do
-        now = Time.current
-        travel_to(now)
+        freeze_time
         notify
-        attachment = email.attachments[0]
-        expect(attachment.content_type).to include('text/csv')
+        attachment = csv_attachment(email)
         expect(attachment.filename).to \
-          eq("energy-sparks-import-report-#{now.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv")
-        expect(attachment.body.raw_source.split("\r\n")).to \
+          eq("energy-sparks-import-report-#{Time.current.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv")
+        expect(attachment.csv).to \
           eq(['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
               'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
               ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,

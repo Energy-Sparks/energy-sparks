@@ -23,4 +23,15 @@ module EmailHelpers
     expect(ActionMailer::Base.deliveries.length).to eq(1)
     ActionMailer::Base.deliveries.last
   end
+
+  def expect_single_attachment(email)
+    expect(email.attachments.count).to eq(1)
+    email.attachments.first
+  end
+
+  def csv_attachment(email)
+    attachment = expect_single_attachment(email)
+    expect(attachment.content_type).to eq('text/csv; charset=UTF-8')
+    ActiveSupport::OrderedOptions.new.merge(filename: attachment.filename, csv: attachment.body.raw_source.split("\n"))
+  end
 end
