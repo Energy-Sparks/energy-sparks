@@ -3,7 +3,7 @@ require 'write_xlsx'
 # takes a hash of aggregated AMR data and adds it as a chart to an excel spreadsheet for testing purposes
 class ExcelCharts
   include Logging
-  include Writexlsx::Utility
+  include Writexlsx::Utility::CellReference
 
   def initialize(filename)
     @filename = filename
