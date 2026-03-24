@@ -579,7 +579,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :dashboards
+    resources :dashboards, only: [:show, :index]
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
