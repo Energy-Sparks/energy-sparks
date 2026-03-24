@@ -224,35 +224,24 @@ RSpec.describe AdminMailer, :include_application_helper do
       end
     end
 
-    context 'csv report' do
+    context 'with the csv report' do
       let(:issues) { [new_issue, closed_issue, someone_elses_issue, inactive_school_issue] }
 
-      it { expect(email.attachments.count).to eq(1) }
-      it { expect(attachment.content_type).to include('text/csv') }
-      it { expect(attachment.filename).to eq('issues_report.csv') }
+      it_behaves_like 'it has a csv attachment' do
+        let(:filename) { 'issues_report.csv' }
+        let(:data) do
+          ['Issue type,Issue for,New,Group,Title,Fuel,Next review date,Created by,Created,Updated by,Updated,View,Edit',
+           ['issue', new_issue.issueable.name, 'New this week!', new_issue.school_group,
+            new_issue.title, 'Gas', new_issue.review_date.strftime('%d/%m/%Y'),
+            new_issue.created_by.display_name, new_issue.created_at.strftime('%d/%m/%Y'),
+            new_issue.updated_by.display_name, new_issue.updated_at.strftime('%d/%m/%Y'),
+            "http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id}",
+            "http://localhost/admin/issues/#{new_issue.id}/edit"].join(',')]
+        end
+      end
 
       describe 'CSV attachment content' do
         let(:body) { attachment.body.raw_source }
-        let(:csv_lines) { csv_attachment(email).csv }
-        let(:headers) { csv_lines.first }
-        let(:first_record) { csv_lines.second }
-
-        it 'includes the correct headers' do
-          expect(headers).to eq(
-            'Issue type,Issue for,New,Group,Title,Fuel,Next review date,Created by,Created,Updated by,Updated,View,Edit'
-          )
-        end
-
-        it 'includes the correct issue data row' do
-          expect(first_record).to eq(
-            "issue,#{new_issue.issueable.name},New this week!,#{new_issue.school_group}," \
-            "#{new_issue.title},Gas,#{new_issue.review_date.strftime('%d/%m/%Y')}," \
-            "#{new_issue.created_by.display_name},#{new_issue.created_at.strftime('%d/%m/%Y')}," \
-            "#{new_issue.updated_by.display_name},#{new_issue.updated_at.strftime('%d/%m/%Y')}," \
-            "http://localhost/admin/schools/#{new_issue.issueable.slug}/issues/#{new_issue.id}," \
-            "http://localhost/admin/issues/#{new_issue.id}/edit"
-          )
-        end
 
         it 'does not include issues for inactive schools' do
           expect(body).not_to include(inactive_school_issue.title)
