@@ -5,13 +5,13 @@ module AdminDashboard
 
   included do
     layout 'admin_dashboard'
-    before_action :set_metadata, :set_breadcrumbs
+    before_action :set_breadcrumbs
   end
 
   private
 
   def set_metadata
-    @admin = User.find(params[:dashboard_id])
+    @admin = User.find(params[:dashboard_id] || params[:id])
     @title = title
   end
 

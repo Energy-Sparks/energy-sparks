@@ -5,6 +5,8 @@ module Admin
     class SchoolGroupsController < Admin::SchoolGroupsController
       include AdminDashboard
 
+      before_action :set_metadata
+
       def index
         super
         @school_groups = @school_groups.where(default_issues_admin_user: @admin) if @admin
@@ -12,12 +14,6 @@ module Admin
 
       def title
         'School Groups'
-      end
-
-      private
-
-      def set_breadcrumbs
-        super
       end
     end
   end
