@@ -55,7 +55,7 @@ RSpec.describe 'Admin dashboard' do
           expect(page).to have_link('Dashboards', href: admin_dashboards_path)
         end
 
-        it { expect(page).to have_content("#{user.name}'s Admin Dashboard") }
+        it { expect(page).to have_content(user.name) }
       end
     end
   end

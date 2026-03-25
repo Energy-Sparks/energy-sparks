@@ -18,7 +18,7 @@ module Admin
     private
 
     def set_metadata
-      @admin = User.where(id: params[:id]).first
+      @admin = User.admin.find(params[:id]) if params[:id]
       @title = title
     end
 
