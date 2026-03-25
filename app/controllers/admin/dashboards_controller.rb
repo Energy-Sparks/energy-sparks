@@ -6,7 +6,7 @@ module Admin
     before_action :set_metadata, :set_breadcrumbs
 
     def index
-      @admins = User.where(role: 'admin').order(:name)
+      @admins = User.admin.order(:name)
     end
 
     def show; end
