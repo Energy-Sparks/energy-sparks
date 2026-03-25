@@ -1,14 +1,16 @@
+<% content_for :header_title, @title if @title && !content_for?(:header_title) %>
+
 <% if content_for(:header_title) %>
-  <% content_for :page_title, yield(:header_title) unless content_for(:page_title) %>
+  <% content_for :page_title, yield(:header_title) unless content_for :page_title %>
 <% else %>
-  <% content_for :page_title, 'Dashboards' %>
+  <% content_for @page_title, 'Admin Dashboard' %>
 <% end %>
 
 <%= content_for(:application) do %>
   <% if @admin %>
     <% content_for :header do %>
       <%= render(Layout::Cards::PageHeaderComponent.new(
-                   title: content_for?(:header_title) ? yield(:header_title) : 'default title'
+                   title: content_for?(:header_title) ? yield(:header_title) : "#{@admin.display_name}'s Dashboard"
                  )) %>
     <% end %>
     <% content_for :page_nav do %>
