@@ -26,11 +26,7 @@
   /* Remove top border on comments row */
   .licence-editor-table tr.comments-row > td {
     border-top: none !important;
-  }
-
-  /* Stripe each licence block (2 rows together) */
-  .licence-editor-table tbody.licence-block:nth-of-type(odd) {
-    background-color: $gray-100;
+    border-bottom: 2px solid $gray-200;
   }
 
   .pending-delete {

@@ -3,10 +3,11 @@ module Forms
     class BulkLicenceEditorComponent < ApplicationComponent
       DEFAULT_FIELDS = [:comments, :end_date, :invoice_reference, :school_specific_price, :start_date, :status].freeze
 
-      def initialize(contract:, form_path: nil, fields: DEFAULT_FIELDS, exclude_fields: [], **kwargs)
+      def initialize(contract:, additional_schools: [], form_path: nil, fields: DEFAULT_FIELDS, exclude_fields: [], **kwargs)
         super
         @contract = contract
         @form_path = form_path
+        @additional_schools = additional_schools
         @fields = fields - exclude_fields
       end
 

@@ -1,5 +1,5 @@
 <%= tag.div id: id, class: classes do %>
-  <div class="licence-editor-table-wrapper">
+  <div class="mb-4 licence-editor-table-wrapper">
     <table id="<%= "#{@contract.id}-licence-table" %>" class="table table-sm align-middle licence-editor-table">
       <thead>
         <tr>
@@ -23,7 +23,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody class="licence-block">
+      <tbody id="licence-rows" class="licence-rows">
         <%= helpers.simple_form_for(@contract, url: form_path, method: :put) do |f| %>
           <% licences.each do |licence| %>
             <%= f.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
@@ -81,4 +81,40 @@
   </div>
   <%= button_tag 'Save changes', form: "edit_commercial_contract_#{@contract.id}", class: 'btn btn-primary' %>
   <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
+
+  <% if @additional_schools.any? %>
+    <div class="mt-4 licence-editor-table-wrapper">
+      <h2>Add schools to contract</h2>
+      <p>
+        The following schools in this school group are expected to be funded by the MAT in future but are not
+        currently part of this contract. Use the options below to add them to the contract or switch them to being
+        self-funded.
+      </p>
+      <table id="<%= "contract-#{@contract.id}-additional-schools-table" %>"
+             class="table table-sm align-middle licence-editor-table">
+        <thead>
+          <tr>
+            <th>School</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @additional_schools.each do |school| %>
+            <tr id="additional-school-<%= school.id %>">
+              <td><%= link_to school.name, school_path(school) %></td>
+              <td>
+                <%= button_to 'Add licence',
+                              create_licence_admin_commercial_contract_licences_path(@contract),
+                              params: { school_id: school.id },
+                              method: :post,
+                              form: { method: :post, authenticity_token: true },
+                              remote: true,
+                              class: 'btn btn-sm btn-primary' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
 <% end %>
