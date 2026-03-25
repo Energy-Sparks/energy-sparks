@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe ImportNotifier do
+  include EmailHelpers
+
   let(:amr_data_feed_config) { create(:amr_data_feed_config, description: 'Sheffield') }
   let(:amr_data_feed_import_log) do
     create(:amr_data_feed_import_log, amr_data_feed_config: amr_data_feed_config, records_imported: 200,
@@ -249,7 +251,7 @@ describe ImportNotifier do
                       school_group: create(:school_group, name: 'Bath', default_issues_admin_user:))
     end
     let(:description)               { nil }
-    let(:email)                     { ActionMailer::Base.deliveries.last }
+    let(:email)                     { last_email }
 
     it 'formats the email properly' do
       notify
@@ -278,23 +280,23 @@ describe ImportNotifier do
                data_source: create(:data_source, import_warning_days: 2))
       end
 
-      it 'has an attachment' do
-        now = Time.current
-        travel_to(now)
+      before do
+        freeze_time
         notify
-        attachment = email.attachments[0]
-        expect(attachment.content_type).to include('text/csv')
-        expect(attachment.filename).to \
-          eq("energy-sparks-import-report-#{now.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv")
-        expect(attachment.body.raw_source.split("\r\n")).to \
-          eq(['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
-              'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
-              ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
-               bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Bath Admin'].join(','),
-              ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
-               sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
-               end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')])
+      end
+
+      it_behaves_like 'it has a csv attachment' do
+        let(:filename) { "energy-sparks-import-report-#{Time.current.strftime('%Y-%m-%dT%H-%M-%S')}Z.csv" }
+        let(:data) do
+          ['"",Area,Meter type,School,MPAN/MPRN,Meter system,Data source,Procurement route,' \
+           'Last validated reading date,Admin meter status,Manual reads,Issues,Notes,Group admin name',
+           ['Meter with stale data', bath_school.school_group.name, bath_meter.meter_type.titleize,
+            bath_school.name, bath_meter.mpan_mprn.to_s, 'NHH AMR', bath_meter.data_source.name, '',
+            end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Bath Admin'].join(','),
+           ['Meter with stale data', sheffield_school.school_group.name, meter_1.meter_type.titleize,
+            sheffield_school.name, meter_1.mpan_mprn.to_s, 'NHH AMR', meter_1.data_source.name, '',
+            end_date.strftime('%d/%m/%Y'), '', 'N', '0', '0', 'Sheffield Admin'].join(',')]
+        end
       end
     end
   end
