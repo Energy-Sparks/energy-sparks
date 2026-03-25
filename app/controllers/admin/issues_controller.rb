@@ -20,7 +20,8 @@ module Admin
         # Includes all school group and school issues
         @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
       else
-        @issues = @issues.active.for_issue_types(params[:issue_types])
+        @issues = @issues.active unless @issueable.is_a?(School) # Only show issues for archived schools in a school context
+        @issues = @issues.for_issue_types(params[:issue_types])
         @issues = @issues.for_statuses(params[:statuses])
         @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
         @issues = @issues.search(params[:search]) if params[:search].present?

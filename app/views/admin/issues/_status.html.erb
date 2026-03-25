@@ -1,1 +1,12 @@
-<span class="badge rounded-pill <%= issue.status_open? ? 'bg-info' : 'text-bg-secondary' %>"><%= issue.status.capitalize %></span>
+<% if issue.archived_school? %>
+  <span class="badge rounded-pill text-bg-dark" data-bs-toggle="tooltip" data-toggle="tooltip"
+  <% if issue.archived? %>
+          title="Previously open issue for an archived school">Archived</span>
+  <% else %>
+          title="Closed issue for an archived school">Closed</span>
+  <% end %>
+<% else %>
+  <span class="badge rounded-pill <%= issue.status_open? ? 'text-bg-info' : 'text-bg-secondary' %>">
+    <%= issue.status.capitalize %>
+  </span>
+<% end %>

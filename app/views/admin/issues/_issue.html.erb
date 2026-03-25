@@ -1,4 +1,4 @@
-<% expand = (issue.status_open? && @issueable) || local_assigns[:single] unless local_assigns[:expand] %>
+<% expand = (issue.resolvable? && @issueable) || local_assigns[:single] unless local_assigns[:expand] %>
 <div class="row pb-2">
   <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
     <h4>
@@ -13,12 +13,12 @@
       </div>
     </h4>
     <div class="clearfix">
-      <span data-toggle="collapse" href="#issue-<%= issue.id %>" role="button"
+      <span data-toggle="collapse" data-bs-toggle="collapse" href="#issue-<%= issue.id %>" role="button"
             aria-expanded="true" aria-controls="issue-<%= issue.id %>"
             class="badge text-dark toggler text-decoration-none<%= ' collapsed' unless expand %>">
         <%= toggler %>
       </span>
-      <span class="badge <%= issue.issue? ? 'badge-danger' : 'badge-warning' %>">
+      <span class="badge <%= issue.issue? ? 'text-bg-danger' : 'text-bg-warning' %>">
         <%= issue.issue_type.capitalize %>
       </span>
       <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
