@@ -18,6 +18,6 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
       render_inline(component)
     end
 
-    it { expect(html).to have_link('Overview', href: admin_dashboard_path(current_user)) }
+    it { expect(html).to have_link('Dashboard Home', href: admin_dashboard_path(current_user)) }
   end
 end
