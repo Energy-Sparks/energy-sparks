@@ -1,0 +1,19 @@
+<% builder = SimpleForm::FormBuilder.new(
+      :contract,
+      @contract,
+      self,
+      {} # options
+) %>
+
+<% nested = builder.simple_fields_for(:licences, @licence, child_index: @licence.id) do |lf| %>
+  <%= render partial: "licence", locals: { lf: lf, licence: @licence } %>
+<% end %>
+
+var html = "<%= j nested %>";
+
+document
+  .getElementById("licence-rows")
+  .insertAdjacentHTML("beforeend", html);
+
+// Remove the missing-school row
+document.getElementById("additional-school-<%= @school.id %>").remove()
