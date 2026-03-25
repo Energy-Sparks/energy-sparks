@@ -8,6 +8,7 @@ module Admin
     load_and_authorize_resource :data_source
     load_and_authorize_resource :school_onboarding, find_by: :uuid
     before_action :issueable
+    before_action :enable_bootstrap_5
 
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 

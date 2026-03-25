@@ -51,6 +51,12 @@ RSpec/MultipleMemoizedHelpers:
   Max: 10 # default 5
 RSpec/NestedGroups:
   Max: 4 # default 3
-
 Style/Documentation:
   Enabled: false
+# For discussion. Don't think we should use enable_bootstrap_five, which is what it would prefer
+# enable_bootstrap_5 is going to be used in lots of controllers, don't want to having to keep switching it off inline
+# everytime it's used, so have put it here.
+Naming/VariableNumber:
+  EnforcedStyle: normalcase
+  AllowedIdentifiers:
+    - enable_bootstrap_5
