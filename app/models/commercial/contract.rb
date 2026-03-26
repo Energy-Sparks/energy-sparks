@@ -127,6 +127,10 @@ module Commercial
       fields
     end
 
+    def cascade_updates_to_licences?
+      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+    end
+
     private
 
     def destroy_error_message
