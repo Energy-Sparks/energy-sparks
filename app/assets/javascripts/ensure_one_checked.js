@@ -6,9 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const input = event.target;
 
     if (!input.matches(".ensure-one-checked input")) return;
-
     const wrapper = input.closest(".ensure-one-checked");
-
     const checkedCount =
       wrapper.querySelectorAll('input[type="checkbox"]:checked').length;
 
@@ -22,11 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const next = wrapper.querySelector(`label[for="${input.id}"][data-bs-toggle="tooltip"]`);
       if (next) {
         let tooltip = bootstrap.Tooltip.getInstance(next);
-
-        if (!tooltip) {
-          tooltip = new bootstrap.Tooltip(next);
-        }
-        tooltip.show();
+        if (tooltip) tooltip.show();
       }
       input.checked = true;
     }
