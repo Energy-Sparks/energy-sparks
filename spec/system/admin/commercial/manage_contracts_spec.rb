@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'manage contracts' do
@@ -9,7 +11,7 @@ describe 'manage contracts' do
   end
 
   context 'when adding a new contract' do
-    let!(:product) { create(:commercial_product, :default_product)}
+    let!(:product) { create(:commercial_product, :default_product) }
     let!(:funder) { create(:funder) }
 
     before do
@@ -77,7 +79,7 @@ describe 'manage contracts' do
   end
 
   context 'when adding a new contract for a contract holder' do
-    let!(:product) { create(:commercial_product, :default_product)}
+    let!(:product) { create(:commercial_product, :default_product) }
     let(:contract_holder) { create(:school_group) }
 
     before do
@@ -89,7 +91,7 @@ describe 'manage contracts' do
       expect(page).to have_content("Create a new contract for #{contract_holder.name}")
     end
 
-    it { expect(page).not_to have_field('Contract holder') }
+    it { expect(page).to have_no_field('Contract holder') }
 
     context 'with valid data', :js do
       before do
@@ -147,13 +149,18 @@ describe 'manage contracts' do
       before { click_on 'Edit' }
 
       it { expect(page).to have_content(contract.name) }
-      it { expect(page).to have_content('Any changes made to the start and end dates for this contract will be automatically applied to all licences')}
 
-      it { expect(page).not_to have_field('Contract holder') }
-      it { expect(page).not_to have_field('Product') }
-      it { expect(page).not_to have_select('Invoice terms') }
-      it { expect(page).not_to have_select('Licence period') }
-      it { expect(page).not_to have_field('Licence years') }
+      it {
+        expect(page).to have_content(
+          'Any changes made to the start and end dates for this contract will be automatically applied to all licences'
+        )
+      }
+
+      it { expect(page).to have_no_field('Contract holder') }
+      it { expect(page).to have_no_field('Product') }
+      it { expect(page).to have_no_select('Invoice terms') }
+      it { expect(page).to have_no_select('Licence period') }
+      it { expect(page).to have_no_field('Licence years') }
 
       context 'with valid data', :js do
         before do
@@ -222,13 +229,16 @@ describe 'manage contracts' do
       end
 
       it { expect(page).to have_content(contract.name) }
-      it { expect(page).to have_content('One or more licences associated with this contract have already been invoiced') }
 
-      it { expect(page).not_to have_field('Contract holder') }
-      it { expect(page).not_to have_field('Product') }
-      it { expect(page).not_to have_select('Invoice terms') }
-      it { expect(page).not_to have_select('Licence period') }
-      it { expect(page).not_to have_field('Licence years') }
+      it {
+        expect(page).to have_content('One or more licences associated with this contract have already been invoiced')
+      }
+
+      it { expect(page).to have_no_field('Contract holder') }
+      it { expect(page).to have_no_field('Product') }
+      it { expect(page).to have_no_select('Invoice terms') }
+      it { expect(page).to have_no_select('Licence period') }
+      it { expect(page).to have_no_field('Licence years') }
     end
   end
 
@@ -359,7 +369,7 @@ describe 'manage contracts' do
     context 'when viewing terms' do
       it {
         expect(page).to have_link(contract.contract_holder.name,
-                                     href: polymorphic_path([:admin, contract.contract_holder]))
+                                  href: polymorphic_path([:admin, contract.contract_holder]))
       }
 
       it { expect(page).to have_content(contract.contract_holder_type) }
@@ -389,7 +399,7 @@ describe 'manage contracts' do
         let(:table_id) { '#licence-summary-table' }
         let(:expected_header) do
           [
-            ['Category', 'Status', 'Count']
+            %w[Category Status Count]
           ]
         end
         let(:expected_rows) do
