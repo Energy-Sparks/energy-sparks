@@ -871,6 +871,16 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         visit admin_school_group_path(school_group)
       end
 
+      it { expect(page).to have_link('New School Onboarding', href: new_admin_school_onboarding_path(school_group_id: school_group.id)) }
+
+      context 'when using the new onboarding link' do
+        before { click_on('New School Onboarding') }
+
+        it 'autofills the school group name' do
+          expect(page).to have_content(school_group.name)
+        end
+      end
+
       context 'with no onboarding schools' do
         before do
           click_on 'Onboarding'
@@ -883,10 +893,21 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         end
       end
 
-      it_behaves_like 'admin school group onboardings' do
-        def after_setup_data
+      context 'with onboarding schools' do
+        it_behaves_like 'admin school group onboardings' do
+          def after_setup_data
+            click_on 'Onboarding'
+          end
+        end
+
+        let(:school_onboarding) { create(:school_onboarding, :with_school, school_group:, created_by: admin) }
+        let!(:setup_data) { school_onboarding }
+
+        before do
           click_on 'Onboarding'
         end
+
+        it { expect(page).to have_link('Download as CSV') }
       end
     end
 
