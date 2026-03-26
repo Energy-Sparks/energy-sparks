@@ -1,16 +1,18 @@
 <% expand = (issue.resolvable? && @issueable) || local_assigns[:single] unless local_assigns[:expand] %>
 <div class="row pb-2">
   <div class="admin-issue <%= issue.issue_type %> col-md-12 rounded">
-    <h4>
-      <%= issue_type_icon(issue.issue_type, 1) %> <%= issue.title %>
-      <div class="float-end">
-        <small>
-          <%= render 'admin/issues/owned_by', issue: issue %>
-          <%= render 'admin/issues/status', issue: issue %>
-          <%= nice_date_times_today(issue.updated_at) %>
-          <%= render 'admin/issues/pinned', issue: issue %>
-        </small>
-      </div>
+    <h4 class="d-flex align-items-start">
+      <span class="flex-grow-1 me-2">
+        <%= issue_type_icon(issue.issue_type, 1) %>
+        <%= issue.title %>
+      </span>
+
+      <small class="text-nowrap">
+        <%= render 'admin/issues/owned_by', issue: issue %>
+        <%= render 'admin/issues/status', issue: issue %>
+        <%= nice_date_times_today(issue.updated_at) %>
+        <%= render 'admin/issues/pinned', issue: issue %>
+      </small>
     </h4>
     <div class="clearfix">
       <span data-toggle="collapse" data-bs-toggle="collapse" href="#issue-<%= issue.id %>" role="button"
@@ -42,14 +44,14 @@
     </div>
     <div class="collapse<%= ' show' if expand %>" id="issue-<%= issue.id %>">
       <div class="bg-white mb-2 p-2"><%= issue.description %></div>
-      <div class="pb-2 d-flex">
-        <div class="badge rounded-pill bg-white text-dark fw-normal pe-2">
+      <div class="pb-1 d-flex flex-wrap">
+        <div class="badge rounded-pill bg-white text-dark fw-normal pe-2 me-1 my-1">
           Created • <%= issue.created_by.display_name %> • <%= nice_date_times_today(issue.created_at) %>
         </div>
-        <div class="badge rounded-pill bg-white text-dark fw-normal">
+        <div class="badge rounded-pill bg-white text-dark fw-normal me-1 my-1">
           Updated • <%= issue.updated_by.display_name %> • <%= nice_date_times_today(issue.updated_at) %>
         </div>
-        <%= review_date_badge(issue, classes: 'ms-auto ps-2') %>
+        <%= review_date_badge(issue, classes: 'ms-auto my-1') %>
       </div>
     </div>
   </div>
