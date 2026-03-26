@@ -28,7 +28,7 @@ describe Commercial::Product do
       let!(:product) { create(:commercial_product) }
 
       it 'allows products to be deleted' do
-        expect { product.destroy }.to change(Commercial::Product, :count).by(-1)
+        expect { product.destroy }.to change(described_class, :count).by(-1)
       end
 
       context 'when default product' do

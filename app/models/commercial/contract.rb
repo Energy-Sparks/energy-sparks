@@ -80,7 +80,7 @@ module Commercial
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
-    validate :ensure_only_editable_attributes_changed
+    validate :ensure_only_editable_attributes_changed, unless: :new_record?
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
@@ -138,8 +138,6 @@ module Commercial
     end
 
     def ensure_only_editable_attributes_changed
-      return if new_record?
-
       allowed = editable_attributes.map(&:to_s)
       # status is editable if previous status was provisional
       allowed << 'status' if status_changed? && status_was.to_s == 'provisional'
