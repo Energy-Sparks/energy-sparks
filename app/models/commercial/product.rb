@@ -32,6 +32,7 @@
 module Commercial
   class Product < ApplicationRecord
     include Trackable
+    include Deletable
 
     self.table_name = 'commercial_products'
 
@@ -48,21 +49,20 @@ module Commercial
 
     has_many :contracts, class_name: 'Commercial::Contract'
 
-    before_destroy :prevent_destroy_if_default
-    before_destroy :prevent_destroy_if_contracts_exist
+    def deletable?
+      return false if default_product?
+      return false if contracts.exists?
+      true
+    end
 
     private
 
-    def prevent_destroy_if_default
-      return unless default_product?
-      errors.add(:base, 'Cannot delete default product')
-      throw(:abort)
-    end
-
-    def prevent_destroy_if_contracts_exist
-      return unless contracts.exists?
-      errors.add(:base, 'Cannot delete a product with contracts')
-      throw(:abort)
+    def destroy_error_message
+      if default_product?
+        'Cannot delete default product'
+      else
+        'Cannot delete a product with contracts'
+      end
     end
   end
 end
