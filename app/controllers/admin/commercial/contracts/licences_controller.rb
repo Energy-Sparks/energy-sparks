@@ -8,7 +8,7 @@ module Admin
         def edit
           contracted_schools = @contract.licences.map(&:school_id)
           @additional_schools = if @contract.contract_holder.is_a?(SchoolGroup)
-                                  scope = @contract.contract_holder.schools.where(
+                                  scope = @contract.contract_holder.assigned_schools.where(
                                     default_contract_holder: @contract.contract_holder
                                   )
                                   scope.where.not(id: contracted_schools).by_name

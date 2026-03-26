@@ -5,9 +5,10 @@
       {} # options
 ) %>
 
-<% nested = builder.simple_fields_for(:licences, @licence, child_index: @licence.id) do |lf| %>
-  <%= render partial: "licence", locals: { lf: lf, licence: @licence } %>
-<% end %>
+<% nested = render(Forms::Commercial::BulkLicenceEditorComponent::LicenceRowComponent.new(licence: @licence, form: builder, fields: %i[comments end_date school_specific_price start_date status])) %>
+<%# nested = builder.simple_fields_for(:licences, @licence, child_index: @licence.id) do |lf| %>
+  <%# = render partial: "licence", locals: { lf: lf, licence: @licence } %>
+<%# end %>
 
 var html = "<%= j nested %>";
 

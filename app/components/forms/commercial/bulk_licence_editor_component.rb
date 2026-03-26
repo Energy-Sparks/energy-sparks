@@ -19,6 +19,21 @@ module Forms
         end
       end
 
+      class LicenceRowComponent < ViewComponent::Base
+        attr_reader :form, :licence
+
+        def initialize(licence:, form:, fields: [])
+          super
+          @licence = licence
+          @form = form
+          @fields = fields
+        end
+
+        def show_field?(name)
+          @fields.include?(name)
+        end
+      end
+
       private
 
       def form_path
