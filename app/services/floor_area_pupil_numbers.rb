@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class FloorAreaPupilNumbers < FloorAreaPupilNumbersBase
-  def initialize(school_attributes, key, default, add_attribute: false)
+  def initialize(school_attributes, key, default)
     school_attributes = school_attributes[:floor_area_pupil_numbers]
     super
   end
