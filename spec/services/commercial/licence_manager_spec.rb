@@ -7,8 +7,8 @@ describe Commercial::LicenceManager do
 
   let(:service) { described_class.new(school) }
 
-  describe '#licence_dates' do
-    subject(:dates) { service.licence_dates(contract) }
+  describe '.licence_dates' do
+    subject(:dates) { described_class.licence_dates(contract) }
 
     context 'when the licence_period is "contract"' do
       let!(:contract) { create(:commercial_contract, status: :confirmed, licence_period: :contract) }

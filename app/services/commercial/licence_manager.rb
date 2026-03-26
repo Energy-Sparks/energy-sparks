@@ -5,14 +5,16 @@ module Commercial
       @school = school
     end
 
-    def licence_dates(contract, base_date: Time.zone.today)
+    def self.licence_dates(contract, base_date: Time.zone.today)
       case contract.licence_period
       when 'contract'
+        start_date = contract.start_date
         end_date = contract.end_date
       else # custom
+        start_date = base_date
         end_date = add_years(base_date, contract.licence_years)
       end
-      { start_date: base_date, end_date: }
+      { start_date:, end_date: }
     end
 
     def school_onboarded(contract)
@@ -24,7 +26,7 @@ module Commercial
       return unless licence
 
       if licence.contract.licence_period.to_sym == :custom
-        licence_dates = licence_dates(licence.contract)
+        licence_dates = self.class.licence_dates(licence.contract)
         licence.start_date = licence_dates[:start_date]
         licence.end_date = licence_dates[:end_date]
       end
@@ -48,7 +50,7 @@ module Commercial
       return unless contract
 
       # these dates may change later, when school is made data visible
-      licence_dates = licence_dates(contract, base_date:)
+      licence_dates = self.class.licence_dates(contract, base_date:)
 
       contract.licences.create(
         contract: contract,
@@ -65,7 +67,7 @@ module Commercial
     # and add to a start date.
     #
     # The date ranges are specified as exclusive end dates, so subtract a day
-    def add_years(start_date, licence_years)
+    private_class_method def self.add_years(start_date, licence_years)
       years = licence_years.floor
       months = ((licence_years - years) * 12).round
       # Advance by whole years and months
