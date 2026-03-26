@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module Forms
   module Commercial
     class BulkLicenceEditorComponent < ApplicationComponent
-      DEFAULT_FIELDS = [:comments, :end_date, :invoice_reference, :school_specific_price, :start_date, :status].freeze
+      DEFAULT_FIELDS = %i[comments end_date invoice_reference school_specific_price start_date status].freeze
 
-      def initialize(contract:, additional_schools: [], form_path: nil, fields: DEFAULT_FIELDS, exclude_fields: [], **kwargs)
+      def initialize(contract:, additional_schools: [], form_path: nil, exclude_fields: [], **kwargs)
         super
         @contract = contract
         @form_path = form_path
         @additional_schools = additional_schools
-        @fields = fields - exclude_fields
+        @fields = DEFAULT_FIELDS - exclude_fields
       end
 
       def before_render
