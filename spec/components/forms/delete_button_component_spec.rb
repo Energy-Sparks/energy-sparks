@@ -20,7 +20,7 @@ RSpec.describe Forms::DeleteButtonComponent, :include_application_helper, type: 
 
   context 'with Deletable' do
     let(:deletable) { true }
-    let(:resource) { OpenStruct.new(deletable?: deletable) }
+    let(:resource) { double(deletable?: deletable) }
 
     before do
       render_inline described_class.new('http://example.org', resource:)
@@ -31,7 +31,7 @@ RSpec.describe Forms::DeleteButtonComponent, :include_application_helper, type: 
     context 'when cannot be deleted' do
       let(:deletable) { false }
 
-      it { expect(page).not_to have_link('Delete', href: 'http://example.org') }
+      it { expect(page).to have_no_link('Delete', href: 'http://example.org') }
     end
   end
 end

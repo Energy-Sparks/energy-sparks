@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forms
   class DeleteButtonComponentPreview < ViewComponent::Preview
     # @param url "URL to target with delete request"
@@ -9,7 +11,7 @@ module Forms
     # @param url "URL to target with delete request"
     # @param deletable "Value to be returned by resource.deletable?"
     def deletable(url: 'http://example.org', deletable: true)
-      render(Forms::DeleteButtonComponent.new(url, resource: OpenStruct.new(deletable?: deletable)))
+      render(Forms::DeleteButtonComponent.new(url, resource: Struct.new(:deletable?).new(deletable)))
     end
   end
 end
