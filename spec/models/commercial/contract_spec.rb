@@ -19,7 +19,7 @@ describe Commercial::Contract do
       let!(:contract) { create(:commercial_contract) }
 
       it 'allows contracts to be deleted' do
-        expect { contract.destroy }.to change(Commercial::Contract, :count).by(-1)
+        expect { contract.destroy }.to change(described_class, :count).by(-1)
       end
 
       context 'with invoiced licences' do
@@ -40,7 +40,7 @@ describe Commercial::Contract do
         end
 
         it 'allows contract to be deleted' do
-          expect { contract.destroy }.to change(Commercial::Contract, :count).by(-1)
+          expect { contract.destroy }.to change(described_class, :count).by(-1)
         end
       end
     end
@@ -57,7 +57,9 @@ describe Commercial::Contract do
         it 'prevents editing fields that are never editable' do
           contract.product = create(:commercial_product)
           expect(contract).not_to be_valid
-          expect(contract.errors[:product_id]).to include('cannot be changed once the contract is in its current state')
+          expect(contract.errors[:product_id]).to include(
+            'cannot be changed once the contract is in its current state'
+          )
         end
       end
 
@@ -80,7 +82,9 @@ describe Commercial::Contract do
         it 'prevents editing fields that become locked after invoicing' do
           contract.agreed_school_price = contract.agreed_school_price + 1
           expect(contract).not_to be_valid
-          expect(contract.errors[:agreed_school_price]).to include('cannot be changed once the contract is in its current state')
+          expect(contract.errors[:agreed_school_price]).to include(
+            'cannot be changed once the contract is in its current state'
+          )
         end
       end
 
@@ -102,14 +106,18 @@ describe Commercial::Contract do
     subject(:contract) { create(:commercial_contract, status: :provisional) }
 
     it 'has the expected fields' do
-      expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name, :number_of_schools, :purchase_order_number, :start_date, :status, :updated_by_id)
+      expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name,
+                                                              :number_of_schools, :purchase_order_number,
+                                                              :start_date, :status, :updated_by_id)
     end
 
     context 'when confirmed' do
       subject(:contract) { create(:commercial_contract, status: :confirmed) }
 
       it 'has the expected fields' do
-        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name, :number_of_schools, :purchase_order_number, :start_date, :updated_by_id)
+        expect(contract.editable_attributes).to contain_exactly(:agreed_school_price, :comments, :end_date, :name,
+                                                                :number_of_schools, :purchase_order_number,
+                                                                :start_date, :updated_by_id)
       end
     end
 
@@ -119,7 +127,8 @@ describe Commercial::Contract do
       end
 
       it 'has the expected fields' do
-        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools, :purchase_order_number, :status, :updated_by_id)
+        expect(contract.editable_attributes).to contain_exactly(:comments, :name, :number_of_schools,
+                                                                :purchase_order_number, :status, :updated_by_id)
       end
     end
   end
