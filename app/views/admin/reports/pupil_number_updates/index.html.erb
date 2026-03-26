@@ -1,0 +1,44 @@
+<%= render 'admin/reports/title', title: 'Pupil Number Updates' %>
+<p>
+  The table below lists active schools that have not been automatically updated from DfE data.
+</p>
+<table class="table table-sorted table-sm">
+  <thead>
+    <tr>
+      <th>School</th>
+      <th>School Group</th>
+      <th>Admin</th>
+      <th>Reason</th>
+      <th data-orderable="false"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% School.active.by_name.each do |school|
+         if school.full_school
+           attribute = school.meter_attributes.active.floor_area_pupil_numbers
+                             .order(Arel.sql("input_data->>'start_date' DESC NULLS LAST"))
+                             .first
+           next if attribute&.reason&.start_with?(Schools::PupilNumberUpdater::AUTOMATED_REASON)
+         end %>
+      <tr>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= school.school_group.name %></td>
+        <td><%= school.school_group&.default_issues_admin_user&.name %></td>
+        <td>
+          <% if !school.full_school %>
+            partial school
+          <% elsif attribute&.created_by_id.present? %>
+            admin set attribute
+          <% elsif school.establishment_id.nil? %>
+            no associated DfE data
+          <% elsif school.establishment.number_of_pupils.nil? %>
+            no number of pupils in DfE data
+          <% elsif school.establishment.number_of_pupils.zero? %>
+            number of pupils is zero in DfE data
+          <% end %>
+        </td>
+        <td><%= link_to :Attributes, admin_school_school_attributes_path(school) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
