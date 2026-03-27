@@ -90,12 +90,14 @@
 </div>
 
 <div class="form-group pt-2">
-  <%= f.input :number_of_pupils, input_html: { disabled: !current_user.admin? } %>
+  <%= f.input :number_of_pupils,
+              input_html: { disabled: controller.instance_of?(SchoolsController) && current_user.admin? } %>
 </div>
 
 <div class="form-group">
-  <%= f.input :percentage_free_school_meals, input_html: { disabled: !current_user.admin? },
-                                             hint: t('schools.school_details.percentage_free_school_meals_hint') %>
+  <%= f.input :percentage_free_school_meals,
+              input_html: { disabled: controller.instance_of?(SchoolsController) && !current_user.admin? },
+              hint: t('schools.school_details.percentage_free_school_meals_hint') %>
 </div>
 
 <h2 id="school-features"><%= t('schools.school_details.school_features') %></h2>
