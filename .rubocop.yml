@@ -52,7 +52,7 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Max: 4 # default 3
 
-# For discussion. Don't think we should use enable_bootstrap_five, which is what it would prefer
+# For discussion. Alternatives are enable_bootstrap5 or enable_bootstrap_five
 # enable_bootstrap_5 is going to be used in lots of controllers, don't want to having to keep switching it off inline
 # everytime it's used, so have put it here.
 Naming/VariableNumber:
