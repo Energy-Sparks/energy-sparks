@@ -1,5 +1,6 @@
 <%= form.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
   <tr id="<%= "licence-#{licence.id}-main-row" %>" class="main-row">
+    <%= lf.hidden_field :id %>
     <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
     <td><%= link_to licence.school.name, school_path(licence.school) %></td>
 

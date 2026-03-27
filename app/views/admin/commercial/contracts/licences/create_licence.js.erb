@@ -1,15 +1,16 @@
-<% form = SimpleForm::FormBuilder.new(:contract, @contract, self, {}) %>
+<% form = SimpleForm::FormBuilder.new(:commercial_contract, @contract, self, {}) %>
 <% nested = render(
-     Forms::Commercial::BulkLicenceEditorComponent.licence_row(
-       form:, licence: @licence, exclude_fields: [:invoice_reference]
-     )
-   ) %>
+    Forms::Commercial::BulkLicenceEditorComponent.licence_row(
+      form:, licence: @licence, exclude_fields: [:invoice_reference]
+    )
+  ) %>
 
 var html = "<%= j nested %>";
 
+// Add in new content
 document
   .getElementById("licence-rows")
   .insertAdjacentHTML("beforeend", html);
 
-// Remove the missing-school row
+// Remove the row in the additional school table
 document.getElementById("additional-school-<%= @school.id %>").remove()
