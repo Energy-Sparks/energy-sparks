@@ -8,12 +8,12 @@ module Commercial
       has_many :contracts,
                as: :contract_holder,
                class_name: 'Commercial::Contract',
-               dependent: :restrict_with_exception
+               dependent: :restrict_with_error
 
       has_many :contract_contacts,
                as: :contract_holder,
                class_name: 'Commercial::ContractContact',
-               dependent: :restrict_with_exception
+               dependent: :restrict_with_error
 
       has_many :default_contracted_schools,
                as: :default_contract_holder,

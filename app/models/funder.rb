@@ -32,14 +32,4 @@ class Funder < ApplicationRecord
                  )}")
           .group(:name).count('schools.id')
   end
-
-  before_destroy :prevent_destroy_if_contracts_exist
-
-  private
-
-  def prevent_destroy_if_contracts_exist
-    return unless contracts.exists?
-    errors.add(:base, 'Cannot delete a funder with contracts')
-    throw(:abort)
-  end
 end
