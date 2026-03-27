@@ -1,14 +1,13 @@
-<% i18n_scope = 'school_groups.impact.notes' %>
 <%= render Layout::GridComponent.new(
       id: 'notes',
       cols: 2,
       classes: 'pt-2 scrollable-title'
     ) do |grid| %>
   <%= grid.with_placeholder(placement: :right) %>
-  <%= grid.with_header(level: 4, title: t('title', scope: i18n_scope)) %>
+  <%= grid.with_header(level: 4, title: impact_t('notes.title')) %>
   <%= grid.with_block %>
   <%= grid.with_paragraph(classes: 'small') do %>
-    <%= t('data_updated', scope: i18n_scope, date: impact_report.generated_at.to_date.to_fs(:es_long)) %>
+    <%= impact_t('notes.data_updated', date: impact_report.generated_at.to_date.to_fs(:es_long)) %>
   <% end %>
 <% end %>
 <%= render Layout::GridComponent.new(
@@ -18,36 +17,36 @@
     ) do |grid| %>
   <%= grid.with_block do %>
     <p class='small'>
-      <%= t('reporting_basis', scope: i18n_scope,
-                               start_date: impact_report.twelve_months_ago.to_date.to_fs(:es_month),
-                               end_date: impact_report.last_month.to_date.to_fs(:es_month)) %>
+      <%= impact_t('notes.reporting_basis',
+                   start_date: impact_report.twelve_months_ago.to_date.to_fs(:es_month),
+                   end_date: impact_report.last_month.to_date.to_fs(:es_month)) %>
     </p>
     <p class='small'>
-      <%= t('comparisons_basis', scope: i18n_scope,
-                                 comparison_start:
-                                  (impact_report.twelve_months_ago - 12.months).to_date.to_fs(:es_month),
-                                 comparison_end:
-                                  (impact_report.last_month - 12.months).to_date.to_fs(:es_month)) %>
+      <%= impact_t('notes.comparisons_basis',
+                   comparison_start:
+                    (impact_report.twelve_months_ago - 12.months).to_date.to_fs(:es_month),
+                   comparison_end:
+                    (impact_report.last_month - 12.months).to_date.to_fs(:es_month)) %>
     </p>
     <p class='small'>
-      <%= t('schools_with_data', scope: i18n_scope,
-                                 count: impact_report.data_visible_schools_count) %>
+      <%= impact_t('notes.schools_with_data',
+                   count: impact_report.data_visible_schools_count) %>
     </p>
     <p class='small'>
-      <%= t('electricity_coverage', scope: i18n_scope,
-                                    count_electricity: 'Y', count_comparison: 'Z') %>
+      <%= impact_t('notes.electricity_coverage',
+                   count_electricity: 'Y', count_comparison: 'Z') %>
     </p>
     <p class='small'>
-      <%= t('gas_coverage', scope: i18n_scope,
-                            count_gas: 'W', count_comparison: 'B') %>
+      <%= impact_t('notes.gas_coverage',
+                   count_gas: 'W', count_comparison: 'B') %>
     </p>
-    <p class='small'><%= t('other_analysis', scope: i18n_scope) %></p>
+    <p class='small'><%= impact_t('notes.other_analysis') %></p>
   <% end %>
   <%= grid.with_block do %>
-    <p class='small'><%= t('other_metrics', scope: i18n_scope) %></p>
-    <p class='small'><%= t('cost_savings', scope: i18n_scope) %></p>
-    <p class='small'><%= t('potential_savings', scope: i18n_scope) %></p>
-    <p class='small'><%= t('coverage', scope: i18n_scope) %></p>
-    <p class='small'><%= t('pupil_numbers', scope: i18n_scope) %></p>
+    <p class='small'><%= impact_t('notes.other_metrics') %></p>
+    <p class='small'><%= impact_t('notes.cost_savings') %></p>
+    <p class='small'><%= impact_t('notes.potential_savings') %></p>
+    <p class='small'><%= impact_t('notes.coverage') %></p>
+    <p class='small'><%= impact_t('notes.pupil_numbers') %></p>
   <% end %>
 <% end %>

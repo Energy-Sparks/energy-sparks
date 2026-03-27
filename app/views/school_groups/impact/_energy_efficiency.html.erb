@@ -1,10 +1,8 @@
-<% i18n_scope = 'school_groups.impact.energy_efficiency' %>
-
 <%= render Layout::Cards::SectionHeaderComponent.new(
       id: 'energy-efficiency-header'
     ) do |section_header| %>
-  <%= section_header.with_header title: t('title', scope: i18n_scope) %>
-  <%= section_header.with_description { t('description', scope: i18n_scope) } %>
+  <%= section_header.with_header title: impact_t('energy_efficiency.title') %>
+  <%= section_header.with_description { impact_t('energy_efficiency.description') } %>
 <% end %>
 
 <%= render Layout::GridComponent.new(
@@ -15,41 +13,39 @@
       component_classes: 'theme theme-dark'
     ) do |grid| %>
   <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('cards.total_gas_savings.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('energy_efficiency.cards.total_gas_savings.title') %>
     <%= card.with_figure format_unit(impact_report.energy_efficiency.total_gas_savings, :£) %>
     <%= card.with_subtext do
-          t('cards.total_gas_savings.subtext', scope: i18n_scope,
-                                               count: impact_report.energy_efficiency.total_gas_savings_schools)
+          impact_t('energy_efficiency.cards.total_gas_savings.subtext',
+                   count: impact_report.energy_efficiency.total_gas_savings_schools)
         end %>
     <%= card.with_placeholder %>
   <% end %>
 
   <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('cards.total_electricity_savings.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('energy_efficiency.cards.total_electricity_savings.title') %>
     <%= card.with_figure format_unit(impact_report.energy_efficiency.total_electricity_savings, :£) %>
     <%= card.with_subtext do
-          t('cards.total_electricity_savings.subtext',
-            scope: i18n_scope,
-            count: impact_report.energy_efficiency.total_electricity_savings_schools)
+          impact_t('energy_efficiency.cards.total_electricity_savings.subtext',
+                   count: impact_report.energy_efficiency.total_electricity_savings_schools)
         end %>
     <%= card.with_placeholder %>
   <% end %>
 
   <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('cards.reduced_gas_emissions.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('energy_efficiency.cards.reduced_gas_emissions.title') %>
     <%= card.with_figure(
           format_unit(impact_report.energy_efficiency.reduced_gas_emissions, :co2, false)
         ) %>
     <%= card.with_subtext do
-          t('cards.reduced_gas_emissions.subtext',
-            scope: i18n_scope,
-            count: impact_report.energy_efficiency.reduced_electricity_emissions_schools)
+          impact_t('energy_efficiency.cards.reduced_gas_emissions.subtext',
+                   count: impact_report.energy_efficiency.reduced_electricity_emissions_schools)
         end %>
     <%= card.with_placeholder %>
   <% end %>
 
   <% grid.with_stats_card do |card| %>
-    <%= card.with_header title: t('cards.reduced_electricity_emissions.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('energy_efficiency.cards.reduced_electricity_emissions.title') %>
     <%= card.with_figure(
           format_unit(
             impact_report.energy_efficiency.reduced_electricity_emissions,
@@ -57,9 +53,8 @@
           )
         ) %>
     <%= card.with_subtext do
-          t(
-            'cards.reduced_electricity_emissions.subtext',
-            scope: i18n_scope,
+          impact_t(
+            'energy_efficiency.cards.reduced_electricity_emissions.subtext',
             count: impact_report.energy_efficiency.reduced_electricity_emissions_schools
           )
         end %>
@@ -76,11 +71,10 @@
     ) do |grid| %>
   <%= grid.with_placeholder %>
   <%= grid.with_feature_card(size: :md) do |feature| %>
-    <%= feature.with_header title: t('featured.title', scope: i18n_scope) %>
+    <%= feature.with_header title: impact_t('energy_efficiency.featured.title') %>
     <%= feature.with_description do
-          t(
-            'featured.description',
-            scope: i18n_scope,
+          impact_t(
+            'energy_efficiency.featured.description',
             school: impact_report.energy_efficiency.featured_school.name,
             percentage_reduction: impact_report.energy_efficiency.featured_school_percentage_reduction
           )
@@ -97,7 +91,7 @@
 <div class='pb-2 text-center' id='energy-efficiency-buttons'>
   <%= render Elements::HeaderComponent.new(
         level: 4,
-        title: t('analysis', scope: i18n_scope)
+        title: impact_t('energy_efficiency.analysis')
       ) %>
 
   <%= render Elements::ButtonComponent.new(
