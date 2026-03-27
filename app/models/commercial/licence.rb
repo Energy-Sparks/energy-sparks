@@ -33,6 +33,7 @@ module Commercial
   class Licence < ApplicationRecord
     include Trackable
     include TemporalRange
+    include Deletable
 
     self.table_name = 'commercial_licences'
 
@@ -63,8 +64,6 @@ module Commercial
 
     validates_presence_of :start_date, :end_date
 
-    before_destroy :prevent_destroy_if_invoiced
-
     def self.filtered(scope_name, date = Time.zone.today, school_group_id = nil)
       scope = public_send(scope_name, date)
 
@@ -89,11 +88,8 @@ module Commercial
 
     private
 
-    def prevent_destroy_if_invoiced
-      return unless invoiced?
-
-      errors.add(:base, 'Cannot delete an invoiced licence')
-      throw :abort
+    def destroy_error_message
+      'Cannot delete an invoiced licence'
     end
   end
 end

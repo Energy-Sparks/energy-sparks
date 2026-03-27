@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'manage contracts' do
@@ -9,13 +11,16 @@ describe 'manage contracts' do
   end
 
   context 'when adding a new contract' do
-    let!(:product) { create(:commercial_product, :default_product)}
+    let!(:product) { create(:commercial_product, :default_product) }
     let!(:funder) { create(:funder) }
 
     before do
       click_on 'Contracts'
       click_on 'New contract'
     end
+
+    it { expect(page).to have_field('Contract holder') }
+    it { expect(page).to have_field('Product') }
 
     context 'with valid data', :js do
       before do
@@ -73,17 +78,20 @@ describe 'manage contracts' do
     end
   end
 
-  context 'when updating an existing contract' do
-    let!(:contract) { create(:commercial_contract, contract_holder: funder) }
-    let!(:product) { create(:commercial_product, :default_product)}
-    let!(:funder) { create(:funder) }
+  context 'when adding a new contract for a contract holder' do
+    let!(:product) { create(:commercial_product, :default_product) }
+    let(:contract_holder) { create(:school_group) }
 
     before do
-      click_on 'Contracts'
-      click_on 'Edit'
+      visit admin_school_group_contracts_path(contract_holder)
+      click_on 'New contract'
     end
 
-    it { expect(page).to have_content(contract.name) }
+    it 'initialises the form correctly' do
+      expect(page).to have_content("Create a new contract for #{contract_holder.name}")
+    end
+
+    it { expect(page).to have_no_field('Contract holder') }
 
     context 'with valid data', :js do
       before do
@@ -91,35 +99,146 @@ describe 'manage contracts' do
         fill_in 'Comments', with: 'Some notes'
 
         select product.name, from: 'Product'
-
         fill_in 'Number of schools', with: 100
+        fill_in 'Purchase order number', with: 'PO123'
 
         set_date('#contract_start_date', '01/01/2026')
         set_date('#contract_end_date', '31/12/2026')
 
         fill_in 'Agreed school price', with: 525
+        select 'Custom', from: 'Licence period'
+        fill_in 'Licence years', with: 1.0
+
         click_on 'Save'
       end
 
-      it 'updates the model' do
-        expect(page).to have_content('Contract has been updated')
-        expect(contract.reload).to have_attributes(
+      it 'creates the model' do
+        expect(page).to have_content('Contract has been created')
+        expect(Commercial::Contract.last).to have_attributes(
           name: 'Custom contract',
           comments: 'Some notes',
           product: product,
-          contract_holder: funder,
+          contract_holder: contract_holder,
+          licence_period: 'custom',
+          licence_years: 1.0,
           number_of_schools: 100,
+          purchase_order_number: 'PO123',
           start_date: Date.new(2026, 1, 1),
           end_date: Date.new(2026, 12, 31),
           agreed_school_price: BigDecimal(525),
-          created_by: contract.created_by,
-          updated_by: user
+          created_by: user
         )
       end
 
       it 'does not create any licences' do
-        expect(contract.reload.licences).to be_empty
+        expect(page).to have_content('Contract has been created')
+        expect(Commercial::Contract.last.licences).to be_empty
       end
+    end
+  end
+
+  context 'when updating an existing contract' do
+    let!(:contract) { create(:commercial_contract, contract_holder: funder) }
+    let!(:funder) { create(:funder) }
+
+    before do
+      click_on 'Contracts'
+    end
+
+    context 'when the contract is editable' do
+      before { click_on 'Edit' }
+
+      it { expect(page).to have_content(contract.name) }
+
+      it {
+        expect(page).to have_content(
+          'Any changes made to the start and end dates for this contract will be automatically applied to all licences'
+        )
+      }
+
+      it { expect(page).to have_no_field('Contract holder') }
+      it { expect(page).to have_no_field('Product') }
+      it { expect(page).to have_no_select('Invoice terms') }
+      it { expect(page).to have_no_select('Licence period') }
+      it { expect(page).to have_no_field('Licence years') }
+
+      context 'with valid data', :js do
+        before do
+          fill_in 'Name', with: 'Custom contract'
+          fill_in 'Comments', with: 'Some notes'
+          fill_in 'Number of schools', with: 100
+
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+
+          fill_in 'Agreed school price', with: 525
+          click_on 'Save'
+        end
+
+        it 'updates the model' do
+          expect(page).to have_content('Contract has been updated')
+          expect(contract.reload).to have_attributes(
+            name: 'Custom contract',
+            comments: 'Some notes',
+            product: contract.product,
+            contract_holder: funder,
+            number_of_schools: 100,
+            start_date: Date.new(2026, 1, 1),
+            end_date: Date.new(2026, 12, 31),
+            agreed_school_price: BigDecimal(525),
+            created_by: contract.created_by,
+            updated_by: user
+          )
+        end
+
+        it 'does not create any licences' do
+          expect(contract.reload.licences).to be_empty
+        end
+      end
+    end
+
+    context 'when there are licences' do
+      let!(:licence) { create(:commercial_licence, contract:) }
+
+      before { click_on 'Edit' }
+
+      context 'when making changes to be cascaded', :js do
+        before do
+          select 'Confirmed', from: 'Status'
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+          click_on 'Save'
+        end
+
+        it 'updates the model' do
+          expect(page).to have_content('Contract and licences have been updated')
+          expect(licence.reload).to have_attributes(
+            start_date: Date.new(2026, 1, 1),
+            end_date: Date.new(2026, 12, 31),
+            status: 'confirmed',
+            updated_by: user
+          )
+        end
+      end
+    end
+
+    context 'when the contract has invoiced licences' do
+      before do
+        create(:commercial_licence, contract:, status: :invoiced)
+        click_on 'Edit'
+      end
+
+      it { expect(page).to have_content(contract.name) }
+
+      it {
+        expect(page).to have_content('One or more licences associated with this contract have already been invoiced')
+      }
+
+      it { expect(page).to have_no_field('Contract holder') }
+      it { expect(page).to have_no_field('Product') }
+      it { expect(page).to have_no_select('Invoice terms') }
+      it { expect(page).to have_no_select('Licence period') }
+      it { expect(page).to have_no_field('Licence years') }
     end
   end
 
@@ -132,13 +251,22 @@ describe 'manage contracts' do
 
     it { expect { click_on 'Delete' }.to change(Commercial::Contract, :count).by(-1) }
 
-    context 'when the contract has a licence' do
-      before do
-        create(:commercial_licence, contract:)
-        click_on 'Delete'
+    context 'when the contract has licences' do
+      context 'with a provisional status' do
+        before do
+          create(:commercial_licence, contract:, status: :provisional)
+        end
+
+        it { expect { click_on 'Delete' }.to change(Commercial::Contract, :count).by(-1) }
       end
 
-      it { expect(page).to have_content('Cannot delete record because dependent licences exist') }
+      context 'with an invoiced status' do
+        before do
+          create(:commercial_licence, contract:, status: :invoiced)
+        end
+
+        it { expect { click_on 'Delete' }.not_to change(Commercial::Contract, :count) }
+      end
     end
   end
 
@@ -241,7 +369,7 @@ describe 'manage contracts' do
     context 'when viewing terms' do
       it {
         expect(page).to have_link(contract.contract_holder.name,
-                                     href: polymorphic_path([:admin, contract.contract_holder]))
+                                  href: polymorphic_path([:admin, contract.contract_holder]))
       }
 
       it { expect(page).to have_content(contract.contract_holder_type) }
@@ -271,7 +399,7 @@ describe 'manage contracts' do
         let(:table_id) { '#licence-summary-table' }
         let(:expected_header) do
           [
-            ['Category', 'Status', 'Count']
+            %w[Category Status Count]
           ]
         end
         let(:expected_rows) do

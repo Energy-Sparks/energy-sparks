@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!typeInputs.length || !select) return;
 
   function loadOptionsFor(type, preselectedId = null) {
-    fetch(`/admin/commercial/contracts/contract_holder_options?type=${type}`)
+    fetch(`/admin/commercial/contracts/contract_holder_options?contract_holder_type=${type}`)
       .then(response => response.json())
       .then(records => {
         select.innerHTML = "";
