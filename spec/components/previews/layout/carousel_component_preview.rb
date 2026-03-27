@@ -7,13 +7,12 @@ module Layout
     # @param theme select { choices: [nil, dark, accent, light, pale] }
     # @param rounded toggle
     # @param bs5 toggle
-    def with_equivalences(show_arrows: :bottom, show_markers: true, theme: nil, rounded: false, bs5: false)
+    def with_equivalences(show_arrows: :bottom, show_markers: true, theme: nil, rounded: false, bs5: false) # rubocop:disable Lint/UnusedMethodArgument
       render_carousel(
         show_arrows: show_arrows,
         show_markers: show_markers,
         theme: theme,
-        rounded: rounded,
-        bs5: bs5
+        rounded: rounded
       ) do |carousel|
         carousel.with_equivalence(image_name: 'tree', classes: 'active') do |e|
           e.with_title { 'The school consumed XXX kWh' }
@@ -34,13 +33,12 @@ module Layout
     # @param theme select { choices: [nil, dark, accent, light, pale] }
     # @param rounded toggle
     # @param bs5 toggle
-    def with_grid(show_arrows: :side, show_markers: false, theme: :accent, rounded: true, bs5: false)
+    def with_grid(show_arrows: :side, show_markers: false, theme: :accent, rounded: true, bs5: false) # rubocop:disable Lint/UnusedMethodArgument
       render_carousel(
         show_arrows: show_arrows,
         show_markers: show_markers,
         theme: theme,
-        rounded: rounded,
-        bs5: bs5
+        rounded: rounded
       ) do |carousel|
         carousel.with_grid(cols: 2) do |grid|
           grid.with_image(src: 'laptop.jpg', classes: 'w-100 rounded')
@@ -66,7 +64,7 @@ module Layout
 
     private
 
-    def render_carousel(show_arrows:, show_markers:, theme:, rounded:, bs5:, &)
+    def render_carousel(show_arrows:, show_markers:, theme:, rounded:, &)
       classes = []
       classes << 'rounded p-4' if rounded
 
@@ -75,7 +73,6 @@ module Layout
                show_arrows: show_arrows,
                show_markers: show_markers,
                theme: theme&.to_sym,
-               bs5: bs5,
                classes: classes.join(' ')
              ), &)
     end

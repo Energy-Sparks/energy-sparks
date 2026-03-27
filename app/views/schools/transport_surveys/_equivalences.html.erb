@@ -1,7 +1,6 @@
 <div class="illustration-background">
   <%= render Layout::CarouselComponent.new(
         id: 'survey_carousel',
-        bs5: bs5?,
         arrows: :bottom
       ) do |carousel| %>
     <% @transport_survey.equivalences.each_with_index do |equivalence, index| %>
