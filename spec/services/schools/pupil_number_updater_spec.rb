@@ -10,6 +10,7 @@ describe Schools::PupilNumberUpdater do
 
   let(:service) { described_class.new(school) }
   let(:pupils) { 200 }
+  let(:percentage_free_school_meals) { 10 }
 
   def create_meter_attribute(start_date: Date.new(2020), end_date: nil, floor_area: '5000', number_of_pupils: '100', **)
     school.meter_attributes.create!({ attribute_type: 'floor_area_pupil_numbers',
@@ -28,7 +29,7 @@ describe Schools::PupilNumberUpdater do
   end
 
   def update
-    service.update(pupils, school.calendar.academic_years.ordered.first.start_date)
+    service.update(pupils, percentage_free_school_meals, school.calendar.academic_years.ordered.first.start_date)
   end
 
   shared_examples 'it creates a new attribute' do
@@ -40,6 +41,10 @@ describe Schools::PupilNumberUpdater do
 
     it 'updates number_of_pupils' do
       expect(school.reload.number_of_pupils).to eq(pupils)
+    end
+
+    it 'updates percentage_free_school_meals' do
+      expect(school.reload.percentage_free_school_meals).to eq(percentage_free_school_meals)
     end
   end
 
@@ -106,6 +111,16 @@ describe Schools::PupilNumberUpdater do
 
       it { expect { update }.not_to change(attribute, :updated_at) }
       it { expect { update }.not_to change(attributes, :count) }
+    end
+
+    context 'when numbers have not changed' do
+      before do
+        create_meter_attribute(number_of_pupils: pupils)
+        school.update!(percentage_free_school_meals:)
+      end
+
+      it { expect { update }.not_to change(attributes, :count) }
+      it { expect { update }.not_to change(school, :updated_at) }
     end
 
     context 'with a deleted meter attribute' do

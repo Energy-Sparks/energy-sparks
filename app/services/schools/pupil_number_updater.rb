@@ -9,10 +9,15 @@ module Schools
       @school = school
     end
 
-    def update(pupil_count, start_date, reason_prefix = 'Automated pupil number update')
+    def update(number_of_pupils, percentage_free_school_meals, start_date,
+               reason_prefix = 'Automated pupil number update')
       ActiveRecord::Base.transaction do
-        attribute = save_pupil_count_to_meter_attribute(pupil_count, start_date, reason_prefix)
-        save_pupil_count_to_school(pupil_count) if attribute
+        if number_of_pupils&.>(0)
+          attribute = save_number_of_pupils_to_meter_attribute(number_of_pupils, start_date, reason_prefix)
+          @school.number_of_pupils = number_of_pupils if attribute
+        end
+        @school.percentage_free_school_meals = percentage_free_school_meals if percentage_free_school_meals.present?
+        @school.save! if @school.changed?
       end
     end
 
@@ -25,45 +30,40 @@ module Schools
       [data, data&.delete(:attribute)]
     end
 
-    def save_pupil_count_to_meter_attribute(pupil_count, start_date, reason_prefix)
+    def save_number_of_pupils_to_meter_attribute(number_of_pupils, start_date, reason_prefix)
       data, attribute = last_attribute
       if attribute.nil?
-        reason = "Pupil numbers set to #{pupil_count}."
-      elsif should_create_attribute?(pupil_count, start_date, attribute, data)
+        reason = "Pupil numbers set to #{number_of_pupils}."
+      elsif should_create_attribute?(number_of_pupils, start_date, attribute, data)
         if attribute.input_data['end_date'].blank?
           update_end_date(attribute, start_date)
         elsif start_date < data[:end_date]
           start_date = data[:end_date]
         end
-        reason = "Pupil numbers changed from #{data[:value]} to #{pupil_count}."
+        reason = "Pupil numbers changed from #{data[:value]} to #{number_of_pupils}."
       end
       return unless reason
 
       Rails.logger.info("#{@school.name}: #{reason}")
-      create_attribute(start_date, pupil_count, [reason_prefix, reason].join)
+      create_attribute(start_date, number_of_pupils, [reason_prefix, reason].join)
     end
 
-    def should_create_attribute?(pupil_count, start_date, attribute, data)
+    def should_create_attribute?(number_of_pupils, start_date, attribute, data)
       (attribute.created_by_id.nil? || data[:end_date] <= start_date) &&
-        data[:value] != pupil_count &&
+        data[:value] != number_of_pupils &&
         data[:start_date] < start_date
     end
 
-    def create_attribute(start_date, pupil_count, reason)
+    def create_attribute(start_date, number_of_pupils, reason)
       @school.meter_attributes.create!(
         attribute_type: :floor_area_pupil_numbers,
-        input_data: { start_date: start_date.strftime(DATE_FORMAT), number_of_pupils: pupil_count.to_s },
+        input_data: { start_date: start_date.strftime(DATE_FORMAT), number_of_pupils: number_of_pupils.to_s },
         reason:
       )
     end
 
     def update_end_date(attribute, end_date)
       attribute.update!(input_data: attribute.input_data.merge('end_date' => end_date.strftime(DATE_FORMAT)))
-    end
-
-    def save_pupil_count_to_school(pupil_count)
-      @school.number_of_pupils = pupil_count
-      @school.save! if @school.number_of_pupils_changed?
     end
   end
 end
