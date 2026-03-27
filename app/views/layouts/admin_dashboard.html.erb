@@ -1,7 +1,3 @@
-<% if @title %>
-  <% content_for :title, @title unless content_for?(:title) %>
-<% end %>
-
 <% unless content_for?(:page_title) %>
   <% content_for :page_title, content_for?(:title) ? yield(:title) : 'Admin Dashboard' %>
 <% end %>
@@ -12,9 +8,10 @@
              )) %>
 <% end %>
 
-<% if @admin %>
+<% if @dashboard_user %>
   <% content_for :page_nav do %>
-    <%= render Navigation::AdminDashboardComponent.new(current_user: @admin) %>
+    <%= render Navigation::AdminDashboardComponent.new(current_user: @dashboard_user) %>
   <% end %>
 <% end %>
+
 <%= render template: 'layouts/application' %>
