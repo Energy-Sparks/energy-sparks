@@ -7,5 +7,61 @@ module Commercial
     included do
       has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_exception
     end
+
+    def licenced_for?(date)
+      licences.any? { |licence| date.between?(licence.start_date, licence.end_date) }
+    end
+
+    def currently_licenced?(today = Time.zone.today)
+      licenced_for?(today)
+    end
+
+    # Do licences cover a whole period, part of it, or none?
+    #
+    # Returns:
+    #   :none    – no licence overlaps the period at all
+    #   :partial – some overlap, but not full coverage
+    #   :full    – the entire period is covered by one or more licences
+    def licenced_for_period(start_date, end_date)
+      period = (start_date..end_date)
+
+      # Collect all overlapping licence ranges
+      overlapping = licences.filter_map do |licence|
+        licence_range = (licence.start_date..licence.end_date)
+        next unless licence_range.overlaps?(period)
+
+        licence_range
+      end
+
+      return :none if overlapping.empty?
+
+      # Merge overlapping ranges to see if they cover the whole period
+      merged = merge_ranges(overlapping)
+
+      fully_covered =
+        merged.any? { |range| range.begin <= start_date && range.end >= end_date }
+
+      fully_covered ? :full : :partial
+    end
+
+    private
+
+    # Merge overlapping Ruby Range objects into minimal set
+    def merge_ranges(ranges)
+      sorted = ranges.sort_by(&:begin)
+      merged = [sorted.shift]
+
+      sorted.each do |range|
+        last = merged.last
+        # range overlaps so extend to latest end
+        if range.begin <= last.end + 1.day
+          merged[-1] = (last.begin..[last.end, range.end].max)
+        else
+          merged << range
+        end
+      end
+
+      merged
+    end
   end
 end

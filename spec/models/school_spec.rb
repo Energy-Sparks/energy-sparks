@@ -1280,7 +1280,7 @@ describe School do
         create(:establishment, id: 2)
         create(:establishment_link, establishment_id: 1, linked_establishment_id: 2)
         onb = create(:school_onboarding, urn: 1, school_name: 'onboarding name')
-        School.from_onboarding(onb)
+        described_class.from_onboarding(onb)
       end
 
       it 'uses new establishment instead' do
@@ -1295,9 +1295,10 @@ describe School do
     context 'with matched current establishment' do
       let(:sch) do
         create(:local_authority_area, code: 'a')
-        create(:establishment, district_administrative_code: 'a', id: 1, establishment_name: 'establishment name', phase_of_education_code: 2, gor_code: 'A')
+        create(:establishment, district_administrative_code: 'a', id: 1, establishment_name: 'establishment name',
+                               phase_of_education_code: 2, gor_code: 'A')
         onb = create(:school_onboarding, urn: 1, school_name: 'onboarding name')
-        School.from_onboarding(onb)
+        described_class.from_onboarding(onb)
       end
 
       it 'gets name from establishment instead of onboarding' do
@@ -1321,7 +1322,7 @@ describe School do
       let(:sch) do
         create(:local_authority_area, code: 'a')
         onb = create(:school_onboarding, school_name: 'onboarding name')
-        School.from_onboarding(onb)
+        described_class.from_onboarding(onb)
       end
 
       it 'defaults to name from onboarding' do
@@ -1332,7 +1333,7 @@ describe School do
 
   describe '.concatenate_address' do
     it 'skips empty elements' do
-      expect(School.concatenate_address(['', 'a', '', 'b', ''])).to eq('a, b')
+      expect(described_class.concatenate_address(['', 'a', '', 'b', ''])).to eq('a, b')
     end
   end
 
@@ -1397,6 +1398,55 @@ describe School do
 
       it 'removes the organisation grouping' do
         expect(SchoolGrouping.find_by(school_id: school.id, role: 'organisation')).to be_nil
+      end
+    end
+  end
+
+  describe 'LicenceHolder' do
+    let(:school) { create(:school) }
+
+    def create_licence(start_date, end_date)
+      create(:commercial_licence, school:, start_date:, end_date:)
+    end
+
+    describe '#licenced_for?' do
+      it 'returns true when a licence covers the date' do
+        create_licence(Date.new(2024, 1, 1), Date.new(2024, 12, 31))
+        expect(school.licenced_for?(Date.new(2024, 6, 1))).to be true
+      end
+
+      it 'returns false when no licence covers the date' do
+        create_licence(Date.new(2024, 1, 1), Date.new(2024, 3, 1))
+        expect(school.licenced_for?(Date.new(2024, 6, 1))).to be false
+      end
+    end
+
+    describe '#currently_licenced?' do
+      it 'checks todays date' do
+        today = Time.zone.today
+        create_licence(today - 1.day, today + 1.day)
+        expect(school.currently_licenced?).to be true
+      end
+    end
+
+    describe '#licenced_for_period' do
+      let(:start_date) { Date.new(2024, 1, 1) }
+      let(:end_date)   { Date.new(2024, 1, 31) }
+
+      it 'returns :none when no licences overlap' do
+        create_licence(Date.new(2024, 3, 1), Date.new(2024, 3, 31))
+        expect(school.licenced_for_period(start_date, end_date)).to eq(:none)
+      end
+
+      it 'returns :partial when licences overlap but do not cover full period' do
+        create_licence(Date.new(2024, 1, 10), Date.new(2024, 1, 20))
+        expect(school.licenced_for_period(start_date, end_date)).to eq(:partial)
+      end
+
+      it 'returns :full when licences fully cover the period' do
+        create_licence(Date.new(2023, 12, 1), Date.new(2024, 1, 15))
+        create_licence(Date.new(2024, 1, 16), Date.new(2024, 2, 1))
+        expect(school.licenced_for_period(start_date, end_date)).to eq(:full)
       end
     end
   end
