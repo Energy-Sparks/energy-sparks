@@ -1,14 +1,9 @@
-<% builder = SimpleForm::FormBuilder.new(
-      :contract,
-      @contract,
-      self,
-      {} # options
-) %>
-
-<% nested = render(Forms::Commercial::BulkLicenceEditorComponent::LicenceRowComponent.new(licence: @licence, form: builder, fields: %i[comments end_date school_specific_price start_date status])) %>
-<%# nested = builder.simple_fields_for(:licences, @licence, child_index: @licence.id) do |lf| %>
-  <%# = render partial: "licence", locals: { lf: lf, licence: @licence } %>
-<%# end %>
+<% form = SimpleForm::FormBuilder.new(:contract, @contract, self, {}) %>
+<% nested = render(
+     Forms::Commercial::BulkLicenceEditorComponent.licence_row(
+       form:, licence: @licence, exclude_fields: [:invoice_reference]
+     )
+   ) %>
 
 var html = "<%= j nested %>";
 

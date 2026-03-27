@@ -19,11 +19,16 @@ module Forms
         end
       end
 
+      def self.licence_row(licence:, form:, exclude_fields: [])
+        fields = DEFAULT_FIELDS - exclude_fields
+        LicenceRowComponent.new(licence:, form:, fields:)
+      end
+
       class LicenceRowComponent < ViewComponent::Base
         attr_reader :form, :licence
 
         def initialize(licence:, form:, fields: [])
-          super
+          super()
           @licence = licence
           @form = form
           @fields = fields
