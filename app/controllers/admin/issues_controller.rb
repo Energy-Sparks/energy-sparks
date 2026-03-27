@@ -11,7 +11,7 @@ module Admin
     before_action :issueable
 
     # Form spacing needs work (site wide issue for bs5), so have not fully switched on here.
-    before_action :enable_bootstrap_5, except: %i[new create edit update]
+    before_action :enable_bootstrap5, except: %i[new create edit update]
 
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 
