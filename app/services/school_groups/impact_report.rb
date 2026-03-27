@@ -182,14 +182,7 @@ module SchoolGroups
       end
 
       def featured_school
-        @featured_school ||= School
-                             .joins(:observations)
-                             .merge(Observation.between(twelve_months_ago, generated_at))
-                             .merge(visible_schools)
-                             .select('schools.*, SUM(observations.points) AS total_points')
-                             .group('schools.id')
-                             .order(total_points: :desc)
-                             .first
+        school_group.scored_schools.first
       end
 
       def featured_school_activities

@@ -65,8 +65,7 @@
                               school_path(impact_report.engagement.featured_school), style: :secondary) %>
     <% end %>
     <%= grid.with_block(classes: 'bg-white p-4 rounded-3') do %>
-      <% podium = Podium.create(school: impact_report.engagement.featured_school,
-                                scoreboard: impact_report.engagement.featured_school.scoreboard) %>
+      <% podium = Podium.create(school: impact_report.engagement.featured_school, scoreboard: @school_group) %>
       <%= render(Scoreboards::PodiumComponent.new(podium: podium)) %>
     <% end %>
   <% end %>
