@@ -97,7 +97,7 @@ RSpec.describe Layout::CarouselComponent, type: :component do
       end
 
       context 'when using bootstrap 5' do
-        let(:params) { { bs5: true } }
+        before { allow(Current).to receive(:bs5).and_return(true) }
 
         it { expect(html).to have_css('.bottom div.carousel-indicators button') }
       end

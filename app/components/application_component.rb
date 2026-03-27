@@ -6,8 +6,6 @@ class ApplicationComponent < ViewComponent::Base
 
   attr_reader :id, :classes, :current_user
 
-  delegate :bs5?, to: :helpers
-
   # Structuring the initialize method in this manner offers flexibility for future enhancements
   # It allows the addition of new parameters without necessitating changes to other subclasses and also
   # means we don't have to define the parameters we pass to super each time

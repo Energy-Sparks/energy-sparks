@@ -11,9 +11,9 @@
         <%= render ArrowComponent.new(id: id, direction: :next) %>
       <% end %>
       <% if show_markers %>
-        <%= content_tag (bs5? ? :div : :ol), class: 'carousel-indicators pb-4' do %>
+        <%= content_tag (Current.bs5 ? :div : :ol), class: 'carousel-indicators pb-4' do %>
           <% panels.size.times do |n| %>
-            <% if bs5? %>
+            <% if Current.bs5 %>
               <%= tag.button type: 'button', data: { bs_target: "##{id}", bs_slide_to: n },
                              class: ('active' if n.zero?).to_s %>
             <% else %>
