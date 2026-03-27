@@ -3,9 +3,9 @@
 <% end %>
 
 <% content_for :header do %>
-  <%= render(Layout::Cards::PageHeaderComponent.new(
-               title: content_for?(:title) ? yield(:title) : 'Admin Dashboard'
-             )) %>
+  <%= render Admin::HeaderNavComponent.new do |header_nav| %>
+    <% header_nav.with_header title: content_for?(:title) ? yield(:title) : 'Admin Dashboard' %>
+  <% end %>
 <% end %>
 
 <% if @dashboard_user %>
