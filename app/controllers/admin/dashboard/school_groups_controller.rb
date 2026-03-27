@@ -5,7 +5,7 @@ module Admin
     class SchoolGroupsController < Admin::SchoolGroupsController
       include AdminDashboard
 
-      before_action :set_user, :set_breadcrumbs
+      before_action :set_user
 
       def index
         super
