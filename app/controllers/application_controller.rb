@@ -112,7 +112,7 @@ class ApplicationController < ActionController::Base
     Current.bs5 = Flipper.enabled?(:bootstrap_switcher) && ActiveModel::Type::Boolean.new.cast(params[:bs5])
   end
 
-  def enable_bootstrap_5
+  def enable_bootstrap5
     Current.bs5 = true unless Flipper.enabled?(:bootstrap_switcher) && params[:bs5]
   end
 
