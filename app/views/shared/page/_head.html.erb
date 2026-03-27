@@ -28,6 +28,12 @@
 <%= stylesheet_link_tag bootstrap_path('application'), media: 'all' %>
 
 <%= javascript_importmap_tags %>
+
+<%= javascript_include_tag 'jquery.min', integrity: true %>
+<%= javascript_include_tag 'jquery_ujs', integrity: true %>
+<%= javascript_include_tag 'moment', integrity: true %>
+<%= javascript_include_tag 'moment/cy', integrity: true %>
+
 <%= javascript_include_tag bootstrap_path('application_assets') %>
 
 <%= javascript_include_tag 'https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js' %>

@@ -275,7 +275,6 @@ GEM
     eventbrite_sdk (3.6.0)
       rest-client (~> 2.0)
     excon (0.112.0)
-    execjs (2.10.0)
     extendmatrix (0.4)
     factory_bot (6.5.5)
       activesupport (>= 6.1.0)
@@ -336,9 +335,6 @@ GEM
       fugit (>= 1.11.0)
       railties (>= 6.1.0)
       thor (>= 1.0.0)
-    google-protobuf (4.33.2)
-      bigdecimal
-      rake (>= 13)
     google-protobuf (4.33.2-aarch64-linux-gnu)
       bigdecimal
       rake (>= 13)
@@ -543,7 +539,6 @@ GEM
     parser (3.3.10.2)
       ast (~> 2.4.1)
       racc
-    pg (1.6.3)
     pg (1.6.3-aarch64-linux)
     pg (1.6.3-arm64-darwin)
     pg (1.6.3-x86_64-darwin)
@@ -754,9 +749,6 @@ GEM
     sanitize (7.0.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.16.8)
-    sass-embedded (1.97.1)
-      google-protobuf (~> 4.31)
-      rake (>= 13)
     sass-embedded (1.97.1-aarch64-linux-gnu)
       google-protobuf (~> 4.31)
     sass-embedded (1.97.1-arm64-darwin)
@@ -812,8 +804,6 @@ GEM
     terminal-notifier-guard (1.7.0)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
-    terser (1.2.7)
-      execjs (>= 0.3.0, < 3)
     test-prof (1.6.0)
     text-table (1.2.4)
     thor (1.5.0)
@@ -975,7 +965,6 @@ DEPENDENCIES
   statsample!
   terminal-notifier
   terminal-notifier-guard
-  terser
   test-prof
   twilio-ruby
   tzinfo-data

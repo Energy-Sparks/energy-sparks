@@ -96,5 +96,6 @@ module EnergySparks
 
     # compiles all public (names don't start with an underscore) Sass files
     config.dartsass.builds = { '.' => '.' }
+    config.assets.integrity_hash_algorithm = "sha384"
   end
 end

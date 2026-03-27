@@ -111,8 +111,6 @@ Rails.application.configure do
     config.assets.prefix = "/static-assets"
     config.public_file_server.headers = { 'Access-Control-Allow-Origin' => "https://#{ENV['APPLICATION_HOST']}" }
   end
-  # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :terser
   config.action_controller.asset_host = ENV['ASSET_HOST'] if ENV['ASSET_HOST'].present?
   config.action_mailer.asset_host = ENV.fetch('ASSET_HOST'){ "https://#{ENV['APPLICATION_HOST']}" }
   config.active_storage.service = :amazon

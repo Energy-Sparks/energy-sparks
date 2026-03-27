@@ -43,7 +43,6 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sassc', path: 'sassc' # dummy gem for https://github.com/FortAwesome/font-awesome-sass/issues/221
-gem 'terser'
 
 # Pagination
 gem 'pagy'
