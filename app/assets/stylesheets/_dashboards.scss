@@ -213,7 +213,7 @@ table {
 }
 
 .chart-placeholder-image {
-    background-image: image-url('graph-placeholder.png');
+    background-image: url('/graph-placeholder.png');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -223,7 +223,7 @@ table {
 
 @media (max-width: 1199.98px) {
   .chart-placeholder-image {
-      background-image: image-url('graph-placeholder-765.png');
+      background-image: url('/graph-placeholder-765.png');
       height: 333px;
   }
 }

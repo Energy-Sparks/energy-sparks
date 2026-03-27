@@ -10,13 +10,13 @@ gem 'rails', '~> 7.2.3'
 gem 'bootsnap'
 gem 'image_processing', '~> 1.14'
 gem 'jbuilder', '~> 2.14' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'propshaft'
 gem 'puma' # Use Puma as the app server
 gem 'rack'
 gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'ruby-limiter'
-gem 'sprockets-rails'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'wisper' # publish subscribe for ruby objects
 
@@ -43,7 +43,6 @@ gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
 gem 'sassc', path: 'sassc' # dummy gem for https://github.com/FortAwesome/font-awesome-sass/issues/221
-gem 'terser'
 
 # Pagination
 gem 'pagy'
@@ -76,8 +75,6 @@ gem 'simple_form'
 gem 'sortablejs-rails'
 gem 'view_component'
 
-# JS Templating
-gem 'handlebars_assets'
 # Template variables
 gem 'mustache', '~> 1.1'
 
