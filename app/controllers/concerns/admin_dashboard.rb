@@ -5,21 +5,29 @@ module AdminDashboard
 
   included do
     layout 'admin_dashboard'
-    before_action :set_breadcrumbs
   end
 
   private
 
-  def set_metadata
-    @admin = User.find(params[:dashboard_id] || params[:id])
-    @title = title
+  def set_breadcrumbs
+    if @dashboard_user
+      build_breadcrumbs([
+                          { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) }
+                        ])
+    else
+      build_breadcrumbs
+    end
   end
 
-  def set_breadcrumbs
+  def set_user
+    @dashboard_user = User.find(params[:dashboard_id] || params[:id])
+  end
+
+  def build_breadcrumbs(extra = nil)
     @breadcrumbs = [
       { name: 'Admin', href: admin_path },
       { name: 'Dashboards', href: admin_dashboards_path },
-      { name: title }
+      *extra
     ]
   end
 end

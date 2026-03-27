@@ -5,15 +5,25 @@ module Admin
     class SchoolGroupsController < Admin::SchoolGroupsController
       include AdminDashboard
 
-      before_action :set_metadata
+      before_action :set_user, :set_breadcrumbs
 
       def index
         super
-        @school_groups = @school_groups.where(default_issues_admin_user: @admin) if @admin
+        @school_groups = @school_groups.where(default_issues_admin_user: @dashboard_user) if @dashboard_user
+        build_breadcrumbs([
+                            { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
+                            { name: 'School Groups' }
+                          ])
       end
 
-      def title
-        'School Groups'
+      def show
+        @title = @school_group.name
+        build_breadcrumbs([
+                            { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
+                            { name: 'School Groups',
+                              href: admin_dashboard_school_groups_path(dashboard_id: @dashboard_user.id) },
+                            { name: @school_group.name }
+                          ])
       end
     end
   end

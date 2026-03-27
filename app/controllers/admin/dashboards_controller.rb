@@ -5,18 +5,14 @@ module Admin
     include AdminDashboard
 
     layout 'admin_dashboard'
-    before_action :set_breadcrumbs
 
     def index
-      @admins = User.admin.order(:name)
+      @dashboard_users = User.admin.order(:name)
     end
 
     def show
-      set_metadata
-    end
-
-    def title
-      @admin&.display_name
+      set_user
+      set_breadcrumbs
     end
   end
 end
