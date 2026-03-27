@@ -8,9 +8,12 @@
 var html = "<%= j nested %>";
 
 // Add in new content
-document
-  .getElementById("licence-rows")
-  .insertAdjacentHTML("beforeend", html);
+var container = document.getElementById("licence-rows");
+container.insertAdjacentHTML("afterbegin", html);
+
+var newMainRow = document.getElementById("licence-<%= @licence.id %>-main-row");
+
+initTempusDominus(newMainRow);
 
 // Remove the row in the additional school table
 document.getElementById("additional-school-<%= @school.id %>").remove()

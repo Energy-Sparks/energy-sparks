@@ -5,7 +5,7 @@
     overflow-y: auto;
   }
 
-  .licence-editor-table thead th {
+  .licence-editor-table > thead > tr > th {
     background-color: $header-dark !important;
     border-bottom: 0;
     border-top: 0;
