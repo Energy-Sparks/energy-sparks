@@ -11,7 +11,7 @@
 #
 class Funder < ApplicationRecord
   include MailchimpUpdateable
-  include ContractHolder
+  include Commercial::ContractHolder
 
   watch_mailchimp_fields :name
 

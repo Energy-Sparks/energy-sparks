@@ -69,7 +69,7 @@
       <% elsif contract.editable_attribute?(:contract_holder) %>
         <%= f.input :contract_holder_type,
                     as: :radio_buttons,
-                    collection: HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
+                    collection: Commercial::HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
                     include_blank: false,
                     input_html: { class: 'contract-holder-type' } %>
 

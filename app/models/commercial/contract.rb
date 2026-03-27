@@ -42,7 +42,7 @@ module Commercial
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
-    include HasContractHolder
+    include Commercial::HasContractHolder
     include Deletable
 
     self.table_name = 'commercial_contracts'
