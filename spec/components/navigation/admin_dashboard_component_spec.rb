@@ -19,5 +19,16 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
     end
 
     it { expect(html).to have_link('Dashboard Home', href: admin_dashboard_path(current_user)) }
+
+    describe 'manage schools section' do
+      it 'has the title section' do
+        expect(html).to have_content('Manage Schools')
+      end
+
+      it 'has the correct links' do
+        expect(html).to have_link('School Groups',
+                                  href: admin_dashboard_school_groups_path(current_user))
+      end
+    end
   end
 end
