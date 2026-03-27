@@ -11,12 +11,12 @@ describe Schools::PupilNumberUpdater do
   let(:service) { described_class.new(school) }
   let(:pupils) { 200 }
 
-  def create_meter_attribute(start_date: '01/01/2020', end_date: nil, floor_area: '5000', number_of_pupils: '100', **)
+  def create_meter_attribute(start_date: Date.new(2020), end_date: nil, floor_area: '5000', number_of_pupils: '100', **)
     school.meter_attributes.create!({ attribute_type: 'floor_area_pupil_numbers',
-                                      input_data: { start_date: start_date,
-                                                    end_date: end_date,
-                                                    floor_area: floor_area,
-                                                    number_of_pupils: number_of_pupils }.compact }.merge(**))
+                                      input_data: { start_date: start_date&.strftime('%d/%m/%Y'),
+                                                    end_date: end_date&.strftime('%d/%m/%Y'),
+                                                    floor_area:,
+                                                    number_of_pupils: }.compact }.merge(**))
   end
 
   def attributes
@@ -25,6 +25,10 @@ describe Schools::PupilNumberUpdater do
 
   def start_date
     school.calendar.academic_years.ordered.first.start_date.strftime('%d/%m/%Y')
+  end
+
+  def update
+    service.update(pupils, school.calendar.academic_years.ordered.first.start_date)
   end
 
   shared_examples 'it creates a new attribute' do
@@ -41,40 +45,40 @@ describe Schools::PupilNumberUpdater do
 
   describe '#update' do
     context 'when there are no meter attributes' do
-      before { service.update(pupils) }
+      before { update }
 
       it_behaves_like 'it creates a new attribute'
     end
 
     context 'with a meter attribute that ended in the past' do
       before do
-        create_meter_attribute(end_date: '01/01/2021')
-        service.update(pupils)
+        create_meter_attribute(end_date: Date.new(2021))
+        update
       end
 
       it_behaves_like 'it creates a new attribute'
     end
 
     context 'with a current meter attribute with start and end date' do
-      let(:end_date) { (Time.zone.today + 1).strftime('%d/%m/%Y') }
+      let(:end_date) { Time.zone.today + 1.day }
       let!(:attribute) { create_meter_attribute(end_date:) }
 
-      before { service.update(pupils) }
+      # before { update }
 
       it_behaves_like 'it creates a new attribute' do
-        let(:start_date) { end_date }
+        before { update }
+
+        let(:start_date) { end_date.strftime('%d/%m/%Y') }
       end
 
-      it 'does not change the current attribute' do
-        expect(attribute.reload.input_data['end_date']).to eq(end_date)
-      end
+      it { expect { update }.not_to change(attribute, :updated_at) }
     end
 
     context 'with an open-ended meter attribute' do
       let!(:attribute) { create_meter_attribute(end_date: nil) }
 
       before do
-        service.update(pupils)
+        update
       end
 
       it 'adds end date to existing attribute' do
@@ -87,7 +91,7 @@ describe Schools::PupilNumberUpdater do
     context 'with an attribute created by a person' do
       before do
         create_meter_attribute(created_by: create(:admin))
-        service.update(pupils)
+        update
       end
 
       it 'does not create a new attribute' do
@@ -95,10 +99,19 @@ describe Schools::PupilNumberUpdater do
       end
     end
 
+    context 'with an attrbute starting after the previous calendar year start' do
+      let!(:attribute) do
+        create_meter_attribute(start_date: school.calendar.academic_years.ordered.first.start_date + 1.day)
+      end
+
+      it { expect { update }.not_to change(attribute, :updated_at) }
+      it { expect { update }.not_to change(attributes, :count) }
+    end
+
     context 'with a deleted meter attribute' do
       before do
-        create_meter_attribute(end_date: '01/01/2021', deleted_by: create(:admin))
-        service.update(pupils)
+        create_meter_attribute(end_date: Date.new(2021), deleted_by: create(:admin))
+        update
       end
 
       it_behaves_like 'it creates a new attribute'
