@@ -3,5 +3,14 @@
                                 icon: nil,
                                 href: admin_dashboard_path(current_user),
                                 options: { user: current_user, match_controller: true } do |c| %>
-  <% classes = 'small' %>
+  <% classes = 'medium' %>
+
+  <% c.with_section name: 'Manage Schools',
+                    icon: 'school',
+                    expanded: true,
+                    options: { match_controller: true } do |s| %>
+    <% s.with_item(name: 'School Groups',
+                   href: admin_dashboard_school_groups_path(current_user),
+                   match_controller: true) %>
+  <% end %>
 <% end %>
