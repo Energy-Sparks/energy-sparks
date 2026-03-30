@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: activities
@@ -78,6 +80,10 @@ class Activity < ApplicationRecord
 
   def academic_year
     school.academic_year_for(happened_on)
+  end
+
+  def type_name
+    activity_type&.name
   end
 
   private
