@@ -18,16 +18,13 @@ class ApplicationComponent < ViewComponent::Base
   #   end
   # end
 
-  # rubocop:disable Metrics/ParameterLists
-  def initialize(*_args, id: nil, classes: '', current_user: nil, bs5: false, **_kwargs)
+  def initialize(*_args, id: nil, classes: '', current_user: nil, **_kwargs)
     super()
     @id = id
     @classes = class_names(classes)
     @current_user = current_user
-    @bs5 = bs5 # pass in to make component bootstrap 5 switchable
     add_classes(self.class.name.underscore.dasherize.parameterize)
   end
-  # rubocop:enable Metrics/ParameterLists
 
   def add_classes(classes)
     @classes = class_names(@classes, classes)
@@ -36,10 +33,6 @@ class ApplicationComponent < ViewComponent::Base
   def merge_classes(classes, kwargs)
     kwargs[:classes] = class_names(classes, kwargs[:classes])
     kwargs
-  end
-
-  def bs5?
-    !!@bs5
   end
 
   class << self

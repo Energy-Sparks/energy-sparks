@@ -576,10 +576,6 @@ module ApplicationHelper
     enum.transform_keys(&:humanize).sort.to_h
   end
 
-  def bs5?
-    !!@bs5
-  end
-
   def bootstrap_version
     Current.bs5 ? 5 : 4
   end
