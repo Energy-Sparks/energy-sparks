@@ -50,7 +50,7 @@ class Activity < ApplicationRecord
   # At last check, activities had one obsevation each (with four having none)
   has_many :observations
 
-  validates_presence_of :school, :activity_type, :activity_category, :happened_on
+  validates :happened_on, presence: true
 
   scope :for_activity_type, ->(activity_type) { where(activity_type: activity_type) }
   scope :for_school, ->(school) { where(school: school) }
@@ -58,47 +58,37 @@ class Activity < ApplicationRecord
   scope :by_date, ->(order = :asc) { order(happened_on: order) }
   scope :between, ->(first_date, last_date) { where('activities.happened_on BETWEEN ? AND ?', first_date, last_date) }
   scope :in_academic_year, ->(academic_year) { between(academic_year.start_date, academic_year.end_date) }
-  scope :in_academic_year_for, ->(school, date) { (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none }
-  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago)}
-  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago)}
+  scope :in_academic_year_for, lambda { |school, date|
+    (academic_year = school.academic_year_for(date)) ? in_academic_year(academic_year) : none
+  }
+  scope :recorded_in_last_year, -> { where('created_at >= ?', 1.year.ago) }
+  scope :recorded_in_last_week, -> { where('created_at >= ?', 1.week.ago) }
 
   has_rich_text :description
 
   after_update :update_observations
 
-  self.ignored_columns = %w(deprecated_description)
+  self.ignored_columns = %w[deprecated_description]
 
-  def display_name
-    activity_type.custom ? title : activity_type.name
-  end
+  def display_name = activity_type.custom ? title : activity_type.name
 
   # There should only ever be one observation per activity
   # But we maintain has_many relationship for now
-  def points
-    observations.sum(:points)
-  end
+  def points = observations.sum(:points)
 
-  def academic_year
-    school.academic_year_for(happened_on)
-  end
+  def academic_year = school.academic_year_for(happened_on)
 
-  def type_name
-    activity_type&.name
-  end
+  def type_name = activity_type&.name
 
   private
 
-  def description_previously_changed?
-    rich_text_description&.previous_changes&.key?('body')
-  end
+  def description_previously_changed? = rich_text_description&.previous_changes&.key?('body')
 
-  def update_observations?
-    happened_on_previously_changed? || description_previously_changed? || updated_by_previously_changed?
-  end
+  def update_observations? = happened_on_previously_changed? || description_previously_changed? || updated_by_previously_changed?
 
   def update_observations
-    if update_observations?
-      observations.each { |o| o.update(updated_by:, at: happened_on) } # forces callbacks to update points
-    end
+    return unless update_observations?
+
+    observations.each { |o| o.update(updated_by:, at: happened_on) } # forces callbacks to update points
   end
 end
