@@ -8,7 +8,7 @@ module SchoolGroups
     before_action :redirect_unless_authorised
     before_action :redirect_unless_enabled
     before_action :enable_prototype_page
-    before_action :enable_bootstrap_5
+    before_action :enable_bootstrap5
     before_action :breadcrumbs
 
     skip_before_action :authenticate_user!
