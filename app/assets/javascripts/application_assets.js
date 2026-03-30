@@ -73,3 +73,4 @@
 //= require delete_association
 //= require section_nav
 //= require match_row_height
+//= require ensure_one_checked

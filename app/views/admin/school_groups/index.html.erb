@@ -1,4 +1,10 @@
-<h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s #{@organisation_group ? 'School' : @group_type.to_s.humanize} Groups" %>
+  <% end %>
+<% else %>
+  <h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
+<% end %>
 
 <div class="row">
   <div class="col-12 d-flex justify-content-between">
@@ -70,10 +76,17 @@
               <td class="text-end"><%= school_group.assigned_schools.not_visible.count %></td>
               <td class="text-end"><%= school_group.assigned_schools.inactive.count %></td>
               <td class="text-end">
-                <%= link_to 'Manage',
-                            admin_school_group_path(school_group),
-                            class: 'btn btn-secondary btn-sm',
-                            id: school_group.slug %>
+                <% unless @dashboard_user %>
+                  <%= link_to 'Manage',
+                              admin_school_group_path(school_group),
+                              class: 'btn btn-secondary btn-sm',
+                              id: school_group.slug %>
+                <% else %>
+                  <%= link_to 'Manage',
+                              admin_dashboard_school_group_path(dashboard_id: @dashboard_user.id, id: school_group.id),
+                              class: 'btn btn-secondary btn-sm',
+                              id: school_group.slug %>
+                <% end %>
               </td>
             </tr>
           <% end %>

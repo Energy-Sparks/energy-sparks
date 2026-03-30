@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 3.4.8'
 
-gem 'rails', '~> 7.2.2'
+gem 'rails', '~> 7.2.3'
 
 # Rails/Core
 gem 'bootsnap'
@@ -16,7 +16,7 @@ gem 'rack-attack'
 gem 'rack-canonical-host' # Redirect www to root
 gem 'rexml' # ruby 3 related - seems like should be a dependency of bootsnap
 gem 'ruby-limiter'
-gem 'sprockets'
+gem 'sprockets-rails'
 gem 'stateful_enum' # extends ActiveRecord::Enum with state
 gem 'wisper' # publish subscribe for ruby objects
 
@@ -24,7 +24,6 @@ gem 'wisper' # publish subscribe for ruby objects
 gem 'after_party' # load data after deploy
 gem 'auto_strip_attributes', '~> 2.5'
 gem 'closed_struct'
-gem 'mechanize' # For GIAS data downloader
 gem 'pg'
 gem 'scenic'
 
@@ -38,12 +37,12 @@ gem 'statsample', github: 'Energy-Sparks/statsample', branch: 'ruby32'
 # Assets
 gem 'active_storage_validations'
 gem 'bootstrap4-datetime-picker-rails' # For tempus dominus date picker
+gem 'dartsass-rails'
 gem 'font-awesome-sass'
 gem 'importmap-rails'
 gem 'jquery-rails' # Use jquery as the JavaScript library
 gem 'momentjs-rails'
-gem 'sassc', github: 'tbhi/sassc-ruby', branch: 'load_error'
-gem 'sass-rails' # Use SCSS for stylesheets
+gem 'sassc', path: 'sassc' # dummy gem for https://github.com/FortAwesome/font-awesome-sass/issues/221
 gem 'terser'
 
 # Pagination
@@ -61,10 +60,14 @@ gem 'faraday-follow_redirects'
 gem 'faraday-retry'
 gem 'MailchimpMarketing'
 gem 'mailgun_rails' # Email service
+gem 'mechanize' # For GIAS data downloader
+gem 'net-sftp'
+gem 'rss'
 gem 'twilio-ruby' # For SMS notifications
 
-# Assets for Emails
+# Email
 gem 'bootstrap-email'
+gem 'premailer-rails' # Used to handle mail processing for the admin mailer
 
 # Frontend
 gem 'bootstrap', '~> 5.3'
@@ -93,9 +96,6 @@ gem 'friendly_id'
 # Sitemap
 gem 'sitemap_generator'
 
-# Reduce log noise in dev and test
-gem 'lograge'
-
 # Exception handling
 gem 'oj'
 gem 'rollbar'
@@ -113,16 +113,10 @@ gem 'good_job'
 gem 'roo', git: 'https://github.com/Energy-Sparks/roo.git', branch: 'bug-fix-branch'
 gem 'roo-xls'
 
-# Used to handle mail processing for the admin mailer
-gem 'premailer-rails'
-
 # Feature flags
 gem 'flipper-active_record', '~> 1.3'
 gem 'flipper-active_support_cache_store'
 gem 'flipper-ui', '~> 1.3'
-
-gem 'net-sftp'
-gem 'rss'
 
 group :development, :test do
   gem 'better_html'

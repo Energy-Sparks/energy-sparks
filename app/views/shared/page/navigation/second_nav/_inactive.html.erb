@@ -1,0 +1,4 @@
+<% if current_user&.admin? && school.not_active? %>
+  <%= tag.span school.archived? ? 'Archived' : 'Deleted',
+               class: 'ms-1 badge rounded-pill text-bg-dark border border-pale' %>
+<% end %>

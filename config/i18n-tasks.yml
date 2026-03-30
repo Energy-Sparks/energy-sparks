@@ -210,3 +210,7 @@ ignore_unused:
        patterns: [
          ['\badvice_t[( ]\s*%{key}', 'advice_pages.%{key}']
        ] %>
+ <% I18n::Tasks.add_scanner 'I18n::Tasks::Scanners::PatternMapper',
+       patterns: [
+         ['\bimpact_t[( ]\s*%{key}', 'school_groups.impact.%{key}']
+       ] %>
