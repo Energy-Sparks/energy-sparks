@@ -69,11 +69,6 @@ Rails.application.configure do
   config.active_support.deprecation = :raise
   config.i18n.raise_on_missing_translations = true
   config.action_mailer.default_url_options = { host: 'localhost' }
-  # Allows mailer previews to be viewed on production
-  # See also: config/initializers/action_mailer.rb
-  config.action_mailer.show_previews = true
-  # Rspec makes rails use spec/mailers/previews as the mail previews path
-  config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
   routes.default_url_options[:host] = 'localhost'
