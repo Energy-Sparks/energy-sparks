@@ -42,12 +42,8 @@ class TempusDominusDateInput < SimpleForm::Inputs::Base
     nil
   end
 
-  def bs5?
-    template.instance_variable_defined?(:@bs5) && template.instance_variable_get(:@bs5)
-  end
-
   def button
-    bs5? ? button_bs5 : button_bs4
+    Current.bs5 ? button_bs5 : button_bs4
   end
 
   def button_bs5

@@ -6,15 +6,15 @@
 
   <%# Switch between Bootstrap 4 and 5 %>
   <% if Flipper.enabled?(:bootstrap_switcher) %>
-    <div class='p-1 mt-1 badge <%= @bs5 ? 'text-bg-success' : 'text-bg-danger' %>'>
-      Bootstrap <%= @bs5 ? 5 : 4 %>:
-      <%= link_to "switch to #{@bs5 ? 4 : 5}",
-                  url_for(request.query_parameters.merge(bs5: !@bs5)) %>
+    <div class='p-1 mt-1 badge <%= Current.bs5 ? 'text-bg-success' : 'text-bg-danger' %>'>
+      Bootstrap <%= Current.bs5 ? 5 : 4 %>:
+      <%= link_to "switch to #{Current.bs5 ? 4 : 5}",
+                  url_for(request.query_parameters.merge(bs5: !Current.bs5)) %>
     </div>
   <% end %>
 
   <%# Prototype page indicator %>
-  <% if @prototype_page %>
+  <% if Current.prototype_page %>
     <div class='p-1 mt-1 badge text-bg-info'
          data-bs-toggle="tooltip"
          data-bs-placement="bottom"
