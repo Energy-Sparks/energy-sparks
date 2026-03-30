@@ -225,3 +225,11 @@ a.badge:focus,
     padding: 0;
   }
 }
+
+// BS5 fix: prevents checkbox groups from appearing on the same line as the legend
+// Once BS5 is in place, we might want to make changes to the markup in simple_form_bootstrap.rb instead
+.bs5 {
+  fieldset.check_boxes > legend.col-form-label {
+    float: none;
+  }
+}

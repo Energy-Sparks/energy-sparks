@@ -11,7 +11,7 @@ module SchoolGroups
     before_action :fetch_impact_report
     before_action :redirect_not_enough_data
     before_action :enable_prototype_page
-    before_action :enable_bootstrap_5
+    before_action :enable_bootstrap5
     before_action :breadcrumbs
 
     skip_before_action :authenticate_user!
@@ -30,14 +30,14 @@ module SchoolGroups
     def redirect_unless_feature_enabled
       return if Flipper.enabled?(:impact_reporting, current_user)
 
-      redirect_back_or_to(school_group_path(@school_group), alert: 'Feature not enabled')
+      redirect_to(school_group_path(@school_group), alert: 'Feature not enabled')
     end
 
     def redirect_not_enough_data
       return if @impact_report.visible_schools_count >= 2
 
-      redirect_back_or_to(school_group_path(@school_group),
-                          alert: I18n.t('advice_pages.index.show.not_available'))
+      redirect_to(school_group_path(@school_group),
+                  alert: I18n.t('advice_pages.index.show.not_available'))
     end
   end
 end

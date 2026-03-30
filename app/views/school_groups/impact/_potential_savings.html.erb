@@ -1,10 +1,8 @@
-<% i18n_scope = 'school_groups.impact.potential_savings' %>
-
 <%= render Layout::Cards::SectionHeaderComponent.new(
       id: 'potential-savings-header'
     ) do |section_header| %>
-  <%= section_header.with_header title: t('title', scope: i18n_scope) %>
-  <%= section_header.with_description { t('description', scope: i18n_scope) } %>
+  <%= section_header.with_header title: impact_t('potential_savings.title') %>
+  <%= section_header.with_description { impact_t('potential_savings.description') } %>
 <% end %>
 
 <%= render Layout::GridComponent.new(id: 'potential-savings-cards',
@@ -13,30 +11,28 @@
                                      component_classes: 'theme theme-dark') do |grid| %>
   <% grid.with_stats_card do |card| %>
     <%= card.with_placeholder %>
-    <%= card.with_header title: t('cards.electricity_savings.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('potential_savings.cards.electricity_savings.title') %>
     <%= card.with_figure format_unit(impact_report.potential_savings.electricity_savings, :£) %>
     <%= card.with_subtext do
-          t('cards.electricity_savings.subtext', scope: i18n_scope)
+          impact_t('potential_savings.cards.electricity_savings.subtext')
         end %>
   <% end %>
   <% grid.with_stats_card do |card| %>
     <%= card.with_placeholder %>
-    <%= card.with_header title: t('cards.solar_panels.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('potential_savings.cards.solar_panels.title') %>
     <%= card.with_figure format_unit(impact_report.potential_savings.solar_panels, :£) %>
     <%= card.with_subtext do
-          t('cards.solar_panels.subtext',
-            scope: i18n_scope,
-            count: impact_report.potential_savings.solar_panels_schools)
+          impact_t('potential_savings.cards.solar_panels.subtext',
+                   count: impact_report.potential_savings.solar_panels_schools)
         end %>
   <% end %>
   <% grid.with_stats_card do |card| %>
     <%= card.with_placeholder %>
-    <%= card.with_header title: t('cards.gas_savings.title', scope: i18n_scope) %>
+    <%= card.with_header title: impact_t('potential_savings.cards.gas_savings.title') %>
     <%= card.with_figure format_unit(impact_report.potential_savings.gas_savings, :£) %>
     <%= card.with_subtext do
-          t('cards.gas_savings.subtext',
-            scope: i18n_scope,
-            count: impact_report.potential_savings.gas_savings_schools)
+          impact_t('potential_savings.cards.gas_savings.subtext',
+                   count: impact_report.potential_savings.gas_savings_schools)
         end %>
   <% end %>
 <% end %>
