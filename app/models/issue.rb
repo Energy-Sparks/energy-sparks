@@ -95,8 +95,16 @@ class Issue < ApplicationRecord
     status_closed!
   end
 
+  def school_archived?
+    issueable.is_a?(School) && issueable.archived?
+  end
+
+  def archived?
+    status_open? && school_archived?
+  end
+
   def resolvable?
-    status_open?
+    status_open? && !school_archived?
   end
 
   def self.csv_headers

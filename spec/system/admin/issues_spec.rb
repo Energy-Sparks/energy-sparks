@@ -562,7 +562,7 @@ RSpec.describe 'issues', :issues, type: :system, include_application_helper: tru
       context 'when there are no issues' do
         let(:setup_data) {}
 
-        it { expect(page).to have_content('No issues or notes to display')}
+        it { expect(page).to have_content('No issues or notes to display') }
       end
     end
   end
