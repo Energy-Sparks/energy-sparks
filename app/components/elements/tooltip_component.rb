@@ -11,7 +11,7 @@ module Elements
 
     def call
       return content unless @text
-      content_tag(:span, content, id: id, class: classes, title: @text,
+      content_tag(:div, content, id: id, class: classes, title: @text,
         data: { bs_toggle: 'tooltip', toggle: 'tooltip' })
     end
   end

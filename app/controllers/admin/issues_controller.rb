@@ -3,11 +3,15 @@
 module Admin
   class IssuesController < AdminController
     include Pagy::Backend
+
     load_and_authorize_resource :school
     load_and_authorize_resource :school_group
     load_and_authorize_resource :data_source
     load_and_authorize_resource :school_onboarding, find_by: :uuid
     before_action :issueable
+
+    # Form spacing needs work (site wide issue for bs5), so have not fully switched on here.
+    before_action :enable_bootstrap5, except: %i[new create edit update]
 
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 
@@ -20,14 +24,19 @@ module Admin
         # Includes all school group and school issues
         @issues = @issueable.all_issues.active if @issueable.is_a?(SchoolGroup)
       else
-        @issues = @issues.active.for_issue_types(params[:issue_types])
+        # Only show issues for archived schools in a school context
+        @issues = @issues.active unless @issueable.is_a?(School)
+        @issues = @issues.for_issue_types(params[:issue_types])
         @issues = @issues.for_statuses(params[:statuses])
         @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
         @issues = @issues.search(params[:search]) if params[:search].present?
 
         if params[:review_date]
           @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'
-          @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now, 7.days.from_now) if params[:review_date] == 'review_next_week'
+          if params[:review_date] == 'review_next_week'
+            @issues = @issues.where('review_date BETWEEN ? AND ?', Time.zone.now,
+                                    7.days.from_now)
+          end
           @issues = @issues.where('review_date <= ?', Time.zone.now) if params[:review_date] == 'review_overdue'
         end
       end
@@ -39,7 +48,7 @@ module Admin
           @pagy, @issues = pagy(@issues.by_priority_order)
         end
         format.csv do
-          issues = @issues.with_rich_text_description.includes(meters: [:data_source, :admin_meter_status])
+          issues = @issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
 
           send_data issues.to_csv,
                     filename: EnergySparks::Filenames.csv('issues')
@@ -50,6 +59,8 @@ module Admin
     def new
       @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids])
     end
+
+    def edit; end
 
     def create
       @issue.attributes = { created_by: current_user, updated_by: current_user }
@@ -109,7 +120,7 @@ module Admin
     end
 
     def redirect_back_or_index(notice:)
-      redirect_back fallback_location: issueable_index_url, notice: issueable_notice(notice)
+      redirect_back_or_to(issueable_index_url, notice: issueable_notice(notice))
     end
 
     def issueable_index_url
