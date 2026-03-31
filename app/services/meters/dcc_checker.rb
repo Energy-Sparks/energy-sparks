@@ -6,18 +6,18 @@ module Meters
       @meters = meters
     end
 
-    def perform
-      updated_meters = []
-      @meters.each do |meter|
-        meter.update!(dcc_checked_at: DateTime.now, dcc_meter: Meters::N3rgyMeteringService.new(meter).type)
-        updated_meters << meter if meter.saved_change_to_dcc_meter?
-      rescue StandardError => e
-        Rails.logger.error("#{e.message} for mpxn #{meter.mpan_mprn}, school #{meter.school.name}")
-        Rollbar.error(e, job: :dcc_checker, mpxn: meter.mpan_mprn, school_name: meter.school.name)
-      end
-      return unless updated_meters.any?
+    def perform(to)
+      meter_ids = update_meters
+      DccMailer.with(meter_ids:).dcc_meter_status_email(to:).deliver_now if meter_ids.any?
+    end
 
-      DccMailer.with(meter_ids: updated_meters.map(&:id)).dcc_meter_status_email.deliver_now
+    def update_meters
+      @meters.filter_map do |meter|
+        meter.update!(dcc_checked_at: Time.current, dcc_meter: Meters::N3rgyMeteringService.new(meter).type)
+        meter.id if meter.saved_change_to_dcc_meter?
+      rescue StandardError => e
+        EnergySparks::Log.exception(e, job: :dcc_checker, mpxn: meter.mpan_mprn, school_name: meter.school.name)
+      end
     end
   end
 end
