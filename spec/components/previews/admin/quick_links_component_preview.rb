@@ -2,9 +2,9 @@
 
 module Admin
   class QuickLinksComponentPreview < ViewComponent::Preview
-    def example
-      user = User.where(role: 'admin').first
-      render Admin::QuickLinksComponent.new(current_user: user)
+    def default
+      user = User.admin.first
+      render Admin::QuickLinksComponent.new(user: user)
     end
   end
 end

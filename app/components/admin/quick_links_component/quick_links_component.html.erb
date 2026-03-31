@@ -5,7 +5,7 @@
     <% grid.with_feature_card(theme: :pale) do |feature| %>
       <%= feature.with_description { 'Select School Group' } %>
       <%= feature.with_block(classes: 'mb-1') do %>
-        <%= form_with url: admin_dashboard_path, method: :get, local: true,
+        <%= form_with url: admin_dashboard_path(@user), method: :get, local: true,
                       class: 'd-flex align-items-center justify-content-end' do %>
           <%= select_tag :school_group_id,
                          options_from_collection_for_select(school_groups.by_name, :id, :name),
@@ -28,7 +28,7 @@
     <% grid.with_feature_card(theme: :pale) do |feature| %>
       <%= feature.with_description { 'Select School' } %>
       <%= feature.with_block(classes: 'mb-1') do %>
-        <%= form_with url: admin_dashboard_path, method: :get, local: true,
+        <%= form_with url: admin_dashboard_path(@user), method: :get, local: true,
                       class: 'd-flex align-items-center justify-content-end' do %>
           <%= select_tag :school_id,
                          options_from_collection_for_select(schools.by_name, :id, :name),
