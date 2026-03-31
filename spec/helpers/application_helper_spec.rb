@@ -320,7 +320,7 @@ describe ApplicationHelper do
 
   describe '#bootstrap_path' do
     context 'when bs5 is true' do
-      before { helper.instance_variable_set(:@bs5, true) }
+      before { allow(Current).to receive(:bs5).and_return(true) }
 
       it 'does not change path' do
         expect(helper.bootstrap_path('application')).to eq('application')
@@ -328,7 +328,7 @@ describe ApplicationHelper do
     end
 
     context 'when bs5 is false' do
-      before { helper.instance_variable_set(:@bs5, false) }
+      before { allow(Current).to receive(:bs5).and_return(false) }
 
       it 'prepends bootstrap4/' do
         expect(helper.bootstrap_path('application')).to eq('bootstrap4/application')

@@ -1,7 +1,4 @@
-/*
- *
- *= require trix
- */
+@use 'font-awesome' with ($fa-font-path: 'font-awesome');
 
 @import "colours";
 @import "fonts";
@@ -9,7 +6,6 @@
 @import "bootstrap4/bootstrap";
 @import "bootstrap4/bootstrap-bridge";
 
-@import "font-awesome";
 @import "base";
 @import "links";
 @import "bootstrap4/buttons";
@@ -63,4 +59,4 @@
 @import "palette";
 @import "tables";
 
-@import "../../../components/**/*"; // loaded here so bootstrap SASS variables are available
+@import "../../components";

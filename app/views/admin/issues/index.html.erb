@@ -41,37 +41,37 @@
                        class: 'form-control' %>
 
       </div>
-      <div class="nowrap me-2 mb-2 mt-1 ensure-one-checked">
+      <div class="nowrap me-2 mb-2 ensure-one-checked">
         <%= label_tag :issue_type, 'Type:', class: 'small' %>
         <% Issue.issue_types.keys.each do |issue_type, issue_type_id| %>
           <%= check_box_tag('issue_types[]', issue_type, (params[:issue_types] ||= []).include?(issue_type),
                             id: issue_type, class: "badge-toggle-#{Issue.issue_type_classes[issue_type.to_sym]}") %>
           <%= label_tag issue_type, issue_type.capitalize,
-                        data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
+                        data: { bs_toggle: 'tooltip', bs_placement: 'bottom', bs_delay: { "show": 500, "hide": 100 } },
                         title: 'Select at least one' %>
         <% end %>
       </div>
-      <div class="nowrap me-2 mb-2 mt-1 ensure-one-checked">
+      <div class="nowrap me-2 mb-2 ensure-one-checked">
         <%= label_tag :status, 'Status:', class: 'small' %>
         <% Issue.statuses.keys.each do |status, status_id| %>
           <%= check_box_tag('statuses[]', status, (params[:statuses] ||= []).include?(status),
                             id: status,
                             class: "badge badge-pill-toggle-#{Issue.status_classes[status.to_sym]}") %>
           <%= label_tag status, status.capitalize,
-                        data: { toggle: 'tooltip', placement: 'bottom', delay: { "show": 500, "hide": 100 } },
+                        data: { bs_toggle: 'tooltip', bs_placement: 'bottom', bs_delay: { "show": 500, "hide": 100 } },
                         title: 'Select at least one' %>
         <% end %>
       </div>
       <div class="ms-xxl-auto me-2 mb-2">
         <%= button_tag 'Filter',
                        type: 'submit',
-                       class: 'btn btn-sm' %>
+                       class: 'btn btn-secondary btn-sm' %>
 
         <%= button_tag 'CSV',
                        type: 'submit',
                        name: 'format',
                        value: 'csv',
-                       class: 'btn btn-sm',
+                       class: 'btn btn-secondary btn-sm',
                        data: { confirm: 'Are you sure?' } %>
       </div>
     </div>
