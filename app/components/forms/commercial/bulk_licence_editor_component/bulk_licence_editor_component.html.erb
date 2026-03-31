@@ -43,7 +43,7 @@
         currently part of this contract. Use the options below to add them to the contract or switch them to being
         self-funded.
       </p>
-      <%= render ::Commercial::GroupLicenceSummaryComponent.new(
+      <%= render ::Commercial::LicensingSummaryComponent.new(
             table_id: "contract-#{@contract.id}-additional-schools-table",
             date_range: @contract.as_range
           ) do |c| %>
@@ -61,7 +61,6 @@
           <% end %>
         <% end %>
       <% end %>
-
     </div>
   <% end %>
 <% end %>

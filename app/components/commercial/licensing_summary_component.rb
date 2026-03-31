@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Commercial
-  class GroupLicenceSummaryComponent < ApplicationComponent
+  class LicensingSummaryComponent < ApplicationComponent
     renders_many :rows, lambda { |**kwargs|
       kwargs[:date_range] = @date_range
       RowComponent.new(**kwargs)
