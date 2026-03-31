@@ -39,9 +39,12 @@
     <div class="mt-4 licence-editor-table-wrapper">
       <h2>Add schools to contract</h2>
       <p>
-        The following schools in this school group are expected to be funded by the MAT in future but are not
-        currently part of this contract. Use the options below to add them to the contract or switch them to being
-        self-funded.
+        The following schools in this school group are not currently part of this contract. The table identifies whether
+        they are currently licensed, who their current and future funder is expected to be, and whether they have
+        any (future) licence that covers the period of this contact.
+      </p>
+      <p>
+        Use the "Add Licence" button to add a licence for the school under this contract.
       </p>
       <%= render ::Commercial::LicensingSummaryComponent.new(
             table_id: "contract-#{@contract.id}-additional-schools-table",
