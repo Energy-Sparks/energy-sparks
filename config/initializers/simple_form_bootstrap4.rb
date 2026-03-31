@@ -7,7 +7,8 @@ module SimpleFormBootstrap4
     # vertical forms
     #
     # vertical default_wrapper
-    config.wrappers :bs4_vertical_form, tag: 'div', class: 'form-group', error_class: 'form-group-invalid',
+    config.wrappers :bs4_vertical_form, tag: 'div', class: 'form-group',
+                                        error_class: 'form-group-invalid',
                                         valid_class: 'form-group-valid' do |b|
       b.use :html5
       b.use :placeholder

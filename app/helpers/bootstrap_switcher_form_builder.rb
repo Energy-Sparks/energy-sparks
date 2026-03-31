@@ -6,7 +6,7 @@ class BootstrapSwitcherFormBuilder < SimpleForm::FormBuilder
     check_boxes: :vertical_collection,
     radio_buttons: :vertical_collection,
     file: :vertical_file,
-    select: :vertical_select,
+    # select: :vertical_select, # does not exist in our bs4 config, so use default (vertical_form)
     range: :vertical_range,
     date: :vertical_multi_select,
     datetime: :vertical_multi_select,
