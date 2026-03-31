@@ -3,6 +3,7 @@ module Admin
     include LocaleHelper
     include ImageResizer
 
+    before_action :enable_bootstrap5
     load_and_authorize_resource
 
     before_action :load_case_studies, only: [:index, :show]
@@ -53,7 +54,7 @@ module Admin
 
     def case_study_params
       translated_params = t_params(CaseStudy.mobility_attributes + CaseStudy.t_attached_attributes)
-      params.require(:case_study).permit(translated_params, :position, :image, :published)
+      params.require(:case_study).permit(translated_params, :position, :image, :published, :organisation_gid)
     end
   end
 end

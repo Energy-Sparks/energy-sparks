@@ -1,6 +1,6 @@
 module Elements
   class ButtonComponent < ApplicationComponent
-    def initialize(name, url, style: nil, size: nil, outline: false, outline_style: :white, data: {}, rel: nil, **_kwargs)
+    def initialize(name, url, style: :secondary, size: nil, outline: false, outline_style: :white, data: {}, rel: nil, **_kwargs)
       super
       raise ArgumentError, 'Unknown button style' if style && !self.class.styles.include?(style)
       raise ArgumentError, 'Unknown button size' if size && !self.class.sizes.include?(size)

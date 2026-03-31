@@ -24,6 +24,17 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
+
+guard :rubocop, all_on_start: false, cli: "--config=.rubocop.yml" do
+  watch(%r{.+\.rb$}) { |m| m[0] }
+end
+
+guard :shell do
+  watch(%r{.+\.html\.erb$}) do |m|
+    "bundle exec erb_lint #{m[0]}"
+  end
+end
+
 guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
@@ -62,8 +73,4 @@ guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
   watch(rails.layouts)       { |m| rspec.spec.call("system/#{m[1]}") }
 
   notification :terminal_notifier if `uname` =~ /Darwin/
-end
-
-guard :rubocop, all_on_start: false, cli: "--config=.rubocop.yml" do
-  watch(%r{.+\.rb$})
 end

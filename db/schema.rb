@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_30_124438) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -631,7 +631,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
     t.boolean "published", default: false, null: false
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
+    t.string "organisation_type"
+    t.bigint "organisation_id"
     t.index ["created_by_id"], name: "index_case_studies_on_created_by_id"
+    t.index ["organisation_type", "organisation_id"], name: "index_case_studies_on_organisation"
     t.index ["updated_by_id"], name: "index_case_studies_on_updated_by_id"
   end
 

@@ -254,6 +254,7 @@ class School < ApplicationRecord
   has_many :school_partners, -> { order(position: :asc) }
   has_many :partners, through: :school_partners
   accepts_nested_attributes_for :school_partners, reject_if: proc { |attributes| attributes['position'].blank? }
+  has_many :case_studies, as: :organisation, dependent: :nullify
 
   has_many :school_groupings, dependent: :destroy
   has_many :assigned_school_groups, through: :school_groupings, source: :school_group

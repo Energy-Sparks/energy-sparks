@@ -2,18 +2,21 @@
 #
 # Table name: case_studies
 #
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
-#  position      :integer          default(0), not null
-#  published     :boolean          default(FALSE), not null
-#  title         :string
-#  updated_at    :datetime         not null
-#  updated_by_id :bigint(8)
+#  created_at        :datetime         not null
+#  created_by_id     :bigint(8)
+#  id                :bigint(8)        not null, primary key
+#  organisation_id   :bigint(8)
+#  organisation_type :string
+#  position          :integer          default(0), not null
+#  published         :boolean          default(FALSE), not null
+#  title             :string
+#  updated_at        :datetime         not null
+#  updated_by_id     :bigint(8)
 #
 # Indexes
 #
 #  index_case_studies_on_created_by_id  (created_by_id)
+#  index_case_studies_on_organisation   (organisation_type,organisation_id)
 #  index_case_studies_on_updated_by_id  (updated_by_id)
 #
 # Foreign Keys
@@ -30,6 +33,8 @@ class CaseStudy < ApplicationRecord
   include Trackable
 
   has_many :testimonials, dependent: :restrict_with_error
+  belongs_to :organisation, polymorphic: true
+  delegated_type :organisation, types: %w[SchoolGroup School]
 
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
@@ -66,5 +71,17 @@ class CaseStudy < ApplicationRecord
 
   def file_locale
     I18n.locale.to_sym == :cy && t_attached(:file, :cy).present? ? :cy : :en
+  end
+
+  def self.organisation_classes
+    organisation_types.map(&:constantize)
+  end
+
+  def organisation_gid
+    self.organisation&.to_gid
+  end
+
+  def organisation_gid=(gid)
+    self.organisation = GlobalID::Locator.locate(gid)
   end
 end

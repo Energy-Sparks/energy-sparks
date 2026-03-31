@@ -377,6 +377,9 @@ GEM
     guard-rubocop (1.5.0)
       guard (~> 2.0)
       rubocop (< 2.0)
+    guard-shell (0.7.2)
+      guard (>= 2.0.0)
+      guard-compat (~> 1.0)
     handlebars_assets (0.23.9)
       execjs (~> 2.0)
       sprockets (>= 2.0.0)
@@ -955,6 +958,7 @@ DEPENDENCIES
   groupdate
   guard-rspec
   guard-rubocop
+  guard-shell
   handlebars_assets
   i18n-tasks (~> 1.1.2)
   image_processing (~> 1.14)

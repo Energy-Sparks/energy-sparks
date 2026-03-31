@@ -81,6 +81,7 @@ class SchoolGroup < ApplicationRecord
   has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
 
   has_many :observations, through: :assigned_schools
+  has_many :case_studies, as: :organisation, dependent: :nullify
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
   belongs_to :default_dark_sky_area, class_name: 'DarkSkyArea', optional: true
