@@ -1433,9 +1433,9 @@ describe School do
       let(:start_date) { Date.new(2024, 1, 1) }
       let(:end_date)   { Date.new(2024, 1, 31) }
 
-      it 'returns :none when no licences overlap' do
+      it 'returns :no when no licences overlap' do
         create_licence(Date.new(2024, 3, 1), Date.new(2024, 3, 31))
-        expect(school.licenced_for_period(start_date..end_date)).to eq(:none)
+        expect(school.licenced_for_period(start_date..end_date)).to eq(:no)
       end
 
       it 'returns :partial when licences overlap but do not cover full period' do

@@ -23,7 +23,7 @@ module Commercial
     # Do licences cover a whole period, part of it, or none?
     #
     # Returns:
-    #   :none    – no licence overlaps the period at all
+    #   :no    – no licence overlaps the period at all
     #   :partial – some overlap, but not full coverage
     #   :full    – the entire period is covered by one or more licences
     def licenced_for_period(period)

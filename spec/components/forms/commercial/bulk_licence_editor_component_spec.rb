@@ -176,12 +176,12 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
           let(:table_id) { "#contract-#{contract.id}-additional-schools-table" }
           let(:expected_header) do
             [
-              ['School', '']
+              ['School', 'Current Licence?', 'Current Funder', 'Future Funder', 'Licenced for Period?']
             ]
           end
           let(:expected_rows) do
             [
-              [additional_school.name, 'Add licence']
+              [additional_school.name, 'No', '', '', 'No', 'Add licence']
             ]
           end
         end
