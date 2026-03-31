@@ -114,7 +114,7 @@ gem 'roo', git: 'https://github.com/Energy-Sparks/roo.git', branch: 'bug-fix-bra
 gem 'roo-xls'
 
 # Feature flags
-gem 'flipper-active_record', '~> 1.3'
+gem 'flipper-active_record', '~> 1.4'
 gem 'flipper-active_support_cache_store'
 gem 'flipper-ui', '~> 1.4'
 
