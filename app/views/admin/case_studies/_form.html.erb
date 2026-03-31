@@ -1,8 +1,5 @@
 <div class="border rounded bg-light p-4">
   <%= simple_form_for([:admin, case_study]) do |f| %>
-    <% I18n.locale = :cy %>
-    <%= f.error_notification %>
-
     <div class="row">
       <div class="col-6">
         <%= render 'admin/shared/locale_tabs', f: f, field: :tags do |locale| %>
