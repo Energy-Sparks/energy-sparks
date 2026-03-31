@@ -8,6 +8,10 @@ module Commercial
       has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_exception
     end
 
+    def current_licence
+      licences.current.by_start_date.first
+    end
+
     def licenced_for?(date)
       licences.any? { |licence| date.between?(licence.start_date, licence.end_date) }
     end
@@ -22,9 +26,7 @@ module Commercial
     #   :none    – no licence overlaps the period at all
     #   :partial – some overlap, but not full coverage
     #   :full    – the entire period is covered by one or more licences
-    def licenced_for_period(start_date, end_date)
-      period = (start_date..end_date)
-
+    def licenced_for_period(period)
       # Collect all overlapping licence ranges
       overlapping = licences.filter_map do |licence|
         licence_range = (licence.start_date..licence.end_date)
@@ -33,13 +35,13 @@ module Commercial
         licence_range
       end
 
-      return :none if overlapping.empty?
+      return :no if overlapping.empty?
 
       # Merge overlapping ranges to see if they cover the whole period
       merged = merge_ranges(overlapping)
 
       fully_covered =
-        merged.any? { |range| range.begin <= start_date && range.end >= end_date }
+        merged.any? { |range| range.begin <= period.begin && range.end >= period.end }
 
       fully_covered ? :full : :partial
     end

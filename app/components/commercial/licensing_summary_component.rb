@@ -19,7 +19,7 @@ module Commercial
     end
 
     class RowComponent < ViewComponent::Base
-      attr_reader :school
+      attr_reader :school, :date_range
 
       renders_many :buttons
 

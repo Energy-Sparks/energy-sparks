@@ -1435,18 +1435,18 @@ describe School do
 
       it 'returns :none when no licences overlap' do
         create_licence(Date.new(2024, 3, 1), Date.new(2024, 3, 31))
-        expect(school.licenced_for_period(start_date, end_date)).to eq(:none)
+        expect(school.licenced_for_period(start_date..end_date)).to eq(:none)
       end
 
       it 'returns :partial when licences overlap but do not cover full period' do
         create_licence(Date.new(2024, 1, 10), Date.new(2024, 1, 20))
-        expect(school.licenced_for_period(start_date, end_date)).to eq(:partial)
+        expect(school.licenced_for_period(start_date..end_date)).to eq(:partial)
       end
 
       it 'returns :full when licences fully cover the period' do
         create_licence(Date.new(2023, 12, 1), Date.new(2024, 1, 15))
         create_licence(Date.new(2024, 1, 16), Date.new(2024, 2, 1))
-        expect(school.licenced_for_period(start_date, end_date)).to eq(:full)
+        expect(school.licenced_for_period(start_date..end_date)).to eq(:full)
       end
     end
   end
