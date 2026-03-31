@@ -172,7 +172,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
 
         it { expect(page).to have_content('Add schools to contract') }
 
-        it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
           let(:table_id) { "#contract-#{contract.id}-additional-schools-table" }
           let(:expected_header) do
             [
