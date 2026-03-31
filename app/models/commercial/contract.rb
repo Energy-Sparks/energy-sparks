@@ -131,6 +131,10 @@ module Commercial
       licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
     end
 
+    def as_range
+      (start_date..end_date)
+    end
+
     private
 
     def destroy_error_message

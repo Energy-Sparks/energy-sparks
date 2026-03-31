@@ -43,31 +43,25 @@
         currently part of this contract. Use the options below to add them to the contract or switch them to being
         self-funded.
       </p>
-      <table id="contract-<%= @contract.id %>-additional-schools-table"
-             class="table table-sm align-middle licence-editor-table">
-        <thead>
-          <tr>
-            <th>School</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @additional_schools.each do |school| %>
-            <tr id="additional-school-<%= school.id %>">
-              <td><%= link_to school.name, school_path(school) %></td>
-              <td>
-                <%= button_to 'Add licence',
-                              create_licence_admin_commercial_contract_licences_path(@contract),
-                              params: { school_id: school.id },
-                              method: :post,
-                              form: { method: :post, authenticity_token: true },
-                              remote: true,
-                              class: 'btn btn-sm btn-primary' %>
-              </td>
-            </tr>
+      <%= render ::Commercial::GroupLicenceSummaryComponent.new(
+            table_id: "contract-#{@contract.id}-additional-schools-table",
+            date_range: @contract.as_range
+          ) do |c| %>
+        <% @additional_schools.each do |school| %>
+          <% c.with_row school: school do |r| %>
+            <% r.with_button do %>
+              <%= button_to 'Add licence',
+                            create_licence_admin_commercial_contract_licences_path(@contract),
+                            params: { school_id: school.id },
+                            method: :post,
+                            form: { method: :post, authenticity_token: true },
+                            remote: true,
+                            class: 'btn btn-sm btn-primary' %>
+            <% end %>
           <% end %>
-        </tbody>
-      </table>
+        <% end %>
+      <% end %>
+
     </div>
   <% end %>
 <% end %>
