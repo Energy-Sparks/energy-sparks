@@ -7,7 +7,7 @@ module Elements
 
       add_classes('d-inline-flex align-items-center badge')
       add_classes('rounded-pill') if pill
-      add_classes("text-bg-#{colour}") if colour
+      add_classes("bg-#{colour}") if colour
       add_classes('text-dark') if !colour || [:light, :warning].include?(colour)
     end
 
