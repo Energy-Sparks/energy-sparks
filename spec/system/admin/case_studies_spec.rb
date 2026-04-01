@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'Admin case studies', type: :system do
+RSpec.describe 'Admin case studies' do
   let!(:admin) { create(:admin) }
   let!(:case_study) { create(:case_study) }
 
@@ -120,7 +122,10 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
-          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
+
+          it {
+            expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
+          }
         end
 
         context 'with valid attributes' do
@@ -162,7 +167,10 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
-          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
+
+          it {
+            expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
+          }
         end
 
         context 'when publishing without an image' do
@@ -228,7 +236,7 @@ RSpec.describe 'Admin case studies', type: :system do
         end
 
         it 'no longer lists the case study' do
-          expect(page).not_to have_content('Delete me')
+          expect(page).to have_no_content('Delete me')
         end
       end
     end

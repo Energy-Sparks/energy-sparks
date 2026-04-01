@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
+
 # These defaults are defined and maintained by the community at
 # https://github.com/heartcombo/simple_form-bootstrap
 # Please submit feedback, changes and tests only there.
@@ -91,7 +93,8 @@ SimpleForm.setup do |config|
 
   # vertical input for inline radio buttons and check boxes
   config.wrappers :vertical_collection_inline, item_wrapper_class: 'form-check form-check-inline',
-                                               item_label_class: 'form-check-label', tag: 'fieldset', class: 'mb-3' do |b|
+                                               item_label_class: 'form-check-label',
+                                               tag: 'fieldset', class: 'mb-3' do |b|
     b.use :html5
     b.optional :readonly
     b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|
@@ -366,14 +369,16 @@ SimpleForm.setup do |config|
   # Custom wrappers for input types. This should be a hash containing an input
   # type as key and the wrapper that will be used for all inputs with specified type.
   config.wrapper_mappings = {
-    boolean:       :vertical_boolean,
-    check_boxes:   :vertical_collection,
-    datetime:      :vertical_multi_select,
-    date:          :vertical_multi_select,
-    file:          :vertical_file,
+    boolean: :vertical_boolean,
+    check_boxes: :vertical_collection,
+    datetime: :vertical_multi_select,
+    date: :vertical_multi_select,
+    file: :vertical_file,
     radio_buttons: :vertical_collection,
-    range:         :vertical_range,
-    time:          :vertical_multi_select,
-    select:        :vertical_select
+    range: :vertical_range,
+    time: :vertical_multi_select,
+    select: :vertical_select
   }
 end
+
+# rubocop:enable Metrics/BlockLength
