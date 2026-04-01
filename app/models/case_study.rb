@@ -33,8 +33,7 @@ class CaseStudy < ApplicationRecord
   include Trackable
 
   has_many :testimonials, dependent: :restrict_with_error
-  belongs_to :organisation, polymorphic: true, optional: true
-  delegated_type :organisation, types: %w[SchoolGroup School]
+  delegated_type :organisation, types: %w[SchoolGroup School], optional: true
 
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })

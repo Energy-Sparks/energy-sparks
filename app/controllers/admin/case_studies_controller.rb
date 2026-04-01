@@ -6,23 +6,20 @@ module Admin
     before_action :enable_bootstrap5
     load_and_authorize_resource
 
-    before_action :load_case_studies, only: [:index, :show]
-    before_action only: [:create, :update] do
+    before_action :load_case_studies, only: %i[index show]
+    before_action only: %i[create update] do
       resize_image(case_study_params[:image])
     end
 
-    def index
-    end
+    def index; end
 
     def show
       render :index
     end
 
-    def new
-    end
+    def new; end
 
-    def edit
-    end
+    def edit; end
 
     def create
       @case_study = CaseStudy.new(case_study_params.merge(created_by: current_user))
