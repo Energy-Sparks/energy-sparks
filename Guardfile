@@ -24,11 +24,6 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-
-#guard :rubocop, all_on_start: false, cli: "--config=.rubocop.yml" do
-#  watch(%r{.+\.rb$}) { |m| m[0] }
-#end
-
 guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
