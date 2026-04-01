@@ -4,9 +4,11 @@ class DccCheckerJob < ApplicationJob
   queue_as :default
 
   def perform(meters, to)
-    meter_ids = update_meters(meters)
+    meter_ids = update_meters(Array(meters))
     DccMailer.with(meter_ids:).dcc_meter_status_email(to:).deliver_now if meter_ids.any?
   end
+
+  private
 
   def update_meters(meters)
     meters.filter_map do |meter|
