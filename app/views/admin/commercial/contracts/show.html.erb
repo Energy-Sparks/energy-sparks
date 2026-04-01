@@ -16,7 +16,8 @@
               Contract holder
             </dt>
             <dd class="col-7">
-              <%= link_to @contract.contract_holder.name, polymorphic_path([:admin, @contract.contract_holder]) %>
+              <%= link_to @contract.contract_holder.name,
+                          polymorphic_path([:admin, @contract.contract_holder, :contracts]) %>
             </dd>
             <dt class="col-5">
               Contract holder type

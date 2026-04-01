@@ -1,0 +1,15 @@
+<%= render 'schools/school_page_with_navigation', school: @school,
+                                                  page_title: "#{@school.name} Licences" do %>
+
+  <div class="row">
+    <div class="col">
+      <p>The following table lists all current, historical and future licences held by <%= @school.name %>.</p>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col">
+      <%= render Commercial::LicencesComponent.new(licences: @licences, show_renewal_data: true) %>
+    </div>
+  </div>
+<% end %>

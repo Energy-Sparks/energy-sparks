@@ -165,6 +165,7 @@ RSpec.describe Navigation::ManageSchoolComponent, :include_application_helper, :
       it 'has admin links for contracts and licensing' do
         within('#admin') do
           expect(html).to have_link('Contracts', href: admin_school_contracts_path(school))
+          expect(html).to have_link('Licences', href: admin_school_licences_path(school))
         end
       end
     end

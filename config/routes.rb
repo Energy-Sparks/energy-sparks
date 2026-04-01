@@ -877,6 +877,7 @@ Rails.application.routes.draw do
             post :clear
           end
         end
+        resources :licences, only: :index
       end
       member do
         post :archive
