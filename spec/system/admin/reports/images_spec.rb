@@ -18,7 +18,7 @@ describe 'Admin Image Feed' do
         click_on('Images')
       end
 
-      it { expect(page).not_to have_content(activity_no_image.school.name) }
+      it { expect(page).to have_no_content(activity_no_image.school.name) }
       it { expect(page).to have_content('No results') }
     end
 
@@ -33,7 +33,13 @@ describe 'Admin Image Feed' do
         click_on('Images')
       end
 
-      it { expect(page).to have_content(activity_with_image.school.name) }
+      it 'has the correct text' do
+        expect(find('.g-4').text).to eq(<<~TEXT.chomp)
+          #{activity_with_image.school.name}
+          Activity ##{activity_with_image.id} #{activity_with_image.activity_type.name}
+          Posted #{Date.current}
+        TEXT
+      end
 
       context 'when filtering by group' do
         let!(:filtered_activity) do
@@ -46,7 +52,7 @@ describe 'Admin Image Feed' do
         end
 
         it { expect(page).to have_content(activity_with_image.school.name) }
-        it { expect(page).not_to have_content(filtered_activity.school.name) }
+        it { expect(page).to have_no_content(filtered_activity.school.name) }
       end
     end
   end
@@ -61,7 +67,7 @@ describe 'Admin Image Feed' do
         click_on('Filter')
       end
 
-      it { expect(page).not_to have_content(observation_no_image.school.name) }
+      it { expect(page).to have_no_content(observation_no_image.school.name) }
       it { expect(page).to have_content('No results') }
     end
 
@@ -91,7 +97,7 @@ describe 'Admin Image Feed' do
         end
 
         it { expect(page).to have_content(observation_with_image.school.name) }
-        it { expect(page).not_to have_content(filtered_action.school.name) }
+        it { expect(page).to have_no_content(filtered_action.school.name) }
       end
     end
   end
