@@ -79,10 +79,10 @@
   <%= tag.span(classes, class: classes) %>
 <% end %>
 
-<h4>Bootstrap 5 syntax (requires adding text-dark for warning, info and light)</h4>
+<h4>Bootstrap 5 syntax (requires adding text-dark for warning and light)</h4>
 <% Colours::PALETTE[:bootstrap].each do |key, _value| %>
   <% classes = "badge bg-#{key}" %>
-  <% classes += ' text-dark' if %i[warning info light].include?(key) %>
+  <% classes += ' text-dark' if %i[warning light].include?(key) %>
   <%= tag.span(classes, class: classes) %>
 <% end %>
 

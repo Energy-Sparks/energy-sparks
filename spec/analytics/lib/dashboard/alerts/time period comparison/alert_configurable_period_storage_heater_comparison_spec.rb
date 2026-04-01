@@ -6,7 +6,7 @@ describe AlertConfigurablePeriodStorageHeaterComparison do
   subject(:alert) do
     meter_collection = build(:meter_collection, :with_aggregated_aggregate_meter,
                              start_date: Date.new(2022, 11, 1), end_date: Date.new(2023, 11, 30),
-                             storage_heaters: true)
+                             storage_heaters: true, random_generator: Random.new(30))
     alert = described_class.new(meter_collection)
     alert.comparison_configuration = configuration
     alert

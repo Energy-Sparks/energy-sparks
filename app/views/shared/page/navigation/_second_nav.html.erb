@@ -2,10 +2,11 @@
   <div class="container">
     <ul id="left-link" class="navbar-nav nowrap">
       <% if school_context? %>
-        <li class="nav-item">
+        <li class="nav-item d-flex align-items-center">
           <%# School name, with link to dashboard %>
           <%# Context: any page scoped to school %>
           <%= link_to current_school.name, school_path(current_school), class: 'nav-link font-weight-bold' %>
+          <%= render 'shared/page/navigation/second_nav/inactive', school: current_school %>
         </li>
       <% elsif current_user_school %>
         <li class="nav-item">

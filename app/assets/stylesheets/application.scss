@@ -1,14 +1,10 @@
-/*
- *
- *= require trix
- */
+@use 'font-awesome' with ($fa-font-path: 'font-awesome'); // https://github.com/FortAwesome/font-awesome-sass/issues/222
 
 @import "colours";
 @import "fonts";
 @import "bootstrap-overrides";
 @import "bootstrap";
 
-@import "font-awesome";
 @import "base";
 @import "links";
 @import "buttons";
@@ -62,4 +58,5 @@
 @import "palette";
 @import "tables";
 
-@import "../../components/**/*"; // loaded here so bootstrap SASS variables are available
+// loaded here so bootstrap SASS variables are available
+@import "../../components";

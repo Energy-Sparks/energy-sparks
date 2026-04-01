@@ -96,11 +96,7 @@
           </dl>
           <%= link_to 'Edit', edit_admin_commercial_contract_path(@contract),
                       class: 'btn btn-secondary btn-sm' %>
-          <%= link_to 'Delete', admin_commercial_contract_path(@contract),
-                      method: :delete,
-                      data: { confirm: 'Are you sure?' },
-                      class: 'btn btn-danger btn-sm' %>
-
+          <%= render(Forms::DeleteButtonComponent.new(admin_commercial_contract_path(@contract), resource: @contract)) %>
         </div>
       <% end %>
       <%= grid.with_block do %>

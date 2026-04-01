@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: commercial_contracts
@@ -41,6 +43,7 @@ module Commercial
     include Trackable
     include TemporalRange
     include HasContractHolder
+    include Deletable
 
     self.table_name = 'commercial_contracts'
 
@@ -51,7 +54,7 @@ module Commercial
 
     CONTRACT_STATUS = {
       provisional: 'provisional',
-      confirmed: 'confirmed',
+      confirmed: 'confirmed'
     }.freeze
 
     STATUS_COLOUR = {
@@ -61,24 +64,25 @@ module Commercial
 
     CONTRACT_LICENCE_PERIOD = {
       contract: 'contract',
-      custom: 'custom',
+      custom: 'custom'
     }.freeze
 
     CONTRACT_INVOICE_TERMS = {
       pro_rata: 'pro_rata',
-      full: 'full',
+      full: 'full'
     }.freeze
 
     enum :status, CONTRACT_STATUS
     enum :licence_period, CONTRACT_LICENCE_PERIOD
     enum :invoice_terms, CONTRACT_INVOICE_TERMS
 
-    validates_presence_of :name, :start_date, :end_date
+    validates :name, :start_date, :end_date, presence: true
 
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
+    validate :ensure_only_editable_attributes_changed, unless: :new_record?
 
-    has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_error
+    has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
     accepts_nested_attributes_for :licences
 
@@ -95,7 +99,7 @@ module Commercial
           :product
         ).merge(
           comments: "Renewed from #{original.name}",
-          end_date:   original.end_date.next_year,
+          end_date: original.end_date.next_year,
           start_date: original.end_date + 1.day
         )
       )
@@ -103,6 +107,47 @@ module Commercial
 
     def status_colour
       STATUS_COLOUR[status.to_sym]
+    end
+
+    def deletable?
+      !licences.invoiced.exists?
+    end
+
+    def editable_attribute?(name)
+      new_record? || editable_attributes.include?(name)
+    end
+
+    # Some fields of a contract cannot be changed once created, e.g. contract terms.
+    # Some are safe to always be changed, e.g. name
+    # Others cannot be changed once invoicing has started, e.g. agreed_school_price
+    def editable_attributes
+      fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
+      fields += [:status] if provisional?
+      fields += %i[agreed_school_price start_date end_date] unless licences.invoiced.exists?
+      fields
+    end
+
+    def cascade_updates_to_licences?
+      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+    end
+
+    private
+
+    def destroy_error_message
+      'Cannot delete a contract with an invoiced licence'
+    end
+
+    def ensure_only_editable_attributes_changed
+      allowed = editable_attributes.map(&:to_s)
+      # status is editable if previous status was provisional
+      allowed << 'status' if status_changed? && status_was.to_s == 'provisional'
+
+      changed   = changes_to_save.keys
+      forbidden = changed - allowed
+
+      forbidden.each do |attr|
+        errors.add(attr, 'cannot be changed once the contract is in its current state')
+      end
     end
   end
 end

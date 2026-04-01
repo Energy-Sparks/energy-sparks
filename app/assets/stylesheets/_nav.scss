@@ -1,3 +1,5 @@
+@use 'font-awesome';
+
 $togglers: (
   "light": (
     "icon": escape-svg($navbar-light-toggler-icon-bg),
@@ -76,7 +78,7 @@ $togglers: (
     border: none;
 
     @extend .fa-solid;
-    content: fa-content($fa-var-chevron-down);
+    content: font-awesome.fa-content(font-awesome.$fa-var-chevron-down);
     vertical-align: 0;
   }
 
