@@ -45,10 +45,10 @@
               <%= link_to licence.contract.name, admin_commercial_contract_path(licence.contract) %>
             </td>
           <% end %>
-          <td>
+          <td data-order="<%= licence.start_date.iso8601 %>">
             <%= licence.start_date.to_fs(:es_short) %>
           </td>
-          <td>
+          <td data-order="<%= licence.end_date.iso8601 %>">
             <%= licence.end_date.to_fs(:es_short) %>
           </td>
           <td class="col-1">
