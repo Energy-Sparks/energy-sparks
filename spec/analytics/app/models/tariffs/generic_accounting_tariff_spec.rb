@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe GenericAccountingTariff, :aggregate_failures do
   let(:end_date)          { Date.today }
-  let(:start_date)        { Date.today - 30 }
+  let(:start_date)        { end_date - 30.days }
   let(:tariff_type)       { :flat }
   let(:rates)             { create_flat_rate }
   let(:kwh_data_x48)      { Array.new(48, 0.01) }
@@ -200,6 +200,7 @@ describe GenericAccountingTariff, :aggregate_failures do
       end
 
       context 'with climate change levy' do
+        let(:end_date) { Date.new(2026) }
         let(:tariff_attribute) do
           create_accounting_tariff_generic(start_date: start_date, end_date: end_date,
                                            type: tariff_type, climate_change_levy: true, rates: rates)
