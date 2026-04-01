@@ -7,6 +7,12 @@ module Admin
 
       def index
         @contracts = @contract_holder.contracts.by_start_date
+        if @contract_holder.is_a?(SchoolGroup)
+          @school_group = @contract_holder
+          render :index, layout: 'group_settings'
+        else
+          render :index
+        end
       end
     end
   end

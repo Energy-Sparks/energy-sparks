@@ -56,6 +56,10 @@
                     expanded: true,
                     visible: current_user.admin?,
                     options: { match_controller: false } do |s| %>
+    <% if school_group.organisation? %>
+      <% s.with_item(name: 'Contracts',
+                     href: admin_school_group_contracts_path(school_group), classes:) %>
+    <% end %>
     <% s.with_item(name: t('school_groups.sub_nav.edit_group'),
                    href: edit_admin_school_group_path(school_group), classes:) %>
     <% s.with_item(name: t('school_groups.sub_nav.group_admin'),

@@ -130,5 +130,7 @@
       <% s.with_item(name: t('manage_school_menu.batch_reports'),
                      href: school_reports_path(school), classes:) %>
     <% end %>
+    <% s.with_item(name: 'Contracts',
+                   href: admin_school_contracts_path(school), classes:) %>
   <% end %>
 <% end %>
