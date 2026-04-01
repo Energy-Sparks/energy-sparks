@@ -11,9 +11,11 @@ module Admin
       @user = user
     end
 
-    def prompt_for_issues_renewal?
-      true
+    def prompt_for_issues_review?
+      user.owned_issues.by_review_date.first.review_date <= Date.current
     end
+
+    def issues_count; end
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists, Lint/UnusedMethodArgument
       return unless check

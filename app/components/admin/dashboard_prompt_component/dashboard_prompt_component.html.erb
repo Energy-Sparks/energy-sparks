@@ -6,12 +6,12 @@
       <% end %>
     <% end %>
 
-    <% add_prompt(id: 'issues_for_renewal',
-                  check: prompt_for_issues_renewal?,
+    <% add_prompt(id: 'issues_for_review',
+                  check: prompt_for_issues_review?,
                   list: list,
                   status: :negative,
                   icon: 'nocon') do %>
-      <% 'isues due for renewal here' %>
+      <% issues_count %>
     <% end %>
   <% end %>
 <% end %>
