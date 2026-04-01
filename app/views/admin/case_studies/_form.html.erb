@@ -2,21 +2,9 @@
   <%= simple_form_for([:admin, case_study]) do |f| %>
     <div class="row">
       <div class="col-6">
-        <%= render 'admin/shared/locale_tabs', f: f, field: :tags do |locale| %>
-          <%= f.input t_field(:tags, locale),
-                      label: CaseStudy.human_attribute_name(:tags),
-                      hint: 'comma seperated' %>
-        <% end %>
-
         <%= render 'admin/shared/locale_tabs', f: f, field: :title do |locale| %>
           <%= f.input t_field(:title, locale), label: CaseStudy.human_attribute_name(:title) %>
         <% end %>
-        <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
-          <div class="description-trix-editor-<%= locale %>">
-            <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description) %>
-          </div>
-        <% end %>
-        <%= f.input :position %>
         <%= f.input :organisation_gid,
                     as: :grouped_select,
                     label: 'Related group or school',
@@ -29,6 +17,17 @@
                     value_method: ->(record) { record.to_gid },
                     include_blank: 'Select group or school',
                     input_html: { class: 'form-select select2' } %>
+        <%= render 'admin/shared/locale_tabs', f: f, field: :tags do |locale| %>
+          <%= f.input t_field(:tags, locale),
+                      label: CaseStudy.human_attribute_name(:tags),
+                      hint: 'comma seperated' %>
+        <% end %>
+        <%= render 'admin/shared/locale_tabs', f: f, field: :description do |locale| %>
+          <div class="description-trix-editor-<%= locale %>">
+            <%= f.rich_text_area t_field(:description, locale), label: CaseStudy.human_attribute_name(:description) %>
+          </div>
+        <% end %>
+        <%= f.input :position %>
         <div class="mt-2">
           <%= f.input :published, as: :boolean %>
           <%= f.submit 'Save', class: 'btn btn-primary btn-small' %>

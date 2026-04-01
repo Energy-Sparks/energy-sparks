@@ -127,7 +127,6 @@ group :development, :test do
   gem 'foreman'
   gem 'guard-rspec', require: false
   gem 'guard-rubocop', require: false
-  gem 'guard-shell', require: false
   gem 'knapsack'
   gem 'rails-controller-testing'
   gem 'rspec-json_expectations'

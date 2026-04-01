@@ -52,6 +52,14 @@
             <span class="badge rounded-pill bg-white text-dark fw-normal border">
               Downloads: <%= t_attached_links(case_study, :file, ' • ') %>
             </span>
+            <% if case_study.organisation %>
+              <span class="badge bg-secondary text-white">
+                <%= issueable_icon(case_study.organisation) %>
+                <%= link_to case_study.organisation.name,
+                            polymorphic_url(case_study.organisation),
+                            class: 'text-white text-decoration-none' %>
+              </span>
+            <% end %>
             <% case_study.tag_list.each do |tag| %>
               <span class="badge bg-yellow-light text-dark fw-normal">
                 <%= tag %>
