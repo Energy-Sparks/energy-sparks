@@ -64,6 +64,8 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
       within('#admin') do
         expect(html).to have_link('Contracts',
                                   href: admin_school_group_contracts_path(school_group))
+        expect(html).to have_link('Licence Summaries',
+                                  href: admin_school_group_licence_summaries_path(school_group))
       end
     end
   end
