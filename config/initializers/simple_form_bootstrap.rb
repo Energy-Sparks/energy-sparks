@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-
 # These defaults are defined and maintained by the community at
 # https://github.com/heartcombo/simple_form-bootstrap
 # Please submit feedback, changes and tests only there.
@@ -380,5 +378,3 @@ SimpleForm.setup do |config|
     select: :vertical_select
   }
 end
-
-# rubocop:enable Metrics/BlockLength
