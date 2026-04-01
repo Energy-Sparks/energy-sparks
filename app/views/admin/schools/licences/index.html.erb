@@ -9,7 +9,8 @@
 
   <div class="row mt-2">
     <div class="col">
-      <%= render Commercial::LicencesComponent.new(licences: @licences, show_renewal_data: true) %>
+      <%= render Commercial::LicencesComponent.new(licences: @licences,
+                                                   show_contract_holder: false) %>
     </div>
   </div>
 <% end %>
