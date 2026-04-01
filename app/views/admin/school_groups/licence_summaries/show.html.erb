@@ -1,0 +1,7 @@
+<%= render Commercial::LicensingSummaryComponent.new(
+      date_range: @academic_year.start_date..@academic_year.end_date
+    ) do |c| %>
+  <% @school_group.assigned_schools.by_name.each do |school| %>
+    <% c.with_row school: school %>
+  <% end %>
+<% end %>
