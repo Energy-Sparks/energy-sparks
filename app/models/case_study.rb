@@ -33,7 +33,7 @@ class CaseStudy < ApplicationRecord
   include Trackable
 
   has_many :testimonials, dependent: :restrict_with_error
-  belongs_to :organisation, polymorphic: true
+  belongs_to :organisation, polymorphic: true, optional: true
   delegated_type :organisation, types: %w[SchoolGroup School]
 
   scope :without_images, -> {
