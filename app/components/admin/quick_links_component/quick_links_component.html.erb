@@ -1,10 +1,10 @@
-<%= tag.div id: id do %>
+<%= tag.div id: 'quick-links-component', class: classes do %>
   <%= render Layout::GridComponent.new(cols: 2,
                                        component_classes: 'h-100 p-1 rounded-lg',
                                        cell_classes: 'mb-4') do |grid| %>
     <% grid.with_feature_card do |feature| %>
       <%= feature.with_block do %>
-        <%= form_with url: admin_dashboard_path(@user), method: :get, local: true,
+        <%= form_with url: admin_dashboard_path(@user), method: :get, local: true, id: 'school-groups-form',
                       class: 'd-flex align-items-center justify-content-end' do |form| %>
           <%= form.select :school_group_id,
                           options_for_select(school_groups.by_name.pluck(:name, :slug)),
@@ -16,16 +16,16 @@
     <% end %>
     <% grid.with_feature_card do |feature| %>
       <%= feature.with_block do %>
-        <%= form_with url: admin_find_school_by_mpxn_index_path, method: :get, local: true,
+        <%= form_with url: admin_find_school_by_mpxn_index_path, method: :get, local: true, id: 'mpxn-form',
                       class: 'd-flex align-items-center justify-content-end' do |form| %>
-          <%= form.search_field :query, class: 'form-control' %>
+          <%= form.search_field :query, id: 'mpxn', class: 'form-control' %>
           <%= form.submit 'Find MPXN', class: 'btn btn-sm btn-primary ml-2' %>
         <% end %>
       <% end %>
     <% end %>
     <% grid.with_feature_card do |feature| %>
       <%= feature.with_block do %>
-        <%= form_with url: admin_dashboard_path(@user), method: :get, local: true,
+        <%= form_with url: admin_dashboard_path(@user), method: :get, local: true, id: 'school-form',
                       class: 'd-flex align-items-center justify-content-end' do |form| %>
           <%= form.select :school_id,
                           options_for_select(schools.by_name.pluck(:name, :slug)),
@@ -37,9 +37,9 @@
     <% end %>
     <% grid.with_feature_card do |feature| %>
       <%= feature.with_block do %>
-        <%= form_with url: admin_find_school_by_urn_index_path, method: :get, local: true,
+        <%= form_with url: admin_find_school_by_urn_index_path, method: :get, local: true, id: 'urn-form',
                       class: 'd-flex align-items-center justify-content-end' do |form| %>
-          <%= form.search_field :query, class: 'form-control' %>
+          <%= form.search_field :query, id: 'urn', class: 'form-control' %>
           <%= form.submit 'Find URN', class: 'btn btn-sm btn-primary ml-2' %>
         <% end %>
       <% end %>
