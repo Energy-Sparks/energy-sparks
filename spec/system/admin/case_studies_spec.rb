@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Admin case studies' do
   let!(:admin) { create(:admin) }
   let!(:case_study) { create(:case_study) }
+  let!(:school_group) { create(:school_group) }
 
   describe 'when not logged in' do
     context 'when visiting the index' do
@@ -131,6 +132,7 @@ RSpec.describe 'Admin case studies' do
         context 'with valid attributes' do
           before do
             fill_in :case_study_title_en, with: 'Updated title'
+            select school_group.name, from: 'Related group or school'
             within('.description-trix-editor-en') do
               fill_in_trix with: 'Updated description'
             end
@@ -143,6 +145,7 @@ RSpec.describe 'Admin case studies' do
           end
 
           it { expect(page).to have_content('Updated title') }
+          it { expect(page).to have_content(school_group.name) }
           it { expect(page).to have_content('Updated description') }
           it { expect(page).to have_content('en1 en2') }
           it { expect(page).to have_content('3') }
@@ -185,6 +188,7 @@ RSpec.describe 'Admin case studies' do
         context 'with valid attributes' do
           before do
             fill_in :case_study_title_en, with: 'New Case Study Title'
+            select school_group.name, from: 'Related group or school'
             within('.description-trix-editor-en') do
               fill_in_trix with: 'This is a new case study description.'
             end
@@ -201,6 +205,7 @@ RSpec.describe 'Admin case studies' do
           end
 
           it { expect(page).to have_content('New Case Study Title') }
+          it { expect(page).to have_content(school_group.name) }
           it { expect(page).to have_content('This is a new case study description.') }
           it { expect(page).to have_content('new example') }
           it { expect(page).to have_content('7') }

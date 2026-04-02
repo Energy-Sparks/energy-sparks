@@ -65,11 +65,20 @@
                                          theme: :accent,
                                          classes: 'rounded-3 p-4 mb-4',
                                          show_arrows: :side) do |carousel| %>
-  <% Testimonial.all.active.shuffle.each do |testimonial| %>
-    <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+
+  <% CaseStudy.for_school_group(@school_group).published.order(:position).each do |case_study| %>
+    <% if case_study.testimonials.any? %>
+      <% case_study.testimonials.active.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+      <% end %>
+    <% else %>
+        <%#= carousel.with_case_study_card(case_study: case_study) %>
+    <% end %>
   <% end %>
+
   <%= carousel.with_placeholder(
-        'Allow testimonials to be associated with a school group, then show here',
-        label: 'Todo'
+        'Please edit case studies and assign a school group or ' \
+        'school to each in order to display here. Add more testimonials too if possible please.',
+        label: 'Admin todo'
       ) %>
 <% end %>

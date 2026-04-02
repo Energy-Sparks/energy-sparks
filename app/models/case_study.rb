@@ -39,6 +39,10 @@ class CaseStudy < ApplicationRecord
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
   }
 
+  scope :for_school_group, ->(school_group) {
+    where(organisation: [school_group] + school_group.assigned_schools.active).distinct
+  }
+
   translates :title, type: :string, fallbacks: { cy: :en }
 
   # it was decided to keep tags in a string field for now, rather than a seperate model
