@@ -16,7 +16,7 @@ module Admin
       if params[:school_group_id].present?
         redirect_to admin_dashboard_school_group_path(@dashboard_user, id: params[:school_group_id])
       elsif params[:school_id].present?
-        redirect_to school_path(id: params[:school_id])
+        redirect_to school_meters_path(school_id: params[:school_id])
       end
     end
   end
