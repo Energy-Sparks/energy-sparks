@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_02_120744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -1204,6 +1204,35 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_help_pages_on_slug", unique: true
+  end
+
+  create_table "impact_report_configurations", force: :cascade do |t|
+    t.bigint "school_group_id", null: false
+    t.boolean "show_engagement", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_group_id"], name: "index_impact_report_configurations_on_school_group_id"
+  end
+
+  create_table "impact_report_metrics", force: :cascade do |t|
+    t.bigint "impact_report_run_id", null: false
+    t.integer "number_of_schools"
+    t.boolean "enough_data", default: false, null: false
+    t.integer "fuel_type"
+    t.jsonb "value", default: {}
+    t.integer "metric_category", null: false
+    t.integer "metric_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
+  end
+
+  create_table "impact_report_runs", force: :cascade do |t|
+    t.bigint "school_group_id", null: false
+    t.date "run_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_group_id"], name: "index_impact_report_runs_on_school_group_id"
   end
 
   create_table "impacts", force: :cascade do |t|
@@ -2464,6 +2493,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
   add_foreign_key "global_meter_attributes", "global_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
+  add_foreign_key "impact_report_configurations", "school_groups"
+  add_foreign_key "impact_report_metrics", "impact_report_runs"
+  add_foreign_key "impact_report_runs", "school_groups"
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "issue_meters", "issues"

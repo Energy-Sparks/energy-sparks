@@ -80,6 +80,9 @@ class SchoolGroup < ApplicationRecord
   has_many :school_issues, through: :assigned_schools, source: :issues
   has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
 
+  has_one :impact_report_configuration, class_name: 'ImpactReport::Configuration', dependent: :destroy
+  has_many :impact_report_runs, class_name: 'ImpactReport::Run', dependent: :destroy
+
   has_many :observations, through: :assigned_schools
 
   belongs_to :default_template_calendar, class_name: 'Calendar', optional: true
@@ -123,7 +126,7 @@ class SchoolGroup < ApplicationRecord
   scope :by_name, -> { order(name: :asc) }
   scope :is_public, -> { where(public: true) }
 
-  scope :with_visible_schools, -> {
+  scope :with_visible_schools, lambda {
     where(
       "id IN (
         SELECT DISTINCT school_groupings.school_group_id
@@ -144,7 +147,8 @@ class SchoolGroup < ApplicationRecord
   #
   # A "diocese" here refers to an area. If a diocese (as an organisation) maintains schools then this would be represented
   # in the DfE database and our system as a multi_academy_trust.
-  enum :group_type, { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
+  enum :group_type,
+       { general: 0, local_authority: 1, multi_academy_trust: 2, diocese: 3, project: 4, local_authority_area: 5 }
 
   ORGANISATION_GROUP_TYPE_KEYS = %w[general local_authority multi_academy_trust].freeze
   AREA_GROUP_TYPE_KEYS = %w[local_authority_area].freeze
@@ -294,14 +298,16 @@ class SchoolGroup < ApplicationRecord
   # For those groups without a scoreboard OR a default calendar (around 3-4)
   # default to using the academic year defined for the national scoreboard
   def this_academic_year(today: Time.zone.today)
-    return super(today:) unless scorable_calendar.nil?
+    return super unless scorable_calendar.nil?
+
     NationalScoreboard.new.this_academic_year(today:)
   end
 
   # For those groups without a scoreboard OR a default calendar (around 3-4)
   # default to using the academic year defined for the national scoreboard
   def previous_academic_year(today: Time.zone.today)
-    return super(today:) unless scorable_calendar.nil?
+    return super unless scorable_calendar.nil?
+
     NationalScoreboard.new.previous_academic_year(today:)
   end
 
@@ -313,6 +319,7 @@ class SchoolGroup < ApplicationRecord
   # template calendar
   def scorable_calendar
     return default_scoreboard.academic_year_calendar unless default_scoreboard.nil?
+
     default_template_calendar
   end
 
