@@ -31,7 +31,7 @@ module Layout
     end
 
     def render?
-      panels.any?
+      panels.any? || placeholder
     end
 
     class ArrowComponent < ApplicationComponent
