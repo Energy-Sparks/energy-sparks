@@ -1,0 +1,24 @@
+<% content_for :page_title, 'Impact Report Configurations' %>
+<h1>Impact Report Configurations</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>Show Engagement</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_groups.each do |school_group| %>
+      <tr>
+        <td><%= school_group.name %></td>
+        <% if config = school_group.impact_report_configuration %>
+          <td><%= config.show_engagement %></td>
+        <% else %>
+          <td>No configuration</td>
+        <% end %>
+        <td><%= link_to 'Edit', edit_admin_impact_configuration_path(school_group), class: 'btn' %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

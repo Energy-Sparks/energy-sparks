@@ -492,7 +492,7 @@ Rails.application.routes.draw do
 
       resource :meter_readings_validation, only: [:create]
 
-      resource :configuration, controller: :configuration, only: [:edit, :update]
+      resource :configuration, controller: :configuration, only: %i[edit update]
       resource :times, only: %i[edit update]
       resource :your_school_estate, only: %i[edit update]
 
@@ -555,7 +555,7 @@ Rails.application.routes.draw do
   devise_for :users, skip: :sessions
 
   devise_scope :user do
-    post "confirmation/confirm", to: "confirmations#confirm", as: :user_confirmation_confirm
+    post 'confirmation/confirm', to: 'confirmations#confirm', as: :user_confirmation_confirm
   end
 
   get '/admin', to: 'admin#index'
@@ -579,7 +579,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :dashboards, only: [:show, :index] do
+    resources :dashboards, only: %i[show index] do
       resources :school_groups, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
@@ -615,7 +615,7 @@ Rails.application.routes.draw do
     namespace :commercial do
       resources :contracts do
         get :contract_holder_options, on: :collection
-        resources :licences, controller: "contracts/licences" do
+        resources :licences, controller: 'contracts/licences' do
           get :edit, on: :collection
           put :update, on: :collection
         end
@@ -643,6 +643,10 @@ Rails.application.routes.draw do
       resources :categories, except: [:show], concerns: [:publishable]
       resources :pages, except: [:show], concerns: [:publishable]
       resources :sections, except: [:show], concerns: [:publishable]
+    end
+
+    namespace :impact do
+      resources :configurations, only: %i[index edit update]
     end
 
     resources :case_studies
@@ -959,7 +963,8 @@ Rails.application.routes.draw do
   get '/schools/:name/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
   get '/schools/:name/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
   get '/schools/:name/progress/storage_heater', to: redirect('/schools/%{name}/advice/storage_heater_target')
-  get '/schools/:name/school_targets/:id/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/school_targets/:id/progress/electricity',
+      to: redirect('/schools/%{name}/advice/electricity_target')
   get '/schools/:name/school_targets/:id/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
   get '/schools/:name/school_targets/:id/progress/storage_heater',
       to: redirect('/schools/%{name}/advice/storage_heater_target')
