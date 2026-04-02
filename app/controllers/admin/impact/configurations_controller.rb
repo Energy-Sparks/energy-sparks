@@ -3,7 +3,9 @@
 module Admin
   module Impact
     class ConfigurationsController < AdminController
-      load_and_authorize_resource :school_group, include: :impact_report_configuration, id_param: :id
+      before_action :enable_bootstrap5
+
+      load_and_authorize_resource :school_group, include: :impact_report_configuration, id_param: :id, except: [:index]
 
       def index
         @school_groups = SchoolGroup.includes(:impact_report_configuration).order(:name)

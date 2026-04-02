@@ -1,5 +1,9 @@
-<%= simple_form_for(configuration, url: admin_impact_configuration_path(configuration.school_group), method: :patch) do |f| %>
-  <%= f.input :show_engagement, label: 'Show Engagement Section' %>
-  <%= f.button :submit, 'Save' %>
-  <%= link_to 'Back', admin_impact_configurations_path, class: 'btn btn-secondary' %>
-<% end %>
+<div class='bg-light p-3'>
+  <%= simple_form_for(configuration, url: admin_impact_configuration_path(configuration.school_group), method: :patch) do |f| %>
+    <%= f.input :show_engagement, label: 'Show Engagement Section' %>
+    <div class='pt-4'>
+      <%= f.button :submit, 'Save' %>
+      <%= link_to 'Back', admin_impact_configurations_path, class: 'btn btn-secondary' %>
+    </div>
+  <% end %>
+</div>
