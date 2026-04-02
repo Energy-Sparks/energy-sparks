@@ -140,13 +140,6 @@ en:
     download_as_csv: Download as CSV
     header:
       view_map: View map
-    impact:
-      feature:
-        description_html:
-          one: Discover how our energy management tool and education programme have been delivering impact for <strong>1</strong> school in this <strong>%{group_type}</strong>
-          other: Discover how our energy management tool and education programme have been delivering impact for <strong>%{count}</strong> schools in this <strong>%{group_type}</strong>
-        read_more_html: "<a href='%{href}'>Read more</a> about how we generate these impact reports"
-        title: "%{school_group} Impact Report"
     labels:
       floor_area: Floor area (m2)
     login_prompt:

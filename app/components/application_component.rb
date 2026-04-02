@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationComponent < ViewComponent::Base
   include ApplicationHelper
   include LocaleHelper
@@ -35,15 +37,15 @@ class ApplicationComponent < ViewComponent::Base
 
   class << self
     def colour_variants
-      [:primary, :secondary, :success, :info, :warning, :danger, :light, :dark]
+      %i[primary secondary success info warning danger light dark]
     end
 
     def raise_unknown_variant_error(**pair)
       key, value = pair.first
 
-      unless colour_variants.include?(value)
-        raise ArgumentError, "Unknown #{key} variant: #{value}. Valid values are: #{colour_variants.join(', ')}"
-      end
+      return if colour_variants.include?(value)
+
+      raise ArgumentError, "Unknown #{key} variant: #{value}. Valid values are: #{colour_variants.join(', ')}"
     end
   end
 end

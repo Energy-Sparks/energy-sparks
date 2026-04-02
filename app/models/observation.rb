@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: observations
@@ -50,6 +52,7 @@
 class Observation < ApplicationRecord
   include Description
   include Todos::Recording
+
   belongs_to :school
   has_many :temperature_recordings
   has_many :locations, through: :temperature_recordings
@@ -104,14 +107,14 @@ class Observation < ApplicationRecord
     where(observation_type: %i[temperature intervention activity audit school_target programme transport_survey])
   }
 
-  scope :with_academic_year, -> {
+  scope :with_academic_year, lambda {
     # Academic year start/end are dates, not datetimes.
     # In a comparison, a DATE is treated as the start of that day (midnight).
     # Without adding INTERVAL '1 day', any observations later on the end date day would be missed.
     joins('JOIN academic_years ON observations.at >= academic_years.start_date AND observations.at < academic_years.end_date + INTERVAL \'1 day\'')
   }
 
-  scope :counts_by_academic_year, -> {
+  scope :counts_by_academic_year, lambda {
     with_academic_year.group('academic_years.id').count
   }
 
@@ -147,9 +150,7 @@ class Observation < ApplicationRecord
     at < current_academic_year.start_date
   end
 
-  def academic_year
-    school.academic_year_for(at)
-  end
+  def academic_year = school.academic_year_for(at)
 
   def academic_year_was
     return nil if at_was.nil? # new record
@@ -170,6 +171,8 @@ class Observation < ApplicationRecord
     !(at_was < current_academic_year.start_date && at < current_academic_year.start_date)
   end
 
+  def type_name = intervention_type&.name
+
   private
 
   def add_points_for_activities
@@ -180,9 +183,7 @@ class Observation < ApplicationRecord
     self.points = intervention_type.calculate_points(self) if update_points?
   end
 
-  def reject_temperature_recordings(attributes)
-    attributes['centigrade'].blank?
-  end
+  def reject_temperature_recordings(attributes) = attributes['centigrade'].blank?
 
   def set_defaults
     # set the observation type from the observable_type if not already set

@@ -165,4 +165,21 @@ RSpec.describe Layout::GridComponent, :include_application_helper, type: :compon
       end
     end
   end
+
+  context 'with :if parameter' do
+    let(:html) do
+      render_inline(described_class.new(**params)) do |c|
+        c.with_cell(if: true) { 'cell 1' }
+        c.with_cell(if: false) { 'cell 2' }
+      end
+    end
+
+    it 'renders cell when if: true' do
+      expect(html).to have_content('cell 1')
+    end
+
+    it 'does not render cell when if: false' do
+      expect(html).not_to have_content('cell 2')
+    end
+  end
 end

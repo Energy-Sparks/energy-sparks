@@ -579,6 +579,9 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :dashboards, only: [:show, :index] do
+      resources :school_groups, module: :dashboard
+    end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'

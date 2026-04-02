@@ -105,11 +105,6 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # Local customisation below:
-  # Allows mailer previews to be viewed on production
-  # See also: config/initializers/action_mailer.rb
-  config.action_mailer.show_previews = true
-  # Rspec makes rails use spec/mailers/previews as the mail previews path
-  config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
   if ENV['RAILS_SERVE_STATIC_FILES'].present?
     # serve the assets from a different folder so they aren't served by NGINX
     config.public_file_server.enabled = true

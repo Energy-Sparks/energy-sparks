@@ -2,7 +2,7 @@ module Admin
   class SchoolGroupsController < AdminController
     load_and_authorize_resource
 
-    before_action :enable_bootstrap_5, only: [:show]
+    before_action :enable_bootstrap5, only: [:show]
 
     def index
       @group_type = group_type
