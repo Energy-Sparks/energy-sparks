@@ -54,7 +54,7 @@
             </span>
             <% if case_study.organisation %>
               <span class="badge bg-secondary text-white">
-                <%= issueable_icon(case_study.organisation) %>
+                <%= entity_icon(case_study.organisation) %>
                 <%= link_to case_study.organisation.name,
                             polymorphic_url(case_study.organisation),
                             class: 'text-white text-decoration-none' %>

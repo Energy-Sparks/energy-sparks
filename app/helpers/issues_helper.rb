@@ -27,16 +27,6 @@ module IssuesHelper
     image_tag "email/#{image}", width: '20px', height: '20px'
   end
 
-  def issueable_icon(issueable)
-    return '' if issueable.nil?
-
-    if issueable.is_a?(Symbol)
-      fa_icon(Issue.issueable_images[issueable])
-    else
-      fa_icon(Issue.issueable_image(issueable))
-    end
-  end
-
   def review_date_badge(issue, label: true, humanise: true, classes: '')
     if issue.review_date.nil? || issue.review_date >= 1.week.from_now
       colour = 'bg-white text-dark'

@@ -590,4 +590,21 @@ module ApplicationHelper
   def impact_t(key, **vars)
     I18n.t(key, **vars, scope: %i[school_groups impact]).html_safe
   end
+
+  def entity_icon_name(entity)
+    return '' if entity.nil?
+
+    klass = entity.is_a?(Class) ? entity : entity.class
+
+    return 'users'    if klass == SchoolGroup
+    return 'school'   if klass == School
+    return 'download' if klass == DataSource
+
+    ''
+  end
+
+  def entity_icon(entity)
+    icon_name = entity_icon_name(entity)
+    fa_icon(icon_name)
+  end
 end
