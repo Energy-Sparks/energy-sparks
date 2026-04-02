@@ -2,8 +2,8 @@
 
 module Admin
   class QuickLinksComponent < ApplicationComponent
-    def initialize(user:)
-      super
+    def initialize(user:, **)
+      super(**)
       @user = user
     end
 
