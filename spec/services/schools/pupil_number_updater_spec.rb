@@ -68,8 +68,6 @@ describe Schools::PupilNumberUpdater do
       let(:end_date) { Time.zone.today + 1.day }
       let!(:attribute) { create_meter_attribute(end_date:) }
 
-      # before { update }
-
       it_behaves_like 'it creates a new attribute' do
         before { update }
 
@@ -82,12 +80,14 @@ describe Schools::PupilNumberUpdater do
     context 'with an open-ended meter attribute' do
       let!(:attribute) { create_meter_attribute(end_date: nil) }
 
-      before do
-        update
-      end
+      before { update }
 
       it 'adds end date to existing attribute' do
         expect(attribute.reload.input_data['end_date']).to eq(start_date)
+      end
+
+      it 'maintains the floor area' do
+        expect(attributes.last.input_data['floor_area']).to eq('5000')
       end
 
       it_behaves_like 'it creates a new attribute'

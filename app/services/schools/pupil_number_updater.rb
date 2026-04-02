@@ -45,19 +45,24 @@ module Schools
       return unless reason
 
       Rails.logger.info("#{@school.name}: #{reason}")
-      create_attribute(start_date, number_of_pupils, [reason_prefix, reason].join)
+      create_attribute(start_date, number_of_pupils, attribute, [reason_prefix, reason].join)
     end
 
     def should_create_attribute?(number_of_pupils, start_date, attribute, data)
+      # not created by a user or has expired
       (attribute.created_by_id.nil? || data[:end_date] <= start_date) &&
+        # and number of pupils has changed
         data[:value] != number_of_pupils &&
+        # and starts after
         data[:start_date] < start_date
     end
 
-    def create_attribute(start_date, number_of_pupils, reason)
+    def create_attribute(start_date, number_of_pupils, attribute, reason)
       @school.meter_attributes.create!(
         attribute_type: :floor_area_pupil_numbers,
-        input_data: { start_date: start_date.strftime(DATE_FORMAT), number_of_pupils: number_of_pupils.to_s },
+        input_data: { start_date: start_date.strftime(DATE_FORMAT),
+                      number_of_pupils: number_of_pupils.to_s,
+                      floor_area: attribute.input_data['floor_area'] }.compact,
         reason:
       )
     end

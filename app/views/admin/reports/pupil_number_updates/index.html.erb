@@ -5,9 +5,9 @@
 <table class="table table-sorted table-sm">
   <thead>
     <tr>
-      <th>School</th>
       <th>School Group</th>
       <th>Admin</th>
+      <th>School</th>
       <th>Reason</th>
       <th data-orderable="false"></th>
     </tr>
@@ -17,9 +17,9 @@
         reasons = find_reasons(school)
         next if reasons.nil? %>
       <tr>
-        <td><%= link_to school.name, school_path(school) %></td>
         <td><%= school.school_group.name %></td>
-        <td><%= school.school_group&.default_issues_admin_user&.name %></td>
+        <td><%= school.default_issues_admin_user&.name %></td>
+        <td><%= link_to school.name, school_path(school) %></td>
         <td><%= reasons.join(', ') %></td>
         <td><%= link_to :Attributes, admin_school_school_attributes_path(school) %></td>
       </tr>

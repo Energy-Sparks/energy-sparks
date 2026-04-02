@@ -235,7 +235,7 @@ class School < ApplicationRecord
   belongs_to :weather_station, optional: true
 
   belongs_to :school_group, optional: true
-  delegate :default_issues_admin_user, to: :school_group
+  delegate :default_issues_admin_user, to: :school_group, allow_nil: true
 
   belongs_to :scoreboard, optional: true
   belongs_to :local_authority_area, optional: true
