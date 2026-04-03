@@ -276,6 +276,9 @@ Rails.application.routes.draw do
           get :charts
         end
       end
+
+      resources :impact, only: [:index]
+
       resources :clusters do
         member do
           post :unassign
@@ -571,8 +574,14 @@ Rails.application.routes.draw do
   concern :messageable do
     resource :dashboard_message, only: %i[update edit destroy], controller: '/admin/dashboard_messages'
   end
+  concern :contract_holder do
+    resources :contracts, only: %i[index], controller: '/admin/commercial/contract_holder_contracts'
+  end
 
   namespace :admin do
+    resources :dashboards, only: [:show, :index] do
+      resources :school_groups, module: :dashboard
+    end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
     get 'colours', to: 'styles#index'
@@ -580,7 +589,11 @@ Rails.application.routes.draw do
     get 'chart-preview', to: 'chart_previews#show'
 
     concerns :issueable
-    resources :funders
+    resources :funders do
+      scope module: :funders do
+        concerns :contract_holder
+      end
+    end
     resources :users, except: [:show] do
       get 'lock', to: 'users#lock'
       get 'unlock', to: 'users#unlock'
@@ -602,9 +615,15 @@ Rails.application.routes.draw do
     namespace :commercial do
       resources :contracts do
         get :contract_holder_options, on: :collection
+        resources :licences, controller: "contracts/licences" do
+          get :edit, on: :collection
+          put :update, on: :collection
+        end
       end
       resources :licences
       resources :products
+
+      get 'pricing', to: 'pricing#show'
     end
 
     namespace :comparisons do
@@ -666,6 +685,7 @@ Rails.application.routes.draw do
         end
         concerns :messageable
         concerns :issueable
+        concerns :contract_holder
       end
     end
 
@@ -692,6 +712,7 @@ Rails.application.routes.draw do
       get 'analysis/:tab', to: 'analysis#show', as: :analysis_tab
       scope module: :schools do
         concerns :messageable
+        concerns :contract_holder
       end
     end
 

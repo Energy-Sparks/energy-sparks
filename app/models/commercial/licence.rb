@@ -33,6 +33,7 @@ module Commercial
   class Licence < ApplicationRecord
     include Trackable
     include TemporalRange
+    include Deletable
 
     self.table_name = 'commercial_licences'
 
@@ -62,5 +63,33 @@ module Commercial
     enum :status, LICENCE_STATUS
 
     validates_presence_of :start_date, :end_date
+
+    def self.filtered(scope_name, date = Time.zone.today, school_group_id = nil)
+      scope = public_send(scope_name, date)
+
+      if school_group_id.present?
+        scope = scope.joins(school: :school_groupings)
+                     .where(school_groupings: { school_group_id: school_group_id })
+      end
+
+      scope.includes(:contract, :school, school: :school_group, contract: :product)
+           .by_start_date
+    end
+
+    def dates_will_automatically_change?
+      persisted? &&
+        contract.custom? &&
+        !school.data_enabled?
+    end
+
+    def deletable?
+      !invoiced?
+    end
+
+    private
+
+    def destroy_error_message
+      'Cannot delete an invoiced licence'
+    end
   end
 end

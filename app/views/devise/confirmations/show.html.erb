@@ -17,7 +17,7 @@
                form: f,
                minimum_password_length: @minimum_password_length %>
 
-    <%= render 'users/preferred_locale', resource:, form: f %>
+    <%= render 'users/preferred_locale', f:, user: resource %>
 
     <% if @allow_alerts %>
       <hr>
@@ -37,22 +37,7 @@
 
     <% end %>
 
-    <div class="form-check agreements">
-      <%= f.check_box :terms_accepted,
-                      { class:
-                         class_names('form-check-input multi-select', 'must-check': !resource.terms_accepted) },
-                      '1',
-                      '0' %>
-      <%= f.label :terms_accepted, t('terms_and_conditions.message_html',
-                                     terms_and_conditions_link: link_to(t('common.terms_and_conditions'),
-                                                                        terms_and_conditions_path,
-                                                                        target: '_blank', rel: 'noopener'),
-                                     privacy_policy_link: link_to(t('common.privacy_policy'),
-                                                                  privacy_and_cookie_policy_path,
-                                                                  target: '_blank',
-                                                                  rel: 'noopener')),
-                  class: 'form-check-label' %>
-    </div>
+    <%= render 'shared/agree_terms_checkbox', f:, user: resource %>
 
     <div class="form-group">
       <%= f.submit t('devise.passwords.edit.complete_registration'), class: 'btn btn-primary' %>

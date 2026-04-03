@@ -162,7 +162,7 @@ RSpec.describe 'alert type management', type: :system do
 
         click_on 'Create content'
 
-        with_retry { expect(gas_fuel_alert_type.ratings.size).to eq(1) }
+        with_retry { expect(gas_fuel_alert_type.reload.ratings.size).to eq(1) }
         alert_type_rating = gas_fuel_alert_type.ratings.first
         expect(alert_type_rating.content_versions.size).to eq(1)
         first_content = alert_type_rating.current_content
@@ -180,7 +180,7 @@ RSpec.describe 'alert type management', type: :system do
         fill_in 'Email title en', with: 'Stop using so much gas!'
         click_on 'Update content'
 
-        with_retry { expect(alert_type_rating.content_versions.size).to eq(2) }
+        with_retry { expect(alert_type_rating.reload.content_versions.size).to eq(2) }
       end
     end
 

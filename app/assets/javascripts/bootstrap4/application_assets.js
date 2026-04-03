@@ -26,7 +26,7 @@
 //= require usage_charts
 //= require schools
 //= require users
-//= require nav_tabs_url_aware
+//= require bootstrap4/nav_tabs_url_aware
 
 // from https://github.com/neivars/bootstrap-year-calendar
 //= require bootstrap-year-calendar
@@ -72,3 +72,4 @@
 //= require delete_association
 //= require section_nav
 //= require match_row_height
+//= require bootstrap4/ensure_one_checked

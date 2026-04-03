@@ -1,6 +1,6 @@
 module Elements
   class ButtonComponent < ApplicationComponent
-    def initialize(name, url, style: nil, size: nil, outline: false, outline_style: :white, data: {}, **_kwargs)
+    def initialize(name, url, style: nil, size: nil, outline: false, outline_style: :white, data: {}, rel: nil, **_kwargs)
       super
       raise ArgumentError, 'Unknown button style' if style && !self.class.styles.include?(style)
       raise ArgumentError, 'Unknown button size' if size && !self.class.sizes.include?(size)
@@ -9,6 +9,7 @@ module Elements
       @name = name
       @url = url
       @data = data
+      @rel = rel
       btn = outline ? 'btn-outline' : 'btn'
       btn += "-#{style}" if style
       add_classes('transparent') if outline_style == :transparent
@@ -17,7 +18,7 @@ module Elements
     end
 
     def call
-      tag.a(id: @id, class: @classes, href: @url, data: @data) { "#{@name}#{content}" }
+      tag.a(id: @id, class: @classes, href: @url, rel: @rel, data: @data) { "#{@name}#{content}" }
     end
 
     class << self

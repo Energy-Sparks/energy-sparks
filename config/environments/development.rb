@@ -88,7 +88,7 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
   config.action_mailer.asset_host = ENV['ASSET_HOST'] && ENV['APPLICATION_HOST'] ? ENV.fetch('ASSET_HOST'){ "http://#{ENV['APPLICATION_HOST']}" } : 'localhost:3000'
-  config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
+
   # Uncomment to pull in locale files when testing with a local version of the Energy Sparks Analytics gem
   # config.i18n.load_path += Dir[Gem.loaded_specs['energy-sparks_analytics'].full_gem_path + '/config/locales/**/*.{rb,yml}']
   # This adds a 'mirror' locale that turns all translated text upside down so we can visually check for any

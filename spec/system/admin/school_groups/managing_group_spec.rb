@@ -122,7 +122,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
     end
   end
 
-  shared_examples 'a school issues and notes tab' do
+  shared_examples 'a school issues tab' do
     context 'when there are issues for schools in the school group' do
       let!(:issue) do
         create(:issue, issue_type: :issue, status: :open, updated_by: admin, issueable: school, fuel_type: :gas,
@@ -135,7 +135,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
 
       it 'displays a count of school issues' do
-        expect(page).to have_content 'School issues and notes 1'
+        expect(page).to have_content 'School issues 1'
       end
 
       it 'does not show issues for inactive schools' do
@@ -153,6 +153,40 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
 
       it { expect(page).to have_content("No school issues for #{school_group.name}") }
+    end
+  end
+
+  shared_examples 'a school notes tab' do
+    context 'when there are notes for schools in the school group' do
+      let!(:issue) do
+        create(:issue, issue_type: :note, status: :open, updated_by: admin, issueable: school, fuel_type: :gas,
+                       pinned: true)
+      end
+      let!(:inactive_school_issue) { create :issue, issue_type: :note, status: :open, issueable: create(:school, school_group: school_group, active: false) }
+
+      before do
+        visit admin_school_group_path(school_group)
+      end
+
+      it 'displays a count of school notes' do
+        expect(page).to have_content 'School notes 1'
+      end
+
+      it 'does not show notes for inactive schools' do
+        expect(page).not_to have_content inactive_school_issue.title
+      end
+
+      it_behaves_like 'an issue listed in a tab', '#school-notes'
+    end
+
+    context 'when there are no active notes' do
+      let!(:inactive_school_note) { create :issue, issue_type: :note, status: :open, issueable: create(:school, school_group: school_group, active: false) }
+
+      before do
+        visit admin_school_group_path(school_group)
+      end
+
+      it { expect(page).to have_content("No school notes for #{school_group.name}") }
     end
   end
 
@@ -434,7 +468,10 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it_behaves_like 'a group issues tab'
     it_behaves_like 'a group notes tab'
-    it_behaves_like 'a school issues and notes tab' do
+    it_behaves_like 'a school issues tab' do
+      let!(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
+    end
+    it_behaves_like 'a school notes tab' do
       let!(:school) { create(:school, :with_project, :with_school_group, group: school_group) }
     end
     it_behaves_like 'a downloadable csv of issues is available' do
@@ -580,13 +617,15 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it_behaves_like 'a group issues tab'
     it_behaves_like 'a group notes tab'
-    it_behaves_like 'a school issues and notes tab' do
+    it_behaves_like 'a school issues tab' do
+      let!(:school) { create(:school, :with_diocese, :with_school_group, group: school_group) }
+    end
+    it_behaves_like 'a school notes tab' do
       let!(:school) { create(:school, :with_diocese, :with_school_group, group: school_group) }
     end
     it_behaves_like 'a downloadable csv of issues is available' do
       let!(:school) { create(:school, :with_diocese, :with_school_group, group: school_group) }
     end
-
     it_behaves_like 'a deletable group' do
       let(:school) { create(:school, :with_diocese, :with_school_group, group: school_group) }
     end
@@ -757,7 +796,10 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
 
     it_behaves_like 'a group issues tab'
     it_behaves_like 'a group notes tab'
-    it_behaves_like 'a school issues and notes tab' do
+    it_behaves_like 'a school issues tab' do
+      let!(:school) { create(:school, school_group: school_group) }
+    end
+    it_behaves_like 'a school notes tab' do
       let!(:school) { create(:school, school_group: school_group) }
     end
     it_behaves_like 'a downloadable csv of issues is available' do
@@ -829,6 +871,16 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         visit admin_school_group_path(school_group)
       end
 
+      it { expect(page).to have_link('New School Onboarding', href: new_admin_school_onboarding_path(school_group_id: school_group.id)) }
+
+      context 'when using the new onboarding link' do
+        before { click_on('New School Onboarding') }
+
+        it 'autofills the school group name' do
+          expect(page).to have_content(school_group.name)
+        end
+      end
+
       context 'with no onboarding schools' do
         before do
           click_on 'Onboarding'
@@ -841,10 +893,21 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         end
       end
 
-      it_behaves_like 'admin school group onboardings' do
-        def after_setup_data
+      context 'with onboarding schools' do
+        it_behaves_like 'admin school group onboardings' do
+          def after_setup_data
+            click_on 'Onboarding'
+          end
+        end
+
+        let(:school_onboarding) { create(:school_onboarding, :with_school, school_group:, created_by: admin) }
+        let!(:setup_data) { school_onboarding }
+
+        before do
           click_on 'Onboarding'
         end
+
+        it { expect(page).to have_link('Download as CSV') }
       end
     end
 

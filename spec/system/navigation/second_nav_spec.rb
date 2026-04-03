@@ -19,7 +19,7 @@ RSpec.describe 'Navigation -> second nav' do
     end
 
     it 'does not back to dashboard link', unless: display do
-      expect(left_link).not_to have_link('Back to dashboard', href: school_path(school))
+      expect(left_link).to have_no_link('Back to dashboard', href: school_path(school))
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe 'Navigation -> second nav' do
     end
 
     it 'does not school name and dashboard link', unless: display do
-      expect(left_link).not_to have_link(school.name, href: school_path(school))
+      expect(left_link).to have_no_link(school.name, href: school_path(school))
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe 'Navigation -> second nav' do
     end
 
     it 'does not show school group name and group dashboard link', unless: display do
-      expect(left_link).not_to have_link(school_group.name, href: school_group_path(school_group))
+      expect(left_link).to have_no_link(school_group.name, href: school_group_path(school_group))
     end
   end
 
@@ -47,11 +47,27 @@ RSpec.describe 'Navigation -> second nav' do
     it_behaves_like 'a school name and dashboard link', display: false
     it_behaves_like 'a back to dashboard link', display: false
     it_behaves_like 'a group name and group dashboard link', display: false
+    it_behaves_like 'a school inactive pill', display: false
+  end
+
+  shared_examples 'a school inactive pill' do |display: false|
+    it 'displays the archived pill', if: display == :archived do
+      expect(left_link).to have_content('Archived')
+    end
+
+    it 'displays the deleted pill', if: display == :deleted do
+      expect(left_link).to have_content('Deleted')
+    end
+
+    it 'the inactive pill is not displayed', unless: display do
+      expect(left_link).to have_no_content('Archived')
+      expect(left_link).to have_no_content('Deleted')
+    end
   end
 
   describe 'Second nav left link' do
     let!(:school) { create(:school, school_group:) }
-    let(:left_link) { nav.find(:css, '#left-link') }
+    let(:left_link) { nav.find('#left-link') }
 
     context 'when user is not logged in' do
       context 'when on a page with school context' do
@@ -89,6 +105,7 @@ RSpec.describe 'Navigation -> second nav' do
         before { visit school_path(school) }
 
         it_behaves_like 'a school name and dashboard link'
+        it_behaves_like 'a school inactive pill', display: false
       end
 
       context 'when on a page with non school or school group context' do
@@ -107,6 +124,30 @@ RSpec.describe 'Navigation -> second nav' do
         before { visit map_school_group_path(school_group) }
 
         it_behaves_like 'a back to dashboard link'
+      end
+    end
+
+    context 'when current user is an admin' do
+      let(:user) { create(:admin) }
+
+      before { visit school_path(school) }
+
+      context 'when school is active' do
+        let!(:school) { create(:school) }
+
+        it_behaves_like 'a school inactive pill', display: false
+      end
+
+      context 'when school is archived' do
+        let!(:school) { create(:school, :archived) }
+
+        it_behaves_like 'a school inactive pill', display: :archived
+      end
+
+      context 'when school is deleted' do
+        let!(:school) { create(:school, :deleted) }
+
+        it_behaves_like 'a school inactive pill', display: :deleted
       end
     end
   end
@@ -181,7 +222,7 @@ RSpec.describe 'Navigation -> second nav' do
       end
 
       it 'does not have a link to adult dashboard' do
-        expect(nav).not_to have_link('Adult dashboard', href: school_path(school))
+        expect(nav).to have_no_link('Adult dashboard', href: school_path(school))
       end
     end
 
@@ -193,7 +234,7 @@ RSpec.describe 'Navigation -> second nav' do
       end
 
       it 'does not have a link to pupil dashboard' do
-        expect(nav).not_to have_link('Pupil dashboard', href: pupils_school_path(school))
+        expect(nav).to have_no_link('Pupil dashboard', href: pupils_school_path(school))
       end
     end
 
@@ -441,10 +482,13 @@ RSpec.describe 'Navigation -> second nav' do
     end
 
     context 'when user is non-admin' do
-      let(:data_enabled) { }
+      let(:data_enabled) {}
       let(:fuel_configuration) { {} }
       let(:school_school_group) {}
-      let(:school) { create(:school, :with_fuel_configuration, **fuel_configuration, data_enabled: data_enabled, school_group: school_school_group, scoreboard: create(:scoreboard)) }
+      let(:school) do
+        create(:school, :with_fuel_configuration, **fuel_configuration, data_enabled: data_enabled,
+                                                                        school_group: school_school_group, scoreboard: create(:scoreboard))
+      end
       let(:user_school_group) {}
       let(:user) { create(:staff, school: school, school_group: user_school_group) }
 
@@ -466,9 +510,9 @@ RSpec.describe 'Navigation -> second nav' do
         end
 
         context 'without school group' do
-          let(:user_school_group) { }
+          let(:user_school_group) {}
 
-          it { expect(page).not_to have_link('My school group') }
+          it { expect(page).to have_no_link('My school group') }
         end
       end
 
@@ -484,11 +528,11 @@ RSpec.describe 'Navigation -> second nav' do
         end
 
         context 'when users school is not in school group' do
-          let(:school_school_group) { }
+          let(:school_school_group) {}
 
           it 'does not have compare school link' do
             within '#my-school-menu' do
-              expect(page).not_to have_link('Compare schools')
+              expect(page).to have_no_link('Compare schools')
             end
           end
         end
@@ -510,13 +554,13 @@ RSpec.describe 'Navigation -> second nav' do
             let(:fuel_configuration) { { has_electricity: true, has_solar_pv: true } }
 
             it { expect(page).to have_link('Electricity and solar usage') }
-            it { expect(page).not_to have_link('Electricity usage') }
+            it { expect(page).to have_no_link('Electricity usage') }
           end
 
           context 'when school has electricity and no solar' do
             let(:fuel_configuration) { { has_electricity: true, has_solar_pv: false } }
 
-            it { expect(page).not_to have_link('Electricity and solar usage') }
+            it { expect(page).to have_no_link('Electricity and solar usage') }
             it { expect(page).to have_link('Electricity usage') }
           end
 
@@ -530,29 +574,33 @@ RSpec.describe 'Navigation -> second nav' do
           end
 
           context 'when school has no fuel types' do
-            let(:fuel_configuration) { { has_electricity: false, has_solar_pv: false, has_gas: false, has_storage_heaters: false } }
+            let(:fuel_configuration) do
+              { has_electricity: false, has_solar_pv: false, has_gas: false, has_storage_heaters: false }
+            end
 
             it 'has no fuel links' do
-              expect(page).not_to have_link('Electricity and solar usage')
-              expect(page).not_to have_link('Electricity usage')
-              expect(page).not_to have_link('Gas usage')
-              expect(page).not_to have_link('Storage heater usage')
+              expect(page).to have_no_link('Electricity and solar usage')
+              expect(page).to have_no_link('Electricity usage')
+              expect(page).to have_no_link('Gas usage')
+              expect(page).to have_no_link('Storage heater usage')
             end
           end
         end
 
         context 'when not data enabled' do
-          let(:fuel_configuration) { { has_electricity: true, has_solar_pv: true, has_gas: true, has_storage_heaters: true } }
+          let(:fuel_configuration) do
+            { has_electricity: true, has_solar_pv: true, has_gas: true, has_storage_heaters: true }
+          end
           let(:data_enabled) { false }
 
-          it { expect(page).not_to have_link('Energy analysis') }
-          it { expect(page).not_to have_link('Download our data') }
+          it { expect(page).to have_no_link('Energy analysis') }
+          it { expect(page).to have_no_link('Download our data') }
 
           it 'has no fuel links' do
-            expect(page).not_to have_link('Electricity and solar usage')
-            expect(page).not_to have_link('Electricity usage')
-            expect(page).not_to have_link('Gas usage')
-            expect(page).not_to have_link('Storage heater usage')
+            expect(page).to have_no_link('Electricity and solar usage')
+            expect(page).to have_no_link('Electricity usage')
+            expect(page).to have_no_link('Gas usage')
+            expect(page).to have_no_link('Storage heater usage')
           end
         end
       end

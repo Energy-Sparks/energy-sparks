@@ -206,6 +206,10 @@ en:
         <p>Fields shown in grey indicate months for which we already have automatically supplied meter readings for the school. These cannot be manually updated and are shown for reference.</p>
       enough_data: We have enough data from your meters so you don't need to enter any readings manually.
       limited_data: We have limited energy data for your school. You can enter monthly consumption data here to show progress against any targets set or observe changes in consumption over a longer period of time. To show historical progress towards your energy use target, we need at least 13 months of historical readings. To see progress over two full years, enter readings for all months below.
+      saved:
+        long_term_html: The readings you have supplied will now be used on your %{fuel_types} long term analysis to show your historical progress to reduce your usage.
+        target_html: The data will also be used to show progress against your current %{fuel_types} target.
+        title: Your manual readings have been saved
       with_target: In order to calculate progress towards your target of reducing your energy use by %{target_date} we need readings going back to %{start_date_month}.
     meters:
       creatable_meter_types:
@@ -480,7 +484,7 @@ en:
         you_are_currently_aiming_to_achieve_your_target_by_html: You are currently aiming to achieve your target by <strong>%{target_date}</strong>.<br>You can revise the start of the 12 month period
         your_new_target_will_run_for_12_months: Your new target will run for 12 months from the date you specify
       fuel_type_note:
-        where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we receive additional data, we'll prompt you to review your targets
+        where_we_have_enough_data_note: Where we have enough data to assess your performance you will be able to set a target for electricity, gas or storage heater usage. If we don't have enough data, you will be prompted to add monthly readings manually.
       manual_readings_prompt:
         enough: We don't have enough data to calculate target progress.
         enter_html: You can enter <a href="%{path}">readings manually</a> to complete the year.
@@ -528,7 +532,6 @@ en:
       view_link: View
     show:
       add_alert_contacts: Add alert contacts
-      add_consumption_estimate: Add an estimate of your annual %{fuels} consumption so we can provide you with a more detailed progress report to help you achieve your targets
       add_estimate: Add an estimate
       coming_soon: Energy data coming soon
       configuring_data_access: We're configuring access to your energy data and will notify you when it's ready to explore.

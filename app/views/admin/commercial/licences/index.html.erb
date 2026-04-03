@@ -1,9 +1,46 @@
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
-  <% header_nav.with_header title: 'Licences' %>
+  <% header_nav.with_header title: 'Licence overview' %>
 <% end %>
 
 <div class="row">
   <div class="col-12">
-    <%= render Commercial::LicencesComponent.new %>
+    <%= render TabsComponent.new do |component| %>
+      <% component.with_tab(name: 'expiring', label: 'Expiring', active: @tab == 'expiring') do %>
+        <%= render 'filters', tab: 'expiring',
+                              school_group_id: @school_group_id,
+                              date_label: 'Show licences expiring by',
+                              field_name: :expiry_date,
+                              date: @expiry_date %>
+
+        <%= render Commercial::LicencesComponent.new(licences: @expiring_licences, show_renewal_data: true) %>
+      <% end %>
+      <% component.with_tab(name: 'recently-expired', label: 'Recently Expired', active: @tab == 'recently-expired') do %>
+        <%= render 'filters', tab: 'recently-expired',
+                              school_group_id: @school_group_id,
+                              date_label: 'Show licences that have expired since',
+                              field_name: :expired_date,
+                              date: @expired_date %>
+
+        <%= render Commercial::LicencesComponent.new(licences: @recently_expired_licences) %>
+      <% end %>
+      <% component.with_tab(name: 'recent', label: 'Recently Added', active: @tab == 'recent') do %>
+        <%= render 'filters', tab: 'recent',
+                              school_group_id: @school_group_id,
+                              date_label: 'Show licences created since',
+                              field_name: :recently_added_date,
+                              date: @recently_added_date %>
+
+        <%= render Commercial::LicencesComponent.new(licences: @recent_licences) %>
+      <% end %>
+      <% component.with_tab(name: 'recently-updated', label: 'Recently Updated', active: @tab == 'recently-updated') do %>
+        <%= render 'filters', tab: 'recently-updated',
+                              school_group_id: @school_group_id,
+                              date_label: 'Show licences updated since',
+                              field_name: :recently_updated_date,
+                              date: @recently_updated_date %>
+
+        <%= render Commercial::LicencesComponent.new(licences: @recently_updated_licences) %>
+      <% end %>
+    <% end %>
   </div>
 </div>

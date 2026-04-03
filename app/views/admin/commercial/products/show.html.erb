@@ -57,12 +57,7 @@
       </dl>
       <%= link_to 'Edit', edit_admin_commercial_product_path(@product),
                   class: 'btn btn-secondary btn-sm' %>
-      <% unless @product.default_product? %>
-        <%= link_to 'Delete', admin_commercial_product_path(@product),
-                    method: :delete,
-                    data: { confirm: 'Are you sure?' },
-                    class: 'btn btn-danger btn-sm' %>
-      <% end %>
+      <%= render(Forms::DeleteButtonComponent.new(admin_commercial_product_path(@product), resource: @product)) %>
     </div>
   <% end %>
   <%= grid.with_block do %>
@@ -122,7 +117,16 @@
 
 <div class="row">
   <div class="col">
-    <%= render(Commercial::ContractsComponent.new(holder: @product)) %>
+    <p>
+      <%= link_to 'Calculate price', admin_commercial_pricing_path(pricing: { product_id: @product.id }),
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render(Commercial::ContractsComponent.new(contracts: @product.contracts.current)) %>
   </div>
 </div>
 

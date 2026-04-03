@@ -1,4 +1,10 @@
-<h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s #{@organisation_group ? 'School' : @group_type.to_s.humanize} Groups" %>
+  <% end %>
+<% else %>
+  <h1>Manage <%= @organisation_group ? 'School' : @group_type.to_s.humanize %> Groups</h1>
+<% end %>
 
 <div class="row">
   <div class="col-12 d-flex justify-content-between">
@@ -14,7 +20,7 @@
     <div>
       <%= link_to 'Download as CSV',
                   admin_school_groups_path(format: :csv, group_type: @organisation_group ? nil : @group_type.to_sym),
-                  class: 'btn btn-sm' %>
+                  class: 'btn btn-secondary btn-sm' %>
     </div>
   </div>
 </div>
@@ -30,12 +36,12 @@
               <th title="Group type" class="nowrap">Type</th>
               <th title="Issues admin" class="d-none d-md-table-cell nowrap">Admin</th>
             <% end %>
-            <th class="text-right" title="Schools onboarding">Onboarding</th>
-            <th class="text-right" title="Schools active (without data visible)">Active</th>
-            <th class="text-right" title="Schools active (with data visible)" class='nowrap'>Data visible</th>
-            <th class="text-right" title="Schools invisible">Invisible</th>
-            <th class="text-right" title="Schools removed">Removed</th>
-            <th class="text-right no-sort"></th>
+            <th class="text-end" title="Schools onboarding">Onboarding</th>
+            <th class="text-end" title="Schools active (without data visible)">Active</th>
+            <th class="text-end" title="Schools active (with data visible)" class='nowrap'>Data visible</th>
+            <th class="text-end" title="Schools invisible">Invisible</th>
+            <th class="text-end" title="Schools removed">Removed</th>
+            <th class="text-end no-sort"></th>
           </tr>
         </thead>
 
@@ -48,11 +54,11 @@
               </td>
               <% if @organisation_group %>
                 <td>
-                  <span class="badge badge-pill badge-secondary"><%= school_group.group_type.humanize %></span>
+                  <span class="badge rounded-pill text-bg-secondary"><%= school_group.group_type.humanize %></span>
                 </td>
                 <td class="d-none d-sm-table-cell">
                   <% if school_group.default_issues_admin_user %>
-                    <span class="badge border badge-pill border-secondary font-weight-normal">
+                    <span class="badge border rounded-pill border-secondary fw-normal">
                       <%= link_to (if school_group.default_issues_admin_user == current_user
                                      'You'
                                    else
@@ -64,28 +70,39 @@
                   <% end %>
                 </td>
               <% end %>
-              <td class="text-right"><%= school_group.onboardings_for_group.incomplete.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.visible.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.visible.data_enabled.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.not_visible.count %></td>
-              <td class="text-right"><%= school_group.assigned_schools.inactive.count %></td>
-              <td class="text-right"><%= link_to 'Manage', admin_school_group_path(school_group), class: 'btn btn-sm',
-                                                                                                  id: school_group.slug %></td>
+              <td class="text-end"><%= school_group.onboardings_for_group.incomplete.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.visible.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.visible.data_enabled.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.not_visible.count %></td>
+              <td class="text-end"><%= school_group.assigned_schools.inactive.count %></td>
+              <td class="text-end">
+                <% unless @dashboard_user %>
+                  <%= link_to 'Manage',
+                              admin_school_group_path(school_group),
+                              class: 'btn btn-secondary btn-sm',
+                              id: school_group.slug %>
+                <% else %>
+                  <%= link_to 'Manage',
+                              admin_dashboard_school_group_path(dashboard_id: @dashboard_user.id, id: school_group.id),
+                              class: 'btn btn-secondary btn-sm',
+                              id: school_group.slug %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>
         <% if @organisation_group %>
           <tfooter>
-            <tr class="font-weight-bold">
+            <tr class="fw-bold">
               <td>All Energy Sparks Schools</td>
               <td></td>
               <td></td>
-              <td class="text-right"><%= SchoolOnboarding.incomplete.count %></td>
-              <td class="text-right"><%= School.visible.count %></td>
-              <td class="text-right"><%= School.visible.data_enabled.count %></td>
-              <td class="text-right"><%= School.not_visible.count %></td>
-              <td class="text-right"><%= School.inactive.count %></td>
-              <td class="text-right"></td>
+              <td class="text-end"><%= SchoolOnboarding.incomplete.count %></td>
+              <td class="text-end"><%= School.visible.count %></td>
+              <td class="text-end"><%= School.visible.data_enabled.count %></td>
+              <td class="text-end"><%= School.not_visible.count %></td>
+              <td class="text-end"><%= School.inactive.count %></td>
+              <td class="text-end"></td>
             </tr>
           </tfooter>
         <% end %>

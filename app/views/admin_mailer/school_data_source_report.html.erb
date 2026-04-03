@@ -16,7 +16,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @data_source.meters.each do |meter| %>
+    <% @data_source.meters.from_active_schools.each do |meter| %>
       <tr>
         <td>
           <% if meter&.school&.school_group %>

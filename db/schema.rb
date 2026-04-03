@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -428,7 +428,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
     t.integer "number_of_header_rows", default: 0, null: false
     t.integer "process_type", default: 0, null: false
     t.integer "source_type", default: 0, null: false
-    t.integer "import_warning_days", default: 10
     t.string "expected_units"
     t.integer "missing_readings_limit"
     t.boolean "lookup_by_serial_number", default: false
@@ -1489,6 +1488,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
     t.bigint "consent_grant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "disabled", default: false, null: false
     t.index ["consent_grant_id"], name: "index_meter_reviews_on_consent_grant_id"
     t.index ["school_id"], name: "index_meter_reviews_on_school_id"
     t.index ["user_id"], name: "index_meter_reviews_on_user_id"
@@ -1658,6 +1658,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
     t.datetime "updated_at", default: -> { "now()" }, null: false
     t.index ["programme_type_id"], name: "index_programmes_on_programme_type_id"
     t.index ["school_id"], name: "index_programmes_on_school_id"
+  end
+
+  create_table "regeneration_errors", force: :cascade do |t|
+    t.bigint "school_id", null: false
+    t.text "message", null: false
+    t.datetime "raised_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_id"], name: "index_regeneration_errors_on_school_id"
   end
 
   create_table "resource_file_types", force: :cascade do |t|
@@ -2498,6 +2507,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_26_093915) do
   add_foreign_key "observations", "users", column: "updated_by_id"
   add_foreign_key "programmes", "programme_types", on_delete: :cascade
   add_foreign_key "programmes", "schools", on_delete: :cascade
+  add_foreign_key "regeneration_errors", "schools"
   add_foreign_key "resource_files", "resource_file_types", on_delete: :restrict
   add_foreign_key "rtone_variant_installations", "amr_data_feed_configs"
   add_foreign_key "rtone_variant_installations", "meters"

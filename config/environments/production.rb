@@ -88,6 +88,7 @@ Rails.application.configure do
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
   # Local customisation below:
+  config.active_job.queue_adapter = :good_job
   # Allows mailer previews to be viewed on production
   # See also: config/initializers/action_mailer.rb
   config.action_mailer.show_previews = true
@@ -97,25 +98,23 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: ENV['APPLICATION_HOST'] }
   config.action_mailer.delivery_method = :mailgun
   config.action_mailer.mailgun_settings = { api_key: ENV['MG_API_KEY'], domain: ENV['MG_DOMAIN'] }
+  config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']
+  config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY']
+  config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT']
   config.assets.prefix = "/static-assets"
-  config.public_file_server.headers['access-control-allow-origin'] = "https://#{ENV['APPLICATION_HOST']}"
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser
   config.action_controller.asset_host = ENV['ASSET_HOST'] if ENV['ASSET_HOST'].present?
   config.active_storage.service = :amazon
+  require './lib/energy_sparks/file_store'
+  config.cache_store = EnergySparks::FileStore.new("/var/cache/rails_cache_store")
   # session cookie has configurable name so that live and test logins are separated
   config.session_store :cookie_store, key: ENV.fetch('SESSION_COOKIE_NAME', '_energy-sparks_session'),
                                       domain: ENV.fetch('SESSION_COOKIE_DOMAIN', '.energysparks.uk')
-  require './lib/energy_sparks/file_store'
-  config.cache_store = EnergySparks::FileStore.new("/var/cache/rails_cache_store")
+  config.force_ssl = true
   # Default good job execution mode configuration for production
   # See https://github.com/bensheldon/good_job#configuration-options
-  config.active_job.queue_adapter = :good_job
   config.good_job.on_thread_error = -> (exception) { Rollbar.error(exception, from: :on_thread_error) }
-  config.mailchimp_client = MailchimpMarketing::Client.new({ api_key: ENV['MAILCHIMP_API_KEY'], server: ENV['MAILCHIMP_SERVER'] })
+  config.public_file_server.headers['access-control-allow-origin'] = "https://#{ENV['APPLICATION_HOST']}"
   config.ssl_options = { redirect: { exclude: -> request { request.path == '/up' } } }
-  config.force_ssl = true
-  config.active_record.encryption.primary_key = ENV['ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY']
-  config.active_record.encryption.deterministic_key = ENV['ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY']
-  config.active_record.encryption.key_derivation_salt = ENV['ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT']
 end

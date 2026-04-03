@@ -139,6 +139,10 @@ class SchoolOnboarding < ApplicationRecord
     !has_only_sent_email_or_reminder?
   end
 
+  def started_on
+    events.email_sent.order(:created_at).first&.created_at
+  end
+
   def onboarding_user_created?
     has_event?(:onboarding_user_created)
   end

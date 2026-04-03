@@ -50,14 +50,74 @@ RSpec.shared_examples_for 'the show meter page' do |admin:|
   end
 end
 
-RSpec.describe 'meter management', :include_application_helper, :meters do
+RSpec.shared_examples_for 'it creates meters' do |email: false, select_data_source: false|
+  context 'when creating meters' do
+    before do
+      stub = instance_double(Meters::N3rgyMeteringService, status: :available,
+                                                           available?: true,
+                                                           consented?: true,
+                                                           inventory: { device_id: 123_999 },
+                                                           available_data: Time.zone.today..Time.zone.today,
+                                                           type: :smets2)
+      allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
+      click_on('Manage meters')
+    end
+
+    it 'requires a type' do
+      click_on 'Create Meter'
+      expect(page).to have_content("Meter type can't be blank")
+    end
+
+    it { expect(page).to have_no_select('Data source') } unless select_data_source
+
+    context 'when filling in the form' do
+      before do
+        fill_in 'Meter Point Number', with: '123543'
+        fill_in 'Name', with: 'Gas'
+        choose 'Gas'
+        select 'Data Co', from: 'Data source' if select_data_source
+        click_on 'Create Meter'
+      end
+
+      it 'allows adding of meters from the management page with validation' do
+        expect(school.meters.pluck(:mpan_mprn)).to eq([123_543])
+        expect(school.meters.first.data_source).to eq(select_data_source ? data_source : nil)
+        perform_enqueued_jobs
+        if email
+          expect(last_email).to have_attributes(subject: 'New smart meters found', to: [admin.email])
+        else
+          expect(ActionMailer::Base.deliveries.length).to eq(0)
+        end
+      end
+    end
+  end
+end
+
+RSpec.shared_examples_for 'it has listed meters' do |staff: true, admin: false|
+  let!(:setup_data) { meter }
+
+  it_behaves_like 'a listed meter', admin:, staff: do
+    let(:meter) { active_meter }
+  end
+  it_behaves_like 'a listed meter', admin:, staff: do
+    let(:meter) { inactive_meter }
+  end
+end
+
+RSpec.shared_examples_for 'the meter management page for staff' do |creates_meters: true|
+  before { visit school_meters_path(school) }
+
+  it_behaves_like 'admin dashboard messages', permitted: false
+  it_behaves_like 'it creates meters' if creates_meters
+  it_behaves_like 'it has listed meters'
+end
+
+describe 'meter management', :include_application_helper, :meters do
   include ActiveJob::TestHelper
+  include EmailHelpers
 
   let(:school_name)     { 'Oldfield Park Infants' }
   let!(:school)         { create_active_school(name: school_name, school_group: create(:school_group)) }
-  let!(:admin)          { create(:admin) }
-  let!(:teacher)        { create(:staff) }
-  let!(:school_admin)   { create(:school_admin, school_id: school.id) }
   let!(:data_source)    { create(:data_source, name: 'Data Co') }
   let(:active_meter)    do
     create(:gas_meter_with_validated_reading_dates, name: 'meter', school:, data_source:, gas_unit: :m3)
@@ -74,12 +134,12 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
   context 'when a school admin' do
     before do
-      sign_in(school_admin)
+      sign_in(create(:school_admin, school:))
       visit root_path
     end
 
     context 'when the school has a meter with no readings' do
-      let!(:gas_meter) { create(:gas_meter, name: 'Gas meter', school:) }
+      before { create(:gas_meter, name: 'Gas meter', school:) }
 
       it 'allows deletion of inactive meters' do
         click_on 'Manage meters'
@@ -143,28 +203,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       end
     end
 
-    context 'Manage meters page' do
-      before { visit school_meters_path(school) }
-
-      it_behaves_like 'admin dashboard messages', permitted: false
-
-      context 'Add meter form' do
-        it 'does not display admin only fields' do
-          expect(page).to have_no_content('Data source')
-        end
-      end
-
-      context 'listing meters' do
-        let!(:setup_data) { meter }
-
-        it_behaves_like 'a listed meter', admin: false do
-          let(:meter) { active_meter }
-        end
-        it_behaves_like 'a listed meter', admin: false do
-          let(:meter) { inactive_meter }
-        end
-      end
-    end
+    it_behaves_like 'the meter management page for staff'
   end
 
   context 'when a group admin' do
@@ -173,61 +212,23 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       visit root_path
     end
 
-    context 'Manage meters page' do
-      before { visit school_meters_path(school) }
-
-      it_behaves_like 'admin dashboard messages', permitted: false
-
-      context 'Add meter form' do
-        it 'does not display admin only fields' do
-          expect(page).to have_no_content('Data source')
-        end
-      end
-
-      context 'listing meters' do
-        let!(:setup_data) { meter }
-
-        it_behaves_like 'a listed meter', admin: false do
-          let(:meter) { active_meter }
-        end
-        it_behaves_like 'a listed meter', admin: false do
-          let(:meter) { inactive_meter }
-        end
-      end
-    end
+    it_behaves_like 'the meter management page for staff'
   end
 
-  context 'as teacher' do
+  context 'when a teacher' do
     before do
-      sign_in(teacher)
+      sign_in(create(:staff, school:))
       visit school_meters_path(school)
     end
 
-    it 'does not see things it should not' do
+    it 'does not show things it should not' do
       expect(page).to have_no_content('Delete')
       expect(page).to have_no_content('Create Meter')
       expect(page).to have_no_content('Activate')
       expect(page).to have_no_content('Deactivate')
     end
 
-    it_behaves_like 'admin dashboard messages', permitted: false
-
-    context 'Add meter form' do
-      it 'does not display admin only fields' do
-        expect(page).to have_no_content('Data source')
-      end
-    end
-
-    context 'listing meters' do
-      let(:setup_data) { meter }
-
-      it_behaves_like 'a listed meter', admin: false, staff: true do
-        let(:meter) { active_meter }
-      end
-      it_behaves_like 'a listed meter', admin: false, staff: true do
-        let(:meter) { inactive_meter }
-      end
-    end
+    it_behaves_like 'the meter management page for staff', creates_meters: false
 
     it_behaves_like 'the show meter page', admin: false do
       let(:setup_data) { meter }
@@ -236,35 +237,28 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
   end
 
   context 'when an admin' do
+    let!(:admin) { create(:admin) }
+
     before do
       sign_in(admin)
       visit school_path(school)
     end
 
     context 'with the Manage meters page' do
-      before do
-        stub_request(:get, "https://n3rgy.test/find-mpxn/#{active_meter.mpan_mprn}")
-        click_on 'Manage meters'
-      end
+      before { click_on 'Manage meters' }
 
       it_behaves_like 'admin dashboard messages' do
         let(:messageable) { school }
       end
 
       it_behaves_like 'the show meter page', admin: true do
+        let(:setup_data) { stub_request(:get, "https://n3rgy.test/find-mpxn/#{active_meter.mpan_mprn}") }
         let(:meter) { active_meter }
       end
 
-      context 'listing meters' do
-        let!(:setup_data) { meter }
+      it_behaves_like 'it has listed meters', staff: false, admin: true
 
-        it_behaves_like 'a listed meter', admin: true do
-          let(:meter) { active_meter }
-        end
-        it_behaves_like 'a listed meter', admin: true do
-          let(:meter) { inactive_meter }
-        end
-      end
+      it_behaves_like 'it creates meters', email: true, select_data_source: true
     end
 
     context 'when managing meter issues' do
@@ -280,7 +274,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
         it { expect(page).to have_css("i[class*='fa-exclamation-circle']") }
         it { expect(page).to have_no_css("i[class*='fa-exclamation-circle text-danger']") }
 
-        context "Clicking on meter 'Details'" do
+        context "when clicking on meter 'Details'" do
           before do
             click_link meter.mpan_mprn.to_s
           end
@@ -340,7 +334,7 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
 
         it_behaves_like 'editing an issue for meter via modal'
 
-        context "Clicking on meter 'Details'" do
+        context "when clicking on meter 'Details'" do
           before { click_link meter.mpan_mprn.to_s }
 
           it { expect(page).to have_link('Issues') }
@@ -396,10 +390,10 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
       def expect_meter_reload
         expect(page).to have_text('Reload queued')
         expect { perform_enqueued_jobs }.to change { ActionMailer::Base.deliveries.count }.by(1)
-        expect(ActionMailer::Base.deliveries.last.subject).to \
+        expect(last_email.subject).to \
           eq("[energy-sparks-unknown] Reload of Meter Electricity meter for #{school.name} complete")
-        expect(ActionMailer::Base.deliveries.last.to).to eq([admin.email])
-        expect(ActionMailer::Base.deliveries.last.to_s).to include('0 records were imported and 0 were updated')
+        expect(last_email.to).to eq([admin.email])
+        expect(last_email.to_s).to include('0 records were imported and 0 were updated')
       end
 
       it 'allows reloading the meter' do
@@ -440,34 +434,6 @@ RSpec.describe 'meter management', :include_application_helper, :meters do
           click_on meter.mpan_mprn.to_s
           expect(page).to have_text("Perse Metering\nPerse API Half Hourly Latest reading 2024-12-10\n")
         end
-      end
-    end
-
-    context 'when creating meters' do
-      let!(:stub) do
-        instance_double(Meters::N3rgyMeteringService, status: :available, available?: true, consented?: true, inventory: { device_id: 123_999 },
-                                                      available_data: Time.zone.today..Time.zone.today)
-      end
-
-      before do
-        allow(Meters::N3rgyMeteringService).to receive(:new).and_return(stub)
-      end
-
-      it 'allows adding of meters from the management page with validation' do
-        click_on('Manage meters')
-
-        click_on 'Create Meter'
-        expect(page).to have_content("Meter type can't be blank")
-
-        fill_in 'Meter Point Number', with: '123543'
-        fill_in 'Name', with: 'Gas'
-        choose 'Gas'
-        select 'Data Co', from: 'Data source'
-        click_on 'Create Meter'
-
-        expect(school.meters.count).to eq(1)
-        expect(school.meters.first.mpan_mprn).to eq(123_543)
-        expect(school.meters.first.data_source.name).to eq('Data Co')
       end
     end
 

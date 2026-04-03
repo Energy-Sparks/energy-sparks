@@ -1,0 +1,52 @@
+<%= render Layout::GridComponent.new(
+      id: 'notes',
+      cols: 2,
+      classes: 'pt-2 scrollable-title'
+    ) do |grid| %>
+  <%= grid.with_placeholder(placement: :right) %>
+  <%= grid.with_header(level: 4, title: impact_t('notes.title')) %>
+  <%= grid.with_block %>
+  <%= grid.with_paragraph(classes: 'small') do %>
+    <%= impact_t('notes.data_updated', date: impact_report.generated_at.to_date.to_fs(:es_long)) %>
+  <% end %>
+<% end %>
+<%= render Layout::GridComponent.new(
+      id: 'notes-content',
+      cols: 2,
+      classes: 'mb-4'
+    ) do |grid| %>
+  <%= grid.with_block do %>
+    <p class='small'>
+      <%= impact_t('notes.reporting_basis',
+                   start_date: impact_report.twelve_months_ago.to_date.to_fs(:es_month),
+                   end_date: impact_report.last_month.to_date.to_fs(:es_month)) %>
+    </p>
+    <p class='small'>
+      <%= impact_t('notes.comparisons_basis',
+                   comparison_start:
+                    (impact_report.twelve_months_ago - 12.months).to_date.to_fs(:es_month),
+                   comparison_end:
+                    (impact_report.last_month - 12.months).to_date.to_fs(:es_month)) %>
+    </p>
+    <p class='small'>
+      <%= impact_t('notes.schools_with_data',
+                   count: impact_report.data_visible_schools_count) %>
+    </p>
+    <p class='small'>
+      <%= impact_t('notes.electricity_coverage',
+                   count_electricity: 'Y', count_comparison: 'Z') %>
+    </p>
+    <p class='small'>
+      <%= impact_t('notes.gas_coverage',
+                   count_gas: 'W', count_comparison: 'B') %>
+    </p>
+    <p class='small'><%= impact_t('notes.other_analysis') %></p>
+  <% end %>
+  <%= grid.with_block do %>
+    <p class='small'><%= impact_t('notes.other_metrics') %></p>
+    <p class='small'><%= impact_t('notes.cost_savings') %></p>
+    <p class='small'><%= impact_t('notes.potential_savings') %></p>
+    <p class='small'><%= impact_t('notes.coverage') %></p>
+    <p class='small'><%= impact_t('notes.pupil_numbers') %></p>
+  <% end %>
+<% end %>
