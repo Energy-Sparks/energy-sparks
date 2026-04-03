@@ -56,12 +56,13 @@ describe Schools::PupilNumberUpdater do
     end
 
     context 'with a meter attribute that ended in the past' do
-      before do
-        create_meter_attribute(end_date: Date.new(2021))
-        update
-      end
+      let!(:attribute) { create_meter_attribute(end_date: Date.new(2021)) }
 
-      it_behaves_like 'it creates a new attribute'
+      it { expect { update }.not_to change(attribute, :updated_at) }
+
+      it_behaves_like 'it creates a new attribute' do
+        before { update }
+      end
     end
 
     context 'with a current meter attribute with start and end date' do

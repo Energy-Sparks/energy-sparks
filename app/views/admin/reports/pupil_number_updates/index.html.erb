@@ -2,6 +2,7 @@
 <p>
   The table below lists active schools that have not been automatically updated from DfE data.
 </p>
+<%= render 'admin/reports/base_meter_reports/report_filters', no_csv: true %>
 <table class="table table-sorted table-sm">
   <thead>
     <tr>
@@ -13,15 +14,14 @@
     </tr>
   </thead>
   <tbody>
-    <% School.active.by_name.each do |school|
-        reasons = find_reasons(school)
-        next if reasons.nil? %>
+    <% @schools.by_name.each do |school|
+         reasons = find_reasons(school) %>
       <tr>
-        <td><%= school.school_group.name %></td>
+        <td><%= school.school_group&.name %></td>
         <td><%= school.default_issues_admin_user&.name %></td>
         <td><%= link_to school.name, school_path(school) %></td>
         <td><%= reasons.join(', ') %></td>
-        <td><%= link_to :Attributes, admin_school_school_attributes_path(school) %></td>
+        <td><%= link_to :Attributes, admin_school_school_attributes_path(school), class: 'btn btn-sm' %></td>
       </tr>
     <% end %>
   </tbody>

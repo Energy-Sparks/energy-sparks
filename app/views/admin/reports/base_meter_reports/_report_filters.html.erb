@@ -23,14 +23,16 @@
       </div>
       <div class="d-flex justify-content-between">
         <%= submit_tag 'Filter', class: 'btn btn-sm' %>
-        <%= link_to 'CSV',
-                    url_for(
-                      controller: controller_path,
-                      action: :index,
-                      only_path: true,
-                      **params.permit(:school_group, :user, :meter_type).merge(format: :csv)
-                    ),
-                    class: 'ml-2 btn btn-sm' %>
+        <% unless defined? no_csv %>
+          <%= link_to 'CSV',
+                      url_for(
+                        controller: controller_path,
+                        action: :index,
+                        only_path: true,
+                        **params.permit(:school_group, :user, :meter_type).merge(format: :csv)
+                      ),
+                      class: 'ml-2 btn btn-sm' %>
+          <% end %>
       </div>
     </div>
   <% end %>
