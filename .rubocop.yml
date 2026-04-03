@@ -42,6 +42,7 @@ RSpec/ContextWording:
   Prefixes:
     - when
     - with
+    - without # these 3 are defaults
     - and
 RSpec/ExampleLength:
   Max: 15 # default 5
