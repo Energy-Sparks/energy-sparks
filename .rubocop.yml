@@ -20,7 +20,7 @@ AllCops:
     - config/initializers/backtrace_silencers.rb
     - config/initializers/content_security_policy.rb
     - config/initializers/filter_parameter_logging.rb
-    - config/initializers/new_framework_defaults_6_1.rb
+    - config/initializers/new_framework_defaults_*.rb
     - config/initializers/permissions_policy.rb
     - config/puma.rb
     - config/routes.rb
