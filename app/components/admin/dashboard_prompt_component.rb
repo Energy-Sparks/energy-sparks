@@ -11,8 +11,12 @@ module Admin
       @user = user
     end
 
-    def prompt_for_issues_review?
+    def prompt_for_issues_overdue?
       user.owned_issues.by_review_date.first.review_date <= Date.current
+    end
+
+    def prompt_for_weekly_issues?
+      user.owned_issues.by_review_date.first.review_date <= 2 # placeholder
     end
 
     def issues_count

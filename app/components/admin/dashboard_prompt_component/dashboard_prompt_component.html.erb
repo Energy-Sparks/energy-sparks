@@ -6,12 +6,20 @@
       <% end %>
     <% end %>
 
-    <% add_prompt(id: 'issues_for_review',
-                  check: prompt_for_issues_review?,
+    <% add_prompt(id: 'issues_overdue',
+                  check: prompt_for_issues_overdue?,
                   list: list,
                   status: :negative,
                   icon: 'nocon') do %>
-      <% "You have #{issues_count} issues due for review" %>
+      <% "You have #{overdue_issues_count} issues overdue for review" %>
+    <% end %>
+
+    <% add_prompt(id: 'issues_this_week',
+                  check: prompt_for_weekly_issues?,
+                  list: list,
+                  status: :neutral,
+                  icon: 'nocon') do %>
+      <% "You have #{weekly_issues_count} issues due for review in the next week" %>
     <% end %>
   <% end %>
 <% end %>
