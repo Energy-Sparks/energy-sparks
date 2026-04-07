@@ -79,8 +79,8 @@ RSpec.describe 'Admin dashboard' do
           it { expect(page).to have_css('.admin-quick-links-component') }
 
           it 'navigates to the school group page' do
-            within '#school-groups-form' do
-              select school_group.name, from: :school_group_id
+            within '#school_group-form' do
+              select school_group.name, from: :school_group
               click_on 'Manage'
             end
 
@@ -98,7 +98,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'navigates to the school page' do
             within '#school-form' do
-              select school.name, from: :school_id
+              select school.name, from: :school
               click_on 'Manage'
             end
 
