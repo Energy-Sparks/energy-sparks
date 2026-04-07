@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'data_feeds:national_gas_calorific_values' do # rubocop:disable RSpec/DescribeClass
-  before { Rails.application.load_tasks unless Rake::Task.tasks.any? }
-
-  let(:task) do
-    task = Rake::Task[self.class.description]
-    task.reenable
-    task
-  end
+  include_context 'with a task'
 
   it 'loads readings' do
     travel_to(Date.new(2025, 3, 9))
