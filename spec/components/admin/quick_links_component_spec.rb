@@ -18,8 +18,8 @@ RSpec.describe Admin::QuickLinksComponent, :include_url_helpers, type: :componen
       let!(:school_groups) { create_list(:school_group, 2, :with_active_schools, default_issues_admin_user: user) }
 
       it 'has a school group selection box' do
-        expect(html).to have_select(:school_group_id,
-                                    options: ['Select a school group'] + school_groups.sort_by(&:name).pluck(:name))
+        expect(html).to have_select(:school_group,
+                                    options: ['select a school group'] + school_groups.sort_by(&:name).pluck(:name))
         expect(html).to have_css("form[action='#{admin_dashboard_path(user)}'][method='get']")
       end
     end
@@ -28,7 +28,7 @@ RSpec.describe Admin::QuickLinksComponent, :include_url_helpers, type: :componen
       let!(:schools) { create_list(:school, 2, school_group: create(:school_group, default_issues_admin_user: user)) }
 
       it 'has a school selection box' do
-        expect(html).to have_select(:school_id, options: ['Select a school'] + schools.sort_by(&:name).pluck(:name))
+        expect(html).to have_select(:school, options: ['select a school'] + schools.sort_by(&:name).pluck(:name))
         expect(html).to have_css("form[action='#{admin_dashboard_path(user)}'][method='get']")
       end
     end
@@ -46,3 +46,5 @@ RSpec.describe Admin::QuickLinksComponent, :include_url_helpers, type: :componen
     end
   end
 end
+
+# WE HAVE CHANGED THE NAME OF THE SELECTOR FROM SCHOOL GROUP ID TO SCHOOL GROUP BTW
