@@ -87,8 +87,9 @@ RSpec.describe 'Navigation -> top nav', type: :system do
       let(:manage) { nav.find(:css, '#manage') }
 
       it 'has all menu options' do
-        expect(manage).to have_link('Admin')
-        expect(manage).to have_link('Reports')
+        expect(manage).to have_link('My Dashboard')
+        expect(manage).to have_link('Admin Home')
+        expect(manage).to have_link('All Reports')
       end
     end
   end
