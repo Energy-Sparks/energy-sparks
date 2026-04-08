@@ -36,7 +36,6 @@ module Admin
 
     def prompt_for_weekly_issues?
       user.owned_issues.where(review_date: Date.current...(Date.current + 7)).first
-      true    # placeholder to see the prompt
     end
 
     def prompt_for_school_activation?
@@ -46,7 +45,6 @@ module Admin
 
     def prompt_for_lagging_data_sources?
       DataSource.where(owned_by_id: user.id).find(&:exceeded_alert_threshold?)
-      true    # placeholder
     end
 
     def overdue_issues_count
