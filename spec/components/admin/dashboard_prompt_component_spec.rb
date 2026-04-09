@@ -89,7 +89,6 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
         end
 
         it 'displays the lagging data sources prompt' do
-          puts html
           expect(html).to have_css('#lagging-data-sources')
           expect(html).to have_text('You have 1 lagging data sources')
           expect(html).to have_link('View Data Sources', href: admin_data_sources_path)
@@ -97,6 +96,31 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
       end
     end
 
-    # describe amr data feeds
+    describe 'missing data feeds prompt' do
+      context 'when there are no data feeds with missing data' do
+        it 'does not display the missing data feeds prompt' do
+          expect(html).to have_no_css('#missing-data-feeds')
+        end
+      end
+
+      context 'when there are data feeds with missing data' do
+        let(:config) { create(:amr_data_feed_config, owned_by: user, missing_reading_window: 2) }
+
+        before do
+          create(
+            :amr_data_feed_reading,
+            amr_data_feed_config: config,
+            reading_date: 4.days.ago,
+            updated_at: 4.days.ago
+          )
+        end
+
+        it 'displays the missing data feeds prompt' do
+          expect(html).to have_css('#missing-data-feeds')
+          expect(html).to have_text('You have 1 amr data feed configurations with missing data')
+          expect(html).to have_link('Import Logs', href: admin_reports_amr_data_feed_import_logs_path)
+        end
+      end
+    end
   end
 end

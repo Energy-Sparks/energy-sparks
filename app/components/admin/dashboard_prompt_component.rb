@@ -24,7 +24,7 @@ module Admin
         { id: 'lagging-data-sources', check: prompt_for_lagging_data_sources?, status: :negative,
           icon: 'exclamation', link: 'View Data Sources', path: admin_data_sources_path,
           content: "You have #{@lagging_data_sources} lagging data sources" },
-        { id: 'data-feeds-without-data', check: prompt_for_missing_data_feed_readings?, status: :negative,
+        { id: 'missing-data-feeds', check: prompt_for_missing_data_feed_readings?, status: :negative,
           icon: 'exclamation', link: 'Import Logs', path: admin_reports_amr_data_feed_import_logs_path,
           content: "You have #{@missing_data_feed_readings} amr data feed configurations with missing data" },
         { id: 'weekly-issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
