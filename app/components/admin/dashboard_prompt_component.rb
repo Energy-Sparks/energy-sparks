@@ -13,25 +13,25 @@ module Admin
 
     def dashboard_prompts
       [
-        { name: 'issues_overdue', check: prompt_for_issues_overdue?, status: :negative, icon: 'circle-exclamation',
+        { id: 'overdue-issues', check: prompt_for_issues_overdue?, status: :negative, icon: 'circle-exclamation',
           link: 'View Issues', path: admin_issues_path(user: @user),
           content: "You have #{overdue_issues_count} issues overdue for review" },
-        { name: 'weekly issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
+        { id: 'lagging-data-sources', check: prompt_for_lagging_data_sources?, status: :negative,
+          icon: 'circle-exclamation', link: 'View Data Sources', path: admin_data_sources_path,
+          content: "You have #{lagging_data_sources_count} lagging data sources" },
+        # { id: 'data-feeds-without-data', check: prompt_for_issues_overdue, status: :negative,
+        #   icon: 'circle-exclamation', link: 'View Issues', path: admin_issues_path(user: @user) },
+        { id: 'weekly-issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
           link: 'View Issues', path: admin_issues_path(user: @user),
           content: "You have #{weekly_issues_count} issues due for review in the next week" },
-        { name: 'schools_awaiting_activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
+        { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
           link: 'Activations', path: admin_activations_path,
-          content: "There are #{schools_awaiting_activation_count} schools awaiting activation" },
-        { name: 'lagging_data_sources', check: prompt_for_lagging_data_sources?, status: :negative,
-          icon: 'circle-exclamation', link: 'View Data Sources', path: admin_data_sources_path,
-          content: "You have #{lagging_data_sources_count} lagging data sources" }
-        # { name: 'data_feeds_without_data', check: prompt_for_issues_overdue, status: :negative,
-        #   icon: 'circle-exclamation', link: 'View Issues', path: admin_issues_path(user: @user) }
+          content: "You have #{schools_awaiting_activation_count} schools awaiting activation" }
       ]
     end
 
     def prompt_for_issues_overdue?
-      user.owned_issues.by_review_date.first.review_date < Date.current
+      (user.owned_issues.by_review_date.first&.review_date || Date.current) < Date.current
     end
 
     def prompt_for_weekly_issues?
@@ -40,7 +40,7 @@ module Admin
 
     def prompt_for_school_activation?
       SchoolGroup.organisation_groups.where(default_issues_admin_user: user)
-                 .by_name.select(&:has_schools_awaiting_activation?)
+                 .by_name.find(&:has_schools_awaiting_activation?)
     end
 
     def prompt_for_lagging_data_sources?
