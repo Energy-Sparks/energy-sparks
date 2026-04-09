@@ -4,13 +4,23 @@
                                 href: admin_dashboard_path(current_user),
                                 options: { user: current_user, match_controller: true } do |c| %>
   <% classes = 'medium' %>
+  <% c.with_section do |s| %>
+    <% s.with_item name: 'My School Groups',
+                   href: admin_dashboard_school_groups_path(current_user) %>
+  <% end %>
 
-  <% c.with_section name: 'Manage Schools',
-                    icon: 'school',
-                    expanded: true,
-                    options: { match_controller: true } do |s| %>
-    <% s.with_item(name: 'School Groups',
-                   href: admin_dashboard_school_groups_path(current_user),
-                   match_controller: true) %>
+  <% c.with_section do |s| %>
+    <% s.with_item name: 'My Project Groups',
+                   href: admin_dashboard_school_groups_path(current_user, group_type: 'project') %>
+  <% end %>
+
+  <% c.with_section do |s| %>
+    <% s.with_item name: 'My Data Sources',
+                   href: admin_dashboard_data_sources_path(current_user) %>
+  <% end %>
+
+  <% c.with_section do |s| %>
+    <% s.with_item name: 'My Data Feeds',
+                   href: admin_dashboard_amr_data_feed_configs_path(current_user) %>
   <% end %>
 <% end %>
