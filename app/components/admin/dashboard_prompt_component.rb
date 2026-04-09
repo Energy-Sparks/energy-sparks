@@ -25,13 +25,13 @@ module Admin
           icon: 'exclamation', link: 'View Data Sources', path: admin_data_sources_path,
           content: "You have #{@lagging_data_sources} lagging data sources" },
         { id: 'missing-data-feeds', check: prompt_for_missing_data_feed_readings?, status: :negative,
-          icon: 'exclamation', link: 'Import Logs', path: admin_reports_amr_data_feed_import_logs_path,
+          icon: 'exclamation', link: 'View AMR Data Feed Configurations', path: admin_amr_data_feed_configs_path,
           content: "You have #{@missing_data_feed_readings} amr data feed configurations with missing data" },
         { id: 'weekly-issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
           link: 'View Issues', path: admin_issues_path(user: @user),
           content: "You have #{@weekly_issues} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
-          link: 'Activations', path: admin_activations_path,
+          link: 'View Activations', path: admin_activations_path,
           content: "You have #{@school_activations} schools awaiting activation" }
       ]
     end
