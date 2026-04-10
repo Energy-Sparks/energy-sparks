@@ -62,7 +62,7 @@ module Schools
         attribute_type: :floor_area_pupil_numbers,
         input_data: { start_date: start_date.strftime(DATE_FORMAT),
                       number_of_pupils: number_of_pupils.to_s,
-                      floor_area: attribute.input_data['floor_area'] }.compact,
+                      floor_area: attribute&.input_data&.[]('floor_area') }.compact,
         reason:
       )
     end
