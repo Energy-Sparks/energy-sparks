@@ -18,7 +18,7 @@ module Commercial
 
       renders_many :buttons
 
-      def initialize(school:, date_range:, id:)
+      def initialize(school:, date_range:, id: "school-#{school.id}")
         super()
         @id = id
         @school = school
