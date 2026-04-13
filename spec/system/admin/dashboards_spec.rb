@@ -45,17 +45,75 @@ RSpec.describe 'Admin dashboard' do
         expect(page).to have_no_content(staff_user.name)
       end
 
-      describe 'Viewing an individual dashboard' do
-        before do
-          click_on 'username'
-        end
-
+      describe 'Individual dashboard' do
         it 'has breadcrumbs' do
+          click_on user.name
           expect(page).to have_link('Admin', href: admin_path)
           expect(page).to have_link('Dashboards', href: admin_dashboards_path)
         end
 
-        it { expect(page).to have_content(user.name) }
+        describe 'navigation component' do # rubocop:disable RSpec/NestedGroups
+          before do
+            click_on user.name
+          end
+
+          it { expect(page).to have_css('.navigation-admin-dashboard-component') }
+
+          it 'navigates to the school group page' do
+            click_on 'School Groups'
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups")
+          end
+        end
+
+        describe 'quick links component' do # rubocop:disable RSpec/NestedGroups
+          let!(:school_group) do
+            create(:school_group, :with_active_schools, default_issues_admin_user: user)
+          end
+
+          let!(:school) { create(:school, school_group:) }
+
+          before do
+            click_on user.name
+          end
+
+          it { expect(page).to have_css('.admin-quick-links-component') }
+
+          it 'navigates to the school group page' do
+            within '#school_group-form' do
+              select school_group.name, from: :school_group
+              click_on 'Manage'
+            end
+
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups/#{school_group.slug}")
+          end
+
+          it 'navigates to the MPXN page' do
+            within '#mpxn-form' do
+              fill_in 'mpxn', with: '1234'
+              click_on 'Find MPXN'
+            end
+
+            expect(page).to have_current_path('/admin/find_school_by_mpxn?query=1234&commit=Find+MPXN')
+          end
+
+          it 'navigates to the school page' do
+            within '#school-form' do
+              select school.name, from: :school
+              click_on 'Manage'
+            end
+
+            expect(page).to have_current_path("/schools/#{school.slug}/meters")
+          end
+
+          it 'navigates to the URN page' do
+            within '#urn-form' do
+              fill_in 'urn', with: '1234'
+              click_on 'Find URN'
+            end
+
+            expect(page).to have_current_path('/admin/find_school_by_urn?query=1234&commit=Find+URN')
+          end
+        end
       end
     end
   end
