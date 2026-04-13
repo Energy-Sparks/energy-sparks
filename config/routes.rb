@@ -583,6 +583,7 @@ Rails.application.routes.draw do
       resources :school_groups, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
+      resources :issues, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]

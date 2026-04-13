@@ -23,4 +23,9 @@
     <% s.with_item name: 'My Data Feeds',
                    href: admin_dashboard_amr_data_feed_configs_path(current_user) %>
   <% end %>
+
+  <% c.with_section do |s| %>
+    <% s.with_item name: 'My Issues',
+                   href: admin_dashboard_issues_path(current_user) %>
+  <% end %>
 <% end %>
