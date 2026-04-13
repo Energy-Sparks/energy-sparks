@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Activity' do
@@ -7,10 +9,10 @@ describe 'Activity' do
     let!(:activity_3) { create(:activity, happened_on: '2020-04-01') }
 
     it 'returns ranges of activities' do
-      expect(Activity.between('2020-01-01', '2020-01-31')).to match_array([])
-      expect(Activity.between('2020-01-01', '2020-02-01')).to match_array([activity_1])
-      expect(Activity.between('2020-01-01', '2020-03-31')).to match_array([activity_1, activity_2])
-      expect(Activity.between('2020-01-01', '2020-04-01')).to match_array([activity_1, activity_2, activity_3])
+      expect(Activity.between('2020-01-01', '2020-01-31')).to be_empty
+      expect(Activity.between('2020-01-01', '2020-02-01')).to contain_exactly(activity_1)
+      expect(Activity.between('2020-01-01', '2020-03-31')).to contain_exactly(activity_1, activity_2)
+      expect(Activity.between('2020-01-01', '2020-04-01')).to contain_exactly(activity_1, activity_2, activity_3)
     end
   end
 
@@ -26,7 +28,7 @@ describe 'Activity' do
     end
 
     it 'excludes older activities' do
-      expect(Activity.recorded_in_last_week).to match_array([activity_last_week_1, activity_last_week_2])
+      expect(Activity.recorded_in_last_week).to contain_exactly(activity_last_week_1, activity_last_week_2)
     end
   end
 
@@ -63,6 +65,8 @@ describe 'Activity' do
     end
 
     context 'when description does not have an image' do
+      before { travel_to(Date.new(2026, 4)) }
+
       let(:description) { 'Initial description without bonus points' }
       let!(:activity) { create(:activity, description:, happened_on: Date.new(2025, 10, 5)) } # also creates observation
 
