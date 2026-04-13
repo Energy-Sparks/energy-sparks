@@ -13,4 +13,14 @@
                    href: admin_dashboard_school_groups_path(current_user),
                    match_controller: true) %>
   <% end %>
+
+  <% c.with_section name: 'My Schools',
+                    expanded: true,
+                    options: { match_controller: true } do |s| %>
+    <% my_schools_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     href: item[:path],
+                     match_controller: true) %>
+    <% end %>
+  <% end %>
 <% end %>
