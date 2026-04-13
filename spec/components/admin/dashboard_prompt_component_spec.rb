@@ -116,9 +116,10 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
         end
 
         it 'displays the missing data feeds prompt' do
+          puts html
           expect(html).to have_css('#missing-data-feeds')
           expect(html).to have_text('You have 1 amr data feed configurations with missing data')
-          expect(html).to have_link('Import Logs', href: admin_reports_amr_data_feed_import_logs_path)
+          expect(html).to have_link('View AMR Data Feed Configurations', href: admin_amr_data_feed_configs_path)
         end
       end
     end
