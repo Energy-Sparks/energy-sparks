@@ -6,8 +6,8 @@ module Admin
       def index
         @schools = schools_with_no_automated_update
         @schools = @schools.where(school_group_id: params[:school_group]) if params[:school_group].present?
-        school_groups = { default_issues_admin_user_id: params[:user] }
-        @schools = @schools.joins(:school_group).where(school_groups:) if params[:user].present?
+        school_groups = { default_issues_admin_user_id: params[:admin] }
+        @schools = @schools.joins(:school_group).where(school_groups:) if params[:admin].present?
       end
 
       private
