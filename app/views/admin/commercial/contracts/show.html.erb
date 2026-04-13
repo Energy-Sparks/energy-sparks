@@ -34,13 +34,13 @@
               Start date
             </dt>
             <dd class="col-7">
-              <%= @contract.start_date %>
+              <%= @contract.start_date.to_fs(:es_short) %>
             </dd>
             <dt class="col-5">
               End date
             </dt>
             <dd class="col-7">
-              <%= @contract.end_date %>
+              <%= @contract.end_date.to_fs(:es_short) %>
             </dd>
             <dt class="col-5">
               Status

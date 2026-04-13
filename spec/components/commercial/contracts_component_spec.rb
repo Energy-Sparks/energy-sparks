@@ -39,8 +39,8 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
             contract.name,
             contract.contract_holder.name,
             contract.product.name,
-            contract.start_date.iso8601,
-            contract.end_date.iso8601,
+            contract.start_date.to_fs(:es_short),
+            contract.end_date.to_fs(:es_short),
             contract.number_of_schools.to_s,
             '0',
             contract.status.humanize
@@ -72,8 +72,8 @@ RSpec.describe Commercial::ContractsComponent, :include_application_helper, :inc
             [
               contract.name,
               contract.product.name,
-              contract.start_date.iso8601,
-              contract.end_date.iso8601,
+              contract.start_date.to_fs(:es_short),
+              contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize
