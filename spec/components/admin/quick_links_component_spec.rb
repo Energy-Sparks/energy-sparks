@@ -46,5 +46,3 @@ RSpec.describe Admin::QuickLinksComponent, :include_url_helpers, type: :componen
     end
   end
 end
-
-# WE HAVE CHANGED THE NAME OF THE SELECTOR FROM SCHOOL GROUP ID TO SCHOOL GROUP BTW
