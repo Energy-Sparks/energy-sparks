@@ -10,12 +10,7 @@ module Commercial
     def initialize(date_range: nil, table_id: 'summary-table', **)
       super(**)
       @table_id = table_id
-      @date_range = if date_range
-                      date_range
-                    else
-                      academic_year = AcademicYear.current
-                      (academic_year.start_date..academic_year.end_date)
-                    end
+      @date_range = date_range || AcademicYear.current.then { |year| year.start_date..year.end_date }
     end
 
     class RowComponent < ViewComponent::Base
@@ -23,8 +18,9 @@ module Commercial
 
       renders_many :buttons
 
-      def initialize(school:, date_range:)
+      def initialize(school:, date_range:, id: "school-#{school.id}")
         super()
+        @id = id
         @school = school
         @date_range = date_range
       end

@@ -5,13 +5,13 @@
     )
   ) %>
 
-var html = "<%= j nested %>";
+const html = "<%= j nested %>";
 
 // Add in new content
-var container = document.getElementById("licence-rows");
+const container = document.getElementById("licence-rows");
 container.insertAdjacentHTML("afterbegin", html);
 
-var newMainRow = document.getElementById("licence-<%= @licence.id %>-main-row");
+const newMainRow = document.getElementById("licence-<%= @licence.id %>-main-row");
 
 initTempusDominus(newMainRow);
 

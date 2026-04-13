@@ -19,7 +19,7 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
       date_range.begin..date_range.end,
                                       id: 'custom-id',
                                       classes: 'extra-classes') do |c|
-      c.with_row school: school
+      c.with_row id: "custom-school-id-#{school.id}", school: school
     end
   end
 
@@ -27,6 +27,10 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
     let(:expected_classes) { 'extra-classes' }
     let(:expected_id) { 'custom-id' }
     let(:html) { page }
+  end
+
+  it 'includes the school id' do
+    expect(page).to have_css("#custom-school-id-#{school.id}")
   end
 
   context 'when school has a current licence' do

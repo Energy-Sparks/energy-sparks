@@ -51,7 +51,7 @@
             date_range: @contract.as_range
           ) do |c| %>
         <% @additional_schools.each do |school| %>
-          <% c.with_row school: school do |r| %>
+          <% c.with_row id: "additional-school-#{school.id}", school: school do |r| %>
             <% r.with_button do %>
               <%= button_to 'Add licence',
                             create_licence_admin_commercial_contract_licences_path(@contract),

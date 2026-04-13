@@ -179,7 +179,7 @@ describe 'manage licences' do
     end
   end
 
-  context 'when deleting a contract' do
+  context 'when deleting a licence' do
     let!(:licence) { create(:commercial_licence) }
 
     before do
@@ -203,8 +203,8 @@ describe 'manage licences' do
     it { expect(page).to have_content(licence.school.name) }
     it { expect(page).to have_content(licence.contract.name) }
     it { expect(page).to have_content(licence.contract.product.name) }
-    it { expect(page).to have_content(licence.start_date.iso8601) }
-    it { expect(page).to have_content(licence.end_date.iso8601) }
+    it { expect(page).to have_content(licence.start_date.to_fs(:es_short)) }
+    it { expect(page).to have_content(licence.end_date.to_fs(:es_short)) }
     it { expect(page).to have_content(licence.comments) }
   end
 
