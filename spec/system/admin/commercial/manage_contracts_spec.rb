@@ -374,8 +374,8 @@ describe 'manage contracts' do
 
       it { expect(page).to have_content(contract.contract_holder_type) }
       it { expect(page).to have_content(contract.product.name) }
-      it { expect(page).to have_content(contract.start_date) }
-      it { expect(page).to have_content(contract.end_date) }
+      it { expect(page).to have_content(contract.start_date.to_fs(:es_short)) }
+      it { expect(page).to have_content(contract.end_date.to_fs(:es_short)) }
       it { expect(page).to have_content(contract.status.humanize) }
       it { expect(page).to have_content(contract.invoice_terms.humanize) }
       it { expect(page).to have_content(contract.licence_period.humanize) }
@@ -433,8 +433,8 @@ describe 'manage contracts' do
             [
               contract.name,
               contract.product.name,
-              contract.start_date.iso8601,
-              contract.end_date.iso8601,
+              contract.start_date.to_fs(:es_short),
+              contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize,
