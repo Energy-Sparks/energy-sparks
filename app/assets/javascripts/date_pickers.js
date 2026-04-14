@@ -1,7 +1,7 @@
-"use strict"
+"use strict";
 
-$(document).ready(function() {
-  $('div.input-group.tempus-dominus-date').each(function() {
+function initTempusDominus(root = document) {
+  $(root).find('div.input-group.tempus-dominus-date').each(function() {
     var date_picker = $(this);
     var options = {
       format: 'DD/MM/YYYY',
@@ -18,10 +18,11 @@ $(document).ready(function() {
     if (maxDate) {
       options.maxDate = moment(new Date(maxDate));
     }
-    $(this).datetimepicker(options);
+
+    date_picker.datetimepicker(options);
   });
 
-  $('div.input-group.tempus-dominus-date-time').each(function() {
+  $(root).find('div.input-group.tempus-dominus-date-time').each(function() {
     var date_picker = $(this);
     var maxDateTime = date_picker.children('input').data('maxDateTime');
     var options = {
@@ -29,12 +30,16 @@ $(document).ready(function() {
       allowInputToggle: true,
       sideBySide: true,
       locale: moment.locale()
-    }
+    };
 
-    if (maxDateTime.length) {
+    if (maxDateTime && maxDateTime.length) {
       options.maxDate = moment(new Date(maxDateTime));
     }
 
     date_picker.datetimepicker(options);
   });
+}
+
+$(document).ready(function() {
+  initTempusDominus();
 });

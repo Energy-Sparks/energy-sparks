@@ -1,0 +1,24 @@
+<%= tag.div id: 'quick-links-component', class: classes do %>
+  <%= render Layout::GridComponent.new(cols: 2,
+                                       component_classes: 'h-100 p-1 rounded-lg',
+                                       cell_classes: 'mb-4') do |grid| %>
+    <% search_cards.each do |card| %>
+      <% grid.with_feature_card do |feature| %>
+        <%= feature.with_block do %>
+          <%= form_with url: card[:url], method: :get, local: true, id: "#{card[:name]}-form",
+                        class: 'd-flex align-items-center justify-content-end' do |form| %>
+            <% if card[:options] %>
+              <%= form.select card[:name],
+                              options_for_select(card[:options]),
+                              { prompt: card[:prompt] },
+                              class: 'form-control select2' %>
+            <% else %>
+              <%= form.search_field :query, id: card[:name], class: 'form-control' %>
+            <% end %>
+            <%= form.submit card[:submit], class: 'btn btn-sm btn-primary ml-2' %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,22 @@
+<tr id='<%= @id %>'>
+  <td>
+    <%= link_to school.name, school_path(school) %>
+  </td>
+  <td>
+    <%= helpers.y_n(school.currently_licenced?) %>
+  </td>
+  <td>
+    <%= school.current_licence&.contract&.contract_holder&.name %>
+  </td>
+  <td>
+    <%= school.default_contract_holder&.name %>
+  </td>
+  <td>
+    <%= school.licenced_for_period(date_range).to_s.humanize %>
+  </td>
+  <td>
+    <% buttons.each do |button| %>
+      <%= button %>
+    <% end %>
+  </td>
+</tr>

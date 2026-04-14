@@ -616,8 +616,11 @@ Rails.application.routes.draw do
       resources :contracts do
         get :contract_holder_options, on: :collection
         resources :licences, controller: "contracts/licences" do
-          get :edit, on: :collection
-          put :update, on: :collection
+          collection do
+            get :edit
+            put :update
+            post :create_licence
+          end
         end
       end
       resources :licences
