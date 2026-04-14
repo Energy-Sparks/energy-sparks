@@ -126,7 +126,8 @@ class School < ApplicationRecord
   include Enums::DataSharing
   include Enums::SchoolType
   include AlphabeticalScopes
-  include ContractHolder
+  include Commercial::ContractHolder
+  include Commercial::LicenceHolder
 
   watch_mailchimp_fields :active, :country, :funder_id, :local_authority_area_id, :name, :percentage_free_school_meals,
                          :region, :school_group_id, :school_type, :scoreboard_id
@@ -215,8 +216,6 @@ class School < ApplicationRecord
   has_many :school_batch_runs
 
   has_many :advice_page_school_benchmarks
-
-  has_many :licences, class_name: 'Commercial::Licence'
 
   has_many :manual_readings, class_name: 'Schools::ManualReading', dependent: :destroy
   accepts_nested_attributes_for :manual_readings,
