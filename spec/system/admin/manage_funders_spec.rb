@@ -69,7 +69,7 @@ describe 'manage funders' do
         click_on 'Delete'
       end
 
-      it { expect(page).to have_content('Cannot delete a funder with contracts') }
+      it { expect(page).to have_content('Cannot delete record because dependent contracts exist') }
     end
   end
 
@@ -80,11 +80,15 @@ describe 'manage funders' do
       click_on('Funders')
     end
 
+    it { expect(page).to have_link('Edit', href: edit_admin_funder_path(funder)) }
+    it { expect(page).to have_link('Delete', href: admin_funder_path(funder)) }
+
     context 'with contracts' do
       let!(:contract) { create(:commercial_contract, contract_holder: funder) }
 
       before do
         click_on(funder.name)
+        click_on('Contracts')
       end
 
       it { expect(page).to have_link(contract.name, href: admin_commercial_contract_path(contract)) }
@@ -93,17 +97,16 @@ describe 'manage funders' do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
-            ['Name', 'Contract Holder', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status', 'Actions']
+            ['Name', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status', 'Actions']
           ]
         end
         let(:expected_rows) do
           [
             [
               contract.name,
-              contract.contract_holder.name,
               contract.product.name,
-              contract.start_date.iso8601,
-              contract.end_date.iso8601,
+              contract.start_date.to_fs(:es_short),
+              contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize,

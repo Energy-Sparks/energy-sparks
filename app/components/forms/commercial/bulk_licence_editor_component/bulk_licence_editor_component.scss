@@ -5,7 +5,7 @@
     overflow-y: auto;
   }
 
-  .licence-editor-table thead th {
+  .licence-editor-table > thead > tr > th {
     background-color: $header-dark !important;
     border-bottom: 0;
     border-top: 0;
@@ -26,10 +26,11 @@
   /* Remove top border on comments row */
   .licence-editor-table tr.comments-row > td {
     border-top: none !important;
+    border-bottom: 2px solid $gray-200;
   }
 
-  /* Stripe each licence block (2 rows together) */
-  .licence-editor-table tbody.licence-block:nth-of-type(odd) {
-    background-color: $gray-100;
+  .pending-delete {
+    opacity: 0.4;
+    text-decoration: line-through;
   }
 }

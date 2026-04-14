@@ -42,7 +42,7 @@ module Commercial
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
-    include HasContractHolder
+    include Commercial::HasContractHolder
     include Deletable
 
     self.table_name = 'commercial_contracts'
@@ -84,7 +84,7 @@ module Commercial
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
-    accepts_nested_attributes_for :licences
+    accepts_nested_attributes_for :licences, allow_destroy: true
 
     def self.as_renewal(original)
       new(
@@ -129,6 +129,10 @@ module Commercial
 
     def cascade_updates_to_licences?
       licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+    end
+
+    def as_range
+      (start_date..end_date)
     end
 
     private

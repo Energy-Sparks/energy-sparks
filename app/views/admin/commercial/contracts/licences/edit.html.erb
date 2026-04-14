@@ -13,4 +13,5 @@
 </div>
 
 <%= render Forms::Commercial::BulkLicenceEditorComponent.new(contract: @contract,
+                                                             additional_schools: @additional_schools,
                                                              exclude_fields: [:invoice_reference]) %>

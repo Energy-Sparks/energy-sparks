@@ -6,8 +6,10 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>School Group</th>
-        <th>School</th>
+        <% if @show_contract_holder %>
+          <th>School Group</th>
+          <th>School</th>
+        <% end %>
         <% if @show_contract || @show_renewal_data %>
           <th>Product</th>
           <th>Contract</th>
@@ -26,17 +28,19 @@
     <tbody>
       <% @licences.each do |licence| %>
         <tr>
-          <td>
+          <td class="col-1">
             <%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %>
           </td>
-          <td class="col-2">
-            <%= if licence.school.school_group
-                  link_to(licence.school.school_group.name, school_group_path(licence.school.school_group))
-                end %>
-          </td>
-          <td class="col-2">
-            <%= link_to licence.school.name, school_path(licence.school) %>
-          </td>
+          <% if @show_contract_holder %>
+            <td>
+              <%= if licence.school.school_group
+                    link_to(licence.school.school_group.name, school_group_path(licence.school.school_group))
+                  end %>
+            </td>
+            <td>
+              <%= link_to licence.school.name, school_path(licence.school) %>
+            </td>
+          <% end %>
           <% if @show_contract || @show_renewal_data %>
             <td>
               <%= link_to licence.contract.product.name, admin_commercial_product_path(licence.contract.product) %>
@@ -45,13 +49,13 @@
               <%= link_to licence.contract.name, admin_commercial_contract_path(licence.contract) %>
             </td>
           <% end %>
-          <td class="col-1">
-            <%= licence.start_date %>
+          <td data-order="<%= licence.start_date.iso8601 %>">
+            <%= licence.start_date.to_fs(:es_short) %>
+          </td>
+          <td data-order="<%= licence.end_date.iso8601 %>">
+            <%= licence.end_date.to_fs(:es_short) %>
           </td>
           <td class="col-1">
-            <%= licence.end_date %>
-          </td>
-          <td>
             <%= render(Elements::BadgeComponent.new(
                          licence.status.humanize,
                          colour: licence.status_colour
