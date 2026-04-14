@@ -5,9 +5,12 @@
                                 options: { user: current_user, match_controller: true } do |c| %>
   <% classes = 'medium' %>
   <% nav_sections.each do |section| %>
-    <% c.with_section do |s| %>
+    <% c.with_section options: { match_controller: false } do |s| %>
       <% s.with_item name: section[:name],
-                     href: section[:path] %>
+                     href: section[:path],
+                     match_on_param: section[:match_on_param] %>
     <% end %>
   <% end %>
 <% end %>
+
+<%# however we don't want the match on param to apply to the whole section, so see if this can be implemented individually for items %>

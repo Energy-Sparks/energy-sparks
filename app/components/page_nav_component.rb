@@ -27,6 +27,7 @@ class PageNavComponent < ApplicationComponent
   class SectionComponent < ViewComponent::Base
     renders_many :items, ->(**kwargs) do
       kwargs[:match_controller] ||= options[:match_controller]
+      kwargs[:match_on_param] ||= options[:match_on_param]
       PageNavComponent::ItemComponent.new(**kwargs)
     end
 
@@ -73,9 +74,10 @@ class PageNavComponent < ApplicationComponent
   end
 
   class ItemComponent < ViewComponent::Base
-    attr_reader :name, :href, :match_controller, :classes
+    attr_reader :name, :href, :match_controller, :classes, :match_on_param
 
-    def initialize(name:, href:, note: nil, match_controller: false, selected: false, visible: true, classes: nil)
+    def initialize(name:, href:, note: nil, match_controller: false, selected: false, # rubocop:disable Lint/MissingSuper, Metrics/ParameterLists
+                   visible: true, classes: nil, match_on_param: false)
       @name = name
       @note = note
       @href = href
@@ -83,6 +85,7 @@ class PageNavComponent < ApplicationComponent
       @selected = selected
       @visible = visible
       @classes = classes
+      @match_on_param = match_on_param
     end
 
     def current_controller?(href)
@@ -90,7 +93,11 @@ class PageNavComponent < ApplicationComponent
     end
 
     def current_item?(href)
-      match_controller ? current_controller?(href) : current_page?(href)
+      if match_on_param
+        params[match_on_param[:param]] == match_on_param[:value] && current_page?(href)
+      else
+        match_controller ? current_controller?(href) : current_page?(href)
+      end
     end
 
     def call

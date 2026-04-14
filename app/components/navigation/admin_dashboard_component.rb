@@ -4,7 +4,8 @@ module Navigation
   class AdminDashboardComponent < BaseComponent
     def nav_sections
       [
-        { name: 'My School Groups', path: admin_dashboard_school_groups_path(current_user) },
+        { name: 'My School Groups', path: admin_dashboard_school_groups_path(current_user),
+          match_on_param: { param: 'group_type', value: nil } },
         { name: 'My Project Groups', path: admin_dashboard_school_groups_path(current_user, group_type: 'project') },
         { name: 'My Data Sources', path: admin_dashboard_data_sources_path(current_user) },
         { name: 'My Data Feeds', path: admin_dashboard_amr_data_feed_configs_path(current_user) },
