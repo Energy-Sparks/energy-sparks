@@ -305,34 +305,23 @@ class School < ApplicationRecord
   scope :without_scoreboard,  -> { active.where(scoreboard_id: nil) }
   scope :awaiting_activation, -> { active.where('visible = ? or data_enabled = ?', false, false) }
   scope :data_visible,        -> { data_enabled.visible }
-
   scope :with_config, -> { joins(:configuration) }
-
   scope :by_name,     -> { order(name: :asc) }
-
   scope :not_in_cluster, -> { where(school_group_cluster_id: nil) }
-
   scope :with_community_use, -> { where(id: SchoolTime.community_use.select(:school_id)) }
-
   scope :with_establishment, -> { where.not(establishment_id: nil) }
-
   # includes creating a target, recording activities and actions, having an audit, starting a programme, recording temperatures
   scope :with_recent_engagement,
         ->(range) { where(id: Observation.engagement.recorded_since(range).select(:school_id)) }
-
   # have recently run a transport survey
   scope :with_transport_survey, ->(range) { where(id: TransportSurvey.recently_added(range).select(:school_id)) }
-
   # have recently started a programme that isn't the default programme
   scope :joined_programme, ->(range) { where(id: Programme.recently_started_non_default(range).select(:school_id)) }
-
   # TODO: cluster users, not just those directly linked
   scope :with_recently_logged_in_users, ->(date) { where(id: User.recently_logged_in(date).select(:school_id)) }
-
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
-
-
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
+  scope :full_school, -> { where(full_school: true) }
 
   def self.with_energy_tariffs
     joins("INNER JOIN energy_tariffs ON energy_tariffs.tariff_holder_id = schools.id AND tariff_holder_type = 'School'")
