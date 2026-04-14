@@ -9,82 +9,72 @@ module Admin
     def initialize(user:, **_kwargs)
       super
       @user = user
-      @overdue_issues = 0
-      @weekly_issues = 0
-      @school_activations = 0
-      @lagging_data_sources = 0
-      @missing_data_feed_readings = 0
     end
 
     def dashboard_prompts
       [
         { id: 'overdue-issues', check: prompt_for_issues_overdue?, status: :negative, icon: 'exclamation',
           link: 'View Issues', path: admin_issues_path(user: @user),
-          content: "You have #{@overdue_issues} issues overdue for review" },
+          content: "You have #{overdue_issues_count} issues overdue for review" },
         { id: 'lagging-data-sources', check: prompt_for_lagging_data_sources?, status: :negative,
           icon: 'exclamation', link: 'View Data Sources', path: admin_data_sources_path,
-          content: "You have #{@lagging_data_sources} lagging data sources" },
+          content: "You have #{lagging_data_sources_count} lagging data sources" },
         { id: 'missing-data-feeds', check: prompt_for_missing_data_feed_readings?, status: :negative,
           icon: 'exclamation', link: 'View AMR Data Feed Configurations', path: admin_amr_data_feed_configs_path,
-          content: "You have #{@missing_data_feed_readings} amr data feed configurations with missing data" },
+          content: "You have #{missing_data_feed_readings_count} amr data feed configurations with missing data" },
         { id: 'weekly-issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
           link: 'View Issues', path: admin_issues_path(user: @user),
-          content: "You have #{@weekly_issues} issues due for review in the next week" },
+          content: "You have #{weekly_issues_count} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
           link: 'View Activations', path: admin_activations_path,
-          content: "You have #{@school_activations} schools awaiting activation" }
+          content: "You have #{school_activations_count} schools awaiting activation" }
       ]
     end
 
     def prompt_for_issues_overdue?
-      overdue_issues_count
-      @overdue_issues.positive?
+      true unless overdue_issues_count.nil? || overdue_issues_count.zero?
     end
 
     def prompt_for_weekly_issues?
-      weekly_issues_count
-      @weekly_issues.positive?
+      true unless weekly_issues_count.nil? || weekly_issues_count.zero?
     end
 
     def prompt_for_school_activation?
-      schools_awaiting_activation_count
-      @school_activations.positive?
+      true unless school_activations_count.nil? || school_activations_count.zero?
     end
 
     def prompt_for_lagging_data_sources?
-      lagging_data_sources_count
-      @lagging_data_sources.positive?
+      true unless lagging_data_sources_count.nil? || lagging_data_sources_count.zero?
     end
 
     def prompt_for_missing_data_feed_readings?
-      missing_data_feed_readings_count
-      @missing_data_feed_readings.positive?
+      true unless missing_data_feed_readings_count.nil? || missing_data_feed_readings_count.zero?
     end
 
     def overdue_issues_count
-      @overdue_issues = user.owned_issues.where.not(review_date: Date.current..).count
+      @overdue_issues_count ||= user.owned_issues.where.not(review_date: Date.current..).count
     end
 
     def weekly_issues_count
-      @weekly_issues = user.owned_issues.where(review_date: Date.current...(Date.current + 7)).count
+      @weekly_issues_count ||= user.owned_issues.where(review_date: Date.current...(Date.current + 7)).count
     end
 
-    def schools_awaiting_activation_count
-      @school_activations = SchoolGroup.organisation_groups.where(default_issues_admin_user: user).by_name
-                                       .count(&:has_schools_awaiting_activation?)
+    def school_activations_count
+      @school_activations_count ||= SchoolGroup.organisation_groups.where(default_issues_admin_user: user).by_name
+                                               .count(&:has_schools_awaiting_activation?)
     end
 
     def lagging_data_sources_count
-      @lagging_data_sources = DataSource.where(owned_by: user).find_each.count(&:exceeded_alert_threshold?)
+      @lagging_data_sources_count ||= DataSource.where(owned_by: user).find_each.count(&:exceeded_alert_threshold?)
     end
 
     def missing_data_feed_readings_count
       now = Time.current
-      @missing_data_feed_readings = AmrDataFeedConfig.enabled
-                                                     .where(owned_by: @user)
-                                                     .where.not(source_type: :manual)
-                                                     .where.not(missing_reading_window: nil)
-                                                     .count do |config|
+      @missing_data_feed_readings_count ||= AmrDataFeedConfig.enabled
+                                                             .where(owned_by: @user)
+                                                             .where.not(source_type: :manual)
+                                                             .where.not(missing_reading_window: nil)
+                                                             .count do |config|
         latest = config.amr_data_feed_readings.maximum(:updated_at)
         since_latest = latest && (now - latest)
         [config] if latest && since_latest > config.missing_reading_window.days
