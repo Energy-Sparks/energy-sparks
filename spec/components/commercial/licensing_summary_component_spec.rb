@@ -45,7 +45,7 @@ RSpec.describe Commercial::LicensingSummaryComponent, :include_application_helpe
         [
           [
             school.name,
-            'Yes',
+            '',
             licence.contract.contract_holder.name,
             school.default_contract_holder&.name,
             'Full',

@@ -1,0 +1,38 @@
+<% content_for :header_title, "#{@school_group.name} Licence Summaries" %>
+
+<div class="row">
+  <div class="col">
+    <p>
+      This page provides a summary of the current licensing situation for this group.
+    </p>
+    <p>
+      The table below lists all schools in this group along with an indication of whether:
+    </p>
+    <ul>
+      <li>They have a current licence, valid for today</li>
+      <li>The contract holder for their current licence</li>
+      <li>Who is expected to be funding them in future (will either be their group or themselves)</li>
+      <li>Whether their current licences cover the current academic year (
+          <%= nice_dates(@academic_year.end_date) %> - <%= nice_dates(@academic_year.start_date) %> ).
+          Full indicates their licences cover the entire year, Partial means that they are only funded
+          for part of the year.</li>
+      <li>A link to the full licence history for the school</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <%= render Commercial::LicensingSummaryComponent.new(
+          date_range: @academic_year.start_date..@academic_year.end_date
+        ) do |c| %>
+      <% @school_group.assigned_schools.by_name.each do |school| %>
+        <% c.with_row school: school do |r| %>
+          <% r.with_button do %>
+            <%= link_to 'Licences', admin_school_licences_path(school) %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
