@@ -1,3 +1,4 @@
 <% content_for :title, "#{@dashboard_user&.display_name}'s Admin Dashboard" %>
 
 <%= render Admin::QuickLinksComponent.new(user: @dashboard_user, classes: 'mt-1') %>
+<%= render Admin::DashboardPromptComponent.new(user: @dashboard_user, classes: 'mt-1') %>
