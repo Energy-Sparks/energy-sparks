@@ -5,6 +5,7 @@
       href="#" role="button" aria-haspopup="true" aria-expanded="false">
     <%= t('manage_menu.manage') %></a>
   <div id='manage' class="dropdown-menu">
+    <%= link_to t('manage_menu.my_dashboard'), admin_dashboard_path(current_user), class: 'dropdown-item' %>
     <%= link_to t('manage_menu.admin'), admin_path, class: 'dropdown-item' %>
     <%= link_to t('manage_menu.reports'), admin_reports_path, class: 'dropdown-item' %>
   </div>

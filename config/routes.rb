@@ -686,6 +686,8 @@ Rails.application.routes.draw do
         resource :meter_report, only: [:show] do
           post :deliver, on: :member
         end
+        resource :licence_summaries, only: :show
+
         concerns :messageable
         concerns :issueable
         concerns :contract_holder
@@ -877,6 +879,7 @@ Rails.application.routes.draw do
             post :clear
           end
         end
+        resources :licences, only: :index
       end
       member do
         post :archive

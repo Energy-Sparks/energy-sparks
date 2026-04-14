@@ -6,8 +6,10 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>School Group</th>
-        <th>School</th>
+        <% if @show_contract_holder %>
+          <th>School Group</th>
+          <th>School</th>
+        <% end %>
         <% if @show_contract || @show_renewal_data %>
           <th>Product</th>
           <th>Contract</th>
@@ -29,14 +31,16 @@
           <td class="col-1">
             <%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %>
           </td>
-          <td>
-            <%= if licence.school.school_group
-                  link_to(licence.school.school_group.name, school_group_path(licence.school.school_group))
-                end %>
-          </td>
-          <td>
-            <%= link_to licence.school.name, school_path(licence.school) %>
-          </td>
+          <% if @show_contract_holder %>
+            <td>
+              <%= if licence.school.school_group
+                    link_to(licence.school.school_group.name, school_group_path(licence.school.school_group))
+                  end %>
+            </td>
+            <td>
+              <%= link_to licence.school.name, school_path(licence.school) %>
+            </td>
+          <% end %>
           <% if @show_contract || @show_renewal_data %>
             <td>
               <%= link_to licence.contract.product.name, admin_commercial_product_path(licence.contract.product) %>

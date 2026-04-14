@@ -24,6 +24,17 @@ module Commercial
         @school = school
         @date_range = date_range
       end
+
+      def period_badge_colour(coverage)
+        case coverage
+        when :no
+          :danger
+        when :full
+          :success
+        else
+          :warning
+        end
+      end
     end
   end
 end
