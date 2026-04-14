@@ -52,9 +52,9 @@ module Schools
       # not created by a user or has expired
       (attribute.created_by_id.nil? || data[:end_date] <= start_date) &&
         # and number of pupils has changed
-        data[:value] != number_of_pupils &&
+        number_of_pupils != data[:value] &&
         # and starts after
-        data[:start_date] < start_date
+        start_date > data[:start_date]
     end
 
     def create_attribute(start_date, number_of_pupils, attribute, reason)
