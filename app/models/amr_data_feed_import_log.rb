@@ -15,6 +15,7 @@
 # Indexes
 #
 #  index_amr_data_feed_import_logs_on_amr_data_feed_config_id  (amr_data_feed_config_id)
+#  index_amr_data_feed_import_logs_on_import_time              (import_time)
 #
 
 class AmrDataFeedImportLog < ApplicationRecord
@@ -26,8 +27,11 @@ class AmrDataFeedImportLog < ApplicationRecord
 
   scope :errored,       -> { where.not(error_messages: nil) }
   scope :successful,    -> { where(error_messages: nil) }
-  scope :with_warnings, -> { includes(:amr_reading_warnings).where.not(amr_reading_warnings: { id: nil }) }
-  scope :since,         ->(date) { where('import_time >= ?', date) }
+  scope :with_warnings, lambda {
+    where(id: AmrReadingWarning.select(:amr_data_feed_import_log_id))
+  }
+
+  scope :since, ->(date) { where('import_time >= ?', date) }
 
   def errors?
     error_messages.present?

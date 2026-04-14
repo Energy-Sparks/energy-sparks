@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_14_143128) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pgcrypto"
@@ -457,6 +457,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_17_160827) do
     t.integer "records_updated", default: 0, null: false
     t.text "error_messages"
     t.index ["amr_data_feed_config_id"], name: "index_amr_data_feed_import_logs_on_amr_data_feed_config_id"
+    t.index ["import_time"], name: "index_amr_data_feed_import_logs_on_import_time"
   end
 
   create_table "amr_data_feed_readings", force: :cascade do |t|
