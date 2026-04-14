@@ -69,7 +69,7 @@ describe 'manage funders' do
         click_on 'Delete'
       end
 
-      it { expect(page).to have_content('Cannot delete a funder with contracts') }
+      it { expect(page).to have_content('Cannot delete record because dependent contracts exist') }
     end
   end
 
@@ -102,8 +102,8 @@ describe 'manage funders' do
               contract.name,
               contract.contract_holder.name,
               contract.product.name,
-              contract.start_date.iso8601,
-              contract.end_date.iso8601,
+              contract.start_date.to_fs(:es_short),
+              contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize,
