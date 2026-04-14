@@ -151,6 +151,13 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
+        describe 'dashboard prompts' do
+          before do
+            click_on user.name
+          end
+
+          it { expect(page).to have_css('.admin-dashboard-prompt-component') }
+        end
         # rubocop:enable RSpec/NestedGroups
       end
     end
