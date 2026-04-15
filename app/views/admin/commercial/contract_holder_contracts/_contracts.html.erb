@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col">
+    <p>
+      <%= link_to 'New contract', new_admin_commercial_contract_path(contract_holder_type: @contract_holder.class,
+                                                                     contract_holder_id: @contract_holder.id),
+                  class: 'btn btn-primary btn-sm' %>
+    </p>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <p>The following table lists all current, historical and future contracts held by <%= @contract_holder.name %>.</p>
+  </div>
+</div>
+
+<div class="row mt-2">
+  <div class="col">
+    <%= render Commercial::ContractsComponent.new(contracts: @contracts, show_contract_holder: false) %>
+  </div>
+</div>

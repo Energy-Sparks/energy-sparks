@@ -73,7 +73,7 @@ RSpec.describe 'Navigation -> top nav', type: :system do
   end
 
   it 'does not link to manage menu' do
-    expect(nav).not_to have_link 'Manage'
+    expect(nav).to have_no_link 'Manage'
   end
 
   context 'when admin' do
@@ -84,11 +84,12 @@ RSpec.describe 'Navigation -> top nav', type: :system do
     end
 
     context 'with a Manage menu' do
-      let(:manage) { nav.find(:css, '#manage') }
+      let(:manage) { nav.find_by_id('manage') } # rubocop:disable Rails/DynamicFindBy
 
       it 'has all menu options' do
-        expect(manage).to have_link('Admin')
-        expect(manage).to have_link('Reports')
+        expect(manage).to have_link('My Dashboard')
+        expect(manage).to have_link('Admin Home')
+        expect(manage).to have_link('All Reports')
       end
     end
   end

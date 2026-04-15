@@ -181,7 +181,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
           end
           let(:expected_rows) do
             [
-              [additional_school.name, 'No', '', '', 'No', 'Add licence']
+              [additional_school.name, '', '', '', 'No', 'Add licence']
             ]
           end
         end

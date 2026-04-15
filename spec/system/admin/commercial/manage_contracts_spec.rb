@@ -369,7 +369,7 @@ describe 'manage contracts' do
     context 'when viewing terms' do
       it {
         expect(page).to have_link(contract.contract_holder.name,
-                                  href: polymorphic_path([:admin, contract.contract_holder]))
+                                  href: polymorphic_path([:admin, contract.contract_holder, :contracts]))
       }
 
       it { expect(page).to have_content(contract.contract_holder_type) }

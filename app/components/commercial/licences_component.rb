@@ -1,15 +1,24 @@
+# frozen_string_literal: true
+
 module Commercial
   class LicencesComponent < ApplicationComponent
-    renders_one :header, ->(**kwargs) do
-      Elements::HeaderComponent.new(**{ level: 2 }.merge(kwargs))
-    end
+    renders_one :header, lambda { |**kwargs|
+      Elements::HeaderComponent.new(level: 2, **kwargs)
+    }
 
-    def initialize(licences:, show_contract: true, show_actions: true, show_renewal_data: false, **kwargs)
-      super(**kwargs)
+    # rubocop:disable Metrics/ParameterLists
+    def initialize(licences:,
+                   show_contract: true,
+                   show_actions: true,
+                   show_renewal_data: false,
+                   show_contract_holder: true, **)
+      super(**)
       @licences = licences
       @show_actions = show_actions
       @show_contract = show_contract
       @show_renewal_data = show_renewal_data
+      @show_contract_holder = show_contract_holder
     end
+    # rubocop:enable Metrics/ParameterLists
   end
 end

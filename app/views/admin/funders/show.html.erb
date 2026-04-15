@@ -3,6 +3,16 @@
   <% header_nav.with_button 'All funders', admin_funders_path %>
 <% end %>
 
+<div>
+  <%= link_to 'Contracts', admin_funder_contracts_path(@funder), class: 'btn btn-sm' %>
+  <%= link_to 'Edit', edit_admin_funder_path(@funder), class: 'btn btn-sm' %>
+  <%= link_to 'Delete',
+              admin_funder_path(@funder),
+              method: :delete,
+              data: { confirm: 'Are you sure?' },
+              class: 'btn btn-danger btn-sm' %>
+</div>
+
 <h2>Funder allocations (current model)</h2>
 
 <table class="table table-sm">
@@ -31,11 +41,3 @@
     </tr>
   </tbody>
 </table>
-
-<div class="row">
-  <div class="col">
-    <%= render Commercial::ContractsComponent.new(contracts: @funder.contracts.by_start_date) do |c| %>
-      <% c.with_header { 'All contracts' } %>
-    <% end %>
-  </div>
-</div>
