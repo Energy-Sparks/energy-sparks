@@ -9,11 +9,16 @@ module Admin
 
       def index
         super
-        @issues = @issues.where(owned_by: @dashboard_user) if @dashboard_user
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
                             { name: 'Issues' }
                           ])
+      end
+
+      private
+
+      def dashboard_issues
+        @issues = @issues.where(owned_by: @dashboard_user) if @dashboard_user
       end
     end
   end
