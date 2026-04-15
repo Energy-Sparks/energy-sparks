@@ -7,7 +7,6 @@
 
   <% c.with_section name: 'Manage Schools',
                     icon: 'school',
-                    expanded: false,
                     options: { match_controller: true } do |s| %>
     <% s.with_item(name: 'School Groups',
                    href: admin_dashboard_school_groups_path(current_user),
@@ -15,7 +14,6 @@
   <% end %>
 
   <% c.with_section name: 'My Schools',
-                    expanded: false,
                     options: { match_controller: true } do |s| %>
     <% my_schools_section.each do |item| %>
       <% s.with_item(name: item[:name],
