@@ -16,11 +16,7 @@ module Schools
 
     # similar to calculate_required but faster to only use DB
     def show_on_menu?
-      @school.manual_readings.any? ||
-        @school.configuration.aggregate_meter_dates.empty? ||
-        @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
-                   .reject(&:empty?)
-                   .any? { |dates| dates[:start_date] > MONTHS_REQUIRED.ago || dates[:end_date] < 2.months.ago }
+      @school.manual_readings.any? || school_configuration_has_required_meter_dates?
     end
 
     def calculate_required(aggregate_school)
@@ -59,6 +55,13 @@ module Schools
     end
 
     private
+
+    def school_configuration_has_required_meter_dates?
+      @school.configuration.aggregate_meter_dates.empty? ||
+        @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
+                   .reject(&:empty?)
+                   .any? { |dates| dates[:start_date] > MONTHS_REQUIRED.ago || dates[:end_date] < 2.months.ago }
+    end
 
     def required_months_and_fuel_types(aggregate_school)
       @fuel_types.each do |fuel_type|
