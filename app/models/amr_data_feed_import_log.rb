@@ -27,9 +27,7 @@ class AmrDataFeedImportLog < ApplicationRecord
 
   scope :errored,       -> { where.not(error_messages: nil) }
   scope :successful,    -> { where(error_messages: nil) }
-  scope :with_warnings, lambda {
-    where(id: AmrReadingWarning.select(:amr_data_feed_import_log_id))
-  }
+  scope :with_warnings, -> { where(id: AmrReadingWarning.select(:amr_data_feed_import_log_id)) }
 
   scope :since, ->(date) { where('import_time >= ?', date) }
 
