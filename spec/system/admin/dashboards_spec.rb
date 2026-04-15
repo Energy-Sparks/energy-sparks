@@ -52,7 +52,7 @@ RSpec.describe 'Admin dashboard' do
           expect(page).to have_link('Dashboards', href: admin_dashboards_path)
         end
 
-        describe 'navigation component' do # rubocop:disable RSpec/NestedGroups
+        describe 'navigation menu' do # rubocop:disable RSpec/NestedGroups
           before do
             click_on user.name
           end
@@ -65,7 +65,7 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
-        describe 'quick links component' do # rubocop:disable RSpec/NestedGroups
+        describe 'quick links' do # rubocop:disable RSpec/NestedGroups
           let!(:school_group) do
             create(:school_group, :with_active_schools, default_issues_admin_user: user)
           end
@@ -113,6 +113,14 @@ RSpec.describe 'Admin dashboard' do
 
             expect(page).to have_current_path('/admin/find_school_by_urn?query=1234&commit=Find+URN')
           end
+        end
+
+        describe 'dashboard prompts' do # rubocop:disable RSpec/NestedGroups
+          before do
+            click_on user.name
+          end
+
+          it { expect(page).to have_css('.admin-dashboard-prompt-component') }
         end
       end
     end
