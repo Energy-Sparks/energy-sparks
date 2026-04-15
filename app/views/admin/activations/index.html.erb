@@ -1,12 +1,17 @@
-<h1>Schools awaiting activation</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+      <%= "#{@dashboard_user.display_name}'s School Activations" %>
+  <% end %>
+<% else %>
+  <h1>Schools awaiting activation</h1>
+  <p>
+    This page lists all schools which are awaiting activation. They are either not yet visible on the system or have not had their data feeds set. The list includes those that were manually setup and those created via the usual onboarding route.
+  </p>
 
-<p>
-  This page lists all schools which are awaiting activation. They are either not yet visible on the system or have not had their data feeds set. The list includes those that were manually setup and those created via the usual onboarding route.
-</p>
-
-<p>
- Each table provides a summary of the setup status with access to the key management pages. Click on the school name to view their dashboard and the school management menu.
-</p>
+  <p>
+  Each table provides a summary of the setup status with access to the key management pages. Click on the school name to view their dashboard and the school management menu.
+  </p>
+<% end %>
 
 <% if @school_groups.any? %>
   <div class="row">
