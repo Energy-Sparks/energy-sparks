@@ -77,7 +77,7 @@ class PageNavComponent < ApplicationComponent
     attr_reader :name, :href, :match_controller, :classes, :match_on_param
 
     def initialize(name:, href:, note: nil, match_controller: false, selected: false, # rubocop:disable Lint/MissingSuper, Metrics/ParameterLists
-                   visible: true, classes: nil, match_on_param: false)
+                   visible: true, classes: nil, match_on_param: nil)
       @name = name
       @note = note
       @href = href
