@@ -2,7 +2,7 @@
                                 classes: classes,
                                 icon: nil,
                                 href: admin_dashboard_path(current_user),
-                                options: { user: current_user, match_controller: true } do |c| %>
+                                options: { user: current_user, match_controller: true, list_inline: true } do |c| %>
   <% classes = 'medium' %>
   <% nav_sections.each do |section| %>
     <% c.with_section options: { match_controller: false } do |s| %>
