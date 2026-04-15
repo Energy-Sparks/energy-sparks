@@ -11,10 +11,7 @@ namespace :amr do
                                .where.not(missing_reading_window: nil)
                                .stopped_feeds
                                .filter_map do |config|
-                                 latest = config.amr_data_feed_readings
-                                                .order(updated_at: :desc)
-                                                .limit(1)
-                                                .pick(:updated_at)
+                                 latest = config.amr_data_feed_readings.maximum(:updated_at)
 
                                  [config, now - latest] if latest
                                end
