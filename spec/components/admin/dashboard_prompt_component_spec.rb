@@ -29,7 +29,7 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
         it 'displays the overdue issues prompt' do
           expect(html).to have_css('#overdue-issues')
           expect(html).to have_text('You have 2 issues overdue for review')
-          expect(html).to have_link('View Issues', href: admin_issues_path(user: user.id))
+          expect(html).to have_link('View Issues', href: admin_dashboard_issues_path(dashboard_id: user, user: user.id))
         end
       end
     end
@@ -49,7 +49,7 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
         it 'displays the weekly issues prompt' do
           expect(html).to have_css('#weekly-issues')
           expect(html).to have_text('You have 2 issues due for review in the next week')
-          expect(html).to have_link('View Issues', href: admin_issues_path(user: user.id))
+          expect(html).to have_link('View Issues', href: admin_dashboard_issues_path(dashboard_id: user, user: user.id))
         end
       end
     end
@@ -91,7 +91,7 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
         it 'displays the lagging data sources prompt' do
           expect(html).to have_css('#lagging-data-sources')
           expect(html).to have_text('You have 1 lagging data sources')
-          expect(html).to have_link('View Data Sources', href: admin_data_sources_path)
+          expect(html).to have_link('View Data Sources', href: admin_dashboard_data_sources_path(dashboard_id: user))
         end
       end
     end
@@ -116,10 +116,10 @@ RSpec.describe Admin::DashboardPromptComponent, :include_url_helpers, type: :com
         end
 
         it 'displays the missing data feeds prompt' do
-          puts html
           expect(html).to have_css('#missing-data-feeds')
           expect(html).to have_text('You have 1 amr data feed configurations with missing data')
-          expect(html).to have_link('View AMR Data Feed Configurations', href: admin_amr_data_feed_configs_path)
+          expect(html).to have_link('View AMR Data Feed Configurations',
+                                    href: admin_dashboard_amr_data_feed_configs_path(dashboard_id: user))
         end
       end
     end
