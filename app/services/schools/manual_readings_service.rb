@@ -79,8 +79,10 @@ module Schools
     end
 
     def required_months(aggregate_school, fuel_type)
+      end_date = Advice::ConsumptionByMonthService.end_date_for(aggregate_school, fuel_type)
+      end_of_last_month = end_date == end_date.end_of_month ? end_date : end_date.prev_month.end_of_month
       (@existing_readings.map(&:month) |
-      DateService.start_of_months(start_date(aggregate_school, fuel_type), Date.current.prev_month).to_a).sort
+       DateService.start_of_months(end_date - MONTHS_REQUIRED, end_of_last_month).to_a).sort
     end
 
     def calculate_required_when_target

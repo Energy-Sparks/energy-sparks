@@ -77,8 +77,13 @@ describe Schools::ManualReadingsService do
   describe '#calculate_required' do
     before { travel_to(Date.new(2025, 5)) }
 
+    def months(number, end_month = Date.current)
+      (0..number).map { |i| end_month - i.months }.reverse
+    end
+
     def expected_readings(usage)
       usage += [1020] * 12 if usage.length < 13
+      # months
       months = (1..usage.length).map { |i| Date.new(2025, 5) - i.months }.reverse
       months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
     end
@@ -122,20 +127,32 @@ describe Schools::ManualReadingsService do
       end
     end
 
-    context 'with dual fuel meter readings with different end dates' do
+    fcontext 'with dual fuel meter readings with different end dates' do
       let(:school) { create(:school, :with_fuel_configuration) }
 
       before do
         meter_collection = build(:meter_collection)
-        build(:meter, :aggregate_meter, meter_collection:, start_date: 25.months.ago.to_date, kwh_data_x48: [1] * 48,
-                                                           end_date: 2.months.ago.to_date)
-        build(:meter, :aggregate_meter, meter_collection:, type: :electricity, start_date: 1.year.ago.to_date,
-                                                           kwh_data_x48: [2] * 48)
+        build(:meter, :aggregate_meter, meter_collection:, kwh_data_x48: [1] * 48,
+                                        start_date: Date.new(2023, 3), end_date: Date.new(2025, 3, 15))
+        build(:meter, :aggregate_meter, meter_collection:, type: :electricity, kwh_data_x48: [2] * 48,
+                                        start_date: Date.new(2024, 5))
         service.calculate_required(meter_collection)
       end
 
       it 'disables months with no required reading' do
-        expect(service.disabled?(Date.new(2023, 4), :electricity)).to be true
+        expect(months(24, Date.new(2025, 4)).map { |month| service.disabled?(month, :gas) }).to eq([true] * 25)
+        expect(months(24, Date.new(2025, 4)).map { |month| service.disabled?(month, :electricity) }).to \
+          eq([*[false] * 13, *[true] * 12])
+      end
+
+      it 'calculates the correct readings' do
+        expect(service.readings.keys).to eq(months(25, Date.new(2025, 4)))
+        expect(service.readings.values.map { |reading| reading.fetch(:gas, :unset) }).to \
+          eq([1488, 1440, 1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440, 1488, 1440, 1488,
+              1488, 1440, 1488, 1440, 1488, 1488, 1344, :unset, :unset])
+        expect(service.readings.values.map { |reading| reading.fetch(:electricity, :unset) }).to \
+          eq([:unset, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 2976, 2880, 2976, 2976, 2880,
+              2976, 2880, 2976, 2976, 2688, 2976, 2880])
       end
     end
   end
