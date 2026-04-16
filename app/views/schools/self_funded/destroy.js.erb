@@ -1,0 +1,3 @@
+document.getElementById("future-funder-<%= @school.id %>").innerHTML = 'Self funding';
+document.getElementById("self-funded-toggle-<%= @school.id %>").innerHTML =
+  `<%= j render('schools/self_funded/button', school: @school) %>`;

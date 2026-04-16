@@ -447,6 +447,7 @@ Rails.application.routes.draw do
       resource :public, only: %i[create destroy], controller: :public
       resource :data_processing, only: %i[create destroy], controller: :data_processing
       resource :data_enabled, only: %i[create destroy], controller: :data_enabled
+      resource :self_funded, only: %i[create destroy], controller: :self_funded
       resources :contacts
       resources :subscription_generation_runs, only: %i[index show]
       resources :alert_subscription_events, only: [:show]

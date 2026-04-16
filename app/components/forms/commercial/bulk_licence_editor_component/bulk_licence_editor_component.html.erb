@@ -61,6 +61,24 @@
                             remote: true,
                             class: 'btn btn-sm btn-primary' %>
             <% end %>
+            <% r.with_button do %>
+              <div id="self-funded-toggle-<%= school.id %>">
+                <% if school.self_funded_in_future? %>
+                  <%= button_to 'Make MAT funded',
+                                school_self_funded_path(school),
+                                method: :create,
+                                remote: true,
+                                class: 'btn btn-sm btn-secondary' %>
+                <% else %>
+                  <%= button_to 'Make Self funded',
+                                school_self_funded_path(school),
+                                method: :delete,
+                                remote: true,
+                                class: 'btn btn-sm btn-secondary' %>
+
+                <% end %>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
       <% end %>
