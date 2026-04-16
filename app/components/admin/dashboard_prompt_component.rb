@@ -24,7 +24,7 @@ module Admin
           path: admin_dashboard_amr_data_feed_configs_path(dashboard_id: @user),
           content: "You have #{missing_data_feed_readings_count} amr data feed configurations with missing data" },
         { id: 'weekly-issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
-          link: 'View Issues', path: admin_issues_path(user: @user),
+          link: 'View Issues', path: admin_dashboard_issues_path(dashboard_id: @user, user: @user),
           content: "You have #{weekly_issues_count} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
           link: 'View Activations', path: admin_activations_path,
