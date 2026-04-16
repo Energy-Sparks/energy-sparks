@@ -69,16 +69,12 @@ module Admin
     end
 
     def missing_data_feed_readings_count
-      now = Time.current
       @missing_data_feed_readings_count ||= AmrDataFeedConfig.enabled
                                                              .where(owned_by: @user)
                                                              .where.not(source_type: :manual)
                                                              .where.not(missing_reading_window: nil)
-                                                             .count do |config|
-        latest = config.amr_data_feed_readings.maximum(:updated_at)
-        since_latest = latest && (now - latest)
-        [config] if latest && since_latest > config.missing_reading_window.days
-      end
+                                                             .stopped_feeds
+                                                             .count
     end
 
     private

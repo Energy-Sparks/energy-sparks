@@ -741,11 +741,7 @@ class School < ApplicationRecord
   end
 
   def invalidate_cache_key
-    if Flipper.enabled?(:meter_collection_cache_delete_on_invalidate)
-      AggregateSchoolService.new(self).invalidate_cache
-    else
-      update_attribute(:validation_cache_key, SecureRandom.uuid)
-    end
+    AggregateSchoolService.new(self).invalidate_cache
   end
 
   def process_data!
