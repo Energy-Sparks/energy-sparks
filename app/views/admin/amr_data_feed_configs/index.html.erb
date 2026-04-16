@@ -1,4 +1,11 @@
-<h1>AMR Data Feed Configurations</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s AMR Data Feed Configurations" %>
+  <% end %>
+<% else %>
+  <h1>AMR Data Feed Configurations</h1>
+<% end %>
+
 <%= render TabsComponent.new do |component| %>
   <% component.with_tab(name: :overview, label: 'Overview') do %>
     <p>The following table provides a brief overview of each configuration.</p>
