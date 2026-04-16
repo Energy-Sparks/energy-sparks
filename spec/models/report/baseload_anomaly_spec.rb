@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Report::BaseloadAnomaly do
-  subject(:anomaly) { described_class.first }
+  subject(:anomaly) { described_class.order(:id).first }
 
   let(:meter) { create(:electricity_meter) }
 
