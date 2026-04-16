@@ -116,7 +116,7 @@ module Schools
             solar_routes[1],
             solar_routes[2],
             current_contract&.contract_holder&.name,
-            school.default_contract_holder&.name || school.name,
+            school.default_contract_holder&.name || 'Self funding',
             current_contract&.start_date,
             current_contract&.end_date,
             current_licence&.start_date,

@@ -9,7 +9,7 @@
     <%= school.current_licence&.contract&.contract_holder&.name %>
   </td>
   <td>
-    <%= school.default_contract_holder&.name || school.name %>
+    <%= school.default_contract_holder&.name || 'Self funding' %>
   </td>
   <td>
     <% licenced_for = school.licenced_for_period(date_range) %>
