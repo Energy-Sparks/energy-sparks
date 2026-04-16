@@ -581,7 +581,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboards, only: [:show, :index] do
       resources :school_groups, module: :dashboard
-      resources :school_onboardings, module: :dashboard
+      resources :school_onboardings, path: 'school_setup', module: :dashboard do
+        collection do
+          get 'completed'
+        end
+      end
       resources :activations, module: :dashboard
     end
     resources :mailer_previews, only: [:index]

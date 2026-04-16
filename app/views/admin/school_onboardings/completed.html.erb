@@ -2,6 +2,9 @@
   <% content_for :title do %>
     <%= "#{@dashboard_user.display_name}'s Recently Onboarded Schools" %>
   <% end %>
+    <div class='container'>
+      <%= "Schools onboarded in the last #{@days} days" %>
+    </div>
 <% else %>
   <h1>Schools recently onboarded</h1>
 <% end %>

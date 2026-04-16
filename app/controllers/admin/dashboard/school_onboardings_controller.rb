@@ -16,8 +16,9 @@ module Admin
       end
 
       def completed
+        @days = 60
         @pagy, @records = pagy(
-          @completed_schools = @school_onboardings.completed_in_last_x_days(60)
+          @completed_schools = @school_onboardings.completed_in_last_x_days(@days)
                                                   .joins(:school_group)
                                                   .where(school_group: { default_issues_admin_user: @dashboard_user })
                                                   .includes(:school, school: :school_group)
