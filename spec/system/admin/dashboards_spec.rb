@@ -52,20 +52,56 @@ RSpec.describe 'Admin dashboard' do
           expect(page).to have_link('Dashboards', href: admin_dashboards_path)
         end
 
-        describe 'navigation menu' do # rubocop:disable RSpec/NestedGroups
+        # rubocop:disable RSpec/NestedGroups
+
+        describe 'navigation' do
+          let!(:user_school_group) { create(:school_group, default_issues_admin_user: user) }
+          let!(:non_user_school_group) { create(:school_group) }
+
           before do
             click_on user.name
           end
 
           it { expect(page).to have_css('.navigation-admin-dashboard-component') }
 
-          it 'navigates to the school group page' do
-            click_on 'School Groups'
-            expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups")
+          describe 'school group page' do
+            before do
+              click_on 'My School Groups'
+            end
+
+            it { expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups") }
+
+            it 'displays school groups belonging to the user' do
+              expect(page).to have_content(user_school_group.name)
+            end
+
+            it 'does not display school groups which do not belong to the user' do
+              expect(page).to have_no_content(non_user_school_group.name)
+            end
+          end
+
+          it 'navigates to the project group page' do
+            click_on 'My Project Groups'
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups?group_type=project")
+          end
+
+          it 'navigates to the data sources page' do
+            click_on 'My Data Sources'
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/data_sources")
+          end
+
+          it 'navigates to the data feeds page' do
+            click_on 'My Data Feeds'
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/amr_data_feed_configs")
+          end
+
+          it 'navigates to the issues page' do
+            click_on 'My Issues'
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/issues")
           end
         end
 
-        describe 'quick links' do # rubocop:disable RSpec/NestedGroups
+        describe 'quick links' do
           let!(:school_group) do
             create(:school_group, :with_active_schools, default_issues_admin_user: user)
           end
@@ -115,13 +151,14 @@ RSpec.describe 'Admin dashboard' do
           end
         end
 
-        describe 'dashboard prompts' do # rubocop:disable RSpec/NestedGroups
+        describe 'dashboard prompts' do
           before do
             click_on user.name
           end
 
           it { expect(page).to have_css('.admin-dashboard-prompt-component') }
         end
+        # rubocop:enable RSpec/NestedGroups
       end
     end
   end
