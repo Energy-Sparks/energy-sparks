@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe AmrDataFeedConfig do
+describe AmrDataFeedConfig, :include_application_helper do
   let!(:admin)              { create(:admin) }
   let!(:config)             { create(:amr_data_feed_config, owned_by: admin) }
   let!(:disabled_config)    { create(:amr_data_feed_config, description: 'Disabled', enabled: false) }
@@ -45,7 +45,7 @@ describe AmrDataFeedConfig do
         expect(page).to have_content(config.identifier)
         expect(page).to have_content(config.notes.to_plain_text)
         expect(page).to have_content(config.owned_by.name)
-        expect(page).to have_content(reading.updated_at)
+        expect(page).to have_content(nice_date_times(reading.updated_at))
         expect(page).to have_content('Out of Date')
         expect(page).to have_link('Upload')
         expect(page).to have_link('Edit')
