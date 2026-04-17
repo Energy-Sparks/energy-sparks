@@ -591,6 +591,7 @@ Rails.application.routes.draw do
         end
       end
       resources :activities, module: :dashboard
+      resources :interventions, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
