@@ -88,6 +88,10 @@ class AmrDataFeedConfig < ApplicationRecord
 
   BLANK_THRESHOLD = 1
 
+  def latest_reading_date
+    amr_data_feed_readings.maximum(:updated_at)
+  end
+
   def period_or_time_field
     return unless positional_index && reading_time_field.blank? && period_field.blank?
 
