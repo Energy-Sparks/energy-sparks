@@ -3,30 +3,27 @@
 RSpec.shared_examples 'a temporal ranged model' do
   let(:today) { Time.zone.today }
 
-  let!(:historical_record) do
+  let!(:expired_record) do
     create(described_class.model_name.singular,
-      start_date: today - 10.days,
-      end_date:   today - 1.day
-    )
+           start_date: today - 10.days,
+           end_date: today - 1.day)
   end
 
   let!(:current_record) do
     create(described_class.model_name.singular,
-      start_date: today - 5.days,
-      end_date:   today + 5.days
-    )
+           start_date: today - 5.days,
+           end_date: today + 5.days)
   end
 
   let!(:future_record) do
     create(described_class.model_name.singular,
-      start_date: today + 1.day,
-      end_date:   today + 10.days
-    )
+           start_date: today + 1.day,
+           end_date: today + 10.days)
   end
 
   describe 'scopes' do
-    it 'returns historical records' do
-      expect(described_class.historical(today)).to contain_exactly(historical_record)
+    it 'returns expired records' do
+      expect(described_class.expired(today)).to contain_exactly(expired_record)
     end
 
     it 'returns current records' do
@@ -39,22 +36,22 @@ RSpec.shared_examples 'a temporal ranged model' do
   end
 
   describe 'instance methods' do
-    it '#historical?' do
-      expect(historical_record.historical?(today)).to be true
-      expect(current_record.historical?(today)).to be false
-      expect(future_record.historical?(today)).to be false
+    it '#expired?' do
+      expect(expired_record.expired?(today)).to be true
+      expect(current_record.expired?(today)).to be false
+      expect(future_record.expired?(today)).to be false
     end
 
     it '#current?' do
       expect(current_record.current?(today)).to be true
-      expect(historical_record.current?(today)).to be false
+      expect(expired_record.current?(today)).to be false
       expect(future_record.current?(today)).to be false
     end
 
     it '#future?' do
       expect(future_record.future?(today)).to be true
       expect(current_record.future?(today)).to be false
-      expect(historical_record.future?(today)).to be false
+      expect(expired_record.future?(today)).to be false
     end
   end
 end

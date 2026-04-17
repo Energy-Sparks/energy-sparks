@@ -625,6 +625,12 @@ Rails.application.routes.draw do
             post :create_licence
           end
         end
+        collection do
+          get :current
+          get :expired
+          get :expiring
+          get :recent
+        end
       end
       resources :licences
       resources :products

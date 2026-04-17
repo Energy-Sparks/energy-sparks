@@ -11,10 +11,22 @@
         <h3>Contracting</h3>
         <div id="contracting" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
             <ul>
-                <li><%= link_to 'Contracts', admin_commercial_contracts_path %></li>
+                <li>Contracts
+                    <ul>
+                        <li><%= link_to 'Current Contracts', current_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Expiring Contracts', expiring_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Expired Contracts', expired_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Recently Added', recent_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'All Contracts', admin_commercial_contracts_path %></li>
+                    </ul>
+                </li>
                 <li><%= link_to 'Funders', admin_funders_path %></li>
                 <li><%= link_to 'Funder allocation report', admin_reports_funder_allocations_path %></li>
             </ul>
+            <div class="mt-auto text-end">
+                <%= link_to 'New contract', new_admin_commercial_contract_path,
+                            class: 'btn btn-sm btn-secondary' %>
+            </div>
         </div>
       <% end %>
       <%= grid.with_block do %>

@@ -72,7 +72,7 @@ describe 'manage licences' do
     let!(:contract) { create(:commercial_contract) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
       click_on(contract.name)
       click_on('Add New Licence')
     end
@@ -131,7 +131,7 @@ describe 'manage licences' do
     let!(:licence) { create(:commercial_licence) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
       click_on(licence.contract.name)
       within('#licences') do
         click_on('Edit')
@@ -220,7 +220,7 @@ describe 'manage licences' do
       create(:commercial_licence, created_at: Time.zone.yesterday, updated_at: Time.zone.today,
                                   end_date: Time.zone.today + 30)
     end
-    let!(:expired) { create(:commercial_licence, :historical) }
+    let!(:expired) { create(:commercial_licence, :expired) }
 
     before { visit admin_commercial_licences_path }
 

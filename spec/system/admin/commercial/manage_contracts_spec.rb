@@ -15,7 +15,6 @@ describe 'manage contracts' do
     let!(:funder) { create(:funder) }
 
     before do
-      click_on 'Contracts'
       click_on 'New contract'
     end
 
@@ -142,7 +141,7 @@ describe 'manage contracts' do
     let!(:funder) { create(:funder) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
     end
 
     context 'when the contract is editable' do
@@ -246,7 +245,7 @@ describe 'manage contracts' do
     let!(:contract) { create(:commercial_contract) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
     end
 
     it { expect { click_on 'Delete' }.to change(Commercial::Contract, :count).by(-1) }
@@ -357,7 +356,7 @@ describe 'manage contracts' do
     let!(:contract) { create(:commercial_contract) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
       click_on contract.name
     end
 
@@ -390,8 +389,8 @@ describe 'manage contracts' do
         create(:commercial_licence, status: :confirmed, contract:)
         create_list(:commercial_licence, 2, status: :provisional, contract:)
         create_list(:commercial_licence, 4, :future, status: :provisional, contract:)
-        create_list(:commercial_licence, 3, :historical, status: :provisional, contract:)
-        create_list(:commercial_licence, 5, :historical, status: :confirmed, contract:)
+        create_list(:commercial_licence, 3, :expired, status: :provisional, contract:)
+        create_list(:commercial_licence, 5, :expired, status: :confirmed, contract:)
         refresh
       end
 
@@ -410,7 +409,7 @@ describe 'manage contracts' do
             ['Future', 'Provisional', '4'],
             ['', 'Confirmed', '0'],
             ['', 'All', '4'],
-            ['Historical', 'All', '8']
+            ['Expired', 'All', '8']
           ]
         end
       end

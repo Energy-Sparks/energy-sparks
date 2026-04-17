@@ -6,8 +6,16 @@ module Admin
       load_and_authorize_resource :contract, class: 'Commercial::Contract'
 
       def index
-        @contracts = ::Commercial::Contract.all
+        @contracts = ::Commercial::Contract.all.by_start_date
       end
+
+      def current = load_contracts(action_name)
+
+      def expired = load_contracts(action_name)
+
+      def expiring = load_contracts(action_name)
+
+      def recent = load_contracts(action_name)
 
       def contract_holder_options
         records = case params[:contract_holder_type]
@@ -70,6 +78,10 @@ module Admin
       end
 
       private
+
+      def load_contracts(scope)
+        ::Commercial::Contract.send(scope).by_start_date
+      end
 
       def renewal_request?
         params[:original_contract_id].present?

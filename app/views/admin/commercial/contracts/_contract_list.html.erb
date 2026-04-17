@@ -1,0 +1,12 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: title %>
+  <% header_nav.with_button 'Contracts & Licensing', admin_commercial_path %>
+<% end %>
+
+<%= yield %>
+
+<div class="row">
+  <div class="col">
+    <%= render Commercial::ContractsComponent.new(contracts: contracts) %>
+  </div>
+</div>
