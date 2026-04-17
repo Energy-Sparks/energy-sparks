@@ -17,6 +17,8 @@ module Admin
 
       def recent = load_contracts(action_name)
 
+      def future = load_contracts(action_name)
+
       def contract_holder_options
         records = case params[:contract_holder_type]
                   when 'School'      then School.active.order(:name)
@@ -80,7 +82,7 @@ module Admin
       private
 
       def load_contracts(scope)
-        ::Commercial::Contract.send(scope).by_start_date
+        @contracts = ::Commercial::Contract.send(scope).by_start_date
       end
 
       def renewal_request?

@@ -629,6 +629,7 @@ Rails.application.routes.draw do
           get :current
           get :expired
           get :expiring
+          get :future
           get :recent
         end
       end
