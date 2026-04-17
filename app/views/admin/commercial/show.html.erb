@@ -35,9 +35,15 @@
             <ul>
                 <li>Licences
                     <ul>
-                        <li><%= link_to 'Expiring Licences', admin_commercial_licences_path(anchor: 'expiring') %></li>
-                        <li><%= link_to 'Expired Licences', admin_commercial_licences_path(anchor: 'recently-expired') %></li>
-                        <li><%= link_to 'Recently Added Licences', admin_commercial_licences_path(anchor: 'recent') %></li>
+                        <li>
+                          <%= link_to 'Expiring Licences', admin_commercial_licences_path(anchor: 'expiring') %>
+                        </li>
+                        <li>
+                          <%= link_to 'Expired Licences', admin_commercial_licences_path(anchor: 'recently-expired') %>
+                        </li>
+                        <li>
+                          <%= link_to 'Recently Added Licences', admin_commercial_licences_path(anchor: 'recent') %>
+                        </li>
                         <li>
                             <%= link_to 'Recently updated Licences',
                                         admin_commercial_licences_path(anchor: 'recently-updated') %>
