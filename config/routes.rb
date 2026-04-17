@@ -631,6 +631,7 @@ Rails.application.routes.draw do
 
       get 'pricing', to: 'pricing#show'
     end
+    resource :commercial, only: [:show], controller: :commercial
 
     namespace :comparisons do
       resources :footnotes, except: [:show]

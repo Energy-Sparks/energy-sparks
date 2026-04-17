@@ -7,7 +7,7 @@ describe 'manage contracts' do
 
   before do
     sign_in(user)
-    visit admin_path
+    visit admin_commercial_path
   end
 
   context 'when adding a new contract' do

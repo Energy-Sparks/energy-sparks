@@ -5,7 +5,7 @@ describe 'manage categories' do
 
   before do
     sign_in(user)
-    visit admin_path
+    visit admin_commercial_path
   end
 
   context 'when adding a new product' do
@@ -147,7 +147,7 @@ describe 'manage categories' do
         let(:table_id) { '#contract-summary-table' }
         let(:expected_header) do
           [
-            ['Category', 'Status', 'Count']
+            %w[Category Status Count]
           ]
         end
         let(:expected_rows) do

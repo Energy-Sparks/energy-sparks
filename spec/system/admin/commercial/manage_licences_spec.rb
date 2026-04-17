@@ -6,7 +6,7 @@ describe 'manage licences' do
 
   before do
     sign_in(user)
-    visit admin_path
+    visit admin_commercial_path
   end
 
   context 'when adding a new licence' do
@@ -78,7 +78,7 @@ describe 'manage licences' do
     end
 
     it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
-    it { expect(page).to have_content("Create a new licence under the #{contract.name} contract.")}
+    it { expect(page).to have_content("Create a new licence under the #{contract.name} contract.") }
 
     context 'with valid data', :js do
       before do
@@ -139,7 +139,10 @@ describe 'manage licences' do
     end
 
     it { expect(page).to have_content(licence.contract.name) }
-    it { expect(page).to have_content("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")}
+
+    it {
+      expect(page).to have_content("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")
+    }
 
     context 'when dates may change' do
       let!(:school) { create(:school, :with_school_group, data_enabled: false) }
@@ -183,7 +186,7 @@ describe 'manage licences' do
     let!(:licence) { create(:commercial_licence) }
 
     before do
-      click_on 'Licences'
+      visit admin_commercial_licences_path
     end
 
     it { expect { click_on 'Delete' }.to change(Commercial::Licence, :count).by(-1) }
@@ -193,7 +196,7 @@ describe 'manage licences' do
     let!(:licence) { create(:commercial_licence) }
 
     before do
-      click_on 'Licences'
+      visit admin_commercial_licences_path
       click_on "##{licence.id}"
     end
 
@@ -213,10 +216,13 @@ describe 'manage licences' do
     let!(:school) { create(:school, :with_school_grouping, group: school_group) }
 
     let!(:expiring_in_a_week) { create(:commercial_licence, end_date: Time.zone.today + 7, school: school) }
-    let!(:expiring_in_a_month) { create(:commercial_licence, created_at: Time.zone.yesterday, updated_at: Time.zone.today, end_date: Time.zone.today + 30) }
+    let!(:expiring_in_a_month) do
+      create(:commercial_licence, created_at: Time.zone.yesterday, updated_at: Time.zone.today,
+                                  end_date: Time.zone.today + 30)
+    end
     let!(:expired) { create(:commercial_licence, :historical) }
 
-    before { click_on('Licences') }
+    before { visit admin_commercial_licences_path }
 
     it { expect(page).to have_content('Expiring') }
 
@@ -258,7 +264,7 @@ describe 'manage licences' do
       it 'shows the filtered expiring licences' do
         within('#expiring') do
           expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-          expect(page).not_to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+          expect(page).to have_no_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
         end
       end
     end
@@ -274,7 +280,7 @@ describe 'manage licences' do
       it 'shows the filtered expiring licences' do
         within('#expiring') do
           expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-          expect(page).not_to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+          expect(page).to have_no_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
         end
       end
     end
