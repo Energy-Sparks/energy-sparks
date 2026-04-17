@@ -444,4 +444,42 @@ describe 'manage contracts' do
       end
     end
   end
+
+  context 'when viewing contract lists' do
+    context 'with current' do
+      let!(:contract) { create(:commercial_contract) }
+
+      before { click_on 'Current Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with expired' do
+      let!(:contract) { create(:commercial_contract, :expired) }
+
+      before { click_on 'Expired Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with recent' do
+      let!(:contract) { create(:commercial_contract) }
+
+      before { click_on 'Recently Added Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+  end
 end

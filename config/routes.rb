@@ -632,7 +632,11 @@ Rails.application.routes.draw do
           get :recent
         end
       end
-      resources :licences
+      resources :licences do
+        collection do
+          get :unlicensed
+        end
+      end
       resources :products
 
       get 'pricing', to: 'pricing#show'

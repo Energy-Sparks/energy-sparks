@@ -16,7 +16,7 @@
                         <li><%= link_to 'Current Contracts', current_admin_commercial_contracts_path %></li>
                         <li><%= link_to 'Expiring Contracts', expiring_admin_commercial_contracts_path %></li>
                         <li><%= link_to 'Expired Contracts', expired_admin_commercial_contracts_path %></li>
-                        <li><%= link_to 'Recently Added', recent_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Recently Added Contracts', recent_admin_commercial_contracts_path %></li>
                         <li><%= link_to 'All Contracts', admin_commercial_contracts_path %></li>
                     </ul>
                 </li>
@@ -33,10 +33,20 @@
         <h3>Licensing</h3>
         <div id="licensing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
             <ul>
-                <li><%= link_to 'Expiring', admin_commercial_contracts_path(anchor: 'expiring') %></li>
-                <li><%= link_to 'Recently expired', admin_commercial_contracts_path(anchor: 'recently-expired') %></li>
-                <li><%= link_to 'Recently added', admin_commercial_contracts_path(anchor: 'recent') %></li>
-                <li><%= link_to 'Recently updated', admin_commercial_contracts_path(anchor: 'recently-updated') %></li>
+                <li>Licences
+                    <ul>
+                        <li><%= link_to 'Expiring Licences', admin_commercial_licences_path(anchor: 'expiring') %></li>
+                        <li><%= link_to 'Expired Licences', admin_commercial_licences_path(anchor: 'recently-expired') %></li>
+                        <li><%= link_to 'Recently Added Licences', admin_commercial_licences_path(anchor: 'recent') %></li>
+                        <li>
+                            <%= link_to 'Recently updated Licences',
+                                        admin_commercial_licences_path(anchor: 'recently-updated') %>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <%= link_to 'Unlicensed schools', unlicensed_admin_commercial_licences_path %>
+                </li>
             </ul>
         </div>
       <% end %>

@@ -285,4 +285,29 @@ describe 'manage licences' do
       end
     end
   end
+
+  context 'when viewing unlicensed schools' do
+    let!(:school) { create(:school, :with_trust) }
+
+    before do
+      calendar = create(:national_calendar, title: 'England and Wales')
+      create(:academic_year, calendar:)
+      click_on 'Unlicensed schools'
+    end
+
+    it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
+      let(:table_id) { '#unlicensed-schools' }
+      let(:expected_header) do
+        [
+          ['School Group', 'School', 'Visible?', 'Data visible?', 'Expired Licence?',
+           'Licenced for Current Academic Year?', '']
+        ]
+      end
+      let(:expected_rows) do
+        [
+          [school.organisation_group.name, school.name, '', '', '', 'No', 'Licences']
+        ]
+      end
+    end
+  end
 end

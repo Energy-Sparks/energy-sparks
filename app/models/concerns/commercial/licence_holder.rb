@@ -6,6 +6,12 @@ module Commercial
 
     included do
       has_many :licences, class_name: 'Commercial::Licence', dependent: :restrict_with_exception
+
+      scope :without_current_licence, lambda {
+        where.not(
+          id: Commercial::Licence.current.select(:school_id)
+        )
+      }
     end
 
     def current_licence
