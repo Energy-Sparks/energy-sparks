@@ -44,7 +44,22 @@
         any (future) licence that covers the period of this contact.
       </p>
       <p>
-        Use the "Add Licence" button to add a licence for the school under this contract.
+        If a school has a current licence (valid for today) then the "<strong>Current Funder</strong>" column includes the name of
+        the contract holder for that licence. "<strong>Future Funder</strong>" indicates whether we are expecting the school to be
+        self-funded or covered by a MAT contract in future.
+      </p>
+
+      <p>
+        "<strong>Licensed for Period?</strong>" indicates whether school has any existing licences that cover the period of this contract.
+        "Full" means they are already licensed. "Partial" means they a licence that covers part of this contracted period.
+      </p>
+      <p>
+        Use the "<strong>Add Licence</strong>" button to add a licence for the school under this contract.
+      </p>
+      <p>
+        Use the "<strong>Make Self funded</strong> / <strong>Make MAT funded</strong>" toggle to set whether the school is expected to be
+        MAT or self-funded in future. If a school was self-funded and is going to be added to this contract, then change their status before
+        adding a licence.
       </p>
       <%= render ::Commercial::LicensingSummaryComponent.new(
             table_id: "contract-#{@contract.id}-additional-schools-table",
