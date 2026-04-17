@@ -34,7 +34,7 @@ module Schools
 
     private
 
-    def mark_blank_for_delete
+    def mark_blank_for_delete(params_hash)
       params_hash['manual_readings_attributes'].each_value do |parameters|
         parameters['_destroy'] = '1' if parameters['id'] && parameters['gas'].blank? && parameters['electricity'].blank?
       end
