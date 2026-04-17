@@ -15,9 +15,11 @@ module Admin
 
       def expiring = load_contracts(action_name)
 
-      def recent = load_contracts(action_name)
-
       def future = load_contracts(action_name)
+
+      def provisional = local_contracts(action_name)
+
+      def recent = load_contracts(action_name)
 
       def contract_holder_options
         records = case params[:contract_holder_type]

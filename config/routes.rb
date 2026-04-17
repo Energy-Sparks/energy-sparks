@@ -630,6 +630,7 @@ Rails.application.routes.draw do
           get :expired
           get :expiring
           get :future
+          get :provisional
           get :recent
         end
       end
