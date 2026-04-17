@@ -101,13 +101,18 @@ module Schools
     def add_reading(month, fuel_type, missing, reading)
       return if month > Date.current.prev_month.beginning_of_month || month.end_of_month >= @end_dates[fuel_type]
 
-      existing_reading = @existing_readings.find { |reading| reading.month == month }
-      disabled, reading = if existing_reading&.[](fuel_type).present?
-                            [false, existing_reading[fuel_type]]
-                          else
-                            [!missing, missing ? nil : reading]
-                          end
-      (@readings[month] ||= {})[fuel_type] = { disabled:, reading: }
+      existing_value = existing_reading_value(month, fuel_type)
+      (@readings[month] ||= {})[fuel_type] = if existing_value.present?
+                                               { disabled: false, reading: existing_value }
+                                             elsif missing
+                                               { disabled: false, reading: nil }
+                                             else
+                                               { disabled: true, reading: }
+                                             end
+    end
+
+    def existing_reading_value(month, fuel_type)
+      @existing_readings.find { |reading| reading.month == month }&.[](fuel_type)
     end
 
     def calculate_month_consumption(aggregate_school, month, fuel_type)
