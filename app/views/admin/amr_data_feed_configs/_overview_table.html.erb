@@ -12,13 +12,12 @@
   </thead>
   <tbody>
     <% configurations.each do |config| %>
-      <% date_time = config.amr_data_feed_readings.maximum(:updated_at) %>
       <tr>
         <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
         <td class="no-wrap"><code><%= config.identifier %></code></td>
         <td><%= config.owned_by&.name %></td>
-        <td data-order="<%= date_time.iso8601 %>">
-          <%= nice_date_times(date_time) %>
+        <td data-order="<%= config.latest_reading_date&.iso8601 %>">
+          <%= nice_date_times(config.latest_reading_date) %>
         </td>
         <% if configurations.stopped_feeds.include?(config) %>
           <td>
