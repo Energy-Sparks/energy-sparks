@@ -590,7 +590,7 @@ Rails.application.routes.draw do
           get 'completed'
         end
       end
-      resources :activities, only: [:index]
+      resources :activities, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
