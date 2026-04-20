@@ -2,26 +2,26 @@
 #
 # Table name: alerts
 #
-#  alert_generation_run_id :bigint(8)
-#  alert_type_id           :bigint(8)        not null
+#  id                      :bigint(8)        not null, primary key
 #  analytics_valid         :boolean          default(TRUE), not null
 #  chart_data              :json
-#  comparison_report_id    :bigint(8)
-#  created_at              :datetime         not null
 #  displayable             :boolean          default(TRUE), not null
 #  enough_data             :integer
-#  id                      :bigint(8)        not null, primary key
 #  priority_data           :json
 #  rating                  :decimal(, )
 #  relevance               :integer          default("relevant")
 #  reporting_period        :integer
 #  run_on                  :date
-#  school_id               :bigint(8)        not null
 #  table_data              :json
 #  template_data           :json
 #  template_data_cy        :json
-#  updated_at              :datetime         not null
 #  variables               :jsonb
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  alert_generation_run_id :bigint(8)
+#  alert_type_id           :bigint(8)        not null
+#  comparison_report_id    :bigint(8)
+#  school_id               :bigint(8)        not null
 #
 # Indexes
 #

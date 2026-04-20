@@ -15,28 +15,26 @@ module Schools
         @school.school_group_id = grouping_attrs[:school_group_id]
       end
 
-      [:area_school_grouping_attributes, :diocese_school_grouping_attributes].each do |attributes|
-        if params[:school][attributes]
-          attrs = params[:school][attributes]
+      %i[area_school_grouping_attributes diocese_school_grouping_attributes].each do |attributes|
+        next unless params[:school][attributes]
 
-          if attrs[:school_group_id].blank?
-            case attributes
-            when :diocese_school_grouping_attributes
-              @school.diocese_school_grouping&.destroy
-            else
-              @school.area_school_grouping&.destroy
-            end
+        attrs = params[:school][attributes]
 
-            params[:school].delete(attributes)
-          end
+        next if attrs[:school_group_id].present?
+
+        case attributes
+        when :diocese_school_grouping_attributes
+          @school.diocese_school_grouping&.destroy
+        else
+          @school.area_school_grouping&.destroy
         end
+
+        params[:school].delete(attributes)
       end
 
       default_contract_holder_type = case school_params[:default_contract_holder_id]
                                      when '', nil
                                        nil
-                                     when @school.id
-                                       School
                                      else
                                        SchoolGroup
                                      end
@@ -45,7 +43,7 @@ module Schools
       redirect_to school_path(@school)
     end
 
-  private
+    private
 
     def set_school
       @school = School.friendly.find(params[:school_id])
