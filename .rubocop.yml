@@ -9,12 +9,9 @@ AllCops:
   NewCops: enable
   Exclude:
     # exclude as these files are updated/managed by rails app:upgrade
-    - bin/rails
-    - bin/rake
-    - bin/setup
-    - bin/yarn
     - config/application.rb
     - config/boot.rb
+    - config/ci.rb
     - config/environment.rb
     - config/environments/development.rb
     - config/environments/production.rb
@@ -23,7 +20,7 @@ AllCops:
     - config/initializers/backtrace_silencers.rb
     - config/initializers/content_security_policy.rb
     - config/initializers/filter_parameter_logging.rb
-    - config/initializers/new_framework_defaults_6_1.rb
+    - config/initializers/new_framework_defaults_*.rb
     - config/initializers/permissions_policy.rb
     - config/puma.rb
     - config/routes.rb
@@ -42,6 +39,7 @@ RSpec/ContextWording:
   Prefixes:
     - when
     - with
+    - without # these 3 are defaults
     - and
 RSpec/ExampleLength:
   Max: 15 # default 5

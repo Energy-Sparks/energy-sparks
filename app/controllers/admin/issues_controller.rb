@@ -42,17 +42,9 @@ module Admin
 
       @issues = @issues.includes(:issueable, :owned_by, :created_by, :updated_by)
 
-      respond_to do |format|
-        format.html do
-          @pagy, @issues = pagy(@issues.by_priority_order)
-        end
-        format.csv do
-          issues = @issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
+      dashboard_issues if @dashboard_user
 
-          send_data issues.to_csv,
-                    filename: EnergySparks::Filenames.csv('issues')
-        end
-      end
+      format
     end
 
     def new
@@ -108,6 +100,20 @@ module Admin
     end
 
     private
+
+    def format
+      respond_to do |format|
+        format.html do
+          @pagy, @issues = pagy(@issues.by_priority_order)
+        end
+        format.csv do
+          issues = @issues.with_rich_text_description.includes(meters: %i[data_source admin_meter_status])
+
+          send_data issues.to_csv,
+                    filename: EnergySparks::Filenames.csv('issues')
+        end
+      end
+    end
 
     def issueable
       # For school context menu if school available

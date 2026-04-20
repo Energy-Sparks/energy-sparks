@@ -27,11 +27,11 @@
           <% if @show_contract_holder %>
             <td class="col-2"><%= contract.contract_holder.name %></td>
           <% end %>
-          <td><%= link_to contract.product.name, admin_commercial_product_path(contract.product) %></td>
-          <td class="text-end col-1"><%= contract.start_date %></td>
-          <td class="text-end col-1"><%= contract.end_date %></td>
-          <td class="text-end"><%= contract.number_of_schools %></td>
-          <td class="text-end"><%= contract.licences.count %></td>
+          <td class="col-2"><%= link_to contract.product.name, admin_commercial_product_path(contract.product) %></td>
+          <td data-order="<%= contract.start_date.iso8601 %>" class="text-end"><%= contract.start_date.to_fs(:es_short) %></td>
+          <td data-order="<%= contract.end_date.iso8601 %>" class="text-end"><%= contract.end_date.to_fs(:es_short) %></td>
+          <td class="text-end col-1"><%= contract.number_of_schools %></td>
+          <td class="text-end col-1"><%= contract.licences.count %></td>
           <td class="text-end">
             <%= render(Elements::BadgeComponent.new(
                          contract.status.humanize,

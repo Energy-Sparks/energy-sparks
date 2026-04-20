@@ -581,6 +581,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboards, only: [:show, :index] do
       resources :school_groups, module: :dashboard
+      resources :data_sources, module: :dashboard
+      resources :amr_data_feed_configs, module: :dashboard
+      resources :issues, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
@@ -616,8 +619,11 @@ Rails.application.routes.draw do
       resources :contracts do
         get :contract_holder_options, on: :collection
         resources :licences, controller: "contracts/licences" do
-          get :edit, on: :collection
-          put :update, on: :collection
+          collection do
+            get :edit
+            put :update
+            post :create_licence
+          end
         end
       end
       resources :licences
@@ -683,6 +689,8 @@ Rails.application.routes.draw do
         resource :meter_report, only: [:show] do
           post :deliver, on: :member
         end
+        resource :licence_summaries, only: :show
+
         concerns :messageable
         concerns :issueable
         concerns :contract_holder
@@ -874,6 +882,7 @@ Rails.application.routes.draw do
             post :clear
           end
         end
+        resources :licences, only: :index
       end
       member do
         post :archive

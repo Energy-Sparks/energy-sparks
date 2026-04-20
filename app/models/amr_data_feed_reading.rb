@@ -24,6 +24,7 @@
 # Indexes
 #
 #  adfr_meter_id_config_id                                      (meter_id,amr_data_feed_config_id)
+#  idx_readings_config_id_updated_at                            (amr_data_feed_config_id,updated_at)
 #  index_amr_data_feed_readings_on_amr_data_feed_config_id      (amr_data_feed_config_id)
 #  index_amr_data_feed_readings_on_amr_data_feed_import_log_id  (amr_data_feed_import_log_id)
 #  index_amr_data_feed_readings_on_created_at_and_meter_id      (created_at,meter_id)
@@ -70,6 +71,7 @@ class AmrDataFeedReading < ApplicationRecord
     WHEN date_format='%Y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD')
     WHEN date_format='%Y-%m-%d' THEN to_date(reading_date, 'YYYY-MM-DD ')
+    WHEN date_format='%y-%m-%d' AND reading_date~'\\d{2}/\\d{2}/\\d{4}' THEN to_date(reading_date, 'DD/MM/YYYY')
     WHEN date_format='%y-%m-%d' THEN to_date(reading_date, 'YY-MM-DD ')
     WHEN date_format='"%d-%m-%Y"' THEN to_date(reading_date, '"DD-MM-YYYY"')
     WHEN date_format='%d/%m/%Y %H:%M:%S' THEN to_date(reading_date, 'DD/MM/YYYY HH24:MI::SS')

@@ -54,6 +54,18 @@ class AmrDataFeedConfig < ApplicationRecord
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
 
+  scope :stopped_feeds, lambda {
+    where(<<~SQL.squish)
+      (
+        SELECT r.updated_at
+        FROM amr_data_feed_readings r
+        WHERE r.amr_data_feed_config_id = amr_data_feed_configs.id
+        ORDER BY r.updated_at DESC
+        LIMIT 1
+      ) < (NOW() - (amr_data_feed_configs.missing_reading_window * INTERVAL '1 day'))
+    SQL
+  }
+
   enum :process_type, { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3, rtone_variant_api: 4,
                         other_api: 5 }
   enum :source_type, { email: 0, manual: 1, api: 2, sftp: 3 }
@@ -75,6 +87,10 @@ class AmrDataFeedConfig < ApplicationRecord
   validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
+
+  def latest_reading_date
+    amr_data_feed_readings.maximum(:updated_at)
+  end
 
   def period_or_time_field
     return unless positional_index && reading_time_field.blank? && period_field.blank?
