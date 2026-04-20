@@ -7,11 +7,7 @@ RSpec.describe AdminMailer, :include_application_helper do
 
   let(:email) { ActionMailer::Base.deliveries.last }
 
-  around do |example|
-    ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
-      example.run
-    end
-  end
+  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true', 'ENVIRONMENT_IDENTIFIER' => 'unknown')) }
 
   describe '#school_group_meters_report' do
     shared_examples 'a report with gaps in the meter readings' do
