@@ -146,6 +146,35 @@ describe 'bulk editing contract licences' do
           end
         end
       end
+
+      context 'when toggling school funding status' do
+        before do
+          click_on 'Make Self funded'
+          within("#contract-#{contract.id}-additional-schools-table") do
+            find('tr', text: 'Self funding')
+          end
+        end
+
+        it 'toggles the button and text' do
+          within("#contract-#{contract.id}-additional-schools-table") do
+            find('tr', text: 'Make MAT funded')
+          end
+          expect(additional_school.reload.default_contract_holder).to be_nil
+        end
+
+        context 'when toggling back' do
+          before do
+            click_on 'Make MAT funded'
+            within("#contract-#{contract.id}-additional-schools-table") do
+              find('tr', text: 'Make Self funded')
+            end
+          end
+
+          it 'reverts the change' do
+            expect(additional_school.reload.default_contract_holder).to eq(contract.contract_holder)
+          end
+        end
+      end
       # rubocop:enable RSpec/NestedGroups
     end
   end

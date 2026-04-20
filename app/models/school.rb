@@ -331,7 +331,6 @@ class School < ApplicationRecord
 
   scope :unfunded, -> { where(schools: { funder_id: nil }) }
 
-
   scope :missing_alert_contacts, -> { where('schools.id NOT IN (SELECT distinct(school_id) from contacts)') }
 
   def self.with_energy_tariffs
@@ -976,6 +975,10 @@ class School < ApplicationRecord
     # 1 - "Nursery"
     # 6 - "16 plus"
     # 7 - "All-through"
+  end
+
+  def self_funded_in_future?
+    default_contract_holder.nil?
   end
 
   private
