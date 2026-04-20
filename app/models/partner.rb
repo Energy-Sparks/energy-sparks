@@ -2,12 +2,12 @@
 #
 # Table name: partners
 #
-#  created_at :datetime         not null
-#  id         :bigint(8)        not null, primary key
+#  id         :bigint           not null, primary key
 #  name       :string
 #  position   :integer          default(0), not null
-#  updated_at :datetime         not null
 #  url        :text
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 class Partner < ApplicationRecord

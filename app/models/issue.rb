@@ -2,20 +2,20 @@
 #
 # Table name: issues
 #
-#  created_at     :datetime         not null
-#  created_by_id  :bigint(8)
+#  id             :bigint           not null, primary key
 #  fuel_type      :integer
-#  id             :bigint(8)        not null, primary key
 #  issue_type     :integer          default("issue"), not null
-#  issueable_id   :bigint(8)
 #  issueable_type :string
-#  owned_by_id    :bigint(8)
 #  pinned         :boolean          default(FALSE)
 #  review_date    :date
 #  status         :integer          default("open"), not null
 #  title          :string           not null
+#  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  updated_by_id  :bigint(8)
+#  created_by_id  :bigint
+#  issueable_id   :bigint
+#  owned_by_id    :bigint
+#  updated_by_id  :bigint
 #
 # Indexes
 #

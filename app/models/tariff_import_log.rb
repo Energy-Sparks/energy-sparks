@@ -2,11 +2,10 @@
 #
 # Table name: tariff_import_logs
 #
-#  created_at                :datetime         not null
+#  id                        :bigint           not null, primary key
 #  description               :text
 #  end_date                  :date
 #  error_messages            :text
-#  id                        :bigint(8)        not null, primary key
 #  import_time               :datetime
 #  prices_imported           :integer          default(0), not null
 #  prices_updated            :integer          default(0), not null
@@ -14,6 +13,7 @@
 #  standing_charges_imported :integer          default(0), not null
 #  standing_charges_updated  :integer          default(0), not null
 #  start_date                :date
+#  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
 class TariffImportLog < ApplicationRecord

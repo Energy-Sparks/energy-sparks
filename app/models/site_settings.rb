@@ -2,10 +2,9 @@
 #
 # Table name: site_settings
 #
+#  id                                    :bigint           not null, primary key
 #  audit_activities_bonus_points         :integer          default(0)
-#  created_at                            :datetime         not null
 #  default_import_warning_days           :integer          default(10)
-#  id                                    :bigint(8)        not null, primary key
 #  management_priorities_dashboard_limit :integer          default(5)
 #  management_priorities_page_limit      :integer          default(10)
 #  message_for_no_contacts               :boolean          default(TRUE)
@@ -13,6 +12,7 @@
 #  photo_bonus_points                    :integer          default(0)
 #  prices                                :jsonb
 #  temperature_recording_months          :jsonb
+#  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
 #
 

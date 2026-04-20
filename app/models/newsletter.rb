@@ -2,15 +2,15 @@
 #
 # Table name: newsletters
 #
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
+#  id            :bigint           not null, primary key
 #  published     :boolean          default(FALSE), not null
 #  published_on  :date             not null
 #  title         :text             not null
-#  updated_at    :datetime         not null
-#  updated_by_id :bigint(8)
 #  url           :text             not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  created_by_id :bigint
+#  updated_by_id :bigint
 #
 # Indexes
 #

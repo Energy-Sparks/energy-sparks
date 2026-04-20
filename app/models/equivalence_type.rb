@@ -2,11 +2,11 @@
 #
 # Table name: equivalence_types
 #
-#  created_at  :datetime         not null
-#  id          :bigint(8)        not null, primary key
+#  id          :bigint           not null, primary key
 #  image_name  :integer          default("no_image"), not null
 #  meter_type  :integer          not null
 #  time_period :integer          not null
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 

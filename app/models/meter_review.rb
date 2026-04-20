@@ -4,13 +4,13 @@
 #
 # Table name: meter_reviews
 #
-#  consent_grant_id :bigint(8)        not null
-#  created_at       :datetime         not null
+#  id               :bigint           not null, primary key
 #  disabled         :boolean          default(FALSE), not null
-#  id               :bigint(8)        not null, primary key
-#  school_id        :bigint(8)        not null
+#  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  user_id          :bigint(8)        not null
+#  consent_grant_id :bigint           not null
+#  school_id        :bigint           not null
+#  user_id          :bigint           not null
 #
 # Indexes
 #

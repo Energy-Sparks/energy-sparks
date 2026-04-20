@@ -2,14 +2,14 @@
 #
 # Table name: comparison_solar_generation_summaries
 #
-#  alert_generation_run_id             :bigint(8)
+#  id                                  :bigint
 #  annual_electricity_kwh              :float
 #  annual_exported_solar_pv_kwh        :float
 #  annual_mains_consumed_kwh           :float
 #  annual_solar_pv_consumed_onsite_kwh :float
 #  annual_solar_pv_kwh                 :float
-#  id                                  :bigint(8)
-#  school_id                           :bigint(8)
+#  alert_generation_run_id             :bigint
+#  school_id                           :bigint
 #
 # Indexes
 #

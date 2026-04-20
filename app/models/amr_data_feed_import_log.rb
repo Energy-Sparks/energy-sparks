@@ -2,15 +2,15 @@
 #
 # Table name: amr_data_feed_import_logs
 #
-#  amr_data_feed_config_id :bigint(8)        not null
-#  created_at              :datetime         not null
+#  id                      :bigint           not null, primary key
 #  error_messages          :text
 #  file_name               :text
-#  id                      :bigint(8)        not null, primary key
 #  import_time             :datetime
 #  records_imported        :integer
 #  records_updated         :integer          default(0), not null
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  amr_data_feed_config_id :bigint           not null
 #
 # Indexes
 #

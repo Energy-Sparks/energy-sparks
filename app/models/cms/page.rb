@@ -2,15 +2,15 @@
 #
 # Table name: cms_pages
 #
+#  id            :bigint           not null, primary key
 #  audience      :enum             default("anyone"), not null
-#  category_id   :bigint(8)        not null
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
 #  published     :boolean          default(FALSE), not null
 #  slug          :string           not null
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  updated_by_id :bigint(8)
+#  category_id   :bigint           not null
+#  created_by_id :bigint
+#  updated_by_id :bigint
 #
 # Indexes
 #

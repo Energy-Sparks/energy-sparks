@@ -2,11 +2,11 @@
 #
 # Table name: school_batch_runs
 #
-#  created_at :datetime         not null
-#  id         :bigint(8)        not null, primary key
-#  school_id  :bigint(8)
+#  id         :bigint           not null, primary key
 #  status     :integer          default("pending"), not null
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  school_id  :bigint
 #
 # Indexes
 #

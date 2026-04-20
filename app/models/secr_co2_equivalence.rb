@@ -4,15 +4,15 @@
 #
 # Table name: secr_co2_equivalences
 #
-#  created_at                     :datetime         not null
+#  id                             :bigint           not null, primary key
 #  electricity_co2e               :float
 #  electricity_co2e_co2           :float
-#  id                             :bigint(8)        not null, primary key
 #  natural_gas_co2e               :float
 #  natural_gas_co2e_co2           :float
 #  transmission_distribution_co2e :float
-#  updated_at                     :datetime         not null
 #  year                           :integer
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
 #
 # Indexes
 #

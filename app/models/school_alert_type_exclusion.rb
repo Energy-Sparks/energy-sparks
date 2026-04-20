@@ -2,13 +2,13 @@
 #
 # Table name: school_alert_type_exclusions
 #
-#  alert_type_id :bigint(8)
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
+#  id            :bigint           not null, primary key
 #  reason        :text
-#  school_id     :bigint(8)
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  alert_type_id :bigint
+#  created_by_id :bigint
+#  school_id     :bigint
 #
 # Indexes
 #

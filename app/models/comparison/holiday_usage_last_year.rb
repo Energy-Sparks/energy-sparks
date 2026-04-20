@@ -2,9 +2,8 @@
 #
 # Table name: comparison_holiday_usage_last_years
 #
-#  alert_generation_run_id                          :bigint(8)
+#  id                                               :bigint
 #  holiday_start_date                               :date
-#  id                                               :bigint(8)
 #  last_year_holiday_electricity_gbp                :float
 #  last_year_holiday_electricity_gbpcurrent         :float
 #  last_year_holiday_electricity_kwh_per_floor_area :float
@@ -14,7 +13,8 @@
 #  last_year_holiday_gas_kwh_per_floor_area         :float
 #  last_year_holiday_start_date                     :date
 #  last_year_holiday_type                           :text
-#  school_id                                        :bigint(8)
+#  alert_generation_run_id                          :bigint
+#  school_id                                        :bigint
 #
 # Indexes
 #

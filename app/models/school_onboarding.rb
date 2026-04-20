@@ -2,32 +2,32 @@
 #
 # Table name: school_onboardings
 #
+#  id                       :bigint           not null, primary key
 #  contact_email            :string           not null
-#  contract_id              :bigint(8)
 #  country                  :integer          default("england"), not null
-#  created_at               :datetime         not null
-#  created_by_id            :bigint(8)
-#  created_user_id          :bigint(8)
-#  dark_sky_area_id         :bigint(8)
 #  data_sharing             :enum             default("public"), not null
 #  default_chart_preference :integer          default("default"), not null
-#  diocese_id               :bigint(8)
 #  full_school              :boolean          default(TRUE)
-#  funder_id                :bigint(8)
-#  id                       :bigint(8)        not null, primary key
-#  local_authority_area_id  :bigint(8)
 #  notes                    :text
-#  project_group_id         :bigint(8)
-#  school_group_id          :bigint(8)
-#  school_id                :bigint(8)
 #  school_name              :string           not null
 #  school_will_be_public    :boolean          default(TRUE)
-#  scoreboard_id            :bigint(8)
-#  template_calendar_id     :bigint(8)
-#  updated_at               :datetime         not null
 #  urn                      :integer
 #  uuid                     :string           not null
-#  weather_station_id       :bigint(8)
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  contract_id              :bigint
+#  created_by_id            :bigint
+#  created_user_id          :bigint
+#  dark_sky_area_id         :bigint
+#  diocese_id               :bigint
+#  funder_id                :bigint
+#  local_authority_area_id  :bigint
+#  project_group_id         :bigint
+#  school_group_id          :bigint
+#  school_id                :bigint
+#  scoreboard_id            :bigint
+#  template_calendar_id     :bigint
+#  weather_station_id       :bigint
 #
 # Indexes
 #

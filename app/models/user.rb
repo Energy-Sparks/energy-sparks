@@ -2,19 +2,17 @@
 #
 # Table name: users
 #
+#  id                          :bigint           not null, primary key
 #  active                      :boolean          default(TRUE), not null
 #  climate_action_lead         :boolean          default(FALSE), not null
 #  confirmation_sent_at        :datetime
 #  confirmation_token          :string
 #  confirmed_at                :datetime
-#  created_at                  :datetime         not null
-#  created_by_id               :bigint(8)
 #  current_sign_in_at          :datetime
 #  current_sign_in_ip          :inet
 #  email                       :string           default(""), not null
 #  encrypted_password          :string           default(""), not null
 #  failed_attempts             :integer          default(0), not null
-#  id                          :bigint(8)        not null, primary key
 #  last_sign_in_at             :datetime
 #  last_sign_in_ip             :inet
 #  locked_at                   :datetime
@@ -28,13 +26,15 @@
 #  reset_password_sent_at      :datetime
 #  reset_password_token        :string
 #  role                        :integer          default("guest"), not null
-#  school_group_id             :bigint(8)
-#  school_id                   :bigint(8)
 #  sign_in_count               :integer          default(0), not null
-#  staff_role_id               :bigint(8)
 #  terms_accepted              :boolean          default(FALSE)
 #  unlock_token                :string
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  created_by_id               :bigint
+#  school_group_id             :bigint
+#  school_id                   :bigint
+#  staff_role_id               :bigint
 #
 # Indexes
 #

@@ -2,30 +2,30 @@
 #
 # Table name: meters
 #
+#  id                             :bigint           not null, primary key
 #  active                         :boolean          default(TRUE)
-#  admin_meter_statuses_id        :bigint(8)
 #  consent_granted                :boolean          default(FALSE)
-#  created_at                     :datetime         not null
-#  data_source_id                 :bigint(8)
 #  dcc_checked_at                 :datetime
 #  dcc_meter                      :enum             default("no"), not null
 #  gas_unit                       :enum
-#  id                             :bigint(8)        not null, primary key
-#  low_carbon_hub_installation_id :bigint(8)
 #  manual_reads                   :boolean          default(FALSE), not null
-#  meter_review_id                :bigint(8)
 #  meter_serial_number            :text
 #  meter_system                   :integer          default("nhh_amr")
 #  meter_type                     :integer
-#  mpan_mprn                      :bigint(8)
+#  mpan_mprn                      :bigint
 #  name                           :string
 #  perse_api                      :enum
-#  procurement_route_id           :bigint(8)
 #  pseudo                         :boolean          default(FALSE)
-#  school_id                      :bigint(8)        not null
-#  solar_edge_installation_id     :bigint(8)
-#  solis_cloud_installation_id    :bigint(8)
+#  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
+#  admin_meter_statuses_id        :bigint
+#  data_source_id                 :bigint
+#  low_carbon_hub_installation_id :bigint
+#  meter_review_id                :bigint
+#  procurement_route_id           :bigint
+#  school_id                      :bigint           not null
+#  solar_edge_installation_id     :bigint
+#  solis_cloud_installation_id    :bigint
 #
 # Indexes
 #

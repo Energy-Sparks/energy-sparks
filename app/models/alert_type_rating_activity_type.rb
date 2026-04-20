@@ -2,10 +2,10 @@
 #
 # Table name: alert_type_rating_activity_types
 #
-#  activity_type_id     :bigint(8)        not null
-#  alert_type_rating_id :bigint(8)        not null
-#  id                   :bigint(8)        not null, primary key
+#  id                   :bigint           not null, primary key
 #  position             :integer          default(0), not null
+#  activity_type_id     :bigint           not null
+#  alert_type_rating_id :bigint           not null
 #
 # Indexes
 #

@@ -2,18 +2,21 @@
 #
 # Table name: case_studies
 #
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  id            :bigint(8)        not null, primary key
-#  position      :integer          default(0), not null
-#  published     :boolean          default(FALSE), not null
-#  title         :string
-#  updated_at    :datetime         not null
-#  updated_by_id :bigint(8)
+#  id                :bigint           not null, primary key
+#  organisation_type :string
+#  position          :integer          default(0), not null
+#  published         :boolean          default(FALSE), not null
+#  title             :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  created_by_id     :bigint
+#  organisation_id   :bigint
+#  updated_by_id     :bigint
 #
 # Indexes
 #
 #  index_case_studies_on_created_by_id  (created_by_id)
+#  index_case_studies_on_organisation   (organisation_type,organisation_id)
 #  index_case_studies_on_updated_by_id  (updated_by_id)
 #
 # Foreign Keys

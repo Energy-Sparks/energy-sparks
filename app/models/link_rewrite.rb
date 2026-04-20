@@ -2,13 +2,13 @@
 #
 # Table name: link_rewrites
 #
-#  created_at       :datetime         not null
-#  id               :bigint(8)        not null, primary key
-#  rewriteable_id   :bigint(8)
+#  id               :bigint           not null, primary key
 #  rewriteable_type :string
 #  source           :string
 #  target           :string
+#  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  rewriteable_id   :bigint
 #
 # Indexes
 #

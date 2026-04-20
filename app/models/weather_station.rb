@@ -2,15 +2,15 @@
 #
 # Table name: weather_stations
 #
+#  id              :bigint           not null, primary key
 #  active          :boolean          default(TRUE)
 #  back_fill_years :integer          default(4)
-#  created_at      :datetime         not null
 #  description     :text
-#  id              :bigint(8)        not null, primary key
 #  latitude        :decimal(10, 6)
 #  longitude       :decimal(10, 6)
 #  provider        :string           not null
 #  title           :text
+#  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
 class WeatherStation < ApplicationRecord

@@ -2,14 +2,14 @@
 #
 # Table name: completed_todos
 #
-#  completable_id   :bigint(8)        not null
+#  id               :bigint           not null, primary key
 #  completable_type :string           not null
-#  created_at       :datetime         not null
-#  id               :bigint(8)        not null, primary key
-#  recording_id     :bigint(8)        not null
 #  recording_type   :string           not null
-#  todo_id          :bigint(8)        not null
+#  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  completable_id   :bigint           not null
+#  recording_id     :bigint           not null
+#  todo_id          :bigint           not null
 #
 # Indexes
 #

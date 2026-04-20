@@ -2,11 +2,11 @@
 #
 # Table name: equivalence_type_content_versions
 #
+#  id                  :bigint           not null, primary key
 #  created_at          :datetime         not null
-#  equivalence_type_id :bigint(8)        not null
-#  id                  :bigint(8)        not null, primary key
-#  replaced_by_id      :bigint(8)
 #  updated_at          :datetime         not null
+#  equivalence_type_id :bigint           not null
+#  replaced_by_id      :bigint
 #
 # Indexes
 #

@@ -2,10 +2,10 @@
 #
 # Table name: comparison_thermostatic_controls
 #
-#  id                   :bigint(8)
+#  id                   :bigint
 #  potential_saving_gbp :float
 #  r2                   :float
-#  school_id            :bigint(8)
+#  school_id            :bigint
 #
 # Indexes
 #

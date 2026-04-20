@@ -2,14 +2,14 @@
 #
 # Table name: contacts
 #
+#  id                  :bigint           not null, primary key
 #  description         :text
 #  email_address       :text
-#  id                  :bigint(8)        not null, primary key
 #  mobile_phone_number :text
 #  name                :text
-#  school_id           :bigint(8)        not null
-#  staff_role_id       :bigint(8)
-#  user_id             :bigint(8)
+#  school_id           :bigint           not null
+#  staff_role_id       :bigint
+#  user_id             :bigint
 #
 # Indexes
 #

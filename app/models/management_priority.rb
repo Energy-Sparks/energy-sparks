@@ -2,14 +2,14 @@
 #
 # Table name: management_priorities
 #
-#  alert_id                             :bigint(8)        not null
-#  alert_type_rating_content_version_id :bigint(8)        not null
-#  content_generation_run_id            :bigint(8)        not null
-#  created_at                           :datetime         not null
-#  find_out_more_id                     :bigint(8)
-#  id                                   :bigint(8)        not null, primary key
+#  id                                   :bigint           not null, primary key
 #  priority                             :decimal(, )      default(0.0), not null
+#  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
+#  alert_id                             :bigint           not null
+#  alert_type_rating_content_version_id :bigint           not null
+#  content_generation_run_id            :bigint           not null
+#  find_out_more_id                     :bigint
 #
 # Indexes
 #

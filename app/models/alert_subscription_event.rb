@@ -2,20 +2,20 @@
 #
 # Table name: alert_subscription_events
 #
-#  alert_id                             :bigint(8)        not null
-#  alert_type_rating_content_version_id :bigint(8)        not null
+#  id                                   :bigint           not null, primary key
 #  communication_type                   :integer          default("email"), not null
-#  contact_id                           :bigint(8)        not null
-#  created_at                           :datetime         not null
-#  email_id                             :bigint(8)
-#  find_out_more_id                     :bigint(8)
-#  id                                   :bigint(8)        not null, primary key
 #  message                              :text
 #  priority                             :decimal(, )      default(0.0), not null
 #  status                               :integer          default("pending"), not null
-#  subscription_generation_run_id       :bigint(8)        not null
 #  unsubscription_uuid                  :string
+#  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
+#  alert_id                             :bigint           not null
+#  alert_type_rating_content_version_id :bigint           not null
+#  contact_id                           :bigint           not null
+#  email_id                             :bigint
+#  find_out_more_id                     :bigint
+#  subscription_generation_run_id       :bigint           not null
 #
 # Indexes
 #

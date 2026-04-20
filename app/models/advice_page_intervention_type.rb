@@ -2,10 +2,10 @@
 #
 # Table name: advice_page_intervention_types
 #
-#  advice_page_id       :bigint(8)
-#  id                   :bigint(8)        not null, primary key
-#  intervention_type_id :bigint(8)
+#  id                   :bigint           not null, primary key
 #  position             :integer
+#  advice_page_id       :bigint
+#  intervention_type_id :bigint
 #
 # Indexes
 #

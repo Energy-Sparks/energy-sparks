@@ -2,15 +2,15 @@
 #
 # Table name: scoreboards
 #
-#  academic_year_calendar_id   :bigint(8)
-#  created_at                  :datetime         not null
+#  id                          :bigint           not null, primary key
 #  description                 :string
-#  id                          :bigint(8)        not null, primary key
 #  mailchimp_fields_changed_at :datetime
 #  name                        :string           not null
 #  public                      :boolean          default(TRUE)
 #  slug                        :string           not null
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  academic_year_calendar_id   :bigint
 #
 # Indexes
 #

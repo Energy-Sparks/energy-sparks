@@ -2,18 +2,17 @@
 #
 # Table name: data_sources
 #
+#  id                          :bigint           not null, primary key
 #  add_existing_data_feed      :text
 #  alert_percentage_threshold  :integer          default(25)
 #  alerts_on                   :boolean          default(TRUE)
 #  comments                    :text
 #  contact_email               :string
 #  contact_name                :string
-#  created_at                  :datetime         not null
 #  data_feed_type              :string
 #  data_issues_contact_details :text
 #  data_prerequisites          :text
 #  historic_data               :text
-#  id                          :bigint(8)        not null, primary key
 #  import_warning_days         :integer          default(7)
 #  loa_contact_details         :text
 #  loa_expiry_procedure        :text
@@ -21,8 +20,9 @@
 #  name                        :string           not null
 #  new_area_data_feed          :text
 #  organisation_type           :integer
-#  owned_by_id                 :bigint(8)
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  owned_by_id                 :bigint
 #
 # Indexes
 #

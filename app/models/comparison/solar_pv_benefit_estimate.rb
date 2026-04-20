@@ -2,14 +2,14 @@
 #
 # Table name: comparison_solar_pv_benefit_estimates
 #
-#  alert_generation_run_id                       :bigint(8)
+#  id                                            :bigint
 #  electricity_economic_tariff_changed_this_year :boolean
-#  id                                            :bigint(8)
 #  one_year_saving_gbpcurrent                    :float
 #  optimum_kwp                                   :float
 #  optimum_mains_reduction_percent               :float
 #  optimum_payback_years                         :float
-#  school_id                                     :bigint(8)
+#  alert_generation_run_id                       :bigint
+#  school_id                                     :bigint
 #
 # Indexes
 #

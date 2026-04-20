@@ -2,12 +2,12 @@
 #
 # Table name: advice_page_school_benchmarks
 #
-#  advice_page_id :bigint(8)        not null
+#  id             :bigint           not null, primary key
 #  benchmarked_as :integer          default("other_school"), not null
 #  created_at     :datetime         not null
-#  id             :bigint(8)        not null, primary key
-#  school_id      :bigint(8)        not null
 #  updated_at     :datetime         not null
+#  advice_page_id :bigint           not null
+#  school_id      :bigint           not null
 #
 # Indexes
 #

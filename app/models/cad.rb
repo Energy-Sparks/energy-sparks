@@ -2,17 +2,17 @@
 #
 # Table name: cads
 #
+#  id                :bigint           not null, primary key
 #  active            :boolean          default(FALSE)
-#  created_at        :datetime         not null
 #  device_identifier :string           not null
-#  id                :bigint(8)        not null, primary key
 #  max_power         :float            default(3.0)
-#  meter_id          :bigint(8)
 #  name              :string           not null
 #  refresh_interval  :integer          default(5)
-#  school_id         :bigint(8)        not null
 #  test_mode         :boolean          default(FALSE)
+#  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  meter_id          :bigint
+#  school_id         :bigint           not null
 #
 # Indexes
 #

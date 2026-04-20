@@ -2,15 +2,15 @@
 #
 # Table name: comparison_annual_storage_heater_out_of_hours_uses
 #
-#  alert_generation_run_id  :bigint(8)
+#  id                       :bigint
 #  holidays_gbp             :float
 #  holidays_percent         :float
-#  id                       :bigint(8)
-#  school_id                :bigint(8)
 #  schoolday_closed_percent :float
 #  schoolday_open_percent   :float
 #  weekends_gbp             :float
 #  weekends_percent         :float
+#  alert_generation_run_id  :bigint
+#  school_id                :bigint
 #
 # Indexes
 #

@@ -2,11 +2,11 @@
 #
 # Table name: amr_data_feed_configs
 #
+#  id                      :bigint           not null, primary key
 #  allow_merging           :boolean          default(FALSE), not null
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
 #  convert_to_kwh          :enum             default("no")
-#  created_at              :datetime         not null
 #  date_format             :text             not null
 #  delayed_reading         :boolean          default(FALSE), not null
 #  description             :text             not null
@@ -15,7 +15,6 @@
 #  half_hourly_labelling   :enum
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
-#  id                      :bigint(8)        not null, primary key
 #  identifier              :text             not null
 #  lookup_by_serial_number :boolean          default(FALSE)
 #  meter_description_field :text
@@ -24,7 +23,6 @@
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
-#  owned_by_id             :bigint(8)
 #  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
 #  postcode_field          :text
@@ -37,7 +35,9 @@
 #  source_type             :integer          default("email"), not null
 #  total_field             :text
 #  units_field             :text
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  owned_by_id             :bigint
 #
 # Indexes
 #

@@ -4,15 +4,15 @@
 #
 # Table name: meter_monthly_summaries
 #
+#  id          :bigint           not null, primary key
 #  consumption :float            not null, is an Array
-#  created_at  :datetime         not null
-#  id          :bigint(8)        not null, primary key
-#  meter_id    :bigint(8)        not null
 #  quality     :enum             not null, is an Array
 #  total       :float            not null
 #  type        :enum             not null
-#  updated_at  :datetime         not null
 #  year        :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  meter_id    :bigint           not null
 #
 # Indexes
 #

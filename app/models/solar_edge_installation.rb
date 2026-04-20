@@ -2,15 +2,15 @@
 #
 # Table name: solar_edge_installations
 #
-#  amr_data_feed_config_id :bigint(8)        not null
+#  id                      :bigint           not null, primary key
 #  api_key                 :text
-#  created_at              :datetime         not null
-#  id                      :bigint(8)        not null, primary key
 #  information             :json
 #  mpan                    :text
-#  school_id               :bigint(8)        not null
-#  site_id                 :text
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  amr_data_feed_config_id :bigint           not null
+#  school_id               :bigint           not null
+#  site_id                 :text
 #
 # Indexes
 #

@@ -2,11 +2,11 @@
 #
 # Table name: school_batch_run_log_entries
 #
-#  created_at          :datetime         not null
-#  id                  :bigint(8)        not null, primary key
+#  id                  :bigint           not null, primary key
 #  message             :string
-#  school_batch_run_id :bigint(8)
+#  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  school_batch_run_id :bigint
 #
 # Indexes
 #

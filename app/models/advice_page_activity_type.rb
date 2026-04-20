@@ -2,10 +2,10 @@
 #
 # Table name: advice_page_activity_types
 #
-#  activity_type_id :bigint(8)
-#  advice_page_id   :bigint(8)
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  position         :integer
+#  activity_type_id :bigint
+#  advice_page_id   :bigint
 #
 # Indexes
 #

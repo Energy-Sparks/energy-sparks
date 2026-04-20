@@ -2,6 +2,7 @@
 #
 # Table name: comparison_change_in_energy_since_last_years
 #
+#  id                                 :bigint
 #  electricity_current_period_co2     :float
 #  electricity_current_period_gbp     :float
 #  electricity_current_period_kwh     :float
@@ -16,8 +17,6 @@
 #  gas_previous_period_gbp            :float
 #  gas_previous_period_kwh            :float
 #  gas_tariff_has_changed             :boolean
-#  id                                 :bigint(8)
-#  school_id                          :bigint(8)
 #  solar_pv_current_period_co2        :float
 #  solar_pv_current_period_kwh        :float
 #  solar_pv_previous_period_co2       :float
@@ -29,6 +28,7 @@
 #  storage_heater_previous_period_co2 :float
 #  storage_heater_previous_period_gbp :float
 #  storage_heater_previous_period_kwh :float
+#  school_id                          :bigint
 #
 # Indexes
 #

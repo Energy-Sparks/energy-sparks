@@ -2,12 +2,12 @@
 #
 # Table name: intervention_type_groups
 #
+#  id          :bigint           not null, primary key
 #  active      :boolean          default(TRUE)
-#  created_at  :datetime         not null
 #  description :string
 #  icon        :string           default("question-circle")
-#  id          :bigint(8)        not null, primary key
 #  name        :string
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 class InterventionTypeGroup < ApplicationRecord

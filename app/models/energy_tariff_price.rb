@@ -2,15 +2,15 @@
 #
 # Table name: energy_tariff_prices
 #
-#  created_at       :datetime         not null
+#  id               :bigint           not null, primary key
 #  description      :text
-#  end_time         :time             default(Sat, 01 Jan 2000 23:30:00.000000000 UTC +00:00), not null
-#  energy_tariff_id :bigint(8)        not null
-#  id               :bigint(8)        not null, primary key
-#  start_time       :time             default(Sat, 01 Jan 2000 00:00:00.000000000 UTC +00:00), not null
+#  end_time         :time             default(2000-01-01 23:30:00.000000000 UTC +00:00), not null
+#  start_time       :time             default(2000-01-01 00:00:00.000000000 UTC +00:00), not null
 #  units            :text
-#  updated_at       :datetime         not null
 #  value            :decimal(, )
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  energy_tariff_id :bigint           not null
 #
 # Indexes
 #

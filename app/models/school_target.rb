@@ -4,23 +4,23 @@
 #
 # Table name: school_targets
 #
-#  created_at                          :datetime         not null
+#  id                                  :bigint           not null, primary key
 #  electricity                         :float
 #  electricity_monthly_consumption     :jsonb
 #  electricity_progress                :json
 #  gas                                 :float
 #  gas_monthly_consumption             :jsonb
 #  gas_progress                        :json
-#  id                                  :bigint(8)        not null, primary key
 #  report_last_generated               :datetime
 #  revised_fuel_types                  :string           default([]), not null, is an Array
-#  school_id                           :bigint(8)        not null
 #  start_date                          :date
 #  storage_heaters                     :float
 #  storage_heaters_monthly_consumption :jsonb
 #  storage_heaters_progress            :json
 #  target_date                         :date
+#  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
+#  school_id                           :bigint           not null
 #
 # Indexes
 #

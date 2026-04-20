@@ -2,12 +2,12 @@
 #
 # Table name: help_pages
 #
-#  created_at :datetime         not null
+#  id         :bigint           not null, primary key
 #  feature    :integer          not null
-#  id         :bigint(8)        not null, primary key
 #  published  :boolean          default(FALSE), not null
 #  slug       :string           not null
 #  title      :string
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 # Indexes

@@ -2,11 +2,11 @@
 #
 # Table name: audit_activity_types
 #
-#  activity_type_id :bigint(8)        not null
-#  audit_id         :bigint(8)        not null
-#  id               :bigint(8)        not null, primary key
+#  id               :bigint           not null, primary key
 #  notes            :text
 #  position         :integer          default(0), not null
+#  activity_type_id :bigint           not null
+#  audit_id         :bigint           not null
 #
 # Indexes
 #

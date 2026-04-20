@@ -2,29 +2,24 @@
 #
 # Table name: schools
 #
+#  id                                      :bigint           not null, primary key
 #  activation_date                         :date
 #  active                                  :boolean          default(TRUE)
 #  address                                 :text
 #  archived_date                           :date
 #  bill_requested                          :boolean          default(FALSE)
 #  bill_requested_at                       :datetime
-#  calendar_id                             :bigint(8)
 #  chart_preference                        :integer          default("default"), not null
 #  cooks_dinners_for_other_schools         :boolean          default(FALSE), not null
 #  cooks_dinners_for_other_schools_count   :integer
 #  cooks_dinners_onsite                    :boolean          default(FALSE), not null
 #  country                                 :integer          default("england"), not null
-#  created_at                              :datetime         not null
-#  dark_sky_area_id                        :bigint(8)
 #  data_enabled                            :boolean          default(FALSE)
 #  data_sharing                            :enum             default("public"), not null
-#  default_contract_holder_id              :bigint(8)
 #  default_contract_holder_type            :string
 #  enable_targets_feature                  :boolean          default(TRUE)
-#  establishment_id                        :bigint(8)
 #  floor_area                              :decimal(, )
 #  full_school                             :boolean          default(TRUE)
-#  funder_id                               :bigint(8)
 #  funding_status                          :integer          default("state_school"), not null
 #  has_swimming_pool                       :boolean          default(FALSE), not null
 #  heating_air_source_heat_pump            :boolean          default(FALSE), not null
@@ -60,16 +55,12 @@
 #  heating_water_source_heat_pump          :boolean          default(FALSE), not null
 #  heating_water_source_heat_pump_notes    :text
 #  heating_water_source_heat_pump_percent  :integer          default(0)
-#  id                                      :bigint(8)        not null, primary key
 #  indicated_has_solar_panels              :boolean          default(FALSE), not null
 #  indicated_has_storage_heaters           :boolean          default(FALSE)
 #  latitude                                :decimal(10, 6)
 #  level                                   :integer          default(0)
-#  local_authority_area_id                 :bigint(8)
-#  local_distribution_zone_id              :bigint(8)
 #  longitude                               :decimal(10, 6)
 #  mailchimp_fields_changed_at             :datetime
-#  met_office_area_id                      :bigint(8)
 #  name                                    :string
 #  number_of_pupils                        :integer
 #  percentage_free_school_meals            :integer
@@ -79,21 +70,30 @@
 #  region                                  :integer
 #  removal_date                            :date
 #  renewal_behaviour                       :enum             default("renew"), not null
-#  school_group_cluster_id                 :bigint(8)
-#  school_group_id                         :bigint(8)
 #  school_type                             :integer          not null
-#  scoreboard_id                           :bigint(8)
 #  serves_dinners                          :boolean          default(FALSE), not null
 #  slug                                    :string
-#  solar_pv_tuos_area_id                   :bigint(8)
-#  temperature_area_id                     :bigint(8)
-#  template_calendar_id                    :integer
-#  updated_at                              :datetime         not null
 #  urn                                     :integer          not null
 #  validation_cache_key                    :string           default("initial")
 #  visible                                 :boolean          default(FALSE)
-#  weather_station_id                      :bigint(8)
 #  website                                 :string
+#  created_at                              :datetime         not null
+#  updated_at                              :datetime         not null
+#  calendar_id                             :bigint
+#  dark_sky_area_id                        :bigint
+#  default_contract_holder_id              :bigint
+#  establishment_id                        :bigint
+#  funder_id                               :bigint
+#  local_authority_area_id                 :bigint
+#  local_distribution_zone_id              :bigint
+#  met_office_area_id                      :bigint
+#  school_group_cluster_id                 :bigint
+#  school_group_id                         :bigint
+#  scoreboard_id                           :bigint
+#  solar_pv_tuos_area_id                   :bigint
+#  temperature_area_id                     :bigint
+#  template_calendar_id                    :integer
+#  weather_station_id                      :bigint
 #
 # Indexes
 #

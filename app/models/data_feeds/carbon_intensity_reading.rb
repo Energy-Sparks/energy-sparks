@@ -2,10 +2,10 @@
 #
 # Table name: carbon_intensity_readings
 #
+#  id                   :bigint           not null, primary key
 #  carbon_intensity_x48 :decimal(, )      not null, is an Array
-#  created_at           :datetime         not null
-#  id                   :bigint(8)        not null, primary key
 #  reading_date         :date             not null
+#  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
 # Indexes

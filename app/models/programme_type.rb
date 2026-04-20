@@ -2,15 +2,15 @@
 #
 # Table name: programme_types
 #
+#  id                :bigint           not null, primary key
 #  active            :boolean          default(FALSE)
 #  bonus_score       :integer          default(0)
-#  created_at        :datetime         default(Wed, 06 Jul 2022 12:00:00.000000000 UTC +00:00), not null
 #  default           :boolean          default(FALSE)
 #  document_link     :string
-#  id                :bigint(8)        not null, primary key
 #  short_description :text
 #  title             :text
-#  updated_at        :datetime         default(Wed, 06 Jul 2022 12:00:00.000000000 UTC +00:00), not null
+#  created_at        :datetime         default(2022-07-06 12:00:00.000000000 UTC +00:00), not null
+#  updated_at        :datetime         default(2022-07-06 12:00:00.000000000 UTC +00:00), not null
 #
 
 class ProgrammeType < ApplicationRecord

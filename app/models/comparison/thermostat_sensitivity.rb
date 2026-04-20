@@ -2,10 +2,10 @@
 #
 # Table name: comparison_thermostat_sensitivities
 #
-#  alert_generation_run_id      :bigint(8)
+#  id                           :bigint
 #  annual_saving_1_C_change_gbp :float
-#  id                           :bigint(8)
-#  school_id                    :bigint(8)
+#  alert_generation_run_id      :bigint
+#  school_id                    :bigint
 #
 # Indexes
 #

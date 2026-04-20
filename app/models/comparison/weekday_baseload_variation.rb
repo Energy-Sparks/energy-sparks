@@ -2,16 +2,16 @@
 #
 # Table name: comparison_weekday_baseload_variations
 #
-#  alert_generation_run_id                       :bigint(8)
+#  id                                            :bigint
 #  annual_cost_gbpcurrent                        :float
 #  electricity_economic_tariff_changed_this_year :boolean
-#  id                                            :bigint(8)
 #  max_day                                       :integer
 #  max_day_kw                                    :float
 #  min_day                                       :integer
 #  min_day_kw                                    :float
 #  percent_intraday_variation                    :float
-#  school_id                                     :bigint(8)
+#  alert_generation_run_id                       :bigint
+#  school_id                                     :bigint
 #
 # Indexes
 #

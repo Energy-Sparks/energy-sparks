@@ -2,11 +2,11 @@
 #
 # Table name: local_authority_areas
 #
+#  id                          :bigint           not null, primary key
 #  code                        :string
-#  created_at                  :datetime         not null
-#  id                          :bigint(8)        not null, primary key
 #  mailchimp_fields_changed_at :datetime
 #  name                        :string
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #
 class LocalAuthorityArea < ApplicationRecord

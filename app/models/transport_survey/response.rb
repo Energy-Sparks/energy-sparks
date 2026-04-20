@@ -2,16 +2,16 @@
 #
 # Table name: transport_survey_responses
 #
-#  created_at          :datetime         not null
-#  id                  :bigint(8)        not null, primary key
+#  id                  :bigint           not null, primary key
 #  journey_minutes     :integer          default(0), not null
 #  passengers          :integer          default(1), not null
 #  run_identifier      :string           not null
 #  surveyed_at         :datetime         not null
-#  transport_survey_id :bigint(8)        not null
-#  transport_type_id   :bigint(8)        not null
-#  updated_at          :datetime         not null
 #  weather             :integer          default("sun"), not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  transport_survey_id :bigint           not null
+#  transport_type_id   :bigint           not null
 #
 # Indexes
 #

@@ -2,12 +2,12 @@
 #
 # Table name: videos
 #
-#  created_at  :datetime         not null
+#  id          :bigint           not null, primary key
 #  description :text
 #  featured    :boolean          default(TRUE), not null
-#  id          :bigint(8)        not null, primary key
 #  position    :integer          default(1), not null
 #  title       :text             not null
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  youtube_id  :text             not null
 #

@@ -4,13 +4,13 @@
 #
 # Table name: schools_manual_readings
 #
-#  created_at  :datetime         not null
+#  id          :bigint           not null, primary key
 #  electricity :float
 #  gas         :float
-#  id          :bigint(8)        not null, primary key
 #  month       :date             not null
-#  school_id   :bigint(8)        not null
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  school_id   :bigint           not null
 #
 # Indexes
 #

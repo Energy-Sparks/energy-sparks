@@ -2,18 +2,18 @@
 #
 # Table name: intervention_types
 #
+#  id                         :bigint           not null, primary key
 #  active                     :boolean          default(TRUE)
-#  created_at                 :datetime         not null
 #  custom                     :boolean          default(FALSE)
 #  fuel_type                  :string           default([]), is an Array
-#  id                         :bigint(8)        not null, primary key
-#  intervention_type_group_id :bigint(8)        not null
 #  maximum_frequency          :integer          default(10)
 #  name                       :string
 #  score                      :integer
 #  show_on_charts             :boolean          default(TRUE)
 #  summary                    :string
+#  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
+#  intervention_type_group_id :bigint           not null
 #
 # Indexes
 #

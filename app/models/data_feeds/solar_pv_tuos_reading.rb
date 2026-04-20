@@ -2,17 +2,17 @@
 #
 # Table name: solar_pv_tuos_readings
 #
-#  area_id           :bigint(8)        not null
-#  created_at        :datetime         not null
+#  id                :bigint           not null, primary key
 #  distance_km       :decimal(, )
 #  generation_mw_x48 :decimal(, )      not null, is an Array
-#  gsp_id            :integer
 #  gsp_name          :text
-#  id                :bigint(8)        not null, primary key
 #  latitude          :decimal(, )
 #  longitude         :decimal(, )
 #  reading_date      :date             not null
+#  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  area_id           :bigint           not null
+#  gsp_id            :integer
 #
 # Indexes
 #

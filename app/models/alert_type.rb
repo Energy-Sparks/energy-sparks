@@ -2,7 +2,7 @@
 #
 # Table name: alert_types
 #
-#  advice_page_id  :bigint(8)
+#  id              :bigint           not null, primary key
 #  background      :boolean          default(FALSE)
 #  benchmark       :boolean          default(FALSE)
 #  class_name      :text
@@ -11,13 +11,13 @@
 #  fuel_type       :integer
 #  group           :integer          default("advice"), not null
 #  has_ratings     :boolean          default(TRUE)
-#  id              :bigint(8)        not null, primary key
 #  link_to         :integer          default("insights_page"), not null
 #  link_to_section :string
 #  source          :integer          default("analytics"), not null
 #  sub_category    :integer
 #  title           :text
 #  user_restricted :boolean          default(FALSE), not null
+#  advice_page_id  :bigint
 #
 # Indexes
 #

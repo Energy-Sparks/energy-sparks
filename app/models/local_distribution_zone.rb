@@ -4,12 +4,12 @@
 #
 # Table name: local_distribution_zones
 #
+#  id             :bigint           not null, primary key
 #  code           :string           not null
-#  created_at     :datetime         not null
-#  id             :bigint(8)        not null, primary key
 #  name           :string           not null
-#  publication_id :string           not null
+#  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  publication_id :string           not null
 #
 # Indexes
 #
