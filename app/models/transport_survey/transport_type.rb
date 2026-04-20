@@ -2,10 +2,9 @@
 #
 # Table name: transport_types
 #
+#  id                :bigint(8)        not null, primary key
 #  can_share         :boolean          default(FALSE), not null
 #  category          :integer
-#  created_at        :datetime         not null
-#  id                :bigint(8)        not null, primary key
 #  image             :string           not null
 #  kg_co2e_per_km    :decimal(, )      default(0.0), not null
 #  name              :string
@@ -13,6 +12,7 @@
 #  park_and_stride   :boolean          default(FALSE), not null
 #  position          :integer          default(0), not null
 #  speed_km_per_hour :decimal(, )      default(0.0), not null
+#  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
 # Indexes

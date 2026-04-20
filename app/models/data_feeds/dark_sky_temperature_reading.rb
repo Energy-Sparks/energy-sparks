@@ -2,12 +2,12 @@
 #
 # Table name: dark_sky_temperature_readings
 #
-#  area_id                 :bigint(8)        not null
-#  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
 #  reading_date            :date             not null
 #  temperature_celsius_x48 :decimal(, )      not null, is an Array
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  area_id                 :bigint(8)        not null
 #
 # Indexes
 #

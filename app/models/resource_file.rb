@@ -2,11 +2,11 @@
 #
 # Table name: resource_files
 #
-#  created_at            :datetime         not null
 #  id                    :bigint(8)        not null, primary key
-#  resource_file_type_id :bigint(8)
 #  title                 :string           not null
+#  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  resource_file_type_id :bigint(8)
 #
 # Indexes
 #

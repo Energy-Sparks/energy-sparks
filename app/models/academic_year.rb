@@ -2,10 +2,10 @@
 #
 # Table name: academic_years
 #
-#  calendar_id :integer
-#  end_date    :date
 #  id          :bigint(8)        not null, primary key
+#  end_date    :date
 #  start_date  :date
+#  calendar_id :integer
 #
 # Foreign Keys
 #
