@@ -2,11 +2,11 @@
 #
 # Table name: manual_data_load_run_log_entries
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  message                 :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  manual_data_load_run_id :bigint           not null
+#  manual_data_load_run_id :bigint(8)        not null
 #
 # Indexes
 #

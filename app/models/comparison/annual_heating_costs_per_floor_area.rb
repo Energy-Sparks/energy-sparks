@@ -2,7 +2,7 @@
 #
 # Table name: comparison_annual_heating_costs_per_floor_areas
 #
-#  id                                                         :bigint
+#  id                                                         :bigint(8)
 #  electricity_economic_tariff_changed_this_year              :boolean
 #  gas_economic_tariff_changed_this_year                      :boolean
 #  gas_last_year_co2                                          :float
@@ -19,7 +19,7 @@
 #  storage_heaters_last_year_co2                              :float
 #  storage_heaters_last_year_gbp                              :float
 #  storage_heaters_last_year_kwh                              :float
-#  school_id                                                  :bigint
+#  school_id                                                  :bigint(8)
 #
 # Indexes
 #

@@ -2,16 +2,16 @@
 #
 # Table name: global_meter_attributes
 #
-#  id             :bigint           not null, primary key
+#  id             :bigint(8)        not null, primary key
 #  attribute_type :string           not null
 #  input_data     :json
 #  meter_types    :jsonb
 #  reason         :text
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  created_by_id  :bigint
-#  deleted_by_id  :bigint
-#  replaced_by_id :bigint
+#  created_by_id  :bigint(8)
+#  deleted_by_id  :bigint(8)
+#  replaced_by_id :bigint(8)
 #
 # Indexes
 #

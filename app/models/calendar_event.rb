@@ -2,16 +2,16 @@
 #
 # Table name: calendar_events
 #
-#  id                     :bigint           not null, primary key
+#  id                     :bigint(8)        not null, primary key
 #  description            :text
 #  end_date               :date             not null
 #  start_date             :date             not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  academic_year_id       :bigint           not null
-#  based_on_id            :bigint
-#  calendar_event_type_id :bigint           not null
-#  calendar_id            :bigint           not null
+#  academic_year_id       :bigint(8)        not null
+#  based_on_id            :bigint(8)
+#  calendar_event_type_id :bigint(8)        not null
+#  calendar_id            :bigint(8)        not null
 #
 # Indexes
 #

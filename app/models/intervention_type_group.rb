@@ -2,7 +2,7 @@
 #
 # Table name: intervention_type_groups
 #
-#  id          :bigint           not null, primary key
+#  id          :bigint(8)        not null, primary key
 #  active      :boolean          default(TRUE)
 #  description :string
 #  icon        :string           default("question-circle")

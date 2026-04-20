@@ -2,7 +2,7 @@
 #
 # Table name: activity_timings
 #
-#  id            :bigint           not null, primary key
+#  id            :bigint(8)        not null, primary key
 #  include_lower :boolean          default(FALSE)
 #  name          :string           not null
 #  position      :integer          default(0)

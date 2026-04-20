@@ -2,11 +2,11 @@
 #
 # Table name: sms_records
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  mobile_phone_number         :text
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#  alert_subscription_event_id :bigint
+#  alert_subscription_event_id :bigint(8)
 #
 # Indexes
 #

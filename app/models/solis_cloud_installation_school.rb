@@ -2,11 +2,11 @@
 #
 # Table name: solis_cloud_installation_schools
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#  school_id                   :bigint           not null
-#  solis_cloud_installation_id :bigint           not null
+#  school_id                   :bigint(8)        not null
+#  solis_cloud_installation_id :bigint(8)        not null
 #
 # Indexes
 #

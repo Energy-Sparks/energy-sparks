@@ -2,7 +2,7 @@
 #
 # Table name: academic_years
 #
-#  id          :bigint           not null, primary key
+#  id          :bigint(8)        not null, primary key
 #  end_date    :date
 #  start_date  :date
 #  calendar_id :integer

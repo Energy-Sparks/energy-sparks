@@ -2,7 +2,7 @@
 #
 # Table name: calendar_event_types
 #
-#  id                   :bigint           not null, primary key
+#  id                   :bigint(8)        not null, primary key
 #  alias                :text
 #  analytics_event_type :integer          default("term_time"), not null
 #  bank_holiday         :boolean          default(FALSE)

@@ -2,7 +2,7 @@
 #
 # Table name: procurement_routes
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  add_existing_data_feed      :text
 #  comments                    :text
 #  contact_email               :string

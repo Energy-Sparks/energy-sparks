@@ -2,14 +2,14 @@
 #
 # Table name: audits
 #
-#  id              :bigint           not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  completed_on    :date
 #  involved_pupils :boolean          default(FALSE), not null
 #  published       :boolean          default(TRUE)
 #  title           :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  school_id       :bigint           not null
+#  school_id       :bigint(8)        not null
 #
 # Indexes
 #

@@ -4,7 +4,7 @@
 #
 # Table name: report_gas_anomalies
 #
-#  id                     :bigint
+#  id                     :bigint(8)
 #  previous_degree_days   :decimal(, )
 #  previous_kwh           :decimal(, )
 #  previous_reading_date  :date
@@ -13,8 +13,8 @@
 #  today_degree_days      :decimal(, )
 #  today_kwh              :decimal(, )
 #  today_temperature      :decimal(, )
-#  calendar_event_type_id :bigint
-#  meter_id               :bigint
+#  calendar_event_type_id :bigint(8)
+#  meter_id               :bigint(8)
 #
 # Indexes
 #

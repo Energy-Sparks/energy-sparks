@@ -2,7 +2,7 @@
 #
 # Table name: advice_pages
 #
-#  id              :bigint           not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  fuel_type       :integer
 #  key             :string           not null
 #  multiple_meters :boolean          default(FALSE), not null

@@ -4,7 +4,7 @@
 #
 # Table name: comparison_custom_periods
 #
-#  id                    :bigint           not null, primary key
+#  id                    :bigint(8)        not null, primary key
 #  current_end_date      :date             not null
 #  current_label         :string           not null
 #  current_start_date    :date             not null

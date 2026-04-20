@@ -2,16 +2,16 @@
 #
 # Table name: case_studies
 #
-#  id                :bigint           not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  organisation_type :string
 #  position          :integer          default(0), not null
 #  published         :boolean          default(FALSE), not null
 #  title             :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  created_by_id     :bigint
-#  organisation_id   :bigint
-#  updated_by_id     :bigint
+#  created_by_id     :bigint(8)
+#  organisation_id   :bigint(8)
+#  updated_by_id     :bigint(8)
 #
 # Indexes
 #

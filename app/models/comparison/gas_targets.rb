@@ -2,7 +2,7 @@
 #
 # Table name: comparison_gas_targets
 #
-#  id                              :bigint
+#  id                              :bigint(8)
 #  current_target                  :float
 #  current_year_kwh                :float
 #  current_year_target_kwh         :float
@@ -10,7 +10,7 @@
 #  previous_to_current_year_change :float
 #  previous_year_kwh               :float
 #  tracking_start_date             :date
-#  school_id                       :bigint
+#  school_id                       :bigint(8)
 #
 # Indexes
 #

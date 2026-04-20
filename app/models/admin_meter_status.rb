@@ -2,7 +2,7 @@
 #
 # Table name: admin_meter_statuses
 #
-#  id                              :bigint           not null, primary key
+#  id                              :bigint(8)        not null, primary key
 #  ignore_in_inactive_meter_report :boolean          default(FALSE)
 #  label                           :string
 #  created_at                      :datetime         not null

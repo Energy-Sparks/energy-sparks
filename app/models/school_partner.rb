@@ -2,12 +2,12 @@
 #
 # Table name: school_partners
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  position   :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  partner_id :bigint
-#  school_id  :bigint
+#  partner_id :bigint(8)
+#  school_id  :bigint(8)
 #
 # Indexes
 #

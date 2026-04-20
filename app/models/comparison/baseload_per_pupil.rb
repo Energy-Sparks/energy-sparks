@@ -2,15 +2,15 @@
 #
 # Table name: comparison_baseload_per_pupils
 #
-#  id                                            :bigint
+#  id                                            :bigint(8)
 #  annual_baseload_percent                       :float
 #  average_baseload_last_year_gbp                :float
 #  average_baseload_last_year_kw                 :float
 #  electricity_economic_tariff_changed_this_year :boolean
 #  one_year_baseload_per_pupil_kw                :float
 #  one_year_saving_versus_exemplar_gbp           :float
-#  alert_generation_run_id                       :bigint
-#  school_id                                     :bigint
+#  alert_generation_run_id                       :bigint(8)
+#  school_id                                     :bigint(8)
 #
 # Indexes
 #

@@ -2,7 +2,7 @@
 #
 # Table name: comparison_annual_electricity_out_of_hours_uses
 #
-#  id                                            :bigint
+#  id                                            :bigint(8)
 #  community_gbp                                 :float
 #  community_percent                             :float
 #  electricity_economic_tariff_changed_this_year :boolean
@@ -12,8 +12,8 @@
 #  schoolday_closed_percent                      :float
 #  schoolday_open_percent                        :float
 #  weekends_percent                              :float
-#  alert_generation_run_id                       :bigint
-#  school_id                                     :bigint
+#  alert_generation_run_id                       :bigint(8)
+#  school_id                                     :bigint(8)
 #
 # Indexes
 #

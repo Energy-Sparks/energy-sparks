@@ -2,12 +2,12 @@
 #
 # Table name: calendars
 #
-#  id            :bigint           not null, primary key
+#  id            :bigint(8)        not null, primary key
 #  calendar_type :integer
 #  title         :string           not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  based_on_id   :bigint
+#  based_on_id   :bigint(8)
 #
 # Indexes
 #

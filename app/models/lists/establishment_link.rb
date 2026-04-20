@@ -7,8 +7,8 @@
 #  link_type               :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  establishment_id        :bigint           not null, primary key
-#  linked_establishment_id :bigint           not null, primary key
+#  establishment_id        :bigint(8)        not null, primary key
+#  linked_establishment_id :bigint(8)        not null, primary key
 #
 # Indexes
 #

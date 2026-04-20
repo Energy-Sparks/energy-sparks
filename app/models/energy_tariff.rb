@@ -2,7 +2,7 @@
 #
 # Table name: energy_tariffs
 #
-#  id                 :bigint           not null, primary key
+#  id                 :bigint(8)        not null, primary key
 #  applies_to         :integer          default("both")
 #  ccl                :boolean          default(FALSE)
 #  enabled            :boolean          default(TRUE)
@@ -17,9 +17,9 @@
 #  vat_rate           :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  created_by_id      :bigint
-#  tariff_holder_id   :bigint
-#  updated_by_id      :bigint
+#  created_by_id      :bigint(8)
+#  tariff_holder_id   :bigint(8)
+#  updated_by_id      :bigint(8)
 #
 # Indexes
 #

@@ -4,13 +4,13 @@
 #
 # Table name: comparison_change_in_solar_pv_since_last_years
 #
-#  id                         :bigint
+#  id                         :bigint(8)
 #  current_year_solar_pv_co2  :float
 #  current_year_solar_pv_kwh  :float
 #  previous_year_solar_pv_co2 :float
 #  previous_year_solar_pv_kwh :float
 #  solar_type                 :text
-#  school_id                  :bigint
+#  school_id                  :bigint(8)
 #
 # Indexes
 #

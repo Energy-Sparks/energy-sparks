@@ -2,7 +2,7 @@
 #
 # Table name: tariff_import_logs
 #
-#  id                        :bigint           not null, primary key
+#  id                        :bigint(8)        not null, primary key
 #  description               :text
 #  end_date                  :date
 #  error_messages            :text

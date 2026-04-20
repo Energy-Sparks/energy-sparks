@@ -4,11 +4,11 @@
 #
 # Table name: report_baseload_anomalies
 #
-#  id                    :bigint
+#  id                    :bigint(8)
 #  previous_day_baseload :decimal(, )
 #  reading_date          :date
 #  today_baseload        :decimal(, )
-#  meter_id              :bigint
+#  meter_id              :bigint(8)
 #
 # Indexes
 #

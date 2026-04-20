@@ -4,7 +4,7 @@
 #
 # Table name: local_distribution_zones
 #
-#  id             :bigint           not null, primary key
+#  id             :bigint(8)        not null, primary key
 #  code           :string           not null
 #  name           :string           not null
 #  created_at     :datetime         not null

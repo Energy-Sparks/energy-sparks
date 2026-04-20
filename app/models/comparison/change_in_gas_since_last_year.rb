@@ -2,7 +2,7 @@
 #
 # Table name: comparison_change_in_gas_since_last_years
 #
-#  id                                     :bigint
+#  id                                     :bigint(8)
 #  current_year_co2                       :float
 #  current_year_gbp                       :float
 #  current_year_kwh                       :float
@@ -11,8 +11,8 @@
 #  previous_year_kwh                      :float
 #  temperature_adjusted_percent           :float
 #  temperature_adjusted_previous_year_kwh :float
-#  alert_generation_run_id                :bigint
-#  school_id                              :bigint
+#  alert_generation_run_id                :bigint(8)
+#  school_id                              :bigint(8)
 #
 # Indexes
 #

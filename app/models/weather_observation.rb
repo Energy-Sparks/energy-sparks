@@ -2,12 +2,12 @@
 #
 # Table name: weather_observations
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  reading_date            :date             not null
 #  temperature_celsius_x48 :decimal(, )      not null, is an Array
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  weather_station_id      :bigint           not null
+#  weather_station_id      :bigint(8)        not null
 #
 # Indexes
 #

@@ -2,7 +2,7 @@
 #
 # Table name: alert_types
 #
-#  id              :bigint           not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  background      :boolean          default(FALSE)
 #  benchmark       :boolean          default(FALSE)
 #  class_name      :text
@@ -17,7 +17,7 @@
 #  sub_category    :integer
 #  title           :text
 #  user_restricted :boolean          default(FALSE), not null
-#  advice_page_id  :bigint
+#  advice_page_id  :bigint(8)
 #
 # Indexes
 #

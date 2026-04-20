@@ -1,5 +1,6 @@
 ---
-:position: before # NEW (no equivalent in original)
+# Items marked as "New" are options that have been added since moving from the annotate gem to the new annotaterb gem.
+:position: before # NEW
 :position_in_additional_file_patterns: before # NEW
 :position_in_class: before
 :position_in_factory: before
@@ -42,7 +43,7 @@
 :command: # NEW
 :debug: false # NEW
 :hide_default_column_types: '' # NEW
-:hide_limit_column_types: '' # CHANGED (was 'integer,boolean')
+:hide_limit_column_types: 'integer,boolean'
 :timestamp_columns: # NEW
 - created_at
 - updated_at
@@ -59,7 +60,7 @@
 :classes_default_to_s: [] # NEW
 :additional_file_patterns: [] # NEW
 :model_dir:
-- app/models # CHANGED (was string)
-:require: [] # CHANGED (was '')
+- app/models
+:require: []
 :root_dir:
-- '' # CHANGED (was string)
+- ''

@@ -2,7 +2,7 @@
 #
 # Table name: comparison_report_groups
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  position   :integer          default(0), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

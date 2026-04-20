@@ -2,7 +2,7 @@
 #
 # Table name: transport_types
 #
-#  id                :bigint           not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  can_share         :boolean          default(FALSE), not null
 #  category          :integer
 #  image             :string           not null

@@ -2,7 +2,7 @@
 #
 # Table name: videos
 #
-#  id          :bigint           not null, primary key
+#  id          :bigint(8)        not null, primary key
 #  description :text
 #  featured    :boolean          default(TRUE), not null
 #  position    :integer          default(1), not null

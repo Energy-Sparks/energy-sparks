@@ -2,7 +2,7 @@
 #
 # Table name: areas
 #
-#  id              :bigint           not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  active          :boolean          default(TRUE)
 #  back_fill_years :integer          default(4)
 #  description     :text

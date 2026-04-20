@@ -4,12 +4,12 @@
 #
 # Table name: regeneration_errors
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  message    :text             not null
 #  raised_at  :datetime         not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  school_id  :bigint           not null
+#  school_id  :bigint(8)        not null
 #
 # Indexes
 #

@@ -4,7 +4,7 @@
 #
 # Table name: observations
 #
-#  id                   :bigint           not null, primary key
+#  id                   :bigint(8)        not null, primary key
 #  _description         :text
 #  at                   :datetime         not null
 #  involved_pupils      :boolean          default(FALSE), not null
@@ -15,15 +15,15 @@
 #  visible              :boolean          default(TRUE)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  activity_id          :bigint
-#  audit_id             :bigint
-#  created_by_id        :bigint
-#  intervention_type_id :bigint
-#  observable_id        :bigint
-#  programme_id         :bigint
-#  school_id            :bigint           not null
-#  school_target_id     :bigint
-#  updated_by_id        :bigint
+#  activity_id          :bigint(8)
+#  audit_id             :bigint(8)
+#  created_by_id        :bigint(8)
+#  intervention_type_id :bigint(8)
+#  observable_id        :bigint(8)
+#  programme_id         :bigint(8)
+#  school_id            :bigint(8)        not null
+#  school_target_id     :bigint(8)
+#  updated_by_id        :bigint(8)
 #
 # Indexes
 #

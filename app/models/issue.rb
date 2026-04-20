@@ -2,7 +2,7 @@
 #
 # Table name: issues
 #
-#  id             :bigint           not null, primary key
+#  id             :bigint(8)        not null, primary key
 #  fuel_type      :integer
 #  issue_type     :integer          default("issue"), not null
 #  issueable_type :string
@@ -12,10 +12,10 @@
 #  title          :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  created_by_id  :bigint
-#  issueable_id   :bigint
-#  owned_by_id    :bigint
-#  updated_by_id  :bigint
+#  created_by_id  :bigint(8)
+#  issueable_id   :bigint(8)
+#  owned_by_id    :bigint(8)
+#  updated_by_id  :bigint(8)
 #
 # Indexes
 #

@@ -2,11 +2,11 @@
 #
 # Table name: school_target_events
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  event      :integer          not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  school_id  :bigint           not null
+#  school_id  :bigint(8)        not null
 #
 # Indexes
 #

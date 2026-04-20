@@ -2,7 +2,7 @@
 #
 # Table name: schools
 #
-#  id                                      :bigint           not null, primary key
+#  id                                      :bigint(8)        not null, primary key
 #  activation_date                         :date
 #  active                                  :boolean          default(TRUE)
 #  address                                 :text
@@ -79,21 +79,21 @@
 #  website                                 :string
 #  created_at                              :datetime         not null
 #  updated_at                              :datetime         not null
-#  calendar_id                             :bigint
-#  dark_sky_area_id                        :bigint
-#  default_contract_holder_id              :bigint
-#  establishment_id                        :bigint
-#  funder_id                               :bigint
-#  local_authority_area_id                 :bigint
-#  local_distribution_zone_id              :bigint
-#  met_office_area_id                      :bigint
-#  school_group_cluster_id                 :bigint
-#  school_group_id                         :bigint
-#  scoreboard_id                           :bigint
-#  solar_pv_tuos_area_id                   :bigint
-#  temperature_area_id                     :bigint
+#  calendar_id                             :bigint(8)
+#  dark_sky_area_id                        :bigint(8)
+#  default_contract_holder_id              :bigint(8)
+#  establishment_id                        :bigint(8)
+#  funder_id                               :bigint(8)
+#  local_authority_area_id                 :bigint(8)
+#  local_distribution_zone_id              :bigint(8)
+#  met_office_area_id                      :bigint(8)
+#  school_group_cluster_id                 :bigint(8)
+#  school_group_id                         :bigint(8)
+#  scoreboard_id                           :bigint(8)
+#  solar_pv_tuos_area_id                   :bigint(8)
+#  temperature_area_id                     :bigint(8)
 #  template_calendar_id                    :integer
-#  weather_station_id                      :bigint
+#  weather_station_id                      :bigint(8)
 #
 # Indexes
 #

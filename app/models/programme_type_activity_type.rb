@@ -2,10 +2,10 @@
 #
 # Table name: programme_type_activity_types
 #
-#  id                :bigint           not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  position          :integer          default(0), not null
-#  activity_type_id  :bigint           not null
-#  programme_type_id :bigint           not null
+#  activity_type_id  :bigint(8)        not null
+#  programme_type_id :bigint(8)        not null
 #
 # Indexes
 #

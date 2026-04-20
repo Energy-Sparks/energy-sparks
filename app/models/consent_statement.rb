@@ -2,7 +2,7 @@
 #
 # Table name: consent_statements
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  current    :boolean          default(FALSE)
 #  title      :text             not null
 #  created_at :datetime         not null

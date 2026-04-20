@@ -2,7 +2,7 @@
 #
 # Table name: amr_data_feed_import_logs
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  error_messages          :text
 #  file_name               :text
 #  import_time             :datetime
@@ -10,7 +10,7 @@
 #  records_updated         :integer          default(0), not null
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  amr_data_feed_config_id :bigint           not null
+#  amr_data_feed_config_id :bigint(8)        not null
 #
 # Indexes
 #

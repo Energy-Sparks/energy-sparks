@@ -2,7 +2,7 @@
 #
 # Table name: jobs
 #
-#  id           :bigint           not null, primary key
+#  id           :bigint(8)        not null, primary key
 #  closing_date :date
 #  title        :string           not null
 #  voluntary    :boolean          default(FALSE)

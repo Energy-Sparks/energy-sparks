@@ -2,7 +2,7 @@
 #
 # Table name: comparison_footnotes
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  key        :string           not null
 #  label      :string
 #  created_at :datetime         not null

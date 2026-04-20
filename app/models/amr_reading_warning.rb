@@ -2,7 +2,7 @@
 #
 # Table name: amr_reading_warnings
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  fuel_type                   :string
 #  mpan_mprn                   :text
 #  reading_date                :text
@@ -12,7 +12,7 @@
 #  warning_types               :integer          is an Array
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#  amr_data_feed_import_log_id :bigint           not null
+#  amr_data_feed_import_log_id :bigint(8)        not null
 #  school_id                   :integer
 #
 # Indexes

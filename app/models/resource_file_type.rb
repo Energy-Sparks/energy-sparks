@@ -2,7 +2,7 @@
 #
 # Table name: resource_file_types
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  position   :integer          not null
 #  title      :string           not null
 #  created_at :datetime         not null

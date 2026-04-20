@@ -2,7 +2,7 @@
 #
 # Table name: help_pages
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  feature    :integer          not null
 #  published  :boolean          default(FALSE), not null
 #  slug       :string           not null

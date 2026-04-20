@@ -2,7 +2,7 @@
 #
 # Table name: partners
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  name       :string
 #  position   :integer          default(0), not null
 #  url        :text

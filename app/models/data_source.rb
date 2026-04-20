@@ -2,7 +2,7 @@
 #
 # Table name: data_sources
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  add_existing_data_feed      :text
 #  alert_percentage_threshold  :integer          default(25)
 #  alerts_on                   :boolean          default(TRUE)
@@ -22,7 +22,7 @@
 #  organisation_type           :integer
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#  owned_by_id                 :bigint
+#  owned_by_id                 :bigint(8)
 #
 # Indexes
 #

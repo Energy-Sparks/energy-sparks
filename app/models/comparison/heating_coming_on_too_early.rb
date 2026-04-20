@@ -2,7 +2,7 @@
 #
 # Table name: comparison_heating_coming_on_too_early
 #
-#  id                                       :bigint
+#  id                                       :bigint(8)
 #  average_start_time_hh_mm                 :time
 #  avg_week_start_time                      :time
 #  gas_economic_tariff_changed_this_year    :boolean
@@ -12,8 +12,8 @@
 #  regression_r2                            :float
 #  regression_start_time                    :float
 #  start_time_standard_devation             :float
-#  alert_generation_run_id                  :bigint
-#  school_id                                :bigint
+#  alert_generation_run_id                  :bigint(8)
+#  school_id                                :bigint(8)
 #
 # Indexes
 #

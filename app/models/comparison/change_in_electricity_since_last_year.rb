@@ -2,7 +2,7 @@
 #
 # Table name: comparison_change_in_electricity_since_last_years
 #
-#  id                            :bigint
+#  id                            :bigint(8)
 #  current_year_electricity_co2  :float
 #  current_year_electricity_gbp  :float
 #  current_year_electricity_kwh  :float
@@ -10,7 +10,7 @@
 #  previous_year_electricity_gbp :float
 #  previous_year_electricity_kwh :float
 #  solar_type                    :text
-#  school_id                     :bigint
+#  school_id                     :bigint(8)
 #
 # Indexes
 #

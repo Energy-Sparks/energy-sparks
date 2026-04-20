@@ -2,7 +2,7 @@
 #
 # Table name: alert_type_ratings
 #
-#  id                                :bigint           not null, primary key
+#  id                                :bigint(8)        not null, primary key
 #  description                       :string           not null
 #  email_active                      :boolean          default(FALSE)
 #  find_out_more_active              :boolean          default(FALSE)
@@ -17,7 +17,7 @@
 #  sms_active                        :boolean          default(FALSE)
 #  created_at                        :datetime         not null
 #  updated_at                        :datetime         not null
-#  alert_type_id                     :bigint           not null
+#  alert_type_id                     :bigint(8)        not null
 #
 # Indexes
 #

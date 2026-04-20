@@ -2,7 +2,7 @@
 #
 # Table name: comparison_reports
 #
-#  id               :bigint           not null, primary key
+#  id               :bigint(8)        not null, primary key
 #  disabled         :boolean          default(FALSE), not null
 #  fuel_type        :integer
 #  key              :string           not null
@@ -10,8 +10,8 @@
 #  reporting_period :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  custom_period_id :bigint
-#  report_group_id  :bigint
+#  custom_period_id :bigint(8)
+#  report_group_id  :bigint(8)
 #
 # Indexes
 #

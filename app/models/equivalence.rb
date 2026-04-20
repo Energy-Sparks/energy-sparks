@@ -2,7 +2,7 @@
 #
 # Table name: equivalences
 #
-#  id                                  :bigint           not null, primary key
+#  id                                  :bigint(8)        not null, primary key
 #  data                                :json
 #  data_cy                             :json
 #  from_date                           :date
@@ -10,8 +10,8 @@
 #  to_date                             :date
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
-#  equivalence_type_content_version_id :bigint           not null
-#  school_id                           :bigint           not null
+#  equivalence_type_content_version_id :bigint(8)        not null
+#  school_id                           :bigint(8)        not null
 #
 # Indexes
 #

@@ -2,7 +2,7 @@
 #
 # Table name: local_authority_areas
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  code                        :string
 #  mailchimp_fields_changed_at :datetime
 #  name                        :string

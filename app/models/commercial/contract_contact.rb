@@ -2,7 +2,7 @@
 #
 # Table name: commercial_contract_contacts
 #
-#  id                   :bigint           not null, primary key
+#  id                   :bigint(8)        not null, primary key
 #  comments             :text
 #  contact_type         :enum             not null
 #  contract_holder_type :string           not null
@@ -10,10 +10,10 @@
 #  name                 :string           not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  contract_holder_id   :bigint           not null
-#  created_by_id        :bigint
-#  updated_by_id        :bigint
-#  user_id              :bigint
+#  contract_holder_id   :bigint(8)        not null
+#  created_by_id        :bigint(8)
+#  updated_by_id        :bigint(8)
+#  user_id              :bigint(8)
 #
 # Indexes
 #

@@ -2,7 +2,7 @@
 #
 # Table name: staff_roles
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  mailchimp_fields_changed_at :datetime
 #  title                       :string           not null
 #  created_at                  :datetime         not null

@@ -2,7 +2,7 @@
 #
 # Table name: comparison_annual_energy_costs_per_units
 #
-#  id                                            :bigint
+#  id                                            :bigint(8)
 #  electricity_economic_tariff_changed_this_year :boolean
 #  floor_area                                    :float
 #  gas_economic_tariff_changed_this_year         :boolean
@@ -25,7 +25,7 @@
 #  one_year_storage_heater_per_pupil_gbp         :float
 #  one_year_storage_heater_per_pupil_kwh         :float
 #  pupils                                        :float
-#  school_id                                     :bigint
+#  school_id                                     :bigint(8)
 #
 # Indexes
 #

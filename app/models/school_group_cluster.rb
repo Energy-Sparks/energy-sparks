@@ -2,11 +2,11 @@
 #
 # Table name: school_group_clusters
 #
-#  id              :bigint           not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  name            :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  school_group_id :bigint           not null
+#  school_group_id :bigint(8)        not null
 #
 # Indexes
 #

@@ -2,7 +2,7 @@
 #
 # Table name: commercial_products
 #
-#  id                  :bigint           not null, primary key
+#  id                  :bigint(8)        not null, primary key
 #  comments            :text
 #  default_product     :boolean          default(FALSE), not null
 #  large_school_price  :decimal(10, 2)
@@ -14,8 +14,8 @@
 #  small_school_price  :decimal(10, 2)
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  created_by_id       :bigint
-#  updated_by_id       :bigint
+#  created_by_id       :bigint(8)
+#  updated_by_id       :bigint(8)
 #
 # Indexes
 #

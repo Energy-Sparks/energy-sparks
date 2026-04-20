@@ -2,7 +2,7 @@
 #
 # Table name: comparison_change_in_energy_since_last_years
 #
-#  id                                 :bigint
+#  id                                 :bigint(8)
 #  electricity_current_period_co2     :float
 #  electricity_current_period_gbp     :float
 #  electricity_current_period_kwh     :float
@@ -28,7 +28,7 @@
 #  storage_heater_previous_period_co2 :float
 #  storage_heater_previous_period_gbp :float
 #  storage_heater_previous_period_kwh :float
-#  school_id                          :bigint
+#  school_id                          :bigint(8)
 #
 # Indexes
 #

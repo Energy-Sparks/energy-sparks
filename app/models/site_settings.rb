@@ -2,7 +2,7 @@
 #
 # Table name: site_settings
 #
-#  id                                    :bigint           not null, primary key
+#  id                                    :bigint(8)        not null, primary key
 #  audit_activities_bonus_points         :integer          default(0)
 #  default_import_warning_days           :integer          default(10)
 #  management_priorities_dashboard_limit :integer          default(5)

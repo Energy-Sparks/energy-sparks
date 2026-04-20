@@ -2,15 +2,15 @@
 #
 # Table name: low_carbon_hub_installations
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  information             :json
 #  password                :string
 #  username                :string
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  amr_data_feed_config_id :bigint           not null
+#  amr_data_feed_config_id :bigint(8)        not null
 #  rbee_meter_id           :text
-#  school_id               :bigint           not null
+#  school_id               :bigint(8)        not null
 #
 # Indexes
 #

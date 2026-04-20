@@ -2,7 +2,7 @@
 #
 # Table name: amr_data_feed_configs
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  allow_merging           :boolean          default(FALSE), not null
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
@@ -37,7 +37,7 @@
 #  units_field             :text
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  owned_by_id             :bigint
+#  owned_by_id             :bigint(8)
 #
 # Indexes
 #

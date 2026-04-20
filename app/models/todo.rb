@@ -2,15 +2,15 @@
 #
 # Table name: todos
 #
-#  id              :bigint           not null, primary key
+#  id              :bigint(8)        not null, primary key
 #  assignable_type :string           not null
 #  notes           :text
 #  position        :integer          default(0), not null
 #  task_type       :string           not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  assignable_id   :bigint           not null
-#  task_id         :bigint           not null
+#  assignable_id   :bigint(8)        not null
+#  task_id         :bigint(8)        not null
 #
 # Indexes
 #

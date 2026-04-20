@@ -2,13 +2,13 @@
 #
 # Table name: transifex_load_errors
 #
-#  id                :bigint           not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  error             :string
 #  record_type       :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  record_id         :bigint
-#  transifex_load_id :bigint           not null
+#  record_id         :bigint(8)
+#  transifex_load_id :bigint(8)        not null
 #
 # Indexes
 #

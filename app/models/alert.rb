@@ -2,7 +2,7 @@
 #
 # Table name: alerts
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  analytics_valid         :boolean          default(TRUE), not null
 #  chart_data              :json
 #  displayable             :boolean          default(TRUE), not null
@@ -18,10 +18,10 @@
 #  variables               :jsonb
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  alert_generation_run_id :bigint
-#  alert_type_id           :bigint           not null
-#  comparison_report_id    :bigint
-#  school_id               :bigint           not null
+#  alert_generation_run_id :bigint(8)
+#  alert_type_id           :bigint(8)        not null
+#  comparison_report_id    :bigint(8)
+#  school_id               :bigint(8)        not null
 #
 # Indexes
 #

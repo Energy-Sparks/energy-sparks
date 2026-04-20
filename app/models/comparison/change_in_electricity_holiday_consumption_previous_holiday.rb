@@ -4,7 +4,7 @@
 #
 # Table name: comparison_change_in_electricity_holiday_consumption_previous_holidays
 #
-#  id                         :bigint
+#  id                         :bigint(8)
 #  current_period_end_date    :date
 #  current_period_start_date  :date
 #  current_period_type        :text
@@ -17,8 +17,8 @@
 #  pupils_changed             :boolean
 #  tariff_has_changed         :boolean
 #  truncated_current_period   :boolean
-#  alert_generation_run_id    :bigint
-#  school_id                  :bigint
+#  alert_generation_run_id    :bigint(8)
+#  school_id                  :bigint(8)
 #
 # Indexes
 #

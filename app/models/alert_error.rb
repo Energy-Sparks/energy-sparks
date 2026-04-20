@@ -2,14 +2,14 @@
 #
 # Table name: alert_errors
 #
-#  id                      :bigint           not null, primary key
+#  id                      :bigint(8)        not null, primary key
 #  asof_date               :date             not null
 #  information             :text
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
-#  alert_generation_run_id :bigint           not null
-#  alert_type_id           :bigint           not null
-#  comparison_report_id    :bigint
+#  alert_generation_run_id :bigint(8)        not null
+#  alert_type_id           :bigint(8)        not null
+#  comparison_report_id    :bigint(8)
 #
 # Indexes
 #

@@ -4,7 +4,7 @@
 #
 # Table name: commercial_contracts
 #
-#  id                    :bigint           not null, primary key
+#  id                    :bigint(8)        not null, primary key
 #  agreed_school_price   :decimal(10, 2)
 #  comments              :text
 #  contract_holder_type  :string           not null
@@ -19,10 +19,10 @@
 #  status                :enum             default("provisional"), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  contract_holder_id    :bigint           not null
-#  created_by_id         :bigint
-#  product_id            :bigint           not null
-#  updated_by_id         :bigint
+#  contract_holder_id    :bigint(8)        not null
+#  created_by_id         :bigint(8)
+#  product_id            :bigint(8)        not null
+#  updated_by_id         :bigint(8)
 #
 # Indexes
 #

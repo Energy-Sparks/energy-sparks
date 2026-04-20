@@ -2,7 +2,7 @@
 #
 # Table name: activity_types
 #
-#  id                     :bigint           not null, primary key
+#  id                     :bigint(8)        not null, primary key
 #  active                 :boolean          default(TRUE)
 #  custom                 :boolean          default(FALSE)
 #  data_driven            :boolean          default(FALSE)
@@ -15,7 +15,7 @@
 #  summary                :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  activity_category_id   :bigint           not null
+#  activity_category_id   :bigint(8)        not null
 #
 # Indexes
 #

@@ -2,14 +2,14 @@
 #
 # Table name: comparison_seasonal_baseload_variations
 #
-#  id                                            :bigint
+#  id                                            :bigint(8)
 #  annual_cost_gbpcurrent                        :float
 #  electricity_economic_tariff_changed_this_year :boolean
 #  percent_seasonal_variation                    :float
 #  summer_kw                                     :float
 #  winter_kw                                     :float
-#  alert_generation_run_id                       :bigint
-#  school_id                                     :bigint
+#  alert_generation_run_id                       :bigint(8)
+#  school_id                                     :bigint(8)
 #
 # Indexes
 #

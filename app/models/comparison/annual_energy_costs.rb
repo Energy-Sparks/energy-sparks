@@ -2,7 +2,7 @@
 #
 # Table name: comparison_annual_energy_costs
 #
-#  id                            :bigint
+#  id                            :bigint(8)
 #  floor_area                    :float
 #  last_year_co2_tonnes          :float
 #  last_year_electricity         :float
@@ -13,8 +13,8 @@
 #  one_year_energy_per_pupil_gbp :float
 #  pupils                        :float
 #  school_type_name              :text
-#  alert_generation_run_id       :bigint
-#  school_id                     :bigint
+#  alert_generation_run_id       :bigint(8)
+#  school_id                     :bigint(8)
 #
 # Indexes
 #

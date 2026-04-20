@@ -4,7 +4,7 @@
 #
 # Table name: comparison_annual_energy_uses
 #
-#  id                             :bigint
+#  id                             :bigint(8)
 #  electricity_last_year_co2      :float
 #  electricity_last_year_gbp      :float
 #  electricity_last_year_kwh      :float
@@ -19,8 +19,8 @@
 #  storage_heaters_last_year_co2  :float
 #  storage_heaters_last_year_gbp  :float
 #  storage_heaters_last_year_kwh  :float
-#  alert_generation_run_id        :bigint
-#  school_id                      :bigint
+#  alert_generation_run_id        :bigint(8)
+#  school_id                      :bigint(8)
 #
 # Indexes
 #

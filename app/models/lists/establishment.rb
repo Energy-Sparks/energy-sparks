@@ -2,7 +2,7 @@
 #
 # Table name: lists_establishments
 #
-#  id                              :bigint           not null, primary key
+#  id                              :bigint(8)        not null, primary key
 #  address3                        :string
 #  administrative_ward_code        :string
 #  boarders_code                   :integer

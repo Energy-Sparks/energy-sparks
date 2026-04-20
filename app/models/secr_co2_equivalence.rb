@@ -4,7 +4,7 @@
 #
 # Table name: secr_co2_equivalences
 #
-#  id                             :bigint           not null, primary key
+#  id                             :bigint(8)        not null, primary key
 #  electricity_co2e               :float
 #  electricity_co2e_co2           :float
 #  natural_gas_co2e               :float

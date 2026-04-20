@@ -2,12 +2,12 @@
 #
 # Table name: find_out_mores
 #
-#  id                                   :bigint           not null, primary key
+#  id                                   :bigint(8)        not null, primary key
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
-#  alert_id                             :bigint           not null
-#  alert_type_rating_content_version_id :bigint           not null
-#  content_generation_run_id            :bigint           not null
+#  alert_id                             :bigint(8)        not null
+#  alert_type_rating_content_version_id :bigint(8)        not null
+#  content_generation_run_id            :bigint(8)        not null
 #
 # Indexes
 #

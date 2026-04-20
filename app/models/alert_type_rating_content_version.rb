@@ -2,7 +2,7 @@
 #
 # Table name: alert_type_rating_content_versions
 #
-#  id                                    :bigint           not null, primary key
+#  id                                    :bigint(8)        not null, primary key
 #  colour                                :integer          default("negative"), not null
 #  email_end_date                        :date
 #  email_start_date                      :date
@@ -36,7 +36,7 @@
 #  sms_weighting                         :decimal(, )      default(5.0)
 #  created_at                            :datetime         not null
 #  updated_at                            :datetime         not null
-#  alert_type_rating_id                  :bigint           not null
+#  alert_type_rating_id                  :bigint(8)        not null
 #  replaced_by_id                        :integer
 #
 # Indexes

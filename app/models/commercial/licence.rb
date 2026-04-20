@@ -2,7 +2,7 @@
 #
 # Table name: commercial_licences
 #
-#  id                    :bigint           not null, primary key
+#  id                    :bigint(8)        not null, primary key
 #  comments              :text
 #  end_date              :date             not null
 #  invoice_reference     :string
@@ -11,10 +11,10 @@
 #  status                :enum             default("provisional"), not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  contract_id           :bigint           not null
-#  created_by_id         :bigint
-#  school_id             :bigint           not null
-#  updated_by_id         :bigint
+#  contract_id           :bigint(8)        not null
+#  created_by_id         :bigint(8)
+#  school_id             :bigint(8)        not null
+#  updated_by_id         :bigint(8)
 #
 # Indexes
 #

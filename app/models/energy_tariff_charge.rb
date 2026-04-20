@@ -2,13 +2,13 @@
 #
 # Table name: energy_tariff_charges
 #
-#  id               :bigint           not null, primary key
+#  id               :bigint(8)        not null, primary key
 #  charge_type      :text             not null
 #  units            :text
 #  value            :decimal(, )      not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  energy_tariff_id :bigint           not null
+#  energy_tariff_id :bigint(8)        not null
 #
 # Indexes
 #

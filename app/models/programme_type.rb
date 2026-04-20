@@ -2,7 +2,7 @@
 #
 # Table name: programme_types
 #
-#  id                :bigint           not null, primary key
+#  id                :bigint(8)        not null, primary key
 #  active            :boolean          default(FALSE)
 #  bonus_score       :integer          default(0)
 #  default           :boolean          default(FALSE)

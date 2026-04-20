@@ -2,11 +2,11 @@
 #
 # Table name: emails
 #
-#  id         :bigint           not null, primary key
+#  id         :bigint(8)        not null, primary key
 #  sent_at    :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  contact_id :bigint           not null
+#  contact_id :bigint(8)        not null
 #
 # Indexes
 #

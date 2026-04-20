@@ -2,7 +2,7 @@
 #
 # Table name: amr_data_feed_readings
 #
-#  id                          :bigint           not null, primary key
+#  id                          :bigint(8)        not null, primary key
 #  description                 :text
 #  meter_serial_number         :text
 #  mpan_mprn                   :text             not null
@@ -16,9 +16,9 @@
 #  units                       :text
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
-#  amr_data_feed_config_id     :bigint           not null
-#  amr_data_feed_import_log_id :bigint           not null
-#  meter_id                    :bigint
+#  amr_data_feed_config_id     :bigint(8)        not null
+#  amr_data_feed_import_log_id :bigint(8)        not null
+#  meter_id                    :bigint(8)
 #  provider_record_id          :text
 #
 # Indexes

@@ -2,7 +2,7 @@
 #
 # Table name: activity_categories
 #
-#  id          :bigint           not null, primary key
+#  id          :bigint(8)        not null, primary key
 #  description :string
 #  featured    :boolean          default(FALSE)
 #  icon        :string           default("clipboard-check")

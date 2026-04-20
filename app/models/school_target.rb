@@ -4,7 +4,7 @@
 #
 # Table name: school_targets
 #
-#  id                                  :bigint           not null, primary key
+#  id                                  :bigint(8)        not null, primary key
 #  electricity                         :float
 #  electricity_monthly_consumption     :jsonb
 #  electricity_progress                :json
@@ -20,7 +20,7 @@
 #  target_date                         :date
 #  created_at                          :datetime         not null
 #  updated_at                          :datetime         not null
-#  school_id                           :bigint           not null
+#  school_id                           :bigint(8)        not null
 #
 # Indexes
 #
