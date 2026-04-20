@@ -4,26 +4,26 @@
 #
 # Table name: observations
 #
-#  _description         :text
-#  activity_id          :bigint(8)
-#  at                   :datetime         not null
-#  audit_id             :bigint(8)
-#  created_at           :datetime         not null
-#  created_by_id        :bigint(8)
 #  id                   :bigint(8)        not null, primary key
-#  intervention_type_id :bigint(8)
+#  _description         :text
+#  at                   :datetime         not null
 #  involved_pupils      :boolean          default(FALSE), not null
-#  observable_id        :bigint(8)
 #  observable_type      :string
 #  observation_type     :integer          not null
 #  points               :integer
-#  programme_id         :bigint(8)
 #  pupil_count          :integer
+#  visible              :boolean          default(TRUE)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  activity_id          :bigint(8)
+#  audit_id             :bigint(8)
+#  created_by_id        :bigint(8)
+#  intervention_type_id :bigint(8)
+#  observable_id        :bigint(8)
+#  programme_id         :bigint(8)
 #  school_id            :bigint(8)        not null
 #  school_target_id     :bigint(8)
-#  updated_at           :datetime         not null
 #  updated_by_id        :bigint(8)
-#  visible              :boolean          default(TRUE)
 #
 # Indexes
 #

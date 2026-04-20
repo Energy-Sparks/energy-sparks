@@ -2,12 +2,12 @@
 #
 # Table name: alert_type_rating_intervention_types
 #
-#  alert_type_rating_id :bigint(8)        not null
-#  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
-#  intervention_type_id :bigint(8)        not null
 #  position             :integer
+#  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  alert_type_rating_id :bigint(8)        not null
+#  intervention_type_id :bigint(8)        not null
 #
 # Indexes
 #

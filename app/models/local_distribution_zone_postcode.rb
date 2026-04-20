@@ -5,8 +5,8 @@
 # Table name: local_distribution_zone_postcodes
 #
 #  id                         :bigint(8)        not null, primary key
-#  local_distribution_zone_id :bigint(8)
 #  postcode                   :string
+#  local_distribution_zone_id :bigint(8)
 #
 # Indexes
 #

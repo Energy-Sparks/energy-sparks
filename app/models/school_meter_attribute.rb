@@ -2,17 +2,17 @@
 #
 # Table name: school_meter_attributes
 #
-#  attribute_type :string           not null
-#  created_at     :datetime         not null
-#  created_by_id  :bigint(8)
-#  deleted_by_id  :bigint(8)
 #  id             :bigint(8)        not null, primary key
+#  attribute_type :string           not null
 #  input_data     :json
 #  meter_types    :jsonb
 #  reason         :text
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  created_by_id  :bigint(8)
+#  deleted_by_id  :bigint(8)
 #  replaced_by_id :bigint(8)
 #  school_id      :bigint(8)        not null
-#  updated_at     :datetime         not null
 #
 # Indexes
 #

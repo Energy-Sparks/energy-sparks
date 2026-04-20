@@ -4,6 +4,8 @@
       <th>Description</th>
       <th>Identifier</th>
       <th>Owned by</th>
+      <th>Latest data recieved</th>
+      <th>Out of date</th>
       <th data-orderable="false">Notes</th>
       <th data-orderable="false">Actions</th>
     </tr>
@@ -14,6 +16,18 @@
         <td><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
         <td class="no-wrap"><code><%= config.identifier %></code></td>
         <td><%= config.owned_by&.name %></td>
+        <td data-order="<%= config.latest_reading_date&.iso8601 %>">
+          <%= nice_date_times(config.latest_reading_date) %>
+        </td>
+        <% if configurations.stopped_feeds.include?(config) %>
+          <td>
+             <span class="badge rounded-pill bg-danger text-light">
+                Out of Date
+              </span>
+          </td>
+        <% else %>
+          <td></td>
+        <% end %>
         <td><%= config.notes %></td>
         <td>
           <div class="btn-group btn-group-sm" role="group">

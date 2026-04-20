@@ -8,8 +8,8 @@
   <td>
     <%= school.current_licence&.contract&.contract_holder&.name %>
   </td>
-  <td>
-    <%= school.default_contract_holder&.name %>
+  <td id="future-funder-<%= school.id %>">
+    <%= school.default_contract_holder&.name || 'Self funding' %>
   </td>
   <td>
     <% licenced_for = school.licenced_for_period(date_range) %>
@@ -17,7 +17,7 @@
                                             pill: true,
                                             colour: period_badge_colour(licenced_for))) %>
   </td>
-  <td>
+  <td class="d-flex gap-2">
     <% buttons.each do |button| %>
       <%= button %>
     <% end %>

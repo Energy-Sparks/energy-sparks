@@ -2,11 +2,11 @@
 #
 # Table name: locations
 #
-#  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
 #  name       :text             not null
-#  school_id  :bigint(8)        not null
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  school_id  :bigint(8)        not null
 #
 # Indexes
 #

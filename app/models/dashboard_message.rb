@@ -2,12 +2,12 @@
 #
 # Table name: dashboard_messages
 #
-#  created_at       :datetime         not null
 #  id               :bigint(8)        not null, primary key
 #  message          :text
-#  messageable_id   :bigint(8)
 #  messageable_type :string
+#  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  messageable_id   :bigint(8)
 #
 # Indexes
 #

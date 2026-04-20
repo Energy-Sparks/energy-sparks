@@ -2,16 +2,16 @@
 #
 # Table name: meter_attributes
 #
+#  id             :bigint(8)        not null, primary key
 #  attribute_type :string           not null
+#  input_data     :json
+#  reason         :text
 #  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #  created_by_id  :bigint(8)
 #  deleted_by_id  :bigint(8)
-#  id             :bigint(8)        not null, primary key
-#  input_data     :json
 #  meter_id       :bigint(8)        not null
-#  reason         :text
 #  replaced_by_id :bigint(8)
-#  updated_at     :datetime         not null
 #
 # Indexes
 #
