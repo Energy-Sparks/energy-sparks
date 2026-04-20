@@ -9,6 +9,7 @@ class DailyRegenerationOnFinishJob < ApplicationJob
 
   def perform(*)
     send_regeneration_errors_mail
+    lagging_data_sources_alert
     refresh_views
   rescue StandardError => e
     EnergySparks::Log.exception(e, job: :daily_regeneration_on_finish)
@@ -30,5 +31,10 @@ class DailyRegenerationOnFinishJob < ApplicationJob
       e.rollbar_context = { view_class: view_class.name }
       raise
     end
+  end
+
+  def lagging_data_sources_alert
+    lagging = DataSource.find_each.filter(&:exceeded_alert_threshold?)
+    AdminMailer.with(lagging:).lagging_data_sources.deliver if lagging.present?
   end
 end
