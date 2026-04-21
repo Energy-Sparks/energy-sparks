@@ -357,7 +357,7 @@ SimpleForm.setup do |config|
 
   #### Also add the prefixed Bootstrap 4 wrappers ####
   ## The wrapper appropriate for the bootstrap version is selected in ##
-  ## the BootstrapSwitcherFormBuilder based on the Current.bs5 variable, which is set in application controller ##
+  ## the CustomSimpleForm::FormBuilder based on the Current.bs5 variable, which is set in application controller ##
   SimpleFormBootstrap4.apply(config)
 
   ## Usual configuration not needed while we are doing the above:
