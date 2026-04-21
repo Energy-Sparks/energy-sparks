@@ -20,7 +20,6 @@
 #  fk_rails_...  (observation_id => observations.id) ON DELETE => cascade
 #
 
-
 class TemperatureRecording < ApplicationRecord
   belongs_to :observation
   belongs_to :location

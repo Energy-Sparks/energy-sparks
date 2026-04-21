@@ -5,4 +5,3 @@
 :exclude_tests: true
 :sort: true
 :hide_limit_column_types: 'integer,boolean'
-:wrapper: (original had wrapper_open/close only)
