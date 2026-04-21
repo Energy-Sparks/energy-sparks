@@ -2,14 +2,14 @@
 #
 # Table name: activity_categories
 #
-#  created_at  :datetime         not null
+#  id          :bigint(8)        not null, primary key
 #  description :string
 #  featured    :boolean          default(FALSE)
 #  icon        :string           default("clipboard-check")
-#  id          :bigint(8)        not null, primary key
 #  live_data   :boolean          default(FALSE)
 #  name        :string
 #  pupil       :boolean          default(FALSE)
+#  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
 

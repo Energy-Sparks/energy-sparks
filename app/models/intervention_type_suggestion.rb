@@ -2,11 +2,11 @@
 #
 # Table name: intervention_type_suggestions
 #
-#  created_at           :datetime         not null
 #  id                   :bigint(8)        not null, primary key
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  intervention_type_id :bigint(8)
 #  suggested_type_id    :integer
-#  updated_at           :datetime         not null
 #
 # Indexes
 #

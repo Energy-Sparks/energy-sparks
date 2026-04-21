@@ -36,9 +36,8 @@ module Schools
     def edit; end
 
     def create
-      manager = MeterManagement.new(@meter)
       if @meter.save
-        manager.process_creation!
+        MeterManagement.new(@meter).process_creation!(current_user)
         redirect_to school_meters_path(@school)
       else
         load_meters

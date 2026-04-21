@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 ruby '~> 3.4.8'
 
-gem 'rails', '~> 7.2.3'
+gem 'rails', '~> 8.1.2'
 
 # Rails/Core
 gem 'bootsnap'
@@ -143,7 +143,7 @@ group :development, :production do
 end
 
 group :development do
-  gem 'annotate'
+  gem 'annotaterb'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'brakeman'

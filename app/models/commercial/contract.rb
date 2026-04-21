@@ -4,24 +4,24 @@
 #
 # Table name: commercial_contracts
 #
+#  id                    :bigint(8)        not null, primary key
 #  agreed_school_price   :decimal(10, 2)
 #  comments              :text
-#  contract_holder_id    :bigint(8)        not null
 #  contract_holder_type  :string           not null
-#  created_at            :datetime         not null
-#  created_by_id         :bigint(8)
 #  end_date              :date             not null
-#  id                    :bigint(8)        not null, primary key
 #  invoice_terms         :enum             default("pro_rata"), not null
 #  licence_period        :enum             default("contract"), not null
 #  licence_years         :decimal(4, 2)
 #  name                  :string           not null
 #  number_of_schools     :integer          not null
-#  product_id            :bigint(8)        not null
 #  purchase_order_number :string
 #  start_date            :date             not null
 #  status                :enum             default("provisional"), not null
+#  created_at            :datetime         not null
 #  updated_at            :datetime         not null
+#  contract_holder_id    :bigint(8)        not null
+#  created_by_id         :bigint(8)
+#  product_id            :bigint(8)        not null
 #  updated_by_id         :bigint(8)
 #
 # Indexes
@@ -42,7 +42,7 @@ module Commercial
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
-    include HasContractHolder
+    include Commercial::HasContractHolder
     include Deletable
 
     self.table_name = 'commercial_contracts'
@@ -84,7 +84,7 @@ module Commercial
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
 
-    accepts_nested_attributes_for :licences
+    accepts_nested_attributes_for :licences, allow_destroy: true
 
     def self.as_renewal(original)
       new(
@@ -129,6 +129,10 @@ module Commercial
 
     def cascade_updates_to_licences?
       licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+    end
+
+    def as_range
+      (start_date..end_date)
     end
 
     private

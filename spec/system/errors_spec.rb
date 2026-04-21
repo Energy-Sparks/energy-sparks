@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'errors', type: :system do
+RSpec.describe 'errors' do
   describe '404' do
     before do
       visit '/404'

@@ -11,7 +11,8 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
       licences: Commercial::Licence.current,
       id: 'custom-id',
       classes: 'extra-classes',
-      show_actions: false) do |c|
+      show_actions: false
+    ) do |c|
       c.with_header { 'Current Licences' }
     end
   end
@@ -40,8 +41,8 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
             licence.school.name,
             licence.contract.product.name,
             licence.contract.name,
-            licence.start_date.iso8601,
-            licence.end_date.iso8601,
+            licence.start_date.to_fs(:es_short),
+            licence.end_date.to_fs(:es_short),
             licence.status.to_s.humanize
           ]
         ]
@@ -56,7 +57,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
                         classes: 'extra-classes',
                         show_actions: false,
                         show_contract: false
-        ))
+                      ))
       end
 
       it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
@@ -72,8 +73,41 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
               "##{licence.id}",
               licence.school.school_group.name,
               licence.school.name,
-              licence.start_date.iso8601,
-              licence.end_date.iso8601,
+              licence.start_date.to_fs(:es_short),
+              licence.end_date.to_fs(:es_short),
+              licence.status.to_s.humanize
+            ]
+          ]
+        end
+      end
+    end
+
+    context 'when not showing contract holder information' do
+      before do
+        render_inline(described_class.new(
+                        licences: Commercial::Licence.current,
+                        id: 'custom-id',
+                        classes: 'extra-classes',
+                        show_actions: false,
+                        show_contract_holder: false
+                      ))
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#licences-table' }
+        let(:expected_header) do
+          [
+            ['ID', 'Product', 'Contract', 'Start date', 'End date', 'Status']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            [
+              "##{licence.id}",
+              licence.contract.product.name,
+              licence.contract.name,
+              licence.start_date.to_fs(:es_short),
+              licence.end_date.to_fs(:es_short),
               licence.status.to_s.humanize
             ]
           ]
@@ -89,14 +123,15 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
                         classes: 'extra-classes',
                         show_actions: false,
                         show_renewal_data: true
-        ))
+                      ))
       end
 
       it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
         let(:table_id) { '#licences-table' }
         let(:expected_header) do
           [
-            ['ID', 'School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status', 'Future Funding Source']
+            ['ID', 'School Group', 'School', 'Product', 'Contract', 'Start date', 'End date', 'Status',
+             'Future Funding Source']
           ]
         end
         let(:expected_rows) do
@@ -107,10 +142,10 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
               licence.school.name,
               licence.contract.product.name,
               licence.contract.name,
-              licence.start_date.iso8601,
-              licence.end_date.iso8601,
+              licence.start_date.to_fs(:es_short),
+              licence.end_date.to_fs(:es_short),
               licence.status.to_s.humanize,
-              'MAT funded'
+              'Self funding'
             ]
           ]
         end

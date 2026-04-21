@@ -9,8 +9,15 @@
       <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> contract, allowing
       revisions of dates, status, school specific prices and comments.
     </p>
+    <p>
+      <strong>Note</strong> to make bulk changes to all licences, e.g. revising all start/end dates or marking them all as confirmed, then please
+      <%= link_to 'edit the contract instead', edit_admin_commercial_contract_path(@contract) %>. This is simpler than changing all fields
+      individually. This form is primarily intended to allow quick editing of school specific pricing and comments, addition and removal of
+      licences, etc
+    </p>
   </div>
 </div>
 
 <%= render Forms::Commercial::BulkLicenceEditorComponent.new(contract: @contract,
+                                                             additional_schools: @additional_schools,
                                                              exclude_fields: [:invoice_reference]) %>

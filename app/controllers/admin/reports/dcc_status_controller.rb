@@ -43,6 +43,11 @@ module Admin
                      ->(meter) { y_n(meter.active) }),
           Column.new(:consented?,
                      ->(meter) { y_n(meter.consent_granted) }),
+
+          Column.new(:meter_system,
+                     ->(meter) { meter.t_meter_system }),
+          Column.new(:n3rgy_meter_type,
+                     ->(meter) { meter.dcc_meter.humanize }),
           Column.new(:earliest_validated,
                      ->(meter) { meter.min }),
           Column.new(:latest_validated,

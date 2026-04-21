@@ -32,8 +32,10 @@
         <thead>
           <tr>
             <th>Name</th>
-            <% if @organisation_group %>
-              <th title="Group type" class="nowrap">Type</th>
+            <% if @organisation_group || @group_type == 'project' %>
+              <% unless @group_type == 'project' %>
+                <th title="Group type" class="nowrap">Type</th>
+              <% end %>
               <th title="Issues admin" class="d-none d-md-table-cell nowrap">Admin</th>
             <% end %>
             <th class="text-end" title="Schools onboarding">Onboarding</th>
@@ -52,10 +54,12 @@
                 <%= link_to(dashboard_message_icon(school_group),
                             edit_admin_school_group_dashboard_message_path(school_group)) %>
               </td>
-              <% if @organisation_group %>
-                <td>
-                  <span class="badge rounded-pill text-bg-secondary"><%= school_group.group_type.humanize %></span>
-                </td>
+              <% if @organisation_group || @group_type == 'project' %>
+                <% unless @group_type == 'project' %>
+                  <td>
+                    <span class="badge rounded-pill text-bg-secondary"><%= school_group.group_type.humanize %></span>
+                  </td>
+                <% end %>
                 <td class="d-none d-sm-table-cell">
                   <% if school_group.default_issues_admin_user %>
                     <span class="badge border rounded-pill border-secondary fw-normal">

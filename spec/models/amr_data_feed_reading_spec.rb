@@ -45,7 +45,8 @@ describe AmrDataFeedReading do
         ['%Y-%m-%d', '28/06/2023'],
         ['%d-%m-%Y', '2023-06-28'],
         ['%e %b %Y %H:%M:%S', '2023-06-28'],
-        ['%d/%m/%Y %H:%M:%S', '2023-06-28']
+        ['%d/%m/%Y %H:%M:%S', '2023-06-28'],
+        ['%y-%m-%d', '28/06/2023']
       ].freeze
 
       FORMATS.each do |format|

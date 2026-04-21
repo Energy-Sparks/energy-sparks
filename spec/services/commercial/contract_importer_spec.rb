@@ -118,7 +118,7 @@ describe Commercial::ContractImporter do
           invoice_terms: 'pro_rata',
           agreed_school_price: 600.0
         )
-        expect(contract_holder.reload.default_contract_holder).to eq(contract_holder)
+        expect(contract_holder.reload.default_contract_holder).to be_nil
       end
     end
 

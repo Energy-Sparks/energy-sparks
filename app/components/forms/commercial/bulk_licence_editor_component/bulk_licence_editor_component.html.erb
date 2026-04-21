@@ -1,11 +1,7 @@
 <%= tag.div id: id, class: classes do %>
-  <%= helpers.simple_form_for(
-        @contract,
-        url: form_path,
-        method: :put
-      ) do |f| %>
-    <div class="licence-editor-table-wrapper">
-      <table id="<%= "#{@contract.id}-licence-table" %>" class="table table-sm align-middle licence-editor-table">
+  <div class="mb-4 licence-editor-table-wrapper">
+    <%= helpers.simple_form_for(@contract, url: form_path, method: :put) do |f| %>
+      <table id="contract-<%= @contract.id %>-licence-table" class="table table-sm align-middle licence-editor-table">
         <thead>
           <tr>
             <th>Id</th>
@@ -25,56 +21,82 @@
             <% if show_field?(:invoice_reference) %>
               <th>Invoice Ref</th>
             <% end %>
+            <th></th>
           </tr>
         </thead>
-        <% licences.each do |licence| %>
-          <tbody class="licence-block">
-            <%= f.simple_fields_for :licences, licence, child_index: licence.id do |lf| %>
-              <tr id="<%= "#{licence.id}-main-row" %>" class="main-row">
-                <td><%= link_to "##{licence.id}", admin_commercial_licence_path(licence) %></td>
-                <td><%= link_to licence.school.name, school_path(licence.school) %></td>
-
-                <% if show_field?(:start_date) %>
-                  <td class="col-2"><%= lf.input :start_date, as: :tempus_dominus_date, label: false %></td>
-                <% end %>
-                <% if show_field?(:end_date) %>
-                  <td class="col-2"><%= lf.input :end_date, as: :tempus_dominus_date, label: false %></td>
-                <% end %>
-                <% if show_field?(:status) %>
-                  <td class="col-2"><%= lf.input :status,
-                                                 collection: collection_from_enum(Commercial::Licence.statuses),
-                                                 include_blank: false,
-                                                 label: false %></td>
-                <% end %>
-                <% if show_field?(:school_specific_price) %>
-                  <td class="col-1"><%= lf.input :school_specific_price,
-                                                 as: :decimal,
-                                                 input_html: { step: '0.01' },
-                                                 label: false %></td>
-                <% end %>
-
-                <% if show_field?(:invoice_reference) %>
-                  <td class="col-1"><%= lf.input :invoice_reference, label: false %></td>
-                <% end %>
-              </tr>
-              <% if show_field?(:comments) %>
-                <tr id="<%= "#{licence.id}-comments-row" %>" class="comments-row">
-                  <td colspan="2"></td>
-                  <td colspan="5">
-                    <%= lf.input :comments,
-                                 as: :text,
-                                 input_html: { rows: 2 },
-                                 label: false,
-                                 placeholder: 'Comments' %>
-                  </td>
-                </tr>
+          <tbody id="licence-rows" class="licence-rows">
+              <% licences.each do |licence| %>
+                <%= render(LicenceRowComponent.new(licence:, form: f, fields: @fields)) %>
               <% end %>
-            <% end %>
           </tbody>
-        <% end %>
       </table>
+    <% end %>
+  </div>
+  <%= button_tag 'Save changes', form: "edit_commercial_contract_#{@contract.id}", class: 'btn btn-primary' %>
+  <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
+
+  <% if @additional_schools.any? %>
+    <div class="mt-4 licence-editor-table-wrapper">
+      <h2>Add schools to contract</h2>
+      <p>
+        The following schools in this school group are not currently part of this contract. The table identifies whether
+        they are currently licensed, who their current and future funder is expected to be, and whether they have
+        any (future) licence that covers the period of this contact.
+      </p>
+      <p>
+        If a school has a current licence (valid for today) then the "<strong>Current Funder</strong>" column includes the name of
+        the contract holder for that licence. "<strong>Future Funder</strong>" indicates whether we are expecting the school to be
+        self-funded or covered by a MAT contract in future.
+      </p>
+
+      <p>
+        "<strong>Licensed for Period?</strong>" indicates whether school has any existing licences that cover the period of this contract.
+        "Full" means they are already licensed. "Partial" means they a licence that covers part of this contracted period.
+      </p>
+      <p>
+        Use the "<strong>Add Licence</strong>" button to add a licence for the school under this contract.
+      </p>
+      <p>
+        Use the "<strong>Make Self funded</strong> / <strong>Make MAT funded</strong>" toggle to set whether the school is expected to be
+        MAT or self-funded in future. If a school was self-funded and is going to be added to this contract, then change their status before
+        adding a licence.
+      </p>
+      <%= render ::Commercial::LicensingSummaryComponent.new(
+            table_id: "contract-#{@contract.id}-additional-schools-table",
+            date_range: @contract.as_range
+          ) do |c| %>
+        <% @additional_schools.each do |school| %>
+          <% c.with_row id: "additional-school-#{school.id}", school: school do |r| %>
+            <% r.with_button do %>
+              <%= button_to 'Add licence',
+                            create_licence_admin_commercial_contract_licences_path(@contract),
+                            params: { school_id: school.id },
+                            method: :post,
+                            form: { method: :post, authenticity_token: true },
+                            remote: true,
+                            class: 'btn btn-sm btn-primary' %>
+            <% end %>
+            <% r.with_button do %>
+              <div id="self-funded-toggle-<%= school.id %>">
+                <% if school.self_funded_in_future? %>
+                  <%= button_to 'Make MAT funded',
+                                school_self_funded_path(school),
+                                method: :create,
+                                remote: true,
+                                class: 'btn btn-sm btn-secondary' %>
+                <% else %>
+                  <%= button_to 'Make Self funded',
+                                school_self_funded_path(school),
+                                method: :delete,
+                                remote: true,
+                                class: 'btn btn-sm btn-secondary' %>
+
+                <% end %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
     </div>
-    <%= f.submit 'Save changes', class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', admin_commercial_contract_path(@contract), class: 'btn btn-secondary' %>
   <% end %>
 <% end %>
