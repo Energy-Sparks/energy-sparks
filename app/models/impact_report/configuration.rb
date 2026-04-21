@@ -4,11 +4,11 @@
 #
 # Table name: impact_report_configurations
 #
-#  created_at      :datetime         not null
 #  id              :bigint(8)        not null, primary key
-#  school_group_id :bigint(8)        not null
 #  show_engagement :boolean          default(TRUE), not null
+#  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  school_group_id :bigint(8)        not null
 #
 # Indexes
 #

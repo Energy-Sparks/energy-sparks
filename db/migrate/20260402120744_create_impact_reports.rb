@@ -14,14 +14,19 @@ class CreateImpactReports < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
+    create_enum :impact_report_metric_categories,
+                %w[overview energy_efficiency engagement potential_savings]
+    create_enum :impact_report_metric_types,
+                %w[schools users pupils enrolled_schools activities actions points targets total_savings]
+
     create_table :impact_report_metrics do |t|
       t.references :impact_report_run, null: false, foreign_key: true
       t.integer :number_of_schools
       t.boolean :enough_data, default: false, null: false
-      t.integer :fuel_type
+      t.integer :fuel_type, null: true
       t.jsonb :value, default: {}
-      t.integer :metric_category, null: false
-      t.integer :metric_type, null: false
+      t.enum :metric_category, enum_type: :impact_report_metric_categories, null: false
+      t.enum :metric_type, enum_type: :impact_report_metric_types, null: false
       t.timestamps
     end
   end

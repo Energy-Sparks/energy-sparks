@@ -29,6 +29,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
+  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings"]
+  create_enum "impact_report_metric_types", ["schools", "users", "pupils", "enrolled_schools", "activities", "actions", "points", "targets", "total_savings"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
@@ -1212,30 +1214,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
   end
 
   create_table "impact_report_configurations", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.bigint "school_group_id", null: false
     t.boolean "show_engagement", default: true, null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["school_group_id"], name: "index_impact_report_configurations_on_school_group_id"
   end
 
   create_table "impact_report_metrics", force: :cascade do |t|
-    t.bigint "impact_report_run_id", null: false
-    t.integer "number_of_schools"
+    t.datetime "created_at", null: false
     t.boolean "enough_data", default: false, null: false
     t.integer "fuel_type"
-    t.jsonb "value", default: {}
-    t.integer "metric_category", null: false
-    t.integer "metric_type", null: false
-    t.datetime "created_at", null: false
+    t.bigint "impact_report_run_id", null: false
+    t.enum "metric_category", null: false, enum_type: "impact_report_metric_categories"
+    t.enum "metric_type", null: false, enum_type: "impact_report_metric_types"
+    t.integer "number_of_schools"
     t.datetime "updated_at", null: false
+    t.jsonb "value", default: {}
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
   end
 
   create_table "impact_report_runs", force: :cascade do |t|
-    t.bigint "school_group_id", null: false
-    t.date "run_date", null: false
     t.datetime "created_at", null: false
+    t.date "run_date", null: false
+    t.bigint "school_group_id", null: false
     t.datetime "updated_at", null: false
     t.index ["school_group_id"], name: "index_impact_report_runs_on_school_group_id"
   end

@@ -8,7 +8,7 @@ module Admin
       load_and_authorize_resource :school_group, include: :impact_report_configuration, id_param: :id, except: [:index]
 
       def index
-        @school_groups = SchoolGroup.includes(:impact_report_configuration).order(:name)
+        @school_groups = SchoolGroup.organisation_groups.includes(:impact_report_configuration).order(:name)
       end
 
       def edit
@@ -30,7 +30,7 @@ module Admin
       private
 
       def configuration_params
-        params.require(:impact_report_configuration).permit(:show_engagement)
+        params.expect(impact_report_configuration: [:show_engagement])
       end
     end
   end

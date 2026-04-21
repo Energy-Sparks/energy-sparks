@@ -4,16 +4,16 @@
 #
 # Table name: impact_report_metrics
 #
-#  created_at           :datetime         not null
+#  id                   :bigint(8)        not null, primary key
 #  enough_data          :boolean          default(FALSE), not null
 #  fuel_type            :integer
-#  id                   :bigint(8)        not null, primary key
-#  impact_report_run_id :bigint(8)        not null
-#  metric_category      :integer          not null
-#  metric_type          :integer          not null
+#  metric_category      :enum             not null
+#  metric_type          :enum             not null
 #  number_of_schools    :integer
-#  updated_at           :datetime         not null
 #  value                :jsonb
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  impact_report_run_id :bigint(8)        not null
 #
 # Indexes
 #
@@ -31,23 +31,41 @@ module ImpactReport
 
     belongs_to :impact_report_run, class_name: 'ImpactReport::Run', inverse_of: :metrics
 
-    enum :metric_category, { overview: 0, energy_efficiency: 1, engagement: 2, potential_savings: 3 }, prefix: :category
-    enum :metric_type, {  visible_schools: 0, # Not sure if this should be the name of a key instead
-                          data_visible_schools: 1,
-                          users: 2,
-                          users_logged_in_recently: 3,
-                          pupils: 4,
-                          enrolled_schools: 5,
-                          enrolling_schools: 6,
-                          total_saving: 7,
-                          reduced_emissions: 8,
-                          activities: 9,
-                          actions: 10,
-                          points: 11,
-                          featured_school: 12,
-                          featured_school_activities: 13,
-                          featured_school_actions: 14,
-                          programmes: 15,
-                          targets: 16 }, prefix: :type
+    METRIC_CATEGORIES = {
+      overview: 'overview',
+      energy_efficiency: 'energy_efficiency',
+      engagement: 'engagement',
+      potential_savings: 'potential_savings'
+    }.freeze
+
+    enum :metric_category, METRIC_CATEGORIES, prefix: :category
+
+    OVERVIEW_METRICS = {
+      schools: 'schools',
+      users: 'users',
+      pupils: 'pupils',
+      enrolled_schools: 'enrolled_schools'
+    }.freeze
+
+    ENERGY_EFFICIENCY_METRICS = {
+      total_saving: 'total_saving'
+      # more energy efficiency metrics can be added here as needed
+    }.freeze
+
+    ENGAGEMENT_METRICS = {
+      activities: 'activities',
+      actions: 'actions',
+      points: 'points',
+      targets: 'targets'
+    }.freeze
+
+    POTENTIAL_SAVINGS_METRICS = {
+      # Placeholder for potential savings metrics
+    }.freeze
+
+    METRIC_TYPES = { **OVERVIEW_METRICS, **ENGAGEMENT_METRICS, **ENERGY_EFFICIENCY_METRICS,
+**POTENTIAL_SAVINGS_METRICS }.freeze
+
+    enum :metric_type, METRIC_TYPES, prefix: :type
   end
 end
