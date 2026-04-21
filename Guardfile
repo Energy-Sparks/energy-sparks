@@ -63,7 +63,3 @@ guard :rspec, all_on_start: false, cmd: "bundle exec rspec" do
 
   notification :terminal_notifier if `uname` =~ /Darwin/
 end
-
-guard :rubocop, all_on_start: false, cli: "--config=.rubocop.yml" do
-  watch(%r{.+\.rb$})
-end

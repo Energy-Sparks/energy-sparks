@@ -33,9 +33,14 @@ class CaseStudy < ApplicationRecord
   include Trackable
 
   has_many :testimonials, dependent: :restrict_with_error
+  delegated_type :organisation, types: %w[SchoolGroup School], optional: true
 
   scope :without_images, -> {
     left_outer_joins(:image_attachment).where(active_storage_attachments: { id: nil })
+  }
+
+  scope :for_school_group, ->(school_group) {
+    where(organisation: [school_group] + school_group.assigned_schools.active).distinct
   }
 
   translates :title, type: :string, fallbacks: { cy: :en }
@@ -69,5 +74,17 @@ class CaseStudy < ApplicationRecord
 
   def file_locale
     I18n.locale.to_sym == :cy && t_attached(:file, :cy).present? ? :cy : :en
+  end
+
+  def self.organisation_classes
+    organisation_types.map(&:constantize)
+  end
+
+  def organisation_gid
+    self.organisation&.to_gid
+  end
+
+  def organisation_gid=(gid)
+    self.organisation = GlobalID::Locator.locate(gid)
   end
 end

@@ -233,3 +233,8 @@ a.badge:focus,
     float: none;
   }
 }
+
+// BS4 fix: fix default font size for select2 selects, which is too small. BS5 doesn't have this issue.
+.bs4 .select2-container--bootstrap .select2-selection {
+  font-size: 1rem;
+}

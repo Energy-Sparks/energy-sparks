@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe 'Admin case studies', type: :system do
+RSpec.describe 'Admin case studies' do
   let!(:admin) { create(:admin) }
   let!(:case_study) { create(:case_study) }
+  let!(:school_group) { create(:school_group) }
 
   describe 'when not logged in' do
     context 'when visiting the index' do
@@ -120,12 +123,16 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
-          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
+
+          it {
+            expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
+          }
         end
 
         context 'with valid attributes' do
           before do
             fill_in :case_study_title_en, with: 'Updated title'
+            select school_group.name, from: 'Related group or school'
             within('.description-trix-editor-en') do
               fill_in_trix with: 'Updated description'
             end
@@ -138,6 +145,7 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content('Updated title') }
+          it { expect(page).to have_content(school_group.name) }
           it { expect(page).to have_content('Updated description') }
           it { expect(page).to have_content('en1 en2') }
           it { expect(page).to have_content('3') }
@@ -162,7 +170,10 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content("Title *\ncan't be blank") }
-          it { expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)") }
+
+          it {
+            expect(page).to have_content("Image\nhas an invalid content type (authorized content types are PNG, JPG)")
+          }
         end
 
         context 'when publishing without an image' do
@@ -177,6 +188,7 @@ RSpec.describe 'Admin case studies', type: :system do
         context 'with valid attributes' do
           before do
             fill_in :case_study_title_en, with: 'New Case Study Title'
+            select school_group.name, from: 'Related group or school'
             within('.description-trix-editor-en') do
               fill_in_trix with: 'This is a new case study description.'
             end
@@ -193,6 +205,7 @@ RSpec.describe 'Admin case studies', type: :system do
           end
 
           it { expect(page).to have_content('New Case Study Title') }
+          it { expect(page).to have_content(school_group.name) }
           it { expect(page).to have_content('This is a new case study description.') }
           it { expect(page).to have_content('new example') }
           it { expect(page).to have_content('7') }
@@ -228,7 +241,7 @@ RSpec.describe 'Admin case studies', type: :system do
         end
 
         it 'no longer lists the case study' do
-          expect(page).not_to have_content('Delete me')
+          expect(page).to have_no_content('Delete me')
         end
       end
     end

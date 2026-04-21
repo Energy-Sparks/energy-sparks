@@ -121,10 +121,6 @@ class Issue < ApplicationRecord
     { issue: 'exclamation-circle', note: 'sticky-note' }
   end
 
-  def self.issueable_images
-    { school_group: 'users', school: 'school', data_source: 'download' }
-  end
-
   def self.issue_type_classes
     { issue: 'danger', note: 'warning' }
   end
@@ -141,16 +137,8 @@ class Issue < ApplicationRecord
     self.class.issue_type_image(issue_type)
   end
 
-  def issueable_image
-    issueable ? self.class.issueable_image(issueable) : ''
-  end
-
   def self.issue_type_image(issue_type)
     issue_type_images[issue_type.to_sym]
-  end
-
-  def self.issueable_image(issueable)
-    issueable_images[issueable.model_name.to_s.underscore.to_sym]
   end
 
   def mpan_mprns
