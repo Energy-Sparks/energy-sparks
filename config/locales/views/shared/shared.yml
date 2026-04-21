@@ -75,9 +75,10 @@ en:
     title: Energy Sparks is currently down for maintenance
     unavailable: We're sorry but Energy Sparks is currently unavailable while we carry out some essential maintenance
   manage_menu:
-    admin: Admin
+    admin: Admin Home
     manage: Manage
-    reports: Reports
+    my_dashboard: My Dashboard
+    reports: All Reports
   manage_school_menu:
     batch_reports: Batch reports
     digital_signage: Digital signage

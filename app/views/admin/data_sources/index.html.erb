@@ -1,5 +1,11 @@
-<%= render 'header', title: 'Manage Data Sources' do %>
-  <%= header_nav_link 'Admin', admin_url %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s Data Sources" %>
+  <% end %>
+<% else %>
+  <%= render 'header', title: 'Manage Data Sources' do %>
+    <%= header_nav_link 'Admin', admin_url %>
+  <% end %>
 <% end %>
 
 <%= link_to 'New data source', new_admin_data_source_path, class: 'btn btn-primary mb-2' %>

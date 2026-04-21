@@ -2,17 +2,17 @@
 #
 # Table name: rtone_variant_installations
 #
-#  amr_data_feed_config_id :bigint(8)        not null
-#  configuration           :json
-#  created_at              :datetime         not null
 #  id                      :bigint(8)        not null, primary key
-#  meter_id                :bigint(8)        not null
+#  configuration           :json
 #  password                :string           not null
 #  rtone_component_type    :integer          not null
+#  username                :string           not null
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  amr_data_feed_config_id :bigint(8)        not null
+#  meter_id                :bigint(8)        not null
 #  rtone_meter_id          :string           not null
 #  school_id               :bigint(8)        not null
-#  updated_at              :datetime         not null
-#  username                :string           not null
 #
 # Indexes
 #

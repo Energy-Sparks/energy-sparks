@@ -2,11 +2,11 @@
 #
 # Table name: amr_data_feed_configs
 #
+#  id                      :bigint(8)        not null, primary key
 #  allow_merging           :boolean          default(FALSE), not null
 #  column_row_filters      :jsonb
 #  column_separator        :text             default(","), not null
 #  convert_to_kwh          :enum             default("no")
-#  created_at              :datetime         not null
 #  date_format             :text             not null
 #  delayed_reading         :boolean          default(FALSE), not null
 #  description             :text             not null
@@ -15,7 +15,6 @@
 #  half_hourly_labelling   :enum
 #  handle_off_by_one       :boolean          default(FALSE)
 #  header_example          :text
-#  id                      :bigint(8)        not null, primary key
 #  identifier              :text             not null
 #  lookup_by_serial_number :boolean          default(FALSE)
 #  meter_description_field :text
@@ -24,7 +23,6 @@
 #  mpan_mprn_field         :text             not null
 #  msn_field               :text
 #  number_of_header_rows   :integer          default(0), not null
-#  owned_by_id             :bigint(8)
 #  period_field            :string
 #  positional_index        :boolean          default(FALSE), not null
 #  postcode_field          :text
@@ -37,7 +35,9 @@
 #  source_type             :integer          default("email"), not null
 #  total_field             :text
 #  units_field             :text
+#  created_at              :datetime         not null
 #  updated_at              :datetime         not null
+#  owned_by_id             :bigint(8)
 #
 # Indexes
 #
@@ -53,6 +53,18 @@
 class AmrDataFeedConfig < ApplicationRecord
   scope :enabled,           -> { where(enabled: true) }
   scope :allow_manual,      -> { enabled.where.not(source_type: :api) }
+
+  scope :stopped_feeds, lambda {
+    where(<<~SQL.squish)
+      (
+        SELECT r.updated_at
+        FROM amr_data_feed_readings r
+        WHERE r.amr_data_feed_config_id = amr_data_feed_configs.id
+        ORDER BY r.updated_at DESC
+        LIMIT 1
+      ) < (NOW() - (amr_data_feed_configs.missing_reading_window * INTERVAL '1 day'))
+    SQL
+  }
 
   enum :process_type, { s3_folder: 0, low_carbon_hub_api: 1, solar_edge_api: 2, n3rgy_api: 3, rtone_variant_api: 4,
                         other_api: 5 }
@@ -75,6 +87,10 @@ class AmrDataFeedConfig < ApplicationRecord
   validate :source_and_process_type
 
   BLANK_THRESHOLD = 1
+
+  def latest_reading_date
+    amr_data_feed_readings.maximum(:updated_at)
+  end
 
   def period_or_time_field
     return unless positional_index && reading_time_field.blank? && period_field.blank?

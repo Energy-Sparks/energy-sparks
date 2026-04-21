@@ -2,10 +2,10 @@
 #
 # Table name: consent_statements
 #
-#  created_at :datetime         not null
-#  current    :boolean          default(FALSE)
 #  id         :bigint(8)        not null, primary key
+#  current    :boolean          default(FALSE)
 #  title      :text             not null
+#  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 class ConsentStatement < ApplicationRecord

@@ -15,9 +15,14 @@ describe 'DCC Status Report' do
   it 'displays the table' do
     expect(all('tr').map { |tr| tr.all('th, td').map(&:text) }).to eq(
       [
-        ['School Name', 'Group Name', 'School Archived?', 'Group Owner', 'Type', 'Data Source', 'MPAN', 'Meter Name',
-         'Active?', 'Consented?', 'Earliest Validated', 'Latest Validated', 'Issues'],
-        [meter.school.name, '', 'No', '', '', '', meter.mpan_mprn.to_s, meter.name, 'Yes', 'No', '', '', '']
+        ['School Name', 'Group Name', 'School Archived?', 'Group Owner', 'Type',
+         'Data Source', 'MPAN', 'Meter Name', 'Active?', 'Consented?', 'Meter System',
+         'N3rgy Meter Type', 'Earliest Validated', 'Latest Validated', 'Issues'],
+        [
+          meter.school.name, '', 'No', '', '',
+          '', meter.mpan_mprn.to_s, meter.name, 'Yes', 'No', 'NHH AMR',
+          'Smets2', '', '', ''
+        ]
       ]
     )
   end
@@ -27,7 +32,7 @@ describe 'DCC Status Report' do
     expect(page.response_headers['content-type']).to eq('text/csv')
     expect(body).to \
       eq('School Name,Group Name,School Archived?,Group Owner,Type,Data Source,MPAN,Meter Name,Active?,Consented?,' \
-         "Earliest Validated,Latest Validated,Issues\n" \
-         "#{meter.school.name},,No,,Gas,,#{meter.mpan_mprn},#{meter.name},Yes,No,,,0\n")
+         "Meter System,N3rgy Meter Type,Earliest Validated,Latest Validated,Issues\n" \
+         "#{meter.school.name},,No,,Gas,,#{meter.mpan_mprn},#{meter.name},Yes,No,NHH AMR,Smets2,,,0\n")
   end
 end

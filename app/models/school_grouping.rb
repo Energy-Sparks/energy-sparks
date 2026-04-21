@@ -2,12 +2,12 @@
 #
 # Table name: school_groupings
 #
-#  created_at      :datetime         not null
 #  id              :bigint(8)        not null, primary key
 #  role            :enum             not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #  school_group_id :bigint(8)        not null
 #  school_id       :bigint(8)        not null
-#  updated_at      :datetime         not null
 #
 # Indexes
 #

@@ -1,7 +1,3 @@
-<% unless content_for?(:page_title) %>
-  <% content_for :page_title, content_for?(:title) ? yield(:title) : 'Admin Dashboard' %>
-<% end %>
-
 <% content_for :header do %>
   <%= render Admin::HeaderNavComponent.new do |header_nav| %>
     <% header_nav.with_header title: content_for?(:title) ? yield(:title) : 'Admin Dashboard' %>

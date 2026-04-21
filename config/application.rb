@@ -25,34 +25,34 @@ module EnergySparks
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Local customisations
+    # devise not supporting new default very well yet - https://github.com/heartcombo/devise/pull/5462
+    # should be resolved by rails 8.1 having config.action_controller.allowed_redirect_hosts
+    #   https://github.com/rails/rails/pull/55420
+    config.action_controller.action_on_open_redirect = :log
+
+    # Allows mailer previews to be viewed on production & tests
+    # See also: config/initializers/action_mailer.rb
+    config.action_mailer.show_previews = true
+    # Rspec makes rails use spec/mailers/previews as the mail previews path
+    config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
+
+    config.active_record.encryption.primary_key = '0UmFz7KnehkidvKKhMWrnvStuFFzM0oK'
+    config.active_record.encryption.deterministic_key = 'eo84dBizRt6e4I68aD8IUrCBjuzTt7c7'
+    config.active_record.encryption.key_derivation_salt = 'IXTWKMlViWaALgj3k2UNhIouWdOyXAwm'
+    config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
+
+    # uploaded SVG files are served as octet stream by default for security
+    # this will remove them from the list of binary file types, but is a slight risk
+    config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
+    config.active_storage.variant_processor = :mini_magick # keep old default for now, breaks validation
+
     config.active_support.cache_format_version = 7.1
     config.autoload_lib(ignore: %w(generators))
+    # compiles all public (names don't start with an underscore) Sass files
+    config.dartsass.builds = { '.' => '.' }
     # For our application date helpers to use to optionally display times in configured zone
     config.display_timezone = 'London'
     config.exceptions_app = self.routes
-
-    config.middleware.use Rack::Attack
-    require_relative '../lib/rack/x_robots_tag'
-    config.middleware.use Rack::XRobotsTag
-
-    # session cookie config will be overridden in production.rb
-    config.session_store :cookie_store, key: '_energy-sparks_session'
-    config.after_initialize do
-      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
-        require 'dashboard/alerts/common/benchmark_metrics'
-        BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
-      end
-
-      # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
-      ActionText::ContentHelper.allowed_attributes =
-        Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
-      ActionText::ContentHelper.allowed_attributes.add 'id'
-      ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
-      ActionText::ContentHelper.allowed_attributes.add 'allow'
-      ActionText::ContentHelper.allowed_attributes.add 'allowfullscreen'
-      ActionText::ContentHelper.allowed_tags = Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_tags
-      ActionText::ContentHelper.allowed_tags.add 'iframe'
-    end
 
     # Default good job execution mode configuration for test
     # See https://github.com/bensheldon/good_job#configuration-options
@@ -65,36 +65,36 @@ module EnergySparks
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}').to_s]
 
+    require_relative '../lib/mailchimp_client'
+    config.mailchimp_client = MailchimpClient.create
+
+    config.middleware.use Rack::Attack
+    require_relative '../lib/rack/x_robots_tag'
+    config.middleware.use Rack::XRobotsTag
+
+    # session cookie config will be overridden in production.rb
+    config.session_store :cookie_store, key: '_energy-sparks_session'
+
     config.view_component.previews.enabled = true
     config.view_component.previews.paths << "#{Rails.root}/spec/components/previews"
     config.view_component.previews.route = "/admin/components/previews"
     config.view_component.previews.default_layout = "component_preview"
     config.view_component.previews.controller = "Admin::ComponentPreviewsController"
 
-    config.active_record.encryption.primary_key = '0UmFz7KnehkidvKKhMWrnvStuFFzM0oK'
-    config.active_record.encryption.deterministic_key = 'eo84dBizRt6e4I68aD8IUrCBjuzTt7c7'
-    config.active_record.encryption.key_derivation_salt = 'IXTWKMlViWaALgj3k2UNhIouWdOyXAwm'
-    config.active_record.encryption.hash_digest_class = OpenSSL::Digest::SHA256
-
-    # uploaded SVG files are served as octet stream by default for security
-    # this will remove them from the list of binary file types, but is a slight risk
-    config.active_storage.content_types_to_serve_as_binary.delete("image/svg+xml")
-    config.active_storage.variant_processor = :mini_magick # keep old default for now, breaks validation
-
-    # devise not supporting new default very well yet - https://github.com/heartcombo/devise/pull/5462
-    # should be resolved by rails 8.1 having config.action_controller.allowed_redirect_hosts
-    #   https://github.com/rails/rails/pull/55420
-    config.action_controller.raise_on_open_redirects = false
-
-    require_relative '../lib/mailchimp_client'
-    config.mailchimp_client = MailchimpClient.create
-    # Allows mailer previews to be viewed on production & tests
-    # See also: config/initializers/action_mailer.rb
-    config.action_mailer.show_previews = true
-    # Rspec makes rails use spec/mailers/previews as the mail previews path
-    config.action_mailer.preview_paths << Rails.root.join('spec', 'mailers', 'previews')
-
-    # compiles all public (names don't start with an underscore) Sass files
-    config.dartsass.builds = { '.' => '.' }
+    config.after_initialize do
+      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
+        require 'dashboard/alerts/common/benchmark_metrics'
+        BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
+      end
+      # https://stackoverflow.com/questions/77366033/allow-actiontext-tags-in-rails-7-1-with-new-sanitizers
+      ActionText::ContentHelper.allowed_attributes =
+        Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_attributes
+      ActionText::ContentHelper.allowed_attributes.add 'id'
+      ActionText::ContentHelper.allowed_attributes.add 'data-chart-config'
+      ActionText::ContentHelper.allowed_attributes.add 'allow'
+      ActionText::ContentHelper.allowed_attributes.add 'allowfullscreen'
+      ActionText::ContentHelper.allowed_tags = Class.new.include(ActionText::ContentHelper).new.sanitizer_allowed_tags
+      ActionText::ContentHelper.allowed_tags.add 'iframe'
+    end
   end
 end

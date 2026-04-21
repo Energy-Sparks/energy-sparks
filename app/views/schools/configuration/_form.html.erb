@@ -111,9 +111,9 @@
     <div class="form-group col-md-12">
       <%= f.label :default_contract_holder_id, 'How will school be funded in future?' %>
       <%= f.select :default_contract_holder_id,
-                   options_for_select([['Self funding', school.id], ['MAT funded', school.organisation_group&.id]],
+                   options_for_select([['Self funding', nil], ['MAT funded', school.organisation_group&.id]],
                                       school.default_contract_holder_id),
-                   { include_blank: true },
+                   { include_blank: false },
                    { class: 'form-control' } %>
       <p class="small">Indicates whether we expect a school to be self-funded or funded by their MAT in future</p>
     </div>
