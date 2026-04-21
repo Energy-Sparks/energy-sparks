@@ -2,11 +2,9 @@
 #
 # Table name: commercial_products
 #
-#  comments            :text
-#  created_at          :datetime         not null
-#  created_by_id       :bigint(8)
-#  default_product     :boolean          default(FALSE), not null
 #  id                  :bigint(8)        not null, primary key
+#  comments            :text
+#  default_product     :boolean          default(FALSE), not null
 #  large_school_price  :decimal(10, 2)
 #  mat_price           :decimal(10, 2)
 #  metering_fee        :decimal(10, 2)
@@ -14,7 +12,9 @@
 #  private_account_fee :decimal(10, 2)
 #  size_threshold      :integer
 #  small_school_price  :decimal(10, 2)
+#  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  created_by_id       :bigint(8)
 #  updated_by_id       :bigint(8)
 #
 # Indexes

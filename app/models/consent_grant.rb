@@ -2,16 +2,16 @@
 #
 # Table name: consent_grants
 #
-#  consent_statement_id :bigint(8)        not null
-#  created_at           :datetime         not null
-#  guid                 :text
 #  id                   :bigint(8)        not null, primary key
+#  guid                 :text
 #  ip_address           :text
 #  job_title            :text
 #  name                 :text
-#  school_id            :bigint(8)        not null
 #  school_name          :text
+#  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  consent_statement_id :bigint(8)        not null
+#  school_id            :bigint(8)        not null
 #  user_id              :bigint(8)
 #
 # Indexes

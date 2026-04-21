@@ -2,16 +2,16 @@
 #
 # Table name: alert_type_rating_unsubscriptions
 #
-#  alert_subscription_event_id :bigint(8)
-#  alert_type_rating_id        :bigint(8)        not null
-#  contact_id                  :bigint(8)        not null
-#  created_at                  :datetime         not null
-#  effective_until             :date
 #  id                          :bigint(8)        not null, primary key
+#  effective_until             :date
 #  reason                      :text
 #  scope                       :integer          not null
 #  unsubscription_period       :integer          not null
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  alert_subscription_event_id :bigint(8)
+#  alert_type_rating_id        :bigint(8)        not null
+#  contact_id                  :bigint(8)        not null
 #
 # Indexes
 #

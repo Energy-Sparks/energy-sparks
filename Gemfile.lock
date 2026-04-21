@@ -136,9 +136,9 @@ GEM
       public_suffix (>= 2.0.2, < 8.0)
     after_party (2.1.0)
     amazing_print (1.7.2)
-    annotate (2.6.5)
-      activerecord (>= 2.3.0)
-      rake (>= 0.8.7)
+    annotaterb (4.22.0)
+      activerecord (>= 6.0.0)
+      activesupport (>= 6.0.0)
     ast (2.4.3)
     auto_strip_attributes (2.6.0)
       activerecord (>= 4.0)
@@ -876,7 +876,7 @@ DEPENDENCIES
   MailchimpMarketing
   active_storage_validations
   after_party
-  annotate
+  annotaterb
   auto_strip_attributes (~> 2.5)
   aws-sdk-s3
   better_errors
