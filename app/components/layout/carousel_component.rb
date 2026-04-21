@@ -7,7 +7,9 @@ module Layout
     renders_many :panels, types: {
       equivalence: { renders: ->(**kwargs) { EquivalenceComponent.new(**with_classes(**kwargs)) }, as: :equivalence },
       grid: { renders: ->(**kwargs) { Layout::GridComponent.new(**with_classes(**kwargs)) }, as: :grid },
-      testimonial_card: { renders: ->(**kwargs) { Cards::TestimonialComponent.new(**with_classes(**kwargs)) }, as: :testimonial_card },
+      testimonial_card: {
+        renders: ->(**kwargs) { Cards::TestimonialComponent.new(**with_classes(**kwargs)) }, as: :testimonial_card
+      },
       case_study_card: { renders: ->(**kwargs) { Cards::CaseStudyComponent.new(**with_classes(**kwargs)) }, as: :case_study_card }
     }
 
