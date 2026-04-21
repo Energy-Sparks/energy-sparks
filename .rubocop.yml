@@ -24,7 +24,7 @@ AllCops:
     - config/initializers/permissions_policy.rb
     - config/puma.rb
     - config/routes.rb
-    - db/migrate/202604211056*.rb
+    - db/migrate/202604211056*.rb # goodjob migrations
 plugins:
   - rubocop-capybara
   - rubocop-factory_bot
