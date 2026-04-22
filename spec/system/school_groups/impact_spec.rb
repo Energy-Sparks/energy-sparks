@@ -7,6 +7,11 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
   let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
 
+  before do
+    # so we can display a testimonial
+    create(:testimonial, case_study: create(:case_study, organisation: school_group))
+  end
+
   describe 'Access control' do
     before { Flipper.enable(:impact_reporting) }
 

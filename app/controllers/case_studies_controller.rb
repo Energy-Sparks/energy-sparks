@@ -1,6 +1,8 @@
 class CaseStudiesController < DownloadableController
   skip_before_action :authenticate_user!
 
+  before_action :enable_bootstrap5
+
   layout 'home'
 
   def index
