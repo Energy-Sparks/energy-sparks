@@ -24,6 +24,10 @@ module Admin
                                                   .includes(:school, school: :school_group)
                                                   .order(updated_at: :desc)
         )
+        build_breadcrumbs([
+                            { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
+                            { name: 'Completed Onboardings' }
+                          ])
       end
     end
   end
