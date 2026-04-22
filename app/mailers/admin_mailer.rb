@@ -60,13 +60,11 @@ class AdminMailer < ApplicationMailer
 
   def issues_report
     @user = params[:user]
-    @issues = Issue.for_owned_by(@user).active.status_open.issue.by_review_date.by_updated_at.includes(%i[created_by updated_by issueable])
-    title = "Issue report for #{@user.display_name}"
-
+    @issues = active_issues(@user).by_review_date.by_updated_at.includes(%i[created_by updated_by issueable])
     return unless @issues.any?
 
     attachments['issues_report.csv'] = { mime_type: 'text/csv', content: build_issues_csv_for(@issues) }
-    mail(to: @user.email, subject: subject(title))
+    mail(to: @user.email, subject: subject("Issue report for #{@user.display_name}"))
   end
 
   def funder_allocation_report
@@ -110,10 +108,17 @@ class AdminMailer < ApplicationMailer
 
   private
 
+  def active_issues(user)
+    issues = Issue.for_owned_by(user).active.status_open.issue
+    issues.where(review_date: ..Date.current)
+          .or(issues.where(review_date: Date.current..1.week.from_now))
+          .or(issues.where(created_at: 1.week.ago.to_date..))
+  end
+
   def build_issues_csv_for(issues)
     CSV.generate(headers: true) do |csv|
-      csv << ['Issue type', 'Issue for', 'New', 'Group', 'Title', 'Fuel', 'Next review date', 'Created by', 'Created', 'Updated by',
-              'Updated', 'View', 'Edit']
+      csv << ['Issue type', 'Issue for', 'New', 'Group', 'Title', 'Fuel', 'Next review date', 'Created by', 'Created',
+              'Updated by', 'Updated', 'View', 'Edit']
       issues.each do |issue|
         csv << [
           issue.issue_type,
