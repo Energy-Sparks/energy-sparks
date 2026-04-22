@@ -3,15 +3,13 @@
 require 'rails_helper'
 
 describe Commercial::ContractPriceCalculator do
-  subject(:prices) { service.per_school }
-
   let(:service) { described_class.new(contract) }
 
   let!(:product) { create(:commercial_product) }
 
   # rubocop:disable RSpec/NestedGroups
   describe 'per_school' do
-    subject(:price) { prices[school.id][:price] }
+    subject(:price) { service.per_school[school.id][:price] }
 
     let!(:contract) { create(:commercial_contract, product:) }
     let!(:school) { create(:school, number_of_pupils: 100, data_sharing: :public) }
@@ -26,7 +24,7 @@ describe Commercial::ContractPriceCalculator do
       end
 
       it 'produces pricing data for each school' do
-        expect(prices[school.id][:name]).to eq(school.name)
+        expect(service.per_school[school.id][:name]).to eq(school.name)
       end
 
       it 'calculates the specific price' do
@@ -138,4 +136,20 @@ describe Commercial::ContractPriceCalculator do
     end
   end
   # rubocop:enable RSpec/NestedGroups
+
+  describe 'totals' do
+    subject(:totals) { service.totals }
+
+    let!(:contract) { create(:commercial_contract, product:) }
+    let!(:school) { create(:school, number_of_pupils: 100, data_sharing: :public) }
+    let!(:licence) { create(:commercial_licence, school:, contract:) }
+
+    it 'calculates the expected price' do
+      expect(totals).to have_attributes(
+        base_price: licence.product.small_school_price,
+        metering_fee: 0.0,
+        private_account_fee: 0.0
+      )
+    end
+  end
 end

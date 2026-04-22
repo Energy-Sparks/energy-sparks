@@ -14,12 +14,11 @@ module Commercial
     def totals
       rows = per_school
 
-      {
-        base_price: rows.values.sum { |r| r[:base_price] },
-        metering_fee: rows.values.sum { |r| r[:metering_fee] },
-        private_account_fee: rows.values.sum { |r| r[:private_account_fee] },
-        total: rows.values.sum { |r| r[:total] }
-      }
+      Price.new(
+        base_price: rows.values.sum { |r| r[:price].base_price },
+        metering_fee: rows.values.sum { |r| r[:price].metering_fee },
+        private_account_fee: rows.values.sum { |r| r[:price].private_account_fee }
+      )
     end
 
     private
