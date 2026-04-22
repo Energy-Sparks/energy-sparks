@@ -29,7 +29,8 @@ describe Schools::PupilNumberUpdater do
   end
 
   def update
-    service.update(pupils, percentage_free_school_meals, school.calendar.academic_years.ordered.first.start_date)
+    service.update(pupils, percentage_free_school_meals, school.calendar.academic_years.ordered.first.start_date,
+                   described_class)
   end
 
   shared_examples 'it creates a new attribute' do
