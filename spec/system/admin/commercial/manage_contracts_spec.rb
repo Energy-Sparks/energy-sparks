@@ -424,6 +424,56 @@ describe 'manage contracts' do
       end
     end
 
+    context 'when viewing financial summary' do
+      before do
+        create(:commercial_licence, status: :confirmed, contract:)
+        refresh
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#total-contract-value' }
+        let(:expected_header) do
+          [
+            %w[Charge Cost]
+          ]
+        end
+        let(:expected_rows) do
+          [
+            ['Base price', '£540'],
+            ['Metering fees', '0p'],
+            ['Private account fees', '0p'],
+            ['Total', '£540']
+          ]
+        end
+      end
+    end
+
+    context 'when viewing contract value' do
+      before do
+        create(:commercial_licence, status: :confirmed, contract:)
+        refresh
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false, tfoot: true do
+        let(:table_id) { '#per-school-fees' }
+        let(:expected_header) do
+          [
+            ['School Group', 'School', 'Base price', 'Metering fee', 'Private account fee', 'Total']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            ['', contract.schools.first.name, '£540', '0p', '0p', '£540']
+          ]
+        end
+        let(:expected_footer_rows) do
+          [
+            ['', '', '£540', '0p', '0p', '£540']
+          ]
+        end
+      end
+    end
+
     context 'when navigating to contract holder page' do
       before { click_on 'All contracts' }
 

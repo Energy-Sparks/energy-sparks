@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Commercial
-  class Commercial::ContractPriceCalculator
+  class ContractPriceCalculator
     def initialize(contract)
       @contract = contract
       @product  = contract.product
@@ -14,7 +14,7 @@ module Commercial
     def totals
       rows = per_school
 
-      Price.new(
+      @totals ||= Price.new(
         base_price: rows.values.sum { |r| r[:price].base_price },
         metering_fee: rows.values.sum { |r| r[:price].metering_fee },
         private_account_fee: rows.values.sum { |r| r[:price].private_account_fee }
@@ -26,7 +26,9 @@ module Commercial
     def calculate_per_school
       rows = schools_scope.select(calculate_price_sql)
 
-      rows.to_h { |row| [row.school_id, row_to_price_hash(row)] }
+      unsorted = rows.to_h { |row| [row.school_id, row_to_price_hash(row)] }
+
+      unsorted.sort_by { |_id, h| h[:name] }.to_h
     end
 
     def meter_counts

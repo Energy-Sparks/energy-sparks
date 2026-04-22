@@ -20,6 +20,10 @@ module Admin
         render json: records.map { |r| { id: r.id, name: r.name } }
       end
 
+      def show
+        @pricing = ::Commercial::ContractPriceCalculator.new(@contract)
+      end
+
       def new
         @contract = if renewal_request?
                       @original = ::Commercial::Contract.find(params[:original_contract_id])
