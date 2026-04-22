@@ -48,8 +48,8 @@ module ImpactReport
     }.freeze
 
     ENERGY_EFFICIENCY_METRICS = {
-      total_saving: 'total_saving'
-      # more energy efficiency metrics can be added here as needed
+      total_savings: 'total_savings'
+      # more to be added
     }.freeze
 
     ENGAGEMENT_METRICS = {
