@@ -3,6 +3,8 @@
 module Admin
   module Commercial
     class ContractsController < AdminController
+      ALLOWED_SCOPES = %w[current expired expiring future recent].freeze
+
       load_and_authorize_resource :contract, class: 'Commercial::Contract'
 
       def index
@@ -84,6 +86,8 @@ module Admin
       private
 
       def load_contracts(scope)
+        raise ArgumentError unless ALLOWED_SCOPES.include?(scope)
+
         @contracts = ::Commercial::Contract.send(scope).by_start_date
       end
 
