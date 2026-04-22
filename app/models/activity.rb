@@ -4,16 +4,16 @@
 #
 # Table name: activities
 #
+#  id                   :bigint(8)        not null, primary key
+#  happened_on          :date
+#  pupil_count          :integer
+#  title                :string
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
 #  activity_category_id :bigint(8)
 #  activity_type_id     :bigint(8)        not null
-#  created_at           :datetime         not null
 #  created_by_id        :bigint(8)
-#  happened_on          :date
-#  id                   :bigint(8)        not null, primary key
-#  pupil_count          :integer
 #  school_id            :bigint(8)        not null
-#  title                :string
-#  updated_at           :datetime         not null
 #  updated_by_id        :bigint(8)
 #
 # Indexes

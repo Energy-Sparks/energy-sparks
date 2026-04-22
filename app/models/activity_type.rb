@@ -2,20 +2,20 @@
 #
 # Table name: activity_types
 #
+#  id                     :bigint(8)        not null, primary key
 #  active                 :boolean          default(TRUE)
-#  activity_category_id   :bigint(8)        not null
-#  created_at             :datetime         not null
 #  custom                 :boolean          default(FALSE)
 #  data_driven            :boolean          default(FALSE)
 #  deprecated_description :text
 #  fuel_type              :string           default([]), is an Array
-#  id                     :bigint(8)        not null, primary key
 #  maximum_frequency      :integer          default(10)
 #  name                   :string
 #  score                  :integer
 #  show_on_charts         :boolean          default(TRUE)
 #  summary                :string
+#  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  activity_category_id   :bigint(8)        not null
 #
 # Indexes
 #

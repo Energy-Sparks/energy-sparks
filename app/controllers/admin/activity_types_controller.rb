@@ -106,7 +106,7 @@ module Admin
       @key_stages = KeyStage.order(:name)
       @subjects = Subject.order(:name)
       @topics = Topic.order(:name)
-      @impacts = Impact.order(:name)
+      @impacts = ::Impact.order(:name)
       @activity_timings = ActivityTiming.order(:position)
     end
 

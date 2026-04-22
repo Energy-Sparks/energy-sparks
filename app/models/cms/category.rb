@@ -2,13 +2,13 @@
 #
 # Table name: cms_categories
 #
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
-#  icon          :string           default("question")
 #  id            :bigint(8)        not null, primary key
+#  icon          :string           default("question")
 #  published     :boolean          default(FALSE), not null
 #  slug          :string           not null
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  created_by_id :bigint(8)
 #  updated_by_id :bigint(8)
 #
 # Indexes

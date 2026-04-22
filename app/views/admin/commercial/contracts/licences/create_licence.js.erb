@@ -1,4 +1,4 @@
-<% form = SimpleForm::FormBuilder.new(:commercial_contract, @contract, self, {}) %>
+<% form = CustomSimpleForm::FormBuilder.new(:commercial_contract, @contract, self, {}) %>
 <% nested = render(
     Forms::Commercial::BulkLicenceEditorComponent.licence_row(
       form:, licence: @licence, exclude_fields: [:invoice_reference]

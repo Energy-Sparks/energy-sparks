@@ -1,0 +1,7 @@
+---
+:exclude_factories: true
+:exclude_fixtures: true
+:exclude_serializers: true
+:exclude_tests: true
+:sort: true
+:hide_limit_column_types: 'integer,boolean'

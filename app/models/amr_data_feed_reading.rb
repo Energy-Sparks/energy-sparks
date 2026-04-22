@@ -1,17 +1,20 @@
+# Postgres autovacuum specific settings:
+# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
+# Applied using: ALTER TABLE amr_data_feed_readings SET (X = n)
+# autovacuum_vacuum_cost_delay = 0
+# autovacuum_analyze_scale_factor = 0
+# autovacuum_analyze_threshold = 10000
+# autovacuum_vacuum_scale_factor = 0
+# autovacuum_vacuum_threshold = 50000
 # == Schema Information
 #
 # Table name: amr_data_feed_readings
 #
-#  amr_data_feed_config_id     :bigint(8)        not null
-#  amr_data_feed_import_log_id :bigint(8)        not null
-#  created_at                  :datetime         not null
-#  description                 :text
 #  id                          :bigint(8)        not null, primary key
-#  meter_id                    :bigint(8)
+#  description                 :text
 #  meter_serial_number         :text
 #  mpan_mprn                   :text             not null
 #  postcode                    :text
-#  provider_record_id          :text
 #  reading_date                :text             not null
 #  reading_time                :text
 #  readings                    :text             not null, is an Array
@@ -19,7 +22,12 @@
 #  total                       :text
 #  type                        :text
 #  units                       :text
+#  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  amr_data_feed_config_id     :bigint(8)        not null
+#  amr_data_feed_import_log_id :bigint(8)        not null
+#  meter_id                    :bigint(8)
+#  provider_record_id          :text
 #
 # Indexes
 #
@@ -39,14 +47,6 @@
 #  fk_rails_...  (meter_id => meters.id) ON DELETE => nullify
 #
 
-# Postgres autovacuum specific settings:
-# See: https://www.postgresql.org/docs/current/runtime-config-autovacuum.html
-# Applied using: ALTER TABLE amr_data_feed_readings SET (X = n)
-# autovacuum_vacuum_cost_delay = 0
-# autovacuum_analyze_scale_factor = 0
-# autovacuum_analyze_threshold = 10000
-# autovacuum_vacuum_scale_factor = 0
-# autovacuum_vacuum_threshold = 50000
 class AmrDataFeedReading < ApplicationRecord
   belongs_to :meter, optional: true
   belongs_to :amr_data_feed_import_log

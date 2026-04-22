@@ -6,7 +6,7 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
   end
 
   it 'does not have sortable columns', unless: sortable do
-    expect(page).not_to have_css("#{table_id}.table-sorted")
+    expect(page).to have_no_css("#{table_id}.table-sorted")
   end
 
   it 'aligns the data cells correctly', if: aligned do
@@ -30,7 +30,7 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
   it 'has the expected rows', if: rows do
     body_rows = page.find("#{table_id} > tbody").find_all('tr')
     actual_rows = body_rows.map do |tr|
-      tr.find_all('td').map { |td| td.text.strip }
+      tr.find_all('td').map { |td| td.text.gsub(/\s+/, ' ').strip }
     end
 
     expect(actual_rows).to eq(expected_rows)
