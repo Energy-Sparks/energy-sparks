@@ -112,41 +112,20 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Current</td>
-                <td>Provisional</td>
-                <td><%= @contract.licences.current.provisional.count %></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Confirmed</td>
-                <td><%= @contract.licences.current.confirmed.count %></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>All</td>
-                <td><%= @contract.licences.current.count %></td>
-              </tr>
-              <tr>
-                <td>Future</td>
-                <td>Provisional</td>
-                <td><%= @contract.licences.future.provisional.count %></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>Confirmed</td>
-                <td><%= @contract.licences.future.confirmed.count %></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>All</td>
-                <td><%= @contract.licences.future.count %></td>
-              </tr>
-              <tr>
-                <td>Historical</td>
-                <td>All</td>
-                <td><%= @contract.licences.historical.count %></td>
-              </tr>
+              <% %i[current future historical].each do |period| %>
+                <% %i[provisional confirmed pending_invoice invoiced].each_with_index do |status, index| %>
+                  <tr>
+                    <td><strong><%= period.to_s.humanize if index.zero? %></strong></td>
+                    <td><%= status.to_s.humanize %></td>
+                    <td><%= @contract.licences.send(period).send(status).count %></td>
+                  </tr>
+                <% end %>
+                  <tr>
+                    <td></td>
+                    <td>All</td>
+                    <td><%= @contract.licences.send(period).count %></td>
+                  </tr>
+              <% end %>
             </tbody>
           </table>
         </div>

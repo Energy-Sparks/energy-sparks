@@ -406,11 +406,19 @@ describe 'manage contracts' do
           [
             ['Current', 'Provisional', '2'],
             ['', 'Confirmed', '1'],
+            ['', 'Pending invoice', '0'],
+            ['', 'Invoiced', '0'],
             ['', 'All', '3'],
             ['Future', 'Provisional', '4'],
             ['', 'Confirmed', '0'],
+            ['', 'Pending invoice', '0'],
+            ['', 'Invoiced', '0'],
             ['', 'All', '4'],
-            ['Historical', 'All', '8']
+            ['Historical', 'Provisional', '3'],
+            ['', 'Confirmed', '5'],
+            ['', 'Pending invoice', '0'],
+            ['', 'Invoiced', '0'],
+            ['', 'All', '8']
           ]
         end
       end
