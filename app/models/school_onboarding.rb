@@ -86,7 +86,15 @@ class SchoolOnboarding < ApplicationRecord
   scope :complete, lambda {
     joins(:events).where(school_onboarding_events: { event: SchoolOnboardingEvent.events[:onboarding_complete] })
   }
-  scope :completed_in_last_x_days, ->(days) { complete.where(updated_at: days.days.ago..) }
+  scope :completed_in_last_x_days, ->(x) do # rubocop:disable Style/Lambda
+    joins(:events).where(
+      school_onboarding_events: {
+        event: SchoolOnboardingEvent.events[:onboarding_complete],
+        created_at: x.days.ago..
+      }
+    )
+  end
+
   scope :incomplete, ->(parent = nil) { where.not(id: parent ? parent.onboardings_for_group.complete : complete) }
   scope :for_school_type, ->(school_type) { joins(:school).where(schools: { school_type: }) }
 
