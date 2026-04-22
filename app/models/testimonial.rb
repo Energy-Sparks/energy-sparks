@@ -2,14 +2,14 @@
 #
 # Table name: testimonials
 #
-#  active        :boolean          default(FALSE), not null
-#  case_study_id :bigint(8)
-#  category      :integer          default("default"), not null
-#  created_at    :datetime         not null
 #  id            :bigint(8)        not null, primary key
+#  active        :boolean          default(FALSE), not null
+#  category      :integer          default("default"), not null
 #  name          :string
 #  organisation  :string
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  case_study_id :bigint(8)
 #
 # Indexes
 #

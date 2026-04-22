@@ -2,11 +2,11 @@
 #
 # Table name: issue_meters
 #
-#  created_at :datetime         not null
 #  id         :bigint(8)        not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #  issue_id   :bigint(8)
 #  meter_id   :bigint(8)
-#  updated_at :datetime         not null
 #
 # Indexes
 #

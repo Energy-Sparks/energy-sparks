@@ -38,9 +38,7 @@ module Commercial
       )
 
       # Self-funding
-      if contract_holder.is_a?(School)
-        contract_holder.update!(default_contract_holder: contract_holder)
-      end
+      contract_holder.update!(default_contract_holder: nil) if contract_holder.is_a?(School)
 
       contract
     end
@@ -54,7 +52,7 @@ module Commercial
       contract_holder = School.find_by_name(name)
       return contract_holder unless contract_holder.nil?
 
-      return SchoolGroup.find_by_name(name)
+      SchoolGroup.find_by_name(name)
     end
   end
 end

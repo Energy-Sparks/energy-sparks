@@ -158,7 +158,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         current_licence.contract.end_date,
         current_licence.start_date,
         current_licence.end_date,
-        current_licence.contract.product.name,
+        current_licence.contract.product.name
       ].join(',')
       expect(csv.lines[2].chomp).to eq [
         school_2.school_group.name,
@@ -202,7 +202,7 @@ RSpec.describe Schools::FunderAllocationReportService, type: :service do
         nil,
         nil,
         nil, # Current Contract Holder
-        nil,
+        'Self funding',
         nil,
         nil,
         nil,

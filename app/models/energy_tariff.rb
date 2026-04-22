@@ -2,24 +2,24 @@
 #
 # Table name: energy_tariffs
 #
+#  id                 :bigint(8)        not null, primary key
 #  applies_to         :integer          default("both")
 #  ccl                :boolean          default(FALSE)
-#  created_at         :datetime         not null
-#  created_by_id      :bigint(8)
 #  enabled            :boolean          default(TRUE)
 #  end_date           :date
-#  id                 :bigint(8)        not null, primary key
 #  meter_type         :integer          default("electricity"), not null
 #  name               :text             not null
 #  source             :integer          default("manually_entered"), not null
 #  start_date         :date
-#  tariff_holder_id   :bigint(8)
 #  tariff_holder_type :string
 #  tariff_type        :integer          default("flat_rate"), not null
 #  tnuos              :boolean          default(FALSE)
-#  updated_at         :datetime         not null
-#  updated_by_id      :bigint(8)
 #  vat_rate           :integer
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  created_by_id      :bigint(8)
+#  tariff_holder_id   :bigint(8)
+#  updated_by_id      :bigint(8)
 #
 # Indexes
 #

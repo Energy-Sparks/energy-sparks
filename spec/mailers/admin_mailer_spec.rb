@@ -7,11 +7,7 @@ RSpec.describe AdminMailer, :include_application_helper do
 
   let(:email) { ActionMailer::Base.deliveries.last }
 
-  around do |example|
-    ClimateControl.modify ENVIRONMENT_IDENTIFIER: 'unknown' do
-      example.run
-    end
-  end
+  before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true', 'ENVIRONMENT_IDENTIFIER' => 'unknown')) }
 
   describe '#school_group_meters_report' do
     shared_examples 'a report with gaps in the meter readings' do
@@ -32,7 +28,8 @@ RSpec.describe AdminMailer, :include_application_helper do
         expect(body).to include 'Modified readings (last 2 years)'
 
         within '.gappy-dates' do
-          expect(body).to include "15 days (#{(base_date + 1.day).to_fs(:es_short)} to #{(base_date + 15.days).to_fs(:es_short)})"
+          expect(body).to include \
+            "15 days (#{(base_date + 1.day).to_fs(:es_short)} to #{(base_date + 15.days).to_fs(:es_short)})"
         end
 
         within '.modified-dates' do
@@ -76,7 +73,7 @@ RSpec.describe AdminMailer, :include_application_helper do
     let(:meter_report) { SchoolGroups::MeterReport.new(school_group, all_meters: all_meters) }
 
     before do
-      AdminMailer.with(to: to, meter_report: meter_report).school_group_meters_report.deliver
+      described_class.with(to: to, meter_report: meter_report).school_group_meters_report.deliver
     end
 
     context 'All meters' do
@@ -166,7 +163,7 @@ RSpec.describe AdminMailer, :include_application_helper do
     let(:body) { email.html_part.body.raw_source }
 
     before do
-      AdminMailer.with(user: admin).issues_report.deliver
+      described_class.with(user: admin).issues_report.deliver
     end
 
     context 'showing only open issues for user' do
@@ -264,15 +261,12 @@ RSpec.describe AdminMailer, :include_application_helper do
     let(:school) { create(:school) }
     let(:lagging) { data_source.exceeded_alert_threshold? ? [data_source] : [] }
 
-    context 'showing data sources which have exceeded their threshold' do
+    context 'when showing data sources which have exceeded their threshold' do
       before do
         [create(:gas_meter, active: true, data_source:, school:),
          create_list(:gas_meter_with_validated_reading_dates, 3, end_date: 11.days.ago, active: true, data_source:,
                                                                  school:)]
-      end
-
-      before do
-        AdminMailer.with(to: :admin, lagging:).lagging_data_sources.deliver if lagging.present?
+        described_class.with(to: :admin, lagging:).lagging_data_sources.deliver if lagging.present?
       end
 
       it { expect(email.subject).to eq '[energy-sparks-unknown] Energy Sparks - Lagging Data Sources' }
@@ -289,7 +283,7 @@ RSpec.describe AdminMailer, :include_application_helper do
 
     context 'when there are no lagging data sources' do
       before do
-        AdminMailer.with(to: :admin, lagging:).lagging_data_sources.deliver if lagging.present?
+        described_class.with(to: :admin, lagging:).lagging_data_sources.deliver if lagging.present?
       end
 
       it 'does not send email' do

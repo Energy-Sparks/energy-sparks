@@ -2,10 +2,10 @@
 #
 # Table name: comparison_annual_energy_costs_per_units
 #
+#  id                                            :bigint(8)
 #  electricity_economic_tariff_changed_this_year :boolean
 #  floor_area                                    :float
 #  gas_economic_tariff_changed_this_year         :boolean
-#  id                                            :bigint(8)
 #  one_year_electricity_per_floor_area_co2       :float
 #  one_year_electricity_per_floor_area_gbp       :float
 #  one_year_electricity_per_floor_area_kwh       :float

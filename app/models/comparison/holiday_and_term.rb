@@ -2,6 +2,7 @@
 #
 # Table name: comparison_holiday_and_terms
 #
+#  id                                            :bigint(8)
 #  activation_date                               :date
 #  electricity_current_period_co2                :float
 #  electricity_current_period_end_date           :date
@@ -27,9 +28,7 @@
 #  gas_previous_period_kwh_unadjusted            :float
 #  gas_tariff_has_changed                        :boolean
 #  gas_truncated_current_period                  :boolean
-#  id                                            :bigint(8)
 #  pupils_changed                                :boolean
-#  school_id                                     :bigint(8)
 #  solar_type                                    :text
 #  storage_heater_current_period_co2             :float
 #  storage_heater_current_period_end_date        :date
@@ -43,6 +42,7 @@
 #  storage_heater_previous_period_kwh_unadjusted :float
 #  storage_heater_tariff_has_changed             :boolean
 #  storage_heater_truncated_current_period       :boolean
+#  school_id                                     :bigint(8)
 #
 # Indexes
 #

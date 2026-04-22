@@ -2,14 +2,14 @@
 #
 # Table name: cms_sections
 #
-#  created_at    :datetime         not null
-#  created_by_id :bigint(8)
 #  id            :bigint(8)        not null, primary key
-#  page_id       :bigint(8)
 #  position      :integer
 #  published     :boolean          default(FALSE), not null
 #  slug          :string           not null
+#  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  created_by_id :bigint(8)
+#  page_id       :bigint(8)
 #  updated_by_id :bigint(8)
 #
 # Indexes

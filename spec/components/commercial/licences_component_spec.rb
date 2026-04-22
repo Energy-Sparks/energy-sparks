@@ -145,7 +145,7 @@ RSpec.describe Commercial::LicencesComponent, :include_application_helper, :incl
               licence.start_date.to_fs(:es_short),
               licence.end_date.to_fs(:es_short),
               licence.status.to_s.humanize,
-              'MAT funded'
+              'Self funding'
             ]
           ]
         end

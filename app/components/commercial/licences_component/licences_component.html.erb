@@ -63,7 +63,7 @@
           </td>
           <% if @show_renewal_data %>
             <td>
-              <% if licence.school.default_contract_holder_id == licence.school.id %>
+              <% if licence.school.default_contract_holder.nil? %>
                 Self funding
               <% else %>
                 MAT funded
