@@ -15,7 +15,7 @@
         <span class="nowrap">
           <%= label_tag :admin, nil, class: 'small' %>
           <%= select_tag :admin,
-                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
                          include_blank: 'Any Admin User',
                          class: 'form-control-sm' %>
         </span>
