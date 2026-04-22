@@ -10,7 +10,7 @@
 #  metric_category      :enum             not null
 #  metric_type          :enum             not null
 #  number_of_schools    :integer
-#  value                :jsonb
+#  value                :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  impact_report_run_id :bigint(8)        not null
@@ -31,41 +31,55 @@ module ImpactReport
 
     belongs_to :impact_report_run, class_name: 'ImpactReport::Run', inverse_of: :metrics
 
-    METRIC_CATEGORIES = {
-      overview: 'overview',
-      energy_efficiency: 'energy_efficiency',
-      engagement: 'engagement',
-      potential_savings: 'potential_savings'
-    }.freeze
+    def self.enum_map(values)
+      values.index_with(&:to_s)
+    end
 
-    enum :metric_category, METRIC_CATEGORIES, prefix: :category
+    METRIC_CATEGORIES = %i[
+      overview
+      energy_efficiency
+      engagement
+      potential_savings
+      footnotes
+    ].freeze
 
-    OVERVIEW_METRICS = {
-      schools: 'schools',
-      users: 'users',
-      pupils: 'pupils',
-      enrolled_schools: 'enrolled_schools'
-    }.freeze
+    enum :metric_category, enum_map(METRIC_CATEGORIES).freeze, prefix: :category
 
-    ENERGY_EFFICIENCY_METRICS = {
-      total_savings: 'total_savings'
-      # more to be added
-    }.freeze
+    OVERVIEW_METRICS = %i[
+      visible_schools
+      data_visible_schools
+      users
+      active_users
+      pupils
+      enrolled_schools
+      enrolling_schools
+    ].freeze
 
-    ENGAGEMENT_METRICS = {
-      activities: 'activities',
-      actions: 'actions',
-      points: 'points',
-      targets: 'targets'
-    }.freeze
+    ENERGY_EFFICIENCY_METRICS = %i[
+      total_savings
+    ].freeze
+    # More to come here
 
-    POTENTIAL_SAVINGS_METRICS = {
-      # Placeholder for potential savings metrics
-    }.freeze
+    ENGAGEMENT_METRICS = %i[
+      activities
+      actions
+      points
+      targets
+    ].freeze
 
-    METRIC_TYPES = { **OVERVIEW_METRICS, **ENGAGEMENT_METRICS, **ENERGY_EFFICIENCY_METRICS,
-**POTENTIAL_SAVINGS_METRICS }.freeze
+    POTENTIAL_SAVINGS_METRICS = %i[].freeze
+    # e.g.:
+    # reducing_out_of_hours_usage: 'reducing_out_of_hours_usage'
 
-    enum :metric_type, METRIC_TYPES, prefix: :type
+    FOOTNOTE_METRICS = %i[].freeze
+
+    METRIC_TYPES = (
+      OVERVIEW_METRICS +
+      ENGAGEMENT_METRICS +
+      ENERGY_EFFICIENCY_METRICS +
+      POTENTIAL_SAVINGS_METRICS +
+      FOOTNOTE_METRICS).freeze
+
+    enum :metric_type, enum_map(METRIC_TYPES).freeze, prefix: :type
   end
 end

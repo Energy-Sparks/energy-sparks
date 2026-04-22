@@ -29,8 +29,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
-  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings"]
-  create_enum "impact_report_metric_types", ["schools", "users", "pupils", "enrolled_schools", "activities", "actions", "points", "targets", "total_savings"]
+  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
+  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
@@ -1230,7 +1230,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
     t.enum "metric_type", null: false, enum_type: "impact_report_metric_types"
     t.integer "number_of_schools"
     t.datetime "updated_at", null: false
-    t.jsonb "value", default: {}
+    t.integer "value", null: false
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
   end
 

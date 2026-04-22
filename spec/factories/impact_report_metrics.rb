@@ -7,6 +7,6 @@ FactoryBot.define do
     metric_type { :total_savings }
     enough_data { true }
     fuel_type { :electricity }
-    value { {} }
+    value { 9 }
   end
 end
