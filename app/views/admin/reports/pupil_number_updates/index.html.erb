@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @schools.by_name.each do |school|
+    <% @schools.left_joins(:school_group).merge(SchoolGroup.by_name).by_name.each do |school|
          reasons = find_reasons(school) %>
       <tr>
         <td><%= school.school_group&.name %></td>

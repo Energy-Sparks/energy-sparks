@@ -13,8 +13,8 @@ namespace :school do
                                  .update(school.establishment.number_of_pupils,
                                          school.establishment.percentage_fsm,
                                          start_date,
-                                         "#{Schools::PupilNumberUpdater::AUTOMATED_REASON}. " \
-                                         "Imported on #{Date.current}. ")
+                                         [Schools::PupilNumberUpdater::AUTOMATED_DFE_REASON,
+                                          "Imported on #{Date.current}", ''].join('. '))
     end
   end
 end

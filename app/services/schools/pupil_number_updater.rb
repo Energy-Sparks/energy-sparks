@@ -3,14 +3,13 @@
 module Schools
   class PupilNumberUpdater
     DATE_FORMAT = '%d/%m/%Y'
-    AUTOMATED_REASON = 'Automated pupil number update using DfE data'
+    AUTOMATED_DFE_REASON = 'Automated pupil number update using DfE data'
 
     def initialize(school)
       @school = school
     end
 
-    def update(number_of_pupils, percentage_free_school_meals, start_date,
-               reason_prefix = 'Automated pupil number update')
+    def update(number_of_pupils, percentage_free_school_meals, start_date, reason_prefix)
       ActiveRecord::Base.transaction do
         if number_of_pupils&.>(0)
           attribute = save_number_of_pupils_to_meter_attribute(number_of_pupils, start_date, reason_prefix)

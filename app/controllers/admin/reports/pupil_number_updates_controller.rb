@@ -21,7 +21,7 @@ module Admin
                          .joins("LEFT JOIN (#{attributes_sql}) AS latest_attributes ON " \
                                 'schools.id = latest_attributes.school_id')
                          .where('latest_attributes.reason IS NULL OR NOT starts_with(latest_attributes.reason, ?)',
-                                ::Schools::PupilNumberUpdater::AUTOMATED_REASON)
+                                ::Schools::PupilNumberUpdater::AUTOMATED_DFE_REASON)
                          .select(['schools.*',
                                   'latest_attributes.created_by_id AS latest_attribute_created_by_id',
                                   'latest_attributes.reason AS latest_attribute_reason'].join(', '))
