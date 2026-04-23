@@ -24,7 +24,11 @@
                    ),
                    { include_blank: false }, { class: 'form-control' } %>
     </div>
-  <% elsif school_group.group_type == 'project' %>
+  <% else %>
+    <%= f.hidden_field :group_type, value: school_group.group_type %>
+  <% end %>
+
+  <% if school_group.group_type == 'project' %>
     <div class="form-group">
       <%= f.label :default_issues_admin_user_id, 'Default issues admin user' %>
       <%= f.select :default_issues_admin_user_id,
@@ -32,8 +36,6 @@
                                                       school_group.default_issues_admin_user_id),
                    { include_blank: true }, { class: 'form-control' } %>
     </div>
-  <% else %>
-    <%= f.hidden_field :group_type, value: school_group.group_type %>
   <% end %>
 
   <div class="form-group">
