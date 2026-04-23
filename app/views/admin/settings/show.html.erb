@@ -1,22 +1,30 @@
 <h1>Site settings</h1>
 
 <%= simple_form_for @settings, url: admin_settings_path, method: :put do |f| %>
-  <%= f.input :message_for_no_contacts, hint: 'Shows message on management dashboard for schools without contacts'%>
-  <%= f.input :message_for_no_pupil_accounts, hint: 'Shows message on management dashboard for schools without pupil accounts'%>
-  <%= f.input :management_priorities_dashboard_limit, hint: 'How many entries to show on the management dashboard priorities table before offering more'%>
-  <%= f.input :management_priorities_page_limit, hint: 'How many entries to show on the management priorities page '%>
-  <%= f.input :temperature_recording_months, as: :check_boxes, collection: @temperature_setting_months, checked: f.object.temperature_recording_months %>
+  <%= f.input :message_for_no_contacts, hint: 'Shows message on management dashboard for schools without contacts' %>
+  <%= f.input :message_for_no_pupil_accounts,
+              hint: 'Shows message on management dashboard for schools without pupil accounts' %>
+  <%= f.input :management_priorities_dashboard_limit,
+              hint: 'How many entries to show on the management dashboard priorities table before offering more' %>
+  <%= f.input :management_priorities_page_limit, hint: 'How many entries to show on the management priorities page ' %>
+  <%= f.input :temperature_recording_months, as: :check_boxes, collection: @temperature_setting_months,
+                                             checked: f.object.temperature_recording_months %>
   <%= f.input :default_import_warning_days %>
   <%= f.input :photo_bonus_points, label: 'Bonus points for adding photos to activities and actions' %>
   <%= f.input :audit_activities_bonus_points, label: 'Bonus points for completing audit assigned activities' %>
 
-  <% if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices) %>
-    <hr />
-    <h3>Price settings</h3>
-    <%= f.input :electricity_price, as: :numeric, label: 'Electricity price per kWh', hint: 'Used to calculate the cost of a kettle, smartphone, TV, & console, for equivalences.  Also used as the default electricity tariff when a school has gas only, when calculating cost of point of use water heaters.' %>
-    <%= f.input :gas_price, as: :numeric, label: 'Gas price per kWh', hint: 'Used to calculate the cost of a shower for equivalences.' %>
-    <%= f.input :solar_export_price, label: 'Solar export price per kWh', as: :numeric, hint: 'Used to calculate the £ value of exported solar, with existing panels, for the advice page.  Also used to calculate the economic benefit of installing solar for the advice page and alert.' %>
-  <% end %>
+  <hr>
+  <h3>Price settings</h3>
+  <%= f.input :electricity_price, as: :numeric, label: 'Electricity price per kWh',
+                                  hint: 'Used to calculate the cost of a kettle, smartphone, TV, & console, for '\
+                                  'equivalences.  Also used as the default electricity tariff when a school has gas '\
+                                  'only, when calculating cost of point of use water heaters.' %>
+  <%= f.input :gas_price, as: :numeric, label: 'Gas price per kWh',
+                          hint: 'Used to calculate the cost of a shower for equivalences.' %>
+  <%= f.input :solar_export_price, label: 'Solar export price per kWh', as: :numeric,
+                                   hint: 'Used to calculate the £ value of exported solar, with existing panels, '\
+                                   'for the advice page.  Also used to calculate the economic benefit of installing '\
+                                   'solar for the advice page and alert.' %>
 
-  <%= f.submit 'Update settings', class: 'btn btn-primary'%>
+  <%= f.submit 'Update settings', class: 'btn btn-primary' %>
 <% end %>
