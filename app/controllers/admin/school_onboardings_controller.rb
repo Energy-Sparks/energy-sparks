@@ -8,6 +8,9 @@ module Admin
 
     def index
       @school_groups = SchoolGroup.order(name: :asc)
+
+      @school_groups = @school_groups.where(default_issues_admin_user: @dashboard_user) if @dashboard_user
+
       respond_to do |format|
         format.html
         format.csv { send_data produce_csv, filename: INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME }

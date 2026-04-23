@@ -192,7 +192,6 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'does not display onboarding schools not in user school groups' do
-              puts page.html
               expect(page).to have_no_content(non_user_onboarding.school_name)
             end
           end
@@ -224,7 +223,7 @@ RSpec.describe 'Admin dashboard' do
           end
 
           describe 'recently onboarded' do
-            let!(:user_onboarding) do
+            let!(:user_completed_onboarding) do
               create(:school_onboarding,
                      :with_events,
                      :with_school,
@@ -233,7 +232,7 @@ RSpec.describe 'Admin dashboard' do
                      school_group_id: user_school_group.id)
             end
 
-            let!(:non_user_onboarding) do
+            let!(:non_user_completed_onboarding) do
               create(:school_onboarding,
                      :with_events,
                      :with_school,
@@ -242,7 +241,7 @@ RSpec.describe 'Admin dashboard' do
                      school_group_id: non_user_school_group.id)
             end
 
-            let!(:old_user_onboarding) do
+            let!(:old_user_completed_onboarding) do
               create(:school_onboarding,
                      :with_school,
                      :with_completed,
@@ -260,15 +259,15 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays onboardings for user school groups' do
-              expect(page).to have_content(user_onboarding.school_name)
+              expect(page).to have_content(user_completed_onboarding.school_name)
             end
 
             it 'does not display onboarding for other school groups' do
-              expect(page).to have_no_content(non_user_onboarding.school_name)
+              expect(page).to have_no_content(non_user_completed_onboarding.school_name)
             end
 
             it 'does not display onboardings older than 60 days' do
-              expect(page).to have_no_content(old_user_onboarding.school_name)
+              expect(page).to have_no_content(old_user_completed_onboarding.school_name)
             end
           end
 
