@@ -167,8 +167,8 @@ RSpec.describe 'Admin dashboard' do
         end
 
         describe 'my schools' do
-          let(:user_school_group) { create(:school_group, default_issues_admin_user: user) }
-          let(:non_user_school_group) { create(:school_group) }
+          let(:user_school_group) { create(:school_group, default_issues_admin_user: user, name: 'user school group') }
+          let(:non_user_school_group) { create(:school_group, name: 'non user school group') }
 
           describe 'onboarding' do
             let!(:user_onboarding) { create(:school_onboarding, school_group_id: user_school_group.id) }
@@ -182,11 +182,12 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_setup")
             end
 
-            it 'displays onboarding schools in the user\'s school groups' do
+            it 'displays onboarding schools in user school groups' do
               expect(page).to have_content(user_onboarding.school_name)
             end
 
-            it 'does not display onboarding schools not in the user\s school groups' do
+            it 'does not display onboarding schools not in user school groups' do
+              puts page.html
               expect(page).to have_no_content(non_user_onboarding.school_name)
             end
           end
@@ -208,11 +209,11 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/activations")
             end
 
-            it 'displays schools awaiting activation in the user\'s school groups' do
+            it 'displays schools awaiting activation in user school groups' do
               expect(page).to have_content(user_awaiting_school.name)
             end
 
-            it 'does not display schools awaiting activation which are not in the user\s school groups' do
+            it 'does not display schools awaiting activation which are not in user school groups' do
               expect(page).to have_no_content(non_user_awaiting_school.name)
             end
           end
@@ -253,7 +254,7 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_setup/completed")
             end
 
-            it 'displays onboardings for user\'s school groups' do
+            it 'displays onboardings for user school groups' do
               expect(page).to have_content(user_onboarding.school_name)
             end
 
@@ -285,7 +286,7 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/activities")
             end
 
-            it 'displays activities from schools in the user\'s school groups' do
+            it 'displays activities from schools in user school groups' do
               expect(page).to have_content(user_activity.title)
             end
 
@@ -311,7 +312,7 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/interventions")
             end
 
-            it 'displays actions for the user\'s school groups' do
+            it 'displays actions for user school groups' do
               expect(page).to have_content(user_intervention.intervention_type.name)
             end
 
