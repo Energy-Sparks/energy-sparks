@@ -57,3 +57,7 @@ Style/Documentation:
 Lint/MissingSuper: # per https://github.com/andyw8/rubocop-view_component
   Exclude:
     - 'app/components/**/*'
+
+ViewComponent/MissingPreview:
+  PreviewPaths:
+    - spec/components/previews
