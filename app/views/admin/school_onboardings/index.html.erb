@@ -2,6 +2,7 @@
   <% content_for :title do %>
       <%= "School Onboardings for #{@dashboard_user.display_name}'s Groups" %>
   <% end %>
+      <%= link_to 'All Onboardings', admin_school_onboardings_path, class: 'btn' %>
 <% else %>
   <h1>School onboardings currently in progress</h1>
 <% end %>

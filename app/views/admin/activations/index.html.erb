@@ -2,6 +2,7 @@
   <% content_for :title do %>
       <%= "#{@dashboard_user.display_name}'s School Activations" %>
   <% end %>
+  <%= link_to 'All Activations', admin_activations_path, class: 'btn' %>
 <% else %>
   <h1>Schools awaiting activation</h1>
   <p>

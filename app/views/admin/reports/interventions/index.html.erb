@@ -2,7 +2,9 @@
   <% content_for :title do %>
     <%= "Interventions for #{@dashboard_user.display_name}" %>
   <% end %>
-
+  <p>
+    <%= link_to 'Full Interventions Report', admin_reports_interventions_path, class: 'btn' %>
+  </p>
   <p>
     All energy saving actions recorded by <%= @dashboard_user.display_name %>'s schools in the
     last 12 months (since <%= nice_dates(1.year.ago) %>).

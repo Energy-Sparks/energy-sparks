@@ -2,9 +2,12 @@
   <% content_for :title do %>
     <%= "#{@dashboard_user.display_name}'s Recently Onboarded Schools" %>
   <% end %>
-    <div class='container'>
-      <%= "Schools onboarded in the last #{@days} days" %>
-    </div>
+<p>
+  <%= link_to 'Full Onboardings Report', completed_admin_school_onboardings_path, class: 'btn' %>
+</p>
+<p>
+  <%= "Schools onboarded in the last #{@days} days" %>
+</p>
 <% else %>
   <h1>Schools recently onboarded</h1>
 <% end %>
