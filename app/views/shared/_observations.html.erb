@@ -2,7 +2,9 @@
   <thead>
     <tr>
       <th>School group</th>
-      <th>Admin</th>
+      <% unless @dashboard_user %>
+        <th>Admin</th>
+      <% end %>
       <th>School</th>
       <th>User</th>
       <th>User Role</th>
@@ -17,7 +19,9 @@
     <% observations.each do |observation| %>
       <tr>
         <td><%= link_to observation.school&.school_group&.name, school_group_url(observation.school&.school_group) %></td>
-        <td><%= observation.school&.school_group&.default_issues_admin_user&.name %></td>
+        <% unless @dashboard_user %>
+          <td><%= observation.school&.school_group&.default_issues_admin_user&.name %></td>
+        <% end %>
         <td><%= link_to observation.school.name, school_url(observation.school) %></td>
         <td><% if observation&.created_by&.has_profile? %>
           <%= link_to email_with_wbr(observation&.created_by&.name || 'View profile'), user_url(observation&.created_by) %>

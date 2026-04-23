@@ -21,7 +21,9 @@
           <tr>
             <th class="name">School group</th>
             <th class="name">Project group</th>
-            <th class="name">Admin</th>
+            <% unless @dashboard_user %>
+              <th class="name">Admin</th>
+            <% end %>
             <th class="name">School</th>
             <th class="completed">Onboarding completed</th>
             <th class="visible">Visible?</th>
@@ -43,7 +45,9 @@
                     <%= school.school_onboarding&.project_group&.name %>
                   <% end %>
                 </td>
-                <td><%= school_group.default_issues_admin_user&.name %></td>
+                <% unless @dashboard_user %>
+                  <td><%= school_group.default_issues_admin_user&.name %></td>
+                <% end %>
                 <td><%= link_to school.name, school_path(school) %></td>
                 <td data-order="<%= school.school_onboarding&.completed_on&.to_date&.iso8601 || 'last' %>">
                     <% if school.school_onboarding.present? %>
