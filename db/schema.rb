@@ -29,6 +29,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
   create_enum "dcc_meter", ["no", "smets2", "other"]
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
+  create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
+  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]
@@ -1209,6 +1211,35 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_help_pages_on_slug", unique: true
+  end
+
+  create_table "impact_report_configurations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "school_group_id", null: false
+    t.boolean "show_engagement", default: true, null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_group_id"], name: "index_impact_report_configurations_on_school_group_id"
+  end
+
+  create_table "impact_report_metrics", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "enough_data", default: false, null: false
+    t.integer "fuel_type"
+    t.bigint "impact_report_run_id", null: false
+    t.enum "metric_category", null: false, enum_type: "impact_report_metric_categories"
+    t.enum "metric_type", null: false, enum_type: "impact_report_metric_types"
+    t.integer "number_of_schools"
+    t.datetime "updated_at", null: false
+    t.integer "value", null: false
+    t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
+  end
+
+  create_table "impact_report_runs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "run_date", null: false
+    t.bigint "school_group_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["school_group_id"], name: "index_impact_report_runs_on_school_group_id"
   end
 
   create_table "impacts", force: :cascade do |t|
@@ -2469,6 +2500,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_132359) do
   add_foreign_key "global_meter_attributes", "global_meter_attributes", column: "replaced_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
+  add_foreign_key "impact_report_configurations", "school_groups"
+  add_foreign_key "impact_report_metrics", "impact_report_runs"
+  add_foreign_key "impact_report_runs", "school_groups"
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade
   add_foreign_key "intervention_types", "intervention_type_groups", on_delete: :cascade
   add_foreign_key "issue_meters", "issues"

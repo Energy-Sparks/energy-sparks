@@ -84,6 +84,12 @@ describe Commercial::Licence do
 
         it { expect(licences).to contain_exactly(licence_school_a) }
       end
+
+      context 'with String parameter' do
+        subject(:licences) { described_class.filtered(:current, Time.zone.today.strftime('%d/%m/%Y')) }
+
+        it { expect(licences).to contain_exactly(licence_school_a) }
+      end
     end
 
     context 'with :expiring' do
