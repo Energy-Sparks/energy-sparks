@@ -17,7 +17,6 @@
 #  fk_rails_...  (school_id => schools.id) ON DELETE => cascade
 #
 
-
 class Location < ApplicationRecord
   belongs_to :school
   has_many   :temperature_recordings

@@ -12,20 +12,18 @@ describe DailyRegenerationOnFinishJob do
   end
 
   describe '#perform' do
-    let!(:errors) { [] }
+    let(:email) { last_email }
 
-    before do
-      stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true'))
-      job.perform
-    end
+    before { stub_const('ENV', ENV.to_h.merge('SEND_AUTOMATED_EMAILS' => 'true')) }
 
     context 'with errors' do
-      let(:errors) do
+      let!(:errors) do
         raised_at = Date.new(2026)
         [RegenerationError.create!(school: create(:school), raised_at:, message: '1'),
          RegenerationError.create!(school: create(:school, :with_school_group), raised_at:, message: '2')]
       end
-      let(:email) { last_email }
+
+      before { job.perform }
 
       it 'emails a report' do
         expect(email.to).to eq(['operations@energysparks.uk'])
@@ -51,6 +49,18 @@ describe DailyRegenerationOnFinishJob do
     context 'without errors' do
       it 'does not send any email' do
         expect(ActionMailer::Base.deliveries.count).to eq(0)
+      end
+    end
+
+    context 'with lagging data' do
+      before do
+        meter = create(:gas_meter, data_source: create(:data_source))
+        create(:amr_validated_reading, meter:, reading_date: 10.days.ago.to_date)
+        job.perform
+      end
+
+      it 'generates a lagging data email' do
+        expect(email.subject).to eq('[energy-sparks-unknown] Energy Sparks - Lagging Data Sources')
       end
     end
   end

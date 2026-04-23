@@ -14,8 +14,8 @@
 #  gsp_id          :integer
 #
 
-# TUOS is The University of Sheffield
 class SolarPvTuosArea < Area
+  # TUOS is The University of Sheffield
   has_many :solar_pv_tuos_readings, class_name: 'DataFeeds::SolarPvTuosReading', foreign_key: :area_id, dependent: :destroy
   has_many :schools, inverse_of: :solar_pv_tuos_area
 

@@ -1,0 +1,26 @@
+<% content_for :page_title, 'Impact Report Configurations' %>
+<h1>Impact Report Configurations</h1>
+<table class="table table-paged">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>Show Engagement</th>
+      <th class="no-sort">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_groups.each do |school_group| %>
+      <% config = school_group.impact_report_configuration %>
+      <tr class="<%= 'bg-light' unless config %>">
+        <td>
+          <%= school_group.name %>
+          <% unless config %>
+            <span class="badge text-bg-warning" title="Default configuration">Default configuration</span>
+          <% end %>
+        </td>
+        <td><%= config ? config.show_engagement : '-' %></td>
+        <td><%= link_to 'Edit', edit_admin_impact_configuration_path(school_group), class: 'btn btn-secondary' %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
