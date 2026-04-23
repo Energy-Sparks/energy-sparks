@@ -37,7 +37,7 @@ class IssuesReportMailer < ApplicationMailer
      Column.new(:title, ->(issue) { issue.title }),
      Column.new(:fuel, ->(issue) { issue.fuel_type&.humanize }),
      Column.new(:next_review_date, ->(issue) { format_date(issue.review_date) }),
-     Column.new(:created_by, ->(issue) { format_date(issue.created_at) }),
+     Column.new(:created_by, ->(issue) { issue.created_by.display_name }),
      Column.new(:created, ->(issue) { format_date(issue.created_at) }),
      Column.new(:updated_by, ->(issue) { issue.updated_by.display_name }),
      Column.new(:updated, ->(issue) { format_date(issue.updated_at) }),

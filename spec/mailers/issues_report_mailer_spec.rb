@@ -11,21 +11,23 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
 
   describe '#issues_report' do
     def create_issue(**)
-      create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago,
+      create(:issue, issue_type: :issue, status: :open, owned_by: admin, created_at: 5.days.ago, created_by: admin,
                      review_date: 1.week.from_now, **)
     end
 
+    def create_inactive_school_issue
+      create_issue(issueable: create(:school, active: false))
+    end
+
     let(:admin) { create(:admin) }
-    let(:school) { create(:school, :with_school_group) }
-    let(:new_issue) { create_issue }
-    let(:issue) { create_issue(created_at: 2.weeks.ago, review_date: 1.day.ago, issueable: school) }
+    let(:issue) { create_issue(review_date: 1.day.ago, issueable: create(:school, :with_school_group)) }
     let!(:issues) do
       freeze_time
       { issue:,
         note: create(:issue, issue_type: :note),
         closed_issue: create_issue(status: :closed),
         someone_elses_issue: create_issue(owned_by: create(:admin)),
-        inactive_school_issue: create_issue(issueable: create(:school, active: false)) }
+        inactive_school_issue: create_inactive_school_issue }
     end
     let(:body) { email.html_part.body.raw_source }
 
@@ -35,11 +37,11 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
 
     context 'when showing only open issues for user' do
       it {
-        expect(email.subject).to eql "[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}"
+        expect(email.subject).to eq("[energy-sparks-unknown] Energy Sparks - Issue report for #{admin.display_name}")
       }
 
       it { expect(body).to have_link(issue.title, href: admin_school_issue_url(issue.issueable, issue)) }
-      it { expect(body).to have_content(school.school_group.name) }
+      it { expect(body).to have_content(issue.school_group.name) }
       it { expect(body).to have_content(issue.fuel_type.capitalize) }
       it { expect(body).to have_content(issue.issueable.name) }
       it { expect(body).to have_content(short_dates(issue.review_date)) }
@@ -47,7 +49,7 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
       it { expect(body).to have_content(short_dates(issue.created_at)) }
       it { expect(body).to have_content(issue.updated_by.display_name) }
       it { expect(body).to have_content(short_dates(issue.updated_at)) }
-      it { expect(body).to have_link('Edit', href: edit_admin_school_issue_url(school, issue)) }
+      it { expect(body).to have_link('Edit', href: edit_admin_school_issue_url(issue.issueable, issue)) }
 
       it {
         expect(body).to have_link("View all issues for: #{admin.display_name}", href: admin_issues_url(user: admin))
@@ -65,7 +67,7 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
     end
 
     context 'when there are only old issues for user' do
-      let(:issues) { [issue] }
+      let(:issues) { [create_issue(created_at: 8.days.ago)] }
 
       it { expect(body).to have_no_content('new!') }
     end
@@ -74,15 +76,15 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
       let(:issues) { [] }
 
       it "doesn't send email" do
-        expect(email).to be_nil
+        expect(ActionMailer::Base.deliveries).to eq([])
       end
     end
 
     context 'with issues for inactive schools' do
-      let(:issues) { [inactive_school_issue] }
+      let(:issues) { [create_inactive_school_issue] }
 
       it "doesn't send email" do
-        expect(email).to be_nil
+        expect(ActionMailer::Base.deliveries).to eq([])
       end
     end
 
@@ -90,7 +92,7 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
       let(:issues) do
         { overdue: create_issue(created_at: 2.weeks.ago, review_date: Date.current),
           next_week: create_issue(created_at: 2.weeks.ago, review_date: 7.days.from_now),
-          new: new_issue,
+          new: create_issue,
           old: create_issue(created_at: 2.weeks.ago, review_date: 8.days.from_now) }
       end
 
@@ -104,19 +106,19 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
       it_behaves_like 'it has a csv attachment' do
         let(:filename) { 'issues_report.csv' }
         let(:data) do
-          hash = { 'Issue type' => 'issue',
-                   'Issue for' => issue.issueable.name,
+          hash = { 'Issue Type' => 'issue',
+                   'Issue For' => issue.issueable.name,
                    'New' => 'New this week!',
-                   'Group' => issue.school_group,
+                   'Group' => issue.school_group.name,
                    'Title' => issue.title,
                    'Fuel' => 'Gas',
-                   'Next review date' => issue.review_date.strftime('%d/%m/%Y'),
-                   'Created by' => issue.created_by.display_name,
+                   'Next Review Date' => issue.review_date.strftime('%d/%m/%Y'),
+                   'Created By' => issue.created_by.display_name,
                    'Created' => issue.created_at.strftime('%d/%m/%Y'),
-                   'Updated by' => issue.updated_by.display_name,
+                   'Updated By' => issue.updated_by.display_name,
                    'Updated' => issue.updated_at.strftime('%d/%m/%Y'),
                    'View' => "http://localhost/admin/schools/#{issue.issueable.slug}/issues/#{issue.id}",
-                   'Edit' => "http://localhost/admin/issues/#{issue.issueable.slug}/#{issue.id}/edit" }
+                   'Edit' => "http://localhost/admin/schools/#{issue.issueable.slug}/issues/#{issue.id}/edit" }
           [hash.keys.join(','), hash.values.join(',')]
         end
       end
