@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Managing a school group', :include_application_helper, :school_groups do
   include ActiveJob::TestHelper
 
-  let!(:admin) { create(:admin) }
+  let!(:admin) { create(:admin, name: 'admin_user') }
 
   before do
     sign_in(admin)
@@ -496,12 +496,14 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         click_on 'Edit'
         fill_in 'Name', with: 'New name'
         uncheck 'Public'
+        select 'admin_user', from: 'Default issues admin user'
         click_on 'Update School group'
         school_group.reload
       end
 
       it { expect(school_group.name).to eq('New name') }
       it { expect(school_group).not_to be_public }
+      it { expect(school_group.default_issues_admin_user_id).to eq(admin.id) }
     end
 
     describe 'Active schools tab' do
@@ -824,7 +826,7 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
         click_on 'Edit'
         fill_in 'Name', with: 'B & NES'
         uncheck 'Public'
-        select 'Admin', from: 'Default issues admin user'
+        select 'admin_user', from: 'Default issues admin user'
         click_on 'Update School group'
         school_group.reload
       end
