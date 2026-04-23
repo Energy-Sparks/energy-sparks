@@ -167,12 +167,17 @@ RSpec.describe 'Admin dashboard' do
         end
 
         describe 'my schools' do
-          let(:user_school_group) { create(:school_group, default_issues_admin_user: user, name: 'user school group') }
-          let(:non_user_school_group) { create(:school_group, name: 'non user school group') }
+          let(:user_school_group) { create(:school_group, default_issues_admin_user: user) }
+          let(:non_user_school_group) { create(:school_group) }
 
           describe 'onboarding' do
-            let!(:user_onboarding) { create(:school_onboarding, school_group_id: user_school_group.id) }
-            let!(:non_user_onboarding) { create(:school_onboarding, school_group_id: non_user_school_group.id) }
+            let!(:user_onboarding) do
+              create(:school_onboarding, school_name: 'user school', school_group_id: user_school_group.id)
+            end
+
+            let!(:non_user_onboarding) do
+              create(:school_onboarding, school_name: 'non user school', school_group_id: non_user_school_group.id)
+            end
 
             before do
               click_on 'Onboarding'
