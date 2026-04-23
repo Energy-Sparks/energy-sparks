@@ -55,6 +55,7 @@
                             edit_admin_school_group_dashboard_message_path(school_group)) %>
               </td>
               <% if @organisation_group || @group_type == 'project' %>
+                <% puts 'we have an organisation group or project group' %>
                 <% unless @group_type == 'project' %>
                   <td>
                     <span class="badge rounded-pill text-bg-secondary"><%= school_group.group_type.humanize %></span>
@@ -62,6 +63,7 @@
                 <% end %>
                 <td class="d-none d-sm-table-cell">
                   <% if school_group.default_issues_admin_user %>
+                    <% puts 'we have a default admin' %>
                     <span class="badge border rounded-pill border-secondary fw-normal">
                       <%= link_to (if school_group.default_issues_admin_user == current_user
                                      'You'
