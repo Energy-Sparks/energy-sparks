@@ -65,6 +65,7 @@ module Commercial
     validates_presence_of :start_date, :end_date
 
     def self.filtered(scope_name, date = Time.zone.today, school_group_id = nil)
+      date = Date.parse(date) if date.is_a?(String)
       scope = public_send(scope_name, date)
 
       if school_group_id.present?
