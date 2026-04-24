@@ -413,7 +413,7 @@ describe 'manage contracts' do
             ['', 'Pending invoice', '0'],
             ['', 'Invoiced', '0'],
             ['', 'All', '4'],
-            ['Historical', 'Provisional', '3'],
+            ['Expired', 'Provisional', '3'],
             ['', 'Confirmed', '5'],
             ['', 'Pending invoice', '0'],
             ['', 'Invoiced', '0'],

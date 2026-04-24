@@ -159,7 +159,7 @@
               </tr>
             </thead>
             <tbody>
-              <% %i[current future historical].each do |period| %>
+              <% %i[current future expired].each do |period| %>
                 <% %i[provisional confirmed pending_invoice invoiced].each_with_index do |status, index| %>
                   <tr>
                     <td><strong><%= period.to_s.humanize if index.zero? %></strong></td>
