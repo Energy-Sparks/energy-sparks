@@ -92,6 +92,14 @@ describe Commercial::PriceCalculator do
               private_account_fee: 0.0)
           end
         end
+
+        context 'when the price is zero' do
+          let(:contract) { create(:commercial_contract, product: contracted_product, agreed_school_price: 0.0) }
+
+          it 'returns zero for the total price' do
+            expect(price.total).to eq(0.0)
+          end
+        end
       end
 
       context 'when the account will be private' do

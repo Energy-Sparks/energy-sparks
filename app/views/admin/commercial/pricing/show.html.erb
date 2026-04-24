@@ -12,7 +12,7 @@
     <%= simple_form_for :pricing, url: admin_commercial_pricing_path, method: :get do |f| %>
 
       <%= f.input :product_id,
-                  collection: Commercial::Product.all,
+                  collection: Commercial::Product.all.by_name,
                   label_method: :name,
                   value_method: :id,
                   include_blank: 'Select a product, or specify contract',
@@ -23,7 +23,7 @@
       </p>
 
       <%= f.input :contract_id,
-                  collection: Commercial::Contract.all,
+                  collection: Commercial::Contract.all.by_name,
                   label_method: :name,
                   value_method: :id,
                   include_blank: 'No contract',
