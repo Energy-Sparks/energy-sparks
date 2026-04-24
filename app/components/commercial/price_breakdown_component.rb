@@ -2,8 +2,8 @@
 
 module Commercial
   class PriceBreakdownComponent < ApplicationComponent
-    def initialize(price:, **)
-      super(**)
+    def initialize(price:, id: 'price', **)
+      super(id:, **)
       @price = price
     end
   end
