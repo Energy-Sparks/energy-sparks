@@ -111,6 +111,10 @@ module SchoolGroups
       def enrolling_schools
         school_group.onboardings_for_group.incomplete.count
       end
+
+      def active_users
+        users.active.count + school_group.users.active.count
+      end
     end
 
     class EnergyEfficiency < Base
