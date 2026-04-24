@@ -3421,6 +3421,7 @@ Lint/RedundantCopDisableDirective:
     - 'spec/system/comparisons/configurable_period_spec.rb'
     - 'spec/system/school_groups/status_spec.rb'
     - 'spec/tasks/solar/import_solis_cloud_readings_spec.rb'
+    - 'spec/services/commercial/price_calculator_spec.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
