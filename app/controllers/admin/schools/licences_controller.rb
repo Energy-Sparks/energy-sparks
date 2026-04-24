@@ -9,6 +9,7 @@ module Admin
 
       def index
         @licences = @school.licences.by_start_date
+        @price = ::Commercial::PriceCalculator.new.for_school_renewal(school: @school)
       end
     end
   end

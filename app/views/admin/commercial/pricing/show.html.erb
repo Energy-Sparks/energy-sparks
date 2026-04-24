@@ -2,23 +2,14 @@
   <% header_nav.with_header title: 'Price Calculator' %>
 <% end %>
 
-<% if @school %>
-  <p>
-   This page allows you to use the built-in price calculator to generate pricing for
-   <%= link_to @school.name, school_path(@school) %>.
-  </p>
-<% else %>
-  <p>
-   This page allows you to use the built-in price calculator to generate a price for an
-   individual school.
-  </p>
-<% end %>
+<p>
+  This page allows you to use the built-in price calculator to generate the total contract price for an
+  individual school.
+</p>
 
 <div class="row">
   <div class="col">
     <%= simple_form_for :pricing, url: admin_commercial_pricing_path, method: :get do |f| %>
-
-      <%= f.hidden_field :school_id, value: @school&.id %>
 
       <%= f.input :product_id,
                   collection: Commercial::Product.all,
@@ -76,20 +67,6 @@
       <h3>Price breakdown</h3>
       <p>Calculation based on pricing specified in <%= link_to @product.name, admin_commercial_product_path(@product) %></p>
     <% end %>
-    <%= render 'price_table', id: 'pricing', price: @price %>
+    <%= render ::Commercial::PriceBreakdownComponent.new(id: 'pricing', price: @price) %>
   </div>
 </div>
-
-<% if @school_specific_price %>
-  <div class="row">
-    <div class="col">
-      <h3>Existing school pricing</h3>
-      <p>
-        Based on details from <%= link_to "Licence ##{@licence.id}", admin_commercial_licence_path(@licence) %>,
-        <%= link_to @school.name, school_path(@school) %> will have been changed the following prices based on
-        its current configuration. This price includes any individual discounted price for this school.
-      </p>
-      <%= render 'price_table', id: 'school-pricing', price: @school_specific_price %>
-    </div>
-  </div>
-<% end %>
