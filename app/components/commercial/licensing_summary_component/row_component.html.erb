@@ -15,7 +15,7 @@
     <% licenced_for = school.licenced_for_period(date_range) %>
     <%= render(Elements::BadgeComponent.new(licenced_for.to_s.humanize,
                                             pill: true,
-                                            colour: period_badge_colour(licenced_for))) %>
+                                            colour: helpers.period_badge_colour(licenced_for))) %>
   </td>
   <td class="d-flex gap-2">
     <% buttons.each do |button| %>

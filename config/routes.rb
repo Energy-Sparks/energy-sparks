@@ -493,7 +493,7 @@ Rails.application.routes.draw do
 
       resource :meter_readings_validation, only: [:create]
 
-      resource :configuration, controller: :configuration, only: [:edit, :update]
+      resource :configuration, controller: :configuration, only: %i[edit update]
       resource :times, only: %i[edit update]
       resource :your_school_estate, only: %i[edit update]
 
@@ -556,7 +556,7 @@ Rails.application.routes.draw do
   devise_for :users, skip: :sessions
 
   devise_scope :user do
-    post "confirmation/confirm", to: "confirmations#confirm", as: :user_confirmation_confirm
+    post 'confirmation/confirm', to: 'confirmations#confirm', as: :user_confirmation_confirm
   end
 
   get '/admin', to: 'admin#index'
@@ -580,7 +580,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :dashboards, only: [:show, :index] do
+    resources :dashboards, only: %i[show index] do
       resources :school_groups, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
@@ -626,12 +626,25 @@ Rails.application.routes.draw do
             post :create_licence
           end
         end
+        collection do
+          get :current
+          get :expired
+          get :expiring
+          get :future
+          get :provisional
+          get :recent
+        end
       end
-      resources :licences
+      resources :licences do
+        collection do
+          get :unlicensed
+        end
+      end
       resources :products
 
       get 'pricing', to: 'pricing#show'
     end
+    resource :commercial, only: [:show], controller: :commercial
 
     namespace :comparisons do
       resources :footnotes, except: [:show]
@@ -650,6 +663,10 @@ Rails.application.routes.draw do
       resources :categories, except: [:show], concerns: [:publishable]
       resources :pages, except: [:show], concerns: [:publishable]
       resources :sections, except: [:show], concerns: [:publishable]
+    end
+
+    namespace :impact do
+      resources :configurations, only: %i[index edit update]
     end
 
     resources :case_studies
@@ -969,7 +986,8 @@ Rails.application.routes.draw do
   get '/schools/:name/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
   get '/schools/:name/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
   get '/schools/:name/progress/storage_heater', to: redirect('/schools/%{name}/advice/storage_heater_target')
-  get '/schools/:name/school_targets/:id/progress/electricity', to: redirect('/schools/%{name}/advice/electricity_target')
+  get '/schools/:name/school_targets/:id/progress/electricity',
+      to: redirect('/schools/%{name}/advice/electricity_target')
   get '/schools/:name/school_targets/:id/progress/gas', to: redirect('/schools/%{name}/advice/gas_target')
   get '/schools/:name/school_targets/:id/progress/storage_heater',
       to: redirect('/schools/%{name}/advice/storage_heater_target')

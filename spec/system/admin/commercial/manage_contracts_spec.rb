@@ -7,7 +7,7 @@ describe 'manage contracts' do
 
   before do
     sign_in(user)
-    visit admin_path
+    visit admin_commercial_path
   end
 
   context 'when adding a new contract' do
@@ -15,7 +15,6 @@ describe 'manage contracts' do
     let!(:funder) { create(:funder) }
 
     before do
-      click_on 'Contracts'
       click_on 'New contract'
     end
 
@@ -142,7 +141,7 @@ describe 'manage contracts' do
     let!(:funder) { create(:funder) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
     end
 
     context 'when the contract is editable' do
@@ -246,7 +245,7 @@ describe 'manage contracts' do
     let!(:contract) { create(:commercial_contract) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
     end
 
     it { expect { click_on 'Delete' }.to change(Commercial::Contract, :count).by(-1) }
@@ -357,7 +356,7 @@ describe 'manage contracts' do
     let!(:contract) { create(:commercial_contract) }
 
     before do
-      click_on 'Contracts'
+      click_on 'All Contracts'
       click_on contract.name
     end
 
@@ -390,8 +389,8 @@ describe 'manage contracts' do
         create(:commercial_licence, status: :confirmed, contract:)
         create_list(:commercial_licence, 2, status: :provisional, contract:)
         create_list(:commercial_licence, 4, :future, status: :provisional, contract:)
-        create_list(:commercial_licence, 3, :historical, status: :provisional, contract:)
-        create_list(:commercial_licence, 5, :historical, status: :confirmed, contract:)
+        create_list(:commercial_licence, 3, :expired, status: :provisional, contract:)
+        create_list(:commercial_licence, 5, :expired, status: :confirmed, contract:)
         refresh
       end
 
@@ -499,6 +498,80 @@ describe 'manage contracts' do
               'Edit Renew Delete'
             ]
           ]
+        end
+      end
+    end
+  end
+
+  context 'when viewing contract lists' do
+    context 'with current' do
+      let!(:contract) { create(:commercial_contract) }
+
+      before { click_on 'Current Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with expired' do
+      let!(:contract) { create(:commercial_contract, :expired) }
+
+      before { click_on 'Expired Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with expiring' do
+      let!(:contract) { create(:commercial_contract, end_date: Time.zone.today + 1) }
+
+      before { click_on 'Expiring Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with recent' do
+      let!(:contract) { create(:commercial_contract) }
+
+      before { click_on 'Recently Added Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with provisional' do
+      let!(:contract) { create(:commercial_contract, status: :provisional) }
+
+      before { click_on 'Provisional Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with future' do
+      let!(:contract) { create(:commercial_contract, :future) }
+
+      before { click_on 'Future Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
         end
       end
     end
