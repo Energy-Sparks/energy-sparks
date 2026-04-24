@@ -353,7 +353,10 @@ describe 'manage contracts' do
   end
 
   context 'when viewing a contract' do
-    let!(:contract) { create(:commercial_contract) }
+    let!(:contract) do
+      create(:commercial_contract,
+             agreed_school_price: 600.0)
+    end
 
     before do
       click_on 'All Contracts'
@@ -438,10 +441,10 @@ describe 'manage contracts' do
         end
         let(:expected_rows) do
           [
-            ['Base price', '£540'],
+            ['Base price', '£600'],
             ['Metering fees', '0p'],
             ['Private account fees', '0p'],
-            ['Total', '£540']
+            ['Total', '£600']
           ]
         end
       end
@@ -462,12 +465,12 @@ describe 'manage contracts' do
         end
         let(:expected_rows) do
           [
-            ['', contract.schools.first.name, '£540', '0p', '0p', '£540']
+            ['', contract.schools.first.name, '£600', '0p', '0p', '£600']
           ]
         end
         let(:expected_footer_rows) do
           [
-            ['', '', '£540', '0p', '0p', '£540']
+            ['', '', '£600', '0p', '0p', '£600']
           ]
         end
       end
