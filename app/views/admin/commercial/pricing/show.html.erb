@@ -3,8 +3,15 @@
 <% end %>
 
 <p>
-  This page allows you to use the built-in price calculator to generate the total contract price for an
-  individual school.
+  This page allows you to use the built-in price calculator to generate the total price for an
+  individual school. The calculator has options for creating an estimate based on one of our
+  <%= link_to 'products', admin_commercial_products_path %> or an
+  <%= link_to 'existing agreement', admin_commercial_contracts_path %> with a Funder, School Group or School.
+</p>
+
+<p>
+  <strong>Note</strong>: the calculator does not currently apply pro-rata calculations, e.g. based on a school
+  joining under an existing contract for a part-year. What is given is the total price for the contracted period.
 </p>
 
 <div class="row">
@@ -60,12 +67,24 @@
   <div class="col">
     <% if @contract %>
       <h3>Contracted Price breakdown</h3>
-      <p>Calculation based on pricing specified in
+      <p>Calculation based on pricing defined in
         <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> for the
         <%= link_to @contract.product.name, admin_commercial_product_path(@contract.product) %> product</p>
+      <% if @contract.custom_contract_length? %>
+        <p>
+          <strong>Custom contract</strong>: this contract has a custom contract length of <%= @contract.licence_years %> years.
+        </p>
+      <% end %>
+      <% if @contract.pro_rata? %>
+        <p>
+          <strong>Pro-rata contract</strong>: this contract is specified as being pro-rata so schools will only
+          be charged based on the period for which they are data visible during the contract.
+        </p>
+      <% end %>
     <% else %>
       <h3>Price breakdown</h3>
-      <p>Calculation based on pricing specified in <%= link_to @product.name, admin_commercial_product_path(@product) %></p>
+      <p>Calculation based on the default pricing defined in
+        <%= link_to @product.name, admin_commercial_product_path(@product) %></p>
     <% end %>
     <%= render ::Commercial::PriceBreakdownComponent.new(id: 'pricing', price: @price) %>
   </div>
