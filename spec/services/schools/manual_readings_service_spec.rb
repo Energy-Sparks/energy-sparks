@@ -77,10 +77,12 @@ describe Schools::ManualReadingsService do
   describe '#calculate_required' do
     before { travel_to(Date.new(2025, 5)) }
 
-    def expected_readings(usage)
-      usage += [1020] * 12 if usage.length < 13
-      months = (1..usage.length).map { |i| Date.new(2025, 5) - i.months }.reverse
-      months.zip(usage).to_h { |month, value| [month, { electricity: value }] }
+    def months(number, end_month)
+      (0..number).map { |i| end_month - i.months }.reverse
+    end
+
+    def expected_readings(end_month, usage)
+      months(usage.length - 1, end_month).zip(usage).to_h { |month, value| [month, { electricity: value }] }
     end
 
     context 'with a target' do
@@ -91,21 +93,22 @@ describe Schools::ManualReadingsService do
       end
 
       it 'calculates the correct readings' do
-        expect(service.readings).to eq(expected_readings([nil] * 11))
+        expect(service.readings).to eq(expected_readings(Date.new(2025, 4), [*[nil] * 12, *[1020] * 12]))
       end
     end
 
     context 'with a target and meter readings' do
       before do
         create(:school_target, :with_monthly_consumption, school:)
-        meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: 2.years.ago.to_date,
+        meter_collection = build(:meter_collection, :with_aggregate_meter, start_date: 25.months.ago.to_date,
                                                                            kwh_data_x48: [1] * 48)
         service.calculate_required(meter_collection)
       end
 
       it 'calculates the correct readings' do
         expect(service.readings).to \
-          eq(expected_readings([1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440]))
+          eq(expected_readings(Date.new(2025, 3), [1440, 1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392,
+                                                   1488, 1440, *[1020] * 11]))
       end
     end
 
@@ -118,24 +121,37 @@ describe Schools::ManualReadingsService do
 
       it 'calculates the correct readings' do
         expect(service.readings).to \
-          eq(expected_readings([*[nil] * 12, 1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1344, 1488, 1440]))
+          eq(expected_readings(Date.new(2025, 3),
+                               [*[nil] * 13, 1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1344, 1488]))
       end
     end
 
-    context 'with dual fuel meter readings with different end dates' do
+    context 'with dual fuel meter readings with different end dates', :aggregate_failures do
       let(:school) { create(:school, :with_fuel_configuration) }
 
       before do
         meter_collection = build(:meter_collection)
-        build(:meter, :aggregate_meter, meter_collection:, start_date: 25.months.ago.to_date, kwh_data_x48: [1] * 48,
-                                                           end_date: 2.months.ago.to_date)
-        build(:meter, :aggregate_meter, meter_collection:, type: :electricity, start_date: 1.year.ago.to_date,
-                                                           kwh_data_x48: [2] * 48)
+        build(:meter, :aggregate_meter, meter_collection:, kwh_data_x48: [1] * 48,
+                                        start_date: Date.new(2023, 3), end_date: Date.new(2025, 3, 15))
+        build(:meter, :aggregate_meter, meter_collection:, type: :electricity, kwh_data_x48: [2] * 48,
+                                        start_date: Date.new(2024, 5))
         service.calculate_required(meter_collection)
       end
 
       it 'disables months with no required reading' do
-        expect(service.disabled?(Date.new(2023, 4), :electricity)).to be true
+        expect(months(24, Date.new(2025, 4)).map { |month| service.disabled?(month, :gas) }).to eq([true] * 25)
+        expect(months(24, Date.new(2025, 4)).map { |month| service.disabled?(month, :electricity) }).to \
+          eq([*[false] * 13, *[true] * 12])
+      end
+
+      it 'calculates the correct readings' do
+        expect(service.readings.keys).to eq(months(24, Date.new(2025, 3)))
+        expect(service.readings.values.map { |reading| reading.fetch(:gas, :unset) }).to \
+          eq([1488, 1440, 1488, 1440, 1488, 1488, 1440, 1488, 1440, 1488, 1488, 1392, 1488, 1440, 1488, 1440, 1488,
+              1488, 1440, 1488, 1440, 1488, 1488, 1344, :unset])
+        expect(service.readings.values.map { |reading| reading.fetch(:electricity, :unset) }).to \
+          eq([:unset, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 2976, 2880, 2976, 2976, 2880,
+              2976, 2880, 2976, 2976, 2688, 2976])
       end
     end
   end

@@ -386,7 +386,8 @@ RSpec.describe 'Managing a school group', :include_application_helper, :school_g
       end
 
       it 'sends the export' do
-        expect(email.subject).to eq("Meter data export for #{school_group.name}")
+        expect(email.subject).to \
+          eq("[energy-sparks-unknown] Energy Sparks - Meter data export for #{school_group.name}")
         expect(Capybara.string(email.html_part.decoded).find('body').text.gsub(/^\s+/, '')).to eq <<~BODY
           #{school_group.name} meter data export
           Zip attached with school meter data.

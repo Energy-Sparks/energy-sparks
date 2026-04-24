@@ -33,6 +33,21 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
         expect(html).to have_link('My Issues',
                                   href: admin_dashboard_issues_path(current_user))
       end
+
+      describe 'my_schools section' do
+        it 'has the correct links' do
+          expect(html).to have_link('Onboarding',
+                                    href: admin_dashboard_school_onboardings_path(current_user))
+          expect(html).to have_link('Awaiting activation',
+                                    href: admin_dashboard_activations_path(current_user))
+          expect(html).to have_link('Recently onboarded',
+                                    href: completed_admin_dashboard_school_onboardings_path(current_user))
+          expect(html).to have_link('Recent activities',
+                                    href: admin_dashboard_activities_path(current_user))
+          expect(html).to have_link('Recent actions',
+                                    href: admin_dashboard_interventions_path(current_user))
+        end
+      end
     end
   end
 end

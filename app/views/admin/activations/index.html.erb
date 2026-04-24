@@ -1,12 +1,18 @@
-<h1>Schools awaiting activation</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+      <%= "#{@dashboard_user.display_name}'s School Activations" %>
+  <% end %>
+  <%= link_to 'All Activations', admin_activations_path, class: 'btn' %>
+<% else %>
+  <h1>Schools awaiting activation</h1>
+  <p>
+    This page lists all schools which are awaiting activation. They are either not yet visible on the system or have not had their data feeds set. The list includes those that were manually setup and those created via the usual onboarding route.
+  </p>
 
-<p>
-  This page lists all schools which are awaiting activation. They are either not yet visible on the system or have not had their data feeds set. The list includes those that were manually setup and those created via the usual onboarding route.
-</p>
-
-<p>
- Each table provides a summary of the setup status with access to the key management pages. Click on the school name to view their dashboard and the school management menu.
-</p>
+  <p>
+  Each table provides a summary of the setup status with access to the key management pages. Click on the school name to view their dashboard and the school management menu.
+  </p>
+<% end %>
 
 <% if @school_groups.any? %>
   <div class="row">
@@ -16,7 +22,9 @@
           <tr>
             <th class="name">School group</th>
             <th class="name">Project group</th>
-            <th class="name">Admin</th>
+            <% unless @dashboard_user %>
+              <th class="name">Admin</th>
+            <% end %>
             <th class="name">School</th>
             <th class="completed">Onboarding completed</th>
             <th class="visible">Visible?</th>
@@ -38,7 +46,9 @@
                     <%= school.school_onboarding&.project_group&.name %>
                   <% end %>
                 </td>
-                <td><%= school_group.default_issues_admin_user&.name %></td>
+                <% unless @dashboard_user %>
+                  <td><%= school_group.default_issues_admin_user&.name %></td>
+                <% end %>
                 <td><%= link_to school.name, school_path(school) %></td>
                 <td data-order="<%= school.school_onboarding&.completed_on&.to_date&.iso8601 || 'last' %>">
                     <% if school.school_onboarding.present? %>
