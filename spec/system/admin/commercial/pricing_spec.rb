@@ -7,11 +7,11 @@ describe 'pricing calculator' do
 
   before do
     sign_in(create(:admin))
-    visit admin_path
+    visit admin_commercial_path
   end
 
   context 'when calculating a product price' do
-    before { click_on 'Pricing' }
+    before { click_on 'Price calculator' }
 
     it { expect(page).to have_content('Price Calculator') }
     it { expect(page).to have_select('Product', selected: product.name) }
@@ -43,7 +43,7 @@ describe 'pricing calculator' do
   context 'when calculating a contract price' do
     let!(:contract) { create(:commercial_contract, agreed_school_price: 500.0) }
 
-    before { click_on 'Pricing' }
+    before { click_on 'Price calculator' }
 
     it { expect(page).to have_content('Price Calculator') }
     it { expect(page).to have_select('Product', selected: product.name) }
