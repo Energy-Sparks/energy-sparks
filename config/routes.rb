@@ -626,12 +626,25 @@ Rails.application.routes.draw do
             post :create_licence
           end
         end
+        collection do
+          get :current
+          get :expired
+          get :expiring
+          get :future
+          get :provisional
+          get :recent
+        end
       end
-      resources :licences
+      resources :licences do
+        collection do
+          get :unlicensed
+        end
+      end
       resources :products
 
       get 'pricing', to: 'pricing#show'
     end
+    resource :commercial, only: [:show], controller: :commercial
 
     namespace :comparisons do
       resources :footnotes, except: [:show]

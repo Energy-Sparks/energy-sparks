@@ -1,0 +1,86 @@
+<%= render Admin::HeaderNavComponent.new do |header_nav| %>
+  <% header_nav.with_header title: 'Contracts & Licensing' %>
+<% end %>
+
+<div class="row">
+  <div class="col-12">
+    <%= render Layout::GridComponent.new(classes: 'mb-4',
+                                         component_classes: 'd-flex flex-column flex-fill',
+                                         cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+      <%= grid.with_block do %>
+        <h3>Contracting</h3>
+        <div id="contracting" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+            <ul>
+                <li>Contracts
+                    <ul>
+                        <li><%= link_to 'Current Contracts', current_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Expiring Contracts', expiring_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Expired Contracts', expired_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Provisional Contracts', provisional_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Future Contracts', future_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'Recently Added Contracts', recent_admin_commercial_contracts_path %></li>
+                        <li><%= link_to 'All Contracts', admin_commercial_contracts_path %></li>
+                    </ul>
+                </li>
+                <li><%= link_to 'Funders', admin_funders_path %></li>
+                <li><%= link_to 'Funder allocation report', admin_reports_funder_allocations_path %></li>
+            </ul>
+            <div class="mt-auto text-end">
+                <%= link_to 'New contract', new_admin_commercial_contract_path,
+                            class: 'btn btn-sm btn-secondary' %>
+            </div>
+        </div>
+      <% end %>
+      <%= grid.with_block do %>
+        <h3>Licensing</h3>
+        <div id="licensing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+            <ul>
+                <li>Licences
+                    <ul>
+                        <li>
+                          <%= link_to 'Expiring Licences', admin_commercial_licences_path(anchor: 'expiring') %>
+                        </li>
+                        <li>
+                          <%= link_to 'Expired Licences', admin_commercial_licences_path(anchor: 'recently-expired') %>
+                        </li>
+                        <li>
+                          <%= link_to 'Recently Added Licences', admin_commercial_licences_path(anchor: 'recent') %>
+                        </li>
+                        <li>
+                            <%= link_to 'Recently updated Licences',
+                                        admin_commercial_licences_path(anchor: 'recently-updated') %>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <%= link_to 'Unlicensed schools', unlicensed_admin_commercial_licences_path %>
+                </li>
+            </ul>
+        </div>
+      <% end %>
+    <% end %>
+   </div>
+ </div>
+
+ <div class="row">
+  <div class="col-12">
+    <%= render Layout::GridComponent.new(classes: 'mb-4',
+                                         component_classes: 'd-flex flex-column flex-fill',
+                                         cell_classes: 'mb-2 d-flex', cols: 2) do |grid| %>
+      <%= grid.with_block do %>
+        <h3>Invoicing</h3>
+        <div id="invoicing" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+        </div>
+      <% end %>
+      <%= grid.with_block do %>
+        <h3>Products and Pricing</h3>
+        <div id="products" class="rounded-2 bg-light pt-3 pb-3 px-4 flex-fill">
+            <ul>
+                <li><%= link_to 'Products', admin_commercial_products_path %></li>
+                <li><%= link_to 'Price calculator', admin_commercial_pricing_path %></li>
+            </ul>
+        </div>
+      <% end %>
+    <% end %>
+   </div>
+ </div>
