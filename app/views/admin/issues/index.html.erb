@@ -1,6 +1,6 @@
 <% if @dashboard_user %>
   <% content_for :title do %>
-    <%= "#{@dashboard_user.display_name}'s Issues & Notes" %>
+    <%= "#{@dashboard_user.display_name}'s Assigned Issues & Notes" %>
   <% end %>
 <% else %>
   <%= render 'header', title: 'Issues & Notes' do %>

@@ -5,7 +5,9 @@
       <th>Title</th>
       <th>Fuel</th>
       <th class="nowrap">Created by</th>
-      <th class="nowrap">Assigned to</th>
+      <% unless @dashboard_user %>
+        <th class="nowrap">Assigned to</th>
+      <% end %>
       <th>Status</th>
       <th>Updated</th>
       <th class="nowrap">Next review</th>
@@ -26,7 +28,9 @@
         </td>
         <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
         <td class="fit"><%= render 'admin/issues/created_by', issue: issue %></td>
-        <td class="fit"><%= render 'admin/issues/owned_by', issue: issue %></td>
+        <% unless @dashboard_user %>
+          <td class="fit"><%= render 'admin/issues/owned_by', issue: issue %></td>
+        <% end %>
         <td class="fit"><%= render 'admin/issues/status', issue: issue %></td>
 
         <td class="fit" data-order="<%= issue.updated_at %>">
