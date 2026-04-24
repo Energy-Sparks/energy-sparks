@@ -13,7 +13,9 @@ module Admin
         super + [
           Column.new(:meter_type,
                      ->(meter) { meter.meter_type.to_s },
-                     ->(meter) { render_to_string(Elements::IconComponent.new(fuel_type: meter.meter_type), layout: false) }),
+                     lambda { |meter|
+                       render_to_string(Elements::IconComponent.new(fuel_type: meter.meter_type), layout: false)
+                     }),
           Column.new(:meter_system,
                      ->(meter) { meter.t_meter_system }),
           Column.new(:data_source,
@@ -33,20 +35,22 @@ module Admin
                      nil,
                      ->(meter) { render_to_string(partial: 'admin/issues/modal', locals: { meter: }) },
                      display: :html),
-          Column.new(:issues,
-                     ->(meter) { meter.issues.issue.count },
-                     display: :csv),
-          Column.new(:notes,
-                    ->(meter) { meter.issues.note.count },
-                     display: :csv)
+          Column.new(:issues, ->(meter) { meter.issues.issue.count }, display: :csv),
+          Column.new(:notes, ->(meter) { meter.issues.note.count }, display: :csv)
         ]
       end
 
       def filter_results(results)
         results = results.where(meter_type: params[:meter_type]) if params[:meter_type].present?
-        results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:user]) } }) if params[:user].present?
-        results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) }) if params[:school_group].present?
-        results = results.where(admin_meter_status: AdminMeterStatus.find(params[:admin_meter_status])) if params[:admin_meter_status].present?
+        if params[:admin].present?
+          results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:admin]) } })
+        end
+        if params[:school_group].present?
+          results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) })
+        end
+        if params[:admin_meter_status].present?
+          results = results.where(admin_meter_status: AdminMeterStatus.find(params[:admin_meter_status]))
+        end
         results
       end
 

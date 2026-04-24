@@ -158,6 +158,7 @@ group :development do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec_rails'
+  gem 'rubocop-view_component', require: false
   gem 'scout_apm'
   gem 'web-console'
 end

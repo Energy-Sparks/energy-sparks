@@ -1,0 +1,28 @@
+<%= render 'admin/reports/title', title: 'Pupil Number Updates' %>
+<p>
+  The table below lists active schools that have not been automatically updated from DfE data.
+</p>
+<%= render 'admin/reports/base_meter_reports/report_filters', no_csv: true %>
+<table class="table table-sorted table-sm">
+  <thead>
+    <tr>
+      <th>School Group</th>
+      <th>Admin</th>
+      <th>School</th>
+      <th>Reason</th>
+      <th data-orderable="false"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @schools.left_joins(:school_group).merge(SchoolGroup.by_name).by_name.each do |school|
+         reasons = find_reasons(school) %>
+      <tr>
+        <td><%= school.school_group&.name %></td>
+        <td><%= school.default_issues_admin_user&.name %></td>
+        <td><%= link_to school.name, school_path(school) %></td>
+        <td><%= reasons.join(', ') %></td>
+        <td><%= link_to :Attributes, admin_school_school_attributes_path(school), class: 'btn btn-sm' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

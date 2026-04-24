@@ -879,6 +879,7 @@ Rails.application.routes.draw do
       resources :user_logins, only: [:index]
       resources :work_allocation, only: [:index]
       resources :zero_readings, only: [:index]
+      resources :pupil_number_updates, only: :index
     end
 
     resource :settings, only: %i[show update]
