@@ -1,71 +1,73 @@
+# frozen_string_literal: true
+
 module Schools
   class PupilNumberUpdater
-    DATE_FORMAT = '%d/%m/%Y'.freeze
+    DATE_FORMAT = '%d/%m/%Y'
+    AUTOMATED_DFE_REASON = 'Automated pupil number update using DfE data'
 
     def initialize(school)
       @school = school
     end
 
-    def update(pupil_count, reason = 'Automated pupil number update')
+    def update(number_of_pupils, percentage_free_school_meals, start_date, reason_prefix)
       ActiveRecord::Base.transaction do
-        expire_active_meter_attributes
-        create_new_meter_attribute(pupil_count, reason)
-        @school.update!(number_of_pupils: pupil_count)
+        if number_of_pupils&.>(0)
+          attribute = save_number_of_pupils_to_meter_attribute(number_of_pupils, start_date, reason_prefix)
+          @school.number_of_pupils = number_of_pupils if attribute
+        end
+        @school.percentage_free_school_meals = percentage_free_school_meals if percentage_free_school_meals.present?
+        @school.save! if @school.changed?
       end
     end
 
     private
 
-    def today
-      @today ||= Time.zone.today.strftime(DATE_FORMAT)
+    def last_attribute
+      attributes = @school.meter_attributes.active.floor_area_pupil_numbers
+                          .map { |attribute| attribute.to_analytics.merge(attribute:) }
+      data = FloorAreaPupilNumbersBase.new(attributes, :number_of_pupils, nil).attributes&.last
+      [data, data&.delete(:attribute)]
     end
 
-    def expire_active_meter_attributes
-      @school.meter_attributes.active.floor_area_pupil_numbers.each do |attr|
-        end_date = parse_date(attr.input_data['end_date'])
-
-        next unless end_date.nil? || end_date > Time.zone.today
-
-        attr.update!(input_data: attr.input_data.merge('end_date' => today))
+    def save_number_of_pupils_to_meter_attribute(number_of_pupils, start_date, reason_prefix)
+      data, attribute = last_attribute
+      if attribute.nil?
+        reason = "Pupil numbers set to #{number_of_pupils}."
+      elsif should_create_attribute?(number_of_pupils, start_date, attribute, data)
+        if attribute.input_data['end_date'].blank?
+          update_end_date(attribute, start_date)
+        elsif start_date < data[:end_date]
+          start_date = data[:end_date]
+        end
+        reason = "Pupil numbers changed from #{data[:value]} to #{number_of_pupils}."
       end
+      return unless reason
+
+      Rails.logger.info("#{@school.name}: #{reason}")
+      create_attribute(start_date, number_of_pupils, attribute, [reason_prefix, reason].join)
     end
 
-    def most_recent_expired_floor_area
-      expired_attrs = @school.meter_attributes.active.floor_area_pupil_numbers.select do |attr|
-        end_date = parse_date(attr.input_data['end_date'])
-        end_date.present? && end_date <= Time.zone.today
-      end
-
-      most_recent = expired_attrs.max_by do |attr|
-        parse_date(attr.input_data['end_date'])
-      end
-
-      most_recent&.input_data&.dig('floor_area')
+    def should_create_attribute?(number_of_pupils, start_date, attribute, data)
+      # not created by a user or has expired
+      (attribute.created_by_id.nil? || data[:end_date] <= start_date) &&
+        # and number of pupils has changed
+        number_of_pupils != data[:value] &&
+        # and starts after
+        start_date > data[:start_date]
     end
 
-    def create_new_meter_attribute(pupil_count, reason)
-      floor_area = most_recent_expired_floor_area
-
-      input_data = {
-        'start_date' => today,
-        'end_date' => nil,
-        'floor_area' => floor_area,
-        'number_of_pupils' => pupil_count.to_s
-      }
-
+    def create_attribute(start_date, number_of_pupils, attribute, reason)
       @school.meter_attributes.create!(
-        attribute_type: 'floor_area_pupil_numbers',
-        input_data: input_data,
-        reason: reason
+        attribute_type: :floor_area_pupil_numbers,
+        input_data: { start_date: start_date.strftime(DATE_FORMAT),
+                      number_of_pupils: number_of_pupils.to_s,
+                      floor_area: attribute&.input_data&.[]('floor_area') }.compact,
+        reason:
       )
     end
 
-    def parse_date(date_str)
-      return nil if date_str.blank?
-
-      Date.strptime(date_str, DATE_FORMAT)
-    rescue ArgumentError
-      nil
+    def update_end_date(attribute, end_date)
+      attribute.update!(input_data: attribute.input_data.merge('end_date' => end_date.strftime(DATE_FORMAT)))
     end
   end
 end

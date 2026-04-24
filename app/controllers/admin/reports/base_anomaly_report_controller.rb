@@ -7,7 +7,7 @@ module Admin
 
       def filter_results(results)
         results = results.for_school_group(SchoolGroup.find(params[:school_group])) if params[:school_group].present?
-        results = results.for_admin(User.admin.find(params[:user])) if params[:user].present?
+        results = results.for_admin(User.admin.find(params[:admin])) if params[:admin].present?
         results.default_order
       end
 
