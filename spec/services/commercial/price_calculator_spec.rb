@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-# rubocop:disable RSpec/NestedGroups
 describe Commercial::PriceCalculator do
   let(:service) { described_class.new }
 
@@ -91,6 +90,7 @@ describe Commercial::PriceCalculator do
           )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when school is larger than size threshold' do
           subject(:price) { service.calculate(contract:, number_of_pupils: 500, number_of_meters: 1) }
 
@@ -110,6 +110,7 @@ describe Commercial::PriceCalculator do
             expect(price.total).to eq(0.0)
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       context 'when the account will be private' do
@@ -191,6 +192,7 @@ describe Commercial::PriceCalculator do
           )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when there are additional fees' do
           let(:school) do
             school = create(:school, number_of_pupils: 600, default_contract_holder: contract_holder,
@@ -234,6 +236,7 @@ describe Commercial::PriceCalculator do
             end
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       describe 'with an agreed school price in contract' do
@@ -254,6 +257,7 @@ describe Commercial::PriceCalculator do
           )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when there are additional fees' do
           let(:school) do
             school = create(:school, number_of_pupils: 600, default_contract_holder: contract_holder,
@@ -271,6 +275,7 @@ describe Commercial::PriceCalculator do
             )
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       describe 'when there are no pricing overrides' do
@@ -282,6 +287,7 @@ describe Commercial::PriceCalculator do
           )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when there are additional fees' do
           let(:school) do
             school = create(:school, number_of_pupils: 600, default_contract_holder: contract_holder,
@@ -299,6 +305,7 @@ describe Commercial::PriceCalculator do
             )
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
     end
 
@@ -361,4 +368,3 @@ describe Commercial::PriceCalculator do
     end
   end
 end
-# rubocop:enable RSpec/NestedGroups
