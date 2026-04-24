@@ -1,5 +1,6 @@
-RSpec.shared_examples 'it contains the expected data table' do |sortable: true, aligned: true, rows: true|
+RSpec.shared_examples 'it contains the expected data table' do |sortable: true, aligned: true, rows: true, tfoot: false|
   let(:expected_rows) { nil }
+  let(:expected_footer_rows) { nil }
 
   it 'has sortable columns', if: sortable do
     expect(page).to have_css("#{table_id}.table-sorted")
@@ -34,5 +35,14 @@ RSpec.shared_examples 'it contains the expected data table' do |sortable: true, 
     end
 
     expect(actual_rows).to eq(expected_rows)
+  end
+
+  it 'has the expected footer', if: tfoot do
+    body_rows = page.find("#{table_id} > tfoot").find_all('tr')
+    actual_rows = body_rows.map do |tr|
+      tr.find_all('td').map { |td| td.text.gsub(/\s+/, ' ').strip }
+    end
+
+    expect(actual_rows).to eq(expected_footer_rows)
   end
 end

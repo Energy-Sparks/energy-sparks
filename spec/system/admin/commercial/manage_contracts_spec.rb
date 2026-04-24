@@ -353,7 +353,10 @@ describe 'manage contracts' do
   end
 
   context 'when viewing a contract' do
-    let!(:contract) { create(:commercial_contract) }
+    let!(:contract) do
+      create(:commercial_contract,
+             agreed_school_price: 600.0)
+    end
 
     before do
       click_on 'All Contracts'
@@ -405,11 +408,69 @@ describe 'manage contracts' do
           [
             ['Current', 'Provisional', '2'],
             ['', 'Confirmed', '1'],
+            ['', 'Pending invoice', '0'],
+            ['', 'Invoiced', '0'],
             ['', 'All', '3'],
             ['Future', 'Provisional', '4'],
             ['', 'Confirmed', '0'],
+            ['', 'Pending invoice', '0'],
+            ['', 'Invoiced', '0'],
             ['', 'All', '4'],
-            ['Expired', 'All', '8']
+            ['Expired', 'Provisional', '3'],
+            ['', 'Confirmed', '5'],
+            ['', 'Pending invoice', '0'],
+            ['', 'Invoiced', '0'],
+            ['', 'All', '8']
+          ]
+        end
+      end
+    end
+
+    context 'when viewing financial summary' do
+      before do
+        create(:commercial_licence, status: :confirmed, contract:)
+        refresh
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
+        let(:table_id) { '#total-contract-value' }
+        let(:expected_header) do
+          [
+            %w[Charge Cost]
+          ]
+        end
+        let(:expected_rows) do
+          [
+            ['Base price', '£600'],
+            ['Metering fees', '0p'],
+            ['Private account fees', '0p'],
+            ['Total', '£600']
+          ]
+        end
+      end
+    end
+
+    context 'when viewing contract value' do
+      before do
+        create(:commercial_licence, status: :confirmed, contract:)
+        refresh
+      end
+
+      it_behaves_like 'it contains the expected data table', sortable: false, aligned: false, tfoot: true do
+        let(:table_id) { '#per-school-fees' }
+        let(:expected_header) do
+          [
+            ['School Group', 'School', 'Base price', 'Metering fee', 'Private account fee', 'Total']
+          ]
+        end
+        let(:expected_rows) do
+          [
+            ['', contract.schools.first.name, '£600', '0p', '0p', '£600']
+          ]
+        end
+        let(:expected_footer_rows) do
+          [
+            ['', '', '£600', '0p', '0p', '£600']
           ]
         end
       end
