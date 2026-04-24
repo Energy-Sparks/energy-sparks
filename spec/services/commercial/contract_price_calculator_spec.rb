@@ -8,7 +8,7 @@ describe Commercial::ContractPriceCalculator do
   let!(:product) { create(:commercial_product) }
 
   # rubocop:disable RSpec/NestedGroups
-  describe 'per_school' do
+  describe '#per_school' do
     subject(:price) { service.per_school[school.id][:price] }
 
     let!(:contract) { create(:commercial_contract, product:) }

@@ -164,13 +164,13 @@
                   <tr>
                     <td><strong><%= period.to_s.humanize if index.zero? %></strong></td>
                     <td><%= status.to_s.humanize %></td>
-                    <td><%= @contract.licences.send(period).send(status).count %></td>
+                    <td><%= @contract.licences.public_send(period).public_send(status).count %></td>
                   </tr>
                 <% end %>
                   <tr>
                     <td></td>
                     <td>All</td>
-                    <td><%= @contract.licences.send(period).count %></td>
+                    <td><%= @contract.licences.public_send(period).count %></td>
                   </tr>
               <% end %>
             </tbody>

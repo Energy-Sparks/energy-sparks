@@ -25,10 +25,7 @@ module Commercial
 
     def calculate_per_school
       rows = schools_scope.select(calculate_price_sql)
-
-      unsorted = rows.to_h { |row| [row.school_id, row_to_price_hash(row)] }
-
-      unsorted.sort_by { |_id, h| h[:name] }.to_h
+      rows.to_h { |row| [row.school_id, row_to_price_hash(row)] }
     end
 
     def meter_counts
@@ -49,6 +46,7 @@ module Commercial
                  LEFT JOIN (#{meter_counts.to_sql}) meters
                    ON meters.school_id = schools.id
                SQL
+               .order('schools.name')
     end
 
     def row_to_price_hash(row)
@@ -65,8 +63,7 @@ module Commercial
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
-    def calculate_price_sql
+    def calculate_price_sql # rubocop:disable Metrics/MethodLength
       size_threshold_sql       = sql_number(@product.size_threshold)
       small_school_price_sql   = sql_number(@product.small_school_price)
       large_school_price_sql   = sql_number(@product.large_school_price)
@@ -105,7 +102,6 @@ module Commercial
         END AS private_account_fee
       SQL
     end
-    # rubocop:enable Metrics/MethodLength
 
     def sql_number(value)
       value.nil? ? 'NULL' : value
