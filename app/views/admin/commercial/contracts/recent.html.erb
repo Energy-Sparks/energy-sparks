@@ -1,9 +1,4 @@
-<%= render 'contract_list', title: 'Recently Added Contracts', contracts: @contracts do %>
-<div class="row">
-  <div class="col">
-    <p>
-        This page lists all contracts added in the last 30 days.
-    </p>
-  </div>
-</div>
-<% end %>
+<%= render 'contract_list',
+           title: 'Recently Added Contracts',
+           contracts: @contracts,
+           description: 'This page lists all contracts added in the last 30 days.' %>
