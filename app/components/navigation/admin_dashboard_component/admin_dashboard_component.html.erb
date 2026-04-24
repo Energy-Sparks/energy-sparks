@@ -11,4 +11,12 @@
                      match_on_param: section[:match_on_param] %>
     <% end %>
   <% end %>
+
+  <% c.with_section name: 'My Schools',
+                    options: { match_controller: false } do |s| %>
+    <% my_schools_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     href: item[:path]) %>
+    <% end %>
+  <% end %>
 <% end %>

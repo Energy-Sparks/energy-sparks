@@ -5,7 +5,7 @@ describe 'manage categories' do
 
   before do
     sign_in(user)
-    visit admin_path
+    visit admin_commercial_path
   end
 
   context 'when adding a new product' do
@@ -138,8 +138,8 @@ describe 'manage categories' do
         create(:commercial_contract, status: :confirmed, product:)
         create_list(:commercial_contract, 2, status: :provisional, product:)
         create_list(:commercial_contract, 4, :future, status: :provisional, product:)
-        create_list(:commercial_contract, 3, :historical, status: :provisional, product:)
-        create_list(:commercial_contract, 5, :historical, status: :confirmed, product:)
+        create_list(:commercial_contract, 3, :expired, status: :provisional, product:)
+        create_list(:commercial_contract, 5, :expired, status: :confirmed, product:)
         refresh
       end
 
@@ -147,7 +147,7 @@ describe 'manage categories' do
         let(:table_id) { '#contract-summary-table' }
         let(:expected_header) do
           [
-            ['Category', 'Status', 'Count']
+            %w[Category Status Count]
           ]
         end
         let(:expected_rows) do
@@ -158,7 +158,7 @@ describe 'manage categories' do
             ['Future', 'Provisional', '4'],
             ['', 'Confirmed', '0'],
             ['', 'All', '4'],
-            ['Historical', 'All', '8']
+            ['Expired', 'All', '8']
           ]
         end
       end
