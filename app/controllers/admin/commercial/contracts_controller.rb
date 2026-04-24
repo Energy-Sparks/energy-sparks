@@ -3,7 +3,7 @@
 module Admin
   module Commercial
     class ContractsController < AdminController
-      ALLOWED_SCOPES = %w[current expired expiring future recent].freeze
+      ALLOWED_SCOPES = %w[current expired expiring future provisional recent].freeze
 
       load_and_authorize_resource :contract, class: 'Commercial::Contract'
 
@@ -19,7 +19,7 @@ module Admin
 
       def future = load_contracts(action_name)
 
-      def provisional = local_contracts(action_name)
+      def provisional = load_contracts(action_name)
 
       def recent = load_contracts(action_name)
 

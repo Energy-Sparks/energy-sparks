@@ -470,10 +470,46 @@ describe 'manage contracts' do
       end
     end
 
+    context 'with expiring' do
+      let!(:contract) { create(:commercial_contract, end_date: Time.zone.today + 1) }
+
+      before { click_on 'Expiring Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
     context 'with recent' do
       let!(:contract) { create(:commercial_contract) }
 
       before { click_on 'Recently Added Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with provisional' do
+      let!(:contract) { create(:commercial_contract, status: :provisional) }
+
+      before { click_on 'Provisional Contracts' }
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_content(contract.name)
+        end
+      end
+    end
+
+    context 'with future' do
+      let!(:contract) { create(:commercial_contract, :future) }
+
+      before { click_on 'Future Contracts' }
 
       it 'shows the contract' do
         within('#contracts-table') do
