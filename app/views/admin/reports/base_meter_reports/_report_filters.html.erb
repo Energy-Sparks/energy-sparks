@@ -13,9 +13,9 @@
                          class: 'form-control-sm' %>
         </span>
         <span class="nowrap">
-          <%= label_tag :user, nil, class: 'small' %>
-          <%= select_tag :user,
-                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+          <%= label_tag :admin, nil, class: 'small' %>
+          <%= select_tag :admin,
+                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:admin]),
                          include_blank: 'Any Admin User',
                          class: 'form-control-sm' %>
         </span>
@@ -23,14 +23,16 @@
       </div>
       <div class="d-flex justify-content-between">
         <%= submit_tag 'Filter', class: 'btn btn-sm' %>
-        <%= link_to 'CSV',
-                    url_for(
-                      controller: controller_path,
-                      action: :index,
-                      only_path: true,
-                      **params.permit(:school_group, :user, :meter_type).merge(format: :csv)
-                    ),
-                    class: 'ml-2 btn btn-sm' %>
+        <% unless defined? no_csv %>
+          <%= link_to 'CSV',
+                      url_for(
+                        controller: controller_path,
+                        action: :index,
+                        only_path: true,
+                        **params.permit(:school_group, :user, :meter_type).merge(format: :csv)
+                      ),
+                      class: 'ml-2 btn btn-sm' %>
+          <% end %>
       </div>
     </div>
   <% end %>

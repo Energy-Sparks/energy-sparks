@@ -1,4 +1,16 @@
-<h1>Schools recently onboarded</h1>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s Recently Onboarded Schools" %>
+  <% end %>
+<p>
+  <%= link_to 'Full Onboardings Report', completed_admin_school_onboardings_path, class: 'btn' %>
+</p>
+<p>
+  <%= "Schools onboarded in the last #{@days} days" %>
+</p>
+<% else %>
+  <h1>Schools recently onboarded</h1>
+<% end %>
 
 <div class="row d-flex justify-content-center pt-4">
   <%= render partial: 'shared/pagy/bootstrap_nav', locals: { pagy: @pagy } %>

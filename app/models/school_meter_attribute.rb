@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: school_meter_attributes
@@ -28,6 +30,7 @@
 
 class SchoolMeterAttribute < ApplicationRecord
   include AnalyticsAttribute
+
   belongs_to :school
 
   scope :floor_area_pupil_numbers, -> { where(attribute_type: 'floor_area_pupil_numbers') }
