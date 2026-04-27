@@ -157,6 +157,14 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the issues page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/issues")
+            expect(page).to have_no_content('Assigned to')
+            expect(page).to have_link('View all issues', href: admin_issues_path)
+          end
+
+          it 'has filters which navigate to the dashboard' do
+            fill_in 'search', with: 'solar'
+            click_on 'Filter'
+            expect(page).to have_current_path("/admin/dashboards/#{user.id}/issues", ignore_query: true)
           end
 
           it 'displays issues belonging to the user' do
