@@ -1,7 +1,13 @@
 <% if @dashboard_user %>
   <% content_for :title do %>
-    <%= "#{@dashboard_user.display_name}'s Issues & Notes" %>
+    <%= "#{@dashboard_user.display_name}'s Assigned Issues & Notes" %>
   <% end %>
+
+  <%= render Elements::ButtonComponent.new('View all issues',
+                                           admin_issues_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+
 <% else %>
   <%= render 'header', title: 'Issues & Notes' do %>
     <% if @issueable.try(:school_group) %>
@@ -20,9 +26,11 @@
       </div>
     <% end %>
   </div>
+  <% end %>
+
   <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
     <%= form_tag polymorphic_path(
-          @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
+          path_helper
         ),
                  method: :get do %>
       <div class='d-flex justify-content-between flex-wrap align-items-center'>
@@ -32,12 +40,14 @@
                                                        width: 200,
                                                        class: '' %>
         </div>
-        <div class="me-2 mb-2">
-          <%= select_tag :user,
-                         options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
-                         include_blank: 'Any admin user',
-                         class: 'form-control' %>
-        </div>
+        <% unless @dashboard_user %>
+          <div class="me-2 mb-2">
+            <%= select_tag :user,
+                           options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+                           include_blank: 'Any admin user',
+                           class: 'form-control' %>
+          </div>
+        <% end %>
         <div class="me-2 mb-2">
           <%= select_tag :review_date,
                          options_for_select([['Next review date not set', :review_unset],
@@ -86,8 +96,6 @@
       </div>
     <% end %>
   </div>
-
-<% end %>
 
 <div id='issues-list'>
   <% if @issues.any? %>
