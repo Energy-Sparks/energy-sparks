@@ -78,9 +78,9 @@
   <p><%= t('schools.school_details.key_stage') %></p>
 
   <%= f.collection_check_boxes(:key_stage_ids, key_stages, :id, :name) do |b| %>
-    <div class="custom-control custom-checkbox custom-control-inline">
-      <%= b.check_box(class: 'custom-control-input') %>
-      <%= b.label(class: 'custom-control-label') do %>
+    <div class="form-check form-check-inline">
+      <%= b.check_box(class: 'form-check-input') %>
+      <%= b.label(class: 'form-check-label') do %>
         <%= t(b.object.i18n_key) %>
       <% end %>
     </div>
@@ -90,11 +90,14 @@
 </div>
 
 <div class="form-group pt-2">
-  <%= f.input :number_of_pupils %>
+  <%= f.input :number_of_pupils,
+              input_html: { disabled: controller.instance_of?(SchoolsController) && !current_user.admin? } %>
 </div>
 
 <div class="form-group">
-  <%= f.input :percentage_free_school_meals, hint: t('schools.school_details.percentage_free_school_meals_hint') %>
+  <%= f.input :percentage_free_school_meals,
+              input_html: { disabled: controller.instance_of?(SchoolsController) && !current_user.admin? },
+              hint: t('schools.school_details.percentage_free_school_meals_hint') %>
 </div>
 
 <h2 id="school-features"><%= t('schools.school_details.school_features') %></h2>

@@ -374,6 +374,10 @@ GEM
       sprockets (>= 2.0.0)
       tilt (>= 1.2)
     hashdiff (1.2.1)
+    herb (0.9.7-aarch64-linux-gnu)
+    herb (0.9.7-arm64-darwin)
+    herb (0.9.7-x86_64-darwin)
+    herb (0.9.7-x86_64-linux-gnu)
     highline (3.1.2)
       reline
     htmlbeautifier (1.4.3)
@@ -731,6 +735,11 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-rspec (~> 3.5)
+    rubocop-view_component (0.5.0)
+      herb
+      lint_roller (~> 1.1)
+      parser
+      rubocop (>= 1.72.2)
     ruby-limiter (2.3.0)
     ruby-ole (1.2.13.1)
     ruby-prof (2.0.4)
@@ -960,6 +969,7 @@ DEPENDENCIES
   rubocop-performance
   rubocop-rails
   rubocop-rspec_rails
+  rubocop-view_component
   ruby-limiter
   ruby-prof
   sassc!

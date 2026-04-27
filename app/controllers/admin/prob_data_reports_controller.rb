@@ -6,7 +6,9 @@ module Admin
       super + [
         Column.new(:meter_type,
                    ->(meter) { meter.meter_type.to_s },
-                   ->(meter) { render_to_string(Elements::IconComponent.new(fuel_type: meter.meter_type), layout: false) }),
+                   lambda { |meter|
+                     render_to_string(Elements::IconComponent.new(fuel_type: meter.meter_type), layout: false)
+                   }),
         Column.new(:count,
                    ->(meter) { meter.count })
       ]
@@ -14,15 +16,19 @@ module Admin
 
     def results
       results = Meter.active
-           .joins(:school)
-           .joins(:amr_validated_readings)
-           .where(amr_validated_readings: { status: 'PROB' })
-           .includes(:school, { school: :school_group })
-           .group('school_groups.id', 'schools.id', 'meters.id')
-           .select('school_groups.*, meters.*, count(amr_validated_readings.id) as count')
+                     .joins(:school)
+                     .joins(:amr_validated_readings)
+                     .where(amr_validated_readings: { status: 'PROB' })
+                     .includes(:school, { school: :school_group })
+                     .group('school_groups.id', 'schools.id', 'meters.id')
+                     .select('school_groups.*, meters.*, count(amr_validated_readings.id) as count')
 
-      results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) }) if params[:school_group].present?
-      results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:user]) } }) if params[:user].present?
+      if params[:school_group].present?
+        results = results.where(schools: { school_group: SchoolGroup.find(params[:school_group]) })
+      end
+      if params[:admin].present?
+        results = results.where(schools: { school_groups: { default_issues_admin_user: User.admin.find(params[:admin]) } })
+      end
       results.order('count DESC')
     end
 

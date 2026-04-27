@@ -19,9 +19,7 @@ module Schools
 
     def update
       params_hash = resource_params.to_h
-      params_hash['manual_readings_attributes'].each_value do |parameters|
-        parameters['_destroy'] = '1' if parameters['id'] && parameters['gas'].blank? && parameters['electricity'].blank?
-      end
+      mark_blank_for_delete(params_hash)
       if @school.update(params_hash)
         readings = Schools::ManualReadingsService.new(@school)
         if readings.target?
@@ -35,6 +33,12 @@ module Schools
     end
 
     private
+
+    def mark_blank_for_delete(params_hash)
+      params_hash['manual_readings_attributes'].each_value do |parameters|
+        parameters['_destroy'] = '1' if parameters['id'] && parameters['gas'].blank? && parameters['electricity'].blank?
+      end
+    end
 
     # Creates manual reading objects on the school, either blank for input or with data for display.
     # @param school to add manual readings to

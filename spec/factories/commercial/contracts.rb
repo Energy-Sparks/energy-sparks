@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :commercial_contract, class: 'Commercial::Contract' do
-    sequence(:name) {|n| "Contract #{n}"}
-    sequence(:comments) {|n| "Contract #{n} comments"}
+    sequence(:name) { |n| "Contract #{n}" }
+    sequence(:comments) { |n| "Contract #{n} comments" }
 
     number_of_schools { 100 }
     licence_years { 1.0 }
@@ -22,7 +22,7 @@ FactoryBot.define do
       contract_holder { association :school_group }
     end
 
-    trait :historical do
+    trait :expired do
       start_date { Time.zone.today - 1.year }
       end_date { Time.zone.yesterday }
     end

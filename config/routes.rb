@@ -582,9 +582,17 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboards, only: %i[show index] do
       resources :school_groups, module: :dashboard
+      resources :activations, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
       resources :issues, module: :dashboard
+      resources :school_onboardings, path: 'school_setup', module: :dashboard do
+        collection do
+          get 'completed'
+        end
+      end
+      resources :activities, module: :dashboard
+      resources :interventions, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
@@ -626,12 +634,25 @@ Rails.application.routes.draw do
             post :create_licence
           end
         end
+        collection do
+          get :current
+          get :expired
+          get :expiring
+          get :future
+          get :provisional
+          get :recent
+        end
       end
-      resources :licences
+      resources :licences do
+        collection do
+          get :unlicensed
+        end
+      end
       resources :products
 
       get 'pricing', to: 'pricing#show'
     end
+    resource :commercial, only: [:show], controller: :commercial
 
     namespace :comparisons do
       resources :footnotes, except: [:show]
@@ -858,6 +879,7 @@ Rails.application.routes.draw do
       resources :user_logins, only: [:index]
       resources :work_allocation, only: [:index]
       resources :zero_readings, only: [:index]
+      resources :pupil_number_updates, only: :index
     end
 
     resource :settings, only: %i[show update]

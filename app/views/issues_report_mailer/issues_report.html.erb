@@ -4,29 +4,23 @@
   <thead>
     <tr>
       <th></th>
-      <th>Issue for</th>
-      <th>Group</th>
-      <th>Title</th>
-      <th>Fuel</th>
-      <th>Review</th>
-      <th>Created By</th>
-      <th>Created</th>
-      <th>Updated By</th>
-      <th>Updated</th>
+      <% @columns.filter(&:display_html).each do |column| %>
+        <%= content_tag(:th, column.name) %>
+      <% end %>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <% @issues.each do |issue| %>
       <tr>
-        <td title="<%= issue.issue_type %>"><%= issue_type_image(issue.issue_type) %></td>
+        <td title="<%= @columns[0].td(issue) %>"><%= issue_type_image(@columns[0].td(issue)) %></td>
         <td>
           <%= render 'admin/issues/issueable', issueable: issue.try(:issueable), email: true %>
-          <% if issue.created_at > 1.week.ago %>
+          <% if @columns[2].csv(issue).present? %>
             <span class="badge bg-danger rounded text-white" title="New this week!">new!</span>
           <% end %>
         </td>
-        <td><%= link_to issue.school_group.try(:name), admin_school_group_url(issue.school_group) if issue.school_group %></td>
+        <td><%= @columns[3].td(issue) %></td>
         <td style="min-width: 100px;" class="overflow">
           <span title="<%= issue.title %>" data-toggle="tooltip">
             <%= link_to issue.title, polymorphic_url([:admin, issue.issueable, issue]) %>
@@ -44,12 +38,12 @@
         </td>
         <td><%= issue.updated_by.display_name %></td>
         <td>
-          <div class="badge bg-white rounded-full text-dark font-weight-normal nowrap">
+          <div class="badge bg-white rounded-full text-dark fw-normal nowrap">
             <%= short_dates(issue.updated_at) %>
           </div>
         </td>
         <td>
-          <%= link_to 'Edit', edit_polymorphic_url([:admin, @issueable, issue]), class: 'btn btn-sm' %>
+          <%= link_to 'Edit', @columns[-1].csv(issue), class: 'btn btn-sm' %>
         </td>
       </tr>
     <% end %>
