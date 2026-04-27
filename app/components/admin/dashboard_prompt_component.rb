@@ -32,6 +32,8 @@ module Admin
       ]
     end
 
+    private
+
     def prompt_for_issues_overdue?
       true unless overdue_issues_count.nil? || overdue_issues_count.zero?
     end
@@ -61,8 +63,10 @@ module Admin
     end
 
     def school_activations_count
-      @school_activations_count ||= SchoolGroup.organisation_groups.where(default_issues_admin_user: user).by_name
-                                               .count(&:has_schools_awaiting_activation?)
+      @school_activations_count ||= School.joins(:organisation_group)
+                                          .where(organisation_group: { default_issues_admin_user: user })
+                                          .awaiting_activation
+                                          .count
     end
 
     def lagging_data_sources_count
@@ -77,8 +81,6 @@ module Admin
                                                              .stopped_feeds
                                                              .count
     end
-
-    private
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists
       return unless check
