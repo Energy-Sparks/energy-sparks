@@ -71,6 +71,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the school groups page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups")
+            expect(page).to have_link('View all groups', href: admin_school_groups_path)
           end
 
           it 'displays school groups belonging to the user' do
@@ -92,6 +93,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the project groups page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups?group_type=project")
+            expect(page).to have_link('View all groups', href: admin_school_groups_path(group_type: 'project'))
           end
 
           it 'displays project groups belonging to the user' do
