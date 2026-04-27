@@ -3,8 +3,7 @@
 namespace :school_groups do
   task generate_impact_reports: :environment do
     SchoolGroup.find_each do |school_group|
-      schools = school_group.assigned_schools.active
-      next if schools.empty?
+      next if school_group.assigned_schools.active.empty?
 
       impact_report_run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
       report = SchoolGroups::ImpactReport.new(school_group)
