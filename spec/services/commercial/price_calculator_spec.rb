@@ -134,6 +134,19 @@ describe Commercial::PriceCalculator do
         metering_fee: product.metering_fee,
         private_account_fee: product.private_account_fee)
     end
+
+    context 'when data sharing is within_group' do
+      let(:school) do
+        create(:school, number_of_pupils: 600, data_sharing: :within_group)
+      end
+
+      it 'calculates the price based on the school data' do
+        expect(price).to have_attributes(
+          base_price: product.large_school_price,
+          metering_fee: 0.0,
+          private_account_fee: product.private_account_fee)
+      end
+    end
   end
 
   describe '#for_school_renewal' do
@@ -165,7 +178,7 @@ describe Commercial::PriceCalculator do
 
         context 'when there are additional fees' do
           let(:school) do
-            school = create(:school, number_of_pupils: 600, data_sharing: :private)
+            school = create(:school, number_of_pupils: 600, data_sharing: :within_group)
             create_list(:electricity_meter, 3, school:)
             create_list(:gas_meter, 3, school:)
             school
