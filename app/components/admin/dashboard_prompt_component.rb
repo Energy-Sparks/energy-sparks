@@ -27,7 +27,7 @@ module Admin
           link: 'View Issues', path: admin_dashboard_issues_path(dashboard_id: @user, user: @user),
           content: "You have #{weekly_issues_count} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
-          link: 'View Activations', path: admin_activations_path,
+          link: 'View Activations', path: admin_dashboard_activations_path(dashboard_id: @user),
           content: "You have #{school_activations_count} schools awaiting activation" }
       ]
     end
