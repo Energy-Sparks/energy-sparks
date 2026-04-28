@@ -15,7 +15,8 @@ describe Commercial::PriceCalculator do
         expect(price).to have_attributes(
           base_price: product.small_school_price,
           metering_fee: 0.0,
-          private_account_fee: 0.0)
+          private_account_fee: 0.0
+        )
       end
 
       context 'when school is larger than size threshold' do
@@ -25,18 +26,22 @@ describe Commercial::PriceCalculator do
           expect(price).to have_attributes(
             base_price: product.large_school_price,
             metering_fee: 0.0,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
       end
 
       context 'when the account will be private' do
-        subject(:price) { service.calculate(product:, number_of_pupils: 100, number_of_meters: 1, private_account: true) }
+        subject(:price) do
+          service.calculate(product:, number_of_pupils: 100, number_of_meters: 1, private_account: true)
+        end
 
         it 'adds on the private account fee' do
           expect(price).to have_attributes(
             base_price: product.small_school_price,
             metering_fee: 0.0,
-            private_account_fee: product.private_account_fee)
+            private_account_fee: product.private_account_fee
+          )
         end
       end
 
@@ -47,7 +52,8 @@ describe Commercial::PriceCalculator do
           expect(price).to have_attributes(
             base_price: product.small_school_price,
             metering_fee: product.metering_fee,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
       end
     end
@@ -69,7 +75,8 @@ describe Commercial::PriceCalculator do
         expect(price).to have_attributes(
           base_price: contracted_product.small_school_price,
           metering_fee: 0.0,
-          private_account_fee: 0.0)
+          private_account_fee: 0.0
+        )
       end
 
       context 'with a fixed agreed school price' do
@@ -79,9 +86,11 @@ describe Commercial::PriceCalculator do
           expect(price).to have_attributes(
             base_price: contract.agreed_school_price,
             metering_fee: 0.0,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when school is larger than size threshold' do
           subject(:price) { service.calculate(contract:, number_of_pupils: 500, number_of_meters: 1) }
 
@@ -89,19 +98,32 @@ describe Commercial::PriceCalculator do
             expect(price).to have_attributes(
               base_price: contract.agreed_school_price,
               metering_fee: 0.0,
-              private_account_fee: 0.0)
+              private_account_fee: 0.0
+            )
           end
         end
+
+        context 'when the price is zero' do
+          let(:contract) { create(:commercial_contract, product: contracted_product, agreed_school_price: 0.0) }
+
+          it 'returns zero for the total price' do
+            expect(price.total).to eq(0.0)
+          end
+        end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       context 'when the account will be private' do
-        subject(:price) { service.calculate(contract:, number_of_pupils: 100, number_of_meters: 1, private_account: true) }
+        subject(:price) do
+          service.calculate(contract:, number_of_pupils: 100, number_of_meters: 1, private_account: true)
+        end
 
         it 'adds on the private account fee' do
           expect(price).to have_attributes(
             base_price: contracted_product.small_school_price,
             metering_fee: 0.0,
-            private_account_fee: contracted_product.private_account_fee)
+            private_account_fee: contracted_product.private_account_fee
+          )
         end
       end
 
@@ -112,7 +134,8 @@ describe Commercial::PriceCalculator do
           expect(price).to have_attributes(
             base_price: contracted_product.small_school_price,
             metering_fee: contracted_product.metering_fee,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
       end
     end
@@ -132,7 +155,8 @@ describe Commercial::PriceCalculator do
       expect(price).to have_attributes(
         base_price: product.large_school_price,
         metering_fee: product.metering_fee,
-        private_account_fee: product.private_account_fee)
+        private_account_fee: product.private_account_fee
+      )
     end
 
     context 'when data sharing is within_group' do
@@ -144,7 +168,8 @@ describe Commercial::PriceCalculator do
         expect(price).to have_attributes(
           base_price: product.large_school_price,
           metering_fee: 0.0,
-          private_account_fee: product.private_account_fee)
+          private_account_fee: product.private_account_fee
+        )
       end
     end
   end
@@ -152,13 +177,17 @@ describe Commercial::PriceCalculator do
   describe '#for_school_renewal' do
     subject(:price) { service.for_school_renewal(school:) }
 
+    let(:contract_holder) { create(:funder) }
+
     describe 'when there is a current licence' do
-      let(:school) { create(:school, number_of_pupils: 100, data_sharing: :public) }
+      let(:school) do
+        create(:school, number_of_pupils: 100, default_contract_holder: contract_holder, data_sharing: :public)
+      end
 
       let!(:licence) do
         create(:commercial_licence,
                school:,
-               contract: create(:commercial_contract, product:))
+               contract: create(:commercial_contract, contract_holder:, product:))
       end
 
       context 'when the school has a specific price' do
@@ -166,19 +195,22 @@ describe Commercial::PriceCalculator do
           create(:commercial_licence,
                  school:,
                  school_specific_price: 250.0,
-                 contract: create(:commercial_contract, product:))
+                 contract: create(:commercial_contract, contract_holder:, product:))
         end
 
         it 'calculates the specific price' do
           expect(price).to have_attributes(
             base_price: licence.school_specific_price,
             metering_fee: 0.0,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when there are additional fees' do
           let(:school) do
-            school = create(:school, number_of_pupils: 600, data_sharing: :within_group)
+            school = create(:school, number_of_pupils: 600, default_contract_holder: contract_holder,
+                                     data_sharing: :within_group)
             create_list(:electricity_meter, 3, school:)
             create_list(:gas_meter, 3, school:)
             school
@@ -188,7 +220,8 @@ describe Commercial::PriceCalculator do
             expect(price).to have_attributes(
               base_price: licence.school_specific_price,
               metering_fee: licence.product.metering_fee,
-              private_account_fee: licence.product.private_account_fee)
+              private_account_fee: licence.product.private_account_fee
+            )
           end
         end
 
@@ -197,7 +230,7 @@ describe Commercial::PriceCalculator do
             create(:commercial_licence,
                    school:,
                    school_specific_price: 0.0,
-                   contract: create(:commercial_contract, product:))
+                   contract: create(:commercial_contract, contract_holder:, product:))
           end
 
           it 'returns zero for the total price' do
@@ -217,6 +250,7 @@ describe Commercial::PriceCalculator do
             end
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       describe 'with an agreed school price in contract' do
@@ -225,6 +259,7 @@ describe Commercial::PriceCalculator do
                  school:,
                  contract: create(:commercial_contract,
                                   agreed_school_price: 400.0,
+                                  contract_holder:,
                                   product:))
         end
 
@@ -232,12 +267,15 @@ describe Commercial::PriceCalculator do
           expect(price).to have_attributes(
             base_price: licence.contract.agreed_school_price,
             metering_fee: 0.0,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when there are additional fees' do
           let(:school) do
-            school = create(:school, number_of_pupils: 600, data_sharing: :private)
+            school = create(:school, number_of_pupils: 600, default_contract_holder: contract_holder,
+                                     data_sharing: :private)
             create_list(:electricity_meter, 3, school:)
             create_list(:gas_meter, 3, school:)
             school
@@ -247,9 +285,11 @@ describe Commercial::PriceCalculator do
             expect(price).to have_attributes(
               base_price: licence.contract.agreed_school_price,
               metering_fee: licence.product.metering_fee,
-              private_account_fee: licence.product.private_account_fee)
+              private_account_fee: licence.product.private_account_fee
+            )
           end
         end
+        # rubocop:enable RSpec/NestedGroups
       end
 
       describe 'when there are no pricing overrides' do
@@ -257,12 +297,15 @@ describe Commercial::PriceCalculator do
           expect(price).to have_attributes(
             base_price: licence.product.small_school_price,
             metering_fee: 0.0,
-            private_account_fee: 0.0)
+            private_account_fee: 0.0
+          )
         end
 
+        # rubocop:disable RSpec/NestedGroups
         context 'when there are additional fees' do
           let(:school) do
-            school = create(:school, number_of_pupils: 600, data_sharing: :private)
+            school = create(:school, number_of_pupils: 600, default_contract_holder: contract_holder,
+                                     data_sharing: :private)
             create_list(:electricity_meter, 3, school:)
             create_list(:gas_meter, 3, school:)
             school
@@ -272,9 +315,69 @@ describe Commercial::PriceCalculator do
             expect(price).to have_attributes(
               base_price: licence.product.large_school_price,
               metering_fee: licence.product.metering_fee,
-              private_account_fee: licence.product.private_account_fee)
+              private_account_fee: licence.product.private_account_fee
+            )
           end
         end
+        # rubocop:enable RSpec/NestedGroups
+      end
+    end
+
+    describe 'when the school is moving to being funded by their MAT' do
+      let(:school) do
+        create(:school, number_of_pupils: 100, default_contract_holder: create(:school_group), data_sharing: :public)
+      end
+
+      before do
+        create(:commercial_product, :default_product)
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:, product:))
+      end
+
+      context 'with no existing MAT contract' do
+        it 'falls back to default product pricing' do
+          expect(price).to have_attributes(
+            base_price: Commercial::Product.default_product.small_school_price,
+            metering_fee: 0.0,
+            private_account_fee: 0.0
+          )
+        end
+      end
+
+      context 'with a MAT contract' do
+        let!(:mat_contract) do
+          create(:commercial_contract, contract_holder: school.default_contract_holder, agreed_school_price: 150.0)
+        end
+
+        it 'calculates a price from latest MAT contract' do
+          expect(price).to have_attributes(
+            base_price: mat_contract.agreed_school_price,
+            metering_fee: 0.0,
+            private_account_fee: 0.0
+          )
+        end
+      end
+    end
+
+    describe 'when the school is moving to self-funding' do
+      let(:school) do
+        create(:school, number_of_pupils: 100, default_contract_holder: nil, data_sharing: :public)
+      end
+
+      before do
+        create(:commercial_product, :default_product)
+        create(:commercial_licence,
+               school:,
+               contract: create(:commercial_contract, contract_holder:, product:))
+      end
+
+      it 'falls back to default product pricing' do
+        expect(price).to have_attributes(
+          base_price: Commercial::Product.default_product.small_school_price,
+          metering_fee: 0.0,
+          private_account_fee: 0.0
+        )
       end
     end
   end
