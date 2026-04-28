@@ -20,7 +20,6 @@
 #  mailchimp_status            :enum
 #  mailchimp_updated_at        :datetime
 #  name                        :string
-#  operations                  :boolean          default(FALSE), not null
 #  preferred_locale            :string           default("en"), not null
 #  pupil_password              :string
 #  remember_created_at         :datetime
