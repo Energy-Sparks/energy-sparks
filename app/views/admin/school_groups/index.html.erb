@@ -8,15 +8,31 @@
 
 <div class="row">
   <div class="col-12 d-flex justify-content-between">
-    <div>
-      <% if @organisation_group %>
-        <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
-      <% elsif @group_type == 'project' %>
+    <% if @organisation_group %>
+      <div>
+          <%= link_to 'New school group', new_admin_school_group_path, class: 'btn btn-sm btn-primary' %>
+      </div>
+      <% if @dashboard_user %>
+        <div>
+          <%= link_to 'View all groups',
+                      admin_school_groups_path,
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
+      <% end %>
+    <% elsif @group_type == 'project' %>
+      <div>
         <%= link_to "New #{t(@group_type, scope: 'school_groups.clusters.group_type')} group",
                     new_admin_school_group_path(group_type: @group_type),
                     class: 'btn btn-sm btn-primary' %>
+      </div>
+      <% if @dashboard_user %>
+        <div>
+          <%= link_to 'View all groups',
+                      admin_school_groups_path(group_type: @group_type),
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
       <% end %>
-    </div>
+    <% end %>
     <div>
       <%= link_to 'Download as CSV',
                   admin_school_groups_path(format: :csv, group_type: @organisation_group ? nil : @group_type.to_sym),
