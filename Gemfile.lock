@@ -985,7 +985,7 @@ DEPENDENCIES
   simple_form
   simplecov
   sitemap_generator
-  solid_cache (~> 1.0)
+  solid_cache
   sortablejs-rails
   sprockets-rails
   sqlite3
