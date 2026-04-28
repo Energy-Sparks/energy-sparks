@@ -136,6 +136,10 @@ module Commercial
       (start_date..end_date)
     end
 
+    def custom_contract_length?
+      custom? && licence_years > 1.0
+    end
+
     private
 
     def destroy_error_message
