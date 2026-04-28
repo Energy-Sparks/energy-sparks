@@ -30,7 +30,7 @@ module Commercial
         contract:,
         number_of_pupils: school.number_of_pupils,
         number_of_meters: school.meters.main_meter.active.count,
-        private_account: school.data_sharing_private?
+        private_account: !school.data_sharing_public?
       )
     end
 
@@ -55,7 +55,7 @@ module Commercial
         Price.new(
           base_price:,
           metering_fee: metering_fee(product:, number_of_meters: school.meters.main_meter.active.count),
-          private_account_fee: private_account_fee(product:, private_account: school.data_sharing_private?)
+          private_account_fee: private_account_fee(product:, private_account: !school.data_sharing_public?)
         )
       end
     end

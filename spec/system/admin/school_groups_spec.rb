@@ -130,6 +130,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
             school_groups.each do |school_group|
               expect(page).to have_selector(:table_row,
                                             { 'Name' => school_group.name,
+                                              'Admin' => school_group.default_issues_admin_user.try(:display_name) || '', # rubocop:disable Layout/LineLength
                                               'Onboarding' => 1,
                                               'Active' => 1,
                                               'Data visible' => 1,

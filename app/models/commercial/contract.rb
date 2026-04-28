@@ -83,6 +83,7 @@ module Commercial
     validate :ensure_only_editable_attributes_changed, unless: :new_record?
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
+    has_many :schools, -> { distinct }, through: :licences
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 

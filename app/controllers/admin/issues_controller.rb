@@ -12,6 +12,8 @@ module Admin
 
     before_action :enable_bootstrap5
 
+    helper_method :path_helper
+
     load_and_authorize_resource :issue, through: :issueable, shallow: true, except: [:meter_issues]
 
     def index
@@ -112,6 +114,14 @@ module Admin
           send_data issues.to_csv,
                     filename: EnergySparks::Filenames.csv('issues')
         end
+      end
+    end
+
+    def path_helper
+      if @dashboard_user
+        [:admin, :dashboard, Issue]
+      else
+        @issueable ? [:admin, @issueable, Issue] : [:admin, Issue]
       end
     end
 
