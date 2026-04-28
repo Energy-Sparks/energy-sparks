@@ -5,7 +5,7 @@ namespace :after_party do
   task set_operations_users: :environment do
     puts "Running deploy task 'set_operations_users'"
 
-    ops_ids = [1, 1144, 6099, 5320, 787, 7837, 9437]
+    ops_ids = [1144, 6099, 5320, 787, 7837, 9437]
 
     ops_ids.each do |id|
       User.where(id: id).update(operations: true)
