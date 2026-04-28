@@ -14,7 +14,8 @@ module Admin
     def dashboard_prompts
       [
         { id: 'overdue-issues', check: prompt_for_issues_overdue?, status: :negative, icon: 'exclamation',
-          link: 'View Issues', path: admin_dashboard_issues_path(dashboard_id: @user, user: @user),
+          link: 'View Issues',
+          path: admin_dashboard_issues_path(dashboard_id: @user, user: @user, review_date: 'review_overdue'),
           content: "You have #{overdue_issues_count} issues overdue for review" },
         { id: 'lagging-data-sources', check: prompt_for_lagging_data_sources?, status: :negative,
           icon: 'exclamation', link: 'View Data Sources', path: admin_dashboard_data_sources_path(dashboard_id: @user),
@@ -24,7 +25,8 @@ module Admin
           path: admin_dashboard_amr_data_feed_configs_path(dashboard_id: @user),
           content: "You have #{missing_data_feed_readings_count} amr data feed configurations with missing data" },
         { id: 'weekly-issues', check: prompt_for_weekly_issues?, status: :neutral, icon: 'magnifying-glass',
-          link: 'View Issues', path: admin_dashboard_issues_path(dashboard_id: @user, user: @user),
+          link: 'View Issues',
+          path: admin_dashboard_issues_path(dashboard_id: @user, user: @user, review_date: 'review_next_week'),
           content: "You have #{weekly_issues_count} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
           link: 'View Activations', path: admin_activations_path,
