@@ -22,39 +22,35 @@
                   collection: Commercial::Product.all.by_name,
                   label_method: :name,
                   value_method: :id,
+                  hint: 'Select the product to be used as the basis for the price calculation.
+                  If no product is selected, you must specify a contract instead',
                   include_blank: 'Select a product, or specify contract',
                   selected: @product&.id %>
-      <p class="small">
-        Select the product to be used as the basis for the price calculation.
-        If no product is selected, you must specify a contract instead
-      </p>
 
       <%= f.input :contract_id,
                   collection: Commercial::Contract.all.by_name,
                   label_method: :name,
                   value_method: :id,
+                  hint: 'Select a contract to calculate a price based on an existing agreement.
+                  The price calculator will use any agreed school pricing defined in the contract and
+                  its related product as the basis for the calculation. So this overrides the Product field.',
                   include_blank: 'No contract',
                   selected: @contract&.id %>
-      <p class="small">
-        Select a contract to calculate a price based on an existing agreement.
-        The price calculator will use any agreed school pricing defined in the contract and its related product
-        as the basis for the calculation. So this overrides the Product field.
-      </p>
 
       <%= f.input :number_of_pupils,
                   as: :integer,
+                  hint: 'Specify the number of pupils in the school',
                   input_html: { min: 1, value: @number_of_pupils } %>
-      <p>Specify the number of pupils in the school</p>
 
       <%= f.input :number_of_meters,
                   as: :integer,
+                  hint: 'Specify the total number of gas and electricity meters in the school',
                   input_html: { min: 1, value: @number_of_meters } %>
-      <p>Specify the total number of gas and electricity meters in the school</p>
 
       <%= f.input :private_account,
                   as: :boolean,
+                  hint: 'Tick this if the school will have a private account',
                   input_html: { checked: @private_account } %>
-      <p>Tick this if the school will have a private account</p>
 
       <%= f.button :submit, 'Calculate' %>
     <% end %>
