@@ -17,7 +17,6 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
   end
 
   it 'creates the correct run and metric objects' do
-    # debugger
     expect(ImpactReport::Run.all.map do |run|
       run.metrics.pluck(:metric_category, :metric_type,
                         :value).group_by(&:first).transform_values do |rows|
