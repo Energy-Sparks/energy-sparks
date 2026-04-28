@@ -11,7 +11,7 @@ module Admin
       @user = user
     end
 
-    def dashboard_prompts
+    def dashboard_prompts # rubocop:disable Metrics/AbcSize
       [
         { id: 'overdue-issues', check: prompt_for_issues_overdue?, status: :negative, icon: 'exclamation',
           link: 'View Issues',
@@ -30,7 +30,10 @@ module Admin
           content: "You have #{weekly_issues_count} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
           link: 'View Activations', path: admin_activations_path,
-          content: "You have #{school_activations_count} schools awaiting activation" }
+          content: "You have #{school_activations_count} schools awaiting activation" },
+        { id: 'school-onboarding', check: prompt_for_school_onboarding?, status: :neutral, icon: 'school',
+          link: 'View Onboardings', path: admin_dashboard_onboardings_path(dashboard_id: @user),
+          content: "You have #{school_onboardings_count} schools that have not yet completed onboarding" }
       ]
     end
 
@@ -44,6 +47,10 @@ module Admin
 
     def prompt_for_school_activation?
       true unless school_activations_count.nil? || school_activations_count.zero?
+    end
+
+    def prompt_for_school_onboarding?
+      true unless school_onboardings_count.nil? || school_onboardings_count.zero?
     end
 
     def prompt_for_lagging_data_sources?
@@ -65,6 +72,13 @@ module Admin
     def school_activations_count
       @school_activations_count ||= SchoolGroup.organisation_groups.where(default_issues_admin_user: user).by_name
                                                .count(&:has_schools_awaiting_activation?)
+    end
+
+    def school_onboardings_count
+      @school_onboardings_count ||= SchoolOnboarding.incomplete
+                                                    .has_event(:email_sent)
+                                                    .joins(:school_group)
+                                                    .where(school_group: { default_issues_admin_user: user })
     end
 
     def lagging_data_sources_count
