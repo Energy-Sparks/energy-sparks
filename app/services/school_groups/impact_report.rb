@@ -76,7 +76,7 @@ module SchoolGroups
 
       delegate :count, to: :users, prefix: true
 
-      def users_logged_in_recently
+      def active_users
         users.recently_logged_in(three_months_ago).count
       end
 
@@ -110,10 +110,6 @@ module SchoolGroups
       # schools still enrolling
       def enrolling_schools
         school_group.onboardings_for_group.incomplete.count
-      end
-
-      def active_users
-        users.active.count + school_group.users.active.count
       end
     end
 
