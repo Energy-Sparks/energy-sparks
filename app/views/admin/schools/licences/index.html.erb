@@ -3,6 +3,7 @@
 
   <div class="row">
     <div class="col">
+      <h3>Licences</h3>
       <p>The following table lists all current, historical and future licences held by <%= @school.name %>.</p>
     </div>
   </div>
@@ -13,4 +14,32 @@
                                                    show_contract_holder: false) %>
     </div>
   </div>
+
+  <% if @price %>
+  <div class="row">
+    <div class="col">
+      <h3>Price</h3>
+      <p>
+        Based on its current configuration and licence, the following fees will apply for this school's
+        use of Energy Sparks. The same prices will apply for their renewal unless they move to a contract
+        with different terms.
+      </p>
+      <%= render ::Commercial::PriceBreakdownComponent.new(id: 'pricing', price: @price) %>
+    </div>
+  </div>
+  <% end %>
+  <% if @renewal_price %>
+  <div class="row">
+    <div class="col">
+      <h3>Renewal Price Estimate</h3>
+      <p>
+        Based on its current configuration and expectation of future funding source, the following fees provide
+        an estimate of the expected renewal price for this school. The base price assumes that any existing
+        school specific pricing will be carried forward. But actual the final pricing may vary depending on
+        contract negotiations with the school and/or their MAT.
+      </p>
+      <%= render ::Commercial::PriceBreakdownComponent.new(id: 'renewal-pricing', price: @renewal_price) %>
+    </div>
+  </div>
+  <% end %>
 <% end %>
