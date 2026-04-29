@@ -29,13 +29,15 @@ module Admin
           path: admin_dashboard_issues_path(dashboard_id: @user, user: @user, review_date: 'review_next_week'),
           content: "You have #{weekly_issues_count} issues due for review in the next week" },
         { id: 'school-activation', check: prompt_for_school_activation?, status: :neutral, icon: 'school',
-          link: 'View Activations', path: admin_activations_path,
+          link: 'View Activations', path: admin_dashboard_activations_path(dashboard_id: @user),
           content: "You have #{school_activations_count} schools awaiting activation" },
         { id: 'school-onboarding', check: prompt_for_school_onboarding?, status: :neutral, icon: 'school',
           link: 'View Onboardings', path: admin_dashboard_school_onboardings_path(dashboard_id: @user),
           content: "You have #{school_onboardings_count} schools that have not yet completed onboarding" }
       ]
     end
+
+    private
 
     def prompt_for_issues_overdue?
       true unless overdue_issues_count.nil? || overdue_issues_count.zero?
@@ -70,8 +72,10 @@ module Admin
     end
 
     def school_activations_count
-      @school_activations_count ||= SchoolGroup.organisation_groups.where(default_issues_admin_user: user).by_name
-                                               .count(&:has_schools_awaiting_activation?)
+      @school_activations_count ||= School.joins(:organisation_group)
+                                          .where(organisation_group: { default_issues_admin_user: user })
+                                          .awaiting_activation
+                                          .count
     end
 
     def school_onboardings_count
@@ -93,8 +97,6 @@ module Admin
                                                              .stopped_feeds
                                                              .count
     end
-
-    private
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists
       return unless check
