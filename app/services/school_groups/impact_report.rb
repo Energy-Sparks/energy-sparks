@@ -76,9 +76,11 @@ module SchoolGroups
 
       delegate :count, to: :users, prefix: true
 
-      def active_users
+      def users_logged_in_recently
         users.recently_logged_in(three_months_ago).count
       end
+
+      alias active_users users_logged_in_recently
 
       def pupils
         visible_schools.sum(:number_of_pupils)
