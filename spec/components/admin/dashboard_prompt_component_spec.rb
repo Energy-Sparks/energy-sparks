@@ -79,7 +79,7 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
 
       it 'displays the school activation prompt' do
         expect(page).to have_text('You have 1 schools awaiting activation')
-        expect(page).to have_link('Activations', href: admin_activations_path)
+        expect(page).to have_link('Activations', href: admin_dashboard_activations_path(dashboard_id: user))
       end
     end
   end
