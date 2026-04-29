@@ -140,4 +140,33 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
     end
   end
+
+  describe 'school onboarding prompt' do
+    context 'when there are no schools onboarding' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the school onboarding prompt' do
+        expect(page).to have_no_text('schools that have not yet completed onboarding')
+      end
+    end
+
+    context 'when there are schools onboarding' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school_onboarding,
+               :with_events,
+               event_names: %i[email_sent],
+               school_group_id: school_group.id)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the school onboarding prompt' do
+        expect(page).to have_text('You have 1 schools that have not yet completed onboarding')
+        expect(page).to have_link('View Onboardings', href: admin_dashboard_school_onboardings_path(dashboard_id: user))
+      end
+    end
+  end
 end
