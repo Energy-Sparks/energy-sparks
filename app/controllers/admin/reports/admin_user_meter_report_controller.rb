@@ -3,11 +3,6 @@
 module Admin
   module Reports
     class AdminUserMeterReportController < BaseImportReportsController
-      def index
-        params[:admin] = current_user.id unless params.key?(:admin)
-        super
-      end
-
       private
 
       def description
@@ -19,8 +14,14 @@ module Admin
       end
 
       def results
-        return nil if !params.key?(:school_group) && !params.key?(:admin)
+        unless params.key?(:school_group) || params.key?(:admin)
+          params[:admin] = current_user.id
+          return nil
+        end
+        filtered_meters
+      end
 
+      def filtered_meters
         Meter.active
              .joins(:school)
              .includes(:school, { school: :school_group })
