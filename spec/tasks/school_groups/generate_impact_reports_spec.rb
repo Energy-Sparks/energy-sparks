@@ -9,7 +9,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     school = create(:school, :with_school_group, number_of_pupils: 1)
     create(:school_onboarding, :with_completed, school_group: school.school_group)
     create(:school_onboarding, school_group: school.school_group)
-    create(:user, school:)
+    create(:user, school:, last_sign_in_at: Time.current)
     create(:activity, school:)
     create(:observation, :intervention, school:)
     create(:school_target, school:)
