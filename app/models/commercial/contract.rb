@@ -140,6 +140,15 @@ module Commercial
       custom? && licence_years > 1.0
     end
 
+    def licence_period_days
+      if custom?
+        licence_end_date = LicenceManager.add_years(start_date, licence_years)
+        (licence_end_date - start_date).to_i
+      else
+        (end_date - start_date).to_i
+      end
+    end
+
     private
 
     def destroy_error_message

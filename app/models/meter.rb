@@ -136,6 +136,10 @@ class Meter < ApplicationRecord
 
   scope :for_admin, ->(admin) { where(school: { school_groups: { default_issues_admin_user: admin } }) }
 
+  scope :main_meter_counts_by_school, lambda  {
+    where(pseudo: false, meter_type: Meter::MAIN_METER_TYPES, active: true).group(:school_id)
+  }
+
   # If adding a new meter_type, add to the amr_validated_reading case statement for downloading data
   enum :meter_type, { electricity: 0, gas: 1, solar_pv: 2, exported_solar_pv: 3 }
   # The Meter's meter sytem defaults to NHH AMR (Non Half-Hourly Automatic Meter Reading)
