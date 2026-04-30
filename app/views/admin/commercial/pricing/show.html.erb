@@ -2,61 +2,55 @@
   <% header_nav.with_header title: 'Price Calculator' %>
 <% end %>
 
-<% if @school %>
-  <p>
-   This page allows you to use the built-in price calculator to generate pricing for
-   <%= link_to @school.name, school_path(@school) %>.
-  </p>
-<% else %>
-  <p>
-   This page allows you to use the built-in price calculator to generate a price for an
-   individual school.
-  </p>
-<% end %>
+<p>
+  This page allows you to use the built-in price calculator to generate the total price for an
+  individual school. The calculator has options for creating an estimate based on one of our
+  <%= link_to 'products', admin_commercial_products_path %> or an
+  <%= link_to 'existing agreement', admin_commercial_contracts_path %> with a Funder, School Group or School.
+</p>
+
+<p>
+  <strong>Note</strong>: the calculator does not currently apply pro-rata calculations, e.g. based on a school
+  joining under an existing contract for a part-year. What is given is the total price for the contracted period.
+</p>
 
 <div class="row">
   <div class="col">
     <%= simple_form_for :pricing, url: admin_commercial_pricing_path, method: :get do |f| %>
 
-      <%= f.hidden_field :school_id, value: @school&.id %>
-
       <%= f.input :product_id,
-                  collection: Commercial::Product.all,
+                  collection: Commercial::Product.all.by_name,
                   label_method: :name,
                   value_method: :id,
+                  hint: 'Select the product to be used as the basis for the price calculation.
+                  If no product is selected, you must specify a contract instead',
                   include_blank: 'Select a product, or specify contract',
                   selected: @product&.id %>
-      <p class="small">
-        Select the product to be used as the basis for the price calculation.
-        If no product is selected, you must specify a contract instead
-      </p>
 
       <%= f.input :contract_id,
-                  collection: Commercial::Contract.all,
+                  collection: Commercial::Contract.all.by_name,
                   label_method: :name,
                   value_method: :id,
+                  hint: 'Select a contract to calculate a price based on an existing agreement.
+                  The price calculator will use any agreed school pricing defined in the contract and
+                  its related product as the basis for the calculation. So this overrides the Product field.',
                   include_blank: 'No contract',
                   selected: @contract&.id %>
-      <p class="small">
-        Select a contract to calculate a price based on an existing agreement.
-        The price calculator will use any agreed school pricing defined in the contract and its related product
-        as the basis for the calculation. So this overrides the Product field.
-      </p>
 
       <%= f.input :number_of_pupils,
                   as: :integer,
+                  hint: 'Specify the number of pupils in the school',
                   input_html: { min: 1, value: @number_of_pupils } %>
-      <p>Specify the number of pupils in the school</p>
 
       <%= f.input :number_of_meters,
                   as: :integer,
+                  hint: 'Specify the total number of gas and electricity meters in the school',
                   input_html: { min: 1, value: @number_of_meters } %>
-      <p>Specify the total number of gas and electricity meters in the school</p>
 
       <%= f.input :private_account,
                   as: :boolean,
+                  hint: 'Tick this if the school will have a private account',
                   input_html: { checked: @private_account } %>
-      <p>Tick this if the school will have a private account</p>
 
       <%= f.button :submit, 'Calculate' %>
     <% end %>
@@ -69,27 +63,25 @@
   <div class="col">
     <% if @contract %>
       <h3>Contracted Price breakdown</h3>
-      <p>Calculation based on pricing specified in
+      <p>Calculation based on pricing defined in
         <%= link_to @contract.name, admin_commercial_contract_path(@contract) %> for the
         <%= link_to @contract.product.name, admin_commercial_product_path(@contract.product) %> product</p>
+      <% if @contract.custom_contract_length? %>
+        <p>
+          <strong>Custom contract</strong>: this contract has a custom contract length of <%= @contract.licence_years %> years.
+        </p>
+      <% end %>
+      <% if @contract.pro_rata? %>
+        <p>
+          <strong>Pro-rata contract</strong>: this contract is specified as being pro-rata so schools will only
+          be charged based on the period for which they are data visible during the contract.
+        </p>
+      <% end %>
     <% else %>
       <h3>Price breakdown</h3>
-      <p>Calculation based on pricing specified in <%= link_to @product.name, admin_commercial_product_path(@product) %></p>
+      <p>Calculation based on the default pricing defined in
+        <%= link_to @product.name, admin_commercial_product_path(@product) %></p>
     <% end %>
-    <%= render 'price_table', id: 'pricing', price: @price %>
+    <%= render ::Commercial::PriceBreakdownComponent.new(id: 'pricing', price: @price) %>
   </div>
 </div>
-
-<% if @school_specific_price %>
-  <div class="row">
-    <div class="col">
-      <h3>Existing school pricing</h3>
-      <p>
-        Based on details from <%= link_to "Licence ##{@licence.id}", admin_commercial_licence_path(@licence) %>,
-        <%= link_to @school.name, school_path(@school) %> will have been changed the following prices based on
-        its current configuration. This price includes any individual discounted price for this school.
-      </p>
-      <%= render 'price_table', id: 'school-pricing', price: @school_specific_price %>
-    </div>
-  </div>
-<% end %>

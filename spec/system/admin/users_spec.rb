@@ -151,6 +151,16 @@ describe 'Administering users' do
         end
       end
 
+      context 'when selecting an Admin user', :js do
+        before do
+          select 'Admin', from: 'user_role'
+        end
+
+        it 'shows the operations option' do
+          expect(page).to have_unchecked_field('Member of ops team?', visible: :visible)
+        end
+      end
+
       context 'when completing the form' do
         subject(:user) { User.find_by(email:) }
 
@@ -162,6 +172,8 @@ describe 'Administering users' do
           select 'Admin', from: 'Role'
         end
 
+        # rubocop:disable RSpec/NestedGroups
+
         context 'with basic information' do
           before do
             click_on 'Create User'
@@ -172,6 +184,15 @@ describe 'Administering users' do
           it { expect(user.climate_action_lead).to be false }
         end
 
+        context 'with member of ops team' do
+          before do
+            check 'Member of ops team?'
+            click_on 'Create User'
+          end
+
+          it { expect(user.operations).to be(true) }
+        end
+
         context 'with a climate action lead' do
           before do
             check 'Climate action lead'
@@ -180,6 +201,8 @@ describe 'Administering users' do
 
           it { expect(user.climate_action_lead).to be true }
         end
+
+        # rubocop:enable RSpec/NestedGroups
       end
     end
 

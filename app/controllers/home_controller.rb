@@ -107,17 +107,25 @@ class HomeController < ApplicationController
     @blog = BlogService.new
   end
 
-  def redirect_if_logged_in
-    if user_signed_in?
-      if current_user.school
-        redirect_to redirect_with_school_path
-      elsif current_user.school_onboarding? && current_user.school_onboardings.any?
-        redirect_to onboarding_path(current_user.school_onboardings.last)
-      elsif current_user.school_group && can?(:show, current_user.school_group)
-        redirect_to school_group_path(current_user.school_group)
-      else
-        redirect_to schools_path
-      end
+  def redirect_if_logged_in # rubocop:disable Metrics/AbcSize
+    return unless user_signed_in?
+
+    if current_user.school
+      redirect_to redirect_with_school_path
+    elsif current_user.school_onboarding? && current_user.school_onboardings.any?
+      redirect_to onboarding_path(current_user.school_onboardings.last)
+    elsif current_user.school_group && can?(:show, current_user.school_group)
+      redirect_to school_group_path(current_user.school_group)
+    else
+      redirect_to redirect_with_admin
+    end
+  end
+
+  def redirect_with_admin
+    if current_user.operations
+      admin_dashboard_path(current_user)
+    else
+      schools_path
     end
   end
 
