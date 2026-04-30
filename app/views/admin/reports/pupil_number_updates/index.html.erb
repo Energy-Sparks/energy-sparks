@@ -1,4 +1,17 @@
-<%= render 'admin/reports/title', title: 'Pupil Number Updates' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+      <%= 'Pupil number updates' %>
+    <% end %>
+
+    <%= render Elements::ButtonComponent.new('View pupil number updates',
+                                             admin_reports_pupil_number_updates_path,
+                                             style: :secondary,
+                                             classes: 'mb-2 me-2') %>
+
+<% else %>
+  <%= render 'admin/reports/title', title: 'Pupil Number Updates' %>
+<% end %>
+
 <p>
   The table below lists active schools that have not been automatically updated from DfE data.
 </p>
