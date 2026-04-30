@@ -28,7 +28,8 @@ RSpec.describe 'Admin dashboard' do
   end
 
   describe 'Authorized access' do
-    let!(:user) { create(:admin, name: 'admin user') }
+    let!(:user) { create(:admin, name: 'admin user', operations: true) }
+    let!(:other_admin) { create(:admin, name: 'other admin', operations: false) }
 
     before do
       visit admin_dashboards_url
@@ -37,8 +38,12 @@ RSpec.describe 'Admin dashboard' do
     describe 'index page' do
       let(:staff_user) { create(:staff) }
 
-      it 'displays a list of links to admin users' do
+      it 'displays a list of links to operations users' do
         expect(page).to have_link(user.name, href: admin_dashboard_path(user))
+      end
+
+      it 'does not display non-operations admins' do
+        expect(page).to have_no_content(other_admin.name)
       end
 
       it 'does not display non-admin users' do
