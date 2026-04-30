@@ -27,7 +27,6 @@ describe 'admin user meter report' do
     before { click_on 'CSV' }
 
     it 'has the correct CSV' do
-      # debugger
       expect(CSV.parse(page.body)).to eq(
         [['School Group', 'Admin', 'School', 'Meter', 'Meter Name', 'Meter Type', 'Meter System', 'Data Source',
           'Procurement Route', 'Meter Status', 'Manual Reads', 'Last Validated Date', 'Issues', 'Notes'],
