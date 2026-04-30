@@ -8,6 +8,7 @@ describe 'admin user meter report' do
   let!(:before) do
     sign_in school.school_group.default_issues_admin_user
     visit admin_reports_admin_user_meter_report_index_path
+    click_on 'Filter'
   end
 
   it_behaves_like 'it contains the expected data table', aligned: false do
