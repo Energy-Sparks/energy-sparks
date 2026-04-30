@@ -10,10 +10,8 @@ namespace :school_groups do
       [[ImpactReport::Metric::OVERVIEW_METRICS, :overview],
        [ImpactReport::Metric::ENGAGEMENT_METRICS, :engagement]].each do |metrics, metric_category|
         metrics.each do |metric_type|
-          value = report.public_send(metric_category).public_send(metric_type)
-          ImpactReport::Metric.create!(impact_report_run:, enough_data: true, metric_category:, metric_type:, value:)
-          run.metrics.create!(enough_data: true, number_of_schools: report.overview.visible_schools,
-                              metric_category: :overview, metric_type:, value:)
+          run.metrics.create!(enough_data: true, number_of_schools: report.overview.visible_schools, metric_category:,
+                              metric_type:, value: report.public_send(metric_category).public_send(metric_type))
         end
       end
     end

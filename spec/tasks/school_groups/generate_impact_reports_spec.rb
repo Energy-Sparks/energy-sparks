@@ -5,10 +5,12 @@ require 'rails_helper'
 RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpec/DescribeClass
   include_context 'with a task'
 
+  let(:school) { create(:school, :with_school_group, number_of_pupils: 1) }
+  let(:school_group) { school.school_group }
+
   before do
-    school = create(:school, :with_school_group, number_of_pupils: 1)
-    create(:school_onboarding, :with_completed, school_group: school.school_group)
-    create(:school_onboarding, school_group: school.school_group)
+    create(:school_onboarding, :with_completed, school_group:)
+    create(:school_onboarding, school_group:)
     create(:user, school:, last_sign_in_at: Time.current)
     create(:activity, school:)
     create(:observation, :intervention, school:)
@@ -39,4 +41,6 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
          engagement: { actions: [1, 1], activities: [1, 1], points: [65, 1], targets: [1, 1] } }]
     )
   end
+
+  it { expect(ImpactReport::Run.first).to have_attributes(school_group:, run_date: Date.current) }
 end
