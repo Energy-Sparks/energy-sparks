@@ -14,14 +14,14 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
   end
 
   it 'creates the correct run and metric objects' do
-    expect(ImpactReport::Run.all.map { |run| run.metrics.pluck(:metric_type, :value) }).to eq(
-      [[['visible_schools', 1],
-        ['data_visible_schools', 1],
-        ['users', 1],
-        ['active_users', 1],
-        ['pupils', 1],
-        ['enrolled_schools', 1],
-        ['enrolling_schools', 1]]]
+    expect(ImpactReport::Run.all.map { |run| run.metrics.pluck(:metric_type, :value, :number_of_schools) }).to eq(
+      [[['visible_schools', 1, 1],
+        ['data_visible_schools', 1, 1],
+        ['users', 1, 1],
+        ['active_users', 1, 1],
+        ['pupils', 1, 1],
+        ['enrolled_schools', 1, 1],
+        ['enrolling_schools', 1, 1]]]
     )
   end
 end
