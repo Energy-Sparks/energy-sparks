@@ -5,14 +5,15 @@ namespace :school_groups do
     SchoolGroup.find_each do |school_group|
       next if school_group.assigned_schools.active.empty?
 
-      impact_report_run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
       report = SchoolGroups::ImpactReport.new(school_group)
+      run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
       [[ImpactReport::Metric::OVERVIEW_METRICS, :overview],
        [ImpactReport::Metric::ENGAGEMENT_METRICS, :engagement]].each do |metrics, metric_category|
         metrics.each do |metric_type|
           value = report.public_send(metric_category).public_send(metric_type)
-          value = value.count if value.respond_to?(:count)
           ImpactReport::Metric.create!(impact_report_run:, enough_data: true, metric_category:, metric_type:, value:)
+          run.metrics.create!(enough_data: true, number_of_schools: report.overview.visible_schools,
+                              metric_category: :overview, metric_type:, value:)
         end
       end
     end

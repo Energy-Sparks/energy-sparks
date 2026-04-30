@@ -16,18 +16,27 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     task.invoke
   end
 
-  it 'creates the correct run and metric objects' do
-    expect(ImpactReport::Run.all.map do |run|
-      run.metrics.pluck(:metric_category, :metric_type,
-                        :value).group_by(&:first).transform_values do |rows|
-        rows.to_h do |_, field, value|
-          [field, value]
+  def metrics_to_h
+    ImpactReport::Run.all.map do |run|
+      run.metrics.pluck(:metric_category, :metric_type, :value, :number_of_schools).group_by(&:first)
+         .transform_values do |rows|
+        rows.to_h do |_, metric_type, value, number_of_schools|
+          [metric_type, [value, number_of_schools]]
         end
       end.deep_symbolize_keys
-    end).to eq(
-      [{ overview: { active_users: 1, data_visible_schools: 1, enrolled_schools: 1, enrolling_schools: 1, pupils: 1,
-                     users: 1, visible_schools: 1 },
-         engagement: { actions: 1, activities: 1, points: 65, targets: 1 } }]
+    end
+  end
+
+  it 'creates the correct run and metric objects' do
+    expect(metrics_to_h).to eq(
+      [{ overview: { active_users: [1, 1],
+                     data_visible_schools: [1, 1],
+                     enrolled_schools: [1, 1],
+                     enrolling_schools: [1, 1],
+                     pupils: [1, 1],
+                     users: [1, 1],
+                     visible_schools: [1, 1] },
+         engagement: { actions: [1, 1], activities: [1, 1], points: [65, 1], targets: [1, 1] } }]
     )
   end
 end
