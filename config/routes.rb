@@ -582,6 +582,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboards, only: %i[show index] do
       resources :school_groups, module: :dashboard
+      resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
