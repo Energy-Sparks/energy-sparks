@@ -4,6 +4,15 @@ require 'rails_helper'
 
 RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpec/DescribeClass
   include_context 'with a task'
+  include_context 'with alert type ratings' do
+    let(:alert_type) { create(:alert_type, class_name: AlertGasAnnualVersusBenchmark) }
+    let(:schools) { [school] }
+    before do
+      create(:alert, :with_run, alert_type:, school:, template_data: { average_one_year_saving_£: '£1,000',
+                                                                       one_year_saving_co2: '1,100 kg CO2',
+                                                                       one_year_saving_kwh: '1,111 kWh' })
+    end
+  end
 
   let(:school) { create(:school, :with_school_group, number_of_pupils: 1) }
   let(:school_group) { school.school_group }
@@ -38,7 +47,8 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
                      pupils: [1, 1],
                      users: [1, 1],
                      visible_schools: [1, 1] },
-         engagement: { actions: [1, 1], activities: [1, 1], points: [65, 1], targets: [1, 1] } }]
+         engagement: { actions: [1, 1], activities: [1, 1], points: [65, 1], targets: [1, 1] },
+         potential_savings: { gas_use_co2: [1100, 1], gas_use_gbp: [1000, 1], gas_use_kwh: [1111, 1] } }]
     )
   end
 

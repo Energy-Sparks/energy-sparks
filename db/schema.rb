@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_105634) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_01_135818) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_105634) do
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
-  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings"]
+  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "electricity_out_of_hours_gbp", "electricity_out_of_hours_co2", "electricity_out_of_hours_kwh", "electricity_peak_gbp", "electricity_peak_co2", "electricity_peak_kwh", "electricity_use_gbp", "electricity_use_co2", "electricity_use_kwh", "electricity_baseload_gbp", "electricity_baseload_co2", "electricity_baseload_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "gas_out_of_hours_gbp", "gas_out_of_hours_co2", "gas_out_of_hours_kwh", "gas_use_gbp", "gas_use_co2", "gas_use_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "storage_heaters_off_gbp", "storage_heaters_off_co2", "storage_heaters_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]

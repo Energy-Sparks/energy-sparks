@@ -58,6 +58,10 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
+      def number_of_schools(*)
+        @impact_report.visible_schools_count
+      end
+
       delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago,
                :three_months_ago, to: :impact_report
     end
@@ -228,28 +232,6 @@ module SchoolGroups
           .joins(:school)
           .merge(visible_schools)
           .count
-      end
-    end
-
-    class PotentialSavings < Base
-      def electricity_savings
-        12_000
-      end
-
-      def solar_panels
-        32_000
-      end
-
-      def solar_panels_schools
-        7
-      end
-
-      def gas_savings
-        11_000
-      end
-
-      def gas_savings_schools
-        12
       end
     end
   end
