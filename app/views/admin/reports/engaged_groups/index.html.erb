@@ -37,6 +37,7 @@
       <th>Active Schools</th>
       <th>Engaged Schools</th>
       <th>Percentage of Engaged Schools</th>
+      <th>Reports</th>
     </tr>
   </thead>
   <tbody>
@@ -52,6 +53,17 @@
         <% percentage = school_group.engaged_count.to_f / school_group.active_count %>
         <td data-order="<%= percentage %>">
             <%= FormatUnit.format(:percent, percentage) unless school_group.active_count.zero? %>
+        </td>
+        <td>
+          <%= form_with url: admin_reports_engaged_groups_path, class: 'form-inline' do %>
+            <%= hidden_field_tag :school_group_id, school_group.id %>
+            <div class="action mb-2">
+              <%= submit_tag 'Email Engagement Report', class: 'btn btn-secondary btn-sm' %>
+            </div>
+            <div class="action mb-2">
+              <%= submit_tag 'Email Previous Year Report', class: 'btn btn-secondary btn-sm', name: 'previous' %>
+            </div>
+          <% end %>
         </td>
       </tr>
     <% end %>

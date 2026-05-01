@@ -847,7 +847,7 @@ Rails.application.routes.draw do
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
-      resources :engaged_groups, only: [:index]
+      match 'engaged_groups', to: 'engaged_groups#index', via: %i[get post]
       match 'engaged_schools', to: 'engaged_schools#index', via: %i[get post]
 
       resource :funder_allocations, only: [:show] do
