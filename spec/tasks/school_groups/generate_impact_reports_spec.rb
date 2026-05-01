@@ -42,5 +42,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     )
   end
 
-  it { expect(ImpactReport::Run.first).to have_attributes(school_group:, run_date: Date.current) }
+  it 'has the group and date' do
+    expect(ImpactReport::Run.first).to have_attributes(school_group:, run_date: Date.current)
+  end
 end
