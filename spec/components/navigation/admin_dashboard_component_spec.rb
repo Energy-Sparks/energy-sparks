@@ -35,13 +35,15 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
       end
 
       describe 'my_schools section' do
-        it 'has the correct links' do
+        it 'has the correct links' do #  rubocop:disable RSpec/MultipleExpectations
           expect(page).to have_link('Onboarding',
                                     href: admin_dashboard_school_onboardings_path(current_user))
           expect(page).to have_link('Awaiting activation',
                                     href: admin_dashboard_activations_path(current_user))
           expect(page).to have_link('Recently onboarded',
                                     href: completed_admin_dashboard_school_onboardings_path(current_user))
+          expect(page).to have_link('Engaged schools',
+                                    href: admin_dashboard_engaged_groups_path(current_user))
           expect(page).to have_link('Recent activities',
                                     href: admin_dashboard_activities_path(current_user))
           expect(page).to have_link('Recent actions',
