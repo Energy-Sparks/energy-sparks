@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <th>Visible</th>
-      <th>School Group</th>
+      <th>Report for group</th>
       <th>Admin</th>
       <th class='border-start'>Visible</th>
       <th>Feature?</th>
@@ -61,7 +61,8 @@
             <br><div class="badge text-bg-light">Expired</div>
           <% end %>
         </td>
-        <td class='text-center'><%= link_to 'Edit', edit_admin_impact_report_path(school_group),
+        <td class='text-center'><%= link_to 'Edit', edit_admin_impact_report_path(school_group,
+                                                                                  redirect_back: request.fullpath),
                                             class: 'btn btn-secondary' %>
       </tr>
     <% end %>

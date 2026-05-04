@@ -1,5 +1,6 @@
 <div class='p-2'>
   <%= simple_form_for(config, url: admin_impact_report_path(config.school_group), method: :patch) do |f| %>
+    <%= redirect_back_tag params %>
     <%= render Layout::GridComponent.new(cols: 1, cell_classes: 'mb-2 bg-light rounded-2 px-3') do |grid| %>
       <%= grid.with_cell do |row| %>
         <h2>General</h2>
