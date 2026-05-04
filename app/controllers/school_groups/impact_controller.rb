@@ -9,7 +9,7 @@ module SchoolGroups
     load_resource :configuration, class: 'ImpactReport::Configuration', through: :school_group
     before_action :redirect_unless_feature_enabled
     before_action :redirect_unless_authorised
-    before_action :redirect_unless_active
+    before_action :redirect_unless_visible
     before_action :fetch_impact_report
     before_action :redirect_not_enough_data
     before_action :enable_prototype_page
@@ -33,7 +33,7 @@ module SchoolGroups
     def redirect_unless_feature_enabled
       return if Flipper.enabled?(:impact_reporting, current_user)
 
-      redirect_to(school_group_path(@school_group), alert: 'Feature not enabled')
+      redirect_to(school_group_path(@school_group), alert: I18n.t('common.feature_not_available'))
     end
 
     def redirect_not_enough_data
@@ -43,8 +43,11 @@ module SchoolGroups
                   alert: I18n.t('advice_pages.index.show.not_available'))
     end
 
-    def redirect_unless_active
-      redirect_to map_school_group_path(@school_group) and return unless @configuration&.active? || current_user.admin?
+    def redirect_unless_visible
+      return if @configuration&.visible? || current_user&.admin?
+
+      redirect_to map_school_group_path(@school_group),
+                  alert: I18n.t('common.feature_not_available') and return
     end
   end
 end

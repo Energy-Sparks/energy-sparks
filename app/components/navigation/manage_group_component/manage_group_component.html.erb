@@ -64,8 +64,10 @@
                    href: edit_admin_school_group_path(school_group), classes:) %>
     <% s.with_item(name: t('school_groups.sub_nav.group_admin'),
                    href: admin_school_group_path(school_group), classes:) %>
-    <% s.with_item(name: 'Impact report',
-                   href: edit_admin_impact_report_path(school_group), classes:) %>
+    <% if school_group.organisation? %>
+      <% s.with_item(name: 'Impact report',
+                     href: edit_admin_impact_report_path(school_group), classes:) %>
+    <% end %>
     <% s.with_item(name: 'Issues',
                    href: admin_school_group_issues_path(school_group), classes:) %>
     <% s.with_item(name: 'Licence Summaries',

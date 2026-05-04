@@ -1224,7 +1224,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_130730) do
   end
 
   create_table "impact_report_configurations", force: :cascade do |t|
-    t.boolean "active", default: false, null: false
     t.datetime "created_at", null: false
     t.text "energy_efficiency_note"
     t.date "energy_efficiency_school_expiry_date"
@@ -1236,6 +1235,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_130730) do
     t.boolean "show_energy_efficiency", default: true, null: false
     t.boolean "show_engagement", default: true, null: false
     t.datetime "updated_at", null: false
+    t.boolean "visible", default: false, null: false
     t.index ["energy_efficiency_school_id"], name: "idx_on_energy_efficiency_school_id_a86b38c262"
     t.index ["engagement_school_id"], name: "index_impact_report_configurations_on_engagement_school_id"
     t.index ["school_group_id"], name: "index_impact_report_configurations_on_school_group_id"

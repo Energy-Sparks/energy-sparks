@@ -3,17 +3,16 @@
 module ImpactReports
   module Engagement
     class FeaturedSchoolComponent < ImpactReports::BaseComponent
+      def override?
+        @config&.feature_visible_for?(:engagement)
+      end
+
       def school
         override? ? @config.engagement_school : default_school
       end
 
       def default_school
         @default_school ||= @school_group.scored_schools.first
-      end
-
-      def override?
-        @config&.engagement_school &&
-          (@config.engagement_school_expiry_date.blank? || @config.engagement_school_expiry_date > Time.zone.today)
       end
 
       def description

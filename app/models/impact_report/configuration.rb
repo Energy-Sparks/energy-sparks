@@ -5,13 +5,13 @@
 # Table name: impact_report_configurations
 #
 #  id                                   :bigint(8)        not null, primary key
-#  active                               :boolean          default(FALSE), not null
 #  energy_efficiency_note               :text
 #  energy_efficiency_school_expiry_date :date
 #  engagement_note                      :text
 #  engagement_school_expiry_date        :date
 #  show_energy_efficiency               :boolean          default(TRUE), not null
 #  show_engagement                      :boolean          default(TRUE), not null
+#  visible                              :boolean          default(FALSE), not null
 #  created_at                           :datetime         not null
 #  updated_at                           :datetime         not null
 #  energy_efficiency_school_id          :bigint(8)
@@ -40,8 +40,8 @@ module ImpactReport
 
     belongs_to :school_group
 
-    belongs_to :engagement_school, class_name: 'School'
-    belongs_to :energy_efficiency_school, class_name: 'School'
+    belongs_to :engagement_school, class_name: 'School', optional: true
+    belongs_to :energy_efficiency_school, class_name: 'School', optional: true
 
     has_one_attached :engagement_image
     has_one_attached :energy_efficiency_image
@@ -63,6 +63,33 @@ module ImpactReport
 
     def remove_energy_efficiency_image
       energy_efficiency_image.purge if energy_efficiency_image.attached?
+    end
+
+    def feature_visible_for?(prefix)
+      feature_visible?(
+        public_send("#{prefix}_school"),
+        public_send("#{prefix}_school_expiry_date")
+      )
+    end
+
+    def feature_expired_for?(prefix)
+      feature_expired?(
+        public_send("#{prefix}_school"),
+        public_send("#{prefix}_school_expiry_date")
+      )
+    end
+
+    private
+
+    def feature_visible?(feature, expiry_date)
+      feature &&
+        (expiry_date.blank? || expiry_date > Time.zone.today)
+    end
+
+    def feature_expired?(feature, expiry_date)
+      feature &&
+        expiry_date.present? &&
+        expiry_date <= Time.zone.today
     end
   end
 end

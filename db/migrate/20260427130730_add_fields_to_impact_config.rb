@@ -3,7 +3,7 @@
 class AddFieldsToImpactConfig < ActiveRecord::Migration[8.1]
   def change
     change_table :impact_report_configurations, bulk: true do |t|
-      t.boolean :active, default: false, null: false
+      t.boolean :visible, default: false, null: false
       t.boolean :show_energy_efficiency, default: true, null: false
 
       t.references :energy_efficiency_school,

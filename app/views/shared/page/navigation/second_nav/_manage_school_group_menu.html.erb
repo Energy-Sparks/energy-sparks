@@ -48,6 +48,11 @@
                   edit_admin_school_group_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.group_admin'),
                   admin_school_group_path(school_group), class: 'dropdown-item' %>
+
+      <% if school_group.organisation? %>
+        <%= link_to 'Impact report', edit_admin_impact_report_path(school_group), class: 'dropdown-item' %>
+      <% end %>
+
       <%= link_to 'Issues',
                   admin_school_group_issues_path(school_group), class: 'dropdown-item' %>
       <%= link_to t('school_groups.sub_nav.manage_users'),

@@ -4,9 +4,7 @@ module ImpactReports
   module EnergyEfficiency
     class FeaturedSchoolComponent < ImpactReports::BaseComponent
       def display?
-        @config&.energy_efficiency_school &&
-          (@config.energy_efficiency_school_expiry_date.blank? ||
-          @config.energy_efficiency_school_expiry_date > Time.zone.today)
+        @config&.feature_visible_for?(:energy_efficiency)
       end
 
       def school
