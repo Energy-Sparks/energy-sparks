@@ -59,7 +59,7 @@
       <%= section_header.with_description { impact_t('energy_efficiency.description') } %>
     <% end %>
     <%= render ImpactReports::EnergyEfficiency::StatsComponent.new(impact_report: @impact_report) %>
-    <%= render ImpactReports::EnergyEfficiency::FeaturedSchoolComponent.new(impact_report: @impact_report) %>
+    <%= render ImpactReports::EnergyEfficiency::FeaturedSchoolComponent.new(school_group: @school_group) %>
     <%= render Layout::Cards::SectionHeaderComponent.new(
           id: 'energy-efficiency-buttons',
           classes: 'pb-2 text-center'
@@ -84,7 +84,7 @@
       <%= section_header.with_description { impact_t('engagement.description') } %>
     <% end %>
     <%= render ImpactReports::Engagement::StatsComponent.new(impact_report: @impact_report) %>
-    <%= render ImpactReports::Engagement::FeaturedSchoolComponent.new(impact_report: @impact_report) %>
+    <%= render ImpactReports::Engagement::FeaturedSchoolComponent.new(school_group: @school_group) %>
     <%= render Layout::Cards::SectionHeaderComponent.new(id: 'engagement-buttons') do |section_header| %>
       <%= section_header.with_header level: 4, title: impact_t('engagement.looking_for_more_detail') %>
       <%= section_header.with_button(t('common.view_timeline'),
