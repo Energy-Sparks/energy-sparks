@@ -22,10 +22,93 @@
   <% end %>
 <% end %>
 
-<%= render 'overview', impact_report: @impact_report %>
-<%= render 'energy_efficiency', impact_report: @impact_report %>
-<%= render 'engagement', impact_report: @impact_report %>
-<%= render 'potential_savings', impact_report: @impact_report %>
+<div id='overview'>
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'overview-header'
+      ) do |section_header| %>
+    <%= section_header.with_header title: impact_t('overview.title') %>
+    <%= section_header.with_description { impact_t('overview.description') } %>
+  <% end %>
+
+  <%= render ImpactReports::Overview::StatsComponent.new(impact_report: @impact_report) %>
+  <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
+                                           show_markers: false,
+                                           theme: :accent,
+                                           classes: 'rounded-3 p-4 mb-4',
+                                           show_arrows: :side) do |carousel| %>
+    <% CaseStudy.for_school_group(@school_group).published.order(:position).each do |case_study| %>
+      <%= if case_study.testimonials.active.none?
+            carousel.with_case_study_card(case_study: case_study, landscape: false)
+          end %>
+      <% case_study.testimonials.active.each do |testimonial| %>
+        <%= carousel.with_testimonial_card(testimonial: testimonial) %>
+      <% end %>
+    <% end %>
+    <%= carousel.with_placeholder(
+          'Please edit case studies and assign a school group or ' \
+          'school to each one, then relevant ones will display here. Add more testimonials too if possible please.',
+          label: 'Admin todo'
+        ) %>
+  <% end %>
+</div>
+
+<% if @configurations&.show_energy_efficiency != false %>
+<div id='energy-efficiency'>
+    <%= render Layout::Cards::SectionHeaderComponent.new(id: 'energy-efficiency-header') do |section_header| %>
+      <%= section_header.with_header title: impact_t('energy_efficiency.title') %>
+      <%= section_header.with_description { impact_t('energy_efficiency.description') } %>
+    <% end %>
+    <%= render ImpactReports::EnergyEfficiency::StatsComponent.new(impact_report: @impact_report) %>
+    <%= render ImpactReports::EnergyEfficiency::FeaturedSchoolComponent.new(impact_report: @impact_report) %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(
+          id: 'energy-efficiency-buttons',
+          classes: 'pb-2 text-center'
+        ) do |section_header| %>
+      <%= section_header.with_header level: 4, title: impact_t('energy_efficiency.analysis') %>
+      <%= section_header.with_button(
+            t('common.view_dashboard'),
+            school_group_path(@impact_report.school_group), style: :primary, classes: 'mb-2 me-2'
+          ) %>
+      <%= section_header.with_button(
+            t('common.view_analysis'),
+            school_group_advice_path(@impact_report.school_group), style: :secondary, classes: 'mb-2'
+          ) %>
+    <% end %>
+  <% end %>
+
+  <% if @configuration&.show_engagement != false %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(id: 'engagement-header') do |section_header| %>
+      <%= section_header.with_header title: impact_t('engagement.title') %>
+      <%= section_header.with_description { impact_t('engagement.description') } %>
+    <% end %>
+    <%= render ImpactReports::Engagement::StatsComponent.new(impact_report: @impact_report) %>
+    <%= render ImpactReports::Engagement::FeaturedSchoolComponent.new(impact_report: @impact_report) %>
+    <%= render Layout::Cards::SectionHeaderComponent.new(id: 'engagement-buttons') do |section_header| %>
+      <%= section_header.with_header level: 4, title: impact_t('engagement.looking_for_more_detail') %>
+      <%= section_header.with_button(t('common.view_timeline'),
+                                     school_group_timeline_path(@school_group), style: :primary, classes: 'mb-2 me-2') %>
+      <%= section_header.with_button(t('common.view_scoreboard'), scores_school_group_advice_path(@school_group),
+                                     style: :secondary, classes: 'mb-2') %>
+    <% end %>
+  <% end %>
+</div>
+
+<div id='potential-savings'>
+  <%= render Layout::Cards::SectionHeaderComponent.new(
+        id: 'potential-savings-header'
+      ) do |section_header| %>
+    <%= section_header.with_header title: impact_t('potential_savings.title') %>
+    <%= section_header.with_description { impact_t('potential_savings.description') } %>
+  <% end %>
+  <%= render ImpactReports::PotentialSavings::StatsComponent.new(impact_report: @impact_report) %>
+  <%= render Elements::ButtonComponent.new(
+        t('common.view_all_potential_savings'),
+        priorities_school_group_advice_path(@impact_report.school_group),
+        style: :primary,
+        id: 'potential-savings-button',
+        classes: 'mb-2 d-table mx-auto'
+      ) %>
+</div>
 
 <% content_for :footer do %>
   <%= render 'notes', impact_report: @impact_report %>

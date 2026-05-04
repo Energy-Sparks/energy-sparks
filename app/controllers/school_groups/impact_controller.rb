@@ -6,8 +6,10 @@ module SchoolGroups
     include SchoolGroupBreadcrumbs
 
     load_resource :school_group
+    load_resource :configuration, class: 'ImpactReport::Configuration', through: :school_group
     before_action :redirect_unless_feature_enabled
     before_action :redirect_unless_authorised
+    before_action :redirect_unless_active
     before_action :fetch_impact_report
     before_action :redirect_not_enough_data
     before_action :enable_prototype_page
@@ -21,6 +23,7 @@ module SchoolGroups
     def fetch_impact_report
       # Eventually this will be replaced with an active record object or similar
       @impact_report = SchoolGroups::ImpactReport.new(@school_group)
+      @configuration = @school_group.impact_report_configuration
     end
 
     def breadcrumbs
@@ -38,6 +41,10 @@ module SchoolGroups
 
       redirect_to(school_group_path(@school_group),
                   alert: I18n.t('advice_pages.index.show.not_available'))
+    end
+
+    def redirect_unless_active
+      redirect_to map_school_group_path(@school_group) and return unless @configuration&.active? || current_user.admin?
     end
   end
 end

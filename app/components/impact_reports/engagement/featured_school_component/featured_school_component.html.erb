@@ -1,0 +1,30 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(
+        id: 'engagement-featured',
+        cols: 2,
+        theme: :accent,
+        classes: 'rounded-3 p-4 my-4',
+        cell_classes: 'my-auto'
+      ) do |grid| %>
+    <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
+      <%= feature.with_header(title: impact_t('engagement.featured.title',
+                                              school: school.name)) %>
+      <%= feature.with_description do
+            description
+          end %>
+      <%= feature.with_button(t('common.view_dashboard'),
+                              school_path(school), style: :secondary) %>
+    <% end %>
+    <% if override? %>
+       <%= grid.with_image(src: image) %>
+    <% else %>
+      <%= grid.with_block(classes: 'bg-white p-4 rounded-3') do %>
+        <%= render(Scoreboards::PodiumComponent.new(
+                     podium: podium,
+                     path_to_scoreboard: scores_school_group_advice_path(@school_group),
+                     i18n_scope: 'components.scoreboards.group_summary.podium'
+                   )) %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

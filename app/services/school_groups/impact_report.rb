@@ -145,14 +145,6 @@ module SchoolGroups
       def reduced_electricity_emissions_schools
         3
       end
-
-      def featured_school
-        @featured_school ||= visible_schools.sample
-      end
-
-      def featured_school_percentage_reduction
-        30
-      end
     end
 
     class Engagement < Base
@@ -179,25 +171,6 @@ module SchoolGroups
           .joins(:school)
           .merge(visible_schools)
           .sum(:points)
-      end
-
-      def featured_school
-        school_group.scored_schools.first
-      end
-
-      def featured_school_activities
-        featured_school
-          .activities
-          .between(twelve_months_ago, generated_at)
-          .count
-      end
-
-      def featured_school_actions
-        featured_school
-          .observations
-          .intervention
-          .between(twelve_months_ago, generated_at)
-          .count
       end
 
       def programmes

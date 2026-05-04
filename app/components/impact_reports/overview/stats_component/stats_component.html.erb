@@ -1,0 +1,55 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(id: 'overview-cards',
+                                       cols: 4, classes: 'mb-4',
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.schools.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.visible_schools_count) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.schools.subtext',
+                     count: @impact_report.data_visible_schools_count)
+          end %>
+    <% end %>
+
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.users.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.overview.users_count) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.users.subtext',
+                     count: @impact_report.overview.users_logged_in_recently)
+          end %>
+    <% end %>
+
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.pupils.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.overview.pupils) %>
+      <%= card.with_subtext { impact_t('overview.cards.pupils.subtext') } %>
+    <% end %>
+
+    <% grid.with_stats_card(if: false) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.funded_places.title') %>
+      <%= card.with_figure format_unit(@impact_report.overview.funded_places_value, :£) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.funded_places.subtext', count: @impact_report.overview.funded_places)
+          end %>
+      <%= card.with_placeholder %>
+    <% end %>
+
+    <% grid.with_stats_card(if: show_enrolling?) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.enrolling_schools.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.overview.enrolling_schools) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.enrolling_schools.subtext')
+          end %>
+    <% end %>
+
+    <% grid.with_stats_card(if: !show_enrolling?) do |card| %>
+      <%= card.with_header title: impact_t('overview.cards.enrolled_schools.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.overview.enrolled_schools) %>
+      <%= card.with_subtext do
+            impact_t('overview.cards.enrolled_schools.subtext')
+          end %>
+    <% end %>
+  <% end %>
+<% end %>

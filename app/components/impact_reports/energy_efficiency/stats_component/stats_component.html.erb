@@ -1,0 +1,58 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(
+        id: 'energy-efficiency-cards',
+        cols: 2,
+        classes: 'mb-4',
+        cell_classes: 'mb-4',
+        component_classes: 'theme theme-dark'
+      ) do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('energy_efficiency.cards.total_gas_savings.title') %>
+      <%= card.with_figure format_unit(@impact_report.energy_efficiency.total_gas_savings, :£) %>
+      <%= card.with_subtext do
+            impact_t('energy_efficiency.cards.total_gas_savings.subtext',
+                     count: @impact_report.energy_efficiency.total_gas_savings_schools)
+          end %>
+      <%= card.with_placeholder %>
+    <% end %>
+
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('energy_efficiency.cards.total_electricity_savings.title') %>
+      <%= card.with_figure format_unit(@impact_report.energy_efficiency.total_electricity_savings, :£) %>
+      <%= card.with_subtext do
+            impact_t('energy_efficiency.cards.total_electricity_savings.subtext',
+                     count: @impact_report.energy_efficiency.total_electricity_savings_schools)
+          end %>
+      <%= card.with_placeholder %>
+    <% end %>
+
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('energy_efficiency.cards.reduced_gas_emissions.title') %>
+      <%= card.with_figure(
+            format_unit(@impact_report.energy_efficiency.reduced_gas_emissions, :co2, false)
+          ) %>
+      <%= card.with_subtext do
+            impact_t('energy_efficiency.cards.reduced_gas_emissions.subtext',
+                     count: @impact_report.energy_efficiency.reduced_electricity_emissions_schools)
+          end %>
+      <%= card.with_placeholder %>
+    <% end %>
+
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('energy_efficiency.cards.reduced_electricity_emissions.title') %>
+      <%= card.with_figure(
+            format_unit(
+              @impact_report.energy_efficiency.reduced_electricity_emissions,
+              :co2, false
+            )
+          ) %>
+      <%= card.with_subtext do
+            impact_t(
+              'energy_efficiency.cards.reduced_electricity_emissions.subtext',
+              count: @impact_report.energy_efficiency.reduced_electricity_emissions_schools
+            )
+          end %>
+      <%= card.with_placeholder %>
+    <% end %>
+  <% end %>
+<% end %>

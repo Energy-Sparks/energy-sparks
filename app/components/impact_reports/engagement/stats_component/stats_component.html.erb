@@ -1,0 +1,33 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(id: 'engagement-cards',
+                                       cols: 4, classes: 'mb-4',
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.activities.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.engagement.activities) %>
+      <%= card.with_subtext do
+            impact_t('engagement.cards.activities.subtext',
+                     count: @impact_report.data_visible_schools_count)
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.actions.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.engagement.actions) %>
+      <%= card.with_subtext do
+            impact_t('engagement.cards.actions.subtext',
+                     count: @impact_report.overview.users_logged_in_recently)
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.points.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.engagement.points) %>
+      <%= card.with_subtext { impact_t('engagement.cards.points.subtext') } %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.targets.title') %>
+      <%= card.with_figure number_with_delimiter(@impact_report.engagement.targets) %>
+      <%= card.with_subtext { impact_t('engagement.cards.targets.subtext') } %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -1,0 +1,130 @@
+<div class='p-2'>
+  <%= simple_form_for(config, url: admin_impact_report_path(config.school_group), method: :patch) do |f| %>
+    <%= render Layout::GridComponent.new(cols: 1, cell_classes: 'mb-2 bg-light rounded-2 px-3') do |grid| %>
+      <%= grid.with_cell do |row| %>
+        <h2>General</h2>
+        <%= f.input :active,
+                    wrapper: :custom_boolean_switch,
+                    label: 'Display report',
+                    hint: 'Switching this on will make the impact report visible to all permitted end users' %>
+      <% end %>
+      <%= grid.with_cell do |row| %>
+        <h3>Energy efficiency section</h3>
+        <%= f.input :show_energy_efficiency,
+                    wrapper: :custom_boolean_switch,
+                    label: 'Display section', hint: 'Show or hide the whole energy efficiency section' %>
+
+        <h4>Featured school</h4>
+        <p>Select a featured school to highlight in this section, along with a note and image. When a school is not selected, this section will not be displayed.</p>
+        <% ee_feature = ImpactReports::EnergyEfficiency::FeaturedSchoolComponent.new(school_group: @school_group) %>
+
+        <% if ee_feature.display? %>
+          <%= render TogglerDropdownComponent.new(title: 'Preview', classes: 'mb-2', bg: 'white') do %>
+            <%= render ee_feature %>
+          <% end %>
+        <% else %>
+          <div class="bg-white p-2 mb-2">
+            No featured school currently selected for this section, or the featured school has expired.
+          </div>
+        <% end %>
+
+        <%= render Layout::GridComponent.new(cols: 2) do |grid| %>
+          <%= grid.with_cell do %>
+            <%= f.input :energy_efficiency_school_id,
+                        label: 'Featured school',
+                        collection: config.school_group.assigned_schools.active.order(:name).pluck(:name, :id),
+                        include_blank: 'None set' %>
+          <% end %>
+          <%= grid.with_cell do %>
+             <%= f.input :energy_efficiency_school_expiry_date, as: :tempus_dominus_date,
+                                                                label: 'Display featured school until date',
+                                                                hint: 'Leave blank to always display this school' %>
+          <% end %>
+
+          <%= grid.with_cell do %>
+            <%= f.input :energy_efficiency_note, label: 'Note', hint: 'Displayed under the feature title', as: :text %>
+          <% end %>
+          <%= grid.with_cell do %>
+            <%= f.input :energy_efficiency_image,
+                        as: :file,
+                        label: 'Image',
+                        hint: if config.energy_efficiency_image.attached?
+                                config.energy_efficiency_image.filename.to_s
+                              else
+                                'Using default image'
+                              end %>
+
+            <% if config.energy_efficiency_image.attached? %>
+              <%= f.input :energy_efficiency_image_remove,
+                          as: :boolean,
+                          label: 'Remove image and use default' %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <%= grid.with_cell do |row| %>
+        <h3>Engagement section</h3>
+
+        <%= f.input :show_engagement, wrapper: :custom_boolean_switch,
+                                      label: 'Display section',
+                                      hint: 'Show or hide the whole engagement section' %>
+        <h4>Featured school</h4>
+        <p>By default, the highest scoring school in the group will be shown as the featured school in this section,
+        along with a podium of the top 3 schools. Use the options below to override this and select a specific school
+        to feature instead, along with a note and image.</p>
+        <% e_feature = ImpactReports::Engagement::FeaturedSchoolComponent.new(school_group: @school_group) %>
+
+        <% if e_feature.render? %>
+          <%= render TogglerDropdownComponent.new(title: 'Preview', classes: 'mb-2', bg: 'white') do %>
+            <%= render e_feature %>
+          <% end %>
+        <% else %>
+          <div class="bg-white p-2 mb-2">
+            No featured school currently selected for this section, or the featured school has expired.
+          </div>
+        <% end %>
+
+        <%= render Layout::GridComponent.new(cols: 2) do |grid| %>
+          <%= grid.with_cell do %>
+            <%= f.input :engagement_school_id,
+                        label: 'Featured school',
+                        collection: config.school_group.assigned_schools.active.order(:name).pluck(
+                          :name, :id
+                        ),
+                        include_blank: 'Default - show top scoring in group with podium' %>
+          <% end %>
+          <%= grid.with_cell do %>
+             <%= f.input :engagement_school_expiry_date,
+                         as: :tempus_dominus_date,
+                         label: 'Display featured school until date',
+                         hint: 'Leave blank to always display this school' %>
+          <% end %>
+          <%= grid.with_cell do %>
+            <%= f.input :engagement_note, label: 'Note', hint: 'Displayed under the feature title', as: :text %>
+          <% end %>
+          <%= grid.with_cell do %>
+            <%= f.input :engagement_image,
+                        as: :file,
+                        label: 'Image',
+                        hint: if config.engagement_image.attached?
+                                config.engagement_image.filename.to_s
+                              else
+                                'Using default image'
+                              end %>
+
+            <% if config.engagement_image.attached? %>
+              <%= f.input :engagement_image_remove,
+                          as: :boolean,
+                          label: 'Remove image and use default' %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <div class='py-3'>
+          <%= f.button :submit, 'Save' %>
+          <%= link_to 'Back', admin_impact_reports_path, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
