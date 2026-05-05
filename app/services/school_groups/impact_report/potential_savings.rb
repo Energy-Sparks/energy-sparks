@@ -18,7 +18,7 @@ module SchoolGroups
                  insulate_pipes: AlertHotWaterInsulationAdvice }.freeze
       TYPES = %i[gbp co2 kwh].freeze
       private_constant :ALERTS, :TYPES
-      METRICS = ALERTS.keys.flat_map { |metric| TYPES.map { |suffix| [metric, suffix].join('_') } }
+      METRICS = ALERTS.keys.flat_map { |metric| TYPES.map { |suffix| [metric, suffix].join('_') } }.freeze
 
       ALERTS.each do |metric, alert|
         define_method("#{metric}_gbp") do

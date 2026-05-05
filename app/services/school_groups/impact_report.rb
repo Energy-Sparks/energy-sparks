@@ -51,6 +51,14 @@ module SchoolGroups
       @potential_savings ||= PotentialSavings.new(self)
     end
 
+    def value(category, type)
+      send(category).public_send(type)
+    end
+
+    def number_of_schools(category, type)
+      send(category).number_of_schools(type)
+    end
+
     class Base
       attr_reader :impact_report
 
