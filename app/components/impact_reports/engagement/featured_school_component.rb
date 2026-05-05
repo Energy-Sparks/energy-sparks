@@ -2,17 +2,21 @@
 
 module ImpactReports
   module Engagement
-    class FeaturedSchoolComponent < ImpactReports::BaseComponent
+    class FeaturedSchoolComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
       def override?
         @config&.feature_visible_for?(:engagement)
       end
 
-      def school
-        override? ? @config.engagement_school : default_school
+      def override_school
+        @config.engagement_school
       end
 
       def default_school
         @default_school ||= @school_group.scored_schools.first
+      end
+
+      def school
+        override? ? override_school : default_school
       end
 
       def description
@@ -56,7 +60,7 @@ module ImpactReports
       end
 
       def render?
-        school.present?
+        override? ? override_school : (default_school && podium.school_has_points?)
       end
     end
   end
