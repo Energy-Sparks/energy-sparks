@@ -47,6 +47,8 @@ module Commercial
       order(default_product: :desc).order(:name)
     }
 
+    scope :by_name, -> { order(name: :asc) }
+
     has_many :contracts, class_name: 'Commercial::Contract'
 
     def deletable?

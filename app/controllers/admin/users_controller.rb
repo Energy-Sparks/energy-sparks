@@ -107,9 +107,8 @@ module Admin
     end
 
     def user_params
-      params.require(:user)
-            .permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :climate_action_lead,
-                    cluster_school_ids: [])
+      params.expect(user: [:name, :active, :email, :role, :operations, :school_id, :school_group_id, :staff_role_id,
+                           :climate_action_lead, { cluster_school_ids: [] }])
     end
 
     def set_schools_options

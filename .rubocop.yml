@@ -62,3 +62,4 @@ Lint/MissingSuper: # per https://github.com/andyw8/rubocop-view_component
 ViewComponent/MissingPreview:
   PreviewPaths:
     - spec/components/previews
+    - spec/components/previews/commercial
