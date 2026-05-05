@@ -16,7 +16,7 @@
       <%= card.with_figure number_with_delimiter(@impact_report.engagement.actions) %>
       <%= card.with_subtext do
             impact_t('engagement.cards.actions.subtext',
-                     count: @impact_report.overview.users_logged_in_recently)
+                     count: @impact_report.overview.active_users)
           end %>
     <% end %>
     <% grid.with_stats_card do |card| %>
