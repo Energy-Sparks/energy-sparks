@@ -29,5 +29,12 @@
       <%= card.with_figure number_with_delimiter(@impact_report.engagement.targets) %>
       <%= card.with_subtext { impact_t('engagement.cards.targets.subtext') } %>
     <% end %>
+    <% grid.with_stats_card(if: false) do |card| %>
+      <%= card.with_header title: impact_t('engagement.cards.programmes.title') %>
+      <%= card.with_figure number_with_delimiter(impact_report.engagement.programmes) %>
+      <%= card.with_subtext do
+            impact_t('engagement.cards.programmes.subtext', count: impact_report.engagement.programmes)
+          end %>
+    <% end %>
   <% end %>
 <% end %>
