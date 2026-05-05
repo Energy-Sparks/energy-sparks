@@ -8,7 +8,7 @@ module ImpactReports
       def default(bs5: false, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
         school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
         impact_report = SchoolGroups::ImpactReport.new(school_group)
-        render(ImpactReports::EnergyEfficiency::StatsComponent.new(school_group: impact_report))
+        render(ImpactReports::EnergyEfficiency::StatsComponent.new(impact_report: impact_report))
       end
 
       private
