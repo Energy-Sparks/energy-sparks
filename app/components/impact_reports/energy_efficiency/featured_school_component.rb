@@ -2,7 +2,7 @@
 
 module ImpactReports
   module EnergyEfficiency
-    class StatsComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
+    class FeaturedSchoolComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
       def display?
         @config&.feature_visible_for?(:energy_efficiency)
       end
