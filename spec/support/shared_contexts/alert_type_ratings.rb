@@ -42,6 +42,7 @@ RSpec.shared_context 'with alert type ratings' do
       alert_type_rating: alert_type_rating_high,
       management_priorities_title: 'Spending too much money on heating (high)'
     )
+    alerts if defined? alerts
     # just run the services to set up rest of test data
     schools.each { |school| Alerts::GenerateContent.new(school).perform }
   end

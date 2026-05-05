@@ -16,8 +16,8 @@ module SchoolGroups
                  heating_off: AlertSeasonalHeatingSchoolDays,
                  storage_heaters_off: AlertSeasonalHeatingSchoolDaysStorageHeaters,
                  insulate_pipes: AlertHotWaterInsulationAdvice }.freeze
-
       TYPES = %i[gbp co2 kwh].freeze
+      private_constant :ALERTS, :TYPES
       METRICS = ALERTS.keys.flat_map { |metric| TYPES.map { |suffix| [metric, suffix].join('_') } }
 
       ALERTS.each do |metric, alert|
