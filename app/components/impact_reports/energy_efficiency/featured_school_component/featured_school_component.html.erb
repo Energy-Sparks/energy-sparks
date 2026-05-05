@@ -8,9 +8,7 @@
       ) do |grid| %>
     <%= grid.with_feature_card(size: :md) do |feature| %>
       <%= feature.with_header title: impact_t('energy_efficiency.featured.title') %>
-      <%= feature.with_description do
-            description
-          end %>
+      <%= feature.with_description { description } %>
       <%= feature.with_button(
             t('common.view_dashboard'),
             school_path(school),

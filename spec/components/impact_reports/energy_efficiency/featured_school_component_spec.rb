@@ -31,7 +31,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::FeaturedSchoolComponent, :includ
     end
 
     it { expect(html).to have_css('#energy-efficiency-featured') }
-    it { expect(html).to have_content(custom_description) }
+    it { expect(html).to have_text(custom_description) }
     it { expect(html).to have_link('View dashboard', href: school_path(featured_school)) }
   end
 

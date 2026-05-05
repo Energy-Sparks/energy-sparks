@@ -9,9 +9,7 @@
     <%= grid.with_feature_card(classes: '', size: :md) do |feature| %>
       <%= feature.with_header(title: impact_t('engagement.featured.title',
                                               school: school.name)) %>
-      <%= feature.with_description do
-            description
-          end %>
+      <%= feature.with_description { description } %>
       <%= feature.with_button(t('common.view_dashboard'),
                               school_path(school), style: :secondary) %>
     <% end %>

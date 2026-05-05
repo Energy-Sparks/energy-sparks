@@ -23,9 +23,9 @@ RSpec.describe ImpactReports::Overview::StatsComponent, :include_application_hel
     end
 
     it { expect(html).to have_css('#overview-cards') }
-    it { expect(html).to have_content('Schools') }
-    it { expect(html).to have_content('Users') }
-    it { expect(html).to have_content('Pupils') }
-    it { expect(html).to have_content('Enrolled schools') }
+    it { expect(html).to have_text('Schools') }
+    it { expect(html).to have_text('Users') }
+    it { expect(html).to have_text('Pupils') }
+    it { expect(html).to have_text('Enrolled schools') }
   end
 end

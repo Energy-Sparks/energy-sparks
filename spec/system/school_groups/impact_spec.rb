@@ -42,7 +42,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
       end
 
       context 'when there is no config and user is not logged in' do
-        let(:config) {}
+        let(:config) { nil }
         let(:user) { nil }
 
         it_behaves_like 'an access controlled impact page'

@@ -18,7 +18,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
 
   context 'without override' do
     it { expect(html).to have_css('#engagement-featured') }
-    it { expect(html).to have_content(school.name) }
+    it { expect(html).to have_text(school.name) }
     it { expect(html).to have_link('View dashboard', href: school_path(school)) }
     it { expect(html).to have_css('.bg-white.p-4.rounded-3') }
   end
@@ -35,7 +35,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
       )
     end
 
-    it { expect(html).to have_content(override_description) }
+    it { expect(html).to have_text(override_description) }
     it { expect(html).to have_link('View dashboard', href: school_path(override_school)) }
     it { expect(html).to have_css('img') }
   end
@@ -50,7 +50,7 @@ RSpec.describe ImpactReports::Engagement::FeaturedSchoolComponent, :include_appl
       )
     end
 
-    it { expect(html).to have_content(school.name) }
+    it { expect(html).to have_text(school.name) }
   end
 
   context 'when school is not present' do

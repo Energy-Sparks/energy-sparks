@@ -17,7 +17,7 @@ RSpec.describe 'Admin impact report configuration' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
 
@@ -27,7 +27,7 @@ RSpec.describe 'Admin impact report configuration' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You need to sign in or sign up before continuing.')
+        expect(page).to have_text('You need to sign in or sign up before continuing.')
       end
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe 'Admin impact report configuration' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You are not authorized to view that page.')
+        expect(page).to have_text('You are not authorized to view that page.')
       end
     end
 
@@ -53,7 +53,7 @@ RSpec.describe 'Admin impact report configuration' do
       end
 
       it 'does not authorise viewing' do
-        expect(page).to have_content('You are not authorized to view that page.')
+        expect(page).to have_text('You are not authorized to view that page.')
       end
     end
   end
@@ -112,7 +112,7 @@ RSpec.describe 'Admin impact report configuration' do
         end
 
         it 'updates the configuration' do
-          expect(page).to have_content('Configuration was successfully updated.')
+          expect(page).to have_text('Configuration was successfully updated.')
         end
 
         context 'when visiting the report' do
@@ -129,8 +129,8 @@ RSpec.describe 'Admin impact report configuration' do
           end
 
           it 'shows overview and potential savings sections' do
-            expect(page).to have_content('Overview')
-            expect(page).to have_content('Potential savings')
+            expect(page).to have_text('Overview')
+            expect(page).to have_text('Potential savings')
           end
         end
       end
@@ -150,7 +150,7 @@ RSpec.describe 'Admin impact report configuration' do
           end
 
           it 'shows feauture' do
-            expect(page).to have_content('Note about energy efficiency')
+            expect(page).to have_text('Note about energy efficiency')
             expect(page).to have_css("img[src*='boiler.jpg']")
             expect(page).to have_link('View dashboard', href: school_path(school))
           end
@@ -171,8 +171,8 @@ RSpec.describe 'Admin impact report configuration' do
           end
 
           it 'shows feauture' do
-            expect(page).to have_content('Featured school')
-            expect(page).to have_content('Note about engaged school')
+            expect(page).to have_text('Featured school')
+            expect(page).to have_text('Note about engaged school')
             expect(page).to have_css("img[src*='laptop.jpg']")
             expect(page).to have_link('View dashboard', href: school_path(school))
           end
@@ -191,8 +191,8 @@ RSpec.describe 'Admin impact report configuration' do
           end
 
           it 'still shows the report to admin users' do
-            expect(page).to have_content('Overview')
-            expect(page).to have_content('Potential savings')
+            expect(page).to have_text('Overview')
+            expect(page).to have_text('Potential savings')
           end
         end
 
@@ -203,7 +203,7 @@ RSpec.describe 'Admin impact report configuration' do
           end
 
           it 'does not show the report' do
-            expect(page).to have_content('This feature is not available')
+            expect(page).to have_text('This feature is not available')
           end
         end
       end
