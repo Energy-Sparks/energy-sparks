@@ -291,8 +291,8 @@ RSpec.describe 'Admin dashboard' do
           describe 'engaged schools' do
             let!(:engaged_school) do
               travel_to(Time.zone.local(2025, 2, 4, 15, 30))
-              create(:school, :with_school_group, :with_points,
-                     calendar: create(:calendar, :with_previous_and_next_academic_years))
+              create(:school, :with_points, school_group: user_school_group,
+                                            calendar: create(:calendar, :with_previous_and_next_academic_years))
             end
             let(:last_sign_in) { Time.zone.now }
 
@@ -306,7 +306,6 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'displays engaged schools' do
-              puts page.html
               expect(page).to have_content(engaged_school.school_group.name)
             end
           end
