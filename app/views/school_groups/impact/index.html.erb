@@ -52,7 +52,7 @@
   <% end %>
 </div>
 
-<% if @configuration&.show_energy_efficiency != false %>
+<% if @config&.show_energy_efficiency != false %>
   <div id='energy-efficiency'>
     <%= render Layout::Cards::SectionHeaderComponent.new(id: 'energy-efficiency-header') do |section_header| %>
       <%= section_header.with_header title: impact_t('energy_efficiency.title') %>
@@ -77,7 +77,7 @@
   </div>
 <% end %>
 
-<% if @configuration&.show_engagement != false %>
+<% if @config&.show_engagement != false %>
   <div id="engagement">
     <%= render Layout::Cards::SectionHeaderComponent.new(id: 'engagement-header') do |section_header| %>
       <%= section_header.with_header title: impact_t('engagement.title') %>
