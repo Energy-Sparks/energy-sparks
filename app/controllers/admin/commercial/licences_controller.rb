@@ -14,7 +14,15 @@ module Admin::Commercial
       @expiring_licences = Commercial::Licence.filtered(:expiring, @expiry_date, @school_group_id)
       @recently_expired_licences = Commercial::Licence.filtered(:recently_expired, @expired_date, @school_group_id)
       @recent_licences = Commercial::Licence.filtered(:recent, @recently_added_date, @school_group_id)
-      @recently_updated_licences = Commercial::Licence.filtered(:recently_updated, @recently_updated_date, @school_group_id)
+      @recently_updated_licences = Commercial::Licence.filtered(:recently_updated, @recently_updated_date,
+                                                                @school_group_id)
+    end
+
+    def unlicensed
+      @academic_year = Calendar.default_national.current_academic_year
+      @schools = School.active.without_current_licence.joins(
+        organisation_school_grouping: :school_group
+      ).order('school_groups.name ASC')
     end
 
     def new
@@ -24,6 +32,9 @@ module Admin::Commercial
       else
         @licence = Commercial::Licence.new
       end
+    end
+
+    def edit
     end
 
     def create
@@ -38,9 +49,6 @@ module Admin::Commercial
       else
         render :new
       end
-    end
-
-    def edit
     end
 
     def update

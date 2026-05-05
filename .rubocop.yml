@@ -24,6 +24,7 @@ AllCops:
     - config/initializers/permissions_policy.rb
     - config/puma.rb
     - config/routes.rb
+    - db/migrate/202604211056*.rb # goodjob migrations
 plugins:
   - rubocop-capybara
   - rubocop-factory_bot
@@ -31,6 +32,7 @@ plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-rspec_rails
+  - rubocop-view_component
 
 Metrics/MethodLength:
   Max: 30 # default 10
@@ -52,3 +54,12 @@ RSpec/NestedGroups:
 
 Style/Documentation:
   Enabled: false
+
+Lint/MissingSuper: # per https://github.com/andyw8/rubocop-view_component
+  Exclude:
+    - 'app/components/**/*'
+
+ViewComponent/MissingPreview:
+  PreviewPaths:
+    - spec/components/previews
+    - spec/components/previews/commercial

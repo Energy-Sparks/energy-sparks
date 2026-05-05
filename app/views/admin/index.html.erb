@@ -2,6 +2,11 @@
 
 <h1>Administration</h1>
 
+<%= render Elements::ButtonComponent.new('Ops Dashboards',
+                                         admin_dashboards_path,
+                                         style: :secondary,
+                                         classes: 'mb-2 me-2') %>
+
 <div class="row">
   <div class="col">
     <h2>School onboarding</h2>
@@ -80,12 +85,9 @@
       <li><%= link_to 'Equivalence Types', admin_equivalence_types_path %></li>
     </ul>
 
-    <h2>Contracts & Licensing</h2>
+    <h2>Commercial</h2>
     <ul>
-      <li><%= link_to 'Contracts', admin_commercial_contracts_path %></li>
-      <li><%= link_to 'Licences', admin_commercial_licences_path %></li>
-      <li><%= link_to 'Products', admin_commercial_products_path %></li>
-      <li><%= link_to 'Pricing', admin_commercial_pricing_path %></li>
+      <li><%= link_to 'Contracts & Licensing', admin_commercial_path %></li>
     </ul>
 
     <h2>Development</h2>

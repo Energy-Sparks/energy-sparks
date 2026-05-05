@@ -12,18 +12,16 @@ module Schools
       @existing_readings = existing_readings
       @fuel_types = %i[electricity gas]
       @readings = {}
+      @end_dates = {}
     end
 
     # similar to calculate_required but faster to only use DB
     def show_on_menu?
-      @school.manual_readings.any? ||
-        @school.configuration.aggregate_meter_dates.empty? ||
-        @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
-                   .reject(&:empty?)
-                   .any? { |dates| dates[:start_date] > MONTHS_REQUIRED.ago || dates[:end_date] < 2.months.ago }
+      @school.manual_readings.any? || school_configuration_indicates_readings_required?
     end
 
     def calculate_required(aggregate_school)
+      @fuel_types.each { |fuel_type| @end_dates[fuel_type] = Advice::ConsumptionByMonthService.end_date_for(aggregate_school, fuel_type) }
       calculate_required_when_target if target?
       required_months_and_fuel_types(aggregate_school) do |month, fuel_type|
         consumption, consumption_missing = calculate_month_consumption(aggregate_school, month, fuel_type)
@@ -60,6 +58,16 @@ module Schools
 
     private
 
+    def school_configuration_indicates_readings_required?
+      @school.configuration.aggregate_meter_dates.empty? ||
+        @fuel_types.map { |fuel_type| @school.configuration.meter_dates(fuel_type) }
+                   .reject(&:empty?)
+                   .any? do |dates|
+                     dates.key?(:start_date) && dates.key?(:end_date) &&
+                       dates[:end_date] - MONTHS_REQUIRED < dates[:start_date]
+                   end
+    end
+
     def required_months_and_fuel_types(aggregate_school)
       @fuel_types.each do |fuel_type|
         required_months(aggregate_school, fuel_type).each do |month|
@@ -71,13 +79,10 @@ module Schools
       end
     end
 
-    def start_date(aggregate_school, fuel_type)
-      Advice::ConsumptionByMonthService.end_date_for(aggregate_school, fuel_type) - (MONTHS_REQUIRED - 1.month)
-    end
-
     def required_months(aggregate_school, fuel_type)
+      @end_date = Advice::ConsumptionByMonthService.end_date_for(aggregate_school, fuel_type)
       (@existing_readings.map(&:month) |
-      DateService.start_of_months(start_date(aggregate_school, fuel_type), Date.current.prev_month).to_a).sort
+       DateService.start_of_months(@end_dates[fuel_type] - MONTHS_REQUIRED, @end_dates[fuel_type]).to_a).sort
     end
 
     def calculate_required_when_target
@@ -94,15 +99,20 @@ module Schools
     end
 
     def add_reading(month, fuel_type, missing, reading)
-      return if month > Date.current.prev_month.beginning_of_month
+      return if month > Date.current.prev_month.beginning_of_month || month.end_of_month >= @end_dates[fuel_type]
 
-      existing_reading = @existing_readings.find { |reading| reading.month == month }
-      disabled, reading = if existing_reading&.[](fuel_type).present?
-                            [false, existing_reading[fuel_type]]
-                          else
-                            [!missing, missing ? nil : reading]
-                          end
-      (@readings[month] ||= {})[fuel_type] = { disabled:, reading: }
+      existing_value = existing_reading_value(month, fuel_type)
+      (@readings[month] ||= {})[fuel_type] = if existing_value.present?
+                                               { disabled: false, reading: existing_value }
+                                             elsif missing
+                                               { disabled: false, reading: nil }
+                                             else
+                                               { disabled: true, reading: }
+                                             end
+    end
+
+    def existing_reading_value(month, fuel_type)
+      @existing_readings.find { |reading| reading.month == month }&.[](fuel_type)
     end
 
     def calculate_month_consumption(aggregate_school, month, fuel_type)

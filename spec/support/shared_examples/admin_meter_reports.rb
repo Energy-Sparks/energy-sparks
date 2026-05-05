@@ -26,7 +26,7 @@ RSpec.shared_examples 'an admin meter report' do |help: true|
 
   it 'has filters' do
     expect(page).to have_field(:school_group)
-    expect(page).to have_field(:user)
+    expect(page).to have_field(:admin)
   end
 
   it 'has a table with a common set of columns' do

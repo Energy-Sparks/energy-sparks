@@ -1,152 +1,137 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Schools::PupilNumberUpdater do
-  subject(:school) { create(:school, number_of_pupils: 100) }
+  subject(:school) do
+    create(:school, calendar: create(:school_calendar, :with_previous_and_next_academic_years),
+                    number_of_pupils: 100)
+  end
 
   let(:service) { described_class.new(school) }
   let(:pupils) { 200 }
-  let(:today) { Time.zone.today.strftime('%d/%m/%Y') }
+  let(:percentage_free_school_meals) { 10 }
 
-  def create_meter_attribute(
-    start_date: '01/01/2020',
-    end_date: nil,
-    floor_area: '5000',
-    number_of_pupils: '100',
-    replaced_by: nil,
-    deleted_by: nil
-  )
-    input_data = {
-      'start_date' => start_date,
-      'end_date' => end_date,
-      'floor_area' => floor_area,
-      'number_of_pupils' => number_of_pupils
-    }.compact
-
-    school.meter_attributes.create!(
-      attribute_type: 'floor_area_pupil_numbers',
-      input_data: input_data,
-      replaced_by_id: replaced_by&.id,
-      deleted_by_id: deleted_by&.id
-    )
+  def create_meter_attribute(start_date: Date.new(2020), end_date: nil, floor_area: '5000', number_of_pupils: '100', **)
+    school.meter_attributes.create!({ attribute_type: 'floor_area_pupil_numbers',
+                                      input_data: { start_date: start_date&.strftime('%d/%m/%Y'),
+                                                    end_date: end_date&.strftime('%d/%m/%Y'),
+                                                    floor_area:,
+                                                    number_of_pupils: }.compact }.merge(**))
   end
 
-  def last_attribute
-    school.meter_attributes.order(:created_at).last
+  def attributes
+    school.meter_attributes.order(:created_at)
   end
 
-  shared_examples 'creates a new attribute' do
+  def start_date
+    school.calendar.academic_years.ordered.first.start_date.strftime('%d/%m/%Y')
+  end
+
+  def update
+    service.update(pupils, percentage_free_school_meals, school.calendar.academic_years.ordered.first.start_date,
+                   described_class)
+  end
+
+  shared_examples 'it creates a new attribute' do
     it 'creates a new attribute' do
       expect(school.meter_attributes.count).to be >= 1
-      expect(last_attribute.input_data['start_date']).to eq(today)
-      expect(last_attribute.input_data['number_of_pupils']).to eq(pupils.to_s)
+      expect(attributes.last.input_data['start_date']).to eq(start_date)
+      expect(attributes.last.input_data['number_of_pupils']).to eq(pupils.to_s)
     end
 
     it 'updates number_of_pupils' do
       expect(school.reload.number_of_pupils).to eq(pupils)
     end
+
+    it 'updates percentage_free_school_meals' do
+      expect(school.reload.percentage_free_school_meals).to eq(percentage_free_school_meals)
+    end
   end
 
   describe '#update' do
     context 'when there are no meter attributes' do
-      before { service.update(pupils) }
+      before { update }
 
-      include_examples 'creates a new attribute'
+      it_behaves_like 'it creates a new attribute'
     end
 
     context 'with a meter attribute that ended in the past' do
-      before do
-        create_meter_attribute(end_date: '01/01/2021')
-        service.update(pupils)
+      let!(:attribute) { create_meter_attribute(end_date: Date.new(2021)) }
+
+      it { expect { update }.not_to change(attribute, :updated_at) }
+
+      it_behaves_like 'it creates a new attribute' do
+        before { update }
       end
-
-      include_examples 'creates a new attribute'
-    end
-
-    context 'with a meter attribute that ends in the future' do
-      before do
-        create_meter_attribute(end_date: (Time.zone.today + 1).strftime('%d/%m/%Y'))
-        service.update(pupils)
-      end
-
-      it 'expires the existing attribute' do
-        expect(school.meter_attributes.first.input_data['end_date']).to eq(today)
-      end
-
-      include_examples 'creates a new attribute'
     end
 
     context 'with a current meter attribute with start and end date' do
-      before do
-        create_meter_attribute(end_date: (Time.zone.today + 1).strftime('%d/%m/%Y'))
-        service.update(pupils)
+      let(:end_date) { Time.zone.today + 1.day }
+      let!(:attribute) { create_meter_attribute(end_date:) }
+
+      it_behaves_like 'it creates a new attribute' do
+        before { update }
+
+        let(:start_date) { end_date.strftime('%d/%m/%Y') }
       end
 
-      include_examples 'creates a new attribute'
+      it { expect { update }.not_to change(attribute, :updated_at) }
     end
 
     context 'with an open-ended meter attribute' do
-      before do
-        create_meter_attribute(end_date: nil)
-        service.update(pupils)
-      end
+      let!(:attribute) { create_meter_attribute(end_date: nil) }
+
+      before { update }
 
       it 'adds end date to existing attribute' do
-        expect(school.meter_attributes.first.input_data['end_date']).to eq(today)
+        expect(attribute.reload.input_data['end_date']).to eq(start_date)
       end
 
-      include_examples 'creates a new attribute'
+      it 'maintains the floor area' do
+        expect(attributes.last.input_data['floor_area']).to eq('5000')
+      end
+
+      it_behaves_like 'it creates a new attribute'
     end
 
-    context 'with an open-ended meter attribute missing floor area' do
+    context 'with an attribute created by a person' do
       before do
-        create_meter_attribute(floor_area: nil)
-        service.update(pupils)
+        create_meter_attribute(created_by: create(:admin))
+        update
       end
 
-      it 'creates a new attribute with only pupil count' do
-        expect(last_attribute.input_data['floor_area']).to be_nil
-        expect(last_attribute.input_data['number_of_pupils']).to eq(pupils.to_s)
+      it 'does not create a new attribute' do
+        expect(attributes.count).to eq(1)
       end
-
-      include_examples 'creates a new attribute'
     end
 
-    context 'when an attribute ends today' do
+    context 'with an attrbute starting after the previous calendar year start' do
+      let!(:attribute) do
+        create_meter_attribute(start_date: school.calendar.academic_years.ordered.first.start_date + 1.day)
+      end
+
+      it { expect { update }.not_to change(attribute, :updated_at) }
+      it { expect { update }.not_to change(attributes, :count) }
+    end
+
+    context 'when numbers have not changed' do
       before do
-        create_meter_attribute(end_date: today)
-        service.update(pupils)
+        create_meter_attribute(number_of_pupils: pupils)
+        school.update!(percentage_free_school_meals:)
       end
 
-      it 'does not update the end date again' do
-        expect(school.meter_attributes.first.input_data['end_date']).to eq(today)
-      end
-
-      include_examples 'creates a new attribute'
+      it { expect { update }.not_to change(attributes, :count) }
+      it { expect { update }.not_to change(school, :updated_at) }
     end
 
     context 'with a deleted meter attribute' do
       before do
-        create_meter_attribute(end_date: '01/01/2021', deleted_by: create(:admin))
-        service.update(pupils)
+        create_meter_attribute(end_date: Date.new(2021), deleted_by: create(:admin))
+        update
       end
 
-      it 'ignores deleted attributes and creates a new one' do
-        expect(school.meter_attributes.active.count).to eq(1)
-        expect(last_attribute.input_data['start_date']).to eq(today)
-        expect(last_attribute.input_data['number_of_pupils']).to eq(pupils.to_s)
-      end
-    end
-
-    context 'with multiple expired attributes having different floor areas' do
-      before do
-        create_meter_attribute(end_date: '01/01/2022', floor_area: '4000')
-        create_meter_attribute(end_date: '01/01/2023', floor_area: '6000') # most recent
-        service.update(pupils)
-      end
-
-      it 'uses floor area from the most recent expired attribute' do
-        expect(last_attribute.input_data['floor_area']).to eq('6000')
-      end
+      it_behaves_like 'it creates a new attribute'
     end
   end
 end

@@ -2357,6 +2357,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_130730) do
     t.enum "mailchimp_status", enum_type: "mailchimp_status"
     t.datetime "mailchimp_updated_at"
     t.string "name"
+    t.boolean "operations", default: false, null: false
     t.string "preferred_locale", default: "en", null: false
     t.string "pupil_password"
     t.datetime "remember_created_at", precision: nil

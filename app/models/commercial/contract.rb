@@ -83,6 +83,7 @@ module Commercial
     validate :ensure_only_editable_attributes_changed, unless: :new_record?
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
+    has_many :schools, -> { distinct }, through: :licences
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
@@ -133,6 +134,10 @@ module Commercial
 
     def as_range
       (start_date..end_date)
+    end
+
+    def custom_contract_length?
+      custom? && licence_years > 1.0
     end
 
     private
