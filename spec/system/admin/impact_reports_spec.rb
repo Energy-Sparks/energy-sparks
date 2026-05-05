@@ -203,7 +203,7 @@ RSpec.describe 'Admin impact report configuration' do
           end
 
           it 'does not show the report' do
-            expect(page).to have_content('This feature is not currently available')
+            expect(page).to have_content('This feature is not available')
           end
         end
       end
