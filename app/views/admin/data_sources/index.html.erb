@@ -2,6 +2,11 @@
   <% content_for :title do %>
     <%= "#{@dashboard_user.display_name}'s Data Sources" %>
   <% end %>
+
+  <%= render Elements::ButtonComponent.new('View all data sources',
+                                           admin_data_sources_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 <% else %>
   <%= render 'header', title: 'Manage Data Sources' do %>
     <%= header_nav_link 'Admin', admin_url %>
