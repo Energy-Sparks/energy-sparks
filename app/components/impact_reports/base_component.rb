@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ImpactReports
-  class BaseComponent < ApplicationComponent
+  class BaseComponent < ApplicationComponent # rubocop:disable ViewComponent/MissingPreview
     delegate :impact_t, :format_unit, to: :helpers
 
     def initialize(impact_report: nil, school_group: nil, **)

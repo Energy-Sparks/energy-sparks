@@ -2,7 +2,7 @@
 
 module ImpactReports
   module Engagement
-    class StatsComponent < ImpactReports::BaseComponent
+    class StatsComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
     end
   end
 end
