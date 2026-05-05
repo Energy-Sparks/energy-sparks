@@ -14,37 +14,37 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
   end
 
   context 'when rendering' do
-    let(:html) do
+    before do
       render_inline(component)
     end
 
-    it { expect(html).to have_link('Dashboard Home', href: admin_dashboard_path(current_user)) }
+    it { expect(page).to have_link('Dashboard Home', href: admin_dashboard_path(current_user)) }
 
     describe 'my x links' do
       it 'has the correct links' do
-        expect(html).to have_link('My School Groups',
+        expect(page).to have_link('My School Groups',
                                   href: admin_dashboard_school_groups_path(current_user))
-        expect(html).to have_link('My Project Groups',
+        expect(page).to have_link('My Project Groups',
                                   href: admin_dashboard_school_groups_path(current_user, group_type: 'project'))
-        expect(html).to have_link('My Data Sources',
+        expect(page).to have_link('My Data Sources',
                                   href: admin_dashboard_data_sources_path(current_user))
-        expect(html).to have_link('My Data Feeds',
+        expect(page).to have_link('My Data Feeds',
                                   href: admin_dashboard_amr_data_feed_configs_path(current_user))
-        expect(html).to have_link('My Issues',
+        expect(page).to have_link('My Issues',
                                   href: admin_dashboard_issues_path(current_user))
       end
 
       describe 'my_schools section' do
         it 'has the correct links' do
-          expect(html).to have_link('Onboarding',
+          expect(page).to have_link('Onboarding',
                                     href: admin_dashboard_school_onboardings_path(current_user))
-          expect(html).to have_link('Awaiting activation',
+          expect(page).to have_link('Awaiting activation',
                                     href: admin_dashboard_activations_path(current_user))
-          expect(html).to have_link('Recently onboarded',
+          expect(page).to have_link('Recently onboarded',
                                     href: completed_admin_dashboard_school_onboardings_path(current_user))
-          expect(html).to have_link('Recent activities',
+          expect(page).to have_link('Recent activities',
                                     href: admin_dashboard_activities_path(current_user))
-          expect(html).to have_link('Recent actions',
+          expect(page).to have_link('Recent actions',
                                     href: admin_dashboard_interventions_path(current_user))
         end
       end

@@ -28,7 +28,8 @@ RSpec.describe 'Admin dashboard' do
   end
 
   describe 'Authorized access' do
-    let!(:user) { create(:admin, name: 'admin user') }
+    let!(:user) { create(:admin, name: 'admin user', operations: true) }
+    let!(:other_admin) { create(:admin, name: 'other admin', operations: false) }
 
     before do
       visit admin_dashboards_url
@@ -37,8 +38,12 @@ RSpec.describe 'Admin dashboard' do
     describe 'index page' do
       let(:staff_user) { create(:staff) }
 
-      it 'displays a list of links to admin users' do
+      it 'displays a list of links to operations users' do
         expect(page).to have_link(user.name, href: admin_dashboard_path(user))
+      end
+
+      it 'does not display non-operations admins' do
+        expect(page).to have_no_content(other_admin.name)
       end
 
       it 'does not display non-admin users' do
@@ -71,6 +76,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the school groups page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups")
+            expect(page).to have_link('View all groups', href: admin_school_groups_path)
           end
 
           it 'displays school groups belonging to the user' do
@@ -92,6 +98,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the project groups page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/school_groups?group_type=project")
+            expect(page).to have_link('View all groups', href: admin_school_groups_path(group_type: 'project'))
           end
 
           it 'displays project groups belonging to the user' do
@@ -113,6 +120,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the data sources page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/data_sources")
+            expect(page).to have_link('View all data sources', href: admin_data_sources_path)
           end
 
           it 'displays data sources belonging to the user' do
@@ -134,6 +142,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the data feeds page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/amr_data_feed_configs")
+            expect(page).to have_link('View all data feed configurations', href: admin_amr_data_feed_configs_path)
           end
 
           it 'displays data feeds belonging to the user' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_105634) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_27_103143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2347,6 +2347,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_105634) do
     t.enum "mailchimp_status", enum_type: "mailchimp_status"
     t.datetime "mailchimp_updated_at"
     t.string "name"
+    t.boolean "operations", default: false, null: false
     t.string "preferred_locale", default: "en", null: false
     t.string "pupil_password"
     t.datetime "remember_created_at", precision: nil
