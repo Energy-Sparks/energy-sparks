@@ -57,9 +57,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: nil)
       end
 
-      it 'returns falsey' do
-        expect(config).not_to be_feature_visible_for(:engagement)
-      end
+      it { expect(config).not_to be_feature_visible_for(:engagement) }
     end
 
     context 'when school is present and expiry date is blank' do
@@ -67,9 +65,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: school, engagement_school_expiry_date: nil)
       end
 
-      it 'returns true' do
-        expect(config.feature_visible_for?(:engagement)).to be true
-      end
+      it { expect(config.feature_visible_for?(:engagement)).to be true }
     end
 
     context 'when school is present and expiry date is in the future' do
@@ -77,9 +73,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: school, engagement_school_expiry_date: 1.year.from_now)
       end
 
-      it 'returns true' do
-        expect(config.feature_visible_for?(:engagement)).to be true
-      end
+      it { expect(config.feature_visible_for?(:engagement)).to be true }
     end
 
     context 'when school is present and expiry date is in the past' do
@@ -87,9 +81,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: school, engagement_school_expiry_date: 1.day.ago)
       end
 
-      it 'returns false' do
-        expect(config.feature_visible_for?(:engagement)).to be false
-      end
+      it { expect(config.feature_visible_for?(:engagement)).to be false }
     end
 
     context 'with energy_efficiency prefix' do
@@ -113,9 +105,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: school, engagement_school_expiry_date: nil)
       end
 
-      it 'returns false' do
-        expect(config.feature_expired_for?(:engagement)).to be false
-      end
+      it { expect(config.feature_expired_for?(:engagement)).to be false }
     end
 
     context 'when expiry date is in the future' do
@@ -123,9 +113,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: school, engagement_school_expiry_date: 1.year.from_now)
       end
 
-      it 'returns false' do
-        expect(config.feature_expired_for?(:engagement)).to be false
-      end
+      it { expect(config.feature_expired_for?(:engagement)).to be false }
     end
 
     context 'when expiry date is in the past' do
@@ -133,9 +121,7 @@ describe ImpactReport::Configuration do
         config.update(engagement_school: school, engagement_school_expiry_date: 1.day.ago)
       end
 
-      it 'returns true' do
-        expect(config.feature_expired_for?(:engagement)).to be true
-      end
+      it { expect(config.feature_expired_for?(:engagement)).to be true }
     end
   end
 
