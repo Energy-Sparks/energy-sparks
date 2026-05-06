@@ -14,6 +14,11 @@ class BillRequestMailer < LocaleMailer
     @updated = params[:updated]
     prefix = "[energy-sparks-#{environment_identifier}]"
     subject = @updated ? "#{prefix} #{@school.name} has updated a bill" : "#{prefix} #{@school.name} has uploaded a bill"
-    make_bootstrap_mail(to: 'operations@energysparks.uk', subject: subject)
+    admin = @school.school_group&.default_issues_admin_user
+    if admin
+      make_bootstrap_mail(to: admin.email, subject: subject)
+    else
+      make_bootstrap_mail(to: 'operations@energysparks.uk', subject: subject)
+    end
   end
 end
