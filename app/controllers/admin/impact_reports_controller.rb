@@ -21,7 +21,7 @@ module Admin
       @configuration.attributes = configuration_params if params[:impact_report_configuration].present?
 
       if @configuration.save
-        redirect_to url_from(params[:redirect_back]) || admin_impact_reports_path,
+        redirect_to edit_admin_impact_report_path(@school_group),
                     notice: 'Configuration was successfully updated.' # rubocop:disable Rails/I18nLocaleTexts
       else
         render :edit

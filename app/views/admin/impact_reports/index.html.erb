@@ -61,8 +61,7 @@
             <br><div class="badge text-bg-light">Expired</div>
           <% end %>
         </td>
-        <td class='text-center'><%= link_to 'Edit', edit_admin_impact_report_path(school_group,
-                                                                                  redirect_back: request.fullpath),
+        <td class='text-center'><%= link_to 'Edit', edit_admin_impact_report_path(school_group),
                                             class: 'btn btn-secondary' %>
       </tr>
     <% end %>
