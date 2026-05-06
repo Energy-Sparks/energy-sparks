@@ -9,6 +9,7 @@ module Admin
       include Columns
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
+
       before_action :set_metadata
 
       layout 'admin_reports'
@@ -20,8 +21,7 @@ module Admin
             @columns = columns.filter(&:display_html)
           end
           format.csv do
-            send_data(csv_report(@columns, @results),
-                      filename: EnergySparks::Filenames.csv(controller_name))
+            send_data(csv_report(@columns, @results), filename: EnergySparks::Filenames.csv(controller_name))
           end
         end
       end
