@@ -1,19 +1,22 @@
 <% if hide %>
-  <div class="bg-light border rounded py-2 m-4">
-    <div class="col-12 clearfix">
-      <span data-toggle="collapse"
-            href="#target-<%= identifier %>"
-            role="button" aria-expanded="true" aria-controls="target"
-            class="px-2 toggler text-decoration-none collapsed">
-        <%= toggler %>
-        <strong><%= title %></strong>
-      </span>
+  <%= tag.div class: class_names('border rounded p-2', classes) do %>
+    <span
+      data-toggle="collapse"
+      data-bs-toggle="collapse"
+      href="#target-<%= identifier %>"
+      data-bs-target="#target-<%= identifier %>"
+      role="button"
+      aria-expanded="false"
+      aria-controls="target-<%= identifier %>"
+      class="toggler text-decoration-none collapsed ps-2">
+      <%= toggler %>
+      <strong><%= title %></strong>
+    </span>
 
-      <div id='target-<%= identifier %>' class='collapse p-4'>
-        <%= content %>
-      </div>
+    <div id="target-<%= identifier %>" class="collapse">
+      <%= content %>
     </div>
-  </div>
+  <% end %>
 <% else %>
   <%= content %>
 <% end %>
