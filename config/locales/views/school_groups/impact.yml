@@ -72,9 +72,6 @@ en:
           enrolling_schools:
             subtext: Number of schools currently going through onboarding
             title: Enrolling schools
-          funded_places:
-            subtext: Value of free access to Energy Sparks provided to %{count} schools this year
-            title: Funded places
           pupils:
             subtext: Benefitting from access to our educational programme
             title: Pupils

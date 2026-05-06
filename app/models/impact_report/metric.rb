@@ -40,10 +40,10 @@ module ImpactReport
       energy_efficiency
       engagement
       potential_savings
-      footnotes
+      footnote
     ].freeze
 
-    enum :metric_category, enum_map(METRIC_CATEGORIES).freeze, prefix: :category
+    enum :metric_category, enum_map(METRIC_CATEGORIES).freeze
 
     OVERVIEW_METRICS = %i[
       visible_schools
@@ -81,5 +81,13 @@ module ImpactReport
       FOOTNOTE_METRICS).freeze
 
     enum :metric_type, enum_map(METRIC_TYPES).freeze, prefix: :type
+
+    def self.categories
+      METRIC_CATEGORIES
+    end
+
+    def self.types_for(category)
+      const_get("#{category.to_s.upcase}_METRICS")
+    end
   end
 end

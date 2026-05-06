@@ -7,7 +7,7 @@ module SchoolGroups
 
     load_resource :school_group
     before_action :redirect_unless_feature_enabled
-    before_action :load_config
+    before_action :load_data
     before_action :redirect_unless_authorised
     before_action :fetch_impact_report
     before_action :redirect_unless_visible
@@ -25,8 +25,9 @@ module SchoolGroups
       @impact_report = SchoolGroups::ImpactReport.new(@school_group)
     end
 
-    def load_config
+    def load_data
       @config = @school_group.impact_report_configuration
+      @run = @school_group.impact_report_runs.latest
     end
 
     def breadcrumbs
