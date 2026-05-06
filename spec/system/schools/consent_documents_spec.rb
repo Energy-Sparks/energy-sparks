@@ -4,6 +4,7 @@ describe 'consent documents', type: :system do
   let!(:school)                   { create_active_school(name: 'School', bill_requested: true)}
   let(:school_admin)              { create(:school_admin, school: school) }
   let!(:admin)                    { create(:admin) }
+  let(:school_group)              { create(:school_group, default_issues_admin_user: admin) }
 
   context 'with not visible school' do
     let!(:school) { create(:school, name: 'School', visible: false)}
@@ -114,41 +115,84 @@ describe 'consent documents', type: :system do
           end
 
           context 'when bill uploaded' do
-            before do
-              visit school_consent_documents_path(school)
-              click_on 'Upload a bill'
-              attach_file('File', Rails.root + 'spec/fixtures/documents/fake-bill.pdf')
-              click_on 'Upload'
-              expect(school.consent_documents.count).to be(1)
+            context 'when there is no default admin for the school group' do
+              before do
+                visit school_consent_documents_path(school)
+                click_on 'Upload a bill'
+                attach_file('File', Rails.root + 'spec/fixtures/documents/fake-bill.pdf')
+                click_on 'Upload'
+                expect(school.consent_documents.count).to be(1)
+              end
+
+              it 'sends an email to operations' do
+                expect(deliveries).to eq 1
+                expect(email.to).to contain_exactly('operations@energysparks.uk')
+                expect(email.subject).to include "#{school.name} has uploaded a bill"
+                expect(matcher).to have_link('View bill')
+                expect(matcher).to have_link('Perform review')
+              end
             end
 
-            it 'sends an email' do
-              expect(deliveries).to eq 1
-              expect(email.to).to contain_exactly('operations@energysparks.uk')
-              expect(email.subject).to include "#{school.name} has uploaded a bill"
-              expect(matcher).to have_link('View bill')
-              expect(matcher).to have_link('Perform review')
+            context 'when there is a default admin for the school group' do
+              let(:admin_owned_school)             { create(:school, name: 'Admin School', school_group:, bill_requested: true) }
+              let(:admin_owned_school_admin)       { create(:school_admin, school: admin_owned_school) }
+
+              before do
+                sign_in(admin_owned_school_admin)
+                visit school_consent_documents_path(admin_owned_school)
+                click_on 'Upload a bill'
+                attach_file('File', Rails.root + 'spec/fixtures/documents/fake-bill.pdf')
+                click_on 'Upload'
+                expect(admin_owned_school.consent_documents.count).to be(1)
+              end
+
+              it 'sends and email to the admin only' do
+                expect(email.to).to contain_exactly(admin.email)
+              end
             end
           end
 
           context 'when bill edited' do
-            before do
-              bill = create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill')
-              visit school_consent_document_path(school, bill)
-              click_on 'Edit'
+            context 'when there is no default admin for the school group' do
+              before do
+                bill = create(:consent_document, school: school, description: 'Proof!', title: 'Our Energy Bill')
+                visit school_consent_document_path(school, bill)
+                click_on 'Edit'
 
-              fill_in :consent_document_title, with: 'Changed title'
-              fill_in_trix with: 'New description'
+                fill_in :consent_document_title, with: 'Changed title'
+                fill_in_trix with: 'New description'
 
-              click_on 'Update'
+                click_on 'Update'
+              end
+
+              it 'sends an email to operations' do
+                expect(deliveries).to eq 1
+                expect(email.to).to contain_exactly('operations@energysparks.uk')
+                expect(email.subject).to include "#{school.name} has updated a bill"
+                expect(matcher).to have_link('View bill')
+                expect(matcher).to have_link('Perform review')
+              end
             end
 
-            it 'sends an email' do
-              expect(deliveries).to eq 1
-              expect(email.to).to contain_exactly('operations@energysparks.uk')
-              expect(email.subject).to include "#{school.name} has updated a bill"
-              expect(matcher).to have_link('View bill')
-              expect(matcher).to have_link('Perform review')
+            context 'when there is a default admin for the school group' do
+              let(:admin_owned_school)             { create(:school, name: 'Admin School', school_group:, bill_requested: true) }
+              let(:admin_owned_school_admin)       { create(:school_admin, school: admin_owned_school) }
+
+              before do
+                sign_in(admin_owned_school_admin)
+                bill = create(:consent_document, school: admin_owned_school, description: 'Proof!', title: 'Our Energy Bill')
+                visit school_consent_document_path(admin_owned_school, bill)
+                click_on 'Edit'
+
+                fill_in :consent_document_title, with: 'Changed title'
+                fill_in_trix with: 'New description'
+
+                click_on 'Update'
+              end
+
+              it 'sends and email to the admin only' do
+                expect(email.to).to contain_exactly(admin.email)
+              end
             end
           end
         end
