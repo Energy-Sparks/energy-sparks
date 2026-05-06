@@ -169,4 +169,31 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
     end
   end
+
+  describe 'low engagement prompt' do
+    context 'when there are no groups with low engagement' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the low engagement prompt' do
+        expect(page).to have_no_text('groups with engagement below 50%')
+      end
+    end
+
+    context 'when there are groups with low engagement' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school, :with_points, school_group:)
+        create_list(:school, 2, school_group:)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the low engagement prompt' do
+        expect(page).to have_text('You have 1 groups with engagement below 50%')
+        expect(page).to have_link('View Engaged Groups', href: admin_reports_engaged_groups_path)
+      end
+    end
+  end
 end
