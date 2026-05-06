@@ -43,7 +43,7 @@ module ImpactReport
       footnotes
     ].freeze
 
-    enum :metric_category, enum_map(METRIC_CATEGORIES).freeze, prefix: :category
+    enum :metric_category, enum_map(METRIC_CATEGORIES).freeze
 
     OVERVIEW_METRICS = %i[
       visible_schools

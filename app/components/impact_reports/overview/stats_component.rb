@@ -4,7 +4,7 @@ module ImpactReports
   module Overview
     class StatsComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
       def show_enrolling?
-        @impact_report.overview.enrolling_schools > @impact_report.overview.enrolled_schools
+        run.overview(:enrolling_schools).value > run.overview(:enrolled_schools).value
       end
     end
   end
