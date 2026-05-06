@@ -19,7 +19,6 @@ en:
             title: Total gas savings
         description: How are schools in this group making progress towards being more energy efficient?
         featured:
-          description: "%{school} have reduced their annual electricity consumption by %{percentage_reduction}% in the last 12 months"
           title: Featured energy efficient school
         title: Energy Efficiency
       engagement:

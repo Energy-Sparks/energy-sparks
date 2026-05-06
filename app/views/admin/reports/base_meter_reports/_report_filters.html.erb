@@ -29,7 +29,7 @@
                         controller: controller_path,
                         action: :index,
                         only_path: true,
-                        **params.permit(:school_group, :user, :meter_type).merge(format: :csv)
+                        **params.permit(:school_group, :admin, :meter_type).merge(format: :csv)
                       ),
                       class: 'ml-2 btn btn-sm' %>
           <% end %>
