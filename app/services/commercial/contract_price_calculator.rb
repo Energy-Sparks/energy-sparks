@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Commercial
+  # rubocop:disable Metrics/ClassLength
   class ContractPriceCalculator
     def initialize(contract)
       @contract = contract
@@ -28,11 +29,35 @@ module Commercial
       rows.to_h { |row| [row.school_id, row_to_price_hash(row)] }
     end
 
-    def meter_counts
-      Meter
-        .where(pseudo: false, meter_type: Meter::MAIN_METER_TYPES, active: true)
-        .group(:school_id)
-        .select('school_id, COUNT(*) AS meter_count')
+    def row_to_price_hash(row)
+      {
+        id: row.school_id,
+        licence_id: row.licence_id,
+        name: row.school_name,
+        price: calculate_price(row)
+      }
+    end
+
+    def calculate_price(row)
+      multiplier = length_multiplier * prorata_multiplier(licence_start_date, licence_end_date)
+      Price.new(
+        base_price: row.base_price.to_f * multiplier,
+        metering_fee: row.metering_fee.to_f * multiplier,
+        private_account_fee: row.private_account_fee.to_f * multiplier
+      )
+    end
+
+    def length_multiplier
+      @contract.licence_period_days.to_f / 365.0
+    end
+
+    def prorata_multiplier(licence_start_date, licence_end_date)
+      return 1.0 if @contract.invoice_terms == 'full'
+
+      licence_days = (licence_end_date - licence_start_date).to_i
+      full_days = @contract.licence_period_days.to_f
+
+      licence_days.to_f / full_days
     end
 
     def schools_scope
@@ -49,18 +74,8 @@ module Commercial
                .order('schools.name')
     end
 
-    def row_to_price_hash(row)
-      Price.new(
-        base_price: row.base_price.to_f,
-        metering_fee: row.metering_fee.to_f,
-        private_account_fee: row.private_account_fee.to_f
-      ).then do |price|
-        {
-          id: row.school_id,
-          name: row.school_name,
-          price: price
-        }
-      end
+    def meter_counts
+      Meter.main_meter_counts_by_school.select('school_id, COUNT(*) AS meter_count')
     end
 
     def calculate_price_sql # rubocop:disable Metrics/MethodLength
@@ -74,6 +89,9 @@ module Commercial
       <<~SQL.squish
         schools.id AS school_id,
         schools.name AS school_name,
+        licences.id AS licence_id,
+        licences.start_date AS licence_start_date,
+        licences.end_date AS licence_end_date,
 
         CASE
           WHEN licences.school_specific_price IS NOT NULL
@@ -107,4 +125,5 @@ module Commercial
       value.nil? ? 'NULL' : value
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
