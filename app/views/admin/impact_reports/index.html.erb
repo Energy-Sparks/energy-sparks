@@ -1,0 +1,69 @@
+<% content_for :page_title, 'Impact Report Configurations' %>
+<h1>Impact Report Configurations</h1>
+<div class="bg-light p-2 my-2 border rounded-2">
+  <%= form_tag admin_impact_reports_path, method: :get do %>
+  <div class="d-flex align-items-center gap-2">
+      <%= select_tag :user,
+                     options_from_collection_for_select(User.admins_by_name, :id, :display_name, params[:user]),
+                     include_blank: 'Any admin user',
+                     class: 'form-control' %>
+      <%= submit_tag 'Filter',
+                     class: 'btn btn-secondary btn-sm' %>
+    </div>
+
+  <% end %>
+</div>
+<table class="table table-paged">
+  <thead>
+    <tr class="bg-light border-top boder-bottom">
+      <th colspan="3">&nbsp;</th>
+      <th colspan="2" class="text-center bg-light border-start border-end">Energy efficiency</th>
+      <th colspan="2" class="text-center bg-light border-end">Engagement</th>
+      <th></th>
+    </tr>
+    <tr>
+      <th>Visible</th>
+      <th>Report for group</th>
+      <th>Admin</th>
+      <th class='border-start'>Visible</th>
+      <th>Feature?</th>
+      <th class='border-start'>Visible</th>
+      <th class='border-end'>Override podium?</th>
+      <th class="no-sort">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @school_groups.each do |school_group| %>
+      <% config = school_group.impact_report_configuration %>
+      <tr class="<%= 'bg-light' unless config %>">
+        <td class="text-center"><%= checkmark(config&.visible) %></td>
+        <td>
+          <%= link_to school_group.name, school_group_impact_index_path(school_group) %>
+        </td>
+        <td>
+          <% if school_group&.default_issues_admin_user %>
+            <span class="badge border text-dark fw-normal border-primary rounded-pill">
+              <%= school_group&.default_issues_admin_user&.display_name %>
+            </span>
+          <% end %>
+        </td>
+        <td class="text-center border-start"><%= checkmark(config&.show_energy_efficiency || !config) %></td>
+        <td class="text-center border-end">
+          <%= checkmark(config&.feature_visible_for?(:energy_efficiency)) %>
+          <% if config&.feature_expired_for?(:energy_efficiency) %>
+            <br><div class="badge text-bg-light">Expired</div>
+          <% end %>
+        </td>
+        <td class="text-center"><%= checkmark(config&.show_engagement || !config) %></td>
+        <td class="text-center border-end">
+          <%= checkmark(config&.feature_visible_for?(:engagement)) %>
+          <% if config&.feature_expired_for?(:engagement) %>
+            <br><div class="badge text-bg-light">Expired</div>
+          <% end %>
+        </td>
+        <td class='text-center'><%= link_to 'Edit', edit_admin_impact_report_path(school_group),
+                                            class: 'btn btn-secondary' %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

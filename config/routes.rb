@@ -680,10 +680,7 @@ Rails.application.routes.draw do
       resources :sections, except: [:show], concerns: [:publishable]
     end
 
-    namespace :impact do
-      resources :configurations, only: %i[index edit update]
-    end
-
+    resources :impact_reports, only: %i[index edit update]
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent

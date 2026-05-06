@@ -41,7 +41,7 @@ RSpec.shared_examples 'a page with a manage school group menu' do
     expect(find_by_id('dropdown-manage-school-group').all('a').collect(&:text)).to eq(
       ['Settings', 'Chart settings', 'Manage clusters', 'Manage tariffs',
        'Digital signage', 'School engagement', 'School status', 'SECR report', 'Timeline',
-       'Edit group', 'Group admin', 'Issues', 'Manage users', 'Manage partners', 'Set message']
+       'Edit group', 'Group admin', 'Impact report', 'Issues', 'Manage users', 'Manage partners', 'Set message']
     )
   end
 end

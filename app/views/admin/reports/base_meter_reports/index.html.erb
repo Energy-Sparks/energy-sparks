@@ -7,8 +7,8 @@
                                            index_button[:path],
                                            style: :secondary,
                                            classes: 'mb-2 me-2') %>
-<% else %>
 
+<% else %>
   <% content_for :page_title, @title %>
   <% content_for :report_header do %>
     <div class="row">
@@ -18,7 +18,7 @@
     </div>
     <div class="d-flex justify-content-between align-items-center">
       <p>
-        <span class="badge text-bg">Updated <%= @frequency.to_s.humanize %> </span> <%= @description %>
+        <span class="badge text-bg-info">Updated <%= @frequency.to_s.humanize %> </span> <%= @description %>
       </p>
       <% if lookup_context.exists?('help', lookup_context.prefixes, true) %>
       <p>
@@ -48,16 +48,22 @@
   <% end %>
 <% end %>
 
-<div class="row">
-  <div class="col">
-    <span class="float-start">
-      <%= @results.length %> Results
-    </span>
+<% if @results.nil? %>
+  <div class="text-center m-4">
+    Filter to display results
   </div>
-</div>
+<% else %>
+  <div class="row">
+    <div class="col">
+      <span class="float-end">
+        <%= @results.length %> Results
+      </span>
+    </div>
+  </div>
 
-<div class="row">
-  <div class="col">
-    <%= render 'admin/reports/column_table', columns: @columns, rows: @results %>
+  <div class="row">
+    <div class="col">
+      <%= render 'admin/reports/column_table', columns: @columns, rows: @results %>
+    </div>
   </div>
-</div>
+<% end %>
