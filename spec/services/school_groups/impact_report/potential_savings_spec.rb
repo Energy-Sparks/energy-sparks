@@ -15,7 +15,7 @@ RSpec.describe SchoolGroups::ImpactReport::PotentialSavings do
                                        one_year_saving_co2: 5.5,
                                        one_year_saving_kwh: 9000) }
     priority_actions = instance_double(SchoolGroups::PriorityActions, total_savings:)
-    allow(SchoolGroups::PriorityActions).to receive(:new).with(school_group).and_return(priority_actions)
+    allow(SchoolGroups::PriorityActions).to receive(:new).with(schools).and_return(priority_actions)
   end
 
   describe '#value' do
