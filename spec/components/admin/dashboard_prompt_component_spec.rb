@@ -169,4 +169,30 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
       end
     end
   end
+
+  describe 'missing alert contacts prompt' do
+    context 'when there are no schools missing alert contacts' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the missing alert contacts prompt' do
+        expect(page).to have_no_text('schools that are missing alert contacts')
+      end
+    end
+
+    context 'when there are schools missing alert contacts' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school, school_group:, active: true)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the missing alert contacts prompt' do
+        expect(page).to have_text('You have 1 schools that are missing alert contacts')
+        expect(page).to have_link('View Schools', href: admin_dashboard_missing_alert_contacts_path(dashboard_id: user))
+      end
+    end
+  end
 end
