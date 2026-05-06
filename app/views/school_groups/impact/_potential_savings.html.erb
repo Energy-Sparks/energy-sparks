@@ -12,7 +12,7 @@
   <% grid.with_stats_card do |card| %>
     <%= card.with_placeholder %>
     <%= card.with_header title: impact_t('potential_savings.cards.electricity_savings.title') %>
-    <%= card.with_figure format_unit(impact_report.potential_savings.electricity_out_of_hours_gbp, :£) %>
+    <%= card.with_figure format_unit(impact_report.value(:potential_savings, :electricity_out_of_hours_gbp), :£) %>
     <%= card.with_subtext do
           impact_t('potential_savings.cards.electricity_savings.subtext')
         end %>
@@ -20,19 +20,19 @@
   <% grid.with_stats_card do |card| %>
     <%= card.with_placeholder %>
     <%= card.with_header title: impact_t('potential_savings.cards.solar_panels.title') %>
-    <%= card.with_figure format_unit(impact_report.potential_savings.solar_panels_gbp, :£) %>
+    <%= card.with_figure format_unit(impact_report.value(:potential_savings, :solar_panels_gbp), :£) %>
     <%= card.with_subtext do
           impact_t('potential_savings.cards.solar_panels.subtext',
-                   count: impact_report.potential_savings.number_of_schools(:solar_panels))
+                   count: impact_report.number_of_schools(:potential_savings, :solar_panels))
         end %>
   <% end %>
   <% grid.with_stats_card do |card| %>
     <%= card.with_placeholder %>
     <%= card.with_header title: impact_t('potential_savings.cards.gas_savings.title') %>
-    <%= card.with_figure format_unit(impact_report.potential_savings.gas_out_of_hours_gbp, :£) %>
+    <%= card.with_figure format_unit(impact_report.value(:potential_savings, :gas_out_of_hours_gbp), :£) %>
     <%= card.with_subtext do
           impact_t('potential_savings.cards.gas_savings.subtext',
-                   count: impact_report.potential_savings.number_of_schools(:gas_out_of_hours))
+                   count: impact_report.number_of_schools(:potential_savings, :gas_out_of_hours))
         end %>
   <% end %>
 <% end %>
