@@ -281,6 +281,24 @@ class SchoolGroup < ApplicationRecord
     joins(school_groupings: :school).merge(School.active).distinct
   end
 
+  def self.count_active_schools
+    joins("LEFT JOIN (
+            #{SchoolGrouping.joins(:school)
+              .merge(School.active)
+              .group(:school_group_id)
+              .select(:school_group_id, 'COUNT(*)').to_sql}
+          ) AS active ON school_groups.id = active.school_group_id")
+  end
+
+  def self.count_engaged_schools
+    joins("LEFT JOIN (
+            #{SchoolGrouping.joins(:school)
+              .merge(School.engaged(AcademicYear.current&.start_date..))
+              .group(:school_group_id)
+              .select(:school_group_id, 'COUNT(*)').to_sql}
+          ) AS engaged ON school_groups.id = engaged.school_group_id")
+  end
+
   def all_issues
     Issue.for_school_group(self)
   end

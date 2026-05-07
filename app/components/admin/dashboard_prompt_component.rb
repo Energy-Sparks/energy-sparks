@@ -114,23 +114,15 @@ module Admin
                                                              .count
     end
 
-    def low_engaged_schools_count # rubocop:disable Metrics/AbcSize
+    def low_engaged_schools_count
+      engagement_threshold = 0.5
       @low_engaged_schools_count ||= SchoolGroup.organisation_groups
                                                 .where(default_issues_admin_user: @user)
-                                                .joins("LEFT JOIN (
-                                                          #{SchoolGrouping.joins(:school)
-                                                            .merge(School.active)
-                                                            .group(:school_group_id)
-                                                            .select(:school_group_id, 'COUNT(*)').to_sql}
-                                                        ) AS active ON school_groups.id = active.school_group_id")
-                                                .joins("LEFT JOIN (
-                                                          #{SchoolGrouping.joins(:school)
-                                                            .merge(School.engaged(AcademicYear.current&.start_date..))
-                                                            .group(:school_group_id)
-                                                            .select(:school_group_id, 'COUNT(*)').to_sql}
-                                                        ) AS engaged ON school_groups.id = engaged.school_group_id")
+                                                .count_active_schools
+                                                .count_engaged_schools
                                                 .where('COALESCE(active.count, 0) > 0')
-                                                .where('COALESCE(engaged.count, 0) * 1.0 < 0.5 * active.count')
+                                                .where('COALESCE(engaged.count, 0) * 1.0 < ? * active.count',
+                                                       engagement_threshold)
                                                 .count
     end
 
