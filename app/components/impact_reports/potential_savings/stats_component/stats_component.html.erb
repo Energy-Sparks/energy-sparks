@@ -1,0 +1,33 @@
+<%= tag.div id: id, class: classes do %>
+  <%= render Layout::GridComponent.new(id: 'potential-savings-cards',
+                                       cols: 3, classes: 'mb-4',
+                                       cell_classes: 'mb-4',
+                                       component_classes: 'theme theme-dark') do |grid| %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_placeholder %>
+      <%= card.with_header title: impact_t('potential_savings.cards.electricity_savings.title') %>
+      <%= card.with_figure format_unit(@impact_report.potential_savings.electricity_savings, :£) %>
+      <%= card.with_subtext do
+            impact_t('potential_savings.cards.electricity_savings.subtext')
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_placeholder %>
+      <%= card.with_header title: impact_t('potential_savings.cards.solar_panels.title') %>
+      <%= card.with_figure format_unit(@impact_report.potential_savings.solar_panels, :£) %>
+      <%= card.with_subtext do
+            impact_t('potential_savings.cards.solar_panels.subtext',
+                     count: @impact_report.potential_savings.solar_panels_schools)
+          end %>
+    <% end %>
+    <% grid.with_stats_card do |card| %>
+      <%= card.with_placeholder %>
+      <%= card.with_header title: impact_t('potential_savings.cards.gas_savings.title') %>
+      <%= card.with_figure format_unit(@impact_report.potential_savings.gas_savings, :£) %>
+      <%= card.with_subtext do
+            impact_t('potential_savings.cards.gas_savings.subtext',
+                     count: @impact_report.potential_savings.gas_savings_schools)
+          end %>
+    <% end %>
+  <% end %>
+<% end %>

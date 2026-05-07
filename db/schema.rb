@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_27_103143) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_27_130730) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1225,9 +1225,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_103143) do
 
   create_table "impact_report_configurations", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.text "energy_efficiency_note"
+    t.date "energy_efficiency_school_expiry_date"
+    t.bigint "energy_efficiency_school_id"
+    t.text "engagement_note"
+    t.date "engagement_school_expiry_date"
+    t.bigint "engagement_school_id"
     t.bigint "school_group_id", null: false
+    t.boolean "show_energy_efficiency", default: true, null: false
     t.boolean "show_engagement", default: true, null: false
     t.datetime "updated_at", null: false
+    t.boolean "visible", default: false, null: false
+    t.index ["energy_efficiency_school_id"], name: "idx_on_energy_efficiency_school_id_a86b38c262"
+    t.index ["engagement_school_id"], name: "index_impact_report_configurations_on_engagement_school_id"
     t.index ["school_group_id"], name: "index_impact_report_configurations_on_school_group_id"
   end
 
@@ -2512,6 +2522,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_103143) do
   add_foreign_key "global_meter_attributes", "users", column: "created_by_id", on_delete: :nullify
   add_foreign_key "global_meter_attributes", "users", column: "deleted_by_id", on_delete: :restrict
   add_foreign_key "impact_report_configurations", "school_groups"
+  add_foreign_key "impact_report_configurations", "schools", column: "energy_efficiency_school_id"
+  add_foreign_key "impact_report_configurations", "schools", column: "engagement_school_id"
   add_foreign_key "impact_report_metrics", "impact_report_runs"
   add_foreign_key "impact_report_runs", "school_groups"
   add_foreign_key "intervention_type_suggestions", "intervention_types", on_delete: :cascade

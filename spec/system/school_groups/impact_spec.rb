@@ -6,6 +6,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
   include ActionView::Helpers::SanitizeHelper
 
   let!(:school_group) { create(:school_group, :with_active_schools, count: 2, public: true) }
+  let!(:config) { create(:impact_report_configuration, school_group:, visible: true) }
 
   before do
     # so we can display a testimonial
@@ -13,19 +14,66 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
   end
 
   describe 'Access control' do
-    before { Flipper.enable(:impact_reporting) }
-
-    it_behaves_like 'an access controlled group page', with_schools_check: false do
-      let(:path) { school_group_impact_index_path(school_group) }
-    end
-
-    context 'when group has less than 2 schools' do
-      let!(:school_group) { create(:school_group, :with_active_schools, count: 1, public: true) }
-
-      before { visit school_group_impact_index_path(school_group) }
-
+    shared_examples 'an access controlled impact page' do |message: 'This feature is not available'|
       it 'redirects to school group dashboard' do
         expect(page).to have_current_path(school_group_path(school_group))
+        expect(page).to have_content(message)
+      end
+    end
+
+    context without_feature: :impact_reporting do
+      before do
+        visit school_group_impact_index_path(school_group)
+      end
+
+      it_behaves_like 'an access controlled impact page'
+    end
+
+    context with_feature: :impact_reporting do
+      it_behaves_like 'an access controlled group page', with_schools_check: false do
+        let(:path) { school_group_impact_index_path(school_group) }
+      end
+
+      let(:user) { nil }
+
+      before do
+        login_as(user) if user.present?
+        visit school_group_impact_index_path(school_group)
+      end
+
+      context 'when there is no config and user is not logged in' do
+        let(:config) {}
+        let(:user) { nil }
+
+        it_behaves_like 'an access controlled impact page'
+      end
+
+      context 'when config is not visible' do
+        let!(:config) { create(:impact_report_configuration, school_group:, visible: false) }
+
+        it_behaves_like 'an access controlled impact page'
+      end
+
+      context 'when config is visible but user is not admin' do
+        let!(:config) { create(:impact_report_configuration, school_group:, visible: false) }
+        let(:user) { create(:group_admin, school_group:) }
+
+        it_behaves_like 'an access controlled impact page'
+      end
+
+      context 'when config is visible and user is an admin' do
+        let!(:config) { create(:impact_report_configuration, school_group:, visible: false) }
+        let(:user) { create(:admin) }
+
+        it 'allows access' do
+          expect(page).to have_current_path(school_group_impact_index_path(school_group))
+        end
+      end
+
+      context 'when group has less than 2 schools' do
+        let!(:school_group) { create(:school_group, :with_active_schools, count: 1, public: true) }
+
+        it_behaves_like 'an access controlled impact page', message: 'Not enough data'
       end
     end
   end
@@ -33,12 +81,17 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
   describe 'Page layout' do
     before do
       Flipper.enable(:impact_reporting)
+
       school = school_group.schools.first
       school.update(scoreboard: create(:scoreboard))
       create(:activity, school: school)
 
       # so we can show a testimonial
       create(:testimonial)
+
+      # so we can show an energy efficiency featured school
+      config.update(energy_efficiency_school: school_group.schools.first, energy_efficiency_note: 'Super school')
+
       visit school_group_impact_index_path(school_group)
     end
 
@@ -91,16 +144,6 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
 
       it { expect(page).to have_css('#notes') }
       it { expect(page).to have_css('#notes-content') }
-    end
-  end
-
-  context without_feature: :impact_reporting do
-    before do
-      visit school_group_impact_index_path(school_group)
-    end
-
-    it 'redirects to the group page' do
-      expect(page).to have_current_path(school_group_path(school_group))
     end
   end
 end
