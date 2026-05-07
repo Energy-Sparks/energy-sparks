@@ -11,7 +11,7 @@ module Admin
       @user = user
     end
 
-    def dashboard_prompts # rubocop:disable Metrics/AbcSize
+    def dashboard_prompts # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       [
         { id: 'overdue-issues', check: prompt_for_issues_overdue?, status: :negative, icon: 'exclamation',
           link: 'View Issues',
@@ -37,7 +37,11 @@ module Admin
           content: "You have #{school_onboardings_count} schools that have not yet completed onboarding" },
         { id: 'low-engaged-schools', check: prompt_for_low_engaged_schools?, status: :neutral,
           icon: 'school-circle-xmark', link: 'View Engaged Groups', path: admin_reports_engaged_groups_path,
-          content: "You have #{low_engaged_schools_count} groups with engagement below 50%" }
+          content: "You have #{low_engaged_schools_count} groups with engagement below 50%" },
+        { id: 'missing-alert-contacts', check: prompt_for_missing_alert_contacts?,
+          status: :neutral, icon: 'address-book', link: 'View Schools',
+          path: admin_dashboard_missing_alert_contacts_path(dashboard_id: @user),
+          content: "You have #{missing_alert_contacts_count} schools that are missing alert contacts" }
       ]
     end
 
@@ -71,6 +75,10 @@ module Admin
       true unless low_engaged_schools_count.nil? || low_engaged_schools_count.zero?
     end
 
+    def prompt_for_missing_alert_contacts?
+      true unless missing_alert_contacts_count.nil? || missing_alert_contacts_count.zero?
+    end
+
     def overdue_issues_count
       @overdue_issues_count ||= user.owned_issues.where.not(review_date: Date.current..).count
     end
@@ -99,7 +107,7 @@ module Admin
 
     def missing_data_feed_readings_count
       @missing_data_feed_readings_count ||= AmrDataFeedConfig.enabled
-                                                             .where(owned_by: @user)
+                                                             .where(owned_by: user)
                                                              .where.not(source_type: :manual)
                                                              .where.not(missing_reading_window: nil)
                                                              .stopped_feeds
@@ -124,6 +132,14 @@ module Admin
                                                 .where('COALESCE(active.count, 0) > 0')
                                                 .where('COALESCE(engaged.count, 0) * 1.0 < 0.5 * active.count')
                                                 .count
+    end
+
+    def missing_alert_contacts_count
+      @missing_alert_contacts_count ||= School.joins(:school_group)
+                                              .where(school_group: { default_issues_admin_user: user })
+                                              .visible
+                                              .missing_alert_contacts
+                                              .count
     end
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists

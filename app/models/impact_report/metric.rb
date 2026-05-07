@@ -69,7 +69,7 @@ module ImpactReport
 
     POTENTIAL_SAVINGS_METRICS = %i[].freeze
     # e.g.:
-    # reducing_out_of_hours_usage: 'reducing_out_of_hours_usage'
+    # reducing_out_of_hours_usage
 
     FOOTNOTE_METRICS = %i[].freeze
 
