@@ -33,7 +33,11 @@ module Admin
           content: "You have #{school_activations_count} schools awaiting activation" },
         { id: 'school-onboarding', check: prompt_for_school_onboarding?, status: :neutral, icon: 'school',
           link: 'View Onboardings', path: admin_dashboard_school_onboardings_path(dashboard_id: @user),
-          content: "You have #{school_onboardings_count} schools that have not yet completed onboarding" }
+          content: "You have #{school_onboardings_count} schools that have not yet completed onboarding" },
+        { id: 'missing-alert-contacts', check: prompt_for_missing_alert_contacts?,
+          status: :neutral, icon: 'address-book', link: 'View Schools',
+          path: admin_dashboard_missing_alert_contacts_path(dashboard_id: @user),
+          content: "You have #{missing_alert_contacts_count} schools that are missing alert contacts" }
       ]
     end
 
@@ -61,6 +65,10 @@ module Admin
 
     def prompt_for_missing_data_feed_readings?
       true unless missing_data_feed_readings_count.nil? || missing_data_feed_readings_count.zero?
+    end
+
+    def prompt_for_missing_alert_contacts?
+      true unless missing_alert_contacts_count.nil? || missing_alert_contacts_count.zero?
     end
 
     def overdue_issues_count
@@ -91,11 +99,19 @@ module Admin
 
     def missing_data_feed_readings_count
       @missing_data_feed_readings_count ||= AmrDataFeedConfig.enabled
-                                                             .where(owned_by: @user)
+                                                             .where(owned_by: user)
                                                              .where.not(source_type: :manual)
                                                              .where.not(missing_reading_window: nil)
                                                              .stopped_feeds
                                                              .count
+    end
+
+    def missing_alert_contacts_count
+      @missing_alert_contacts_count ||= School.joins(:school_group)
+                                              .where(school_group: { default_issues_admin_user: user })
+                                              .visible
+                                              .missing_alert_contacts
+                                              .count
     end
 
     def add_prompt(list:, status:, icon:, check: true, id: nil, link: nil, path: nil) # rubocop:disable Metrics/ParameterLists
