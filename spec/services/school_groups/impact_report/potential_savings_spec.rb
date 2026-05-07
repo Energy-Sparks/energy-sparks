@@ -18,49 +18,34 @@ RSpec.describe SchoolGroups::ImpactReport::PotentialSavings do
     allow(SchoolGroups::PriorityActions).to receive(:new).with(schools).and_return(priority_actions)
   end
 
-  describe '#value' do
+  describe '#metrics' do
+    subject(:metrics) do
+      potential_savings.metrics.index_by { |metric| [metric[:fuel_type], metric[:metric_type].to_sym] }
+                               .transform_values { |u| u.except(:fuel_type, :metric_type) }
+    end
+
+    def expected(**)
+      { enough_data: true, metric_category: :potential_savings, number_of_schools: 3,
+        value: 1 }.merge(**)
+    end
+
     context 'when the alert has data' do
       it 'returns the GBP saving for an electricity_out_of_hours_gbp metric' do
-        expect(potential_savings.value(:electricity_out_of_hours_gbp)).to eq(1200.0)
+        expect(metrics[%i[electricity out_of_hours_gbp]]).to eq(expected(value: 1200))
       end
 
       it 'returns the CO2 saving for an electricity_out_of_hours_co2 metric' do
-        expect(potential_savings.value(:electricity_out_of_hours_co2)).to eq(5.5)
+        expect(metrics[%i[electricity out_of_hours_co2]]).to eq(expected(value: 5.5))
       end
 
       it 'returns the kWh saving for an electricity_out_of_hours_kwh metric' do
-        expect(potential_savings.value(:electricity_out_of_hours_kwh)).to eq(9000.0)
+        expect(metrics[%i[electricity out_of_hours_kwh]]).to eq(expected(value: 9000))
       end
     end
 
     context 'when there is no matching action for the alert' do
-      it 'returns nil' do
-        expect(potential_savings.value(:gas_use_gbp)).to be_nil
-      end
-    end
-
-    context 'when the metric string is passed as a string rather than a symbol' do
-      it 'still returns the correct value' do
-        expect(potential_savings.value('electricity_out_of_hours_gbp')).to eq(1200.0)
-      end
-    end
-  end
-
-  describe '#number_of_schools' do
-    context 'when schools are associated with the alert action' do
-      it 'returns the count of schools for the given metric' do
-        expect(potential_savings.number_of_schools(:electricity_out_of_hours_gbp)).to eq(3)
-      end
-
-      it 'ignores the type suffix when looking up schools' do
-        expect(potential_savings.number_of_schools(:electricity_out_of_hours_kwh)).to eq(3)
-        expect(potential_savings.number_of_schools(:electricity_out_of_hours_co2)).to eq(3)
-      end
-    end
-
-    context 'when there is no matching action for the alert' do
-      it 'returns nil' do
-        expect(potential_savings.number_of_schools(:gas_use_gbp)).to be_nil
+      it 'returns zero' do
+        expect(metrics[%i[gas out_of_hours_kwh]]).to eq(expected(value: 0, number_of_schools: 0, enough_data: false))
       end
     end
   end

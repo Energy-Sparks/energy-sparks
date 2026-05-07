@@ -64,6 +64,12 @@ module SchoolGroups
       send(category).number_of_schools(type)
     end
 
+    def metrics
+      %i[overview engagement potential_savings].flat_map do |metric_category|
+        send(metric_category).metrics
+      end
+    end
+
     class Base
       attr_reader :impact_report
 
@@ -71,75 +77,32 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
-      def number_of_schools(*)
-        @impact_report.visible_schools_count
+      def metrics
+        metric_names.map do |fuel_type, metric_type|
+          { enough_data: enough_data?(fuel_type, metric_type),
+            metric_category:,
+            metric_type:,
+            number_of_schools: number_of_schools(metric_type),
+            fuel_type:,
+            value: value(fuel_type, metric_type) }
+        end
       end
 
       delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago,
                :three_months_ago, to: :impact_report
-    end
-
-    # Will move these out into seperate files at some point
-    class Overview < Base
-      def visible_schools
-        @impact_report.visible_schools_count
-      end
-
-      def data_visible_schools
-        @impact_report.data_visible_schools_count
-      end
-
-      def users
-        users_scope.count
-      end
-
-      def active_users
-        users_scope.recently_logged_in(three_months_ago).count
-      end
-
-      def pupils
-        @impact_report.visible_schools.sum(:number_of_pupils)
-      end
-
-      def funded_places
-        3
-      end
-
-      def funded_places_value
-        1500
-      end
-
-      # schools enrolled in the last 12 months
-      def enrolled_schools
-        school_group
-          .onboardings_for_group
-          .joins(:events)
-          .where(
-            school_onboarding_events: {
-              event: SchoolOnboardingEvent.events[:onboarding_complete],
-              created_at: twelve_months_ago..
-            }
-          )
-          .distinct
-          .count
-      end
-
-      # schools still enrolling
-      def enrolling_schools
-        school_group.onboardings_for_group.incomplete.count
-      end
 
       private
 
-      def users_scope
-        schools = @impact_report.visible_schools
-        # do we want cluster users?
-        cluster_users = User.joins(:cluster_schools_users).where(cluster_schools_users: { school_id: schools })
+      def enough_data?(*)
+        true
+      end
 
-        User.where(school: schools)
-            .or(User.where(school_group:))
-            .or(User.where(id: cluster_users))
-            .distinct
+      def number_of_schools(*)
+        @impact_report.visible_schools_count
+      end
+
+      def value(_fuel_type, metric_type)
+        send(metric_type)
       end
     end
 
@@ -174,50 +137,6 @@ module SchoolGroups
 
       def reduced_electricity_emissions_schools
         3
-      end
-    end
-
-    class Engagement < Base
-      def activities
-        Activity
-          .between(twelve_months_ago, generated_at)
-          .joins(:school)
-          .merge(visible_schools)
-          .count
-      end
-
-      def actions
-        Observation
-          .intervention
-          .between(twelve_months_ago, generated_at)
-          .joins(:school)
-          .merge(visible_schools)
-          .count
-      end
-
-      def points
-        Observation
-          .between(twelve_months_ago, generated_at)
-          .joins(:school)
-          .merge(visible_schools)
-          .sum(:points)
-      end
-
-      def programmes
-        Programme
-          .completed
-          .where(created_at: twelve_months_ago..)
-          .joins(:school)
-          .merge(visible_schools)
-          .count
-      end
-
-      def targets
-        SchoolTarget
-          .currently_active
-          .joins(:school)
-          .merge(visible_schools)
-          .count
       end
     end
   end

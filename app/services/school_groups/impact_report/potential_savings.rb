@@ -3,41 +3,65 @@
 module SchoolGroups
   class ImpactReport
     class PotentialSavings < Base
+      def self.metric_type(base, type) = [base, type].join('_')
+
       ALERTS = {
-        electricity_out_of_hours: AlertOutOfHoursElectricityUsage,
-        electricity_peak: AlertElectricityPeakKWVersusBenchmark,
-        electricity_use: AlertElectricityAnnualVersusBenchmark,
-        electricity_baseload: AlertElectricityBaseloadVersusBenchmark,
-        solar_panels: AlertSolarPVBenefitEstimator,
-        thermostatic_control: AlertThermostaticControl,
-        gas_out_of_hours: AlertOutOfHoursGasUsage,
-        gas_use: AlertGasAnnualVersusBenchmark,
-        heating_early: AlertHeatingComingOnTooEarly,
-        heating_down: AlertHeatingSensitivityAdvice,
-        heating_off: AlertSeasonalHeatingSchoolDays,
-        storage_heaters_off: AlertSeasonalHeatingSchoolDaysStorageHeaters,
-        insulate_pipes: AlertHotWaterInsulationAdvice
+        %i[electricity baseload] => AlertElectricityBaseloadVersusBenchmark,
+        %i[electricity out_of_hours] => AlertOutOfHoursElectricityUsage,
+        %i[electricity peak] => AlertElectricityPeakKWVersusBenchmark,
+        %i[electricity use] => AlertElectricityAnnualVersusBenchmark,
+        %i[gas heating_down] => AlertHeatingSensitivityAdvice,
+        %i[gas heating_early] => AlertHeatingComingOnTooEarly,
+        %i[gas heating_off] => AlertSeasonalHeatingSchoolDays,
+        %i[gas insulate_pipes] => AlertHotWaterInsulationAdvice,
+        %i[gas out_of_hours] => AlertOutOfHoursGasUsage,
+        %i[gas thermostatic_control] => AlertThermostaticControl,
+        %i[gas use] => AlertGasAnnualVersusBenchmark,
+        %i[solar_pv solar_panels] => AlertSolarPVBenefitEstimator,
+        %i[storage_heater heating_off] => AlertSeasonalHeatingSchoolDaysStorageHeaters
       }.freeze
       TYPES = %i[gbp co2 kwh].freeze
       TYPES_TO_METHOD = TYPES.zip(%i[average_one_year_saving_gbp one_year_saving_co2 one_year_saving_kwh]).to_h
       private_constant :ALERTS, :TYPES, :TYPES_TO_METHOD
-      METRICS = ALERTS.keys.flat_map { |metric| TYPES.map { |suffix| [metric, suffix].join('_') } }.freeze
+      METRICS = ALERTS.keys.flat_map { |_fuel_type, metric| TYPES.map { |type| metric_type(metric, type) } }.uniq.freeze
 
-      def value(metric)
-        metric, type = split_metric(metric)
-        actions[ALERTS[metric]]&.public_send(TYPES_TO_METHOD[type])
+      def electricity_savings
+        12_000
       end
 
-      def number_of_schools(metric)
-        actions[ALERTS[split_metric(metric).first]]&.schools&.count
+      def solar_panels
+        32_000
+      end
+
+      def solar_panels_schools
+        7
+      end
+
+      def gas_savings
+        11_000
+      end
+
+      def gas_savings_schools
+        12
+      end
+
+      def metrics
+        ALERTS.flat_map do |(fuel_type, metric), alert|
+          TYPES.map do |type|
+            number_of_schools = actions[alert]&.schools&.count
+            { fuel_type:,
+              metric_type: self.class.metric_type(metric, type),
+              metric_category: :potential_savings,
+              value: value(alert, type),
+              number_of_schools: number_of_schools || 0,
+              enough_data: number_of_schools.present? }
+          end
+        end
       end
 
       private
 
-      def split_metric(metric)
-        metric, _, type = metric.to_s.rpartition('_')
-        [metric, type].map(&:to_sym)
-      end
+      def value(alert, type) = actions[alert]&.public_send(TYPES_TO_METHOD[type]) || 0
 
       def actions
         @actions ||= SchoolGroups::PriorityActions.new(@impact_report.visible_schools).total_savings
