@@ -2,7 +2,7 @@
 
 module Admin
   module Dashboard
-    class AdminUserMeterReportController < Admin::Reports::AdminUserMeterReportController
+    class BaseloadAnomalyController < Admin::Reports::BaseloadAnomalyController
       include AdminDashboard
 
       before_action :set_user
@@ -13,12 +13,12 @@ module Admin
         super
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },
-                            { name: "Meters for #{@dashboard_user.display_name}" }
+                            { name: 'Baseload anomalies' }
                           ])
       end
 
       def index_button
-        { text: 'View all admin meter reports',
+        { text: 'View all baseload anomalies',
           path: admin_reports_admin_user_meter_report_index_path }
       end
     end
