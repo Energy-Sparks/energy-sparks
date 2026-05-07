@@ -16,11 +16,12 @@ describe 'Engaged Groups Report' do
   it 'displays the correct table' do
     within_table('engaged-groups-table') do
       expect(first('tr').all('th').map(&:text)).to \
-        eq(['School Group', 'Group Type', 'Admin', 'Active Schools', 'Engaged Schools', 'Percentage of Engaged Schools'])
+        eq(['School Group', 'Group Type', 'Admin', 'Active Schools',
+            'Engaged Schools', 'Percentage of Engaged Schools', 'Reports'])
       expect(all('tr').map { |tr| tr.all('td').map(&:text) }).to \
         eq([[],
-            ['Group 1', 'General', 'Admin', '1', '1', '100%'],
-            ['Group 2', 'General', 'Admin', '0', '0', '']])
+            ['Group 1', 'General', 'Admin', '1', '1', '100%', ''],
+            ['Group 2', 'General', 'Admin', '0', '0', '', '']])
     end
   end
 end
