@@ -7,13 +7,14 @@ namespace :school_groups do
 
       report = SchoolGroups::ImpactReport.new(school_group)
       run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
-      %i[overview engagement potential_savings].each do |metric_category|
+      %i[overview engagement potential_savings energy_efficiency].each do |metric_category|
         ImpactReport::Metric.metrics(metric_category).each do |metric_type|
           value = report.value(metric_category, metric_type)
           next if value.nil?
 
-          run.metrics.create!(enough_data: true, metric_category:, metric_type:,
+          run.metrics.create!(metric_category:, metric_type:,
                               number_of_schools: report.number_of_schools(metric_category, metric_type),
+                              enough_data: report.enough_data?(metric_category, metric_type),
                               value:)
         end
       end

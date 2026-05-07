@@ -64,6 +64,10 @@ module SchoolGroups
       send(category).number_of_schools(type)
     end
 
+    def enough_data?(category, type)
+      send(category).enough_data?(type)
+    end
+
     class Base
       attr_reader :impact_report
 
@@ -71,8 +75,12 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
-      def number_of_schools(*)
+      def number_of_schools(_)
         @impact_report.visible_schools_count
+      end
+
+      def enough_data?(_)
+        true
       end
 
       delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago,

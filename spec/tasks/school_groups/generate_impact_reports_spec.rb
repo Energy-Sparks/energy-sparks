@@ -24,15 +24,17 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     create(:activity, school:)
     create(:observation, :intervention, school:)
     create(:school_target, school:)
+    create(:alert, :with_run, :energy_annual_versus_benchmark, school:)
+    Comparison::ChangeInElectricitySinceLastYear.refresh
     task.invoke
   end
 
   def metrics_to_h
     ImpactReport::Run.all.map do |run|
-      run.metrics.pluck(:metric_category, :metric_type, :value, :number_of_schools).group_by(&:first)
-         .transform_values do |rows|
-        rows.to_h do |_, metric_type, value, number_of_schools|
-          [metric_type, [value, number_of_schools]]
+      run.metrics.group_by(&:metric_category).transform_values do |metrics|
+        metrics.to_h do |metric|
+          [metric.metric_type,
+           [metric.value, metric.number_of_schools, metric.enough_data ? nil : metric.enough_data].compact]
         end
       end.deep_symbolize_keys
     end
@@ -48,7 +50,9 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
                      users: [1, 1],
                      visible_schools: [1, 1] },
          engagement: { actions: [1, 1], activities: [1, 1], points: [65, 1], targets: [1, 1] },
-         potential_savings: { gas_use_co2: [1100, 1], gas_use_gbp: [1000, 1], gas_use_kwh: [1111, 1] } }]
+         potential_savings: { gas_use_co2: [1100, 1], gas_use_gbp: [1000, 1], gas_use_kwh: [1111, 1] },
+         energy_efficiency: { electricity_co2: [400, 1], electricity_gbp: [800, 1], electricity_kwh: [500, 1],
+                              gas_co2: [0, 0, false], gas_gbp: [0, 0, false], gas_kwh: [0, 0, false] } }]
     )
   end
 

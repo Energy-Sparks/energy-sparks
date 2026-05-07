@@ -24,5 +24,18 @@ FactoryBot.define do
     trait :with_run do
       alert_generation_run { FactoryBot.build(:alert_generation_run, school: school) }
     end
+
+    trait :energy_annual_versus_benchmark do
+      variables do
+        { previous_year_electricity_kwh: 1000.0,
+          current_year_electricity_kwh: 500.0,
+          previous_year_electricity_co2: 800.0,
+          current_year_electricity_co2: 400.0,
+          previous_year_electricity_gbp: 2000.0,
+          current_year_electricity_gbp: 1200.0,
+          solar_type: 'synthetic' }
+      end
+      alert_type { association(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark') }
+    end
   end
 end
