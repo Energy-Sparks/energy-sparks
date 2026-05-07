@@ -21,7 +21,8 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
   def create_data_for_project_groups(school_group, project_groups)
     project_groups.each do |project_group|
       create(:school_onboarding, created_by: admin, school_group: school_group, project_group:)
-      create(:school, :with_project, visible: true, data_enabled: true, school_group: school_group, group: project_group)
+      create(:school, :with_project, visible: true, data_enabled: true, school_group: school_group,
+                                     group: project_group)
       create(:school, :with_project, visible: false, school_group: school_group, group: project_group)
       create(:school, :with_project, active: false, school_group: school_group, group: project_group)
     end
@@ -128,14 +129,16 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
         it 'displays totals for each group' do
           within('table') do
             school_groups.each do |school_group|
-              expect(page).to have_selector(:table_row,
-                                            { 'Name' => school_group.name,
-                                              'Admin' => school_group.default_issues_admin_user.try(:display_name) || '', # rubocop:disable Layout/LineLength
-                                              'Onboarding' => 1,
-                                              'Active' => 1,
-                                              'Data visible' => 1,
-                                              'Invisible' => 1,
-                                              'Removed' => 1 })
+              expect(page).to have_selector(
+                :table_row,
+                { 'Name' => school_group.name,
+                  'Admin' => school_group.default_issues_admin_user.try(:display_name) || '',
+                  'Onboarding' => 1,
+                  'Active' => 1,
+                  'Data visible' => 1,
+                  'Invisible' => 1,
+                  'Removed' => 1 }
+              )
             end
           end
         end
@@ -188,7 +191,7 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'Manage School Groups'
         end
 
-        it { expect(page).not_to have_link("New #{I18n.t('school_groups.clusters.group_type.diocese')} group") }
+        it { expect(page).to have_no_link("New #{I18n.t('school_groups.clusters.group_type.diocese')} group") }
       end
 
       context 'with local authority group' do
@@ -196,7 +199,9 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'Manage School Groups'
         end
 
-        it { expect(page).not_to have_link("New #{I18n.t('school_groups.clusters.group_type.local_authority_area')} group") }
+        it {
+          expect(page).to have_no_link("New #{I18n.t('school_groups.clusters.group_type.local_authority_area')} group")
+        }
       end
 
       context 'when creating an organisation group' do
@@ -208,15 +213,15 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'New school group'
         end
 
-        it { expect(page).to have_content('New School group')}
-        it { expect(page).to have_css('#group-defaults')}
+        it { expect(page).to have_content('New School group') }
+        it { expect(page).to have_css('#group-defaults') }
 
         context 'when required data has not been entered' do
           before do
             click_on 'Create School group'
           end
 
-          it { expect(page).to have_content('New School group')}
+          it { expect(page).to have_content('New School group') }
           it { expect(page).to have_content("Name can't be blank") }
         end
 
@@ -248,15 +253,15 @@ RSpec.describe 'Managing school groups', :include_application_helper, :school_gr
           click_on 'New Project group'
         end
 
-        it { expect(page).to have_content('New Project group')}
-        it { expect(page).not_to have_css('#group-defaults')}
+        it { expect(page).to have_content('New Project group') }
+        it { expect(page).to have_no_css('#group-defaults') }
 
         context 'when required data has not been entered' do
           before do
             click_on 'Create School group'
           end
 
-          it { expect(page).to have_content('New Project group')}
+          it { expect(page).to have_content('New Project group') }
           it { expect(page).to have_content("Name can't be blank") }
         end
 

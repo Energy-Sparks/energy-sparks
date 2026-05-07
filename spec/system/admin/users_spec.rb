@@ -118,13 +118,13 @@ describe 'Administering users' do
         it { expect(page).to have_select('Staff role', visible: :hidden) }
 
         it 'shows the organisation group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{school_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('false')
         end
 
         it 'does not show the project group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{project_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('true')
         end
@@ -139,13 +139,13 @@ describe 'Administering users' do
         it { expect(page).to have_select('Staff role', visible: :hidden) }
 
         it 'does not show the organisation group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{school_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('true')
         end
 
         it 'shows the project group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{project_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('false')
         end
@@ -171,8 +171,6 @@ describe 'Administering users' do
           fill_in 'Email', with: email
           select 'Admin', from: 'Role'
         end
-
-        # rubocop:disable RSpec/NestedGroups
 
         context 'with basic information' do
           before do
@@ -201,8 +199,6 @@ describe 'Administering users' do
 
           it { expect(user.climate_action_lead).to be true }
         end
-
-        # rubocop:enable RSpec/NestedGroups
       end
     end
 

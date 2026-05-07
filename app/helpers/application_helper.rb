@@ -288,6 +288,10 @@ module ApplicationHelper
     boolean ? I18n.t('common.labels.yes_label') : I18n.t('common.labels.no_label')
   end
 
+  def y_n_badge(boolean)
+    content_tag(:span, y_n(boolean), class: "badge #{boolean ? 'text-bg-success' : 'text-bg-danger'}")
+  end
+
   def checkmark(boolean, on_class: 'text-success', off_class: 'text-danger')
     fa_icon(boolean ? "check-circle #{on_class}" : "times-circle #{off_class}")
   end

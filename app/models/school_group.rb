@@ -76,6 +76,7 @@ class SchoolGroup < ApplicationRecord
   accepts_nested_attributes_for :school_group_partners, reject_if: proc { |attributes| attributes['position'].blank? }
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
+
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :assigned_schools, source: :issues
   has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
