@@ -591,6 +591,7 @@ Rails.application.routes.draw do
           get 'completed'
         end
       end
+      resources :missing_alert_contacts, module: :dashboard
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
     end

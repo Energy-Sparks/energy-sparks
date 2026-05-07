@@ -1,9 +1,27 @@
-<%= render 'admin/reports/title', title: 'Schools missing alert contacts' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "Schools missing alert contacts for #{@dashboard_user.display_name}" %>
+  <% end %>
+
+  <%= render Elements::ButtonComponent.new('View full report',
+                                           admin_reports_missing_alert_contacts_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+
+  <p>
+    This report lists all visible schools for <%= @dashboard_user.display_name %>'s groups that do not have any alert contacts. This means
+    there are no users at the school who are receiving weekly alerts.
+  </p>
+
+<% else %>
+  <%= render 'admin/reports/title', title: 'Schools missing alert contacts' %>
 
 <p>
   This report lists all visible schools that do not have any alert contacts. This means
   there are no users at the school who are receiving weekly alerts.
 </p>
+
+<% end %>
 
 <p>
   In addition to listing the group, funder and country for each school, the table shows the date the school completed

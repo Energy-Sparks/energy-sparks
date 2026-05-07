@@ -341,6 +341,32 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_no_content(non_user_intervention.intervention_type.name)
             end
           end
+
+          describe 'missing alert contacts' do
+            let!(:user_school) do
+              create(:school, school_group: user_school_group, active: true)
+            end
+
+            let!(:non_user_school) do
+              create(:school, school_group: non_user_school_group, active: true)
+            end
+
+            before do
+              click_on 'Missing alert contacts'
+            end
+
+            it 'links to the missing alert contacts report' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/missing_alert_contacts")
+            end
+
+            it 'displays missing alert contacts for user school groups' do
+              expect(page).to have_content(user_school.name)
+            end
+
+            it 'does not display missing alert contacts for non-user school groups' do
+              expect(page).to have_no_content(non_user_school.name)
+            end
+          end
         end
 
         # rubocop:enable RSpec/NestedGroups
