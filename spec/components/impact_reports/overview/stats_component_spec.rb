@@ -4,28 +4,88 @@ require 'rails_helper'
 
 RSpec.describe ImpactReports::Overview::StatsComponent, :include_application_helper, type: :component do
   let(:school_group) { create(:school_group) }
-  let(:impact_report) { SchoolGroups::ImpactReport.new(school_group) }
-
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:base_params) { { impact_report: impact_report, id: id, classes: classes } }
+  let(:base_params) { { run: run, id: id, classes: classes } }
+  let!(:run) { create(:impact_report_run, :with_overview_metrics, school_group:) }
 
-  let(:html) do
+  before do
     render_inline(described_class.new(**params))
   end
 
   context 'with base params' do
     let(:params) { base_params }
+    let(:cards) { page.all('#overview-cards .layout-cards-stats-component') }
 
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_css('#overview-cards') }
-    it { expect(html).to have_text('Schools') }
-    it { expect(html).to have_text('Users') }
-    it { expect(html).to have_text('Pupils') }
-    it { expect(html).to have_text('Enrolled schools') }
+    describe 'schools card' do
+      let(:card) { cards[0] }
+
+      it { expect(card).to have_text('Schools') }
+      it { expect(card).to have_css('.figure', exact_text: run.overview(:visible_schools).value) }
+
+      it do
+        expect(card).to have_text(
+          impact_t('overview.cards.schools.subtext',
+                   count: run.overview(:data_visible_schools).value)
+        )
+      end
+    end
+
+    describe 'users card' do
+      let(:card) { cards[1] }
+
+      it { expect(card).to have_text('Users') }
+      it { expect(card).to have_css('.figure', exact_text: run.overview(:users).value) }
+
+      it do
+        expect(card).to have_text(
+          impact_t('overview.cards.users.subtext',
+                   count: run.overview(:active_users).value)
+        )
+      end
+    end
+
+    describe 'pupils card' do
+      let(:card) { cards[2] }
+
+      it { expect(card).to have_text('Pupils') }
+      it { expect(card).to have_css('.figure', exact_text: run.overview(:pupils).value) }
+      it { expect(card).to have_text(impact_t('overview.cards.pupils.subtext')) }
+    end
+
+    describe 'enrollment schools card' do
+      let(:card) { cards[3] }
+      let(:metrics) {}
+      let!(:run) { create(:impact_report_run, :with_overview_metrics, school_group:, **metrics) }
+
+      context 'when enrolling is larger than enrolled' do
+        let(:metrics) { { enrolling_schools: { value: 3 }, enrolled_schools: { value: 2 } } }
+
+        it { expect(card).to have_text('Enrolling schools') }
+        it { expect(card).to have_css('.figure', exact_text: run.overview(:enrolling_schools).value) }
+        it { expect(card).to have_text(impact_t('overview.cards.enrolling_schools.subtext')) }
+      end
+
+      context 'when enrolled is larger than enrolling' do
+        let(:metrics) { { enrolling_schools: { value: 2 }, enrolled_schools: { value: 3 } } }
+
+        it { expect(card).to have_text('Enrolled schools') }
+        it { expect(card).to have_css('.figure', exact_text: run.overview(:enrolled_schools).value) }
+        it { expect(card).to have_text(impact_t('overview.cards.enrolled_schools.subtext')) }
+      end
+
+      context 'when enrolling is the same as enrolled' do
+        let(:metrics) { { enrolling_schools: { value: 2 }, enrolled_schools: { value: 2 } } }
+
+        it { expect(card).to have_text('Enrolling schools') }
+        it { expect(card).to have_css('.figure', exact_text: run.overview(:enrolling_schools).value) }
+        it { expect(card).to have_text(impact_t('overview.cards.enrolling_schools.subtext')) }
+      end
+    end
   end
 end
