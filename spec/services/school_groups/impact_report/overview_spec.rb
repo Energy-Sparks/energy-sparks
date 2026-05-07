@@ -78,7 +78,7 @@ describe SchoolGroups::ImpactReport::Overview do
       context 'with onboardings completed within the last 12 months' do
         before { create(:school_onboarding, :with_completed, school_group:) }
 
-        it '' do
+        it 'counts correctly' do
           expect(metrics[:enrolled_schools]).to eq(expected)
         end
       end
