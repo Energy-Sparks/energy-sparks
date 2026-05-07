@@ -10,7 +10,7 @@ FactoryBot.define do
 
       # one transient per metric type (expects a hash or nil)
       ImpactReport::Metric.categories.each do |category|
-        ImpactReport::Metric.types_for(category).each do |type|
+        ImpactReport::Metric.metrics(category).each do |type|
           add_attribute(type) { nil }
         end
       end
@@ -18,7 +18,7 @@ FactoryBot.define do
 
     after(:create) do |run, evaluator|
       evaluator.metric_categories.each do |category|
-        ImpactReport::Metric.types_for(category).each do |type|
+        ImpactReport::Metric.metrics(category).each do |type|
           override = evaluator.public_send(type)
           attrs = override.is_a?(Hash) ? override : {}
 

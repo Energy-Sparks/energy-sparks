@@ -86,7 +86,7 @@ module ImpactReport
       METRIC_CATEGORIES
     end
 
-    def self.types_for(category)
+    def self.metrics(category)
       const_get("#{category.to_s.upcase}_METRICS")
     end
   end
