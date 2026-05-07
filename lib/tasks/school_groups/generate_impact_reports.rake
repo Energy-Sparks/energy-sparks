@@ -7,10 +7,12 @@ namespace :school_groups do
 
       report = SchoolGroups::ImpactReport.new(school_group)
       run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
-      ImpactReport::Metric::OVERVIEW_METRICS.each do |metric_type|
-        value = report.overview.public_send(metric_type)
-        run.metrics.create!(enough_data: true, number_of_schools: report.overview.visible_schools,
-                            metric_category: :overview, metric_type:, value:)
+      [[ImpactReport::Metric::OVERVIEW_METRICS, :overview],
+       [ImpactReport::Metric::ENGAGEMENT_METRICS, :engagement]].each do |metrics, metric_category|
+        metrics.each do |metric_type|
+          run.metrics.create!(enough_data: true, number_of_schools: report.overview.visible_schools, metric_category:,
+                              metric_type:, value: report.public_send(metric_category).public_send(metric_type))
+        end
       end
     end
   rescue StandardError => e
