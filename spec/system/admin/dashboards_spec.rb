@@ -389,6 +389,48 @@ RSpec.describe 'Admin dashboard' do
               expect(page).to have_no_content(non_user_school.name)
             end
           end
+
+          describe 'pupil number updates' do
+            before do
+              click_on 'Pupil number updates'
+            end
+
+            it 'links to the pupil number report filtered by user' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/pupil_number_updates?admin=#{user.id}")
+            end
+          end
+        end
+
+        describe 'my meters' do
+          describe 'meter report' do
+            before do
+              click_on 'Meter report'
+            end
+
+            it 'links to the meter report filtered by user' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/admin_user_meter_report?admin=#{user.id}")
+            end
+          end
+
+          describe 'new data for inactive meters' do
+            before do
+              click_on 'New data for inactive meters'
+            end
+
+            it 'links to the new data for inactive meter report filtered by user' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/new_data_inactive_meter_report?admin=#{user.id}") # rubocop:disable Layout/LineLength
+            end
+          end
+
+          describe 'baseload anomalies' do
+            before do
+              click_on 'Baseload anomalies'
+            end
+
+            it 'links to the baseload anomalies report filtered by user' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/baseload_anomaly?admin=#{user.id}")
+            end
+          end
         end
 
         # rubocop:enable RSpec/NestedGroups
