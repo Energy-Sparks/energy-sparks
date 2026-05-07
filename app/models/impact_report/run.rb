@@ -28,9 +28,10 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    def metrics_index
-      @metrics_index ||= metrics.index_by do |m|
-        [m.metric_category, m.metric_type]
+    # e.g. overview(:active_users) etc
+    ImpactReport::Metric.categories.each do |category|
+      define_method(category) do |type|
+        metric(category, type)
       end
     end
 
@@ -38,10 +39,11 @@ module ImpactReport
       metrics_index[[category.to_s, type.to_s]]
     end
 
-    # e.g. overview(:active_users) etc
-    ImpactReport::Metric.metric_categories.each_key do |category|
-      define_method(category) do |type|
-        metric(category, type)
+    private
+
+    def metrics_index
+      @metrics_index ||= metrics.index_by do |m|
+        [m.metric_category, m.metric_type]
       end
     end
   end
