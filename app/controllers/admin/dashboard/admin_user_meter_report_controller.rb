@@ -9,7 +9,7 @@ module Admin
 
       helper_method :index_button
 
-      def index
+      def results
         super
         build_breadcrumbs([
                             { name: @dashboard_user.display_name, href: admin_dashboard_path(@dashboard_user) },

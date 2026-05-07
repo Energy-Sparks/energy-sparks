@@ -596,12 +596,13 @@ Rails.application.routes.draw do
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
 
-      resources :amr_data_feed_import_logs, only: [:index], module: :dashboard
-      resources :blank_readings, :lagging_meters, :zero_readings, only: [:index], module: :dashboard
-      resources :new_data_inactive_meter_report, only: [:index], module: :dashboard
-      resources :admin_user_meter_report, :baseload_anomaly, only: [:index], module: :dashboard
-      resources :manual_reads, only: [:index], module: :dashboard
-      resources :pupil_number_updates, only: [:index], module: :dashboard
+      resources :amr_data_feed_import_logs, module: :dashboard
+      resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
+      resources :new_data_inactive_meter_report, module: :dashboard
+      resources :admin_user_meter_report, module: :dashboard
+      resources :baseload_anomaly, module: :dashboard
+      resources :manual_reads, module: :dashboard
+      resources :pupil_number_updates, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]

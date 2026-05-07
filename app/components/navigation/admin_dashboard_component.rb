@@ -22,7 +22,19 @@ module Navigation
         { name: 'Engaged schools', classes: 'small', path: admin_dashboard_engaged_groups_path(current_user) },
         { name: 'Recent activities', classes: 'small', path: admin_dashboard_activities_path(current_user) },
         { name: 'Recent actions', classes: 'small', path: admin_dashboard_interventions_path(current_user) },
-        { name: 'Missing alert contacts', path: admin_dashboard_missing_alert_contacts_path(current_user) }
+        { name: 'Missing alert contacts', classes: 'small',
+          path: admin_dashboard_missing_alert_contacts_path(current_user) },
+        { name: 'Pupil number updates', classes: 'small',
+          path: admin_dashboard_pupil_number_updates_path(dashboard_id: current_user, admin: current_user) }
+      ]
+    end
+
+    def my_meters_section
+      [
+        { name: 'Admin user meter report', classes: 'small',
+          path: admin_dashboard_admin_user_meter_report_index_path(dashboard_id: current_user) },
+        { name: 'New data inactive meter report', classes: 'small',
+          path: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id: current_user) }
       ]
     end
   end
