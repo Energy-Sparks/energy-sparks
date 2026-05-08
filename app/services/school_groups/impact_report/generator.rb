@@ -5,11 +5,10 @@ module SchoolGroups
     class Generator
       def initialize(school_group)
         @import_report = ImpactReport.new(school_group)
-        # debugger
       end
 
       def metrics
-        [Overview, Engagement, PotentialSavings].lazy.flat_map do |metric_category|
+        [Overview, Engagement, PotentialSavings, EnergyEfficiency].lazy.flat_map do |metric_category|
           metric_category.new(@import_report).metrics
         end
       end

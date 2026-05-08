@@ -14,7 +14,7 @@ module SchoolGroups
               fuel_type:,
               metric_category:,
               metric_type:,
-              number_of_schools: number_of_schools(metric_type),
+              number_of_schools: number_of_schools(fuel_type, metric_type),
               value: value(fuel_type, metric_type) }
           end
         end
