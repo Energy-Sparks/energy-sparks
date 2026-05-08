@@ -47,10 +47,10 @@
             </span>
           </td>
           <% if local_assigns[:email] %>
-            <td>
+            <td class="issue-icon">
               <%= link_to issue_type_image(:issue), school_meter_url(meter.school, meter) if meter.issues.issue.any? %>
             </td>
-            <td>
+            <td class="issue-icon">
               <%= link_to issue_type_image(:note), school_meter_url(meter.school, meter) if meter.issues.note.any? %>
             </td>
           <% else %>
