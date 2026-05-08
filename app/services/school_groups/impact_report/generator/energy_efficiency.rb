@@ -13,12 +13,16 @@ module SchoolGroups
 
         private
 
-        def metric_names
-          %i[electricity gas].flat_map { |fuel| TYPES.map { |type| [fuel, type] } }.freeze
+        def metric_category
+          :energy_efficiency
         end
 
-        def value(metric)
-          sum(metric)
+        def metric_names
+          %i[electricity gas].flat_map { |fuel| METRICS.map { |type| [fuel, type] } }
+        end
+
+        def value(fuel, metric)
+          sum(fuel, metric)
         end
 
         def number_of_schools(fuel, metric)
@@ -38,8 +42,8 @@ module SchoolGroups
           scope.where("current_year_#{metric} < previous_year_#{metric}")
         end
 
-        def sum(metric)
-          savings(type).sum("previous_year_#{metric} - current_year_#{metric}")
+        def sum(fuel, metric)
+          savings(fuel, metric).sum("previous_year_#{metric} - current_year_#{metric}")
         end
       end
     end
