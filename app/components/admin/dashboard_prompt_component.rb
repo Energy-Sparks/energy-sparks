@@ -116,14 +116,14 @@ module Admin
     end
 
     def low_engaged_schools_count
-      engagement_threshold = 0.5
+      engagement_percentage_threshold = 50
       @low_engaged_schools_count ||= SchoolGroup.organisation_groups
                                                 .where(default_issues_admin_user: @user)
                                                 .count_active_schools
                                                 .count_engaged_schools
                                                 .where('COALESCE(active.count, 0) > 0')
-                                                .where('COALESCE(engaged.count, 0) * 1.0 < ? * active.count',
-                                                       engagement_threshold)
+                                                .where('COALESCE(engaged.count, 0) * 1.0 < ? / 100.0 * active.count',
+                                                       engagement_percentage_threshold)
                                                 .count
     end
 

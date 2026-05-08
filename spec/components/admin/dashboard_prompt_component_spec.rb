@@ -192,7 +192,7 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
 
       it 'displays the low engagement prompt' do
         expect(page).to have_text('You have 1 groups with engagement below 50%')
-        expect(page).to have_link('View Engaged Groups', href: admin_reports_engaged_groups_path)
+        expect(page).to have_link('View Engaged Groups', href: admin_dashboard_engaged_groups_path(dashboard_id: user))
       end
     end
   end
