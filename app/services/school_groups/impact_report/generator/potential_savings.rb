@@ -47,8 +47,9 @@ module SchoolGroups
         def value(alert, type) = actions[alert]&.public_send(TYPES_TO_METHOD[type]) || 0
 
         def actions
-          @actions ||= SchoolGroups::PriorityActions.new(@impact_report.visible_schools).total_savings
-                                                    .transform_keys { |key| Object.const_get(key.alert_type.class_name) }
+          @actions ||= SchoolGroups::PriorityActions
+                       .new(@impact_report.visible_schools).total_savings
+                       .transform_keys { |key| Object.const_get(key.alert_type.class_name) }
         end
       end
     end
