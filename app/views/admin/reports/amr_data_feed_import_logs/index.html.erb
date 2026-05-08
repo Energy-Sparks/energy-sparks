@@ -1,4 +1,16 @@
-<%= render 'admin/reports/title', title: 'Data Feed Import Logs' %>
+<% if @dashboard_user %>
+  <% content_for :title do %>
+    <%= "#{@dashboard_user.display_name}'s Data Feed Import Logs" %>
+  <% end %>
+
+  <%= render Elements::ButtonComponent.new('View all imports',
+                                           admin_reports_lagging_meters_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+
+<% else %>
+  <%= render 'admin/reports/title', title: 'Data Feed Import Logs' %>
+<% end %>
 
 <%= render 'tabs' %>
 
@@ -29,7 +41,7 @@
     <tr class="<%= 'table-warning' unless config.enabled %>">
     <% import_logs = config.amr_data_feed_import_logs
                            .since(Admin::Reports::AmrDataFeedImportLogsController::SUMMARY_PERIOD_IN_DAYS.days.ago) %>
-    <td class='text-left'><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
+    <td class='text-start'><%= link_to config.description, admin_amr_data_feed_config_path(config) %></td>
     <td><%= import_logs.count %></td>
     <td><%= link_to import_logs.successful.count,
                     admin_reports_amr_data_feed_import_logs_successes_path({ config: { config_id: config.id } }) %></td>
