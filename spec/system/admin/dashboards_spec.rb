@@ -403,18 +403,6 @@ RSpec.describe 'Admin dashboard' do
         end
 
         describe 'my meters' do
-          describe 'meter report' do
-            before do
-              click_on 'Meter report'
-            end
-
-            it 'links to the meter report filtered by user' do
-              expect(page).to have_link('View all admin meter reports',
-                                        href: admin_reports_admin_user_meter_report_index_path)
-              expect(page).to have_current_path("/admin/dashboards/#{user.id}/admin_user_meter_report?admin=#{user.id}")
-            end
-          end
-
           describe 'new data for inactive meters' do
             before do
               click_on 'New data for inactive meters'

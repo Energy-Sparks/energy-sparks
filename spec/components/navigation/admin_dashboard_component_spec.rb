@@ -59,8 +59,6 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
       describe 'my meters section' do
         # rubocop:disable Layout/LineLength
         it 'has the correct links' do
-          expect(page).to have_link('Meter report',
-                                    href: admin_dashboard_admin_user_meter_report_index_path(dashboard_id: current_user, admin: current_user))
           expect(page).to have_link('New data for inactive meters',
                                     href: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id: current_user, admin: current_user))
           expect(page).to have_link('Baseload anomalies',

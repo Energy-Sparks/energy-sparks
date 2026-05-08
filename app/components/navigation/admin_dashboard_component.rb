@@ -31,9 +31,6 @@ module Navigation
 
     def my_meters_section
       [
-        { name: 'Meter report', classes: 'small',
-          path: admin_dashboard_admin_user_meter_report_index_path(dashboard_id: current_user,
-                                                                   admin: current_user.id) },
         { name: 'New data for inactive meters', classes: 'small',
           path: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id: current_user,
                                                                           admin: current_user.id) },
