@@ -288,6 +288,28 @@ RSpec.describe 'Admin dashboard' do
             end
           end
 
+          describe 'engaged schools' do
+            let!(:engaged_school) do
+              travel_to(Time.zone.local(2025, 2, 4, 15, 30))
+              create(:school, :with_points, school_group: user_school_group,
+                                            calendar: create(:calendar, :with_previous_and_next_academic_years))
+            end
+            let(:last_sign_in) { Time.zone.now }
+
+            before do
+              create(:school_admin, school: engaged_school, last_sign_in_at: last_sign_in)
+              click_on 'Engaged schools'
+            end
+
+            it 'links to the engaged groups report' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/engaged_groups")
+            end
+
+            it 'displays engaged schools' do
+              expect(page).to have_content(engaged_school.school_group.name)
+            end
+          end
+
           describe 'recent activities' do
             let!(:activity_type) { create(:activity_type) }
             let!(:user_school) { create(:school, school_group: user_school_group) }
