@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SchoolGroups::ImpactReport::Engagement do
+describe SchoolGroups::ImpactReport::Generator::Engagement do
   subject(:engagement) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
 
   let(:school) { create(:school, :with_school_group) }

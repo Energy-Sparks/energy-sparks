@@ -63,14 +63,6 @@ module SchoolGroups
             .or(User.where(id: cluster_users))
             .distinct
       end
-
-      def metric_names
-        ::ImpactReport::Metric::OVERVIEW_METRICS.map { |metric| [nil, metric] }
-      end
-
-      def metric_category
-        :overview
-      end
     end
   end
 end

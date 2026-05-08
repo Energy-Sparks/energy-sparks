@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SchoolGroups::ImpactReport::Overview do
+describe SchoolGroups::ImpactReport::Generator::Overview do
   subject(:overview) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
 
   let(:school) { create(:school, :with_school_group) }

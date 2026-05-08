@@ -51,25 +51,6 @@ module SchoolGroups
       @potential_savings ||= PotentialSavings.new(self)
     end
 
-    def value(category, type)
-      category = send(category)
-      if category.respond_to?(:value)
-        category.value(type)
-      else
-        category.public_send(type)
-      end
-    end
-
-    def number_of_schools(category, type)
-      send(category).number_of_schools(type)
-    end
-
-    def metrics
-      %i[overview engagement potential_savings].flat_map do |metric_category|
-        send(metric_category).metrics
-      end
-    end
-
     class Base
       attr_reader :impact_report
 
@@ -77,33 +58,8 @@ module SchoolGroups
         @impact_report = impact_report
       end
 
-      def metrics
-        metric_names.map do |fuel_type, metric_type|
-          { enough_data: enough_data?(fuel_type, metric_type),
-            metric_category:,
-            metric_type:,
-            number_of_schools: number_of_schools(metric_type),
-            fuel_type:,
-            value: value(fuel_type, metric_type) }
-        end
-      end
-
       delegate :school_group, :visible_schools, :data_visible_schools, :generated_at, :twelve_months_ago,
                :three_months_ago, to: :impact_report
-
-      private
-
-      def enough_data?(*)
-        true
-      end
-
-      def number_of_schools(*)
-        @impact_report.visible_schools_count
-      end
-
-      def value(_fuel_type, metric_type)
-        send(metric_type)
-      end
     end
 
     class EnergyEfficiency < Base

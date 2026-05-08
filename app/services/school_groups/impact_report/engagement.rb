@@ -44,16 +44,6 @@ module SchoolGroups
           .merge(visible_schools)
           .count
       end
-
-      private
-
-      def metric_category
-        :engagement
-      end
-
-      def metric_names
-        ::ImpactReport::Metric::ENGAGEMENT_METRICS.map { |metric| [nil, metric] }
-      end
     end
   end
 end
