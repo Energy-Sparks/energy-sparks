@@ -10,6 +10,11 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
   describe '#metrics' do
     subject(:metrics) { engagement.metrics.reject { |metric| metric[:value].zero? } }
 
+    def metric(metric_type, **)
+      { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type:, number_of_schools: 1, value: 1 }
+        .merge(**)
+    end
+
     context 'with activities in visible schools within the last 12 months' do
       before do
         create(:activity, school:, happened_on: 6.months.ago)
@@ -19,12 +24,7 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
       end
 
       it 'counts correctly' do
-        expect(metrics).to contain_exactly(
-          { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type: :activities,
-            number_of_schools: 1, value: 1 },
-          { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type: :points,
-            number_of_schools: 1, value: 25 }
-        )
+        expect(metrics).to contain_exactly(metric(:activities), metric(:points, value: 25))
       end
     end
 
@@ -35,12 +35,7 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
       end
 
       it 'counts correctly' do
-        expect(metrics).to contain_exactly(
-          { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type: :actions,
-            number_of_schools: 1, value: 1 },
-          { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type: :points,
-            number_of_schools: 1, value: 30 }
-        )
+        expect(metrics).to contain_exactly(metric(:actions), metric(:points, value: 30))
       end
     end
 
@@ -51,12 +46,7 @@ describe SchoolGroups::ImpactReport::Generator::Engagement do
       end
 
       it 'counts correctly' do
-        expect(metrics).to contain_exactly(
-          { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type: :targets,
-            number_of_schools: 1, value: 1 },
-          { enough_data: true, fuel_type: nil, metric_category: :engagement, metric_type: :points,
-            number_of_schools: 1, value: 10 }
-        )
+        expect(metrics).to contain_exactly(metric(:targets), metric(:points, value: 10))
       end
     end
   end
