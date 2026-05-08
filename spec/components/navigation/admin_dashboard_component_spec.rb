@@ -65,6 +65,8 @@ RSpec.describe Navigation::AdminDashboardComponent, :include_url_helpers, type: 
                                     href: admin_dashboard_new_data_inactive_meter_report_index_path(dashboard_id: current_user, admin: current_user))
           expect(page).to have_link('Baseload anomalies',
                                     href: admin_dashboard_baseload_anomaly_index_path(dashboard_id: current_user, admin: current_user))
+          expect(page).to have_link('Manually read meters',
+                                    href: admin_dashboard_manual_reads_path(dashboard_id: current_user, admin: current_user))
         end
         # rubocop:enable Layout/LineLength
       end

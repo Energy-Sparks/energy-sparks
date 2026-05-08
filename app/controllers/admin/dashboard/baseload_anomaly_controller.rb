@@ -19,7 +19,7 @@ module Admin
 
       def index_button
         { text: 'View all baseload anomalies',
-          path: admin_reports_admin_user_meter_report_index_path }
+          path: admin_reports_baseload_anomaly_index_path }
       end
     end
   end

@@ -18,7 +18,7 @@ module Admin
       end
 
       def index_button
-        { text: 'View all new inactive meter data',
+        { text: 'View all new data for inactive meters',
           path: admin_reports_new_data_inactive_meter_report_index_path }
       end
     end

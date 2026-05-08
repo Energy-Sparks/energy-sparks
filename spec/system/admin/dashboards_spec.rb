@@ -396,6 +396,7 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'links to the pupil number report filtered by user' do
+              expect(page).to have_link('View all pupil number updates', href: admin_reports_pupil_number_updates_path)
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/pupil_number_updates?admin=#{user.id}")
             end
           end
@@ -408,6 +409,8 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'links to the meter report filtered by user' do
+              expect(page).to have_link('View all admin meter reports',
+                                        href: admin_reports_admin_user_meter_report_index_path)
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/admin_user_meter_report?admin=#{user.id}")
             end
           end
@@ -418,6 +421,8 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'links to the new data for inactive meter report filtered by user' do
+              expect(page).to have_link('View all new data for inactive meters',
+                                        href: admin_reports_new_data_inactive_meter_report_index_path)
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/new_data_inactive_meter_report?admin=#{user.id}") # rubocop:disable Layout/LineLength
             end
           end
@@ -428,7 +433,19 @@ RSpec.describe 'Admin dashboard' do
             end
 
             it 'links to the baseload anomalies report filtered by user' do
+              expect(page).to have_link('View all baseload anomalies', href: admin_reports_baseload_anomaly_index_path)
               expect(page).to have_current_path("/admin/dashboards/#{user.id}/baseload_anomaly?admin=#{user.id}")
+            end
+          end
+
+          describe 'manual reads' do
+            before do
+              click_on 'Manually read meters'
+            end
+
+            it 'links to the manual reads report filtered by user' do
+              expect(page).to have_link('View all manual reads', href: admin_reports_manual_reads_path)
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/manual_reads?admin=#{user.id}")
             end
           end
         end

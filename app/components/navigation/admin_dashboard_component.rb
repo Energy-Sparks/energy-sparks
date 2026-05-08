@@ -39,7 +39,10 @@ module Navigation
                                                                           admin: current_user.id) },
         { name: 'Baseload anomalies', classes: 'small',
           path: admin_dashboard_baseload_anomaly_index_path(dashboard_id: current_user,
-                                                            admin: current_user.id) }
+                                                            admin: current_user.id) },
+        { name: 'Manually read meters', classes: 'small',
+          path: admin_dashboard_manual_reads_path(dashboard_id: current_user,
+                                                  admin: current_user.id) }
       ]
     end
   end
