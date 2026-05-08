@@ -26,11 +26,11 @@ module SchoolGroups
         end
 
         def number_of_schools(fuel, metric)
-          @number_of_schools[[fuel, metric]] ||= savings(fuel, metric).count
+          savings(fuel, metric).count
         end
 
         def enough_data?(fuel, metric)
-          number_of_schools(fuel, metric).positive?
+          savings(fuel, metric).any?
         end
 
         def savings(fuel, metric)

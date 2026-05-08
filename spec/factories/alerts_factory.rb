@@ -26,16 +26,19 @@ FactoryBot.define do
     end
 
     trait :energy_annual_versus_benchmark do
+      transient do
+        fuel_type { :electricity }
+      end
       variables do
-        { previous_year_electricity_kwh: 1000.0,
-          current_year_electricity_kwh: 500.0,
-          previous_year_electricity_co2: 800.0,
-          current_year_electricity_co2: 400.0,
-          previous_year_electricity_gbp: 2000.0,
-          current_year_electricity_gbp: 1200.0,
+        { "previous_year_#{fuel_type}_kwh": 1000.0,
+          "current_year_#{fuel_type}_kwh": 500.0,
+          "previous_year_#{fuel_type}_co2": 800.0,
+          "current_year_#{fuel_type}_co2": 400.0,
+          "previous_year_#{fuel_type}_gbp": 2000.0,
+          "current_year_#{fuel_type}_gbp": 1200.0,
           solar_type: 'synthetic' }
       end
-      alert_type { association(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark') }
+      alert_type { association(:alert_type, class_name: 'AlertEnergyAnnualVersusBenchmark', fuel_type:) }
     end
   end
 end
