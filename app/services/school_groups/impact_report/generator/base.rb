@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SchoolGroups
   class ImpactReport
     class Generator
