@@ -55,7 +55,7 @@ module ImpactReport
       enrolling_schools
     ].freeze
 
-    ENERGY_EFFICIENCY_METRICS = SchoolGroups::ImpactReport::Generator::EnergyEfficiency::METRICS
+    ENERGY_EFFICIENCY_METRICS = %i[total_savings] + SchoolGroups::ImpactReport::Generator::EnergyEfficiency::METRICS
 
     ENGAGEMENT_METRICS = %i[
       activities

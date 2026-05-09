@@ -7,22 +7,22 @@
     <% c.with_row do |r| %>
       <% r.with_school school: result.school %>
 
-      <%= r.with_var val: result.previous_year_electricity_kwh, unit: :kwh %>
-      <%= r.with_var val: result.current_year_electricity_kwh, unit: :kwh %>
+      <%= r.with_var val: result.previous_year_kwh, unit: :kwh %>
+      <%= r.with_var val: result.current_year_kwh, unit: :kwh %>
       <%= r.with_var change: true,
-                     val: percent_change(result.previous_year_electricity_kwh, result.current_year_electricity_kwh),
+                     val: percent_change(result.previous_year_kwh, result.current_year_kwh),
                      unit: :relative_percent_0dp %>
 
-      <%= r.with_var val: result.previous_year_electricity_co2, unit: :co2 %>
-      <%= r.with_var val: result.current_year_electricity_co2, unit: :co2 %>
+      <%= r.with_var val: result.previous_year_co2, unit: :co2 %>
+      <%= r.with_var val: result.current_year_co2, unit: :co2 %>
       <%= r.with_var change: true,
-                     val: percent_change(result.previous_year_electricity_co2, result.current_year_electricity_co2),
+                     val: percent_change(result.previous_year_co2, result.current_year_co2),
                      unit: :relative_percent_0dp %>
 
-      <%= r.with_var val: result.previous_year_electricity_gbp, unit: :£ %>
-      <%= r.with_var val: result.current_year_electricity_gbp, unit: :£ %>
+      <%= r.with_var val: result.previous_year_gbp, unit: :£ %>
+      <%= r.with_var val: result.current_year_gbp, unit: :£ %>
       <%= r.with_var change: true,
-                     val: percent_change(result.previous_year_electricity_gbp, result.current_year_electricity_gbp),
+                     val: percent_change(result.previous_year_gbp, result.current_year_gbp),
                      unit: :relative_percent_0dp %>
 
       <%= r.with_var { y_n(result.solar_type == 'synthetic') } %>

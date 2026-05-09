@@ -17,7 +17,7 @@
 #  idx_on_school_id_14ce133c88  (school_id) UNIQUE
 #
 class Comparison::ChangeInElectricitySinceLastYear < Comparison::View
-  scope :with_data, -> { where('previous_year_electricity_kwh IS NOT NULL AND current_year_electricity_kwh IS NOT NULL') }
+  scope :with_data, -> { where('previous_year_kwh IS NOT NULL AND current_year_kwh IS NOT NULL') }
 
   def self.default_header_groups
     [
