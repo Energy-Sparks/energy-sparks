@@ -34,16 +34,21 @@ module SchoolGroups
         end
 
         def savings(fuel, metric)
-          scope = if fuel == :gas
+          model = if fuel == :gas
                     Comparison::ChangeInGasSinceLastYear
                   else
                     Comparison::ChangeInElectricitySinceLastYear
                   end
-          scope.where("current_year_#{metric} < previous_year_#{metric}")
+          model.where(column(model, metric, :current).lt(column(model, metric, :previous)))
+        end
+
+        def column(model, metric, type)
+          model.arel_table["#{type}_year_#{metric}"]
         end
 
         def sum(fuel, metric)
-          savings(fuel, metric).sum("previous_year_#{metric} - current_year_#{metric}")
+          scope = savings(fuel, metric)
+          scope.sum(column(scope, metric, :previous) - column(scope, metric, :current))
         end
       end
     end
