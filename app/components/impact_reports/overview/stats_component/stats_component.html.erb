@@ -3,7 +3,7 @@
                                        cols: cols, classes: 'mb-4',
                                        cell_classes: 'mb-4',
                                        component_classes: 'theme theme-dark') do |grid| %>
-    <% grid.with_stats_card do |card| %>
+    <% grid.with_stats_card(if overview(:visible_schools).displayable?) do |card| %>
       <%= card.with_header title: impact_t('overview.cards.schools.title') %>
       <%= card.with_figure number_with_delimiter(overview(:visible_schools).value) %>
       <%= card.with_subtext do
