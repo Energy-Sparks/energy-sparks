@@ -113,7 +113,7 @@ resource "aws_cloudwatch_metric_alarm" "production_postgres_freeable_memory" {
   period              = 300
   evaluation_periods  = 1
   datapoints_to_alarm = 1
-  threshold           = 214748365 # 10% of 2GB
+  threshold           = 858993459 # 10% of 8GB
   comparison_operator = "LessThanOrEqualToThreshold"
   treat_missing_data  = "missing"
 }
