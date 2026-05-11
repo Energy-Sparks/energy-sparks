@@ -15,7 +15,7 @@ RSpec.describe ImpactReports::Overview::MetricsComponent, :include_application_h
 
   context 'with base params' do
     let(:params) { base_params }
-    let(:cards) { page.all('#overview-cards .layout-cards-metrics-component') }
+    let(:cards) { page.all('#overview-cards .layout-cards-stats-component') }
 
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
