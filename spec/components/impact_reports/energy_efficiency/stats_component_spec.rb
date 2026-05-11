@@ -10,7 +10,7 @@ RSpec.describe ImpactReports::EnergyEfficiency::StatsComponent, :include_applica
   let(:classes) { 'extra-classes' }
   let(:base_params) { { impact_report: impact_report, id: id, classes: classes } }
 
-  let(:html) do
+  before do
     render_inline(described_class.new(**params))
   end
 
@@ -22,6 +22,6 @@ RSpec.describe ImpactReports::EnergyEfficiency::StatsComponent, :include_applica
       let(:expected_id) { id }
     end
 
-    it { expect(html).to have_css('#energy-efficiency-cards') }
+    it { expect(page).to have_css('#energy-efficiency-cards') }
   end
 end

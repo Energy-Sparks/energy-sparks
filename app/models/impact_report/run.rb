@@ -25,5 +25,26 @@ module ImpactReport
 
     belongs_to :school_group
     has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :impact_report_run, dependent: :destroy
+
+    scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
+
+    # e.g. overview(:active_users) etc
+    ImpactReport::Metric.categories.each do |category|
+      define_method(category) do |type|
+        metric(category, type)
+      end
+    end
+
+    def metric(category, type)
+      metrics_index[[category.to_s, type.to_s]]
+    end
+
+    private
+
+    def metrics_index
+      @metrics_index ||= metrics.index_by do |m|
+        [m.metric_category, m.metric_type]
+      end
+    end
   end
 end
