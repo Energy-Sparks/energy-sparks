@@ -33,10 +33,8 @@ module DataFeeds
     end
 
     def site_start_end_dates(site_id)
-      dates = get_data("/site/#{site_id}/dataPeriod")
-      start_date = Date.parse(dates['dataPeriod']['startDate']) if dates['dataPeriod']['startDate']
-      end_date = Date.parse(dates['dataPeriod']['endDate']) if dates['dataPeriod']['endDate']
-      [start_date, end_date]
+      period = get_data("/site/#{site_id}/dataPeriod").fetch('dataPeriod', {})
+      %w[startDate endDate].map { |key| Date.parse(period[key]) if period[key] }
     end
 
     # Used by application code
