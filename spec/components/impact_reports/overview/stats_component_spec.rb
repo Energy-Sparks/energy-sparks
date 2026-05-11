@@ -63,28 +63,37 @@ RSpec.describe ImpactReports::Overview::StatsComponent, :include_application_hel
       let(:metrics) {}
       let!(:run) { create(:impact_report_run, :with_overview_metrics, school_group:, **metrics) }
 
-      context 'when enrolling is larger than enrolled' do
-        let(:metrics) { { enrolling_schools: { value: 3 }, enrolled_schools: { value: 2 } } }
+      context 'when enrolling is non-zero' do
+        let(:metrics) { { enrolling_schools: { value: 3 }, enrolled_schools: { value: 0 } } }
 
+        it { expect(cards.count).to be(4) }
         it { expect(card).to have_text('Enrolling schools') }
         it { expect(card).to have_css('.figure', exact_text: run.overview(:enrolling_schools).value) }
         it { expect(card).to have_text(impact_t('overview.cards.enrolling_schools.subtext')) }
       end
 
-      context 'when enrolled is larger than enrolling' do
-        let(:metrics) { { enrolling_schools: { value: 2 }, enrolled_schools: { value: 3 } } }
+      context 'when enrolled is non-zero and enrolling is zero' do
+        let(:metrics) { { enrolling_schools: { value: 0 }, enrolled_schools: { value: 3 } } }
 
+        it { expect(cards.count).to be(4) }
         it { expect(card).to have_text('Enrolled schools') }
         it { expect(card).to have_css('.figure', exact_text: run.overview(:enrolled_schools).value) }
         it { expect(card).to have_text(impact_t('overview.cards.enrolled_schools.subtext')) }
       end
 
-      context 'when enrolling is the same as enrolled' do
-        let(:metrics) { { enrolling_schools: { value: 2 }, enrolled_schools: { value: 2 } } }
+      context 'when enrolled is non-zero and enrolling is non-zero' do
+        let(:metrics) { { enrolling_schools: { value: 3 }, enrolled_schools: { value: 4 } } }
 
+        it { expect(cards.count).to be(4) }
         it { expect(card).to have_text('Enrolling schools') }
         it { expect(card).to have_css('.figure', exact_text: run.overview(:enrolling_schools).value) }
         it { expect(card).to have_text(impact_t('overview.cards.enrolling_schools.subtext')) }
+      end
+
+      context 'when enrolling and enrolled are zero' do
+        let(:metrics) { { enrolling_schools: { value: 0 }, enrolled_schools: { value: 0 } } }
+
+        it { expect(cards.count).to be(3) }
       end
     end
   end

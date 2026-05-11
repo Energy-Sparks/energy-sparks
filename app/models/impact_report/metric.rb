@@ -10,7 +10,7 @@
 #  metric_category      :enum             not null
 #  metric_type          :enum             not null
 #  number_of_schools    :integer
-#  value                :integer          not null
+#  value                :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  impact_report_run_id :bigint(8)        not null
@@ -88,6 +88,14 @@ module ImpactReport
 
     def self.metrics(category)
       const_get("#{category.to_s.upcase}_METRICS")
+    end
+
+    def displayable?
+      enough_data? && value.present?
+    end
+
+    def figure
+      value if displayable?
     end
   end
 end

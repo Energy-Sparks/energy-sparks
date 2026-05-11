@@ -79,6 +79,7 @@ en:
             subtext:
               one: Of which %{count} has energy analysis available
               other: Of which %{count} have energy analysis available
+              zero: With access to our education programme and pending energy analysis
             title: Schools
           users:
             subtext:
