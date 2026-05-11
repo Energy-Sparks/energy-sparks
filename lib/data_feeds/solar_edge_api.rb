@@ -10,6 +10,7 @@ module DataFeeds
     class NotFound < StandardError; end
     class NotAllowed < StandardError; end
     class NotAuthorised < StandardError; end
+    class SiteStatusIssue < StandardError; end
 
     BASE_URL = 'https://monitoringapi.solaredge.com'
     # Maximum number of days that can be requested for 15 minute period data
@@ -33,7 +34,9 @@ module DataFeeds
 
     def site_start_end_dates(site_id)
       dates = get_data("/site/#{site_id}/dataPeriod")
-      [Date.parse(dates['dataPeriod']['startDate']), Date.parse(dates['dataPeriod']['endDate'])]
+      start_date = Date.parse(dates['dataPeriod']['startDate']) if dates['dataPeriod']['startDate']
+      end_date = Date.parse(dates['dataPeriod']['endDate']) if dates['dataPeriod']['endDate']
+      [start_date, end_date]
     end
 
     # Used by application code
@@ -178,6 +181,9 @@ module DataFeeds
 
     def dates(meter_id, start_date, end_date)
       sd, ed = site_start_end_dates(meter_id) if start_date.nil? || end_date.nil?
+
+      raise SiteStatusIssue, 'Site has incomplete Data Period. Is site still in pending status?' if sd.nil? || ed.nil?
+
       start_date = sd if start_date.nil?
       end_date   = ed if end_date.nil?
       [start_date, end_date]
