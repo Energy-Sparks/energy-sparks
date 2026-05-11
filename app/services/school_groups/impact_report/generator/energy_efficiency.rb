@@ -6,11 +6,6 @@ module SchoolGroups
       class EnergyEfficiency < Base
         METRICS = %i[gbp co2 kwh].freeze
 
-        def initialize(*)
-          super
-          @number_of_schools = {}
-        end
-
         private
 
         def metric_category
@@ -29,8 +24,8 @@ module SchoolGroups
           savings(fuel, metric).count
         end
 
-        def enough_data?(fuel, metric)
-          savings(fuel, metric).any?
+        def enough_data?(_fuel, _metric, number_of_schools)
+          number_of_schools.positive?
         end
 
         def savings(fuel, metric)

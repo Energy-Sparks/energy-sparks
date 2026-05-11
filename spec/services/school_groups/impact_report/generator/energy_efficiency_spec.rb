@@ -13,7 +13,6 @@ describe SchoolGroups::ImpactReport::Generator::EnergyEfficiency do
 
     before do
       alerts
-      # create(:alert, :with_run, :energy_annual_versus_benchmark, school:)
       Comparison::ChangeInElectricitySinceLastYear.refresh
       Comparison::ChangeInGasSinceLastYear.refresh
     end
@@ -48,12 +47,9 @@ describe SchoolGroups::ImpactReport::Generator::EnergyEfficiency do
                        alert_type: create(:alert_type, class_name: AlertGasAnnualVersusBenchmark),
                        variables: { temperature_adjusted_previous_year_kwh: 7,
                                     temperature_adjusted_percent: 8 })
-
-        # create(:alert, :with_run, :energy_annual_versus_benchmark, school:, fuel_type: :gas)
       end
 
       it 'has the right metrics' do
-        # debugger
         expect(energy.metrics).to contain_exactly(
           electricity(:gbp, enough_data: false, number_of_schools: 0),
           electricity(:co2, enough_data: false, number_of_schools: 0),
