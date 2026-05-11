@@ -35,9 +35,15 @@ describe ImpactReport::Metric do
     end
 
     context 'when enough_data is true and value is not present' do
-      subject(:metric) { create(:metimpact_report_metricric, value: nil, enough_data: true) }
+      subject(:metric) { create(:impact_report_metric, value: nil, enough_data: true) }
 
       it { expect(metric.displayable?).to be(false) }
+    end
+
+    context 'when enough_data is true and value is 0' do
+      subject(:metric) { create(:impact_report_metric, value: 0, enough_data: true) }
+
+      it { expect(metric.displayable?).to be(true) }
     end
   end
 end
