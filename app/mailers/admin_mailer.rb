@@ -2,6 +2,8 @@
 
 class AdminMailer < ApplicationMailer
   helper :application
+  helper :issues
+
   layout 'admin_mailer'
 
   def school_data_source_report
