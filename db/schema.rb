@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_27_130730) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_11_103302) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1250,7 +1250,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_27_130730) do
     t.enum "metric_type", null: false, enum_type: "impact_report_metric_types"
     t.integer "number_of_schools"
     t.datetime "updated_at", null: false
-    t.integer "value", null: false
+    t.integer "value"
     t.index ["impact_report_run_id"], name: "index_impact_report_metrics_on_impact_report_run_id"
   end
 
