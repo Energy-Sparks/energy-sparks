@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ImpactReports::Overview::StatsComponent, :include_application_helper, type: :component do
+RSpec.describe ImpactReports::Overview::MetricsComponent, :include_application_helper, type: :component do
   let(:school_group) { create(:school_group) }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
@@ -15,7 +15,7 @@ RSpec.describe ImpactReports::Overview::StatsComponent, :include_application_hel
 
   context 'with base params' do
     let(:params) { base_params }
-    let(:cards) { page.all('#overview-cards .layout-cards-stats-component') }
+    let(:cards) { page.all('#overview-cards .layout-cards-metrics-component') }
 
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }

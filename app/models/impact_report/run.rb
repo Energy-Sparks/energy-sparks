@@ -33,6 +33,10 @@ module ImpactReport
       define_method(category) do |type|
         metric(category, type)
       end
+
+      define_method("#{category}?") do |type|
+        metric(category, type).displayable?
+      end
     end
 
     def metric(category, type)
