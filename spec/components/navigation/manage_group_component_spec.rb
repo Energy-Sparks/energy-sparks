@@ -45,7 +45,7 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
   end
 
   shared_examples 'a correctly populated admin section' do
-    it 'has the correct links' do
+    it 'has the correct links' do # rubocop:disable RSpec/MultipleExpectations
       within('#admin') do
         expect(html).to have_link(I18n.t('school_groups.sub_nav.edit_group'),
                                   href: edit_admin_school_group_path(school_group))
@@ -53,6 +53,8 @@ RSpec.describe Navigation::ManageGroupComponent, :include_application_helper, :i
                                   href: admin_school_group_path(school_group))
         expect(html).to have_link('Issues',
                                   href: admin_school_group_issues_path(school_group))
+        expect(html).to have_link('Impact report',
+                                  href: edit_admin_impact_report_path(school_group))
         expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_users'),
                                   href: admin_school_group_users_path(school_group))
         expect(html).to have_link(I18n.t('school_groups.sub_nav.manage_partners'),

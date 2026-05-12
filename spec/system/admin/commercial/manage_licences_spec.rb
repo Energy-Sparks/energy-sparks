@@ -287,7 +287,11 @@ describe 'manage licences' do
   end
 
   context 'when viewing unlicensed schools' do
-    let!(:school) { create(:school, :with_trust) }
+    let!(:school) do
+      school = create(:school, :with_trust)
+      school.update(diocese: create(:school_group, :diocese))
+      school
+    end
 
     before do
       calendar = create(:national_calendar, title: 'England and Wales')

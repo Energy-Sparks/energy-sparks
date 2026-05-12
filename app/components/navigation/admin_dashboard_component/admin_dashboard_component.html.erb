@@ -16,6 +16,16 @@
                     options: { match_controller: false } do |s| %>
     <% my_schools_section.each do |item| %>
       <% s.with_item(name: item[:name],
+                     classes: item[:classes],
+                     href: item[:path]) %>
+    <% end %>
+  <% end %>
+
+  <% c.with_section name: 'My Meters',
+                    options: { match_controller: false } do |s| %>
+    <% my_meters_section.each do |item| %>
+      <% s.with_item(name: item[:name],
+                     classes: item[:classes],
                      href: item[:path]) %>
     <% end %>
   <% end %>

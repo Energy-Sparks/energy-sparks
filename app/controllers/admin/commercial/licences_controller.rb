@@ -20,8 +20,9 @@ module Admin::Commercial
 
     def unlicensed
       @academic_year = Calendar.default_national.current_academic_year
-      @schools = School.active.without_current_licence.joins(:school_groupings,
-                                                             school_groupings: :school_group).order('school_groups.name ASC')
+      @schools = School.active.without_current_licence.joins(
+        organisation_school_grouping: :school_group
+      ).order('school_groups.name ASC')
     end
 
     def new

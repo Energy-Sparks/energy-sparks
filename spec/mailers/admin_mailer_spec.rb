@@ -40,18 +40,18 @@ RSpec.describe AdminMailer, :include_application_helper do
 
     shared_examples 'a report with standard fields' do |active_only: true|
       it 'includes school and meters for active meters' do
-        expect(body).to have_content(active_meter.school.name)
-        expect(body).to have_content(active_meter.mpan_mprn)
+        expect(body).to have_text(active_meter.school.name)
+        expect(body).to have_text(active_meter.mpan_mprn)
       end
 
       it 'includes school and meters for inactive meters', unless: active_only do
-        expect(body).to have_content(inactive_meter.school.name)
-        expect(body).to have_content(inactive_meter.mpan_mprn)
+        expect(body).to have_text(inactive_meter.school.name)
+        expect(body).to have_text(inactive_meter.mpan_mprn)
       end
 
       it 'does not include school and meters for inactive meters', if: active_only do
-        expect(body).to have_no_content(inactive_meter.school.name)
-        expect(body).to have_no_content(inactive_meter.mpan_mprn)
+        expect(body).to have_no_text(inactive_meter.school.name)
+        expect(body).to have_no_text(inactive_meter.mpan_mprn)
       end
     end
 
@@ -73,6 +73,7 @@ RSpec.describe AdminMailer, :include_application_helper do
     let(:meter_report) { SchoolGroups::MeterReport.new(school_group, all_meters: all_meters) }
 
     before do
+      create(:issue, issueable: active_meter.school, meters: [active_meter])
       described_class.with(to: to, meter_report: meter_report).school_group_meters_report.deliver
     end
 
@@ -100,6 +101,10 @@ RSpec.describe AdminMailer, :include_application_helper do
       end
 
       it_behaves_like 'a report with gaps in the meter readings'
+
+      it 'includes issue icons' do
+        expect(body).to have_css('td.issue-icon')
+      end
 
       context 'All meters' do
         let(:all_meters) { true }
@@ -158,10 +163,10 @@ RSpec.describe AdminMailer, :include_application_helper do
 
       it 'shows table with data' do
         expect(email).to have_link('Lagging Source', href: admin_data_source_url(data_source))
-        expect(email).to have_content('4')
-        expect(email).to have_content('3')
-        expect(email).to have_content('75')
-        expect(email).to have_content('50')
+        expect(email).to have_text('4')
+        expect(email).to have_text('3')
+        expect(email).to have_text('75')
+        expect(email).to have_text('50')
       end
     end
 

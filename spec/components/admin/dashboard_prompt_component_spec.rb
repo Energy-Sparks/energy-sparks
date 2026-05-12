@@ -79,7 +79,7 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
 
       it 'displays the school activation prompt' do
         expect(page).to have_text('You have 1 schools awaiting activation')
-        expect(page).to have_link('Activations', href: admin_activations_path)
+        expect(page).to have_link('Activations', href: admin_dashboard_activations_path(dashboard_id: user))
       end
     end
   end
@@ -137,6 +137,88 @@ RSpec.describe Admin::DashboardPromptComponent, :include_application_helper, :in
         expect(page).to have_text('You have 1 amr data feed configurations with missing data')
         expect(page).to have_link('View AMR Data Feed Configurations',
                                   href: admin_dashboard_amr_data_feed_configs_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'school onboarding prompt' do
+    context 'when there are no schools onboarding' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the school onboarding prompt' do
+        expect(page).to have_no_text('schools that have not yet completed onboarding')
+      end
+    end
+
+    context 'when there are schools onboarding' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school_onboarding,
+               :with_events,
+               event_names: %i[email_sent],
+               school_group_id: school_group.id)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the school onboarding prompt' do
+        expect(page).to have_text('You have 1 schools that have not yet completed onboarding')
+        expect(page).to have_link('View Onboardings', href: admin_dashboard_school_onboardings_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'low engagement prompt' do
+    context 'when there are no groups with low engagement' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the low engagement prompt' do
+        expect(page).to have_no_text('groups with engagement below 50%')
+      end
+    end
+
+    context 'when there are groups with low engagement' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school, :with_points, school_group:)
+        create_list(:school, 2, school_group:)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the low engagement prompt' do
+        expect(page).to have_text('You have 1 groups with engagement below 50%')
+        expect(page).to have_link('View Engaged Groups', href: admin_dashboard_engaged_groups_path(dashboard_id: user))
+      end
+    end
+  end
+
+  describe 'missing alert contacts prompt' do
+    context 'when there are no schools missing alert contacts' do
+      before do
+        render_inline described_class.new(user: user)
+      end
+
+      it 'does not display the missing alert contacts prompt' do
+        expect(page).to have_no_text('schools that are missing alert contacts')
+      end
+    end
+
+    context 'when there are schools missing alert contacts' do
+      let(:school_group) { create(:school_group, default_issues_admin_user: user) }
+
+      before do
+        create(:school, school_group:, active: true)
+        render_inline described_class.new(user: user)
+      end
+
+      it 'displays the missing alert contacts prompt' do
+        expect(page).to have_text('You have 1 schools that are missing alert contacts')
+        expect(page).to have_link('View Schools', href: admin_dashboard_missing_alert_contacts_path(dashboard_id: user))
       end
     end
   end

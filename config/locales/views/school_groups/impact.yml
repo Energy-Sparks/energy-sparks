@@ -19,7 +19,6 @@ en:
             title: Total gas savings
         description: How are schools in this group making progress towards being more energy efficient?
         featured:
-          description: "%{school} have reduced their annual electricity consumption by %{percentage_reduction}% in the last 12 months"
           title: Featured energy efficient school
         title: Energy Efficiency
       engagement:
@@ -73,9 +72,6 @@ en:
           enrolling_schools:
             subtext: Number of schools currently going through onboarding
             title: Enrolling schools
-          funded_places:
-            subtext: Value of free access to Energy Sparks provided to %{count} schools this year
-            title: Funded places
           pupils:
             subtext: Benefitting from access to our educational programme
             title: Pupils
@@ -83,6 +79,7 @@ en:
             subtext:
               one: Of which %{count} has energy analysis available
               other: Of which %{count} have energy analysis available
+              zero: With access to our education programme and pending energy analysis
             title: Schools
           users:
             subtext:

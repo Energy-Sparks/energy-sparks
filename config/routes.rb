@@ -582,6 +582,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :dashboards, only: %i[show index] do
       resources :school_groups, module: :dashboard
+      resources :engaged_groups, module: :dashboard
       resources :activations, module: :dashboard
       resources :data_sources, module: :dashboard
       resources :amr_data_feed_configs, module: :dashboard
@@ -591,8 +592,17 @@ Rails.application.routes.draw do
           get 'completed'
         end
       end
+      resources :missing_alert_contacts, module: :dashboard
       resources :activities, module: :dashboard
       resources :interventions, module: :dashboard
+
+      resources :amr_data_feed_import_logs, module: :dashboard
+      resources :blank_readings, :lagging_meters, :zero_readings, module: :dashboard
+      resources :new_data_inactive_meter_report, module: :dashboard
+      resources :admin_user_meter_report, module: :dashboard
+      resources :baseload_anomaly, module: :dashboard
+      resources :manual_reads, module: :dashboard
+      resources :pupil_number_updates, module: :dashboard
     end
     resources :mailer_previews, only: [:index]
     resources :styles, only: [:index]
@@ -673,10 +683,7 @@ Rails.application.routes.draw do
       resources :sections, except: [:show], concerns: [:publishable]
     end
 
-    namespace :impact do
-      resources :configurations, only: %i[index edit update]
-    end
-
+    resources :impact_reports, only: %i[index edit update]
     resources :case_studies
     resources :dcc_consents, only: [:index]
     post 'dcc_consents/:mpxn/withdraw', to: 'dcc_consents#withdraw', as: :withdraw_dcc_consent
@@ -846,7 +853,7 @@ Rails.application.routes.draw do
 
       get 'energy_tariffs', to: 'energy_tariffs#index', as: :energy_tariffs
 
-      resources :engaged_groups, only: [:index]
+      match 'engaged_groups', to: 'engaged_groups#index', via: %i[get post]
       match 'engaged_schools', to: 'engaged_schools#index', via: %i[get post]
 
       resource :funder_allocations, only: [:show] do

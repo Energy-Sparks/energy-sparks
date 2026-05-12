@@ -2,6 +2,11 @@
 
 <h1>Administration</h1>
 
+<%= render Elements::ButtonComponent.new('Ops Dashboards',
+                                         admin_dashboards_path,
+                                         style: :secondary,
+                                         classes: 'mb-2 me-2') %>
+
 <div class="row">
   <div class="col">
     <h2>School onboarding</h2>

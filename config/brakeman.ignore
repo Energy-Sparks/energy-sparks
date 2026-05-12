@@ -110,9 +110,9 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/admin/users_controller.rb",
-      "line": 114,
+      "line": 110,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:user).permit(:name, :active, :email, :role, :school_id, :school_group_id, :staff_role_id, :climate_action_lead, :cluster_school_ids => ([]))",
+      "code": "params.expect(user: [:name, :active, :email, :role, :operations, :school_id, :school_group_id, :staff_role_id, :climate_action_lead, { cluster_school_ids: [] }])",
       "render_path": null,
       "location": {
         "type": "method",

@@ -118,13 +118,13 @@ describe 'Administering users' do
         it { expect(page).to have_select('Staff role', visible: :hidden) }
 
         it 'shows the organisation group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{school_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('false')
         end
 
         it 'does not show the project group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{project_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('true')
         end
@@ -139,15 +139,25 @@ describe 'Administering users' do
         it { expect(page).to have_select('Staff role', visible: :hidden) }
 
         it 'does not show the organisation group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{school_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('true')
         end
 
         it 'shows the project group options' do
-          select_box = find('#school_group_select', visible: :all)
+          select_box = find_by_id('school_group_select', visible: :all)
           option = select_box.find(:css, "option[value='#{project_group.id}']", visible: :all)
           expect(option[:hidden]).to eq('false')
+        end
+      end
+
+      context 'when selecting an Admin user', :js do
+        before do
+          select 'Admin', from: 'user_role'
+        end
+
+        it 'shows the operations option' do
+          expect(page).to have_unchecked_field('Member of ops team?', visible: :visible)
         end
       end
 
@@ -170,6 +180,15 @@ describe 'Administering users' do
           it { expect(user.role).to eq('admin') }
           it { expect(user.created_by).to eq(admin) }
           it { expect(user.climate_action_lead).to be false }
+        end
+
+        context 'with member of ops team' do
+          before do
+            check 'Member of ops team?'
+            click_on 'Create User'
+          end
+
+          it { expect(user.operations).to be(true) }
         end
 
         context 'with a climate action lead' do

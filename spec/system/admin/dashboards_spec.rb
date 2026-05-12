@@ -28,7 +28,8 @@ RSpec.describe 'Admin dashboard' do
   end
 
   describe 'Authorized access' do
-    let!(:user) { create(:admin, name: 'admin user') }
+    let!(:user) { create(:admin, name: 'admin user', operations: true) }
+    let!(:other_admin) { create(:admin, name: 'other admin', operations: false) }
 
     before do
       visit admin_dashboards_url
@@ -37,8 +38,12 @@ RSpec.describe 'Admin dashboard' do
     describe 'index page' do
       let(:staff_user) { create(:staff) }
 
-      it 'displays a list of links to admin users' do
+      it 'displays a list of links to operations users' do
         expect(page).to have_link(user.name, href: admin_dashboard_path(user))
+      end
+
+      it 'does not display non-operations admins' do
+        expect(page).to have_no_content(other_admin.name)
       end
 
       it 'does not display non-admin users' do
@@ -115,6 +120,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the data sources page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/data_sources")
+            expect(page).to have_link('View all data sources', href: admin_data_sources_path)
           end
 
           it 'displays data sources belonging to the user' do
@@ -136,6 +142,7 @@ RSpec.describe 'Admin dashboard' do
 
           it 'links to the data feeds page' do
             expect(page).to have_current_path("/admin/dashboards/#{user.id}/amr_data_feed_configs")
+            expect(page).to have_link('View all data feed configurations', href: admin_amr_data_feed_configs_path)
           end
 
           it 'displays data feeds belonging to the user' do
@@ -281,6 +288,28 @@ RSpec.describe 'Admin dashboard' do
             end
           end
 
+          describe 'engaged schools' do
+            let!(:engaged_school) do
+              travel_to(Time.zone.local(2025, 2, 4, 15, 30))
+              create(:school, :with_points, school_group: user_school_group,
+                                            calendar: create(:calendar, :with_previous_and_next_academic_years))
+            end
+            let(:last_sign_in) { Time.zone.now }
+
+            before do
+              create(:school_admin, school: engaged_school, last_sign_in_at: last_sign_in)
+              click_on 'Engaged schools'
+            end
+
+            it 'links to the engaged groups report' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/engaged_groups")
+            end
+
+            it 'displays engaged schools' do
+              expect(page).to have_content(engaged_school.school_group.name)
+            end
+          end
+
           describe 'recent activities' do
             let!(:activity_type) { create(:activity_type) }
             let!(:user_school) { create(:school, school_group: user_school_group) }
@@ -332,6 +361,79 @@ RSpec.describe 'Admin dashboard' do
 
             it 'does not display actions for other non-user school groups' do
               expect(page).to have_no_content(non_user_intervention.intervention_type.name)
+            end
+          end
+
+          describe 'missing alert contacts' do
+            let!(:user_school) do
+              create(:school, school_group: user_school_group, active: true)
+            end
+
+            let!(:non_user_school) do
+              create(:school, school_group: non_user_school_group, active: true)
+            end
+
+            before do
+              click_on 'Missing alert contacts'
+            end
+
+            it 'links to the missing alert contacts report' do
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/missing_alert_contacts")
+            end
+
+            it 'displays missing alert contacts for user school groups' do
+              expect(page).to have_content(user_school.name)
+            end
+
+            it 'does not display missing alert contacts for non-user school groups' do
+              expect(page).to have_no_content(non_user_school.name)
+            end
+          end
+
+          describe 'pupil number updates' do
+            before do
+              click_on 'Pupil number updates'
+            end
+
+            it 'links to the pupil number report filtered by user' do
+              expect(page).to have_link('View all pupil number updates', href: admin_reports_pupil_number_updates_path)
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/pupil_number_updates?admin=#{user.id}")
+            end
+          end
+        end
+
+        describe 'my meters' do
+          describe 'new data for inactive meters' do
+            before do
+              click_on 'New data for inactive meters'
+            end
+
+            it 'links to the new data for inactive meter report filtered by user' do
+              expect(page).to have_link('View all new data for inactive meters',
+                                        href: admin_reports_new_data_inactive_meter_report_index_path)
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/new_data_inactive_meter_report?admin=#{user.id}") # rubocop:disable Layout/LineLength
+            end
+          end
+
+          describe 'baseload anomalies' do
+            before do
+              click_on 'Baseload anomalies'
+            end
+
+            it 'links to the baseload anomalies report filtered by user' do
+              expect(page).to have_link('View all baseload anomalies', href: admin_reports_baseload_anomaly_index_path)
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/baseload_anomaly?admin=#{user.id}")
+            end
+          end
+
+          describe 'manual reads' do
+            before do
+              click_on 'Manually read meters'
+            end
+
+            it 'links to the manual reads report filtered by user' do
+              expect(page).to have_link('View all manual reads', href: admin_reports_manual_reads_path)
+              expect(page).to have_current_path("/admin/dashboards/#{user.id}/manual_reads?admin=#{user.id}")
             end
           end
         end

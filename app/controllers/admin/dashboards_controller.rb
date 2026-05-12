@@ -7,7 +7,7 @@ module Admin
     layout 'admin_dashboard'
 
     def index
-      @dashboard_users = User.admin.order(:name)
+      @dashboard_users = User.admin.where(operations: true).order(:name)
     end
 
     def show

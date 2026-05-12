@@ -76,6 +76,7 @@ class SchoolGroup < ApplicationRecord
   accepts_nested_attributes_for :school_group_partners, reject_if: proc { |attributes| attributes['position'].blank? }
 
   has_one :dashboard_message, as: :messageable, dependent: :destroy
+
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :school_issues, through: :assigned_schools, source: :issues
   has_many :active_school_issues, -> { merge(School.active) }, through: :assigned_schools, source: :issues
@@ -278,6 +279,24 @@ class SchoolGroup < ApplicationRecord
 
   def self.with_active_schools
     joins(school_groupings: :school).merge(School.active).distinct
+  end
+
+  def self.count_active_schools
+    joins("LEFT JOIN (
+            #{SchoolGrouping.joins(:school)
+              .merge(School.active)
+              .group(:school_group_id)
+              .select(:school_group_id, 'COUNT(*)').to_sql}
+          ) AS active ON school_groups.id = active.school_group_id")
+  end
+
+  def self.count_engaged_schools
+    joins("LEFT JOIN (
+            #{SchoolGrouping.joins(:school)
+              .merge(School.engaged(AcademicYear.current&.start_date..))
+              .group(:school_group_id)
+              .select(:school_group_id, 'COUNT(*)').to_sql}
+          ) AS engaged ON school_groups.id = engaged.school_group_id")
   end
 
   def all_issues

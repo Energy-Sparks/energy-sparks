@@ -2,6 +2,7 @@
   <%= f.input :name, required: true %>
   <%= f.input :email %>
   <%= f.input :role, collection: User.roles.except(:guest).keys.sort, label_method: :titleize %>
+  <%= f.input :operations, label: 'Member of ops team?' %>
   <%= f.input :school_id, collection: @schools, hint: 'For staff and school admins' %>
 
   <%= f.input :school_group_id,

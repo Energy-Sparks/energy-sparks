@@ -2,6 +2,11 @@
   <% content_for :title do %>
     <%= "#{@dashboard_user.display_name}'s AMR Data Feed Configurations" %>
   <% end %>
+
+  <%= render Elements::ButtonComponent.new('View all data feed configurations',
+                                           admin_amr_data_feed_configs_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 <% else %>
   <h1>AMR Data Feed Configurations</h1>
 <% end %>
