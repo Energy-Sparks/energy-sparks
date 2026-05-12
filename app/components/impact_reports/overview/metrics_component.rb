@@ -8,24 +8,18 @@ module ImpactReports
         raise_unless_run
       end
 
-      def display_enrolling?
-        overview?(:enrolling_schools) && overview(:enrolling_schools).value.to_i.positive?
+      def displayable
+        @displayable ||= main_metrics.append(enrollment_metrics).compact
       end
 
-      def display_enrolled?
-        !display_enrolling? &&
-          overview?(:enrolled_schools) && overview(:enrolled_schools).value.to_i.positive?
+      private
+
+      def main_metrics
+        %i[visible_schools users pupils].select { |metric| overview(metric)&.available? }
       end
 
-      def display_enrollment?
-        display_enrolling? || display_enrolled?
-      end
-
-      def cols
-        %i[visible_schools users pupils]
-          .map { |metric| overview?(metric) }
-          .append(display_enrollment?)
-          .count(true)
+      def enrollment_metrics
+        %i[enrolling_schools enrolled_schools].find { |metric| overview(metric)&.nonzero? }
       end
     end
   end

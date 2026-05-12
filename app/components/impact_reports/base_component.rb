@@ -7,7 +7,6 @@ module ImpactReports
     attr_reader :run
 
     delegate(*ImpactReport::Metric.metric_categories.keys, to: :run, allow_nil: true)
-    delegate(*ImpactReport::Metric.metric_categories.keys.map { |k| "#{k}?" }, to: :run, allow_nil: true)
     delegate :metric, to: :run, allow_nil: true
 
     def initialize(run: nil, impact_report: nil, school_group: nil, **)
@@ -19,6 +18,25 @@ module ImpactReports
     end
 
     private
+
+    def display?(metric)
+      displayable.include?(metric)
+    end
+
+    def displayable
+      raise NotImplementedError, "#{self.class} must implement #displayable"
+    end
+
+    def render?
+      displayable.any?
+    end
+
+    def cols
+      count = displayable.count
+      return count if count <= 4
+
+      [4, 3].reject { |cols| (count % cols) == 1 }.first || 4
+    end
 
     def raise_unless_run
       raise ArgumentError, 'run parameter is required' if run.nil?

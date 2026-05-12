@@ -4,28 +4,34 @@ require 'rails_helper'
 
 RSpec.describe ImpactReports::Engagement::MetricsComponent, :include_application_helper, type: :component do
   let(:school_group) { create(:school_group) }
+  let(:cards) { page.all('#engagement-cards .layout-cards-stats-component') }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:base_params) { { run: run, id: id, classes: classes } }
-  let!(:run) { create(:impact_report_run, categories: %i[overview engagement], school_group:) }
+  let(:params) { base_params }
+
+  let(:metrics) {}
+  let!(:run) { create(:impact_report_run, categories: %i[overview engagement], school_group:, **metrics) }
 
   before do
     render_inline(described_class.new(**params))
   end
 
   context 'with base params' do
-    let(:params) { base_params }
-    let(:cards) { page.all('#engagement-cards .layout-cards-stats-component') }
-
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
       let(:expected_id) { id }
     end
+  end
 
-    describe 'activities card' do
-      let(:card) { cards[0] }
+  def card_with_title(title)
+    cards.find { |card| card.has_css?('h5.elements-header-component', text: title) }
+  end
 
-      it { expect(card).to have_text('Pupil activities') }
+  describe 'activities card' do
+    let(:card) { card_with_title('Pupil activities') }
+
+    context 'when activities is nonzero' do
       it { expect(card).to have_css('.figure', exact_text: run.engagement(:activities).value) }
 
       it do
@@ -36,10 +42,17 @@ RSpec.describe ImpactReports::Engagement::MetricsComponent, :include_application
       end
     end
 
-    describe 'actions card' do
-      let(:card) { cards[1] }
+    context 'when activities is zero' do
+      let(:metrics) { { activities: { value: 0 } } }
 
-      it { expect(card).to have_text('Adult actions') }
+      it { expect(card).to be_nil }
+    end
+  end
+
+  describe 'actions card' do
+    let(:card) { card_with_title('Adult actions') }
+
+    context 'when actions is nonzero' do
       it { expect(card).to have_css('.figure', exact_text: run.engagement(:actions).value) }
 
       it do
@@ -50,20 +63,57 @@ RSpec.describe ImpactReports::Engagement::MetricsComponent, :include_application
       end
     end
 
-    describe 'points card' do
-      let(:card) { cards[2] }
+    context 'when actions is zero' do
+      let(:metrics) { { actions: { value: 0 } } }
 
-      it { expect(card).to have_text('Points') }
+      it { expect(card).to be_nil }
+    end
+  end
+
+  describe 'points card' do
+    let(:card) { card_with_title('Points') }
+
+    context 'when points is nonzero' do
       it { expect(card).to have_css('.figure', exact_text: run.engagement(:points).value) }
       it { expect(card).to have_text(impact_t('engagement.cards.points.subtext')) }
     end
 
-    describe 'tagets card' do
-      let(:card) { cards[3] }
+    context 'when points is zero' do
+      let(:metrics) { { points: { value: 0 } } }
 
-      it { expect(card).to have_text('Targets') }
+      it { expect(card).to be_nil }
+    end
+  end
+
+  describe 'targets card' do
+    let(:card) { card_with_title('Current targets') }
+
+    context 'when targets is nonzero' do
       it { expect(card).to have_css('.figure', exact_text: run.engagement(:targets).value) }
       it { expect(card).to have_text(impact_t('engagement.cards.targets.subtext')) }
     end
+
+    context 'when targets is zero' do
+      let(:metrics) { { targets: { value: 0 } } }
+
+      it { expect(card).to be_nil }
+    end
+  end
+
+  context 'when all metrics do not have enough data' do
+    let(:metrics) do
+      { activities: { enough_data: false }, actions: { enough_data: false }, points: { enough_data: false },
+        targets: { enough_data: false } }
+    end
+
+    it { expect(cards.count).to be_zero }
+    it { expect(rendered_content).to be_blank }
+  end
+
+  context 'when all cards are nonzero' do
+    let(:metrics) { { activities: { value: 0 }, actions: { value: 0 }, points: { value: 0 }, targets: { value: 0 } } }
+
+    it { expect(cards.count).to be_zero }
+    it { expect(rendered_content).to be_blank }
   end
 end

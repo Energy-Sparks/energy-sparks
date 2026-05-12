@@ -8,19 +8,9 @@ module ImpactReports
         raise_unless_run
       end
 
-      def self.metric_category
-        :engagement
-      end
-
-      # disabled for now
-      def display_programmes?
-        false
-      end
-
-      def cols
-        %i[activities actions points targets]
-          .map { |metric| engagement?(metric) }
-          .count(true)
+      def displayable
+        @displayable ||= ImpactReport::Metric.metrics(:engagement)
+                                             .select { |metric| engagement(metric)&.nonzero? }.compact
       end
     end
   end
