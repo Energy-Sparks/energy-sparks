@@ -45,9 +45,8 @@ module SchoolGroups
           key = [fuel_type, benchmark].compact.join('_')
           categories = SchoolGroups::CategoriseSchools.new(schools: @impact_report.visible_schools)
                                                       .categorise_schools_for_advice_page(AdvicePage.find_by(key:))
-          %i[exemplar_school benchmark_school].map do |category|
-            categories[category]&.count || 0
-          end + [categories.values.sum(&:count)]
+          %i[exemplar_school benchmark_school].map { |category| categories[category]&.count || 0 } +
+            [categories.values.sum(&:count)]
         end
       end
     end
