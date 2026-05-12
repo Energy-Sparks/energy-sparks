@@ -18,7 +18,7 @@ module SchoolGroups
         def metrics
           BENCHMARKS.flat_map do |fuel_types, benchmark|
             fuel_types.flat_map do |fuel_type|
-              exemplar, well_managed, number_of_schools = \
+              exemplar, well_managed, number_of_schools =
                 categorise(fuel_types.length == 1 ? nil : fuel_type, benchmark)
               [metric(fuel_type, benchmark, :exemplar, number_of_schools, exemplar),
                metric(fuel_type, benchmark, :well_managed, number_of_schools, well_managed)]
