@@ -56,6 +56,24 @@ describe SchoolGroups::ImpactReport do
 
         it { expect(overview.users).to eq(0) }
       end
+
+      context 'with pupils' do
+        before { create(:pupil, school: visible_school) }
+
+        it { expect(overview.users).to eq(0) }
+      end
+
+      context 'with non active' do
+        before { create(:user, school: visible_school, active: false) }
+
+        it { expect(overview.users).to eq(0) }
+      end
+
+      context 'with non confirmed' do
+        before { create(:user, school: visible_school, confirmed_at: nil) }
+
+        it { expect(overview.users).to eq(0) }
+      end
     end
 
     describe '#active_users' do

@@ -83,23 +83,23 @@ class User < ApplicationRecord
   has_many :owned_issues, class_name: 'Issue', foreign_key: :owned_by_id, inverse_of: :owned_by
 
   actor_associations_for \
-    Activity: [:created, :updated],
-    CaseStudy: [:created, :updated],
-    'Commercial::Contract': [:created, :updated],
-    'Commercial::ContractContact': [:created, :updated],
-    'Commercial::Licence': [:created, :updated],
-    'Commercial::Product': [:created, :updated],
-    'Cms::Category': [:created, :updated],
-    'Cms::Page': [:created, :updated],
-    'Cms::Section': [:created, :updated],
-    EnergyTariff: [:created, :updated],
-    Issue: [:created, :updated],
-    Newsletter: [:created, :updated],
-    Observation: [:created, :updated],
-    GlobalMeterAttribute: [:created, :deleted],
-    MeterAttribute: [:created, :deleted],
-    SchoolGroupMeterAttribute: [:created, :deleted],
-    SchoolMeterAttribute: [:created, :deleted],
+    Activity: %i[created updated],
+    CaseStudy: %i[created updated],
+    'Commercial::Contract': %i[created updated],
+    'Commercial::ContractContact': %i[created updated],
+    'Commercial::Licence': %i[created updated],
+    'Commercial::Product': %i[created updated],
+    'Cms::Category': %i[created updated],
+    'Cms::Page': %i[created updated],
+    'Cms::Section': %i[created updated],
+    EnergyTariff: %i[created updated],
+    Issue: %i[created updated],
+    Newsletter: %i[created updated],
+    Observation: %i[created updated],
+    GlobalMeterAttribute: %i[created deleted],
+    MeterAttribute: %i[created deleted],
+    SchoolGroupMeterAttribute: %i[created deleted],
+    SchoolMeterAttribute: %i[created deleted],
     SchoolAlertTypeExclusion: :created,
     SchoolOnboarding: :created,
     User: :created
@@ -117,7 +117,7 @@ class User < ApplicationRecord
   enum :mailchimp_status, %w[subscribed unsubscribed cleaned nonsubscribed archived].to_h { |v| [v, v] }, prefix: true
 
   scope :active, -> { where(active: true) }
-
+  scope :confirmed, -> { where.not(confirmed_at: nil) }
   scope :alertable, -> { where(role: [User.roles[:staff], User.roles[:school_admin]]) }
 
   scope :mailchimp_roles, lambda {
@@ -146,12 +146,12 @@ class User < ApplicationRecord
 
   scope :recently_logged_in, ->(date) { where('last_sign_in_at >= ?', date) }
 
-  scope :with_owned_issue_count, ->(issueable: nil) do
+  scope :with_owned_issue_count, lambda { |issueable: nil|
     users = left_joins(:owned_issues)
     users = users.merge(Issue.for_issueable(issueable)) if issueable
 
     users.group('id').select('users.*', 'COUNT(issues.id) AS issues_count')
-  end
+  }
 
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 

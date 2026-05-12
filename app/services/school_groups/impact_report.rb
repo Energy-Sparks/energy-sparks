@@ -116,13 +116,10 @@ module SchoolGroups
 
       def users_scope
         schools = @impact_report.visible_schools
-        # do we want cluster users?
         cluster_users = User.joins(:cluster_schools_users).where(cluster_schools_users: { school_id: schools })
-
-        User.where(school: schools)
-            .or(User.where(school_group:))
-            .or(User.where(id: cluster_users))
-            .distinct
+        User.active.confirmed.where.not(role: :pupil)
+            .where('school_id IN (:schools) OR school_group_id = :school_group OR users.id IN (:cluster_users)',
+                   schools: schools.select(:id), school_group:, cluster_users: cluster_users.select(:id))
       end
     end
 

@@ -2,13 +2,13 @@
 
 module ImpactReports
   module PotentialSavings
-    class StatsComponentPreview < ::ViewComponent::Preview
+    class MetricsComponentPreview < ::ViewComponent::Preview
       # @param slug select :group_options
       # @param bs5 toggle
-      def default(bs5: false, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
+      def default(bs5: true, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
         school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
         impact_report = SchoolGroups::ImpactReport.new(school_group)
-        render(ImpactReports::PotentialSavings::StatsComponent.new(impact_report: impact_report))
+        render(ImpactReports::PotentialSavings::MetricsComponent.new(impact_report: impact_report))
       end
 
       private

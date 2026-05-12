@@ -2,9 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe ImpactReports::PotentialSavings::StatsComponent, :include_application_helper, type: :component do
+RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_application_helper, type: :component do
   let(:school_group) { create(:school_group) }
   let(:impact_report) { SchoolGroups::ImpactReport.new(school_group) }
+
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
   let(:base_params) { { impact_report: impact_report, id: id, classes: classes } }
@@ -21,6 +22,6 @@ RSpec.describe ImpactReports::PotentialSavings::StatsComponent, :include_applica
       let(:expected_id) { id }
     end
 
-    it { expect(page).to have_css('#potential-savings-cards') }
+    it { expect(page).to have_css('#energy-efficiency-cards') }
   end
 end
