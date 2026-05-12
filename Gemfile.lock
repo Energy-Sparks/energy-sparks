@@ -666,7 +666,7 @@ GEM
     rgeo-geojson (2.2.0)
       multi_json (~> 1.15)
       rgeo (>= 1.0.0)
-    rollbar (3.7.0)
+    rollbar (3.8.0)
     roo-xls (2.0.0)
       csv
       nokogiri
