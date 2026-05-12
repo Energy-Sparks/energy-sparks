@@ -1,6 +1,7 @@
 module ApplicationHelper
   include Pagy::Frontend
   include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::NumberHelper
 
   def nice_date_times(datetime, options = {})
     return '' if datetime.nil?
@@ -263,6 +264,19 @@ module ApplicationHelper
     return school_time if school_time.blank?
 
     format('%04d', school_time).insert(2, ':')
+  end
+
+  def format_price(price, decimals: true)
+    raw = price.to_s
+    integer, decimal = raw.split('.')
+
+    formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
+
+    if decimals && decimal
+      "£#{formatted_int}.#{decimal}"
+    else
+      "£#{formatted_int}"
+    end
   end
 
   def table_headers_from_array(array)
