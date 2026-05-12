@@ -11,6 +11,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
   before do
     # so we can display a testimonial
     create(:testimonial, case_study: create(:case_study, organisation: school_group))
+    create(:impact_report_run, :with_metrics, school_group:)
   end
 
   describe 'Access control' do
@@ -106,8 +107,7 @@ RSpec.describe 'school group impact reports', :include_application_helper, :scho
         group_type = I18n.t(school_group.group_type, scope: 'school_groups.clusters.group_type')
         expect(header).to have_content(strip_tags(
                                          I18n.t('school_groups.impact.feature.description_html',
-                                                count: 2,
-                                                group_type: group_type)
+                                                count: 1, group_type: group_type)
                                        ))
       end
 

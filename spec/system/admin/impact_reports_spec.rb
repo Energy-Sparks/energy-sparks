@@ -8,7 +8,10 @@ RSpec.describe 'Admin impact report configuration' do
   let!(:other_school_group) { create(:school_group, :diocese) }
   let(:school) { school_group.assigned_schools.first }
 
-  before { Flipper.enable(:impact_reporting) }
+  before do
+    Flipper.enable(:impact_reporting)
+    create(:impact_report_run, :with_metrics, school_group:)
+  end
 
   describe 'when not logged in' do
     context 'when visiting the index' do

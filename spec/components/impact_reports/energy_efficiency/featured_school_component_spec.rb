@@ -8,18 +8,15 @@ RSpec.describe ImpactReports::EnergyEfficiency::FeaturedSchoolComponent, :includ
   let!(:config) { create(:impact_report_configuration, school_group: school_group) }
 
   context 'without override' do
-    let(:html) do
+    before do
       render_inline(described_class.new(school_group: school_group))
     end
 
-    it { expect(html).to have_no_css('#energy-efficiency-featured') }
+    it { expect(page).to have_no_css('#energy-efficiency-featured') }
   end
 
   context 'with override' do
     let(:featured_school) { create(:school, school_group: school_group) }
-    let(:html) do
-      render_inline(described_class.new(school_group: school_group))
-    end
     let(:custom_description) { 'Custom energy efficiency description' }
 
     before do
@@ -28,18 +25,16 @@ RSpec.describe ImpactReports::EnergyEfficiency::FeaturedSchoolComponent, :includ
         energy_efficiency_note: custom_description,
         energy_efficiency_school_expiry_date: 1.year.from_now
       )
+      render_inline(described_class.new(school_group: school_group))
     end
 
-    it { expect(html).to have_css('#energy-efficiency-featured') }
-    it { expect(html).to have_text(custom_description) }
-    it { expect(html).to have_link('View dashboard', href: school_path(featured_school)) }
+    it { expect(page).to have_css('#energy-efficiency-featured') }
+    it { expect(page).to have_text(custom_description) }
+    it { expect(page).to have_link('View dashboard', href: school_path(featured_school)) }
   end
 
   context 'with override and custom image' do
     let(:featured_school) { create(:school, school_group: school_group) }
-    let(:html) do
-      render_inline(described_class.new(school_group: school_group))
-    end
 
     before do
       config.update(
@@ -50,25 +45,25 @@ RSpec.describe ImpactReports::EnergyEfficiency::FeaturedSchoolComponent, :includ
       config.energy_efficiency_image.attach(
         io: Rails.root.join('app/assets/images/for-multi-academies.jpg').open, filename: 'for-multi-academies.jpg'
       )
+
+      render_inline(described_class.new(school_group: school_group))
     end
 
-    it { expect(html).to have_css('img') }
+    it { expect(page).to have_css('img') }
   end
 
   context 'with override but expired' do
     let(:featured_school) { create(:school, school_group: school_group) }
-    let(:html) do
-      render_inline(described_class.new(school_group: school_group))
-    end
 
     before do
+      render_inline(described_class.new(school_group: school_group))
       config.update(
         energy_efficiency_school: featured_school,
         energy_efficiency_school_expiry_date: 1.day.ago
       )
     end
 
-    it { expect(html).to have_no_css('#energy-efficiency-featured') }
+    it { expect(page).to have_no_css('#energy-efficiency-featured') }
   end
 
   context 'when school is not present' do
