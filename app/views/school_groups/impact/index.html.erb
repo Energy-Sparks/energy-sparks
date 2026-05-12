@@ -8,12 +8,12 @@
       <%= feature.with_header title: impact_t('feature.title', school_group: @school_group.name) %>
       <%= feature.with_description do %>
         <%= impact_t('feature.description_html',
-                     count: @impact_report.visible_schools_count,
+                     count: @run.overview(:visible_schools).value,
                      group_type: t(@school_group.group_type, scope: 'school_groups.clusters.group_type')) %>
       <% end %>
       <%= feature.with_block do %>
         <%= t('common.last_updated_on_html',
-              date: @impact_report.generated_at.to_date.to_fs(:es_long)) %>
+              date: @run.run_date.to_fs(:es_long)) %>
       <% end %>
       <%= feature.with_block(classes: 'pt-2') do %>
         <%= impact_t('feature.read_more_html', href: '#notes') %>
@@ -30,7 +30,7 @@
     <%= section_header.with_description { impact_t('overview.description') } %>
   <% end %>
 
-  <%= render ImpactReports::Overview::StatsComponent.new(impact_report: @impact_report) %>
+  <%= render ImpactReports::Overview::StatsComponent.new(run: @run) %>
   <%= render Layout::CarouselComponent.new(id: 'overview-testimonials',
                                            show_markers: false,
                                            theme: :accent,

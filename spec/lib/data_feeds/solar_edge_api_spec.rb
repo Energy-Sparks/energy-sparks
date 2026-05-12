@@ -16,6 +16,42 @@ describe DataFeeds::SolarEdgeApi do
     allow(Faraday).to receive(:get).with(expected_url, expected_params, headers).and_return(response)
   end
 
+  describe '#site_start_end_dates' do
+    let(:expected_url) { "#{DataFeeds::SolarEdgeApi::BASE_URL}/site/#{site_id}/dataPeriod" }
+    let(:expected_params) { { api_key: } }
+    let(:site_id) { 123 }
+
+    context 'with valid dates' do
+      let(:body) do
+        {
+          dataPeriod: {
+            startDate: '2025-01-01',
+            endDate: '2026-05-11'
+          }
+        }
+      end
+
+      it 'returns data' do
+        expect(client.site_start_end_dates(site_id)).to eql [Date.new(2025, 1, 1), Date.new(2026, 5, 11)]
+      end
+    end
+
+    context 'when site is still in Pending status' do
+      let(:body) do
+        {
+          dataPeriod: {
+            startDate: nil,
+            endDate: '2026-05-11'
+          }
+        }
+      end
+
+      it 'returns data' do
+        expect(client.site_start_end_dates(site_id)).to eql [nil, Date.new(2026, 5, 11)]
+      end
+    end
+  end
+
   # minimal test of HTTP response handling behaviour
   describe '#site_details' do
     let(:expected_url) { "#{DataFeeds::SolarEdgeApi::BASE_URL}/sites/list" }

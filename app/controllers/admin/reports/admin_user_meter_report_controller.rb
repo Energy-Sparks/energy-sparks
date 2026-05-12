@@ -14,6 +14,7 @@ module Admin
       end
 
       def results
+        params[:active] ||= 'true'
         unless params.key?(:school_group) || params.key?(:admin)
           params[:admin] = current_user.id
           return nil
@@ -21,8 +22,12 @@ module Admin
         filtered_meters
       end
 
+      def columns
+        super.insert(7, Column.new(:active, ->(meter) { meter.active }))
+      end
+
       def filtered_meters
-        Meter.active
+        Meter.then { |scope| filter_by_active(scope) }
              .joins(:school)
              .includes(:school, { school: :school_group })
              .then { |scope| filter_by_admin(scope) }
@@ -40,6 +45,12 @@ module Admin
 
       def filter_by_school_group(scope)
         filter(scope, params[:school_group]) { scope.where(schools: { school_group_id: params[:school_group] }) }
+      end
+
+      def filter_by_active(scope)
+        return scope if params[:active] == 'all'
+
+        filter(scope, params[:active]) { scope.where(active: params[:active]) }
       end
 
       def filter(scope, condition)
