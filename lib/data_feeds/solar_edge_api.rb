@@ -179,7 +179,7 @@ module DataFeeds
     end
 
     def dates(meter_id, start_date, end_date)
-      sd, ed = site_start_end_dates(meter_id) # if start_date.nil? || end_date.nil?
+      sd, ed = site_start_end_dates(meter_id)
 
       raise SiteStatusIssue, 'Site has incomplete Data Period. Is site still in pending status?' if sd.nil? || ed.nil?
 
