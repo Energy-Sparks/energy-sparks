@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ImpactReports::Overview::StatsComponent, :include_application_helper, type: :component do
+RSpec.describe ImpactReports::Overview::MetricsComponent, :include_application_helper, type: :component do
   let(:school_group) { create(:school_group) }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }

@@ -11,8 +11,9 @@ module Schools
 
       return unless @installation.cached_api_information?
 
-      start_time = @installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
-      end_time = @installation.api_latest_data_date.strftime('%Y-%m-%d 00:00:00')
+      latest_date = @installation.api_latest_data_date
+      start_time = (latest_date - 1.day).strftime('%Y-%m-%d 00:00:00')
+      end_time = latest_date.strftime('%Y-%m-%d 00:00:00')
       @reading_params = @api_params.merge({ timeUnit: 'QUARTER_OF_AN_HOUR', startTime: start_time,
                                             endTime: end_time })
     end

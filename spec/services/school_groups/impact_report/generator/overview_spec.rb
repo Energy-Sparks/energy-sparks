@@ -18,35 +18,61 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
       { enough_data: true, fuel_type: nil, metric_category: :overview, number_of_schools: 1, value: 1 }.merge(**)
     end
 
-    context 'with school users' do
-      before { create(:user, school:) }
+    context 'with users' do
+      context 'with school users' do
+        before { create(:user, school:) }
 
-      it 'includes users belonging to visible schools' do
-        expect(metrics[:users]).to eq(expected)
+        it 'includes users belonging to visible schools' do
+          expect(metrics[:users]).to eq(expected)
+        end
       end
-    end
 
-    context 'with school group users' do
-      before { create(:user, school_group:) }
+      context 'with school group users' do
+        before { create(:user, school_group:) }
 
-      it 'includes users belonging to the school group' do
-        expect(metrics[:users]).to eq(expected)
+        it 'includes users belonging to the school group' do
+          expect(metrics[:users]).to eq(expected)
+        end
       end
-    end
 
-    context 'with cluster school users' do
-      before { create(:school_admin, :with_cluster_schools, existing_school: school) }
+      context 'with cluster school users' do
+        before { create(:school_admin, :with_cluster_schools, existing_school: school) }
 
-      it 'includes cluster school users for visible schools' do
-        expect(metrics[:users]).to eq(expected)
+        it 'includes cluster school users for visible schools' do
+          expect(metrics[:users]).to eq(expected)
+        end
       end
-    end
 
-    context 'with non visible schools' do
-      before { create(:user, school: create(:school, visible: false, school_group:)) }
+      context 'with non visible schools' do
+        before { create(:user, school: create(:school, visible: false, school_group:)) }
 
-      it 'shows no users' do
-        expect(metrics[:users]).to eq(expected(value: 0))
+        it 'shows no users' do
+          expect(metrics[:users]).to eq(expected(value: 0))
+        end
+      end
+
+      context 'with pupils' do
+        before { create(:pupil, school: visible_school) }
+
+        it 'shows no users' do
+          expect(metrics[:users]).to eq(expected(value: 0))
+        end
+      end
+
+      context 'with non active' do
+        before { create(:user, school: visible_school, active: false) }
+
+        it 'shows no users' do
+          expect(metrics[:users]).to eq(expected(value: 0))
+        end
+      end
+
+      context 'with non confirmed' do
+        before { create(:user, school: visible_school, confirmed_at: nil) }
+
+        it 'shows no users' do
+          expect(metrics[:users]).to eq(expected(value: 0))
+        end
       end
     end
 

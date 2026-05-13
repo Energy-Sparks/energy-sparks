@@ -88,12 +88,12 @@ module ImpactReport
       const_get("#{category.to_s.upcase}_METRICS")
     end
 
-    def displayable?
+    def available?
       enough_data? && value.present?
     end
 
-    def figure
-      value if displayable?
+    def nonzero?
+      available? && value.to_i.nonzero?
     end
   end
 end
