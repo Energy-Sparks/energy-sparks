@@ -34,7 +34,8 @@ module SchoolGroups
                   else
                     Comparison::ChangeInElectricitySinceLastYear
                   end
-          model.where(column(model, metric, :current).lt(column(model, metric, :previous)))
+          model.where(school: @impact_report.visible_schools)
+               .where(column(model, metric, :current).lt(column(model, metric, :previous)))
         end
 
         def column(model, metric, type)
