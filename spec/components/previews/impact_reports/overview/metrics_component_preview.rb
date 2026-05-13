@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 module ImpactReports
-  module Engagement
-    class StatsComponentPreview < ::ViewComponent::Preview
+  module Overview
+    class MetricsComponentPreview < ::ViewComponent::Preview
       # @param slug select :group_options
       # @param bs5 toggle
-      def default(bs5: false, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
+      def default(bs5: true, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
         school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
-        impact_report = SchoolGroups::ImpactReport.new(school_group)
-        render(ImpactReports::Engagement::StatsComponent.new(impact_report: impact_report))
+        render(ImpactReports::Overview::MetricsComponent.new(run: school_group.impact_report_runs.latest))
       end
 
       private

@@ -5,7 +5,7 @@ module ImpactReports
     class FeaturedSchoolComponentPreview < ::ViewComponent::Preview
       # @param slug select :group_options
       # @param bs5 toggle
-      def default(bs5: false, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
+      def default(bs5: true, slug: nil) # rubocop:disable Lint/UnusedMethodArgument
         school_group = slug ? SchoolGroup.find(slug) : SchoolGroup.with_active_schools.sample
 
         render(ImpactReports::EnergyEfficiency::FeaturedSchoolComponent.new(school_group: school_group))
