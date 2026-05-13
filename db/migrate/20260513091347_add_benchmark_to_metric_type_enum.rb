@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddBenchmarkToMetricTypeEnum < ActiveRecord::Migration[8.1]
   def up
     SchoolGroups::ImpactReport::Generator::Benchmark::METRICS.each do |metric|
