@@ -4,11 +4,12 @@ module SchoolGroups
   class ImpactReport
     class Generator
       def initialize(school_group)
+        @school_group = school_group
         @import_report = ImpactReport.new(school_group)
       end
 
       def create_metrics!
-        run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
+        run = ::ImpactReport::Run.create!(school_group: @school_group, run_date: Date.current)
         metrics.each { |attributes| run.metrics.create!(**attributes) }
       end
 
