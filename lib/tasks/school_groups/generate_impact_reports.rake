@@ -6,8 +6,7 @@ namespace :school_groups do
       next if school_group.assigned_schools.active.empty?
 
       generator = SchoolGroups::ImpactReport::Generator.new(school_group)
-      run = ImpactReport::Run.create!(school_group:, run_date: Date.current)
-      generator.metrics.each { |attributes| run.metrics.create!(**attributes) }
+      generator.create_metrics!
     end
   rescue StandardError => e
     EnergySparks::Log.exception(e, job: 'school_groups:generate_impact_reports')
