@@ -272,10 +272,13 @@ module ApplicationHelper
 
     formatted_int = ActiveSupport::NumberHelper.number_to_delimited(integer)
 
-    if decimals && decimal
-      "£#{formatted_int}.#{decimal}"
+    return "£#{formatted_int}" unless decimals
+
+    if decimal
+      padded = decimal.ljust(2, '0')
+      "£#{formatted_int}.#{padded}"
     else
-      "£#{formatted_int}"
+      "£#{formatted_int}.00"
     end
   end
 
