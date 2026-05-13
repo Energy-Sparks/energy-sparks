@@ -87,15 +87,21 @@ en:
         description: How many schools and users are enrolled in Energy Sparks from this group?
         title: Overview
       potential_savings:
-        cards:
-          electricity_savings:
-            subtext: By reducing out of hours electricity use
-            title: Potential electricity savings
-          gas_savings:
-            subtext: By turning down thermostats by 1C in %{count} schools
-            title: Potential gas savings
-          solar_panels:
-            subtext: Benefits from installing solar on an additional %{count} schools
-            title: Install solar panels
         description: What additional savings have we identified that can help these schools continue to reduce their energy bills and carbon emissions?
+        keys:
+          baseload: By reducing %{fuel_type} baseload in %{schools} schools
+          heating_down: By turning the heating down by 1°C in %{schools} schools
+          heating_early: By setting the heating to come on later in the morning in %{schools} schools
+          heating_off: By switching off the heating in warmer weather in %{schools} schools
+          insulate_pipes: By insulating hot water pipes in %{schools} schools
+          out_of_hours: By reducing out of hours %{fuel_type} use in %{schools} schools
+          peak: By reducing peak %{fuel_type} consumption in %{schools} schools
+          solar_panels: Benefits from installing solar on an additional %{schools} schools
+          thermostatic_control: By improving thermostatic control in %{schools} schools
+          use: By reducing annual %{fuel_type} use in %{schools} schools
         title: Potential savings
+        titles:
+          electricity: Potential electricity savings
+          gas: Potential gas savings
+          solar_pv: Install solar panels
+          storage_heater: Potential electricity savings

@@ -95,5 +95,19 @@ module ImpactReport
     def nonzero?
       available? && value.to_i.nonzero?
     end
+
+    def key_and_units
+      @key_and_units ||= metric_type.match(
+        /(.+?)(?:_(#{SchoolGroups::ImpactReport::Generator::PotentialSavings::TYPES.join('|')}))?$/
+      ).captures
+    end
+
+    def key
+      key_and_units.first.to_s
+    end
+
+    def units
+      key_and_units[1]&.to_s
+    end
   end
 end

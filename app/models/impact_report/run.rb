@@ -28,22 +28,40 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    # e.g. overview(:active_users) etc
-    ImpactReport::Metric.categories.each do |category|
-      define_method(category) do |type|
-        metric(category, type)
+    # e.g. overview(:active_users)
+    %i[overview engagement].each do |category|
+      define_method(category) do |type, fuel_type = nil|
+        metric(category, type, fuel_type)
       end
     end
 
-    def metric(category, type)
-      metrics_index[[category.to_s, type.to_s]]
+    # Putting the logic here for ordering as might want this for the admin interface
+    def potential_savings
+      # This is the order we would like to pick them
+      # only using gpb metrics for now
+      %w[electricity solar_pv gas storage_heater].map do |fuel_type|
+        by_category(:potential_savings).fetch(fuel_type, {}).values
+                                       .select { |metric| metric.units == 'gbp' && metric.nonzero? }
+                                       .sort_by { |metric| -metric.value }
+      end.reduce(&:zip).flatten.compact
     end
 
-    private
+    def metric(category, metric_type, fuel_type = nil)
+      metrics_index.dig(category.to_s, fuel_type&.to_s, metric_type.to_s)
+    end
+
+    def by_category(category)
+      metrics_index[category.to_s]
+    end
 
     def metrics_index
-      @metrics_index ||= metrics.index_by do |m|
-        [m.metric_category, m.metric_type]
+      @metrics_index ||= metrics.each_with_object({}) do |metric, hash|
+        category = metric.metric_category
+        fuel_type = metric.fuel_type
+
+        hash[category] ||= {}
+        hash[category][fuel_type] ||= {}
+        hash[category][fuel_type][metric.metric_type] ||= metric
       end
     end
   end
