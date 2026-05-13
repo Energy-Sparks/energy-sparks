@@ -22,6 +22,10 @@ module SchoolGroups
 
         private
 
+        def metric_names
+          %i[electricity gas].flat_map { |fuel| self.class::METRICS.map { |type| [fuel, type] } }
+        end
+
         def enough_data?(*)
           true
         end

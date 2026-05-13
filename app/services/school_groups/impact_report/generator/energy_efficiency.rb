@@ -12,10 +12,6 @@ module SchoolGroups
           :energy_efficiency
         end
 
-        def metric_names
-          %i[electricity gas].flat_map { |fuel| METRICS.map { |type| [fuel, type] } }
-        end
-
         def value(fuel, metric)
           sum(fuel, metric)
         end
