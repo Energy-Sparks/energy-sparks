@@ -14,7 +14,7 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
   end
 
   before do
-    AdvicePageSchoolBenchmark.create(advice_page: advice_pages.first, school:, benchmarked_as: :exemplar_school)
+    AdvicePageSchoolBenchmark.create!(advice_page: advice_pages.first, school:, benchmarked_as: :exemplar_school)
   end
 
   describe '#metrics' do
