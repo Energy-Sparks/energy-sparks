@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-describe 'pricing calculator' do
-  include AdvicePageHelper
-
+describe 'pricing calculator', :include_application_helper do
   let!(:product) { create(:commercial_product, default_product: true) }
 
   before do

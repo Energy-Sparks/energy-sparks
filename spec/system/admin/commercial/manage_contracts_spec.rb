@@ -441,10 +441,10 @@ describe 'manage contracts' do
         end
         let(:expected_rows) do
           [
-            ['Base price', '£600'],
-            ['Metering fees', '0p'],
-            ['Private account fees', '0p'],
-            ['Total', '£600']
+            ['Base price', '£600.0'],
+            ['Metering fees', '£0.0'],
+            ['Private account fees', '£0.0'],
+            ['Total', '£600.0']
           ]
         end
       end
@@ -465,12 +465,12 @@ describe 'manage contracts' do
         end
         let(:expected_rows) do
           [
-            ['', contract.schools.first.name, '£600', '0p', '0p', '£600']
+            ['', contract.schools.first.name, '£600.0', '£0.0', '£0.0', '£600.0']
           ]
         end
         let(:expected_footer_rows) do
           [
-            ['', '', '£600', '0p', '0p', '£600']
+            ['', '', '£600.0', '£0.0', '£0.0', '£600.0']
           ]
         end
       end
