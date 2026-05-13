@@ -4,15 +4,18 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class Benchmark < Base
+        def self.metric_name(benchmark, type)
+          [benchmark, type].join('_')
+        end
+
         BENCHMARKS = [[%i[electricity gas], :out_of_hours],
                       [%i[electricity gas], :long_term],
                       [[:electricity], :baseload],
                       [[:gas], :heating_control]].freeze
         BENCHMARK_TYPES = %i[exemplar well_managed].freeze
-        BENCHMARK_METRICS = BENCHMARKS.flat_map do |benchmark|
-          BENCHMARK_TYPES.map do |type|
-            [benchmark, type].join('_')
-          end
+        private_constant :BENCHMARKS, :BENCHMARK_TYPES
+        METRICS = BENCHMARKS.flat_map do |_fuel_types, benchmark|
+          BENCHMARK_TYPES.map { |type| metric_name(benchmark, type) }
         end
 
         def metrics
@@ -32,7 +35,7 @@ module SchoolGroups
           { enough_data: !number_of_schools.zero?,
             fuel_type:,
             metric_category:,
-            metric_type: [benchmark, type].join('_'),
+            metric_type: self.class.metric_name(benchmark, type),
             number_of_schools:,
             value: }
         end
