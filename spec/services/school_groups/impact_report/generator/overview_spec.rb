@@ -52,7 +52,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
       end
 
       context 'with pupils' do
-        before { create(:pupil, school: visible_school) }
+        before { create(:pupil, school:) }
 
         it 'shows no users' do
           expect(metrics[:users]).to eq(expected(value: 0))
@@ -60,7 +60,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
       end
 
       context 'with non active' do
-        before { create(:user, school: visible_school, active: false) }
+        before { create(:user, school:, active: false) }
 
         it 'shows no users' do
           expect(metrics[:users]).to eq(expected(value: 0))
@@ -68,7 +68,7 @@ describe SchoolGroups::ImpactReport::Generator::Overview do
       end
 
       context 'with non confirmed' do
-        before { create(:user, school: visible_school, confirmed_at: nil) }
+        before { create(:user, school:, confirmed_at: nil) }
 
         it 'shows no users' do
           expect(metrics[:users]).to eq(expected(value: 0))
