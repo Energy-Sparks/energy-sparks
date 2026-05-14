@@ -20,6 +20,7 @@ describe 'Missing Alert Contacts' do
     expect(page).to have_selector(:table_row, {
                                     'School Group' => school.school_group.name,
                                     'School' => school.name,
+                                    'Admin' => school.school_group.default_issues_admin_user.name,
                                     'Funder' => school.funder.name,
                                     'Country' => school.country.humanize,
                                     'Onboarding completed' => 'N/A',

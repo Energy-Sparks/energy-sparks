@@ -16,7 +16,7 @@ module SchoolGroups
       private
 
       def metrics
-        [Overview, Engagement, PotentialSavings, EnergyEfficiency, Benchmark, Targets]
+        [Overview, Engagement, PotentialSavings, AnnualSaving, Benchmark, Targets]
           .lazy.flat_map { |metric_category| metric_category.new(@import_report).metrics }
       end
     end
