@@ -3,17 +3,18 @@
 module SchoolGroups
   class ImpactReport
     class Generator
-      class EnergyEfficiency < Base
-        METRICS = %i[gbp co2 kwh].freeze
+      class AnnualSaving < Base
+        def self.metric_type(metric)
+          [:annual_saving, metric].join('_').to_sym
+        end
+
+        TYPES = %i[gbp co2 kwh].freeze
+        METRICS = TYPES.map { |type| metric_type(type) }.freeze
 
         private
 
         def metric_category
           :energy_efficiency
-        end
-
-        def metric_names
-          %i[electricity gas].flat_map { |fuel| METRICS.map { |type| [fuel, type] } }
         end
 
         def value(fuel, metric)
