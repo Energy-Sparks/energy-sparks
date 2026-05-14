@@ -23,13 +23,13 @@ FactoryBot.define do
           attrs = override.is_a?(Hash) ? override : {}
 
           defaults = {
-            impact_report_run: run,
+            run: run,
             metric_category: category,
             metric_type: type,
-            value: 1,
-            enough_data: true,
-            fuel_type: nil
+            value: 1
           }
+
+          defaults[:fuel_type] = :electricity if category == :potential_savings
 
           create(
             :impact_report_metric,

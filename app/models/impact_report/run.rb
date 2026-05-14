@@ -28,6 +28,12 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
+    LOOKUP_CATEGORIES = (ImpactReport::Metric.categories - %i[potential_savings energy_efficiency]).freeze
+
+    def self.lookup_categories
+      LOOKUP_CATEGORIES
+    end
+
     # e.g. overview(:active_users)
     def overview(metric_type)
       by_category(:overview)[metric_type.to_s]
@@ -48,13 +54,17 @@ module ImpactReport
         end
     end
 
+    private
+
     def by_category(category)
       metrics_index[category.to_s]
     end
 
     def metrics_index
       @metrics_index ||= metrics.each_with_object({}) do |metric, hash|
-        store_metric(hash, metric) unless metric.units && metric.units != 'gbp' # ignore non-gbp for now
+        next if metric.units && metric.units != 'gbp' # ignore non-gbp for now
+
+        store_metric(hash, metric)
       end
     end
 
@@ -62,7 +72,6 @@ module ImpactReport
       category = metric.metric_category
 
       hash[category] ||= {}
-
       if category == 'potential_savings'
         (hash[category][metric.fuel_type] ||= []) << metric
       else
@@ -70,11 +79,10 @@ module ImpactReport
       end
     end
 
-    private
-
     def sorted_potential_savings(fuel)
       by_category(:potential_savings)
-        .fetch(fuel, [])
+        .to_h
+        .fetch(fuel) { [] }
         .select(&:nonzero?)
         .sort_by { |m| -m.value }
         .presence
