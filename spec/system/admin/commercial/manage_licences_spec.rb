@@ -17,7 +17,7 @@ describe 'manage licences' do
       visit new_admin_commercial_licence_path
     end
 
-    it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
+    it { expect(page).to have_text('Leave date fields empty to automatically create a licence starting from today') }
 
     context 'with valid data', :js do
       before do
@@ -33,7 +33,7 @@ describe 'manage licences' do
       end
 
       it 'creates the licence' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -56,7 +56,7 @@ describe 'manage licences' do
       end
 
       it 'creates the licence' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -77,8 +77,8 @@ describe 'manage licences' do
       click_on('Add New Licence')
     end
 
-    it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
-    it { expect(page).to have_content("Create a new licence under the #{contract.name} contract.") }
+    it { expect(page).to have_text('Leave date fields empty to automatically create a licence starting from today') }
+    it { expect(page).to have_text("Create a new licence under the #{contract.name} contract.") }
 
     context 'with valid data', :js do
       before do
@@ -93,7 +93,7 @@ describe 'manage licences' do
       end
 
       it 'creates the model' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -115,7 +115,7 @@ describe 'manage licences' do
       end
 
       it 'creates the licence' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -138,10 +138,10 @@ describe 'manage licences' do
       end
     end
 
-    it { expect(page).to have_content(licence.contract.name) }
+    it { expect(page).to have_text(licence.contract.name) }
 
     it {
-      expect(page).to have_content("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")
+      expect(page).to have_text("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")
     }
 
     context 'when dates may change' do
@@ -150,7 +150,7 @@ describe 'manage licences' do
       let!(:licence) { create(:commercial_licence, contract:, school:) }
 
       it 'includes a warning' do
-        expect(page).to have_content('Changes made here will be overwritten')
+        expect(page).to have_text('Changes made here will be overwritten')
       end
     end
 
@@ -166,7 +166,7 @@ describe 'manage licences' do
       end
 
       it 'updates the model' do
-        expect(page).to have_content('Licence has been updated')
+        expect(page).to have_text('Licence has been updated')
         expect(licence.reload).to have_attributes(
           contract: licence.contract,
           start_date: Date.new(2026, 1, 1),
@@ -202,85 +202,77 @@ describe 'manage licences' do
 
     it { expect(page).to have_css('#metadata') }
 
-    it { expect(page).to have_content(licence.status.to_s.humanize) }
-    it { expect(page).to have_content(licence.school.name) }
-    it { expect(page).to have_content(licence.contract.name) }
-    it { expect(page).to have_content(licence.contract.product.name) }
-    it { expect(page).to have_content(licence.start_date.to_fs(:es_short)) }
-    it { expect(page).to have_content(licence.end_date.to_fs(:es_short)) }
-    it { expect(page).to have_content(licence.comments) }
+    it { expect(page).to have_text(licence.status.to_s.humanize) }
+    it { expect(page).to have_text(licence.school.name) }
+    it { expect(page).to have_text(licence.contract.name) }
+    it { expect(page).to have_text(licence.contract.product.name) }
+    it { expect(page).to have_text(licence.start_date.to_fs(:es_short)) }
+    it { expect(page).to have_text(licence.end_date.to_fs(:es_short)) }
+    it { expect(page).to have_text(licence.comments) }
   end
 
-  context 'when viewing licence index' do
+  context 'when viewing licence lists' do
     let!(:school_group) { create(:school_group) }
     let!(:school) { create(:school, :with_school_grouping, group: school_group) }
 
-    let!(:expiring_in_a_week) { create(:commercial_licence, end_date: Time.zone.today + 7, school: school) }
-    let!(:expiring_in_a_month) do
-      create(:commercial_licence, created_at: Time.zone.yesterday, updated_at: Time.zone.today,
-                                  end_date: Time.zone.today + 30)
-    end
-    let!(:expired) { create(:commercial_licence, :expired) }
+    context 'with current' do
+      let!(:licence) { create(:commercial_licence, school:) }
 
-    before { visit admin_commercial_licences_path }
+      before { click_on 'Current Licences' }
 
-    it { expect(page).to have_content('Expiring') }
+      it { expect(page).to have_no_field(:date) }
 
-    it 'shows expiring licences' do
-      within('#expiring') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
-      end
-    end
-
-    it 'shows recent licences' do
-      within('#recent') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
-      end
-    end
-
-    it 'shows expired licences' do
-      within('#recently-expired') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expired.id))
-      end
-    end
-
-    it 'shows recently updated licences' do
-      within('#recently-updated') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
-      end
-    end
-
-    context 'when filtering by school group' do
-      before do
-        within('#expiring') do
-          select(school_group.name, from: 'School group')
-          fill_in(:filters_expiry_date, with: (Time.zone.today + 30.days).iso8601)
-          click_on('Filter')
-        end
-      end
-
-      it 'shows the filtered expiring licences' do
-        within('#expiring') do
-          expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-          expect(page).to have_no_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
         end
       end
     end
 
-    context 'when filtering by just date' do
-      before do
-        within('#expiring') do
-          fill_in(:filters_expiry_date, with: (Time.zone.today + 10.days).iso8601)
-          click_on('Filter')
+    context 'with expired' do
+      let!(:licence) { create(:commercial_licence, :expired, school:) }
+
+      before { click_on 'Expired Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
         end
       end
+    end
 
-      it 'shows the filtered expiring licences' do
-        within('#expiring') do
-          expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-          expect(page).to have_no_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+    context 'with expiring' do
+      let!(:licence) { create(:commercial_licence, end_date: Time.zone.today + 7, school:) }
+
+      before { click_on 'Expiring Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
+        end
+      end
+    end
+
+    context 'with recent' do
+      let!(:licence) { create(:commercial_licence, school:) }
+
+      before { click_on 'Recently Added Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
+        end
+      end
+    end
+
+    context 'with all' do
+      let!(:licence) { create(:commercial_licence, school:) }
+
+      before { click_on 'All Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
         end
       end
     end
