@@ -24,30 +24,28 @@ module ImpactReport
     self.table_name = 'impact_report_runs'
 
     belongs_to :school_group
-    has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :impact_report_run, dependent: :destroy
+    has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :run, dependent: :destroy
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
     # e.g. overview(:active_users)
-    %i[overview engagement].each do |category|
-      define_method(category) do |type, fuel_type = nil|
-        metric(category, type, fuel_type)
-      end
+    def overview(metric_type)
+      by_category(:overview)[metric_type.to_s]
     end
 
-    # Putting the logic here for ordering as might want this for the admin interface
+    # e.g. engagement(:points)
+    def engagement(metric_type)
+      by_category(:engagement)[metric_type.to_s]
+    end
+
     def potential_savings
-      # This is the order we would like to pick them
-      # only using gpb metrics for now
-      %w[electricity solar_pv gas storage_heater].map do |fuel_type|
-        by_category(:potential_savings).fetch(fuel_type, {}).values
-                                       .select { |metric| metric.units == 'gbp' && metric.nonzero? }
-                                       .sort_by { |metric| -metric.value }
-      end.reduce(&:zip).flatten.compact
-    end
-
-    def metric(category, metric_type, fuel_type = nil)
-      metrics_index.dig(category.to_s, fuel_type&.to_s, metric_type.to_s)
+      %w[electricity gas solar_pv]
+        .filter_map { |fuel| sorted_potential_savings(fuel) }
+        .then do |groups|
+          groups.map(&:size).max.to_i.times.flat_map do |i|
+            groups.filter_map { |g| g[i] }
+          end
+        end
     end
 
     def by_category(category)
@@ -56,13 +54,30 @@ module ImpactReport
 
     def metrics_index
       @metrics_index ||= metrics.each_with_object({}) do |metric, hash|
-        category = metric.metric_category
-        fuel_type = metric.fuel_type
-
-        hash[category] ||= {}
-        hash[category][fuel_type] ||= {}
-        hash[category][fuel_type][metric.metric_type] ||= metric
+        store_metric(hash, metric) unless metric.units && metric.units != 'gbp' # ignore non-gbp for now
       end
+    end
+
+    def store_metric(hash, metric)
+      category = metric.metric_category
+
+      hash[category] ||= {}
+
+      if category == 'potential_savings'
+        (hash[category][metric.fuel_type] ||= []) << metric
+      else
+        hash[category][metric.metric_type] = metric
+      end
+    end
+
+    private
+
+    def sorted_potential_savings(fuel)
+      by_category(:potential_savings)
+        .fetch(fuel, [])
+        .select(&:nonzero?)
+        .sort_by { |m| -m.value }
+        .presence
     end
   end
 end

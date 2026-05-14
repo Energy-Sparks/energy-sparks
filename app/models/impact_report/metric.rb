@@ -29,7 +29,7 @@ module ImpactReport
 
     include Enums::FuelType
 
-    belongs_to :impact_report_run, class_name: 'ImpactReport::Run', inverse_of: :metrics
+    belongs_to :run, foreign_key: :impact_report_run_id, class_name: 'ImpactReport::Run', inverse_of: :metrics
 
     def self.enum_map(values)
       values.index_with(&:to_s)

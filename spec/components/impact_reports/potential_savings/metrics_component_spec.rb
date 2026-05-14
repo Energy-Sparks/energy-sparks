@@ -7,7 +7,10 @@ RSpec.describe ImpactReports::PotentialSavings::MetricsComponent, :include_appli
   let(:impact_report) { SchoolGroups::ImpactReport.new(school_group) }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:base_params) { { impact_report: impact_report, id: id, classes: classes } }
+  let(:base_params) { { run:, id:, classes: } }
+
+  let(:metrics) {}
+  let!(:run) { create(:impact_report_run, :with_overview_metrics, school_group:, **metrics) }
 
   before do
     render_inline(described_class.new(**params))

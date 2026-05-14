@@ -9,7 +9,7 @@ module ImpactReports
       end
 
       def max
-        3
+        2
       end
 
       # NB need to add singular translations to keys for when only one school

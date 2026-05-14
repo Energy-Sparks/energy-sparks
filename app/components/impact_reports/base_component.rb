@@ -7,7 +7,6 @@ module ImpactReports
     attr_reader :run
 
     delegate(*ImpactReport::Metric.metric_categories.keys, to: :run, allow_nil: true)
-    delegate :metric, to: :run, allow_nil: true
 
     def initialize(run: nil, impact_report: nil, school_group: nil, **)
       super(**)
