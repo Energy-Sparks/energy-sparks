@@ -45,13 +45,12 @@ module ImpactReport
     end
 
     def potential_savings
-      %w[electricity gas solar_pv]
-        .filter_map { |fuel| sorted_potential_savings(fuel) }
-        .then do |groups|
-          groups.map(&:size).max.to_i.times.flat_map do |i|
-            groups.filter_map { |g| g[i] }
-          end
-        end
+      %w[electricity gas solar_pv].filter_map { |fuel| sorted_potential_savings(fuel) }
+                                  .then do |groups|
+                                    groups.map(&:size).max.to_i.times.flat_map do |i|
+                                      groups.filter_map { |g| g[i] }
+                                    end
+                                  end
     end
 
     private
