@@ -34,6 +34,9 @@
     <tr>
       <th>School Group</th>
       <th>School</th>
+      <% unless @dashboard_user %>
+        <th>Admin</th>
+      <% end %>
       <th>Funder</th>
       <th>Country</th>
       <th>Onboarding completed</th>
@@ -47,6 +50,9 @@
       <tr>
         <td><%= link_to school.school_group.name, school_group_path(school.school_group) %></td>
         <td><%= link_to school.name, school_path(school) %></td>
+        <% unless @dashboard_user %>
+          <td><%= school.school_group.default_issues_admin_user&.display_name %></td>
+        <% end %>
         <td><%= school.funder&.name %></td>
         <td><%= school.country.humanize %></td>
         <td data-order="<%= school.school_onboarding&.completed_on&.iso8601 || 'last' %>">
