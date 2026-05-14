@@ -4,7 +4,7 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class EnergyEfficiency < Base
-        METRICS = %i[gbp co2 kwh].freeze
+        TYPES = METRICS = %i[gbp co2 kwh].freeze
 
         private
 

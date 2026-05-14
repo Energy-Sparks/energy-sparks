@@ -4,7 +4,7 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class Targets < Base
-        METRICS = %i[targets].freeze
+        TYPES = METRICS = %i[targets].freeze
 
         private
 
