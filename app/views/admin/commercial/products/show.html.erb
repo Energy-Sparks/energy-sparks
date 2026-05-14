@@ -16,13 +16,13 @@
           Small school price
         </dt>
         <dd class="col-7">
-          <%= format_unit(@product.small_school_price, :£) %>
+          <%= format_price(@product.small_school_price) %>
         </dd>
         <dt class="col-5">
           Large school price
         </dt>
         <dd class="col-7">
-          <%= format_unit(@product.large_school_price, :£) %>
+          <%= format_price(@product.large_school_price) %>
         </dd>
         <dt class="col-5">
           School size threshold
@@ -34,19 +34,19 @@
           MAT price
         </dt>
         <dd class="col-7">
-          <%= format_unit(@product.mat_price, :£) %>
+          <%= format_price(@product.mat_price) %>
         </dd>
         <dt class="col-5">
           Private account fee (per year)
         </dt>
         <dd class="col-7">
-          <%= format_unit(@product.private_account_fee, :£) %>
+          <%= format_price(@product.private_account_fee) %>
         </dd>
         <dt class="col-5">
           Metering fee (per meter)
         </dt>
         <dd class="col-7">
-          <%= format_unit(@product.metering_fee, :£) %>
+          <%= format_price(@product.metering_fee) %>
         </dd>
         <dt class="col-5">
           Comments
