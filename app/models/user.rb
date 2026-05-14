@@ -326,6 +326,10 @@ class User < ApplicationRecord
     contacts.for_school(school).first
   end
 
+  def alert_schools_count
+    school_group.assigned_schools.visible.count
+  end
+
   def after_confirmation
     return unless school&.visible
 
