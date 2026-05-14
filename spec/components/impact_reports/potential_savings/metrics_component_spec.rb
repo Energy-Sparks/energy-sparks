@@ -48,7 +48,7 @@ RSpec.describe ImpactReports::PotentialSavings::MetricsComponent, :include_appli
     it do
       expect(cards.first).to have_text(
         impact_t('potential_savings.keys.use',
-                 schools: electricity.number_of_schools, fuel_type: 'electricity')
+                 count: electricity.number_of_schools, fuel_type: 'electricity')
       )
     end
 
@@ -58,7 +58,7 @@ RSpec.describe ImpactReports::PotentialSavings::MetricsComponent, :include_appli
     it do
       expect(cards[1]).to have_text(
         impact_t('potential_savings.keys.insulate_pipes',
-                 schools: gas.number_of_schools, fuel_type: 'gas')
+                 count: gas.number_of_schools, fuel_type: 'gas')
       )
     end
   end

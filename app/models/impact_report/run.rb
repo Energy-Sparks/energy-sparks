@@ -28,12 +28,6 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    LOOKUP_CATEGORIES = (ImpactReport::Metric.categories - %i[potential_savings energy_efficiency]).freeze
-
-    def self.lookup_categories
-      LOOKUP_CATEGORIES
-    end
-
     # e.g. overview(:active_users)
     def overview(metric_type)
       by_category(:overview)[metric_type.to_s]

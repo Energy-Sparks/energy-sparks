@@ -10,7 +10,7 @@
         <%= card.with_subtext do
               impact_t("potential_savings.keys.#{metric.key}",
                        fuel_type: t("advice_pages.fuel_type.#{metric.fuel_type}"),
-                       schools: metric.number_of_schools)
+                       count: metric.number_of_schools)
             end %>
       <% end %>
     <% end %>
