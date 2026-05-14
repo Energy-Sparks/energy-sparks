@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SchoolGroups::ImpactReport::Generator::EnergyEfficiency do
+describe SchoolGroups::ImpactReport::Generator::AnnualSaving do
   subject(:energy) { described_class.new(SchoolGroups::ImpactReport.new(school.school_group)) }
 
   let(:school) { create(:school, :with_school_group) }
@@ -17,9 +17,9 @@ describe SchoolGroups::ImpactReport::Generator::EnergyEfficiency do
       Comparison::ChangeInGasSinceLastYear.refresh
     end
 
-    def electricity(metric_type, **)
-      { enough_data: true, fuel_type: :electricity, metric_category: :energy_efficiency, metric_type:,
-        number_of_schools: 1, value: 0 }.merge(**)
+    def electricity(type, **)
+      { enough_data: true, fuel_type: :electricity, metric_category: :energy_efficiency,
+        metric_type: :"annual_saving_#{type}", number_of_schools: 1, value: 0 }.merge(**)
     end
 
     def gas(*, **)
