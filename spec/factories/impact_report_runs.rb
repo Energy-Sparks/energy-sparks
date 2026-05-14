@@ -6,7 +6,7 @@ FactoryBot.define do
     run_date { Time.zone.today }
 
     transient do
-      metric_categories { [] }
+      categories { [] }
 
       # one transient per metric type (expects a hash or nil)
       ImpactReport::Metric.categories.each do |category|
@@ -17,7 +17,7 @@ FactoryBot.define do
     end
 
     after(:create) do |run, evaluator|
-      evaluator.metric_categories.each do |category|
+      evaluator.categories.each do |category|
         ImpactReport::Metric.metrics(category).each do |type|
           override = evaluator.public_send(type)
           attrs = override.is_a?(Hash) ? override : {}
@@ -41,12 +41,12 @@ FactoryBot.define do
 
     ImpactReport::Metric.categories.each do |category|
       trait :"with_#{category}_metrics" do
-        transient { metric_categories { [category] } }
+        transient { categories { [category] } }
       end
     end
 
     trait :with_metrics do
-      transient { metric_categories { ImpactReport::Metric.categories } }
+      transient { categories { ImpactReport::Metric.categories } }
     end
   end
 end
