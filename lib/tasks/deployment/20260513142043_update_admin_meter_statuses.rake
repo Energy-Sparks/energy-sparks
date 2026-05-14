@@ -23,7 +23,7 @@ namespace :after_party do
     # 18 => 'Meter no longer required'
 
     # TO
-    # 19 => 'Not required'
+    # 19 => 'Not required' (or 'Data not required' if working with older database)
 
     Meter.where(admin_meter_statuses_id: 18)
          .update(admin_meter_statuses_id: 19)
