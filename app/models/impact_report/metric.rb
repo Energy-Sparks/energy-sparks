@@ -67,9 +67,7 @@ module ImpactReport
       targets
     ].freeze
 
-    POTENTIAL_SAVINGS_METRICS = %i[].freeze
-    # e.g.:
-    # reducing_out_of_hours_usage
+    POTENTIAL_SAVINGS_METRICS = SchoolGroups::ImpactReport::Generator::PotentialSavings::METRICS
 
     FOOTNOTE_METRICS = %i[].freeze
 

@@ -4,6 +4,15 @@ require 'rails_helper'
 
 RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpec/DescribeClass
   include_context 'with a task'
+  include_context 'with alert type ratings' do
+    let(:alert_type) { create(:alert_type, class_name: AlertGasAnnualVersusBenchmark) }
+    let(:alerts) do
+      create(:alert, :with_run, alert_type:, school:, template_data: { average_one_year_saving_£: '£1,000',
+                                                                       one_year_saving_co2: '1,100 kg CO2',
+                                                                       one_year_saving_kwh: '1,111 kWh' })
+    end
+    let(:schools) { [school] }
+  end
 
   let(:school) { create(:school, :with_school_group, number_of_pupils: 1) }
   let(:school_group) { school.school_group }
@@ -20,10 +29,9 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
 
   def metrics_to_h
     ImpactReport::Run.all.map do |run|
-      run.metrics.pluck(:metric_category, :metric_type, :value, :number_of_schools).group_by(&:first)
-         .transform_values do |rows|
-        rows.to_h do |_, metric_type, value, number_of_schools|
-          [metric_type, [value, number_of_schools]]
+      run.metrics.group_by(&:metric_category).transform_values do |metrics|
+        metrics.select(&:enough_data).to_h do |metric|
+          [metric.fuel_type ? [metric.fuel_type, metric.metric_type].join('_') : metric.metric_type, metric.value]
         end
       end.deep_symbolize_keys
     end
@@ -31,14 +39,15 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
 
   it 'creates the correct run and metric objects' do
     expect(metrics_to_h).to eq(
-      [{ overview: { active_users: [1, 1],
-                     data_visible_schools: [1, 1],
-                     enrolled_schools: [1, 1],
-                     enrolling_schools: [1, 1],
-                     pupils: [1, 1],
-                     users: [1, 1],
-                     visible_schools: [1, 1] },
-         engagement: { actions: [1, 1], activities: [1, 1], points: [65, 1], targets: [1, 1] } }]
+      [{ overview: { active_users: 1,
+                     data_visible_schools: 1,
+                     enrolled_schools: 1,
+                     enrolling_schools: 1,
+                     pupils: 1,
+                     users: 1,
+                     visible_schools: 1 },
+         engagement: { actions: 1, activities: 1, points: 65, targets: 1 },
+         potential_savings: { gas_use_co2: 1100, gas_use_gbp: 1000, gas_use_kwh: 1111 } }]
     )
   end
 
