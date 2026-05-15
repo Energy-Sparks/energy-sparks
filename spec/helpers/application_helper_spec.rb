@@ -335,4 +335,29 @@ describe ApplicationHelper do
       end
     end
   end
+
+  describe '#format_price' do
+    it 'formats floats correctly' do
+      expect(helper.format_price(123.0)).to eq('£123.00')
+      expect(helper.format_price(1234.0)).to eq('£1,234.00')
+      expect(helper.format_price(1234.50)).to eq('£1,234.50')
+      expect(helper.format_price(1234.567)).to eq('£1,234.567')
+      expect(helper.format_price(0.0)).to eq('£0.00')
+    end
+
+    it 'formats integers correctly' do
+      expect(helper.format_price(1234)).to eq('£1,234.00')
+    end
+
+    it 'formats BigDecimals correctly' do
+      expect(helper.format_price(BigDecimal(123.0))).to eq('£123.00')
+    end
+
+    it 'formats floats correctly excluding decimals' do
+      expect(helper.format_price(123.0, decimals: false)).to eq('£123')
+      expect(helper.format_price(1234.0, decimals: false)).to eq('£1,234')
+      expect(helper.format_price(1234.50, decimals: false)).to eq('£1,234')
+      expect(helper.format_price(1234.567, decimals: false)).to eq('£1,234')
+    end
+  end
 end

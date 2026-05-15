@@ -1,0 +1,8 @@
+<%= render 'licence_list',
+           title: 'Expiring Licences',
+           description: 'This page lists all licences that will shortly be expiring.',
+           licences: @licences,
+           date_label: 'Show licences that will expire by this date',
+           path: expiring_admin_commercial_licences_path,
+           date: @date,
+           school_group_id: @school_group_id %>

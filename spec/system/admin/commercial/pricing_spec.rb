@@ -1,8 +1,6 @@
 require 'rails_helper'
 
-describe 'pricing calculator' do
-  include AdvicePageHelper
-
+describe 'pricing calculator', :include_application_helper do
   let!(:product) { create(:commercial_product, default_product: true) }
 
   before do
@@ -30,10 +28,10 @@ describe 'pricing calculator' do
         end
         let(:expected_rows) do
           [
-            ['Base Price', format_unit(product.small_school_price, :£, true, :ks2, :text)],
-            ['Metering Fee', format_unit(0.0, :£, true, :ks2, :text)],
-            ['Private Account Fee', format_unit(0.0, :£, true, :ks2, :text)],
-            ['Total Price', format_unit(product.small_school_price, :£, true, :ks2, :text)]
+            ['Base Price', format_price(product.small_school_price)],
+            ['Metering Fee', format_price(0.0)],
+            ['Private Account Fee', format_price(0.0)],
+            ['Total Price', format_price(product.small_school_price)]
           ]
         end
       end
@@ -65,10 +63,10 @@ describe 'pricing calculator' do
         end
         let(:expected_rows) do
           [
-            ['Base Price', format_unit(contract.agreed_school_price, :£, true, :ks2, :text)],
-            ['Metering Fee', format_unit(0.0, :£, true, :ks2, :text)],
-            ['Private Account Fee', format_unit(0.0, :£, true, :ks2, :text)],
-            ['Total Price', format_unit(contract.agreed_school_price, :£, true, :ks2, :text)]
+            ['Base Price', format_price(contract.agreed_school_price)],
+            ['Metering Fee', format_price(0.0)],
+            ['Private Account Fee', format_price(0.0)],
+            ['Total Price', format_price(contract.agreed_school_price)]
           ]
         end
       end
