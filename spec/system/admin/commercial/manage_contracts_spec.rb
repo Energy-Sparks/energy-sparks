@@ -56,6 +56,7 @@ describe 'manage contracts' do
         set_date('#contract_end_date', '31/12/2026')
 
         fill_in 'Agreed school price', with: 525
+        select 'Full', from: 'Invoice terms'
         select 'Custom', from: 'Licence period'
         fill_in 'Licence years', with: 1.0
 
@@ -124,6 +125,7 @@ describe 'manage contracts' do
         set_date('#contract_end_date', '31/12/2026')
 
         fill_in 'Agreed school price', with: 525
+        select 'Full', from: 'Invoice terms'
         select 'Custom', from: 'Licence period'
         fill_in 'Licence years', with: 1.0
 
