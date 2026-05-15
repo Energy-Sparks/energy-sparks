@@ -655,6 +655,10 @@ Rails.application.routes.draw do
       end
       resources :licences do
         collection do
+          get :current
+          get :expired
+          get :expiring
+          get :recent
           get :unlicensed
         end
       end
