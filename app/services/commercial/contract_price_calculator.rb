@@ -80,14 +80,7 @@ module Commercial
       Meter.main_meter_counts_by_school.select('school_id, COUNT(*) AS meter_count')
     end
 
-    def calculate_price_sql # rubocop:disable Metrics/MethodLength
-      size_threshold_sql       = sql_number(@product.size_threshold)
-      small_school_price_sql   = sql_number(@product.small_school_price)
-      large_school_price_sql   = sql_number(@product.large_school_price)
-      metering_fee_sql         = sql_number(@product.metering_fee)
-      private_account_fee_sql  = sql_number(@product.private_account_fee)
-      agreed_school_price_sql  = sql_number(@contract.agreed_school_price)
-
+    def calculate_price_sql
       <<~SQL.squish
         schools.id AS school_id,
         schools.name AS school_name,
@@ -95,6 +88,23 @@ module Commercial
         licences.start_date AS licence_start_date,
         licences.end_date AS licence_end_date,
 
+        #{base_price_clause},
+        #{metering_fee_clause},
+        #{private_account_fee_clause}
+      SQL
+    end
+
+    def sql_number(value)
+      value.nil? ? 'NULL' : value
+    end
+
+    def base_price_clause
+      agreed_school_price_sql  = sql_number(@contract.agreed_school_price)
+      size_threshold_sql       = sql_number(@product.size_threshold)
+      small_school_price_sql   = sql_number(@product.small_school_price)
+      large_school_price_sql   = sql_number(@product.large_school_price)
+
+      <<~SQL.squish
         CASE
           WHEN licences.school_specific_price IS NOT NULL
             THEN licences.school_specific_price
@@ -103,16 +113,26 @@ module Commercial
           WHEN schools.number_of_pupils <= #{size_threshold_sql}
             THEN #{small_school_price_sql}
           ELSE #{large_school_price_sql}
-        END AS base_price,
+        END AS base_price
+      SQL
+    end
 
+    def metering_fee_clause
+      metering_fee_sql = sql_number(@product.metering_fee)
+      <<~SQL.squish
         CASE
           WHEN licences.school_specific_price = 0
             THEN 0
           WHEN COALESCE(meters.meter_count, 0) > 5
             THEN #{metering_fee_sql} * (meters.meter_count - 5)
           ELSE 0
-        END AS metering_fee,
+        END AS metering_fee
+      SQL
+    end
 
+    def private_account_fee_clause
+      private_account_fee_sql = sql_number(@product.private_account_fee)
+      <<~SQL.squish
         CASE
           WHEN licences.school_specific_price = 0
             THEN 0
@@ -121,10 +141,6 @@ module Commercial
           ELSE 0
         END AS private_account_fee
       SQL
-    end
-
-    def sql_number(value)
-      value.nil? ? 'NULL' : value
     end
   end
   # rubocop:enable Metrics/ClassLength
