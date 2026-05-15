@@ -125,7 +125,7 @@ module Commercial
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
       fields += [:status] if provisional?
-      fields += %i[agreed_school_price start_date end_date] unless licences.invoiced.exists?
+      fields += %i[agreed_school_price start_date end_date] unless invoiced?
       fields
     end
 
@@ -139,6 +139,10 @@ module Commercial
 
     def custom_contract_length?
       custom? && licence_years > 1.0
+    end
+
+    def invoiced?
+      licences.invoiced.exists?
     end
 
     private

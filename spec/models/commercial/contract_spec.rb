@@ -145,9 +145,8 @@ describe Commercial::Contract do
 
     let(:original) do
       create(:commercial_contract,
+             :custom,
              agreed_school_price: 450.0,
-             invoice_terms: :full,
-             licence_period: :custom,
              licence_years: 2.0,
              number_of_schools: 15)
     end

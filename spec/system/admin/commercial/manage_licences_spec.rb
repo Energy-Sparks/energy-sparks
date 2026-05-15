@@ -17,7 +17,7 @@ describe 'manage licences' do
       visit new_admin_commercial_licence_path
     end
 
-    it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
+    it { expect(page).to have_text('Leave date fields empty to automatically create a licence starting from today') }
 
     context 'with valid data', :js do
       before do
@@ -33,7 +33,7 @@ describe 'manage licences' do
       end
 
       it 'creates the licence' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -56,7 +56,7 @@ describe 'manage licences' do
       end
 
       it 'creates the licence' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -77,8 +77,8 @@ describe 'manage licences' do
       click_on('Add New Licence')
     end
 
-    it { expect(page).to have_content('Leave date fields empty to automatically create a licence starting from today') }
-    it { expect(page).to have_content("Create a new licence under the #{contract.name} contract.") }
+    it { expect(page).to have_text('Leave date fields empty to automatically create a licence starting from today') }
+    it { expect(page).to have_text("Create a new licence under the #{contract.name} contract.") }
 
     context 'with valid data', :js do
       before do
@@ -93,7 +93,7 @@ describe 'manage licences' do
       end
 
       it 'creates the model' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -115,7 +115,7 @@ describe 'manage licences' do
       end
 
       it 'creates the licence' do
-        expect(page).to have_content('Licence has been created')
+        expect(page).to have_text('Licence has been created')
         expect(Commercial::Licence.last).to have_attributes(
           contract:,
           school:,
@@ -138,19 +138,19 @@ describe 'manage licences' do
       end
     end
 
-    it { expect(page).to have_content(licence.contract.name) }
+    it { expect(page).to have_text(licence.contract.name) }
 
     it {
-      expect(page).to have_content("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")
+      expect(page).to have_text("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")
     }
 
     context 'when dates may change' do
       let!(:school) { create(:school, :with_school_group, data_enabled: false) }
-      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:contract) { create(:commercial_contract, :custom) }
       let!(:licence) { create(:commercial_licence, contract:, school:) }
 
       it 'includes a warning' do
-        expect(page).to have_content('Changes made here will be overwritten')
+        expect(page).to have_text('Changes made here will be overwritten')
       end
     end
 
@@ -166,7 +166,7 @@ describe 'manage licences' do
       end
 
       it 'updates the model' do
-        expect(page).to have_content('Licence has been updated')
+        expect(page).to have_text('Licence has been updated')
         expect(licence.reload).to have_attributes(
           contract: licence.contract,
           start_date: Date.new(2026, 1, 1),
@@ -202,13 +202,13 @@ describe 'manage licences' do
 
     it { expect(page).to have_css('#metadata') }
 
-    it { expect(page).to have_content(licence.status.to_s.humanize) }
-    it { expect(page).to have_content(licence.school.name) }
-    it { expect(page).to have_content(licence.contract.name) }
-    it { expect(page).to have_content(licence.contract.product.name) }
-    it { expect(page).to have_content(licence.start_date.to_fs(:es_short)) }
-    it { expect(page).to have_content(licence.end_date.to_fs(:es_short)) }
-    it { expect(page).to have_content(licence.comments) }
+    it { expect(page).to have_text(licence.status.to_s.humanize) }
+    it { expect(page).to have_text(licence.school.name) }
+    it { expect(page).to have_text(licence.contract.name) }
+    it { expect(page).to have_text(licence.contract.product.name) }
+    it { expect(page).to have_text(licence.start_date.to_fs(:es_short)) }
+    it { expect(page).to have_text(licence.end_date.to_fs(:es_short)) }
+    it { expect(page).to have_text(licence.comments) }
   end
 
   context 'when viewing licence index' do
@@ -224,7 +224,7 @@ describe 'manage licences' do
 
     before { visit admin_commercial_licences_path }
 
-    it { expect(page).to have_content('Expiring') }
+    it { expect(page).to have_text('Expiring') }
 
     it 'shows expiring licences' do
       within('#expiring') do
