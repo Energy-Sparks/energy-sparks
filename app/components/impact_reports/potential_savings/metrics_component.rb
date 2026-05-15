@@ -12,8 +12,6 @@ module ImpactReports
         2
       end
 
-      # NB need to add singular translations to keys for when only one school
-
       def displayable
         run.potential_savings.take(max)
       end
