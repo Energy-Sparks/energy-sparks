@@ -50,4 +50,16 @@ describe 'admin user meter report' do
 
     it_behaves_like 'it has the correct CSV'
   end
+
+  context 'with inactive filter' do
+    let!(:meter) { create(:gas_meter, school:, active: false, name: 'Inactive Meter') }
+    let!(:before) do
+      sign_in school.school_group.default_issues_admin_user
+      visit admin_reports_admin_user_meter_report_index_path
+      select 'Inactive', from: 'Active'
+      click_on 'Filter'
+    end
+
+    it_behaves_like 'it has the correct CSV'
+  end
 end

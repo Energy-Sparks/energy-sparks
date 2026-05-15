@@ -67,9 +67,7 @@ module ImpactReport
       targets
     ].freeze
 
-    POTENTIAL_SAVINGS_METRICS = %i[].freeze
-    # e.g.:
-    # reducing_out_of_hours_usage
+    POTENTIAL_SAVINGS_METRICS = SchoolGroups::ImpactReport::Generator::PotentialSavings::METRICS
 
     FOOTNOTE_METRICS = %i[].freeze
 
@@ -90,12 +88,12 @@ module ImpactReport
       const_get("#{category.to_s.upcase}_METRICS")
     end
 
-    def displayable?
+    def available?
       enough_data? && value.present?
     end
 
-    def figure
-      value if displayable?
+    def nonzero?
+      available? && value.to_i.nonzero?
     end
   end
 end
