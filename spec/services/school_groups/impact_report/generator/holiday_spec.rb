@@ -47,7 +47,7 @@ describe SchoolGroups::ImpactReport::Generator::Holiday do
         metric(:previous, :gbp, 5, :gas),
         metric(:previous, :kwh, 6, :gas),
         metric(:previous_year, :gbp, 7, :gas),
-        metric(:previous_year, :kwh, 8, :gas),
+        metric(:previous_year, :kwh, 8, :gas)
       )
     end
   end
