@@ -34,12 +34,14 @@ module Commercial
         id: row.school_id,
         licence_id: row.licence_id,
         name: row.school_name,
+        licence_start_date: row.licence_start_date,
+        licence_end_date: row.licence_end_date,
         price: calculate_price(row)
       }
     end
 
     def calculate_price(row)
-      multiplier = length_multiplier * prorata_multiplier(licence_start_date, licence_end_date)
+      multiplier = length_multiplier * prorata_multiplier(row[:licence_start_date], row[:licence_end_date])
       Price.new(
         base_price: row.base_price.to_f * multiplier,
         metering_fee: row.metering_fee.to_f * multiplier,
