@@ -1,22 +1,20 @@
 module Admin::Commercial
   class LicencesController < AdminController
+    ALLOWED_SCOPES = %w[current expired expiring recent].freeze
+
     load_and_authorize_resource :licence, class: 'Commercial::Licence'
 
     def index
-      @expiry_date = filter_params[:expiry_date]
-      @expired_date = filter_params[:expired_date]
-      @recently_added_date = filter_params[:recently_added_date]
-      @recently_updated_date = filter_params[:recently_updated_date]
-
-      @school_group_id = filter_params[:school_group_id]
-      @tab = filter_params[:tab]
-
-      @expiring_licences = Commercial::Licence.filtered(:expiring, @expiry_date, @school_group_id)
-      @recently_expired_licences = Commercial::Licence.filtered(:recently_expired, @expired_date, @school_group_id)
-      @recent_licences = Commercial::Licence.filtered(:recent, @recently_added_date, @school_group_id)
-      @recently_updated_licences = Commercial::Licence.filtered(:recently_updated, @recently_updated_date,
-                                                                @school_group_id)
+      @licences = Commercial::Licence.all.by_start_date
     end
+
+    def current = load_licences(action_name)
+
+    def expired = load_licences(action_name)
+
+    def expiring = load_licences(action_name)
+
+    def recent = load_licences(action_name)
 
     def unlicensed
       @academic_year = Calendar.default_national.current_academic_year
@@ -71,15 +69,15 @@ module Admin::Commercial
     private
 
     def filter_params
-      last_month = (Time.zone.today - 1.month).beginning_of_month
-      params.fetch(:filters, {}).with_defaults(
-        expiry_date: (Time.zone.today + 1.month).end_of_month,
-        expired_date: last_month,
-        recently_added_date: last_month,
-        recently_updated_date: last_month,
-        school_group_id: nil,
-        tab: 'expiring'
-      )
+      params.fetch(:filters, {})
+    end
+
+    def load_licences(scope)
+      raise ArgumentError unless ALLOWED_SCOPES.include?(scope)
+
+      @date = filter_params[:date]
+      @school_group_id = filter_params[:school_group_id]
+      @licences = ::Commercial::Licence.filtered(scope, @date, @school_group_id)
     end
 
     def licence_params
