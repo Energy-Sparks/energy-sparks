@@ -81,6 +81,7 @@ module Commercial
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
     validate :ensure_only_editable_attributes_changed, unless: :new_record?
+    validate :validate_invoice_terms
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
@@ -157,6 +158,12 @@ module Commercial
       forbidden.each do |attr|
         errors.add(attr, 'cannot be changed once the contract is in its current state')
       end
+    end
+
+    def validate_invoice_terms
+      return unless custom? && pro_rata?
+
+      errors.add(:invoice_terms, 'invoice terms can only be full for a custom contract')
     end
   end
 end

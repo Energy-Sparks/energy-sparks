@@ -15,6 +15,13 @@ describe Commercial::Contract do
     it_behaves_like 'a date ranged model'
     it_behaves_like 'has a contract holder'
 
+    it 'validates invoice terms' do
+      expect(build(:commercial_contract, licence_period: :contract, invoice_terms: :full)).to be_valid
+      expect(build(:commercial_contract, licence_period: :contract, invoice_terms: :pro_rata)).to be_valid
+      expect(build(:commercial_contract, licence_period: :custom, invoice_terms: :full)).to be_valid
+      expect(build(:commercial_contract, licence_period: :custom, invoice_terms: :pro_rata)).not_to be_valid
+    end
+
     context 'when destroying' do
       let!(:contract) { create(:commercial_contract) }
 
