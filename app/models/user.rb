@@ -329,7 +329,7 @@ class User < ApplicationRecord
 
   def alert_schools_count
     school_group.assigned_schools.visible.count do |school|
-      contact_for_school(school: school)
+      contact_for_school(school:)
     end
   end
 
