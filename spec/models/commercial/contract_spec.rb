@@ -160,4 +160,41 @@ describe Commercial::Contract do
       )
     end
   end
+
+  describe '#licence_period_days' do
+    subject(:licence_period_days) { contract.licence_period_days }
+
+    context 'with custom contract' do
+      context 'with 1.0 licence_years' do
+        let(:contract) { build(:commercial_contract, licence_period: :custom, licence_years: 1.0) }
+
+        it { expect(licence_period_days).to eq(365) }
+      end
+
+      context 'with 1.5 licence_years' do
+        let(:contract) do
+          build(:commercial_contract, start_date: Date.new(2026, 5, 15), licence_period: :custom, licence_years: 1.5)
+        end
+
+        it { expect(licence_period_days).to eq(549) }
+      end
+
+      context 'with 2.0 licence_years' do
+        let(:contract) { build(:commercial_contract, licence_period: :custom, licence_years: 2.0) }
+
+        it { expect(licence_period_days).to eq(365 * 2) }
+      end
+    end
+
+    context 'with standard contract' do
+      context 'when contract is one year' do
+        let(:contract) do
+          build(:commercial_contract, licence_period: :contract, start_date: Time.zone.today,
+                                      end_date: Time.zone.today + 364)
+        end
+
+        it { expect(licence_period_days).to eq(365) }
+      end
+    end
+  end
 end

@@ -50,7 +50,7 @@ module Commercial
     end
 
     def length_multiplier
-      @contract.licence_period_days.to_f / 365.0
+      @contract.licence_period == 'custom' ? @contract.licence_years : @contract.licence_period_days.to_f / 365.0
     end
 
     def prorata_multiplier(licence_start_date, licence_end_date)

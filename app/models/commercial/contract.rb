@@ -147,16 +147,24 @@ module Commercial
       custom? && licence_years > 1.0
     end
 
+    # Calculate duration ignoring leap years, use consistent logic for both
+    # types of contract.
     def licence_period_days
-      if custom?
-        licence_end_date = LicenceManager.add_years(start_date, licence_years)
-        (licence_end_date - start_date).to_i
-      else
-        (end_date - start_date).to_i
-      end
+      period_end = custom? ? Commercial::LicenceManager.add_years(start_date, licence_years) : end_date
+      real_days = (period_end - start_date).to_i + 1
+      real_days - leap_days_between(start_date, period_end)
     end
 
     private
+
+    def leap_days_between(period_start, period_end)
+      (period_start.year..period_end.year).count do |year|
+        next false unless Date.leap?(year)
+
+        leap_day = Date.new(year, 2, 29)
+        leap_day.between?(period_start, period_end)
+      end
+    end
 
     def destroy_error_message
       'Cannot delete a contract with an invoiced licence'

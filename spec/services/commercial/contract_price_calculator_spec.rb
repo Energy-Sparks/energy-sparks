@@ -174,14 +174,9 @@ describe Commercial::ContractPriceCalculator do
       let!(:school) { create(:school, number_of_pupils: 100, data_sharing: :public) }
       let!(:licence) { create(:commercial_licence, school:, contract:) }
 
-      it 'calculates a price based on the month-granular licence years' do
+      it 'calculates a price based licence years' do
         expected_base = licence.product.small_school_price
-
-        # Month-granular full period: 1 year + 9 months
-        full_end = contract.start_date.advance(years: 1, months: 9) - 1.day
-        full_days = (full_end - contract.start_date).to_i
-
-        length_multiplier = full_days.to_f / 365.0
+        length_multiplier = 1.75
 
         expect(price.base_price).to be_within(0.0001).of(expected_base * length_multiplier)
         expect(price.metering_fee).to eq(0.0)
