@@ -34,7 +34,7 @@ describe 'DCC Status Report' do
     expect(body).to \
       eq('School Name,Group Name,School Removed?,Group Owner,Type,Data Source,MPAN,Meter Name,Active?,Consented?,' \
          "Meter System,N3rgy Meter Type,Meter Status,Earliest Validated,Latest Validated,Issues\n" \
-         "#{meter.school.name},,No,,Gas,,#{meter.mpan_mprn},#{meter.name},Yes,No,NHH AMR,Smets2,\n" \
+         "#{meter.school.name},,No,,Gas,,#{meter.mpan_mprn},#{meter.name},Yes,No,NHH AMR,Smets2," \
          "#{meter.admin_meter_status_label},,,0\n")
   end
 end
