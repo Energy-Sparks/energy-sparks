@@ -5,7 +5,7 @@ module SchoolGroups
     class Generator
       class Benchmark < Base
         def self.metric_name(benchmark, type)
-          [benchmark, type].join('_')
+          [benchmark, type].join('_').to_sym
         end
 
         BENCHMARKS = [[%i[electricity gas], :out_of_hours],

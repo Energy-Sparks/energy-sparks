@@ -32,7 +32,7 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
                             [advice_page.key == 'heating_control' ? :gas : :electricity, advice_page.key]
                           end
       %i[exemplar well_managed].map do |type|
-        metric([metric, type].join('_'), fuel_type:)
+        metric([metric, type].join('_').to_sym, fuel_type:)
       end
     end
 
@@ -44,8 +44,8 @@ describe SchoolGroups::ImpactReport::Generator::Benchmark do
       expect(benchmark.metrics).to match_array(
         advice_pages.reject { |page| page.key == 'electricity_long_term' }
                     .flat_map { |page| advice_page_metric(page) } +
-        [metric('long_term_exemplar', number_of_schools: 1, value: 1, enough_data: true),
-         metric('long_term_well_managed', number_of_schools: 1, value: 0, enough_data: true)]
+        [metric(:long_term_exemplar, number_of_schools: 1, value: 1, enough_data: true),
+         metric(:long_term_well_managed, number_of_schools: 1, value: 0, enough_data: true)]
       )
     end
   end
