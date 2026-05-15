@@ -4,7 +4,7 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class PotentialSavings < Base
-        def self.metric_type(base, type) = [base, type].join('_')
+        def self.metric_type(base, type) = [base, type].join('_').to_sym
 
         ALERTS = {
           %i[electricity baseload] => AlertElectricityBaseloadVersusBenchmark,

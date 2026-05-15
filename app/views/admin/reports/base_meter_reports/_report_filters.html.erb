@@ -24,12 +24,12 @@
       <div class="d-flex justify-content-between">
         <%= submit_tag 'Filter', class: 'btn btn-sm' %>
         <% unless defined? no_csv %>
-          <%= link_to 'CSV',
+          <%= link_to 'CSV for below table',
                       url_for(
                         controller: controller_path,
                         action: :index,
                         only_path: true,
-                        **params.permit(:school_group, :admin, :meter_type).merge(format: :csv)
+                        **params.permit(:school_group, :admin, :meter_type, :active).merge(format: :csv)
                       ),
                       class: 'ml-2 btn btn-sm' %>
           <% end %>
