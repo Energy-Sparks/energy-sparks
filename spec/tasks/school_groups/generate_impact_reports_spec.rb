@@ -51,7 +51,9 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
                      visible_schools: 1 },
          engagement: { actions: 1, activities: 1, points: 65, targets: 1 },
          potential_savings: { gas_use_co2: 1100, gas_use_gbp: 1000, gas_use_kwh: 1111 },
-         energy_efficiency: { electricity_co2: 400, electricity_gbp: 800, electricity_kwh: 500 } }]
+         energy_efficiency: { electricity_annual_saving_co2: 400,
+                              electricity_annual_saving_kwh: 500,
+                              electricity_annual_saving_gbp: 800 } }]
     )
   end
 
