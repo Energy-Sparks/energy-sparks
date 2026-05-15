@@ -39,6 +39,7 @@
 #  fk_rails_...  (updated_by_id => users.id)
 #
 module Commercial
+  # rubocop:disable Metrics/ClassLength
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
@@ -174,4 +175,5 @@ module Commercial
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
