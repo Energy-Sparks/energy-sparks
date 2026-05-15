@@ -81,6 +81,10 @@ module ImpactReport
       METRIC_CATEGORIES
     end
 
+    def self.metrics(category)
+      const_get("#{category.to_s.upcase}_METRICS")
+    end
+
     def available?
       enough_data? && value.present?
     end
