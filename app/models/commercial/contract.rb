@@ -106,6 +106,12 @@ module Commercial
       )
     end
 
+    def self.filtered(scope_name, date = nil)
+      date = Date.parse(date) if date.present? && date.is_a?(String)
+      scope = date.present? ? public_send(scope_name, date) : public_send(scope_name)
+      scope.includes(:contract_holder, :product).by_start_date
+    end
+
     def status_colour
       STATUS_COLOUR[status.to_sym]
     end
