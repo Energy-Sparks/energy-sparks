@@ -37,8 +37,8 @@
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
-#
 module Commercial
+  # rubocop:disable Metrics/ClassLength
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
@@ -107,6 +107,12 @@ module Commercial
       )
     end
 
+    def self.filtered(scope_name, date = nil)
+      date = Date.parse(date) if date.present? && date.is_a?(String)
+      scope = date.present? ? public_send(scope_name, date) : public_send(scope_name)
+      scope.includes(:contract_holder, :product).by_start_date
+    end
+
     def status_colour
       STATUS_COLOUR[status.to_sym]
     end
@@ -170,4 +176,5 @@ module Commercial
       errors.add(:invoice_terms, 'invoice terms can only be full for a custom contract')
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

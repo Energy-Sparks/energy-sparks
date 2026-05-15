@@ -1,5 +1,41 @@
 require 'rails_helper'
 
+shared_examples 'a licence list filtered by date' do
+  let(:filter_date) { nil }
+
+  it { expect(page).to have_field(:date) }
+
+  context 'when applying the filter', :js do
+    before do
+      set_date('#filters_date', filter_date)
+      click_on 'Filter'
+    end
+
+    it 'filters the view' do
+      within('#licences-table') do
+        expect(page).to have_no_link(href: admin_commercial_licence_path(filtered_licence.id))
+      end
+    end
+  end
+end
+
+shared_examples 'a licence list filtered by school group' do
+  it { expect(page).to have_field('School group') }
+
+  context 'when applying the filter' do
+    before do
+      select(filter_group.name, from: 'School group')
+      click_on 'Filter'
+    end
+
+    it 'filters the view' do
+      within('#licences-table') do
+        expect(page).to have_no_link(href: admin_commercial_licence_path(filtered_licence.id))
+      end
+    end
+  end
+end
+
 describe 'manage licences' do
   let(:user) { create(:admin) }
   let!(:school) { create(:school, :with_school_group) }
@@ -211,76 +247,100 @@ describe 'manage licences' do
     it { expect(page).to have_text(licence.comments) }
   end
 
-  context 'when viewing licence index' do
+  context 'when viewing licence lists' do
     let!(:school_group) { create(:school_group) }
+    let!(:filter_group) { create(:school_group, :with_active_schools) }
+
     let!(:school) { create(:school, :with_school_grouping, group: school_group) }
 
-    let!(:expiring_in_a_week) { create(:commercial_licence, end_date: Time.zone.today + 7, school: school) }
-    let!(:expiring_in_a_month) do
-      create(:commercial_licence, created_at: Time.zone.yesterday, updated_at: Time.zone.today,
-                                  end_date: Time.zone.today + 30)
-    end
-    let!(:expired) { create(:commercial_licence, :expired) }
+    context 'with current' do
+      let!(:licence) { create(:commercial_licence, school:) }
 
-    before { visit admin_commercial_licences_path }
+      before { click_on 'Current Licences' }
 
-    it { expect(page).to have_text('Expiring') }
+      it { expect(page).to have_no_field(:date) }
+      it { expect(page).to have_no_field(:school_group_id) }
 
-    it 'shows expiring licences' do
-      within('#expiring') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
-      end
-    end
-
-    it 'shows recent licences' do
-      within('#recent') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
-      end
-    end
-
-    it 'shows expired licences' do
-      within('#recently-expired') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expired.id))
-      end
-    end
-
-    it 'shows recently updated licences' do
-      within('#recently-updated') do
-        expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
-      end
-    end
-
-    context 'when filtering by school group' do
-      before do
-        within('#expiring') do
-          select(school_group.name, from: 'School group')
-          fill_in(:filters_expiry_date, with: (Time.zone.today + 30.days).iso8601)
-          click_on('Filter')
-        end
-      end
-
-      it 'shows the filtered expiring licences' do
-        within('#expiring') do
-          expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-          expect(page).to have_no_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
         end
       end
     end
 
-    context 'when filtering by just date' do
-      before do
-        within('#expiring') do
-          fill_in(:filters_expiry_date, with: (Time.zone.today + 10.days).iso8601)
-          click_on('Filter')
+    context 'with expired' do
+      let!(:licence) { create(:commercial_licence, :expired, school:) }
+
+      before { click_on 'Expired Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
         end
       end
 
-      it 'shows the filtered expiring licences' do
-        within('#expiring') do
-          expect(page).to have_link(href: admin_commercial_licence_path(expiring_in_a_week.id))
-          expect(page).to have_no_link(href: admin_commercial_licence_path(expiring_in_a_month.id))
+      it_behaves_like 'a licence list filtered by date' do
+        let(:filter_date) { (licence.end_date - 1).strftime('%d/%m/%Y') }
+        let(:filtered_licence) { licence }
+      end
+
+      it_behaves_like 'a licence list filtered by school group' do
+        let(:filtered_licence) { licence }
+      end
+    end
+
+    context 'with expiring' do
+      let!(:licence) { create(:commercial_licence, end_date: Time.zone.today + 7, school:) }
+
+      before { click_on 'Expiring Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
+        end
+      end
+
+      it_behaves_like 'a licence list filtered by date' do
+        let(:filter_date) { Time.zone.yesterday.strftime('%d/%m/%Y') }
+        let(:filtered_licence) { licence }
+      end
+
+      it_behaves_like 'a licence list filtered by school group' do
+        let(:filtered_licence) { licence }
+      end
+    end
+
+    context 'with recent' do
+      let!(:licence) { create(:commercial_licence, school:) }
+
+      before { click_on 'Recently Added Licences' }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
+        end
+      end
+
+      it_behaves_like 'a licence list filtered by date' do
+        let(:filter_date) { Time.zone.tomorrow.strftime('%d/%m/%Y') }
+        let(:filtered_licence) { licence }
+      end
+
+      it_behaves_like 'a licence list filtered by school group' do
+        let(:filtered_licence) { licence }
+      end
+    end
+
+    context 'with all' do
+      let!(:licence) { create(:commercial_licence, school:) }
+
+      before { click_on 'All Licences' }
+
+      it { expect(page).to have_no_field(:date) }
+
+      it 'shows the licence' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
         end
       end
     end
