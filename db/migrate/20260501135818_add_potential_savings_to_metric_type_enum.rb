@@ -2,8 +2,20 @@
 
 class AddPotentialSavingsToMetricTypeEnum < ActiveRecord::Migration[8.1]
   def up
-    SchoolGroups::ImpactReport::Generator::PotentialSavings::METRICS.each do |metric|
-      add_enum_value :impact_report_metric_types, metric
+    %i[baseload
+       out_of_hours
+       peak
+       use
+       heating_down
+       heating_early
+       heating_off
+       insulate_pipes
+       out_of_hours
+       thermostatic_control
+       use
+       solar_panels
+       heating_off].product(%i[gbp co2 kwh]).uniq.each do |metric, type|
+      add_enum_value :impact_report_metric_types, [metric, type].join('_')
     end
   end
 

@@ -7,7 +7,6 @@ module ImpactReports
     attr_reader :run
 
     delegate(*ImpactReport::Metric.metric_categories.keys, to: :run, allow_nil: true)
-    delegate :metric, to: :run, allow_nil: true
 
     def initialize(run: nil, impact_report: nil, school_group: nil, **)
       super(**)
@@ -33,8 +32,11 @@ module ImpactReports
 
     def cols
       count = displayable.count
-      return count if count <= 4
 
+      return count if count <= 4
+      return 3 if (count % 3).zero?
+
+      # Prefer 4 columns, otherwise 3, but avoid layouts that leave exactly one item stranded on the last row
       [4, 3].reject { |cols| (count % cols) == 1 }.first || 4
     end
 

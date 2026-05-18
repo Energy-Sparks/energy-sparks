@@ -10,8 +10,8 @@ describe ImpactReport::Metric do
       expect(metric).to be_valid
     end
 
-    it 'belongs to impact_report_run' do
-      expect(metric).to belong_to(:impact_report_run)
+    it 'belongs to run' do
+      expect(metric).to belong_to(:run)
     end
   end
 

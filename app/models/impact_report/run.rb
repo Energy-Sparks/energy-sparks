@@ -24,27 +24,61 @@ module ImpactReport
     self.table_name = 'impact_report_runs'
 
     belongs_to :school_group
-    has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :impact_report_run, dependent: :destroy
+    has_many :metrics, class_name: 'ImpactReport::Metric', inverse_of: :run, dependent: :destroy
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    # e.g. overview(:active_users) etc
-    ImpactReport::Metric.categories.each do |category|
-      define_method(category) do |type|
-        metric(category, type)
-      end
+    # e.g. overview(:active_users)
+    def overview(metric_type)
+      by_category(:overview)[metric_type.to_s]
     end
 
-    def metric(category, type)
-      metrics_index[[category.to_s, type.to_s]]
+    # e.g. engagement(:points)
+    def engagement(metric_type)
+      by_category(:engagement)[metric_type.to_s]
+    end
+
+    def potential_savings
+      %w[electricity gas solar_pv].filter_map { |fuel| sorted_potential_savings(fuel) }
+                                  .then do |groups|
+                                    groups.map(&:size).max.to_i.times.flat_map do |i|
+                                      groups.filter_map { |g| g[i] }
+                                    end
+                                  end
     end
 
     private
 
+    def by_category(category)
+      metrics_index[category.to_s]
+    end
+
     def metrics_index
-      @metrics_index ||= metrics.index_by do |m|
-        [m.metric_category, m.metric_type]
+      @metrics_index ||= metrics.each_with_object({}) do |metric, hash|
+        next if metric.units && metric.units != 'gbp' # ignore non-gbp for now
+
+        store_metric(hash, metric)
       end
+    end
+
+    def store_metric(hash, metric)
+      category = metric.metric_category
+
+      hash[category] ||= {}
+      if category == 'potential_savings'
+        (hash[category][metric.fuel_type] ||= []) << metric
+      else
+        hash[category][metric.metric_type] = metric
+      end
+    end
+
+    def sorted_potential_savings(fuel)
+      by_category(:potential_savings)
+        .to_h
+        .fetch(fuel) { [] }
+        .select(&:nonzero?)
+        .sort_by { |m| -m.value }
+        .presence
     end
   end
 end
