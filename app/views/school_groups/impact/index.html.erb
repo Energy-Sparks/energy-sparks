@@ -102,7 +102,7 @@
     <%= section_header.with_header title: impact_t('potential_savings.title') %>
     <%= section_header.with_description { impact_t('potential_savings.description') } %>
   <% end %>
-  <%= render ImpactReports::PotentialSavings::MetricsComponent.new(impact_report: @impact_report) %>
+  <%= render ImpactReports::PotentialSavings::MetricsComponent.new(run: @run) %>
   <%= render Elements::ButtonComponent.new(
         t('common.view_all_potential_savings'),
         priorities_school_group_advice_path(@impact_report.school_group),
