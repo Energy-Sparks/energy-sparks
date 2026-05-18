@@ -20,7 +20,7 @@ module SchoolGroups
       private
 
       def metrics
-        [Overview, Engagement, PotentialSavings].lazy.flat_map do |metric_category|
+        [Overview, Engagement, PotentialSavings, AnnualSaving].lazy.flat_map do |metric_category|
           metric_category.new(@import_report).metrics
         end
       end
