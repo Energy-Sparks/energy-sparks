@@ -149,6 +149,7 @@ module Commercial
 
     # Calculate duration ignoring leap years, use consistent logic for both
     # types of contract.
+    # FIXME move to method on Licence?
     def licence_period_days
       period_end = custom? ? Commercial::LicenceManager.add_years(start_date, licence_years) : end_date
       real_days = (period_end - start_date).to_i + 1

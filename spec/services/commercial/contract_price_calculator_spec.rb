@@ -11,7 +11,7 @@ describe Commercial::ContractPriceCalculator do
   describe '#per_school' do
     subject(:price) { service.per_school[school.id][:price] }
 
-    let!(:contract) { create(:commercial_contract, product:) }
+    let!(:contract) { create(:commercial_contract, product:, invoice_terms: :full) }
     let!(:school) { create(:school, number_of_pupils: 100, data_sharing: :public) }
     let!(:licence) { create(:commercial_licence, school:, contract:) }
 
@@ -80,7 +80,7 @@ describe Commercial::ContractPriceCalculator do
     end
 
     context 'with an agreed school price in contract' do
-      let!(:contract) { create(:commercial_contract, agreed_school_price: 400.0, product:) }
+      let!(:contract) { create(:commercial_contract, invoice_terms: :full, agreed_school_price: 400.0, product:) }
 
       it 'uses the agreed price' do
         expect(price).to have_attributes(
@@ -200,15 +200,12 @@ describe Commercial::ContractPriceCalculator do
       end
 
       it 'calculates a price based on the licence period' do
-        full_days = (contract.end_date - contract.start_date).to_i
-        used_days = (licence.end_date - licence.start_date).to_i
+        full_days = Commercial::Licence.licence_period_days(contract.start_date, contract.end_date)
+        used_days = Commercial::Licence.licence_period_days(licence.start_date, licence.end_date)
 
-        length_multiplier = full_days.to_f / 365.0
-        proration_multiplier = used_days.to_f / full_days
+        prorata_multiplier = used_days.to_f / full_days
 
-        total_multiplier = length_multiplier * proration_multiplier
-
-        expect_price_to_match(price, base_price: licence.product.small_school_price * total_multiplier)
+        expect_price_to_match(price, base_price: licence.product.small_school_price * prorata_multiplier)
       end
     end
 
@@ -238,8 +235,9 @@ describe Commercial::ContractPriceCalculator do
       end
 
       it 'prorates base, metering, and private fees' do
-        full_days = (contract.end_date - contract.start_date).to_i
-        used_days = (licence.end_date - licence.start_date).to_i
+        full_days = Commercial::Licence.licence_period_days(contract.start_date, contract.end_date)
+        used_days = Commercial::Licence.licence_period_days(licence.start_date, licence.end_date)
+
         length_multiplier = full_days.to_f / 365.0
         proration_multiplier = used_days.to_f / full_days
 
@@ -257,7 +255,7 @@ describe Commercial::ContractPriceCalculator do
   describe 'totals' do
     subject(:totals) { service.totals }
 
-    let!(:contract) { create(:commercial_contract, product:) }
+    let!(:contract) { create(:commercial_contract, product:, invoice_terms: :full) }
     let!(:school) { create(:school, number_of_pupils: 100, data_sharing: :public) }
     let!(:licence) { create(:commercial_licence, school:, contract:) }
 
