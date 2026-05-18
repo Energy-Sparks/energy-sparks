@@ -9,6 +9,7 @@ module SchoolGroups
         end
 
         METRICS_ARRAY = %i[previous previous_year].product(%i[gbp kwh]).freeze
+        private_constant :METRICS_ARRAY
         METRICS = METRICS_ARRAY.map { |metric| metric_type(metric) }
 
         private
