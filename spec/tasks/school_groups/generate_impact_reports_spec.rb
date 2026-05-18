@@ -26,6 +26,7 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
     create(:school_target, school:)
     create(:alert, :with_run, :energy_annual_versus_benchmark, school:)
     Comparison::ChangeInElectricitySinceLastYear.refresh
+    allow(Rollbar).to receive(:error)
     task.invoke
   end
 
@@ -58,5 +59,9 @@ RSpec.describe 'school_groups:generate_impact_reports' do # rubocop:disable RSpe
 
   it 'has the group and date' do
     expect(ImpactReport::Run.first).to have_attributes(school_group:, run_date: Date.current)
+  end
+
+  it 'does not error' do
+    expect(Rollbar).not_to have_received(:error)
   end
 end
