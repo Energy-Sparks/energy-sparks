@@ -29,7 +29,7 @@ module ImpactReport
 
     include Enums::FuelType
 
-    belongs_to :impact_report_run, class_name: 'ImpactReport::Run', inverse_of: :metrics
+    belongs_to :run, foreign_key: :impact_report_run_id, class_name: 'ImpactReport::Run', inverse_of: :metrics
 
     def self.enum_map(values)
       values.index_with(&:to_s)
@@ -67,9 +67,7 @@ module ImpactReport
       targets
     ].freeze
 
-    POTENTIAL_SAVINGS_METRICS = %i[].freeze
-    # e.g.:
-    # reducing_out_of_hours_usage
+    POTENTIAL_SAVINGS_METRICS = SchoolGroups::ImpactReport::Generator::PotentialSavings::METRICS
 
     FOOTNOTE_METRICS = %i[].freeze
 
@@ -96,6 +94,20 @@ module ImpactReport
 
     def nonzero?
       available? && value.to_i.nonzero?
+    end
+
+    def key_and_units
+      @key_and_units ||= metric_type.match(
+        /(.+?)(?:_(#{SchoolGroups::ImpactReport::Generator::PotentialSavings::TYPES.join('|')}))?$/
+      ).captures
+    end
+
+    def key
+      key_and_units.first.to_s
+    end
+
+    def units
+      key_and_units[1]&.to_s
     end
   end
 end

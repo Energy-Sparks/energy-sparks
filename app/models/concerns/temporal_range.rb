@@ -13,7 +13,7 @@ module TemporalRange
     }
 
     scope :expiring, lambda { |end_date = (Time.zone.today + 1.month).end_of_month|
-      where("#{table_name}.end_date <= ?", end_date)
+      where("#{table_name}.end_date >= CURRENT_DATE and #{table_name}.end_date <= ?", end_date)
     }
 
     scope :expired, lambda { |today = Time.zone.today|
@@ -24,8 +24,8 @@ module TemporalRange
       where("#{table_name}.end_date >= ? and #{table_name}.end_date < ?", end_date, Time.zone.today)
     }
 
-    scope :recent, lambda { |updated_at = (Time.zone.today - 1.month).beginning_of_month|
-      where("#{table_name}.created_at >= ?", updated_at)
+    scope :recent, lambda { |created_at = (Time.zone.today - 1.month).beginning_of_month|
+      where("#{table_name}.created_at >= ?", created_at)
     }
 
     scope :recently_updated, lambda { |updated_at = (Time.zone.today - 1.month).beginning_of_month|

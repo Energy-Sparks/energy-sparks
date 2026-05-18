@@ -21,7 +21,7 @@ describe ImpactReport::Run do
 
   describe 'associations' do
     let(:run) { create(:impact_report_run) }
-    let!(:metric) { create(:impact_report_metric, impact_report_run: run) }
+    let!(:metric) { create(:impact_report_metric, run: run) }
 
     it 'has metrics' do
       expect(run.metrics).to include(metric)
@@ -46,35 +46,13 @@ describe ImpactReport::Run do
     end
   end
 
-  describe '#metric' do
+  describe '#overview' do
     let(:run) { create(:impact_report_run) }
 
     let!(:metric) do
       create(
         :impact_report_metric,
-        impact_report_run: run,
-        metric_category: 'overview',
-        metric_type: 'active_users',
-        value: 42
-      )
-    end
-
-    it 'returns the matching metric by category and type' do
-      expect(run.metric(:overview, :active_users)).to eq(metric)
-    end
-
-    it 'returns nil if no metric matches' do
-      expect(run.metric(:overview, :missing)).to be_nil
-    end
-  end
-
-  describe 'category helpers (e.g. #overview)' do
-    let(:run) { create(:impact_report_run) }
-
-    let!(:metric) do
-      create(
-        :impact_report_metric,
-        impact_report_run: run,
+        run: run,
         metric_category: 'overview',
         metric_type: 'active_users',
         value: 10
@@ -86,30 +64,148 @@ describe ImpactReport::Run do
     end
   end
 
+  describe '#engagement' do
+    let(:run) { create(:impact_report_run) }
+
+    let!(:metric) do
+      create(
+        :impact_report_metric,
+        run: run,
+        metric_category: 'engagement',
+        metric_type: 'points',
+        value: 10
+      )
+    end
+
+    it 'delegates to #metric via dynamic method' do
+      expect(run.engagement(:points)).to eq(metric)
+    end
+  end
+
+  describe '#potential_savings' do
+    let(:metric_category) { :potential_savings }
+
+    context 'when ignoring irrelevant metrics' do
+      subject(:run) { create(:impact_report_run) }
+
+      let(:fuel_type) { :electricity }
+      let!(:non_gbp_metric) do
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload_kwh)
+      end
+      let!(:zero_metric) do
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :out_of_hours_gbp, value: 0)
+      end
+      let!(:no_data_metric) do
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :peak_gbp, enough_data: false)
+      end
+      let!(:ok_metric) { create(:impact_report_metric, run:, metric_category:, fuel_type:, metric_type: :baseload_gbp) }
+
+      it 'includes nonzero gbp metrics with enough_data' do
+        expect(run.potential_savings).to include(ok_metric)
+      end
+
+      it 'filters out non-gbp metrics' do
+        expect(run.potential_savings).not_to include(non_gbp_metric)
+      end
+
+      it 'filters out zero metrics' do
+        expect(run.potential_savings).not_to include(zero_metric)
+      end
+
+      it 'filters out metrics without enough_data' do
+        expect(run.potential_savings).not_to include(no_data_metric)
+      end
+    end
+
+    context 'when sorting metrics' do
+      subject(:potential_savings) { run.potential_savings.map(&:metric_type) }
+
+      let(:run) { create(:impact_report_run) }
+
+      def create_metric(metric_type, fuel_type, value)
+        create(:impact_report_metric, run:, metric_category:, fuel_type:, value:, metric_type:)
+      end
+
+      context 'when there are only electricity metrics' do
+        let(:fuel_type) { :electricity }
+
+        before do
+          create_metric(:baseload_gbp, :electricity, 3)
+          create_metric(:out_of_hours_gbp, :electricity, 4)
+        end
+
+        it 'returns metrics with the highest value first' do
+          expect(potential_savings).to eq(%w[out_of_hours_gbp baseload_gbp])
+        end
+      end
+
+      context 'when there are 2 electicity metrics and a gas metric' do
+        before do
+          create_metric(:baseload_gbp, :electricity, 3)
+          create_metric(:out_of_hours_gbp, :electricity, 4)
+          create_metric(:insulate_pipes_gbp, :gas, 3)
+        end
+
+        it 'returns highest electricity, then gas, then next elec' do
+          expect(potential_savings).to eq(%w[out_of_hours_gbp insulate_pipes_gbp baseload_gbp])
+        end
+      end
+
+      context 'when there are 2 electricity metrics and a solar metric' do
+        before do
+          create_metric(:baseload_gbp, :electricity, 3)
+          create_metric(:out_of_hours_gbp, :electricity, 4)
+          create_metric(:solar_panels_gbp, :solar_pv, 3)
+        end
+
+        it 'returns highest electricity, then solar, then next elec' do
+          expect(potential_savings).to eq(%w[out_of_hours_gbp solar_panels_gbp baseload_gbp])
+        end
+      end
+    end
+  end
+
   describe 'metrics indexing' do
+    subject(:index) { run.send(:metrics_index) }
+
     let(:run) { create(:impact_report_run) }
 
     let!(:active_users) do
       create(:impact_report_metric,
-             impact_report_run: run,
+             run: run,
              metric_category: 'overview',
              metric_type: 'active_users')
     end
 
-    let!(:users) do
+    let!(:points) do
       create(:impact_report_metric,
-             impact_report_run: run,
-             metric_category: 'overview',
-             metric_type: 'users')
+             run: run,
+             metric_category: 'engagement',
+             metric_type: 'points')
     end
 
-    it 'indexes metrics by category and type' do
-      expect(run.metric(:overview, :active_users)).to eq(active_users)
-      expect(run.metric(:overview, :users)).to eq(users)
+    let!(:baseload_gbp) do
+      create(:impact_report_metric,
+             run: run,
+             fuel_type: 'electricity',
+             metric_category: 'potential_savings',
+             metric_type: 'baseload_gbp')
     end
 
     it 'memoizes the index' do
-      expect(run.send(:metrics_index)).to equal(run.send(:metrics_index))
+      expect(index).to equal(run.send(:metrics_index))
+    end
+
+    it 'stores overview metrics in a hash' do
+      expect(index['overview']['active_users']).to equal(active_users)
+    end
+
+    it 'stores engagemement metrics in a hash' do
+      expect(index['engagement']['points']).to equal(points)
+    end
+
+    it 'stores potential savings metrics in an array' do
+      expect(index['potential_savings']['electricity']).to eq([baseload_gbp])
     end
   end
 end
