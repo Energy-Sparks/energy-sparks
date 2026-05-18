@@ -14,7 +14,7 @@ class AddPotentialSavingsToMetricTypeEnum < ActiveRecord::Migration[8.1]
        thermostatic_control
        use
        solar_panels
-       heating_off].product(%i[gbp co2 kwh]).each do |metric, type|
+       heating_off].product(%i[gbp co2 kwh]).uniq.each do |metric, type|
       add_enum_value :impact_report_metric_types, [metric, type].join('_')
     end
   end
