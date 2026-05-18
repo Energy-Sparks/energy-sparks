@@ -23,7 +23,7 @@ module SchoolGroups
         }.freeze
         TYPES = %i[gbp co2 kwh].freeze
         TYPES_TO_METHOD = TYPES.zip(%i[average_one_year_saving_gbp one_year_saving_co2 one_year_saving_kwh]).to_h
-        private_constant :ALERTS, :TYPES, :TYPES_TO_METHOD
+        private_constant :ALERTS, :TYPES_TO_METHOD
         METRICS = ALERTS.keys.product(TYPES).map { |(_fuel_type, metric), type| metric_type(metric, type) }.uniq.freeze
 
         def metrics
