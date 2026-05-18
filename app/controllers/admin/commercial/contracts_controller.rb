@@ -89,10 +89,15 @@ module Admin
 
       private
 
+      def filter_params
+        params.fetch(:filters, {})
+      end
+
       def load_contracts(scope)
         raise ArgumentError unless ALLOWED_SCOPES.include?(scope)
 
-        @contracts = ::Commercial::Contract.send(scope).by_start_date
+        @date = filter_params[:date]
+        @contracts = ::Commercial::Contract.filtered(scope, @date)
       end
 
       def renewal_request?

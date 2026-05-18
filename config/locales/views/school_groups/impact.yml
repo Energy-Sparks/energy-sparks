@@ -87,15 +87,40 @@ en:
         description: How many schools and users are enrolled in Energy Sparks from this group?
         title: Overview
       potential_savings:
-        cards:
-          electricity_savings:
-            subtext: By reducing out of hours electricity use
-            title: Potential electricity savings
-          gas_savings:
-            subtext: By turning down thermostats by 1C in %{count} schools
-            title: Potential gas savings
-          solar_panels:
-            subtext: Benefits from installing solar on an additional %{count} schools
-            title: Install solar panels
         description: What additional savings have we identified that can help these schools continue to reduce their energy bills and carbon emissions?
+        keys:
+          baseload:
+            one: By reducing %{fuel_type} baseload in %{count} school
+            other: By reducing %{fuel_type} baseload in %{count} schools
+          heating_down:
+            one: By turning the heating down by 1°C in %{count} school
+            other: By turning the heating down by 1°C in %{count} schools
+          heating_early:
+            one: By setting the heating to come on later in the morning in %{count} school
+            other: By setting the heating to come on later in the morning in %{count} schools
+          heating_off:
+            one: By switching off the heating in warmer weather in %{count} school
+            other: By switching off the heating in warmer weather in %{count} schools
+          insulate_pipes:
+            one: By insulating hot water pipes in %{count} school
+            other: By insulating hot water pipes in %{count} schools
+          out_of_hours:
+            one: By reducing out of hours %{fuel_type} use in %{count} school
+            other: By reducing out of hours %{fuel_type} use in %{count} schools
+          peak:
+            one: By reducing peak %{fuel_type} consumption in %{count} school
+            other: By reducing peak %{fuel_type} consumption in %{count} schools
+          solar_panels:
+            one: Benefits from installing solar on an additional %{count} school
+            other: Benefits from installing solar on an additional %{count} schools
+          thermostatic_control:
+            one: By improving thermostatic control in %{count} school
+            other: By improving thermostatic control in %{count} schools
+          use:
+            one: By reducing annual %{fuel_type} use in %{count} school
+            other: By reducing annual %{fuel_type} use in %{count} schools
         title: Potential savings
+        titles:
+          electricity: Potential electricity savings
+          gas: Potential gas savings
+          solar_pv: Install solar panels
