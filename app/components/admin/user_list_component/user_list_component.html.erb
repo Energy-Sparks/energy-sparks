@@ -1,5 +1,5 @@
 <div id="<%= id %>" class="<%= classes %>">
-  <table class="table table-sm table-sorted">
+  <table id="user-list-table" class="table table-sm table-sorted">
     <thead>
       <tr>
         <% if show_organisation? %>
@@ -41,7 +41,13 @@
           <td data-order="<%= user.last_sign_in_at&.iso8601 %>">
             <%= display_last_signed_in_as(user) %>
           </td>
-          <td><%= y_n(user.contact_for_school) %></td>
+          <td>
+          <% unless user.group_user? %>
+            <%= y_n(user.contact_for_school) %>
+          <% else %>
+            <%= user.alert_schools_count.positive? ? "Yes (#{user.alert_schools_count})" : 'No' %>
+          <% end %>
+          </td>
           <td><%= I18n.t("languages.#{user.preferred_locale}") %></td>
           <td>
             <% if !user.active? %>

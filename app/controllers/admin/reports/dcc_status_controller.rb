@@ -7,7 +7,7 @@ module Admin
 
       before_action :set_consented_mpxns
 
-      def index
+      def index # rubocop:disable Metrics/CyclomaticComplexity
         meter_issue_counts =
           Meter.joins(:issues).where(issues: { status: :open }).group('meters.id', 'issues.issue_type')
                .count
@@ -25,8 +25,8 @@ module Admin
           Column.new(:group_name,
                      ->(meter) { meter.school.school_group&.name },
                      ->(meter, csv) { csv && link_to(csv, school_group_path(meter.school.school_group)) }),
-          Column.new(:school_archived?,
-                     ->(meter) { y_n(meter.school.archived?) }),
+          Column.new(:school_removed?,
+                     ->(meter) { y_n(meter.school.archived? || meter.school.deleted?) }),
           Column.new(:group_owner,
                      ->(meter) { meter.school.school_group&.default_issues_admin_user&.name }),
           Column.new(:type,
@@ -48,6 +48,8 @@ module Admin
                      ->(meter) { meter.t_meter_system }),
           Column.new(:n3rgy_meter_type,
                      ->(meter) { meter.dcc_meter.humanize }),
+          Column.new(:meter_status,
+                     ->(meter) { meter.admin_meter_status_label }),
           Column.new(:earliest_validated,
                      ->(meter) { meter.min }),
           Column.new(:latest_validated,
