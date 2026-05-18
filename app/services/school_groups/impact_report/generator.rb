@@ -11,15 +11,13 @@ module SchoolGroups
       def create_metrics!
         run = ::ImpactReport::Run.create!(school_group: @school_group, run_date: Date.current)
         metrics.each do |attributes|
-          run.metrics.create!(**attributes) unless invalid_value?(attributes[:value])
+          run.metrics.create!(**attributes)
         rescue StandardError => e
           EnergySparks::Log.exception(e, school_group: @school_group.slug, attributes:)
         end
       end
 
       private
-
-      def invalid_value?(value) = value.present? && value >= 2**31
 
       def metrics
         [Overview, Engagement, PotentialSavings].lazy.flat_map do |metric_category|
