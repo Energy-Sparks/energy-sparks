@@ -10,7 +10,11 @@ module SchoolGroups
 
       def create_metrics!
         run = ::ImpactReport::Run.create!(school_group: @school_group, run_date: Date.current)
-        metrics.each { |attributes| run.metrics.create!(**attributes) }
+        metrics.each do |attributes|
+          run.metrics.create!(**attributes)
+        rescue StandardError => e
+          EnergySparks::Log.exception(e, school_group: @school_group.slug, attributes:)
+        end
       end
 
       private
