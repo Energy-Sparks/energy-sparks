@@ -40,11 +40,9 @@ module Commercial
       }
     end
 
-    # rubocop:disable Metrics/AbcSize
     def calculate_price(row)
-      multiplier = length_multiplier(row[:licence_start_date],
-                                     row[:licence_end_date]) * prorata_multiplier(row[:licence_start_date],
-                                                                                  row[:licence_end_date])
+      multiplier = length_multiplier * prorata_multiplier(row[:licence_start_date],
+                                                          row[:licence_end_date])
       Price.new(
         base_price: row.base_price.to_f * multiplier,
         metering_fee: row.metering_fee.to_f * multiplier,
@@ -52,20 +50,16 @@ module Commercial
       )
     end
 
-    # rubocop:enable Metrics/AbcSize
-    #
-    # FIXME
-    def length_multiplier(licence_start_date, licence_end_date)
+    def length_multiplier
       if @contract.licence_period == 'custom'
         @contract.licence_years
       else
         Commercial::Licence.licence_period_days(
-          licence_start_date, licence_end_date
+          @contract.start_date, @contract.end_date
         ).to_f / 365.0
       end
     end
 
-    # FIXME
     def prorata_multiplier(licence_start_date, licence_end_date)
       return 1.0 if @contract.invoice_terms == 'full'
       return 1.0 if @contract.custom?
