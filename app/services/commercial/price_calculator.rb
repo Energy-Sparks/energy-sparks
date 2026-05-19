@@ -48,30 +48,5 @@ module Commercial
 
       product.private_account_fee
     end
-
-    # Determine contract to use for renewal estimate based on expected future funder
-    def renewal_contract(school, licence)
-      # Self-funded in future, assume switching to default product pricing
-      if school.default_contract_holder.nil?
-        nil
-      # Switching from funded place
-      elsif school.default_contract_holder != licence.contract.contract_holder
-        school.default_contract_holder.contracts.by_end_date.first
-      # Already funded by MAT, assume same contract
-      else
-        licence.contract
-      end
-    end
-
-    # use same product as contract, or fall back to our default product
-    def renewal_product(contract)
-      contract&.product || Commercial::Product.default_product
-    end
-
-    # use existing school pricing or based on contract and product
-    def renewal_base_price(school, product, contract, licence)
-      licence.school_specific_price ||
-        base_price(product:, contract:, number_of_pupils: school.number_of_pupils)
-    end
   end
 end
