@@ -2,6 +2,14 @@
   <%= render Admin::HeaderNavComponent.new do |header_nav| %>
     <% header_nav.with_header title: content_for?(:title) ? yield(:title) : 'Admin Dashboard' %>
   <% end %>
+  <%= render Elements::ButtonComponent.new('Admin Home',
+                                           admin_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
+  <%= render Elements::ButtonComponent.new('All Reports',
+                                           admin_reports_path,
+                                           style: :secondary,
+                                           classes: 'mb-2 me-2') %>
 <% end %>
 
 <% if @dashboard_user %>
