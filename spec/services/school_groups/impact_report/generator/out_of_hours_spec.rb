@@ -26,7 +26,6 @@ describe SchoolGroups::ImpactReport::Generator::OutOfHours do
                                   out_of_hours_gbpcurrent: 6 })
       create(:alert, school: school, alert_generation_run:,
                      alert_type: create(:alert_type, class_name: AlertOutOfHoursElectricityUsagePreviousYear))
-
       [Comparison::AnnualChangeInGasOutOfHoursUse, Comparison::AnnualChangeInElectricityOutOfHoursUse].each(&:refresh)
     end
 
