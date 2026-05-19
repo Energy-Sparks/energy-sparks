@@ -14,6 +14,11 @@ FactoryBot.define do
     association :created_by, factory: :user
     association :updated_by, factory: :user
 
+    trait :custom do
+      licence_period { :custom }
+      invoice_terms { :full }
+    end
+
     trait :with_school do
       contract_holder { association :school }
     end
