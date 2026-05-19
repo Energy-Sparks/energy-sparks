@@ -51,18 +51,15 @@ module Commercial
     end
 
     def length_multiplier
-      if @contract.licence_period == 'custom'
-        @contract.licence_years
-      else
-        Commercial::Licence.licence_period_days(
-          @contract.start_date, @contract.end_date
-        ).to_f / 365.0
-      end
+      return @contract.licence_years if @contract.custom?
+
+      Commercial::Licence.licence_period_days(
+        @contract.start_date, @contract.end_date
+      ).to_f / 365.0
     end
 
     def prorata_multiplier(licence_start_date, licence_end_date)
-      return 1.0 if @contract.invoice_terms == 'full'
-      return 1.0 if @contract.custom?
+      return 1.0 if @contract.custom? || @contract.full?
 
       licence_days = Commercial::Licence.licence_period_days(licence_start_date, licence_end_date).to_f
       full_days = Commercial::Licence.licence_period_days(@contract.start_date, @contract.end_date).to_f
