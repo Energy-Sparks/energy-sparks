@@ -8,7 +8,8 @@ module Commercial
     def self.licence_dates(contract, base_date: Time.zone.today)
       case contract.licence_period
       when 'contract'
-        start_date = contract.start_date
+        # for pro_rata contracts, once first invoiced generated then all other licences are pro_rata
+        start_date = contract.invoiced? && contract.pro_rata? ? Time.zone.today : contract.start_date
         end_date = contract.end_date
       else # custom
         start_date = base_date

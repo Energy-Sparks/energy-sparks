@@ -48,7 +48,7 @@ describe Commercial::Licence do
     end
 
     context 'when licence_period is custom' do
-      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:contract) { create(:commercial_contract, :custom) }
 
       it { expect(licence.dates_will_automatically_change?).to be(true) }
 
