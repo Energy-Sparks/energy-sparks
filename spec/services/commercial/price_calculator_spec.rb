@@ -138,6 +138,20 @@ describe Commercial::PriceCalculator do
           )
         end
       end
+
+      context 'when the contract spans multiple years' do
+        let(:contract) do
+          create(:commercial_contract, product: contracted_product, end_date: Time.zone.today + 730)
+        end
+
+        it 'calculates the price using the contract length' do
+          expect(price).to have_attributes(
+            base_price: contracted_product.small_school_price * 2.0,
+            metering_fee: 0.0,
+            private_account_fee: 0.0
+          )
+        end
+      end
     end
   end
 end

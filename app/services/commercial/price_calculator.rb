@@ -18,10 +18,12 @@ module Commercial
 
       return Price::FREE if base_price == 0.0
 
+      length_multiplier = contract_length_multiplier(contract)
+
       Price.new(
-        base_price:,
-        metering_fee: metering_fee(product: contracted_product, number_of_meters:),
-        private_account_fee: private_account_fee(product: contracted_product, private_account:)
+        base_price: base_price * length_multiplier,
+        metering_fee: metering_fee(product: contracted_product, number_of_meters:) * length_multiplier,
+        private_account_fee: private_account_fee(product: contracted_product, private_account:) * length_multiplier
       )
     end
 
@@ -47,6 +49,15 @@ module Commercial
       return 0.0 unless private_account
 
       product.private_account_fee
+    end
+
+    def contract_length_multiplier(contract)
+      return 1.0 unless contract
+      return contract.licence_years if contract.custom?
+
+      Commercial::Licence.licence_period_days(
+        contract.start_date, contract.end_date
+      ).to_f / 365.0
     end
   end
 end
