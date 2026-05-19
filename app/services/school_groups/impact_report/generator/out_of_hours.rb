@@ -9,7 +9,6 @@ module SchoolGroups
         end
 
         TYPES = %i[gbp co2 kwh].freeze
-        private_constant :TYPES
         METRICS = TYPES.map { |type| metric_type(type) }.freeze
 
         private
