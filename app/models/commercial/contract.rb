@@ -49,6 +49,12 @@ module Commercial
 
     scope :by_name, -> { order(name: :asc) }
 
+    scope :over_licensed, lambda {
+      joins(:licences)
+        .group('commercial_contracts.id')
+        .having('COUNT(commercial_licences.id) > commercial_contracts.number_of_schools')
+    }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 

@@ -649,6 +649,7 @@ Rails.application.routes.draw do
           get :expired
           get :expiring
           get :future
+          get :over_licensed
           get :provisional
           get :recent
         end

@@ -23,6 +23,10 @@ module Admin
 
       def recent = load_contracts(action_name)
 
+      def over_licensed
+        @contracts = ::Commercial::Contract.over_licensed
+      end
+
       def contract_holder_options
         records = case params[:contract_holder_type]
                   when 'School'      then School.active.order(:name)

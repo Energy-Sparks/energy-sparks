@@ -166,4 +166,21 @@ describe Commercial::Contract do
       )
     end
   end
+
+  describe '.over_licensed' do
+    let!(:contract) { create(:commercial_contract, number_of_schools: 1) }
+    let(:licence_count) { 1 }
+
+    before do
+      create_list(:commercial_licence, licence_count, contract:)
+    end
+
+    it { expect(described_class.over_licensed).to be_empty }
+
+    context 'with too many licences' do
+      let(:licence_count) { 2 }
+
+      it { expect(described_class.over_licensed).to include(contract) }
+    end
+  end
 end

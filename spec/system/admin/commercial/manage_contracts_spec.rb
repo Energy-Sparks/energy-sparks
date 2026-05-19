@@ -623,5 +623,20 @@ describe 'manage contracts' do
         let(:filtered_contract) { contract }
       end
     end
+
+    context 'with over licensed' do
+      let!(:contract) { create(:commercial_contract, number_of_schools: 2) }
+
+      before do
+        create_list(:commercial_licence, 5, contract:)
+        click_on 'Over Licensed Contracts'
+      end
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_text(contract.name)
+        end
+      end
+    end
   end
 end
