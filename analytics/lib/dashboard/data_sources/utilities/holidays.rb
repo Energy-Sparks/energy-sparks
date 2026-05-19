@@ -1,58 +1,13 @@
-require_relative 'school_date_period.rb'
+# frozen_string_literal: true
 
-# single holiday period
-class Holiday < SchoolDatePeriod
-  attr_accessor :type           # :easter, :xmas, autumn_halfterm etc.
-  attr_accessor :academic_year  # e.g. 2018..2019
-  def initialize(type, name, start_date, end_date, academic_year)
-    start_date = roll_start_date_back_to_sunday(start_date) unless type == :inset_day_in_school
-    end_date = roll_end_date_forward_to_saturday(end_date)  unless type == :inset_day_in_school
-    name = Holidays.holiday_name(middle_date(start_date, end_date)) if name.nil? || name == 'No title'
-    super(:holiday, name, start_date, end_date)
-    @type = type
-    @academic_year = academic_year
-    raise EnergySparksNoMeterDataAvailableForFuelType.new('Start date after end date') if start_date > end_date
-  end
-
-  def number_weekdays
-    d = 0
-    (start_date..end_date).each do |date|
-      d += 1 if date.wday.between?(1,5)
-    end
-    d
-  end
-
-  private def roll_start_date_back_to_sunday(start_date)
-    return start_date - 1 if start_date.monday?
-    start_date
-  end
-
-  private def roll_end_date_forward_to_saturday(end_date)
-    return end_date + 1 if end_date.friday?
-    end_date
-  end
-
-  def middle_date(start_date = @start_date, end_date = @end_date)
-    start_date + ((end_date - start_date) / 2).to_i
-  end
-
-  def to_s
-    super + ' ' + @type.to_s + ' ' + (@academic_year.nil? ? '' : @academic_year.first.to_s + '/' + @academic_year.last.to_s)
-  end
-
-  def translation_type
-    # set_holiday_types overwrites the type using Holidays.holiday_type but only does so for @holidays and not
-    # @additional_holidays so Mayday doesn't get set as it is classed as additional being a bank holiday
-    Holidays.holiday_type(middle_date)
-  end
-end
+require_relative 'school_date_period'
 
 # holds holiday data as an array of hashes - one hash for each holiday period
 class HolidayData < Array
   include Logging
 
   def add(holiday)
-    self.push(holiday)
+    push(holiday)
   end
 end
 
@@ -70,7 +25,9 @@ class HolidayLoader
     count = 0
     datareadings.each do |reading|
       holiday_type = reading[0].to_sym
-      raise EnergySparksBadHolidayDataException, "Unknown holiday type #{holiday_type}" if !%i[bank_holiday inset_day_in_school inset_day_out_of_school school_holiday].include?(holiday_type)
+      raise EnergySparksBadHolidayDataException, "Unknown holiday type #{holiday_type}" unless %i[bank_holiday
+                                                                                                  inset_day_in_school inset_day_out_of_school school_holiday].include?(holiday_type)
+
       title = reading[1]
       start_date = Date.parse reading[2]
       end_date = Date.parse reading[3]
@@ -85,8 +42,10 @@ end
 # contains holidays, plus functionality for determining whether a date is a holiday
 class Holidays
   include Logging
+
   attr_reader :holidays
-  MAIN_HOLIDAY_TYPES = %i[autumn_half_term xmas spring_half_term easter summer_half_term summer]
+
+  MAIN_HOLIDAY_TYPES = %i[autumn_half_term xmas spring_half_term easter summer_half_term summer].freeze
 
   def initialize(holiday_data, country = nil)
     @country = country
@@ -98,63 +57,8 @@ class Holidays
 
   def print
     @holidays.each do |holiday|
-      puts holiday
+      Rails.logger.debug holiday
     end
-  end
-
-  # once all the data is loaded, set type enumerations e.g. :easter
-  # and academic year e.g. 2018..2019 against each holiday
-  private def set_holiday_types_and_academic_years
-    set_holiday_types
-    set_academic_years
-    check_consistency
-  end
-
-  private def remove_non_holidays
-    @holidays.reject! { |holiday| %i[bank_holiday inset_day_in_school inset_day_out_of_school].include?(holiday.type) } # not :school_holiday
-  end
-
-  private def set_holidays_by_type(holidays)
-    @holidays            = filter_and_sort_holidays(holidays, %i[school_holiday])
-    @additional_holidays = filter_and_sort_holidays(holidays, %i[bank_holiday inset_day_out_of_school])
-    @school_days         = filter_and_sort_holidays(holidays, %i[inset_day_in_school] )
-  end
-
-  private def sort_holidays(holidays)
-    holidays.sort_by(&:start_date)
-  end
-
-  private def filter_and_sort_holidays(holidays, types)
-    filtered_holidays = holidays.select{ |holiday| types.include?(holiday.type) }
-    sort_holidays(filtered_holidays)
-  end
-
-  private def set_holiday_types
-    @holidays.each do |holiday|
-      holiday.type = type(holiday.middle_date)
-    end
-  end
-
-  private def set_academic_years
-    @holidays.each do |holiday|
-      if holiday.middle_date.month > 8
-        holiday.academic_year = holiday.middle_date.year..(holiday.middle_date.year + 1)
-      else
-        holiday.academic_year = (holiday.middle_date.year - 1)..holiday.middle_date.year
-      end
-    end
-  end
-
-  private def check_consistency
-    logger.info 'Checking for consistency of recently loaded holiday data'
-    types_grouped_by_academic_year = Hash.new([])
-    @holidays.each do |holiday|
-      next unless types_grouped_by_academic_year.key?(holiday.academic_year)
-      unless types_grouped_by_academic_year[holiday.academic_year].find { |hol| hol.type == holiday.type }.nil?
-        logger.error "2 holidays of same time #{holiday.type} in same academic year #{holiday.academic_year.first}/#{holiday.academic_year.first}"
-      end
-    end
-    logger.info 'Holiday check complete'
   end
 
   def holiday?(date)
@@ -167,9 +71,9 @@ class Holidays
 
   def day_type_statistics(start_date, end_date)
     stats = {
-      holiday:    0,
-      weekend:    0,
-      schoolday:  0
+      holiday: 0,
+      weekend: 0,
+      schoolday: 0
     }
     (start_date..end_date).each do |date|
       stats[day_type(date)] += 1
@@ -190,14 +94,16 @@ class Holidays
   # The function is currently only used for the holida usage alert. It could be moved into
   # that class or be turned into a more general purpose utility, as it is not strictly
   # speaking limited to summarising holiday usage.
-  def calculate_statistics(start_date, end_date, lambda, args: nil, classifier: -> (date) { day_type(date) }, statistics: %i[total average min max count])
+  def calculate_statistics(start_date, end_date, lambda, args: nil, classifier: lambda { |date|
+    day_type(date)
+  }, statistics: %i[total average min max count])
     totals = {}
     stats = {}
 
     (start_date..end_date).each do |date|
       dt = classifier.call(date)
       totals[dt] ||= []
-      result = args.nil? ? lambda.call(date): lambda.call(date, *args)
+      result = args.nil? ? lambda.call(date) : lambda.call(date, *args)
       totals[dt].push(result)
     end
 
@@ -208,7 +114,7 @@ class Holidays
         when :total
           stats[daytype][statistic_type] = total.sum
         when :average
-          stats[daytype][statistic_type] = total.length == 0 ? nil : total.sum / total.length
+          stats[daytype][statistic_type] = total.empty? ? nil : total.sum / total.length
         when :min
           stats[daytype][statistic_type] = total.min
         when :max
@@ -234,17 +140,14 @@ class Holidays
     end
   end
 
-  def last
-    @holidays.last
-  end
+  delegate :last, to: :@holidays
 
   # returns a holiday period corresponding to a date, nil if not a date
   def holiday(date)
     # check cache, as lookup currently loops through list of holidays
     # speeds up this function for 48x365 lookup report by 0.5s (0.6s to 0.1s)
-    if @cached_holiday_lookup.key?(date)
-      return @cached_holiday_lookup[date]
-    end
+    return @cached_holiday_lookup[date] if @cached_holiday_lookup.key?(date)
+
     @cached_holiday_lookup[date] = is_holiday(date)
     @cached_holiday_lookup[date]
   end
@@ -252,11 +155,11 @@ class Holidays
   def is_holiday(date)
     return nil unless find_holiday(date, @school_days).nil? # inset day out of school not a holiday
 
-    school_holiday      = find_holiday(date, @holidays)
-    return school_holiday       unless school_holiday.nil?
+    school_holiday = find_holiday(date, @holidays)
+    return school_holiday unless school_holiday.nil?
 
     public_or_inset_day = find_holiday(date, @additional_holidays)
-    return public_or_inset_day  unless public_or_inset_day.nil?
+    return public_or_inset_day unless public_or_inset_day.nil?
 
     # TODO(PH, 17Nov2019) check for weekend gap between 2 holidays here - complex & difficult, but not critical
     nil # no holiday
@@ -285,26 +188,21 @@ class Holidays
   end
 
   def find_previous_holiday_to_current(current_holiday, number_holidays_before = 1, min_days_in_holiday = nil)
-    raise EnergySparksUnexpectedStateException, "number holidays before = #{number_holidays_before} needs to be > 0" if number_holidays_before <= 0
+    if number_holidays_before <= 0
+      raise EnergySparksUnexpectedStateException,
+            "number holidays before = #{number_holidays_before} needs to be > 0"
+    end
 
     holiday_index = SchoolDatePeriod.find_period_index_for_date(current_holiday.middle_date, @holidays)
 
-    while number_holidays_before > 0 && holiday_index > 0
+    while number_holidays_before.positive? && holiday_index.positive?
       if min_days_in_holiday.nil? || @holidays[holiday_index - 1].weekdays >= min_days_in_holiday
         number_holidays_before -= 1
       end
       holiday_index -= 1
     end
 
-    holiday_index < 0 || number_holidays_before > 0 ? nil : @holidays[holiday_index]
-  end
-
-  private def find_holiday_with_offset(date, max_days_search = 100, direction = 1, min_days_in_holiday = nil)
-    (0..max_days_search).each do |days|
-      period = SchoolDatePeriod.find_period_for_date(date + direction * days, @holidays, min_days_in_holiday)
-      return period unless period.nil?
-    end
-    nil
+    holiday_index.negative? || number_holidays_before.positive? ? nil : @holidays[holiday_index]
   end
 
   def same_holiday_previous_year(this_years_holiday_period, max_days_search = 365 + 100)
@@ -314,17 +212,17 @@ class Holidays
     (200..max_days_search).each do |num_days_offset_backwards|
       date = this_years_holiday_period.start_date - num_days_offset_backwards
       last_years_holiday_period = find_holiday(date)
-      unless last_years_holiday_period.nil?
-        last_years_holiday_mid_date = last_years_holiday_period.start_date + (last_years_holiday_period.days / 2).floor
-        last_years_holiday_type = type(last_years_holiday_mid_date)
-        return last_years_holiday_period if this_years_holiday_type == last_years_holiday_type
-      end
+      next if last_years_holiday_period.nil?
+
+      last_years_holiday_mid_date = last_years_holiday_period.start_date + (last_years_holiday_period.days / 2).floor
+      last_years_holiday_type = type(last_years_holiday_mid_date)
+      return last_years_holiday_period if this_years_holiday_type == last_years_holiday_type
     end
     nil
   end
 
   def self.holiday_month_year_str(holiday)
-    I18n.t("analytics.holiday_year", holiday: I18nHelper.holiday(holiday.type), year: holiday.start_date.year.to_s)
+    I18n.t('analytics.holiday_year', holiday: I18nHelper.holiday(holiday.type), year: holiday.start_date.year.to_s)
   end
 
   # finds nth holiday before or after date, including/excluding current holiday if date within a holiday
@@ -341,44 +239,43 @@ class Holidays
   def find_nth_holiday(date, nth_holiday_number, include_holiday_if_in_date = false)
     nearest_holiday_index = find_nearest_holiday_index(@holidays, date, include_holiday_if_in_date)
     return nil if nearest_holiday_index.nil?
+
     holiday_index = nearest_holiday_index + nth_holiday_number
-    return nil if holiday_index < 0 || holiday_index >= @holidays.length
+    return nil if holiday_index.negative? || holiday_index >= @holidays.length
+
     @holidays[holiday_index]
   end
 
   def number_holidays_between_dates(start_date, end_date, include_holiday_if_in_date = false)
     end_date_holiday_index = find_nearest_holiday_index(@holidays, end_date, include_holiday_if_in_date)
-    raise EnergySparksNotEnoughDataException, "Not enough holiday data for meter end date #{end_date}" if end_date_holiday_index.nil?
+    if end_date_holiday_index.nil?
+      raise EnergySparksNotEnoughDataException,
+            "Not enough holiday data for meter end date #{end_date}"
+    end
+
     start_date_holiday_index = find_nearest_holiday_index(@holidays, end_date, false)
-    raise EnergySparksNotEnoughDataException, "Not enough holiday data for meter start date #{start_date}" if start_date_holiday_index.nil?
+    if start_date_holiday_index.nil?
+      raise EnergySparksNotEnoughDataException,
+            "Not enough holiday data for meter start date #{start_date}"
+    end
+
     end_date_holiday_index - start_date_holiday_index # could possibly be +1????
   end
 
-  private def find_nearest_holiday_index(holidays, date, include_holiday_if_in_date = false)
-    holidays.each_with_index do |holiday, index|
-      return index if include_holiday_if_in_date && date.between?(holiday.start_date, holiday.end_date)
-      return index - 1 if date.between?(holiday.start_date, holiday.end_date)
-      return index if index < holidays.length - 1 && date > holiday.end_date && date < holidays[index + 1].start_date
-    end
-    nil
-  end
-
   def find_summer_holiday_before(date)
-    @holidays.reverse.each do |hol|
+    @holidays.reverse_each do |hol|
       # identify summer holiday by length, then month (England e.g. Mon 9 Jul 2018 - Wed 4 Sep 2018  Scotland e.g. Mon 1 Jul 2019 - 13 Aug 2019
 
       days_in_holiday = (hol.end_date - hol.start_date + 1).to_i
-      if days_in_holiday > 4 * 7 && date > hol.end_date
-        return hol
-      end
+      return hol if days_in_holiday > 4 * 7 && date > hol.end_date
     end
     nil
   end
 
-  def find_all_summer_holidays_date_range(start_date, end_date)
+  def find_all_summer_holidays_date_range(_start_date, end_date)
     summer_holidays = []
     summer_holiday = find_summer_holiday_before(end_date)
-    while !summer_holiday.nil? do
+    until summer_holiday.nil?
       summer_holidays.push(summer_holiday)
       summer_holiday = find_summer_holiday_before(summer_holiday.start_date - 1)
     end
@@ -390,9 +287,7 @@ class Holidays
       # identify summer holiday by length, then month (England e.g. Mon 9 Jul 2018 - Wed 4 Sep 2018  Scotland e.g. Mon 1 Jul 2019 - 13 Aug 2019
 
       days_in_holiday = (hol.end_date - hol.start_date + 1).to_i
-      if days_in_holiday > 4 * 7 && date < hol.start_date
-        return hol
-      end
+      return hol if days_in_holiday > 4 * 7 && date < hol.start_date
     end
     nil
   end
@@ -400,21 +295,33 @@ class Holidays
   # iterate backwards to find nth school week before date, skipping holidays
   # last week = 0, previous school week = -1, iterates on Sunday-Saturday boundary
   def nth_school_week(asof_date, nth_week_number, min_days_in_school_week = 3, min_date = nil)
-    raise EnergySparksBadChartSpecification.new("Badly specified nth_school_week #{nth_week_number} must be zero or negative") if nth_week_number > 0
-    raise EnergySparksBadChartSpecification.new("Badly specified min_days_in_school_week #{min_days_in_school_week} must be > 0") if min_days_in_school_week <= 0
+    if nth_week_number.positive?
+      raise EnergySparksBadChartSpecification,
+            "Badly specified nth_school_week #{nth_week_number} must be zero or negative"
+    end
+    if min_days_in_school_week <= 0
+      raise EnergySparksBadChartSpecification,
+            "Badly specified min_days_in_school_week #{min_days_in_school_week} must be > 0"
+    end
+
     limit = 2000
     week_count = nth_week_number.magnitude
     saturday = asof_date.saturday? ? asof_date : self.class.nearest_previous_saturday(asof_date)
     loop do
       break if !min_date.nil? && saturday <= min_date
+
       monday = saturday - 5
       friday = saturday - 1
       holiday_days_in_week = holidaydays_in_range(monday, friday)
       week_count -= 1 unless holiday_days_in_week > (5 - min_days_in_school_week)
-      break if week_count < 0
-      saturday = saturday - 7
+      break if week_count.negative?
+
+      saturday -= 7
       limit -= 1
-      raise EnergySparksUnexpectedStateException.new('Gone too many times around loop looking for school weeks, not sure why error has occurred') if limit <= 0
+      if limit <= 0
+        raise EnergySparksUnexpectedStateException,
+              'Gone too many times around loop looking for school weeks, not sure why error has occurred'
+      end
     end
     [saturday - 6, saturday, week_count]
   end
@@ -441,7 +348,8 @@ class Holidays
     if year.nil?
       # data commonly not being set for next summer holiday, so make a guess!!!!!!!!!!!
       previous_academic_year = academic_year(date - 364)
-      year = SchoolDatePeriod.new(:academic_year, 'Synthetic approx current academic year', previous_academic_year.end_date + 1, previous_academic_year.end_date + 365)
+      year = SchoolDatePeriod.new(:academic_year, 'Synthetic approx current academic year',
+                                  previous_academic_year.end_date + 1, previous_academic_year.end_date + 365)
     end
     year
   end
@@ -452,7 +360,7 @@ class Holidays
 
     last_summer_hol = find_summer_holiday_before(end_date)
 
-    until last_summer_hol.nil? do
+    until last_summer_hol.nil?
       previous_summer_hol = find_summer_holiday_before(last_summer_hol.start_date - 1)
       return acy_years if previous_summer_hol.nil?
       return acy_years if previous_summer_hol.end_date < start_date
@@ -473,16 +381,16 @@ class Holidays
     last_date_of_period = move_to_saturday_boundary ? nearest_previous_saturday(end_date) : end_date
 
     # iterate backwards creating a year periods until we run out of AMR data
-    first_date_of_period = last_date_of_period - 52 * 7 + 1
+    first_date_of_period = last_date_of_period - (52 * 7) + 1
 
     while first_date_of_period >= start_date
       # add a new period to the return array
-      year_description = "year to " << last_date_of_period.strftime("%a %d %b %y")
+      year_description = 'year to ' << last_date_of_period.strftime('%a %d %b %y')
       yrs_to_date.push(SchoolDatePeriod.new(:year_to_date, year_description, first_date_of_period, last_date_of_period))
 
       # move back 52 weeks
       last_date_of_period = first_date_of_period - 1
-      first_date_of_period = last_date_of_period - 52 * 7 + 1
+      first_date_of_period = last_date_of_period - (52 * 7) + 1
     end
 
     yrs_to_date
@@ -503,7 +411,8 @@ class Holidays
   end
 
   # Currently only used by the ChartManagerTimescaleManipulation and UpToAYearPeriods
-  def self.periods_cadence(start_date, end_date, cadence_days: 52 * 7, include_partial_period: false, move_to_saturday_boundary: false, minimum_days: nil)
+  def self.periods_cadence(start_date, end_date, cadence_days: 52 * 7, include_partial_period: false,
+                           move_to_saturday_boundary: false, minimum_days: nil)
     last_date_of_period = if move_to_saturday_boundary && !end_date.saturday?
                             nearest_previous_saturday(end_date)
                           else
@@ -526,13 +435,13 @@ class Holidays
 
     last_date_of_period = end_date
 
-    last_date_of_period = self.class.nearest_previous_saturday(last_date_of_period) if move_to_saturday_boundary
+    self.class.nearest_previous_saturday(last_date_of_period) if move_to_saturday_boundary
 
     # go backwards
     offset = 0
-    while activation_date - 365 * offset > start_date
+    while activation_date - (365 * offset) > start_date
       year_description = "#{offset.magnitude} years before activation date year"
-      start_of_year = activation_date - 365 * (offset + 1)
+      start_of_year = activation_date - (365 * (offset + 1))
       end_of_year   = start_of_year + 364
       year = SchoolDatePeriod.new(:activationyear, year_description, start_of_year, end_of_year)
       yrs_to_date[-offset] = year
@@ -541,9 +450,9 @@ class Holidays
 
     # go forwards
     offset = 0
-    while activation_date + 365 * offset < end_date
+    while activation_date + (365 * offset) < end_date
       year_description = "#{offset} years after activation date year"
-      start_of_year = activation_date + 365 * (offset - 1)
+      start_of_year = activation_date + (365 * (offset - 1))
       end_of_year   = start_of_year + 364
       year = SchoolDatePeriod.new(:activationyear, year_description, start_of_year, end_of_year)
       yrs_to_date[offset] = year
@@ -553,15 +462,16 @@ class Holidays
     yrs_to_date
   end
 
-
   class AcademicYear < SchoolDatePeriod
     include Logging
+
     attr_reader :holidays_in_year
+
     def initialize(start_date, end_date, full_holiday_schedule)
       # this is called from meter validation and equivalences with slightly different
       # structures TODO(PH,24Nov2019) normalise upstream so switch not required
       schedule = full_holiday_schedule.is_a?(Array) ? full_holiday_schedule : full_holiday_schedule.holidays
-      year_name = start_date.year.to_s + '/' + end_date.year.to_s
+      year_name = "#{start_date.year}/#{end_date.year}"
       super(:academic_year, year_name, start_date, end_date)
       @holidays_in_year = find_holidays_in_year(schedule)
     end
@@ -569,9 +479,7 @@ class Holidays
     def find_holidays_in_year(full_holiday_schedule)
       hols = []
       full_holiday_schedule.each do |hol|
-        if hol.start_date >= start_date && hol.end_date <= end_date
-          hols.push(hol)
-        end
+        hols.push(hol) if hol.start_date >= start_date && hol.end_date <= end_date
       end
       hols
     end
@@ -584,21 +492,25 @@ class Holidays
       logger.debug "Warning: unable to find academic year for date #{date}"
       nil
     else
-      acy_year = AcademicYear.new(summer_hol_before.end_date + 1, summer_hol_after.end_date, @holidays)
+      AcademicYear.new(summer_hol_before.end_date + 1, summer_hol_after.end_date, @holidays)
       # logger.debug "Found academic year for date #{date} - year from #{acy_year.start_date} #{acy_year.end_date}"
-      acy_year
+
     end
   end
 
   # returns current academic year if n = 0, next if n = 1, 2 before if n = -2
   def nth_academic_year_from_date(n, date, raise_exception = true)
     this_year = academic_year(date)
-    raise EnergySparksUnexpectedStateException.new("Cannnot find current academic year for date #{date}") if this_year.nil?
+    raise EnergySparksUnexpectedStateException, "Cannnot find current academic year for date #{date}" if this_year.nil?
+
     # slightly crude way of doing this
     mid_point_of_year = this_year.start_date + 180
-    day_in_middle_of_wanted_year = mid_point_of_year + n * 365
+    day_in_middle_of_wanted_year = mid_point_of_year + (n * 365)
     wanted_year = academic_year(day_in_middle_of_wanted_year)
-    raise EnergySparksUnexpectedStateException.new("Cannnot find #{n}th academic year for date #{date}") if wanted_year.nil? && raise_exception
+    if wanted_year.nil? && raise_exception
+      raise EnergySparksUnexpectedStateException, "Cannnot find #{n}th academic year for date #{date}"
+    end
+
     wanted_year
   end
 
@@ -617,22 +529,24 @@ class Holidays
       when :xmas
         return hol if hol.start_date.month == 12 && hol.days > 5
       when :spring_half_term
-        return hol if (hol.start_date.month == 2 || (hol.start_date.month == 1 && hol.end_date.month == 2)) && hol.days > 3
+        if (hol.start_date.month == 2 || (hol.start_date.month == 1 && hol.end_date.month == 2)) && hol.days > 3
+          return hol
+        end
       when :easter
-        return hol if (hol.start_date.month == 3 || hol.start_date.month == 4) && hol.days > 4
+        return hol if [3, 4].include?(hol.start_date.month) && hol.days > 4
       when :mayday
         return hol if hol.start_date.month == 5 && hol.days <= 2
       when :summer_half_term
         if (hol.start_date.month == 5 || (hol.start_date.month == 6 && hol.start_date.day < 10)) &&
-          hol.days > 2
+           hol.days > 2
           return hol
         end
       when :summer
-        return hol if (hol.start_date.month == 6 || hol.start_date.month == 7) && hol.days > 10
+        return hol if [6, 7].include?(hol.start_date.month) && hol.days > 10
       when :autumn_half_term
         return hol if hol.start_date.month == 10 && hol.days > 3
       else
-        raise EnergySparksUnexpectedStateException.new("Unknown holiday type #{holiday_type}")
+        raise EnergySparksUnexpectedStateException, "Unknown holiday type #{holiday_type}"
       end
     end
     nil
@@ -666,43 +580,115 @@ class Holidays
     when 7, 8
       :summer
     when 9
-      if date.day < 15 # Scotland has a one off holiday later in September
-        :summer
-      else
-        nil
-      end
+      :summer if date.day < 15 # Scotland has a one off holiday later in September
     when 10, 11
       :autumn_half_term
-    else
-      nil
     end
   end
 
   def self.new_year_year(date)
     year = date.year
     if date.mon == 12
-      year.to_s + '/' + (year + 1).to_s
+      "#{year}/#{year + 1}"
     else
-      (year - 1).to_s + '/' + year.to_s
+      "#{year - 1}/#{year}"
     end
   end
 
   def self.holiday_name(date)
     type = holiday_type(date)
     year = type == :xmas ? new_year_year(date) : date.year.to_s
-    type.to_s.humanize + ' ' + year
+    "#{type.to_s.humanize} #{year}"
   end
 
   def new_year_year(date)
     year = date.year
     if date.mon == 12
-      year.to_s + '/' + (year + 1).to_s
+      "#{year}/#{year + 1}"
     else
-      (year - 1).to_s + '/' + year.to_s
+      "#{year - 1}/#{year}"
     end
   end
 
   def type(date)
     self.class.holiday_type(date)
+  end
+
+  private
+
+  # once all the data is loaded, set type enumerations e.g. :easter
+  # and academic year e.g. 2018..2019 against each holiday
+  def set_holiday_types_and_academic_years
+    set_holiday_types
+    set_academic_years
+    check_consistency
+  end
+
+  def remove_non_holidays
+    # not :school_holiday
+    @holidays.reject! do |holiday|
+      %i[bank_holiday inset_day_in_school inset_day_out_of_school].include?(holiday.type)
+    end
+  end
+
+  def set_holidays_by_type(holidays)
+    @holidays = filter_and_sort_holidays(holidays, %i[school_holiday])
+    @additional_holidays = filter_and_sort_holidays(holidays, %i[bank_holiday inset_day_out_of_school])
+    @school_days         = filter_and_sort_holidays(holidays, %i[inset_day_in_school])
+  end
+
+  def sort_holidays(holidays)
+    holidays.sort_by(&:start_date)
+  end
+
+  def filter_and_sort_holidays(holidays, types)
+    filtered_holidays = holidays.select { |holiday| types.include?(holiday.type) }
+    sort_holidays(filtered_holidays)
+  end
+
+  def set_holiday_types
+    @holidays.each do |holiday|
+      holiday.type = type(holiday.middle_date)
+    end
+  end
+
+  def set_academic_years
+    @holidays.each do |holiday|
+      holiday.academic_year = if holiday.middle_date.month > 8
+                                holiday.middle_date.year..(holiday.middle_date.year + 1)
+                              else
+                                (holiday.middle_date.year - 1)..holiday.middle_date.year
+                              end
+    end
+  end
+
+  def check_consistency
+    logger.info 'Checking for consistency of recently loaded holiday data'
+    types_grouped_by_academic_year = Hash.new([])
+    @holidays.each do |holiday|
+      next unless types_grouped_by_academic_year.key?(holiday.academic_year)
+
+      unless types_grouped_by_academic_year[holiday.academic_year].find { |hol| hol.type == holiday.type }.nil?
+        logger.error "2 holidays of same time #{holiday.type} in same academic year #{holiday.academic_year.first}/#{holiday.academic_year.first}"
+      end
+    end
+    logger.info 'Holiday check complete'
+  end
+
+  def find_holiday_with_offset(date, max_days_search = 100, direction = 1, min_days_in_holiday = nil)
+    (0..max_days_search).each do |days|
+      period = SchoolDatePeriod.find_period_for_date(date + (direction * days), @holidays, min_days_in_holiday)
+      return period unless period.nil?
+    end
+    nil
+  end
+
+  def find_nearest_holiday_index(holidays, date, include_holiday_if_in_date = false)
+    holidays.each_with_index do |holiday, index|
+      return index if include_holiday_if_in_date && date.between?(holiday.start_date, holiday.end_date)
+      return index - 1 if date.between?(holiday.start_date, holiday.end_date)
+      return index if index < holidays.length - 1 && date > holiday.end_date && date < holidays[index + 1].start_date
+    end
+    nil
   end
 end
