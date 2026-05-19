@@ -44,7 +44,7 @@ class ScheduleDataManagerService
       start_date
     end
 
-    def roll_end_date_forward_to_saturday(end_date)
+    def roll_end_date_forward_to_saturday(end_date, type)
       return end_date + 1 if end_date.friday? && roll?(type)
 
       end_date
