@@ -225,7 +225,8 @@ class Holidays
 
   def find_summer_holiday_before(date)
     @holidays.reverse_each do |hol|
-      # identify summer holiday by length, then month (England e.g. Mon 9 Jul 2018 - Wed 4 Sep 2018  Scotland e.g. Mon 1 Jul 2019 - 13 Aug 2019
+      # identify summer holiday by length, then month (England e.g. Mon 9 Jul 2018 - Wed 4 Sep 2018  Scotland
+      # e.g. Mon 1 Jul 2019 - 13 Aug 2019
 
       days_in_holiday = (hol.end_date - hol.start_date + 1).to_i
       return hol if days_in_holiday > 4 * 7 && date > hol.end_date
@@ -245,7 +246,8 @@ class Holidays
 
   def find_summer_holiday_after(date)
     @holidays.each do |hol|
-      # identify summer holiday by length, then month (England e.g. Mon 9 Jul 2018 - Wed 4 Sep 2018  Scotland e.g. Mon 1 Jul 2019 - 13 Aug 2019
+      # identify summer holiday by length, then month (England e.g. Mon 9 Jul 2018 - Wed 4 Sep 2018  Scotland
+      # e.g. Mon 1 Jul 2019 - 13 Aug 2019
 
       days_in_holiday = (hol.end_date - hol.start_date + 1).to_i
       return hol if days_in_holiday > 4 * 7 && date < hol.start_date
@@ -478,7 +480,8 @@ class Holidays
   def find_holiday_in_academic_year(academic_year, holiday_type)
     hol = find_holiday_in_academic_year_private(academic_year, holiday_type)
     if hol.nil?
-      logger.debug "Unable to find holiday of type #{holiday_type} in academic year #{academic_year.start_date} to #{academic_year.end_date}"
+      logger.debug "Unable to find holiday of type #{holiday_type} in academic year #{academic_year.start_date} to " \
+                   "#{academic_year.end_date}"
     end
     hol
   end
@@ -630,7 +633,8 @@ class Holidays
       next unless types_grouped_by_academic_year.key?(holiday.academic_year)
 
       unless types_grouped_by_academic_year[holiday.academic_year].find { |hol| hol.type == holiday.type }.nil?
-        logger.error "2 holidays of same time #{holiday.type} in same academic year #{holiday.academic_year.first}/#{holiday.academic_year.first}"
+        logger.error "2 holidays of same time #{holiday.type} in same academic year " \
+                     "#{holiday.academic_year.first}/#{holiday.academic_year.first}"
       end
     end
     logger.info 'Holiday check complete'
