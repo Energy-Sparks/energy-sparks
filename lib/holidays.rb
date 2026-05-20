@@ -2,43 +2,6 @@
 
 require_relative 'school_date_period'
 
-# holds holiday data as an array of hashes - one hash for each holiday period
-class HolidayData < Array
-  include Logging
-
-  def add(holiday)
-    push(holiday)
-  end
-end
-
-# loads holiday data (from a CSV file), assumes added in date order!
-class HolidayLoader
-  include Logging
-
-  def initialize(csv_file, holiday_data)
-    read_csv(csv_file, holiday_data)
-  end
-
-  def read_csv(csv_file, holidays)
-    logger.debug "Reading Holiday data from '#{csv_file}'"
-    datareadings = Roo::CSV.new(csv_file)
-    count = 0
-    datareadings.each do |reading|
-      holiday_type = reading[0].to_sym
-      raise EnergySparksBadHolidayDataException, "Unknown holiday type #{holiday_type}" unless %i[bank_holiday
-                                                                                                  inset_day_in_school inset_day_out_of_school school_holiday].include?(holiday_type)
-
-      title = reading[1]
-      start_date = Date.parse reading[2]
-      end_date = Date.parse reading[3]
-      holidays.add(Holiday.new(holiday_type, title, start_date, end_date, nil))
-      count += 1
-    end
-    logger.debug "Read #{count} rows"
-    logger.debug "Read #{holidays.length} rows"
-  end
-end
-
 # contains holidays, plus functionality for determining whether a date is a holiday
 class Holidays
   include Logging
