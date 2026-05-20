@@ -48,7 +48,7 @@ describe Commercial::Licence do
     end
 
     context 'when licence_period is custom' do
-      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:contract) { create(:commercial_contract, :custom) }
 
       it { expect(licence.dates_will_automatically_change?).to be(true) }
 
@@ -93,9 +93,9 @@ describe Commercial::Licence do
     end
 
     context 'with :expiring' do
-      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
-
       subject(:licences) { described_class.filtered(:expiring, Time.zone.today + 7) }
+
+      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
 
       it { expect(licences).to contain_exactly(licence_school_a) }
     end

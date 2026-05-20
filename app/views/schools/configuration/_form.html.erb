@@ -170,7 +170,7 @@
                    options_for_select(
                      LocalAuthorityArea.all.order(name: :asc).pluck(:name, :id), school.local_authority_area_id
                    ),
-                   { include_blank: false },
+                   { include_blank: true },
                    { class: 'form-control' } %>
       <small class="form-text text-muted">Local authority areas cover the whole of England, Wales and Scotland</small>
     </div>
