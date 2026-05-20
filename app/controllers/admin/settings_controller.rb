@@ -8,9 +8,7 @@ module Admin
 
     def update
       @settings.update!(site_settings_params)
-      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
-        BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
-      end
+      BenchmarkMetrics.set_current_prices(prices: SiteSettings.current_prices)
       redirect_to admin_settings_path, notice: 'Settings updated'
     end
 
@@ -31,22 +29,13 @@ module Admin
     end
 
     def settings_params
-      if EnergySparks::FeatureFlags.active?(:use_site_settings_current_prices)
-        params.require(:site_settings).permit(
-          :message_for_no_contacts, :message_for_no_pupil_accounts,
-          :management_priorities_dashboard_limit, :management_priorities_page_limit,
-          :default_import_warning_days, :photo_bonus_points, :audit_activities_bonus_points,
-          :electricity_price, :solar_export_price, :gas_price,
-          temperature_recording_months: []
-        )
-      else
-        params.require(:site_settings).permit(
-          :message_for_no_contacts, :message_for_no_pupil_accounts,
-          :management_priorities_dashboard_limit, :management_priorities_page_limit,
-          :default_import_warning_days, :photo_bonus_points, :audit_activities_bonus_points,
-          temperature_recording_months: []
-        )
-      end
+      params.require(:site_settings).permit(
+        :message_for_no_contacts, :message_for_no_pupil_accounts,
+        :management_priorities_dashboard_limit, :management_priorities_page_limit,
+        :default_import_warning_days, :photo_bonus_points, :audit_activities_bonus_points,
+        :electricity_price, :solar_export_price, :gas_price,
+        temperature_recording_months: []
+      )
     end
 
     def temperature_setting_months
