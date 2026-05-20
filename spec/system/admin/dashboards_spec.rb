@@ -61,6 +61,11 @@ RSpec.describe 'Admin dashboard' do
         expect(page).to have_link('Dashboards', href: admin_dashboards_path)
       end
 
+      it 'has links to admin home and all reports' do
+        expect(page).to have_link('Admin Home', href: admin_path)
+        expect(page).to have_link('All Reports', href: admin_reports_path)
+      end
+
       describe 'navigation' do
         it { expect(page).to have_css('.navigation-admin-dashboard-component') }
 
