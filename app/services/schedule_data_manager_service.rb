@@ -109,7 +109,7 @@ class ScheduleDataManagerService
   # Load Dark Sky readings if there's any associated with schools
   # Optionally only loading those from before a specified date
   def load_dark_sky_readings(temperatures, earliest = nil)
-    return unless @dark_sky_area_id.present?
+    return if @dark_sky_area_id.blank?
 
     if earliest.present?
       DataFeeds::DarkSkyTemperatureReading.where('area_id = ? AND reading_date < ?', @dark_sky_area_id, earliest).pluck(

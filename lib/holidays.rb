@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'school_date_period'
-
 # contains holidays, plus functionality for determining whether a date is a holiday
 class Holidays
   include Logging
