@@ -18,7 +18,7 @@ class SchoolDatePeriod
   end
 
   def to_s
-    '' << @title << ' (' << start_date.strftime('%a %d %b %Y') << ' to ' << end_date.strftime('%a %d %b %Y') << ')'
+    "#{@title} (#{start_date.strftime('%a %d %b %Y')} to #{end_date.strftime('%a %d %b %Y')})"
   end
 
   def days
@@ -138,8 +138,7 @@ class SchoolDatePeriod
   def check_is_date(date, name)
     raise EnergySparksUnexpectedStateException, "Unexpected nil #{name}" if date.nil?
     unless date.is_a?(Date)
-      raise EnergySparksUnexpectedStateException,
-            "Unexpected #{name} of type #{date.class.name} expecting a Date"
+      raise EnergySparksUnexpectedStateException, "Unexpected #{name} of type #{date.class.name} expecting a Date"
     end
 
     date

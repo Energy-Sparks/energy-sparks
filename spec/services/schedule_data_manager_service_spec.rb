@@ -45,7 +45,7 @@ describe ScheduleDataManagerService do
     end
 
     it 'has bank holidays' do
-      bank_holidays.pluck(:start_date).each { |date| expect(holidays.holiday?(date)).to be true }
+      bank_holidays.pluck(:start_date).each { |date| expect(service.holidays.holiday?(date)).to be true }
     end
   end
 

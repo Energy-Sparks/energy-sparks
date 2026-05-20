@@ -50,6 +50,6 @@ class Holiday < SchoolDatePeriod
   end
 
   def roll?(type)
-    %i[inset_day_in_school bank_holiday].include?(type)
+    %i[inset_day_in_school bank_holiday].exclude?(type)
   end
 end
