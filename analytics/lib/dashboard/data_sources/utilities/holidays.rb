@@ -385,7 +385,7 @@ class Holidays
 
     while first_date_of_period >= start_date
       # add a new period to the return array
-      year_description = 'year to ' << last_date_of_period.strftime('%a %d %b %y')
+      year_description = "year to #{last_date_of_period.strftime('%a %d %b %y')}"
       yrs_to_date.push(SchoolDatePeriod.new(:year_to_date, year_description, first_date_of_period, last_date_of_period))
 
       # move back 52 weeks
