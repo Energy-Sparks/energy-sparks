@@ -26,7 +26,12 @@
       </div>
     <% end %>
   </div>
-  <% end %>
+<% end %>
+
+ <%= render Elements::ButtonComponent.new('Manage Issue Tags',
+                                          admin_issues_path,
+                                          style: :secondary,
+                                          classes: 'mt-3 mb-3') %>
 
   <div class="bg-light ps-2 pt-2 my-2 border rounded-2">
     <%= form_tag polymorphic_path(
