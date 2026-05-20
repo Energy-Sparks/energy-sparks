@@ -94,6 +94,8 @@ module Commercial
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
+    def self.temporal_group_key = :contract_holder_id
+
     def self.as_renewal(original)
       new(
         original.slice(

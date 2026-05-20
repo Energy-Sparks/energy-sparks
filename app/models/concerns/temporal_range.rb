@@ -8,17 +8,13 @@ module TemporalRange
       where("#{table_name}.start_date <= ? AND #{table_name}.end_date >= ?", today, today)
     }
 
-    scope :future, lambda { |today = Time.zone.today|
-      where("#{table_name}.start_date > ?", today)
-    }
+    scope :future, ->(today = Time.zone.today) { where("#{table_name}.start_date > ?", today) }
 
     scope :expiring, lambda { |end_date = (Time.zone.today + 1.month).end_of_month|
       where("#{table_name}.end_date >= CURRENT_DATE and #{table_name}.end_date <= ?", end_date)
     }
 
-    scope :expired, lambda { |today = Time.zone.today|
-      where("#{table_name}.end_date < ?", today)
-    }
+    scope :expired, ->(today = Time.zone.today) { where("#{table_name}.end_date < ?", today) }
 
     scope :recently_expired, lambda { |end_date = (Time.zone.today - 1.month).beginning_of_month|
       where("#{table_name}.end_date >= ? and #{table_name}.end_date < ?", end_date, Time.zone.today)
@@ -30,6 +26,12 @@ module TemporalRange
 
     scope :recently_updated, lambda { |updated_at = (Time.zone.today - 1.month).beginning_of_month|
       where("#{table_name}.updated_at >= ? AND #{table_name}.updated_at > #{table_name}.created_at", updated_at)
+    }
+
+    scope :overlapping, lambda {
+      joins("INNER JOIN #{table_name} AS t2 ON t2.#{temporal_group_key} = #{table_name}.#{temporal_group_key}
+            AND t2.id <> #{table_name}.id
+            AND t2.start_date <= #{table_name}.end_date AND t2.end_date >= #{table_name}.start_date")
     }
   end
 

@@ -2,7 +2,7 @@
 
 module Admin
   module Commercial
-    class ContractsController < AdminController
+    class ContractsController < AdminController # rubocop:disable Metrics/ClassLength
       ALLOWED_SCOPES = %w[current expired expiring future provisional recent].freeze
 
       load_and_authorize_resource :contract, class: 'Commercial::Contract'
@@ -18,6 +18,10 @@ module Admin
       def expiring = load_contracts(action_name)
 
       def future = load_contracts(action_name)
+
+      def overlapping
+        @contracts = ::Commercial::Contract.overlapping.by_start_date
+      end
 
       def provisional = load_contracts(action_name)
 

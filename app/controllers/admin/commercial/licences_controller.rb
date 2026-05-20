@@ -23,6 +23,10 @@ module Admin::Commercial
       ).order('school_groups.name ASC')
     end
 
+    def overlapping
+      @licences = Commercial::Licence.overlapping.by_start_date
+    end
+
     def new
       if params[:contract_id]
         @contract = Commercial::Contract.find(params[:contract_id])
