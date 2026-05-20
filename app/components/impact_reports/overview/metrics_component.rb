@@ -2,12 +2,7 @@
 
 module ImpactReports
   module Overview
-    class MetricsComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
-      def initialize(**)
-        super
-        raise_unless_run
-      end
-
+    class MetricsComponent < ImpactReports::MetricsBaseComponent # rubocop:disable ViewComponent/PreferComposition
       def displayable
         @displayable ||= main_metrics.append(enrollment_metrics).compact
       end
