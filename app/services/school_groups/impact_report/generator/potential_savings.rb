@@ -4,7 +4,7 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class PotentialSavings < Base
-        def self.metric_type(base, type) = [base, type].join('_')
+        def self.metric_type(base, type) = [base, type].join('_').to_sym
 
         ALERTS = {
           %i[electricity baseload] => AlertElectricityBaseloadVersusBenchmark,
@@ -24,9 +24,7 @@ module SchoolGroups
         TYPES = %i[gbp co2 kwh].freeze
         TYPES_TO_METHOD = TYPES.zip(%i[average_one_year_saving_gbp one_year_saving_co2 one_year_saving_kwh]).to_h
         private_constant :ALERTS, :TYPES_TO_METHOD
-        METRICS = ALERTS.keys.flat_map do |_fuel_type, metric|
-          TYPES.map { |type| metric_type(metric, type) }
-        end.uniq.freeze
+        METRICS = ALERTS.keys.product(TYPES).map { |(_fuel_type, metric), type| metric_type(metric, type) }.uniq.freeze
 
         def metrics
           ALERTS.flat_map do |(fuel_type, metric), alert|

@@ -8,28 +8,30 @@ FactoryBot.define do
     transient do
       categories { [] }
 
-      # one transient per metric type (expects a hash or nil)
+      # one hash per category:
+      # engagement: { targets: { value: 5 } }
       ImpactReport::Metric.categories.each do |category|
-        ImpactReport::Metric.metrics(category).each do |type|
-          add_attribute(type) { nil }
-        end
+        add_attribute(category) { {} }
       end
     end
 
     after(:create) do |run, evaluator|
       evaluator.categories.each do |category|
+        category_overrides = evaluator.public_send(category)
+
         ImpactReport::Metric.metrics(category).each do |type|
-          override = evaluator.public_send(type)
+          override = category_overrides[type] || {}
           attrs = override.is_a?(Hash) ? override : {}
 
           defaults = {
             run: run,
             metric_category: category,
             metric_type: type,
-            value: 1
+            value: 1,
+            enough_data: true
           }
 
-          defaults[:fuel_type] = :electricity if category == :potential_savings
+          defaults[:fuel_type] = :electricity if %i[potential_savings energy_efficiency].include?(category)
 
           create(
             :impact_report_metric,

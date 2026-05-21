@@ -87,7 +87,7 @@ RSpec.describe 'editing school configuration', type: :system do
         before do
           school.update_attribute(:local_authority_area_group, area)
           refresh
-          select '', from: 'Local Authority Area'
+          select '', from: 'Local Authority Area Group'
           click_on('Update configuration')
         end
 

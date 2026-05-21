@@ -48,7 +48,7 @@ describe Commercial::Licence do
     end
 
     context 'when licence_period is custom' do
-      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:contract) { create(:commercial_contract, :custom) }
 
       it { expect(licence.dates_will_automatically_change?).to be(true) }
 
@@ -93,11 +93,36 @@ describe Commercial::Licence do
     end
 
     context 'with :expiring' do
-      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
-
       subject(:licences) { described_class.filtered(:expiring, Time.zone.today + 7) }
 
+      let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
+
       it { expect(licences).to contain_exactly(licence_school_a) }
+    end
+  end
+
+  describe '.licence_period_days' do
+    subject(:licence_period_days) { described_class.licence_period_days(start_date, end_date) }
+
+    context 'with a non-leap year' do
+      let(:start_date) { Date.new(2026, 1, 1) }
+      let(:end_date) { Date.new(2026, 12, 31) }
+
+      it { expect(licence_period_days).to eq(365) }
+    end
+
+    context 'with a leap year' do
+      let(:start_date) { Date.new(2028, 1, 1) }
+      let(:end_date) { Date.new(2028, 12, 31) }
+
+      it { expect(licence_period_days).to eq(365) }
+    end
+
+    context 'with a period including a leap day' do
+      let(:start_date) { Date.new(2028, 1, 1) }
+      let(:end_date) { Date.new(2028, 3, 1) }
+
+      it { expect(licence_period_days).to eq(60) }
     end
   end
 end

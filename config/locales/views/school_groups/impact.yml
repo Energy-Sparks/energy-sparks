@@ -4,22 +4,35 @@ en:
     impact:
       energy_efficiency:
         analysis: Want to explore our latest analysis in more detail?
-        cards:
-          reduced_electricity_emissions:
-            subtext: Reduced emissions by reducing electricity use in %{count} schools in the last 12 months
-            title: Reduced electricity emissions
-          reduced_gas_emissions:
-            subtext: Reduced emissions by reducing gas use in %{count} schools in the last 12 months
-            title: Reduced gas emissions
-          total_electricity_savings:
-            subtext: Cost saving by reducing electricity use in %{count} schools in the last 12 months using current tariffs
-            title: Total electricity savings
-          total_gas_savings:
-            subtext: Cost saving by reducing gas use in %{count} schools in last 12 months using current tariffs
-            title: Total gas savings
         description: How are schools in this group making progress towards being more energy efficient?
         featured:
           title: Featured energy efficient school
+        metric_types:
+          annual_saving_co2:
+            subtext:
+              one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
+              other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
+            title: Reduced %{fuel_type} emissions
+          annual_saving_gbp:
+            subtext:
+              one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
+              other: Cost saving by reducing %{fuel_type} use in %{count} schools in the last 12 months using current tariffs
+            title: Total %{fuel_type} savings
+          baseload:
+            subtext: Schools achieving %{rating} rating for managing electricity baseload
+            title: Baseload management
+          heating_control:
+            subtext: Schools achieving %{rating} rating for heating control
+            title: Improved heating control
+          long_term:
+            subtext: Schools achieving %{rating} rating for managing long term %{fuel_type} use
+            title: Reducing long term %{fuel_type} use
+          out_of_hours:
+            subtext: Schools achieving %{rating} rating for managing out of hours %{fuel_type} use
+            title: Reducing out of hours %{fuel_type} use
+          targets:
+            subtext: Schools with measurable progress against reducing their %{fuel_type} use
+            title: Energy saving targets
         title: Energy Efficiency
       engagement:
         cards:
@@ -52,8 +65,6 @@ en:
         cost_savings: Cost savings are based on the historical energy tariff data provided to us by the group and/or individual schools. Where not available we use a default charge.
         coverage: Energy Sparks may not have full coverage for all meters in schools, but school data is only made available for analysis where we have significant coverage. This means our figures may underestimate actual or potential savings.
         data_updated: The data on this page was last updated on %{date}.
-        electricity_coverage: "%{count_electricity} schools had sufficient electricity data for the full 12 month period, of which %{count_comparison} had enough data to carry out a comparison."
-        gas_coverage: "%{count_gas} schools had sufficient gas data for the full 12 month period, of which %{count_comparison} had enough data to carry out a comparison."
         other_analysis: Other analysis, e.g. progress against energy targets is based on the latest available data at the point of analysis.
         other_metrics: Other metrics, including school enrolment, engagement metrics and ROI values are based on the latest available data and Energy Sparks prices at the point of analysis.
         potential_savings: Potential cost savings are based on current tariff data for individual schools and/or the group.

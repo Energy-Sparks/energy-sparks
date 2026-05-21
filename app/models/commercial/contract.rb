@@ -37,8 +37,8 @@
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
-#
 module Commercial
+  # rubocop:disable Metrics/ClassLength
   class Contract < ApplicationRecord
     include Trackable
     include TemporalRange
@@ -81,6 +81,7 @@ module Commercial
     validates :number_of_schools, numericality: { only_integer: true, greater_than: 0 }
     validates :licence_years, numericality: { greater_than: 0 }, if: :custom?
     validate :ensure_only_editable_attributes_changed, unless: :new_record?
+    validate :validate_invoice_terms
 
     has_many :licences, class_name: 'Commercial::Licence', dependent: :destroy
     has_many :schools, -> { distinct }, through: :licences
@@ -130,7 +131,7 @@ module Commercial
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
       fields += [:status] if provisional?
-      fields += %i[agreed_school_price start_date end_date] unless licences.invoiced.exists?
+      fields += %i[agreed_school_price start_date end_date] unless invoiced?
       fields
     end
 
@@ -144,6 +145,10 @@ module Commercial
 
     def custom_contract_length?
       custom? && licence_years > 1.0
+    end
+
+    def invoiced?
+      licences.invoiced.exists?
     end
 
     private
@@ -164,5 +169,12 @@ module Commercial
         errors.add(attr, 'cannot be changed once the contract is in its current state')
       end
     end
+
+    def validate_invoice_terms
+      return unless custom? && pro_rata?
+
+      errors.add(:invoice_terms, 'invoice terms can only be full for a custom contract')
+    end
   end
+  # rubocop:enable Metrics/ClassLength
 end
