@@ -2,12 +2,7 @@
 
 module ImpactReports
   module Engagement
-    class MetricsComponent < ImpactReports::BaseComponent # rubocop:disable ViewComponent/PreferComposition
-      def initialize(**)
-        super
-        raise_unless_run
-      end
-
+    class MetricsComponent < ImpactReports::MetricsBaseComponent # rubocop:disable ViewComponent/PreferComposition
       def displayable
         @displayable ||= ImpactReport::Metric.metrics(:engagement)
                                              .select { |metric| engagement(metric)&.nonzero? }.compact

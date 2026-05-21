@@ -35,6 +35,8 @@ module ImpactReport
       values.index_with(&:to_s)
     end
 
+    GENERATOR = SchoolGroups::ImpactReport::Generator
+
     METRIC_CATEGORIES = %i[
       overview
       energy_efficiency
@@ -55,10 +57,16 @@ module ImpactReport
       enrolling_schools
     ].freeze
 
-    ENERGY_EFFICIENCY_METRICS = (%i[total_savings] +
-                                 SchoolGroups::ImpactReport::Generator::AnnualSaving::METRICS +
-                                 SchoolGroups::ImpactReport::Generator::Benchmark::METRICS +
-                                 SchoolGroups::ImpactReport::Generator::Holiday::METRICS).freeze
+    ENERGY_EFFICIENCY_GENERATORS = [
+      GENERATOR::AnnualSaving,
+      GENERATOR::Benchmark,
+      GENERATOR::Targets
+    ].freeze
+
+    ENERGY_EFFICIENCY_METRICS = (
+      %i[total_savings] + # not sure we need this now. Remove from DB too?
+      ENERGY_EFFICIENCY_GENERATORS.flat_map { |type| type::METRICS }
+    ).freeze
 
     ENGAGEMENT_METRICS = %i[
       activities
@@ -67,7 +75,7 @@ module ImpactReport
       targets
     ].freeze
 
-    POTENTIAL_SAVINGS_METRICS = SchoolGroups::ImpactReport::Generator::PotentialSavings::METRICS
+    POTENTIAL_SAVINGS_METRICS = GENERATOR::PotentialSavings::METRICS
 
     FOOTNOTE_METRICS = %i[].freeze
 
@@ -76,9 +84,10 @@ module ImpactReport
       ENGAGEMENT_METRICS +
       ENERGY_EFFICIENCY_METRICS +
       POTENTIAL_SAVINGS_METRICS +
-      FOOTNOTE_METRICS).freeze
+      FOOTNOTE_METRICS
+    ).uniq.freeze # uniq because targets is found in engagement and potential_savings
 
-    enum :metric_type, enum_map(METRIC_TYPES).freeze, prefix: :type
+    enum :metric_type, enum_map(METRIC_TYPES).freeze, suffix: :metric
 
     def self.categories
       METRIC_CATEGORIES
@@ -96,18 +105,28 @@ module ImpactReport
       available? && value.to_i.nonzero?
     end
 
-    def key_and_units
-      @key_and_units ||= metric_type.match(
-        /(.+?)(?:_(#{SchoolGroups::ImpactReport::Generator::PotentialSavings::TYPES.join('|')}))?$/
-      ).captures
-    end
-
     def key
-      key_and_units.first.to_s
+      key_and_unit.first&.to_sym
     end
 
-    def units
-      key_and_units[1]&.to_s
+    def unit
+      key_and_unit[1]&.to_sym
+    end
+
+    def energy_efficiency_type
+      return unless energy_efficiency?
+
+      ENERGY_EFFICIENCY_GENERATORS.find { |type| type::METRICS.include?(metric_type.to_sym) }
+                                  &.name.to_s.demodulize.underscore.to_sym
+    end
+
+    private
+
+    ## I would like to see the unit in it's own field on metric as this is clunky
+    def key_and_unit
+      @key_and_unit ||= metric_type.match(
+        /(.+?)(?:_(#{GENERATOR::PotentialSavings::TYPES.join('|')}))?$/
+      ).captures
     end
   end
 end

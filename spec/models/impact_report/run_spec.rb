@@ -82,6 +82,10 @@ describe ImpactReport::Run do
     end
   end
 
+  def create_metric(metric_type, fuel_type, value)
+    create(:impact_report_metric, run:, metric_category:, fuel_type:, value:, metric_type:)
+  end
+
   describe '#potential_savings' do
     let(:metric_category) { :potential_savings }
 
@@ -122,13 +126,7 @@ describe ImpactReport::Run do
 
       let(:run) { create(:impact_report_run) }
 
-      def create_metric(metric_type, fuel_type, value)
-        create(:impact_report_metric, run:, metric_category:, fuel_type:, value:, metric_type:)
-      end
-
       context 'when there are only electricity metrics' do
-        let(:fuel_type) { :electricity }
-
         before do
           create_metric(:baseload_gbp, :electricity, 3)
           create_metric(:out_of_hours_gbp, :electricity, 4)
@@ -165,6 +163,54 @@ describe ImpactReport::Run do
     end
   end
 
+  describe '#energy_efficiency' do
+    subject(:energy_efficiency) { run.energy_efficiency }
+
+    let(:metric_category) { :energy_efficiency }
+    let(:run) { create(:impact_report_run) }
+
+    context 'with all annual savings metrics' do
+      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving_gbp, :gas, 3) }
+      let!(:annual_saving_gbp_electricity) { create_metric(:annual_saving_gbp, :electricity, 4) }
+      let!(:annual_saving_co2_gas) { create_metric(:annual_saving_co2, :gas, 5) }
+      let!(:annual_saving_co2_electricity) { create_metric(:annual_saving_co2, :electricity, 6) }
+
+      it 'returns metrics in configured order, gas first, then electricity' do
+        expect(energy_efficiency).to eq(
+          [annual_saving_gbp_gas, annual_saving_gbp_electricity,
+           annual_saving_co2_gas, annual_saving_co2_electricity]
+        )
+      end
+    end
+
+    context 'with just gas metrics' do
+      let!(:annual_saving_gbp_gas) { create_metric(:annual_saving_gbp, :gas, 3) }
+      let!(:annual_saving_co2_gas) { create_metric(:annual_saving_co2, :gas, 5) }
+
+      it 'returns metrics in configured order, gas first, then electricity' do
+        expect(energy_efficiency).to eq(
+          [annual_saving_gbp_gas, annual_saving_co2_gas]
+        )
+      end
+    end
+
+    context 'when metrics have no data' do
+      let!(:ok_metric) do
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :gas, metric_type: :annual_saving_gbp, value: 3, enough_data: true)
+      end
+
+      before do
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :electricity, metric_type: :annual_saving_gbp, value: 0)
+        create(:impact_report_metric, run:, metric_category:,
+                                      fuel_type: :gas, metric_type: :annual_saving_co2, enough_data: false)
+      end
+
+      it { expect(energy_efficiency).to eq([ok_metric]) }
+    end
+  end
+
   describe 'metrics indexing' do
     subject(:index) { run.send(:metrics_index) }
 
@@ -192,16 +238,28 @@ describe ImpactReport::Run do
              metric_type: 'baseload_gbp')
     end
 
+    let!(:annual_saving_gbp) do
+      create(:impact_report_metric,
+             run: run,
+             fuel_type: 'electricity',
+             metric_category: 'energy_efficiency',
+             metric_type: 'annual_saving_gbp')
+    end
+
     it 'memoizes the index' do
       expect(index).to equal(run.send(:metrics_index))
     end
 
     it 'stores overview metrics in a hash' do
-      expect(index['overview']['active_users']).to equal(active_users)
+      expect(index['overview']['active_users'][nil]).to equal(active_users)
     end
 
     it 'stores engagemement metrics in a hash' do
-      expect(index['engagement']['points']).to equal(points)
+      expect(index['engagement']['points'][nil]).to equal(points)
+    end
+
+    it 'stores energy efficiency metrics in a hash' do
+      expect(index['energy_efficiency']['annual_saving_gbp']['electricity']).to equal(annual_saving_gbp)
     end
 
     it 'stores potential savings metrics in an array' do

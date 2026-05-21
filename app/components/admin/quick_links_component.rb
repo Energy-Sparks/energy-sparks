@@ -18,6 +18,8 @@ module Admin
       ]
     end
 
+    private
+
     def school_groups
       SchoolGroup.where(default_issues_admin_user: @user).with_active_schools.by_name
     end

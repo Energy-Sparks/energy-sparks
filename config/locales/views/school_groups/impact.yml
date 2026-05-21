@@ -4,22 +4,35 @@ en:
     impact:
       energy_efficiency:
         analysis: Want to explore our latest analysis in more detail?
-        cards:
-          reduced_electricity_emissions:
-            subtext: Reduced emissions by reducing electricity use in %{count} schools in the last 12 months
-            title: Reduced electricity emissions
-          reduced_gas_emissions:
-            subtext: Reduced emissions by reducing gas use in %{count} schools in the last 12 months
-            title: Reduced gas emissions
-          total_electricity_savings:
-            subtext: Cost saving by reducing electricity use in %{count} schools in the last 12 months using current tariffs
-            title: Total electricity savings
-          total_gas_savings:
-            subtext: Cost saving by reducing gas use in %{count} schools in last 12 months using current tariffs
-            title: Total gas savings
         description: How are schools in this group making progress towards being more energy efficient?
         featured:
           title: Featured energy efficient school
+        metric_types:
+          annual_saving_co2:
+            subtext:
+              one: Reduced emissions by reducing %{fuel_type} use in %{count} school in the last 12 months
+              other: Reduced emissions by reducing %{fuel_type} use in %{count} schools in the last 12 months
+            title: Reduced %{fuel_type} emissions
+          annual_saving_gbp:
+            subtext:
+              one: Cost saving by reducing %{fuel_type} use in %{count} school in the last 12 months using current tariffs
+              other: Cost saving by reducing %{fuel_type} use in %{count} schools in the last 12 months using current tariffs
+            title: Total %{fuel_type} savings
+          baseload:
+            subtext: Schools achieving %{rating} rating for managing electricity baseload
+            title: Baseload management
+          heating_control:
+            subtext: Schools achieving %{rating} rating for heating control
+            title: Improved heating control
+          long_term:
+            subtext: Schools achieving %{rating} rating for managing long term %{fuel_type} use
+            title: Reducing long term %{fuel_type} use
+          out_of_hours:
+            subtext: Schools achieving %{rating} rating for managing out of hours %{fuel_type} use
+            title: Reducing out of hours %{fuel_type} use
+          targets:
+            subtext: Number of schools currently meeting their target, or making steps in the right direction
+            title: Energy saving targets
         title: Energy Efficiency
       engagement:
         cards:
