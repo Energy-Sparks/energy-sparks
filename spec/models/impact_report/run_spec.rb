@@ -171,16 +171,19 @@ describe ImpactReport::Run do
     let(:metric_category) { :energy_efficiency }
     let(:run) { create(:impact_report_run) }
 
-    context 'with all annual savings metrics' do
+    context 'with all metrics' do
       let!(:annual_saving_gbp_gas) { create_metric(:annual_saving_gbp, :gas, 300) }
       let!(:annual_saving_gbp_electricity) { create_metric(:annual_saving_gbp, :electricity, 400) }
       let!(:annual_saving_co2_gas) { create_metric(:annual_saving_co2, :gas, 500) }
       let!(:annual_saving_co2_electricity) { create_metric(:annual_saving_co2, :electricity, 600) }
+      let!(:targets_gas) { create_metric(:targets, :gas, 12) }
+      let!(:targets_electricity) { create_metric(:targets, :electricity, 1) }
 
       it 'returns metrics in configured order, gas first, then electricity' do
         expect(energy_efficiency).to eq(
           [annual_saving_gbp_gas, annual_saving_gbp_electricity,
-           annual_saving_co2_gas, annual_saving_co2_electricity]
+           annual_saving_co2_gas, annual_saving_co2_electricity,
+           targets_gas, targets_electricity]
         )
       end
     end

@@ -75,5 +75,27 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
         )
       }
     end
+
+    context 'with targets metric' do
+      let!(:metric_type) { :targets }
+      let!(:metric) do
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :gas)
+      end
+      let(:card) { card_with_title('Energy saving targets') }
+
+      before do
+        render_inline(described_class.new(**params))
+      end
+
+      it { expect(card).to have_css('.figure', exact_text: metric.value) }
+
+      it {
+        expect(card).to have_text(
+          impact_t('energy_efficiency.metric_types.targets.subtext',
+                   fuel_type: 'gas',
+                   count: metric.number_of_schools)
+        )
+      }
+    end
   end
 end

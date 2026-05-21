@@ -28,7 +28,7 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2].freeze
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2 targets].freeze
 
     # e.g. overview(:active_users)
     def overview(metric_type)
@@ -51,7 +51,7 @@ module ImpactReport
     end
 
     def energy_efficiency
-      fuel_order = %w[gas electricity]
+      fuel_order = ['gas', 'electricity', nil]
 
       SUPPORTED_ENERGY_EFFICIENCY_METRICS.flat_map do |metric_type|
         fuel_order.filter_map do |fuel_type|
