@@ -638,5 +638,29 @@ describe 'manage contracts' do
         end
       end
     end
+
+    context 'with overlapping' do
+      let!(:contract_one) do
+        create(:commercial_contract, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+      end
+
+      let!(:contract_two) do
+        create(:commercial_contract,
+               contract_holder: contract_one.contract_holder,
+               start_date: Date.new(2024, 6, 1),
+               end_date: Date.new(2025, 12, 31))
+      end
+
+      before do
+        click_on 'Overlapping Contracts'
+      end
+
+      it 'shows the contract' do
+        within('#contracts-table') do
+          expect(page).to have_text(contract_one.name)
+          expect(page).to have_text(contract_two.name)
+        end
+      end
+    end
   end
 end

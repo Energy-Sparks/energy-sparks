@@ -183,4 +183,35 @@ describe Commercial::Contract do
       it { expect(described_class.over_licensed).to include(contract) }
     end
   end
+
+  describe '.overlapping' do
+    let!(:contract_one) do
+      create(:commercial_contract, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+    end
+    let!(:contract_two) do
+      create(:commercial_contract,
+             contract_holder: contract_one.contract_holder,
+             start_date: Date.new(2025, 1, 1),
+             end_date: Date.new(2025, 12, 31))
+    end
+
+    it { expect(described_class.overlapping).to(be_empty) }
+
+    context 'when there are overlaps for different contract holders' do
+      let!(:contract_two) do
+        create(:commercial_contract, start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(be_empty) }
+    end
+
+    context 'when there are overlaps for same contract holder' do
+      let!(:contract_two) do
+        create(:commercial_contract, contract_holder: contract_one.contract_holder,
+                                     start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(contain_exactly(contract_one, contract_two)) }
+    end
+  end
 end

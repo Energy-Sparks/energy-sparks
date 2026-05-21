@@ -24,7 +24,7 @@ describe Commercial::Licence do
         let!(:licence) { create(:commercial_licence, status: :provisional) }
 
         it 'allows the licence to be destroyed' do
-          expect { licence.destroy }.to change(Commercial::Licence, :count).by(-1)
+          expect { licence.destroy }.to change(described_class, :count).by(-1)
         end
       end
     end
@@ -42,7 +42,9 @@ describe Commercial::Licence do
     let!(:licence) { create(:commercial_licence, contract:, school:) }
 
     context 'when licence_period is contract' do
-      let!(:contract) { create(:commercial_contract, licence_period: :contract) }
+      before do
+        create(:commercial_contract, licence_period: :contract)
+      end
 
       it { expect(licence.dates_will_automatically_change?).to be(false) }
     end
@@ -98,6 +100,37 @@ describe Commercial::Licence do
       let(:licence_school_a) { create(:commercial_licence, school: school_a, end_date: Time.zone.today + 1) }
 
       it { expect(licences).to contain_exactly(licence_school_a) }
+    end
+  end
+
+  describe '.overlapping' do
+    let!(:licence_one) do
+      create(:commercial_licence, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+    end
+    let!(:licence_two) do
+      create(:commercial_licence,
+             school: licence_one.school,
+             start_date: Date.new(2025, 1, 1),
+             end_date: Date.new(2025, 12, 31))
+    end
+
+    it { expect(described_class.overlapping).to(be_empty) }
+
+    context 'when there are overlaps for different contract holders' do
+      let!(:licence_two) do
+        create(:commercial_licence, start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(be_empty) }
+    end
+
+    context 'when there are overlaps for same contract holder' do
+      let!(:licence_two) do
+        create(:commercial_licence, school: licence_one.school,
+                                    start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(contain_exactly(licence_one, licence_two)) }
     end
   end
 end
