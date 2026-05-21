@@ -28,7 +28,7 @@ module ImpactReport
 
     scope :latest, -> { includes(:metrics).order(run_date: :desc).first }
 
-    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2].freeze
+    SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2 targets].freeze
 
     # e.g. overview(:active_users)
     def overview(metric_type)
@@ -55,15 +55,24 @@ module ImpactReport
 
       SUPPORTED_ENERGY_EFFICIENCY_METRICS.flat_map do |metric_type|
         fuel_order.filter_map do |fuel_type|
-          by_category(:energy_efficiency).dig(metric_type, fuel_type).then { |m| m if m&.nonzero? }
+          by_category(:energy_efficiency).dig(metric_type, fuel_type).then do |m|
+            # all values have to be non-zero and gbp values have to be above threshold
+            m if m&.nonzero? && (m.unit != :gbp || m.value > self.class.gbp_threshold)
+          end
         end
+      end
+    end
+
+    class << self
+      def gbp_threshold
+        @gbp_threshold ||= Commercial::Product.default_product.try(:large_school_price).to_i
       end
     end
 
     private
 
     def by_category(category)
-      metrics_index[category.to_s]
+      metrics_index[category.to_s] || {}
     end
 
     def metrics_index

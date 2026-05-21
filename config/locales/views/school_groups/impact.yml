@@ -31,7 +31,7 @@ en:
             subtext: Schools achieving %{rating} rating for managing out of hours %{fuel_type} use
             title: Reducing out of hours %{fuel_type} use
           targets:
-            subtext: Number of schools currently meeting their target, or making steps in the right direction
+            subtext: Schools with measurable progress against reducing their %{fuel_type} use
             title: Energy saving targets
         title: Energy Efficiency
       engagement:
