@@ -474,7 +474,7 @@ RSpec.describe 'Admin dashboard' do
             click_on 'Find MPXN'
           end
 
-          expect(page).to have_current_path('/admin/find_school_by_mpxn?query=1234&commit=Find+MPXN')
+          expect(page).to have_current_path('/admin/find_school_by_mpxn?query=1234&button=')
         end
 
         it 'links to the school page' do
@@ -492,7 +492,7 @@ RSpec.describe 'Admin dashboard' do
             click_on 'Find URN'
           end
 
-          expect(page).to have_current_path('/admin/find_school_by_urn?query=1234&commit=Find+URN')
+          expect(page).to have_current_path('/admin/find_school_by_urn?query=1234&button=')
         end
       end
 
