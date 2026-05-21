@@ -7,11 +7,11 @@ RSpec.describe ImpactReports::Engagement::MetricsComponent, :include_application
   let(:cards) { page.all('#engagement-cards .layout-cards-stats-component') }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let(:base_params) { { run: run, id: id, classes: classes } }
+  let(:base_params) { { run:, id:, classes: } }
   let(:params) { base_params }
 
-  let(:metrics) {}
-  let!(:run) { create(:impact_report_run, categories: %i[overview engagement], school_group:, **metrics) }
+  let(:metrics) { {} }
+  let!(:run) { create(:impact_report_run, categories: %i[overview engagement], school_group:, engagement: metrics) }
 
   before do
     render_inline(described_class.new(**params))

@@ -79,6 +79,12 @@ module Commercial
            .by_start_date
     end
 
+    # Calculate duration ignoring leap years
+    def self.licence_period_days(period_start, period_end)
+      real_days = (period_end - period_start).to_i + 1
+      real_days - leap_days_between(period_start, period_end)
+    end
+
     def dates_will_automatically_change?
       persisted? &&
         contract.custom? &&
@@ -87,6 +93,12 @@ module Commercial
 
     def deletable?
       !invoiced?
+    end
+
+    private_class_method def self.leap_days_between(period_start, period_end)
+      (period_start.year..period_end.year).count do |year|
+        Date.leap?(year) && Date.new(year, 2, 29).between?(period_start, period_end)
+      end
     end
 
     private
