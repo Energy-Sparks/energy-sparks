@@ -4,23 +4,19 @@ require 'rails_helper'
 
 RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_application_helper, type: :component do
   let(:school_group) { create(:school_group) }
-  let(:impact_report) { SchoolGroups::ImpactReport.new(school_group) }
-
+  let(:cards) { page.all('#energy-efficiency-cards .layout-cards-stats-component') }
   let(:id) { 'custom-id' }
   let(:classes) { 'extra-classes' }
-  let!(:metrics) { {} }
-  let!(:run) do
-    create(:impact_report_run, categories: %i[overview energy_efficiency], school_group:, energy_efficiency: metrics)
-  end
+  let(:metric_category) { :energy_efficiency }
 
-  let(:base_params) { { run: run, id:, classes: } }
-
-  before do
-    render_inline(described_class.new(**params))
-  end
+  let(:params) { { run:, id:, classes: } }
 
   context 'with base params' do
-    let(:params) { base_params }
+    let(:run) { create(:impact_report_run, categories: %i[overview energy_efficiency], school_group:) }
+
+    before do
+      render_inline(described_class.new(**params))
+    end
 
     it_behaves_like 'an application component' do
       let(:expected_classes) { classes }
@@ -28,5 +24,56 @@ RSpec.describe ImpactReports::EnergyEfficiency::MetricsComponent, :include_appli
     end
 
     it { expect(page).to have_css('#energy-efficiency-cards') }
+  end
+
+  def card_with_title(title)
+    cards.find { |card| card.has_css?('h5.elements-header-component', text: title) }
+  end
+
+  context 'with specific metrics' do
+    let(:run) do
+      create(:impact_report_run, categories: %i[overview], school_group:)
+    end
+
+    context 'with annual_saving_gbp metric' do
+      let!(:metric_type) { :annual_saving_gbp }
+      let!(:metric) do
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :electricity)
+      end
+      let(:card) { card_with_title('Total electricity savings') }
+
+      before do
+        render_inline(described_class.new(**params))
+      end
+
+      it { expect(card).to have_css('.figure', exact_text: "£#{metric.value}") }
+
+      it {
+        expect(card).to have_text(impact_t('energy_efficiency.metric_types.annual_saving_gbp.subtext',
+                                           fuel_type: 'electricity', count: metric.number_of_schools))
+      }
+    end
+
+    context 'with annual_saving_co2 metric' do
+      let!(:metric_type) { :annual_saving_co2 }
+      let!(:metric) do
+        create(:impact_report_metric, run:, metric_category:, metric_type:, fuel_type: :gas)
+      end
+      let(:card) { card_with_title('Reduced gas emissions') }
+
+      before do
+        render_inline(described_class.new(**params))
+      end
+
+      it { expect(card).to have_css('.figure', exact_text: "#{metric.value} kg CO2") }
+
+      it {
+        expect(card).to have_text(
+          impact_t('energy_efficiency.metric_types.annual_saving_co2.subtext',
+                   fuel_type: 'gas',
+                   count: metric.number_of_schools)
+        )
+      }
+    end
   end
 end
