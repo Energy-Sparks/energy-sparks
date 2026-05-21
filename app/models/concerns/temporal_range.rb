@@ -3,6 +3,7 @@ module TemporalRange
 
   include DateRanged
 
+  # rubocop:disable Metrics/BlockLength
   included do
     scope :current, lambda { |today = Time.zone.today|
       where("#{table_name}.start_date <= ? AND #{table_name}.end_date >= ?", today, today)
@@ -28,13 +29,26 @@ module TemporalRange
       where("#{table_name}.updated_at >= ? AND #{table_name}.updated_at > #{table_name}.created_at", updated_at)
     }
 
+    # Define in model, returning array of attributes
+    def temporal_group_keys
+      raise NotImplementedError
+    end
+
     scope :overlapping, lambda {
-      joins("INNER JOIN #{table_name} AS t2 ON t2.#{temporal_group_key} = #{table_name}.#{temporal_group_key}
-            AND t2.id <> #{table_name}.id
-            AND t2.start_date <= #{table_name}.end_date AND t2.end_date >= #{table_name}.start_date")
+      group_conditions = temporal_group_keys.map { |key| "t2.#{key} = #{table_name}.#{key}" }.join(' AND ')
+
+      joins(<<~SQL.squish)
+        INNER JOIN #{table_name} AS t2
+          ON #{group_conditions}
+         AND t2.id <> #{table_name}.id
+         AND t2.start_date <= #{table_name}.end_date
+         AND t2.end_date >= #{table_name}.start_date
+      SQL
+        .distinct
     }
   end
-
+  # rubocop:enable Metrics/BlockLength
+  #
   def current?(today = Time.zone.today)
     start_date <= today && end_date >= today
   end

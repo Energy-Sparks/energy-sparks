@@ -214,4 +214,15 @@ describe Commercial::Contract do
       it { expect(described_class.overlapping).to(contain_exactly(contract_one, contract_two)) }
     end
   end
+
+  describe '.ordered_by_contract_holder_name' do
+    let!(:school_contract) { create(:commercial_contract, contract_holder: create(:school, name: 'XYZ School')) }
+    let!(:group_contract) { create(:commercial_contract, contract_holder: create(:school_group, name: 'Big Group')) }
+    let!(:funder_contract) { create(:commercial_contract, contract_holder: create(:funder, name: 'ABC, Inc')) }
+
+    it {
+      expect(described_class.ordered_by_contract_holder_name).to contain_exactly(funder_contract, group_contract,
+                                                                                 school_contract)
+    }
+  end
 end

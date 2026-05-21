@@ -42,9 +42,7 @@ describe Commercial::Licence do
     let!(:licence) { create(:commercial_licence, contract:, school:) }
 
     context 'when licence_period is contract' do
-      before do
-        create(:commercial_contract, licence_period: :contract)
-      end
+      let!(:contract) { create(:commercial_contract, licence_period: :contract) }
 
       it { expect(licence.dates_will_automatically_change?).to be(false) }
     end
