@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence(:comments) { |n| "Licence #{n} comments" }
 
     start_date { Time.zone.today }
-    end_date { Time.zone.today + 1.year }
+    end_date { Time.zone.today + 364 }
 
     association :created_by, factory: :user
     association :updated_by, factory: :user
@@ -18,7 +18,7 @@ FactoryBot.define do
 
     trait :future do
       start_date { Time.zone.today + 7.days }
-      end_date { start_date + 1.year }
+      end_date { start_date + 364 }
     end
   end
 end

@@ -100,4 +100,29 @@ describe Commercial::Licence do
       it { expect(licences).to contain_exactly(licence_school_a) }
     end
   end
+
+  describe '.licence_period_days' do
+    subject(:licence_period_days) { described_class.licence_period_days(start_date, end_date) }
+
+    context 'with a non-leap year' do
+      let(:start_date) { Date.new(2026, 1, 1) }
+      let(:end_date) { Date.new(2026, 12, 31) }
+
+      it { expect(licence_period_days).to eq(365) }
+    end
+
+    context 'with a leap year' do
+      let(:start_date) { Date.new(2028, 1, 1) }
+      let(:end_date) { Date.new(2028, 12, 31) }
+
+      it { expect(licence_period_days).to eq(365) }
+    end
+
+    context 'with a period including a leap day' do
+      let(:start_date) { Date.new(2028, 1, 1) }
+      let(:end_date) { Date.new(2028, 3, 1) }
+
+      it { expect(licence_period_days).to eq(60) }
+    end
+  end
 end

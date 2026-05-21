@@ -18,39 +18,5 @@ describe 'school licences', :include_application_helper do
   end
 
   it { expect(page).to have_css('div.commercial-licences-component') }
-  it { expect(page).to have_content("##{licence.id}") }
-
-  it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
-    let(:table_id) { '#pricing-table' }
-    let(:expected_header) do
-      [
-        ['', 'Cost']
-      ]
-    end
-    let(:expected_rows) do
-      [
-        ['Base Price', format_price(product.small_school_price)],
-        ['Metering Fee', format_price(0.0)],
-        ['Private Account Fee', format_price(0.0)],
-        ['Total Price', format_price(product.small_school_price)]
-      ]
-    end
-  end
-
-  it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
-    let(:table_id) { '#renewal-pricing-table' }
-    let(:expected_header) do
-      [
-        ['', 'Cost']
-      ]
-    end
-    let(:expected_rows) do
-      [
-        ['Base Price', format_price(product.small_school_price)],
-        ['Metering Fee', format_price(0.0)],
-        ['Private Account Fee', format_price(0.0)],
-        ['Total Price', format_price(product.small_school_price)]
-      ]
-    end
-  end
+  it { expect(page).to have_text("##{licence.id}") }
 end

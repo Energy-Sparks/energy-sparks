@@ -7,7 +7,7 @@ FactoryBot.define do
     licence_years { 1.0 }
 
     start_date { Time.zone.today }
-    end_date { Time.zone.today + 1.year }
+    end_date { Time.zone.today + 364 }
 
     association :contract_holder, factory: :funder
     association :product, factory: :commercial_product
@@ -34,7 +34,7 @@ FactoryBot.define do
 
     trait :future do
       start_date { Time.zone.today + 7.days }
-      end_date { start_date + 1.year }
+      end_date { start_date + 364 }
     end
   end
 end
