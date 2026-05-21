@@ -48,7 +48,7 @@ module TemporalRange
     }
   end
   # rubocop:enable Metrics/BlockLength
-  #
+
   def current?(today = Time.zone.today)
     start_date <= today && end_date >= today
   end
