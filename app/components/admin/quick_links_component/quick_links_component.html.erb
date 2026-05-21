@@ -15,7 +15,7 @@
             <% else %>
               <%= form.search_field :query, id: card[:name], class: 'form-control' %>
             <% end %>
-            <%= form.submit card[:submit], formtarget: '_blank', class: 'btn btn-sm btn-primary ml-2' %>
+            <%= form.button card[:submit], formtarget: '_blank', class: 'btn btn-sm btn-primary ml-2' %>
           <% end %>
         <% end %>
       <% end %>

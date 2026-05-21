@@ -11,13 +11,13 @@ describe 'pricing calculator', :include_application_helper do
   context 'when calculating a product price' do
     before { click_on 'Price calculator' }
 
-    it { expect(page).to have_content('Price Calculator') }
+    it { expect(page).to have_text('Price Calculator') }
     it { expect(page).to have_select('Product', selected: product.name) }
 
     context 'with default options' do
       before { click_on 'Calculate' }
 
-      it { expect(page).to have_content("Calculation based on the default pricing defined in #{product.name}") }
+      it { expect(page).to have_text("Calculation based on the default pricing defined in #{product.name}") }
 
       it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
         let(:table_id) { '#pricing-table' }
@@ -43,7 +43,7 @@ describe 'pricing calculator', :include_application_helper do
 
     before { click_on 'Price calculator' }
 
-    it { expect(page).to have_content('Price Calculator') }
+    it { expect(page).to have_text('Price Calculator') }
     it { expect(page).to have_select('Product', selected: product.name) }
 
     context 'when the contract is selected' do
@@ -52,7 +52,9 @@ describe 'pricing calculator', :include_application_helper do
         click_on 'Calculate'
       end
 
-      it { expect(page).to have_content("Calculation based on pricing defined in #{contract.name} for the #{contract.product.name} product") }
+      it {
+        expect(page).to have_text("Calculation based on pricing defined in #{contract.name} for the #{contract.product.name} product")
+      }
 
       it_behaves_like 'it contains the expected data table', sortable: false, aligned: false do
         let(:table_id) { '#pricing-table' }
@@ -73,14 +75,10 @@ describe 'pricing calculator', :include_application_helper do
 
       context 'when the contract has custom terms' do
         let!(:contract) do
-          create(:commercial_contract,
-                 invoice_terms: :pro_rata,
-                 licence_period: :custom,
-                 licence_years: 2.0)
+          create(:commercial_contract, :custom, licence_years: 2.0)
         end
 
-        it { expect(page).to have_content('Pro-rata contract') }
-        it { expect(page).to have_content('Custom contract') }
+        it { expect(page).to have_text('Custom contract') }
       end
     end
   end

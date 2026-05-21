@@ -182,7 +182,7 @@ describe 'manage licences' do
 
     context 'when dates may change' do
       let!(:school) { create(:school, :with_school_group, data_enabled: false) }
-      let!(:contract) { create(:commercial_contract, licence_period: :custom) }
+      let!(:contract) { create(:commercial_contract, :custom) }
       let!(:licence) { create(:commercial_licence, contract:, school:) }
 
       it 'includes a warning' do

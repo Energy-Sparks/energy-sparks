@@ -60,8 +60,8 @@ RSpec.describe ImpactReports::Overview::MetricsComponent, :include_application_h
 
     describe 'enrollment schools card' do
       let(:card) { cards[3] }
-      let(:metrics) {}
-      let!(:run) { create(:impact_report_run, :with_overview_metrics, school_group:, **metrics) }
+      let(:metrics) { {} }
+      let!(:run) { create(:impact_report_run, :with_overview_metrics, school_group:, overview: metrics) }
 
       context 'when enrolling is non-zero' do
         let(:metrics) { { enrolling_schools: { value: 3 }, enrolled_schools: { value: 0 } } }
