@@ -69,7 +69,7 @@ en:
         other_metrics: Other metrics, including school enrolment, engagement metrics and ROI values are based on the latest available data and Energy Sparks prices at the point of analysis.
         potential_savings: Potential cost savings are based on current tariff data for individual schools and/or the group.
         pupil_numbers: Pupil numbers and other benchmarking metrics such as floor area are based on data taken from the Department of Education database, or as supplied to us by users.
-        reporting_basis: Reporting of energy savings, benchmarking and potential opportunities are based on analysing half-hourly energy data for the 12 month period between %{start_date} to %{end_date}.
+        reporting_basis: Reporting of energy savings, benchmarking and potential opportunities are based on analysing half-hourly energy data for the 12 calendar months between %{start_date} to %{end_date}.
         schools_with_data: At the time of analysis, %{count} schools had data available for at least one utility.
         title: How did we calculate these figures?
       overview:
