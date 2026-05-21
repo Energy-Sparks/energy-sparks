@@ -51,7 +51,7 @@ module ImpactReport
     end
 
     def energy_efficiency
-      fuel_order = ['gas', 'electricity', nil]
+      fuel_order = %w[gas electricity]
 
       SUPPORTED_ENERGY_EFFICIENCY_METRICS.flat_map do |metric_type|
         fuel_order.filter_map do |fuel_type|
