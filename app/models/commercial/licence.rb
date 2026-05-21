@@ -95,10 +95,7 @@ module Commercial
 
     private_class_method def self.leap_days_between(period_start, period_end)
       (period_start.year..period_end.year).count do |year|
-        next false unless Date.leap?(year)
-
-        leap_day = Date.new(year, 2, 29)
-        leap_day.between?(period_start, period_end)
+        Date.leap?(year) && Date.new(year, 2, 29).between?(period_start, period_end)
       end
     end
 

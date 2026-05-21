@@ -64,7 +64,7 @@ module Commercial
       licence_days = Commercial::Licence.licence_period_days(licence_start_date, licence_end_date).to_f
       full_days = Commercial::Licence.licence_period_days(@contract.start_date, @contract.end_date).to_f
 
-      licence_days.to_f / full_days
+      licence_days / full_days
     end
 
     def schools_scope

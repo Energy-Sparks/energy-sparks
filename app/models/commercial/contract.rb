@@ -153,15 +153,6 @@ module Commercial
 
     private
 
-    def leap_days_between(period_start, period_end)
-      (period_start.year..period_end.year).count do |year|
-        next false unless Date.leap?(year)
-
-        leap_day = Date.new(year, 2, 29)
-        leap_day.between?(period_start, period_end)
-      end
-    end
-
     def destroy_error_message
       'Cannot delete a contract with an invoiced licence'
     end
