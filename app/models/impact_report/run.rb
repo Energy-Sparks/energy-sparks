@@ -30,6 +30,22 @@ module ImpactReport
 
     SUPPORTED_ENERGY_EFFICIENCY_METRICS = %w[annual_saving_gbp annual_saving_co2].freeze
 
+    def end_date
+      run_date - 1.day
+    end
+
+    def start_date
+      end_date - 364.days
+    end
+
+    def comparison_end_date
+      start_date - 1.day
+    end
+
+    def comparison_start_date
+      comparison_end_date - 364.days
+    end
+
     # e.g. overview(:active_users)
     def overview(metric_type)
       by_category(:overview)[metric_type.to_s][nil]
