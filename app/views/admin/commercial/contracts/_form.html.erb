@@ -16,33 +16,39 @@
 
 <div class="row">
   <div class="col">
-  <% if local_assigns[:original].present? %>
-    <p>
-      Creating a new contract for <strong><%= contract.contract_holder.name %></strong> based on
-      <strong><%= original.name %></strong>.
-      The form has been populated using the existing contractual details, including contract terms, length and
-      agreed pricing.
-    </p>
-    <p>
-      Provisional licences for all schools under <strong><%= original.name %></strong> will be added
-      by default (see option below). Additional schools can be added later.
-    </p>
-  <% elsif contract.new_record? && contract.contract_holder.present? %>
-    <p>
-      Create a new contract for <strong><%= contract.contract_holder.name %></strong>.
-    </p>
-  <% elsif contract.persisted? && contract.licences.invoiced.exists? %>
-    <p>
-      One or more licences associated with this contract have already been invoiced. Only limited changes can now
-      be made the contract itself.
-    </p>
-  <% elsif contract.persisted? %>
-    <p>
-      Any changes made to the start and end dates for this contract will be automatically applied to all licences,
-      overwriting any existing licence dates.
-    </p>
-  <% end %>
-</div>
+    <% if local_assigns[:original].present? %>
+      <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+        <p>
+          Creating a new contract for <strong><%= contract.contract_holder.name %></strong> based on
+          <strong><%= original.name %></strong>.
+          The form has been populated using the existing contractual details, including contract terms, length and
+          agreed pricing.
+        </p>
+        <p>
+          Provisional licences for all schools under <strong><%= original.name %></strong> will be added
+          by default (see option below). Additional schools can be added later.
+        </p>
+      <% end %>
+    <% elsif contract.new_record? && contract.contract_holder.present? %>
+      <p>
+        Create a new contract for <strong><%= contract.contract_holder.name %></strong>.
+      </p>
+    <% elsif contract.persisted? && contract.licences.invoiced.exists? %>
+      <%= render PromptComponent.new icon: 'circle-info', status: :neutral do %>
+        <p>
+          One or more licences associated with this contract have already been invoiced. Only limited changes can now
+          be made the contract itself.
+        </p>
+      <% end %>
+    <% elsif contract.persisted? %>
+      <%= render PromptComponent.new icon: 'circle-info', status: :negative do %>
+        <p>
+          Any changes made to the start and end dates for this contract will be automatically applied to any
+          licences that have not yet been invoiced, overwriting any existing licence dates.
+        </p>
+      <% end %>
+    <% end %>
+  </div>
 </div>
 
 <div class="row">
