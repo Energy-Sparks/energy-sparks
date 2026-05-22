@@ -3,6 +3,7 @@
     <tr>
       <th class="no-sort"></th>
       <th>Title</th>
+      <th>Tags</th>
       <th>Fuel</th>
       <th class="nowrap">Created by</th>
       <% unless @dashboard_user %>
@@ -25,6 +26,11 @@
           </span><br>
           <%= render 'admin/issues/issueable', issueable: issue.try(:issueable) %>
           <%= render 'admin/issues/meters', issue: issue %>
+        </td>
+        <td>
+          <% issue.issue_tags.each do |tag| %>
+            <span class="badge bg-info text-white"><%= tag.label %></span>
+          <% end %>
         </td>
         <td class="fit"><%= render 'admin/issues/fuel_type', issue: issue %></td>
         <td class="fit"><%= render 'admin/issues/created_by', issue: issue %></td>
