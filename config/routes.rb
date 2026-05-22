@@ -610,6 +610,8 @@ Rails.application.routes.draw do
 
     get 'chart-preview', to: 'chart_previews#show'
 
+    resources :issue_tags
+
     concerns :issueable
     resources :funders do
       scope module: :funders do

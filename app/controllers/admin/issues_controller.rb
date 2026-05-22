@@ -50,7 +50,8 @@ module Admin
     end
 
     def new
-      @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids])
+      @issue = Issue.new(issue_type: params[:issue_type], issueable: @issueable, meter_ids: params[:meter_ids],
+                         issue_tags: params[:issue_tags])
     end
 
     def edit; end
@@ -151,8 +152,8 @@ module Admin
     end
 
     def issue_params
-      params.require(:issue).permit(:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :review_date, :pinned,
-                                    meter_ids: [])
+      params.expect(issue: [:issue_type, :title, :description, :fuel_type, :status, :owned_by_id, :review_date, :pinned,
+                            { meter_ids: [] }, { issue_tag_ids: [] }])
     end
   end
 end
