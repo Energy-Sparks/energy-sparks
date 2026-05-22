@@ -47,6 +47,8 @@ class Issue < ApplicationRecord
   has_many :issue_meters, dependent: :destroy
   has_many :meters, through: :issue_meters
 
+  has_and_belongs_to_many :issue_tags, inverse_of: :issues # rubocop:disable Rails/HasAndBelongsToMany
+
   scope :for_school_group, lambda { |school_group|
     where(issues: { issueable_type: 'SchoolGroup', issueable_id: school_group }).or(
       where(issues: { issueable_type: 'School', issueable_id: school_group.assigned_schools })

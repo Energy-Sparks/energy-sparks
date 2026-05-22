@@ -8,6 +8,8 @@
 #  label      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  system_id  :string
 #
 class IssueTag < ApplicationRecord
+  has_and_belongs_to_many :issues, inverse_of: :issue_tags # rubocop:disable Rails/HasAndBelongsToMany
 end
