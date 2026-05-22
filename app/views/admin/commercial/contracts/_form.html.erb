@@ -43,8 +43,8 @@
     <% elsif contract.persisted? %>
       <%= render PromptComponent.new icon: 'circle-info', status: :negative do %>
         <p>
-          Any changes made to the start and end dates for this contract will be automatically applied to any
-          licences that have not yet been invoiced, overwriting any existing licence dates.
+          Any changes made to the start and end dates for this contract will be automatically applied to any licences
+          that have not yet been invoiced, overwriting any existing licence dates.
         </p>
       <% end %>
     <% end %>
@@ -101,17 +101,10 @@
                     collection: collection_from_enum(Commercial::Contract.statuses),
                     include_blank: false
           end %>
-      <%= if contract.editable_attribute?(:invoice_terms)
-            f.input :invoice_terms,
-                    collection: collection_from_enum(Commercial::Contract.invoice_terms),
-                    include_blank: false
-          end %>
-      <%= if contract.editable_attribute?(:licence_period)
-            f.input :licence_period,
-                    collection: collection_from_enum(Commercial::Contract.licence_periods),
-                    include_blank: false
-          end %>
-      <%= f.input :licence_years if contract.editable_attribute?(:licence_years) %>
+
+      <%= f.input :invoice_terms, as: :hidden %>
+      <%= f.input :licence_period, as: :hidden %>
+      <%= f.input :licence_years if contract.custom? && contract.editable_attribute?(:licence_years) %>
 
       <% if local_assigns[:original].present? %>
         <div class="form-group">

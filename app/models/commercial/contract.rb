@@ -121,6 +121,7 @@ module Commercial
       !licences.invoiced.exists?
     end
 
+    # FIXME: might need revising
     def editable_attribute?(name)
       new_record? || editable_attributes.include?(name)
     end

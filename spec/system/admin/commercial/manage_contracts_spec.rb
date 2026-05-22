@@ -21,6 +21,36 @@ shared_examples 'a filtered contract list' do
   end
 end
 
+shared_examples 'it shows the common contract fields' do
+  it { expect(page).to have_field('Name') }
+  it { expect(page).to have_field('Comments') }
+  it { expect(page).to have_field('Contract holder') }
+  it { expect(page).to have_field('Product') }
+end
+
+shared_examples 'it applies validation when creating a contract' do
+  context 'with invalid data' do
+    it { expect { click_on 'Save' }.not_to change(Commercial::Contract, :count) }
+
+    it 'displays errors' do
+      click_on 'Save'
+      expect(page).to have_text("Name can't be blank")
+    end
+  end
+end
+
+shared_examples 'it successfully creates a contract' do
+  it 'creates the model' do
+    expect(page).to have_text('Contract has been created')
+    expect(Commercial::Contract.last).to have_attributes(expected_attributes)
+  end
+
+  it 'does not create any licences' do
+    expect(page).to have_text('Contract has been created')
+    expect(Commercial::Contract.last.licences).to be_empty
+  end
+end
+
 describe 'manage contracts' do
   let(:user) { create(:admin) }
 
@@ -33,66 +63,173 @@ describe 'manage contracts' do
     let!(:product) { create(:commercial_product, :default_product) }
     let!(:funder) { create(:funder) }
 
-    before do
-      click_on 'New contract'
-    end
+    before { click_on 'New contract' }
 
-    it { expect(page).to have_field('Contract holder') }
-    it { expect(page).to have_field('Product') }
-
-    context 'with valid data', :js do
+    context 'when choosing a standard contract' do
       before do
-        fill_in 'Name', with: 'Custom contract'
-        fill_in 'Comments', with: 'Some notes'
-
-        select product.name, from: 'Product'
-        choose 'Funder'
-        select funder.name, from: 'Contract holder'
-
-        fill_in 'Number of schools', with: 100
-        fill_in 'Purchase order number', with: 'PO123'
-
-        set_date('#contract_start_date', '01/01/2026')
-        set_date('#contract_end_date', '31/12/2026')
-
-        fill_in 'Agreed school price', with: 525
-        select 'Full', from: 'Invoice terms'
-        select 'Custom', from: 'Licence period'
-        fill_in 'Licence years', with: 1.0
-
-        click_on 'Save'
+        within('div#standard') do
+          click_on 'Create this type of contract'
+        end
       end
 
-      it 'creates the model' do
-        expect(page).to have_text('Contract has been created')
-        expect(Commercial::Contract.last).to have_attributes(
-          name: 'Custom contract',
-          comments: 'Some notes',
-          product: product,
-          contract_holder: funder,
-          licence_period: 'custom',
-          licence_years: 1.0,
-          number_of_schools: 100,
-          purchase_order_number: 'PO123',
-          start_date: Date.new(2026, 1, 1),
-          end_date: Date.new(2026, 12, 31),
-          agreed_school_price: BigDecimal(525),
-          created_by: user
-        )
-      end
+      it { expect(page).to have_text('Create new standard contract') }
 
-      it 'does not create any licences' do
-        expect(page).to have_text('Contract has been created')
-        expect(Commercial::Contract.last.licences).to be_empty
+      it_behaves_like 'it shows the common contract fields'
+
+      it { expect(page).to have_no_field('Invoice terms') }
+      it { expect(page).to have_no_field('Licence period') }
+      it { expect(page).to have_no_field('Licence years') }
+
+      it_behaves_like 'it applies validation when creating a contract'
+
+      context 'with valid data', :js do
+        before do
+          fill_in 'Name', with: 'Standard contract'
+          fill_in 'Comments', with: 'Some notes'
+
+          select product.name, from: 'Product'
+          choose 'Funder'
+          select funder.name, from: 'Contract holder'
+
+          fill_in 'Number of schools', with: 100
+          fill_in 'Agreed school price', with: 525
+
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+
+          click_on 'Save'
+        end
+
+        it_behaves_like 'it successfully creates a contract' do
+          let(:expected_attributes) do
+            {
+              name: 'Standard contract',
+              comments: 'Some notes',
+              product: product,
+              contract_holder: funder,
+              licence_period: 'contract',
+              invoice_terms: 'full',
+              number_of_schools: 100,
+              start_date: Date.new(2026, 1, 1),
+              end_date: Date.new(2026, 12, 31),
+              agreed_school_price: BigDecimal(525),
+              created_by: user
+            }
+          end
+        end
       end
     end
 
-    context 'with invalid data' do
-      it { expect { click_on 'Save' }.not_to change(Commercial::Contract, :count) }
+    context 'when choosing a pro_rata contract' do
+      before do
+        within('div#pro-rata') do
+          click_on 'Create this type of contract'
+        end
+      end
 
-      it 'displays errors' do
-        click_on 'Save'
-        expect(page).to have_text("Name can't be blank")
+      it { expect(page).to have_text('Create new pro-rata contract') }
+
+      it_behaves_like 'it shows the common contract fields'
+      it { expect(page).to have_no_field('Invoice terms') }
+      it { expect(page).to have_no_field('Licence period') }
+      it { expect(page).to have_no_field('Licence years') }
+
+      it_behaves_like 'it applies validation when creating a contract'
+
+      context 'with valid data', :js do
+        before do
+          fill_in 'Name', with: 'Pro-rata contract'
+          fill_in 'Comments', with: 'Some notes'
+
+          select product.name, from: 'Product'
+          choose 'Funder'
+          select funder.name, from: 'Contract holder'
+
+          fill_in 'Number of schools', with: 100
+          fill_in 'Agreed school price', with: 525
+
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+
+          click_on 'Save'
+        end
+
+        it_behaves_like 'it successfully creates a contract' do
+          let(:expected_attributes) do
+            {
+              name: 'Pro-rata contract',
+              comments: 'Some notes',
+              product: product,
+              contract_holder: funder,
+              licence_period: 'contract',
+              invoice_terms: 'pro_rata',
+              number_of_schools: 100,
+              start_date: Date.new(2026, 1, 1),
+              end_date: Date.new(2026, 12, 31),
+              agreed_school_price: BigDecimal(525),
+              created_by: user
+            }
+          end
+        end
+      end
+    end
+
+    context 'when choosing a custom contract' do
+      before do
+        within('div#custom') do
+          click_on 'Create this type of contract'
+        end
+      end
+
+      it { expect(page).to have_text('Create new custom contract') }
+
+      it_behaves_like 'it shows the common contract fields'
+      it { expect(page).to have_no_field('Invoice terms') }
+      it { expect(page).to have_no_field('Licence period') }
+      it { expect(page).to have_field('Licence years') }
+
+      it_behaves_like 'it applies validation when creating a contract'
+
+      context 'with valid data', :js do
+        before do
+          fill_in 'Name', with: 'Custom contract'
+          fill_in 'Comments', with: 'Some notes'
+
+          select product.name, from: 'Product'
+          choose 'Funder'
+          select funder.name, from: 'Contract holder'
+
+          fill_in 'Number of schools', with: 100
+          fill_in 'Purchase order number', with: 'PO123'
+
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+
+          fill_in 'Agreed school price', with: 525
+          fill_in 'Licence years', with: 2.0
+
+          click_on 'Save'
+        end
+
+        it_behaves_like 'it successfully creates a contract' do
+          let(:expected_attributes) do
+            {
+              name: 'Custom contract',
+              comments: 'Some notes',
+              product: product,
+              contract_holder: funder,
+              licence_period: 'custom',
+              invoice_terms: 'full',
+              licence_years: 2.0,
+              number_of_schools: 100,
+              purchase_order_number: 'PO123',
+              start_date: Date.new(2026, 1, 1),
+              end_date: Date.new(2026, 12, 31),
+              agreed_school_price: BigDecimal(525),
+              created_by: user
+            }
+          end
+        end
       end
     end
   end
@@ -104,10 +241,13 @@ describe 'manage contracts' do
     before do
       visit admin_school_group_contracts_path(contract_holder)
       click_on 'New contract'
+      within('div#custom') do
+        click_on 'Create this type of contract'
+      end
     end
 
     it 'initialises the form correctly' do
-      expect(page).to have_text("Create a new contract for #{contract_holder.name}")
+      expect(page).to have_text("Create a new custom contract for #{contract_holder.name}")
     end
 
     it { expect(page).to have_no_field('Contract holder') }
@@ -125,34 +265,28 @@ describe 'manage contracts' do
         set_date('#contract_end_date', '31/12/2026')
 
         fill_in 'Agreed school price', with: 525
-        select 'Full', from: 'Invoice terms'
-        select 'Custom', from: 'Licence period'
         fill_in 'Licence years', with: 1.0
 
         click_on 'Save'
       end
 
-      it 'creates the model' do
-        expect(page).to have_text('Contract has been created')
-        expect(Commercial::Contract.last).to have_attributes(
-          name: 'Custom contract',
-          comments: 'Some notes',
-          product: product,
-          contract_holder: contract_holder,
-          licence_period: 'custom',
-          licence_years: 1.0,
-          number_of_schools: 100,
-          purchase_order_number: 'PO123',
-          start_date: Date.new(2026, 1, 1),
-          end_date: Date.new(2026, 12, 31),
-          agreed_school_price: BigDecimal(525),
-          created_by: user
-        )
-      end
-
-      it 'does not create any licences' do
-        expect(page).to have_text('Contract has been created')
-        expect(Commercial::Contract.last.licences).to be_empty
+      it_behaves_like 'it successfully creates a contract' do
+        let(:expected_attributes) do
+          {
+            name: 'Custom contract',
+            comments: 'Some notes',
+            product: product,
+            contract_holder: contract_holder,
+            licence_period: 'custom',
+            licence_years: 1.0,
+            number_of_schools: 100,
+            purchase_order_number: 'PO123',
+            start_date: Date.new(2026, 1, 1),
+            end_date: Date.new(2026, 12, 31),
+            agreed_school_price: BigDecimal(525),
+            created_by: user
+          }
+        end
       end
     end
   end
@@ -172,7 +306,7 @@ describe 'manage contracts' do
 
       it {
         expect(page).to have_text(
-          'Any changes made to the start and end dates for this contract will be automatically applied to all licences'
+          'Any changes made to the start and end dates for this contract will be automatically applied to any licences'
         )
       }
 
@@ -297,7 +431,6 @@ describe 'manage contracts' do
              agreed_school_price: 600.0,
              invoice_terms: :full,
              licence_period: :contract,
-             licence_years: 2,
              number_of_schools: 100)
     end
 
@@ -317,9 +450,9 @@ describe 'manage contracts' do
 
       it { expect(page).to have_field('Agreed school price', with: contract.agreed_school_price) }
       it { expect(page).to have_field('Comments', with: "Renewed from #{contract.name}") }
-      it { expect(page).to have_select('Invoice terms', selected: 'Full') }
-      it { expect(page).to have_select('Licence period', selected: 'Contract') }
-      it { expect(page).to have_field('Licence years', with: '2.0') }
+      it { expect(page).to have_field('contract_invoice_terms', with: 'full', type: :hidden, visible: :all) }
+      it { expect(page).to have_field('contract_licence_period', with: 'contract', type: :hidden, visible: :all) }
+
       it { expect(page).to have_field('Number of schools', with: contract.number_of_schools) }
       it { expect(page).to have_select('Status', selected: 'Provisional') }
 
@@ -339,7 +472,6 @@ describe 'manage contracts' do
             product: contract.product,
             contract_holder: contract.contract_holder,
             licence_period: contract.licence_period,
-            licence_years: contract.licence_years,
             number_of_schools: contract.number_of_schools,
             start_date: contract.end_date + 1.day,
             end_date: contract.end_date.next_year,
