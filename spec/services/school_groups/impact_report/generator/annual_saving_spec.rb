@@ -13,8 +13,7 @@ describe SchoolGroups::ImpactReport::Generator::AnnualSaving do
 
     before do
       alerts
-      Comparison::ChangeInElectricitySinceLastYear.refresh
-      Comparison::ChangeInGasSinceLastYear.refresh
+      [Comparison::ChangeInElectricitySinceLastYear, Comparison::ChangeInGasSinceLastYear].each(&:refresh)
     end
 
     def electricity(type, **)
