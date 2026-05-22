@@ -140,20 +140,20 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
-      "fingerprint": "9ff88180ca38901b679a0ed3c04613c535e3a260fc751ec42de7cc8bf78dffec",
+      "fingerprint": "861336d5a0af771537d6865e3971c9585ec70433e0d9eced2d65180f81627da5",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "app/models/concerns/temporal_range.rb",
-      "line": 32,
+      "line": 42,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
-      "code": "joins(\"INNER JOIN #{table_name} AS t2 ON t2.#{temporal_group_key} = #{table_name}.#{temporal_group_key}\\n            AND t2.id <> #{table_name}.id\\n            AND t2.start_date <= #{table_name}.end_date AND t2.end_date >= #{table_name}.start_date\")",
+      "code": "joins(\"INNER JOIN #{table_name} AS t2\\n  ON #{temporal_group_keys.map do\n \"t2.#{key} = #{table_name}.#{key}\"\n end.join(\" AND \")}\\n AND t2.id <> #{table_name}.id\\n AND t2.start_date <= #{table_name}.end_date\\n AND t2.end_date >= #{table_name}.start_date\\n\".squish)",
       "render_path": null,
       "location": {
         "type": "method",
         "class": "TemporalRange",
         "method": null
       },
-      "user_input": "temporal_group_key",
+      "user_input": "temporal_group_keys.map do\n \"t2.#{key} = #{table_name}.#{key}\"\n end.join(\" AND \")",
       "confidence": "Medium",
       "cwe_id": [
         89
