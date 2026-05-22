@@ -45,7 +45,8 @@ describe ApplicationHelper do
 
     it 'shows the last time as user signed in' do
       last_sign_in_at = DateTime.new(2001, 2, 3, 4, 5, 6)
-      expect(display_last_signed_in_as(build(:user, last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
+      expect(display_last_signed_in_as(build(:user,
+                                             last_sign_in_at: last_sign_in_at))).to eq last_sign_in_at.strftime('%d/%m/%Y %H:%M')
     end
   end
 
@@ -153,8 +154,14 @@ describe ApplicationHelper do
       end
     end
 
+    context 'when short_dates is true' do
+      subject { nice_date_times(utc_date_time, short_date: true) }
+
+      it { expect(subject).to eql("#{short_dates(utc_date_time)} #{nice_times_only(utc_date_time)}") }
+    end
+
     context 'when date is nil' do
-      subject {nice_date_times(nil)}
+      subject { nice_date_times(nil) }
 
       it { expect(nice_date_times(nil)).to be_blank }
     end
@@ -236,7 +243,8 @@ describe ApplicationHelper do
       times = (start_of_the_day..end_of_the_day).step(30.minutes)
       times = times.map { |time| helper.nice_times_only(Time.zone.at(time)) }
       expect(times).to eq(
-        ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
+        ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30',
+         '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00', '23:30']
       )
     end
   end
