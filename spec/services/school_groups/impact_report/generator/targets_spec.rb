@@ -12,8 +12,7 @@ describe SchoolGroups::ImpactReport::Generator::Targets do
       create(:school_target, :with_monthly_consumption, school:)
       create(:school_target, :with_monthly_consumption, fuel_type: :gas,
                                                         school: create(:school, school_group: school.school_group))
-      Comparison::GasTargets.refresh
-      Comparison::ElectricityTargets.refresh
+      [Comparison::GasTargets, Comparison::ElectricityTargets].each(&:refresh)
     end
 
     def metric(**)

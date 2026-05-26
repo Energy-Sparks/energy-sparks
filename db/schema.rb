@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_13_091347) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_18_083842) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -30,7 +30,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_091347) do
   create_enum "gas_unit", ["kwh", "m3", "ft3", "hcf"]
   create_enum "half_hourly_labelling", ["start", "end"]
   create_enum "impact_report_metric_categories", ["overview", "energy_efficiency", "engagement", "potential_savings", "footnotes"]
-  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "baseload_gbp", "baseload_co2", "baseload_kwh", "out_of_hours_gbp", "out_of_hours_co2", "out_of_hours_kwh", "peak_gbp", "peak_co2", "peak_kwh", "use_gbp", "use_co2", "use_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "annual_saving_gbp", "annual_saving_co2", "annual_saving_kwh", "out_of_hours_exemplar", "out_of_hours_well_managed", "long_term_exemplar", "long_term_well_managed", "baseload_exemplar", "baseload_well_managed", "heating_control_exemplar", "heating_control_well_managed"]
+  create_enum "impact_report_metric_types", ["visible_schools", "data_visible_schools", "users", "active_users", "pupils", "enrolled_schools", "enrolling_schools", "activities", "actions", "points", "targets", "total_savings", "baseload_gbp", "baseload_co2", "baseload_kwh", "out_of_hours_gbp", "out_of_hours_co2", "out_of_hours_kwh", "peak_gbp", "peak_co2", "peak_kwh", "use_gbp", "use_co2", "use_kwh", "heating_down_gbp", "heating_down_co2", "heating_down_kwh", "heating_early_gbp", "heating_early_co2", "heating_early_kwh", "heating_off_gbp", "heating_off_co2", "heating_off_kwh", "insulate_pipes_gbp", "insulate_pipes_co2", "insulate_pipes_kwh", "thermostatic_control_gbp", "thermostatic_control_co2", "thermostatic_control_kwh", "solar_panels_gbp", "solar_panels_co2", "solar_panels_kwh", "annual_saving_gbp", "annual_saving_co2", "annual_saving_kwh", "out_of_hours_exemplar", "out_of_hours_well_managed", "long_term_exemplar", "long_term_well_managed", "baseload_exemplar", "baseload_well_managed", "heating_control_exemplar", "heating_control_well_managed", "holiday_previous_gbp", "holiday_previous_kwh", "holiday_previous_year_gbp", "holiday_previous_year_kwh"]
   create_enum "licence_status", ["provisional", "confirmed", "pending_invoice", "invoiced"]
   create_enum "mailchimp_status", ["subscribed", "unsubscribed", "cleaned", "nonsubscribed", "archived"]
   create_enum "meter_monthly_summary_quality", ["incomplete", "actual", "estimated", "corrected"]

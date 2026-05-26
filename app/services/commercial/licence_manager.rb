@@ -18,6 +18,23 @@ module Commercial
       { start_date:, end_date: }
     end
 
+    # Take licence years, which is a float specifying length of licence, e.g. 1.0, 2.0, 1.75 (1 yr, 9 months)
+    # and add to a start date.
+    #
+    # Ignore leap years.
+    #
+    # Should return a date to create an inclusive range.
+    def self.add_years(start_date, licence_years)
+      # Convert fractional years into exact months
+      total_months = (licence_years * 12).round
+
+      # Shift forward by that many calendar months
+      end_date = start_date >> total_months
+
+      # inclusive end date
+      end_date - 1
+    end
+
     def school_onboarded(contract)
       create_licence(contract)
     end
@@ -62,19 +79,6 @@ module Commercial
         comments:,
         status: contract.confirmed? ? :confirmed : :provisional
       )
-    end
-
-    # Take licence years, which is a float specifying length of licence, e.g. 1.0, 2.0, 1.75 (1 yr, 9 months)
-    # and add to a start date.
-    #
-    # The date ranges are specified as exclusive end dates, so subtract a day
-    private_class_method def self.add_years(start_date, licence_years)
-      years = licence_years.floor
-      months = ((licence_years - years) * 12).round
-      # Advance by whole years and months
-      end_date = start_date.advance(years: years, months: months)
-      # Inclusive range: subtract 1 day
-      end_date - 1.day
     end
   end
 end
