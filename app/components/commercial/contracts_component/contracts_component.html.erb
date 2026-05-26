@@ -10,6 +10,8 @@
           <th>Contract Holder</th>
         <% end %>
         <th>Product</th>
+        <th class="text-end">Period</th>
+        <th class="text-end">Terms</th>
         <th class="text-end">Start Date</th>
         <th class="text-end">End Date</th>
         <th class="text-end">Number of Schools</th>
@@ -28,6 +30,8 @@
             <td class="col-2"><%= contract.contract_holder.name %></td>
           <% end %>
           <td class="col-2"><%= link_to contract.product.name, admin_commercial_product_path(contract.product) %></td>
+          <td><%= contract.licence_period.humanize %></td>
+          <td><%= contract.invoice_terms.humanize %></td>
           <td data-order="<%= contract.start_date.iso8601 %>" class="text-end"><%= contract.start_date.to_fs(:es_short) %></td>
           <td data-order="<%= contract.end_date.iso8601 %>" class="text-end"><%= contract.end_date.to_fs(:es_short) %></td>
           <td class="text-end col-1"><%= contract.number_of_schools %></td>

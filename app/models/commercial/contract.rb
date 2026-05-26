@@ -121,7 +121,6 @@ module Commercial
       !licences.invoiced.exists?
     end
 
-    # FIXME: might need revising
     def editable_attribute?(name)
       new_record? || editable_attributes.include?(name)
     end
@@ -132,6 +131,7 @@ module Commercial
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
       fields += [:status] if provisional?
+      fields += [:licence_years] if custom? && !invoiced?
       fields += %i[agreed_school_price start_date end_date] unless invoiced?
       fields
     end
