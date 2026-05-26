@@ -51,8 +51,6 @@ module Admin
       end
 
       def new
-        @title = new_model_form_title
-
         if renewal_request?
           @original = ::Commercial::Contract.find(params.expect(:original_contract_id))
           @contract = ::Commercial::Contract.as_renewal(@original)
@@ -61,6 +59,7 @@ module Admin
 
           @contract = build_contract
         end
+        @title = new_model_form_title
       end
 
       def edit; end
@@ -158,7 +157,7 @@ module Admin
       end
 
       def chosen_params
-        params.permit(:contract_holder_type, :contract_holder_id, :chosen_type)
+        params.permit(:contract_holder_type, :contract_holder_id, :original_contract_id, :chosen_type)
       end
 
       def contract_params
