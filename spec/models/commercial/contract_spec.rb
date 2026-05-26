@@ -221,8 +221,7 @@ describe Commercial::Contract do
     let!(:funder_contract) { create(:commercial_contract, contract_holder: create(:funder, name: 'ABC, Inc')) }
 
     it {
-      expect(described_class.ordered_by_contract_holder_name).to contain_exactly(funder_contract, group_contract,
-                                                                                 school_contract)
+      expect(described_class.ordered_by_contract_holder_name).to eq([funder_contract, group_contract, school_contract])
     }
   end
 end
