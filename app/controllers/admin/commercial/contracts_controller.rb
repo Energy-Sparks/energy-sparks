@@ -64,11 +64,14 @@ module Admin
 
       def edit; end
 
-      def create
+      def create # rubocop:disable Metrics/AbcSize
         @contract = ::Commercial::Contract.build(contract_params.merge(created_by: current_user))
-        render :new and return unless @contract.save
+        unless @contract.save
+          @original = ::Commercial::Contract.find(params[:original_contract_id]) if params[:original_contract_id]
+          render :new and return
+        end
 
-        if params[:renew_licences] == '1'
+        if @contract.renew_licences?
           renew_licences(@contract)
           redirect_to(admin_commercial_contract_path(@contract),
                       notice: 'Contract and provisional licences have been created') # rubocop:disable Rails/I18nLocaleTexts
@@ -163,7 +166,8 @@ module Admin
       def contract_params
         params.expect(contract: %i[agreed_school_price comments contract_holder_id contract_holder_type
                                    end_date invoice_terms licence_period licence_years name
-                                   number_of_schools product_id purchase_order_number start_date status])
+                                   number_of_schools product_id purchase_order_number
+                                   renew_licences start_date status])
       end
     end
   end

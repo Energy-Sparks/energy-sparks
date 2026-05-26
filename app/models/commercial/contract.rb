@@ -88,6 +88,12 @@ module Commercial
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
+    attr_accessor :renew_licences
+
+    def renew_licences?
+      ActiveModel::Type::Boolean.new.cast(renew_licences)
+    end
+
     def self.as_renewal(original)
       new(
         original.slice(
@@ -102,7 +108,8 @@ module Commercial
         ).merge(
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
-          start_date: original.end_date + 1.day
+          start_date: original.end_date + 1.day,
+          renew_licences: true
         )
       )
     end
@@ -130,14 +137,14 @@ module Commercial
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
-      fields += [:status] if provisional?
+      fields += %i[status] if provisional?
       fields += [:licence_years] if custom? && !invoiced?
-      fields += %i[agreed_school_price start_date end_date] unless invoiced?
+      fields += %i[agreed_school_price product_id start_date end_date] unless invoiced?
       fields
     end
 
     def cascade_updates_to_licences?
-      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status licence_years])
     end
 
     def as_range

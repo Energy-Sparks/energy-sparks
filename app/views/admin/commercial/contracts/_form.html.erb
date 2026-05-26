@@ -43,8 +43,8 @@
     <% elsif contract.persisted? %>
       <%= render PromptComponent.new icon: 'circle-info', status: :negative do %>
         <p>
-          Any changes made to the start and end dates for this contract will be automatically applied to any licences
-          that have not yet been invoiced, overwriting any existing licence dates.
+          Any changes made to the start and end dates or licence years fields for this contract will be
+          automatically applied to any licences that have not yet been invoiced, overwriting any existing licence dates.
         </p>
       <% end %>
     <% end %>
@@ -63,7 +63,7 @@
       <%= f.input :name %>
       <%= f.input :comments %>
 
-      <% if contract.editable_attribute?(:product) %>
+      <% if contract.editable_attribute?(:product_id) %>
         <%= f.input :product_id,
                     collection: Commercial::Product.with_default_first,
                     include_blank: false %>
@@ -72,7 +72,7 @@
       <% if contract.contract_holder.present? %>
         <%= f.input :contract_holder_type, as: :hidden %>
         <%= f.input :contract_holder_id, as: :hidden %>
-      <% elsif contract.editable_attribute?(:contract_holder) %>
+      <% elsif contract.editable_attribute?(:contract_holder_id) %>
         <%= f.input :contract_holder_type,
                     as: :radio_buttons,
                     collection: Commercial::HasContractHolder::ALLOWED_HOLDERS.map(&:name).sort,
@@ -110,11 +110,12 @@
         <div class="form-group">
           <div class="form-check">
             <%= hidden_field_tag :original_contract_id, original.id %>
-            <%= check_box_tag 'renew_licences', '1', true, class: 'form-check-input' %>
+            <%= f.check_box :renew_licences, class: 'form-check-input' %>
 
-            <%= label_tag 'renew_licences',
-                          'Automatically add licences for all schools associated with the original contract?',
-                          class: 'form-check-label' %>
+            <%= f.label :renew_licences,
+                        'Automatically add licences for all schools associated with the original contract?',
+                        class: 'form-check-label' %>
+
           </div>
         </div>
       <% end %>

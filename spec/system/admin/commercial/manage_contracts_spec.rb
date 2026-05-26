@@ -411,12 +411,13 @@ describe 'manage contracts' do
 
       it {
         expect(page).to have_text(
-          'Any changes made to the start and end dates for this contract will be automatically applied to any licences'
+          'Any changes made to the start and end dates or licence years fields for this contract will be ' \
+          'automatically applied to any licences'
         )
       }
 
       it { expect(page).to have_no_field('Contract holder') }
-      it { expect(page).to have_no_field('Product') }
+
       it { expect(page).to have_no_select('Invoice terms') }
       it { expect(page).to have_no_select('Licence period') }
       it { expect(page).to have_no_field('Licence years') }
@@ -598,7 +599,7 @@ describe 'manage contracts' do
 
         before do
           fill_in('Name', with: 'Renewed contract')
-          uncheck('renew_licences')
+          uncheck('contract_renew_licences')
           click_on 'Save'
         end
 
@@ -743,7 +744,8 @@ describe 'manage contracts' do
         let(:table_id) { '#contracts-table' }
         let(:expected_header) do
           [
-            ['Name', 'Product', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools', 'Status', 'Actions']
+            ['Name', 'Product', 'Period', 'Terms', 'Start Date', 'End Date', 'Number of Schools', 'Licensed Schools',
+             'Status', 'Actions']
           ]
         end
         let(:expected_rows) do
@@ -751,6 +753,8 @@ describe 'manage contracts' do
             [
               contract.name,
               contract.product.name,
+              contract.licence_period.humanize,
+              contract.invoice_terms.humanize,
               contract.start_date.to_fs(:es_short),
               contract.end_date.to_fs(:es_short),
               contract.number_of_schools.to_s,
