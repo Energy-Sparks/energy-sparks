@@ -5,22 +5,31 @@
     <td><%= link_to licence.school.name, school_path(licence.school) %></td>
 
     <% if show_field?(:start_date) %>
-      <td class="col-2"><%= lf.input :start_date, as: :tempus_dominus_date, label: false %></td>
+      <td class="col-2">
+        <%= lf.input :start_date, as: :tempus_dominus_date, label: false, disabled: licence.invoiced? %>
+        </td>
     <% end %>
     <% if show_field?(:end_date) %>
-      <td class="col-2"><%= lf.input :end_date, as: :tempus_dominus_date, label: false %></td>
+      <td class="col-2">
+        <%= lf.input :end_date, as: :tempus_dominus_date, label: false, disabled: licence.invoiced? %>
+      </td>
     <% end %>
     <% if show_field?(:status) %>
-      <td class="col-2"><%= lf.input :status,
-                                     collection: helpers.collection_from_enum(Commercial::Licence.statuses),
-                                     include_blank: false,
-                                     label: false %></td>
+      <td class="col-2">
+        <%= lf.input :status,
+                     collection: helpers.collection_from_enum(Commercial::Licence.statuses),
+                     include_blank: false,
+                     label: false,
+                     disabled: licence.invoiced? %>
+      </td>
     <% end %>
     <% if show_field?(:school_specific_price) %>
-      <td class="col-1"><%= lf.input :school_specific_price,
-                                     as: :decimal,
-                                     input_html: { step: '0.01' },
-                                     label: false %></td>
+      <td class="col-1">
+        <%= lf.input :school_specific_price,
+                     as: :decimal,
+                     input_html: { step: '0.01' },
+                     label: false, disabled: licence.invoiced? %>
+      </td>
     <% end %>
 
     <% if show_field?(:invoice_reference) %>
@@ -31,7 +40,7 @@
       <%= button_tag 'Delete',
                      type: :button,
                      data: { target: licence.id },
-                     class: 'btn btn-sm btn-danger licence-toggle-delete' %>
+                     class: 'btn btn-sm btn-danger licence-toggle-delete', disabled: licence.invoiced? %>
     </td>
   </tr>
   <% if show_field?(:comments) %>
