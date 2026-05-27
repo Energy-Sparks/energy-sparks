@@ -476,7 +476,7 @@ RSpec.describe 'issues', :include_application_helper, :issues do
         let!(:issue_next_week) { create(:issue, review_date: 5.days.from_now) }
         let!(:issue_week_after_next) { create(:issue, review_date: 10.days.from_now) }
         let!(:issue_no_review_date) { create(:issue, review_date: nil) }
-        let(:issues) { [issue_overdue, issue_next_week, issue_week_after_next, issue_no_review_date]}
+        let(:issues) { [issue_overdue, issue_next_week, issue_week_after_next, issue_no_review_date] }
         let(:setup_data) { issues }
 
         context 'when selecting any next review date' do
@@ -546,6 +546,31 @@ RSpec.describe 'issues', :include_application_helper, :issues do
               end
             end
           end
+        end
+      end
+
+      context 'when filtering by issue tag' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+        let(:issue_with_first_tag)  { create(:issue, issue_tags: [create(:issue_tag, label: 'tag1')]) }
+        let(:issue_with_second_tag) { create(:issue, issue_tags: [create(:issue_tag, label: 'tag2')]) }
+        let!(:issues) { [issue_with_first_tag, issue_with_second_tag] }
+
+        before do
+          select 'tag1', from: :issue_tag
+        end
+
+        buttons.each do |button|
+          # rubocop:disable RSpec/NestedGroups
+
+          context "when clicking #{button}" do # rubocop:disable RSpec/MultipleMemoizedHelpers
+            before { click_on button }
+
+            it_behaves_like 'a displayed list issue', type: button do
+              let(:issue) { issue_with_first_tag }
+              let(:all_issues) { issues }
+            end
+          end
+
+          # rubocop:enable RSpec/NestedGroups
         end
       end
 

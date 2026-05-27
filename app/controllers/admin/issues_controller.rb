@@ -31,6 +31,7 @@ module Admin
         @issues = @issues.for_statuses(params[:statuses])
         @issues = @issues.for_owned_by(params[:user]) if params[:user].present?
         @issues = @issues.search(params[:search]) if params[:search].present?
+        @issues = @issues.for_issue_tag(params[:issue_tag]) if params[:issue_tag].present?
 
         if params[:review_date]
           @issues = @issues.where(review_date: nil) if params[:review_date] == 'review_unset'

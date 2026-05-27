@@ -54,6 +54,12 @@
           </div>
         <% end %>
         <div class="me-2 mb-2">
+          <%= select_tag :issue_tag,
+                         options_from_collection_for_select(IssueTag.all, :id, :label, params[:issue_tag]),
+                         include_blank: 'Any tag',
+                         class: 'form-control' %>
+        </div>
+        <div class="me-2 mb-2">
           <%= select_tag :review_date,
                          options_for_select([['Next review date not set', :review_unset],
                                              ['Next review date in next week', :review_next_week],

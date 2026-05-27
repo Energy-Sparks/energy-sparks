@@ -18,7 +18,8 @@
           <tr>
             <td><%= issue_tag.label %></td>
             <td class="fit nowrap text-end">
-              <%= link_to 'View issues with this tag', admin_issues_path, class: 'btn btn-secondary btn-sm edit' %>
+              <%= link_to 'View issues with this tag', admin_issues_path(issue_tag:),
+                          class: 'btn btn-secondary btn-sm edit' %>
               <%= link_to 'Edit', edit_admin_issue_tag_path(issue_tag), class: 'btn btn-secondary btn-sm edit' %>
               <%= link_to 'Delete',
                           admin_issue_tag_path(issue_tag),
