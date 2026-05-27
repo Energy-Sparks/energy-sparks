@@ -650,6 +650,8 @@ Rails.application.routes.draw do
           get :expired
           get :expiring
           get :future
+          get :over_licensed
+          get :overlapping
           get :provisional
           get :recent
         end
@@ -659,6 +661,7 @@ Rails.application.routes.draw do
           get :current
           get :expired
           get :expiring
+          get :overlapping
           get :recent
           get :unlicensed
         end

@@ -49,6 +49,12 @@ module Commercial
 
     scope :by_name, -> { order(name: :asc) }
 
+    scope :over_licensed, lambda {
+      joins(:licences)
+        .group('commercial_contracts.id')
+        .having('COUNT(commercial_licences.id) > commercial_contracts.number_of_schools')
+    }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 
@@ -93,6 +99,42 @@ module Commercial
     def update_licences?
       ActiveModel::Type::Boolean.new.cast(update_licences)
     end
+
+    def self.contract_holder_name_sql
+      <<~SQL.squish
+        COALESCE(
+          schools.name,
+          school_groups.name,
+          funders.name
+        )
+      SQL
+    end
+
+    def self.contract_holder_joins
+      <<~SQL.squish
+        LEFT JOIN schools
+          ON schools.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'School'
+        LEFT JOIN school_groups
+          ON school_groups.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'SchoolGroup'
+        LEFT JOIN funders
+          ON funders.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'Funder'
+      SQL
+    end
+
+    scope :ordered_by_contract_holder_name, lambda {
+      name_sql = contract_holder_name_sql
+
+      joins(contract_holder_joins)
+        .select(
+          Arel.sql("commercial_contracts.*, #{name_sql} AS contract_holder_name")
+        )
+        .order(Arel.sql('contract_holder_name ASC'))
+    }
+
+    def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
 
     def self.as_renewal(original)
       new(

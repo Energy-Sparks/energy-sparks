@@ -9,7 +9,11 @@ module ApplicationHelper
     if options[:localtime] && Rails.application.config.display_timezone
       datetime = datetime.in_time_zone(Rails.application.config.display_timezone)
     end
-    "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
+    if options[:short_date]
+      "#{short_dates(datetime)} #{nice_times_only(datetime)}"
+    else
+      "#{nice_dates(datetime)} #{nice_times_only(datetime)}"
+    end
   end
 
   def nice_times_only(datetime)
