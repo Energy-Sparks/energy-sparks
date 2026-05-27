@@ -3,8 +3,8 @@
 class CreateIssueTags < ActiveRecord::Migration[8.1]
   def change
     create_table :issue_tags do |t|
-      t.string :system_id
-      t.string :label
+      t.string :system_id, index: { unique: true }
+      t.string :label, index: { unique: true }
 
       t.timestamps
     end

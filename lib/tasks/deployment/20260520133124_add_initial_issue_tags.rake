@@ -6,9 +6,9 @@ namespace :after_party do
     puts "Running deploy task 'add_initial_issue_tags'"
 
     IssueTag.create([
-                      { label: 'Onboarding status', system_id: :onboarding_status },
+                      { label: 'Onboarding status' },
                       { label: 'Group review', system_id: :group_review },
-                      { label: 'Solar setup', system_id: :solar_setup }
+                      { label: 'Solar setup' }
                     ])
 
     # Update task as completed.  If you remove the line below, the task will
