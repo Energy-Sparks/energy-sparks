@@ -11,5 +11,11 @@
 #  system_id  :string
 #
 class IssueTag < ApplicationRecord
+  include Deletable
+
   has_and_belongs_to_many :issues, inverse_of: :issue_tags # rubocop:disable Rails/HasAndBelongsToMany
+
+  def deletable?
+    system_id.nil?
+  end
 end

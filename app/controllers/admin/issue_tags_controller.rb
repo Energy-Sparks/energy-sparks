@@ -25,8 +25,11 @@ module Admin
     end
 
     def destroy
-      @issue_tag.destroy
-      redirect_to admin_issue_tags_path, notice: 'Issue tag was successfully deleted'
+      if @issue_tag.destroy
+        redirect_to admin_issue_tags_path, notice: 'Issue tag was successfully deleted'
+      else
+        redirect_to admin_issue_tags_path, notice: @issue_tag.errors.full_messages.to_sentence
+      end
     end
 
     # rubocop:enable Rails/I18nLocaleTexts
