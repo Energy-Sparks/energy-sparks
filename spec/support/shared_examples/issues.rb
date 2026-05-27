@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_examples 'a displayed issue' do
   it 'displays issue' do
     expect(page).to have_content issue.issue_type.capitalize
@@ -6,6 +8,9 @@ RSpec.shared_examples 'a displayed issue' do
     expect(page).to have_content issue.fuel_type.capitalize
     issue.meters.each do |meter|
       expect(page).to have_link meter.mpan_mprn.to_s, href: school_meter_path(meter.school, meter)
+    end
+    issue.issue_tags.each do |tag|
+      expect(page).to have_text tag.label
     end
     expect(page).to have_content issue.status.capitalize
     expect(page).to have_content issue_admin.display_name
