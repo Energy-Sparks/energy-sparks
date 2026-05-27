@@ -71,7 +71,7 @@ module Admin
           render :new and return
         end
 
-        if @contract.renew_licences?
+        if @contract.update_licences?
           renew_licences(@contract)
           redirect_to(admin_commercial_contract_path(@contract),
                       notice: 'Contract and provisional licences have been created') # rubocop:disable Rails/I18nLocaleTexts
@@ -167,7 +167,7 @@ module Admin
         params.expect(contract: %i[agreed_school_price comments contract_holder_id contract_holder_type
                                    end_date invoice_terms licence_period licence_years name
                                    number_of_schools product_id purchase_order_number
-                                   renew_licences start_date status])
+                                   update_licences start_date status])
       end
     end
   end

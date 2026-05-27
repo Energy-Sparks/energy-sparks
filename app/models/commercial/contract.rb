@@ -88,10 +88,10 @@ module Commercial
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
-    attr_accessor :renew_licences
+    attr_accessor :update_licences
 
-    def renew_licences?
-      ActiveModel::Type::Boolean.new.cast(renew_licences)
+    def update_licences?
+      ActiveModel::Type::Boolean.new.cast(update_licences)
     end
 
     def self.as_renewal(original)
@@ -109,7 +109,7 @@ module Commercial
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
           start_date: original.end_date + 1.day,
-          renew_licences: true
+          update_licences: true
         )
       )
     end
@@ -143,8 +143,11 @@ module Commercial
       fields
     end
 
+    # Indicate whether changes to the contract should trigger updates to existing licences. Based on
+    # user choice (:update_licences) and whether the saved changes indicate that an update is worthwhile.
     def cascade_updates_to_licences?
-      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status licence_years])
+      update_licences? && licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status
+                                                                               licence_years])
     end
 
     def as_range

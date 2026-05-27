@@ -467,6 +467,7 @@ describe 'manage contracts' do
           select 'Confirmed', from: 'Status'
           set_date('#contract_start_date', '01/01/2026')
           set_date('#contract_end_date', '31/12/2026')
+          check('contract_update_licences')
           click_on 'Save'
         end
 
@@ -478,6 +479,21 @@ describe 'manage contracts' do
             status: 'confirmed',
             updated_by: user
           )
+        end
+      end
+
+      context 'when making changes without cascading them to licences', :js do
+        before do
+          select 'Confirmed', from: 'Status'
+          set_date('#contract_start_date', '01/01/2026')
+          set_date('#contract_end_date', '31/12/2026')
+          click_on 'Save'
+        end
+
+        it 'updates the model' do
+          expect(page).to have_text('Contract has been updated')
+          original_attributes = licence.attributes
+          expect(licence.reload).to have_attributes(original_attributes)
         end
       end
     end
@@ -599,7 +615,7 @@ describe 'manage contracts' do
 
         before do
           fill_in('Name', with: 'Renewed contract')
-          uncheck('contract_renew_licences')
+          uncheck('contract_update_licences')
           click_on 'Save'
         end
 

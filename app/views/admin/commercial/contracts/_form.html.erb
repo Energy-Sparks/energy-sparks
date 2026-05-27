@@ -105,20 +105,22 @@
       <%= f.input :invoice_terms, as: :hidden %>
       <%= f.input :licence_period, as: :hidden %>
       <%= f.input :licence_years if contract.custom? && contract.editable_attribute?(:licence_years) %>
+      <%= hidden_field_tag :original_contract_id, original.id if local_assigns[:original].present? %>
 
-      <% if local_assigns[:original].present? %>
-        <div class="form-group">
-          <div class="form-check">
-            <%= hidden_field_tag :original_contract_id, original.id %>
-            <%= f.check_box :renew_licences, class: 'form-check-input' %>
+      <div class="form-group">
+        <div class="form-check">
+          <%= f.check_box :update_licences, class: 'form-check-input' %>
 
-            <%= f.label :renew_licences,
-                        'Automatically add licences for all schools associated with the original contract?',
-                        class: 'form-check-label' %>
+          <% if local_assigns[:original].present? %>
+            <% label = 'Automatically add licences for all schools associated with the original contract?' %>
+          <% else %>
+            <% label = 'Automatically update existing licences based on changes?' %>
+          <% end %>
 
-          </div>
+          <%= f.label :update_licences, label, class: 'form-check-label' %>
+
         </div>
-      <% end %>
+      </div>
 
       <%= f.submit 'Save', class: 'btn btn-primary' %>
       <%= link_to 'Cancel', all_contracts_path, class: 'btn' %>
