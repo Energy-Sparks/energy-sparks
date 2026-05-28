@@ -166,4 +166,62 @@ describe Commercial::Contract do
       )
     end
   end
+
+  describe '.over_licensed' do
+    let!(:contract) { create(:commercial_contract, number_of_schools: 1) }
+    let(:licence_count) { 1 }
+
+    before do
+      create_list(:commercial_licence, licence_count, contract:)
+    end
+
+    it { expect(described_class.over_licensed).to be_empty }
+
+    context 'with too many licences' do
+      let(:licence_count) { 2 }
+
+      it { expect(described_class.over_licensed).to include(contract) }
+    end
+  end
+
+  describe '.overlapping' do
+    let!(:contract_one) do
+      create(:commercial_contract, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+    end
+    let!(:contract_two) do
+      create(:commercial_contract,
+             contract_holder: contract_one.contract_holder,
+             start_date: Date.new(2025, 1, 1),
+             end_date: Date.new(2025, 12, 31))
+    end
+
+    it { expect(described_class.overlapping).to(be_empty) }
+
+    context 'when there are overlaps for different contract holders' do
+      let!(:contract_two) do
+        create(:commercial_contract, start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(be_empty) }
+    end
+
+    context 'when there are overlaps for same contract holder' do
+      let!(:contract_two) do
+        create(:commercial_contract, contract_holder: contract_one.contract_holder,
+                                     start_date: Date.new(2024, 6, 1), end_date: Date.new(2025, 12, 31))
+      end
+
+      it { expect(described_class.overlapping).to(contain_exactly(contract_one, contract_two)) }
+    end
+  end
+
+  describe '.ordered_by_contract_holder_name' do
+    let!(:school_contract) { create(:commercial_contract, contract_holder: create(:school, name: 'XYZ School')) }
+    let!(:group_contract) { create(:commercial_contract, contract_holder: create(:school_group, name: 'Big Group')) }
+    let!(:funder_contract) { create(:commercial_contract, contract_holder: create(:funder, name: 'ABC, Inc')) }
+
+    it {
+      expect(described_class.ordered_by_contract_holder_name).to eq([funder_contract, group_contract, school_contract])
+    }
+  end
 end

@@ -26,7 +26,7 @@ RSpec.describe 'onboarding', :schools do
 
   let!(:project_group) { create(:school_group, group_type: :project) }
   let!(:diocese) { create(:school_group, group_type: :diocese) }
-  let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area)}
+  let!(:local_authority_area) { create(:school_group, group_type: :local_authority_area) }
   let!(:funder) { create(:funder) }
   let!(:contract) { create(:commercial_contract) }
 
@@ -54,12 +54,14 @@ RSpec.describe 'onboarding', :schools do
         click_on 'New School Onboarding'
       end
 
-      it { expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name)) }
+      it {
+        expect(page).to have_select('School Group', options: [''] + SchoolGroup.organisation_groups.by_name.map(&:name))
+      }
 
       context 'when completing the first form' do
         before do
           fill_in 'School name', with: school_name
-          fill_in 'URN', with: 100000
+          fill_in 'URN', with: 100_000
           fill_in 'Contact email', with: 'oldfield@test.com'
           select school_group.name, from: 'School Group'
           click_on 'Next'
@@ -68,7 +70,11 @@ RSpec.describe 'onboarding', :schools do
         it { expect(page).to have_select('Data Sharing', selected: 'Public') }
         it { expect(page).to have_select('Funder', options: [''] + Funder.all.by_name.map(&:name)) }
         it { expect(page).to have_select('Contract', options: [''] + Commercial::Contract.current.by_name.map(&:name)) }
-        it { expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name)) }
+
+        it {
+          expect(page).to have_select('Project Group', options: [''] + SchoolGroup.project_groups.by_name.map(&:name))
+        }
+
         it { expect(page).to have_select('Template calendar', selected: template_calendar.title) }
         it { expect(page).to have_select('Weather Station', selected: weather_station.title) }
         it { expect(page).to have_select('Scoreboard', selected: scoreboard.name) }
@@ -86,8 +92,8 @@ RSpec.describe 'onboarding', :schools do
             click_on 'Next'
           end
 
-          it { expect(page).to have_content(school_name) }
-          it { expect(page).to have_content('oldfield@test.com') }
+          it { expect(page).to have_text(school_name) }
+          it { expect(page).to have_text('oldfield@test.com') }
 
           context 'when the setup is done' do
             subject(:onboarding) { SchoolOnboarding.first }
@@ -102,7 +108,9 @@ RSpec.describe 'onboarding', :schools do
             it { expect(onboarding.diocese).to eq(diocese) }
             it { expect(onboarding.local_authority_area).to eq(local_authority_area) }
             it { expect(onboarding.funder).to eq(funder) }
-            it { expect(onboarding.contract).to eq(contract)}
+            it { expect(onboarding.contract).to eq(contract) }
+
+            it { expect(page).to have_link(contract.name, href: admin_commercial_contract_path(contract)) }
 
             it 'has sent an email' do
               expect(last_email.subject).to include('Set up your school on Energy Sparks')
@@ -118,7 +126,7 @@ RSpec.describe 'onboarding', :schools do
 
       before do
         click_on 'Manage school onboarding'
-        click_on 'Send reminder email'
+        click_on 'Send reminder'
       end
 
       it { expect(last_email.subject).to include("Don't forget to set up your school on Energy Sparks") }
@@ -165,7 +173,7 @@ RSpec.describe 'onboarding', :schools do
       it { expect(onboarding.default_chart_preference).to eq 'cost' }
       it { expect(onboarding.country).to eq 'scotland' }
       it { expect(onboarding.funder).to eq(funder) }
-      it { expect(onboarding.contract).to eq(contract)}
+      it { expect(onboarding.contract).to eq(contract) }
 
       context 'when revisiting the forms' do
         before do
@@ -214,7 +222,7 @@ RSpec.describe 'onboarding', :schools do
         click_on 'Manage school onboarding'
         click_on 'Make visible'
 
-        expect(page).to have_content('School onboardings')
+        expect(page).to have_text('School onboardings')
 
         school_onboarding.reload
         expect(school_onboarding).to be_complete
@@ -262,9 +270,9 @@ RSpec.describe 'onboarding', :schools do
           expect(header).to match(/^attachment/)
           expect(header).to match(/filename="#{Admin::SchoolOnboardingsController::INCOMPLETE_ONBOARDING_SCHOOLS_FILE_NAME}"/o)
 
-          expect(page.source).to have_content 'Email sent'
-          expect(page.source).to have_content onboarding.school_name
-          expect(page.source).to have_content onboarding.contact_email
+          expect(page.source).to have_text 'Email sent'
+          expect(page.source).to have_text onboarding.school_name
+          expect(page.source).to have_text onboarding.contact_email
         end
       end
 
@@ -279,11 +287,11 @@ RSpec.describe 'onboarding', :schools do
           header = page.response_headers['Content-Disposition']
           expect(header).to match(/^attachment/)
           expect(header).to match(/filename="#{onboarding.school_group.slug}-onboarding-schools.csv"/)
-          expect(page.source).to have_content 'Email sent'
-          expect(page.source).to have_content 'In progress'
-          expect(page.source).to have_content onboarding.school_name
-          expect(page.source).to have_content onboarding.contact_email
-          expect(page.source).to have_content 'Manual school'
+          expect(page.source).to have_text 'Email sent'
+          expect(page.source).to have_text 'In progress'
+          expect(page.source).to have_text onboarding.school_name
+          expect(page.source).to have_text onboarding.contact_email
+          expect(page.source).to have_text 'Manual school'
         end
       end
     end
@@ -306,8 +314,8 @@ RSpec.describe 'onboarding', :schools do
         let(:email_address) { '' }
 
         it "doesn't save" do
-          expect(page).to have_content("Contact email *\ncan't be blank")
-          expect(page).to have_content('Change email address')
+          expect(page).to have_text("Contact email *\ncan't be blank")
+          expect(page).to have_text('Change email address')
         end
       end
 
@@ -315,8 +323,8 @@ RSpec.describe 'onboarding', :schools do
         let(:email_address) { 'different_address@email.com' }
 
         it 'saves' do
-          expect(page).to have_content('School onboardings currently in progress')
-          expect(page).to have_content(email_address)
+          expect(page).to have_text('School onboardings currently in progress')
+          expect(page).to have_text(email_address)
         end
 
         it 'sends email' do
@@ -360,9 +368,9 @@ RSpec.describe 'onboarding', :schools do
       end
 
       it 'shows recently onboarded schools' do
-        expect(page).to have_content 'Schools recently onboarded'
+        expect(page).to have_text 'Schools recently onboarded'
         click_on onboarding.school_name
-        expect(page).to have_content(onboarding.school.name)
+        expect(page).to have_text(onboarding.school.name)
       end
     end
   end

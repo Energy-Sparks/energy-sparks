@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'manage categories' do
@@ -47,7 +49,7 @@ describe 'manage categories' do
 
       it 'displays errors' do
         click_on 'Save'
-        expect(page).to have_content("Name can't be blank")
+        expect(page).to have_text("Name can't be blank")
       end
     end
   end
@@ -60,7 +62,7 @@ describe 'manage categories' do
       click_on 'Edit'
     end
 
-    it { expect(page).to have_content(product.name) }
+    it { expect(page).to have_text(product.name) }
 
     context 'with valid data' do
       before do
@@ -107,7 +109,7 @@ describe 'manage categories' do
         click_on 'Delete'
       end
 
-      it { expect(page).to have_content('Cannot delete a product with contracts') }
+      it { expect(page).to have_text('Cannot delete a product with contracts') }
     end
   end
 
@@ -121,16 +123,16 @@ describe 'manage categories' do
 
     it { expect(page).to have_css('#metadata') }
 
-    it { expect(page).to have_content(product.name) }
-    it { expect(page).to have_content(product.comments) }
+    it { expect(page).to have_text(product.name) }
+    it { expect(page).to have_text(product.comments) }
 
     context 'when viewing pricing' do
-      it { expect(page).to have_content(FormatUnit.format(:£, product.small_school_price)) }
-      it { expect(page).to have_content(FormatUnit.format(:£, product.large_school_price)) }
-      it { expect(page).to have_content(FormatUnit.format(:£, product.mat_price)) }
-      it { expect(page).to have_content(FormatUnit.format(:£, product.private_account_fee)) }
-      it { expect(page).to have_content(FormatUnit.format(:£, product.metering_fee)) }
-      it { expect(page).to have_content(FormatUnit.format(:pupils, product.size_threshold, :html, false, false)) }
+      it { expect(page).to have_text(FormatUnit.format(:£, product.small_school_price)) }
+      it { expect(page).to have_text(FormatUnit.format(:£, product.large_school_price)) }
+      it { expect(page).to have_text(FormatUnit.format(:£, product.mat_price)) }
+      it { expect(page).to have_text(FormatUnit.format(:£, product.private_account_fee)) }
+      it { expect(page).to have_text(FormatUnit.format(:£, product.metering_fee)) }
+      it { expect(page).to have_text(FormatUnit.format(:pupils, product.size_threshold, :html, false, false)) }
     end
 
     context 'when viewing contract summary' do
