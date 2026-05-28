@@ -40,9 +40,11 @@ class DataSource < ApplicationRecord
 
   validates :alert_percentage_threshold, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100, allow_blank: true }
   validates :name, presence: true, uniqueness: true
+
   has_many :meters
   has_many :issues, as: :issueable, dependent: :destroy
   has_many :schools, -> { distinct }, through: :meters
+  has_many :active_meter_issues, -> { merge(Meter.active).distinct }, through: :meters, source: :issues
 
   def percentage_of_lagging_meters
     active = meters.active_for_active_schools.count

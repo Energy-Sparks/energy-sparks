@@ -43,21 +43,36 @@
   <%= render 'data_source', data_source: @data_source %>
 </div>
 
-<ul class="nav nav-tabs url-aware" id="data-source-tabs" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="issues-tab" data-toggle="tab" href="#issues" role="tab" aria-controls="issues-content" aria-selected="true">
-      Issues <span class="badge text-bg-secondary"><%= @data_source.issues.count %></span>
-    </a>
-  </li>
-</ul>
-
-<div class="tab-content" id="data-source-content">
-  <div class="tab-pane fade show active" id="issues" role="tabpanel" aria-labelledby="issues-tab">
+<%= render TabsComponent.new do |component| %>
+  <% component.with_tab(name: :issues,
+                        label: label_count('Issues', @data_source.issues.issue.status_open.count)) do %>
     <% if @data_source.issues.any? %>
-      <%= render 'admin/issues/issues_list', issues: @data_source.issues, issueable_type: 'Data source' %>
+      <%= render 'admin/issues/issues_list', issues: @data_source.issues.by_priority_order,
+                                             issueable_type: 'Data source' %>
     <% else %>
       <div class="bg-light p-2">No issues for <%= @data_source.name %>.</div>
     <% end %>
-    <%= render 'admin/issues/issues_links', issueable: @data_source %>
-  </div>
-</div>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
+  <% end %>
+
+  <% component.with_tab(name: :meter_issues,
+                        label: label_count('Meter issues', @data_source.active_meter_issues.issue.status_open.count)) do %>
+    <% if @data_source.active_meter_issues.issue.any? %>
+      <%= render 'admin/issues/issues_list', issues: @data_source.active_meter_issues.issue
+                                                                 .status_open.by_priority_order,
+                                             issuable_type: 'Data source' %>
+    <% else %>
+      <div class="bg-light p-2">No meter issues for <%= @data_source.name %>.</div>
+    <% end %>
+    <div class='pt-3'><%= render 'admin/issues/issues_links', issueable: @data_source %></div>
+  <% end %>
+<% end %>
+
+<script>
+document.querySelectorAll('.tab-content a.btn.edit').forEach((element) => {
+  element.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.location.href = `${element.href}${encodeURIComponent(window.location.hash)}`;
+  });
+});
+</script>
