@@ -112,7 +112,7 @@ RSpec.describe IssuesReportMailer, :include_application_helper do
                    'New' => 'New this week!',
                    'Group' => issue.school_group.name,
                    'Title' => issue.title,
-                   'Tags' => 'issue tag',
+                   'Tags' => 'issue tag label',
                    'Fuel' => 'Gas',
                    'Next Review Date' => issue.review_date.strftime('%d/%m/%Y'),
                    'Created By' => issue.created_by.display_name,
