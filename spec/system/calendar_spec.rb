@@ -28,8 +28,8 @@ describe 'calendar view' do
 
       before do
         calendar
-         # need to do this after calendar so ID is greater in JSON generated as it shows those with higher
-         # IDs when multiple are present
+        # need to do this after calendar so ID is greater in JSON generated as it shows those with higher
+        # IDs when multiple are present
         inset_day_type
         visit calendar_path(calendar)
       end
