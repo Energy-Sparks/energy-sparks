@@ -192,9 +192,8 @@ describe AggregatorMultiSchoolsPeriods do
       context 'with year not starting on a month boundary' do
         let(:holidays) do
           Holidays.new(
-            HolidayData.new(
-              [build(:holiday, name: 'Summer', start_date: Date.new(2023, 7, 22), end_date: Date.new(2023, 9, 3))]
-            ), nil
+            [build(:holiday, name: 'Summer', start_date: Date.new(2023, 7, 22), end_date: Date.new(2023, 9, 3))],
+            nil
           )
         end
 
