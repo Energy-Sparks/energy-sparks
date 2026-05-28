@@ -4,15 +4,17 @@ module SchoolGroups
   class ImpactReport
     class Generator
       class Benchmark < Base
-        BENCHMARKS = [[%i[electricity gas], :out_of_hours],
-                      [%i[electricity gas], :long_term],
-                      [[:electricity], :baseload],
-                      [[:gas], :heating_control]].freeze
+        BENCHMARKS = [{ fuel_types: %i[electricity gas], metric_type: :out_of_hours },
+                      { fuel_types: %i[electricity gas], metric_type: :long_term },
+                      { fuel_types: %i[electricity],     metric_type: :baseload },
+                      { fuel_types: %i[gas],             metric_type: :heating_control }].freeze
         private_constant :BENCHMARKS
-        METRICS = BENCHMARKS.map(&:second)
+        METRICS = BENCHMARKS.pluck(:metric_type).freeze
 
         def metrics
-          BENCHMARKS.flat_map do |fuel_types, metric_type|
+          BENCHMARKS.flat_map do |benchmark|
+            fuel_types = benchmark[:fuel_types]
+            metric_type = benchmark[:metric_type]
             fuel_types.map do |fuel_type|
               good_schools, number_of_schools = categorise(fuel_types.length == 1 ? nil : fuel_type, metric_type)
               { enough_data: !number_of_schools.zero?,
@@ -27,9 +29,7 @@ module SchoolGroups
 
         private
 
-        def metric_category
-          :energy_efficiency
-        end
+        def metric_category = :energy_efficiency
 
         def categorise(fuel_type, benchmark)
           key = [fuel_type, benchmark].compact.join('_')
