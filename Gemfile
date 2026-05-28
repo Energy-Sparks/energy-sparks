@@ -8,7 +8,7 @@ gem 'rails', '~> 8.1.2'
 
 # Rails/Core
 gem 'bootsnap'
-gem 'image_processing', '~> 2.0'
+gem 'image_processing', '~> 2.0' # https://guides.rubyonrails.org/active_storage_overview.html#transforming-images
 gem 'jbuilder', '~> 2.15' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'mini_magick' # for image_processing
 gem 'puma' # Use Puma as the app server
