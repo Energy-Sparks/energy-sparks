@@ -37,6 +37,10 @@
 #  fk_rails_...  (created_by_id => users.id)
 #  fk_rails_...  (product_id => commercial_products.id)
 #  fk_rails_...  (updated_by_id => users.id)
+#
+#  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (product_id => commercial_products.id)
+#  fk_rails_...  (updated_by_id => users.id)
 module Commercial
   # rubocop:disable Metrics/ClassLength
   class Contract < ApplicationRecord

@@ -111,6 +111,16 @@ module Admin
         end
       end
 
+      def confirm
+        if @contract.update(status: :confirmed)
+          ::Commercial::ContractManager.new(@contract, current_user).cascade_updates_to_licences
+          notice = 'Contract and licences have been confirmed'
+        else
+          notice = 'Unable to confirm contract'
+        end
+        redirect_to(admin_commercial_contract_path(@contract), notice:)
+      end
+
       private
 
       def filter_params
