@@ -637,6 +637,7 @@ Rails.application.routes.draw do
     namespace :commercial do
       resources :contracts do
         get :contract_holder_options, on: :collection
+        get :choose, on: :collection
         resources :licences, controller: "contracts/licences" do
           collection do
             get :edit
@@ -649,6 +650,8 @@ Rails.application.routes.draw do
           get :expired
           get :expiring
           get :future
+          get :over_licensed
+          get :overlapping
           get :provisional
           get :recent
         end
@@ -658,6 +661,7 @@ Rails.application.routes.draw do
           get :current
           get :expired
           get :expiring
+          get :overlapping
           get :recent
           get :unlicensed
         end

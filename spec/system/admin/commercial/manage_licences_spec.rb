@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 shared_examples 'a licence list filtered by date' do
@@ -53,7 +55,7 @@ describe 'manage licences' do
       visit new_admin_commercial_licence_path
     end
 
-    it { expect(page).to have_text('Leave date fields empty to automatically create a licence starting from today') }
+    it { expect(page).to have_text('Leave the following fields blank ') }
 
     context 'with valid data', :js do
       before do
@@ -113,7 +115,7 @@ describe 'manage licences' do
       click_on('Add New Licence')
     end
 
-    it { expect(page).to have_text('Leave date fields empty to automatically create a licence starting from today') }
+    it { expect(page).to have_text('Leave the following fields blank to automatically populate the licence') }
     it { expect(page).to have_text("Create a new licence under the #{contract.name} contract.") }
 
     context 'with valid data', :js do
@@ -177,7 +179,9 @@ describe 'manage licences' do
     it { expect(page).to have_text(licence.contract.name) }
 
     it {
-      expect(page).to have_text("Update the licence for #{licence.school.name} under the #{licence.contract.name} contract.")
+      expect(page).to have_text(
+        "Update the licence for #{licence.school.name} under the #{licence.contract.name} contract."
+      )
     }
 
     context 'when dates may change' do
@@ -186,7 +190,7 @@ describe 'manage licences' do
       let!(:licence) { create(:commercial_licence, contract:, school:) }
 
       it 'includes a warning' do
-        expect(page).to have_text('Changes made here will be overwritten')
+        expect(page).to have_text('Any changes made here will then be overwritten.')
       end
     end
 
@@ -216,12 +220,23 @@ describe 'manage licences' do
         )
       end
     end
+
+    context 'when licence is invoiced' do
+      let!(:licence) { create(:commercial_licence, status: :invoiced) }
+
+      it { expect(page).to have_text('This licence has been invoiced. Only limited changes can now be made') }
+
+      it { expect(page).to have_no_field('School specific price') }
+
+      it { expect(page).to have_no_field('Status') }
+      it { expect(page).to have_no_field('Start date') }
+      it { expect(page).to have_no_field('End date') }
+    end
   end
 
   context 'when deleting a licence' do
-    let!(:licence) { create(:commercial_licence) }
-
     before do
+      create(:commercial_licence)
       visit admin_commercial_licences_path
     end
 
@@ -249,8 +264,11 @@ describe 'manage licences' do
 
   context 'when viewing licence lists' do
     let!(:school_group) { create(:school_group) }
+    # this is used in the shared examples, must be created before page load
+    # rubocop:disable RSpec/LetSetup
     let!(:filter_group) { create(:school_group, :with_active_schools) }
-
+    # rubocop:enable RSpec/LetSetup
+    #
     let!(:school) { create(:school, :with_school_grouping, group: school_group) }
 
     context 'with current' do
@@ -341,6 +359,30 @@ describe 'manage licences' do
       it 'shows the licence' do
         within('#licences-table') do
           expect(page).to have_link(href: admin_commercial_licence_path(licence.id))
+        end
+      end
+    end
+
+    context 'with overlapping' do
+      let!(:licence_one) do
+        create(:commercial_licence, school:, start_date: Date.new(2024, 1, 1), end_date: Date.new(2024, 12, 31))
+      end
+
+      let!(:licence_two) do
+        create(:commercial_licence,
+               school: licence_one.school,
+               start_date: Date.new(2024, 6, 1),
+               end_date: Date.new(2025, 12, 31))
+      end
+
+      before do
+        click_on 'Overlapping Licences'
+      end
+
+      it 'shows the contract' do
+        within('#licences-table') do
+          expect(page).to have_link(href: admin_commercial_licence_path(licence_one.id))
+          expect(page).to have_link(href: admin_commercial_licence_path(licence_two.id))
         end
       end
     end

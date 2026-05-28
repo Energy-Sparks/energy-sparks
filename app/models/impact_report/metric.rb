@@ -60,7 +60,8 @@ module ImpactReport
     ENERGY_EFFICIENCY_GENERATORS = [
       GENERATOR::AnnualSaving,
       GENERATOR::Benchmark,
-      GENERATOR::Targets
+      GENERATOR::Targets,
+      GENERATOR::Holiday
     ].freeze
 
     ENERGY_EFFICIENCY_METRICS = (

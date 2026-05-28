@@ -109,6 +109,22 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
           expect(main).to have_field(field_name(licence, :invoice_reference),
                                      with: 'INV-001')
         end
+
+        context 'with an invoiced licence' do # rubocop:disable RSpec/NestedGroups
+          let!(:licence) do
+            create(:commercial_licence,
+                   contract:,
+                   status: :invoiced)
+          end
+
+          it 'disables some of the fields' do
+            expect(main).to have_field(field_name(licence, :start_date), disabled: true)
+            expect(main).to have_field(field_name(licence, :end_date), disabled: true)
+            expect(main).to have_select(field_name(licence, :status), disabled: true)
+            expect(main).to have_field(field_name(licence, :school_specific_price), disabled: true)
+            expect(main).to have_field(field_name(licence, :invoice_reference), disabled: false)
+          end
+        end
       end
 
       context 'when populating the comments row' do
@@ -117,6 +133,18 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
         it 'renders the comments' do
           expect(comments).to have_field(field_name(licence, :comments),
                                          with: 'Some comments')
+        end
+
+        context 'with an invoiced licence' do # rubocop:disable RSpec/NestedGroups
+          let!(:licence) do
+            create(:commercial_licence,
+                   contract:,
+                   status: :invoiced)
+          end
+
+          it 'allows comments to be edited' do
+            expect(comments).to have_field(field_name(licence, :comments), disabled: false)
+          end
         end
       end
 
@@ -162,7 +190,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
       let!(:licence) { create(:commercial_licence, contract:, school:) }
 
       context 'when there are no additional schools' do
-        it { expect(page).to have_no_content('Add schools to contract') }
+        it { expect(page).to have_no_text('Add schools to contract') }
       end
 
       context 'when there are schools to show' do
@@ -170,7 +198,7 @@ RSpec.describe Forms::Commercial::BulkLicenceEditorComponent, :include_applicati
 
         let(:additional_schools) { [additional_school] }
 
-        it { expect(page).to have_content('Add schools to contract') }
+        it { expect(page).to have_text('Add schools to contract') }
 
         it_behaves_like 'it contains the expected data table', sortable: true, aligned: false do
           let(:table_id) { "#contract-#{contract.id}-additional-schools-table" }

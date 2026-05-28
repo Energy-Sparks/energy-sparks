@@ -1,6 +1,6 @@
 <%= render Admin::HeaderNavComponent.new do |header_nav| %>
   <% header_nav.with_header title: @licence.school.name.to_s %>
-  <% header_nav.with_button 'All licences', admin_commercial_licences_path %>
+  <% header_nav.with_button 'All licences', polymorphic_path([:admin, @licence.contract]) %>
 <% end %>
 
 <div class="row">

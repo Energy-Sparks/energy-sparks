@@ -49,6 +49,12 @@ module Commercial
 
     scope :by_name, -> { order(name: :asc) }
 
+    scope :over_licensed, lambda {
+      joins(:licences)
+        .group('commercial_contracts.id')
+        .having('COUNT(commercial_licences.id) > commercial_contracts.number_of_schools')
+    }
+
     belongs_to :product, class_name: 'Commercial::Product'
     belongs_to :contract_holder, polymorphic: true
 
@@ -88,6 +94,48 @@ module Commercial
 
     accepts_nested_attributes_for :licences, allow_destroy: true
 
+    attr_accessor :update_licences
+
+    def update_licences?
+      ActiveModel::Type::Boolean.new.cast(update_licences)
+    end
+
+    def self.contract_holder_name_sql
+      <<~SQL.squish
+        COALESCE(
+          schools.name,
+          school_groups.name,
+          funders.name
+        )
+      SQL
+    end
+
+    def self.contract_holder_joins
+      <<~SQL.squish
+        LEFT JOIN schools
+          ON schools.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'School'
+        LEFT JOIN school_groups
+          ON school_groups.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'SchoolGroup'
+        LEFT JOIN funders
+          ON funders.id = commercial_contracts.contract_holder_id
+         AND commercial_contracts.contract_holder_type = 'Funder'
+      SQL
+    end
+
+    scope :ordered_by_contract_holder_name, lambda {
+      name_sql = contract_holder_name_sql
+
+      joins(contract_holder_joins)
+        .select(
+          Arel.sql("commercial_contracts.*, #{name_sql} AS contract_holder_name")
+        )
+        .order(Arel.sql('contract_holder_name ASC'))
+    }
+
+    def self.temporal_group_keys = %i[contract_holder_id contract_holder_type]
+
     def self.as_renewal(original)
       new(
         original.slice(
@@ -102,7 +150,8 @@ module Commercial
         ).merge(
           comments: "Renewed from #{original.name}",
           end_date: original.end_date.next_year,
-          start_date: original.end_date + 1.day
+          start_date: original.end_date + 1.day,
+          update_licences: true
         )
       )
     end
@@ -130,13 +179,17 @@ module Commercial
     # Others cannot be changed once invoicing has started, e.g. agreed_school_price
     def editable_attributes
       fields = %i[comments name purchase_order_number number_of_schools updated_by_id]
-      fields += [:status] if provisional?
-      fields += %i[agreed_school_price start_date end_date] unless invoiced?
+      fields += %i[status] if provisional?
+      fields += [:licence_years] if custom? && !invoiced?
+      fields += %i[agreed_school_price product_id start_date end_date] unless invoiced?
       fields
     end
 
+    # Indicate whether changes to the contract should trigger updates to existing licences. Based on
+    # user choice (:update_licences) and whether the saved changes indicate that an update is worthwhile.
     def cascade_updates_to_licences?
-      licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status])
+      update_licences? && licences.exists? && saved_changes.keys.intersect?(%w[start_date end_date status
+                                                                               licence_years])
     end
 
     def as_range

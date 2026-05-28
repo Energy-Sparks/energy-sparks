@@ -64,6 +64,8 @@ module Commercial
 
     validates :start_date, :end_date, presence: true
 
+    def self.temporal_group_keys = [:school_id]
+
     def self.filtered(scope_name, date = nil, school_group_id = nil)
       date = Date.parse(date) if date.present? && date.is_a?(String)
       scope = date.present? ? public_send(scope_name, date) : public_send(scope_name)

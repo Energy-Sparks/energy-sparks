@@ -59,20 +59,21 @@ describe Holidays do
         expect(periods).to match([have_attributes(start_date: Date.new(2023, 1, 3), end_date: end_date)])
       end
 
-      context 'when partial periods allowed' do
+      context 'with partial periods allowed' do
         let(:include_partial_period) { true }
 
         it 'returns 2 periods' do
           expect(periods).to match([have_attributes(start_date: Date.new(2023, 1, 3), end_date: end_date),
                                     have_attributes(start_date: start_date, end_date: start_date)])
         end
+      end
 
-        context 'with minimum days per period' do
-          let(:minimum_days) { 7 }
+      context 'with partial periods and minimum days per period' do
+        let(:include_partial_period) { true }
+        let(:minimum_days) { 7 }
 
-          it 'returns a single period' do
-            expect(periods).to match([have_attributes(start_date: Date.new(2023, 1, 3), end_date: end_date)])
-          end
+        it 'returns a single period' do
+          expect(periods).to match([have_attributes(start_date: Date.new(2023, 1, 3), end_date: end_date)])
         end
       end
     end
