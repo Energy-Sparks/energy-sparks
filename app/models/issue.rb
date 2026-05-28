@@ -65,6 +65,9 @@ class Issue < ApplicationRecord
   scope :for_issue_types, ->(issue_types) { where(issue_type: issue_types) }
   scope :for_owned_by, ->(owned_by) { where(owned_by:) }
   scope :for_statuses, ->(statuses) { where(status: statuses) }
+  scope :for_issue_tag, lambda { |issue_tag|
+    joins(:issue_tags).where(issue_tags: { id: issue_tag })
+  }
   scope :search, lambda { |search|
     joins(:rich_text_description).where('title ~* ? or action_text_rich_texts.body ~* ?', search, search)
   }
