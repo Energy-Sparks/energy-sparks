@@ -776,7 +776,7 @@ describe 'manage contracts' do
               contract.number_of_schools.to_s,
               '0',
               contract.status.humanize,
-              'Edit Renew Delete'
+              'Edit Renew Confirm Delete'
             ]
           ]
         end
